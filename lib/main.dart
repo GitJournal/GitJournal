@@ -16,34 +16,59 @@ class JournalList extends StatelessWidget {
       appBar: new AppBar(
         title: new Text('Journal'),
       ),
-      body: _buildSuggestions(),
+      body: _buildSuggestions(context),
       floatingActionButton: createButton,
     );
   }
 
-  Widget _buildRow() {
+  Widget _buildRow(BuildContext context) {
+    var title = "May 5, 2018";
     var body = "The quick brown fox jumped over the very lazy dog, who then ran"
         "all around the garden untill he fell down";
 
     return new ListTile(
       isThreeLine: true,
       title: new Text(
-        "May 5, 2018",
+        title,
         style: _biggerFont,
       ),
       subtitle: new Text("10:24" + "\n" + body),
-      onTap: () {
-        print("Item tapped");
-      },
+      onTap: () => _itemTapped(context, title, body),
     );
   }
 
-  Widget _buildSuggestions() {
+  void _itemTapped(BuildContext context, String title, String body) {
+    // FIXME: Add some kind of a header?
+    body = """Hello
+
+This is a sample note. Blah Blooh
+The quick brown fox
+jumped over the lazy dog.
+So now what is going to happen?
+    """;
+
+    var bodyWidget = new SingleChildScrollView(
+      child: new Text(body, style: _biggerFont),
+      padding: const EdgeInsets.all(8.0),
+    );
+
+    var showJournalScreen = new Scaffold(
+      appBar: new AppBar(
+        title: new Text(title),
+      ),
+      body: bodyWidget,
+    );
+
+    var route = new MaterialPageRoute(builder: (context) => showJournalScreen);
+    Navigator.of(context).push(route);
+  }
+
+  Widget _buildSuggestions(BuildContext context) {
     return new ListView.builder(
       padding: const EdgeInsets.all(8.0),
       itemBuilder: (context, i) {
         if (i.isOdd) return new Divider();
-        return _buildRow();
+        return _buildRow(context);
       },
     );
   }
