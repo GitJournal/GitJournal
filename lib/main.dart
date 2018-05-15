@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
 
-class JournalList extends StatefulWidget {
-  @override
-  createState() => new JournalListState();
-}
-
-class JournalListState extends State<JournalList> {
+class JournalList extends StatelessWidget {
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
   @override
@@ -38,7 +33,7 @@ class JournalListState extends State<JournalList> {
       ),
       subtitle: new Text("10:24" + "\n" + body),
       onTap: () {
-        setState(() {});
+        print("Item tapped");
       },
     );
   }
