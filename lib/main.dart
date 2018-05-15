@@ -8,7 +8,7 @@ class JournalList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var createButton = new FloatingActionButton(
-      onPressed: _newPost,
+      onPressed: () => _newPost(context),
       child: new Icon(Icons.add),
     );
 
@@ -73,8 +73,25 @@ So now what is going to happen?
     );
   }
 
-  void _newPost() {
-    print("FOoOO");
+  void _newPost(BuildContext context) {
+    var bodyWidget = new Container(
+      child: new TextField(
+        autofocus: true,
+        keyboardType: TextInputType.multiline,
+        maxLines: 500,
+      ),
+      padding: const EdgeInsets.all(8.0),
+    );
+
+    var newJournalScreen = new Scaffold(
+      appBar: new AppBar(
+        title: new Text("May 15, 17:35"),
+      ),
+      body: bodyWidget,
+    );
+
+    var route = new MaterialPageRoute(builder: (context) => newJournalScreen);
+    Navigator.of(context).push(route);
   }
 }
 
