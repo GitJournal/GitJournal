@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
+import 'note_editor.dart';
 
 class Note {
   final DateTime createdAt;
@@ -32,23 +33,6 @@ Future<List<Note>> fetchNotes() async {
 
   return notes;
 }
-
-// How to load this dynamically?
-// I can put this in a widget with a state
-// and do an async call.
-/*
-var state = <Note>[
-  Note(
-    createdAt: new DateTime.now(),
-    body: "The quick brown fox jumped over the very lazy dog, who then ran"
-        "all around the garden untill he fell down",
-  ),
-  Note(
-    createdAt: new DateTime.now().subtract(new Duration(days: 1)),
-    body: "This is the body",
-  ),
-];
-*/
 
 void main() => runApp(new MyApp());
 
@@ -146,26 +130,7 @@ So now what is going to happen?
   }
 
   void _newPost(BuildContext context) {
-    var bodyWidget = new Container(
-      child: new TextField(
-        autofocus: true,
-        keyboardType: TextInputType.multiline,
-        maxLines: 500,
-        decoration: new InputDecoration(
-          hintText: 'Write here',
-        ),
-      ),
-      padding: const EdgeInsets.all(8.0),
-    );
-
-    var newJournalScreen = new Scaffold(
-      appBar: new AppBar(
-        title: new Text("May 15, 17:35"),
-      ),
-      body: bodyWidget,
-    );
-
-    var route = new MaterialPageRoute(builder: (context) => newJournalScreen);
+    var route = new MaterialPageRoute(builder: (context) => new NoteEditor());
     Navigator.of(context).push(route);
   }
 }
