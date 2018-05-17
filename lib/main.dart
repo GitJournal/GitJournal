@@ -1,5 +1,34 @@
 import 'package:flutter/material.dart';
 
+class Journal {
+  final DateTime creationDateTime;
+  final String body;
+
+  const Journal({this.creationDateTime, this.body});
+
+  factory Journal.fromJson(Map<String, dynamic> json) {
+    return new Journal(
+      creationDateTime: json['creationDateTime'],
+      body: json['body'],
+    );
+  }
+}
+
+// How to load this dynamically?
+// I can put this in a widget with a state
+// and do an async call.
+var state = <Journal>[
+  Journal(
+    creationDateTime: new DateTime.now(),
+    body: "The quick brown fox jumped over the very lazy dog, who then ran"
+        "all around the garden untill he fell down",
+  ),
+  Journal(
+    creationDateTime: new DateTime.now().subtract(new Duration(days: 1)),
+    body: "This is the body",
+  ),
+];
+
 void main() => runApp(new MyApp());
 
 class JournalList extends StatelessWidget {
@@ -21,10 +50,10 @@ class JournalList extends StatelessWidget {
     );
   }
 
-  Widget _buildRow(BuildContext context) {
-    var title = "May 5, 2018";
-    var body = "The quick brown fox jumped over the very lazy dog, who then ran"
-        "all around the garden untill he fell down";
+  Widget _buildRow(BuildContext context, Journal journal) {
+    var title = journal.creationDateTime.toString();
+    var time = "10:24";
+    var body = journal.body;
 
     return new ListTile(
       isThreeLine: true,
@@ -32,7 +61,7 @@ class JournalList extends StatelessWidget {
         title,
         style: _biggerFont,
       ),
-      subtitle: new Text("10:24" + "\n" + body),
+      subtitle: new Text(time + "\n" + body),
       onTap: () => _itemTapped(context, title, body),
     );
   }
@@ -41,7 +70,7 @@ class JournalList extends StatelessWidget {
     // FIXME: Add some kind of a header?
     body = """Hello
 
-This is a sample note. Blah Blooh
+This is a sample note. Blah Blooh foo foo foo foo bfoooo
 The quick brown fox
 jumped over the lazy dog.
 So now what is going to happen?
@@ -67,8 +96,11 @@ So now what is going to happen?
     return new ListView.builder(
       padding: const EdgeInsets.all(8.0),
       itemBuilder: (context, i) {
-        if (i.isOdd) return new Divider();
-        return _buildRow(context);
+        if (i >= state.length) {
+          return null;
+        }
+        //if (i.isOdd) return new Divider();
+        return _buildRow(context, state[i]);
       },
     );
   }
@@ -79,6 +111,9 @@ So now what is going to happen?
         autofocus: true,
         keyboardType: TextInputType.multiline,
         maxLines: 500,
+        decoration: new InputDecoration(
+          hintText: 'Write here',
+        ),
       ),
       padding: const EdgeInsets.all(8.0),
     );
