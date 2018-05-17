@@ -85,22 +85,17 @@ class JournalList extends StatelessWidget {
         style: _biggerFont,
       ),
       subtitle: new Text(time + "\n" + body),
-      onTap: () => _itemTapped(context, title, body),
+      onTap: () => _itemTapped(context, journal),
     );
   }
 
-  void _itemTapped(BuildContext context, String title, String body) {
+  void _itemTapped(BuildContext context, Note note) {
     // FIXME: Add some kind of a header?
-    body = """Hello
-
-This is a sample note. Blah Blooh foo foo foo foo bfoooo
-The quick brown fox
-jumped over the lazy dog.
-So now what is going to happen?
-    """;
+    var formatter = new DateFormat('dd MMM, yyyy');
+    var title = formatter.format(note.createdAt);
 
     var bodyWidget = new SingleChildScrollView(
-      child: new Text(body, style: _biggerFont),
+      child: new Text(note.body, style: _biggerFont),
       padding: const EdgeInsets.all(8.0),
     );
 
