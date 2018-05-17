@@ -4,6 +4,9 @@ description: A simple journaling app.
 dependencies:
   flutter:
     sdk: flutter
+  http: "^0.11.3+16"
+  intl: "^0.15.6"
+
 
 dev_dependencies:
   flutter_test:

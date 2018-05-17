@@ -1,33 +1,52 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:convert';
 
-class Journal {
-  final DateTime creationDateTime;
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+class Note {
+  final DateTime createdAt;
   final String body;
 
-  const Journal({this.creationDateTime, this.body});
+  const Note({this.createdAt, this.body});
 
-  factory Journal.fromJson(Map<String, dynamic> json) {
-    return new Journal(
-      creationDateTime: json['creationDateTime'],
-      body: json['body'],
+  factory Note.fromJson(Map<String, dynamic> json) {
+    print(json)
+    return new Note(
+      createdAt: DateTime.parse(json['createdAt']),
+      body: json['data'],
     );
   }
+}
+
+Future<List<Note>> fetchNotes() async {
+  final response = await http.get('http://192.168.1.132:8000/notes');
+  final responseJson = json.decode(response.body);
+
+  var notes = <Note>[];
+  for (var postJson in responseJson) {
+    notes.add(new Note.fromJson(postJson));
+  }
+
+  return notes;
 }
 
 // How to load this dynamically?
 // I can put this in a widget with a state
 // and do an async call.
-var state = <Journal>[
-  Journal(
-    creationDateTime: new DateTime.now(),
+/*
+var state = <Note>[
+  Note(
+    createdAt: new DateTime.now(),
     body: "The quick brown fox jumped over the very lazy dog, who then ran"
         "all around the garden untill he fell down",
   ),
-  Journal(
-    creationDateTime: new DateTime.now().subtract(new Duration(days: 1)),
+  Note(
+    createdAt: new DateTime.now().subtract(new Duration(days: 1)),
     body: "This is the body",
   ),
 ];
+*/
 
 void main() => runApp(new MyApp());
 
@@ -45,15 +64,31 @@ class JournalList extends StatelessWidget {
       appBar: new AppBar(
         title: new Text('Journal'),
       ),
-      body: _buildSuggestions(context),
       floatingActionButton: createButton,
+      body: new FutureBuilder<List<Note>>(
+          future: fetchNotes(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              var notes = snapshot.data;
+              return _buildSuggestions(context, notes);
+            } else if (snapshot.hasError) {
+              return new Text("${snapshot.error}");
+            }
+
+            return new CircularProgressIndicator();
+          }),
     );
   }
 
-  Widget _buildRow(BuildContext context, Journal journal) {
-    var title = journal.creationDateTime.toString();
+  Widget _buildRow(BuildContext context, Note journal) {
+    var title = journal.createdAt.toString();
     var time = "10:24";
+
     var body = journal.body;
+    if (body.length >= 100) {
+      body = body.substring(0, 100);
+    }
+    body = body.replaceAll("\n", " ");
 
     return new ListTile(
       isThreeLine: true,
@@ -92,15 +127,15 @@ So now what is going to happen?
     Navigator.of(context).push(route);
   }
 
-  Widget _buildSuggestions(BuildContext context) {
+  Widget _buildSuggestions(BuildContext context, List<Note> notes) {
     return new ListView.builder(
       padding: const EdgeInsets.all(8.0),
       itemBuilder: (context, i) {
-        if (i >= state.length) {
+        if (i >= notes.length) {
           return null;
         }
         //if (i.isOdd) return new Divider();
-        return _buildRow(context, state[i]);
+        return _buildRow(context, notes[i]);
       },
     );
   }
