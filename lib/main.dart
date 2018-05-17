@@ -14,10 +14,9 @@ class Note {
   const Note({this.createdAt, this.body});
 
   factory Note.fromJson(Map<String, dynamic> json) {
-    print(json)
     return new Note(
       createdAt: DateTime.parse(json['createdAt']),
-      body: json['data'],
+      body: json['body'],
     );
   }
 }
