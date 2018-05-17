@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+
 
 class Note {
   final DateTime createdAt;
@@ -81,8 +83,11 @@ class JournalList extends StatelessWidget {
   }
 
   Widget _buildRow(BuildContext context, Note journal) {
-    var title = journal.createdAt.toString();
-    var time = "10:24";
+    var formatter = new DateFormat('dd MMM, yyyy');
+    var title = formatter.format(journal.createdAt);
+
+    var timeFormatter = new DateFormat('Hm');
+    var time = timeFormatter.format(journal.createdAt);
 
     var body = journal.body;
     if (body.length >= 100) {
