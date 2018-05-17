@@ -5,21 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
+import 'note.dart';
 import 'note_editor.dart';
-
-class Note {
-  final DateTime createdAt;
-  final String body;
-
-  const Note({this.createdAt, this.body});
-
-  factory Note.fromJson(Map<String, dynamic> json) {
-    return new Note(
-      createdAt: DateTime.parse(json['createdAt']),
-      body: json['body'],
-    );
-  }
-}
+import 'note_viewer.dart';
 
 Future<List<Note>> fetchNotes() async {
   final response = await http.get('http://192.168.1.132:8000/notes');
@@ -90,23 +78,8 @@ class JournalList extends StatelessWidget {
   }
 
   void _itemTapped(BuildContext context, Note note) {
-    // FIXME: Add some kind of a header?
-    var formatter = new DateFormat('dd MMM, yyyy');
-    var title = formatter.format(note.createdAt);
-
-    var bodyWidget = new SingleChildScrollView(
-      child: new Text(note.body, style: _biggerFont),
-      padding: const EdgeInsets.all(8.0),
-    );
-
-    var showJournalScreen = new Scaffold(
-      appBar: new AppBar(
-        title: new Text(title),
-      ),
-      body: bodyWidget,
-    );
-
-    var route = new MaterialPageRoute(builder: (context) => showJournalScreen);
+    var route =
+        new MaterialPageRoute(builder: (context) => new NoteViewer(note: note));
     Navigator.of(context).push(route);
   }
 
