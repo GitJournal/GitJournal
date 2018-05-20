@@ -3,11 +3,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 
 import 'note.dart';
 import 'note_editor.dart';
 import 'note_viewer.dart';
+import 'journal_list.dart';
 
 Future<List<Note>> fetchNotes() async {
   final response = await http.get('http://192.168.1.132:8000/notes');
@@ -23,9 +23,7 @@ Future<List<Note>> fetchNotes() async {
 
 void main() => runApp(new MyApp());
 
-class JournalList extends StatelessWidget {
-  final _biggerFont = const TextStyle(fontSize: 18.0);
-
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var createButton = new FloatingActionButton(
@@ -43,7 +41,10 @@ class JournalList extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               var notes = snapshot.data;
-              return _buildSuggestions(context, notes);
+              return new JournalList(
+                notes: notes,
+                noteSelectedFunction: (note) => _noteSelected(note, context),
+              );
             } else if (snapshot.hasError) {
               return new Text("${snapshot.error}");
             }
@@ -53,47 +54,10 @@ class JournalList extends StatelessWidget {
     );
   }
 
-  Widget _buildRow(BuildContext context, Note journal) {
-    var formatter = new DateFormat('dd MMM, yyyy');
-    var title = formatter.format(journal.createdAt);
-
-    var timeFormatter = new DateFormat('Hm');
-    var time = timeFormatter.format(journal.createdAt);
-
-    var body = journal.body;
-    if (body.length >= 100) {
-      body = body.substring(0, 100);
-    }
-    body = body.replaceAll("\n", " ");
-
-    return new ListTile(
-      isThreeLine: true,
-      title: new Text(
-        title,
-        style: _biggerFont,
-      ),
-      subtitle: new Text(time + "\n" + body),
-      onTap: () => _itemTapped(context, journal),
-    );
-  }
-
-  void _itemTapped(BuildContext context, Note note) {
+  void _noteSelected(Note note, BuildContext context) {
     var route =
         new MaterialPageRoute(builder: (context) => new NoteViewer(note: note));
     Navigator.of(context).push(route);
-  }
-
-  Widget _buildSuggestions(BuildContext context, List<Note> notes) {
-    return new ListView.builder(
-      padding: const EdgeInsets.all(8.0),
-      itemBuilder: (context, i) {
-        if (i >= notes.length) {
-          return null;
-        }
-        //if (i.isOdd) return new Divider();
-        return _buildRow(context, notes[i]);
-      },
-    );
   }
 
   void _newPost(BuildContext context) {
@@ -105,6 +69,14 @@ class JournalList extends StatelessWidget {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(title: 'Journal', home: new JournalList());
+    return new MaterialApp(
+      title: 'Journal',
+      home: new HomeScreen(),
+      theme: new ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: Colors.lightBlue[800],
+        accentColor: Colors.cyan[600],
+      ),
+    );
   }
 }
