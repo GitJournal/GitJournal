@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:journal/journal_list.dart';
+import 'package:journal/widgets/journal_list.dart';
 import 'package:journal/note.dart';
 import 'package:journal/note_editor.dart';
 import 'package:journal/note_viewer.dart';
