@@ -16,6 +16,7 @@ class NoteViewer extends StatelessWidget {
         children: <Widget>[
           _buildHeader(context),
           new Text(note.body, style: _biggerFont),
+          _buildFooter(context),
         ],
         crossAxisAlignment: CrossAxisAlignment.start,
       ),
@@ -68,6 +69,30 @@ class NoteViewer extends StatelessWidget {
     return new Padding(
       padding: new EdgeInsets.only(top: 6.0, bottom: 6.0 * 3),
       child: w,
+    );
+  }
+
+  Widget _buildFooter(BuildContext context) {
+    return new Padding(
+      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+      child: new Row(
+        children: <Widget>[
+          new IconButton(
+            icon: new Icon(Icons.arrow_left),
+            tooltip: 'Previous Entry',
+            onPressed: () {},
+          ),
+          new Expanded(
+            flex: 10,
+            child: new Text(''),
+          ),
+          new IconButton(
+            icon: new Icon(Icons.arrow_right),
+            tooltip: 'Next Entry',
+            onPressed: () {},
+          ),
+        ],
+      ),
     );
   }
 }
