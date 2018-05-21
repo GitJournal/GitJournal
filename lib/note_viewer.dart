@@ -17,6 +17,7 @@ class NoteViewer extends StatelessWidget {
           _buildHeader(context),
           new Text(note.body, style: _biggerFont),
         ],
+        crossAxisAlignment: CrossAxisAlignment.start,
       ),
       padding: const EdgeInsets.all(16.0),
     );
@@ -36,19 +37,16 @@ class NoteViewer extends StatelessWidget {
     var bigNum = new Text(
       note.createdAt.day.toString(),
       style: TextStyle(fontSize: 40.0),
-      textAlign: TextAlign.left,
     );
 
     var dateText = new Text(
       dateStr,
       style: TextStyle(fontSize: 18.0),
-      textAlign: TextAlign.left,
     );
 
     var timeText = new Text(
       timeStr,
       style: TextStyle(fontSize: 18.0),
-      textAlign: TextAlign.left,
     );
 
     var w = new Row(
@@ -61,6 +59,7 @@ class NoteViewer extends StatelessWidget {
               dateText,
               timeText,
             ],
+            crossAxisAlignment: CrossAxisAlignment.start,
           ),
         ),
       ],
