@@ -3,11 +3,11 @@ typedef NoteRemover(Note note);
 typedef NoteUpdator(Note note);
 
 class Note implements Comparable {
-  final String id;
+  String id;
   final DateTime createdAt;
   final String body;
 
-  const Note({this.createdAt, this.body, this.id});
+  Note({this.createdAt, this.body, this.id});
 
   factory Note.fromJson(Map<String, dynamic> json) {
     return new Note(

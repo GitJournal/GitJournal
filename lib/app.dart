@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
+
 import 'package:journal/file_storage.dart';
 import 'package:journal/note.dart';
 import 'package:journal/screens/home_screen.dart';
@@ -61,12 +63,8 @@ class JournalAppState extends State<JournalApp> {
   void addNote(Note note) {
     print("Adding a note " + note.toString());
     setState(() {
-      try {
-        appState.notes.add(note);
-      } catch (err) {
-        print("WTF");
-        print(err);
-      }
+      note.id = new Uuid().v4();
+      appState.notes.insert(0, note);
     });
   }
 

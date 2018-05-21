@@ -41,7 +41,6 @@ class NoteEditor extends StatelessWidget {
           onPressed: () {
             var body = noteTextKey.currentState.value;
             var note = new Note(
-              id: "1",
               createdAt: _createdAt,
               body: body,
             );
