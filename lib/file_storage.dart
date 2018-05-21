@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
 
 import './note.dart';
@@ -9,7 +10,7 @@ import './note.dart';
 class FileStorage {
   final Future<Directory> Function() getDirectory;
 
-  FileStorage(this.getDirectory);
+  FileStorage({@required this.getDirectory});
 
   Future<List<Note>> loadNotes() async {
     final dir = await getDirectory();

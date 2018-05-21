@@ -1,3 +1,7 @@
+typedef NoteAdder(Note note);
+typedef NoteRemover(Note note);
+typedef NoteUpdator(Note note);
+
 class Note implements Comparable {
   final String id;
   final DateTime createdAt;
@@ -40,4 +44,16 @@ class Note implements Comparable {
 
   @override
   int compareTo(other) => createdAt.compareTo(other.createdAt);
+}
+
+class AppState {
+  bool isLoading;
+  List<Note> notes;
+
+  AppState({
+    this.isLoading = false,
+    this.notes = const [],
+  });
+
+  factory AppState.loading() => AppState(isLoading: true);
 }

@@ -14,7 +14,7 @@ main() {
     ];
 
     final directory = Directory.systemTemp.createTemp('__storage_test__');
-    final storage = FileStorage(() => directory);
+    final storage = FileStorage(getDirectory: () => directory);
 
     tearDownAll(() async {
       final tempDirectory = await directory;
