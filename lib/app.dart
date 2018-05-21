@@ -44,6 +44,7 @@ class JournalAppState extends State<JournalApp> {
       home: new HomeScreen(
         appState: appState,
         noteAdder: addNote,
+        noteRemover: removeNote,
       ),
       theme: new ThemeData(
         brightness: Brightness.dark,

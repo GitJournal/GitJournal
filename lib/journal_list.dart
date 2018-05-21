@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
 import 'note.dart';
@@ -7,11 +8,16 @@ typedef void NoteSelectedFunction(Note note);
 
 class JournalList extends StatelessWidget {
   final NoteSelectedFunction noteSelectedFunction;
+  final NoteRemover noteRemover;
   final List<Note> notes;
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
-  JournalList({this.noteSelectedFunction, this.notes});
+  JournalList({
+    @required this.notes,
+    @required this.noteSelectedFunction,
+    @required this.noteRemover,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +28,20 @@ class JournalList extends StatelessWidget {
           return null;
         }
         //if (i.isOdd) return new Divider();
-        return _buildRow(context, notes[i]);
+
+        var note = notes[i];
+        return new Dismissible(
+          key: new Key(note.id),
+          child: _buildRow(context, note),
+          background: new Container(color: Colors.red),
+          onDismissed: (direction) {
+            noteRemover(note);
+
+            Scaffold
+                .of(context)
+                .showSnackBar(new SnackBar(content: new Text("Note deleted")));
+          },
+        );
       },
     );
   }

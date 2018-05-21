@@ -9,10 +9,12 @@ import 'package:journal/note_viewer.dart';
 class HomeScreen extends StatelessWidget {
   final AppState appState;
   final NoteAdder noteAdder;
+  final NoteRemover noteRemover;
 
   HomeScreen({
     @required this.appState,
     @required this.noteAdder,
+    @required this.noteRemover,
   });
 
   @override
@@ -47,6 +49,7 @@ class HomeScreen extends StatelessWidget {
       body: new JournalList(
         notes: appState.notes,
         noteSelectedFunction: (note) => _noteSelected(note, context),
+        noteRemover: noteRemover,
       ),
     );
   }
