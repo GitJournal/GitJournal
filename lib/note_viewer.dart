@@ -11,21 +11,64 @@ class NoteViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // FIXME: Add some kind of a header?
-
-    var formatter = new DateFormat('dd MMM, yyyy');
-    var title = formatter.format(note.createdAt);
-
     var bodyWidget = new SingleChildScrollView(
-      child: new Text(note.body, style: _biggerFont),
-      padding: const EdgeInsets.all(8.0),
+      child: new Column(
+        children: <Widget>[
+          _buildHeader(context),
+          new Text(note.body, style: _biggerFont),
+        ],
+      ),
+      padding: const EdgeInsets.all(16.0),
     );
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(title),
+        title: new Text('TIMELINE'),
       ),
       body: bodyWidget,
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    var dateStr = DateFormat('MMM dd, yyyy').format(note.createdAt);
+    var timeStr = DateFormat('EEEE H:m').format(note.createdAt);
+
+    var bigNum = new Text(
+      note.createdAt.day.toString(),
+      style: TextStyle(fontSize: 40.0),
+      textAlign: TextAlign.left,
+    );
+
+    var dateText = new Text(
+      dateStr,
+      style: TextStyle(fontSize: 18.0),
+      textAlign: TextAlign.left,
+    );
+
+    var timeText = new Text(
+      timeStr,
+      style: TextStyle(fontSize: 18.0),
+      textAlign: TextAlign.left,
+    );
+
+    var w = new Row(
+      children: <Widget>[
+        bigNum,
+        new Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: new Column(
+            children: <Widget>[
+              dateText,
+              timeText,
+            ],
+          ),
+        ),
+      ],
+    );
+
+    return new Padding(
+      padding: new EdgeInsets.only(top: 6.0, bottom: 6.0 * 3),
+      child: w,
     );
   }
 }
