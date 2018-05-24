@@ -5,12 +5,20 @@ import 'package:intl/intl.dart';
 import 'package:journal/note.dart';
 import 'package:journal/state_container.dart';
 
-class NoteEditor extends StatelessWidget {
+class NoteEditor extends StatefulWidget {
+  @override
+  NoteEditorState createState() {
+    return new NoteEditorState();
+  }
+}
+
+class NoteEditorState extends State<NoteEditor> {
   static final GlobalKey<FormFieldState<String>> noteTextKey =
       GlobalKey<FormFieldState<String>>();
+
   final DateTime _createdAt;
 
-  NoteEditor() : _createdAt = new DateTime.now();
+  NoteEditorState() : _createdAt = new DateTime.now();
 
   @override
   Widget build(BuildContext context) {
