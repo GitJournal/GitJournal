@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:journal/state_container.dart';
+import 'package:journal/widgets/app_drawer.dart';
 import 'package:journal/widgets/journal_list.dart';
 import 'package:journal/note_editor.dart';
 import 'package:journal/note_viewer.dart';
@@ -33,6 +34,7 @@ class HomeScreen extends StatelessWidget {
           Navigator.of(context).push(route);
         },
       ),
+      drawer: new AppDrawer(),
     );
   }
 
