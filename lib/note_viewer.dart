@@ -1,17 +1,70 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'note.dart';
 
-class NoteViewer extends StatelessWidget {
-  final Note note;
-  final _biggerFont = const TextStyle(fontSize: 18.0);
+class NoteBrowsingScreen extends StatefulWidget {
+  final List<Note> notes;
+  final int noteIndex;
 
-  const NoteViewer({this.note});
+  const NoteBrowsingScreen({
+    @required this.notes,
+    @required this.noteIndex,
+  });
+
+  @override
+  NoteBrowsingScreenState createState() {
+    return new NoteBrowsingScreenState(noteIndex: noteIndex);
+  }
+}
+
+class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
+  int noteIndex;
+
+  NoteBrowsingScreenState({@required this.noteIndex});
 
   @override
   Widget build(BuildContext context) {
-    var bodyWidget = new SingleChildScrollView(
+    var viewer = new NoteViewer(
+      note: widget.notes[noteIndex],
+      showNextNoteFunc: () {
+        setState(() {
+          if (noteIndex < widget.notes.length - 1) noteIndex += 1;
+        });
+      },
+      showPrevNoteFunc: () {
+        setState(() {
+          if (noteIndex > 0) noteIndex -= 1;
+        });
+      },
+    );
+
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('TIMELINE'),
+      ),
+      body: viewer,
+    );
+  }
+}
+
+class NoteViewer extends StatelessWidget {
+  final Note note;
+  final VoidCallback showNextNoteFunc;
+  final VoidCallback showPrevNoteFunc;
+
+  final _biggerFont = const TextStyle(fontSize: 18.0);
+
+  const NoteViewer({
+    @required this.note,
+    @required this.showNextNoteFunc,
+    @required this.showPrevNoteFunc,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return new SingleChildScrollView(
       child: new Column(
         children: <Widget>[
           _buildHeader(context),
@@ -21,13 +74,6 @@ class NoteViewer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
       ),
       padding: const EdgeInsets.all(16.0),
-    );
-
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('TIMELINE'),
-      ),
-      body: bodyWidget,
     );
   }
 
@@ -80,7 +126,7 @@ class NoteViewer extends StatelessWidget {
           new IconButton(
             icon: new Icon(Icons.arrow_left),
             tooltip: 'Previous Entry',
-            onPressed: () {},
+            onPressed: showPrevNoteFunc,
           ),
           new Expanded(
             flex: 10,
@@ -89,7 +135,7 @@ class NoteViewer extends StatelessWidget {
           new IconButton(
             icon: new Icon(Icons.arrow_right),
             tooltip: 'Next Entry',
-            onPressed: () {},
+            onPressed: showNextNoteFunc,
           ),
         ],
       ),

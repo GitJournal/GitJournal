@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:journal/note.dart';
 import 'package:journal/state_container.dart';
 
-typedef void NoteSelectedFunction(Note note);
+typedef void NoteSelectedFunction(int noteIndex);
 
 class JournalList extends StatelessWidget {
   final NoteSelectedFunction noteSelectedFunction;
@@ -33,7 +33,7 @@ class JournalList extends StatelessWidget {
         var note = notes[i];
         return new Dismissible(
           key: new Key(note.id),
-          child: _buildRow(context, note),
+          child: _buildRow(context, note, i),
           background: new Container(color: Colors.red),
           onDismissed: (direction) {
             container.removeNote(note);
@@ -47,7 +47,7 @@ class JournalList extends StatelessWidget {
     );
   }
 
-  Widget _buildRow(BuildContext context, Note journal) {
+  Widget _buildRow(BuildContext context, Note journal, int noteIndex) {
     var formatter = new DateFormat('dd MMM, yyyy');
     var title = formatter.format(journal.createdAt);
 
@@ -67,7 +67,7 @@ class JournalList extends StatelessWidget {
         style: _biggerFont,
       ),
       subtitle: new Text(time + "\n" + body),
-      onTap: () => noteSelectedFunction(journal),
+      onTap: () => noteSelectedFunction(noteIndex),
     );
   }
 }
