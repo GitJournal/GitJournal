@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:journal/widgets/swipe_detector.dart';
 
 import 'note.dart';
 
@@ -64,7 +65,7 @@ class NoteViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new SingleChildScrollView(
+    var view = new SingleChildScrollView(
       child: new Column(
         children: <Widget>[
           _buildHeader(context),
@@ -74,6 +75,12 @@ class NoteViewer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
       ),
       padding: const EdgeInsets.all(16.0),
+    );
+
+    return new SwipeDetector(
+      child: view,
+      onLeftSwipe: showNextNoteFunc,
+      onRightSwipe: showPrevNoteFunc,
     );
   }
 
