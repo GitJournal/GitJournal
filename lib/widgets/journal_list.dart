@@ -55,9 +55,6 @@ class JournalList extends StatelessWidget {
     var time = timeFormatter.format(journal.createdAt);
 
     var body = journal.body;
-    if (body.length >= 100) {
-      body = body.substring(0, 100);
-    }
     body = body.replaceAll("\n", " ");
 
     return new ListTile(
@@ -66,7 +63,11 @@ class JournalList extends StatelessWidget {
         title,
         style: _biggerFont,
       ),
-      subtitle: new Text(time + "\n" + body),
+      subtitle: new Text(
+        time + "\n" + body,
+        maxLines: 3,
+        overflow: TextOverflow.ellipsis,
+      ),
       onTap: () => noteSelectedFunction(noteIndex),
     );
   }
