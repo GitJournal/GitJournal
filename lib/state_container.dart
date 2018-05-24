@@ -69,7 +69,6 @@ class StateContainerState extends State<StateContainer> {
   }
 
   void addNote(Note note) {
-    print("Adding a note " + note.toString());
     setState(() {
       note.id = new Uuid().v4();
       appState.notes.insert(0, note);
@@ -79,6 +78,12 @@ class StateContainerState extends State<StateContainer> {
   void removeNote(Note note) {
     setState(() {
       appState.notes.remove(note);
+    });
+  }
+
+  void insertNote(int index, Note note) {
+    setState(() {
+      appState.notes.insert(index, note);
     });
   }
 

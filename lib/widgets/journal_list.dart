@@ -38,9 +38,13 @@ class JournalList extends StatelessWidget {
           onDismissed: (direction) {
             container.removeNote(note);
 
-            Scaffold
-                .of(context)
-                .showSnackBar(new SnackBar(content: new Text("Note deleted")));
+            Scaffold.of(context).showSnackBar(new SnackBar(
+                  content: new Text("Note deleted"),
+                  action: new SnackBarAction(
+                    label: 'Undo',
+                    onPressed: () => container.insertNote(i, note),
+                  ),
+                ));
           },
         );
       },
