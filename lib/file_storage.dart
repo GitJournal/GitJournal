@@ -10,7 +10,7 @@ import './note.dart';
 class FileStorage {
   final Future<Directory> Function() getDirectory;
 
-  FileStorage({@required this.getDirectory});
+  const FileStorage({@required this.getDirectory});
 
   Future<List<Note>> loadNotes() async {
     final dir = await getDirectory();

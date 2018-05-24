@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
+import 'package:journal/state_container.dart';
 import 'package:journal/widgets/journal_list.dart';
 import 'package:journal/note.dart';
 import 'package:journal/note_editor.dart';
 import 'package:journal/note_viewer.dart';
 
 class HomeScreen extends StatelessWidget {
-  final AppState appState;
-  final NoteAdder noteAdder;
-  final NoteRemover noteRemover;
-
-  HomeScreen({
-    @required this.appState,
-    @required this.noteAdder,
-    @required this.noteRemover,
-  });
-
   @override
   Widget build(BuildContext context) {
+    final container = StateContainer.of(context);
+    final appState = container.appState;
+
     var createButton = new FloatingActionButton(
       onPressed: () => _newPost(context),
       child: new Icon(Icons.add),
@@ -49,7 +43,6 @@ class HomeScreen extends StatelessWidget {
       body: new JournalList(
         notes: appState.notes,
         noteSelectedFunction: (note) => _noteSelected(note, context),
-        noteRemover: noteRemover,
       ),
     );
   }
@@ -61,10 +54,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   void _newPost(BuildContext context) {
-    var route = new MaterialPageRoute(
-        builder: (context) => new NoteEditor(
-              noteAdder: noteAdder,
-            ));
+    var route = new MaterialPageRoute(builder: (context) => new NoteEditor());
     Navigator.of(context).push(route);
   }
 }

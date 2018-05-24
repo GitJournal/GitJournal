@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:journal/note.dart';
+import 'package:journal/state_container.dart';
 
 class NoteEditor extends StatelessWidget {
   static final GlobalKey<FormFieldState<String>> noteTextKey =
       GlobalKey<FormFieldState<String>>();
-  final NoteAdder noteAdder;
   final DateTime _createdAt;
 
-  NoteEditor({
-    @required this.noteAdder,
-  }) : _createdAt = new DateTime.now();
+  NoteEditor() : _createdAt = new DateTime.now();
 
   @override
   Widget build(BuildContext context) {
+    final container = StateContainer.of(context);
+
     var bodyWidget = new Container(
       child: new TextFormField(
         key: noteTextKey,
@@ -44,7 +43,7 @@ class NoteEditor extends StatelessWidget {
               createdAt: _createdAt,
               body: body,
             );
-            noteAdder(note);
+            container.addNote(note);
 
             Navigator.pop(context);
           }),

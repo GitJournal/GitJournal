@@ -3,12 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
 import 'package:journal/note.dart';
+import 'package:journal/state_container.dart';
 
 typedef void NoteSelectedFunction(Note note);
 
 class JournalList extends StatelessWidget {
   final NoteSelectedFunction noteSelectedFunction;
-  final NoteRemover noteRemover;
   final List<Note> notes;
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
@@ -16,11 +16,12 @@ class JournalList extends StatelessWidget {
   JournalList({
     @required this.notes,
     @required this.noteSelectedFunction,
-    @required this.noteRemover,
   });
 
   @override
   Widget build(BuildContext context) {
+    final container = StateContainer.of(context);
+
     return new ListView.builder(
       padding: const EdgeInsets.all(8.0),
       itemBuilder: (context, i) {
@@ -35,7 +36,7 @@ class JournalList extends StatelessWidget {
           child: _buildRow(context, note),
           background: new Container(color: Colors.red),
           onDismissed: (direction) {
-            noteRemover(note);
+            container.removeNote(note);
 
             Scaffold
                 .of(context)
