@@ -1,5 +1,7 @@
 package com.example.journal;
 
+import java.io.File;
+
 import android.os.Bundle;
 
 import io.flutter.app.FlutterActivity;
@@ -11,14 +13,9 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
-// For battery stuf
-import android.content.ContextWrapper;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.BatteryManager;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
-import android.os.Bundle;
+import org.eclipse.jgit.api.CloneCommand;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 public class MainActivity extends FlutterActivity {
   private static final String CHANNEL = "samples.flutter.io/battery";
@@ -32,33 +29,46 @@ public class MainActivity extends FlutterActivity {
       new MethodCallHandler() {
         @Override
         public void onMethodCall(MethodCall call, Result result) {
-          if (call.method.equals("getBatteryLevel")) {
-            int batteryLevel = getBatteryLevel();
+          if (call.method.equals("gitClone")) {
+            String cloneUrl = call.argument("cloneUrl");
+            String filePath = call.argument("filePath");
 
-            if (batteryLevel != -1) {
-              result.success(batteryLevel);
-            } else {
-              result.error("UNAVAILABLE", "Battery level not available.", null);
+            if (cloneUrl.isEmpty() || filePath.isEmpty()) {
+              result.error("Invalid Parameters", "Arguments Invalid", null);
+              return;
             }
-          } else {
-            result.notImplemented();
+
+            gitClone(cloneUrl, filePath);
+            result.success(null);
+            return;
           }
+
+          result.notImplemented();
+
+          // Methods to add
+          // git clone
+          // git pull - merge by taking newest
+          // git add
+          // git commit
+          // git push
         }
       });
   }
 
-  private int getBatteryLevel() {
-    int batteryLevel = -1;
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      BatteryManager batteryManager = (BatteryManager) getSystemService(BATTERY_SERVICE);
-      batteryLevel = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
-    } else {
-      Intent intent = new ContextWrapper(getApplicationContext()).
-              registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-      batteryLevel = (intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) * 100) /
-              intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-    }
+  private void gitClone(String url, String filePath) {
+    // TODO: Progress
+    // TODO: Credentials
+    // TODO: Handle errors!
+    File directory = new File(filePath);
 
-    return batteryLevel;
+    try {
+      Git git = Git.cloneRepository()
+              .setURI(url)
+              .setDirectory(directory)
+              .call();
+    }
+    catch (GitAPIException e) {
+      System.err.println("Error Cloning repository " + url + " : "+ e.getMessage());
+    }
   }
 }
