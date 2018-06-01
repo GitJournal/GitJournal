@@ -53,10 +53,10 @@ class JournalList extends StatelessWidget {
 
   Widget _buildRow(BuildContext context, Note journal, int noteIndex) {
     var formatter = new DateFormat('dd MMM, yyyy');
-    var title = formatter.format(journal.createdAt);
+    var title = formatter.format(journal.created);
 
     var timeFormatter = new DateFormat('Hm');
-    var time = timeFormatter.format(journal.createdAt);
+    var time = timeFormatter.format(journal.created);
 
     var body = journal.body;
     body = body.replaceAll("\n", " ");

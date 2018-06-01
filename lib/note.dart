@@ -4,10 +4,10 @@ typedef NoteUpdator(Note note);
 
 class Note implements Comparable {
   String id;
-  DateTime createdAt;
+  DateTime created;
   String body;
 
-  Note({this.createdAt, this.body, this.id});
+  Note({this.created, this.body, this.id});
 
   factory Note.fromJson(Map<String, dynamic> json) {
     String id;
@@ -22,21 +22,21 @@ class Note implements Comparable {
 
     return new Note(
       id: id,
-      createdAt: DateTime.parse(json['createdAt']),
+      created: DateTime.parse(json['created']),
       body: json['body'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "createdAt": createdAt.toIso8601String(),
+      "created": created.toIso8601String(),
       "body": body,
       "id": id,
     };
   }
 
   @override
-  int get hashCode => id.hashCode ^ createdAt.hashCode ^ body.hashCode;
+  int get hashCode => id.hashCode ^ created.hashCode ^ body.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -45,15 +45,15 @@ class Note implements Comparable {
           runtimeType == other.runtimeType &&
           id == other.id &&
           body == other.body &&
-          createdAt == other.createdAt;
+          created == other.created;
 
   @override
   String toString() {
-    return 'Note{id: $id, body: $body, createdAt: $createdAt}';
+    return 'Note{id: $id, body: $body, createdAt: $created}';
   }
 
   @override
-  int compareTo(other) => createdAt.compareTo(other.createdAt);
+  int compareTo(other) => created.compareTo(other.created);
 }
 
 class AppState {

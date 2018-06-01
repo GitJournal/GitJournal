@@ -8,7 +8,7 @@ import 'package:test/test.dart';
 main() {
   group('Serializers', () {
     var note =
-        Note(id: "2", body: "This is the body", createdAt: new DateTime.now());
+        Note(id: "2", body: "This is the body", created: new DateTime.now());
 
     test('JSON Serializer', () {
       var jsonSerializer = new JsonNoteSerializer();

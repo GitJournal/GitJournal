@@ -80,7 +80,7 @@ class NoteEditorState extends State<NoteEditor> {
           onPressed: () {
             var noteContent = noteTextKey.currentState.value;
             var note = new Note(
-              createdAt: _createdAt,
+              created: _createdAt,
               body: noteContent,
             );
             container.addNote(note);
