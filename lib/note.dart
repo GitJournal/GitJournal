@@ -4,14 +4,24 @@ typedef NoteUpdator(Note note);
 
 class Note implements Comparable {
   String id;
-  final DateTime createdAt;
-  final String body;
+  DateTime createdAt;
+  String body;
 
   Note({this.createdAt, this.body, this.id});
 
   factory Note.fromJson(Map<String, dynamic> json) {
+    String id;
+    if (json.containsKey("id")) {
+      var val = json["id"];
+      if (val.runtimeType == String) {
+        id = val;
+      } else {
+        id = val.toString();
+      }
+    }
+
     return new Note(
-      id: json['id'],
+      id: id,
       createdAt: DateTime.parse(json['createdAt']),
       body: json['body'],
     );
