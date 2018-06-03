@@ -56,36 +56,32 @@ class StateContainerState extends State<StateContainer> {
       });
     }).catchError((err) {
       setState(() {
-        print("Got Error");
+        print("Load Notes Error:");
         print(err);
         appState.isLoading = false;
       });
     });
   }
 
-  @override
-  void setState(VoidCallback fn) {
-    super.setState(fn);
-
-    fileStorage.saveNotes(appState.notes);
-  }
-
   void addNote(Note note) {
     setState(() {
       note.id = new Uuid().v4();
       appState.notes.insert(0, note);
+      fileStorage.addNote(note);
     });
   }
 
   void removeNote(Note note) {
     setState(() {
       appState.notes.remove(note);
+      fileStorage.removeNote(note);
     });
   }
 
   void insertNote(int index, Note note) {
     setState(() {
       appState.notes.insert(index, note);
+      fileStorage.addNote(note);
     });
   }
 

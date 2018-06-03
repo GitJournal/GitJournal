@@ -59,4 +59,25 @@ class FileStorage {
 
     return dir;
   }
+
+  Future<bool> addNote(Note note) async {
+    final dir = await getDirectory();
+    var filePath = p.join(dir.path, fileNameGenerator(note));
+
+    var file = new File(filePath);
+    var contents = noteSerializer.encode(note);
+    await file.writeAsString(contents);
+
+    return true;
+  }
+
+  Future<bool> removeNote(Note note) async {
+    final dir = await getDirectory();
+    var filePath = p.join(dir.path, fileNameGenerator(note));
+
+    var file = new File(filePath);
+    await file.delete();
+
+    return true;
+  }
 }
