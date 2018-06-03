@@ -30,6 +30,8 @@ class FileStorage {
       notes.add(note);
     }
 
+    // Reverse sort
+    notes.sort((a, b) => b.compareTo(a));
     return notes;
   }
 
