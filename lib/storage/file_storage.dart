@@ -2,14 +2,14 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:journal/notes_repository.dart';
-import 'package:journal/serializers.dart';
+import 'package:journal/note.dart';
+import 'package:journal/storage/notes_repository.dart';
+import 'package:journal/storage/serializers.dart';
 import 'package:path/path.dart' as p;
-
-import './note.dart';
 
 typedef String NoteFileNameGenerator(Note note);
 
+/// Each Note is saved in a different file
 class FileStorage implements NoteRepository {
   final Future<Directory> Function() getDirectory;
   final NoteSerializer noteSerializer;

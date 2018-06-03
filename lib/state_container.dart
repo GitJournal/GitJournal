@@ -3,14 +3,14 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:journal/notes_repository.dart';
-import 'package:journal/serializers.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:uuid/uuid.dart';
 
 import 'package:journal/note.dart';
-import 'package:journal/file_storage.dart';
+import 'package:journal/storage/serializers.dart';
+import 'package:journal/storage/notes_repository.dart';
+import 'package:journal/storage/file_storage.dart';
 
 Future<Directory> getNotesDir() async {
   var appDir = await getApplicationDocumentsDirectory();
