@@ -7,13 +7,17 @@ import 'package:path/path.dart' as p;
 
 import './note.dart';
 
+typedef String NoteFileNameGenerator(Note note);
+
 class FileStorage {
   final Future<Directory> Function() getDirectory;
   final NoteSerializer noteSerializer;
+  final NoteFileNameGenerator fileNameGenerator;
 
   const FileStorage({
     @required this.getDirectory,
     @required this.noteSerializer,
+    @required this.fileNameGenerator,
   });
 
   Future<List<Note>> loadNotes() async {
@@ -44,7 +48,7 @@ class FileStorage {
     await dir.create();
 
     for (var note in notes) {
-      var filePath = p.join(dir.path, note.id);
+      var filePath = p.join(dir.path, fileNameGenerator(note));
 
       var file = new File(filePath);
       var contents = noteSerializer.encode(note);

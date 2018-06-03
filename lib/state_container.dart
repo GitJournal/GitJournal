@@ -40,16 +40,15 @@ class StateContainer extends StatefulWidget {
 
 class StateContainerState extends State<StateContainer> {
   AppState appState = AppState.loading();
-  FileStorage fileStorage;
+  FileStorage fileStorage = new FileStorage(
+    getDirectory: getNotesDir,
+    noteSerializer: new MarkdownYAMLSerializer(),
+    fileNameGenerator: (Note note) => note.id,
+  );
 
   @override
   void initState() {
     super.initState();
-
-    fileStorage = new FileStorage(
-      getDirectory: getNotesDir,
-      noteSerializer: new MarkdownYAMLSerializer(),
-    );
 
     fileStorage.loadNotes().then((loadedNotes) {
       setState(() {
