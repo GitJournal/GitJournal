@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:journal/note.dart';
-import 'package:journal/serializers.dart';
+import 'package:journal/storage/serializers.dart';
 
 import 'package:test/test.dart';
 

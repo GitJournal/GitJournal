@@ -89,8 +89,7 @@ class StateContainerState extends State<StateContainer> {
   // FIXME: Implement this!
   void updateNote(Note note) {
     setState(() {
-      //appState.notes.
-      //appState.notes.remove(note);
+      noteRepo.updateNote(note);
     });
   }
 

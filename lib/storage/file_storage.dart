@@ -78,4 +78,20 @@ class FileStorage implements NoteRepository {
   Future<bool> sync() async {
     return false;
   }
+
+  Future<Directory> saveNotes(List<Note> notes) async {
+    final dir = await getDirectory();
+    await dir.delete(recursive: true);
+    await dir.create();
+
+    for (var note in notes) {
+      var filePath = p.join(dir.path, fileNameGenerator(note));
+
+      var file = new File(filePath);
+      var contents = noteSerializer.encode(note);
+      await file.writeAsString(contents);
+    }
+
+    return dir;
+  }
 }
