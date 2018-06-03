@@ -1,16 +1,20 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:journal/serializers.dart';
 import 'package:path/path.dart' as p;
 
 import './note.dart';
 
 class FileStorage {
   final Future<Directory> Function() getDirectory;
+  final NoteSerializer noteSerializer;
 
-  const FileStorage({@required this.getDirectory});
+  const FileStorage({
+    @required this.getDirectory,
+    @required this.noteSerializer,
+  });
 
   Future<List<Note>> loadNotes() async {
     final dir = await getDirectory();
@@ -31,8 +35,7 @@ class FileStorage {
     }
     var file = entity as File;
     final string = await file.readAsString();
-    final json = JsonDecoder().convert(string);
-    return new Note.fromJson(json);
+    return noteSerializer.decode(string);
   }
 
   Future<Directory> saveNotes(List<Note> notes) async {
@@ -44,7 +47,7 @@ class FileStorage {
       var filePath = p.join(dir.path, note.id);
 
       var file = new File(filePath);
-      var contents = JsonEncoder().convert(note.toJson());
+      var contents = noteSerializer.encode(note);
       await file.writeAsString(contents);
     }
 

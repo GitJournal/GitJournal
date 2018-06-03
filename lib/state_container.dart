@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:journal/serializers.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:uuid/uuid.dart';
@@ -19,14 +20,10 @@ Future<Directory> getNotesDir() async {
 }
 
 class StateContainer extends StatefulWidget {
-  final FileStorage fileStorage;
   final Widget child;
 
   StateContainer({
     @required this.child,
-    this.fileStorage = const FileStorage(
-      getDirectory: getNotesDir,
-    ),
   });
 
   static StateContainerState of(BuildContext context) {
@@ -43,12 +40,18 @@ class StateContainer extends StatefulWidget {
 
 class StateContainerState extends State<StateContainer> {
   AppState appState = AppState.loading();
+  FileStorage fileStorage;
 
   @override
   void initState() {
     super.initState();
 
-    widget.fileStorage.loadNotes().then((loadedNotes) {
+    fileStorage = new FileStorage(
+      getDirectory: getNotesDir,
+      noteSerializer: new MarkdownYAMLSerializer(),
+    );
+
+    fileStorage.loadNotes().then((loadedNotes) {
       setState(() {
         appState = AppState(notes: loadedNotes);
       });
@@ -65,7 +68,7 @@ class StateContainerState extends State<StateContainer> {
   void setState(VoidCallback fn) {
     super.setState(fn);
 
-    widget.fileStorage.saveNotes(appState.notes);
+    fileStorage.saveNotes(appState.notes);
   }
 
   void addNote(Note note) {
