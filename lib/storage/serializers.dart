@@ -48,13 +48,20 @@ class MarkdownYAMLSerializer implements NoteSerializer {
 
     var metadata = note.toJson();
     metadata.remove('body');
-    metadata.forEach((key, value) {
-      str += key + ": " + value + "\n";
-    });
+    str += toYAML(metadata);
     str += serparator;
     str += '\n';
     str += note.body;
 
+    return str;
+  }
+
+  static String toYAML(Map<String, dynamic> map) {
+    var str = "";
+
+    map.forEach((key, value) {
+      str += key + ": " + value + "\n";
+    });
     return str;
   }
 }
