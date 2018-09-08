@@ -11,17 +11,17 @@ main() {
         Note(id: "2", body: "This is the body", created: new DateTime.now());
 
     test('JSON Serializer', () {
-      var jsonSerializer = new JsonNoteSerializer();
-      var str = jsonSerializer.encode(note);
-      var note2 = jsonSerializer.decode(str);
+      var serializer = new JsonNoteSerializer();
+      var str = serializer.encode(note);
+      var note2 = serializer.decode(str);
 
       expect(note2, note);
     });
 
     test('Markdown Serializer', () {
-      var jsonSerializer = new MarkdownYAMLSerializer();
-      var str = jsonSerializer.encode(note);
-      var note2 = jsonSerializer.decode(str);
+      var serializer = new MarkdownYAMLSerializer();
+      var str = serializer.encode(note);
+      var note2 = serializer.decode(str);
 
       expect(note2, note);
     });
