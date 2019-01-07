@@ -34,6 +34,10 @@ public class MainActivity extends FlutterActivity {
                 new MethodCallHandler() {
                     @Override
                     public void onMethodCall(MethodCall call, Result result) {
+                        final String filesDir = PathUtils.getFilesDir(getApplicationContext());
+                        final String sshKeysLocation = filesDir + "/ssh";
+                        final String privateKeyPath = sshKeysLocation + "/id_rsa";
+
                         if (call.method.equals("gitClone")) {
                             String cloneUrl = call.argument("cloneUrl");
                             String folderName = call.argument("folderName");
@@ -43,15 +47,11 @@ public class MainActivity extends FlutterActivity {
                                 return;
                             }
 
-                            String filesDir = PathUtils.getFilesDir(getApplicationContext());
                             String cloneLocation = filesDir + "/" + folderName;
 
-                            final String privateKeyPath = filesDir + "/ssh/id_rsa";
                             new GitCloneTask(result).execute(cloneUrl, cloneLocation, privateKeyPath);
                             return;
-                        }
-
-                        if (call.method.equals("gitPull")) {
+                        } else if (call.method.equals("gitPull")) {
                             String folderName = call.argument("folderName");
 
                             if (folderName.isEmpty()) {
@@ -59,18 +59,51 @@ public class MainActivity extends FlutterActivity {
                                 return;
                             }
 
-                            String filesDir = PathUtils.getFilesDir(getApplicationContext());
                             String cloneLocation = filesDir + "/" + folderName;
 
-                            final String privateKeyPath = filesDir + "/ssh/id_rsa";
                             new GitPullTask(result).execute(cloneLocation, privateKeyPath);
                             return;
-                        }
+                        } else if (call.method.equals("gitPush")) {
+                            String folderName = call.argument("folderName");
 
-                        if (call.method.equals("generateSSHKeys")) {
-                            String appFilesDir = PathUtils.getFilesDir(getApplicationContext());
-                            String sshKeysLocation = appFilesDir + "/ssh";
+                            if (folderName.isEmpty()) {
+                                result.error("Invalid Parameters", "Arguments Invalid", null);
+                                return;
+                            }
 
+                            String cloneLocation = filesDir + "/" + folderName;
+
+                            new GitPushTask(result).execute(cloneLocation, privateKeyPath);
+                            return;
+                        } else if (call.method.equals("gitAdd")) {
+                            String folderName = call.argument("folderName");
+                            String filePattern = call.argument("filePattern");
+
+                            if (folderName.isEmpty() || filePattern.isEmpty()) {
+                                result.error("Invalid Parameters", "Arguments Invalid", null);
+                                return;
+                            }
+
+                            String cloneLocation = filesDir + "/" + folderName;
+
+                            new GitAddTask(result).execute(cloneLocation, filePattern);
+                            return;
+                        } else if (call.method.equals("gitCommit")) {
+                            String folderName = call.argument("folderName");
+                            String authorName = call.argument("authorName");
+                            String authorEmail = call.argument("authorEmail");
+                            String message = call.argument("message");
+
+                            if (folderName.isEmpty() || authorName.isEmpty() || authorEmail.isEmpty() || message.isEmpty()) {
+                                result.error("Invalid Parameters", "Arguments Invalid", null);
+                                return;
+                            }
+
+                            String cloneLocation = filesDir + "/" + folderName;
+
+                            new GitCommitTask(result).execute(cloneLocation, authorName, authorEmail, message);
+                            return;
+                        } else if (call.method.equals("generateSSHKeys")) {
                             new GenerateSSHKeysTask(result).execute(sshKeysLocation);
                             return;
                         }
