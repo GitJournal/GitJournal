@@ -16,11 +16,14 @@ import org.eclipse.jgit.transport.SshSessionFactory;
 import org.eclipse.jgit.transport.OpenSshConfig.Host;
 import org.eclipse.jgit.util.FS;
 
+import org.eclipse.jgit.lib.TextProgressMonitor;
+
+import java.io.PrintWriter;
+
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.*;
 
 import java.io.File;
-import java.io.IOException;
 
 import io.flutter.plugin.common.MethodChannel.Result;
 
@@ -83,7 +86,8 @@ public class GitCloneTask extends AsyncTask<String, Void, Void> {
 
             CloneCommand cloneCommand = Git.cloneRepository()
                     .setURI(url)
-                    .setDirectory(cloneDir);
+                    .setDirectory(cloneDir)
+                    .setProgressMonitor(new TextProgressMonitor(new PrintWriter(System.out)));
 
             cloneCommand.setTransportConfigCallback(new TransportConfigCallback() {
                 @Override
