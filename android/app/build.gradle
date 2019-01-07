@@ -50,7 +50,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     // https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit
-    implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '4.5.4.201711221230-r'
+    implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '4.4.1.201607150455-r'
 }
 
 configurations {
