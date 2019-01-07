@@ -21,9 +21,9 @@ class GitApp extends StatelessWidget {
 buildGitButtons() {
   return <Widget>[
     RaisedButton(
-      child: Text("Remove Directory"),
-      onPressed: () {
-        print("FOO");
+      child: Text("Generate Keys"),
+      onPressed: () async {
+        await generateSSHKeys();
       },
     ),
     RaisedButton(
@@ -42,7 +42,7 @@ buildGitButtons() {
 }
 
 Future gitClone() async {
-  const platform = const MethodChannel('samples.flutter.io/battery');
+  const platform = const MethodChannel('gitjournal.io/git');
 
   print("Going to git clone");
   await platform.invokeMethod('gitClone', {
@@ -50,4 +50,17 @@ Future gitClone() async {
     'filePath': "/",
   });
   print("FOO");
+}
+
+Future generateSSHKeys() async {
+  print("generateSSHKeys");
+  try {
+    const platform = const MethodChannel('gitjournal.io/git');
+    String publicKey = await platform.invokeMethod('generateSSHKeys', {});
+    print("Public Key " + publicKey);
+  } on PlatformException catch (e) {
+    print("Failed to generateSSHKeys: '${e.message}'.");
+  } catch (e) {
+    print("EX: '${e.message}'.");
+  }
 }

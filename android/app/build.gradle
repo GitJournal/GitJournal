@@ -51,6 +51,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit
     implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '4.4.1.201607150455-r'
+
+    // For reading a file to string
+    implementation 'commons-io:commons-io:2.5'
 }
 
 configurations {

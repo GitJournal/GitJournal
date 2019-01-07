@@ -21,7 +21,7 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 public class MainActivity extends FlutterActivity {
-  private static final String CHANNEL = "samples.flutter.io/battery";
+  private static final String CHANNEL = "gitjournal.io/git";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -56,93 +56,17 @@ public class MainActivity extends FlutterActivity {
             return;
           }
 
-          result.notImplemented();
+          if (call.method.equals("generateSSHKeys")) {
+            String appFilesDir = PathUtils.getFilesDir(getApplicationContext());
+            String sshKeysLocation = appFilesDir + "/ssh";
 
-          // Methods to add
-          // git clone
-          // git pull - merge by taking newest
-          // git add
-          // git commit
-          // git push
+            new GenerateSSHKeysTask(result).execute(sshKeysLocation);
+            return;
+          }
+
+          result.notImplemented();
         }
       });
   }
-
-  private boolean gitClone(String url, String filePath) {
-    // TODO: Progress
-    // TODO: Credentials
-    // TODO: Handle errors!
-
-    File directory = new File("/git");
-
-    try {
-      Git git = Git.cloneRepository()
-              .setURI(url)
-              .setDirectory(directory)
-              .call();
-      return true;
-    }
-    catch (GitAPIException e) {
-      System.err.println("Error Cloning repository " + url + " : "+ e.getMessage());
-      return false;
-    }
-  }
-
-  /*
-  private void gitAdd(String gitRootUrl, String gitFileUrl) {
-    File directory = new File(gitRootUrl);
-
-    try {
-      Git git = Git.open(directory);
-
-      git.add()
-        .addFilepattern(gitFileUrl)
-        .call();
-    }
-    catch (GitAPIException e) {
-      System.err.println("Error Cloning repository " + url + " : "+ e.getMessage());
-    }
-    catch (java.io.IOException e) {
-      System.err.println("Error Opening GitRepo " + gitRootUrl + " : "+ e.getMessage());
-    }
-  }
-
-  private void gitRemove(String gitRootUrl, String gitFileUrl) {
-    File directory = new File(gitRootUrl);
-
-    try {
-      Git git = Git.open(directory);
-
-      git.rm()
-        .addFilepattern(gitFileUrl)
-        .call();
-    }
-    catch (GitAPIException e) {
-      System.err.println("Error Cloning repository " + url + " : "+ e.getMessage());
-    }
-    catch (java.io.IOException e) {
-      System.err.println("Error Opening GitRepo " + gitRootUrl + " : "+ e.getMessage());
-    }
-  }
-
-  private void gitCommit(String gitRootUrl, String message) {
-    File directory = new File(gitRootUrl);
-
-    try {
-      Git git = Git.open(directory);
-
-      git.commit()
-        .setAuthor("JournalApp", "none@example.com")
-        .setMessage(message)
-        .call();
-    }
-    catch (GitAPIException e) {
-      System.err.println("Error Cloning repository " + url + " : "+ e.getMessage());
-    }
-    catch (java.io.IOException e) {
-      System.err.println("Error Opening GitRepo " + gitRootUrl + " : "+ e.getMessage());
-    }
-  }
-  */
 
 }
