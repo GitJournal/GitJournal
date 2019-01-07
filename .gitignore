@@ -8,3 +8,8 @@ build/
 
 .flutter-plugins
 .vscode
+
+.idea/
+.project
+.classpath
+.settings/
