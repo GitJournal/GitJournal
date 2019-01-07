@@ -38,7 +38,10 @@ public class MainActivity extends FlutterActivity {
                         final String sshKeysLocation = filesDir + "/ssh";
                         final String privateKeyPath = sshKeysLocation + "/id_rsa";
 
-                        if (call.method.equals("gitClone")) {
+                        if (call.method.equals("getBaseDirectory")) {
+                            result.success(filesDir);
+                            return;
+                        } else if (call.method.equals("gitClone")) {
                             String cloneUrl = call.argument("cloneUrl");
                             String folderName = call.argument("folderName");
 
