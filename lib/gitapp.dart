@@ -45,22 +45,24 @@ Future gitClone() async {
   const platform = const MethodChannel('gitjournal.io/git');
 
   print("Going to git clone");
-  await platform.invokeMethod('gitClone', {
-    'cloneUrl': "root@bcn.vhanda.in:git/notes",
-    'filePath': "/",
-  });
-  print("FOO");
+  try {
+    await platform.invokeMethod('gitClone', {
+      'cloneUrl': "root@bcn.vhanda.in:git/notes",
+      'folderName': "journal",
+    });
+    print("Done");
+  } on PlatformException catch (e) {
+    print("gitClone Failed: '${e.message}'.");
+  }
 }
 
 Future generateSSHKeys() async {
-  print("generateSSHKeys");
+  print("generateSSHKeyss");
   try {
     const platform = const MethodChannel('gitjournal.io/git');
     String publicKey = await platform.invokeMethod('generateSSHKeys', {});
     print("Public Key " + publicKey);
   } on PlatformException catch (e) {
     print("Failed to generateSSHKeys: '${e.message}'.");
-  } catch (e) {
-    print("EX: '${e.message}'.");
   }
 }

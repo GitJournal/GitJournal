@@ -34,25 +34,18 @@ public class MainActivity extends FlutterActivity {
         public void onMethodCall(MethodCall call, Result result) {
           if (call.method.equals("gitClone")) {
             String cloneUrl = call.argument("cloneUrl");
-            String filePath = call.argument("filePath");
+            String folderName = call.argument("folderName");
 
-            if (cloneUrl.isEmpty() || filePath.isEmpty()) {
+            if (cloneUrl.isEmpty() || folderName.isEmpty()) {
               result.error("Invalid Parameters", "Arguments Invalid", null);
               return;
             }
 
             String filesDir = PathUtils.getFilesDir(getApplicationContext());
-            Log.d("vhanda", filesDir);
-            String cloneLocation = filesDir + "/git";
+            String cloneLocation = filesDir + "/" + folderName;
 
-            new GitCloneTask(result).execute(cloneUrl, cloneLocation);
-            /*
-            if (gitClone(cloneUrl, filePath)) {
-              result.success(null);
-            } else {
-              result.error("UNAVAILABLE", "Battery level not available.", null);
-            }
-            */
+            final String privateKeyPath = filesDir + "/ssh/id_rsa";
+            new GitCloneTask(result).execute(cloneUrl, cloneLocation, privateKeyPath);
             return;
           }
 

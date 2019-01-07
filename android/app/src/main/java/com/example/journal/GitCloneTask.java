@@ -33,33 +33,13 @@ public class GitCloneTask extends AsyncTask<String, Void, Void> {
 
     protected Void doInBackground(String... params) {
         String url = params[0];
-        String filesDir = params[1];
-        File directory = new File(filesDir + "/git");
+        String cloneDirPath = params[1];
+        final String privateKeyPath = params[2];
 
-        Log.d("GitClone Directory", filesDir);
-
-        File keysDir = new File(filesDir + "/keys");
-        if (!keysDir.exists()) {
-            keysDir.mkdir();
-        }
-        final String privateKeyPath = filesDir + "/keys/id_rsa";
-        final String publicKeyPath = filesDir + "/keys/id_rsa.pub";
+        File cloneDir = new File(cloneDirPath);
+        Log.d("GitClone Directory", cloneDirPath);
 
         try {
-            // Generate key pair
-            try {
-                JSch jsch = new JSch();
-                KeyPair kpair = KeyPair.genKeyPair(jsch, KeyPair.RSA, 1024 * 4);
-
-                kpair.writePrivateKey(privateKeyPath);
-                kpair.writePublicKey(publicKeyPath, "Auto generated Key");
-                kpair.dispose();
-            } catch (JSchException ex) {
-                Log.d("GitClone", ex.toString());
-            } catch (IOException ex) {
-                Log.d("GitClone", ex.toString());
-            }
-
             final SshSessionFactory sshSessionFactory = new JschConfigSessionFactory() {
                 protected void configure(Host host, Session session) {
                     session.setConfig("StrictHostKeyChecking", "no");
@@ -94,6 +74,8 @@ public class GitCloneTask extends AsyncTask<String, Void, Void> {
                     JSch defaultJSch = super.createDefaultJSch(fs);
                     defaultJSch.addIdentity(privateKeyPath);
 
+                    JSch.setConfig("PreferredAuthentications", "publickey");
+
                     Log.d("identityNames", defaultJSch.getIdentityNames().toString());
                     return defaultJSch;
                 }
@@ -101,7 +83,7 @@ public class GitCloneTask extends AsyncTask<String, Void, Void> {
 
             CloneCommand cloneCommand = Git.cloneRepository()
                     .setURI(url)
-                    .setDirectory(directory);
+                    .setDirectory(cloneDir);
 
             cloneCommand.setTransportConfigCallback(new TransportConfigCallback() {
                 @Override
@@ -113,18 +95,20 @@ public class GitCloneTask extends AsyncTask<String, Void, Void> {
 
             cloneCommand.call();
         } catch (TransportException e) {
-            // FIXME: Return a better error message?
-            System.err.println("Transport Error Cloning repository " + url + " : " + e.getMessage());
-            return null;
-
-        } catch (GitAPIException e) {
-            System.err.println("Error Cloning repository " + url + " : " + e.getMessage());
             Log.d("gitClone", e.toString());
+            result.error("FAILED", e.toString(), null);
+            return null;
+        } catch (GitAPIException e) {
+            Log.d("gitClone", e.toString());
+            result.error("FAILED", e.toString(), null);
+            return null;
+        } catch (Exception e) {
+            Log.d("gitClone", e.toString());
+            result.error("FAILED", e.toString(), null);
+            return null;
         }
-        return null;
-    }
 
-    protected void onPostExecute(Void taskResult) {
         result.success(null);
+        return null;
     }
 }
