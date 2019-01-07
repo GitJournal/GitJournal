@@ -33,6 +33,12 @@ buildGitButtons() {
       },
     ),
     RaisedButton(
+      child: Text("Git Pull"),
+      onPressed: () async {
+        await gitPull();
+      },
+    ),
+    RaisedButton(
       child: Text("New File"),
       onPressed: () {
         print("FOO");
@@ -47,7 +53,7 @@ Future gitClone() async {
   print("Going to git clone");
   try {
     await platform.invokeMethod('gitClone', {
-      'cloneUrl': "root@bcn.vhanda.in:git/notes",
+      'cloneUrl': "root@bcn.vhanda.in:git/test",
       'folderName': "journal",
     });
     print("Done");
@@ -64,5 +70,19 @@ Future generateSSHKeys() async {
     print("Public Key " + publicKey);
   } on PlatformException catch (e) {
     print("Failed to generateSSHKeys: '${e.message}'.");
+  }
+}
+
+Future gitPull() async {
+  const platform = const MethodChannel('gitjournal.io/git');
+
+  print("Going to git pull");
+  try {
+    await platform.invokeMethod('gitPull', {
+      'folderName': "journal",
+    });
+    print("Done");
+  } on PlatformException catch (e) {
+    print("gitPull Failed: '${e.message}'.");
   }
 }
