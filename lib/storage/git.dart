@@ -61,6 +61,19 @@ Future gitAdd() async {
   }
 }
 
+Future gitRm() async {
+  print("Going to git rm");
+  try {
+    await _platform.invokeMethod('gitRm', {
+      'folderName': "journal",
+      'filePattern': "1",
+    });
+    print("Done");
+  } on PlatformException catch (e) {
+    print("gitRm Failed: '${e.message}'.");
+  }
+}
+
 Future gitPush() async {
   print("Going to git push");
   try {

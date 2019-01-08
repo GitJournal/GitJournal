@@ -91,6 +91,19 @@ public class MainActivity extends FlutterActivity {
 
                             new GitAddTask(result).execute(cloneLocation, filePattern);
                             return;
+                        } else if (call.method.equals("gitRm")) {
+                            String folderName = call.argument("folderName");
+                            String filePattern = call.argument("filePattern");
+
+                            if (folderName.isEmpty() || filePattern.isEmpty()) {
+                                result.error("Invalid Parameters", "Arguments Invalid", null);
+                                return;
+                            }
+
+                            String cloneLocation = filesDir + "/" + folderName;
+
+                            new GitRmTask(result).execute(cloneLocation, filePattern);
+                            return;
                         } else if (call.method.equals("gitCommit")) {
                             String folderName = call.argument("folderName");
                             String authorName = call.argument("authorName");
