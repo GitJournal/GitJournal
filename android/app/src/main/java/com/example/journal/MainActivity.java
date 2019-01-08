@@ -1,4 +1,4 @@
-package com.example.journal;
+package io.gitjournal.gitjournal;
 
 import java.io.File;
 
@@ -14,12 +14,10 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
-
 // For EventChannel
 import io.flutter.plugin.common.EventChannel;
 
 import io.flutter.util.PathUtils;
-
 
 public class MainActivity extends FlutterActivity {
     private static final String CHANNEL = "gitjournal.io/git";

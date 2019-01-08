@@ -1,4 +1,4 @@
-package com.example.journal;
+package io.gitjournal.gitjournal;
 
 import android.os.AsyncTask;
 import android.util.Log;

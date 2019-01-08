@@ -1,4 +1,4 @@
-package com.example.journal;
+package io.gitjournal.gitjournal;
 
 import android.util.Log;
 
@@ -34,7 +34,6 @@ public class CustomSshSessionFactory extends JschConfigSessionFactory {
                 name.put(new Integer(ERROR), "ERROR: ");
                 name.put(new Integer(FATAL), "FATAL: ");
             }
-
 
             public boolean isEnabled(int level) {
                 return true;

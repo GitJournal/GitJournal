@@ -1,4 +1,4 @@
-package com.example.journal;
+package io.gitjournal.gitjournal;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -35,9 +35,7 @@ public class GitCloneTask extends AsyncTask<String, Void, Void> {
         Log.d("GitClone Directory", cloneDirPath);
 
         try {
-            CloneCommand cloneCommand = Git.cloneRepository()
-                    .setURI(url)
-                    .setDirectory(cloneDir)
+            CloneCommand cloneCommand = Git.cloneRepository().setURI(url).setDirectory(cloneDir)
                     .setProgressMonitor(new TextProgressMonitor(new PrintWriter(System.out)));
 
             cloneCommand.setTransportConfigCallback(new TransportConfigCallback() {
