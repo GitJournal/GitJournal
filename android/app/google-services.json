@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "18856682550",
+    "firebase_url": "https://gitjournal-io.firebaseio.com",
+    "project_id": "gitjournal-io",
+    "storage_bucket": "gitjournal-io.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:18856682550:android:fb0ceb03dbf2e58f",
+        "android_client_info": {
+          "package_name": "io.gitjournal.gitjournal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "18856682550-k5e281uclj5ov7mdmprqoiphhe3g42s2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlkNb53du5Q9WqaAAZScm7X1CzACArcw8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

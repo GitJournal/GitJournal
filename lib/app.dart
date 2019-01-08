@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:journal/screens/home_screen.dart';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
+
 class JournalApp extends StatelessWidget {
-  JournalApp();
+  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +19,7 @@ class JournalApp extends StatelessWidget {
         primaryColor: Colors.lightBlue[800],
         accentColor: Colors.cyan[600],
       ),
+      navigatorObservers: <NavigatorObserver>[observer],
     );
   }
 }
