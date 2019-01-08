@@ -1,5 +1,5 @@
 name: journal
-description: A simple journaling app.
+description: A Journaling App Built on top of Git
 
 dependencies:
   flutter:
