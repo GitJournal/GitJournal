@@ -36,7 +36,7 @@ public class CustomSshSessionFactory extends JschConfigSessionFactory {
             }
 
             public boolean isEnabled(int level) {
-                return true;
+                return false;
             }
 
             public void log(int level, String message) {
