@@ -27,6 +27,8 @@ public class GenerateSSHKeysTask extends AsyncTask<String, Void, Void> {
             keysDir.mkdir();
         }
 
+        String comment = params[1];
+
         final String privateKeyPath = keysDir + "/id_rsa";
         final String publicKeyPath = keysDir + "/id_rsa.pub";
 
@@ -43,7 +45,7 @@ public class GenerateSSHKeysTask extends AsyncTask<String, Void, Void> {
             KeyPair kpair = KeyPair.genKeyPair(jsch, KeyPair.RSA, 1024 * 4);
 
             kpair.writePrivateKey(privateKeyPath);
-            kpair.writePublicKey(publicKeyPath, "Auto generated Key");
+            kpair.writePublicKey(publicKeyPath, comment);
             kpair.dispose();
         } catch (JSchException ex) {
             Log.d("GenerateSSHKeys", ex.toString());

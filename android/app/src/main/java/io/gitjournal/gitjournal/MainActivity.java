@@ -118,7 +118,12 @@ public class MainActivity extends FlutterActivity {
                             new GitCommitTask(result).execute(cloneLocation, authorName, authorEmail, message);
                             return;
                         } else if (call.method.equals("generateSSHKeys")) {
-                            new GenerateSSHKeysTask(result).execute(sshKeysLocation);
+                            String comment = call.argument("comment");
+                            if (comment == null || comment.isEmpty()) {
+                                comment = "Generated on Android";
+                            }
+
+                            new GenerateSSHKeysTask(result).execute(sshKeysLocation, comment);
                             return;
                         }
 
