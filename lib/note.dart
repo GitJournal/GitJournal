@@ -49,21 +49,34 @@ class Note implements Comparable {
 
   @override
   String toString() {
-    return 'Note{id: $id, body: $body, createdAt: $created}';
+    return 'Note{id: $id, body: $body, created: $created}';
   }
 
   @override
-  int compareTo(other) => created.compareTo(other.created);
+  int compareTo(other) {
+    if (other == null) {
+      return -1;
+    }
+    return created.compareTo(other.created);
+  }
 }
 
 class AppState {
-  bool isLoading;
+  bool isLoadingFromDisk;
+  bool localStateModified;
+
+  bool isLoadingRemoteState;
+  bool remoteStateModified;
+
   List<Note> notes;
 
   AppState({
-    this.isLoading = false,
+    this.isLoadingFromDisk = false,
+    this.localStateModified = false,
+    this.isLoadingRemoteState = false,
+    this.remoteStateModified = false,
     this.notes = const [],
   });
 
-  factory AppState.loading() => AppState(isLoading: true);
+  //factory AppState.loading() => AppState(isLoading: true);
 }

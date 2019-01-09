@@ -1,13 +1,25 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
+
 import 'package:journal/note.dart';
+
+class NoteRepoResult {
+  bool error;
+  String noteFilePath;
+
+  NoteRepoResult({
+    @required this.error,
+    this.noteFilePath,
+  });
+}
 
 abstract class NoteRepository {
   // TODO: Better error message!
   Future<bool> sync();
 
-  Future<bool> addNote(Note note);
-  Future<bool> updateNote(Note note);
-  Future<bool> removeNote(Note note);
+  Future<NoteRepoResult> addNote(Note note);
+  Future<NoteRepoResult> updateNote(Note note);
+  Future<NoteRepoResult> removeNote(Note note);
 
   Future<List<Note>> listNotes();
 }

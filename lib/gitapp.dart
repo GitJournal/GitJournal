@@ -26,23 +26,37 @@ buildGitButtons() {
     ),
     RaisedButton(
       child: Text("Git Clone"),
-      onPressed: gitClone,
+      onPressed: () async {
+        gitClone("root@bcn.vhanda.in:git/test", "journal");
+      },
     ),
     RaisedButton(
       child: Text("Git Pull"),
-      onPressed: gitPull,
+      onPressed: () async {
+        gitPull("journal");
+      },
     ),
     RaisedButton(
       child: Text("Git Add"),
-      onPressed: gitAdd,
+      onPressed: () async {
+        await gitAdd("journal", "1");
+      },
     ),
     RaisedButton(
       child: Text("Git Push"),
-      onPressed: gitPush,
+      onPressed: () async {
+        gitPush("journal");
+      },
     ),
     RaisedButton(
-      child: Text("Git Commit"),
-      onPressed: gitCommit,
-    ),
+        child: Text("Git Commit"),
+        onPressed: () async {
+          gitCommit(
+            gitFolder: "journal",
+            authorEmail: "noemail@example.com",
+            authorName: "Vishesh Handa",
+            message: "Default message from GitJournal",
+          );
+        }),
   ];
 }

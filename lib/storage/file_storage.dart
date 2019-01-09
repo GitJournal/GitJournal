@@ -29,6 +29,13 @@ class FileStorage implements NoteRepository {
     var lister = dir.list(recursive: false);
     await for (var fileEntity in lister) {
       Note note = await _loadNote(fileEntity);
+      if (note == null) {
+        continue;
+      }
+      if (note.id == null) {
+        String filename = p.basename(fileEntity.path);
+        note.id = filename;
+      }
       notes.add(note);
     }
 
@@ -47,30 +54,33 @@ class FileStorage implements NoteRepository {
   }
 
   @override
-  Future<bool> addNote(Note note) async {
+  Future<NoteRepoResult> addNote(Note note) async {
     final dir = await getDirectory();
     var filePath = p.join(dir.path, fileNameGenerator(note));
 
     var file = new File(filePath);
+    if (file == null) {
+      return NoteRepoResult(error: true);
+    }
     var contents = noteSerializer.encode(note);
     await file.writeAsString(contents);
 
-    return true;
+    return NoteRepoResult(noteFilePath: filePath, error: false);
   }
 
   @override
-  Future<bool> removeNote(Note note) async {
+  Future<NoteRepoResult> removeNote(Note note) async {
     final dir = await getDirectory();
     var filePath = p.join(dir.path, fileNameGenerator(note));
 
     var file = new File(filePath);
     await file.delete();
 
-    return true;
+    return NoteRepoResult(noteFilePath: filePath, error: false);
   }
 
   @override
-  Future<bool> updateNote(Note note) async {
+  Future<NoteRepoResult> updateNote(Note note) async {
     return addNote(note);
   }
 
@@ -81,8 +91,8 @@ class FileStorage implements NoteRepository {
 
   Future<Directory> saveNotes(List<Note> notes) async {
     final dir = await getDirectory();
-    await dir.delete(recursive: true);
-    await dir.create();
+    // FIXME: Why do we need to delete everything?
+    // await dir.delete(recursive: true);
 
     for (var note in notes) {
       var filePath = p.join(dir.path, fileNameGenerator(note));

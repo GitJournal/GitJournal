@@ -13,12 +13,12 @@ Future<Directory> getGitBaseDirectory() async {
   return new Directory(path);
 }
 
-Future gitClone() async {
+Future gitClone(String cloneUrl, String folderName) async {
   print("Going to git clone");
   try {
     await _platform.invokeMethod('gitClone', {
-      'cloneUrl': "root@bcn.vhanda.in:git/test",
-      'folderName': "journal",
+      'cloneUrl': cloneUrl,
+      'folderName': folderName,
     });
     print("Done");
   } on PlatformException catch (e) {
@@ -36,11 +36,11 @@ Future generateSSHKeys() async {
   }
 }
 
-Future gitPull() async {
+Future gitPull(String folderName) async {
   print("Going to git pull");
   try {
     await _platform.invokeMethod('gitPull', {
-      'folderName': "journal",
+      'folderName': folderName,
     });
     print("Done");
   } on PlatformException catch (e) {
@@ -48,12 +48,12 @@ Future gitPull() async {
   }
 }
 
-Future gitAdd() async {
-  print("Going to git add");
+Future gitAdd(String gitFolder, String filePattern) async {
+  print("Going to git add: " + filePattern);
   try {
     await _platform.invokeMethod('gitAdd', {
-      'folderName': "journal",
-      'filePattern': ".",
+      'folderName': gitFolder,
+      'filePattern': filePattern,
     });
     print("Done");
   } on PlatformException catch (e) {
@@ -61,12 +61,12 @@ Future gitAdd() async {
   }
 }
 
-Future gitRm() async {
+Future gitRm(String gitFolder, String filePattern) async {
   print("Going to git rm");
   try {
     await _platform.invokeMethod('gitRm', {
-      'folderName': "journal",
-      'filePattern': "1",
+      'folderName': gitFolder,
+      'filePattern': filePattern,
     });
     print("Done");
   } on PlatformException catch (e) {
@@ -74,11 +74,11 @@ Future gitRm() async {
   }
 }
 
-Future gitPush() async {
+Future gitPush(String folderName) async {
   print("Going to git push");
   try {
     await _platform.invokeMethod('gitPush', {
-      'folderName': "journal",
+      'folderName': folderName,
     });
     print("Done");
   } on PlatformException catch (e) {
@@ -86,14 +86,19 @@ Future gitPush() async {
   }
 }
 
-Future gitCommit() async {
+Future gitCommit({
+  String gitFolder,
+  String authorName,
+  String authorEmail,
+  String message,
+}) async {
   print("Going to git commit");
   try {
     await _platform.invokeMethod('gitCommit', {
-      'folderName': "journal",
-      'authorName': "Vishesh Handa",
-      'authorEmail': "noemail@example.com",
-      'message': "Default message from GitJournal",
+      'folderName': gitFolder,
+      'authorName': authorName,
+      'authorEmail': authorEmail,
+      'message': message,
     });
     print("Done");
   } on PlatformException catch (e) {

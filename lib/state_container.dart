@@ -9,12 +9,12 @@ import 'package:uuid/uuid.dart';
 import 'package:journal/note.dart';
 import 'package:journal/storage/serializers.dart';
 import 'package:journal/storage/notes_repository.dart';
-import 'package:journal/storage/file_storage.dart';
+import 'package:journal/storage/git_storage.dart';
 import 'package:journal/storage/git.dart';
 
 Future<Directory> getNotesDir() async {
   var appDir = await getGitBaseDirectory();
-  var dir = new Directory(p.join(appDir.path, "notes"));
+  var dir = new Directory(p.join(appDir.path, "journal"));
   await dir.create();
 
   return dir;
@@ -40,56 +40,80 @@ class StateContainer extends StatefulWidget {
 }
 
 class StateContainerState extends State<StateContainer> {
-  AppState appState = AppState.loading();
-  NoteRepository noteRepo = new FileStorage(
+  AppState appState = AppState();
+
+  NoteRepository noteRepo = new GitNoteRepository(
     getDirectory: getNotesDir,
-    noteSerializer: new MarkdownYAMLSerializer(),
-    fileNameGenerator: (Note note) => note.id,
+    dirName: "journal",
+    gitCloneUrl: "root@bcn.vhanda.in:git/test",
   );
 
   @override
   void initState() {
     super.initState();
 
+    _loadNotesFromDisk();
+    _syncNotes();
+  }
+
+  void _loadNotesFromDisk() {
+    print("Loading Notes From Disk");
+    appState.isLoadingFromDisk = true;
     noteRepo.listNotes().then((loadedNotes) {
       setState(() {
-        appState = AppState(notes: loadedNotes);
+        appState.isLoadingFromDisk = false;
+        appState.notes = loadedNotes;
       });
-    }).catchError((err) {
+    }).catchError((err, stack) {
       setState(() {
-        print("Load Notes Error:");
-        print(err);
-        appState.isLoading = false;
+        print("Load Notes From Disk Error: " + err.toString());
+        print(stack.toString());
+        appState.isLoadingFromDisk = false;
       });
     });
   }
 
-  void addNote(Note note) {
-    setState(() {
-      note.id = new Uuid().v4();
-      appState.notes.insert(0, note);
-      noteRepo.addNote(note);
+  void _syncNotes() {
+    print("Starting to syncNOtes");
+    this.noteRepo.sync().then((loaded) {
+      print("NotesRepo Synced: " + loaded.toString());
+      _loadNotesFromDisk();
+    }).catchError((err) {
+      print("NotesRepo Sync: " + err.toString());
     });
+  }
+
+  void addNote(Note note) {
+    insertNote(0, note);
   }
 
   void removeNote(Note note) {
     setState(() {
       appState.notes.remove(note);
-      noteRepo.removeNote(note);
+      noteRepo.removeNote(note).then((NoteRepoResult _) {
+        _syncNotes();
+      });
     });
   }
 
   void insertNote(int index, Note note) {
     setState(() {
+      print("insertNote: " + note.toString());
+      if (note.id == null || note.id.isEmpty) {
+        note.id = new Uuid().v4();
+      }
       appState.notes.insert(index, note);
-      noteRepo.addNote(note);
+      noteRepo.addNote(note).then((NoteRepoResult _) {
+        _syncNotes();
+      });
     });
   }
 
-  // FIXME: Implement this!
   void updateNote(Note note) {
     setState(() {
-      noteRepo.updateNote(note);
+      noteRepo.updateNote(note).then((NoteRepoResult _) {
+        _syncNotes();
+      });
     });
   }
 
