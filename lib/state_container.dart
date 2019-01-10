@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 import 'package:uuid/uuid.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:journal/appstate.dart';
 import 'package:journal/note.dart';
@@ -22,8 +23,10 @@ Future<Directory> getNotesDir() async {
 
 class StateContainer extends StatefulWidget {
   final Widget child;
+  final bool onBoardingCompleted;
 
   StateContainer({
+    @required this.onBoardingCompleted,
     @required this.child,
   });
 
@@ -35,7 +38,7 @@ class StateContainer extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return StateContainerState();
+    return StateContainerState(this.onBoardingCompleted);
   }
 }
 
@@ -47,6 +50,10 @@ class StateContainerState extends State<StateContainer> {
     dirName: "journal",
     gitCloneUrl: "root@bcn.vhanda.in:git/test",
   );
+
+  StateContainerState(bool onBoardingCompleted) {
+    appState.onBoardingCompleted = onBoardingCompleted;
+  }
 
   @override
   void initState() {
@@ -123,9 +130,15 @@ class StateContainerState extends State<StateContainer> {
     setState(() {
       this.appState.onBoardingCompleted = true;
 
+      _persistOnBoardingCompleted();
       _loadNotesFromDisk();
       _syncNotes();
     });
+  }
+
+  void _persistOnBoardingCompleted() async {
+    var pref = await SharedPreferences.getInstance();
+    pref.setBool("onBoardingCompleted", true);
   }
 
   @override
