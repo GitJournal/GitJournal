@@ -62,6 +62,18 @@ class StateContainerState extends State<StateContainer> {
     if (appState.onBoardingCompleted) {
       _loadNotesFromDisk();
       _syncNotes();
+    } else {
+      _removeExistingClone();
+    }
+  }
+
+  void _removeExistingClone() async {
+    var baseDir = await getNotesDir();
+    var dotGitDir = new Directory(p.join(baseDir.path, ".git"));
+    bool exists = await dotGitDir.exists();
+    if (exists) {
+      await baseDir.delete(recursive: true);
+      await baseDir.create();
     }
   }
 
