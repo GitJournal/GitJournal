@@ -125,6 +125,8 @@ class OnBoardingSshKeyState extends State<OnBoardingSshKey> {
 
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).requestFocus(new FocusNode());
+
     return new Scaffold(
       body: new Container(
         width: double.infinity,
