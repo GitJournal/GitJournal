@@ -68,28 +68,50 @@ class OnBoardingGitUrlState extends State<OnBoardingGitUrl> {
 
   @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+    var inputForm = Form(
+      key: _formKey,
+      child: TextFormField(
+        key: sshUrlKey,
+        textAlign: TextAlign.center,
+        autofocus: true,
+        style: Theme.of(context).textTheme.title,
+        decoration: const InputDecoration(
+          hintText: 'Eg: git@github.com:GitJournal/GitJournal.git',
+        ),
+        validator: (value) {
+          if (value.isEmpty) {
+            return 'Please enter some text';
+          }
+          if (value.startsWith('https://') || value.startsWith('http://')) {
+            return 'Only SSH urls are currently accepted';
+          }
+
+          RegExp regExp = new RegExp(r"[a-zA-Z0-9.]+@[a-zA-Z0-9.]+:.+");
+          if (!regExp.hasMatch(value)) {
+            return "Invalid Input";
+          }
+        },
+      ),
+    );
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text(
-          'Enter the Git SSH URL -',
+          'Enter the Git SSH URL',
           textAlign: TextAlign.center,
-          overflow: TextOverflow.ellipsis,
           style: Theme.of(context).textTheme.display1,
         ),
-        Form(
-          child: TextFormField(
-            key: sshUrlKey,
-            textAlign: TextAlign.center,
-            autofocus: true,
-          ),
-        ),
+        inputForm,
         RaisedButton(
           child: Text("Next"),
           onPressed: () {
-            var url = sshUrlKey.currentState.value;
-            this.doneFunction(url);
+            if (_formKey.currentState.validate()) {
+              var url = sshUrlKey.currentState.value;
+              this.doneFunction(url);
+            } else {}
           },
         )
       ],
