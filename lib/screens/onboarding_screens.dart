@@ -139,7 +139,7 @@ class OnBoardingSshKeyState extends State<OnBoardingSshKey> {
 
   void initState() {
     super.initState();
-    generateSSHKeys().then((String _publicKey) {
+    generateSSHKeys(comment: "GitJournal").then((String _publicKey) {
       setState(() {
         print("Changing the state");
         publicKey = _publicKey;

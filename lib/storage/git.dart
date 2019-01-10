@@ -29,10 +29,12 @@ Future<String> gitClone(String cloneUrl, String folderName) async {
   return null;
 }
 
-Future<String> generateSSHKeys() async {
+Future<String> generateSSHKeys({comment: ""}) async {
   print("generateSSHKeyss");
   try {
-    String publicKey = await _platform.invokeMethod('generateSSHKeys', {});
+    String publicKey = await _platform.invokeMethod('generateSSHKeys', {
+      comment: comment,
+    });
     print("Public Key " + publicKey);
     return publicKey;
   } on PlatformException catch (e) {
