@@ -13,7 +13,7 @@ Future<Directory> getGitBaseDirectory() async {
   return new Directory(path);
 }
 
-Future gitClone(String cloneUrl, String folderName) async {
+Future<String> gitClone(String cloneUrl, String folderName) async {
   print("Going to git clone");
   try {
     await _platform.invokeMethod('gitClone', {
@@ -23,7 +23,10 @@ Future gitClone(String cloneUrl, String folderName) async {
     print("Done");
   } on PlatformException catch (e) {
     print("gitClone Failed: '${e.message}'.");
+    return e.message;
   }
+
+  return null;
 }
 
 Future<String> generateSSHKeys() async {

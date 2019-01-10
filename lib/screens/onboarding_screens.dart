@@ -20,7 +20,13 @@ class OnBoardingScreen extends StatelessWidget {
             pref.setString("sshCloneUrl", sshUrl);
           });
         }),
-        OnBoardingSshKey(),
+        OnBoardingSshKey(doneFunction: () {
+          pageController.nextPage(
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeIn,
+          );
+        }),
+        OnBoardingGitClone(),
       ],
     );
   }
@@ -84,14 +90,22 @@ class OnBoardingGitUrlState extends State<OnBoardingGitUrl> {
 }
 
 class OnBoardingSshKey extends StatefulWidget {
+  final Function doneFunction;
+
+  OnBoardingSshKey({@required this.doneFunction});
+
   @override
   OnBoardingSshKeyState createState() {
-    return new OnBoardingSshKeyState();
+    return new OnBoardingSshKeyState(doneFunction: this.doneFunction);
   }
 }
 
 class OnBoardingSshKeyState extends State<OnBoardingSshKey> {
+  final Function doneFunction;
+
   String publicKey = "Generating ...";
+
+  OnBoardingSshKeyState({@required this.doneFunction});
 
   void initState() {
     super.initState();
@@ -126,10 +140,8 @@ class OnBoardingSshKeyState extends State<OnBoardingSshKey> {
               style: TextStyle(fontSize: 10),
             ),
             RaisedButton(
-              child: Text("Click when Loaded"),
-              onPressed: () {
-                print("Button pressed");
-              },
+              child: Text("Start Clone"),
+              onPressed: this.doneFunction,
             )
           ],
         ),
@@ -138,9 +150,73 @@ class OnBoardingSshKeyState extends State<OnBoardingSshKey> {
   }
 }
 
-class OnBoardingGitClone extends StatelessWidget {
+class OnBoardingGitClone extends StatefulWidget {
+  @override
+  OnBoardingGitCloneState createState() {
+    return new OnBoardingGitCloneState();
+  }
+}
+
+class OnBoardingGitCloneState extends State<OnBoardingGitClone> {
+  String errorMessage = "";
+
+  @override
+  void initState() {
+    _initStateAsync();
+  }
+
+  void _initStateAsync() async {
+    var pref = await SharedPreferences.getInstance();
+    String sshCloneUrl = pref.getString("sshCloneUrl");
+
+    String error = await gitClone(sshCloneUrl, "journal");
+    if (error != null && error.isNotEmpty) {
+      setState(() {
+        errorMessage = error;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Text("Cloning");
+    var children = <Widget>[];
+    if (this.errorMessage.isEmpty) {
+      children = <Widget>[
+        Text(
+          'Cloning ...',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 38),
+        ),
+        CircularProgressIndicator(
+          value: null,
+        ),
+      ];
+    } else {
+      children = <Widget>[
+        Text(
+          'Failed',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 38),
+        ),
+        Text(
+          this.errorMessage,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 18),
+        ),
+      ];
+    }
+
+    return new Scaffold(
+      body: new Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.green[400],
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: children,
+        ),
+      ),
+    );
   }
 }
