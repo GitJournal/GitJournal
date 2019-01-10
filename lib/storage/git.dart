@@ -26,14 +26,25 @@ Future gitClone(String cloneUrl, String folderName) async {
   }
 }
 
-Future generateSSHKeys() async {
+Future<String> generateSSHKeys() async {
   print("generateSSHKeyss");
   try {
     String publicKey = await _platform.invokeMethod('generateSSHKeys', {});
     print("Public Key " + publicKey);
+    return publicKey;
   } on PlatformException catch (e) {
     print("Failed to generateSSHKeys: '${e.message}'.");
   }
+
+  try {
+    String publicKey = await _platform.invokeMethod('getSSHPublicKey', {});
+    print("Public Key " + publicKey);
+    return publicKey;
+  } on PlatformException catch (e) {
+    print("Failed to getSSHPublicKey: '${e.message}'.");
+  }
+
+  return "";
 }
 
 Future gitPull(String folderName) async {

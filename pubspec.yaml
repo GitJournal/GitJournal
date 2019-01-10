@@ -4,12 +4,12 @@ description: A Journaling App Built on top of Git
 dependencies:
   flutter:
     sdk: flutter
-  http: "^0.11.3+16"
   intl: "^0.15.6"
   path: "^1.5.1"
   uuid: "^1.0.0"
   yaml: "^2.1.13"
   firebase_analytics: ^1.1.0
+  shared_preferences: ^0.4.3
 
 dev_dependencies:
   test: ^1.5.1

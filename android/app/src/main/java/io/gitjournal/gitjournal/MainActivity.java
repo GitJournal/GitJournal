@@ -1,9 +1,13 @@
 package io.gitjournal.gitjournal;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 
 import android.os.Bundle;
 import android.util.Log;
+
+import org.apache.commons.io.FileUtils;
 
 import io.flutter.app.FlutterActivity;
 import io.flutter.plugins.GeneratedPluginRegistrant;
@@ -124,6 +128,19 @@ public class MainActivity extends FlutterActivity {
                             }
 
                             new GenerateSSHKeysTask(result).execute(sshKeysLocation, comment);
+                            return;
+                        } else if (call.method.equals("getSSHPublicKey")) {
+                            final String publicKeyPath = sshKeysLocation + "/id_rsa.pub";
+
+                            String publicKey = "";
+                            try {
+                                publicKey = FileUtils.readFileToString(new File(publicKeyPath), Charset.defaultCharset());
+                            } catch (IOException ex) {
+                                Log.d("GenerateSSHKeys", ex.toString());
+                                result.error("FAILED", "Failed to read the public key", null);
+                            }
+
+                            result.success(publicKey);
                             return;
                         }
 
