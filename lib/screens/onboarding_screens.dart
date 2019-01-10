@@ -69,6 +69,18 @@ class OnBoardingGitUrlState extends State<OnBoardingGitUrl> {
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
+    final inputFormFocus = FocusNode();
+
+    final formSubmitted = () {
+      if (_formKey.currentState.validate()) {
+        _formKey.currentState.save();
+
+        var url = sshUrlKey.currentState.value;
+        this.doneFunction(url);
+        inputFormFocus.unfocus();
+      }
+    };
+
     var inputForm = Form(
       key: _formKey,
       child: TextFormField(
@@ -92,6 +104,9 @@ class OnBoardingGitUrlState extends State<OnBoardingGitUrl> {
             return "Invalid Input";
           }
         },
+        focusNode: inputFormFocus,
+        textInputAction: TextInputAction.done,
+        onFieldSubmitted: (String _) => formSubmitted(),
       ),
     );
 
@@ -107,12 +122,7 @@ class OnBoardingGitUrlState extends State<OnBoardingGitUrl> {
         inputForm,
         RaisedButton(
           child: Text("Next"),
-          onPressed: () {
-            if (_formKey.currentState.validate()) {
-              var url = sshUrlKey.currentState.value;
-              this.doneFunction(url);
-            } else {}
-          },
+          onPressed: formSubmitted,
         )
       ],
     );
@@ -149,8 +159,6 @@ class OnBoardingSshKeyState extends State<OnBoardingSshKey> {
 
   @override
   Widget build(BuildContext context) {
-    FocusScope.of(context).requestFocus(new FocusNode());
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
