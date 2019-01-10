@@ -76,7 +76,7 @@ class OnBoardingGitUrlState extends State<OnBoardingGitUrl> {
           'Enter the Git SSH URL -',
           textAlign: TextAlign.center,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 38),
+          style: Theme.of(context).textTheme.display1,
         ),
         Form(
           child: TextFormField(
@@ -136,13 +136,13 @@ class OnBoardingSshKeyState extends State<OnBoardingSshKey> {
         Text(
           'Deploy Public Key',
           textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 38),
+          style: Theme.of(context).textTheme.display1,
         ),
         Text(
           publicKey,
-          textAlign: TextAlign.center,
-          maxLines: 10,
-          style: TextStyle(fontSize: 10),
+          textAlign: TextAlign.left,
+          maxLines: 20,
+          style: Theme.of(context).textTheme.body1,
         ),
         RaisedButton(
           child: Text("Start Clone"),
@@ -198,7 +198,7 @@ class OnBoardingGitCloneState extends State<OnBoardingGitClone> {
         Text(
           'Cloning ...',
           textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 38),
+          style: Theme.of(context).textTheme.display1,
         ),
         CircularProgressIndicator(
           value: null,
@@ -209,12 +209,12 @@ class OnBoardingGitCloneState extends State<OnBoardingGitClone> {
         Text(
           'Failed',
           textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 38),
+          style: Theme.of(context).textTheme.display1,
         ),
         Text(
           this.errorMessage,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18),
+          style: Theme.of(context).textTheme.display1,
         ),
       ];
     }
