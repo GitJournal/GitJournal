@@ -3,14 +3,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:journal/storage/git.dart';
 
-class OnBoardingScreen extends StatelessWidget {
+class OnBoardingScreen extends StatefulWidget {
   final Function onBoardingCompletedFunction;
 
   OnBoardingScreen(this.onBoardingCompletedFunction);
 
   @override
+  OnBoardingScreenState createState() {
+    return new OnBoardingScreenState();
+  }
+}
+
+class OnBoardingScreenState extends State<OnBoardingScreen> {
+  var pageController = PageController();
+
+  @override
   Widget build(BuildContext context) {
-    var pageController = PageController();
     var pageView = PageView(
       controller: pageController,
       children: <Widget>[
@@ -31,7 +39,7 @@ class OnBoardingScreen extends StatelessWidget {
           );
         }),
         OnBoardingGitClone(
-          doneFunction: this.onBoardingCompletedFunction,
+          doneFunction: this.widget.onBoardingCompletedFunction,
         ),
       ],
     );
