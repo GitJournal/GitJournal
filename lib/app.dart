@@ -21,12 +21,12 @@ class JournalApp extends StatelessWidget {
         : new OnBoardingScreen(stateContainer.completeOnBoarding);
 
     return new MaterialApp(
-      title: 'Journal',
+      title: 'GitJournal',
       home: home,
       theme: new ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: Colors.lightBlue[800],
-        accentColor: Colors.cyan[600],
+        brightness: Brightness.light,
+        primaryColor: Color(0xFF66bb6a),
+        accentColor: Color(0xffe64a19),
       ),
       navigatorObservers: <NavigatorObserver>[observer],
     );
