@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:journal/storage/git.dart';
@@ -16,6 +17,7 @@ class OnBoardingScreen extends StatefulWidget {
 
 class OnBoardingScreenState extends State<OnBoardingScreen> {
   var pageController = PageController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +34,15 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
             pref.setString("sshCloneUrl", sshUrl);
           });
         }),
-        OnBoardingSshKey(doneFunction: () {
-          pageController.nextPage(
-            duration: Duration(milliseconds: 200),
-            curve: Curves.easeIn,
-          );
-        }),
+        OnBoardingSshKey(
+          doneFunction: () {
+            pageController.nextPage(
+              duration: Duration(milliseconds: 200),
+              curve: Curves.easeIn,
+            );
+          },
+          scaffoldKey: _scaffoldKey,
+        ),
         OnBoardingGitClone(
           doneFunction: this.widget.onBoardingCompletedFunction,
         ),
@@ -45,6 +50,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     );
 
     return new Scaffold(
+      key: _scaffoldKey,
       body: new Container(
         width: double.infinity,
         height: double.infinity,
@@ -135,8 +141,12 @@ class OnBoardingGitUrlState extends State<OnBoardingGitUrl> {
 
 class OnBoardingSshKey extends StatefulWidget {
   final Function doneFunction;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
-  OnBoardingSshKey({@required this.doneFunction});
+  OnBoardingSshKey({
+    @required this.doneFunction,
+    @required this.scaffoldKey,
+  });
 
   @override
   OnBoardingSshKeyState createState() {
@@ -153,6 +163,14 @@ class OnBoardingSshKeyState extends State<OnBoardingSshKey> {
       setState(() {
         print("Changing the state");
         publicKey = _publicKey;
+
+        Clipboard.setData(ClipboardData(text: publicKey));
+        var text = "Public Key copied to Clipboard";
+        this
+            .widget
+            .scaffoldKey
+            .currentState
+            .showSnackBar(new SnackBar(content: new Text(text)));
       });
     });
   }
