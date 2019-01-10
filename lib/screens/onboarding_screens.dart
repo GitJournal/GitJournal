@@ -62,17 +62,13 @@ class OnBoardingGitUrl extends StatefulWidget {
 
   @override
   OnBoardingGitUrlState createState() {
-    return new OnBoardingGitUrlState(doneFunction: this.doneFunction);
+    return new OnBoardingGitUrlState();
   }
 }
 
 class OnBoardingGitUrlState extends State<OnBoardingGitUrl> {
-  final Function doneFunction;
-
   final GlobalKey<FormFieldState<String>> sshUrlKey =
       GlobalKey<FormFieldState<String>>();
-
-  OnBoardingGitUrlState({@required this.doneFunction});
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +80,7 @@ class OnBoardingGitUrlState extends State<OnBoardingGitUrl> {
         _formKey.currentState.save();
 
         var url = sshUrlKey.currentState.value;
-        this.doneFunction(url);
+        this.widget.doneFunction(url);
         inputFormFocus.unfocus();
       }
     };
@@ -144,16 +140,12 @@ class OnBoardingSshKey extends StatefulWidget {
 
   @override
   OnBoardingSshKeyState createState() {
-    return new OnBoardingSshKeyState(doneFunction: this.doneFunction);
+    return new OnBoardingSshKeyState();
   }
 }
 
 class OnBoardingSshKeyState extends State<OnBoardingSshKey> {
-  final Function doneFunction;
-
   String publicKey = "Generating ...";
-
-  OnBoardingSshKeyState({@required this.doneFunction});
 
   void initState() {
     super.initState();
@@ -184,7 +176,7 @@ class OnBoardingSshKeyState extends State<OnBoardingSshKey> {
         ),
         RaisedButton(
           child: Text("Start Clone"),
-          onPressed: this.doneFunction,
+          onPressed: this.widget.doneFunction,
         )
       ],
     );
@@ -198,15 +190,12 @@ class OnBoardingGitClone extends StatefulWidget {
 
   @override
   OnBoardingGitCloneState createState() {
-    return new OnBoardingGitCloneState(doneFunction: this.doneFunction);
+    return new OnBoardingGitCloneState();
   }
 }
 
 class OnBoardingGitCloneState extends State<OnBoardingGitClone> {
-  final Function doneFunction;
   String errorMessage = "";
-
-  OnBoardingGitCloneState({@required this.doneFunction});
 
   @override
   void initState() {
@@ -224,7 +213,7 @@ class OnBoardingGitCloneState extends State<OnBoardingGitClone> {
         errorMessage = error;
       });
     } else {
-      doneFunction();
+      this.widget.doneFunction();
     }
   }
 
