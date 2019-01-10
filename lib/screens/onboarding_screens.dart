@@ -4,6 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:journal/storage/git.dart';
 
 class OnBoardingScreen extends StatelessWidget {
+  final Function onBoardingCompletedFunction;
+
+  OnBoardingScreen(this.onBoardingCompletedFunction);
+
   @override
   Widget build(BuildContext context) {
     var pageController = PageController();
@@ -26,7 +30,9 @@ class OnBoardingScreen extends StatelessWidget {
             curve: Curves.easeIn,
           );
         }),
-        OnBoardingGitClone(),
+        OnBoardingGitClone(
+          doneFunction: this.onBoardingCompletedFunction,
+        ),
       ],
     );
   }
@@ -151,17 +157,25 @@ class OnBoardingSshKeyState extends State<OnBoardingSshKey> {
 }
 
 class OnBoardingGitClone extends StatefulWidget {
+  final Function doneFunction;
+
+  OnBoardingGitClone({@required this.doneFunction});
+
   @override
   OnBoardingGitCloneState createState() {
-    return new OnBoardingGitCloneState();
+    return new OnBoardingGitCloneState(doneFunction: this.doneFunction);
   }
 }
 
 class OnBoardingGitCloneState extends State<OnBoardingGitClone> {
+  final Function doneFunction;
   String errorMessage = "";
+
+  OnBoardingGitCloneState({@required this.doneFunction});
 
   @override
   void initState() {
+    super.initState();
     _initStateAsync();
   }
 
@@ -174,6 +188,8 @@ class OnBoardingGitCloneState extends State<OnBoardingGitClone> {
       setState(() {
         errorMessage = error;
       });
+    } else {
+      doneFunction();
     }
   }
 
@@ -191,7 +207,7 @@ class OnBoardingGitCloneState extends State<OnBoardingGitClone> {
           value: null,
         ),
       ];
-    } else {
+    } else if (this.errorMessage.isNotEmpty) {
       children = <Widget>[
         Text(
           'Failed',

@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 import 'package:uuid/uuid.dart';
 
+import 'package:journal/appstate.dart';
 import 'package:journal/note.dart';
-import 'package:journal/storage/serializers.dart';
 import 'package:journal/storage/notes_repository.dart';
 import 'package:journal/storage/git_storage.dart';
 import 'package:journal/storage/git.dart';
@@ -52,8 +52,10 @@ class StateContainerState extends State<StateContainer> {
   void initState() {
     super.initState();
 
-    _loadNotesFromDisk();
-    _syncNotes();
+    if (appState.onBoardingCompleted) {
+      _loadNotesFromDisk();
+      _syncNotes();
+    }
   }
 
   void _loadNotesFromDisk() {
@@ -114,6 +116,15 @@ class StateContainerState extends State<StateContainer> {
       noteRepo.updateNote(note).then((NoteRepoResult _) {
         _syncNotes();
       });
+    });
+  }
+
+  void completeOnBoarding() {
+    setState(() {
+      this.appState.onBoardingCompleted = true;
+
+      _loadNotesFromDisk();
+      _syncNotes();
     });
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:journal/state_container.dart';
 import 'package:journal/screens/home_screen.dart';
 import 'package:journal/screens/onboarding_screens.dart';
 
@@ -12,8 +13,12 @@ class JournalApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var onBoardingDone = false;
-    var home = onBoardingDone ? new HomeScreen() : new OnBoardingScreen();
+    final stateContainer = StateContainer.of(context);
+
+    var onBoardingDone = stateContainer.appState.onBoardingCompleted;
+    var home = onBoardingDone
+        ? new HomeScreen()
+        : new OnBoardingScreen(stateContainer.completeOnBoarding);
 
     return new MaterialApp(
       title: 'Journal',
