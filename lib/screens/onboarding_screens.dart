@@ -16,37 +16,58 @@ class OnBoardingScreen extends StatefulWidget {
 }
 
 class OnBoardingScreenState extends State<OnBoardingScreen> {
+  var _pageInputUrlDone = false;
+  var _pageSshKeyDone = false;
+
   var pageController = PageController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    var pageView = PageView(
-      controller: pageController,
-      children: <Widget>[
-        OnBoardingGitUrl(doneFunction: (String sshUrl) {
-          pageController.nextPage(
-            duration: Duration(milliseconds: 200),
-            curve: Curves.easeIn,
-          );
+    var pageCount = 1;
+    if (_pageInputUrlDone) {
+      pageCount++;
+    }
+    if (_pageSshKeyDone) {
+      pageCount++;
+    }
 
-          SharedPreferences.getInstance().then((SharedPreferences pref) {
-            pref.setString("sshCloneUrl", sshUrl);
-          });
-        }),
-        OnBoardingSshKey(
-          doneFunction: () {
+    var pageView = PageView.builder(
+      controller: pageController,
+      itemBuilder: (BuildContext context, int pos) {
+        if (pos == 0) {
+          return OnBoardingGitUrl(doneFunction: (String sshUrl) {
+            setPageInputUrlDone();
             pageController.nextPage(
               duration: Duration(milliseconds: 200),
               curve: Curves.easeIn,
             );
-          },
-          scaffoldKey: _scaffoldKey,
-        ),
-        OnBoardingGitClone(
-          doneFunction: this.widget.onBoardingCompletedFunction,
-        ),
-      ],
+
+            SharedPreferences.getInstance().then((SharedPreferences pref) {
+              pref.setString("sshCloneUrl", sshUrl);
+            });
+          });
+        }
+        if (pos == 1) {
+          return OnBoardingSshKey(
+            doneFunction: () {
+              setPageSshKeyDone();
+              pageController.nextPage(
+                duration: Duration(milliseconds: 200),
+                curve: Curves.easeIn,
+              );
+            },
+            scaffoldKey: _scaffoldKey,
+          );
+        }
+
+        if (pos == 2) {
+          return OnBoardingGitClone(
+            doneFunction: this.widget.onBoardingCompletedFunction,
+          );
+        }
+      },
+      itemCount: pageCount,
     );
 
     return new Scaffold(
@@ -58,6 +79,18 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         child: pageView,
       ),
     );
+  }
+
+  void setPageInputUrlDone() {
+    setState(() {
+      this._pageInputUrlDone = true;
+    });
+  }
+
+  void setPageSshKeyDone() {
+    setState(() {
+      this._pageSshKeyDone = true;
+    });
   }
 }
 
