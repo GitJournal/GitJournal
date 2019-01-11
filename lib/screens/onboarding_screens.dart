@@ -124,15 +124,27 @@ class OnBoardingGitUrlState extends State<OnBoardingGitUrl> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text(
-          'Enter the Git SSH URL',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.display1,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            'Enter the Git SSH URL',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.display1,
+          ),
         ),
-        inputForm,
-        RaisedButton(
-          child: Text("Next"),
-          onPressed: formSubmitted,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: new Container(
+            color: Theme.of(context).primaryColorLight,
+            child: inputForm,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: RaisedButton(
+            child: Text("Next"),
+            onPressed: formSubmitted,
+          ),
         )
       ],
     );
