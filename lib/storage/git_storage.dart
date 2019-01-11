@@ -46,8 +46,8 @@ class GitNoteRepository implements NoteRepository {
     await gitAdd(this.dirName, filePath);
     await gitCommit(
       gitFolder: this.dirName,
-      authorEmail: "noemail@example.com",
-      authorName: "Vishesh Handa",
+      authorEmail: "app@gitjournal.io",
+      authorName: "GitJournal",
       message: "Added Journal entry",
     );
 
@@ -67,9 +67,9 @@ class GitNoteRepository implements NoteRepository {
     await gitRm(this.dirName, filePath);
     await gitCommit(
       gitFolder: this.dirName,
-      authorEmail: "noemail@example.com",
-      authorName: "Vishesh Handa",
-      message: "Added Journal entry",
+      authorEmail: "app@gitjournal.io",
+      authorName: "GitJournal",
+      message: "Removed Journal entry",
     );
 
     return result;
