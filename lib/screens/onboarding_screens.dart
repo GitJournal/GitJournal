@@ -226,8 +226,9 @@ class OnBoardingSshKey extends StatelessWidget {
             style: Theme.of(context).textTheme.display1,
           ),
         ),
-        Padding(
+        Container(
           padding: const EdgeInsets.all(8.0),
+          color: Theme.of(context).primaryColorLight,
           child: Text(
             publicKey,
             textAlign: TextAlign.left,
