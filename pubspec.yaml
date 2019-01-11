@@ -12,9 +12,14 @@ dependencies:
   shared_preferences: ^0.4.3
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.7.0"
   test: ^1.5.1
   flutter_test:
     sdk: flutter
 
 flutter:
   uses-material-design: true
+
+flutter_icons:
+  android: "launcher_icon"
+  image_path: "assets/icon/icon.png"
