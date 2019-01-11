@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Journal'),
+        title: new Text('GitJournal'),
       ),
       floatingActionButton: createButton,
       body: new JournalList(
