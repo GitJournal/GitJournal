@@ -12,27 +12,25 @@ class AppDrawer extends StatelessWidget {
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: <Widget>[
-          new UserAccountsDrawerHeader(
-            accountEmail: new Text("me@vhanda.in"),
-            accountName: new Text("Vishesh Handa"),
+          new DrawerHeader(
             decoration: new BoxDecoration(
-              color: Colors.blue,
+              color: Theme.of(context).accentColor,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/icon/icon.png'),
+                  ),
+                ),
+              ),
             ),
           ),
           new ListTile(
-            title: new Text('Item 1'),
+            title: new Text('Share App'),
             onTap: () {
               Navigator.pop(context);
-
-              // Update the state of the app
-              // ...
-            },
-          ),
-          new ListTile(
-            title: new Text('Item 2'),
-            onTap: () {
-              Navigator.pop(context);
-
               // Update the state of the app
               // ...
             },
