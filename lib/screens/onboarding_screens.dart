@@ -22,6 +22,8 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   var pageController = PageController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  String publicKey = "Generating ...";
+
   @override
   Widget build(BuildContext context) {
     var pageCount = 1;
@@ -45,6 +47,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
 
             SharedPreferences.getInstance().then((SharedPreferences pref) {
               pref.setString("sshCloneUrl", sshUrl);
+              this._generateSshKey();
             });
           });
         }
@@ -57,7 +60,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                 curve: Curves.easeIn,
               );
             },
-            scaffoldKey: _scaffoldKey,
+            publicKey: publicKey,
           );
         }
 
@@ -90,6 +93,22 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   void setPageSshKeyDone() {
     setState(() {
       this._pageSshKeyDone = true;
+    });
+  }
+
+  void _generateSshKey() {
+    generateSSHKeys(comment: "GitJournal").then((String _publicKey) {
+      setState(() {
+        print("Changing the state");
+        publicKey = _publicKey;
+
+        Clipboard.setData(ClipboardData(text: publicKey));
+        var text = "Public Key copied to Clipboard";
+        this
+            ._scaffoldKey
+            .currentState
+            .showSnackBar(new SnackBar(content: new Text(text)));
+      });
     });
   }
 }
@@ -184,41 +203,14 @@ class OnBoardingGitUrlState extends State<OnBoardingGitUrl> {
   }
 }
 
-class OnBoardingSshKey extends StatefulWidget {
+class OnBoardingSshKey extends StatelessWidget {
   final Function doneFunction;
-  final GlobalKey<ScaffoldState> scaffoldKey;
+  final String publicKey;
 
   OnBoardingSshKey({
     @required this.doneFunction,
-    @required this.scaffoldKey,
+    @required this.publicKey,
   });
-
-  @override
-  OnBoardingSshKeyState createState() {
-    return new OnBoardingSshKeyState();
-  }
-}
-
-class OnBoardingSshKeyState extends State<OnBoardingSshKey> {
-  String publicKey = "Generating ...";
-
-  void initState() {
-    super.initState();
-    generateSSHKeys(comment: "GitJournal").then((String _publicKey) {
-      setState(() {
-        print("Changing the state");
-        publicKey = _publicKey;
-
-        Clipboard.setData(ClipboardData(text: publicKey));
-        var text = "Public Key copied to Clipboard";
-        this
-            .widget
-            .scaffoldKey
-            .currentState
-            .showSnackBar(new SnackBar(content: new Text(text)));
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -239,7 +231,7 @@ class OnBoardingSshKeyState extends State<OnBoardingSshKey> {
         ),
         RaisedButton(
           child: Text("Start Clone"),
-          onPressed: this.widget.doneFunction,
+          onPressed: this.doneFunction,
         )
       ],
     );
