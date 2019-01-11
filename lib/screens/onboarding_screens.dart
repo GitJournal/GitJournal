@@ -218,20 +218,29 @@ class OnBoardingSshKey extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text(
-          'Deploy Public Key',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.display1,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            'Deploy Public Key',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.display1,
+          ),
         ),
-        Text(
-          publicKey,
-          textAlign: TextAlign.left,
-          maxLines: 20,
-          style: Theme.of(context).textTheme.body1,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            publicKey,
+            textAlign: TextAlign.left,
+            maxLines: 20,
+            style: Theme.of(context).textTheme.body1,
+          ),
         ),
-        RaisedButton(
-          child: Text("Start Clone"),
-          onPressed: this.doneFunction,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: RaisedButton(
+            child: Text("Start Clone"),
+            onPressed: this.doneFunction,
+          ),
         )
       ],
     );
@@ -277,26 +286,38 @@ class OnBoardingGitCloneState extends State<OnBoardingGitClone> {
     var children = <Widget>[];
     if (this.errorMessage.isEmpty) {
       children = <Widget>[
-        Text(
-          'Cloning ...',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.display1,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            'Cloning ...',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.display1,
+          ),
         ),
-        CircularProgressIndicator(
-          value: null,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CircularProgressIndicator(
+            value: null,
+          ),
         ),
       ];
     } else if (this.errorMessage.isNotEmpty) {
       children = <Widget>[
-        Text(
-          'Failed',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.display1,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            'Failed',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.display1,
+          ),
         ),
-        Text(
-          this.errorMessage,
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.display1,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            this.errorMessage,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.display1,
+          ),
         ),
       ];
     }
