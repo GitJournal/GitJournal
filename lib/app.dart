@@ -26,7 +26,7 @@ class JournalApp extends StatelessWidget {
       theme: new ThemeData(
         brightness: Brightness.light,
         primaryColor: Color(0xFF66bb6a),
-        accentColor: Color(0xffe64a19),
+        accentColor: Color(0xff6d4c41),
       ),
       navigatorObservers: <NavigatorObserver>[observer],
     );
