@@ -85,7 +85,7 @@ class NoteViewer extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context) {
-    var dateStr = DateFormat('MMM dd, yyyy').format(note.created);
+    var dateStr = DateFormat('MMM, yyyy').format(note.created);
     var timeStr = DateFormat('EEEE H:m').format(note.created);
 
     var bigNum = new Text(
