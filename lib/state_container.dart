@@ -63,11 +63,11 @@ class StateContainerState extends State<StateContainer> {
       _loadNotesFromDisk();
       _syncNotes();
     } else {
-      _removeExistingClone();
+      removeExistingClone();
     }
   }
 
-  void _removeExistingClone() async {
+  void removeExistingClone() async {
     var baseDir = await getNotesDir();
     var dotGitDir = new Directory(p.join(baseDir.path, ".git"));
     bool exists = await dotGitDir.exists();

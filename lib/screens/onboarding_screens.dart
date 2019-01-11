@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:path/path.dart' as p;
+
+import 'package:journal/state_container.dart';
 import 'package:journal/storage/git.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -272,6 +277,9 @@ class OnBoardingGitCloneState extends State<OnBoardingGitClone> {
     var pref = await SharedPreferences.getInstance();
     String sshCloneUrl = pref.getString("sshCloneUrl");
 
+    // Just in case it was half cloned because of an error
+    await _removeExistingClone();
+
     String error = await gitClone(sshCloneUrl, "journal");
     if (error != null && error.isNotEmpty) {
       setState(() {
@@ -279,6 +287,16 @@ class OnBoardingGitCloneState extends State<OnBoardingGitClone> {
       });
     } else {
       this.widget.doneFunction();
+    }
+  }
+
+  Future _removeExistingClone() async {
+    var baseDir = await getNotesDir();
+    var dotGitDir = new Directory(p.join(baseDir.path, ".git"));
+    bool exists = await dotGitDir.exists();
+    if (exists) {
+      await baseDir.delete(recursive: true);
+      await baseDir.create();
     }
   }
 
