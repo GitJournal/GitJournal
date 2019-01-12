@@ -76,7 +76,7 @@ class NoteEditorState extends State<NoteEditor> {
       ),
       body: bodyWidget,
       floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
+          child: Icon(Icons.check),
           onPressed: () {
             var noteContent = noteTextKey.currentState.value;
             var note = new Note(
