@@ -1,0 +1,2 @@
+json_key_file("./google-play-api-key.json")
+package_name("io.gitjournal.gitjournal")
