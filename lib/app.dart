@@ -18,7 +18,7 @@ class JournalApp extends StatelessWidget {
     var onBoardingDone = stateContainer.appState.onBoardingCompleted;
     var markOnBoardingCompleted = () {
       stateContainer.completeOnBoarding();
-      analytics.logEvent(name: "on_boarding_complete");
+      analytics.logEvent(name: "onboarding_complete");
     };
     var home = onBoardingDone
         ? new HomeScreen()

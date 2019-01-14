@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:path/path.dart' as p;
 
+import 'package:journal/analytics.dart';
 import 'package:journal/state_container.dart';
 import 'package:journal/storage/git.dart';
 
@@ -76,6 +77,30 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         }
       },
       itemCount: pageCount,
+      onPageChanged: (int pageNum) {
+        print("PageView onPageChanged: " + pageNum.toString());
+        String pageName = "";
+        switch (pageNum) {
+          case 0:
+            pageName = "OnBoardingGitUrl";
+            break;
+
+          case 1:
+            pageName = "OnBoardingSshKey";
+            break;
+
+          case 2:
+            pageName = "OnBoardingGitClone";
+            break;
+        }
+        getAnalytics().logEvent(
+          name: "onboarding_page_changed",
+          parameters: <String, dynamic>{
+            'page_num': pageNum,
+            'page_name': pageName,
+          },
+        );
+      },
     );
 
     return new Scaffold(
