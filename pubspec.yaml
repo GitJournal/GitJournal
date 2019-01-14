@@ -9,6 +9,7 @@ dependencies:
   uuid: "^1.0.0"
   yaml: "^2.1.13"
   firebase_analytics: ^1.1.0
+  flutter_crashlytics: ^0.2.0
   shared_preferences: ^0.4.3
 
 dev_dependencies:
