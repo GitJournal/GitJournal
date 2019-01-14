@@ -55,6 +55,11 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
               pref.setString("sshCloneUrl", sshUrl);
               this._generateSshKey();
             });
+
+            getAnalytics().logEvent(
+              name: "onboarding_git_url_enterred",
+              parameters: <String, dynamic>{},
+            );
           });
         }
         if (pos == 1) {
@@ -65,6 +70,11 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                 duration: Duration(milliseconds: 200),
                 curve: Curves.easeIn,
               );
+
+              getAnalytics().logEvent(
+                name: "onboarding_public_key_copied",
+                parameters: <String, dynamic>{},
+              );
             },
             publicKey: publicKey,
           );
@@ -72,7 +82,13 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
 
         if (pos == 2) {
           return OnBoardingGitClone(
-            doneFunction: this.widget.onBoardingCompletedFunction,
+            doneFunction: () {
+              getAnalytics().logEvent(
+                name: "onboarding_complete",
+                parameters: <String, dynamic>{},
+              );
+              this.widget.onBoardingCompletedFunction();
+            },
           );
         }
       },
@@ -308,6 +324,12 @@ class OnBoardingGitCloneState extends State<OnBoardingGitClone> {
     String error = await gitClone(sshCloneUrl, "journal");
     if (error != null && error.isNotEmpty) {
       setState(() {
+        getAnalytics().logEvent(
+          name: "onboarding_gitClone_error",
+          parameters: <String, dynamic>{
+            'error': error,
+          },
+        );
         errorMessage = error;
       });
     } else {
