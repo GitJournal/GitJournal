@@ -16,9 +16,13 @@ class JournalApp extends StatelessWidget {
     final stateContainer = StateContainer.of(context);
 
     var onBoardingDone = stateContainer.appState.onBoardingCompleted;
+    var markOnBoardingCompleted = () {
+      stateContainer.completeOnBoarding();
+      analytics.logEvent(name: "on_boarding_complete");
+    };
     var home = onBoardingDone
         ? new HomeScreen()
-        : new OnBoardingScreen(stateContainer.completeOnBoarding);
+        : new OnBoardingScreen(markOnBoardingCompleted);
 
     return new MaterialApp(
       title: 'GitJournal',
