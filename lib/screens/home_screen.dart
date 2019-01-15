@@ -17,22 +17,29 @@ class HomeScreen extends StatelessWidget {
       child: new Icon(Icons.add),
     );
 
+    var journalList = JournalList(
+      notes: appState.notes,
+      noteSelectedFunction: (noteIndex) {
+        var route = new MaterialPageRoute(
+          builder: (context) => new NoteBrowsingScreen(
+                notes: appState.notes,
+                noteIndex: noteIndex,
+              ),
+        );
+        Navigator.of(context).push(route);
+      },
+    );
+
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('GitJournal'),
       ),
       floatingActionButton: createButton,
-      body: new JournalList(
-        notes: appState.notes,
-        noteSelectedFunction: (noteIndex) {
-          var route = new MaterialPageRoute(
-            builder: (context) => new NoteBrowsingScreen(
-                  notes: appState.notes,
-                  noteIndex: noteIndex,
-                ),
-          );
-          Navigator.of(context).push(route);
-        },
+      body: Center(
+        child: RefreshIndicator(
+          child: journalList,
+          onRefresh: container.syncNotes,
+        ),
       ),
       drawer: new AppDrawer(),
     );

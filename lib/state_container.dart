@@ -96,6 +96,33 @@ class StateContainerState extends State<StateContainer> {
     });
   }
 
+  Future syncNotes() async {
+    try {
+      await noteRepo.sync();
+    } catch (err, stack) {
+      print("Notes Repo Sync Error: " + err.toString());
+      print(stack.toString());
+      return true;
+    }
+
+    try {
+      appState.isLoadingFromDisk = true;
+      var loadedNotes = await noteRepo.listNotes();
+      setState(() {
+        appState.isLoadingFromDisk = false;
+        appState.notes = loadedNotes;
+      });
+    } catch (err, stack) {
+      setState(() {
+        print("Load Notes From Disk Error: " + err.toString());
+        print(stack.toString());
+        appState.isLoadingFromDisk = false;
+      });
+    }
+
+    return true;
+  }
+
   void _syncNotes() {
     print("Starting to syncNOtes");
     this.noteRepo.sync().then((loaded) {
