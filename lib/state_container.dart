@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
-import 'package:uuid/uuid.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:journal/appstate.dart';
@@ -148,9 +147,8 @@ class StateContainerState extends State<StateContainer> {
 
   void insertNote(int index, Note note) {
     setState(() {
-      print("insertNote: " + note.toString());
       if (note.id == null || note.id.isEmpty) {
-        note.id = new Uuid().v4();
+        note.id = toIso8601WithTimezone(note.created);
       }
       appState.notes.insert(index, note);
       noteRepo.addNote(note).then((NoteRepoResult _) {

@@ -48,6 +48,14 @@ class MarkdownYAMLSerializer implements NoteSerializer {
 
     var metadata = note.toJson();
     metadata.remove('body');
+
+    // Do not save the 'id' if it is just the 'created' file like default
+    if (metadata.containsKey('id') && metadata.containsKey('created')) {
+      if (metadata['id'] == metadata['created']) {
+        metadata.remove('id');
+      }
+    }
+
     str += toYAML(metadata);
     str += serparator;
     str += '\n';
