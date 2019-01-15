@@ -67,12 +67,9 @@ class NoteEditorState extends State<NoteEditor> {
       padding: const EdgeInsets.all(8.0),
     );
 
-    var formatter = new DateFormat('dd MMM, yyyy');
-    var title = formatter.format(_createdAt);
-
     var newJournalScreen = new Scaffold(
       appBar: new AppBar(
-        title: new Text(title),
+        title: new Text("New Journal Entry"),
       ),
       body: bodyWidget,
       floatingActionButton: FloatingActionButton(
