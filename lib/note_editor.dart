@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 import 'package:journal/note.dart';
 import 'package:journal/state_container.dart';
+import 'package:journal/widgets/note_header.dart';
 
 class NoteEditor extends StatefulWidget {
   final Note note;
@@ -37,32 +38,30 @@ class NoteEditorState extends State<NoteEditor> {
 
   @override
   Widget build(BuildContext context) {
-    var bodyWidget = new Container(
-      child: new Form(
-        // Show a dialog if discarding non-empty notes
-        onWillPop: () {
-          return Future(() {
-            var noteContent = _textController.text.trim();
-            if (noteContent.isEmpty) {
-              return true;
-            }
-            return showDialog(
-              context: context,
-              builder: _buildAlertDialog,
-            );
-          });
-        },
-        child: TextFormField(
-          autofocus: true,
-          keyboardType: TextInputType.multiline,
-          maxLines: 5000,
-          decoration: new InputDecoration(
-            hintText: 'Write here',
-          ),
-          controller: _textController,
+    var bodyWidget = Form(
+      // Show a dialog if discarding non-empty notes
+      onWillPop: () {
+        return Future(() {
+          var noteContent = _textController.text.trim();
+          if (noteContent.isEmpty) {
+            return true;
+          }
+          return showDialog(
+            context: context,
+            builder: _buildAlertDialog,
+          );
+        });
+      },
+      child: TextFormField(
+        autofocus: true,
+        keyboardType: TextInputType.multiline,
+        maxLines: null,
+        decoration: new InputDecoration(
+          hintText: 'Write here',
+          border: InputBorder.none,
         ),
+        controller: _textController,
       ),
-      padding: const EdgeInsets.all(8.0),
     );
 
     var title = newNote ? "New Journal Entry" : "Edit Journal Entry";
@@ -70,7 +69,17 @@ class NoteEditorState extends State<NoteEditor> {
       appBar: new AppBar(
         title: new Text(title),
       ),
-      body: bodyWidget,
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              NoteHeader(note),
+              bodyWidget,
+            ],
+          ),
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.check),
           onPressed: () {

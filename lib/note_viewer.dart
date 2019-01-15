@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import 'package:journal/widgets/swipe_detector.dart';
+import 'package:journal/widgets/note_header.dart';
 
 import 'note_editor.dart';
 import 'note.dart';
@@ -79,9 +79,9 @@ class NoteViewer extends StatelessWidget {
     var view = new SingleChildScrollView(
       child: new Column(
         children: <Widget>[
-          _buildHeader(context),
-          new Text(note.body, style: _biggerFont),
-          _buildFooter(context),
+          NoteHeader(note),
+          Text(note.body, style: _biggerFont),
+          // _buildFooter(context),
         ],
         crossAxisAlignment: CrossAxisAlignment.start,
       ),
@@ -92,47 +92,6 @@ class NoteViewer extends StatelessWidget {
       child: view,
       onLeftSwipe: showNextNoteFunc,
       onRightSwipe: showPrevNoteFunc,
-    );
-  }
-
-  Widget _buildHeader(BuildContext context) {
-    var dateStr = DateFormat('MMM, yyyy').format(note.created);
-    var timeStr = DateFormat('EEEE H:m').format(note.created);
-
-    var bigNum = new Text(
-      note.created.day.toString(),
-      style: TextStyle(fontSize: 40.0),
-    );
-
-    var dateText = new Text(
-      dateStr,
-      style: TextStyle(fontSize: 18.0),
-    );
-
-    var timeText = new Text(
-      timeStr,
-      style: TextStyle(fontSize: 18.0),
-    );
-
-    var w = new Row(
-      children: <Widget>[
-        bigNum,
-        new Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: new Column(
-            children: <Widget>[
-              dateText,
-              timeText,
-            ],
-            crossAxisAlignment: CrossAxisAlignment.start,
-          ),
-        ),
-      ],
-    );
-
-    return new Padding(
-      padding: new EdgeInsets.only(top: 6.0, bottom: 6.0 * 3),
-      child: w,
     );
   }
 
