@@ -9,12 +9,15 @@ class Note implements Comparable {
   DateTime created;
   String body;
 
-  Note({this.created, this.body, this.id});
+  Map<String, dynamic> extraProperties = new Map<String, dynamic>();
+
+  Note({this.created, this.body, this.id, this.extraProperties});
 
   factory Note.fromJson(Map<String, dynamic> json) {
     String id;
     if (json.containsKey("id")) {
       id = json["id"].toString();
+      json.remove("id");
     }
 
     DateTime created;
@@ -36,8 +39,11 @@ class Note implements Comparable {
 
       // FIXME: Get created from file system or from git!
       if (created == null) {
+        // FIXME: make this 0
         created = DateTime.now();
       }
+
+      json.remove("created");
     }
 
     if (id == null && created != null) {
@@ -47,25 +53,29 @@ class Note implements Comparable {
     String body = "";
     if (json.containsKey("body")) {
       body = json['body'];
+      json.remove("body");
     }
 
     return new Note(
       id: id,
       created: created,
       body: body,
+      extraProperties: json,
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      "created": toIso8601WithTimezone(created),
-      "body": body,
-      "id": id,
-    };
+    var json = Map<String, dynamic>.from(extraProperties);
+    json['created'] = toIso8601WithTimezone(created);
+    json['body'] = body;
+    json['id'] = id;
+
+    return json;
   }
 
   @override
-  int get hashCode => id.hashCode ^ created.hashCode ^ body.hashCode;
+  int get hashCode =>
+      id.hashCode ^ created.hashCode ^ body.hashCode ^ extraProperties.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -74,11 +84,12 @@ class Note implements Comparable {
           runtimeType == other.runtimeType &&
           id == other.id &&
           body == other.body &&
-          created == other.created;
+          created == other.created &&
+          extraProperties == other.extraProperties;
 
   @override
   String toString() {
-    return 'Note{id: $id, body: $body, created: $created}';
+    return 'Note{id: $id, body: $body, created: $created, extraProperties: $extraProperties}';
   }
 
   @override
