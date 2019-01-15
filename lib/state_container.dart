@@ -12,6 +12,7 @@ import 'package:journal/note.dart';
 import 'package:journal/storage/notes_repository.dart';
 import 'package:journal/storage/git_storage.dart';
 import 'package:journal/storage/git.dart';
+import 'package:journal/datetime_utils.dart';
 
 Future<Directory> getNotesDir() async {
   var appDir = await getGitBaseDirectory();
@@ -49,7 +50,7 @@ class StateContainerState extends State<StateContainer> {
     getDirectory: getNotesDir,
     dirName: "journal",
     gitCloneUrl: "root@bcn.vhanda.in:git/test",
-    fileNameGenerator: (Note n) => n.created.toIso8601String(),
+    fileNameGenerator: (Note n) => toIso8601WithTimezone(n.created),
   );
 
   StateContainerState(bool onBoardingCompleted) {

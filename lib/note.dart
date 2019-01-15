@@ -1,3 +1,5 @@
+import 'package:journal/datetime_utils.dart';
+
 typedef NoteAdder(Note note);
 typedef NoteRemover(Note note);
 typedef NoteUpdator(Note note);
@@ -12,24 +14,51 @@ class Note implements Comparable {
   factory Note.fromJson(Map<String, dynamic> json) {
     String id;
     if (json.containsKey("id")) {
-      var val = json["id"];
-      if (val.runtimeType == String) {
-        id = val;
-      } else {
-        id = val.toString();
+      id = json["id"].toString();
+    }
+
+    DateTime created;
+    if (json.containsKey("created")) {
+      var createdStr = json['created'].toString();
+      try {
+        created = DateTime.parse(json['created']);
+      } catch (ex) {}
+
+      if (created == null) {
+        var regex = new RegExp(
+            r"(\d{4})-(\d{2})-(\d{2})T(\d{2})\:(\d{2})\:(\d{2})\+(\d{2})\:(\d{2})");
+        if (regex.hasMatch(createdStr)) {
+          // FIXME: Handle the timezone!
+          createdStr = createdStr.substring(0, 19);
+          created = DateTime.parse(json['created']);
+        }
       }
+
+      // FIXME: Get created from file system or from git!
+      if (created == null) {
+        created = DateTime.now();
+      }
+    }
+
+    if (id == null && created != null) {
+      id = toIso8601WithTimezone(created);
+    }
+
+    String body = "";
+    if (json.containsKey("body")) {
+      body = json['body'];
     }
 
     return new Note(
       id: id,
-      created: DateTime.parse(json['created']),
-      body: json['body'],
+      created: created,
+      body: body,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "created": created.toIso8601String(),
+      "created": toIso8601WithTimezone(created),
       "body": body,
       "id": id,
     };
