@@ -49,6 +49,7 @@ class StateContainerState extends State<StateContainer> {
     getDirectory: getNotesDir,
     dirName: "journal",
     gitCloneUrl: "root@bcn.vhanda.in:git/test",
+    fileNameGenerator: (Note n) => n.created.toIso8601String(),
   );
 
   StateContainerState(bool onBoardingCompleted) {

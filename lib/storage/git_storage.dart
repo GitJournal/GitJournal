@@ -24,9 +24,10 @@ class GitNoteRepository implements NoteRepository {
     @required this.gitCloneUrl,
     @required this.dirName,
     @required this.getDirectory,
+    @required fileNameGenerator,
   }) : _fileStorage = FileStorage(
           noteSerializer: new MarkdownYAMLSerializer(),
-          fileNameGenerator: (Note note) => note.id,
+          fileNameGenerator: fileNameGenerator,
           getDirectory: getDirectory,
         ) {
     // FIXME: This isn't correct. The gitUrl might not be cloned at this point!
