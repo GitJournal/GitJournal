@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'package:journal/widgets/swipe_detector.dart';
 
+import 'note_editor.dart';
 import 'note.dart';
 
 class NoteBrowsingScreen extends StatefulWidget {
@@ -46,6 +48,15 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
         title: new Text('TIMELINE'),
       ),
       body: viewer,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.edit),
+        onPressed: () {
+          var note = widget.notes[noteIndex];
+          var route = new MaterialPageRoute(
+              builder: (context) => new NoteEditor.fromNote(note));
+          Navigator.of(context).push(route);
+        },
+      ),
     );
   }
 }

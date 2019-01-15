@@ -34,6 +34,10 @@ class GitNoteRepository implements NoteRepository {
 
   @override
   Future<NoteRepoResult> addNote(Note note) async {
+    return _addNote(note, "Added Journal Entry");
+  }
+
+  Future<NoteRepoResult> _addNote(Note note, String commitMessage) async {
     print("Calling gitStorage addNote");
     var result = await _fileStorage.addNote(note);
     if (result.error) {
@@ -48,7 +52,7 @@ class GitNoteRepository implements NoteRepository {
       gitFolder: this.dirName,
       authorEmail: "app@gitjournal.io",
       authorName: "GitJournal",
-      message: "Added Journal entry",
+      message: commitMessage,
     );
 
     return result;
@@ -77,7 +81,7 @@ class GitNoteRepository implements NoteRepository {
 
   @override
   Future<NoteRepoResult> updateNote(Note note) async {
-    return this.addNote(note);
+    return _addNote(note, "Edited Journal Entry");
   }
 
   @override

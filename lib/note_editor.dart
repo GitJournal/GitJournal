@@ -6,86 +6,102 @@ import 'package:journal/note.dart';
 import 'package:journal/state_container.dart';
 
 class NoteEditor extends StatefulWidget {
+  final Note note;
+
+  NoteEditor() : note = null;
+  NoteEditor.fromNote(this.note);
+
   @override
   NoteEditorState createState() {
-    return new NoteEditorState();
+    if (note == null) {
+      return new NoteEditorState();
+    } else {
+      return new NoteEditorState.fromNote(note);
+    }
   }
 }
 
 class NoteEditorState extends State<NoteEditor> {
-  static final GlobalKey<FormFieldState<String>> noteTextKey =
-      GlobalKey<FormFieldState<String>>();
+  Note note = new Note();
+  final bool newNote;
+  TextEditingController _textController = new TextEditingController();
 
-  final DateTime _createdAt;
+  NoteEditorState() : newNote = true {
+    note.created = new DateTime.now();
+  }
 
-  NoteEditorState() : _createdAt = new DateTime.now();
+  NoteEditorState.fromNote(Note n) : newNote = false {
+    note = n;
+    _textController = new TextEditingController(text: note.body);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final container = StateContainer.of(context);
-
     var bodyWidget = new Container(
       child: new Form(
         // Show a dialog if discarding non-empty notes
         onWillPop: () {
           return Future(() {
-            var noteContent = noteTextKey.currentState.value.trim();
+            var noteContent = _textController.text.trim();
             if (noteContent.isEmpty) {
               return true;
             }
             return showDialog(
               context: context,
-              builder: (BuildContext context) {
-                return new AlertDialog(
-                  title: new Text('Are you sure?'),
-                  content: new Text('Do you want to discard the entry'),
-                  actions: <Widget>[
-                    new FlatButton(
-                      onPressed: () => Navigator.of(context).pop(false),
-                      child: new Text('No'),
-                    ),
-                    new FlatButton(
-                      onPressed: () => Navigator.of(context).pop(true),
-                      child: new Text('Yes'),
-                    ),
-                  ],
-                );
-              },
+              builder: _buildAlertDialog,
             );
           });
         },
         child: TextFormField(
-          key: noteTextKey,
           autofocus: true,
           keyboardType: TextInputType.multiline,
           maxLines: 5000,
           decoration: new InputDecoration(
             hintText: 'Write here',
           ),
+          controller: _textController,
         ),
       ),
       padding: const EdgeInsets.all(8.0),
     );
 
+    var title = newNote ? "New Journal Entry" : "Edit Journal Entry";
     var newJournalScreen = new Scaffold(
       appBar: new AppBar(
-        title: new Text("New Journal Entry"),
+        title: new Text(title),
       ),
       body: bodyWidget,
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.check),
           onPressed: () {
-            var noteContent = noteTextKey.currentState.value;
-            var note = new Note(
-              created: _createdAt,
-              body: noteContent,
-            );
-            container.addNote(note);
+            final stateContainer = StateContainer.of(context);
+            this.note.body = _textController.text;
 
+            newNote
+                ? stateContainer.addNote(note)
+                : stateContainer.updateNote(note);
             Navigator.pop(context);
           }),
     );
 
     return newJournalScreen;
+  }
+
+  Widget _buildAlertDialog(BuildContext context) {
+    return new AlertDialog(
+      // FIXME: Change this to 'Save' vs 'Discard'
+      title: new Text('Are you sure?'),
+      content: new Text('Do you want to discard the entry'),
+      actions: <Widget>[
+        new FlatButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: new Text('No'),
+        ),
+        new FlatButton(
+          onPressed: () => Navigator.of(context).pop(true),
+          child: new Text('Yes'),
+        ),
+      ],
+    );
   }
 }
