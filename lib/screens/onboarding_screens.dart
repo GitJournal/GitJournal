@@ -22,6 +22,10 @@ class OnBoardingScreen extends StatefulWidget {
 }
 
 class OnBoardingScreenState extends State<OnBoardingScreen> {
+  var _createNewRepo = false;
+
+  var _pageInitalScreenDone = false;
+  var _pageCreateNewRepoDone = false;
   var _pageInputUrlDone = false;
   var _pageSshKeyDone = false;
 
@@ -33,6 +37,12 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     var pageCount = 1;
+    if (_pageInitalScreenDone) {
+      pageCount++;
+    }
+    if (_pageCreateNewRepoDone) {
+      pageCount++;
+    }
     if (_pageInputUrlDone) {
       pageCount++;
     }
@@ -43,6 +53,37 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     var pageView = PageView.builder(
       controller: pageController,
       itemBuilder: (BuildContext context, int pos) {
+        if (pos == 0) {
+          return OnBoardingInitialChoice(
+            onCreateNewRepo: () {
+              setState(() {
+                _createNewRepo = true;
+                _pageInitalScreenDone = true;
+
+                pageController.nextPage(
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.easeIn,
+                );
+              });
+            },
+            onExistingRepo: () {
+              setState(() {
+                _createNewRepo = false;
+                _pageInitalScreenDone = true;
+
+                pageController.nextPage(
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.easeIn,
+                );
+              });
+            },
+          );
+        }
+
+        if (pos == 1 && _createNewRepo) {
+          return OnBoardingCreateRepo();
+        }
+
         if (pos == 0) {
           return OnBoardingGitUrl(doneFunction: (String sshUrl) {
             setPageInputUrlDone();
@@ -124,8 +165,9 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       body: new Container(
         width: double.infinity,
         height: double.infinity,
-        color: Theme.of(context).primaryColor,
+        //color: Theme.of(context).primaryColor,
         child: pageView,
+        padding: EdgeInsets.all(16.0),
       ),
     );
   }
@@ -156,6 +198,128 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
             .showSnackBar(new SnackBar(content: new Text(text)));
       });
     });
+  }
+}
+
+class OnBoardingInitialChoice extends StatelessWidget {
+  final Function onCreateNewRepo;
+  final Function onExistingRepo;
+
+  OnBoardingInitialChoice({
+    @required this.onCreateNewRepo,
+    @required this.onExistingRepo,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var header = Row(
+      children: <Widget>[
+        Image.asset(
+          'assets/icon/icon.png',
+          height: 200,
+          fit: BoxFit.fill,
+        ),
+        Text(
+          "GitJournal",
+          style: Theme.of(context).textTheme.display3,
+        ),
+      ],
+    );
+
+    return Container(
+      child: Column(
+        children: <Widget>[
+          header,
+          SizedBox(height: 64.0),
+          Text(
+            "We need a Git Repo to store the data -",
+            style: Theme.of(context).textTheme.headline,
+          ),
+          SizedBox(height: 8.0),
+          SizedBox(
+            width: double.infinity,
+            child: RaisedButton(
+              child: Text(
+                "Create a Rew Repo",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.button,
+              ),
+              color: Theme.of(context).primaryColor,
+              onPressed: onCreateNewRepo,
+            ),
+          ),
+          SizedBox(height: 8.0),
+          SizedBox(
+            width: double.infinity,
+            child: RaisedButton(
+              child: Text(
+                "I already have one",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.button,
+              ),
+              color: Theme.of(context).primaryColor,
+              onPressed: onExistingRepo,
+            ),
+          ),
+        ],
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+    );
+  }
+}
+
+class OnBoardingCreateRepo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Text(
+            "Select a provider -",
+            style: Theme.of(context).textTheme.headline,
+          ),
+          SizedBox(height: 16.0),
+          SizedBox(
+            width: double.infinity,
+            child: RaisedButton.icon(
+              label: Text(
+                "GitHub",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.button,
+              ),
+              icon: Image.asset(
+                'assets/icon/github-icon.png',
+                width: 32,
+                height: 32,
+              ),
+              color: Theme.of(context).primaryColor,
+              onPressed: () {},
+            ),
+          ),
+          SizedBox(height: 8.0),
+          SizedBox(
+            width: double.infinity,
+            child: RaisedButton.icon(
+              label: Text(
+                "GitLab",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.button,
+              ),
+              icon: Image.asset(
+                'assets/icon/gitlab-icon.png',
+                width: 32,
+                height: 32,
+              ),
+              color: Theme.of(context).primaryColor,
+              onPressed: () {},
+            ),
+          ),
+        ],
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+    );
   }
 }
 
