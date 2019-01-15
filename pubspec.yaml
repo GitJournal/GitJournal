@@ -12,6 +12,7 @@ dependencies:
   firebase_analytics: ^1.1.0
   flutter_crashlytics: ^0.2.0
   shared_preferences: ^0.4.3
+  url_launcher: ^4.0.3
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.0"

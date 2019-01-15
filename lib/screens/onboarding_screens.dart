@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:path/path.dart' as p;
 
@@ -81,10 +82,22 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         }
 
         if (pos == 1 && _createNewRepo) {
-          return OnBoardingCreateRepo();
+          return OnBoardingCreateRepo(
+            onDone: () {
+              setState(() {
+                _createNewRepo = true;
+                _pageCreateNewRepoDone = true;
+
+                pageController.nextPage(
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.easeIn,
+                );
+              });
+            },
+          );
         }
 
-        if (pos == 0) {
+        if ((pos == 2 && _createNewRepo) || pos == 1) {
           return OnBoardingGitUrl(doneFunction: (String sshUrl) {
             setPageInputUrlDone();
             pageController.nextPage(
@@ -103,7 +116,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
             );
           });
         }
-        if (pos == 1) {
+        if ((pos == 3 && _createNewRepo) || pos == 2) {
           return OnBoardingSshKey(
             doneFunction: () {
               setPageSshKeyDone();
@@ -121,7 +134,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
           );
         }
 
-        if (pos == 2) {
+        if ((pos == 4 && _createNewRepo) || pos == 3) {
           return OnBoardingGitClone(
             doneFunction: () {
               getAnalytics().logEvent(
@@ -270,6 +283,10 @@ class OnBoardingInitialChoice extends StatelessWidget {
 }
 
 class OnBoardingCreateRepo extends StatelessWidget {
+  final Function onDone;
+
+  OnBoardingCreateRepo({@required this.onDone});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -294,7 +311,16 @@ class OnBoardingCreateRepo extends StatelessWidget {
                 height: 32,
               ),
               color: Theme.of(context).primaryColor,
-              onPressed: () {},
+              onPressed: () async {
+                try {
+                  await launch("https://github.com/new");
+                } catch (err, stack) {
+                  // FIXME: Error handling?
+                  print(err);
+                  print(stack);
+                }
+                onDone();
+              },
             ),
           ),
           SizedBox(height: 8.0),
@@ -312,7 +338,16 @@ class OnBoardingCreateRepo extends StatelessWidget {
                 height: 32,
               ),
               color: Theme.of(context).primaryColor,
-              onPressed: () {},
+              onPressed: () async {
+                try {
+                  await launch("https://gitlab.com/projects/new");
+                } catch (err, stack) {
+                  // FIXME: Error handling?
+                  print(err);
+                  print(stack);
+                }
+                onDone();
+              },
             ),
           ),
         ],
