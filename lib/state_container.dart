@@ -50,7 +50,7 @@ class StateContainerState extends State<StateContainer> {
     getDirectory: getNotesDir,
     dirName: "journal",
     gitCloneUrl: "root@bcn.vhanda.in:git/test",
-    fileNameGenerator: (Note n) => toIso8601WithTimezone(n.created),
+    fileNameGenerator: (Note n) => toIso8601WithTimezone(n.created) + '.md',
   );
 
   StateContainerState(bool onBoardingCompleted) {

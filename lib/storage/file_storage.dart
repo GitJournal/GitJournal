@@ -32,6 +32,10 @@ class FileStorage implements NoteRepository {
       if (note == null) {
         continue;
       }
+      if (!fileEntity.path.endsWith('.md') &&
+          !fileEntity.path.endsWith('.MD')) {
+        continue;
+      }
       if (note.id == null) {
         String filename = p.basename(fileEntity.path);
         note.id = filename;
