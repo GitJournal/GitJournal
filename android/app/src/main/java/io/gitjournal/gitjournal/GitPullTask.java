@@ -9,6 +9,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.PullCommand;
 import org.eclipse.jgit.api.TransportConfigCallback;
 import org.eclipse.jgit.api.errors.TransportException;
+import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.transport.Transport;
 import org.eclipse.jgit.transport.SshTransport;
 
@@ -34,7 +35,7 @@ public class GitPullTask extends AsyncTask<String, Void, Void> {
         try {
             Git git = Git.open(cloneDir);
 
-            PullCommand pullCommand = git.pull();
+            PullCommand pullCommand = git.pull().setStrategy(MergeStrategy.THEIRS);
             pullCommand.setTransportConfigCallback(new TransportConfigCallback() {
                 @Override
                 public void configure(Transport transport) {
