@@ -20,31 +20,29 @@ class JournalList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final container = StateContainer.of(context);
-
     return new ListView.builder(
       padding: const EdgeInsets.all(8.0),
       itemBuilder: (context, i) {
         if (i >= notes.length) {
           return null;
         }
-        //if (i.isOdd) return new Divider();
 
         var note = notes[i];
         return new Dismissible(
           key: new Key(note.id),
           child: _buildRow(context, note, i),
-          background: new Container(color: Colors.red),
+          background: new Container(color: Theme.of(context).accentColor),
           onDismissed: (direction) {
-            container.removeNote(note);
+            final stateContainer = StateContainer.of(context);
+            stateContainer.removeNote(note);
 
             Scaffold.of(context).showSnackBar(new SnackBar(
-                  content: new Text("Note deleted"),
-                  action: new SnackBarAction(
-                    label: 'Undo',
-                    onPressed: () => container.insertNote(i, note),
-                  ),
-                ));
+              content: new Text("Note deleted"),
+              action: new SnackBarAction(
+                label: 'Undo',
+                onPressed: () => stateContainer.insertNote(i, note),
+              ),
+            ));
           },
         );
       },
