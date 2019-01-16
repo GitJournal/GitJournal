@@ -225,6 +225,8 @@ class OnBoardingInitialChoice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var headerTextStyle =
+        Theme.of(context).textTheme.display3.copyWith(fontFamily: "Lato");
     var header = Row(
       children: <Widget>[
         Image.asset(
@@ -234,7 +236,7 @@ class OnBoardingInitialChoice extends StatelessWidget {
         ),
         Text(
           "GitJournal",
-          style: Theme.of(context).textTheme.display3,
+          style: headerTextStyle,
         ),
       ],
     );

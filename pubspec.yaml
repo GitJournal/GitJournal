@@ -26,6 +26,10 @@ flutter:
     - "assets/icon/icon.png"
     - "assets/icon/github-icon.png"
     - "assets/icon/gitlab-icon.png"
+  fonts:
+    - family: Lato
+      fonts:
+        - asset: fonts/Lato-Regular.ttf
 
 flutter_icons:
   android: "launcher_icon"
