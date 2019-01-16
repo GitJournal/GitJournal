@@ -96,13 +96,7 @@ class StateContainerState extends State<StateContainer> {
   }
 
   Future syncNotes() async {
-    try {
-      await noteRepo.sync();
-    } catch (err, stack) {
-      print("Notes Repo Sync Error: " + err.toString());
-      print(stack.toString());
-      return true;
-    }
+    await noteRepo.sync();
 
     try {
       appState.isLoadingFromDisk = true;

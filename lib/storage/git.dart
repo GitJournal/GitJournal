@@ -52,6 +52,11 @@ Future<String> generateSSHKeys({comment: ""}) async {
   return "";
 }
 
+class GitException implements Exception {
+  final String cause;
+  GitException(this.cause);
+}
+
 Future gitPull(String folderName) async {
   print("Going to git pull");
   try {
@@ -61,6 +66,10 @@ Future gitPull(String folderName) async {
     print("Done");
   } on PlatformException catch (e) {
     print("gitPull Failed: '${e.message}'.");
+    if (e.message.contains("ENETUNREACH")) {
+      throw GitException("No Connection");
+    }
+    throw GitException(e.message);
   }
 }
 
@@ -99,6 +108,7 @@ Future gitPush(String folderName) async {
     print("Done");
   } on PlatformException catch (e) {
     print("gitPush Failed: '${e.message}'.");
+    throw GitException(e.message);
   }
 }
 

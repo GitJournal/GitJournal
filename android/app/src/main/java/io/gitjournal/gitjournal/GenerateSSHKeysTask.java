@@ -49,11 +49,11 @@ public class GenerateSSHKeysTask extends AsyncTask<String, Void, Void> {
             kpair.dispose();
         } catch (JSchException ex) {
             Log.d("GenerateSSHKeys", ex.toString());
-            result.error("FAILED", ex.toString(), null);
+            result.error("FAILED", ex.getMessage(), null);
             return null;
         } catch (IOException ex) {
             Log.d("GenerateSSHKeys", ex.toString());
-            result.error("FAILED", ex.toString(), null);
+            result.error("FAILED", ex.getMessage(), null);
             return null;
         }
 

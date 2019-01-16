@@ -6,7 +6,11 @@ import 'package:journal/widgets/journal_list.dart';
 import 'package:journal/note_editor.dart';
 import 'package:journal/note_viewer.dart';
 
+import 'package:journal/storage/git.dart';
+
 class HomeScreen extends StatelessWidget {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     final container = StateContainer.of(context);
@@ -31,15 +35,22 @@ class HomeScreen extends StatelessWidget {
     );
 
     return new Scaffold(
+      key: _scaffoldKey,
       appBar: new AppBar(
         title: new Text('GitJournal'),
       ),
       floatingActionButton: createButton,
       body: Center(
         child: RefreshIndicator(
-          child: journalList,
-          onRefresh: container.syncNotes,
-        ),
+            child: journalList,
+            onRefresh: () async {
+              try {
+                await container.syncNotes();
+              } on GitException catch (exp) {
+                _scaffoldKey.currentState
+                    .showSnackBar(new SnackBar(content: new Text(exp.cause)));
+              }
+            }),
       ),
       drawer: new AppDrawer(),
     );
