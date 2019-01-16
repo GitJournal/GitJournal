@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:path/path.dart' as p;
@@ -32,6 +33,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   var _pageSshKeyDone = false;
 
   var _gitCloneUrl = "";
+  String gitCloneErrorMessage = "";
 
   var pageController = PageController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -108,13 +110,10 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
               curve: Curves.easeIn,
             );
 
-            SharedPreferences.getInstance().then((SharedPreferences pref) {
-              // We aren't calling setState as this isn't being used for rendering
-              _gitCloneUrl = sshUrl;
+            // We aren't calling setState as this isn't being used for rendering
+            _gitCloneUrl = sshUrl;
 
-              pref.setString("sshCloneUrl", sshUrl);
-              this._generateSshKey();
-            });
+            this._generateSshKey();
 
             getAnalytics().logEvent(
               name: "onboarding_git_url_enterred",
@@ -131,6 +130,8 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                 curve: Curves.easeIn,
               );
 
+              _startGitClone();
+
               getAnalytics().logEvent(
                 name: "onboarding_public_key_copied",
                 parameters: <String, dynamic>{},
@@ -141,15 +142,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         }
 
         if ((pos == 4 && _createNewRepo) || pos == 3) {
-          return OnBoardingGitClone(
-            doneFunction: () {
-              getAnalytics().logEvent(
-                name: "onboarding_complete",
-                parameters: <String, dynamic>{},
-              );
-              this.widget.onBoardingCompletedFunction();
-            },
-          );
+          return OnBoardingGitClone(errorMessage: gitCloneErrorMessage);
         }
       },
       itemCount: pageCount,
@@ -241,6 +234,40 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     } catch (err, stack) {
       print('_launchDeployKeyPage: ' + err.toString());
       print(stack.toString());
+    }
+  }
+
+  void _startGitClone() async {
+    // Just in case it was half cloned because of an error
+    await _removeExistingClone();
+
+    String error = await gitClone(_gitCloneUrl, "journal");
+    if (error != null && error.isNotEmpty) {
+      setState(() {
+        getAnalytics().logEvent(
+          name: "onboarding_gitClone_error",
+          parameters: <String, dynamic>{
+            'error': error,
+          },
+        );
+        gitCloneErrorMessage = error;
+      });
+    } else {
+      getAnalytics().logEvent(
+        name: "onboarding_complete",
+        parameters: <String, dynamic>{},
+      );
+      this.widget.onBoardingCompletedFunction();
+    }
+  }
+
+  Future _removeExistingClone() async {
+    var baseDir = await getNotesDir();
+    var dotGitDir = new Directory(p.join(baseDir.path, ".git"));
+    bool exists = await dotGitDir.exists();
+    if (exists) {
+      await baseDir.delete(recursive: true);
+      await baseDir.create();
     }
   }
 }
