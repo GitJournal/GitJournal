@@ -47,8 +47,12 @@ public class MainActivity extends FlutterActivity {
                             String cloneUrl = call.argument("cloneUrl");
                             String folderName = call.argument("folderName");
 
-                            if (cloneUrl.isEmpty() || folderName.isEmpty()) {
-                                result.error("Invalid Parameters", "Arguments Invalid", null);
+                            if (cloneUrl == null || cloneUrl.isEmpty()) {
+                                result.error("Invalid Parameters", "cloneUrl Invalid", null);
+                                return;
+                            }
+                            if (folderName == null || folderName.isEmpty()) {
+                                result.error("Invalid Parameters", "folderName Invalid", null);
                                 return;
                             }
 
@@ -59,8 +63,8 @@ public class MainActivity extends FlutterActivity {
                         } else if (call.method.equals("gitPull")) {
                             String folderName = call.argument("folderName");
 
-                            if (folderName.isEmpty()) {
-                                result.error("Invalid Parameters", "Arguments Invalid", null);
+                            if (folderName == null || folderName.isEmpty()) {
+                                result.error("Invalid Parameters", "folderName Invalid", null);
                                 return;
                             }
 
@@ -71,8 +75,8 @@ public class MainActivity extends FlutterActivity {
                         } else if (call.method.equals("gitPush")) {
                             String folderName = call.argument("folderName");
 
-                            if (folderName.isEmpty()) {
-                                result.error("Invalid Parameters", "Arguments Invalid", null);
+                            if (folderName == null || folderName.isEmpty()) {
+                                result.error("Invalid Parameters", "folderName Invalid", null);
                                 return;
                             }
 
@@ -84,8 +88,12 @@ public class MainActivity extends FlutterActivity {
                             String folderName = call.argument("folderName");
                             String filePattern = call.argument("filePattern");
 
-                            if (folderName.isEmpty() || filePattern.isEmpty()) {
-                                result.error("Invalid Parameters", "Arguments Invalid", null);
+                            if (folderName == null || folderName.isEmpty()) {
+                                result.error("Invalid Parameters", "folderName Invalid", null);
+                                return;
+                            }
+                            if (filePattern == null || filePattern.isEmpty()) {
+                                result.error("Invalid Parameters", "filePattern Invalid", null);
                                 return;
                             }
 
@@ -97,10 +105,15 @@ public class MainActivity extends FlutterActivity {
                             String folderName = call.argument("folderName");
                             String filePattern = call.argument("filePattern");
 
-                            if (folderName.isEmpty() || filePattern.isEmpty()) {
-                                result.error("Invalid Parameters", "Arguments Invalid", null);
+                            if (folderName == null || folderName.isEmpty()) {
+                                result.error("Invalid Parameters", "folderName Invalid", null);
                                 return;
                             }
+                            if (filePattern == null || filePattern.isEmpty()) {
+                                result.error("Invalid Parameters", "filePattern Invalid", null);
+                                return;
+                            }
+
 
                             String cloneLocation = filesDir + "/" + folderName;
 
@@ -112,8 +125,20 @@ public class MainActivity extends FlutterActivity {
                             String authorEmail = call.argument("authorEmail");
                             String message = call.argument("message");
 
-                            if (folderName.isEmpty() || authorName.isEmpty() || authorEmail.isEmpty() || message.isEmpty()) {
-                                result.error("Invalid Parameters", "Arguments Invalid", null);
+                            if (folderName == null || folderName.isEmpty()) {
+                                result.error("Invalid Parameters", "folderName Invalid", null);
+                                return;
+                            }
+                            if (authorName == null || authorName.isEmpty()) {
+                                result.error("Invalid Parameters", "authorName Invalid", null);
+                                return;
+                            }
+                            if (authorEmail == null || authorEmail.isEmpty()) {
+                                result.error("Invalid Parameters", "authorEmail Invalid", null);
+                                return;
+                            }
+                            if (message == null || message.isEmpty()) {
+                                result.error("Invalid Parameters", "message Invalid", null);
                                 return;
                             }
 
