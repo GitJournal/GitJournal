@@ -234,6 +234,7 @@ class OnBoardingInitialChoice extends StatelessWidget {
           height: 200,
           fit: BoxFit.fill,
         ),
+        SizedBox(width: 24.0),
         Text(
           "GitJournal",
           style: headerTextStyle,
