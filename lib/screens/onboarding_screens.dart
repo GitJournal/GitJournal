@@ -388,19 +388,19 @@ class OnBoardingSshKey extends StatelessWidget {
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
             'Deploy Public Key',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.display1,
+            style: Theme.of(context).textTheme.headline,
           ),
         ),
+        SizedBox(height: 16.0),
         Container(
           padding: const EdgeInsets.all(8.0),
-          color: Theme.of(context).primaryColorLight,
+          color: Theme.of(context).buttonColor,
           child: Text(
             publicKey,
             textAlign: TextAlign.left,
@@ -408,13 +408,11 @@ class OnBoardingSshKey extends StatelessWidget {
             style: Theme.of(context).textTheme.body1,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: RaisedButton(
-            child: Text("Start Clone"),
-            onPressed: this.doneFunction,
-          ),
-        )
+        SizedBox(height: 8.0),
+        OnBoardingButton(
+          text: "Clone Repo",
+          onPressed: this.doneFunction,
+        ),
       ],
     );
   }
@@ -486,6 +484,7 @@ class OnBoardingGitCloneState extends State<OnBoardingGitClone> {
             style: Theme.of(context).textTheme.display1,
           ),
         ),
+        SizedBox(height: 8.0),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: CircularProgressIndicator(
