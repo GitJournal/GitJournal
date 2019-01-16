@@ -16,11 +16,11 @@ class OnBoardingGitUrlState extends State<OnBoardingGitUrl> {
   final GlobalKey<FormFieldState<String>> sshUrlKey =
       GlobalKey<FormFieldState<String>>();
 
+  final _formKey = GlobalKey<FormState>();
+  final inputFormFocus = FocusNode();
+
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    final inputFormFocus = FocusNode();
-
     final formSubmitted = () {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
@@ -62,27 +62,30 @@ class OnBoardingGitUrlState extends State<OnBoardingGitUrl> {
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            'Enter the Git SSH URL',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.display1,
+            "Enter the Git SSH URL:",
+            style: Theme.of(context).textTheme.headline,
           ),
         ),
+        SizedBox(height: 16.0),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: new Container(
-            color: Theme.of(context).primaryColorLight,
-            child: inputForm,
-          ),
+          child: inputForm,
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
+        SizedBox(height: 8.0),
+        SizedBox(
+          width: double.infinity,
           child: RaisedButton(
-            child: Text("Next"),
+            child: Text(
+              "Next",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.button,
+            ),
+            color: Theme.of(context).primaryColor,
             onPressed: formSubmitted,
           ),
         )
