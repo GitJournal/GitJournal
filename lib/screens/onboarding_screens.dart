@@ -255,6 +255,8 @@ class OnBoardingInitialChoice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).requestFocus(new FocusNode());
+
     var headerTextStyle =
         Theme.of(context).textTheme.display3.copyWith(fontFamily: "Lato");
     var header = Row(
@@ -322,6 +324,8 @@ class OnBoardingCreateRepo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).requestFocus(new FocusNode());
+
     return Container(
       child: Column(
         children: <Widget>[
@@ -492,6 +496,8 @@ class OnBoardingSshKey extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).requestFocus(new FocusNode());
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
