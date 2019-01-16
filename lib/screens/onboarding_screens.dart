@@ -30,6 +30,8 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   var _pageInputUrlDone = false;
   var _pageSshKeyDone = false;
 
+  var _gitCloneUrl = "";
+
   var pageController = PageController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -106,6 +108,9 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
             );
 
             SharedPreferences.getInstance().then((SharedPreferences pref) {
+              // We aren't calling setState as this isn't being used for rendering
+              _gitCloneUrl = sshUrl;
+
               pref.setString("sshCloneUrl", sshUrl);
               this._generateSshKey();
             });
@@ -200,7 +205,6 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   void _generateSshKey() {
     generateSSHKeys(comment: "GitJournal").then((String _publicKey) {
       setState(() {
-        print("Changing the state");
         publicKey = _publicKey;
 
         Clipboard.setData(ClipboardData(text: publicKey));
@@ -209,8 +213,34 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
             ._scaffoldKey
             .currentState
             .showSnackBar(new SnackBar(content: new Text(text)));
+
+        _launchDeployKeyPage();
       });
     });
+  }
+
+  void _launchDeployKeyPage() async {
+    var lastIndex = _gitCloneUrl.lastIndexOf(".git");
+    if (lastIndex == -1) {
+      lastIndex = _gitCloneUrl.length;
+    }
+
+    var repoName =
+        _gitCloneUrl.substring(_gitCloneUrl.lastIndexOf(":"), lastIndex);
+
+    final gitHubUrl = 'https://github.com/' + repoName + '/settings/keys/new';
+    final gitLabUrl = 'https://gitlab.com/' + repoName + '/settings/repository';
+
+    try {
+      if (_gitCloneUrl.startsWith("git@github.com:")) {
+        await launch(gitHubUrl);
+      } else if (_gitCloneUrl.startsWith("git@gitlab.com:")) {
+        await launch(gitLabUrl);
+      }
+    } catch (err, stack) {
+      print('_launchDeployKeyPage: ' + err.toString());
+      print(stack.toString());
+    }
   }
 }
 
