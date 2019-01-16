@@ -336,58 +336,34 @@ class OnBoardingCreateRepo extends StatelessWidget {
             style: Theme.of(context).textTheme.headline,
           ),
           SizedBox(height: 16.0),
-          SizedBox(
-            width: double.infinity,
-            child: RaisedButton.icon(
-              label: Text(
-                "GitHub",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.button,
-              ),
-              icon: Image.asset(
-                'assets/icon/github-icon.png',
-                width: 32,
-                height: 32,
-              ),
-              color: Theme.of(context).primaryColor,
-              onPressed: () async {
-                try {
-                  await launch("https://github.com/new");
-                } catch (err, stack) {
-                  // FIXME: Error handling?
-                  print(err);
-                  print(stack);
-                }
-                onDone();
-              },
-            ),
+          OnBoardingButton(
+            text: "GitHub",
+            iconUrl: 'assets/icon/github-icon.png',
+            onPressed: () async {
+              try {
+                await launch("https://github.com/new");
+              } catch (err, stack) {
+                // FIXME: Error handling?
+                print(err);
+                print(stack);
+              }
+              onDone();
+            },
           ),
           SizedBox(height: 8.0),
-          SizedBox(
-            width: double.infinity,
-            child: RaisedButton.icon(
-              label: Text(
-                "GitLab",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.button,
-              ),
-              icon: Image.asset(
-                'assets/icon/gitlab-icon.png',
-                width: 32,
-                height: 32,
-              ),
-              color: Theme.of(context).primaryColor,
-              onPressed: () async {
-                try {
-                  await launch("https://gitlab.com/projects/new");
-                } catch (err, stack) {
-                  // FIXME: Error handling?
-                  print(err);
-                  print(stack);
-                }
-                onDone();
-              },
-            ),
+          OnBoardingButton(
+            text: "GitLab",
+            iconUrl: 'assets/icon/gitlab-icon.png',
+            onPressed: () async {
+              try {
+                await launch("https://gitlab.com/projects/new");
+              } catch (err, stack) {
+                // FIXME: Error handling?
+                print(err);
+                print(stack);
+              }
+              onDone();
+            },
           ),
         ],
         mainAxisAlignment: MainAxisAlignment.center,

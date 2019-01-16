@@ -77,19 +77,55 @@ class OnBoardingGitUrlState extends State<OnBoardingGitUrl> {
           child: inputForm,
         ),
         SizedBox(height: 8.0),
-        SizedBox(
-          width: double.infinity,
-          child: RaisedButton(
-            child: Text(
-              "Next",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.button,
-            ),
-            color: Theme.of(context).primaryColor,
-            onPressed: formSubmitted,
-          ),
-        )
+        OnBoardingButton(
+          text: "Next",
+          onPressed: formSubmitted,
+        ),
       ],
     );
+  }
+}
+
+class OnBoardingButton extends StatelessWidget {
+  final Function onPressed;
+  final String text;
+  final String iconUrl;
+
+  OnBoardingButton({
+    @required this.text,
+    @required this.onPressed,
+    this.iconUrl,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (iconUrl == null) {
+      return SizedBox(
+        width: double.infinity,
+        child: RaisedButton(
+          child: Text(
+            text,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.button,
+          ),
+          color: Theme.of(context).primaryColor,
+          onPressed: onPressed,
+        ),
+      );
+    } else {
+      return SizedBox(
+        width: double.infinity,
+        child: RaisedButton.icon(
+          label: Text(
+            text,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.button,
+          ),
+          icon: Image.asset(iconUrl, width: 32, height: 32),
+          color: Theme.of(context).primaryColor,
+          onPressed: onPressed,
+        ),
+      );
+    }
   }
 }
