@@ -21,9 +21,10 @@ class GitApp extends StatelessWidget {
 buildGitButtons() {
   return <Widget>[
     RaisedButton(
-      child: Text("Generate Keys"),
-      onPressed: generateSSHKeys,
-    ),
+        child: Text("Generate Keys"),
+        onPressed: () {
+          generateSSHKeys(comment: "Git Sample App");
+        }),
     RaisedButton(
       child: Text("Git Clone"),
       onPressed: () async {

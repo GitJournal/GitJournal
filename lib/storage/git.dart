@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 const _platform = const MethodChannel('gitjournal.io/git');
@@ -29,11 +30,11 @@ Future<String> gitClone(String cloneUrl, String folderName) async {
   return null;
 }
 
-Future<String> generateSSHKeys({comment: ""}) async {
-  print("generateSSHKeyss");
+Future<String> generateSSHKeys({@required String comment}) async {
+  print("generateSSHKeyss: " + comment);
   try {
     String publicKey = await _platform.invokeMethod('generateSSHKeys', {
-      comment: comment,
+      'comment': comment,
     });
     print("Public Key " + publicKey);
     return publicKey;

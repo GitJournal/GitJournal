@@ -14,6 +14,7 @@ import org.apache.commons.io.FileUtils;
 import io.flutter.plugin.common.MethodChannel.Result;
 
 public class GenerateSSHKeysTask extends AsyncTask<String, Void, Void> {
+    private final static String TAG = "GenerateSSHKeys";
     private Result result;
 
     public GenerateSSHKeysTask(Result _result) {
@@ -28,13 +29,14 @@ public class GenerateSSHKeysTask extends AsyncTask<String, Void, Void> {
         }
 
         String comment = params[1];
+        Log.d(TAG, "Comment: " + comment);
 
         final String privateKeyPath = keysDir + "/id_rsa";
         final String publicKeyPath = keysDir + "/id_rsa.pub";
 
         File privateKeyFile = new File(privateKeyPath);
         if (privateKeyFile.exists()) {
-            Log.d("GenerateSSHKeys", "Private key already exists");
+            Log.d(TAG, "Private key already exists");
             result.error("FAILED", "Private key already exists", null);
             return null;
         }
@@ -48,11 +50,11 @@ public class GenerateSSHKeysTask extends AsyncTask<String, Void, Void> {
             kpair.writePublicKey(publicKeyPath, comment);
             kpair.dispose();
         } catch (JSchException ex) {
-            Log.d("GenerateSSHKeys", ex.toString());
+            Log.d(TAG, ex.toString());
             result.error("FAILED", ex.getMessage(), null);
             return null;
         } catch (IOException ex) {
-            Log.d("GenerateSSHKeys", ex.toString());
+            Log.d(TAG, ex.toString());
             result.error("FAILED", ex.getMessage(), null);
             return null;
         }
@@ -61,7 +63,7 @@ public class GenerateSSHKeysTask extends AsyncTask<String, Void, Void> {
         try {
             publicKey = FileUtils.readFileToString(new File(publicKeyPath), Charset.defaultCharset());
         } catch (IOException ex) {
-            Log.d("GenerateSSHKeys", ex.toString());
+            Log.d(TAG, ex.toString());
             result.error("FAILED", "Failed to read the public key", null);
             return null;
         }

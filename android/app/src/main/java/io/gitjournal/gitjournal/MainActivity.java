@@ -124,6 +124,7 @@ public class MainActivity extends FlutterActivity {
                         } else if (call.method.equals("generateSSHKeys")) {
                             String comment = call.argument("comment");
                             if (comment == null || comment.isEmpty()) {
+                                Log.d("generateSSHKeys", "Defaulting to default comment");
                                 comment = "Generated on Android";
                             }
 
@@ -136,7 +137,7 @@ public class MainActivity extends FlutterActivity {
                             try {
                                 publicKey = FileUtils.readFileToString(new File(publicKeyPath), Charset.defaultCharset());
                             } catch (IOException ex) {
-                                Log.d("GenerateSSHKeys", ex.toString());
+                                Log.d("getSSHPublicKey", ex.toString());
                                 result.error("FAILED", "Failed to read the public key", null);
                             }
 
