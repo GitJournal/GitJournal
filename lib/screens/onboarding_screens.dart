@@ -111,7 +111,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
             );
 
             // We aren't calling setState as this isn't being used for rendering
-            _gitCloneUrl = sshUrl;
+            _gitCloneUrl = sshUrl.trim();
 
             this._generateSshKey();
 

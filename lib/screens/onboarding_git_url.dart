@@ -41,7 +41,8 @@ class OnBoardingGitUrlState extends State<OnBoardingGitUrl> {
         decoration: const InputDecoration(
           hintText: 'Eg: git@github.com:GitJournal/GitJournal.git',
         ),
-        validator: (value) {
+        validator: (String value) {
+          value = value.trim();
           if (value.isEmpty) {
             return 'Please enter some text';
           }
