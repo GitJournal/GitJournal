@@ -43,7 +43,7 @@ public class GitPushTask extends AsyncTask<String, Void, Void> {
                 }
             });
 
-            pushCommand.call();
+            pushCommand.setPushAll().call();
         } catch (TransportException e) {
             Log.d(TAG, e.toString());
             result.error("FAILED", e.getMessage(), null);
