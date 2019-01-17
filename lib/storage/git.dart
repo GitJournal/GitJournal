@@ -56,6 +56,24 @@ Future<String> generateSSHKeys({@required String comment}) async {
 class GitException implements Exception {
   final String cause;
   GitException(this.cause);
+
+  @override
+  String toString() {
+    return "GitException: " + cause;
+  }
+}
+
+GitException createGitException(String msg) {
+  if (msg.contains("ENETUNREACH")) {
+    return GitException("No Connection");
+  }
+  if (msg.contains("Remote origin did not advertise Ref for branch master")) {
+    return GitException("No master branch");
+  }
+  if (msg.contains("Nothing to push")) {
+    return GitException("Nothing to push.");
+  }
+  return GitException(msg);
 }
 
 Future gitPull(String folderName) async {
@@ -67,10 +85,7 @@ Future gitPull(String folderName) async {
     print("Done");
   } on PlatformException catch (e) {
     print("gitPull Failed: '${e.message}'.");
-    if (e.message.contains("ENETUNREACH")) {
-      throw GitException("No Connection");
-    }
-    throw GitException(e.message);
+    throw createGitException(e.message);
   }
 }
 
@@ -109,7 +124,7 @@ Future gitPush(String folderName) async {
     print("Done");
   } on PlatformException catch (e) {
     print("gitPush Failed: '${e.message}'.");
-    throw GitException(e.message);
+    throw createGitException(e.message);
   }
 }
 
