@@ -70,7 +70,7 @@ class NoteEditorState extends State<NoteEditor> {
         title: new Text(title),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
