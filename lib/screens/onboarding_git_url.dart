@@ -39,7 +39,7 @@ class OnBoardingGitUrlState extends State<OnBoardingGitUrl> {
         autofocus: true,
         style: Theme.of(context).textTheme.title,
         decoration: const InputDecoration(
-          hintText: 'Eg: git@github.com:GitJournal/GitJournal.git',
+          hintText: 'git@github.com:GitJournal/GitJournal.git',
         ),
         validator: (String value) {
           value = value.trim();
@@ -68,7 +68,7 @@ class OnBoardingGitUrlState extends State<OnBoardingGitUrl> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            "Enter the Git SSH URL:",
+            "Enter the Git Clone URL",
             style: Theme.of(context).textTheme.headline,
           ),
         ),
