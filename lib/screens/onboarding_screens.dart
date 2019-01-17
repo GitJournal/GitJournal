@@ -38,7 +38,8 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   var pageController = PageController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  String publicKey = "Generating ...";
+  String publicKey = "";
+  bool _canLaunchDeployKeyPage = false;
 
   @override
   Widget build(BuildContext context) {
@@ -138,6 +139,9 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
               );
             },
             publicKey: publicKey,
+            copyKeyFunction: _copyKeyToClipboard,
+            openDeployKeyPage: _launchDeployKeyPage,
+            canOpenDeployKeyPage: _canLaunchDeployKeyPage,
           );
         }
 
@@ -197,20 +201,25 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   void _generateSshKey() {
-    generateSSHKeys(comment: "GitJournal").then((String _publicKey) {
+    generateSSHKeys(comment: "GitJournal").then((String publicKey) {
       setState(() {
-        publicKey = _publicKey;
+        this.publicKey = publicKey;
+        this._canLaunchDeployKeyPage =
+            _gitCloneUrl.startsWith("git@github.com:") ||
+                _gitCloneUrl.startsWith("git@gitlab.com:");
 
-        Clipboard.setData(ClipboardData(text: publicKey));
-        var text = "Public Key copied to Clipboard";
-        this
-            ._scaffoldKey
-            .currentState
-            .showSnackBar(new SnackBar(content: new Text(text)));
-
-        _launchDeployKeyPage();
+        _copyKeyToClipboard();
       });
     });
+  }
+
+  void _copyKeyToClipboard() {
+    Clipboard.setData(ClipboardData(text: publicKey));
+    var text = "Public Key copied to Clipboard";
+    this
+        ._scaffoldKey
+        .currentState
+        .showSnackBar(new SnackBar(content: new Text(text)));
   }
 
   void _launchDeployKeyPage() async {
@@ -401,40 +410,103 @@ class OnBoardingCreateRepo extends StatelessWidget {
 
 class OnBoardingSshKey extends StatelessWidget {
   final Function doneFunction;
+  final Function copyKeyFunction;
   final String publicKey;
+
+  final Function openDeployKeyPage;
+  final bool canOpenDeployKeyPage;
 
   OnBoardingSshKey({
     @required this.doneFunction,
+    @required this.copyKeyFunction,
+    @required this.openDeployKeyPage,
     @required this.publicKey,
+    @required this.canOpenDeployKeyPage,
   });
 
   @override
   Widget build(BuildContext context) {
     FocusScope.of(context).requestFocus(new FocusNode());
 
+    Widget copyAndDepoyWidget;
+    if (this.publicKey.isEmpty) {
+      copyAndDepoyWidget = Container();
+    } else {
+      if (canOpenDeployKeyPage) {
+        copyAndDepoyWidget = Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              child: RaisedButton(
+                child: Text(
+                  "Copy Key",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.button,
+                ),
+                color: Theme.of(context).primaryColor,
+                onPressed: copyKeyFunction,
+              ),
+            ),
+            SizedBox(width: 8.0),
+            Expanded(
+              child: RaisedButton(
+                child: Text(
+                  "Open Deploy Key Webpage",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.button,
+                ),
+                color: Theme.of(context).primaryColor,
+                onPressed: openDeployKeyPage,
+              ),
+            ),
+          ],
+        );
+      } else {
+        copyAndDepoyWidget = OnBoardingButton(
+          text: "Copy Key",
+          onPressed: this.copyKeyFunction,
+        );
+      }
+    }
+
+    String publicKeyStr = "";
+    if (this.publicKey == null || this.publicKey.isEmpty) {
+      publicKeyStr = "Generating ...";
+    } else {
+      publicKeyStr = this.publicKey;
+    }
+
+    var publicKeyWidget = SizedBox(
+      width: double.infinity,
+      height: 160.0,
+      child: Container(
+        color: Theme.of(context).buttonColor,
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              publicKeyStr,
+              textAlign: TextAlign.left,
+              maxLines: null,
+              style: Theme.of(context).textTheme.body1,
+            ),
+          ),
+        ),
+      ),
+    );
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            'Deploy Public Key',
-            style: Theme.of(context).textTheme.headline,
-          ),
+        Text(
+          'Deploy Public Key',
+          style: Theme.of(context).textTheme.headline,
         ),
         SizedBox(height: 16.0),
-        Container(
-          padding: const EdgeInsets.all(8.0),
-          color: Theme.of(context).buttonColor,
-          child: Text(
-            publicKey,
-            textAlign: TextAlign.left,
-            maxLines: 20,
-            style: Theme.of(context).textTheme.body1,
-          ),
-        ),
+        publicKeyWidget,
         SizedBox(height: 8.0),
+        copyAndDepoyWidget,
         OnBoardingButton(
           text: "Clone Repo",
           onPressed: this.doneFunction,
