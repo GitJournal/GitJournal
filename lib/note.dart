@@ -11,7 +11,11 @@ class Note implements Comparable {
 
   Map<String, dynamic> extraProperties = new Map<String, dynamic>();
 
-  Note({this.created, this.body, this.id, this.extraProperties});
+  Note({this.created, this.body, this.id, this.extraProperties}) {
+    if (extraProperties == null) {
+      extraProperties = new Map<String, dynamic>();
+    }
+  }
 
   factory Note.fromJson(Map<String, dynamic> json) {
     String id;
