@@ -245,7 +245,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     }
 
     var repoName =
-        _gitCloneUrl.substring(_gitCloneUrl.lastIndexOf(":"), lastIndex);
+        _gitCloneUrl.substring(_gitCloneUrl.lastIndexOf(":") + 1, lastIndex);
 
     final gitHubUrl = 'https://github.com/' + repoName + '/settings/keys/new';
     final gitLabUrl = 'https://gitlab.com/' + repoName + '/settings/repository';
