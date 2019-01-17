@@ -3,15 +3,9 @@
   <br/>A Journaling app built on top of git
 </p>
 
-Add badges for -
-build: passing
-apk: latest
-
-Add links to -
-
-- Android Play Store
-- FDroid
-- iOS
+<p align="center">
+  <a href="https://play.google.com/store/apps/details?id=io.gitjournal.gitjournal&pcampaignid=github"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge-border.png" height="75px"/></a>
+</p>
 
 # Summary
 
@@ -45,7 +39,3 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
-
---
-
-Add tags/topics for Github
