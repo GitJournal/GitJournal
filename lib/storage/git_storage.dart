@@ -105,8 +105,18 @@ class GitNoteRepository implements NoteRepository {
       return true;
     }
 
-    await gitPull(this.dirName);
-    await gitPush(this.dirName);
+    try {
+      await gitPull(this.dirName);
+    } on GitException catch (ex) {
+      print(ex);
+    }
+
+    try {
+      await gitPush(this.dirName);
+    } on GitException catch (ex) {
+      print(ex);
+      throw ex;
+    }
 
     return true;
   }
