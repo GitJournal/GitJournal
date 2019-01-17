@@ -13,3 +13,6 @@ build/
 .project
 .classpath
 .settings/
+
+android/fastlane/README.md
+android/fastlane/report.xml
