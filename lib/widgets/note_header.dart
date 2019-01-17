@@ -11,7 +11,7 @@ class NoteHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var dateStr = DateFormat('MMM, yyyy').format(note.created);
-    var timeStr = DateFormat('EEEE H:m').format(note.created);
+    var timeStr = DateFormat('EEEE HH:mm').format(note.created);
 
     var bigNum = new Text(
       note.created.day.toString(),
