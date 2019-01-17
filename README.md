@@ -22,6 +22,12 @@ Features -
 
 # Screenshots
 
+<p float="left">
+<img src="https://github.com/GitJournal/GitJournal/raw/master/android/fastlane/metadata/android/en-GB/images/phoneScreenshots/1.jpeg" width="240" height="auto">
+<img src="https://github.com/GitJournal/GitJournal/raw/master/android/fastlane/metadata/android/en-GB/images/phoneScreenshots/2.jpeg" width="240" height="auto">
+<img src="https://github.com/GitJournal/GitJournal/raw/master/android/fastlane/metadata/android/en-GB/images/phoneScreenshots/3.jpeg" width="240" height="auto">
+</p>
+
 # License
 
 ```
