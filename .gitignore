@@ -13,5 +13,3 @@ build/
 .project
 .classpath
 .settings/
-
-android/fastlane/

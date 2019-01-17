@@ -1,1 +1,16 @@
-A Journaling App Built on top of Git
+GitJournal is a journaling, personal diary app built with privacy and transparency in mind. It stores all its notes in a standardised Markdown + YAML header format. The notes are stored in a hosted Git Repo of your choice - GitHub / GitLab / Any Custom-provider.
+
+Features -
+
+- Private by design
+- No Account Required
+- Open source
+- Beautiful interface focused on writing
+- Can easily be extended and integrated with other git tools
+- Git log clearly shows a history of changes
+- Built for developers
+- No Ads
+
+Never need to import / export your journal, as you always have control of the data. Apps may come and go, but your journal entries will always be with you.
+
+The app comes with a clean, easy to use interface designed to focus on just writing your journal entries without any distractions.
