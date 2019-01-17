@@ -183,7 +183,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       },
     );
 
-    return new Scaffold(
+    var scaffold = new Scaffold(
       key: _scaffoldKey,
       body: new Container(
         width: double.infinity,
@@ -201,6 +201,20 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         ),
         padding: EdgeInsets.all(16.0),
       ),
+    );
+
+    return new WillPopScope(
+      onWillPop: () {
+        if (_currentPageIndex != 0) {
+          pageController.previousPage(
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeIn,
+          );
+        } else {
+          SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+        }
+      },
+      child: scaffold,
     );
   }
 
