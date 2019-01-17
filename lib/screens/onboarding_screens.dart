@@ -447,9 +447,16 @@ class OnBoardingSshKey extends StatelessWidget {
     FocusScope.of(context).requestFocus(new FocusNode());
 
     Widget copyAndDepoyWidget;
+    Widget cloneButton;
     if (this.publicKey.isEmpty) {
       copyAndDepoyWidget = Container();
+      cloneButton = Container();
     } else {
+      cloneButton = OnBoardingButton(
+        text: "Clone Repo",
+        onPressed: this.doneFunction,
+      );
+
       if (canOpenDeployKeyPage) {
         copyAndDepoyWidget = Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -525,10 +532,7 @@ class OnBoardingSshKey extends StatelessWidget {
         publicKeyWidget,
         SizedBox(height: 8.0),
         copyAndDepoyWidget,
-        OnBoardingButton(
-          text: "Clone Repo",
-          onPressed: this.doneFunction,
-        ),
+        cloneButton,
       ],
     );
   }
