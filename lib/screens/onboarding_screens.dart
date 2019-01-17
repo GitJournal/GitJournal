@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:path/path.dart' as p;
+import 'package:dots_indicator/dots_indicator.dart';
 
 import 'package:journal/analytics.dart';
 import 'package:journal/state_container.dart';
@@ -36,6 +37,8 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   String gitCloneErrorMessage = "";
 
   var pageController = PageController();
+  int _currentPageIndex = 0;
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   String publicKey = "";
@@ -173,6 +176,10 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
             'page_name': pageName,
           },
         );
+
+        setState(() {
+          _currentPageIndex = pageNum;
+        });
       },
     );
 
@@ -181,8 +188,17 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       body: new Container(
         width: double.infinity,
         height: double.infinity,
-        //color: Theme.of(context).primaryColor,
-        child: pageView,
+        child: Stack(
+          alignment: FractionalOffset.bottomCenter,
+          children: <Widget>[
+            pageView,
+            new DotsIndicator(
+              numberOfDot: pageCount,
+              position: _currentPageIndex,
+              dotActiveColor: Theme.of(context).primaryColorDark,
+            )
+          ],
+        ),
         padding: EdgeInsets.all(16.0),
       ),
     );
