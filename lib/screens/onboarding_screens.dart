@@ -357,7 +357,7 @@ class OnBoardingInitialChoice extends StatelessWidget {
             width: double.infinity,
             child: RaisedButton(
               child: Text(
-                "Create a Rew Repo",
+                "Create a New Repo",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.button,
               ),
