@@ -312,14 +312,16 @@ class OnBoardingInitialChoice extends StatelessWidget {
 
     var headerTextStyle =
         Theme.of(context).textTheme.display3.copyWith(fontFamily: "Lato");
-    var header = Row(
+    var header = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Image.asset(
           'assets/icon/icon.png',
           height: 200,
           fit: BoxFit.fill,
         ),
-        SizedBox(width: 24.0),
+        SizedBox(height: 8.0),
         Text(
           "GitJournal",
           style: headerTextStyle,
@@ -330,7 +332,7 @@ class OnBoardingInitialChoice extends StatelessWidget {
     return Container(
       child: Column(
         children: <Widget>[
-          header,
+          Center(child: header),
           SizedBox(height: 64.0),
           Text(
             "We need a Git Repo to store the data -",
