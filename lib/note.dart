@@ -106,6 +106,7 @@ class Note implements Comparable {
     if (other == null) {
       return -1;
     }
+    if (created == other.created) return fileName.compareTo(other.fileName);
     return created.compareTo(other.created);
   }
 }
