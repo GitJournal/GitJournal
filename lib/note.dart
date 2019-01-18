@@ -41,13 +41,11 @@ class Note implements Comparable {
         }
       }
 
-      // FIXME: Get created from file system or from git!
-      if (created == null) {
-        // FIXME: make this 0
-        created = DateTime.now();
-      }
-
       json.remove("created");
+    }
+
+    if (created == null) {
+      created = DateTime(0, 0, 0, 0, 0, 0, 0, 0);
     }
 
     String body = "";
@@ -66,7 +64,10 @@ class Note implements Comparable {
 
   Map<String, dynamic> toJson() {
     var json = Map<String, dynamic>.from(extraProperties);
-    json['created'] = toIso8601WithTimezone(created);
+    var createdStr = toIso8601WithTimezone(created);
+    if (!createdStr.startsWith("00")) {
+      json['created'] = createdStr;
+    }
     json['body'] = body;
     json['fileName'] = fileName;
 
