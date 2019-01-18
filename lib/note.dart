@@ -28,7 +28,7 @@ class Note implements Comparable {
     if (json.containsKey("created")) {
       var createdStr = json['created'].toString();
       try {
-        created = DateTime.parse(json['created']);
+        created = DateTime.parse(json['created']).toLocal();
       } catch (ex) {}
 
       if (created == null) {
@@ -37,7 +37,7 @@ class Note implements Comparable {
         if (regex.hasMatch(createdStr)) {
           // FIXME: Handle the timezone!
           createdStr = createdStr.substring(0, 19);
-          created = DateTime.parse(json['created']);
+          created = DateTime.parse(createdStr);
         }
       }
 
@@ -89,7 +89,12 @@ class Note implements Comparable {
           id == other.id &&
           body == other.body &&
           created == other.created &&
-          extraProperties == other.extraProperties;
+          _equalMaps(extraProperties, other.extraProperties);
+
+  static bool _equalMaps(Map a, Map b) {
+    if (a.length != b.length) return false;
+    return a.keys.every((key) => b.containsKey(key) && a[key] == b[key]);
+  }
 
   @override
   String toString() {
