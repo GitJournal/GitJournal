@@ -353,30 +353,14 @@ class OnBoardingInitialChoice extends StatelessWidget {
             style: Theme.of(context).textTheme.headline,
           ),
           SizedBox(height: 8.0),
-          SizedBox(
-            width: double.infinity,
-            child: RaisedButton(
-              child: Text(
-                "Create a New Repo",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.button,
-              ),
-              color: Theme.of(context).primaryColor,
-              onPressed: onCreateNewRepo,
-            ),
+          OnBoardingButton(
+            text: "Create a New Repo",
+            onPressed: onCreateNewRepo,
           ),
           SizedBox(height: 8.0),
-          SizedBox(
-            width: double.infinity,
-            child: RaisedButton(
-              child: Text(
-                "I already have one",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.button,
-              ),
-              color: Theme.of(context).primaryColor,
-              onPressed: onExistingRepo,
-            ),
+          OnBoardingButton(
+            text: "I already have one",
+            onPressed: onExistingRepo,
           ),
         ],
         mainAxisAlignment: MainAxisAlignment.center,

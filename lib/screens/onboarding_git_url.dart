@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:journal/analytics.dart';
+
 class OnBoardingGitUrl extends StatefulWidget {
   final Function doneFunction;
 
@@ -110,7 +112,7 @@ class OnBoardingButton extends StatelessWidget {
             style: Theme.of(context).textTheme.button,
           ),
           color: Theme.of(context).primaryColor,
-          onPressed: onPressed,
+          onPressed: this._onPressedWithAnalytics,
         ),
       );
     } else {
@@ -124,9 +126,21 @@ class OnBoardingButton extends StatelessWidget {
           ),
           icon: Image.asset(iconUrl, width: 32, height: 32),
           color: Theme.of(context).primaryColor,
-          onPressed: onPressed,
+          onPressed: this._onPressedWithAnalytics,
         ),
       );
     }
+  }
+
+  void _onPressedWithAnalytics() {
+    print("onboarding_button_click " + text);
+    getAnalytics().logEvent(
+      name: "onboarding_button_click",
+      parameters: <String, dynamic>{
+        'text': text,
+        'icon_url': iconUrl == null ? "" : iconUrl,
+      },
+    );
+    onPressed();
   }
 }
