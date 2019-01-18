@@ -95,6 +95,7 @@ class NoteViewer extends StatelessWidget {
     );
   }
 
+  /*
   Widget _buildFooter(BuildContext context) {
     return new Padding(
       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
@@ -118,4 +119,5 @@ class NoteViewer extends StatelessWidget {
       ),
     );
   }
+  */
 }

@@ -27,7 +27,7 @@ class GitNoteRepository implements NoteRepository {
   }) : _fileStorage = FileStorage(
           noteSerializer: new MarkdownYAMLSerializer(),
           getDirectory: getDirectory,
-        ) {}
+        );
 
   @override
   Future<NoteRepoResult> addNote(Note note) async {
