@@ -49,7 +49,6 @@ class StateContainerState extends State<StateContainer> {
     getDirectory: getNotesDir,
     dirName: "journal",
     gitCloneUrl: "root@bcn.vhanda.in:git/test",
-    fileNameGenerator: (Note n) => toIso8601WithTimezone(n.created) + '.md',
   );
 
   StateContainerState(bool onBoardingCompleted) {
@@ -140,9 +139,10 @@ class StateContainerState extends State<StateContainer> {
   }
 
   void insertNote(int index, Note note) {
+    print("State Container insertNote");
     setState(() {
-      if (note.id == null || note.id.isEmpty) {
-        note.id = toIso8601WithTimezone(note.created);
+      if (note.fileName == null || note.fileName.isEmpty) {
+        note.fileName = toIso8601WithTimezone(note.created) + '.md';
       }
       appState.notes.insert(index, note);
       noteRepo.addNote(note).then((NoteRepoResult _) {
@@ -152,6 +152,7 @@ class StateContainerState extends State<StateContainer> {
   }
 
   void updateNote(Note note) {
+    print("State Container updateNote");
     setState(() {
       noteRepo.updateNote(note).then((NoteRepoResult _) {
         _syncNotes();

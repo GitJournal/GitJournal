@@ -15,15 +15,14 @@ DateTime nowWithoutMicro() {
 main() {
   group('FileStorage', () {
     var notes = [
-      Note(id: "1", body: "test", created: nowWithoutMicro()),
-      Note(id: "2", body: "test2", created: nowWithoutMicro()),
+      Note(fileName: "1.md", body: "test", created: nowWithoutMicro()),
+      Note(fileName: "2.md", body: "test2", created: nowWithoutMicro()),
     ];
 
     final directory = Directory.systemTemp.createTemp('__storage_test__');
     final storage = FileStorage(
       getDirectory: () => directory,
       noteSerializer: new JsonNoteSerializer(),
-      fileNameGenerator: (Note note) => note.id + '.md',
     );
 
     tearDownAll(() async {

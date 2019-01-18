@@ -29,7 +29,7 @@ class JournalList extends StatelessWidget {
 
         var note = notes[i];
         return new Dismissible(
-          key: new Key(note.id),
+          key: new Key(note.fileName),
           child: _buildRow(context, note, i),
           background: new Container(color: Theme.of(context).accentColor),
           onDismissed: (direction) {

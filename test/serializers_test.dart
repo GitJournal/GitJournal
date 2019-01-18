@@ -10,8 +10,8 @@ DateTime nowWithoutMicro() {
 
 main() {
   group('Serializers', () {
-    var note =
-        Note(id: "2", body: "This is the body", created: nowWithoutMicro());
+    var note = Note(
+        fileName: "2", body: "This is the body", created: nowWithoutMicro());
 
     test('JSON Serializer', () {
       var serializer = new JsonNoteSerializer();
@@ -25,6 +25,9 @@ main() {
       var serializer = new MarkdownYAMLSerializer();
       var str = serializer.encode(note);
       var note2 = serializer.decode(str);
+
+      // The YAML seriazlier loses the fileName by design
+      note2.fileName = note.fileName;
 
       expect(note2, note);
     });

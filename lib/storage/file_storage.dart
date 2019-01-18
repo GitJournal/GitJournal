@@ -10,15 +10,14 @@ import 'package:path/path.dart' as p;
 typedef String NoteFileNameGenerator(Note note);
 
 /// Each Note is saved in a different file
+/// Each note must have a fileName which ends in a .md
 class FileStorage implements NoteRepository {
   final Future<Directory> Function() getDirectory;
   final NoteSerializer noteSerializer;
-  final NoteFileNameGenerator fileNameGenerator;
 
   const FileStorage({
     @required this.getDirectory,
     @required this.noteSerializer,
-    @required this.fileNameGenerator,
   });
 
   @override
@@ -32,13 +31,8 @@ class FileStorage implements NoteRepository {
       if (note == null) {
         continue;
       }
-      if (!fileEntity.path.endsWith('.md') &&
-          !fileEntity.path.endsWith('.MD')) {
+      if (!note.fileName.toLowerCase().endsWith('.md')) {
         continue;
-      }
-      if (note.id == null) {
-        String filename = p.basename(fileEntity.path);
-        note.id = filename;
       }
       notes.add(note);
     }
@@ -54,13 +48,16 @@ class FileStorage implements NoteRepository {
     }
     var file = entity as File;
     final string = await file.readAsString();
-    return noteSerializer.decode(string);
+
+    var note = noteSerializer.decode(string);
+    note.fileName = p.basename(entity.path);
+    return note;
   }
 
   @override
   Future<NoteRepoResult> addNote(Note note) async {
     final dir = await getDirectory();
-    var filePath = p.join(dir.path, fileNameGenerator(note));
+    var filePath = p.join(dir.path, note.fileName);
 
     var file = new File(filePath);
     if (file == null) {
@@ -75,7 +72,7 @@ class FileStorage implements NoteRepository {
   @override
   Future<NoteRepoResult> removeNote(Note note) async {
     final dir = await getDirectory();
-    var filePath = p.join(dir.path, fileNameGenerator(note));
+    var filePath = p.join(dir.path, note.fileName);
 
     var file = new File(filePath);
     await file.delete();
@@ -95,11 +92,9 @@ class FileStorage implements NoteRepository {
 
   Future<Directory> saveNotes(List<Note> notes) async {
     final dir = await getDirectory();
-    // FIXME: Why do we need to delete everything?
-    // await dir.delete(recursive: true);
 
     for (var note in notes) {
-      var filePath = p.join(dir.path, fileNameGenerator(note));
+      var filePath = p.join(dir.path, note.fileName);
 
       var file = new File(filePath);
       var contents = noteSerializer.encode(note);

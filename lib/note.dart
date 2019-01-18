@@ -5,23 +5,23 @@ typedef NoteRemover(Note note);
 typedef NoteUpdator(Note note);
 
 class Note implements Comparable {
-  String id;
+  String fileName;
   DateTime created;
   String body;
 
   Map<String, dynamic> extraProperties = new Map<String, dynamic>();
 
-  Note({this.created, this.body, this.id, this.extraProperties}) {
+  Note({this.created, this.body, this.fileName, this.extraProperties}) {
     if (extraProperties == null) {
       extraProperties = new Map<String, dynamic>();
     }
   }
 
   factory Note.fromJson(Map<String, dynamic> json) {
-    String id;
-    if (json.containsKey("id")) {
-      id = json["id"].toString();
-      json.remove("id");
+    String fileName = "";
+    if (json.containsKey("fileName")) {
+      fileName = json["fileName"].toString();
+      json.remove("fileName");
     }
 
     DateTime created;
@@ -50,10 +50,6 @@ class Note implements Comparable {
       json.remove("created");
     }
 
-    if (id == null && created != null) {
-      id = toIso8601WithTimezone(created);
-    }
-
     String body = "";
     if (json.containsKey("body")) {
       body = json['body'];
@@ -61,7 +57,7 @@ class Note implements Comparable {
     }
 
     return new Note(
-      id: id,
+      fileName: fileName,
       created: created,
       body: body,
       extraProperties: json,
@@ -72,21 +68,24 @@ class Note implements Comparable {
     var json = Map<String, dynamic>.from(extraProperties);
     json['created'] = toIso8601WithTimezone(created);
     json['body'] = body;
-    json['id'] = id;
+    json['fileName'] = fileName;
 
     return json;
   }
 
   @override
   int get hashCode =>
-      id.hashCode ^ created.hashCode ^ body.hashCode ^ extraProperties.hashCode;
+      fileName.hashCode ^
+      created.hashCode ^
+      body.hashCode ^
+      extraProperties.hashCode;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Note &&
           runtimeType == other.runtimeType &&
-          id == other.id &&
+          fileName == other.fileName &&
           body == other.body &&
           created == other.created &&
           _equalMaps(extraProperties, other.extraProperties);
@@ -98,7 +97,7 @@ class Note implements Comparable {
 
   @override
   String toString() {
-    return 'Note{id: $id, body: $body, created: $created, extraProperties: $extraProperties}';
+    return 'Note{fileName: $fileName, body: $body, created: $created, extraProperties: $extraProperties}';
   }
 
   @override

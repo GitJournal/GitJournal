@@ -24,14 +24,10 @@ class GitNoteRepository implements NoteRepository {
     @required this.gitCloneUrl,
     @required this.dirName,
     @required this.getDirectory,
-    @required fileNameGenerator,
   }) : _fileStorage = FileStorage(
           noteSerializer: new MarkdownYAMLSerializer(),
-          fileNameGenerator: fileNameGenerator,
           getDirectory: getDirectory,
-        ) {
-    // FIXME: This isn't correct. The gitUrl might not be cloned at this point!
-  }
+        ) {}
 
   @override
   Future<NoteRepoResult> addNote(Note note) async {
@@ -39,7 +35,6 @@ class GitNoteRepository implements NoteRepository {
   }
 
   Future<NoteRepoResult> _addNote(Note note, String commitMessage) async {
-    print("Calling gitStorage addNote");
     var result = await _fileStorage.addNote(note);
     if (result.error) {
       return result;
