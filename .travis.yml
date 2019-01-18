@@ -12,7 +12,7 @@ addons:
       - lib32stdc++6
 install:
   - cd $HOME
-  - git clone https://github.com/flutter/flutter.git -b beta
+  - git clone https://github.com/flutter/flutter.git -b beta || true
   - ./flutter/bin/flutter doctor
   - cd -
 script:
