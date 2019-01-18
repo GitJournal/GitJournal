@@ -1,0 +1,22 @@
+language: dart
+dist: xenial
+matrix:
+  include:
+    - name: Test
+      env: COMMAND=test
+    - name: Analyze
+      env: COMMAND=analyze
+addons:
+  apt:
+    packages:
+      - lib32stdc++6
+install:
+  - git clone https://github.com/flutter/flutter.git -b beta
+  - ./flutter/bin/flutter doctor
+script:
+  - pwd
+  - ls
+  - ./flutter/bin/flutter $COMMAND
+cache:
+  directories:
+    - $HOME/.pub-cache
