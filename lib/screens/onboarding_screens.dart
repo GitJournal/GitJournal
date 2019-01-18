@@ -246,10 +246,9 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   void _copyKeyToClipboard() {
     Clipboard.setData(ClipboardData(text: publicKey));
     var text = "Public Key copied to Clipboard";
-    this
-        ._scaffoldKey
-        .currentState
-        .showSnackBar(new SnackBar(content: new Text(text)));
+    this._scaffoldKey.currentState
+      ..removeCurrentSnackBar()
+      ..showSnackBar(new SnackBar(content: new Text(text)));
   }
 
   void _launchDeployKeyPage() async {

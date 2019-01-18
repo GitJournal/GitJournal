@@ -48,7 +48,8 @@ class HomeScreen extends StatelessWidget {
                 await container.syncNotes();
               } on GitException catch (exp) {
                 _scaffoldKey.currentState
-                    .showSnackBar(new SnackBar(content: new Text(exp.cause)));
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(new SnackBar(content: new Text(exp.cause)));
               }
             }),
       ),
