@@ -11,6 +11,12 @@ class JournalApp extends StatelessWidget {
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
 
+  static bool get isInDebugMode {
+    bool inDebugMode = false;
+    assert(inDebugMode = true);
+    return inDebugMode;
+  }
+
   @override
   Widget build(BuildContext context) {
     final stateContainer = StateContainer.of(context);
@@ -30,7 +36,7 @@ class JournalApp extends StatelessWidget {
         primaryColorDark: Color(0xFF338a3e),
         accentColor: Color(0xff6d4c41),
       ),
-      navigatorObservers: <NavigatorObserver>[observer],
+      navigatorObservers: <NavigatorObserver>[JournalApp.observer],
     );
   }
 }

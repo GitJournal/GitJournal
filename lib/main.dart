@@ -32,6 +32,12 @@ Future runJournalApp() async {
   var pref = await SharedPreferences.getInstance();
   var onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
 
+  if (JournalApp.isInDebugMode) {
+    if (JournalApp.analytics.android != null) {
+      JournalApp.analytics.android.setAnalyticsCollectionEnabled(false);
+    }
+  }
+
   runApp(new StateContainer(
     onBoardingCompleted: onBoardingCompleted,
     child: JournalApp(),
