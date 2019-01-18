@@ -46,6 +46,12 @@ class NoteEditorState extends State<NoteEditor> {
           if (noteContent.isEmpty) {
             return true;
           }
+          if (note != null) {
+            if (noteContent == note.body) {
+              return true;
+            }
+          }
+
           return showDialog(
             context: context,
             builder: _buildAlertDialog,
@@ -97,10 +103,14 @@ class NoteEditorState extends State<NoteEditor> {
   }
 
   Widget _buildAlertDialog(BuildContext context) {
+    var title = newNote
+        ? "Do you want to discard the entry"
+        : "Do you want to discard the changes?";
+
     return new AlertDialog(
       // FIXME: Change this to 'Save' vs 'Discard'
       title: new Text('Are you sure?'),
-      content: new Text('Do you want to discard the entry'),
+      content: new Text(title),
       actions: <Widget>[
         new FlatButton(
           onPressed: () => Navigator.of(context).pop(false),
