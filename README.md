@@ -7,6 +7,10 @@
   <a href="https://play.google.com/store/apps/details?id=io.gitjournal.gitjournal&pcampaignid=github"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge-border.png" height="75px"/></a>
 </p>
 
+<p align="center">
+  <a href="https://travis-ci.org/GitJournal/GitJournal"><img alt="Build Status" src="https://travis-ci.org/GitJournal/GitJournal.svg?branch=master"/></a>
+</p>
+
 # Summary
 
 GitJournal is a journaling app built with privacy and openness in mind. It stores all its notes in a standardized Markdown + YAML header format. The notes are stored in a Git Repo of your choice - GitHub / Gitlab / Custom-provider.
