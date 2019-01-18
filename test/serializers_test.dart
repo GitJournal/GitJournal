@@ -31,5 +31,23 @@ main() {
 
       expect(note2, note);
     });
+
+    /*
+    test('Markdown Serializer YAML Order', () {
+      var str = """---
+type: Journal
+created: 2017-02-15T22:41:19+01:00
+foo: bar
+---
+
+Alright.""";
+
+      var serializer = new MarkdownYAMLSerializer();
+      var note = serializer.decode(str);
+      var actualStr = serializer.encode(note);
+
+      expect(actualStr, str);
+    });
+    */
   });
 }
