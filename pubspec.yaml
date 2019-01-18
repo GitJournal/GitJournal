@@ -14,6 +14,7 @@ dependencies:
   shared_preferences: ^0.4.3
   url_launcher: ^4.0.3
   dots_indicator: ^0.0.3
+  package_info: ^0.3.2+1
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.0"
