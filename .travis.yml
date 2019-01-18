@@ -14,6 +14,7 @@ install:
   - cd /tmp/
   - git clone https://github.com/flutter/flutter.git -b beta
   - ./flutter/bin/flutter doctor
+  - cd -
 script:
   - /tmp/flutter/bin/flutter $COMMAND
 cache:
