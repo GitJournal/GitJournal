@@ -52,31 +52,37 @@ class VersionNumberButton extends StatefulWidget {
 }
 
 class VersionNumberButtonState extends State<VersionNumberButton> {
-  String versionNumber = "";
-  String appName = "";
+  PackageInfo packageInfo;
 
   @override
   void initState() {
     super.initState();
 
     () async {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-
+      PackageInfo info = await PackageInfo.fromPlatform();
       setState(() {
-        versionNumber = packageInfo.version;
-        appName = packageInfo.appName;
+        packageInfo = info;
       });
     }();
   }
 
   @override
   Widget build(BuildContext context) {
+    var text = "";
+    if (packageInfo != null) {
+      text = packageInfo.appName +
+          " " +
+          packageInfo.version +
+          "+" +
+          packageInfo.buildNumber;
+    }
+
     return FlatButton(
       child: SizedBox(
         width: double.infinity,
         child: Text(
-          appName + " " + versionNumber,
-          style: Theme.of(context).textTheme.title,
+          text,
+          style: Theme.of(context).textTheme.subhead,
           textAlign: TextAlign.left,
         ),
       ),
