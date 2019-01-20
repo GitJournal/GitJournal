@@ -67,6 +67,7 @@ class NoteEditorState extends State<NoteEditor> {
           border: InputBorder.none,
         ),
         controller: _textController,
+        textCapitalization: TextCapitalization.sentences,
       ),
     );
 
