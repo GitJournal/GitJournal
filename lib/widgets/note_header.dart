@@ -10,7 +10,7 @@ class NoteHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var dateStr = DateFormat('MMM, yyyy').format(note.created);
+    var dateStr = DateFormat('MMMM, yyyy').format(note.created);
     var timeStr = DateFormat('EEEE HH:mm').format(note.created);
 
     var bigNum = new Text(
@@ -31,21 +31,20 @@ class NoteHeader extends StatelessWidget {
     var w = new Row(
       children: <Widget>[
         bigNum,
-        new Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: new Column(
-            children: <Widget>[
-              dateText,
-              timeText,
-            ],
-            crossAxisAlignment: CrossAxisAlignment.start,
-          ),
+        SizedBox(width: 8.0),
+        Column(
+          children: <Widget>[
+            dateText,
+            timeText,
+          ],
+          crossAxisAlignment: CrossAxisAlignment.start,
         ),
       ],
+      crossAxisAlignment: CrossAxisAlignment.start,
     );
 
     return new Padding(
-      padding: new EdgeInsets.only(top: 6.0, bottom: 6.0 * 3),
+      padding: new EdgeInsets.only(top: 8.0, bottom: 18.0),
       child: w,
     );
   }
