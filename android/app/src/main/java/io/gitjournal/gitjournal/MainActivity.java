@@ -146,6 +146,18 @@ public class MainActivity extends FlutterActivity {
 
                             new GitCommitTask(result).execute(cloneLocation, authorName, authorEmail, message);
                             return;
+                        } else if (call.method.equals("gitInit")) {
+                            String folderName = call.argument("folderName");
+
+                            if (folderName == null || folderName.isEmpty()) {
+                                result.error("Invalid Parameters", "folderName Invalid", null);
+                                return;
+                            }
+
+                            String initLocation = filesDir + "/" + folderName;
+
+                            new GitInitTask(result).execute(initLocation);
+                            return;
                         } else if (call.method.equals("generateSSHKeys")) {
                             String comment = call.argument("comment");
                             if (comment == null || comment.isEmpty()) {

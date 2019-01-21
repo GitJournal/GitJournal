@@ -147,3 +147,16 @@ Future gitCommit({
     print("gitCommit Failed: '${e.message}'.");
   }
 }
+
+Future gitInit(String folderName) async {
+  print("Going to git init");
+  try {
+    await _platform.invokeMethod('gitInit', {
+      'folderName': folderName,
+    });
+    print("Done");
+  } on PlatformException catch (e) {
+    print("gitInit Failed: '${e.message}'.");
+    throw createGitException(e.message);
+  }
+}

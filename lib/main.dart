@@ -6,6 +6,7 @@ import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 
 import 'package:journal/app.dart';
 import 'package:journal/state_container.dart';
+import 'package:journal/storage/git.dart';
 
 void main() async {
   bool isInDebugMode = true;
@@ -30,7 +31,11 @@ void main() async {
 
 Future runJournalApp() async {
   var pref = await SharedPreferences.getInstance();
-  var onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
+  var localGitRepoConfigured = pref.getBool("localGitRepoConfigured") ?? false;
+  var remoteGitRepoConfigured =
+      pref.getBool("remoteGitRepoConfigured") ?? false;
+  var localGitRepoPath = pref.getString("localGitRepoPath") ?? "";
+  var remoteGitRepoPath = pref.getString("remoteGitRepoPath") ?? "";
 
   if (JournalApp.isInDebugMode) {
     if (JournalApp.analytics.android != null) {
@@ -38,8 +43,25 @@ Future runJournalApp() async {
     }
   }
 
+  if (localGitRepoConfigured == false) {
+    // FIXME: What about exceptions!
+    localGitRepoPath = "journal_local";
+    await gitInit(localGitRepoPath);
+
+    localGitRepoConfigured = true;
+
+    await pref.setBool("localGitRepoConfigured", localGitRepoConfigured);
+    await pref.setString("localGitRepoPath", localGitRepoPath);
+  }
+
+  var dir = await getGitBaseDirectory();
+
   runApp(new StateContainer(
-    onBoardingCompleted: onBoardingCompleted,
+    localGitRepoConfigured: localGitRepoConfigured,
+    remoteGitRepoConfigured: remoteGitRepoConfigured,
+    localGitRepoPath: localGitRepoPath,
+    remoteGitRepoPath: remoteGitRepoPath,
+    gitBaseDirectory: dir.path,
     child: JournalApp(),
   ));
 }

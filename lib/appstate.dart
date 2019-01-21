@@ -1,12 +1,21 @@
 import 'package:journal/note.dart';
 
 class AppState {
-  bool onBoardingCompleted;
+  // FIXME: Make these 2 final
+  String localGitRepoPath = "";
+  bool localGitRepoConfigured = false;
+
+  // FIXME: Rename from 'path' to folderName
+  String remoteGitRepoPath = "";
+  bool remoteGitRepoConfigured = false;
+
+  // FIXME: Make final
+  String gitBaseDirectory = "";
+
   bool isLoadingFromDisk;
   List<Note> notes;
 
   AppState({
-    this.onBoardingCompleted = false,
     this.isLoadingFromDisk = false,
     this.notes = const [],
   });

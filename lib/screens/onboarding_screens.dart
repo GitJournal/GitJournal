@@ -300,6 +300,8 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   Future _removeExistingClone() async {
+    // FIXME: Implement this
+    /*
     var baseDir = await getNotesDir();
     var dotGitDir = new Directory(p.join(baseDir.path, ".git"));
     bool exists = await dotGitDir.exists();
@@ -307,6 +309,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       await baseDir.delete(recursive: true);
       await baseDir.create();
     }
+    */
   }
 }
 

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:journal/state_container.dart';
 import 'package:journal/screens/home_screen.dart';
-import 'package:journal/screens/onboarding_screens.dart';
 import 'package:journal/screens/settings_screen.dart';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -32,14 +30,7 @@ class JournalApp extends StatelessWidget {
       navigatorObservers: <NavigatorObserver>[JournalApp.observer],
       initialRoute: '/',
       routes: {
-        '/': (context) {
-          final stateContainer = StateContainer.of(context);
-          var onBoardingDone = stateContainer.appState.onBoardingCompleted;
-          var home = onBoardingDone
-              ? new HomeScreen()
-              : new OnBoardingScreen(stateContainer.completeOnBoarding);
-          return home;
-        },
+        '/': (context) => HomeScreen(),
         '/settings': (context) => SettingsScreen(),
       },
     );

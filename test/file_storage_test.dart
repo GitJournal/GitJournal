@@ -19,15 +19,19 @@ main() {
       Note(fileName: "2.md", body: "test2", created: nowWithoutMicro()),
     ];
 
-    final directory = Directory.systemTemp.createTemp('__storage_test__');
-    final storage = FileStorage(
-      getDirectory: () => directory,
-      noteSerializer: new JsonNoteSerializer(),
-    );
+    Directory tempDir;
+    FileStorage storage;
+
+    setUpAll(() async {
+      tempDir = await Directory.systemTemp.createTemp('__storage_test__');
+      storage = FileStorage(
+        baseDirectory: tempDir.path,
+        noteSerializer: new JsonNoteSerializer(),
+      );
+    });
 
     tearDownAll(() async {
-      final tempDirectory = await directory;
-      tempDirectory.deleteSync(recursive: true);
+      tempDir.deleteSync(recursive: true);
     });
 
     test('Should persist Notes to disk', () async {

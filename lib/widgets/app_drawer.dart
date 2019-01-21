@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:journal/state_container.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Widget setupGitButton = new Container();
+    var appState = StateContainer.of(context).appState;
+
+    if (!appState.remoteGitRepoConfigured) {
+      setupGitButton = ListTile(
+        title: new Text('Setup Git Sync'),
+        onTap: () {
+          Navigator.pop(context);
+          // Update the state of the app
+          // ...
+        },
+      );
+    }
+
     return new Drawer(
       child: new ListView(
         // Important: Remove any padding from the ListView.
@@ -23,6 +38,7 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
           ),
+          setupGitButton,
           new ListTile(
             title: new Text('Share App'),
             onTap: () {

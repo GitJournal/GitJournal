@@ -13,20 +13,20 @@ import 'package:journal/storage/git_storage.dart';
 import 'package:journal/storage/git.dart';
 import 'package:journal/datetime_utils.dart';
 
-Future<Directory> getNotesDir() async {
-  var appDir = await getGitBaseDirectory();
-  var dir = new Directory(p.join(appDir.path, "journal"));
-  await dir.create();
-
-  return dir;
-}
-
 class StateContainer extends StatefulWidget {
   final Widget child;
-  final bool onBoardingCompleted;
+  final bool localGitRepoConfigured;
+  final bool remoteGitRepoConfigured;
+  final String localGitRepoPath;
+  final String remoteGitRepoPath;
+  final String gitBaseDirectory;
 
   StateContainer({
-    @required this.onBoardingCompleted,
+    @required this.localGitRepoConfigured,
+    @required this.remoteGitRepoConfigured,
+    @required this.localGitRepoPath,
+    @required this.remoteGitRepoPath,
+    @required this.gitBaseDirectory,
     @required this.child,
   });
 
@@ -38,42 +38,56 @@ class StateContainer extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return StateContainerState(this.onBoardingCompleted);
+    var st = StateContainerState();
+    st.appState.localGitRepoConfigured = localGitRepoConfigured;
+    st.appState.remoteGitRepoConfigured = remoteGitRepoConfigured;
+    st.appState.localGitRepoPath = localGitRepoPath;
+    st.appState.remoteGitRepoPath = remoteGitRepoPath;
+    st.appState.gitBaseDirectory = gitBaseDirectory;
+
+    return st;
   }
 }
 
 class StateContainerState extends State<StateContainer> {
   AppState appState = AppState();
-
-  NoteRepository noteRepo = new GitNoteRepository(
-    getDirectory: getNotesDir,
-    dirName: "journal",
-    gitCloneUrl: "root@bcn.vhanda.in:git/test",
-  );
-
-  StateContainerState(bool onBoardingCompleted) {
-    appState.onBoardingCompleted = onBoardingCompleted;
-  }
+  NoteRepository noteRepo;
 
   @override
   void initState() {
     super.initState();
 
-    if (appState.onBoardingCompleted) {
-      _loadNotesFromDisk();
-      _syncNotes();
-    } else {
-      removeExistingClone();
+    assert(appState.localGitRepoConfigured);
+
+    if (appState.remoteGitRepoConfigured) {
+      noteRepo = new GitNoteRepository(
+        baseDirectory: appState.gitBaseDirectory,
+        dirName: appState.remoteGitRepoPath,
+      );
+    } else if (appState.localGitRepoConfigured) {
+      noteRepo = new GitNoteRepository(
+        baseDirectory: appState.gitBaseDirectory,
+        dirName: appState.localGitRepoPath,
+      );
     }
+
+    // Just a fail safe
+    if (!appState.remoteGitRepoConfigured) {
+      removeExistingRemoteClone();
+    }
+
+    _loadNotesFromDisk();
+    _syncNotes();
   }
 
-  void removeExistingClone() async {
-    var baseDir = await getNotesDir();
-    var dotGitDir = new Directory(p.join(baseDir.path, ".git"));
+  void removeExistingRemoteClone() async {
+    var remoteGitDir = new Directory(
+        p.join(appState.gitBaseDirectory, appState.remoteGitRepoPath));
+    var dotGitDir = new Directory(p.join(remoteGitDir.path, ".git"));
+
     bool exists = await dotGitDir.exists();
     if (exists) {
-      await baseDir.delete(recursive: true);
-      await baseDir.create();
+      await remoteGitDir.delete(recursive: true);
     }
   }
 
@@ -95,6 +109,11 @@ class StateContainerState extends State<StateContainer> {
   }
 
   Future syncNotes() async {
+    if (!appState.remoteGitRepoConfigured) {
+      print("Not syncing because RemoteRepo not configured");
+      return true;
+    }
+
     await noteRepo.sync();
 
     try {
@@ -116,7 +135,12 @@ class StateContainerState extends State<StateContainer> {
   }
 
   void _syncNotes() {
-    print("Starting to syncNOtes");
+    if (!appState.remoteGitRepoConfigured) {
+      print("Not syncing because RemoteRepo not configured");
+      return;
+    }
+
+    print("Starting to syncNotes");
     this.noteRepo.sync().then((loaded) {
       print("NotesRepo Synced: " + loaded.toString());
       _loadNotesFromDisk();
@@ -162,7 +186,7 @@ class StateContainerState extends State<StateContainer> {
 
   void completeOnBoarding() {
     setState(() {
-      this.appState.onBoardingCompleted = true;
+      //this.appState.onBoardingCompleted = true;
 
       _persistOnBoardingCompleted();
       _loadNotesFromDisk();
@@ -173,6 +197,13 @@ class StateContainerState extends State<StateContainer> {
   void _persistOnBoardingCompleted() async {
     var pref = await SharedPreferences.getInstance();
     pref.setBool("onBoardingCompleted", true);
+  }
+
+  Future _persistConfig() async {
+    var pref = await SharedPreferences.getInstance();
+    await pref.setBool(
+        "remoteGitRepoConfigured", appState.remoteGitRepoConfigured);
+    await pref.setString("remoteGitRepoPath", appState.remoteGitRepoPath);
   }
 
   @override

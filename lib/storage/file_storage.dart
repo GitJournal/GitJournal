@@ -12,17 +12,21 @@ typedef String NoteFileNameGenerator(Note note);
 /// Each Note is saved in a different file
 /// Each note must have a fileName which ends in a .md
 class FileStorage implements NoteRepository {
-  final Future<Directory> Function() getDirectory;
+  final String baseDirectory;
   final NoteSerializer noteSerializer;
 
-  const FileStorage({
-    @required this.getDirectory,
+  FileStorage({
+    @required this.baseDirectory,
     @required this.noteSerializer,
-  });
+  }) {
+    assert(this.baseDirectory != null);
+    assert(this.baseDirectory.isNotEmpty);
+    print("FileStorage Directory: " + this.baseDirectory);
+  }
 
   @override
   Future<List<Note>> listNotes() async {
-    final dir = await getDirectory();
+    final dir = new Directory(baseDirectory);
 
     var notes = new List<Note>();
     var lister = dir.list(recursive: false);
@@ -56,8 +60,8 @@ class FileStorage implements NoteRepository {
 
   @override
   Future<NoteRepoResult> addNote(Note note) async {
-    final dir = await getDirectory();
-    var filePath = p.join(dir.path, note.fileName);
+    var filePath = p.join(baseDirectory, note.fileName);
+    print("FileStorage: Adding note in " + filePath);
 
     var file = new File(filePath);
     if (file == null) {
@@ -71,8 +75,7 @@ class FileStorage implements NoteRepository {
 
   @override
   Future<NoteRepoResult> removeNote(Note note) async {
-    final dir = await getDirectory();
-    var filePath = p.join(dir.path, note.fileName);
+    var filePath = p.join(baseDirectory, note.fileName);
 
     var file = new File(filePath);
     await file.delete();
@@ -91,7 +94,7 @@ class FileStorage implements NoteRepository {
   }
 
   Future<Directory> saveNotes(List<Note> notes) async {
-    final dir = await getDirectory();
+    final dir = new Directory(baseDirectory);
 
     for (var note in notes) {
       var filePath = p.join(dir.path, note.fileName);

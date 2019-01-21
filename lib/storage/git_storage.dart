@@ -12,21 +12,18 @@ import 'package:journal/storage/notes_repository.dart';
 
 class GitNoteRepository implements NoteRepository {
   final FileStorage _fileStorage;
-  final String gitCloneUrl;
+  final String gitCloneUrl = "";
   final String dirName;
 
   bool cloned = false;
   bool checkForCloned = false;
 
-  final Future<Directory> Function() getDirectory;
-
   GitNoteRepository({
-    @required this.gitCloneUrl,
     @required this.dirName,
-    @required this.getDirectory,
+    @required String baseDirectory,
   }) : _fileStorage = FileStorage(
           noteSerializer: new MarkdownYAMLSerializer(),
-          getDirectory: getDirectory,
+          baseDirectory: p.join(baseDirectory, dirName),
         );
 
   @override
@@ -40,8 +37,8 @@ class GitNoteRepository implements NoteRepository {
       return result;
     }
 
-    var baseDir = await this.getDirectory();
-    var filePath = result.noteFilePath.replaceFirst(baseDir.path + "/", "");
+    var baseDir = _fileStorage.baseDirectory;
+    var filePath = result.noteFilePath.replaceFirst(baseDir + "/", "");
 
     await gitAdd(this.dirName, filePath);
     await gitCommit(
@@ -61,8 +58,9 @@ class GitNoteRepository implements NoteRepository {
       return result;
     }
 
-    var baseDir = await this.getDirectory();
-    var filePath = result.noteFilePath.replaceFirst(baseDir.path + "/", "");
+    // FIXME: '/' is not valid on all platforms
+    var baseDir = _fileStorage.baseDirectory;
+    var filePath = result.noteFilePath.replaceFirst(baseDir + "/", "");
 
     await gitRm(this.dirName, filePath);
     await gitCommit(
@@ -87,13 +85,19 @@ class GitNoteRepository implements NoteRepository {
 
   @override
   Future<bool> sync() async {
-    print("Starting Sync");
+    if (gitCloneUrl == null || gitCloneUrl.isEmpty) {
+      print("Cannot sync because of lack of clone url");
+      return false;
+    }
+
     if (!checkForCloned) {
-      var baseDir = await this.getDirectory();
+      var baseDir = new Directory(_fileStorage.baseDirectory);
       var dotGitDir = new Directory(p.join(baseDir.path, ".git"));
       cloned = await dotGitDir.exists();
       checkForCloned = true;
     }
+    // FIXME: If we are calling sync, it should always be cloned!
+    assert(cloned == true);
     if (!cloned) {
       await gitClone(this.gitCloneUrl, this.dirName);
       cloned = true;
