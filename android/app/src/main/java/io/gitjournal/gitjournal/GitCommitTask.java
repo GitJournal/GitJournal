@@ -36,6 +36,7 @@ public class GitCommitTask extends AsyncTask<String, Void, Void> {
             CommitCommand commitCommand = git.commit();
             commitCommand.setAuthor(authorName, authorEmail);
             commitCommand.setMessage(message);
+            commitCommand.setAllowEmpty(false);
             commitCommand.call();
 
         } catch (TransportException e) {
