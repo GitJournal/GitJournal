@@ -133,6 +133,7 @@ Future gitCommit({
   String authorName,
   String authorEmail,
   String message,
+  String when,
 }) async {
   print("Going to git commit");
   try {
@@ -141,6 +142,7 @@ Future gitCommit({
       'authorName': authorName,
       'authorEmail': authorEmail,
       'message': message,
+      'when': when,
     });
     print("Done");
   } on PlatformException catch (e) {

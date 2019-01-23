@@ -40,7 +40,7 @@ buildGitButtons() {
     RaisedButton(
       child: Text("Git Add"),
       onPressed: () async {
-        await gitAdd("journal", "1");
+        await gitAdd("journal", ".");
       },
     ),
     RaisedButton(
@@ -57,6 +57,7 @@ buildGitButtons() {
             authorEmail: "noemail@example.com",
             authorName: "Vishesh Handa",
             message: "Default message from GitJournal",
+            when: "2017-10-20T01:21:10+02:00",
           );
         }),
   ];

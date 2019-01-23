@@ -124,6 +124,7 @@ public class MainActivity extends FlutterActivity {
                             String authorName = call.argument("authorName");
                             String authorEmail = call.argument("authorEmail");
                             String message = call.argument("message");
+                            String dateTimeStr = call.argument("when");
 
                             if (folderName == null || folderName.isEmpty()) {
                                 result.error("Invalid Parameters", "folderName Invalid", null);
@@ -144,7 +145,7 @@ public class MainActivity extends FlutterActivity {
 
                             String cloneLocation = filesDir + "/" + folderName;
 
-                            new GitCommitTask(result).execute(cloneLocation, authorName, authorEmail, message);
+                            new GitCommitTask(result).execute(cloneLocation, authorName, authorEmail, message, dateTimeStr);
                             return;
                         } else if (call.method.equals("gitInit")) {
                             String folderName = call.argument("folderName");
