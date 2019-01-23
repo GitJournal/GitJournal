@@ -28,7 +28,7 @@ class MarkdownYAMLSerializer implements NoteSerializer {
       var parts = str.split("---\n");
 
       var yamlMap = loadYaml(parts[1]);
-      Map<String, dynamic> map = new Map<String, dynamic>();
+      var map = new Map<String, dynamic>();
       yamlMap.forEach((key, value) {
         map[key] = value;
       });
@@ -37,7 +37,9 @@ class MarkdownYAMLSerializer implements NoteSerializer {
       return new Note.fromJson(map);
     }
 
-    return new Note(body: str);
+    var map = new Map<String, dynamic>();
+    map['body'] = str;
+    return new Note.fromJson(map);
   }
 
   @override
