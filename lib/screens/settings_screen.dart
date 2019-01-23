@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 
+import 'package:journal/app.dart';
+
 class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -14,44 +16,84 @@ class SettingsScreen extends StatelessWidget {
           },
         ),
       ),
-      body: SettingsForms(),
+      body: SettingsList(),
     );
   }
 }
 
-class SettingsForms extends StatefulWidget {
+class SettingsList extends StatefulWidget {
   @override
-  SettingsFormsState createState() {
-    return new SettingsFormsState();
+  SettingsListState createState() {
+    return new SettingsListState();
   }
 }
 
-class SettingsFormsState extends State<SettingsForms> {
+class SettingsListState extends State<SettingsList> {
   @override
   Widget build(BuildContext context) {
+    var gitAuthorForm = Form(
+      child: TextFormField(
+        style: Theme.of(context).textTheme.title,
+        decoration: const InputDecoration(
+          icon: Icon(Icons.person),
+          hintText: 'Who should author the changes?',
+          labelText: 'Git Author',
+        ),
+        validator: (String value) {
+          value = value.trim();
+          if (value.isEmpty) {
+            return 'Please enter a name';
+          }
+        },
+        textInputAction: TextInputAction.done,
+        onFieldSubmitted: (String _) {},
+        initialValue:
+            JournalApp.preferences.getString("gitAuthor") ?? "GitJournal",
+      ),
+    );
+
+    var gitAuthorEmailForm = Form(
+      child: TextFormField(
+        style: Theme.of(context).textTheme.title,
+        decoration: const InputDecoration(
+          icon: Icon(Icons.email),
+          hintText: 'Who should author the changes?',
+          labelText: 'Git Author Email',
+        ),
+        validator: (String value) {
+          value = value.trim();
+          if (value.isEmpty) {
+            return 'Please enter an email';
+          }
+        },
+        textInputAction: TextInputAction.done,
+        onFieldSubmitted: (String _) {},
+        initialValue: JournalApp.preferences.getString("gitAuthorEmail") ??
+            "app@gitjournal.io",
+      ),
+    );
+
+    var listView = ListView(children: <Widget>[
+      ListTile(title: gitAuthorForm),
+      ListTile(title: gitAuthorEmailForm),
+      VersionNumberTile(),
+    ]);
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Form(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            VersionNumberButton(),
-          ],
-        ),
-      ),
+      child: listView,
     );
   }
 }
 
-class VersionNumberButton extends StatefulWidget {
+class VersionNumberTile extends StatefulWidget {
   @override
-  VersionNumberButtonState createState() {
-    return new VersionNumberButtonState();
+  VersionNumberTileState createState() {
+    return new VersionNumberTileState();
   }
 }
 
-class VersionNumberButtonState extends State<VersionNumberButton> {
+class VersionNumberTileState extends State<VersionNumberTile> {
   PackageInfo packageInfo;
 
   @override
@@ -77,16 +119,13 @@ class VersionNumberButtonState extends State<VersionNumberButton> {
           packageInfo.buildNumber;
     }
 
-    return FlatButton(
-      child: SizedBox(
-        width: double.infinity,
-        child: Text(
-          text,
-          style: Theme.of(context).textTheme.subhead,
-          textAlign: TextAlign.left,
-        ),
+    return ListTile(
+      title: Text(
+        text,
+        style: Theme.of(context).textTheme.subhead,
+        textAlign: TextAlign.left,
       ),
-      onPressed: () {},
+      onTap: () {},
     );
   }
 }

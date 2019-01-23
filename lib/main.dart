@@ -31,6 +31,8 @@ void main() async {
 
 Future runJournalApp() async {
   var pref = await SharedPreferences.getInstance();
+  JournalApp.preferences = pref;
+
   var localGitRepoConfigured = pref.getBool("localGitRepoConfigured") ?? false;
   var remoteGitRepoConfigured =
       pref.getBool("remoteGitRepoConfigured") ?? false;

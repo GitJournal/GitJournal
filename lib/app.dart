@@ -6,6 +6,7 @@ import 'package:journal/state_container.dart';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class JournalApp extends StatelessWidget {
   static FirebaseAnalytics analytics = FirebaseAnalytics();
@@ -17,6 +18,8 @@ class JournalApp extends StatelessWidget {
     assert(inDebugMode = true);
     return inDebugMode;
   }
+
+  static SharedPreferences preferences;
 
   @override
   Widget build(BuildContext context) {
