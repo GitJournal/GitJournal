@@ -44,6 +44,7 @@ class JournalApp extends StatelessWidget {
         '/settings': (context) => SettingsScreen(),
         '/setupRemoteGit': (context) => OnBoardingScreen(onCompleted),
       },
+      debugShowCheckedModeBanner: false,
     );
   }
 }
