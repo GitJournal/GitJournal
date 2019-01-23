@@ -12,7 +12,7 @@ import 'package:journal/storage/notes_repository.dart';
 
 class GitNoteRepository implements NoteRepository {
   final FileStorage _fileStorage;
-  final String gitCloneUrl = "";
+  //final String gitCloneUrl = "";
   final String dirName;
 
   bool cloned = false;
@@ -85,6 +85,9 @@ class GitNoteRepository implements NoteRepository {
 
   @override
   Future<bool> sync() async {
+    /*
+    Disable git clone for now - The repo should have already been cloned!
+
     if (gitCloneUrl == null || gitCloneUrl.isEmpty) {
       print("Cannot sync because of lack of clone url");
       return false;
@@ -103,6 +106,7 @@ class GitNoteRepository implements NoteRepository {
       cloned = true;
       return true;
     }
+    */
 
     try {
       await gitPull(this.dirName);

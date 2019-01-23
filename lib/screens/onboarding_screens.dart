@@ -135,7 +135,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
               );
 
               var appState = StateContainer.of(context).appState;
-              _startGitClone(appState.gitBaseDirectory);
+              _startGitClone(context, appState.gitBaseDirectory);
 
               getAnalytics().logEvent(
                 name: "onboarding_public_key_copied",
@@ -276,7 +276,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     }
   }
 
-  void _startGitClone(String basePath) async {
+  void _startGitClone(BuildContext context, String basePath) async {
     // Just in case it was half cloned because of an error
     await _removeExistingClone(basePath);
 
@@ -296,15 +296,17 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         name: "onboarding_complete",
         parameters: <String, dynamic>{},
       );
+      Navigator.pop(context);
       this.widget.onBoardingCompletedFunction();
     }
   }
 
   Future _removeExistingClone(String baseDirPath) async {
-    var baseDir = new Directory(baseDirPath);
-    var dotGitDir = new Directory(p.join(baseDir.path, "journal", ".git"));
+    var baseDir = new Directory(p.join(baseDirPath, "journal"));
+    var dotGitDir = new Directory(p.join(baseDir.path, ".git"));
     bool exists = await dotGitDir.exists();
     if (exists) {
+      print("Removing " + baseDir.path);
       await baseDir.delete(recursive: true);
       await baseDir.create();
     }

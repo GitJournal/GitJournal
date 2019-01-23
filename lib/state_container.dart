@@ -192,7 +192,7 @@ class StateContainerState extends State<StateContainer> {
 
       await migrateGitRepo(
         fromGitBasePath: appState.localGitRepoPath,
-        toGitBasePath: appState.localGitRepoPath,
+        toGitBasePath: appState.remoteGitRepoPath,
         gitBasePath: appState.gitBaseDirectory,
       );
 
@@ -201,7 +201,7 @@ class StateContainerState extends State<StateContainer> {
         dirName: appState.remoteGitRepoPath,
       );
 
-      _persistConfig();
+      await _persistConfig();
       _loadNotesFromDisk();
       _syncNotes();
     });
