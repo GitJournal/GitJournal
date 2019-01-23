@@ -74,14 +74,32 @@ class SettingsListState extends State<SettingsList> {
     );
 
     var listView = ListView(children: <Widget>[
+      SettingsHeader("Git Settings"),
       ListTile(title: gitAuthorForm),
       ListTile(title: gitAuthorEmailForm),
+      SettingsHeader("Version Info"),
       VersionNumberTile(),
     ]);
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: listView,
+    );
+  }
+}
+
+class SettingsHeader extends StatelessWidget {
+  final String text;
+  SettingsHeader(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(
+        text,
+        style: Theme.of(context).textTheme.headline,
+      ),
+      enabled: false,
     );
   }
 }
