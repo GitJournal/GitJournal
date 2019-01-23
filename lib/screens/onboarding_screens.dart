@@ -211,7 +211,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
             curve: Curves.easeIn,
           );
         } else {
-          SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+          Navigator.pop(context);
         }
       },
       child: scaffold,
