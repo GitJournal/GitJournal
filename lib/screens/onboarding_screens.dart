@@ -262,7 +262,9 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         _gitCloneUrl.substring(_gitCloneUrl.lastIndexOf(":") + 1, lastIndex);
 
     final gitHubUrl = 'https://github.com/' + repoName + '/settings/keys/new';
-    final gitLabUrl = 'https://gitlab.com/' + repoName + '/settings/repository';
+    final gitLabUrl = 'https://gitlab.com/' +
+        repoName +
+        '/settings/repository/#js-deploy-keys-settings';
 
     try {
       if (_gitCloneUrl.startsWith("git@github.com:")) {
