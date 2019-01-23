@@ -6,7 +6,7 @@ import 'package:journal/widgets/journal_list.dart';
 import 'package:journal/note_editor.dart';
 import 'package:journal/note_viewer.dart';
 
-import 'package:journal/storage/git.dart';
+import 'package:journal/apis/git.dart';
 
 class HomeScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();

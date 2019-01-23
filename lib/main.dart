@@ -6,7 +6,7 @@ import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 
 import 'package:journal/app.dart';
 import 'package:journal/state_container.dart';
-import 'package:journal/storage/git.dart';
+import 'package:journal/apis/git.dart';
 
 void main() async {
   bool isInDebugMode = true;

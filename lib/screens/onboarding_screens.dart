@@ -9,7 +9,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 
 import 'package:journal/analytics.dart';
 import 'package:journal/state_container.dart';
-import 'package:journal/storage/git.dart';
+import 'package:journal/apis/git.dart';
 
 import 'package:journal/screens/onboarding_git_url.dart';
 import 'package:journal/screens/onboarding_git_clone.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:journal/storage/git.dart';
+import 'package:journal/apis/git.dart';
 
 import 'package:journal/apis/git_migration.dart';
 

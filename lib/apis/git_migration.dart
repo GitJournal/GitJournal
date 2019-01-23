@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:journal/storage/git.dart';
+import 'package:journal/apis/git.dart';
 
 import 'package:path/path.dart' as p;
 

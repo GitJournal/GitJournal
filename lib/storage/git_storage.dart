@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
 
 import 'package:journal/note.dart';
-import 'package:journal/storage/git.dart';
+import 'package:journal/apis/git.dart';
 import 'package:journal/storage/serializers.dart';
 import 'package:journal/storage/file_storage.dart';
 import 'package:journal/storage/notes_repository.dart';

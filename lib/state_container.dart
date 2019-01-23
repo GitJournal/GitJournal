@@ -10,7 +10,7 @@ import 'package:journal/appstate.dart';
 import 'package:journal/note.dart';
 import 'package:journal/storage/notes_repository.dart';
 import 'package:journal/storage/git_storage.dart';
-import 'package:journal/storage/git.dart';
+import 'package:journal/apis/git.dart';
 import 'package:journal/datetime_utils.dart';
 
 class StateContainer extends StatefulWidget {
