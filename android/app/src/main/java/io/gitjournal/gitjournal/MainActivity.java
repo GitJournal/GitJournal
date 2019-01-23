@@ -22,13 +22,15 @@ import io.flutter.util.PathUtils;
 
 public class MainActivity extends FlutterActivity implements MethodCallHandler {
     private static final String CHANNEL_NAME = "gitjournal.io/git";
+    static MethodChannel channel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         GeneratedPluginRegistrant.registerWith(this);
 
-        new MethodChannel(getFlutterView(), CHANNEL_NAME).setMethodCallHandler(this);
+        channel = new MethodChannel(getFlutterView(), CHANNEL_NAME);
+        channel.setMethodCallHandler(this);
     }
 
     @Override
