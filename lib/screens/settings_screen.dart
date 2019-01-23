@@ -135,6 +135,10 @@ class VersionNumberTileState extends State<VersionNumberTile> {
           packageInfo.version +
           "+" +
           packageInfo.buildNumber;
+
+      if (JournalApp.isInDebugMode) {
+        text += " (Debug)";
+      }
     }
 
     return ListTile(
