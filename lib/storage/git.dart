@@ -129,10 +129,10 @@ Future gitPush(String folderName) async {
 }
 
 Future gitCommit({
-  String gitFolder,
-  String authorName,
-  String authorEmail,
-  String message,
+  @required String gitFolder,
+  @required String authorName,
+  @required String authorEmail,
+  @required String message,
   String when,
 }) async {
   print("Going to git commit");

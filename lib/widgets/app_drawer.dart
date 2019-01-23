@@ -12,8 +12,7 @@ class AppDrawer extends StatelessWidget {
         title: new Text('Setup Git Sync'),
         onTap: () {
           Navigator.pop(context);
-          // Update the state of the app
-          // ...
+          Navigator.pushNamed(context, "/setupRemoteGit");
         },
       );
     }

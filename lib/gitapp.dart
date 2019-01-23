@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:journal/storage/git.dart';
 
+import 'package:journal/apis/git_migration.dart';
+
+const basePath = "journal";
+
 class GitApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -28,37 +32,49 @@ buildGitButtons() {
     RaisedButton(
       child: Text("Git Clone"),
       onPressed: () async {
-        gitClone("root@bcn.vhanda.in:git/test", "journal");
+        gitClone("root@bcn.vhanda.in:git/test", basePath);
       },
     ),
     RaisedButton(
       child: Text("Git Pull"),
       onPressed: () async {
-        gitPull("journal");
+        gitPull(basePath);
       },
     ),
     RaisedButton(
       child: Text("Git Add"),
       onPressed: () async {
-        await gitAdd("journal", ".");
+        await gitAdd(basePath, ".");
       },
     ),
     RaisedButton(
       child: Text("Git Push"),
       onPressed: () async {
-        gitPush("journal");
+        gitPush(basePath);
       },
     ),
     RaisedButton(
-        child: Text("Git Commit"),
-        onPressed: () async {
-          gitCommit(
-            gitFolder: "journal",
-            authorEmail: "noemail@example.com",
-            authorName: "Vishesh Handa",
-            message: "Default message from GitJournal",
-            when: "2017-10-20T01:21:10+02:00",
-          );
-        }),
+      child: Text("Git Commit"),
+      onPressed: () async {
+        gitCommit(
+          gitFolder: basePath,
+          authorEmail: "noemail@example.com",
+          authorName: "Vishesh Handa",
+          message: "Default message from GitJournal",
+          when: "2017-10-20T01:21:10+02:00",
+        );
+      },
+    ),
+    RaisedButton(
+      child: Text("Git Migrate"),
+      onPressed: () async {
+        var baseGitPath = await getGitBaseDirectory();
+        await migrateGitRepo(
+          fromGitBasePath: "journal_local",
+          toGitBasePath: "journal",
+          gitBasePath: baseGitPath.path,
+        );
+      },
+    ),
   ];
 }
