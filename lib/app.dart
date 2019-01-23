@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:journal/screens/home_screen.dart';
 import 'package:journal/screens/settings_screen.dart';
+import 'package:journal/screens/onboarding_screens.dart';
+import 'package:journal/state_container.dart';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -18,6 +20,11 @@ class JournalApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var stateContainer = StateContainer.of(context);
+    var onCompleted = () {
+      stateContainer.completeOnBoarding();
+    };
+
     return new MaterialApp(
       title: 'GitJournal',
       theme: new ThemeData(
@@ -32,6 +39,7 @@ class JournalApp extends StatelessWidget {
       routes: {
         '/': (context) => HomeScreen(),
         '/settings': (context) => SettingsScreen(),
+        '/setupRemoteGit': (context) => OnBoardingScreen(onCompleted),
       },
     );
   }

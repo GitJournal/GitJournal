@@ -10,8 +10,9 @@ import 'package:journal/appstate.dart';
 import 'package:journal/note.dart';
 import 'package:journal/storage/notes_repository.dart';
 import 'package:journal/storage/git_storage.dart';
-import 'package:journal/apis/git.dart';
 import 'package:journal/datetime_utils.dart';
+
+import 'package:journal/apis/git_migration.dart';
 
 class StateContainer extends StatefulWidget {
   final Widget child;
@@ -185,18 +186,25 @@ class StateContainerState extends State<StateContainer> {
   }
 
   void completeOnBoarding() {
-    setState(() {
-      //this.appState.onBoardingCompleted = true;
+    setState(() async {
+      this.appState.remoteGitRepoConfigured = true;
+      this.appState.remoteGitRepoPath = "journal";
 
-      _persistOnBoardingCompleted();
+      await migrateGitRepo(
+        fromGitBasePath: appState.localGitRepoPath,
+        toGitBasePath: appState.localGitRepoPath,
+        gitBasePath: appState.gitBaseDirectory,
+      );
+
+      noteRepo = new GitNoteRepository(
+        baseDirectory: appState.gitBaseDirectory,
+        dirName: appState.remoteGitRepoPath,
+      );
+
+      _persistConfig();
       _loadNotesFromDisk();
       _syncNotes();
     });
-  }
-
-  void _persistOnBoardingCompleted() async {
-    var pref = await SharedPreferences.getInstance();
-    pref.setBool("onBoardingCompleted", true);
   }
 
   Future _persistConfig() async {

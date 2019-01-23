@@ -134,7 +134,8 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                 curve: Curves.easeIn,
               );
 
-              _startGitClone();
+              var appState = StateContainer.of(context).appState;
+              _startGitClone(appState.gitBaseDirectory);
 
               getAnalytics().logEvent(
                 name: "onboarding_public_key_copied",
@@ -275,9 +276,9 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     }
   }
 
-  void _startGitClone() async {
+  void _startGitClone(String basePath) async {
     // Just in case it was half cloned because of an error
-    await _removeExistingClone();
+    await _removeExistingClone(basePath);
 
     String error = await gitClone(_gitCloneUrl, "journal");
     if (error != null && error.isNotEmpty) {
@@ -299,17 +300,14 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     }
   }
 
-  Future _removeExistingClone() async {
-    // FIXME: Implement this
-    /*
-    var baseDir = await getNotesDir();
-    var dotGitDir = new Directory(p.join(baseDir.path, ".git"));
+  Future _removeExistingClone(String baseDirPath) async {
+    var baseDir = new Directory(baseDirPath);
+    var dotGitDir = new Directory(p.join(baseDir.path, "journal", ".git"));
     bool exists = await dotGitDir.exists();
     if (exists) {
       await baseDir.delete(recursive: true);
       await baseDir.create();
     }
-    */
   }
 }
 
