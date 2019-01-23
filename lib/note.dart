@@ -12,10 +12,9 @@ class Note implements Comparable {
   Map<String, dynamic> extraProperties = new Map<String, dynamic>();
 
   Note({this.created, this.body, this.fileName, this.extraProperties}) {
-    assert(this.created != null);
-    assert(this.body != null);
-    assert(this.fileName != null);
-
+    if (created == null) {
+      created = DateTime(0, 0, 0, 0, 0, 0, 0, 0);
+    }
     if (extraProperties == null) {
       extraProperties = new Map<String, dynamic>();
     }
