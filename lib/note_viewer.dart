@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:journal/widgets/swipe_detector.dart';
 import 'package:journal/widgets/note_header.dart';
 
 import 'note_editor.dart';
@@ -23,23 +22,19 @@ class NoteBrowsingScreen extends StatefulWidget {
 }
 
 class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
-  int noteIndex;
+  PageController pageController;
 
-  NoteBrowsingScreenState({@required this.noteIndex});
+  NoteBrowsingScreenState({@required int noteIndex}) {
+    pageController = new PageController(initialPage: noteIndex);
+  }
 
   @override
   Widget build(BuildContext context) {
-    var viewer = new NoteViewer(
-      note: widget.notes[noteIndex],
-      showNextNoteFunc: () {
-        setState(() {
-          if (noteIndex < widget.notes.length - 1) noteIndex += 1;
-        });
-      },
-      showPrevNoteFunc: () {
-        setState(() {
-          if (noteIndex > 0) noteIndex -= 1;
-        });
+    var pageView = new PageView.builder(
+      controller: pageController,
+      itemCount: widget.notes.length,
+      itemBuilder: (BuildContext context, int pos) {
+        return new NoteViewer(note: widget.notes[pos]);
       },
     );
 
@@ -47,13 +42,18 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
       appBar: new AppBar(
         title: new Text('TIMELINE'),
       ),
-      body: viewer,
+      body: pageView,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.edit),
         onPressed: () {
-          var note = widget.notes[noteIndex];
-          var route = new MaterialPageRoute(
-              builder: (context) => new NoteEditor.fromNote(note));
+          var route = new MaterialPageRoute(builder: (context) {
+            int currentIndex = pageController.page.toInt();
+            assert(currentIndex > 0);
+            assert(currentIndex < widget.notes.length);
+
+            Note note = widget.notes[currentIndex];
+            return NoteEditor.fromNote(note);
+          });
           Navigator.of(context).push(route);
         },
       ),
@@ -63,16 +63,9 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
 
 class NoteViewer extends StatelessWidget {
   final Note note;
-  final VoidCallback showNextNoteFunc;
-  final VoidCallback showPrevNoteFunc;
-
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
-  const NoteViewer({
-    @required this.note,
-    @required this.showNextNoteFunc,
-    @required this.showPrevNoteFunc,
-  });
+  const NoteViewer({@required this.note});
 
   @override
   Widget build(BuildContext context) {
@@ -88,11 +81,7 @@ class NoteViewer extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
     );
 
-    return new SwipeDetector(
-      child: view,
-      onLeftSwipe: showNextNoteFunc,
-      onRightSwipe: showPrevNoteFunc,
-    );
+    return view;
   }
 
   /*
