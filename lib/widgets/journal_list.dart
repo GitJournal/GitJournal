@@ -21,7 +21,6 @@ class JournalList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new ListView.builder(
-      padding: const EdgeInsets.all(8.0),
       itemBuilder: (context, i) {
         if (i >= notes.length) {
           return null;
