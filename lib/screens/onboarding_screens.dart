@@ -13,6 +13,7 @@ import 'package:journal/apis/git.dart';
 
 import 'package:journal/screens/onboarding_git_url.dart';
 import 'package:journal/screens/onboarding_git_clone.dart';
+import 'package:journal/screens/onboarding_autoconfigure.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   final Function onBoardingCompletedFunction;
@@ -32,6 +33,9 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   var _pageCreateNewRepoDone = false;
   var _pageInputUrlDone = false;
   var _pageSshKeyDone = false;
+  var _autoConfigureStarted = false;
+  var _autoConfigureDone = false;
+  GitRemoteRepo _remoteRepo;
 
   var _gitCloneUrl = "";
   String gitCloneErrorMessage = "";
@@ -57,6 +61,9 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       pageCount++;
     }
     if (_pageSshKeyDone) {
+      pageCount++;
+    }
+    if (_autoConfigureStarted) {
       pageCount++;
     }
 
@@ -92,10 +99,16 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
 
         if (pos == 1 && _createNewRepo) {
           return OnBoardingCreateRepo(
-            onDone: () {
+            onDone: (GitRemoteRepo remoteRepo, bool autoConfigure) {
+              if (!autoConfigure) {
+                _launchCreateRepoPage(remoteRepo);
+              }
+
               setState(() {
                 _createNewRepo = true;
                 _pageCreateNewRepoDone = true;
+                _autoConfigureStarted = autoConfigure;
+                _remoteRepo = remoteRepo;
 
                 pageController.nextPage(
                   duration: Duration(milliseconds: 200),
@@ -104,6 +117,30 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
               });
             },
           );
+        }
+
+        if (pos == 2 && _createNewRepo && _autoConfigureStarted) {
+          return OnBoardingAutoConfigure(
+            remoteRepo: _remoteRepo,
+            onDone: (String gitCloneUrl) {
+              setState(() {
+                _gitCloneUrl = gitCloneUrl;
+                _autoConfigureDone = true;
+
+                pageController.nextPage(
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.easeIn,
+                );
+
+                var appState = StateContainer.of(context).appState;
+                _startGitClone(context, appState.gitBaseDirectory);
+              });
+            },
+          );
+        }
+
+        if (pos == 3 && _createNewRepo && _autoConfigureDone) {
+          return OnBoardingGitClone(errorMessage: gitCloneErrorMessage);
         }
 
         if ((pos == 2 && _createNewRepo) || pos == 1) {
@@ -278,6 +315,20 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     }
   }
 
+  void _launchCreateRepoPage(GitRemoteRepo repo) async {
+    try {
+      if (repo == GitRemoteRepo.GitHub) {
+        await launch("https://github.com/new");
+      } else if (repo == GitRemoteRepo.Gitlab) {
+        await launch("https://gitlab.com/projects/new");
+      }
+    } catch (err, stack) {
+      // FIXME: Error handling?
+      print("_launchCreateRepoPage: " + err.toString());
+      print(stack);
+    }
+  }
+
   void _startGitClone(BuildContext context, String basePath) async {
     // Just in case it was half cloned because of an error
     await _removeExistingClone(basePath);
@@ -376,6 +427,7 @@ class OnBoardingInitialChoice extends StatelessWidget {
 
 class OnBoardingCreateRepo extends StatelessWidget {
   final Function onDone;
+  final _configureKey = new GlobalKey();
 
   OnBoardingCreateRepo({@required this.onDone});
 
@@ -394,15 +446,9 @@ class OnBoardingCreateRepo extends StatelessWidget {
           OnBoardingButton(
             text: "GitHub",
             iconUrl: 'assets/icon/github-icon.png',
-            onPressed: () async {
-              try {
-                await launch("https://github.com/new");
-              } catch (err, stack) {
-                // FIXME: Error handling?
-                print(err);
-                print(stack);
-              }
-              onDone();
+            onPressed: () {
+              var switchWidget = _configureKey.currentWidget as Switch;
+              onDone(GitRemoteRepo.GitHub, switchWidget.value);
             },
           ),
           SizedBox(height: 8.0),
@@ -410,15 +456,25 @@ class OnBoardingCreateRepo extends StatelessWidget {
             text: "GitLab",
             iconUrl: 'assets/icon/gitlab-icon.png',
             onPressed: () async {
-              try {
-                await launch("https://gitlab.com/projects/new");
-              } catch (err, stack) {
-                // FIXME: Error handling?
-                print(err);
-                print(stack);
-              }
-              onDone();
+              var switchWidget = _configureKey.currentWidget as Switch;
+              onDone(GitRemoteRepo.Gitlab, switchWidget.value);
             },
+          ),
+          SizedBox(height: 8.0),
+          Row(
+            children: <Widget>[
+              Switch(
+                key: _configureKey,
+                value: true,
+                onChanged: (bool value) {},
+              ),
+              Text(
+                "Auto Configure",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline,
+              ),
+            ],
+            mainAxisAlignment: MainAxisAlignment.end,
           ),
         ],
         mainAxisAlignment: MainAxisAlignment.center,

@@ -161,10 +161,14 @@ class GitHub {
 
 class Repo {
   String fullName;
+  String cloneUrl;
 
-  Repo({this.fullName});
+  Repo({this.fullName, this.cloneUrl});
   factory Repo.fromJson(Map<String, dynamic> parsedJson) {
-    return new Repo(fullName: parsedJson['full_name']);
+    return new Repo(
+      fullName: parsedJson['full_name'],
+      cloneUrl: parsedJson['ssh_url'],
+    );
   }
 
   @override
