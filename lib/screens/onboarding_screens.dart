@@ -108,6 +108,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                 _createNewRepo = true;
                 _pageCreateNewRepoDone = true;
                 _autoConfigureStarted = autoConfigure;
+                _autoConfigureDone = false;
                 _remoteRepo = remoteRepo;
 
                 pageController.nextPage(
