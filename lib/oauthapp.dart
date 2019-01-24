@@ -1,17 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-const _platform = const MethodChannel('gitjournal.io/git');
-
-// Actual message handler:
-Future _handleMessages(MethodCall call) async {
-  switch (call.method) {
-    case "onURL":
-      print("Call onURL" + call.arguments.toString());
-    // Do something nice using call.arguments["URL"]
-  }
-}
+import 'package:journal/apis/github.dart';
 
 class OAuthApp extends StatefulWidget {
   @override
@@ -20,10 +9,18 @@ class OAuthApp extends StatefulWidget {
   }
 }
 
+var key =
+    'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+VAh8r+vn0c+M+DacOo/szXcdMpxO1kIO3USkzgE5XdO83kQdDwh4Xc4P3dcc+FFSfVcEl3mSXGKbYC3G0ZoVcWd4ed40Gt3sLHSfNRQlRv+obnqKbzDLuOGfq65EkaJ90vrWBo/k7K8tBC2j1FZ/PUYy3DxeQkPEZXCMZDSG5P/+XoHn5IPcaxDpvlZjtOrx4H3pQ/YVI+XmyFAsZe+/Shy5sg4ilsdo4BQN2nODuBLwmgYu/hHmCcd8t4OxgBANVN8TMqHnZfRLixRSuXn0DbV4YOa/b2lBFQNvjkoBF6KhXOxZ+awyjyTpNp4AgF5c+3xptkNwUlwiQDCzcUmH your_email@example.com';
+
 class OAuthAppState extends State<OAuthApp> {
+  String githubAccessCode = "";
+
   void initState() {
     super.initState();
-    _platform.setMethodCallHandler(_handleMessages);
+    initGitHub((String accessCode) {
+      print("Got accessCode " + accessCode);
+      githubAccessCode = accessCode;
+    });
   }
 
   @override
@@ -38,9 +35,37 @@ class OAuthAppState extends State<OAuthApp> {
           RaisedButton(
             child: Text("Open OAuth URL"),
             onPressed: () {
-              var url =
-                  "https://github.com/login/oauth/authorize?client_id=aa3072cbfb02b1db14ed&scope=repo";
-              launch(url);
+              launchOAuthScreen();
+            },
+          ),
+          RaisedButton(
+            child: Text("List Repos"),
+            onPressed: () async {
+              var repos = await listRepos(githubAccessCode);
+              for (var repo in repos) {
+                print(repo.fullName);
+              }
+            },
+          ),
+          RaisedButton(
+            child: Text("Create Repo"),
+            onPressed: () async {
+              try {
+                await createRepo(githubAccessCode, "journal_test2");
+              } catch (err) {
+                print("Create Repo: " + err.toString());
+              }
+            },
+          ),
+          RaisedButton(
+            child: Text("Add Deploy Key"),
+            onPressed: () async {
+              try {
+                await addDeployKey(
+                    githubAccessCode, key, "vhanda/journal_test2");
+              } catch (err) {
+                print("Deploy Key: " + err.toString());
+              }
             },
           ),
         ]),
