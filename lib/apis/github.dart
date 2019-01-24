@@ -41,7 +41,7 @@ class GitHub {
 
   Future<String> _getAccessCode(String authCode) async {
     var url =
-        "https://github.com/login/oauth/access_token?client_id=${_clientID}&client_secret=${_clientSecret}&code=${authCode}";
+        "https://github.com/login/oauth/access_token?client_id=$_clientID&client_secret=$_clientSecret&code=$authCode";
 
     var response = await http.post(url);
     if (response.statusCode != 200) {
@@ -72,7 +72,7 @@ class GitHub {
     }
 
     var url =
-        "https://api.github.com/user/repos?page=1&per_page=100&access_token=${_accessCode}";
+        "https://api.github.com/user/repos?page=1&per_page=100&access_token=$_accessCode";
 
     var response = await http.get(url);
     if (response.statusCode != 200) {
@@ -101,7 +101,7 @@ class GitHub {
       throw "GitHub Access Code Missing";
     }
 
-    var url = "https://api.github.com/user/repos?access_token=${_accessCode}";
+    var url = "https://api.github.com/user/repos?access_token=$_accessCode";
     Map<String, dynamic> data = {
       'name': name,
       'private': true,
@@ -132,7 +132,7 @@ class GitHub {
     }
 
     var url =
-        "https://api.github.com/repos/$repo/keys?access_token=${_accessCode}";
+        "https://api.github.com/repos/$repo/keys?access_token=$_accessCode";
 
     Map<String, dynamic> data = {
       'title': "GitJournal",
