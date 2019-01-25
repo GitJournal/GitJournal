@@ -441,7 +441,7 @@ class GitHostSetupCreateRepo extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Text(
-            "Select a provider -",
+            "Select a Git hosting provider -",
             style: Theme.of(context).textTheme.headline,
           ),
           SizedBox(height: 16.0),
