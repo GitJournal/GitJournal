@@ -31,15 +31,22 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
       gitHost.init(() async {
         print("GitHost Initalized: " + widget.gitHostType.toString());
 
-        var repo = await gitHost.createRepo("journal");
-        var publicKey = await generateSSHKeys(comment: "GitJournal");
-        await gitHost.addDeployKey(publicKey, repo.fullName);
-
+        GitRepo repo;
+        try {
+          repo = await gitHost.createRepo("journal");
+          var publicKey = await generateSSHKeys(comment: "GitJournal");
+          await gitHost.addDeployKey(publicKey, repo.fullName);
+        } on GitHostException catch (e) {
+          print("GitHostSetupAutoConfigure: " + e.toString());
+          setState(() {
+            errorMessage = widget.gitHostType.toString() + ": " + e.toString();
+          });
+        }
         widget.onDone(repo.cloneUrl);
       });
       gitHost.launchOAuthScreen();
     } on GitHostException catch (e) {
-      print("GitHostSetupAutoConfigur: " + e.toString());
+      print("GitHostSetupAutoConfigure: " + e.toString());
       setState(() {
         errorMessage = widget.gitHostType.toString() + ": " + e.toString();
       });
