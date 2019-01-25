@@ -1,24 +1,15 @@
 import 'package:flutter/material.dart';
-
-import 'package:journal/apis/github.dart';
 import 'package:journal/apis/git.dart';
-
-enum GitRemoteRepo {
-  GitHub,
-  Gitlab,
-  Custom,
-}
+import 'package:journal/apis/githost_factory.dart';
 
 class OnBoardingAutoConfigure extends StatefulWidget {
-  final GitRemoteRepo remoteRepo;
+  final GitHostType gitHostType;
   final Function onDone;
 
   OnBoardingAutoConfigure({
-    @required this.remoteRepo,
+    @required this.gitHostType,
     @required this.onDone,
-  }) {
-    assert(remoteRepo == GitRemoteRepo.GitHub);
-  }
+  });
 
   @override
   OnBoardingAutoConfigureState createState() {
@@ -27,22 +18,23 @@ class OnBoardingAutoConfigure extends StatefulWidget {
 }
 
 class OnBoardingAutoConfigureState extends State<OnBoardingAutoConfigure> {
-  var gitHub = new GitHub();
+  GitHost gitHost;
 
   @override
   void initState() {
     super.initState();
 
-    gitHub.init(() async {
+    gitHost = createGitHost(widget.gitHostType);
+    gitHost.init(() async {
       print("GitHub Initalized");
 
-      var repo = await gitHub.createRepo("journal");
+      var repo = await gitHost.createRepo("journal");
       var publicKey = await generateSSHKeys(comment: "GitJournal");
-      await gitHub.addDeployKey(publicKey, repo.fullName);
+      await gitHost.addDeployKey(publicKey, repo.fullName);
 
       widget.onDone(repo.cloneUrl);
     });
-    gitHub.launchOAuthScreen();
+    gitHost.launchOAuthScreen();
   }
 
   @override

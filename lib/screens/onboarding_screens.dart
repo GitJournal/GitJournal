@@ -1,19 +1,17 @@
 import 'dart:io';
 
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import 'package:path/path.dart' as p;
-import 'package:dots_indicator/dots_indicator.dart';
-
 import 'package:journal/analytics.dart';
-import 'package:journal/state_container.dart';
 import 'package:journal/apis/git.dart';
-
-import 'package:journal/screens/onboarding_git_url.dart';
-import 'package:journal/screens/onboarding_git_clone.dart';
+import 'package:journal/apis/githost_factory.dart';
 import 'package:journal/screens/onboarding_autoconfigure.dart';
+import 'package:journal/screens/onboarding_git_clone.dart';
+import 'package:journal/screens/onboarding_git_url.dart';
+import 'package:journal/state_container.dart';
+import 'package:path/path.dart' as p;
+import 'package:url_launcher/url_launcher.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   final Function onBoardingCompletedFunction;
@@ -35,7 +33,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   var _pageSshKeyDone = false;
   var _autoConfigureStarted = false;
   var _autoConfigureDone = false;
-  GitRemoteRepo _remoteRepo;
+  GitHostType _gitHostType;
 
   var _gitCloneUrl = "";
   String gitCloneErrorMessage = "";
@@ -99,9 +97,9 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
 
         if (pos == 1 && _createNewRepo) {
           return OnBoardingCreateRepo(
-            onDone: (GitRemoteRepo remoteRepo, bool autoConfigure) {
+            onDone: (GitHostType gitHostType, bool autoConfigure) {
               if (!autoConfigure) {
-                _launchCreateRepoPage(remoteRepo);
+                _launchCreateRepoPage(gitHostType);
               }
 
               setState(() {
@@ -109,7 +107,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                 _pageCreateNewRepoDone = true;
                 _autoConfigureStarted = autoConfigure;
                 _autoConfigureDone = false;
-                _remoteRepo = remoteRepo;
+                _gitHostType = gitHostType;
 
                 pageController.nextPage(
                   duration: Duration(milliseconds: 200),
@@ -122,7 +120,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
 
         if (pos == 2 && _createNewRepo && _autoConfigureStarted) {
           return OnBoardingAutoConfigure(
-            remoteRepo: _remoteRepo,
+            gitHostType: _gitHostType,
             onDone: (String gitCloneUrl) {
               setState(() {
                 _gitCloneUrl = gitCloneUrl;
@@ -316,11 +314,11 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     }
   }
 
-  void _launchCreateRepoPage(GitRemoteRepo repo) async {
+  void _launchCreateRepoPage(GitHostType hostType) async {
     try {
-      if (repo == GitRemoteRepo.GitHub) {
+      if (hostType == GitHostType.GitHub) {
         await launch("https://github.com/new");
-      } else if (repo == GitRemoteRepo.Gitlab) {
+      } else if (hostType == GitHostType.GitLab) {
         await launch("https://gitlab.com/projects/new");
       }
     } catch (err, stack) {
@@ -449,7 +447,7 @@ class OnBoardingCreateRepo extends StatelessWidget {
             iconUrl: 'assets/icon/github-icon.png',
             onPressed: () {
               var switchWidget = _configureKey.currentWidget as Switch;
-              onDone(GitRemoteRepo.GitHub, switchWidget.value);
+              onDone(GitHostType.GitHub, switchWidget.value);
             },
           ),
           SizedBox(height: 8.0),
@@ -458,7 +456,7 @@ class OnBoardingCreateRepo extends StatelessWidget {
             iconUrl: 'assets/icon/gitlab-icon.png',
             onPressed: () async {
               var switchWidget = _configureKey.currentWidget as Switch;
-              onDone(GitRemoteRepo.Gitlab, switchWidget.value);
+              onDone(GitHostType.GitLab, switchWidget.value);
             },
           ),
           SizedBox(height: 8.0),
