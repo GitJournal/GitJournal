@@ -1,12 +1,11 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-
+import 'package:journal/apis/git.dart';
+import 'package:journal/note_editor.dart';
+import 'package:journal/note_viewer.dart';
 import 'package:journal/state_container.dart';
 import 'package:journal/widgets/app_drawer.dart';
 import 'package:journal/widgets/journal_list.dart';
-import 'package:journal/note_editor.dart';
-import 'package:journal/note_viewer.dart';
-
-import 'package:journal/apis/git.dart';
 
 class HomeScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -34,10 +33,19 @@ class HomeScreen extends StatelessWidget {
       },
     );
 
+    var appBarMenuButton = BadgeIconButton(
+      icon: const Icon(Icons.menu),
+      itemCount: appState.remoteGitRepoConfigured ? 0 : 1,
+      onPressed: () {
+        _scaffoldKey.currentState.openDrawer();
+      },
+    );
+
     return new Scaffold(
       key: _scaffoldKey,
       appBar: new AppBar(
         title: new Text('GitJournal'),
+        leading: appBarMenuButton,
       ),
       floatingActionButton: createButton,
       body: Center(

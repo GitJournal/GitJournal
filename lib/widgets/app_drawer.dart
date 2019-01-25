@@ -9,7 +9,11 @@ class AppDrawer extends StatelessWidget {
 
     if (!appState.remoteGitRepoConfigured) {
       setupGitButton = ListTile(
-        title: new Text('Setup Git Sync'),
+        title: new Text('Setup Git Host'),
+        trailing: new Icon(
+          Icons.priority_high,
+          color: Colors.red,
+        ),
         onTap: () {
           Navigator.pop(context);
           Navigator.pushNamed(context, "/setupRemoteGit");
