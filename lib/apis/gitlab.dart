@@ -27,19 +27,21 @@ class GitLab implements GitHost {
 
       print("GitLab: Called onUrl with " + call.arguments.toString());
 
-      var url = call.arguments["URL"];
-      var uri = Uri.parse(url);
+      String url = call.arguments["URL"];
+      var queryParamters = url.substring(url.indexOf('#') + 1);
+      var map = Uri.splitQueryString(queryParamters);
 
-      var state = uri.queryParameters['state'];
+      var state = map['state'];
       if (state != _stateOAuth) {
         print("GitLab: OAuth State incorrect");
-        callback();
+        print("Required State: " + _stateOAuth);
+        print("Actual State: " + state);
+        throw GitHostException.OAuthFailed;
       }
 
-      _accessCode = uri.queryParameters['access_token'];
+      _accessCode = map['access_token'];
       if (_accessCode == null) {
-        print("GitLab: Missing access code. Now what?");
-        callback();
+        throw GitHostException.OAuthFailed;
       }
 
       callback();

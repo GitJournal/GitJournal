@@ -20,3 +20,16 @@ class GitRepo {
     return 'GitRepo{fulleName: $fullName, cloneUrl: $cloneUrl}';
   }
 }
+
+class GitHostException implements Exception {
+  static const OAuthFailed = const GitHostException("OAuthFailed");
+  static const RepoExists = const GitHostException("RepoExists");
+
+  final String cause;
+  const GitHostException(this.cause);
+
+  @override
+  String toString() {
+    return "GitHostException: " + cause;
+  }
+}

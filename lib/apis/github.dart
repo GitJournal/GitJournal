@@ -30,7 +30,7 @@ class GitHub implements GitHost {
       var authCode = uri.queryParameters['code'];
       if (authCode == null) {
         print("GitHub: Missing auth code. Now what?");
-        callback();
+        throw GitHostException.OAuthFailed;
       }
 
       this._accessCode = await _getAccessCode(authCode);
@@ -51,7 +51,7 @@ class GitHub implements GitHost {
           response.statusCode.toString() +
           ": " +
           response.body);
-      return null;
+      throw GitHostException.OAuthFailed;
     }
     print("GithubResponse: " + response.body);
 
