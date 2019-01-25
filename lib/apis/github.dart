@@ -72,7 +72,7 @@ class GitHub implements GitHost {
   @override
   Future<List<GitRepo>> listRepos() async {
     if (_accessCode.isEmpty) {
-      throw "GitHub Access Code Missing";
+      throw GitHostException.MissingAccessCode;
     }
 
     var url =
@@ -103,7 +103,7 @@ class GitHub implements GitHost {
   Future<GitRepo> createRepo(String name) async {
     // FIXME: Proper error when the repo exists!
     if (_accessCode.isEmpty) {
-      throw "GitHub Access Code Missing";
+      throw GitHostException.MissingAccessCode;
     }
 
     var url = "https://api.github.com/user/repos?access_token=$_accessCode";
@@ -123,7 +123,8 @@ class GitHub implements GitHost {
           response.statusCode.toString() +
           ": " +
           response.body);
-      return null;
+
+      throw GitHostException.CreateRepoFailed;
     }
 
     print("GitHub createRepo: " + response.body);
@@ -134,7 +135,7 @@ class GitHub implements GitHost {
   // FIXME: Proper error when the repo exists!
   Future addDeployKey(String sshPublicKey, String repo) async {
     if (_accessCode.isEmpty) {
-      throw "GitHub Access Code Missing";
+      throw GitHostException.MissingAccessCode;
     }
 
     var url =
@@ -157,7 +158,7 @@ class GitHub implements GitHost {
           response.statusCode.toString() +
           ": " +
           response.body);
-      return null;
+      throw GitHostException.DeployKeyFailed;
     }
 
     print("GitHub addDeployKey: " + response.body);

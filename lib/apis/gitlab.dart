@@ -63,7 +63,7 @@ class GitLab implements GitHost {
   @override
   Future<List<GitRepo>> listRepos() async {
     if (_accessCode.isEmpty) {
-      throw "GitHub Access Code Missing";
+      throw GitHostException.MissingAccessCode;
     }
 
     // FIXME: pagination!
@@ -95,7 +95,7 @@ class GitLab implements GitHost {
   Future<GitRepo> createRepo(String name) async {
     // FIXME: Proper error when the repo exists!
     if (_accessCode.isEmpty) {
-      throw "GitLab Access Code Missing";
+      throw GitHostException.MissingAccessCode;
     }
 
     var url = "https://gitlab.com/api/v4/projects?access_token=$_accessCode";
@@ -115,7 +115,15 @@ class GitLab implements GitHost {
           response.statusCode.toString() +
           ": " +
           response.body);
-      return null;
+
+      if (response.statusCode == 400) {
+        Map<String, dynamic> data = json.decode(response.body);
+        Map<String, dynamic> message = data['message'];
+        var name = message['name'];
+        print(name);
+      }
+
+      throw GitHostException.CreateRepoFailed;
     }
 
     print("GitLab createRepo: " + response.body);
@@ -126,7 +134,7 @@ class GitLab implements GitHost {
   @override
   Future addDeployKey(String sshPublicKey, String repo) async {
     if (_accessCode.isEmpty) {
-      throw "GitLab Access Code Missing";
+      throw GitHostException.MissingAccessCode;
     }
 
     repo = repo.replaceAll('/', '%2F');
@@ -150,7 +158,7 @@ class GitLab implements GitHost {
           response.statusCode.toString() +
           ": " +
           response.body);
-      return null;
+      throw GitHostException.DeployKeyFailed;
     }
 
     print("GitLab addDeployKey: " + response.body);
