@@ -2,18 +2,20 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
-class GitHub {
+import 'githost.dart';
+
+class GitHub implements GitHost {
   static const _clientID = "aa3072cbfb02b1db14ed";
   static const _clientSecret = "010d303ea99f82330f2b228977cef9ddbf7af2cd";
 
   var _platform = const MethodChannel('gitjournal.io/git');
   var _accessCode = "";
 
+  @override
   void init(Function callback) {
     Future _handleMessages(MethodCall call) async {
       if (call.method != "onURL") {
@@ -57,6 +59,7 @@ class GitHub {
     return map["access_token"];
   }
 
+  @override
   Future launchOAuthScreen() async {
     // FIXME: Add some 'state' over here!
 
@@ -66,7 +69,8 @@ class GitHub {
     return launch(url);
   }
 
-  Future<List<Repo>> listRepos() async {
+  @override
+  Future<List<GitRepo>> listRepos() async {
     if (_accessCode.isEmpty) {
       throw "GitHub Access Code Missing";
     }
@@ -84,10 +88,10 @@ class GitHub {
     }
 
     List<dynamic> list = jsonDecode(response.body);
-    List<Repo> repos = new List<Repo>();
+    var repos = new List<GitRepo>();
     list.forEach((dynamic d) {
       var map = Map<String, dynamic>.from(d);
-      var repo = Repo.fromJson(map);
+      var repo = _repoFromJson(map);
       repos.add(repo);
     });
 
@@ -95,8 +99,9 @@ class GitHub {
     return repos;
   }
 
-// FIXME: Proper error when the repo exists!
-  Future<Repo> createRepo(String name) async {
+  @override
+  Future<GitRepo> createRepo(String name) async {
+    // FIXME: Proper error when the repo exists!
     if (_accessCode.isEmpty) {
       throw "GitHub Access Code Missing";
     }
@@ -123,9 +128,10 @@ class GitHub {
 
     print("GitHub createRepo: " + response.body);
     var map = json.decode(response.body);
-    return Repo.fromJson(map);
+    return _repoFromJson(map);
   }
 
+  // FIXME: Proper error when the repo exists!
   Future addDeployKey(String sshPublicKey, String repo) async {
     if (_accessCode.isEmpty) {
       throw "GitHub Access Code Missing";
@@ -157,22 +163,11 @@ class GitHub {
     print("GitHub addDeployKey: " + response.body);
     return json.decode(response.body);
   }
-}
 
-class Repo {
-  String fullName;
-  String cloneUrl;
-
-  Repo({this.fullName, this.cloneUrl});
-  factory Repo.fromJson(Map<String, dynamic> parsedJson) {
-    return new Repo(
+  GitRepo _repoFromJson(Map<String, dynamic> parsedJson) {
+    return new GitRepo(
       fullName: parsedJson['full_name'],
       cloneUrl: parsedJson['ssh_url'],
     );
-  }
-
-  @override
-  String toString() {
-    return 'Repo{fulleName: $fullName}';
   }
 }

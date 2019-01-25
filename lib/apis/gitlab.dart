@@ -1,24 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:http/http.dart' as http;
-import 'package:flutter/services.dart';
-
-import 'package:url_launcher/url_launcher.dart';
-
 import 'dart:math';
 
-String _randomString(int length) {
-  var rand = new Random();
-  var codeUnits = new List.generate(length, (index) {
-    return rand.nextInt(33) + 89;
-  });
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
-  return new String.fromCharCodes(codeUnits);
-}
+import 'githost.dart';
 
-class Gitlab {
+class GitLab implements GitHost {
   static const _clientID =
       "faf33c3716faf05bfb701b1b31e36c83a23c3ec2d7161f4ff00fba2275524d09";
 
@@ -26,6 +17,7 @@ class Gitlab {
   var _accessCode = "";
   var _stateOAuth = "";
 
+  @override
   void init(Function callback) {
     Future _handleMessages(MethodCall call) async {
       if (call.method != "onURL") {
@@ -57,6 +49,7 @@ class Gitlab {
     print("GitLab: Installed Handler");
   }
 
+  @override
   Future launchOAuthScreen() async {
     _stateOAuth = _randomString(10);
 
@@ -65,7 +58,8 @@ class Gitlab {
     return launch(url);
   }
 
-  Future<List<GitLabRepo>> listRepos() async {
+  @override
+  Future<List<GitRepo>> listRepos() async {
     if (_accessCode.isEmpty) {
       throw "GitHub Access Code Missing";
     }
@@ -84,10 +78,10 @@ class Gitlab {
     }
 
     List<dynamic> list = jsonDecode(response.body);
-    List<GitLabRepo> repos = new List<GitLabRepo>();
+    var repos = new List<GitRepo>();
     list.forEach((dynamic d) {
       var map = Map<String, dynamic>.from(d);
-      var repo = GitLabRepo.fromJson(map);
+      var repo = _repoFromJson(map);
       repos.add(repo);
     });
 
@@ -95,8 +89,9 @@ class Gitlab {
     return repos;
   }
 
-// FIXME: Proper error when the repo exists!
-  Future<GitLabRepo> createRepo(String name) async {
+  @override
+  Future<GitRepo> createRepo(String name) async {
+    // FIXME: Proper error when the repo exists!
     if (_accessCode.isEmpty) {
       throw "GitLab Access Code Missing";
     }
@@ -123,9 +118,10 @@ class Gitlab {
 
     print("GitLab createRepo: " + response.body);
     var map = json.decode(response.body);
-    return GitLabRepo.fromJson(map);
+    return _repoFromJson(map);
   }
 
+  @override
   Future addDeployKey(String sshPublicKey, String repo) async {
     if (_accessCode.isEmpty) {
       throw "GitLab Access Code Missing";
@@ -158,22 +154,20 @@ class Gitlab {
     print("GitLab addDeployKey: " + response.body);
     return json.decode(response.body);
   }
-}
 
-class GitLabRepo {
-  String fullName;
-  String cloneUrl;
-
-  GitLabRepo({this.fullName, this.cloneUrl});
-  factory GitLabRepo.fromJson(Map<String, dynamic> parsedJson) {
-    return new GitLabRepo(
+  GitRepo _repoFromJson(Map<String, dynamic> parsedJson) {
+    return new GitRepo(
       fullName: parsedJson['path_with_namespace'],
       cloneUrl: parsedJson['ssh_url_to_repo'],
     );
   }
+}
 
-  @override
-  String toString() {
-    return 'GitLabRepo{fulleName: $fullName, cloneUrl: $cloneUrl}';
-  }
+String _randomString(int length) {
+  var rand = new Random();
+  var codeUnits = new List.generate(length, (index) {
+    return rand.nextInt(33) + 89;
+  });
+
+  return new String.fromCharCodes(codeUnits);
 }

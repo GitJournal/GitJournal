@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:flutter/foundation.dart';
 
+import 'package:flutter/foundation.dart';
 import 'package:journal/note.dart';
 
 class NoteRepoResult {
