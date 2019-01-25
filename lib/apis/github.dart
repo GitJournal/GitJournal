@@ -124,6 +124,12 @@ class GitHub implements GitHost {
           ": " +
           response.body);
 
+      if (response.statusCode == 422) {
+        if (response.body.contains("name already exists")) {
+          throw GitHostException.RepoExists;
+        }
+      }
+
       throw GitHostException.CreateRepoFailed;
     }
 

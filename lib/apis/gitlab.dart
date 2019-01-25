@@ -117,10 +117,9 @@ class GitLab implements GitHost {
           response.body);
 
       if (response.statusCode == 400) {
-        Map<String, dynamic> data = json.decode(response.body);
-        Map<String, dynamic> message = data['message'];
-        var name = message['name'];
-        print(name);
+        if (response.body.contains("has already been taken")) {
+          throw GitHostException.RepoExists;
+        }
       }
 
       throw GitHostException.CreateRepoFailed;
