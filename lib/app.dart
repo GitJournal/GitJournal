@@ -1,12 +1,12 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:journal/screens/home_screen.dart';
 import 'package:journal/screens/settings_screen.dart';
-import 'package:journal/screens/onboarding_screens.dart';
 import 'package:journal/state_container.dart';
-
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'screens/githostsetup_screens.dart';
 
 class JournalApp extends StatelessWidget {
   static FirebaseAnalytics analytics = FirebaseAnalytics();
@@ -25,7 +25,7 @@ class JournalApp extends StatelessWidget {
   Widget build(BuildContext context) {
     var stateContainer = StateContainer.of(context);
     var onCompleted = () {
-      stateContainer.completeOnBoarding();
+      stateContainer.completeGitHostSetup();
     };
 
     return new MaterialApp(
@@ -42,7 +42,7 @@ class JournalApp extends StatelessWidget {
       routes: {
         '/': (context) => HomeScreen(),
         '/settings': (context) => SettingsScreen(),
-        '/setupRemoteGit': (context) => OnBoardingScreen(onCompleted),
+        '/setupRemoteGit': (context) => GitHostSetupScreen(onCompleted),
       },
       debugShowCheckedModeBanner: false,
       //debugShowMaterialGrid: true,

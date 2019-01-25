@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:journal/apis/git.dart';
 import 'package:journal/apis/githost_factory.dart';
 
-class OnBoardingAutoConfigure extends StatefulWidget {
+class GitHostSetupAutoConfigure extends StatefulWidget {
   final GitHostType gitHostType;
   final Function onDone;
 
-  OnBoardingAutoConfigure({
+  GitHostSetupAutoConfigure({
     @required this.gitHostType,
     @required this.onDone,
   });
 
   @override
-  OnBoardingAutoConfigureState createState() {
-    return new OnBoardingAutoConfigureState();
+  GitHostSetupAutoConfigureState createState() {
+    return new GitHostSetupAutoConfigureState();
   }
 }
 
-class OnBoardingAutoConfigureState extends State<OnBoardingAutoConfigure> {
+class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
   GitHost gitHost;
 
   @override

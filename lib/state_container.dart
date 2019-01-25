@@ -3,16 +3,14 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:journal/apis/git_migration.dart';
+import 'package:journal/appstate.dart';
+import 'package:journal/datetime_utils.dart';
+import 'package:journal/note.dart';
+import 'package:journal/storage/git_storage.dart';
+import 'package:journal/storage/notes_repository.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:journal/appstate.dart';
-import 'package:journal/note.dart';
-import 'package:journal/storage/notes_repository.dart';
-import 'package:journal/storage/git_storage.dart';
-import 'package:journal/datetime_utils.dart';
-
-import 'package:journal/apis/git_migration.dart';
 
 class StateContainer extends StatefulWidget {
   final Widget child;
@@ -185,7 +183,7 @@ class StateContainerState extends State<StateContainer> {
     });
   }
 
-  void completeOnBoarding() {
+  void completeGitHostSetup() {
     setState(() async {
       this.appState.remoteGitRepoConfigured = true;
       this.appState.remoteGitRepoPath = "journal";

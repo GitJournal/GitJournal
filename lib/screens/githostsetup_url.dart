@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:journal/analytics.dart';
 
-class OnBoardingGitUrl extends StatefulWidget {
+class GitHostSetupUrl extends StatefulWidget {
   final Function doneFunction;
 
-  OnBoardingGitUrl({@required this.doneFunction});
+  GitHostSetupUrl({@required this.doneFunction});
 
   @override
-  OnBoardingGitUrlState createState() {
-    return new OnBoardingGitUrlState();
+  GitHostSetupUrlState createState() {
+    return new GitHostSetupUrlState();
   }
 }
 
-class OnBoardingGitUrlState extends State<OnBoardingGitUrl> {
+class GitHostSetupUrlState extends State<GitHostSetupUrl> {
   final GlobalKey<FormFieldState<String>> sshUrlKey =
       GlobalKey<FormFieldState<String>>();
 
@@ -80,7 +79,7 @@ class OnBoardingGitUrlState extends State<OnBoardingGitUrl> {
           child: inputForm,
         ),
         SizedBox(height: 8.0),
-        OnBoardingButton(
+        GitHostSetupButton(
           text: "Next",
           onPressed: formSubmitted,
         ),
@@ -89,12 +88,12 @@ class OnBoardingGitUrlState extends State<OnBoardingGitUrl> {
   }
 }
 
-class OnBoardingButton extends StatelessWidget {
+class GitHostSetupButton extends StatelessWidget {
   final Function onPressed;
   final String text;
   final String iconUrl;
 
-  OnBoardingButton({
+  GitHostSetupButton({
     @required this.text,
     @required this.onPressed,
     this.iconUrl,
@@ -133,9 +132,9 @@ class OnBoardingButton extends StatelessWidget {
   }
 
   void _onPressedWithAnalytics() {
-    print("onboarding_button_click " + text);
+    print("githostsetup_button_click " + text);
     getAnalytics().logEvent(
-      name: "onboarding_button_click",
+      name: "githostsetup_button_click",
       parameters: <String, dynamic>{
         'text': text,
         'icon_url': iconUrl == null ? "" : iconUrl,

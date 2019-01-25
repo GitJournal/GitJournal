@@ -6,25 +6,26 @@ import 'package:flutter/services.dart';
 import 'package:journal/analytics.dart';
 import 'package:journal/apis/git.dart';
 import 'package:journal/apis/githost_factory.dart';
-import 'package:journal/screens/onboarding_autoconfigure.dart';
-import 'package:journal/screens/onboarding_git_clone.dart';
-import 'package:journal/screens/onboarding_git_url.dart';
 import 'package:journal/state_container.dart';
 import 'package:path/path.dart' as p;
 import 'package:url_launcher/url_launcher.dart';
 
-class OnBoardingScreen extends StatefulWidget {
-  final Function onBoardingCompletedFunction;
+import 'githostsetup_autoconfigure.dart';
+import 'githostsetup_clone.dart';
+import 'githostsetup_url.dart';
 
-  OnBoardingScreen(this.onBoardingCompletedFunction);
+class GitHostSetupScreen extends StatefulWidget {
+  final Function onCompletedFunction;
+
+  GitHostSetupScreen(this.onCompletedFunction);
 
   @override
-  OnBoardingScreenState createState() {
-    return new OnBoardingScreenState();
+  GitHostSetupScreenState createState() {
+    return new GitHostSetupScreenState();
   }
 }
 
-class OnBoardingScreenState extends State<OnBoardingScreen> {
+class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   var _createNewRepo = false;
 
   var _pageInitalScreenDone = false;
@@ -69,7 +70,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       controller: pageController,
       itemBuilder: (BuildContext context, int pos) {
         if (pos == 0) {
-          return OnBoardingInitialChoice(
+          return GitHostSetupInitialChoice(
             onCreateNewRepo: () {
               setState(() {
                 _createNewRepo = true;
@@ -96,7 +97,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         }
 
         if (pos == 1 && _createNewRepo) {
-          return OnBoardingCreateRepo(
+          return GitHostSetupCreateRepo(
             onDone: (GitHostType gitHostType, bool autoConfigure) {
               if (!autoConfigure) {
                 _launchCreateRepoPage(gitHostType);
@@ -119,7 +120,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         }
 
         if (pos == 2 && _createNewRepo && _autoConfigureStarted) {
-          return OnBoardingAutoConfigure(
+          return GitHostSetupAutoConfigure(
             gitHostType: _gitHostType,
             onDone: (String gitCloneUrl) {
               setState(() {
@@ -139,11 +140,11 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         }
 
         if (pos == 3 && _createNewRepo && _autoConfigureDone) {
-          return OnBoardingGitClone(errorMessage: gitCloneErrorMessage);
+          return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
         }
 
         if ((pos == 2 && _createNewRepo) || pos == 1) {
-          return OnBoardingGitUrl(doneFunction: (String sshUrl) {
+          return GitHostSetupUrl(doneFunction: (String sshUrl) {
             setPageInputUrlDone();
             pageController.nextPage(
               duration: Duration(milliseconds: 200),
@@ -162,7 +163,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
           });
         }
         if ((pos == 3 && _createNewRepo) || pos == 2) {
-          return OnBoardingSshKey(
+          return GitHostSetupSshKey(
             doneFunction: () {
               setPageSshKeyDone();
               pageController.nextPage(
@@ -186,12 +187,13 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         }
 
         if ((pos == 4 && _createNewRepo) || pos == 3) {
-          return OnBoardingGitClone(errorMessage: gitCloneErrorMessage);
+          return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
         }
       },
       itemCount: pageCount,
       onPageChanged: (int pageNum) {
         print("PageView onPageChanged: " + pageNum.toString());
+        /*
         String pageName = "";
         switch (pageNum) {
           case 0:
@@ -213,6 +215,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
             'page_name': pageName,
           },
         );
+        */
 
         setState(() {
           _currentPageIndex = pageNum;
@@ -349,7 +352,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         parameters: <String, dynamic>{},
       );
       Navigator.pop(context);
-      this.widget.onBoardingCompletedFunction();
+      this.widget.onCompletedFunction();
     }
   }
 
@@ -365,11 +368,11 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 }
 
-class OnBoardingInitialChoice extends StatelessWidget {
+class GitHostSetupInitialChoice extends StatelessWidget {
   final Function onCreateNewRepo;
   final Function onExistingRepo;
 
-  OnBoardingInitialChoice({
+  GitHostSetupInitialChoice({
     @required this.onCreateNewRepo,
     @required this.onExistingRepo,
   });
@@ -407,12 +410,12 @@ class OnBoardingInitialChoice extends StatelessWidget {
             style: Theme.of(context).textTheme.headline,
           ),
           SizedBox(height: 8.0),
-          OnBoardingButton(
+          GitHostSetupButton(
             text: "Create a New Repo",
             onPressed: onCreateNewRepo,
           ),
           SizedBox(height: 8.0),
-          OnBoardingButton(
+          GitHostSetupButton(
             text: "I already have one",
             onPressed: onExistingRepo,
           ),
@@ -424,11 +427,11 @@ class OnBoardingInitialChoice extends StatelessWidget {
   }
 }
 
-class OnBoardingCreateRepo extends StatelessWidget {
+class GitHostSetupCreateRepo extends StatelessWidget {
   final Function onDone;
   final _configureKey = new GlobalKey();
 
-  OnBoardingCreateRepo({@required this.onDone});
+  GitHostSetupCreateRepo({@required this.onDone});
 
   @override
   Widget build(BuildContext context) {
@@ -442,7 +445,7 @@ class OnBoardingCreateRepo extends StatelessWidget {
             style: Theme.of(context).textTheme.headline,
           ),
           SizedBox(height: 16.0),
-          OnBoardingButton(
+          GitHostSetupButton(
             text: "GitHub",
             iconUrl: 'assets/icon/github-icon.png',
             onPressed: () {
@@ -451,7 +454,7 @@ class OnBoardingCreateRepo extends StatelessWidget {
             },
           ),
           SizedBox(height: 8.0),
-          OnBoardingButton(
+          GitHostSetupButton(
             text: "GitLab",
             iconUrl: 'assets/icon/gitlab-icon.png',
             onPressed: () async {
@@ -483,7 +486,7 @@ class OnBoardingCreateRepo extends StatelessWidget {
   }
 }
 
-class OnBoardingSshKey extends StatelessWidget {
+class GitHostSetupSshKey extends StatelessWidget {
   final Function doneFunction;
   final Function copyKeyFunction;
   final String publicKey;
@@ -491,7 +494,7 @@ class OnBoardingSshKey extends StatelessWidget {
   final Function openDeployKeyPage;
   final bool canOpenDeployKeyPage;
 
-  OnBoardingSshKey({
+  GitHostSetupSshKey({
     @required this.doneFunction,
     @required this.copyKeyFunction,
     @required this.openDeployKeyPage,
@@ -509,7 +512,7 @@ class OnBoardingSshKey extends StatelessWidget {
       copyAndDepoyWidget = Container();
       cloneButton = Container();
     } else {
-      cloneButton = OnBoardingButton(
+      cloneButton = GitHostSetupButton(
         text: "Clone Repo",
         onPressed: this.doneFunction,
       );
@@ -544,7 +547,7 @@ class OnBoardingSshKey extends StatelessWidget {
           ],
         );
       } else {
-        copyAndDepoyWidget = OnBoardingButton(
+        copyAndDepoyWidget = GitHostSetupButton(
           text: "Copy Key",
           onPressed: this.copyKeyFunction,
         );

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class OnBoardingGitClone extends StatelessWidget {
+class GitHostSetupGitClone extends StatelessWidget {
   final String errorMessage;
 
-  OnBoardingGitClone({
+  GitHostSetupGitClone({
     this.errorMessage,
   });
 
