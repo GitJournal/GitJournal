@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'apis/githost.dart';
-import 'apis/github.dart';
-import 'apis/gitlab.dart';
+import 'apis/githost_factory.dart';
 
 class OAuthApp extends StatefulWidget {
   @override
@@ -20,14 +18,9 @@ class OAuthAppState extends State<OAuthApp> {
   void initState() {
     super.initState();
 
-    if (true) {
-      githost = new GitHub();
-    } else {
-      githost = new GitLab();
-    }
-
+    githost = createGitHost(GitHostType.GitHub);
     githost.init(() {
-      print("GitHub initialized and has access code");
+      print("GitHost initialized and has access code");
     });
   }
 
