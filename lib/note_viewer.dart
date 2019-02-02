@@ -1,10 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import 'package:journal/widgets/note_header.dart';
 
-import 'note_editor.dart';
 import 'note.dart';
+import 'note_editor.dart';
 
 class NoteBrowsingScreen extends StatefulWidget {
   final List<Note> notes;
@@ -48,7 +47,7 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
         onPressed: () {
           var route = new MaterialPageRoute(builder: (context) {
             int currentIndex = pageController.page.toInt();
-            assert(currentIndex > 0);
+            assert(currentIndex >= 0);
             assert(currentIndex < widget.notes.length);
 
             Note note = widget.notes[currentIndex];
