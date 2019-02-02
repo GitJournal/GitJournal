@@ -39,7 +39,7 @@ android {
 
     defaultConfig {
         applicationId "io.gitjournal.gitjournal"
-        minSdkVersion 26
+        minSdkVersion 21
         targetSdkVersion 27
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -70,8 +70,10 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
-    // https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit
-    implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '4.4.1.201607150455-r'
+    implementation('org.eclipse.jgit:org.eclipse.jgit:3.7.1.201504261725-r')
+            {
+                exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+            }
 
     // For reading a file to string
     implementation 'commons-io:commons-io:2.5'
