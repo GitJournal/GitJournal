@@ -6,9 +6,9 @@ platform :android do
     # Return the number of commits in current git branch
     build_number = number_of_commits()
     Dir.chdir "../../" do
-      #sh("flutter", "packages", "get")
-      #sh("flutter", "clean")
-      #sh("flutter", "build", "apk", "--build-number=#{build_number}")
+      sh("flutter", "packages", "get")
+      sh("flutter", "clean")
+      sh("flutter", "build", "apk", "--build-number=#{build_number}")
     end
 
     upload_to_play_store(track: "beta",
