@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:journal/apis/git.dart';
-
 import 'package:journal/apis/git_migration.dart';
 
 const basePath = "journal";
@@ -32,7 +31,8 @@ buildGitButtons() {
     RaisedButton(
       child: Text("Git Clone"),
       onPressed: () async {
-        gitClone("root@bcn.vhanda.in:git/test", basePath);
+        gitClone(
+            "git@github.com:GitJournal/GitJournal.github.io.git", basePath);
       },
     ),
     RaisedButton(
