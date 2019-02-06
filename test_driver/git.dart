@@ -8,7 +8,8 @@ void main() async {
   enableFlutterDriverExtension();
 
   await setSshKeys(
-    privateKey: """-----BEGIN RSA PRIVATE KEY-----
+    privateKey: """
+-----BEGIN RSA PRIVATE KEY-----
 MIIEpAIBAAKCAQEAyPlNUPGo2vCK/w4jN90yxhvrAvSmaAohhYmyzT3NLpw97eW9
 Td2JSQE+D3Mcb0QK10aFdz1Q11IAF1bP7F9FMMvwpwT3283u+m8wNfRqELtWkbFW
 8F011hzklrQe14AhBrj+pL64lL5GQBv8IrHMiYtvDI3QDbBfjm+G+TMYaYgcSt1q
@@ -34,15 +35,10 @@ jrg1+FepRUSsIW/n/d0Rc3RdzgERAgMFywY8F8rv0xdW5dqOvuJfth33zzCkhCgm
 kxvgoQKBgQCtpv31vAhpW5Hsz6i+ltID8ePQ5f9zVs9LcsNhr4yH28kT+ahVQDov
 ef8YxSqfUYF66rqYp9OKt/Gm6R6aysE6XZaLdsonFc+jxX7ww+PDnZ+2ysNqbQYg
 IzaFDjJprJTo6g679GYSWXmq0Mj1wesuh7Ccz+u3bsVLm3hpp/nMDg==
------END RSA PRIVATE KEY-----""",
+-----END RSA PRIVATE KEY-----
+""",
     publicKey:
-        """ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDI+U1Q8aja8Ir/DiM33TLGG+sC9KZoCiGFib
-LNPc0unD3t5b1N3YlJAT4PcxxvRArXRoV3PVDXUgAXVs/sX0Uwy/CnBPfbze76bzA19GoQu1aR
-sVbwXTXWHOSWtB7XgCEGuP6kvriUvkZAG/wiscyJi28MjdANsF+Ob4b5MxhpiBxK3WqObLPk2B
-buQWMbxDzf8ZaWJKvIYaeRJgTe+50oe610nrzD7UWLZzvCo7EZItAS7hhUPSdRinH1/yvTBcc2
-/J1wTb5vWOUGVVe9GBS7ZFfK5VQs6rqhTcOZCyf/SvLV6r8DcWQE+57C7WQutMusnZvHKFoMsI
-gPCR+KWGCf gitjournal git testing
-    """,
+        "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDI+U1Q8aja8Ir/DiM33TLGG+sC9KZoCiGFibLNPc0unD3t5b1N3YlJAT4PcxxvRArXRoV3PVDXUgAXVs/sX0Uwy/CnBPfbze76bzA19GoQu1aRsVbwXTXWHOSWtB7XgCEGuP6kvriUvkZAG/wiscyJi28MjdANsF+Ob4b5MxhpiBxK3WqObLPk2BbuQWMbxDzf8ZaWJKvIYaeRJgTe+50oe610nrzD7UWLZzvCo7EZItAS7hhUPSdRinH1/yvTBcc2/J1wTb5vWOUGVVe9GBS7ZFfK5VQs6rqhTcOZCyf/SvLV6r8DcWQE+57C7WQutMusnZvHKFoMsIgPCR+KWGCf gitjournal git testing",
   );
 
   runApp(GitApp());
