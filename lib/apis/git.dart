@@ -14,7 +14,7 @@ Future<Directory> getGitBaseDirectory() async {
   return new Directory(path);
 }
 
-Future<String> gitClone(String cloneUrl, String folderName) async {
+Future<void> gitClone(String cloneUrl, String folderName) async {
   print("Going to git clone");
   try {
     await _platform.invokeMethod('gitClone', {
@@ -24,7 +24,7 @@ Future<String> gitClone(String cloneUrl, String folderName) async {
     print("Done");
   } on PlatformException catch (e) {
     print("gitClone Failed: '${e.message}'.");
-    return e.message;
+    throw createGitException(e.message);
   }
 
   return null;
@@ -51,6 +51,22 @@ Future<String> generateSSHKeys({@required String comment}) async {
   }
 
   return "";
+}
+
+Future<void> setSshKeys({
+  @required String publicKey,
+  @required String privateKey,
+}) async {
+  print("setSshKeys");
+  try {
+    await _platform.invokeMethod('setSshKeys', {
+      'publicKey': publicKey,
+      'privateKey': privateKey,
+    });
+  } on PlatformException catch (e) {
+    print("Failed to generateSSHKeys: '${e.message}'.");
+    throw e;
+  }
 }
 
 class GitException implements Exception {

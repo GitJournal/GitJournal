@@ -24,9 +24,8 @@ void main() {
     });
 
     test('Anonymous GitClone works', () async {
-      print(buttonFinder.finderType);
-      print(buttonFinder.serialize());
       await driver.tap(buttonFinder);
+      await driver.waitFor(find.text("Success"), timeout: Duration(seconds: 5));
     });
   });
 }

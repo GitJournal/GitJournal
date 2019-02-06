@@ -38,6 +38,7 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
         final String filesDir = PathUtils.getFilesDir(getApplicationContext());
         final String sshKeysLocation = filesDir + "/ssh";
         final String privateKeyPath = sshKeysLocation + "/id_rsa";
+        final String publicKeyPath = sshKeysLocation + "/id_rsa.pub";
 
         if (call.method.equals("getBaseDirectory")) {
             result.success(filesDir);
@@ -167,14 +168,36 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
             new GenerateSSHKeysTask(result).execute(sshKeysLocation, comment);
             return;
         } else if (call.method.equals("getSSHPublicKey")) {
-            final String publicKeyPath = sshKeysLocation + "/id_rsa.pub";
-
             String publicKey = "";
             try {
                 publicKey = FileUtils.readFileToString(new File(publicKeyPath), Charset.defaultCharset());
             } catch (IOException ex) {
                 Log.d("getSSHPublicKey", ex.toString());
                 result.error("FAILED", "Failed to read the public key", null);
+            }
+
+            result.success(publicKey);
+            return;
+        } else if (call.method.equals("setSshKeys")) {
+            String privateKey = call.argument("privateKey");
+            String publicKey = call.argument("publicKey");
+
+            if (privateKey == null || privateKey.isEmpty()) {
+                result.error("Invalid Parameters", "privateKey Invalid", null);
+                return;
+            }
+
+            if (publicKey == null || publicKey.isEmpty()) {
+                result.error("Invalid Parameters", "publicKey Invalid", null);
+                return;
+            }
+
+            try {
+                FileUtils.writeStringToFile(new File(publicKeyPath), publicKey, Charset.defaultCharset());
+                FileUtils.writeStringToFile(new File(privateKeyPath), privateKey, Charset.defaultCharset());
+            } catch (IOException ex) {
+                Log.d("setSshKeys", ex.toString());
+                result.error("FAILED", "Failed to write the ssh keys", null);
             }
 
             result.success(publicKey);

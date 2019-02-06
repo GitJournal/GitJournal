@@ -1,11 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_driver/driver_extension.dart';
+import 'package:journal/apis/git.dart';
 import 'package:journal/gitapp.dart';
-//import 'package:journal/apis/git.dart';
 
-void main() {
+void main() async {
   // This line enables the extension
   enableFlutterDriverExtension();
+
+  await setSshKeys(
+    privateKey: """-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEAyPlNUPGo2vCK/w4jN90yxhvrAvSmaAohhYmyzT3NLpw97eW9
+Td2JSQE+D3Mcb0QK10aFdz1Q11IAF1bP7F9FMMvwpwT3283u+m8wNfRqELtWkbFW
+8F011hzklrQe14AhBrj+pL64lL5GQBv8IrHMiYtvDI3QDbBfjm+G+TMYaYgcSt1q
+jmyz5NgW7kFjG8Q83/GWliSryGGnkSYE3vudKHutdJ68w+1Fi2c7wqOxGSLQEu4Y
+VD0nUYpx9f8r0wXHNvydcE2+b1jlBlVXvRgUu2RXyuVULOq6oU3DmQsn/0ry1eq/
+A3FkBPuewu1kLrTLrJ2bxyhaDLCIDwkfilhgnwIDAQABAoIBAFRXzArcYHEB4lOI
+K1+WhWh+7vIemnevSMIyN8fK2AFnsNXWRMwY3TS2QMVbGePYOnR+NCUGppa24zLo
+S/p3QSJpdGWjwCGPG2wena0HFjxPYtViB4p4k8938LcOgKMQMswPd07Me8pw0Cq3
+k+k7lQtkaQZrvZUBIBk21P5gYy5mIgSDuVRMe4ogzC4LsHShhCj9bffi7TjQb4lc
+/NDjTqP94uB+o6lFeTTRgM+1mZYV2zy3x77ewgSrzfPHEB+7AFItXF1NdjaMJFSD
+D7bwldH548Di/qW0UMJDSV83Zwcek9jhPl9d9cQR5UwMKRJfbFNg2i1SxFQjqYBB
+v4ucywECgYEA9RUPZ6WJaluDC0ozji46WGvl5P2soEdXKEOSXkximgMVZKkDLraG
+aUi+QMT6IvSiNNGtBx6od0iYELc5V004FvRqV0jYLVFLkfJtiZWmhSFqkwPSdBIL
+NFE3/KjnMiSnQJ8oeORAYp8Qj52S3j09ruXkLxkRonr7rO3MMXXKn5cCgYEA0e05
+tA3qb+Wy9SoDH4klSXmKgxT1/Ka9kyro7S6rL3UbKa9yacpNEtHTOO6PtHTHCPze
+vGjmJAPBNemKq82hTwoAfcCcQRuluKNAE+f/0DXmzVCd012QPK7pcD24+ZdGEecJ
+injgsBEb98i1ne8A4QggzObbbhXgXRqUpeB26DkCgYEAyBVpfjSm+y26znzFmk4j
+VAzCozB2vmN/xF9mH5Y86X+a95MEBh79nPbGXBp0HBWcV4LWv/lHkBq0CvGK3rss
+D5F7P8c4tcao633/71M9n3Koj12PczNH8m5cRumd1lIWOau2Xvv5lIpH+vep78YP
+lboZkFnnC79buNJq4fZIdgECgYB39yVerAUpZQ7b4+JdBzbzwi1Rs4zPkUoM7Byo
+Tl8tg7K+I7Eym5VoB9i5VDtzWLjVfgybhybdtfeYI5pHi/9+96xIMOYanv4ZgdGA
+jrg1+FepRUSsIW/n/d0Rc3RdzgERAgMFywY8F8rv0xdW5dqOvuJfth33zzCkhCgm
+kxvgoQKBgQCtpv31vAhpW5Hsz6i+ltID8ePQ5f9zVs9LcsNhr4yH28kT+ahVQDov
+ef8YxSqfUYF66rqYp9OKt/Gm6R6aysE6XZaLdsonFc+jxX7ww+PDnZ+2ysNqbQYg
+IzaFDjJprJTo6g679GYSWXmq0Mj1wesuh7Ccz+u3bsVLm3hpp/nMDg==
+-----END RSA PRIVATE KEY-----""",
+    publicKey:
+        """ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDI+U1Q8aja8Ir/DiM33TLGG+sC9KZoCiGFib
+LNPc0unD3t5b1N3YlJAT4PcxxvRArXRoV3PVDXUgAXVs/sX0Uwy/CnBPfbze76bzA19GoQu1aR
+sVbwXTXWHOSWtB7XgCEGuP6kvriUvkZAG/wiscyJi28MjdANsF+Ob4b5MxhpiBxK3WqObLPk2B
+buQWMbxDzf8ZaWJKvIYaeRJgTe+50oe610nrzD7UWLZzvCo7EZItAS7hhUPSdRinH1/yvTBcc2
+/J1wTb5vWOUGVVe9GBS7ZFfK5VQs6rqhTcOZCyf/SvLV6r8DcWQE+57C7WQutMusnZvHKFoMsI
+gPCR+KWGCf gitjournal git testing
+    """,
+  );
 
   runApp(GitApp());
 }
