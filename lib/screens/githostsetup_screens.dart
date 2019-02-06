@@ -395,7 +395,13 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     // Just in case it was half cloned because of an error
     await _removeExistingClone(basePath);
 
-    String error = await gitClone(_gitCloneUrl, "journal");
+    String error;
+    try {
+      await gitClone(_gitCloneUrl, "journal");
+    } catch (e) {
+      error = e.message;
+    }
+
     if (error != null && error.isNotEmpty) {
       setState(() {
         getAnalytics().logEvent(

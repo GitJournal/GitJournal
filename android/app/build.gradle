@@ -74,6 +74,7 @@ dependencies {
             {
                 exclude group: 'org.apache.httpcomponents', module: 'httpclient'
             }
+    implementation 'com.jcraft:jsch:0.1.54'
 
     // For reading a file to string
     implementation 'commons-io:commons-io:2.5'
