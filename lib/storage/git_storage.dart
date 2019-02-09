@@ -1,17 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:path/path.dart' as p;
-
-import 'package:journal/note.dart';
 import 'package:journal/apis/git.dart';
-import 'package:journal/storage/serializers.dart';
+import 'package:journal/note.dart';
+import 'package:journal/settings.dart';
 import 'package:journal/storage/file_storage.dart';
 import 'package:journal/storage/notes_repository.dart';
+import 'package:journal/storage/serializers.dart';
+import 'package:path/path.dart' as p;
 
 class GitNoteRepository implements NoteRepository {
   final FileStorage _fileStorage;
-  //final String gitCloneUrl = "";
   final String dirName;
 
   bool cloned = false;
@@ -42,8 +41,8 @@ class GitNoteRepository implements NoteRepository {
     await gitAdd(this.dirName, filePath);
     await gitCommit(
       gitFolder: this.dirName,
-      authorEmail: "app@gitjournal.io",
-      authorName: "GitJournal",
+      authorEmail: Settings.instance.gitAuthorEmail,
+      authorName: Settings.instance.gitAuthor,
       message: commitMessage,
     );
 
@@ -64,8 +63,8 @@ class GitNoteRepository implements NoteRepository {
     await gitRm(this.dirName, filePath);
     await gitCommit(
       gitFolder: this.dirName,
-      authorEmail: "app@gitjournal.io",
-      authorName: "GitJournal",
+      authorEmail: Settings.instance.gitAuthorEmail,
+      authorName: Settings.instance.gitAuthor,
       message: "Removed Journal entry",
     );
 

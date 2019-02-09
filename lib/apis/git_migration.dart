@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:journal/apis/git.dart';
-
+import 'package:journal/settings.dart';
 import 'package:path/path.dart' as p;
 
 //
@@ -34,8 +34,8 @@ Future migrateGitRepo({
     await gitAdd(toGitBasePath, fileName);
     await gitCommit(
       gitFolder: toGitBasePath,
-      authorEmail: "app@gitjournal.io",
-      authorName: "GitJournal",
+      authorEmail: Settings.instance.gitAuthorEmail,
+      authorName: Settings.instance.gitAuthor,
       message: "Migrated Journal Entry",
     );
   }

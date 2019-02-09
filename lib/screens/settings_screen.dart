@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:package_info/package_info.dart';
-
 import 'package:journal/app.dart';
+import 'package:journal/settings.dart';
+import 'package:package_info/package_info.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override
@@ -29,10 +29,14 @@ class SettingsList extends StatefulWidget {
 }
 
 class SettingsListState extends State<SettingsList> {
+  final gitAuthorKey = GlobalKey<FormFieldState<String>>();
+  final gitAuthorEmailKey = GlobalKey<FormFieldState<String>>();
+
   @override
   Widget build(BuildContext context) {
     var gitAuthorForm = Form(
       child: TextFormField(
+        key: gitAuthorKey,
         style: Theme.of(context).textTheme.title,
         decoration: const InputDecoration(
           icon: Icon(Icons.person),
@@ -46,14 +50,27 @@ class SettingsListState extends State<SettingsList> {
           }
         },
         textInputAction: TextInputAction.done,
-        onFieldSubmitted: (String _) {},
-        initialValue:
-            JournalApp.preferences.getString("gitAuthor") ?? "GitJournal",
+        onFieldSubmitted: (String gitAuthor) {
+          Settings.instance.gitAuthor = gitAuthor;
+          Settings.instance.save();
+        },
+        onSaved: (String gitAuthor) {
+          Settings.instance.gitAuthor = gitAuthor;
+          Settings.instance.save();
+        },
+        initialValue: Settings.instance.gitAuthor,
       ),
+      onChanged: () {
+        if (!gitAuthorKey.currentState.validate()) return;
+        var gitAuthor = gitAuthorKey.currentState.value;
+        Settings.instance.gitAuthor = gitAuthor;
+        Settings.instance.save();
+      },
     );
 
     var gitAuthorEmailForm = Form(
       child: TextFormField(
+        key: gitAuthorEmailKey,
         style: Theme.of(context).textTheme.title,
         decoration: const InputDecoration(
           icon: Icon(Icons.email),
@@ -65,12 +82,30 @@ class SettingsListState extends State<SettingsList> {
           if (value.isEmpty) {
             return 'Please enter an email';
           }
+
+          bool emailValid =
+              RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
+          if (!emailValid) {
+            return 'Please enter a valid email';
+          }
         },
         textInputAction: TextInputAction.done,
-        onFieldSubmitted: (String _) {},
-        initialValue: JournalApp.preferences.getString("gitAuthorEmail") ??
-            "app@gitjournal.io",
+        onFieldSubmitted: (String gitAuthorEmail) {
+          Settings.instance.gitAuthorEmail = gitAuthorEmail;
+          Settings.instance.save();
+        },
+        onSaved: (String gitAuthorEmail) {
+          Settings.instance.gitAuthorEmail = gitAuthorEmail;
+          Settings.instance.save();
+        },
+        initialValue: Settings.instance.gitAuthorEmail,
       ),
+      onChanged: () {
+        if (!gitAuthorEmailKey.currentState.validate()) return;
+        var gitAuthorEmail = gitAuthorEmailKey.currentState.value;
+        Settings.instance.gitAuthorEmail = gitAuthorEmail;
+        Settings.instance.save();
+      },
     );
 
     var listView = ListView(children: <Widget>[

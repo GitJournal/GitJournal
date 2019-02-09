@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
-
-import 'package:journal/app.dart';
-import 'package:journal/state_container.dart';
 import 'package:journal/apis/git.dart';
+import 'package:journal/app.dart';
+import 'package:journal/settings.dart';
+import 'package:journal/state_container.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   bool isInDebugMode = true;
@@ -57,6 +57,8 @@ Future runJournalApp() async {
   }
 
   var dir = await getGitBaseDirectory();
+
+  await Settings.instance.load();
 
   runApp(new StateContainer(
     localGitRepoConfigured: localGitRepoConfigured,
