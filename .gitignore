@@ -16,3 +16,5 @@ build/
 
 android/fastlane/README.md
 android/fastlane/report.xml
+
+.externalNativeBuild
