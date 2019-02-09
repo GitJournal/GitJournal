@@ -177,4 +177,33 @@ class GitHub implements GitHost {
       cloneUrl: parsedJson['ssh_url'],
     );
   }
+
+  @override
+  Future<UserInfo> getUserInfo() async {
+    if (_accessCode.isEmpty) {
+      throw GitHostException.MissingAccessCode;
+    }
+
+    var url = "https://api.github.com/user?access_token=$_accessCode";
+
+    var response = await http.get(url);
+    if (response.statusCode != 200) {
+      print("Github getUserInfo: Invalid response " +
+          response.statusCode.toString() +
+          ": " +
+          response.body);
+      return null;
+    }
+
+    Map<String, dynamic> map = jsonDecode(response.body);
+    if (map == null || map.isEmpty) {
+      print("Github getUserInfo: jsonDecode Failed " +
+          response.statusCode.toString() +
+          ": " +
+          response.body);
+      return null;
+    }
+
+    return UserInfo(name: map['name'], email: map['email']);
+  }
 }

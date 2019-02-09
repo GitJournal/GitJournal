@@ -1,12 +1,22 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+
 abstract class GitHost {
   void init(Function oAuthCallback);
   Future launchOAuthScreen();
 
+  Future<UserInfo> getUserInfo();
   Future<List<GitRepo>> listRepos();
   Future<GitRepo> createRepo(String name);
   Future addDeployKey(String sshPublicKey, String repo);
+}
+
+class UserInfo {
+  String name;
+  String email;
+
+  UserInfo({@required this.name, @required this.email});
 }
 
 class GitRepo {

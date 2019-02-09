@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:journal/apis/git.dart';
 import 'package:journal/apis/githost_factory.dart';
+import 'package:journal/settings.dart';
 
 class GitHostSetupAutoConfigure extends StatefulWidget {
   final GitHostType gitHostType;
@@ -36,6 +37,15 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
           repo = await gitHost.createRepo("journal");
           var publicKey = await generateSSHKeys(comment: "GitJournal");
           await gitHost.addDeployKey(publicKey, repo.fullName);
+
+          var userInfo = await gitHost.getUserInfo();
+          if (userInfo.name != null && userInfo.name.isNotEmpty) {
+            Settings.instance.gitAuthor = userInfo.name;
+          }
+          if (userInfo.email != null && userInfo.email.isNotEmpty) {
+            Settings.instance.gitAuthorEmail = userInfo.email;
+          }
+          Settings.instance.save();
         } on GitHostException catch (e) {
           print("GitHostSetupAutoConfigure: " + e.toString());
           setState(() {

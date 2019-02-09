@@ -170,6 +170,35 @@ class GitLab implements GitHost {
       cloneUrl: parsedJson['ssh_url_to_repo'],
     );
   }
+
+  @override
+  Future<UserInfo> getUserInfo() async {
+    if (_accessCode.isEmpty) {
+      throw GitHostException.MissingAccessCode;
+    }
+
+    var url = "https://gitlab.com/api/v4/user?access_token=$_accessCode";
+
+    var response = await http.get(url);
+    if (response.statusCode != 200) {
+      print("GitLab getUserInfo: Invalid response " +
+          response.statusCode.toString() +
+          ": " +
+          response.body);
+      return null;
+    }
+
+    Map<String, dynamic> map = jsonDecode(response.body);
+    if (map == null || map.isEmpty) {
+      print("GitLab getUserInfo: jsonDecode Failed " +
+          response.statusCode.toString() +
+          ": " +
+          response.body);
+      return null;
+    }
+
+    return UserInfo(name: map['name'], email: map['email']);
+  }
 }
 
 String _randomString(int length) {
