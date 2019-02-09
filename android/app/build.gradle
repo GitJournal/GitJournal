@@ -44,6 +44,11 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        externalNativeBuild {
+            cmake {
+                cppFlags ""
+            }
+        }
     }
 
     signingConfigs {
@@ -57,6 +62,11 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
         }
     }
 }
