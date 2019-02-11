@@ -24,6 +24,7 @@ void main() {
     });
 
     test('Anonymous GitClone works', () async {
+      await driver.waitFor(buttonFinder);
       await driver.tap(buttonFinder);
       await driver.waitFor(
         find.text("Success"),

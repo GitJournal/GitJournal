@@ -19,6 +19,8 @@ class GitApp extends StatelessWidget {
         ),
         body: Column(
           children: _buildGitButtons(),
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
         ),
       ),
     );
