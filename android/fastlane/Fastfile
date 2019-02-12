@@ -1,15 +1,15 @@
 default_platform(:android)
 
 platform :android do
-  desc "Build a new Android APK"
+  desc "Publish a new Android APK"
   lane :betaBuild do
     # Return the number of commits in current git branch
-    build_number = number_of_commits()
-    Dir.chdir "../../" do
-      sh("flutter", "packages", "get")
-      sh("flutter", "clean")
-      sh("flutter", "build", "apk", "--build-number=#{build_number}")
-    end
+    # build_number = number_of_commits()
+    # Dir.chdir "../../" do
+    #  sh("flutter", "packages", "get")
+    #  sh("flutter", "clean")
+    #  sh("flutter", "build", "apk", "--build-number=#{build_number}")
+    # end
 
     upload_to_play_store(track: "beta",
       apk: "../build/app/outputs/apk/release/app-release.apk",
