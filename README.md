@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <a href="https://travis-ci.org/GitJournal/GitJournal"><img alt="Build Status" src="https://travis-ci.org/GitJournal/GitJournal.svg?branch=master"/></a>
+  <a href="https://circleci.com/gh/GitJournal/GitJournal"><img alt="Build Status" src="https://circleci.com/gh/GitJournal/GitJournal.svg?style=svg"/></a>
 </p>
 
 # Summary
