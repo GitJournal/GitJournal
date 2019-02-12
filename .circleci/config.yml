@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: cirrusci/flutter
+      - image: vhanda/flutter-android:latest
     steps:
       - checkout
       - run:
