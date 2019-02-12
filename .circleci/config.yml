@@ -19,7 +19,10 @@ jobs:
           command: echo "$GOOGLE_PLAY_KEY" | base64 -di > android/google-play-key.json
       - run:
           name: Create Android Key file
-          command: echo "$ANDROID_KEY_FILE" | base64 -di > android/key.propertier
+          command: echo "$ANDROID_KEY_FILE" | base64 -di > android/key.properties
+      - run:
+          name: Accept Android Licenses
+          command: $ANDROID_HOME/tools/bin/sdkmanager --update
       - run:
           name: Publish Beta
           command: cd android && fastlane betaBuild
