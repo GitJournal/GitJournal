@@ -12,9 +12,6 @@ jobs:
           name: Analyze
           command: flutter analyze
       - run:
-          name: Build
-          command: ./scripts/build.sh
-      - run:
           name: Decode Android key store
           command: echo "$KEYSTORE" | base64 -di > android/app/keystore.jks
       - run:
@@ -23,6 +20,9 @@ jobs:
       - run:
           name: Create Android Key file
           command: echo "$ANDROID_KEY_FILE" | base64 -di > android/key.properties
+      - run:
+          name: Build
+          command: ./scripts/build.sh
       - run:
           name: Publish Beta
           command: cd android && fastlane betaBuild
