@@ -36,15 +36,17 @@ class GitLab implements GitHost {
         print("GitLab: OAuth State incorrect");
         print("Required State: " + _stateOAuth);
         print("Actual State: " + state);
-        throw GitHostException.OAuthFailed;
+        callback(GitHostException.OAuthFailed);
+        return;
       }
 
       _accessCode = map['access_token'];
       if (_accessCode == null) {
-        throw GitHostException.OAuthFailed;
+        callback(GitHostException.OAuthFailed);
+        return;
       }
 
-      callback();
+      callback(null);
     }
 
     _platform.setMethodCallHandler(_handleMessages);

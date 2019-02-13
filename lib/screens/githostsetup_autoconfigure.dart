@@ -29,7 +29,10 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
     print("Starting autoconfigure");
     gitHost = createGitHost(widget.gitHostType);
     try {
-      gitHost.init(() async {
+      gitHost.init((Exception error) async {
+        if (error != null) {
+          throw error;
+        }
         print("GitHost Initalized: " + widget.gitHostType.toString());
 
         GitRepo repo;

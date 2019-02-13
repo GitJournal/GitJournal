@@ -30,11 +30,16 @@ class GitHub implements GitHost {
       var authCode = uri.queryParameters['code'];
       if (authCode == null) {
         print("GitHub: Missing auth code. Now what?");
-        throw GitHostException.OAuthFailed;
+        callback(GitHostException.OAuthFailed);
       }
 
       this._accessCode = await _getAccessCode(authCode);
-      callback();
+      if (this._accessCode == null || this._accessCode.isEmpty) {
+        print("GitHub: AccessCode is invalid: " + this._accessCode);
+        callback(GitHostException.OAuthFailed);
+      }
+
+      callback(null);
     }
 
     _platform.setMethodCallHandler(_handleMessages);
