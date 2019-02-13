@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:journal/analytics.dart';
 
-class GitHostSetupUrl extends StatefulWidget {
+class GitCloneUrlPage extends StatefulWidget {
   final Function doneFunction;
 
-  GitHostSetupUrl({@required this.doneFunction});
+  GitCloneUrlPage({@required this.doneFunction});
 
   @override
-  GitHostSetupUrlState createState() {
-    return GitHostSetupUrlState();
+  GitCloneUrlPageState createState() {
+    return GitCloneUrlPageState();
   }
 }
 
-class GitHostSetupUrlState extends State<GitHostSetupUrl> {
+class GitCloneUrlPageState extends State<GitCloneUrlPage> {
   final GlobalKey<FormFieldState<String>> sshUrlKey =
       GlobalKey<FormFieldState<String>>();
 

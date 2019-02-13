@@ -12,7 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'githostsetup_autoconfigure.dart';
 import 'githostsetup_clone.dart';
-import 'githostsetup_url.dart';
+import 'githostsetup_clone_url.dart';
 
 class GitHostSetupScreen extends StatefulWidget {
   final Function onCompletedFunction;
@@ -89,7 +89,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           },
         );
       } else if (_pageChoice[0] == PageChoice0.UseExisting) {
-        return GitHostSetupUrl(doneFunction: (String sshUrl) {
+        return GitCloneUrlPage(doneFunction: (String sshUrl) {
           setState(() {
             _gitCloneUrl = sshUrl;
 
@@ -156,7 +156,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           },
         );
       } else if (_pageChoice[2] == PageChoice2.Manual) {
-        return GitHostSetupUrl(doneFunction: (String sshUrl) {
+        return GitCloneUrlPage(doneFunction: (String sshUrl) {
           setState(() {
             _pageCount = pos + 2;
             _gitCloneUrl = sshUrl;
