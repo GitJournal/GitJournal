@@ -27,7 +27,7 @@ class GitHostSetupUrlState extends State<GitHostSetupUrl> {
         _formKey.currentState.save();
 
         var url = sshUrlKey.currentState.value;
-        this.widget.doneFunction(url);
+        this.widget.doneFunction(url.trim());
         inputFormFocus.unfocus();
       }
     };

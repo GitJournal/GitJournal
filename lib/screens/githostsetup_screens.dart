@@ -25,232 +25,192 @@ class GitHostSetupScreen extends StatefulWidget {
   }
 }
 
-class GitHostSetupScreenState extends State<GitHostSetupScreen> {
-  var _createNewRepo = false;
+enum PageChoice0 { Unknown, CreateRepo, UseExisting }
+enum PageChoice1 { None }
+enum PageChoice2 { Unknown, Manual, Auto }
 
-  var _pageInitalScreenDone = false;
-  var _pageCreateNewRepoDone = false;
-  var _pageInputUrlDone = false;
-  var _pageSshKeyDone = false;
-  var _autoConfigureStarted = false;
-  var _autoConfigureDone = false;
+class GitHostSetupScreenState extends State<GitHostSetupScreen> {
+  var _pageCount = 1;
+
+  var _pageChoice = [
+    PageChoice0.Unknown,
+    PageChoice1.None,
+    PageChoice2.Unknown,
+  ];
+
   GitHostType _gitHostType;
 
   var _gitCloneUrl = "";
   String gitCloneErrorMessage = "";
+
+  String publicKey = "";
+  bool _canLaunchDeployKeyPage = false;
 
   var pageController = PageController();
   int _currentPageIndex = 0;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  String publicKey = "";
-  bool _canLaunchDeployKeyPage = false;
+  Widget _buildPage(BuildContext context, int pos) {
+    print("_buildPage " + pos.toString());
+    assert(_pageCount >= 1);
+
+    if (pos == 0) {
+      return GitHostSetupInitialChoice(
+        onCreateNewRepo: () {
+          setState(() {
+            _pageChoice[0] = PageChoice0.CreateRepo;
+            _pageCount = 2;
+            _nextPage();
+          });
+        },
+        onExistingRepo: () {
+          setState(() {
+            _pageChoice[0] = PageChoice0.UseExisting;
+            _pageCount = 2;
+            _nextPage();
+          });
+        },
+      );
+    }
+
+    if (pos == 1) {
+      assert(_pageChoice[0] != PageChoice0.Unknown);
+
+      if (_pageChoice[0] == PageChoice0.CreateRepo) {
+        return GitHostChoicePage(
+          onDone: (GitHostType gitHostType) {
+            setState(() {
+              _pageCount = 3;
+              _gitHostType = gitHostType;
+              _nextPage();
+            });
+          },
+        );
+      } else if (_pageChoice[0] == PageChoice0.UseExisting) {
+        return GitHostSetupUrl(doneFunction: (String sshUrl) {
+          setState(() {
+            _pageCount = 3;
+            _gitCloneUrl = sshUrl;
+
+            _nextPage();
+            _generateSshKey();
+          });
+        });
+      }
+    }
+
+    if (pos == 2) {
+      if (_pageChoice[0] == PageChoice0.UseExisting) {
+        return GitHostSetupSshKey(
+          doneFunction: () {
+            setState(() {
+              _pageCount = 4;
+
+              _nextPage();
+              _startGitClone(context);
+            });
+          },
+          publicKey: publicKey,
+          copyKeyFunction: _copyKeyToClipboard,
+          openDeployKeyPage: _launchDeployKeyPage,
+          canOpenDeployKeyPage: _canLaunchDeployKeyPage,
+        );
+      }
+
+      return GitHostAutoConfigureChoicePage(
+        onDone: (GitHostSetupType setupType) {
+          if (setupType == GitHostSetupType.Manual) {
+            setState(() {
+              _pageCount = 4;
+              _pageChoice[2] = PageChoice2.Manual;
+              _nextPage();
+            });
+          } else if (setupType == GitHostSetupType.Auto) {
+            setState(() {
+              _pageCount = 4;
+              _pageChoice[2] = PageChoice2.Auto;
+              _nextPage();
+            });
+          }
+        },
+      );
+    }
+
+    if (pos == 3) {
+      if (_pageChoice[0] == PageChoice0.UseExisting) {
+        return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
+      }
+
+      if (_pageChoice[2] == PageChoice2.Auto) {
+        return GitHostSetupAutoConfigure(
+          gitHostType: _gitHostType,
+          onDone: (String gitCloneUrl) {
+            setState(() {
+              _gitCloneUrl = gitCloneUrl;
+              _pageCount = 5;
+
+              _nextPage();
+              _startGitClone(context);
+            });
+          },
+        );
+      } else if (_pageChoice[2] == PageChoice2.Manual) {
+        return GitHostSetupUrl(doneFunction: (String sshUrl) {
+          setState(() {
+            _pageCount = 5;
+            _gitCloneUrl = sshUrl;
+
+            _nextPage();
+            _generateSshKey();
+          });
+        });
+      }
+
+      assert(false);
+    }
+
+    assert(_pageChoice[0] != PageChoice0.UseExisting);
+
+    if (pos == 4) {
+      if (_pageChoice[2] == PageChoice2.Auto) {
+        return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
+      } else if (_pageChoice[2] == PageChoice2.Manual) {
+        return GitHostSetupSshKey(
+          doneFunction: () {
+            setState(() {
+              _pageCount = 6;
+
+              _nextPage();
+              _startGitClone(context);
+            });
+          },
+          publicKey: publicKey,
+          copyKeyFunction: _copyKeyToClipboard,
+          openDeployKeyPage: _launchDeployKeyPage,
+          canOpenDeployKeyPage: _canLaunchDeployKeyPage,
+        );
+      }
+    }
+
+    if (pos == 5) {
+      assert(_pageChoice[2] == PageChoice2.Manual);
+      return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
+    }
+
+    assert(false);
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
-    var pageCount = 1;
-    if (_pageInitalScreenDone) {
-      pageCount = 2;
-    }
-    if (_pageCreateNewRepoDone) {
-      pageCount = 3;
-    }
-    if (_autoConfigureDone) {
-      pageCount = 4;
-    }
-    if (_pageInputUrlDone) {
-      pageCount++;
-    }
-    if (_pageSshKeyDone) {
-      pageCount++;
-    }
-    print("_pageInitalScreenDone: " + _pageInitalScreenDone.toString());
-    print("_pageCreateNewRepoDone: " + _pageCreateNewRepoDone.toString());
-    print("_autoConfigureDone: " + _autoConfigureDone.toString());
-    print("_pageInputUrlDone: " + _pageInputUrlDone.toString());
-    print("_pageSshKeyDone: " + _pageSshKeyDone.toString());
+    print("build _pageCount " + _pageCount.toString());
+    print("build _currentPageIndex " + _currentPageIndex.toString());
 
     var pageView = PageView.builder(
       controller: pageController,
-      itemBuilder: (BuildContext context, int pos) {
-        if (pos == 0) {
-          return GitHostSetupInitialChoice(
-            onCreateNewRepo: () {
-              setState(() {
-                _createNewRepo = true;
-                _pageInitalScreenDone = true;
-
-                _autoConfigureStarted = false;
-                _autoConfigureDone = false;
-                _pageSshKeyDone = false;
-
-                pageController.nextPage(
-                  duration: Duration(milliseconds: 200),
-                  curve: Curves.easeIn,
-                );
-              });
-            },
-            onExistingRepo: () {
-              setState(() {
-                _createNewRepo = false;
-                _pageInitalScreenDone = true;
-
-                _autoConfigureStarted = false;
-                _autoConfigureDone = false;
-                _pageSshKeyDone = false;
-
-                pageController.nextPage(
-                  duration: Duration(milliseconds: 200),
-                  curve: Curves.easeIn,
-                );
-              });
-            },
-          );
-        }
-
-        if (_createNewRepo) {
-          if (pos == 1) {
-            return GitHostSetupCreateRepo(
-              onDone: (GitHostType gitHostType, bool autoConfigure) {
-                if (!autoConfigure) {
-                  _launchCreateRepoPage(gitHostType);
-                }
-
-                setState(() {
-                  _createNewRepo = true;
-                  _pageCreateNewRepoDone = true;
-                  _autoConfigureStarted = autoConfigure;
-                  _autoConfigureDone = false;
-                  _gitHostType = gitHostType;
-
-                  pageController.nextPage(
-                    duration: Duration(milliseconds: 200),
-                    curve: Curves.easeIn,
-                  );
-                });
-              },
-            );
-          }
-
-          if (_autoConfigureStarted) {
-            if (pos == 2) {
-              return GitHostSetupAutoConfigure(
-                gitHostType: _gitHostType,
-                onDone: (String gitCloneUrl) {
-                  setState(() {
-                    _gitCloneUrl = gitCloneUrl;
-                    _autoConfigureDone = true;
-
-                    pageController.nextPage(
-                      duration: Duration(milliseconds: 200),
-                      curve: Curves.easeIn,
-                    );
-
-                    var appState = StateContainer.of(context).appState;
-                    _startGitClone(context, appState.gitBaseDirectory);
-                  });
-                },
-              );
-            }
-
-            if (pos == 3 && _autoConfigureDone) {
-              return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
-            }
-          } else {
-            if (pos == 2) {
-              return GitHostSetupUrl(doneFunction: (String sshUrl) {
-                setPageInputUrlDone();
-                pageController.nextPage(
-                  duration: Duration(milliseconds: 200),
-                  curve: Curves.easeIn,
-                );
-
-                // We aren't calling setState as this isn't being used for rendering
-                _gitCloneUrl = sshUrl.trim();
-
-                this._generateSshKey();
-              });
-            }
-
-            if (pos == 3) {
-              return GitHostSetupSshKey(
-                doneFunction: () {
-                  setPageSshKeyDone();
-                  pageController.nextPage(
-                    duration: Duration(milliseconds: 200),
-                    curve: Curves.easeIn,
-                  );
-
-                  var appState = StateContainer.of(context).appState;
-                  _startGitClone(context, appState.gitBaseDirectory);
-
-                  getAnalytics().logEvent(
-                    name: "onboarding_public_key_copied",
-                    parameters: <String, dynamic>{},
-                  );
-                },
-                publicKey: publicKey,
-                copyKeyFunction: _copyKeyToClipboard,
-                openDeployKeyPage: _launchDeployKeyPage,
-                canOpenDeployKeyPage: _canLaunchDeployKeyPage,
-              );
-            }
-
-            if (pos == 4) {
-              return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
-            }
-          }
-        } // create new repo
-
-        if (pos == 1) {
-          return GitHostSetupUrl(doneFunction: (String sshUrl) {
-            setPageInputUrlDone();
-            pageController.nextPage(
-              duration: Duration(milliseconds: 200),
-              curve: Curves.easeIn,
-            );
-
-            // We aren't calling setState as this isn't being used for rendering
-            _gitCloneUrl = sshUrl.trim();
-
-            this._generateSshKey();
-
-            getAnalytics().logEvent(
-              name: "onboarding_git_url_enterred",
-              parameters: <String, dynamic>{},
-            );
-          });
-        }
-        if (pos == 2) {
-          return GitHostSetupSshKey(
-            doneFunction: () {
-              setPageSshKeyDone();
-              pageController.nextPage(
-                duration: Duration(milliseconds: 200),
-                curve: Curves.easeIn,
-              );
-
-              var appState = StateContainer.of(context).appState;
-              _startGitClone(context, appState.gitBaseDirectory);
-
-              getAnalytics().logEvent(
-                name: "onboarding_public_key_copied",
-                parameters: <String, dynamic>{},
-              );
-            },
-            publicKey: publicKey,
-            copyKeyFunction: _copyKeyToClipboard,
-            openDeployKeyPage: _launchDeployKeyPage,
-            canOpenDeployKeyPage: _canLaunchDeployKeyPage,
-          );
-        }
-
-        if (pos == 3) {
-          return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
-        }
-      },
-      itemCount: pageCount,
+      itemBuilder: _buildPage,
+      itemCount: _pageCount,
       onPageChanged: (int pageNum) {
         print("PageView onPageChanged: " + pageNum.toString());
         /*
@@ -279,6 +239,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
         setState(() {
           _currentPageIndex = pageNum;
+          _pageCount = _currentPageIndex + 1;
         });
       },
     );
@@ -293,7 +254,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           children: <Widget>[
             pageView,
             DotsIndicator(
-              numberOfDot: pageCount,
+              numberOfDot: _pageCount,
               position: _currentPageIndex,
               dotActiveColor: Theme.of(context).primaryColorDark,
             )
@@ -318,16 +279,11 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     );
   }
 
-  void setPageInputUrlDone() {
-    setState(() {
-      this._pageInputUrlDone = true;
-    });
-  }
-
-  void setPageSshKeyDone() {
-    setState(() {
-      this._pageSshKeyDone = true;
-    });
+  void _nextPage() {
+    pageController.nextPage(
+      duration: Duration(milliseconds: 200),
+      curve: Curves.easeIn,
+    );
   }
 
   void _generateSshKey() {
@@ -391,7 +347,10 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     }
   }
 
-  void _startGitClone(BuildContext context, String basePath) async {
+  void _startGitClone(BuildContext context) async {
+    var appState = StateContainer.of(context).appState;
+    var basePath = appState.gitBaseDirectory;
+
     // Just in case it was half cloned because of an error
     await _removeExistingClone(basePath);
 
@@ -491,19 +450,10 @@ class GitHostSetupInitialChoice extends StatelessWidget {
   }
 }
 
-class GitHostSetupCreateRepo extends StatefulWidget {
+class GitHostChoicePage extends StatelessWidget {
   final Function onDone;
 
-  GitHostSetupCreateRepo({@required this.onDone});
-
-  @override
-  GitHostSetupCreateRepoState createState() {
-    return GitHostSetupCreateRepoState();
-  }
-}
-
-class GitHostSetupCreateRepoState extends State<GitHostSetupCreateRepo> {
-  bool switchValue = true;
+  GitHostChoicePage({@required this.onDone});
 
   @override
   Widget build(BuildContext context) {
@@ -519,8 +469,7 @@ class GitHostSetupCreateRepoState extends State<GitHostSetupCreateRepo> {
             text: "GitHub",
             iconUrl: 'assets/icon/github-icon.png',
             onPressed: () {
-              print("SwitchValue: " + switchValue.toString());
-              widget.onDone(GitHostType.GitHub, switchValue);
+              onDone(GitHostType.GitHub);
             },
           ),
           SizedBox(height: 8.0),
@@ -528,28 +477,49 @@ class GitHostSetupCreateRepoState extends State<GitHostSetupCreateRepo> {
             text: "GitLab",
             iconUrl: 'assets/icon/gitlab-icon.png',
             onPressed: () async {
-              widget.onDone(GitHostType.GitLab, switchValue);
+              onDone(GitHostType.GitLab);
+            },
+          ),
+        ],
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+    );
+  }
+}
+
+enum GitHostSetupType {
+  Auto,
+  Manual,
+}
+
+class GitHostAutoConfigureChoicePage extends StatelessWidget {
+  final Function onDone;
+
+  GitHostAutoConfigureChoicePage({@required this.onDone});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Text(
+            "How do you want to do this?",
+            style: Theme.of(context).textTheme.headline,
+          ),
+          SizedBox(height: 16.0),
+          GitHostSetupButton(
+            text: "Setup everything automatically",
+            onPressed: () {
+              onDone(GitHostSetupType.Auto);
             },
           ),
           SizedBox(height: 8.0),
-          Row(
-            children: <Widget>[
-              Switch(
-                value: switchValue,
-                onChanged: (bool value) {
-                  setState(() {
-                    print("Changing switchValue " + value.toString());
-                    switchValue = value;
-                  });
-                },
-              ),
-              Text(
-                "Auto Configure",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline,
-              ),
-            ],
-            mainAxisAlignment: MainAxisAlignment.end,
+          GitHostSetupButton(
+            text: "Let me do it manually",
+            onPressed: () async {
+              onDone(GitHostSetupType.Manual);
+            },
           ),
         ],
         mainAxisAlignment: MainAxisAlignment.center,
