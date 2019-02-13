@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'githostsetup_button.dart';
+import 'githostsetup_loading.dart';
 
 class GitHostSetupSshKey extends StatelessWidget {
   final Function doneFunction;
@@ -20,6 +21,10 @@ class GitHostSetupSshKey extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (this.publicKey == null || this.publicKey.isEmpty) {
+      return GitHostSetupLoadingPage("Generating SSH Key ...");
+    }
+
     Widget copyAndDepoyWidget;
     Widget cloneButton;
     if (this.publicKey.isEmpty) {
@@ -68,13 +73,6 @@ class GitHostSetupSshKey extends StatelessWidget {
       }
     }
 
-    String publicKeyStr = "";
-    if (this.publicKey == null || this.publicKey.isEmpty) {
-      publicKeyStr = "Generating ...";
-    } else {
-      publicKeyStr = this.publicKey;
-    }
-
     var publicKeyWidget = SizedBox(
       width: double.infinity,
       height: 160.0,
@@ -84,7 +82,7 @@ class GitHostSetupSshKey extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              publicKeyStr,
+              publicKey,
               textAlign: TextAlign.left,
               maxLines: null,
               style: Theme.of(context).textTheme.body1,
