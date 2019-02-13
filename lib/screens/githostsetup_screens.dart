@@ -60,14 +60,14 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         onCreateNewRepo: () {
           setState(() {
             _pageChoice[0] = PageChoice0.CreateRepo;
-            _pageCount = 2;
+            _pageCount = pos + 2;
             _nextPage();
           });
         },
         onExistingRepo: () {
           setState(() {
             _pageChoice[0] = PageChoice0.UseExisting;
-            _pageCount = 2;
+            _pageCount = pos + 2;
             _nextPage();
           });
         },
@@ -81,8 +81,9 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         return GitHostChoicePage(
           onDone: (GitHostType gitHostType) {
             setState(() {
-              _pageCount = 3;
               _gitHostType = gitHostType;
+
+              _pageCount = pos + 2;
               _nextPage();
             });
           },
@@ -90,9 +91,9 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       } else if (_pageChoice[0] == PageChoice0.UseExisting) {
         return GitHostSetupUrl(doneFunction: (String sshUrl) {
           setState(() {
-            _pageCount = 3;
             _gitCloneUrl = sshUrl;
 
+            _pageCount = pos + 2;
             _nextPage();
             _generateSshKey();
           });
@@ -105,8 +106,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         return GitHostSetupSshKey(
           doneFunction: () {
             setState(() {
-              _pageCount = 4;
-
+              _pageCount = pos + 2;
               _nextPage();
               _startGitClone(context);
             });
@@ -122,13 +122,13 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         onDone: (GitHostSetupType setupType) {
           if (setupType == GitHostSetupType.Manual) {
             setState(() {
-              _pageCount = 4;
+              _pageCount = pos + 2;
               _pageChoice[2] = PageChoice2.Manual;
               _nextPage();
             });
           } else if (setupType == GitHostSetupType.Auto) {
             setState(() {
-              _pageCount = 4;
+              _pageCount = pos + 2;
               _pageChoice[2] = PageChoice2.Auto;
               _nextPage();
             });
@@ -148,7 +148,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           onDone: (String gitCloneUrl) {
             setState(() {
               _gitCloneUrl = gitCloneUrl;
-              _pageCount = 5;
+              _pageCount = pos + 2;
 
               _nextPage();
               _startGitClone(context);
@@ -158,7 +158,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       } else if (_pageChoice[2] == PageChoice2.Manual) {
         return GitHostSetupUrl(doneFunction: (String sshUrl) {
           setState(() {
-            _pageCount = 5;
+            _pageCount = pos + 2;
             _gitCloneUrl = sshUrl;
 
             _nextPage();
