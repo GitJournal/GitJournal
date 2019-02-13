@@ -79,15 +79,18 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       assert(_pageChoice[0] != PageChoice0.Unknown);
 
       if (_pageChoice[0] == PageChoice0.CustomProvider) {
-        return GitCloneUrlPage(doneFunction: (String sshUrl) {
-          setState(() {
-            _gitCloneUrl = sshUrl;
+        return GitCloneUrlPage(
+          doneFunction: (String sshUrl) {
+            setState(() {
+              _gitCloneUrl = sshUrl;
 
-            _pageCount = pos + 2;
-            _nextPage();
-            _generateSshKey();
-          });
-        });
+              _pageCount = pos + 2;
+              _nextPage();
+              _generateSshKey();
+            });
+          },
+          initialValue: _gitCloneUrl,
+        );
       }
 
       return GitHostAutoConfigureChoicePage(
@@ -141,6 +144,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           },
           launchCreateUrlPage: _launchCreateRepoPage,
           gitHostType: _gitHostType,
+          initialValue: _gitCloneUrl,
         );
       } else if (_pageChoice[1] == PageChoice1.Auto) {
         return GitHostSetupAutoConfigure(

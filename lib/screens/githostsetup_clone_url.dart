@@ -6,8 +6,12 @@ import 'githostsetup_button.dart';
 
 class GitCloneUrlPage extends StatefulWidget {
   final Function doneFunction;
+  final String initialValue;
 
-  GitCloneUrlPage({@required this.doneFunction});
+  GitCloneUrlPage({
+    @required this.doneFunction,
+    @required this.initialValue,
+  });
 
   @override
   GitCloneUrlPageState createState() {
@@ -61,6 +65,7 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
         focusNode: inputFormFocus,
         textInputAction: TextInputAction.done,
         onFieldSubmitted: (String _) => formSubmitted(),
+        initialValue: widget.initialValue,
       ),
     );
 
@@ -94,11 +99,13 @@ class GitCloneUrlKnownProviderPage extends StatefulWidget {
   final Function doneFunction;
   final Function launchCreateUrlPage;
   final GitHostType gitHostType;
+  final String initialValue;
 
   GitCloneUrlKnownProviderPage({
     @required this.doneFunction,
     @required this.launchCreateUrlPage,
     @required this.gitHostType,
+    @required this.initialValue,
   });
 
   @override
@@ -154,6 +161,7 @@ class GitCloneUrlKnownProviderPageState
         focusNode: inputFormFocus,
         textInputAction: TextInputAction.done,
         onFieldSubmitted: (String _) => formSubmitted(),
+        initialValue: widget.initialValue,
       ),
     );
 
