@@ -93,8 +93,6 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         onDone: (GitHostSetupType setupType) {
           if (setupType == GitHostSetupType.Manual) {
             setState(() {
-              _launchCreateRepoPage();
-
               _pageCount = pos + 2;
               _pageChoice[1] = PageChoice1.Manual;
               _nextPage();
@@ -130,16 +128,19 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       assert(_pageChoice[1] != PageChoice1.Unknown);
 
       if (_pageChoice[1] == PageChoice1.Manual) {
-        // FIXME: Create a new page with better instructions
-        return GitCloneUrlPage(doneFunction: (String sshUrl) {
-          setState(() {
-            _pageCount = pos + 2;
-            _gitCloneUrl = sshUrl;
+        return GitCloneUrlKnownProviderPage(
+          doneFunction: (String sshUrl) {
+            setState(() {
+              _pageCount = pos + 2;
+              _gitCloneUrl = sshUrl;
 
-            _nextPage();
-            _generateSshKey();
-          });
-        });
+              _nextPage();
+              _generateSshKey();
+            });
+          },
+          launchCreateUrlPage: _launchCreateRepoPage,
+          gitHostType: _gitHostType,
+        );
       } else if (_pageChoice[1] == PageChoice1.Auto) {
         return GitHostSetupAutoConfigure(
           gitHostType: _gitHostType,
