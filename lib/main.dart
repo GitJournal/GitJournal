@@ -23,7 +23,7 @@ void main() async {
 
   runZoned<Future<void>>(() async {
     await runJournalApp();
-  }, onError: (Error error, StackTrace stackTrace) async {
+  }, onError: (Object error, StackTrace stackTrace) async {
     await FlutterCrashlytics()
         .reportCrash(error, stackTrace, forceCrash: false);
   });

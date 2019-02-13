@@ -45,7 +45,7 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.edit),
         onPressed: () {
-          var route = MaterialPageRoute<Widget>(builder: (context) {
+          var route = MaterialPageRoute(builder: (context) {
             int currentIndex = pageController.page.toInt();
             assert(currentIndex >= 0);
             assert(currentIndex < widget.notes.length);
