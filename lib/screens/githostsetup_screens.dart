@@ -38,7 +38,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     PageChoice2.Unknown,
   ];
 
-  GitHostType _gitHostType;
+  GitHostType _gitHostType = GitHostType.Unknown;
 
   var _gitCloneUrl = "";
   String gitCloneErrorMessage = "";
@@ -122,6 +122,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         onDone: (GitHostSetupType setupType) {
           if (setupType == GitHostSetupType.Manual) {
             setState(() {
+              _launchCreateRepoPage();
+
               _pageCount = pos + 2;
               _pageChoice[2] = PageChoice2.Manual;
               _nextPage();
@@ -333,11 +335,13 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     }
   }
 
-  void _launchCreateRepoPage(GitHostType hostType) async {
+  void _launchCreateRepoPage() async {
+    assert(_gitHostType != GitHostType.Unknown);
+
     try {
-      if (hostType == GitHostType.GitHub) {
+      if (_gitHostType == GitHostType.GitHub) {
         await launch("https://github.com/new");
-      } else if (hostType == GitHostType.GitLab) {
+      } else if (_gitHostType == GitHostType.GitLab) {
         await launch("https://gitlab.com/projects/new");
       }
     } catch (err, stack) {

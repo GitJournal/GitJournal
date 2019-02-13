@@ -5,6 +5,7 @@ import 'gitlab.dart';
 export 'githost.dart';
 
 enum GitHostType {
+  Unknown,
   GitHub,
   GitLab,
   Custom,
