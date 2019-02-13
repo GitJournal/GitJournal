@@ -23,6 +23,9 @@ jobs:
       - run:
           name: Build
           command: ./scripts/build.sh
+      - store_artifacts:
+          path: build/app/outputs/apk/release/app-release.apk
+          destination: gitjournal.apk
       - run:
           name: Publish Beta
           command: cd android && fastlane betaBuild
