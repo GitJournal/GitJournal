@@ -37,7 +37,9 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
 
         GitRepo repo;
         try {
+          // FIXME: What if repo already exists?
           repo = await gitHost.createRepo("journal");
+
           var publicKey = await generateSSHKeys(comment: "GitJournal");
           await gitHost.addDeployKey(publicKey, repo.fullName);
 

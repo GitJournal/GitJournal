@@ -25,17 +25,15 @@ class GitHostSetupScreen extends StatefulWidget {
   }
 }
 
-enum PageChoice0 { Unknown, CreateRepo, UseExisting }
-enum PageChoice1 { None }
-enum PageChoice2 { Unknown, Manual, Auto }
+enum PageChoice0 { Unknown, KnownProvider, CustomProvider }
+enum PageChoice1 { Unknown, Manual, Auto }
 
 class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   var _pageCount = 1;
 
   var _pageChoice = [
     PageChoice0.Unknown,
-    PageChoice1.None,
-    PageChoice2.Unknown,
+    PageChoice1.Unknown,
   ];
 
   GitHostType _gitHostType = GitHostType.Unknown;
@@ -56,17 +54,18 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     assert(_pageCount >= 1);
 
     if (pos == 0) {
-      return GitHostSetupInitialChoice(
-        onCreateNewRepo: () {
+      return GitHostChoicePage(
+        onKnownGitHost: (GitHostType gitHostType) {
           setState(() {
-            _pageChoice[0] = PageChoice0.CreateRepo;
+            _gitHostType = gitHostType;
+            _pageChoice[0] = PageChoice0.KnownProvider;
             _pageCount = pos + 2;
             _nextPage();
           });
         },
-        onExistingRepo: () {
+        onCustomGitHost: () {
           setState(() {
-            _pageChoice[0] = PageChoice0.UseExisting;
+            _pageChoice[0] = PageChoice0.CustomProvider;
             _pageCount = pos + 2;
             _nextPage();
           });
@@ -77,18 +76,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     if (pos == 1) {
       assert(_pageChoice[0] != PageChoice0.Unknown);
 
-      if (_pageChoice[0] == PageChoice0.CreateRepo) {
-        return GitHostChoicePage(
-          onDone: (GitHostType gitHostType) {
-            setState(() {
-              _gitHostType = gitHostType;
-
-              _pageCount = pos + 2;
-              _nextPage();
-            });
-          },
-        );
-      } else if (_pageChoice[0] == PageChoice0.UseExisting) {
+      if (_pageChoice[0] == PageChoice0.CustomProvider) {
         return GitCloneUrlPage(doneFunction: (String sshUrl) {
           setState(() {
             _gitCloneUrl = sshUrl;
@@ -99,10 +87,30 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           });
         });
       }
+
+      return GitHostAutoConfigureChoicePage(
+        onDone: (GitHostSetupType setupType) {
+          if (setupType == GitHostSetupType.Manual) {
+            setState(() {
+              _launchCreateRepoPage();
+
+              _pageCount = pos + 2;
+              _pageChoice[1] = PageChoice1.Manual;
+              _nextPage();
+            });
+          } else if (setupType == GitHostSetupType.Auto) {
+            setState(() {
+              _pageCount = pos + 2;
+              _pageChoice[1] = PageChoice1.Auto;
+              _nextPage();
+            });
+          }
+        },
+      );
     }
 
     if (pos == 2) {
-      if (_pageChoice[0] == PageChoice0.UseExisting) {
+      if (_pageChoice[0] == PageChoice0.CustomProvider) {
         return GitHostSetupSshKey(
           doneFunction: () {
             setState(() {
@@ -118,33 +126,20 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         );
       }
 
-      return GitHostAutoConfigureChoicePage(
-        onDone: (GitHostSetupType setupType) {
-          if (setupType == GitHostSetupType.Manual) {
-            setState(() {
-              _launchCreateRepoPage();
+      assert(_pageChoice[1] != PageChoice1.Unknown);
 
-              _pageCount = pos + 2;
-              _pageChoice[2] = PageChoice2.Manual;
-              _nextPage();
-            });
-          } else if (setupType == GitHostSetupType.Auto) {
-            setState(() {
-              _pageCount = pos + 2;
-              _pageChoice[2] = PageChoice2.Auto;
-              _nextPage();
-            });
-          }
-        },
-      );
-    }
+      if (_pageChoice[1] == PageChoice1.Manual) {
+        // FIXME: Create a new page with better instructions
+        return GitCloneUrlPage(doneFunction: (String sshUrl) {
+          setState(() {
+            _pageCount = pos + 2;
+            _gitCloneUrl = sshUrl;
 
-    if (pos == 3) {
-      if (_pageChoice[0] == PageChoice0.UseExisting) {
-        return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
-      }
-
-      if (_pageChoice[2] == PageChoice2.Auto) {
+            _nextPage();
+            _generateSshKey();
+          });
+        });
+      } else if (_pageChoice[1] == PageChoice1.Auto) {
         return GitHostSetupAutoConfigure(
           gitHostType: _gitHostType,
           onDone: (String gitCloneUrl) {
@@ -157,27 +152,16 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
             });
           },
         );
-      } else if (_pageChoice[2] == PageChoice2.Manual) {
-        return GitCloneUrlPage(doneFunction: (String sshUrl) {
-          setState(() {
-            _pageCount = pos + 2;
-            _gitCloneUrl = sshUrl;
-
-            _nextPage();
-            _generateSshKey();
-          });
-        });
       }
-
-      assert(false);
     }
 
-    assert(_pageChoice[0] != PageChoice0.UseExisting);
-
-    if (pos == 4) {
-      if (_pageChoice[2] == PageChoice2.Auto) {
+    if (pos == 3) {
+      if (_pageChoice[0] == PageChoice0.CustomProvider) {
         return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
-      } else if (_pageChoice[2] == PageChoice2.Manual) {
+      }
+
+      if (_pageChoice[1] == PageChoice1.Manual) {
+        // FIXME: Create a new page with better instructions
         return GitHostSetupSshKey(
           doneFunction: () {
             setState(() {
@@ -192,12 +176,19 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           openDeployKeyPage: _launchDeployKeyPage,
           canOpenDeployKeyPage: _canLaunchDeployKeyPage,
         );
+      } else if (_pageChoice[1] == PageChoice1.Auto) {
+        return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
       }
+
+      assert(false);
     }
 
-    if (pos == 5) {
-      assert(_pageChoice[2] == PageChoice2.Manual);
-      return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
+    assert(_pageChoice[0] != PageChoice0.CustomProvider);
+
+    if (pos == 4) {
+      if (_pageChoice[1] == PageChoice1.Manual) {
+        return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
+      }
     }
 
     assert(false);
@@ -455,9 +446,13 @@ class GitHostSetupInitialChoice extends StatelessWidget {
 }
 
 class GitHostChoicePage extends StatelessWidget {
-  final Function onDone;
+  final Function onKnownGitHost;
+  final Function onCustomGitHost;
 
-  GitHostChoicePage({@required this.onDone});
+  GitHostChoicePage({
+    @required this.onKnownGitHost,
+    @required this.onCustomGitHost,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -465,7 +460,7 @@ class GitHostChoicePage extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Text(
-            "Select a Git hosting provider -",
+            "Select a Git Hosting Provider -",
             style: Theme.of(context).textTheme.headline,
           ),
           SizedBox(height: 16.0),
@@ -473,7 +468,7 @@ class GitHostChoicePage extends StatelessWidget {
             text: "GitHub",
             iconUrl: 'assets/icon/github-icon.png',
             onPressed: () {
-              onDone(GitHostType.GitHub);
+              onKnownGitHost(GitHostType.GitHub);
             },
           ),
           SizedBox(height: 8.0),
@@ -481,7 +476,14 @@ class GitHostChoicePage extends StatelessWidget {
             text: "GitLab",
             iconUrl: 'assets/icon/gitlab-icon.png',
             onPressed: () async {
-              onDone(GitHostType.GitLab);
+              onKnownGitHost(GitHostType.GitLab);
+            },
+          ),
+          SizedBox(height: 8.0),
+          GitHostSetupButton(
+            text: "Custom",
+            onPressed: () async {
+              onCustomGitHost();
             },
           ),
         ],
