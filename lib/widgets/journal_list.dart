@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'package:journal/note.dart';
 import 'package:journal/state_container.dart';
 
@@ -20,24 +19,24 @@ class JournalList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new ListView.builder(
+    return ListView.builder(
       itemBuilder: (context, i) {
         if (i >= notes.length) {
           return null;
         }
 
         var note = notes[i];
-        return new Dismissible(
-          key: new Key(note.fileName),
+        return Dismissible(
+          key: Key(note.fileName),
           child: _buildRow(context, note, i),
-          background: new Container(color: Theme.of(context).accentColor),
+          background: Container(color: Theme.of(context).accentColor),
           onDismissed: (direction) {
             final stateContainer = StateContainer.of(context);
             stateContainer.removeNote(note);
 
-            Scaffold.of(context).showSnackBar(new SnackBar(
-              content: new Text("Note deleted"),
-              action: new SnackBarAction(
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text("Note deleted"),
+              action: SnackBarAction(
                 label: 'Undo',
                 onPressed: () => stateContainer.insertNote(i, note),
               ),
@@ -49,22 +48,22 @@ class JournalList extends StatelessWidget {
   }
 
   Widget _buildRow(BuildContext context, Note journal, int noteIndex) {
-    var formatter = new DateFormat('dd MMM, yyyy');
+    var formatter = DateFormat('dd MMM, yyyy');
     var title = formatter.format(journal.created);
 
-    var timeFormatter = new DateFormat('Hm');
+    var timeFormatter = DateFormat('Hm');
     var time = timeFormatter.format(journal.created);
 
     var body = journal.body;
     body = body.replaceAll("\n", " ");
 
-    return new ListTile(
+    return ListTile(
       isThreeLine: true,
-      title: new Text(
+      title: Text(
         title,
         style: _biggerFont,
       ),
-      subtitle: new Text(
+      subtitle: Text(
         time + "\n" + body,
         maxLines: 3,
         overflow: TextOverflow.ellipsis,

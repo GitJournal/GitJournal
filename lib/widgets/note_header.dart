@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'package:journal/note.dart';
 
 class NoteHeader extends StatelessWidget {
@@ -13,22 +12,22 @@ class NoteHeader extends StatelessWidget {
     var dateStr = DateFormat('MMMM, yyyy').format(note.created);
     var timeStr = DateFormat('EEEE HH:mm').format(note.created);
 
-    var bigNum = new Text(
+    var bigNum = Text(
       note.created.day.toString(),
       style: TextStyle(fontSize: 40.0),
     );
 
-    var dateText = new Text(
+    var dateText = Text(
       dateStr,
       style: TextStyle(fontSize: 18.0),
     );
 
-    var timeText = new Text(
+    var timeText = Text(
       timeStr,
       style: TextStyle(fontSize: 18.0),
     );
 
-    var w = new Row(
+    var w = Row(
       children: <Widget>[
         bigNum,
         SizedBox(width: 8.0),
@@ -43,8 +42,8 @@ class NoteHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
     );
 
-    return new Padding(
-      padding: new EdgeInsets.only(top: 8.0, bottom: 18.0),
+    return Padding(
+      padding: EdgeInsets.only(top: 8.0, bottom: 18.0),
       child: w,
     );
   }

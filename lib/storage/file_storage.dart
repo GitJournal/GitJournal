@@ -26,9 +26,9 @@ class FileStorage implements NoteRepository {
 
   @override
   Future<List<Note>> listNotes() async {
-    final dir = new Directory(baseDirectory);
+    final dir = Directory(baseDirectory);
 
-    var notes = new List<Note>();
+    var notes = List<Note>();
     var lister = dir.list(recursive: false);
     await for (var fileEntity in lister) {
       Note note = await _loadNote(fileEntity);
@@ -63,7 +63,7 @@ class FileStorage implements NoteRepository {
     var filePath = p.join(baseDirectory, note.fileName);
     print("FileStorage: Adding note in " + filePath);
 
-    var file = new File(filePath);
+    var file = File(filePath);
     if (file == null) {
       return NoteRepoResult(error: true);
     }
@@ -77,7 +77,7 @@ class FileStorage implements NoteRepository {
   Future<NoteRepoResult> removeNote(Note note) async {
     var filePath = p.join(baseDirectory, note.fileName);
 
-    var file = new File(filePath);
+    var file = File(filePath);
     await file.delete();
 
     return NoteRepoResult(noteFilePath: filePath, error: false);
@@ -94,12 +94,12 @@ class FileStorage implements NoteRepository {
   }
 
   Future<Directory> saveNotes(List<Note> notes) async {
-    final dir = new Directory(baseDirectory);
+    final dir = Directory(baseDirectory);
 
     for (var note in notes) {
       var filePath = p.join(dir.path, note.fileName);
 
-      var file = new File(filePath);
+      var file = File(filePath);
       var contents = noteSerializer.encode(note);
       await file.writeAsString(contents);
     }

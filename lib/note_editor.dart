@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
 import 'package:journal/note.dart';
 import 'package:journal/state_container.dart';
 import 'package:journal/widgets/note_header.dart';
@@ -15,25 +14,24 @@ class NoteEditor extends StatefulWidget {
   @override
   NoteEditorState createState() {
     if (note == null) {
-      return new NoteEditorState();
+      return NoteEditorState();
     } else {
-      return new NoteEditorState.fromNote(note);
+      return NoteEditorState.fromNote(note);
     }
   }
 }
 
 class NoteEditorState extends State<NoteEditor> {
-  Note note = new Note();
+  Note note = Note();
   final bool newNote;
-  TextEditingController _textController = new TextEditingController();
+  TextEditingController _textController = TextEditingController();
 
   NoteEditorState() : newNote = true {
-    note.created = new DateTime.now();
+    note.created = DateTime.now();
   }
 
-  NoteEditorState.fromNote(Note n) : newNote = false {
-    note = n;
-    _textController = new TextEditingController(text: note.body);
+  NoteEditorState.fromNote(this.note) : newNote = false {
+    _textController = TextEditingController(text: note.body);
   }
 
   @override
@@ -62,7 +60,7 @@ class NoteEditorState extends State<NoteEditor> {
         autofocus: true,
         keyboardType: TextInputType.multiline,
         maxLines: null,
-        decoration: new InputDecoration(
+        decoration: InputDecoration(
           hintText: 'Write here',
           border: InputBorder.none,
         ),
@@ -71,10 +69,10 @@ class NoteEditorState extends State<NoteEditor> {
       ),
     );
 
-    var title = newNote ? "New Journal Entry" : "Edit Journal Entry";
-    var newJournalScreen = new Scaffold(
-      appBar: new AppBar(
-        title: new Text(title),
+    var title = newNote ? "Journal Entry" : "Edit Journal Entry";
+    var newJournalScreen = Scaffold(
+      appBar: AppBar(
+        title: Text(title),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -108,18 +106,18 @@ class NoteEditorState extends State<NoteEditor> {
         ? "Do you want to discard the entry"
         : "Do you want to discard the changes?";
 
-    return new AlertDialog(
+    return AlertDialog(
       // FIXME: Change this to 'Save' vs 'Discard'
-      title: new Text('Are you sure?'),
-      content: new Text(title),
+      title: Text('Are you sure?'),
+      content: Text(title),
       actions: <Widget>[
-        new FlatButton(
+        FlatButton(
           onPressed: () => Navigator.of(context).pop(false),
-          child: new Text('No'),
+          child: Text('No'),
         ),
-        new FlatButton(
+        FlatButton(
           onPressed: () => Navigator.of(context).pop(true),
-          child: new Text('Yes'),
+          child: Text('Yes'),
         ),
       ],
     );

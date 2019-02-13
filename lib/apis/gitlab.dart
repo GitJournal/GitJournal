@@ -80,7 +80,7 @@ class GitLab implements GitHost {
     }
 
     List<dynamic> list = jsonDecode(response.body);
-    var repos = new List<GitRepo>();
+    var repos = List<GitRepo>();
     list.forEach((dynamic d) {
       var map = Map<String, dynamic>.from(d);
       var repo = _repoFromJson(map);
@@ -99,7 +99,7 @@ class GitLab implements GitHost {
     }
 
     var url = "https://gitlab.com/api/v4/projects?access_token=$_accessCode";
-    Map<String, dynamic> data = {
+    var data = <String, dynamic>{
       'name': name,
       'visibility': 'private',
     };
@@ -126,7 +126,7 @@ class GitLab implements GitHost {
     }
 
     print("GitLab createRepo: " + response.body);
-    var map = json.decode(response.body);
+    Map<String, dynamic> map = json.decode(response.body);
     return _repoFromJson(map);
   }
 
@@ -140,7 +140,7 @@ class GitLab implements GitHost {
     var url =
         "https://gitlab.com/api/v4/projects/$repo/deploy_keys?access_token=$_accessCode";
 
-    Map<String, dynamic> data = {
+    var data = {
       'title': "GitJournal",
       'key': sshPublicKey,
       'can_push': true,
@@ -165,7 +165,7 @@ class GitLab implements GitHost {
   }
 
   GitRepo _repoFromJson(Map<String, dynamic> parsedJson) {
-    return new GitRepo(
+    return GitRepo(
       fullName: parsedJson['path_with_namespace'],
       cloneUrl: parsedJson['ssh_url_to_repo'],
     );
@@ -202,10 +202,10 @@ class GitLab implements GitHost {
 }
 
 String _randomString(int length) {
-  var rand = new Random();
-  var codeUnits = new List.generate(length, (index) {
+  var rand = Random();
+  var codeUnits = List.generate(length, (index) {
     return rand.nextInt(33) + 89;
   });
 
-  return new String.fromCharCodes(codeUnits);
+  return String.fromCharCodes(codeUnits);
 }

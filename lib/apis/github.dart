@@ -25,7 +25,7 @@ class GitHub implements GitHost {
 
       print("GitHub: Called onUrl with " + call.arguments.toString());
 
-      var url = call.arguments["URL"];
+      String url = call.arguments["URL"];
       var uri = Uri.parse(url);
       var authCode = uri.queryParameters['code'];
       if (authCode == null) {
@@ -88,7 +88,7 @@ class GitHub implements GitHost {
     }
 
     List<dynamic> list = jsonDecode(response.body);
-    var repos = new List<GitRepo>();
+    var repos = List<GitRepo>();
     list.forEach((dynamic d) {
       var map = Map<String, dynamic>.from(d);
       var repo = _repoFromJson(map);
@@ -107,7 +107,7 @@ class GitHub implements GitHost {
     }
 
     var url = "https://api.github.com/user/repos?access_token=$_accessCode";
-    Map<String, dynamic> data = {
+    var data = <String, dynamic>{
       'name': name,
       'private': true,
     };
@@ -134,11 +134,12 @@ class GitHub implements GitHost {
     }
 
     print("GitHub createRepo: " + response.body);
-    var map = json.decode(response.body);
+    Map<String, dynamic> map = json.decode(response.body);
     return _repoFromJson(map);
   }
 
   // FIXME: Proper error when the repo exists!
+  @override
   Future addDeployKey(String sshPublicKey, String repo) async {
     if (_accessCode.isEmpty) {
       throw GitHostException.MissingAccessCode;
@@ -147,7 +148,7 @@ class GitHub implements GitHost {
     var url =
         "https://api.github.com/repos/$repo/keys?access_token=$_accessCode";
 
-    Map<String, dynamic> data = {
+    var data = <String, dynamic>{
       'title': "GitJournal",
       'key': sshPublicKey,
       'read_only': false,
@@ -172,7 +173,7 @@ class GitHub implements GitHost {
   }
 
   GitRepo _repoFromJson(Map<String, dynamic> parsedJson) {
-    return new GitRepo(
+    return GitRepo(
       fullName: parsedJson['full_name'],
       cloneUrl: parsedJson['ssh_url'],
     );

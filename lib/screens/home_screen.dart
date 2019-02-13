@@ -8,23 +8,23 @@ import 'package:journal/widgets/app_drawer.dart';
 import 'package:journal/widgets/journal_list.dart';
 
 class HomeScreen extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     final container = StateContainer.of(context);
     final appState = container.appState;
 
-    var createButton = new FloatingActionButton(
+    var createButton = FloatingActionButton(
       onPressed: () => _newPost(context),
-      child: new Icon(Icons.add),
+      child: Icon(Icons.add),
     );
 
     var journalList = JournalList(
       notes: appState.notes,
       noteSelectedFunction: (noteIndex) {
-        var route = new MaterialPageRoute(
-          builder: (context) => new NoteBrowsingScreen(
+        var route = MaterialPageRoute(
+          builder: (context) => NoteBrowsingScreen(
                 notes: appState.notes,
                 noteIndex: noteIndex,
               ),
@@ -41,10 +41,10 @@ class HomeScreen extends StatelessWidget {
       },
     );
 
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
-      appBar: new AppBar(
-        title: new Text('GitJournal'),
+      appBar: AppBar(
+        title: Text('GitJournal'),
         leading: appBarMenuButton,
       ),
       floatingActionButton: createButton,
@@ -57,16 +57,16 @@ class HomeScreen extends StatelessWidget {
               } on GitException catch (exp) {
                 _scaffoldKey.currentState
                   ..removeCurrentSnackBar()
-                  ..showSnackBar(new SnackBar(content: new Text(exp.cause)));
+                  ..showSnackBar(SnackBar(content: Text(exp.cause)));
               }
             }),
       ),
-      drawer: new AppDrawer(),
+      drawer: AppDrawer(),
     );
   }
 
   void _newPost(BuildContext context) {
-    var route = new MaterialPageRoute(builder: (context) => new NoteEditor());
+    var route = MaterialPageRoute(builder: (context) => NoteEditor());
     Navigator.of(context).push(route);
   }
 }

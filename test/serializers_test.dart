@@ -1,6 +1,5 @@
 import 'package:journal/note.dart';
 import 'package:journal/storage/serializers.dart';
-
 import 'package:test/test.dart';
 
 DateTime nowWithoutMicro() {
@@ -8,13 +7,13 @@ DateTime nowWithoutMicro() {
   return DateTime(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second);
 }
 
-main() {
+void main() {
   group('Serializers', () {
     var note = Note(
         fileName: "2", body: "This is the body", created: nowWithoutMicro());
 
     test('JSON Serializer', () {
-      var serializer = new JsonNoteSerializer();
+      var serializer = JsonNoteSerializer();
       var str = serializer.encode(note);
       var note2 = serializer.decode(str);
 
@@ -22,7 +21,7 @@ main() {
     });
 
     test('Markdown Serializer', () {
-      var serializer = new MarkdownYAMLSerializer();
+      var serializer = MarkdownYAMLSerializer();
       var str = serializer.encode(note);
       var note2 = serializer.decode(str);
 
@@ -42,7 +41,7 @@ foo: bar
 
 Alright.""";
 
-      var serializer = new MarkdownYAMLSerializer();
+      var serializer = MarkdownYAMLSerializer();
       var note = serializer.decode(str);
       var actualStr = serializer.encode(note);
 

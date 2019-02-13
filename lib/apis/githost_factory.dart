@@ -13,10 +13,10 @@ enum GitHostType {
 GitHost createGitHost(GitHostType type) {
   switch (type) {
     case GitHostType.GitHub:
-      return new GitHub();
+      return GitHub();
 
     case GitHostType.GitLab:
-      return new GitLab();
+      return GitLab();
 
     default:
       return null;

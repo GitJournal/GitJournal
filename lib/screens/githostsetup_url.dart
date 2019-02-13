@@ -9,7 +9,7 @@ class GitHostSetupUrl extends StatefulWidget {
 
   @override
   GitHostSetupUrlState createState() {
-    return new GitHostSetupUrlState();
+    return GitHostSetupUrlState();
   }
 }
 
@@ -51,7 +51,7 @@ class GitHostSetupUrlState extends State<GitHostSetupUrl> {
             return 'Only SSH urls are currently accepted';
           }
 
-          RegExp regExp = new RegExp(r"[a-zA-Z0-9.]+@[a-zA-Z0-9.]+:.+");
+          RegExp regExp = RegExp(r"[a-zA-Z0-9.]+@[a-zA-Z0-9.]+:.+");
           if (!regExp.hasMatch(value)) {
             return "Invalid Input";
           }

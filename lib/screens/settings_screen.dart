@@ -6,7 +6,7 @@ import 'package:package_info/package_info.dart';
 class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
         leading: IconButton(
@@ -24,7 +24,7 @@ class SettingsScreen extends StatelessWidget {
 class SettingsList extends StatefulWidget {
   @override
   SettingsListState createState() {
-    return new SettingsListState();
+    return SettingsListState();
   }
 }
 
@@ -142,7 +142,7 @@ class SettingsHeader extends StatelessWidget {
 class VersionNumberTile extends StatefulWidget {
   @override
   VersionNumberTileState createState() {
-    return new VersionNumberTileState();
+    return VersionNumberTileState();
   }
 }
 

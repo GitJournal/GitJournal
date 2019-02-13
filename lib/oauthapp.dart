@@ -5,7 +5,7 @@ import 'apis/githost_factory.dart';
 class OAuthApp extends StatefulWidget {
   @override
   OAuthAppState createState() {
-    return new OAuthAppState();
+    return OAuthAppState();
   }
 }
 
@@ -15,6 +15,7 @@ var key =
 class OAuthAppState extends State<OAuthApp> {
   GitHost githost;
 
+  @override
   void initState() {
     super.initState();
 
@@ -26,7 +27,7 @@ class OAuthAppState extends State<OAuthApp> {
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       title: 'OAuth App',
       home: Scaffold(
         appBar: AppBar(

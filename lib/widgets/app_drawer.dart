@@ -4,13 +4,13 @@ import 'package:journal/state_container.dart';
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Widget setupGitButton = new Container();
+    Widget setupGitButton = Container();
     var appState = StateContainer.of(context).appState;
 
     if (!appState.remoteGitRepoConfigured) {
       setupGitButton = ListTile(
-        title: new Text('Setup Git Host'),
-        trailing: new Icon(
+        title: Text('Setup Git Host'),
+        trailing: Icon(
           Icons.priority_high,
           color: Colors.red,
         ),
@@ -21,13 +21,13 @@ class AppDrawer extends StatelessWidget {
       );
     }
 
-    return new Drawer(
-      child: new ListView(
+    return Drawer(
+      child: ListView(
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: <Widget>[
-          new DrawerHeader(
-            decoration: new BoxDecoration(
+          DrawerHeader(
+            decoration: BoxDecoration(
               color: Theme.of(context).buttonColor,
             ),
             child: Padding(
@@ -42,16 +42,16 @@ class AppDrawer extends StatelessWidget {
             ),
           ),
           setupGitButton,
-          new ListTile(
-            title: new Text('Share App'),
+          ListTile(
+            title: Text('Share App'),
             onTap: () {
               Navigator.pop(context);
               // Update the state of the app
               // ...
             },
           ),
-          new ListTile(
-            title: new Text('Settings'),
+          ListTile(
+            title: Text('Settings'),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, "/settings");

@@ -21,7 +21,7 @@ class GitHostSetupScreen extends StatefulWidget {
 
   @override
   GitHostSetupScreenState createState() {
-    return new GitHostSetupScreenState();
+    return GitHostSetupScreenState();
   }
 }
 
@@ -42,7 +42,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   var pageController = PageController();
   int _currentPageIndex = 0;
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   String publicKey = "";
   bool _canLaunchDeployKeyPage = false;
@@ -283,16 +283,16 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       },
     );
 
-    var scaffold = new Scaffold(
+    var scaffold = Scaffold(
       key: _scaffoldKey,
-      body: new Container(
+      body: Container(
         width: double.infinity,
         height: double.infinity,
         child: Stack(
           alignment: FractionalOffset.bottomCenter,
           children: <Widget>[
             pageView,
-            new DotsIndicator(
+            DotsIndicator(
               numberOfDot: pageCount,
               position: _currentPageIndex,
               dotActiveColor: Theme.of(context).primaryColorDark,
@@ -303,7 +303,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       ),
     );
 
-    return new WillPopScope(
+    return WillPopScope(
       onWillPop: () {
         if (_currentPageIndex != 0) {
           pageController.previousPage(
@@ -348,7 +348,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     var text = "Public Key copied to Clipboard";
     this._scaffoldKey.currentState
       ..removeCurrentSnackBar()
-      ..showSnackBar(new SnackBar(content: new Text(text)));
+      ..showSnackBar(SnackBar(content: Text(text)));
   }
 
   void _launchDeployKeyPage() async {
@@ -423,8 +423,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   }
 
   Future _removeExistingClone(String baseDirPath) async {
-    var baseDir = new Directory(p.join(baseDirPath, "journal"));
-    var dotGitDir = new Directory(p.join(baseDir.path, ".git"));
+    var baseDir = Directory(p.join(baseDirPath, "journal"));
+    var dotGitDir = Directory(p.join(baseDir.path, ".git"));
     bool exists = await dotGitDir.exists();
     if (exists) {
       print("Removing " + baseDir.path);
@@ -498,7 +498,7 @@ class GitHostSetupCreateRepo extends StatefulWidget {
 
   @override
   GitHostSetupCreateRepoState createState() {
-    return new GitHostSetupCreateRepoState();
+    return GitHostSetupCreateRepoState();
   }
 }
 

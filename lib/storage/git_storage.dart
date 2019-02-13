@@ -20,7 +20,7 @@ class GitNoteRepository implements NoteRepository {
     @required this.dirName,
     @required String baseDirectory,
   }) : _fileStorage = FileStorage(
-          noteSerializer: new MarkdownYAMLSerializer(),
+          noteSerializer: MarkdownYAMLSerializer(),
           baseDirectory: p.join(baseDirectory, dirName),
         );
 
@@ -92,8 +92,8 @@ class GitNoteRepository implements NoteRepository {
     }
 
     if (!checkForCloned) {
-      var baseDir = new Directory(_fileStorage.baseDirectory);
-      var dotGitDir = new Directory(p.join(baseDir.path, ".git"));
+      var baseDir = Directory(_fileStorage.baseDirectory);
+      var dotGitDir = Directory(p.join(baseDir.path, ".git"));
       cloned = await dotGitDir.exists();
       checkForCloned = true;
     }
@@ -116,7 +116,7 @@ class GitNoteRepository implements NoteRepository {
       await gitPush(this.dirName);
     } on GitException catch (ex) {
       print(ex);
-      throw ex;
+      rethrow;
     }
 
     return true;

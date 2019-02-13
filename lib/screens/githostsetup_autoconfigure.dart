@@ -14,7 +14,7 @@ class GitHostSetupAutoConfigure extends StatefulWidget {
 
   @override
   GitHostSetupAutoConfigureState createState() {
-    return new GitHostSetupAutoConfigureState();
+    return GitHostSetupAutoConfigureState();
   }
 }
 

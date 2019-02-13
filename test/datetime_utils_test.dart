@@ -1,7 +1,7 @@
-import 'package:test/test.dart';
 import 'package:journal/datetime_utils.dart';
+import 'package:test/test.dart';
 
-main() {
+void main() {
   group('DateTime Utils', () {
     test('Test random date', () {
       var dateTime = DateTime.utc(2011, 12, 23, 10, 15, 30);

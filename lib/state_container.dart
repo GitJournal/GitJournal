@@ -59,12 +59,12 @@ class StateContainerState extends State<StateContainer> {
     assert(appState.localGitRepoConfigured);
 
     if (appState.remoteGitRepoConfigured) {
-      noteRepo = new GitNoteRepository(
+      noteRepo = GitNoteRepository(
         baseDirectory: appState.gitBaseDirectory,
         dirName: appState.remoteGitRepoPath,
       );
     } else if (appState.localGitRepoConfigured) {
-      noteRepo = new GitNoteRepository(
+      noteRepo = GitNoteRepository(
         baseDirectory: appState.gitBaseDirectory,
         dirName: appState.localGitRepoPath,
       );
@@ -80,9 +80,9 @@ class StateContainerState extends State<StateContainer> {
   }
 
   void removeExistingRemoteClone() async {
-    var remoteGitDir = new Directory(
+    var remoteGitDir = Directory(
         p.join(appState.gitBaseDirectory, appState.remoteGitRepoPath));
-    var dotGitDir = new Directory(p.join(remoteGitDir.path, ".git"));
+    var dotGitDir = Directory(p.join(remoteGitDir.path, ".git"));
 
     bool exists = await dotGitDir.exists();
     if (exists) {
@@ -194,7 +194,7 @@ class StateContainerState extends State<StateContainer> {
         gitBasePath: appState.gitBaseDirectory,
       );
 
-      noteRepo = new GitNoteRepository(
+      noteRepo = GitNoteRepository(
         baseDirectory: appState.gitBaseDirectory,
         dirName: appState.remoteGitRepoPath,
       );

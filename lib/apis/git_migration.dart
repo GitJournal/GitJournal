@@ -18,13 +18,13 @@ Future migrateGitRepo({
   var fromBasePath = p.join(gitBasePath, fromGitBasePath);
   var toBasePath = p.join(gitBasePath, toGitBasePath);
 
-  final dir = new Directory(fromBasePath);
+  final dir = Directory(fromBasePath);
   var lister = dir.list(recursive: false);
   await for (var fileEntity in lister) {
     if (fileEntity is! File) {
       continue;
     }
-    var file = fileEntity as File;
+    File file = fileEntity;
     var fileName = p.basename(file.path);
     var toPath = p.join(toBasePath, fileName);
 

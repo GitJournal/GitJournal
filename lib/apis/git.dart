@@ -11,7 +11,7 @@ Future<Directory> getGitBaseDirectory() async {
   if (path == null) {
     return null;
   }
-  return new Directory(path);
+  return Directory(path);
 }
 
 Future<void> gitClone(String cloneUrl, String folderName) async {
@@ -43,7 +43,7 @@ Future<String> generateSSHKeys({@required String comment}) async {
   }
 
   try {
-    String publicKey = await _platform.invokeMethod('getSSHPublicKey', {});
+    String publicKey = await _platform.invokeMethod('getSSHPublicKey');
     print("Public Key " + publicKey);
     return publicKey;
   } on PlatformException catch (e) {
@@ -65,7 +65,7 @@ Future<void> setSshKeys({
     });
   } on PlatformException catch (e) {
     print("Failed to generateSSHKeys: '${e.message}'.");
-    throw e;
+    rethrow;
   }
 }
 

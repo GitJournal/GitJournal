@@ -1,22 +1,18 @@
 import 'package:journal/datetime_utils.dart';
 
-typedef NoteAdder(Note note);
-typedef NoteRemover(Note note);
-typedef NoteUpdator(Note note);
-
-class Note implements Comparable {
+class Note implements Comparable<Note> {
   String fileName;
   DateTime created;
   String body;
 
-  Map<String, dynamic> extraProperties = new Map<String, dynamic>();
+  Map<String, dynamic> extraProperties = Map<String, dynamic>();
 
   Note({this.created, this.body, this.fileName, this.extraProperties}) {
     if (created == null) {
       created = DateTime(0, 0, 0, 0, 0, 0, 0, 0);
     }
     if (extraProperties == null) {
-      extraProperties = new Map<String, dynamic>();
+      extraProperties = Map<String, dynamic>();
     }
   }
 
@@ -32,10 +28,12 @@ class Note implements Comparable {
       var createdStr = json['created'].toString();
       try {
         created = DateTime.parse(json['created']).toLocal();
-      } catch (ex) {}
+      } catch (ex) {
+        // Ignore it
+      }
 
       if (created == null) {
-        var regex = new RegExp(
+        var regex = RegExp(
             r"(\d{4})-(\d{2})-(\d{2})T(\d{2})\:(\d{2})\:(\d{2})\+(\d{2})\:(\d{2})");
         if (regex.hasMatch(createdStr)) {
           // FIXME: Handle the timezone!
@@ -57,7 +55,7 @@ class Note implements Comparable {
       json.remove("body");
     }
 
-    return new Note(
+    return Note(
       fileName: fileName,
       created: created,
       body: body,
@@ -96,7 +94,8 @@ class Note implements Comparable {
 
   static bool _equalMaps(Map a, Map b) {
     if (a.length != b.length) return false;
-    return a.keys.every((key) => b.containsKey(key) && a[key] == b[key]);
+    return a.keys
+        .every((dynamic key) => b.containsKey(key) && a[key] == b[key]);
   }
 
   @override
@@ -105,7 +104,7 @@ class Note implements Comparable {
   }
 
   @override
-  int compareTo(other) {
+  int compareTo(Note other) {
     if (other == null) {
       return -1;
     }

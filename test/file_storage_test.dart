@@ -1,18 +1,17 @@
 import 'dart:io';
 
-import 'package:test/test.dart';
-import 'package:path/path.dart' as p;
-
 import 'package:journal/note.dart';
 import 'package:journal/storage/file_storage.dart';
 import 'package:journal/storage/serializers.dart';
+import 'package:path/path.dart' as p;
+import 'package:test/test.dart';
 
 DateTime nowWithoutMicro() {
   var dt = DateTime.now();
   return DateTime(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second);
 }
 
-main() {
+void main() {
   group('FileStorage', () {
     var notes = [
       Note(fileName: "1.md", body: "test", created: nowWithoutMicro()),
@@ -26,7 +25,7 @@ main() {
       tempDir = await Directory.systemTemp.createTemp('__storage_test__');
       storage = FileStorage(
         baseDirectory: tempDir.path,
-        noteSerializer: new JsonNoteSerializer(),
+        noteSerializer: JsonNoteSerializer(),
       );
     });
 

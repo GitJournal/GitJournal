@@ -21,9 +21,9 @@ void main() async {
 
   await FlutterCrashlytics().initialize();
 
-  runZoned<Future<Null>>(() async {
+  runZoned<Future<void>>(() async {
     await runJournalApp();
-  }, onError: (error, stackTrace) async {
+  }, onError: (Error error, StackTrace stackTrace) async {
     await FlutterCrashlytics()
         .reportCrash(error, stackTrace, forceCrash: false);
   });
@@ -60,7 +60,7 @@ Future runJournalApp() async {
 
   await Settings.instance.load();
 
-  runApp(new StateContainer(
+  runApp(StateContainer(
     localGitRepoConfigured: localGitRepoConfigured,
     remoteGitRepoConfigured: remoteGitRepoConfigured,
     localGitRepoPath: localGitRepoPath,

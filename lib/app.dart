@@ -28,9 +28,9 @@ class JournalApp extends StatelessWidget {
       stateContainer.completeGitHostSetup();
     };
 
-    return new MaterialApp(
+    return MaterialApp(
       title: 'GitJournal',
-      theme: new ThemeData(
+      theme: ThemeData(
         brightness: Brightness.light,
         primaryColor: Color(0xFF66bb6a),
         primaryColorLight: Color(0xFF98ee99),

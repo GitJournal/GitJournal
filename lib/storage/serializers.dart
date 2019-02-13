@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:yaml/yaml.dart';
 import 'package:journal/note.dart';
+import 'package:yaml/yaml.dart';
 
 abstract class NoteSerializer {
   String encode(Note note);
@@ -12,7 +12,7 @@ class JsonNoteSerializer implements NoteSerializer {
   @override
   Note decode(String str) {
     final json = JsonDecoder().convert(str);
-    return new Note.fromJson(json);
+    return Note.fromJson(json);
   }
 
   @override
@@ -28,18 +28,18 @@ class MarkdownYAMLSerializer implements NoteSerializer {
       var parts = str.split("---\n");
 
       var yamlMap = loadYaml(parts[1]);
-      var map = new Map<String, dynamic>();
+      var map = Map<String, dynamic>();
       yamlMap.forEach((key, value) {
         map[key] = value;
       });
       map['body'] = parts[2].trimLeft();
 
-      return new Note.fromJson(map);
+      return Note.fromJson(map);
     }
 
-    var map = new Map<String, dynamic>();
+    var map = Map<String, dynamic>();
     map['body'] = str;
-    return new Note.fromJson(map);
+    return Note.fromJson(map);
   }
 
   @override

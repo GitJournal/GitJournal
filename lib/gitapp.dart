@@ -6,11 +6,11 @@ const basePath = "journal";
 String cloneUrl = "git@github.com:GitJournal/journal_test.git";
 
 class GitApp extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       title: 'Git App',
       home: Scaffold(
         key: _scaffoldKey,
@@ -30,16 +30,16 @@ class GitApp extends StatelessWidget {
     var text = "Success";
     this._scaffoldKey.currentState
       ..removeCurrentSnackBar()
-      ..showSnackBar(new SnackBar(content: new Text(text)));
+      ..showSnackBar(SnackBar(content: Text(text)));
   }
 
   void _sendError(String text) {
     this._scaffoldKey.currentState
       ..removeCurrentSnackBar()
-      ..showSnackBar(new SnackBar(content: new Text("ERROR: " + text)));
+      ..showSnackBar(SnackBar(content: Text("ERROR: " + text)));
   }
 
-  _buildGitButtons() {
+  List<Widget> _buildGitButtons() {
     return <Widget>[
       RaisedButton(
           child: Text("Generate Keys"),

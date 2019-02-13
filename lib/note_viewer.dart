@@ -16,7 +16,7 @@ class NoteBrowsingScreen extends StatefulWidget {
 
   @override
   NoteBrowsingScreenState createState() {
-    return new NoteBrowsingScreenState(noteIndex: noteIndex);
+    return NoteBrowsingScreenState(noteIndex: noteIndex);
   }
 }
 
@@ -24,28 +24,28 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
   PageController pageController;
 
   NoteBrowsingScreenState({@required int noteIndex}) {
-    pageController = new PageController(initialPage: noteIndex);
+    pageController = PageController(initialPage: noteIndex);
   }
 
   @override
   Widget build(BuildContext context) {
-    var pageView = new PageView.builder(
+    var pageView = PageView.builder(
       controller: pageController,
       itemCount: widget.notes.length,
       itemBuilder: (BuildContext context, int pos) {
-        return new NoteViewer(note: widget.notes[pos]);
+        return NoteViewer(note: widget.notes[pos]);
       },
     );
 
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('TIMELINE'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('TIMELINE'),
       ),
       body: pageView,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.edit),
         onPressed: () {
-          var route = new MaterialPageRoute(builder: (context) {
+          var route = MaterialPageRoute<Widget>(builder: (context) {
             int currentIndex = pageController.page.toInt();
             assert(currentIndex >= 0);
             assert(currentIndex < widget.notes.length);
@@ -68,8 +68,8 @@ class NoteViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var view = new SingleChildScrollView(
-      child: new Column(
+    var view = SingleChildScrollView(
+      child: Column(
         children: <Widget>[
           NoteHeader(note),
           Text(note.body, style: _biggerFont),
@@ -85,21 +85,21 @@ class NoteViewer extends StatelessWidget {
 
   /*
   Widget _buildFooter(BuildContext context) {
-    return new Padding(
+    return Padding(
       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-      child: new Row(
+      child: Row(
         children: <Widget>[
-          new IconButton(
-            icon: new Icon(Icons.arrow_left),
+          IconButton(
+            icon: Icon(Icons.arrow_left),
             tooltip: 'Previous Entry',
             onPressed: showPrevNoteFunc,
           ),
-          new Expanded(
+          Expanded(
             flex: 10,
-            child: new Text(''),
+            child: Text(''),
           ),
-          new IconButton(
-            icon: new Icon(Icons.arrow_right),
+          IconButton(
+            icon: Icon(Icons.arrow_right),
             tooltip: 'Next Entry',
             onPressed: showNextNoteFunc,
           ),
