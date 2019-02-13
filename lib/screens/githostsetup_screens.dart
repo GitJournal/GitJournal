@@ -11,6 +11,7 @@ import 'package:path/path.dart' as p;
 import 'package:url_launcher/url_launcher.dart';
 
 import 'githostsetup_autoconfigure.dart';
+import 'githostsetup_button.dart';
 import 'githostsetup_clone.dart';
 import 'githostsetup_clone_url.dart';
 
