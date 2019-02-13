@@ -1,35 +1,25 @@
 import 'package:flutter/material.dart';
 
-import 'githostsetup_loading.dart';
-
-class GitHostSetupGitClone extends StatelessWidget {
-  final String errorMessage;
-
-  GitHostSetupGitClone({
-    this.errorMessage,
-  });
+class GitHostSetupLoadingPage extends StatelessWidget {
+  final String text;
+  GitHostSetupLoadingPage(this.text);
 
   @override
   Widget build(BuildContext context) {
-    if (this.errorMessage == null || this.errorMessage.isEmpty) {
-      return GitHostSetupLoadingPage("Cloning ...");
-    }
-
     var children = <Widget>[
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(
-          'Failed',
+          text,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.display1,
         ),
       ),
+      SizedBox(height: 8.0),
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Text(
-          this.errorMessage,
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.display1,
+        child: CircularProgressIndicator(
+          value: null,
         ),
       ),
     ];
