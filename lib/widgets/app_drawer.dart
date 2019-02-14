@@ -9,10 +9,12 @@ class AppDrawer extends StatelessWidget {
     Widget setupGitButton = Container();
     var appState = StateContainer.of(context).appState;
 
+    var textStyle = Theme.of(context).textTheme.body2;
+
     if (!appState.remoteGitRepoConfigured) {
       setupGitButton = ListTile(
-        leading: Icon(Icons.sync),
-        title: Text('Setup Git Host'),
+        leading: Icon(Icons.sync, color: textStyle.color),
+        title: Text('Setup Git Host', style: textStyle),
         trailing: Icon(
           Icons.info,
           color: Colors.red,
@@ -46,16 +48,16 @@ class AppDrawer extends StatelessWidget {
           ),
           setupGitButton,
           ListTile(
-            leading: Icon(Icons.share),
-            title: Text('Share App'),
+            leading: Icon(Icons.share, color: textStyle.color),
+            title: Text('Share App', style: textStyle),
             onTap: () {
               Navigator.pop(context);
               Share.share('Checkout GitJournal https://gitjournal.io/');
             },
           ),
           ListTile(
-            leading: Icon(Icons.feedback),
-            title: Text('Feedback'),
+            leading: Icon(Icons.feedback, color: textStyle.color),
+            title: Text('Feedback', style: textStyle),
             onTap: () {
               var emailAddress = 'gitjournal.io@gmail.com';
               var subject = 'GitJournal Feedback';
@@ -68,8 +70,8 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
+            leading: Icon(Icons.settings, color: textStyle.color),
+            title: Text('Settings', style: textStyle),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, "/settings");
