@@ -14,6 +14,7 @@ import 'githostsetup_autoconfigure.dart';
 import 'githostsetup_button.dart';
 import 'githostsetup_clone.dart';
 import 'githostsetup_clone_url.dart';
+import 'githostsetup_folder.dart';
 import 'githostsetup_sshkey.dart';
 
 class GitHostSetupScreen extends StatefulWidget {
@@ -38,17 +39,16 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     PageChoice1.Unknown,
   ];
 
-  GitHostType _gitHostType = GitHostType.Unknown;
-
+  var _gitHostType = GitHostType.Unknown;
   var _gitCloneUrl = "";
-  String gitCloneErrorMessage = "";
-
-  String publicKey = "";
+  var gitCloneErrorMessage = "";
+  var publicKey = "";
+  var _subFolders = <String>[];
 
   var pageController = PageController();
   int _currentPageIndex = 0;
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Widget _buildPage(BuildContext context, int pos) {
     print("_buildPage " + pos.toString());
@@ -186,11 +186,35 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       assert(false);
     }
 
-    assert(_pageChoice[0] != PageChoice0.CustomProvider);
-
     if (pos == 4) {
+      if (_pageChoice[0] == PageChoice0.CustomProvider) {
+        return GitHostSetupFolderPage(
+          folders: _subFolders,
+          subFolderSelected: _subFolderSelected,
+          rootFolderSelected: _finish,
+        );
+      }
+
       if (_pageChoice[1] == PageChoice1.Manual) {
         return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
+      } else if (_pageChoice[1] == PageChoice1.Auto) {
+        return GitHostSetupFolderPage(
+          folders: _subFolders,
+          subFolderSelected: _subFolderSelected,
+          rootFolderSelected: _finish,
+        );
+      }
+    }
+
+    assert(_pageChoice[0] != PageChoice0.CustomProvider);
+
+    if (pos == 5) {
+      if (_pageChoice[1] == PageChoice1.Manual) {
+        return GitHostSetupFolderPage(
+          folders: _subFolders,
+          subFolderSelected: _subFolderSelected,
+          rootFolderSelected: _finish,
+        );
       }
     }
 
@@ -371,14 +395,21 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         );
         gitCloneErrorMessage = error;
       });
-    } else {
-      getAnalytics().logEvent(
-        name: "onboarding_complete",
-        parameters: <String, dynamic>{},
-      );
-      Navigator.pop(context);
-      this.widget.onCompletedFunction();
+      return;
     }
+
+    List<String> subFolders = await _getSubFoldersWithMdFiles(basePath);
+    if (subFolders.isEmpty) {
+      print("Found no subfolders with md files");
+      _finish();
+      return;
+    }
+
+    setState(() {
+      _subFolders = subFolders;
+      _pageCount += 1;
+      _nextPage();
+    });
   }
 
   Future _removeExistingClone(String baseDirPath) async {
@@ -390,6 +421,54 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       await baseDir.delete(recursive: true);
       await baseDir.create();
     }
+  }
+
+  Future<List<String>> _getSubFoldersWithMdFiles(String baseDirPath) async {
+    var subFolders = <String>[];
+
+    var gitRootDir = Directory(p.join(baseDirPath, "journal"));
+    var lister = gitRootDir.list(recursive: false);
+    await for (var fileEntity in lister) {
+      if (fileEntity is! Directory) {
+        continue;
+      }
+
+      Directory dir = fileEntity;
+      var hasMdFiles = await _hasMdFiles(dir);
+      if (hasMdFiles) {
+        subFolders.add(p.basename(dir.path));
+      }
+    }
+
+    return subFolders;
+  }
+
+  Future<bool> _hasMdFiles(Directory dir) async {
+    var lister = dir.list(recursive: false);
+    await for (var fileEntity in lister) {
+      if (fileEntity is! File) {
+        continue;
+      }
+
+      if (fileEntity.path.toLowerCase().endsWith('.md')) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  void _finish() {
+    getAnalytics().logEvent(
+      name: "onboarding_complete",
+      parameters: <String, dynamic>{},
+    );
+    Navigator.pop(context);
+    this.widget.onCompletedFunction();
+  }
+
+  void _subFolderSelected(String folder) {
+    _finish();
   }
 }
 

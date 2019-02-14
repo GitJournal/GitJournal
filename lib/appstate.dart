@@ -13,6 +13,7 @@ class AppState {
   bool onBoardingCompleted = false;
 
   // FIXME: Make final
+  /// This is the directory where all the git repos are stored
   String gitBaseDirectory = "";
 
   bool isLoadingFromDisk;
