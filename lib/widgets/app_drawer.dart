@@ -11,6 +11,7 @@ class AppDrawer extends StatelessWidget {
 
     if (!appState.remoteGitRepoConfigured) {
       setupGitButton = ListTile(
+        leading: Icon(Icons.sync),
         title: Text('Setup Git Host'),
         trailing: Icon(
           Icons.info,
@@ -45,6 +46,7 @@ class AppDrawer extends StatelessWidget {
           ),
           setupGitButton,
           ListTile(
+            leading: Icon(Icons.share),
             title: Text('Share App'),
             onTap: () {
               Navigator.pop(context);
@@ -52,6 +54,7 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: Icon(Icons.feedback),
             title: Text('Feedback'),
             onTap: () {
               var emailAddress = 'gitjournal.io@gmail.com';
@@ -65,6 +68,7 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: Icon(Icons.settings),
             title: Text('Settings'),
             onTap: () {
               Navigator.pop(context);
