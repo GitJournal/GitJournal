@@ -94,7 +94,8 @@ class GitApp extends StatelessWidget {
           var baseGitPath = await getGitBaseDirectory();
           await migrateGitRepo(
             fromGitBasePath: "journal_local",
-            toGitBasePath: "journal",
+            toGitBaseFolder: "journal",
+            toGitBaseSubFolder: "",
             gitBasePath: baseGitPath.path,
           );
         },
