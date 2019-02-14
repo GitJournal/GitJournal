@@ -393,63 +393,6 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   }
 }
 
-class GitHostSetupInitialChoice extends StatelessWidget {
-  final Function onCreateNewRepo;
-  final Function onExistingRepo;
-
-  GitHostSetupInitialChoice({
-    @required this.onCreateNewRepo,
-    @required this.onExistingRepo,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    var headerTextStyle =
-        Theme.of(context).textTheme.display3.copyWith(fontFamily: "Lato");
-    var header = Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Image.asset(
-          'assets/icon/icon.png',
-          height: 200,
-          fit: BoxFit.fill,
-        ),
-        SizedBox(height: 8.0),
-        Text(
-          "GitJournal",
-          style: headerTextStyle,
-        ),
-      ],
-    );
-
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Center(child: header),
-          SizedBox(height: 64.0),
-          Text(
-            "We need a Git Repo to store the data -",
-            style: Theme.of(context).textTheme.headline,
-          ),
-          SizedBox(height: 8.0),
-          GitHostSetupButton(
-            text: "Create a New Repo",
-            onPressed: onCreateNewRepo,
-          ),
-          SizedBox(height: 8.0),
-          GitHostSetupButton(
-            text: "I already have one",
-            onPressed: onExistingRepo,
-          ),
-        ],
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-      ),
-    );
-  }
-}
-
 class GitHostChoicePage extends StatelessWidget {
   final Function onKnownGitHost;
   final Function onCustomGitHost;
