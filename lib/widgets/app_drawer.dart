@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:journal/state_container.dart';
 import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -12,7 +13,7 @@ class AppDrawer extends StatelessWidget {
       setupGitButton = ListTile(
         title: Text('Setup Git Host'),
         trailing: Icon(
-          Icons.priority_high,
+          Icons.info,
           color: Colors.red,
         ),
         onTap: () {
@@ -48,6 +49,19 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
               Share.share('Checkout GitJournal https://gitjournal.io/');
+            },
+          ),
+          ListTile(
+            title: Text('Feedback'),
+            onTap: () {
+              var emailAddress = 'gitjournal.io@gmail.com';
+              var subject = 'GitJournal Feedback';
+              var body =
+                  "Hey!\n\nHere are some ways to improve GitJournal - \n";
+              var url = 'mailto:$emailAddress?subject=$subject&body=$body';
+              launch(url);
+
+              Navigator.pop(context);
             },
           ),
           ListTile(
