@@ -9,6 +9,8 @@ class AppState {
   String remoteGitRepoPath = "";
   bool remoteGitRepoConfigured = false;
 
+  bool hasJournalEntries = false;
+
   // FIXME: Make final
   String gitBaseDirectory = "";
 

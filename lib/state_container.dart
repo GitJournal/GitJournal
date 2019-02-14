@@ -97,6 +97,7 @@ class StateContainerState extends State<StateContainer> {
       setState(() {
         appState.isLoadingFromDisk = false;
         appState.notes = loadedNotes;
+        appState.hasJournalEntries = loadedNotes.isNotEmpty;
       });
     }).catchError((err, stack) {
       setState(() {
@@ -121,6 +122,7 @@ class StateContainerState extends State<StateContainer> {
       setState(() {
         appState.isLoadingFromDisk = false;
         appState.notes = loadedNotes;
+        appState.hasJournalEntries = loadedNotes.isNotEmpty;
       });
     } catch (err, stack) {
       setState(() {

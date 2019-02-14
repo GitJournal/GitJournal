@@ -33,9 +33,11 @@ class HomeScreen extends StatelessWidget {
       },
     );
 
+    bool shouldShowBadge =
+        !appState.remoteGitRepoConfigured && appState.hasJournalEntries;
     var appBarMenuButton = BadgeIconButton(
       icon: const Icon(Icons.menu),
-      itemCount: appState.remoteGitRepoConfigured ? 0 : 1,
+      itemCount: shouldShowBadge ? 1 : 0,
       onPressed: () {
         _scaffoldKey.currentState.openDrawer();
       },
