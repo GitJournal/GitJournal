@@ -39,7 +39,7 @@ Future migrateGitRepo({
       gitFolder: toGitBaseFolder,
       authorEmail: Settings.instance.gitAuthorEmail,
       authorName: Settings.instance.gitAuthor,
-      message: "Migrated Journal Entry",
+      message: "Added Journal Entry",
     );
   }
   print("migrateGitRepo: Done");
