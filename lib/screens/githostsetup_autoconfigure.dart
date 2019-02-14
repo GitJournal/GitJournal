@@ -25,7 +25,9 @@ class GitHostSetupAutoConfigure extends StatefulWidget {
 class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
   GitHost gitHost;
   String errorMessage = "";
+
   bool _configuringStarted = false;
+  String _message = "Waiting for Permissions ...";
 
   @override
   void initState() {
@@ -48,10 +50,21 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
 
         GitRepo repo;
         try {
+          this.setState(() {
+            _message = "Creating private repo";
+          });
+
           // FIXME: What if repo already exists?
           repo = await gitHost.createRepo("journal");
 
+          this.setState(() {
+            _message = "Generating SSH Key";
+          });
           var publicKey = await generateSSHKeys(comment: "GitJournal");
+
+          this.setState(() {
+            _message = "Adding as a Deploy Key";
+          });
           await gitHost.addDeployKey(publicKey, repo.fullName);
 
           var userInfo = await gitHost.getUserInfo();
@@ -83,7 +96,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
   Widget build(BuildContext context) {
     if (_configuringStarted) {
       if (this.errorMessage == null || this.errorMessage.isEmpty) {
-        return GitHostSetupLoadingPage("Configuring ...");
+        return GitHostSetupLoadingPage(_message);
       }
 
       return GitHostSetupErrorPage(errorMessage);
