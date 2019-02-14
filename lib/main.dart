@@ -37,7 +37,8 @@ Future runJournalApp() async {
   var remoteGitRepoConfigured =
       pref.getBool("remoteGitRepoConfigured") ?? false;
   var localGitRepoPath = pref.getString("localGitRepoPath") ?? "";
-  var remoteGitRepoPath = pref.getString("remoteGitRepoPath") ?? "";
+  var remoteGitRepoFolderName = pref.getString("remoteGitRepoPath") ?? "";
+  var remoteGitRepoSubFolder = pref.getString("remoteGitRepoSubFolder") ?? "";
   var onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
 
   if (JournalApp.isInDebugMode) {
@@ -65,7 +66,8 @@ Future runJournalApp() async {
     localGitRepoConfigured: localGitRepoConfigured,
     remoteGitRepoConfigured: remoteGitRepoConfigured,
     localGitRepoPath: localGitRepoPath,
-    remoteGitRepoPath: remoteGitRepoPath,
+    remoteGitRepoFolderName: remoteGitRepoFolderName,
+    remoteGitRepoSubFolder: remoteGitRepoSubFolder,
     gitBaseDirectory: dir.path,
     onBoardingCompleted: onBoardingCompleted,
     child: JournalApp(),

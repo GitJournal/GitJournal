@@ -459,16 +459,17 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   }
 
   void _finish() {
+    String subFolder = "";
+    _subFolderSelected(subFolder);
+  }
+
+  void _subFolderSelected(String folder) {
     getAnalytics().logEvent(
       name: "onboarding_complete",
       parameters: <String, dynamic>{},
     );
     Navigator.pop(context);
-    this.widget.onCompletedFunction();
-  }
-
-  void _subFolderSelected(String folder) {
-    _finish();
+    this.widget.onCompletedFunction(folder);
   }
 }
 

@@ -6,6 +6,9 @@ import 'package:flutter/services.dart';
 
 const _platform = const MethodChannel('gitjournal.io/git');
 
+///
+/// This gives us the directory where all the git repos will be stored
+///
 Future<Directory> getGitBaseDirectory() async {
   final String path = await _platform.invokeMethod('getBaseDirectory');
   if (path == null) {
@@ -14,6 +17,9 @@ Future<Directory> getGitBaseDirectory() async {
   return Directory(path);
 }
 
+///
+/// It will be clone in gitBaseDirectory/folderName
+///
 Future<void> gitClone(String cloneUrl, String folderName) async {
   print("Going to git clone");
   try {
@@ -93,7 +99,7 @@ GitException createGitException(String msg) {
 }
 
 Future gitPull(String folderName) async {
-  print("Going to git pull");
+  print("Going to git pull: $folderName");
   try {
     await _platform.invokeMethod('gitPull', {
       'folderName': folderName,

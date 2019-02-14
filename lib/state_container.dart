@@ -17,7 +17,9 @@ class StateContainer extends StatefulWidget {
   final bool localGitRepoConfigured;
   final bool remoteGitRepoConfigured;
   final String localGitRepoPath;
-  final String remoteGitRepoPath;
+  final String remoteGitRepoFolderName;
+  final String remoteGitRepoSubFolder;
+
   final String gitBaseDirectory;
   final bool onBoardingCompleted;
 
@@ -25,7 +27,8 @@ class StateContainer extends StatefulWidget {
     @required this.localGitRepoConfigured,
     @required this.remoteGitRepoConfigured,
     @required this.localGitRepoPath,
-    @required this.remoteGitRepoPath,
+    @required this.remoteGitRepoFolderName,
+    @required this.remoteGitRepoSubFolder,
     @required this.gitBaseDirectory,
     @required this.onBoardingCompleted,
     @required this.child,
@@ -43,7 +46,8 @@ class StateContainer extends StatefulWidget {
     st.appState.localGitRepoConfigured = localGitRepoConfigured;
     st.appState.remoteGitRepoConfigured = remoteGitRepoConfigured;
     st.appState.localGitRepoPath = localGitRepoPath;
-    st.appState.remoteGitRepoPath = remoteGitRepoPath;
+    st.appState.remoteGitRepoFolderName = remoteGitRepoFolderName;
+    st.appState.remoteGitRepoSubFolder = remoteGitRepoSubFolder;
     st.appState.gitBaseDirectory = gitBaseDirectory;
     st.appState.onBoardingCompleted = onBoardingCompleted;
 
@@ -53,7 +57,7 @@ class StateContainer extends StatefulWidget {
 
 class StateContainerState extends State<StateContainer> {
   AppState appState = AppState();
-  NoteRepository noteRepo;
+  GitNoteRepository noteRepo;
 
   @override
   void initState() {
@@ -64,12 +68,14 @@ class StateContainerState extends State<StateContainer> {
     if (appState.remoteGitRepoConfigured) {
       noteRepo = GitNoteRepository(
         baseDirectory: appState.gitBaseDirectory,
-        dirName: appState.remoteGitRepoPath,
+        dirName: appState.remoteGitRepoFolderName,
+        subDirName: appState.remoteGitRepoSubFolder,
       );
     } else if (appState.localGitRepoConfigured) {
       noteRepo = GitNoteRepository(
         baseDirectory: appState.gitBaseDirectory,
         dirName: appState.localGitRepoPath,
+        subDirName: "",
       );
     }
 
@@ -84,7 +90,7 @@ class StateContainerState extends State<StateContainer> {
 
   void removeExistingRemoteClone() async {
     var remoteGitDir = Directory(
-        p.join(appState.gitBaseDirectory, appState.remoteGitRepoPath));
+        p.join(appState.gitBaseDirectory, appState.remoteGitRepoFolderName));
     var dotGitDir = Directory(p.join(remoteGitDir.path, ".git"));
 
     bool exists = await dotGitDir.exists();
@@ -173,6 +179,7 @@ class StateContainerState extends State<StateContainer> {
         note.filePath = toIso8601WithTimezone(note.created) + '.md';
       }
       appState.notes.insert(index, note);
+      appState.hasJournalEntries = true;
       noteRepo.addNote(note).then((NoteRepoResult _) {
         _syncNotes();
       });
@@ -188,20 +195,23 @@ class StateContainerState extends State<StateContainer> {
     });
   }
 
-  void completeGitHostSetup() {
+  void completeGitHostSetup(String subFolder) {
     setState(() async {
       this.appState.remoteGitRepoConfigured = true;
-      this.appState.remoteGitRepoPath = "journal";
+      this.appState.remoteGitRepoFolderName = "journal";
+      this.appState.remoteGitRepoSubFolder = subFolder;
 
       await migrateGitRepo(
         fromGitBasePath: appState.localGitRepoPath,
-        toGitBasePath: appState.remoteGitRepoPath,
+        toGitBaseFolder: appState.remoteGitRepoFolderName,
+        toGitBaseSubFolder: appState.remoteGitRepoSubFolder,
         gitBasePath: appState.gitBaseDirectory,
       );
 
       noteRepo = GitNoteRepository(
         baseDirectory: appState.gitBaseDirectory,
-        dirName: appState.remoteGitRepoPath,
+        dirName: appState.remoteGitRepoFolderName,
+        subDirName: appState.remoteGitRepoSubFolder,
       );
 
       await _persistConfig();
@@ -221,7 +231,9 @@ class StateContainerState extends State<StateContainer> {
     var pref = await SharedPreferences.getInstance();
     await pref.setBool(
         "remoteGitRepoConfigured", appState.remoteGitRepoConfigured);
-    await pref.setString("remoteGitRepoPath", appState.remoteGitRepoPath);
+    await pref.setString("remoteGitRepoPath", appState.remoteGitRepoFolderName);
+    await pref.setString(
+        "remoteGitRepoSubFolder", appState.remoteGitRepoSubFolder);
     await pref.setBool("onBoardingCompleted", appState.onBoardingCompleted);
   }
 

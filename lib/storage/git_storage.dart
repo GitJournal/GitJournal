@@ -12,16 +12,18 @@ import 'package:path/path.dart' as p;
 class GitNoteRepository implements NoteRepository {
   final FileStorage _fileStorage;
   final String dirName;
+  final String subDirName;
 
   bool cloned = false;
   bool checkForCloned = false;
 
   GitNoteRepository({
     @required this.dirName,
+    @required this.subDirName,
     @required String baseDirectory,
   }) : _fileStorage = FileStorage(
           noteSerializer: MarkdownYAMLSerializer(),
-          baseDirectory: p.join(baseDirectory, dirName),
+          baseDirectory: p.join(baseDirectory, dirName, subDirName),
         );
 
   @override
@@ -83,29 +85,6 @@ class GitNoteRepository implements NoteRepository {
 
   @override
   Future<bool> sync() async {
-    /*
-    Disable git clone for now - The repo should have already been cloned!
-
-    if (gitCloneUrl == null || gitCloneUrl.isEmpty) {
-      print("Cannot sync because of lack of clone url");
-      return false;
-    }
-
-    if (!checkForCloned) {
-      var baseDir = Directory(_fileStorage.baseDirectory);
-      var dotGitDir = Directory(p.join(baseDir.path, ".git"));
-      cloned = await dotGitDir.exists();
-      checkForCloned = true;
-    }
-    // FIXME: If we are calling sync, it should always be cloned!
-    assert(cloned == true);
-    if (!cloned) {
-      await gitClone(this.gitCloneUrl, this.dirName);
-      cloned = true;
-      return true;
-    }
-    */
-
     try {
       await gitPull(this.dirName);
     } on GitException catch (ex) {

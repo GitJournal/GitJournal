@@ -6,7 +6,8 @@ class AppState {
   bool localGitRepoConfigured = false;
 
   // FIXME: Rename from 'path' to folderName
-  String remoteGitRepoPath = "";
+  String remoteGitRepoFolderName = "";
+  String remoteGitRepoSubFolder = "";
   bool remoteGitRepoConfigured = false;
 
   bool hasJournalEntries = false;
