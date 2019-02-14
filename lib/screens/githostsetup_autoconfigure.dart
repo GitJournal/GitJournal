@@ -3,6 +3,7 @@ import 'package:journal/apis/git.dart';
 import 'package:journal/apis/githost_factory.dart';
 import 'package:journal/settings.dart';
 
+import 'githostsetup_button.dart';
 import 'githostsetup_error.dart';
 import 'githostsetup_loading.dart';
 
@@ -24,12 +25,19 @@ class GitHostSetupAutoConfigure extends StatefulWidget {
 class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
   GitHost gitHost;
   String errorMessage = "";
+  bool _configuringStarted = false;
 
   @override
   void initState() {
     super.initState();
+  }
 
+  void _startAutoConfigure() {
     print("Starting autoconfigure");
+    setState(() {
+      _configuringStarted = true;
+    });
+
     gitHost = createGitHost(widget.gitHostType);
     try {
       gitHost.init((Exception error) async {
@@ -73,10 +81,52 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
 
   @override
   Widget build(BuildContext context) {
-    if (this.errorMessage == null || this.errorMessage.isEmpty) {
-      return GitHostSetupLoadingPage("Configuring ...");
+    if (_configuringStarted) {
+      if (this.errorMessage == null || this.errorMessage.isEmpty) {
+        return GitHostSetupLoadingPage("Configuring ...");
+      }
+
+      return GitHostSetupErrorPage(errorMessage);
     }
 
-    return GitHostSetupErrorPage(errorMessage);
+    var columns = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'We need to perform the following steps:',
+          style: Theme.of(context).textTheme.title,
+        ),
+        SizedBox(height: 32.0),
+
+        // Step 1
+        Text(
+          "1. Create a new private repo called 'journal'",
+          style: Theme.of(context).textTheme.body2,
+        ),
+        SizedBox(height: 8.0),
+        Text(
+          "2. Generate an SSH Key on this device",
+          style: Theme.of(context).textTheme.body2,
+        ),
+        SizedBox(height: 8.0),
+        Text(
+          "3. Add the key as a deploy key with write access to the created repo",
+          style: Theme.of(context).textTheme.body2,
+        ),
+        SizedBox(height: 32.0),
+
+        GitHostSetupButton(
+          text: "Authorize GitJournal",
+          onPressed: _startAutoConfigure,
+        ),
+      ],
+    );
+
+    return Center(
+      child: SingleChildScrollView(
+        child: columns,
+      ),
+    );
   }
 }
