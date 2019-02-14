@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:journal/state_container.dart';
+import 'package:share/share.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -46,8 +47,7 @@ class AppDrawer extends StatelessWidget {
             title: Text('Share App'),
             onTap: () {
               Navigator.pop(context);
-              // Update the state of the app
-              // ...
+              Share.share('Checkout GitJournal https://gitjournal.io/');
             },
           ),
           ListTile(
