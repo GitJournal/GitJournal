@@ -7,6 +7,7 @@ import 'package:journal/state_container.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'screens/githostsetup_screens.dart';
+import 'screens/onboarding_screens.dart';
 
 class JournalApp extends StatelessWidget {
   static FirebaseAnalytics analytics = FirebaseAnalytics();
@@ -24,9 +25,11 @@ class JournalApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var stateContainer = StateContainer.of(context);
-    var onCompleted = () {
-      stateContainer.completeGitHostSetup();
-    };
+
+    var initialRoute = '/';
+    if (!stateContainer.appState.onBoardingCompleted) {
+      initialRoute = '/onBoarding';
+    }
 
     return MaterialApp(
       title: 'GitJournal',
@@ -38,11 +41,14 @@ class JournalApp extends StatelessWidget {
         accentColor: Color(0xff6d4c41),
       ),
       navigatorObservers: <NavigatorObserver>[JournalApp.observer],
-      initialRoute: '/',
+      initialRoute: initialRoute,
       routes: {
         '/': (context) => HomeScreen(),
         '/settings': (context) => SettingsScreen(),
-        '/setupRemoteGit': (context) => GitHostSetupScreen(onCompleted),
+        '/setupRemoteGit': (context) =>
+            GitHostSetupScreen(stateContainer.completeGitHostSetup),
+        '/onBoarding': (context) =>
+            OnBoardingScreen(stateContainer.completeOnBoarding),
       },
       debugShowCheckedModeBanner: false,
       //debugShowMaterialGrid: true,

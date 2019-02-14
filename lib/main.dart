@@ -38,6 +38,7 @@ Future runJournalApp() async {
       pref.getBool("remoteGitRepoConfigured") ?? false;
   var localGitRepoPath = pref.getString("localGitRepoPath") ?? "";
   var remoteGitRepoPath = pref.getString("remoteGitRepoPath") ?? "";
+  var onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
 
   if (JournalApp.isInDebugMode) {
     if (JournalApp.analytics.android != null) {
@@ -66,6 +67,7 @@ Future runJournalApp() async {
     localGitRepoPath: localGitRepoPath,
     remoteGitRepoPath: remoteGitRepoPath,
     gitBaseDirectory: dir.path,
+    onBoardingCompleted: onBoardingCompleted,
     child: JournalApp(),
   ));
 }

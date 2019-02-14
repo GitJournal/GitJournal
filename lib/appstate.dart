@@ -10,6 +10,7 @@ class AppState {
   bool remoteGitRepoConfigured = false;
 
   bool hasJournalEntries = false;
+  bool onBoardingCompleted = false;
 
   // FIXME: Make final
   String gitBaseDirectory = "";

@@ -19,6 +19,7 @@ class StateContainer extends StatefulWidget {
   final String localGitRepoPath;
   final String remoteGitRepoPath;
   final String gitBaseDirectory;
+  final bool onBoardingCompleted;
 
   StateContainer({
     @required this.localGitRepoConfigured,
@@ -26,6 +27,7 @@ class StateContainer extends StatefulWidget {
     @required this.localGitRepoPath,
     @required this.remoteGitRepoPath,
     @required this.gitBaseDirectory,
+    @required this.onBoardingCompleted,
     @required this.child,
   });
 
@@ -43,6 +45,7 @@ class StateContainer extends StatefulWidget {
     st.appState.localGitRepoPath = localGitRepoPath;
     st.appState.remoteGitRepoPath = remoteGitRepoPath;
     st.appState.gitBaseDirectory = gitBaseDirectory;
+    st.appState.onBoardingCompleted = onBoardingCompleted;
 
     return st;
   }
@@ -207,11 +210,19 @@ class StateContainerState extends State<StateContainer> {
     });
   }
 
+  void completeOnBoarding() {
+    setState(() {
+      this.appState.onBoardingCompleted = true;
+      _persistConfig();
+    });
+  }
+
   Future _persistConfig() async {
     var pref = await SharedPreferences.getInstance();
     await pref.setBool(
         "remoteGitRepoConfigured", appState.remoteGitRepoConfigured);
     await pref.setString("remoteGitRepoPath", appState.remoteGitRepoPath);
+    await pref.setBool("onBoardingCompleted", appState.onBoardingCompleted);
   }
 
   @override
