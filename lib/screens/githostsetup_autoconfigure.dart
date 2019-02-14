@@ -117,14 +117,14 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'We need to perform the following steps:',
+          'We need permission to perform the following steps:',
           style: Theme.of(context).textTheme.title,
         ),
         SizedBox(height: 32.0),
 
         // Step 1
         Text(
-          "1. Create a new private repo called 'journal'",
+          "1. Create a new private repo called 'journal' or use the existing one",
           style: Theme.of(context).textTheme.body2,
         ),
         SizedBox(height: 8.0),

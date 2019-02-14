@@ -520,7 +520,7 @@ class GitHostAutoConfigureChoicePage extends StatelessWidget {
           ),
           SizedBox(height: 16.0),
           GitHostSetupButton(
-            text: "Setup everything automatically",
+            text: "Setup Automatically",
             onPressed: () {
               onDone(GitHostSetupType.Auto);
             },
