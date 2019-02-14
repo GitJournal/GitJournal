@@ -189,6 +189,14 @@ class StateContainerState extends State<StateContainer> {
   void updateNote(Note note) {
     print("State Container updateNote");
     setState(() {
+      // Update that specific note
+      for (var i = 0; i < appState.notes.length; i++) {
+        var n = appState.notes[i];
+        if (n.filePath == note.filePath) {
+          appState.notes[i] = note;
+        }
+      }
+
       noteRepo.updateNote(note).then((NoteRepoResult _) {
         _syncNotes();
       });
