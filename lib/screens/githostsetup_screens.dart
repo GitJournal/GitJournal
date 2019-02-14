@@ -44,7 +44,6 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   String gitCloneErrorMessage = "";
 
   String publicKey = "";
-  bool _canLaunchDeployKeyPage = false;
 
   var pageController = PageController();
   int _currentPageIndex = 0;
@@ -114,7 +113,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
     if (pos == 2) {
       if (_pageChoice[0] == PageChoice0.CustomProvider) {
-        return GitHostSetupSshKey(
+        return GitHostSetupSshKeyUnknownProvider(
           doneFunction: () {
             setState(() {
               _pageCount = pos + 2;
@@ -124,8 +123,6 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           },
           publicKey: publicKey,
           copyKeyFunction: _copyKeyToClipboard,
-          openDeployKeyPage: _launchDeployKeyPage,
-          canOpenDeployKeyPage: _canLaunchDeployKeyPage,
         );
       }
 
@@ -169,7 +166,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
       if (_pageChoice[1] == PageChoice1.Manual) {
         // FIXME: Create a new page with better instructions
-        return GitHostSetupSshKey(
+        return GitHostSetupSshKeyKnownProvider(
           doneFunction: () {
             setState(() {
               _pageCount = 6;
@@ -181,7 +178,6 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           publicKey: publicKey,
           copyKeyFunction: _copyKeyToClipboard,
           openDeployKeyPage: _launchDeployKeyPage,
-          canOpenDeployKeyPage: _canLaunchDeployKeyPage,
         );
       } else if (_pageChoice[1] == PageChoice1.Auto) {
         return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
@@ -290,10 +286,6 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     generateSSHKeys(comment: "GitJournal").then((String publicKey) {
       setState(() {
         this.publicKey = publicKey;
-        this._canLaunchDeployKeyPage =
-            _gitCloneUrl.startsWith("git@github.com:") ||
-                _gitCloneUrl.startsWith("git@gitlab.com:");
-
         _copyKeyToClipboard();
       });
     });
@@ -308,6 +300,12 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   }
 
   void _launchDeployKeyPage() async {
+    var canLaunch = _gitCloneUrl.startsWith("git@github.com:") ||
+        _gitCloneUrl.startsWith("git@gitlab.com:");
+    if (!canLaunch) {
+      return;
+    }
+
     var lastIndex = _gitCloneUrl.lastIndexOf(".git");
     if (lastIndex == -1) {
       lastIndex = _gitCloneUrl.length;
