@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:journal/note.dart';
 import 'package:journal/state_container.dart';
@@ -37,25 +35,6 @@ class NoteEditorState extends State<NoteEditor> {
   @override
   Widget build(BuildContext context) {
     var bodyWidget = Form(
-      // Show a dialog if discarding non-empty notes
-      onWillPop: () {
-        return Future(() {
-          var noteContent = _textController.text.trim();
-          if (noteContent.isEmpty) {
-            return true;
-          }
-          if (note != null) {
-            if (noteContent == note.body) {
-              return true;
-            }
-          }
-
-          return showDialog(
-            context: context,
-            builder: _buildAlertDialog,
-          );
-        });
-      },
       child: TextFormField(
         autofocus: true,
         keyboardType: TextInputType.multiline,
@@ -73,6 +52,31 @@ class NoteEditorState extends State<NoteEditor> {
     var newJournalScreen = Scaffold(
       appBar: AppBar(
         title: Text(title),
+        leading: IconButton(
+          icon: Icon(Icons.check),
+          onPressed: () {
+            final stateContainer = StateContainer.of(context);
+            this.note.body = _textController.text;
+            if (this.note.body.isNotEmpty) {
+              newNote
+                  ? stateContainer.addNote(note)
+                  : stateContainer.updateNote(note);
+            }
+            Navigator.pop(context);
+          },
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () {
+              if (_noteModified()) {
+                showDialog(context: context, builder: _buildAlertDialog);
+              } else {
+                Navigator.pop(context);
+              }
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -85,17 +89,6 @@ class NoteEditorState extends State<NoteEditor> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.check),
-          onPressed: () {
-            final stateContainer = StateContainer.of(context);
-            this.note.body = _textController.text;
-
-            newNote
-                ? stateContainer.addNote(note)
-                : stateContainer.updateNote(note);
-            Navigator.pop(context);
-          }),
     );
 
     return newJournalScreen;
@@ -116,10 +109,25 @@ class NoteEditorState extends State<NoteEditor> {
           child: Text('No'),
         ),
         FlatButton(
-          onPressed: () => Navigator.of(context).pop(true),
+          onPressed: () {
+            Navigator.pop(context); // Alert box
+            Navigator.pop(context); // Note Editor
+          },
           child: Text('Yes'),
         ),
       ],
     );
+  }
+
+  bool _noteModified() {
+    var noteContent = _textController.text.trim();
+    if (noteContent.isEmpty) {
+      return false;
+    }
+    if (note != null) {
+      return noteContent != note.body;
+    }
+
+    return false;
   }
 }
