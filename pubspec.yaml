@@ -1,6 +1,6 @@
 name: journal
 description: A Journaling App Built on top of Git
-version: 1.0.5+10
+version: 1.0.6+10
 
 dependencies:
   flutter:
