@@ -14,8 +14,8 @@ DateTime nowWithoutMicro() {
 void main() {
   group('FileStorage', () {
     var notes = [
-      Note(fileName: "1.md", body: "test", created: nowWithoutMicro()),
-      Note(fileName: "2.md", body: "test2", created: nowWithoutMicro()),
+      Note(filePath: "1.md", body: "test", created: nowWithoutMicro()),
+      Note(filePath: "2.md", body: "test2", created: nowWithoutMicro()),
     ];
 
     Directory tempDir;

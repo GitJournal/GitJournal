@@ -169,8 +169,8 @@ class StateContainerState extends State<StateContainer> {
   void insertNote(int index, Note note) {
     print("State Container insertNote");
     setState(() {
-      if (note.fileName == null || note.fileName.isEmpty) {
-        note.fileName = toIso8601WithTimezone(note.created) + '.md';
+      if (note.filePath == null || note.filePath.isEmpty) {
+        note.filePath = toIso8601WithTimezone(note.created) + '.md';
       }
       appState.notes.insert(index, note);
       noteRepo.addNote(note).then((NoteRepoResult _) {

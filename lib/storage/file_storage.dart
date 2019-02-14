@@ -35,7 +35,7 @@ class FileStorage implements NoteRepository {
       if (note == null) {
         continue;
       }
-      if (!note.fileName.toLowerCase().endsWith('.md')) {
+      if (!note.filePath.toLowerCase().endsWith('.md')) {
         continue;
       }
       notes.add(note);
@@ -54,13 +54,13 @@ class FileStorage implements NoteRepository {
     final string = await file.readAsString();
 
     var note = noteSerializer.decode(string);
-    note.fileName = p.basename(entity.path);
+    note.filePath = p.basename(entity.path);
     return note;
   }
 
   @override
   Future<NoteRepoResult> addNote(Note note) async {
-    var filePath = p.join(baseDirectory, note.fileName);
+    var filePath = p.join(baseDirectory, note.filePath);
     print("FileStorage: Adding note in " + filePath);
 
     var file = File(filePath);
@@ -75,7 +75,7 @@ class FileStorage implements NoteRepository {
 
   @override
   Future<NoteRepoResult> removeNote(Note note) async {
-    var filePath = p.join(baseDirectory, note.fileName);
+    var filePath = p.join(baseDirectory, note.filePath);
 
     var file = File(filePath);
     await file.delete();
@@ -97,7 +97,7 @@ class FileStorage implements NoteRepository {
     final dir = Directory(baseDirectory);
 
     for (var note in notes) {
-      var filePath = p.join(dir.path, note.fileName);
+      var filePath = p.join(dir.path, note.filePath);
 
       var file = File(filePath);
       var contents = noteSerializer.encode(note);

@@ -1,13 +1,13 @@
 import 'package:journal/datetime_utils.dart';
 
 class Note implements Comparable<Note> {
-  String fileName;
+  String filePath;
   DateTime created;
   String body;
 
   Map<String, dynamic> extraProperties = Map<String, dynamic>();
 
-  Note({this.created, this.body, this.fileName, this.extraProperties}) {
+  Note({this.created, this.body, this.filePath, this.extraProperties}) {
     if (created == null) {
       created = DateTime(0, 0, 0, 0, 0, 0, 0, 0);
     }
@@ -17,10 +17,10 @@ class Note implements Comparable<Note> {
   }
 
   factory Note.fromJson(Map<String, dynamic> json) {
-    String fileName = "";
-    if (json.containsKey("fileName")) {
-      fileName = json["fileName"].toString();
-      json.remove("fileName");
+    String filePath = "";
+    if (json.containsKey("filePath")) {
+      filePath = json["filePath"].toString();
+      json.remove("filePath");
     }
 
     DateTime created;
@@ -56,7 +56,7 @@ class Note implements Comparable<Note> {
     }
 
     return Note(
-      fileName: fileName,
+      filePath: filePath,
       created: created,
       body: body,
       extraProperties: json,
@@ -70,14 +70,14 @@ class Note implements Comparable<Note> {
       json['created'] = createdStr;
     }
     json['body'] = body;
-    json['fileName'] = fileName;
+    json['filePath'] = filePath;
 
     return json;
   }
 
   @override
   int get hashCode =>
-      fileName.hashCode ^
+      filePath.hashCode ^
       created.hashCode ^
       body.hashCode ^
       extraProperties.hashCode;
@@ -87,7 +87,7 @@ class Note implements Comparable<Note> {
       identical(this, other) ||
       other is Note &&
           runtimeType == other.runtimeType &&
-          fileName == other.fileName &&
+          filePath == other.filePath &&
           body == other.body &&
           created == other.created &&
           _equalMaps(extraProperties, other.extraProperties);
@@ -100,7 +100,7 @@ class Note implements Comparable<Note> {
 
   @override
   String toString() {
-    return 'Note{fileName: $fileName, body: $body, created: $created, extraProperties: $extraProperties}';
+    return 'Note{filePath: $filePath, body: $body, created: $created, extraProperties: $extraProperties}';
   }
 
   @override
@@ -108,7 +108,7 @@ class Note implements Comparable<Note> {
     if (other == null) {
       return -1;
     }
-    if (created == other.created) return fileName.compareTo(other.fileName);
+    if (created == other.created) return filePath.compareTo(other.filePath);
     return created.compareTo(other.created);
   }
 }
