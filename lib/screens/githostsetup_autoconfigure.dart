@@ -54,8 +54,18 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
             _message = "Creating private repo";
           });
 
-          // FIXME: What if repo already exists?
-          repo = await gitHost.createRepo("journal");
+          try {
+            repo = await gitHost.createRepo("journal");
+          } on GitHostException catch (e) {
+            if (e.cause != GitHostException.RepoExists.cause) {
+              rethrow;
+            }
+
+            this.setState(() {
+              _message = "Using existing repo";
+            });
+            repo = await gitHost.getRepo("journal");
+          }
 
           this.setState(() {
             _message = "Generating SSH Key";

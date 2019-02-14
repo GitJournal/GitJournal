@@ -9,14 +9,20 @@ abstract class GitHost {
   Future<UserInfo> getUserInfo();
   Future<List<GitRepo>> listRepos();
   Future<GitRepo> createRepo(String name);
+  Future<GitRepo> getRepo(String name);
   Future addDeployKey(String sshPublicKey, String repo);
 }
 
 class UserInfo {
   String name;
   String email;
+  String username;
 
-  UserInfo({@required this.name, @required this.email});
+  UserInfo({
+    @required this.name,
+    @required this.email,
+    @required this.username,
+  });
 }
 
 class GitRepo {
@@ -37,6 +43,7 @@ class GitHostException implements Exception {
   static const RepoExists = const GitHostException("RepoExists");
   static const CreateRepoFailed = const GitHostException("CreateRepoFailed");
   static const DeployKeyFailed = const GitHostException("DeployKeyFailed");
+  static const GetRepoFailed = const GitHostException("GetRepoFailed");
 
   final String cause;
   const GitHostException(this.cause);

@@ -106,7 +106,6 @@ class GitHub implements GitHost {
 
   @override
   Future<GitRepo> createRepo(String name) async {
-    // FIXME: Proper error when the repo exists!
     if (_accessCode.isEmpty) {
       throw GitHostException.MissingAccessCode;
     }
@@ -143,7 +142,32 @@ class GitHub implements GitHost {
     return _repoFromJson(map);
   }
 
-  // FIXME: Proper error when the repo exists!
+  @override
+  Future<GitRepo> getRepo(String name) async {
+    if (_accessCode.isEmpty) {
+      throw GitHostException.MissingAccessCode;
+    }
+
+    var userInfo = await getUserInfo();
+    var owner = userInfo.username;
+    var url =
+        "https://api.github.com/repos/$owner/$name?access_token=$_accessCode";
+
+    var response = await http.get(url);
+    if (response.statusCode != 200) {
+      print("Github getRepo: Invalid response " +
+          response.statusCode.toString() +
+          ": " +
+          response.body);
+
+      throw GitHostException.GetRepoFailed;
+    }
+
+    print("GitHub getRepo: " + response.body);
+    Map<String, dynamic> map = json.decode(response.body);
+    return _repoFromJson(map);
+  }
+
   @override
   Future addDeployKey(String sshPublicKey, String repo) async {
     if (_accessCode.isEmpty) {
@@ -210,6 +234,10 @@ class GitHub implements GitHost {
       return null;
     }
 
-    return UserInfo(name: map['name'], email: map['email']);
+    return UserInfo(
+      name: map['name'],
+      email: map['email'],
+      username: map['login'],
+    );
   }
 }

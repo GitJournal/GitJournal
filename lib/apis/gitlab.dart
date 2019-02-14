@@ -95,7 +95,6 @@ class GitLab implements GitHost {
 
   @override
   Future<GitRepo> createRepo(String name) async {
-    // FIXME: Proper error when the repo exists!
     if (_accessCode.isEmpty) {
       throw GitHostException.MissingAccessCode;
     }
@@ -128,6 +127,32 @@ class GitLab implements GitHost {
     }
 
     print("GitLab createRepo: " + response.body);
+    Map<String, dynamic> map = json.decode(response.body);
+    return _repoFromJson(map);
+  }
+
+  @override
+  Future<GitRepo> getRepo(String name) async {
+    if (_accessCode.isEmpty) {
+      throw GitHostException.MissingAccessCode;
+    }
+
+    var userInfo = await getUserInfo();
+    var repo = userInfo.username + '%2F' + name;
+    var url =
+        "https://gitlab.com/api/v4/projects/$repo?access_token=$_accessCode";
+
+    var response = await http.get(url);
+    if (response.statusCode != 200) {
+      print("GitLab getRepo: Invalid response " +
+          response.statusCode.toString() +
+          ": " +
+          response.body);
+
+      throw GitHostException.GetRepoFailed;
+    }
+
+    print("GitLab getRepo: " + response.body);
     Map<String, dynamic> map = json.decode(response.body);
     return _repoFromJson(map);
   }
@@ -199,7 +224,11 @@ class GitLab implements GitHost {
       return null;
     }
 
-    return UserInfo(name: map['name'], email: map['email']);
+    return UserInfo(
+      name: map['name'],
+      email: map['email'],
+      username: map['username'],
+    );
   }
 }
 
