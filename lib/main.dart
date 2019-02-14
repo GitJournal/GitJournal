@@ -39,7 +39,8 @@ Future runJournalApp() async {
   var localGitRepoPath = pref.getString("localGitRepoPath") ?? "";
   var remoteGitRepoFolderName = pref.getString("remoteGitRepoPath") ?? "";
   var remoteGitRepoSubFolder = pref.getString("remoteGitRepoSubFolder") ?? "";
-  var onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
+  var onBoardingCompleted =
+      true; //pref.getBool("onBoardingCompleted") ?? false;
 
   if (JournalApp.isInDebugMode) {
     if (JournalApp.analytics.android != null) {
