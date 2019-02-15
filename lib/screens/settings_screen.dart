@@ -34,6 +34,11 @@ class SettingsListState extends State<SettingsList> {
 
   @override
   Widget build(BuildContext context) {
+    var saveGitAuthor = (String gitAuthor) {
+      Settings.instance.gitAuthor = gitAuthor;
+      Settings.instance.save();
+    };
+
     var gitAuthorForm = Form(
       child: TextFormField(
         key: gitAuthorKey,
@@ -50,24 +55,21 @@ class SettingsListState extends State<SettingsList> {
           }
         },
         textInputAction: TextInputAction.done,
-        onFieldSubmitted: (String gitAuthor) {
-          Settings.instance.gitAuthor = gitAuthor;
-          Settings.instance.save();
-        },
-        onSaved: (String gitAuthor) {
-          Settings.instance.gitAuthor = gitAuthor;
-          Settings.instance.save();
-        },
+        onFieldSubmitted: saveGitAuthor,
+        onSaved: saveGitAuthor,
         initialValue: Settings.instance.gitAuthor,
       ),
       onChanged: () {
         if (!gitAuthorKey.currentState.validate()) return;
         var gitAuthor = gitAuthorKey.currentState.value;
-        Settings.instance.gitAuthor = gitAuthor;
-        Settings.instance.save();
+        saveGitAuthor(gitAuthor);
       },
     );
 
+    var saveGitAuthorEmail = (String gitAuthorEmail) {
+      Settings.instance.gitAuthorEmail = gitAuthorEmail;
+      Settings.instance.save();
+    };
     var gitAuthorEmailForm = Form(
       child: TextFormField(
         key: gitAuthorEmailKey,
@@ -90,21 +92,14 @@ class SettingsListState extends State<SettingsList> {
           }
         },
         textInputAction: TextInputAction.done,
-        onFieldSubmitted: (String gitAuthorEmail) {
-          Settings.instance.gitAuthorEmail = gitAuthorEmail;
-          Settings.instance.save();
-        },
-        onSaved: (String gitAuthorEmail) {
-          Settings.instance.gitAuthorEmail = gitAuthorEmail;
-          Settings.instance.save();
-        },
+        onFieldSubmitted: saveGitAuthorEmail,
+        onSaved: saveGitAuthorEmail,
         initialValue: Settings.instance.gitAuthorEmail,
       ),
       onChanged: () {
         if (!gitAuthorEmailKey.currentState.validate()) return;
         var gitAuthorEmail = gitAuthorEmailKey.currentState.value;
-        Settings.instance.gitAuthorEmail = gitAuthorEmail;
-        Settings.instance.save();
+        saveGitAuthorEmail(gitAuthorEmail);
       },
     );
 
