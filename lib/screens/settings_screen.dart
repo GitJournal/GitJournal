@@ -107,7 +107,7 @@ class SettingsListState extends State<SettingsList> {
       SettingsHeader("Git Settings"),
       ListTile(title: gitAuthorForm),
       ListTile(title: gitAuthorEmailForm),
-      SettingsHeader("Version Info"),
+      SizedBox(height: 16.0),
       VersionNumberTile(),
     ]);
 
@@ -125,9 +125,10 @@ class SettingsHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      dense: true,
       title: Text(
         text,
-        style: Theme.of(context).textTheme.headline,
+        style: Theme.of(context).textTheme.title,
       ),
       enabled: false,
     );
@@ -171,13 +172,15 @@ class VersionNumberTileState extends State<VersionNumberTile> {
       }
     }
 
+    var textTheme = Theme.of(context).textTheme;
     return ListTile(
-      title: Text(
+      title: Text("Version Info", style: textTheme.subhead),
+      subtitle: Text(
         text,
-        style: Theme.of(context).textTheme.subhead,
+        style: textTheme.body1,
         textAlign: TextAlign.left,
       ),
-      onTap: () {},
+      enabled: false,
     );
   }
 }
