@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:journal/app.dart';
 import 'package:journal/settings.dart';
-import 'package:package_info/package_info.dart';
+import 'package:journal/utils.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override
@@ -143,40 +142,27 @@ class VersionNumberTile extends StatefulWidget {
 }
 
 class VersionNumberTileState extends State<VersionNumberTile> {
-  PackageInfo packageInfo;
+  String versionText;
 
   @override
   void initState() {
     super.initState();
 
     () async {
-      PackageInfo info = await PackageInfo.fromPlatform();
+      var str = await getVersionString();
       setState(() {
-        packageInfo = info;
+        versionText = str;
       });
     }();
   }
 
   @override
   Widget build(BuildContext context) {
-    var text = "";
-    if (packageInfo != null) {
-      text = packageInfo.appName +
-          " " +
-          packageInfo.version +
-          "+" +
-          packageInfo.buildNumber;
-
-      if (JournalApp.isInDebugMode) {
-        text += " (Debug)";
-      }
-    }
-
     var textTheme = Theme.of(context).textTheme;
     return ListTile(
       title: Text("Version Info", style: textTheme.subhead),
       subtitle: Text(
-        text,
+        versionText,
         style: textTheme.body1,
         textAlign: TextAlign.left,
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:journal/state_container.dart';
+import 'package:journal/utils.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -67,11 +68,13 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.rate_review, color: textStyle.color),
             title: Text('Feedback', style: textStyle),
-            onTap: () {
+            onTap: () async {
+              var versionText = await getVersionString();
+
               var emailAddress = 'gitjournal.io@gmail.com';
               var subject = 'GitJournal Feedback';
               var body =
-                  "Hey!\n\nHere are some ways to improve GitJournal - \n";
+                  "Hey!\n\nHere are some ways to improve GitJournal - \n \n\nVersion: $versionText";
               var url = 'mailto:$emailAddress?subject=$subject&body=$body';
               launch(url);
 
