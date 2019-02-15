@@ -20,18 +20,33 @@ class HomeScreen extends StatelessWidget {
       child: Icon(Icons.add),
     );
 
-    var journalList = JournalList(
-      notes: appState.notes,
-      noteSelectedFunction: (noteIndex) {
-        var route = MaterialPageRoute(
-          builder: (context) => NoteBrowsingScreen(
-                notes: appState.notes,
-                noteIndex: noteIndex,
-              ),
-        );
-        Navigator.of(context).push(route);
-      },
-    );
+    Widget journalList;
+    if (appState.notes.isNotEmpty) {
+      journalList = JournalList(
+        notes: appState.notes,
+        noteSelectedFunction: (noteIndex) {
+          var route = MaterialPageRoute(
+            builder: (context) => NoteBrowsingScreen(
+                  notes: appState.notes,
+                  noteIndex: noteIndex,
+                ),
+          );
+          Navigator.of(context).push(route);
+        },
+      );
+    } else {
+      journalList = Center(
+        child: Text(
+          "Why not add your first\n Journal Entry?",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 28.0,
+            fontWeight: FontWeight.w300,
+            color: Colors.grey[350],
+          ),
+        ),
+      );
+    }
 
     bool shouldShowBadge =
         !appState.remoteGitRepoConfigured && appState.hasJournalEntries;
