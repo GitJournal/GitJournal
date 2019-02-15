@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:journal/apis/git.dart';
 import 'package:journal/app.dart';
-import 'package:journal/gitapp.dart';
 import 'package:journal/settings.dart';
 import 'package:journal/state_container.dart';
 import 'package:shared_preferences/shared_preferences.dart';

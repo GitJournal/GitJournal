@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:journal/note.dart';
 import 'package:journal/state_container.dart';
+import 'package:journal/utils.dart';
 
 typedef void NoteSelectedFunction(int noteIndex);
 
@@ -37,13 +38,8 @@ class JournalList extends StatelessWidget {
             final stateContainer = StateContainer.of(context);
             stateContainer.removeNote(note);
 
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text("Note deleted"),
-              action: SnackBarAction(
-                label: 'Undo',
-                onPressed: () => stateContainer.insertNote(i, note),
-              ),
-            ));
+            Scaffold.of(context)
+                .showSnackBar(buildUndoDeleteSnackbar(context, note, i));
           },
         );
       },

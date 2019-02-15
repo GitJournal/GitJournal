@@ -5,6 +5,7 @@ import 'package:journal/widgets/note_header.dart';
 
 import 'note.dart';
 import 'note_editor.dart';
+import 'utils.dart';
 
 class NoteBrowsingScreen extends StatefulWidget {
   final List<Note> notes;
@@ -23,6 +24,7 @@ class NoteBrowsingScreen extends StatefulWidget {
 
 class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
   PageController pageController;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   NoteBrowsingScreenState({@required int noteIndex}) {
     pageController = PageController(initialPage: noteIndex);
@@ -39,6 +41,7 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
     );
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('TIMELINE'),
         actions: <Widget>[
@@ -46,9 +49,16 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
             icon: Icon(Icons.delete),
             onPressed: () {
               final stateContainer = StateContainer.of(context);
-              Note note = widget.notes[_currentIndex()];
+              var noteIndex = _currentIndex();
+              Note note = widget.notes[noteIndex];
               stateContainer.removeNote(note);
               Navigator.pop(context);
+
+              print("Shwoing an undo snackbar");
+              var snackbar = buildUndoDeleteSnackbar(context, note, noteIndex);
+              _scaffoldKey.currentState
+                ..removeCurrentSnackBar()
+                ..showSnackBar(snackbar);
             },
           ),
         ],

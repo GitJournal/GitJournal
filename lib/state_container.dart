@@ -172,6 +172,26 @@ class StateContainerState extends State<StateContainer> {
     });
   }
 
+  /*
+  String _getGitDir(BuildContext context) {
+    var state = StateContainer.of(context).appState;
+    if (state.remoteGitRepoConfigured) {
+      return state.remoteGitRepoFolderName;
+    } else {
+      return state.localGitRepoPath;
+    }
+  }
+  */
+
+  void undoRemoveNote(Note note, int index) {
+    setState(() {
+      appState.notes.insert(index, note);
+      noteRepo.resetLastCommit().then((NoteRepoResult _) {
+        _syncNotes();
+      });
+    });
+  }
+
   void insertNote(int index, Note note) {
     print("State Container insertNote");
     setState(() {

@@ -73,6 +73,11 @@ class GitNoteRepository implements NoteRepository {
     return result;
   }
 
+  Future<NoteRepoResult> resetLastCommit() async {
+    await gitResetLast(this.dirName);
+    return NoteRepoResult(error: false);
+  }
+
   @override
   Future<NoteRepoResult> updateNote(Note note) async {
     return _addNote(note, "Edited Journal Entry");
