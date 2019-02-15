@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:journal/state_container.dart';
 import 'package:journal/widgets/note_header.dart';
 
 import 'note.dart';
@@ -40,23 +41,37 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('TIMELINE'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              final stateContainer = StateContainer.of(context);
+              Note note = widget.notes[_currentIndex()];
+              stateContainer.removeNote(note);
+              Navigator.pop(context);
+            },
+          ),
+        ],
       ),
       body: pageView,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.edit),
         onPressed: () {
           var route = MaterialPageRoute(builder: (context) {
-            int currentIndex = pageController.page.toInt();
-            assert(currentIndex >= 0);
-            assert(currentIndex < widget.notes.length);
-
-            Note note = widget.notes[currentIndex];
+            Note note = widget.notes[_currentIndex()];
             return NoteEditor.fromNote(note);
           });
           Navigator.of(context).push(route);
         },
       ),
     );
+  }
+
+  int _currentIndex() {
+    int currentIndex = pageController.page.toInt();
+    assert(currentIndex >= 0);
+    assert(currentIndex < widget.notes.length);
+    return currentIndex;
   }
 }
 
