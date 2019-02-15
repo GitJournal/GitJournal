@@ -73,6 +73,7 @@ class NoteViewer extends StatelessWidget {
         children: <Widget>[
           NoteHeader(note),
           Text(note.body, style: _biggerFont),
+          SizedBox(height: 64.0),
           // _buildFooter(context),
         ],
         crossAxisAlignment: CrossAxisAlignment.start,
