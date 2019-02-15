@@ -17,7 +17,12 @@ class JournalList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
+      separatorBuilder: (context, index) {
+        return Divider(
+          color: Theme.of(context).primaryColorLight,
+        );
+      },
       itemBuilder: (context, i) {
         if (i >= notes.length) {
           return null;
@@ -42,6 +47,7 @@ class JournalList extends StatelessWidget {
           },
         );
       },
+      itemCount: notes.length,
     );
   }
 
