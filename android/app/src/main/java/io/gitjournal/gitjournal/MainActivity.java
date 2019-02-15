@@ -171,6 +171,18 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
 
             new GitInitTask(result).execute(initLocation);
             return;
+        } else if (call.method.equals("gitResetLast")) {
+            String folderName = call.argument("folderName");
+
+            if (folderName == null || folderName.isEmpty()) {
+                result.error("Invalid Parameters", "folderName Invalid", null);
+                return;
+            }
+
+            String cloneLocation = filesDir + "/" + folderName;
+
+            new GitResetLastTask(result).execute(cloneLocation);
+            return;
         } else if (call.method.equals("generateSSHKeys")) {
             String comment = call.argument("comment");
             if (comment == null || comment.isEmpty()) {

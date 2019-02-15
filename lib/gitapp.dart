@@ -89,6 +89,12 @@ class GitApp extends StatelessWidget {
         },
       ),
       RaisedButton(
+        child: Text("Git Reset Last"),
+        onPressed: () async {
+          gitResetLast(basePath);
+        },
+      ),
+      RaisedButton(
         child: Text("Git Migrate"),
         onPressed: () async {
           var baseGitPath = await getGitBaseDirectory();

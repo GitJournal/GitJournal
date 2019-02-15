@@ -150,6 +150,19 @@ Future gitPush(String folderName) async {
   }
 }
 
+Future gitResetLast(String folderName) async {
+  print("Going to git reset last");
+  try {
+    await _platform.invokeMethod('gitResetLast', {
+      'folderName': folderName,
+    });
+    print("Done");
+  } on PlatformException catch (e) {
+    print("gitResetLast Failed: '${e.message}'.");
+    throw createGitException(e.message);
+  }
+}
+
 Future gitCommit({
   @required String gitFolder,
   @required String authorName,
