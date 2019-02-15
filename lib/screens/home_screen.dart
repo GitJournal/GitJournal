@@ -16,6 +16,7 @@ class HomeScreen extends StatelessWidget {
     final appState = container.appState;
 
     var createButton = FloatingActionButton(
+      key: ValueKey("FAB"),
       onPressed: () => _newPost(context),
       child: Icon(Icons.add),
     );
@@ -51,6 +52,7 @@ class HomeScreen extends StatelessWidget {
     bool shouldShowBadge =
         !appState.remoteGitRepoConfigured && appState.hasJournalEntries;
     var appBarMenuButton = BadgeIconButton(
+      key: ValueKey("DrawerButton"),
       icon: const Icon(Icons.menu),
       itemCount: shouldShowBadge ? 1 : 0,
       onPressed: () {

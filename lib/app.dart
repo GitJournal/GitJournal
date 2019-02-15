@@ -81,6 +81,7 @@ class JournalApp extends StatelessWidget {
     }
 
     return MaterialApp(
+      key: ValueKey("App"),
       title: 'GitJournal',
       theme: ThemeData(
         brightness: Brightness.light,
