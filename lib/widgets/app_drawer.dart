@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:journal/state_container.dart';
+import 'package:launch_review/launch_review.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -57,6 +58,14 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.feedback, color: textStyle.color),
+            title: Text('Rate Us', style: textStyle),
+            onTap: () {
+              LaunchReview.launch();
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.rate_review, color: textStyle.color),
             title: Text('Feedback', style: textStyle),
             onTap: () {
               var emailAddress = 'gitjournal.io@gmail.com';
