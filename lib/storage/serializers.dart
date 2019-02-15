@@ -50,7 +50,7 @@ class MarkdownYAMLSerializer implements NoteSerializer {
 
     var metadata = note.toJson();
     metadata.remove('body');
-    metadata.remove('fileName');
+    metadata.remove('filePath');
 
     str += toYAML(metadata);
     str += serparator;
