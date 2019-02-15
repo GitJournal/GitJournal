@@ -166,7 +166,12 @@ class StateContainerState extends State<StateContainer> {
   void removeNote(Note note) {
     setState(() {
       appState.notes.remove(note);
-      noteRepo.removeNote(note).then((NoteRepoResult _) {
+      noteRepo.removeNote(note).then((NoteRepoResult _) async {
+        // FIXME: Is there a way of figuring this amount dynamically?
+        // The '4 seconds' is taken from snack_bar.dart -> _kSnackBarDisplayDuration
+        // We wait an aritfical amount of time, so that the user has a change to undo
+        // their delete operation, and that commit is not synced with the server, till then.
+        await Future.delayed(const Duration(seconds: 4));
         _syncNotes();
       });
     });
