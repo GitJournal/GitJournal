@@ -35,25 +35,6 @@ void main() {
       await driver.waitFor(loadedFinder, timeout: Duration(seconds: 5));
       await _takeScreenshot();
 
-      // Open the Drawer
-      final drawerButtonFinder = find.byValueKey("DrawerButton");
-      await driver.tap(drawerButtonFinder);
-      await Future.delayed(Duration(milliseconds: 500));
-      await _takeScreenshot();
-
-      // The Git Host setup screen
-      /*
-      await driver.tap(find.text("Setup Git Host"));
-      await driver.waitFor(find.text("GitHub"), timeout: Duration(seconds: 2));
-      await _takeScreenshot();
-      // FIXME: This doesn't seem to work!
-      await driver.tap(find.pageBack());
-      */
-
-      // Close the drawer
-      var app = find.byValueKey("App");
-      await driver.scroll(app, -300.0, 0.0, const Duration(milliseconds: 300));
-
       // Create a new note
       var fab = find.byValueKey("FAB");
       await driver.waitFor(fab, timeout: Duration(seconds: 2));
@@ -65,6 +46,38 @@ void main() {
       await driver.enterText(
           "Your notes will be saved in Markdown with a YAML header for the metadata.\n\nThe writing experience is clean and distraction free");
       await _takeScreenshot();
+      await driver.tap(find.byValueKey("NewEntry"));
+
+      // Create another note
+      await driver.waitFor(fab, timeout: Duration(seconds: 2));
+      await driver.tap(fab);
+      await driver.waitFor(find.text('Write here'),
+          timeout: Duration(seconds: 2));
+
+      await driver.enterText(
+          "Journaling is a great way to clear your mind and get all your throughts down into paper. Well, not literal paper, as this is an app, but I think you get the point.");
+      await _takeScreenshot();
+      await driver.tap(find.byValueKey("NewEntry"));
+
+      await Future.delayed(Duration(milliseconds: 500));
+      await _takeScreenshot();
+
+      // Open the Drawer
+      final drawerButtonFinder = find.byValueKey("DrawerButton");
+      await driver.tap(drawerButtonFinder);
+      await Future.delayed(Duration(milliseconds: 500));
+      await _takeScreenshot();
+
+      // The Git Host setup screen
+      await driver.tap(find.text("Setup Git Host"));
+      await driver.waitFor(find.text("GitHub"), timeout: Duration(seconds: 2));
+      await _takeScreenshot();
+      // FIXME: This doesn't seem to work!
+      // await driver.tap(find.pageBack());
+
+      // Close the drawer
+      // var app = find.byValueKey("App");
+      // await driver.scroll(app, -300.0, 0.0, const Duration(milliseconds: 300));
     });
   });
 }

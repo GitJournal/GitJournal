@@ -53,6 +53,7 @@ class NoteEditorState extends State<NoteEditor> {
       appBar: AppBar(
         title: Text(title),
         leading: IconButton(
+          key: ValueKey("NewEntry"),
           icon: Icon(Icons.check),
           onPressed: () {
             final stateContainer = StateContainer.of(context);
