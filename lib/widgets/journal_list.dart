@@ -10,8 +10,6 @@ class JournalList extends StatelessWidget {
   final NoteSelectedFunction noteSelectedFunction;
   final List<Note> notes;
 
-  final _biggerFont = const TextStyle(fontSize: 18.0);
-
   JournalList({
     @required this.notes,
     @required this.noteSelectedFunction,
@@ -48,7 +46,7 @@ class JournalList extends StatelessWidget {
   }
 
   Widget _buildRow(BuildContext context, Note journal, int noteIndex) {
-    var formatter = DateFormat('dd MMM, yyyy');
+    var formatter = DateFormat('dd MMM, yyyy - EE');
     var title = formatter.format(journal.created);
 
     var timeFormatter = DateFormat('Hm');
@@ -57,18 +55,35 @@ class JournalList extends StatelessWidget {
     var body = journal.body;
     body = body.replaceAll("\n", " ");
 
-    return ListTile(
+    var textTheme = Theme.of(context).textTheme;
+
+    var tile = ListTile(
+      key: ValueKey(journal.filePath),
       isThreeLine: true,
       title: Text(
         title,
-        style: _biggerFont,
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
       ),
-      subtitle: Text(
-        time + "\n" + body,
-        maxLines: 3,
-        overflow: TextOverflow.ellipsis,
+      subtitle: Column(
+        children: <Widget>[
+          SizedBox(height: 4.0),
+          Text(time, style: textTheme.body1),
+          SizedBox(height: 4.0),
+          Text(
+            body,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            style: textTheme.body1,
+          ),
+        ],
+        crossAxisAlignment: CrossAxisAlignment.start,
       ),
       onTap: () => noteSelectedFunction(noteIndex),
+    );
+
+    return Padding(
+      padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+      child: tile,
     );
   }
 }
