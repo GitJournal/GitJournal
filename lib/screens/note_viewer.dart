@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:journal/note.dart';
 import 'package:journal/state_container.dart';
+import 'package:journal/utils.dart';
 import 'package:journal/widgets/note_header.dart';
 
-import 'note.dart';
 import 'note_editor.dart';
-import 'utils.dart';
 
 class NoteBrowsingScreen extends StatefulWidget {
   final List<Note> notes;

@@ -1,8 +1,8 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:journal/apis/git.dart';
-import 'package:journal/note_editor.dart';
-import 'package:journal/note_viewer.dart';
+import 'package:journal/screens/note_editor.dart';
+import 'package:journal/screens/note_viewer.dart';
 import 'package:journal/state_container.dart';
 import 'package:journal/widgets/app_drawer.dart';
 import 'package:journal/widgets/journal_list.dart';
