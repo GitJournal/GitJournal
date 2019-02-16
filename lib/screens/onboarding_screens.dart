@@ -170,13 +170,13 @@ class OnBoardingPage1 extends StatelessWidget {
           Center(child: header),
           SizedBox(height: 64.0),
           Text(
-            "A Journaling App focused on Openness and Data Privacy",
+            "A Journaling App focused on\nOpenness and Data Privacy",
             style: textTheme.headline,
             textAlign: TextAlign.center,
           ),
         ],
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
       ),
     );
   }
@@ -211,7 +211,7 @@ class OnBoardingPage2 extends StatelessWidget {
           ),
         ],
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
       ),
     );
   }
