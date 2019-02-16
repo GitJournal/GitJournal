@@ -48,8 +48,6 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   var pageController = PageController();
   int _currentPageIndex = 0;
 
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
-
   Widget _buildPage(BuildContext context, int pos) {
     print("_buildPage " + pos.toString());
     assert(_pageCount >= 1);
@@ -85,7 +83,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
               _pageCount = pos + 2;
               _nextPage();
-              _generateSshKey();
+              _generateSshKey(context);
             });
           },
           initialValue: _gitCloneUrl,
@@ -136,7 +134,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
               _gitCloneUrl = sshUrl;
 
               _nextPage();
-              _generateSshKey();
+              _generateSshKey(context);
             });
           },
           launchCreateUrlPage: _launchCreateRepoPage,
@@ -265,7 +263,6 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     );
 
     var scaffold = Scaffold(
-      key: _scaffoldKey,
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -306,19 +303,19 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     );
   }
 
-  void _generateSshKey() {
+  void _generateSshKey(BuildContext context) {
     generateSSHKeys(comment: "GitJournal").then((String publicKey) {
       setState(() {
         this.publicKey = publicKey;
-        _copyKeyToClipboard();
+        _copyKeyToClipboard(context);
       });
     });
   }
 
-  void _copyKeyToClipboard() {
+  void _copyKeyToClipboard(BuildContext context) {
     Clipboard.setData(ClipboardData(text: publicKey));
     var text = "Public Key copied to Clipboard";
-    this._scaffoldKey.currentState
+    Scaffold.of(context)
       ..removeCurrentSnackBar()
       ..showSnackBar(SnackBar(content: Text(text)));
   }
