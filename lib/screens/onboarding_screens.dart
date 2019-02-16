@@ -49,7 +49,11 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     if (_currentPageIndex != pages.length - 1) {
       var row = Row(
         children: <Widget>[
-          OnBoardingBottomButton(text: "Skip", onPressed: _finish),
+          OnBoardingBottomButton(
+            key: ValueKey("Skip"),
+            text: "Skip",
+            onPressed: _finish,
+          ),
           Expanded(
             child: Row(
               children: [
@@ -62,7 +66,11 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
             ),
           ),
-          OnBoardingBottomButton(text: "Next", onPressed: _nextPage),
+          OnBoardingBottomButton(
+            key: ValueKey("Next"),
+            text: "Next",
+            onPressed: _nextPage,
+          ),
         ],
       );
 
@@ -123,11 +131,16 @@ class OnBoardingBottomButton extends StatelessWidget {
   final Function onPressed;
   final String text;
 
-  OnBoardingBottomButton({@required this.text, @required this.onPressed});
+  OnBoardingBottomButton({
+    Key key,
+    @required this.text,
+    @required this.onPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FlatButton(
+      key: key,
       child: Text(
         text,
         textAlign: TextAlign.center,
