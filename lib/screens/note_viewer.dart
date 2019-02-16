@@ -48,17 +48,7 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
           IconButton(
             icon: Icon(Icons.delete),
             onPressed: () {
-              final stateContainer = StateContainer.of(context);
-              var noteIndex = _currentIndex();
-              Note note = widget.notes[noteIndex];
-              stateContainer.removeNote(note);
-              Navigator.pop(context);
-
-              print("Shwoing an undo snackbar");
-              var snackbar = buildUndoDeleteSnackbar(context, note, noteIndex);
-              _scaffoldKey.currentState
-                ..removeCurrentSnackBar()
-                ..showSnackBar(snackbar);
+              showDialog(context: context, builder: _buildAlertDialog);
             },
           ),
         ],
@@ -82,6 +72,41 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
     assert(currentIndex >= 0);
     assert(currentIndex < widget.notes.length);
     return currentIndex;
+  }
+
+  void _deleteNote(BuildContext context) {
+    final stateContainer = StateContainer.of(context);
+    var noteIndex = _currentIndex();
+    Note note = widget.notes[noteIndex];
+    stateContainer.removeNote(note);
+    Navigator.pop(context);
+
+    print("Shwoing an undo snackbar");
+    var snackbar = buildUndoDeleteSnackbar(context, note, noteIndex);
+    _scaffoldKey.currentState
+      ..removeCurrentSnackBar()
+      ..showSnackBar(snackbar);
+  }
+
+  Widget _buildAlertDialog(BuildContext context) {
+    var title = "Are you sure you want to delete this Journal Entry?";
+
+    return AlertDialog(
+      content: Text(title),
+      actions: <Widget>[
+        FlatButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text('Keep It'),
+        ),
+        FlatButton(
+          onPressed: () {
+            Navigator.pop(context); // Alert box
+            _deleteNote(context);
+          },
+          child: Text('Delete It'),
+        ),
+      ],
+    );
   }
 }
 
