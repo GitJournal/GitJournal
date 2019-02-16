@@ -31,7 +31,7 @@ class JournalList extends StatelessWidget {
 
         var note = notes[i];
         return Dismissible(
-          key: Key(note.filePath),
+          key: ValueKey("JournalList_" + note.filePath),
           child: _buildRow(context, note, i),
           background: Container(color: Theme.of(context).accentColor),
           onDismissed: (direction) {
@@ -60,7 +60,6 @@ class JournalList extends StatelessWidget {
     var textTheme = Theme.of(context).textTheme;
 
     var tile = ListTile(
-      key: ValueKey(journal.filePath),
       isThreeLine: true,
       title: Text(
         title,

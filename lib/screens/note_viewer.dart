@@ -36,7 +36,11 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
       controller: pageController,
       itemCount: widget.notes.length,
       itemBuilder: (BuildContext context, int pos) {
-        return NoteViewer(note: widget.notes[pos]);
+        var note = widget.notes[pos];
+        return NoteViewer(
+          key: ValueKey("Viewer_" + note.filePath),
+          note: widget.notes[pos],
+        );
       },
     );
 
@@ -114,7 +118,7 @@ class NoteViewer extends StatelessWidget {
   final Note note;
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
-  const NoteViewer({@required this.note});
+  const NoteViewer({Key key, @required this.note}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
