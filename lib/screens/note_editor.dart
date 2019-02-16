@@ -97,24 +97,25 @@ class NoteEditorState extends State<NoteEditor> {
 
   Widget _buildAlertDialog(BuildContext context) {
     var title = newNote
-        ? "Do you want to discard the entry"
-        : "Do you want to discard the changes?";
+        ? "Do you want to discard this?"
+        : "Do you want to ignore the changes?";
+
+    var editText = newNote ? "Keep Writing" : "Keep Editing";
+    var discardText = newNote ? "Discard" : "Discard Changes";
 
     return AlertDialog(
-      // FIXME: Change this to 'Save' vs 'Discard'
-      title: Text('Are you sure?'),
-      content: Text(title),
+      title: Text(title),
       actions: <Widget>[
         FlatButton(
           onPressed: () => Navigator.of(context).pop(false),
-          child: Text('No'),
+          child: Text(editText),
         ),
         FlatButton(
           onPressed: () {
             Navigator.pop(context); // Alert box
             Navigator.pop(context); // Note Editor
           },
-          child: Text('Yes'),
+          child: Text(discardText),
         ),
       ],
     );
