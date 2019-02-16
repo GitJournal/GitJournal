@@ -32,7 +32,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   Widget build(BuildContext context) {
     var pages = <Widget>[
       OnBoardingPage1(),
-      _buildPage("Page 2"),
+      OnBoardingPage2(),
       _buildPage("Page 3"),
     ];
     var pageView = PageView(
@@ -181,6 +181,41 @@ class OnBoardingPage1 extends StatelessWidget {
           SizedBox(height: 64.0),
           Text(
             "A Journaling App focused on Openness and Data Privacy",
+            style: textTheme.headline,
+            textAlign: TextAlign.center,
+          ),
+        ],
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+    );
+  }
+}
+
+class OnBoardingPage2 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme;
+    var header = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Image.asset(
+          'assets/OnBoardingMarkdown.png',
+          //height: 200,
+          fit: BoxFit.fill,
+        ),
+        SizedBox(height: 16.0),
+      ],
+    );
+
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Center(child: header),
+          SizedBox(height: 64.0),
+          Text(
+            "Your Journal Entries are stored in a standard Markdown + YAML Header format",
             style: textTheme.headline,
             textAlign: TextAlign.center,
           ),
