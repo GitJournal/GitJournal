@@ -1,8 +1,6 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
-import 'githostsetup_button.dart';
-
 class OnBoardingScreen extends StatefulWidget {
   final Function onCompletedFunction;
 
@@ -22,15 +20,6 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     return Column(
       children: <Widget>[
         Text(text),
-        GitHostSetupButton(
-          text: 'Take me to the App',
-          onPressed: () {
-            widget.onCompletedFunction();
-
-            Navigator.pop(context);
-            Navigator.pushNamed(context, "/");
-          },
-        ),
       ],
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -54,23 +43,67 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       },
     );
 
+    var bottomBar = Row(
+      children: <Widget>[
+        OnBoardingBottomButton(text: "Skip", onPressed: _finish),
+        Expanded(
+          child: Row(
+            children: [
+              DotsIndicator(
+                numberOfDot: pages.length,
+                position: _currentPageIndex,
+                dotActiveColor: Theme.of(context).primaryColorDark,
+              ),
+            ],
+            mainAxisAlignment: MainAxisAlignment.center,
+          ),
+        ),
+        OnBoardingBottomButton(text: "Next", onPressed: _nextPage),
+      ],
+    );
+
     return Scaffold(
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        child: Stack(
-          alignment: FractionalOffset.bottomCenter,
-          children: <Widget>[
-            pageView,
-            DotsIndicator(
-              numberOfDot: pages.length,
-              position: _currentPageIndex,
-              dotActiveColor: Theme.of(context).primaryColorDark,
-            )
-          ],
-        ),
+        child: pageView,
         padding: EdgeInsets.all(16.0),
       ),
+      bottomNavigationBar: Container(child: bottomBar, color: Colors.grey[200]),
+    );
+  }
+
+  void _finish() {
+    widget.onCompletedFunction();
+
+    Navigator.pop(context);
+    Navigator.pushNamed(context, "/");
+  }
+
+  void _nextPage() {
+    pageController.nextPage(
+      duration: Duration(milliseconds: 200),
+      curve: Curves.easeIn,
+    );
+  }
+}
+
+class OnBoardingBottomButton extends StatelessWidget {
+  final Function onPressed;
+  final String text;
+
+  OnBoardingBottomButton({@required this.text, @required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.button,
+      ),
+      //color: Colors.grey[200],
+      onPressed: onPressed,
     );
   }
 }
