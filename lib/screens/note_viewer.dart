@@ -125,7 +125,7 @@ class NoteViewer extends StatelessWidget {
     var view = SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          NoteHeader(note),
+          note.hasValidDate() ? NoteHeader(note) : Container(),
           Text(note.body, style: _biggerFont),
           SizedBox(height: 64.0),
           // _buildFooter(context),
