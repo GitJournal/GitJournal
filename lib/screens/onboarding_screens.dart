@@ -77,6 +77,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         width: double.infinity,
         height: _bottomBarHeight,
         child: RaisedButton(
+          key: ValueKey("GetStarted"),
           child: Text(
             "Get Started",
             textAlign: TextAlign.center,

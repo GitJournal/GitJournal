@@ -31,6 +31,21 @@ void main() {
     }
 
     test('Anonymous GitClone works', () async {
+      // OnBoarding
+      var nextButton = find.text("Next");
+      await driver.waitFor(nextButton, timeout: Duration(seconds: 5));
+      await _takeScreenshot();
+      await driver.tap(nextButton);
+
+      // Page 2
+      await _takeScreenshot();
+      await driver.tap(nextButton);
+
+      // Page 3
+      await _takeScreenshot();
+      await driver.tap(find.byValueKey("GetStarted"));
+
+      // Main Screen
       final loadedFinder = find.text('Why not add your first\n Journal Entry?');
       await driver.waitFor(loadedFinder, timeout: Duration(seconds: 5));
       await _takeScreenshot();
