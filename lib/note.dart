@@ -16,6 +16,11 @@ class Note implements Comparable<Note> {
     }
   }
 
+  bool hasValidDate() {
+    // Arbitrary number, when we set the year = 0, it becomes 1, somehow
+    return created.year > 10;
+  }
+
   factory Note.fromJson(Map<String, dynamic> json) {
     String filePath = "";
     if (json.containsKey("filePath")) {

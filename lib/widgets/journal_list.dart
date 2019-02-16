@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:journal/note.dart';
 import 'package:journal/state_container.dart';
 import 'package:journal/utils.dart';
+import 'package:path/path.dart';
 
 typedef void NoteSelectedFunction(int noteIndex);
 
@@ -48,16 +49,40 @@ class JournalList extends StatelessWidget {
   }
 
   Widget _buildRow(BuildContext context, Note journal, int noteIndex) {
-    var formatter = DateFormat('dd MMM, yyyy - EE');
-    var title = formatter.format(journal.created);
+    var title = "";
+    var time = "";
 
-    var timeFormatter = DateFormat('Hm');
-    var time = timeFormatter.format(journal.created);
+    if (journal.hasValidDate()) {
+      var formatter = DateFormat('dd MMM, yyyy - EE');
+      title = formatter.format(journal.created);
+
+      var timeFormatter = DateFormat('Hm');
+      time = timeFormatter.format(journal.created);
+    } else {
+      title = basename(journal.filePath);
+    }
 
     var body = journal.body;
     body = body.replaceAll("\n", " ");
 
     var textTheme = Theme.of(context).textTheme;
+    var children = <Widget>[];
+    if (time.isNotEmpty) {
+      children.addAll(<Widget>[
+        SizedBox(height: 4.0),
+        Text(time, style: textTheme.body1),
+      ]);
+    }
+
+    children.addAll(<Widget>[
+      SizedBox(height: 4.0),
+      Text(
+        body,
+        maxLines: 3,
+        overflow: TextOverflow.ellipsis,
+        style: textTheme.body1,
+      ),
+    ]);
 
     var tile = ListTile(
       isThreeLine: true,
@@ -66,17 +91,7 @@ class JournalList extends StatelessWidget {
         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
       ),
       subtitle: Column(
-        children: <Widget>[
-          SizedBox(height: 4.0),
-          Text(time, style: textTheme.body1),
-          SizedBox(height: 4.0),
-          Text(
-            body,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            style: textTheme.body1,
-          ),
-        ],
+        children: children,
         crossAxisAlignment: CrossAxisAlignment.start,
       ),
       onTap: () => noteSelectedFunction(noteIndex),
