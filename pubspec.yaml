@@ -35,6 +35,7 @@ flutter:
     - "assets/icon/github-icon.png"
     - "assets/icon/gitlab-icon.png"
     - "assets/OnBoardingMarkdown.png"
+    - "assets/OnBoardingGitProviders.png"
   fonts:
     - family: Lato
       fonts:

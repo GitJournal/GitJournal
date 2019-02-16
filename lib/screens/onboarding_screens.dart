@@ -18,22 +18,12 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
 
   final _bottomBarHeight = 50.0;
 
-  Widget _buildPage(String text) {
-    return Column(
-      children: <Widget>[
-        Text(text),
-      ],
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     var pages = <Widget>[
       OnBoardingPage1(),
       OnBoardingPage2(),
-      _buildPage("Page 3"),
+      OnBoardingPage3(),
     ];
     var pageView = PageView(
       controller: pageController,
@@ -222,6 +212,41 @@ class OnBoardingPage2 extends StatelessWidget {
         ],
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+    );
+  }
+}
+
+class OnBoardingPage3 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme;
+    var header = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Image.asset(
+          'assets/OnBoardingGitProviders.png',
+          //height: 200,
+          fit: BoxFit.fill,
+        ),
+        SizedBox(height: 16.0),
+      ],
+    );
+
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Center(child: header),
+          SizedBox(height: 64.0),
+          Text(
+            "Sync your Local Git Repo\nwith any provider",
+            style: textTheme.headline,
+            textAlign: TextAlign.center,
+          ),
+        ],
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
       ),
     );
   }
