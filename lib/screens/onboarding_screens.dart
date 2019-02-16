@@ -31,7 +31,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     var pages = <Widget>[
-      _buildPage("Page 1"),
+      OnBoardingPage1(),
       _buildPage("Page 2"),
       _buildPage("Page 3"),
     ];
@@ -135,6 +135,46 @@ class OnBoardingBottomButton extends StatelessWidget {
       ),
       //color: Colors.grey[200],
       onPressed: onPressed,
+    );
+  }
+}
+
+class OnBoardingPage1 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme;
+    var headerTextStyle = textTheme.display3.copyWith(fontFamily: "Lato");
+    var header = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Image.asset(
+          'assets/icon/icon.png',
+          height: 200,
+          fit: BoxFit.fill,
+        ),
+        SizedBox(height: 16.0),
+        Text(
+          "GitJournal",
+          style: headerTextStyle,
+        ),
+      ],
+    );
+
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Center(child: header),
+          SizedBox(height: 64.0),
+          Text(
+            "A Journaling App focused on Openness and Data Privacy",
+            style: textTheme.headline,
+            textAlign: TextAlign.center,
+          ),
+        ],
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+      ),
     );
   }
 }
