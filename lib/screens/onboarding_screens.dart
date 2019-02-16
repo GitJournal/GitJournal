@@ -16,6 +16,8 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   var pageController = PageController();
   int _currentPageIndex = 0;
 
+  final _bottomBarHeight = 50.0;
+
   Widget _buildPage(String text) {
     return Column(
       children: <Widget>[
@@ -43,24 +45,50 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       },
     );
 
-    var bottomBar = Row(
-      children: <Widget>[
-        OnBoardingBottomButton(text: "Skip", onPressed: _finish),
-        Expanded(
-          child: Row(
-            children: [
-              DotsIndicator(
-                numberOfDot: pages.length,
-                position: _currentPageIndex,
-                dotActiveColor: Theme.of(context).primaryColorDark,
-              ),
-            ],
-            mainAxisAlignment: MainAxisAlignment.center,
+    Widget bottomBar;
+    if (_currentPageIndex != pages.length - 1) {
+      var row = Row(
+        children: <Widget>[
+          OnBoardingBottomButton(text: "Skip", onPressed: _finish),
+          Expanded(
+            child: Row(
+              children: [
+                DotsIndicator(
+                  numberOfDot: pages.length,
+                  position: _currentPageIndex,
+                  dotActiveColor: Theme.of(context).primaryColorDark,
+                ),
+              ],
+              mainAxisAlignment: MainAxisAlignment.center,
+            ),
           ),
+          OnBoardingBottomButton(text: "Next", onPressed: _nextPage),
+        ],
+      );
+
+      bottomBar = Container(
+        child: SizedBox(
+          width: double.infinity,
+          height: _bottomBarHeight,
+          child: row,
         ),
-        OnBoardingBottomButton(text: "Next", onPressed: _nextPage),
-      ],
-    );
+        color: Colors.grey[200],
+      );
+    } else {
+      bottomBar = SizedBox(
+        width: double.infinity,
+        height: _bottomBarHeight,
+        child: RaisedButton(
+          child: Text(
+            "Get Started",
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.button,
+          ),
+          color: Theme.of(context).primaryColor,
+          onPressed: _finish,
+        ),
+      );
+    }
 
     return Scaffold(
       body: Container(
@@ -69,7 +97,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         child: pageView,
         padding: EdgeInsets.all(16.0),
       ),
-      bottomNavigationBar: Container(child: bottomBar, color: Colors.grey[200]),
+      bottomNavigationBar: bottomBar,
     );
   }
 
