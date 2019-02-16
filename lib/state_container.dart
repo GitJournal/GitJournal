@@ -267,7 +267,7 @@ class StateContainerState extends State<StateContainer> {
     await pref.setString("remoteGitRepoPath", appState.remoteGitRepoFolderName);
     await pref.setString(
         "remoteGitRepoSubFolder", appState.remoteGitRepoSubFolder);
-    //await pref.setBool("onBoardingCompleted", appState.onBoardingCompleted);
+    await pref.setBool("onBoardingCompleted", appState.onBoardingCompleted);
   }
 
   @override
