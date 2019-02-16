@@ -97,7 +97,10 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         child: pageView,
         padding: EdgeInsets.all(16.0),
       ),
-      bottomNavigationBar: bottomBar,
+      bottomNavigationBar: AnimatedSwitcher(
+        duration: Duration(milliseconds: 300),
+        child: bottomBar,
+      ),
     );
   }
 
