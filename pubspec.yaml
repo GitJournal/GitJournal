@@ -19,6 +19,7 @@ dependencies:
   badges: ^0.0.6
   share: ^0.6.0+1
   launch_review: ^1.0.1
+  device_info: ^0.4.0+1
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.0"

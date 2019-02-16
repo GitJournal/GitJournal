@@ -1,3 +1,4 @@
+import 'package:device_info/device_info.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,17 @@ class JournalApp extends StatelessWidget {
     var remoteGitRepoFolderName = pref.getString("remoteGitRepoPath") ?? "";
     var remoteGitRepoSubFolder = pref.getString("remoteGitRepoSubFolder") ?? "";
     var onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
+
+    //
+    // Check if in debugMode or not a real device
+    //
+    assert(JournalApp.isInDebugMode = true);
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    if (androidInfo.isPhysicalDevice == false) {
+      print("Not running in a physcial device");
+      JournalApp.isInDebugMode = true;
+    }
 
     if (JournalApp.isInDebugMode) {
       if (JournalApp.analytics.android != null) {
@@ -62,12 +74,7 @@ class JournalApp extends StatelessWidget {
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
 
-  static bool get isInDebugMode {
-    bool inDebugMode = false;
-    assert(inDebugMode = true);
-    return inDebugMode;
-  }
-
+  static bool isInDebugMode = false;
   static SharedPreferences preferences;
 
   @override
