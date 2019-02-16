@@ -47,5 +47,7 @@
                 <!-- Triggering URI would be gitjournal://login.oauth2 -->
             </intent-filter>
         </activity>
+
+        <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
     </application>
 </manifest>
