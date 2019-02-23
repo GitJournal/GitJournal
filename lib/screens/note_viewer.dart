@@ -4,6 +4,7 @@ import 'package:journal/note.dart';
 import 'package:journal/state_container.dart';
 import 'package:journal/utils.dart';
 import 'package:journal/widgets/note_header.dart';
+import 'package:share/share.dart';
 
 import 'note_editor.dart';
 
@@ -53,6 +54,13 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
             icon: Icon(Icons.delete),
             onPressed: () {
               showDialog(context: context, builder: _buildAlertDialog);
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.share),
+            onPressed: () {
+              Note note = widget.notes[_currentIndex()];
+              Share.share(note.body);
             },
           ),
         ],
