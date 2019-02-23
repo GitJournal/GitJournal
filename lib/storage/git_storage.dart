@@ -37,10 +37,7 @@ class GitNoteRepository implements NoteRepository {
       return result;
     }
 
-    var baseDir = _fileStorage.baseDirectory;
-    var filePath = result.noteFilePath.replaceFirst(baseDir + "/", "");
-
-    await gitAdd(dirName, filePath);
+    await gitAdd(dirName, '.');
     await gitCommit(
       gitFolder: dirName,
       authorEmail: Settings.instance.gitAuthorEmail,
