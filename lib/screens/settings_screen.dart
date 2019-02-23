@@ -142,7 +142,7 @@ class VersionNumberTile extends StatefulWidget {
 }
 
 class VersionNumberTileState extends State<VersionNumberTile> {
-  String versionText;
+  String versionText = "";
 
   @override
   void initState() {
