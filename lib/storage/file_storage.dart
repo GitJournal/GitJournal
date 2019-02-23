@@ -19,9 +19,9 @@ class FileStorage implements NoteRepository {
     @required this.baseDirectory,
     @required this.noteSerializer,
   }) {
-    assert(this.baseDirectory != null);
-    assert(this.baseDirectory.isNotEmpty);
-    print("FileStorage Directory: " + this.baseDirectory);
+    assert(baseDirectory != null);
+    assert(baseDirectory.isNotEmpty);
+    print("FileStorage Directory: " + baseDirectory);
   }
 
   @override

@@ -19,7 +19,7 @@ class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (this.publicKey == null || this.publicKey.isEmpty) {
+    if (publicKey == null || publicKey.isEmpty) {
       return GitHostSetupLoadingPage("Generating SSH Key ...");
     }
 
@@ -67,7 +67,7 @@ class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
         SizedBox(height: 8.0),
         GitHostSetupButton(
           text: "Clone Repo",
-          onPressed: this.doneFunction,
+          onPressed: doneFunction,
         ),
       ],
     );
@@ -93,7 +93,7 @@ class GitHostSetupSshKeyUnknownProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (this.publicKey == null || this.publicKey.isEmpty) {
+    if (publicKey == null || publicKey.isEmpty) {
       return GitHostSetupLoadingPage("Generating SSH Key ...");
     }
 
@@ -136,7 +136,7 @@ class GitHostSetupSshKeyUnknownProvider extends StatelessWidget {
         SizedBox(height: 8.0),
         GitHostSetupButton(
           text: "Clone Repo",
-          onPressed: this.doneFunction,
+          onPressed: doneFunction,
         ),
       ],
     );

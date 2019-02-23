@@ -466,7 +466,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       parameters: <String, dynamic>{},
     );
     Navigator.pop(context);
-    this.widget.onCompletedFunction(folder);
+    widget.onCompletedFunction(folder);
   }
 }
 

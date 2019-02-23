@@ -50,7 +50,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
 
         GitRepo repo;
         try {
-          this.setState(() {
+          setState(() {
             _message = "Creating private repo";
           });
 
@@ -61,18 +61,18 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
               rethrow;
             }
 
-            this.setState(() {
+            setState(() {
               _message = "Using existing repo";
             });
             repo = await gitHost.getRepo("journal");
           }
 
-          this.setState(() {
+          setState(() {
             _message = "Generating SSH Key";
           });
           var publicKey = await generateSSHKeys(comment: "GitJournal");
 
-          this.setState(() {
+          setState(() {
             _message = "Adding as a Deploy Key";
           });
           await gitHost.addDeployKey(publicKey, repo.fullName);
@@ -105,7 +105,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
   @override
   Widget build(BuildContext context) {
     if (_configuringStarted) {
-      if (this.errorMessage == null || this.errorMessage.isEmpty) {
+      if (errorMessage == null || errorMessage.isEmpty) {
         return GitHostSetupLoadingPage(_message);
       }
 

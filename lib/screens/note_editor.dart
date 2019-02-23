@@ -57,8 +57,8 @@ class NoteEditorState extends State<NoteEditor> {
           icon: Icon(Icons.check),
           onPressed: () {
             final stateContainer = StateContainer.of(context);
-            this.note.body = _textController.text;
-            if (this.note.body.isNotEmpty) {
+            note.body = _textController.text;
+            if (note.body.isNotEmpty) {
               newNote
                   ? stateContainer.addNote(note)
                   : stateContainer.updateNote(note);

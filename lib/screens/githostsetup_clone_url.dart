@@ -33,7 +33,7 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
         _formKey.currentState.save();
 
         var url = sshUrlKey.currentState.value;
-        this.widget.doneFunction(url.trim());
+        widget.doneFunction(url.trim());
         inputFormFocus.unfocus();
       }
     };
@@ -129,7 +129,7 @@ class GitCloneUrlKnownProviderPageState
         _formKey.currentState.save();
 
         var url = sshUrlKey.currentState.value;
-        this.widget.doneFunction(url.trim());
+        widget.doneFunction(url.trim());
         inputFormFocus.unfocus();
       }
     };

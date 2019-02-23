@@ -12,7 +12,7 @@ class GitHostSetupGitClone extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (this.errorMessage == null || this.errorMessage.isEmpty) {
+    if (errorMessage == null || errorMessage.isEmpty) {
       return GitHostSetupLoadingPage("Cloning ...");
     }
 

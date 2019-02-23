@@ -33,9 +33,9 @@ class GitHub implements GitHost {
         callback(GitHostException.OAuthFailed);
       }
 
-      this._accessCode = await _getAccessCode(authCode);
-      if (this._accessCode == null || this._accessCode.isEmpty) {
-        print("GitHub: AccessCode is invalid: " + this._accessCode);
+      _accessCode = await _getAccessCode(authCode);
+      if (_accessCode == null || _accessCode.isEmpty) {
+        print("GitHub: AccessCode is invalid: " + _accessCode);
         callback(GitHostException.OAuthFailed);
       }
 

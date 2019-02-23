@@ -40,9 +40,9 @@ class GitNoteRepository implements NoteRepository {
     var baseDir = _fileStorage.baseDirectory;
     var filePath = result.noteFilePath.replaceFirst(baseDir + "/", "");
 
-    await gitAdd(this.dirName, filePath);
+    await gitAdd(dirName, filePath);
     await gitCommit(
-      gitFolder: this.dirName,
+      gitFolder: dirName,
       authorEmail: Settings.instance.gitAuthorEmail,
       authorName: Settings.instance.gitAuthor,
       message: commitMessage,
@@ -62,9 +62,9 @@ class GitNoteRepository implements NoteRepository {
     var baseDir = _fileStorage.baseDirectory;
     var filePath = result.noteFilePath.replaceFirst(baseDir + "/", "");
 
-    await gitRm(this.dirName, filePath);
+    await gitRm(dirName, filePath);
     await gitCommit(
-      gitFolder: this.dirName,
+      gitFolder: dirName,
       authorEmail: Settings.instance.gitAuthorEmail,
       authorName: Settings.instance.gitAuthor,
       message: "Removed Journal entry",
@@ -74,7 +74,7 @@ class GitNoteRepository implements NoteRepository {
   }
 
   Future<NoteRepoResult> resetLastCommit() async {
-    await gitResetLast(this.dirName);
+    await gitResetLast(dirName);
     return NoteRepoResult(error: false);
   }
 
@@ -91,13 +91,13 @@ class GitNoteRepository implements NoteRepository {
   @override
   Future<bool> sync() async {
     try {
-      await gitPull(this.dirName);
+      await gitPull(dirName);
     } on GitException catch (ex) {
       print(ex);
     }
 
     try {
-      await gitPush(this.dirName);
+      await gitPush(dirName);
     } on GitException catch (ex) {
       print(ex);
       rethrow;

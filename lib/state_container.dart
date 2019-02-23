@@ -151,7 +151,7 @@ class StateContainerState extends State<StateContainer> {
     }
 
     print("Starting to syncNotes");
-    this.noteRepo.sync().then((loaded) {
+    noteRepo.sync().then((loaded) {
       print("NotesRepo Synced: " + loaded.toString());
       _loadNotesFromDisk();
     }).catchError((err) {
@@ -230,9 +230,9 @@ class StateContainerState extends State<StateContainer> {
 
   void completeGitHostSetup(String subFolder) {
     setState(() async {
-      this.appState.remoteGitRepoConfigured = true;
-      this.appState.remoteGitRepoFolderName = "journal";
-      this.appState.remoteGitRepoSubFolder = subFolder;
+      appState.remoteGitRepoConfigured = true;
+      appState.remoteGitRepoFolderName = "journal";
+      appState.remoteGitRepoSubFolder = subFolder;
 
       await migrateGitRepo(
         fromGitBasePath: appState.localGitRepoPath,
@@ -255,7 +255,7 @@ class StateContainerState extends State<StateContainer> {
 
   void completeOnBoarding() {
     setState(() {
-      this.appState.onBoardingCompleted = true;
+      appState.onBoardingCompleted = true;
       _persistConfig();
     });
   }

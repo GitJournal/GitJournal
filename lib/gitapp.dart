@@ -28,13 +28,13 @@ class GitApp extends StatelessWidget {
 
   void _sendSuccess() {
     var text = "Success";
-    this._scaffoldKey.currentState
+    _scaffoldKey.currentState
       ..removeCurrentSnackBar()
       ..showSnackBar(SnackBar(content: Text(text)));
   }
 
   void _sendError(String text) {
-    this._scaffoldKey.currentState
+    _scaffoldKey.currentState
       ..removeCurrentSnackBar()
       ..showSnackBar(SnackBar(content: Text("ERROR: " + text)));
   }

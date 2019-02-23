@@ -24,7 +24,7 @@ class GitHostSetupButton extends StatelessWidget {
             style: Theme.of(context).textTheme.button,
           ),
           color: Theme.of(context).primaryColor,
-          onPressed: this._onPressedWithAnalytics,
+          onPressed: _onPressedWithAnalytics,
         ),
       );
     } else {
@@ -38,7 +38,7 @@ class GitHostSetupButton extends StatelessWidget {
           ),
           icon: Image.asset(iconUrl, width: 32, height: 32),
           color: Theme.of(context).primaryColor,
-          onPressed: this._onPressedWithAnalytics,
+          onPressed: _onPressedWithAnalytics,
         ),
       );
     }
