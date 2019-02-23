@@ -82,7 +82,7 @@ class GitLab implements GitHost {
     }
 
     List<dynamic> list = jsonDecode(response.body);
-    var repos = List<GitRepo>();
+    var repos = <GitRepo>[];
     list.forEach((dynamic d) {
       var map = Map<String, dynamic>.from(d);
       var repo = _repoFromJson(map);

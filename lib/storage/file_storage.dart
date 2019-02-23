@@ -28,7 +28,7 @@ class FileStorage implements NoteRepository {
   Future<List<Note>> listNotes() async {
     final dir = Directory(baseDirectory);
 
-    var notes = List<Note>();
+    var notes = <Note>[];
     var lister = dir.list(recursive: false);
     await for (var fileEntity in lister) {
       Note note = await _loadNote(fileEntity);

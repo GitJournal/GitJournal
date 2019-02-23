@@ -5,14 +5,14 @@ class Note implements Comparable<Note> {
   DateTime created;
   String body;
 
-  Map<String, dynamic> extraProperties = Map<String, dynamic>();
+  Map<String, dynamic> extraProperties = <String, dynamic>{};
 
   Note({this.created, this.body, this.filePath, this.extraProperties}) {
     if (created == null) {
       created = DateTime(0, 0, 0, 0, 0, 0, 0, 0);
     }
     if (extraProperties == null) {
-      extraProperties = Map<String, dynamic>();
+      extraProperties = <String, dynamic>{};
     }
   }
 
