@@ -51,7 +51,7 @@ linter:
     # - avoid_as
     # - avoid_catches_without_on_clauses # not yet tested
     # - avoid_catching_errors # not yet tested
-    # - avoid_classes_with_only_static_members # not yet tested
+    - avoid_classes_with_only_static_members
     # - avoid_function_literals_in_foreach_calls # not yet tested
     - avoid_init_to_null
     - avoid_null_checks_in_equality_operators
@@ -75,7 +75,7 @@ linter:
     - non_constant_identifier_names
     # - omit_local_variable_types # opposite of always_specify_types
     # - one_member_abstracts # too many false positives
-    # - only_throw_errors # https://github.com/flutter/flutter/issues/5792
+    - only_throw_errors
     - overridden_fields
     - package_api_docs
     - package_prefixed_library_names
