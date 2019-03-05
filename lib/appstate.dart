@@ -18,10 +18,9 @@ class AppState {
   String gitBaseDirectory = "";
 
   bool isLoadingFromDisk;
-  List<Note> notes;
+  List<Note> notes = [];
 
   AppState({
     this.isLoadingFromDisk = false,
-    this.notes = const [],
   });
 }
