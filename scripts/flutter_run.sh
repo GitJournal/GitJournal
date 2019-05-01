@@ -2,6 +2,13 @@
 
 set -eu
 
+cd "$(dirname "$0")"
+touch /tmp/flutter.pid
+./reload.sh &
+BGPID=$!
+trap 'kill $BGPID; exit' SIGINT
+cd ../
+
 DEVICES=$(adb devices -l | tail -n +2)
 NUM_DEVICES=$(echo "$DEVICES" | wc -l)
 
