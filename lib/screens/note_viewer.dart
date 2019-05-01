@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:journal/note.dart';
 import 'package:journal/state_container.dart';
 import 'package:journal/utils.dart';
@@ -124,17 +125,25 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
 
 class NoteViewer extends StatelessWidget {
   final Note note;
-  final _biggerFont = const TextStyle(fontSize: 18.0);
-
   const NoteViewer({Key key, @required this.note}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+    theme = theme.copyWith(
+      textTheme: theme.textTheme.copyWith(
+        body1: theme.textTheme.body1.copyWith(fontSize: 18.0),
+      ),
+    );
+
     var view = SingleChildScrollView(
       child: Column(
         children: <Widget>[
           note.hasValidDate() ? NoteHeader(note) : Container(),
-          Text(note.body, style: _biggerFont),
+          MarkdownBody(
+            data: note.body,
+            styleSheet: MarkdownStyleSheet.fromTheme(theme),
+          ),
           SizedBox(height: 64.0),
           // _buildFooter(context),
         ],
