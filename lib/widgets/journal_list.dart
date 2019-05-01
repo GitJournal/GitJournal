@@ -19,6 +19,20 @@ class JournalList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (notes.isEmpty) {
+      return Center(
+        child: Text(
+          "Why not add your first\n Journal Entry?",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 28.0,
+            fontWeight: FontWeight.w300,
+            color: Colors.grey[350],
+          ),
+        ),
+      );
+    }
+
     return ListView.separated(
       separatorBuilder: (context, index) {
         return Divider(
