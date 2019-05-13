@@ -44,7 +44,7 @@ class MarkdownBuilder implements md.NodeVisitor {
   }
 }
 
-String markdownToPlainText(String markdown) {
+String stripMarkdownFormatting(String markdown) {
   final List<String> lines = markdown.replaceAll('\r\n', '\n').split('\n');
   var doc = md.Document(encodeHtml: false);
 

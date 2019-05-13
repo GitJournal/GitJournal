@@ -77,7 +77,7 @@ class JournalList extends StatelessWidget {
       title = basename(journal.filePath);
     }
 
-    var body = markdownToPlainText(journal.body);
+    var body = stripMarkdownFormatting(journal.body);
 
     var textTheme = Theme.of(context).textTheme;
     var children = <Widget>[];

@@ -2,10 +2,10 @@ import 'package:journal/utils/markdown.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Markdown To Text', () {
+  group('Markdown Remove Formatting', () {
     test('Test Headers', () {
       var input = '# Hello\nHow are you?';
-      expect(markdownToPlainText(input), 'Hello How are you?');
+      expect(stripMarkdownFormatting(input), 'Hello How are you?');
     });
 
     test('Test Header2', () {
@@ -15,7 +15,7 @@ void main() {
 Hello
       """;
 
-      expect(markdownToPlainText(input), 'Test Header Hello');
+      expect(stripMarkdownFormatting(input), 'Test Header Hello');
     });
 
     test('Itemized LIsts', () {
@@ -26,7 +26,7 @@ look like:
   * that one
       """;
 
-      expect(markdownToPlainText(input),
+      expect(stripMarkdownFormatting(input),
           'Itemized lists look like: this one that one');
     });
   });
