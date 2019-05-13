@@ -8,6 +8,16 @@ void main() {
       expect(markdownToPlainText(input), 'Hello How are you?');
     });
 
+    test('Test Header2', () {
+      var input = """Test Header
+----------
+
+Hello
+      """;
+
+      expect(markdownToPlainText(input), 'Test Header Hello');
+    });
+
     test('Itemized LIsts', () {
       var input = """Itemized lists
 look like:
