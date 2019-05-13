@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:journal/note.dart';
 import 'package:journal/state_container.dart';
 import 'package:journal/utils.dart';
+import 'package:journal/utils/markdown.dart';
 import 'package:path/path.dart';
 
 typedef void NoteSelectedFunction(int noteIndex);
@@ -76,10 +77,7 @@ class JournalList extends StatelessWidget {
       title = basename(journal.filePath);
     }
 
-    var body = journal.body;
-    body = body.replaceAll("\n", " ");
-    body = body.replaceAll("#", "");
-    body = body.trim();
+    var body = markdownToPlainText(journal.body);
 
     var textTheme = Theme.of(context).textTheme;
     var children = <Widget>[];
