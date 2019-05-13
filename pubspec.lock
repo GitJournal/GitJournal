@@ -7,7 +7,7 @@ packages:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.36.2"
+    version: "0.36.3"
   archive:
     dependency: transitive
     description:
@@ -157,7 +157,7 @@ packages:
       name: front_end
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.17"
+    version: "0.1.18"
   fuchsia_remote_debug_protocol:
     dependency: transitive
     description: flutter
@@ -204,7 +204,7 @@ packages:
       name: image
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.7"
+    version: "2.0.9"
   intl:
     dependency: "direct main"
     description:
@@ -239,7 +239,7 @@ packages:
       name: kernel
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.17"
+    version: "0.3.18"
   launch_review:
     dependency: "direct main"
     description:
