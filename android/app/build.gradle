@@ -44,13 +44,21 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        /*
+
         externalNativeBuild {
             cmake {
                 cppFlags ""
             }
         }
-        */
+        ndk {
+            abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
+        }
+        sourceSets {
+            main {
+                jniLibs.srcDirs = ['libs']
+                java.srcDirs = ['src']
+            }
+        }
     }
 
     signingConfigs {
@@ -66,13 +74,19 @@ android {
             signingConfig signingConfigs.release
         }
     }
-    /*
+
     externalNativeBuild {
         cmake {
             path "src/main/cpp/CMakeLists.txt"
         }
     }
-    */
+
+    dexOptions {
+        incremental true
+        preDexLibraries true
+        jumboMode true
+        javaMaxHeapSize "12g"
+    }
 }
 
 flutter {
