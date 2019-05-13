@@ -78,6 +78,8 @@ class JournalList extends StatelessWidget {
 
     var body = journal.body;
     body = body.replaceAll("\n", " ");
+    body = body.replaceAll("#", "");
+    body = body.trim();
 
     var textTheme = Theme.of(context).textTheme;
     var children = <Widget>[];
