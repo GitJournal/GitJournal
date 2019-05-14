@@ -46,6 +46,7 @@ set_target_properties(git2-lib
 add_library(native-lib
         SHARED
         keygen.c
+        git.c
 )
 
 # The order of these libraries is super dooper important

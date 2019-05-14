@@ -87,7 +87,7 @@ int generate_keys(const char* private_key_path,
 
 void ssh_log_jni_callback(int priority, const char *function, const char *buffer, void *userdata)
 {
-    __android_log_print(ANDROID_LOG_ERROR, "SSH_HOWDY", "P%d : %s : %s", priority, function, buffer);
+    __android_log_print(ANDROID_LOG_ERROR, "SSH_HOWDY", "P%d : %s : %s\n", priority, function, buffer);
 }
 
 JNIEXPORT jstring JNICALL
