@@ -81,6 +81,8 @@ int gj_git_init(char *git_base_path)
         return handle_error(err);
     }
 
+    git_repository_free(repo);
+
     return 0;
 }
 
@@ -94,8 +96,77 @@ int gj_git_push()
     return 0;
 }
 
-int gj_git_commit()
+// FIXME: Add a datetime str
+int gj_git_commit(char *git_base_path, char *author_name, char *author_email, char *message)
 {
+    int err;
+    git_signature *sig = NULL;
+    git_index *index = NULL;
+    git_oid tree_id, commit_id;
+    git_tree *tree = NULL;
+    git_repository *repo = NULL;
+
+    err = git_signature_now(&sig, author_name, author_email);
+    if (err < 0)
+    {
+        handle_error(err);
+    }
+
+    err = git_repository_open(&repo, git_base_path);
+    if (err < 0)
+    {
+        git_signature_free(sig);
+        return handle_error(err);
+    }
+
+    err = git_repository_index(&index, repo);
+    if (err < 0)
+    {
+        git_signature_free(sig);
+        git_repository_free(repo);
+        return handle_error(err);
+    }
+
+    err = git_index_write_tree(&tree_id, index);
+    if (err < 0)
+    {
+        git_signature_free(sig);
+        git_index_free(index);
+        git_repository_free(repo);
+        return handle_error(err);
+    }
+
+    git_index_free(index);
+
+    err = git_tree_lookup(&tree, repo, &tree_id);
+    if (err < 0)
+    {
+        git_signature_free(sig);
+        git_repository_free(repo);
+        return handle_error(err);
+    }
+
+    // Get the parent, if exists
+    git_oid parent_id;
+    git_commit *parent_commit = NULL;
+
+    git_reference_name_to_id(&parent_id, repo, "HEAD");
+    git_commit_lookup(&parent_commit, repo, &parent_id);
+
+    const git_commit *parents = {parent_commit};
+    err = git_commit_create(&commit_id, repo, "HEAD", sig, sig, NULL, message, tree, 1, &parents);
+    if (err < 0)
+    {
+        git_signature_free(sig);
+        git_tree_free(tree);
+        git_repository_free(repo);
+        return handle_error(err);
+    }
+
+    git_tree_free(tree);
+    git_repository_free(repo);
+    git_signature_free(sig);
+
     return 0;
 }
 
@@ -109,10 +180,14 @@ int main(int argc, char *argv[])
     char *git_base_path = "/tmp/journal_test";
     char *clone_url = "git@github.com:GitJournal/journal_test.git";
     char *add_pattern = ".";
+    char *author_name = "TestMan";
+    char *author_email = "TestMan@example.com";
+    char *message = "Commit message for GitJournal";
 
     git_libgit2_init();
 
-    gj_git_init("/tmp/foo");
+    //gj_git_init("/tmp/foo");
+    gj_git_commit(git_base_path, author_name, author_email, message);
 
     git_libgit2_shutdown();
     return 0;
