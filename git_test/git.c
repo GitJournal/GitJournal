@@ -6,7 +6,6 @@
 
 int handle_error(int err)
 {
-
     const git_error *e = giterr_last();
     printf("Error %d/%d: %s\n", err, e->klass, e->message);
     return err;
@@ -57,6 +56,54 @@ int gj_git_add(char *git_base_path, char *add_pattern)
     return 0;
 }
 
+int gj_git_rm(char *git_base_path, char *pattern)
+{
+    return 0;
+}
+
+int gj_git_clone(char *clone_url, char *git_base_path)
+{
+    return 0;
+}
+
+int gj_git_init(char *git_base_path)
+{
+    int err;
+
+    git_repository_init_options initopts = GIT_REPOSITORY_INIT_OPTIONS_INIT;
+    initopts.flags = GIT_REPOSITORY_INIT_MKPATH;
+    initopts.workdir_path = git_base_path;
+
+    git_repository *repo = NULL;
+    err = git_repository_init_ext(&repo, git_base_path, &initopts);
+    if (err < 0)
+    {
+        return handle_error(err);
+    }
+
+    return 0;
+}
+
+int gj_git_reset_hard(char *clone_url, char *ref)
+{
+    return 0;
+}
+
+int gj_git_push()
+{
+    return 0;
+}
+
+int gj_git_commit()
+{
+    return 0;
+}
+
+int gj_git_pull()
+{
+    return 0;
+}
+
 int main(int argc, char *argv[])
 {
     char *git_base_path = "/tmp/journal_test";
@@ -64,6 +111,8 @@ int main(int argc, char *argv[])
     char *add_pattern = ".";
 
     git_libgit2_init();
+
+    gj_git_init("/tmp/foo");
 
     git_libgit2_shutdown();
     return 0;
