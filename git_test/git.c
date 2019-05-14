@@ -149,7 +149,10 @@ int gj_git_commit(char *git_base_path, char *author_name, char *author_email, ch
     err = git_reference_name_to_id(&parent_id, repo, "HEAD");
     if (err)
     {
+        // FIXME: Better check for this!
         // Probably first commit
+        git_error_clear();
+
         err = git_commit_create(&commit_id, repo, "HEAD", sig, sig, NULL, message, tree, 0, NULL);
         if (err < 0)
         {
@@ -209,12 +212,42 @@ int fetch_progress(const git_transfer_progress *stats, void *payload)
     return 0;
 }
 
+int credentials_cb(git_cred **out, const char *url, const char *username_from_url,
+                   unsigned int allowed_types, void *payload)
+{
+    printf("UsernameProvided: %s\n", username_from_url);
+
+    if (allowed_types != GIT_CREDTYPE_SSH_KEY)
+    {
+        printf("Some other auth mechanism is being used");
+        return -1;
+    }
+
+    int err;
+
+    char *publickey = "/Users/vishesh/.ssh/id_rsa.pub";
+    char *privatekey = "/Users/vishesh/.ssh/id_rsa.pub";
+    char *passphrase = "";
+
+    git_cred *cred = NULL;
+    err = git_cred_ssh_key_new(&cred, username_from_url, publickey, privatekey, passphrase);
+    if (err < 0)
+    {
+        return handle_error(err);
+    }
+
+    *out = cred;
+    return 0;
+}
+
 int gj_git_clone(char *clone_url, char *git_base_path)
 {
     int err;
     git_repository *repo = NULL;
     git_clone_options options = GIT_CLONE_OPTIONS_INIT;
     options.fetch_opts.callbacks.transfer_progress = fetch_progress;
+    options.fetch_opts.callbacks.credentials = credentials_cb;
+    //options.fetch_opts.callbacks.certificate_check = certificate_check_cb;
 
     git_clone(&repo, clone_url, git_base_path, &options);
     if (err < 0)
@@ -235,7 +268,8 @@ int gj_git_pull()
 int main(int argc, char *argv[])
 {
     char *git_base_path = "/tmp/journal_test";
-    char *clone_url = "https://github.com/GitJournal/journal_test.git";
+    //char *clone_url = "https://github.com/GitJournal/journal_test.git";
+    char *clone_url = "ssh://git@github.com:GitJournal/journal_test.git";
     char *add_pattern = ".";
     char *author_name = "TestMan";
     char *author_email = "TestMan@example.com";
