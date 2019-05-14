@@ -150,19 +150,43 @@ int gj_git_commit(char *git_base_path, char *author_name, char *author_email, ch
     git_oid parent_id;
     git_commit *parent_commit = NULL;
 
-    git_reference_name_to_id(&parent_id, repo, "HEAD");
-    git_commit_lookup(&parent_commit, repo, &parent_id);
-
-    const git_commit *parents = {parent_commit};
-    err = git_commit_create(&commit_id, repo, "HEAD", sig, sig, NULL, message, tree, 1, &parents);
-    if (err < 0)
+    err = git_reference_name_to_id(&parent_id, repo, "HEAD");
+    if (err)
     {
-        git_signature_free(sig);
-        git_tree_free(tree);
-        git_repository_free(repo);
-        return handle_error(err);
+        // Probably first commit
+        err = git_commit_create(&commit_id, repo, "HEAD", sig, sig, NULL, message, tree, 0, NULL);
+        if (err < 0)
+        {
+            git_signature_free(sig);
+            git_tree_free(tree);
+            git_repository_free(repo);
+            return handle_error(err);
+        }
+    }
+    else
+    {
+        err = git_commit_lookup(&parent_commit, repo, &parent_id);
+        if (err < 0)
+        {
+            git_signature_free(sig);
+            git_tree_free(tree);
+            git_repository_free(repo);
+            return handle_error(err);
+        }
+
+        const git_commit *parents = {parent_commit};
+        err = git_commit_create(&commit_id, repo, "HEAD", sig, sig, NULL, message, tree, 1, &parents);
+        if (err < 0)
+        {
+            git_commit_free(parent_commit);
+            git_signature_free(sig);
+            git_tree_free(tree);
+            git_repository_free(repo);
+            return handle_error(err);
+        }
     }
 
+    git_commit_free(parent_commit);
     git_tree_free(tree);
     git_repository_free(repo);
     git_signature_free(sig);
@@ -186,7 +210,7 @@ int main(int argc, char *argv[])
 
     git_libgit2_init();
 
-    //gj_git_init("/tmp/foo");
+    gj_git_init(git_base_path);
     gj_git_commit(git_base_path, author_name, author_email, message);
 
     git_libgit2_shutdown();
