@@ -26,9 +26,6 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Git git = new Git();
-        Log.d("VISH", git.stringFromJNI());
-
         super.onCreate(savedInstanceState);
         GeneratedPluginRegistrant.registerWith(this);
 

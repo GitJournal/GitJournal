@@ -5,9 +5,5 @@ public class Git {
         System.loadLibrary("native-lib");
     }
 
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-    public native String stringFromJNI();
+    public native String generateKeys(String privateKeyPath, String publicKeyPath, String comment);
 }
