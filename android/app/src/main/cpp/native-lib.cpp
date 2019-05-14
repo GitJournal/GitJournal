@@ -8,7 +8,7 @@
 #include <git2.h>
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_io_gitjournal_gitjournal_MainActivity_stringFromJNI(
+Java_io_gitjournal_gitjournal_Git_stringFromJNI(
         JNIEnv *env,
         jobject /* this */) {
 
@@ -21,7 +21,7 @@ Java_io_gitjournal_gitjournal_MainActivity_stringFromJNI(
     hello += " SSH Version: ";
     hello += ssh2_version;
 
-    //git_libgit2_init();
+    git_libgit2_init();
     int major;
     int minor;
     int patch;

@@ -21,23 +21,13 @@ import io.flutter.util.PathUtils;
 // For MethodChannel
 
 public class MainActivity extends FlutterActivity implements MethodCallHandler {
-    static {
-        System.loadLibrary("native-lib");
-    }
-
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-    public native String stringFromJNI();
-
-
     private static final String CHANNEL_NAME = "gitjournal.io/git";
     static MethodChannel channel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("VISH", stringFromJNI());
+        Git git = new Git();
+        Log.d("VISH", git.stringFromJNI());
 
         super.onCreate(savedInstanceState);
         GeneratedPluginRegistrant.registerWith(this);
