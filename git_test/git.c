@@ -4,13 +4,12 @@
 
 #include <git2.h>
 
-void handle_error(int err)
+int handle_error(int err)
 {
-    if (err < 0)
-    {
-        const git_error *e = giterr_last();
-        printf("Error %d/%d: %s\n", err, e->klass, e->message);
-    }
+
+    const git_error *e = giterr_last();
+    printf("Error %d/%d: %s\n", err, e->klass, e->message);
+    return err;
 }
 
 int match_cb(const char *path, const char *spec, void *payload)
@@ -19,33 +18,53 @@ int match_cb(const char *path, const char *spec, void *payload)
     return 0;
 }
 
-int main(int argc, char *argv[])
+int gj_git_add(char *git_base_path, char *add_pattern)
 {
     int err;
+
+    git_repository *repo = NULL;
+    err = git_repository_open(&repo, git_base_path);
+    if (err < 0)
+    {
+        return handle_error(err);
+    }
+
+    git_index *idx = NULL;
+    err = git_repository_index(&idx, repo);
+    if (err < 0)
+    {
+        return handle_error(err);
+    }
+
+    char *paths[] = {add_pattern};
+    git_strarray pathspec = {paths, 1};
+
+    err = git_index_add_all(idx, &pathspec, GIT_INDEX_ADD_DEFAULT, match_cb, NULL);
+    if (err < 0)
+    {
+        return handle_error(err);
+    }
+
+    err = git_index_write(idx);
+    if (err < 0)
+    {
+        return handle_error(err);
+    }
+
+    git_index_free(idx);
+    git_repository_free(repo);
+
+    return 0;
+}
+
+int main(int argc, char *argv[])
+{
     char *git_base_path = "/tmp/journal_test";
     char *clone_url = "git@github.com:GitJournal/journal_test.git";
     char *add_pattern = ".";
 
     git_libgit2_init();
 
-    git_repository *repo = NULL;
-    err = git_repository_open(&repo, git_base_path);
-    handle_error(err);
-
-    git_index *idx = NULL;
-    err = git_repository_index(&idx, repo);
-    handle_error(err);
-
-    char *paths[] = {add_pattern};
-    git_strarray pathspec = {paths, 1};
-
-    err = git_index_add_all(idx, &pathspec, GIT_INDEX_ADD_DEFAULT, match_cb, NULL);
-    handle_error(err);
-
-    err = git_index_write(idx);
-    handle_error(err);
-
-    git_index_free(idx);
-
+    git_libgit2_shutdown();
     return 0;
 }
