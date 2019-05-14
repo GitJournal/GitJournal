@@ -1,15 +1,5 @@
 cmake_minimum_required(VERSION 3.4.1)
 
-macro(print_all_variables)
-    message(STATUS "print_all_variables------------------------------------------{")
-    get_cmake_property(_variableNames VARIABLES)
-    foreach (_variableName ${_variableNames})
-        message(STATUS "${_variableName}=${${_variableName}}")
-    endforeach ()
-    message(STATUS "print_all_variables------------------------------------------}")
-endmacro()
-
-
 set(lib_src_DIR ${CMAKE_SOURCE_DIR}/../../../libs/${ANDROID_ABI})
 include_directories(${lib_src_DIR}/include)
 
