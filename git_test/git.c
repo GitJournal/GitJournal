@@ -61,11 +61,6 @@ int gj_git_rm(char *git_base_path, char *pattern)
     return 0;
 }
 
-int gj_git_clone(char *clone_url, char *git_base_path)
-{
-    return 0;
-}
-
 int gj_git_init(char *git_base_path)
 {
     int err;
@@ -97,6 +92,7 @@ int gj_git_push()
 }
 
 // FIXME: Add a datetime str
+// FIXME: Do not allow empty commits
 int gj_git_commit(char *git_base_path, char *author_name, char *author_email, char *message)
 {
     int err;
@@ -194,6 +190,43 @@ int gj_git_commit(char *git_base_path, char *author_name, char *author_email, ch
     return 0;
 }
 
+int fetch_progress(const git_transfer_progress *stats, void *payload)
+{
+    int fetch_percent =
+        (100 * stats->received_objects) /
+        stats->total_objects;
+    int index_percent =
+        (100 * stats->indexed_objects) /
+        stats->total_objects;
+    int kbytes = stats->received_bytes / 1024;
+
+    printf("network %3d%% (%4d kb, %5d/%5d)  /"
+           "  index %3d%% (%5d/%5d)\n",
+           fetch_percent, kbytes,
+           stats->received_objects, stats->total_objects,
+           index_percent,
+           stats->indexed_objects, stats->total_objects);
+    return 0;
+}
+
+int gj_git_clone(char *clone_url, char *git_base_path)
+{
+    int err;
+    git_repository *repo = NULL;
+    git_clone_options options = GIT_CLONE_OPTIONS_INIT;
+    options.fetch_opts.callbacks.transfer_progress = fetch_progress;
+
+    git_clone(&repo, clone_url, git_base_path, &options);
+    if (err < 0)
+    {
+        return handle_error(err);
+    }
+
+    git_repository_free(repo);
+
+    return 0;
+}
+
 int gj_git_pull()
 {
     return 0;
@@ -202,7 +235,7 @@ int gj_git_pull()
 int main(int argc, char *argv[])
 {
     char *git_base_path = "/tmp/journal_test";
-    char *clone_url = "git@github.com:GitJournal/journal_test.git";
+    char *clone_url = "https://github.com/GitJournal/journal_test.git";
     char *add_pattern = ".";
     char *author_name = "TestMan";
     char *author_email = "TestMan@example.com";
@@ -210,9 +243,12 @@ int main(int argc, char *argv[])
 
     git_libgit2_init();
 
-    gj_git_init(git_base_path);
-    gj_git_commit(git_base_path, author_name, author_email, message);
+    //gj_git_init(git_base_path);
+    //gj_git_commit(git_base_path, author_name, author_email, message);
 
+    gj_git_clone(clone_url, git_base_path);
+
+    printf("We seem to be done\n");
     git_libgit2_shutdown();
     return 0;
 }
