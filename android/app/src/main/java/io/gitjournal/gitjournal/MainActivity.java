@@ -31,6 +31,9 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
 
         channel = new MethodChannel(getFlutterView(), CHANNEL_NAME);
         channel.setMethodCallHandler(this);
+
+        Git g = new Git();
+        g.setupLib();
     }
 
     @Override
@@ -58,7 +61,7 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
 
             String cloneLocation = filesDir + "/" + folderName;
 
-            new GitCloneTask(result).execute(cloneUrl, cloneLocation, privateKeyPath);
+            new GitCloneTask(result).execute(cloneUrl, cloneLocation, publicKeyPath, privateKeyPath);
             return;
         } else if (call.method.equals("gitPull")) {
             String folderName = call.argument("folderName");
@@ -82,7 +85,7 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
 
             String cloneLocation = filesDir + "/" + folderName;
 
-            new GitPushTask(result).execute(cloneLocation, privateKeyPath);
+            new GitPushTask(result).execute(cloneLocation, publicKeyPath, privateKeyPath);
             return;
         } else if (call.method.equals("gitAdd")) {
             String folderName = call.argument("folderName");
