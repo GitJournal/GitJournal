@@ -49,7 +49,7 @@ void gj_error_free(const gj_error *err)
 
 int match_cb(const char *path, const char *spec, void *payload)
 {
-    printf("Match: %s\n", path);
+    gj_log("Match: %s\n", path);
     return 0;
 }
 
@@ -90,7 +90,7 @@ int rm_match_cb(const char *path, const char *spec, void *payload)
     char *git_base_path = (char *)payload;
     if (!git_base_path)
     {
-        printf("git_base_path not in payload. Why?\n");
+        gj_log("git_base_path not in payload. Why?\n");
         return 1;
     }
 
@@ -103,10 +103,10 @@ int rm_match_cb(const char *path, const char *spec, void *payload)
     int err = remove(full_path);
     if (err != 0)
     {
-        printf("File could not be deleted: %s %d\n", full_path, errno);
+        gj_log("File could not be deleted: %s %d\n", full_path, errno);
         if (errno == ENOENT)
         {
-            printf("ENOENT\n");
+            gj_log("ENOENT\n");
         }
     }
 
@@ -274,7 +274,7 @@ int fetch_progress(const git_transfer_progress *stats, void *payload)
         stats->total_objects;
     int kbytes = stats->received_bytes / 1024;
 
-    printf("network %3d%% (%4d kb, %5d/%5d)  /"
+    gj_log("network %3d%% (%4d kb, %5d/%5d)  /"
            "  index %3d%% (%5d/%5d)\n",
            fetch_percent, kbytes,
            stats->received_objects, stats->total_objects,
@@ -304,27 +304,27 @@ int credentials_cb(git_cred **out, const char *url, const char *username_from_ur
 {
     if (!payload)
     {
-        printf("credentials_cb has no payload\n");
+        gj_log("credentials_cb has no payload\n");
         return -1;
     }
     gj_credentials_payload *gj_payload = (gj_credentials_payload *)payload;
     if (!gj_payload->first_time)
     {
-        printf("GitJournal: Credentials have been tried and they failed\n");
+        gj_log("GitJournal: Credentials have been tried and they failed\n");
         return -1;
     }
 
-    printf("UsernameProvided: %s\n", username_from_url);
-    printf("Allowed Types: %d\n", allowed_types);
-    printf("Payload: %p\n", payload);
+    gj_log("UsernameProvided: %s\n", username_from_url);
+    gj_log("Allowed Types: %d\n", allowed_types);
+    gj_log("Payload: %p\n", payload);
 
     if (!(allowed_types & GIT_CREDTYPE_SSH_KEY))
     {
-        printf("Some other auth mechanism is being used: %d\n", allowed_types);
+        gj_log("Some other auth mechanism is being used: %d\n", allowed_types);
         return -1;
     }
 
-    printf("gj_paylaod: %p\n", gj_payload);
+    gj_log("gj_paylaod: %p\n", gj_payload);
     gj_payload->first_time = false;
     return git_cred_ssh_key_new(out, username_from_url,
                                 g_public_key_path, g_private_key_path, g_passcode);
@@ -332,17 +332,17 @@ int credentials_cb(git_cred **out, const char *url, const char *username_from_ur
 
 int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payload)
 {
-    printf("Valid: %d\n", valid);
-    printf("CertType: %d\n", cert->cert_type);
+    gj_log("Valid: %d\n", valid);
+    gj_log("CertType: %d\n", cert->cert_type);
 
     if (valid == 0)
     {
-        printf("%s: Invalid certificate\n", host);
+        gj_log("%s: Invalid certificate\n", host);
     }
 
     if (cert->cert_type == GIT_CERT_HOSTKEY_LIBSSH2)
     {
-        printf("LibSSH2 Key: %p\n", payload);
+        gj_log("LibSSH2 Key: %p\n", payload);
         return 0;
     }
     return -1;
@@ -472,7 +472,7 @@ int gj_git_pull(char *git_base_path, char *author_name, char *author_email)
 
         if (err == GIT_ITEROVER)
         {
-            printf("    No Conflicts\n");
+            gj_log("    No Conflicts\n");
             break;
         }
         if (err < 0)
