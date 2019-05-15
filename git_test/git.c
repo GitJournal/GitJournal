@@ -99,13 +99,7 @@ int gj_git_reset_hard(char *clone_url, char *ref)
     return 0;
 }
 
-int gj_git_push()
-{
-    return 0;
-}
-
 // FIXME: Add a datetime str
-// FIXME: Do not allow empty commits
 int gj_git_commit(char *git_base_path, char *author_name, char *author_email, char *message)
 {
     int err = 0;
@@ -261,6 +255,39 @@ int gj_git_clone(char *clone_url, char *git_base_path)
     return 0;
 }
 
+// FIXME: What if the 'HEAD" does not point to 'master'
+int gj_git_push(char *git_base_path)
+{
+    int err = 0;
+    git_repository *repo = NULL;
+    git_remote *remote = NULL;
+    git_oid head_id;
+
+    err = git_repository_open(&repo, git_base_path);
+    if (err < 0)
+        goto cleanup;
+
+    err = git_remote_lookup(&remote, repo, "origin");
+    if (err < 0)
+        goto cleanup;
+
+    char *name = "refs/heads/master";
+    const git_strarray refs = {&name, 1};
+
+    git_push_options options = GIT_PUSH_OPTIONS_INIT;
+    options.callbacks.credentials = credentials_cb;
+
+    err = git_remote_push(remote, &refs, &options);
+    if (err < 0)
+        goto cleanup;
+
+cleanup:
+    git_remote_free(remote);
+    git_repository_free(repo);
+
+    return err;
+}
+
 int gj_git_pull()
 {
     return 0;
@@ -280,13 +307,14 @@ int main(int argc, char *argv[])
 
     git_libgit2_init();
 
-    //gj_git_init(git_base_path);
-    err = gj_git_commit(git_base_path, author_name, author_email, message);
+    //err = gj_git_init(git_base_path);
+    //err = gj_git_commit(git_base_path, author_name, author_email, message);
+    //err = gj_git_clone(clone_url, git_base_path);
+
+    err = gj_git_push(git_base_path);
+
     if (err < 0)
         handle_error(err);
-
-    //gj_git_clone(clone_url, git_base_path);
-
     printf("We seem to be done\n");
 
     git_libgit2_shutdown();
