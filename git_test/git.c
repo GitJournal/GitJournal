@@ -145,9 +145,29 @@ int gj_git_init(char *git_base_path)
     return 0;
 }
 
-int gj_git_reset_hard(char *clone_url, char *ref)
+int gj_git_reset_hard(char *git_base_path, char *ref)
 {
-    return 0;
+    int err = 0;
+    git_repository *repo = NULL;
+    git_object *obj = NULL;
+
+    err = git_repository_open(&repo, git_base_path);
+    if (err < 0)
+        goto cleanup;
+
+    err = git_revparse_single(&obj, repo, ref);
+    if (err < 0)
+        goto cleanup;
+
+    err = git_reset(repo, obj, GIT_RESET_HARD, NULL);
+    if (err < 0)
+        goto cleanup;
+
+cleanup:
+    git_object_free(obj);
+    git_repository_free(repo);
+
+    return err;
 }
 
 // FIXME: Add a datetime str
@@ -452,7 +472,8 @@ int main(int argc, char *argv[])
     //err = gj_git_push(git_base_path);
     //err = gj_git_pull(git_base_path, author_name, author_email);
     //err = gj_git_add(git_base_path, "9.md");
-    err = gj_git_rm(git_base_path, "9.md");
+    //err = gj_git_rm(git_base_path, "9.md");
+    err = gj_git_reset_hard(git_base_path, "HEAD^");
 
     if (err < 0)
         handle_error(err);
