@@ -288,9 +288,97 @@ cleanup:
     return err;
 }
 
-int gj_git_pull()
+int gj_git_pull(char *git_base_path, char *author_name, char *author_email)
 {
-    return 0;
+    int err = 0;
+    git_repository *repo = NULL;
+    git_remote *remote = NULL;
+    git_annotated_commit *annotated_commit = NULL;
+    git_reference *ref = NULL;
+    git_index *index = NULL;
+    git_index_conflict_iterator *conflict_iter = NULL;
+
+    err = git_repository_open(&repo, git_base_path);
+    if (err < 0)
+        goto cleanup;
+
+    err = git_remote_lookup(&remote, repo, "origin");
+    if (err < 0)
+        goto cleanup;
+
+    git_fetch_options options = GIT_FETCH_OPTIONS_INIT;
+    options.callbacks.credentials = credentials_cb;
+
+    err = git_remote_fetch(remote, NULL, &options, NULL);
+    if (err < 0)
+        goto cleanup;
+
+    git_merge_options merge_options = GIT_MERGE_OPTIONS_INIT;
+    git_checkout_options checkout_options = GIT_CHECKOUT_OPTIONS_INIT;
+
+    // FIXME: Maybe I should be taking the head of the remote?
+    err = git_repository_head(&ref, repo);
+    if (err < 0)
+        goto cleanup;
+
+    err = git_annotated_commit_from_ref(&annotated_commit, repo, ref);
+    if (err < 0)
+        goto cleanup;
+
+    err = git_merge(repo, (const git_annotated_commit **)&annotated_commit, 1,
+                    &merge_options, &checkout_options);
+    if (err < 0)
+        goto cleanup;
+
+    err = git_repository_index(&index, repo);
+    if (err < 0)
+        goto cleanup;
+
+    err = git_index_conflict_iterator_new(&conflict_iter, index);
+    if (err < 0)
+        goto cleanup;
+
+    // Handle Conflicts
+    while (1)
+    {
+        git_index_entry *ancestor_out;
+        git_index_entry *our_out;
+        git_index_entry *their_out;
+        err = git_index_conflict_next((const git_index_entry **)&ancestor_out,
+                                      (const git_index_entry **)&our_out,
+                                      (const git_index_entry **)&their_out,
+                                      conflict_iter);
+
+        if (err == GIT_ITEROVER)
+        {
+            printf("    No Conflicts\n");
+            break;
+        }
+        if (err < 0)
+            goto cleanup;
+
+        // FIXME: This isn't what I want. I want 'theirs' to be applied!
+        //        How to do that?
+        git_index_conflict_remove(index, their_out->path);
+    }
+
+    err = git_index_write(index);
+    if (err < 0)
+        goto cleanup;
+
+    //const git_commit *parents = {parent_commit};
+    //err = git_commit_create(&commit_id, repo, "HEAD", sig, sig, NULL, message, tree, 1, &parents);
+
+cleanup:
+    git_repository_state_cleanup(repo);
+    git_index_conflict_iterator_free(conflict_iter);
+    git_index_free(index);
+    git_reference_free(ref);
+    git_annotated_commit_free(annotated_commit);
+    git_remote_free(remote);
+    git_repository_free(repo);
+
+    return err;
 }
 
 int main(int argc, char *argv[])
@@ -310,8 +398,8 @@ int main(int argc, char *argv[])
     //err = gj_git_init(git_base_path);
     //err = gj_git_commit(git_base_path, author_name, author_email, message);
     //err = gj_git_clone(clone_url, git_base_path);
-
-    err = gj_git_push(git_base_path);
+    //err = gj_git_push(git_base_path);
+    err = gj_git_pull(git_base_path, author_name, author_email);
 
     if (err < 0)
         handle_error(err);
