@@ -15,6 +15,8 @@ int gj_git_reset_hard(char *git_base_path, char *ref);
 int gj_git_add(char *git_base_path, char *pattern);
 int gj_git_rm(char *git_base_path, char *pattern);
 
+void gj_set_ssh_keys_paths(char *public_key, char *private_key, char *passcode);
+
 typedef struct
 {
     char *message;

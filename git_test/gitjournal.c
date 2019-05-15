@@ -273,6 +273,17 @@ int fetch_progress(const git_transfer_progress *stats, void *payload)
     return 0;
 }
 
+char *g_public_key_path = NULL;
+char *g_private_key_path = NULL;
+char *g_passcode = NULL;
+
+void gj_set_ssh_keys_paths(char *public_key, char *private_key, char *passcode)
+{
+    g_public_key_path = public_key;
+    g_private_key_path = private_key;
+    g_passcode = passcode;
+}
+
 int credentials_cb(git_cred **out, const char *url, const char *username_from_url,
                    unsigned int allowed_types, void *payload)
 {
@@ -286,11 +297,8 @@ int credentials_cb(git_cred **out, const char *url, const char *username_from_ur
         return -1;
     }
 
-    char *publickey = "/Users/vishesh/.ssh/id_rsa.pub";
-    char *privatekey = "/Users/vishesh/.ssh/id_rsa";
-    char *passphrase = "";
-
-    int err = git_cred_ssh_key_new(out, username_from_url, publickey, privatekey, passphrase);
+    int err = git_cred_ssh_key_new(out, username_from_url,
+                                   g_public_key_path, g_private_key_path, g_passcode);
     if (err < 0)
     {
         printf("Credentials CB Error");
