@@ -30,43 +30,36 @@ int match_cb(const char *path, const char *spec, void *payload)
     return 0;
 }
 
-int gj_git_add(char *git_base_path, char *add_pattern)
+int gj_git_add(char *git_base_path, char *pattern)
 {
     int err;
-
     git_repository *repo = NULL;
+    git_index *index = NULL;
+
     err = git_repository_open(&repo, git_base_path);
     if (err < 0)
-    {
-        return handle_error(err);
-    }
+        goto cleanup;
 
-    git_index *idx = NULL;
-    err = git_repository_index(&idx, repo);
+    err = git_repository_index(&index, repo);
     if (err < 0)
-    {
-        return handle_error(err);
-    }
+        goto cleanup;
 
-    char *paths[] = {add_pattern};
+    char *paths[] = {pattern};
     git_strarray pathspec = {paths, 1};
 
-    err = git_index_add_all(idx, &pathspec, GIT_INDEX_ADD_DEFAULT, match_cb, NULL);
+    err = git_index_add_all(index, &pathspec, GIT_INDEX_ADD_DEFAULT, match_cb, NULL);
     if (err < 0)
-    {
-        return handle_error(err);
-    }
+        goto cleanup;
 
-    err = git_index_write(idx);
+    err = git_index_write(index);
     if (err < 0)
-    {
-        return handle_error(err);
-    }
+        goto cleanup;
 
-    git_index_free(idx);
+cleanup:
+    git_index_free(index);
     git_repository_free(repo);
 
-    return 0;
+    return err;
 }
 
 int gj_git_rm(char *git_base_path, char *pattern)
@@ -399,7 +392,9 @@ int main(int argc, char *argv[])
     //err = gj_git_commit(git_base_path, author_name, author_email, message);
     //err = gj_git_clone(clone_url, git_base_path);
     //err = gj_git_push(git_base_path);
-    err = gj_git_pull(git_base_path, author_name, author_email);
+    //err = gj_git_pull(git_base_path, author_name, author_email);
+    //err = gj_git_add(git_base_path, "9.md");
+    err = gj_git_rm(git_base_path, "9.md");
 
     if (err < 0)
         handle_error(err);
