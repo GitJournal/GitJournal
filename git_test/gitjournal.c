@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <stdbool.h>
 #include <sys/stat.h>
 #include <errno.h>
 
@@ -16,6 +15,7 @@ gj_error *gj_error_info(int err)
         return NULL;
 
     gj_error *error = (gj_error *)malloc(sizeof(gj_error));
+    error->message_allocated = false;
     if (err == GJ_ERR_EMPTY_COMMIT)
     {
         error->code = 954;
@@ -24,16 +24,26 @@ gj_error *gj_error_info(int err)
     }
 
     const git_error *e = git_error_last();
-    error->code = e->klass;
-    error->message = (char *)malloc(strlen(e->message));
-    strcpy(error->message, e->message);
+    if (e)
+    {
+        error->code = e->klass;
+        error->message = (char *)malloc(strlen(e->message));
+        strcpy(error->message, e->message);
+        error->message_allocated = true;
+    }
+    else
+    {
+        error->code = 1000;
+        error->message = "Unknown Message";
+    }
 
     return error;
 }
 
 void gj_error_free(const gj_error *err)
 {
-    free(err->message);
+    if (err->message_allocated)
+        free(err->message);
     free((void *)err);
 }
 
@@ -80,7 +90,7 @@ int rm_match_cb(const char *path, const char *spec, void *payload)
     char *git_base_path = (char *)payload;
     if (!git_base_path)
     {
-        printf("git_base_path not in payload. Why?");
+        printf("git_base_path not in payload. Why?\n");
         return 1;
     }
 
@@ -284,9 +294,26 @@ void gj_set_ssh_keys_paths(char *public_key, char *private_key, char *passcode)
     g_passcode = passcode;
 }
 
+typedef struct
+{
+    bool first_time;
+} gj_credentials_payload;
+
 int credentials_cb(git_cred **out, const char *url, const char *username_from_url,
                    unsigned int allowed_types, void *payload)
 {
+    if (!payload)
+    {
+        printf("credentials_cb has no payload\n");
+        return -1;
+    }
+    gj_credentials_payload *gj_payload = (gj_credentials_payload *)payload;
+    if (!gj_payload->first_time)
+    {
+        printf("GitJournal: Credentials have been tried and they failed\n");
+        return -1;
+    }
+
     printf("UsernameProvided: %s\n", username_from_url);
     printf("Allowed Types: %d\n", allowed_types);
     printf("Payload: %p\n", payload);
@@ -297,15 +324,10 @@ int credentials_cb(git_cred **out, const char *url, const char *username_from_ur
         return -1;
     }
 
-    int err = git_cred_ssh_key_new(out, username_from_url,
-                                   g_public_key_path, g_private_key_path, g_passcode);
-    if (err < 0)
-    {
-        printf("Credentials CB Error");
-        return err;
-    }
-
-    return 0;
+    printf("gj_paylaod: %p\n", gj_payload);
+    gj_payload->first_time = false;
+    return git_cred_ssh_key_new(out, username_from_url,
+                                g_public_key_path, g_private_key_path, g_passcode);
 }
 
 int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payload)
@@ -332,8 +354,11 @@ int gj_git_clone(char *clone_url, char *git_base_path)
     git_repository *repo = NULL;
     git_clone_options options = GIT_CLONE_OPTIONS_INIT;
     options.fetch_opts.callbacks.transfer_progress = fetch_progress;
-    options.fetch_opts.callbacks.credentials = credentials_cb;
     options.fetch_opts.callbacks.certificate_check = certificate_check_cb;
+
+    gj_credentials_payload gj_payload = {true};
+    options.fetch_opts.callbacks.payload = (void *)&gj_payload;
+    options.fetch_opts.callbacks.credentials = credentials_cb;
 
     err = git_clone(&repo, clone_url, git_base_path, &options);
     if (err < 0)
@@ -365,6 +390,9 @@ int gj_git_push(char *git_base_path)
     const git_strarray refs = {&name, 1};
 
     git_push_options options = GIT_PUSH_OPTIONS_INIT;
+
+    gj_credentials_payload gj_payload = {true};
+    options.callbacks.payload = (void *)&gj_payload;
     options.callbacks.credentials = credentials_cb;
 
     err = git_remote_push(remote, &refs, &options);
@@ -397,6 +425,9 @@ int gj_git_pull(char *git_base_path, char *author_name, char *author_email)
         goto cleanup;
 
     git_fetch_options options = GIT_FETCH_OPTIONS_INIT;
+
+    gj_credentials_payload gj_payload = {true};
+    options.callbacks.payload = (void *)&gj_payload;
     options.callbacks.credentials = credentials_cb;
 
     err = git_remote_fetch(remote, NULL, &options, NULL);

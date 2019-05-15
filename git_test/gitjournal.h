@@ -1,6 +1,8 @@
 #ifndef _GITJOURNAL_H_
 #define _GITJOURNAL_H_
 
+#include <stdbool.h>
+
 int gj_init();
 int gj_shutdown();
 
@@ -20,6 +22,7 @@ void gj_set_ssh_keys_paths(char *public_key, char *private_key, char *passcode);
 typedef struct
 {
     char *message;
+    bool message_allocated;
     int code;
 } gj_error;
 
