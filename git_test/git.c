@@ -5,12 +5,21 @@
 
 #include <git2.h>
 
+#define GJ_ERR_EMPTY_COMMIT -954
+
 int handle_error(int err)
 {
     if (err != 0)
     {
         const git_error *e = giterr_last();
-        printf("Error %d/%d: %s\n", err, e->klass, e->message);
+        if (e)
+        {
+            printf("Error %d/%d: %s\n", err, e->klass, e->message);
+        }
+        else
+        {
+            printf("Unknown Error: %d\n", err);
+        }
     }
     return err;
 }
@@ -108,15 +117,22 @@ int gj_git_commit(char *git_base_path, char *author_name, char *author_email, ch
     git_oid parent_id;
     git_commit *parent_commit = NULL;
 
-    err = git_signature_now(&sig, author_name, author_email);
-    if (err < 0)
-        goto cleanup;
-
     err = git_repository_open(&repo, git_base_path);
     if (err < 0)
         goto cleanup;
 
     err = git_repository_index(&index, repo);
+    if (err < 0)
+        goto cleanup;
+
+    int numOps = git_index_entrycount(index);
+    if (numOps == 0)
+    {
+        err = GJ_ERR_EMPTY_COMMIT;
+        goto cleanup;
+    }
+
+    err = git_signature_now(&sig, author_name, author_email);
     if (err < 0)
         goto cleanup;
 
@@ -159,7 +175,7 @@ cleanup:
     git_repository_free(repo);
     git_signature_free(sig);
 
-    return 0;
+    return err;
 }
 
 int fetch_progress(const git_transfer_progress *stats, void *payload)
@@ -252,10 +268,11 @@ int gj_git_pull()
 
 int main(int argc, char *argv[])
 {
-    char *git_base_path = "/tmp/journal_test";
+    int err;
+    char *git_base_path = "/tmp/foo";
     //char *clone_url = "https://github.com/GitJournal/journal_test.git";
-    //char *clone_url = "git@github.com:GitJournal/journal_test.git";
-    char *clone_url = "root@pi.local:git/test";
+    char *clone_url = "git@github.com:GitJournal/journal_test.git";
+    //char *clone_url = "root@pi.local:git/test";
     char *add_pattern = ".";
     char *author_name = "TestMan";
     char *author_email = "TestMan@example.com";
@@ -264,14 +281,17 @@ int main(int argc, char *argv[])
     git_libgit2_init();
 
     //gj_git_init(git_base_path);
-    //gj_git_commit(git_base_path, author_name, author_email, message);
+    err = gj_git_commit(git_base_path, author_name, author_email, message);
+    if (err < 0)
+        handle_error(err);
 
-    gj_git_clone(clone_url, git_base_path);
+    //gj_git_clone(clone_url, git_base_path);
 
     printf("We seem to be done\n");
 
     git_libgit2_shutdown();
 
+    /*
     int features = git_libgit2_features();
     bool supports_threading = features & GIT_FEATURE_THREADS;
     bool supports_https2 = features & GIT_FEATURE_HTTPS;
@@ -279,6 +299,6 @@ int main(int argc, char *argv[])
     printf("Threading: %d\n", supports_threading);
     printf("Https: %d\n", supports_https2);
     printf("SSH: %d\n", supports_ssh);
-
+    */
     return 0;
 }
