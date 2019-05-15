@@ -6,16 +6,17 @@
 int gj_init();
 int gj_shutdown();
 
-int gj_git_init(char *git_base_path);
-int gj_git_clone(char *clone_url, char *git_base_path);
+int gj_git_init(const char *git_base_path);
+int gj_git_clone(const char *clone_url, const char *git_base_path);
 
-int gj_git_pull(char *git_base_path, char *author_name, char *author_email);
-int gj_git_push(char *git_base_path);
+int gj_git_pull(const char *git_base_path, const char *author_name, const char *author_email);
+int gj_git_push(const char *git_base_path);
 
-int gj_git_commit(char *git_base_path, char *author_name, char *author_email, char *message);
-int gj_git_reset_hard(char *git_base_path, char *ref);
-int gj_git_add(char *git_base_path, char *pattern);
-int gj_git_rm(char *git_base_path, char *pattern);
+int gj_git_commit(const char *git_base_path, const char *author_name,
+                  const char *author_email, const char *message);
+int gj_git_reset_hard(const char *git_base_path, const char *ref);
+int gj_git_add(const char *git_base_path, const char *pattern);
+int gj_git_rm(const char *git_base_path, const char *pattern);
 
 void gj_set_ssh_keys_paths(char *public_key, char *private_key, char *passcode);
 

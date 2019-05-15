@@ -4,6 +4,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include <stdarg.h>
 
 #include <git2.h>
 
@@ -63,7 +64,7 @@ int match_cb(const char *path, const char *spec, void *payload)
     return 0;
 }
 
-int gj_git_add(char *git_base_path, char *pattern)
+int gj_git_add(const char *git_base_path, const char *pattern)
 {
     int err;
     git_repository *repo = NULL;
@@ -77,7 +78,7 @@ int gj_git_add(char *git_base_path, char *pattern)
     if (err < 0)
         goto cleanup;
 
-    char *paths[] = {pattern};
+    char *paths[] = {(char *)pattern};
     git_strarray pathspec = {paths, 1};
 
     err = git_index_add_all(index, &pathspec, GIT_INDEX_ADD_DEFAULT, match_cb, NULL);
@@ -124,7 +125,7 @@ int rm_match_cb(const char *path, const char *spec, void *payload)
     return 0;
 }
 
-int gj_git_rm(char *git_base_path, char *pattern)
+int gj_git_rm(const char *git_base_path, const char *pattern)
 {
     int err;
     git_repository *repo = NULL;
@@ -138,10 +139,10 @@ int gj_git_rm(char *git_base_path, char *pattern)
     if (err < 0)
         goto cleanup;
 
-    char *paths[] = {pattern};
+    char *paths[] = {(char *)pattern};
     git_strarray pathspec = {paths, 1};
 
-    void *payload = git_base_path;
+    void *payload = (void *)git_base_path;
     err = git_index_remove_all(index, &pathspec, rm_match_cb, (void *)git_base_path);
     if (err < 0)
         goto cleanup;
@@ -157,7 +158,7 @@ cleanup:
     return err;
 }
 
-int gj_git_init(char *git_base_path)
+int gj_git_init(const char *git_base_path)
 {
     int err = 0;
     git_repository *repo = NULL;
@@ -176,7 +177,7 @@ cleanup:
     return 0;
 }
 
-int gj_git_reset_hard(char *git_base_path, char *ref)
+int gj_git_reset_hard(const char *git_base_path, const char *ref)
 {
     int err = 0;
     git_repository *repo = NULL;
@@ -202,7 +203,8 @@ cleanup:
 }
 
 // FIXME: Add a datetime str
-int gj_git_commit(char *git_base_path, char *author_name, char *author_email, char *message)
+int gj_git_commit(const char *git_base_path, const char *author_name,
+                  const char *author_email, const char *message)
 {
     int err = 0;
     git_signature *sig = NULL;
@@ -358,7 +360,7 @@ int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payl
     return -1;
 }
 
-int gj_git_clone(char *clone_url, char *git_base_path)
+int gj_git_clone(const char *clone_url, const char *git_base_path)
 {
     int err;
     git_repository *repo = NULL;
@@ -381,7 +383,7 @@ cleanup:
 }
 
 // FIXME: What if the 'HEAD" does not point to 'master'
-int gj_git_push(char *git_base_path)
+int gj_git_push(const char *git_base_path)
 {
     int err = 0;
     git_repository *repo = NULL;
@@ -416,7 +418,7 @@ cleanup:
     return err;
 }
 
-int gj_git_pull(char *git_base_path, char *author_name, char *author_email)
+int gj_git_pull(const char *git_base_path, const char *author_name, const char *author_email)
 {
     int err = 0;
     git_repository *repo = NULL;

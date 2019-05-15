@@ -1,7 +1,6 @@
 #include "gitjournal.h"
 
 #include <stdio.h>
-#include <stdarg.h>
 
 int handle_error(int err)
 {
@@ -19,7 +18,7 @@ int handle_error(int err)
 
 void gj_log(const char *message)
 {
-    printf(message);
+    printf("%s", message);
 }
 
 int main(int argc, char *argv[])
