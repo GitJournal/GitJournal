@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.4.1)
 
 set(lib_src_DIR ${CMAKE_SOURCE_DIR}/../../../libs/${ANDROID_ABI})
-include_directories(${lib_src_DIR}/include)
+include_directories(
+        ${lib_src_DIR}/include
+        ${CMAKE_SOURCE_DIR}/../../../../../gj_common/
+)
 
 add_library(openssl-lib
         STATIC
@@ -45,9 +48,10 @@ set_target_properties(git2-lib
 
 add_library(native-lib
         SHARED
+        ${CMAKE_SOURCE_DIR}/../../../../../gj_common/gitjournal.c
         keygen.c
         git.c
-)
+        )
 
 # The order of these libraries is super dooper important
 # Otherwise you'll get linker errors
