@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <sys/stat.h>
+#include <errno.h>
 
 #include <git2.h>
 
@@ -62,9 +63,66 @@ cleanup:
     return err;
 }
 
+int rm_match_cb(const char *path, const char *spec, void *payload)
+{
+    char *git_base_path = (char *)payload;
+    if (!git_base_path)
+    {
+        printf("git_base_path not in payload. Why?");
+        return 1;
+    }
+
+    int full_path_length = strlen(git_base_path) + 1 + strlen(path);
+    char *full_path = (char *)malloc(full_path_length);
+    strcpy(full_path, git_base_path);
+    strcat(full_path, "/"); // FIXME: Will not work on windows!
+    strcat(full_path, path);
+
+    int err = remove(full_path);
+    if (err != 0)
+    {
+        printf("File could not be deleted: %s %d\n", full_path, errno);
+        if (errno == ENOENT)
+        {
+            printf("ENOENT\n");
+        }
+    }
+
+    free(full_path);
+    return 0;
+}
+
 int gj_git_rm(char *git_base_path, char *pattern)
 {
-    return 0;
+    int err;
+    git_repository *repo = NULL;
+    git_index *index = NULL;
+
+    err = git_repository_open(&repo, git_base_path);
+    if (err < 0)
+        goto cleanup;
+
+    err = git_repository_index(&index, repo);
+    if (err < 0)
+        goto cleanup;
+
+    char *paths[] = {pattern};
+    git_strarray pathspec = {paths, 1};
+
+    void *payload = git_base_path;
+    err = git_index_remove_all(index, &pathspec, rm_match_cb, (void *)git_base_path);
+    if (err < 0)
+        goto cleanup;
+
+    err = git_index_write(index);
+    if (err < 0)
+        goto cleanup;
+
+cleanup:
+    git_index_free(index);
+    git_repository_free(repo);
+
+    return err;
 }
 
 int gj_git_init(char *git_base_path)
