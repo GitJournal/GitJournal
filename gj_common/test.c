@@ -17,12 +17,9 @@ int handle_error(int err)
     return err;
 }
 
-void gj_log(const char *format, ...)
+void gj_log(const char *message)
 {
-    va_list args;
-    va_start(args, format);
-    vprintf(format, args);
-    va_end(args);
+    printf(message);
 }
 
 int main(int argc, char *argv[])

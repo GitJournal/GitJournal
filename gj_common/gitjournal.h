@@ -30,6 +30,6 @@ gj_error *gj_error_info(int err);
 void gj_error_free(const gj_error *err);
 
 // This must be implemented by you
-void gj_log(const char *format, ...);
+void gj_log(const char *message);
 
 #endif
