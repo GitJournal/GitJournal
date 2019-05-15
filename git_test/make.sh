@@ -2,4 +2,4 @@
 
 set -euv
 
-clang git.c -lgit2 -lssh2
+clang test.c gitjournal.c -lgit2

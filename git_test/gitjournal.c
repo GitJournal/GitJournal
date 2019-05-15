@@ -1,3 +1,5 @@
+#include "gitjournal.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
@@ -8,21 +10,31 @@
 
 #define GJ_ERR_EMPTY_COMMIT -954
 
-int handle_error(int err)
+gj_error *gj_error_info(int err)
 {
-    if (err != 0)
+    if (err == 0)
+        return NULL;
+
+    gj_error *error = (gj_error *)malloc(sizeof(gj_error));
+    if (err == GJ_ERR_EMPTY_COMMIT)
     {
-        const git_error *e = giterr_last();
-        if (e)
-        {
-            printf("Error %d/%d: %s\n", err, e->klass, e->message);
-        }
-        else
-        {
-            printf("Unknown Error: %d\n", err);
-        }
+        error->code = 954;
+        error->message = "Empty Commit";
+        return error;
     }
-    return err;
+
+    const git_error *e = git_error_last();
+    error->code = e->klass;
+    error->message = (char *)malloc(strlen(e->message));
+    strcpy(error->message, e->message);
+
+    return error;
+}
+
+void gj_error_free(const gj_error *err)
+{
+    free(err->message);
+    free((void *)err);
 }
 
 int match_cb(const char *path, const char *spec, void *payload)
@@ -127,19 +139,18 @@ cleanup:
 
 int gj_git_init(char *git_base_path)
 {
-    int err;
+    int err = 0;
+    git_repository *repo = NULL;
 
     git_repository_init_options initopts = GIT_REPOSITORY_INIT_OPTIONS_INIT;
     initopts.flags = GIT_REPOSITORY_INIT_MKPATH;
     initopts.workdir_path = git_base_path;
 
-    git_repository *repo = NULL;
     err = git_repository_init_ext(&repo, git_base_path, &initopts);
     if (err < 0)
-    {
-        return handle_error(err);
-    }
+        goto cleanup;
 
+cleanup:
     git_repository_free(repo);
 
     return 0;
@@ -282,7 +293,8 @@ int credentials_cb(git_cred **out, const char *url, const char *username_from_ur
     int err = git_cred_ssh_key_new(out, username_from_url, publickey, privatekey, passphrase);
     if (err < 0)
     {
-        return handle_error(err);
+        printf("Credentials CB Error");
+        return err;
     }
 
     return 0;
@@ -317,13 +329,12 @@ int gj_git_clone(char *clone_url, char *git_base_path)
 
     err = git_clone(&repo, clone_url, git_base_path, &options);
     if (err < 0)
-    {
-        return handle_error(err);
-    }
+        goto cleanup;
 
+cleanup:
     git_repository_free(repo);
 
-    return 0;
+    return err;
 }
 
 // FIXME: What if the 'HEAD" does not point to 'master'
@@ -452,43 +463,12 @@ cleanup:
     return err;
 }
 
-int main(int argc, char *argv[])
+int gj_init()
 {
-    int err;
-    char *git_base_path = "/tmp/foo";
-    //char *clone_url = "https://github.com/GitJournal/journal_test.git";
-    char *clone_url = "git@github.com:GitJournal/journal_test.git";
-    //char *clone_url = "root@pi.local:git/test";
-    char *add_pattern = ".";
-    char *author_name = "TestMan";
-    char *author_email = "TestMan@example.com";
-    char *message = "Commit message for GitJournal";
+    return git_libgit2_init();
+}
 
-    git_libgit2_init();
-
-    //err = gj_git_init(git_base_path);
-    //err = gj_git_commit(git_base_path, author_name, author_email, message);
-    //err = gj_git_clone(clone_url, git_base_path);
-    //err = gj_git_push(git_base_path);
-    //err = gj_git_pull(git_base_path, author_name, author_email);
-    //err = gj_git_add(git_base_path, "9.md");
-    //err = gj_git_rm(git_base_path, "9.md");
-    err = gj_git_reset_hard(git_base_path, "HEAD^");
-
-    if (err < 0)
-        handle_error(err);
-    printf("We seem to be done\n");
-
-    git_libgit2_shutdown();
-
-    /*
-    int features = git_libgit2_features();
-    bool supports_threading = features & GIT_FEATURE_THREADS;
-    bool supports_https2 = features & GIT_FEATURE_HTTPS;
-    bool supports_ssh = features & GIT_FEATURE_SSH;
-    printf("Threading: %d\n", supports_threading);
-    printf("Https: %d\n", supports_https2);
-    printf("SSH: %d\n", supports_ssh);
-    */
-    return 0;
+int gj_shutdown()
+{
+    return git_libgit2_shutdown();
 }

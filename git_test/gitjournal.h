@@ -1,0 +1,27 @@
+#ifndef _GITJOURNAL_H_
+#define _GITJOURNAL_H_
+
+int gj_init();
+int gj_shutdown();
+
+int gj_git_init(char *git_base_path);
+int gj_git_clone(char *clone_url, char *git_base_path);
+
+int gj_git_pull(char *git_base_path, char *author_name, char *author_email);
+int gj_git_push(char *git_base_path);
+
+int gj_git_commit(char *git_base_path, char *author_name, char *author_email, char *message);
+int gj_git_reset_hard(char *git_base_path, char *ref);
+int gj_git_add(char *git_base_path, char *pattern);
+int gj_git_rm(char *git_base_path, char *pattern);
+
+typedef struct
+{
+    char *message;
+    int code;
+} gj_error;
+
+gj_error *gj_error_info(int err);
+void gj_error_free(const gj_error *err);
+
+#endif
