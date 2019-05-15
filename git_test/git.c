@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 #include <sys/stat.h>
 
 #include <git2.h>
@@ -151,7 +152,7 @@ int gj_git_commit(char *git_base_path, char *author_name, char *author_email, ch
     {
         // FIXME: Better check for this!
         // Probably first commit
-        git_error_clear();
+        // git_error_clear();
 
         err = git_commit_create(&commit_id, repo, "HEAD", sig, sig, NULL, message, tree, 0, NULL);
         if (err < 0)
@@ -216,28 +217,44 @@ int credentials_cb(git_cred **out, const char *url, const char *username_from_ur
                    unsigned int allowed_types, void *payload)
 {
     printf("UsernameProvided: %s\n", username_from_url);
+    printf("Allowed Types: %d\n", allowed_types);
+    printf("Payload: %p\n", payload);
 
-    if (allowed_types != GIT_CREDTYPE_SSH_KEY)
+    if (!(allowed_types & GIT_CREDTYPE_SSH_KEY))
     {
-        printf("Some other auth mechanism is being used");
+        printf("Some other auth mechanism is being used: %d\n", allowed_types);
         return -1;
     }
 
-    int err;
-
     char *publickey = "/Users/vishesh/.ssh/id_rsa.pub";
-    char *privatekey = "/Users/vishesh/.ssh/id_rsa.pub";
+    char *privatekey = "/Users/vishesh/.ssh/id_rsa";
     char *passphrase = "";
 
-    git_cred *cred = NULL;
-    err = git_cred_ssh_key_new(&cred, username_from_url, publickey, privatekey, passphrase);
+    int err = git_cred_ssh_key_new(out, username_from_url, publickey, privatekey, passphrase);
     if (err < 0)
     {
         return handle_error(err);
     }
 
-    *out = cred;
     return 0;
+}
+
+int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payload)
+{
+    printf("Valid: %d\n", valid);
+    printf("CertType: %d\n", cert->cert_type);
+
+    if (valid == 0)
+    {
+        printf("%s: Invalid certificate\n", host);
+    }
+
+    if (cert->cert_type == GIT_CERT_HOSTKEY_LIBSSH2)
+    {
+        printf("LibSSH2 Key: %p\n", payload);
+        return 0;
+    }
+    return -1;
 }
 
 int gj_git_clone(char *clone_url, char *git_base_path)
@@ -247,9 +264,9 @@ int gj_git_clone(char *clone_url, char *git_base_path)
     git_clone_options options = GIT_CLONE_OPTIONS_INIT;
     options.fetch_opts.callbacks.transfer_progress = fetch_progress;
     options.fetch_opts.callbacks.credentials = credentials_cb;
-    //options.fetch_opts.callbacks.certificate_check = certificate_check_cb;
+    options.fetch_opts.callbacks.certificate_check = certificate_check_cb;
 
-    git_clone(&repo, clone_url, git_base_path, &options);
+    err = git_clone(&repo, clone_url, git_base_path, &options);
     if (err < 0)
     {
         return handle_error(err);
@@ -269,7 +286,8 @@ int main(int argc, char *argv[])
 {
     char *git_base_path = "/tmp/journal_test";
     //char *clone_url = "https://github.com/GitJournal/journal_test.git";
-    char *clone_url = "ssh://git@github.com:GitJournal/journal_test.git";
+    //char *clone_url = "git@github.com:GitJournal/journal_test.git";
+    char *clone_url = "root@pi.local:git/test";
     char *add_pattern = ".";
     char *author_name = "TestMan";
     char *author_email = "TestMan@example.com";
@@ -283,6 +301,16 @@ int main(int argc, char *argv[])
     gj_git_clone(clone_url, git_base_path);
 
     printf("We seem to be done\n");
+
     git_libgit2_shutdown();
+
+    int features = git_libgit2_features();
+    bool supports_threading = features & GIT_FEATURE_THREADS;
+    bool supports_https2 = features & GIT_FEATURE_HTTPS;
+    bool supports_ssh = features & GIT_FEATURE_SSH;
+    printf("Threading: %d\n", supports_threading);
+    printf("Https: %d\n", supports_https2);
+    printf("SSH: %d\n", supports_ssh);
+
     return 0;
 }
