@@ -4,9 +4,10 @@
 #include <string.h>
 #include <sys/stat.h>
 
-#include <git2.h>
+/*
 #include <libssh/libssh.h>
 #include <libssh/callbacks.h>
+*/
 
 void change_pubickey_comment(const char *filename, const char *comment)
 {
@@ -40,6 +41,8 @@ void gj_ssh_log_callback(int priority, const char *function, const char *buffer,
 int gj_generate_ssh_keys(const char *private_key_path,
                          const char *public_key_path, const char *comment)
 {
+    return 1;
+    /*
     ssh_key key;
     int err;
 
@@ -79,4 +82,5 @@ int gj_generate_ssh_keys(const char *private_key_path,
     chmod(private_key_path, modeInt);
 
     return 0;
+    */
 }

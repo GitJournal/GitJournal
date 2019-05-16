@@ -22,14 +22,6 @@ set_target_properties(crypto-lib
         PROPERTIES IMPORTED_LOCATION
         ${lib_src_DIR}/lib/libcrypto.a)
 
-add_library(ssh-lib
-        STATIC
-        IMPORTED)
-
-set_target_properties(ssh-lib
-        PROPERTIES IMPORTED_LOCATION
-        ${lib_src_DIR}/lib/libssh.a)
-
 add_library(ssh2-lib
         STATIC
         IMPORTED)
@@ -55,4 +47,4 @@ add_library(native-lib
 
 # The order of these libraries is super dooper important
 # Otherwise you'll get linker errors
-target_link_libraries(native-lib git2-lib ssh2-lib ssh-lib openssl-lib crypto-lib android log)
+target_link_libraries(native-lib git2-lib ssh2-lib openssl-lib crypto-lib android log)
