@@ -517,30 +517,16 @@ int gj_git_pull(const char *git_base_path, const char *author_name, const char *
         goto cleanup;
 
     // Get the parents
-    git_oid head_id, origin_head_id;
+    git_oid head_id;
     err = git_reference_name_to_id(&head_id, repo, "HEAD");
     if (err < 0)
         goto cleanup;
-
-    git_object *obj = NULL;
-    err = git_revparse_single(&obj, repo, "6fb95a2ae97cc");
-    if (err < 0)
-        goto cleanup;
-
-    origin_head_id = *git_object_id(obj);
-    /*
-    err = git_reference_lookup(&head_id, repo, git_object_id(obj));
-    if (err < 0)
-        goto cleanup;
-    */
 
     err = git_commit_lookup(&head_commit, repo, &head_id);
     if (err < 0)
         goto cleanup;
 
-    printf("Looked up head commit\n");
-
-    err = git_commit_lookup(&origin_head_commit, repo, &origin_head_id);
+    err = git_commit_lookup(&origin_head_commit, repo, git_annotated_commit_id(annotated_commit));
     if (err < 0)
         goto cleanup;
 
