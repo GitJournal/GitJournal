@@ -8,7 +8,10 @@
 
 #include <git2.h>
 
+#define GJ_ERR_FIRST -954
 #define GJ_ERR_EMPTY_COMMIT -954
+#define GJ_ERR_PULL_INVALID_STATE -955
+#define GJ_ERR_LAST -955
 
 void gj_log_internal(const char *format, ...)
 {
@@ -27,10 +30,20 @@ gj_error *gj_error_info(int err)
 
     gj_error *error = (gj_error *)malloc(sizeof(gj_error));
     error->message_allocated = false;
-    if (err == GJ_ERR_EMPTY_COMMIT)
+    if (err >= GJ_ERR_FIRST && err <= GJ_ERR_LAST)
     {
-        error->code = 954;
-        error->message = "Empty Commit";
+        switch (err)
+        {
+        case GJ_ERR_EMPTY_COMMIT:
+            error->code = err;
+            error->message = "Empty Commit";
+            break;
+
+        case GJ_ERR_PULL_INVALID_STATE:
+            error->code = err;
+            error->message = "GitPull Invalid State";
+            break;
+        }
         return error;
     }
 
@@ -437,6 +450,15 @@ int gj_git_pull(const char *git_base_path, const char *author_name, const char *
     err = git_repository_open(&repo, git_base_path);
     if (err < 0)
         goto cleanup;
+
+    git_repository_state_t state = git_repository_state(repo);
+    if (state != GIT_REPOSITORY_STATE_NONE)
+    {
+        err = GJ_ERR_PULL_INVALID_STATE;
+        goto cleanup;
+    }
+
+    // FIXME: Do not make a merge commit when not required!
 
     err = git_remote_lookup(&remote, repo, "origin");
     if (err < 0)
