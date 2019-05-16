@@ -474,17 +474,17 @@ int gj_git_pull(const char *git_base_path, const char *author_name, const char *
     if (err < 0)
         goto cleanup;
 
-    git_merge_options merge_options = GIT_MERGE_OPTIONS_INIT;
-    git_checkout_options checkout_options = GIT_CHECKOUT_OPTIONS_INIT;
-
-    // FIXME: Maybe I should be taking the head of the remote?
-    err = git_repository_head(&ref, repo);
+    // FIXME: Do not hardcode the master branch!
+    err = git_reference_lookup(&ref, repo, "refs/remotes/origin/master");
     if (err < 0)
         goto cleanup;
 
     err = git_annotated_commit_from_ref(&annotated_commit, repo, ref);
     if (err < 0)
         goto cleanup;
+
+    git_merge_options merge_options = GIT_MERGE_OPTIONS_INIT;
+    git_checkout_options checkout_options = GIT_CHECKOUT_OPTIONS_INIT;
 
     err = git_merge(repo, (const git_annotated_commit **)&annotated_commit, 1,
                     &merge_options, &checkout_options);
@@ -551,9 +551,6 @@ int gj_git_pull(const char *git_base_path, const char *author_name, const char *
     err = git_commit_lookup(&origin_head_commit, repo, git_annotated_commit_id(annotated_commit));
     if (err < 0)
         goto cleanup;
-
-    printf("Looked up origin head commit\n");
-    printf("About to commit\n");
 
     const git_commit *parents[] = {head_commit, origin_head_commit};
     char *message = "Custom Merge commit";
