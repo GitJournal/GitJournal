@@ -98,10 +98,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
-    implementation('org.eclipse.jgit:org.eclipse.jgit:3.7.1.201504261725-r')
-            {
-                exclude group: 'org.apache.httpcomponents', module: 'httpclient'
-            }
     implementation 'com.jcraft:jsch:0.1.54'
 
     // For reading a file to string
