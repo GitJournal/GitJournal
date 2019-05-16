@@ -49,7 +49,7 @@ set_target_properties(git2-lib
 add_library(native-lib
         SHARED
         ${CMAKE_SOURCE_DIR}/../../../../../gj_common/gitjournal.c
-        keygen.c
+        ${CMAKE_SOURCE_DIR}/../../../../../gj_common/keygen.c
         git.c
         )
 

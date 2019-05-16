@@ -33,4 +33,7 @@ void gj_error_free(const gj_error *err);
 // This must be implemented by you
 void gj_log(const char *message);
 
+int gj_generate_ssh_keys(const char *private_key_path,
+                         const char *public_key_path, const char *comment);
+
 #endif

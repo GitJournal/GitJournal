@@ -160,8 +160,6 @@ Java_io_gitjournal_gitjournal_Git_add(
         return (*env)->NewStringUTF(env, "Error");
     }
 
-    __android_log_print(ANDROID_LOG_ERROR, "GitAdd", "Everything seems fine");
-
     return (*env)->NewStringUTF(env, "");
 }
 
@@ -181,8 +179,6 @@ Java_io_gitjournal_gitjournal_Git_rm(
         return (*env)->NewStringUTF(env, "Error");
     }
 
-    __android_log_print(ANDROID_LOG_ERROR, "GitAdd", "Everything seems fine");
-
     return (*env)->NewStringUTF(env, "");
 }
 
@@ -199,4 +195,23 @@ Java_io_gitjournal_gitjournal_Git_setSshKeys(
     const char *passphrase = (*env)->GetStringUTFChars(env, jni_passphrase, 0);
 
     gj_set_ssh_keys_paths((char *) public_key_path, (char *) private_key_path, (char *) passphrase);
+}
+
+JNIEXPORT jstring JNICALL
+Java_io_gitjournal_gitjournal_Git_generateKeys(
+        JNIEnv *env,
+        jobject this_obj,
+        jstring jni_private_key_path,
+        jstring jni_public_key_path,
+        jstring jni_comment) {
+    const char *private_key_path = (*env)->GetStringUTFChars(env, jni_private_key_path, 0);
+    const char *public_key_path = (*env)->GetStringUTFChars(env, jni_public_key_path, 0);
+    const char *comment = (*env)->GetStringUTFChars(env, jni_comment, 0);
+
+    int ret = gj_generate_ssh_keys(private_key_path, public_key_path, comment);
+    if (ret != 0) {
+        return (*env)->NewStringUTF(env, "Error Generating SSH Keys");
+    }
+
+    return (*env)->NewStringUTF(env, "");
 }
