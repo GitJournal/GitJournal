@@ -427,6 +427,12 @@ int gj_git_pull(const char *git_base_path, const char *author_name, const char *
     git_reference *ref = NULL;
     git_index *index = NULL;
     git_index_conflict_iterator *conflict_iter = NULL;
+    git_signature *sig = NULL;
+
+    git_commit *head_commit = NULL;
+    git_commit *origin_head_commit = NULL;
+    git_tree *tree = NULL;
+    git_oid tree_id;
 
     err = git_repository_open(&repo, git_base_path);
     if (err < 0)
@@ -495,14 +501,65 @@ int gj_git_pull(const char *git_base_path, const char *author_name, const char *
         git_index_conflict_remove(index, their_out->path);
     }
 
-    err = git_index_write(index);
+    err = git_index_write_tree(&tree_id, index);
     if (err < 0)
         goto cleanup;
 
-    //const git_commit *parents = {parent_commit};
-    //err = git_commit_create(&commit_id, repo, "HEAD", sig, sig, NULL, message, tree, 1, &parents);
+    err = git_tree_lookup(&tree, repo, &tree_id);
+    if (err < 0)
+        goto cleanup;
+
+    //
+    // Make the commit
+    //
+    err = git_signature_now(&sig, author_name, author_email);
+    if (err < 0)
+        goto cleanup;
+
+    // Get the parents
+    git_oid head_id, origin_head_id;
+    err = git_reference_name_to_id(&head_id, repo, "HEAD");
+    if (err < 0)
+        goto cleanup;
+
+    git_object *obj = NULL;
+    err = git_revparse_single(&obj, repo, "6fb95a2ae97cc");
+    if (err < 0)
+        goto cleanup;
+
+    origin_head_id = *git_object_id(obj);
+    /*
+    err = git_reference_lookup(&head_id, repo, git_object_id(obj));
+    if (err < 0)
+        goto cleanup;
+    */
+
+    err = git_commit_lookup(&head_commit, repo, &head_id);
+    if (err < 0)
+        goto cleanup;
+
+    printf("Looked up head commit\n");
+
+    err = git_commit_lookup(&origin_head_commit, repo, &origin_head_id);
+    if (err < 0)
+        goto cleanup;
+
+    printf("Looked up origin head commit\n");
+    printf("About to commit\n");
+
+    const git_commit *parents[] = {head_commit, origin_head_commit};
+    char *message = "Custom Merge commit";
+    git_oid commit_id;
+
+    err = git_commit_create(&commit_id, repo, "HEAD", sig, sig, NULL, message, tree, 2, parents);
+    if (err < 0)
+        goto cleanup;
 
 cleanup:
+    git_tree_free(tree);
+    git_commit_free(head_commit);
+    git_commit_free(origin_head_commit);
+    git_signature_free(sig);
     git_repository_state_cleanup(repo);
     git_index_conflict_iterator_free(conflict_iter);
     git_index_free(index);
