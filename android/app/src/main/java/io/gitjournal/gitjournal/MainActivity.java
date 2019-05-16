@@ -65,15 +65,25 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
             return;
         } else if (call.method.equals("gitPull")) {
             String folderName = call.argument("folderName");
+            String authorName = call.argument("authorName");
+            String authorEmail = call.argument("authorEmail");
 
             if (folderName == null || folderName.isEmpty()) {
                 result.error("Invalid Parameters", "folderName Invalid", null);
                 return;
             }
+            if (authorName == null || authorName.isEmpty()) {
+                result.error("Invalid Parameters", "authorName Invalid", null);
+                return;
+            }
+            if (authorEmail == null || authorEmail.isEmpty()) {
+                result.error("Invalid Parameters", "authorEmail Invalid", null);
+                return;
+            }
 
             String cloneLocation = filesDir + "/" + folderName;
 
-            new GitPullTask(result).execute(cloneLocation, privateKeyPath);
+            new GitPullTask(result).execute(cloneLocation, publicKeyPath, privateKeyPath, authorName, authorEmail);
             return;
         } else if (call.method.equals("gitPush")) {
             String folderName = call.argument("folderName");

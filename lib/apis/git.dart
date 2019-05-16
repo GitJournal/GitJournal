@@ -98,11 +98,17 @@ GitException createGitException(String msg) {
   return GitException(msg);
 }
 
-Future gitPull(String folderName) async {
+Future gitPull({
+  String folderName,
+  String authorName,
+  String authorEmail,
+}) async {
   print("Going to git pull: $folderName");
   try {
     await _platform.invokeMethod('gitPull', {
       'folderName': folderName,
+      'authorName': authorName,
+      'authorEmail': authorEmail,
     });
     print("Done");
   } on PlatformException catch (e) {

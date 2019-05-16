@@ -61,7 +61,11 @@ class GitApp extends StatelessWidget {
       RaisedButton(
         child: Text("Git Pull"),
         onPressed: () async {
-          gitPull(basePath);
+          gitPull(
+            folderName: basePath,
+            authorEmail: "noemail@example.com",
+            authorName: "Vishesh Handa",
+          );
         },
       ),
       RaisedButton(

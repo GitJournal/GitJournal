@@ -88,7 +88,11 @@ class GitNoteRepository implements NoteRepository {
   @override
   Future<bool> sync() async {
     try {
-      await gitPull(dirName);
+      await gitPull(
+        folderName: dirName,
+        authorEmail: Settings.instance.gitAuthorEmail,
+        authorName: Settings.instance.gitAuthor,
+      );
     } on GitException catch (ex) {
       print(ex);
     }
