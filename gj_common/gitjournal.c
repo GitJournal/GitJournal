@@ -580,15 +580,30 @@ int gj_git_pull(const char *git_base_path, const char *author_name, const char *
 
             if (err == GIT_ITEROVER)
             {
-                gj_log_internal("    No Conflicts\n");
+                gj_log_internal("    Done with Conflicts\n");
                 break;
             }
             if (err < 0)
                 goto cleanup;
 
-            // FIXME: This isn't what I want. I want 'theirs' to be applied!
-            //        How to do that?
-            git_index_conflict_remove(index, their_out->path);
+            gj_log_internal("GitPull: Conflict on file %s\n", their_out->path);
+
+            // 1. We resolve the conflict by choosing their changes
+            // TODO:
+
+            // 2. We remove it from the list of conflicts
+            err = git_index_conflict_remove(index, their_out->path);
+            if (err < 0)
+                goto cleanup;
+
+            // 3. We add it to the index
+            err = git_index_add_bypath(index, their_out->path);
+            if (err < 0)
+                goto cleanup;
+
+            err = git_index_write(index);
+            if (err < 0)
+                goto cleanup;
         }
 
         err = git_index_write_tree(&tree_id, index);
