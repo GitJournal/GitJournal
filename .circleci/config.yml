@@ -6,6 +6,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Get NDK Libraries
+          command: ./scripts/install_ndk_libs.sh
+      - run:
           name: Test
           command: flutter test
       - run:
