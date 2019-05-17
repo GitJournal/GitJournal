@@ -431,13 +431,50 @@ cleanup:
     return err;
 }
 
+// Taken from merge.c libgit2 examples
+static int perform_fastforward(git_repository *repo, const git_oid *target_oid)
+{
+    git_checkout_options ff_checkout_options = GIT_CHECKOUT_OPTIONS_INIT;
+    git_reference *target_ref;
+    git_reference *new_target_ref;
+    git_object *target = NULL;
+    int err = 0;
+
+    err = git_repository_head(&target_ref, repo);
+    if (err != 0)
+        goto cleanup;
+
+    /* Lookup the target object */
+    err = git_object_lookup(&target, repo, target_oid, GIT_OBJECT_COMMIT);
+    if (err != 0)
+        goto cleanup;
+
+    /* Checkout the result so the workdir is in the expected state */
+    ff_checkout_options.checkout_strategy = GIT_CHECKOUT_SAFE;
+    err = git_checkout_tree(repo, target, &ff_checkout_options);
+    if (err != 0)
+        goto cleanup;
+
+    /* Move the target reference to the target OID */
+    err = git_reference_set_target(&new_target_ref, target_ref, target_oid, NULL);
+    if (err != 0)
+        goto cleanup;
+
+cleanup:
+    git_reference_free(target_ref);
+    git_reference_free(new_target_ref);
+    git_object_free(target);
+
+    return err;
+}
+
 int gj_git_pull(const char *git_base_path, const char *author_name, const char *author_email)
 {
     int err = 0;
     git_repository *repo = NULL;
     git_remote *remote = NULL;
-    git_annotated_commit *annotated_commit = NULL;
-    git_reference *ref = NULL;
+    git_annotated_commit *origin_annotated_commit = NULL;
+    git_reference *origin_head_ref = NULL;
     git_index *index = NULL;
     git_index_conflict_iterator *conflict_iter = NULL;
     git_signature *sig = NULL;
@@ -475,90 +512,123 @@ int gj_git_pull(const char *git_base_path, const char *author_name, const char *
         goto cleanup;
 
     // FIXME: Do not hardcode the master branch!
-    err = git_reference_lookup(&ref, repo, "refs/remotes/origin/master");
+    err = git_reference_lookup(&origin_head_ref, repo, "refs/remotes/origin/master");
     if (err < 0)
         goto cleanup;
 
-    err = git_annotated_commit_from_ref(&annotated_commit, repo, ref);
+    err = git_annotated_commit_from_ref(&origin_annotated_commit, repo, origin_head_ref);
     if (err < 0)
         goto cleanup;
 
-    git_merge_options merge_options = GIT_MERGE_OPTIONS_INIT;
-    git_checkout_options checkout_options = GIT_CHECKOUT_OPTIONS_INIT;
+    git_merge_analysis_t merge_analysis;
+    git_merge_preference_t merge_preference;
 
-    err = git_merge(repo, (const git_annotated_commit **)&annotated_commit, 1,
-                    &merge_options, &checkout_options);
+    git_annotated_commit *annotated_commits[] = {origin_annotated_commit};
+    err = git_merge_analysis(&merge_analysis, &merge_preference, repo,
+                             (const git_annotated_commit **)annotated_commits, 1);
     if (err < 0)
         goto cleanup;
 
-    err = git_repository_index(&index, repo);
-    if (err < 0)
-        goto cleanup;
-
-    err = git_index_conflict_iterator_new(&conflict_iter, index);
-    if (err < 0)
-        goto cleanup;
-
-    // Handle Conflicts
-    while (1)
+    if (merge_analysis & GIT_MERGE_ANALYSIS_UP_TO_DATE)
     {
-        git_index_entry *ancestor_out;
-        git_index_entry *our_out;
-        git_index_entry *their_out;
-        err = git_index_conflict_next((const git_index_entry **)&ancestor_out,
-                                      (const git_index_entry **)&our_out,
-                                      (const git_index_entry **)&their_out,
-                                      conflict_iter);
+        goto cleanup;
+    }
+    else if (merge_analysis & GIT_MERGE_ANALYSIS_UNBORN)
+    {
+        err = 5000;
+        gj_log("GitPull merge_analysis unborn\n");
+        goto cleanup;
+    }
+    else if (merge_analysis & GIT_MERGE_ANALYSIS_FASTFORWARD)
+    {
+        gj_log("GitPull: Performing FastForward\n");
 
-        if (err == GIT_ITEROVER)
-        {
-            gj_log_internal("    No Conflicts\n");
-            break;
-        }
+        err = perform_fastforward(repo, git_annotated_commit_id(origin_annotated_commit));
+        if (err < 0)
+            goto cleanup;
+    }
+    else if (merge_analysis & GIT_MERGE_ANALYSIS_NORMAL)
+    {
+        gj_log("GitPull: Performing Normal Merge\n");
+
+        git_merge_options merge_options = GIT_MERGE_OPTIONS_INIT;
+        git_checkout_options checkout_options = GIT_CHECKOUT_OPTIONS_INIT;
+
+        err = git_merge(repo, (const git_annotated_commit **)annotated_commits, 1,
+                        &merge_options, &checkout_options);
         if (err < 0)
             goto cleanup;
 
-        // FIXME: This isn't what I want. I want 'theirs' to be applied!
-        //        How to do that?
-        git_index_conflict_remove(index, their_out->path);
+        err = git_repository_index(&index, repo);
+        if (err < 0)
+            goto cleanup;
+
+        err = git_index_conflict_iterator_new(&conflict_iter, index);
+        if (err < 0)
+            goto cleanup;
+
+        // Handle Conflicts
+        while (1)
+        {
+            git_index_entry *ancestor_out;
+            git_index_entry *our_out;
+            git_index_entry *their_out;
+            err = git_index_conflict_next((const git_index_entry **)&ancestor_out,
+                                          (const git_index_entry **)&our_out,
+                                          (const git_index_entry **)&their_out,
+                                          conflict_iter);
+
+            if (err == GIT_ITEROVER)
+            {
+                gj_log_internal("    No Conflicts\n");
+                break;
+            }
+            if (err < 0)
+                goto cleanup;
+
+            // FIXME: This isn't what I want. I want 'theirs' to be applied!
+            //        How to do that?
+            git_index_conflict_remove(index, their_out->path);
+        }
+
+        err = git_index_write_tree(&tree_id, index);
+        if (err < 0)
+            goto cleanup;
+
+        err = git_tree_lookup(&tree, repo, &tree_id);
+        if (err < 0)
+            goto cleanup;
+
+        //
+        // Make the commit
+        //
+        err = git_signature_now(&sig, author_name, author_email);
+        if (err < 0)
+            goto cleanup;
+
+        // Get the parents
+        git_oid head_id;
+        err = git_reference_name_to_id(&head_id, repo, "HEAD");
+        if (err < 0)
+            goto cleanup;
+
+        err = git_commit_lookup(&head_commit, repo, &head_id);
+        if (err < 0)
+            goto cleanup;
+
+        err = git_commit_lookup(&origin_head_commit, repo,
+                                git_annotated_commit_id(origin_annotated_commit));
+        if (err < 0)
+            goto cleanup;
+
+        const git_commit *parents[] = {head_commit, origin_head_commit};
+        char *message = "Custom Merge commit";
+        git_oid commit_id;
+
+        err = git_commit_create(&commit_id, repo, "HEAD", sig, sig, NULL, message, tree, 2, parents);
+        if (err < 0)
+            goto cleanup;
     }
-
-    err = git_index_write_tree(&tree_id, index);
-    if (err < 0)
-        goto cleanup;
-
-    err = git_tree_lookup(&tree, repo, &tree_id);
-    if (err < 0)
-        goto cleanup;
-
-    //
-    // Make the commit
-    //
-    err = git_signature_now(&sig, author_name, author_email);
-    if (err < 0)
-        goto cleanup;
-
-    // Get the parents
-    git_oid head_id;
-    err = git_reference_name_to_id(&head_id, repo, "HEAD");
-    if (err < 0)
-        goto cleanup;
-
-    err = git_commit_lookup(&head_commit, repo, &head_id);
-    if (err < 0)
-        goto cleanup;
-
-    err = git_commit_lookup(&origin_head_commit, repo, git_annotated_commit_id(annotated_commit));
-    if (err < 0)
-        goto cleanup;
-
-    const git_commit *parents[] = {head_commit, origin_head_commit};
-    char *message = "Custom Merge commit";
-    git_oid commit_id;
-
-    err = git_commit_create(&commit_id, repo, "HEAD", sig, sig, NULL, message, tree, 2, parents);
-    if (err < 0)
-        goto cleanup;
 
 cleanup:
     git_tree_free(tree);
@@ -568,8 +638,8 @@ cleanup:
     git_repository_state_cleanup(repo);
     git_index_conflict_iterator_free(conflict_iter);
     git_index_free(index);
-    git_reference_free(ref);
-    git_annotated_commit_free(annotated_commit);
+    git_reference_free(origin_head_ref);
+    git_annotated_commit_free(origin_annotated_commit);
     git_remote_free(remote);
     git_repository_free(repo);
 
