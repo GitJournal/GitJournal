@@ -68,6 +68,7 @@ android {
     }
     buildTypes {
         release {
+            debuggable true
             signingConfig signingConfigs.release
             ndk {
                 abiFilters 'armeabi-v7a'
