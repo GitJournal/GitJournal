@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:journal/analytics.dart';
 import 'package:journal/state_container.dart';
 import 'package:journal/utils.dart';
 import 'package:launch_review/launch_review.dart';
@@ -24,6 +25,10 @@ class AppDrawer extends StatelessWidget {
         onTap: () {
           Navigator.pop(context);
           Navigator.pushNamed(context, "/setupRemoteGit");
+
+          getAnalytics().logEvent(
+            name: "drawer_setupGitHost",
+          );
         },
       );
     }
@@ -55,6 +60,10 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
               Share.share('Checkout GitJournal https://gitjournal.io/');
+
+              getAnalytics().logEvent(
+                name: "drawer_share",
+              );
             },
           ),
           ListTile(
@@ -63,6 +72,10 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               LaunchReview.launch();
               Navigator.pop(context);
+
+              getAnalytics().logEvent(
+                name: "drawer_rate",
+              );
             },
           ),
           ListTile(
@@ -79,6 +92,10 @@ class AppDrawer extends StatelessWidget {
               launch(url);
 
               Navigator.pop(context);
+
+              getAnalytics().logEvent(
+                name: "drawer_feedback",
+              );
             },
           ),
           ListTile(
@@ -87,6 +104,10 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, "/settings");
+
+              getAnalytics().logEvent(
+                name: "drawer_settings",
+              );
             },
           ),
         ],
