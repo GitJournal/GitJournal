@@ -227,6 +227,17 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
 
             result.success(publicKey);
             return;
+        } else if (call.method.equals("dumpAppLogs")) {
+            String filePath = filesDir + "/app-logs.txt";
+
+            try {
+                LogDumper.dumpLogs(filePath);
+            } catch (Exception e) {
+                e.printStackTrace();
+                result.error("FAILED", e.toString(), null);
+            }
+
+            result.success(filePath);
         }
 
         result.notImplemented();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
 
 import 'app.dart';
@@ -17,6 +18,14 @@ Future<String> getVersionString() async {
   }
 
   return versionText;
+}
+
+/// adb logcat
+/// Returns the file path where the logs were dumped
+Future<String> dumpAppLogs() async {
+  const _platform = const MethodChannel('gitjournal.io/git');
+  final String logsFilePath = await _platform.invokeMethod('dumpAppLogs');
+  return logsFilePath;
 }
 
 SnackBar buildUndoDeleteSnackbar(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:journal/analytics.dart';
 import 'package:journal/state_container.dart';
 import 'package:journal/utils.dart';
@@ -84,7 +85,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () async {
               var versionText = await getVersionString();
 
-              var emailAddress = 'gitjournal.io@gmail.com';
+              var emailAddress = 'gitjournal.io+feedback@gmail.com';
               var subject = 'GitJournal Feedback';
               var body =
                   "Hey!\n\nHere are some ways to improve GitJournal - \n \n\nVersion: $versionText";
@@ -95,6 +96,30 @@ class AppDrawer extends StatelessWidget {
 
               getAnalytics().logEvent(
                 name: "drawer_feedback",
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.bug_report, color: textStyle.color),
+            title: Text('Bug Report', style: textStyle),
+            onTap: () async {
+              var versionText = await getVersionString();
+              var appLogsFilePath = await dumpAppLogs();
+
+              final Email email = Email(
+                body:
+                    "Hey!\n\nI found a bug in GitJournal - \n \n\nVersion: $versionText",
+                subject: 'GitJournal Bug',
+                recipients: ['gitjournal.io+bugs@gmail.com'],
+                attachmentPath: appLogsFilePath,
+              );
+
+              await FlutterEmailSender.send(email);
+
+              Navigator.pop(context);
+
+              getAnalytics().logEvent(
+                name: "drawer_bugreport",
               );
             },
           ),
