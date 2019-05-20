@@ -11,5 +11,5 @@ APK_LOCATION="/tmp/gitjournal.apk"
 echo "Downloading $URL"
 curl "$URL" -o "$APK_LOCATION"
 
-adb uninstall io.gitjournal.gitjournal
+adb uninstall io.gitjournal.gitjournal || true
 adb install -r "$APK_LOCATION"
