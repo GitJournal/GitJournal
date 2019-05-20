@@ -15,21 +15,33 @@ NSString* GetDirectoryOfType(NSSearchPathDirectory dir) {
         methodChannelWithName:@"gitjournal.io/git" binaryMessenger:controller];
 
     [gitChannel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
-        NSString* filesDir = [self getApplicationDocumentsDirectory];
-        if ([@"getBaseDirectory" isEqualToString:call.method]) {
-            /*
-             int batteryLevel = [weakSelf getBatteryLevel];
+        NSString *method = [call method];
+        NSDictionary *arguments = [call arguments];
 
-             if (batteryLevel == -1) {
-             result([FlutterError errorWithCode:@"UNAVAILABLE"
-             message:@"Battery info unavailable"
-             details:nil]);
-             } else {
-             result(@(batteryLevel));
-             }
-             */
+        NSString* filesDir = [self getApplicationDocumentsDirectory];
+        if ([@"getBaseDirectory" isEqualToString:method]) {
             result(filesDir);
-        } else {
+        }
+        else if ([@"gitInit" isEqualToString:method]) {
+            NSString *folderName = arguments[@"folderName"];
+            NSArray *components = [NSArray arrayWithObjects:filesDir, folderName, nil];
+            NSString* dirPath = [NSString pathWithComponents:components];
+
+            NSError *error;
+            if (![[NSFileManager defaultManager] createDirectoryAtPath:dirPath
+                                      withIntermediateDirectories:NO
+                                      attributes:nil
+                                      error:&error])
+            {
+                NSLog(@"Create directory error: %@", error);
+                result([FlutterError errorWithCode:@"FAILED"
+                        message:@"Failed to perform fake gitInit" details:nil]);
+            }
+            else {
+                result(@YES);
+            }
+        }
+        else {
             result(FlutterMethodNotImplemented);
         }
     }];

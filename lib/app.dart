@@ -30,11 +30,15 @@ class JournalApp extends StatelessWidget {
     // Check if in debugMode or not a real device
     //
     assert(JournalApp.isInDebugMode = true);
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    if (androidInfo.isPhysicalDevice == false) {
-      print("Not running in a physcial device");
-      JournalApp.isInDebugMode = true;
+    try {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      if (androidInfo.isPhysicalDevice == false) {
+        print("Not running in a physcial device");
+        JournalApp.isInDebugMode = true;
+      }
+    } catch (e) {
+      print(e);
     }
 
     if (JournalApp.isInDebugMode) {
