@@ -38,9 +38,7 @@ class JournalApp extends StatelessWidget {
     }
 
     if (JournalApp.isInDebugMode) {
-      if (JournalApp.analytics.android != null) {
-        JournalApp.analytics.android.setAnalyticsCollectionEnabled(false);
-      }
+      JournalApp.analytics.setAnalyticsCollectionEnabled(false);
     }
 
     if (localGitRepoConfigured == false) {
