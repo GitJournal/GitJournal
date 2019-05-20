@@ -6,19 +6,19 @@ dependencies:
   flutter:
     sdk: flutter
   intl: "^0.15.6"
-  path: "^1.5.1"
-  uuid: "^1.0.0"
-  yaml: "^2.1.13"
-  firebase_analytics: ^1.1.0
-  flutter_crashlytics: ^0.2.0
-  shared_preferences: ^0.4.3
-  url_launcher: ^5.0.1
+  path: ^1.6.2
+  uuid: ^2.0.1
+  yaml: ^2.1.15
+  firebase_analytics: ^3.0.1
+  flutter_crashlytics: ^1.0.0
+  shared_preferences: ^0.5.2
+  url_launcher: ^5.0.2
   dots_indicator: ^0.0.3
-  package_info: ^0.3.2+1
+  package_info: ^0.4.0+3
   http: ^0.12.0+1
   badges: ^0.0.6
-  share: ^0.6.0+1
-  launch_review: ^1.0.1
+  share: ^0.6.1+1
+  launch_review: ^2.0.0
   device_info: ^0.4.0+1
   flutter_markdown: ^0.2.0
   flutter_email_sender: ^2.0.2

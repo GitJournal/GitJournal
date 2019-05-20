@@ -114,7 +114,7 @@ packages:
       name: firebase_analytics
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0+1"
+    version: "3.0.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -126,7 +126,7 @@ packages:
       name: flutter_crashlytics
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.1+1"
+    version: "1.0.0"
   flutter_driver:
     dependency: "direct dev"
     description: flutter
@@ -253,7 +253,7 @@ packages:
       name: launch_review
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "2.0.0"
   markdown:
     dependency: transitive
     description:
@@ -309,7 +309,7 @@ packages:
       name: package_info
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.2+1"
+    version: "0.4.0+3"
   package_resolver:
     dependency: transitive
     description:
@@ -386,7 +386,7 @@ packages:
       name: shared_preferences
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.3"
+    version: "0.5.2"
   shelf:
     dependency: transitive
     description:
@@ -510,7 +510,7 @@ packages:
       name: uuid
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.3"
+    version: "2.0.1"
   vector_math:
     dependency: transitive
     description:
