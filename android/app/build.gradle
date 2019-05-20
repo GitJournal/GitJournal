@@ -108,11 +108,5 @@ dependencies {
     implementation 'commons-io:commons-io:2.5'
 }
 
-configurations {
-    all {
-        exclude module: 'httpclient'
-    }
-}
-
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'
