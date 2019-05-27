@@ -31,6 +31,20 @@ void main() {
       expect(note2, note);
     });
 
+    test('Markdown Serializer with invalid Markdown', () {
+      var inputNoteStr = """---
+type
+---
+
+Alright.""";
+
+      var serializer = MarkdownYAMLSerializer();
+      var note = serializer.decode(inputNoteStr);
+      var actualStr = "Alright.";
+
+      expect(actualStr, note.body);
+    });
+
     /*
     test('Markdown Serializer YAML Order', () {
       var str = """---
