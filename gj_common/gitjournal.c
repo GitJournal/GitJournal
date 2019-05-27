@@ -341,7 +341,6 @@ int credentials_cb(git_cred **out, const char *url, const char *username_from_ur
 
     gj_log_internal("UsernameProvided: %s\n", username_from_url);
     gj_log_internal("Allowed Types: %d\n", allowed_types);
-    gj_log_internal("Payload: %p\n", payload);
 
     if (!(allowed_types & GIT_CREDTYPE_SSH_KEY))
     {
@@ -349,7 +348,6 @@ int credentials_cb(git_cred **out, const char *url, const char *username_from_ur
         return -1;
     }
 
-    gj_log_internal("gj_paylaod: %p\n", gj_payload);
     gj_payload->first_time = false;
     return git_cred_ssh_key_new(out, username_from_url,
                                 g_public_key_path, g_private_key_path, g_passcode);
