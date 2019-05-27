@@ -8,6 +8,8 @@
 
 #include "gitjournal.h"
 
+#define UNUSED(x) (void)(x)
+
 void gj_log(const char *message) {
     __android_log_print(ANDROID_LOG_ERROR, "GitJournalLib", "%s", message);
 }
@@ -31,6 +33,10 @@ JNIEXPORT void JNICALL
 Java_io_gitjournal_gitjournal_Git_setupLib(
         JNIEnv *env,
         jobject this_obj) {
+
+    UNUSED(env);
+    UNUSED(this_obj);
+
     gj_init();
 }
 
@@ -39,6 +45,8 @@ Java_io_gitjournal_gitjournal_Git_init(
         JNIEnv *env,
         jobject this_obj,
         jstring jni_git_base_path) {
+    UNUSED(this_obj);
+
     const char *git_base_path = (*env)->GetStringUTFChars(env, jni_git_base_path, 0);
 
     int err = gj_git_init(git_base_path);
@@ -56,6 +64,7 @@ Java_io_gitjournal_gitjournal_Git_clone(
         jobject this_obj,
         jstring jni_clone_url,
         jstring jni_git_base_path) {
+    UNUSED(this_obj);
     const char *clone_url = (*env)->GetStringUTFChars(env, jni_clone_url, 0);
     const char *git_base_path = (*env)->GetStringUTFChars(env, jni_git_base_path, 0);
 
@@ -76,6 +85,7 @@ Java_io_gitjournal_gitjournal_Git_pull(
         jstring jni_git_base_path,
         jstring jni_author_name,
         jstring jni_author_email) {
+    UNUSED(this_obj);
     const char *git_base_path = (*env)->GetStringUTFChars(env, jni_git_base_path, 0);
     const char *author_name = (*env)->GetStringUTFChars(env, jni_author_name, 0);
     const char *author_email = (*env)->GetStringUTFChars(env, jni_author_email, 0);
@@ -95,6 +105,7 @@ Java_io_gitjournal_gitjournal_Git_push(
         JNIEnv *env,
         jobject this_obj,
         jstring jni_git_base_path) {
+    UNUSED(this_obj);
     const char *git_base_path = (*env)->GetStringUTFChars(env, jni_git_base_path, 0);
 
     int err = gj_git_push(git_base_path);
@@ -114,6 +125,7 @@ Java_io_gitjournal_gitjournal_Git_commit(
         jstring jni_author_name,
         jstring jni_author_email,
         jstring jni_message) {
+    UNUSED(this_obj);
     const char *git_base_path = (*env)->GetStringUTFChars(env, jni_git_base_path, 0);
     const char *author_name = (*env)->GetStringUTFChars(env, jni_author_name, 0);
     const char *author_email = (*env)->GetStringUTFChars(env, jni_author_email, 0);
@@ -134,6 +146,7 @@ Java_io_gitjournal_gitjournal_Git_resetHard(
         jobject this_obj,
         jstring jni_git_base_path,
         jstring jni_ref) {
+    UNUSED(this_obj);
     const char *git_base_path = (*env)->GetStringUTFChars(env, jni_git_base_path, 0);
     const char *ref = (*env)->GetStringUTFChars(env, jni_ref, 0);
 
@@ -152,6 +165,8 @@ Java_io_gitjournal_gitjournal_Git_add(
         jobject this_obj,
         jstring jni_git_base_path,
         jstring jni_add_pattern) {
+    UNUSED(this_obj);
+
     const char *git_base_path = (*env)->GetStringUTFChars(env, jni_git_base_path, 0);
     const char *add_pattern = (*env)->GetStringUTFChars(env, jni_add_pattern, 0);
 
@@ -171,6 +186,8 @@ Java_io_gitjournal_gitjournal_Git_rm(
         jobject this_obj,
         jstring jni_git_base_path,
         jstring jni_pattern) {
+    UNUSED(this_obj);
+
     const char *git_base_path = (*env)->GetStringUTFChars(env, jni_git_base_path, 0);
     const char *pattern = (*env)->GetStringUTFChars(env, jni_pattern, 0);
 
@@ -191,6 +208,8 @@ Java_io_gitjournal_gitjournal_Git_setSshKeys(
         jstring jni_public_key_path,
         jstring jni_private_key_path,
         jstring jni_passphrase) {
+    UNUSED(this_obj);
+
     const char *public_key_path = (*env)->GetStringUTFChars(env, jni_public_key_path, 0);
     const char *private_key_path = (*env)->GetStringUTFChars(env, jni_private_key_path, 0);
     const char *passphrase = (*env)->GetStringUTFChars(env, jni_passphrase, 0);
@@ -205,6 +224,8 @@ Java_io_gitjournal_gitjournal_Git_generateKeys(
         jstring jni_private_key_path,
         jstring jni_public_key_path,
         jstring jni_comment) {
+    UNUSED(this_obj);
+
     const char *private_key_path = (*env)->GetStringUTFChars(env, jni_private_key_path, 0);
     const char *public_key_path = (*env)->GetStringUTFChars(env, jni_public_key_path, 0);
     const char *comment = (*env)->GetStringUTFChars(env, jni_comment, 0);

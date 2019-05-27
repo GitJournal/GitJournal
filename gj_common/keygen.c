@@ -9,6 +9,8 @@
 #include <libssh/callbacks.h>
 */
 
+#define UNUSED(x) (void)(x)
+
 void change_pubickey_comment(const char *filename, const char *comment)
 {
     FILE *fp = fopen(filename, "r");
@@ -33,6 +35,7 @@ void change_pubickey_comment(const char *filename, const char *comment)
 
 void gj_ssh_log_callback(int priority, const char *function, const char *buffer, void *userdata)
 {
+    UNUSED(userdata);
     char log_str[1024];
     sprintf(log_str, "LIB_SSH P%d : %s : %s\n", priority, function, buffer);
     gj_log(log_str);
@@ -41,6 +44,10 @@ void gj_ssh_log_callback(int priority, const char *function, const char *buffer,
 int gj_generate_ssh_keys(const char *private_key_path,
                          const char *public_key_path, const char *comment)
 {
+    UNUSED(private_key_path);
+    UNUSED(public_key_path);
+    UNUSED(comment);
+
     return 1;
     /*
     ssh_key key;

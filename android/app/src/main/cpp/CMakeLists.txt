@@ -45,6 +45,8 @@ add_library(native-lib
         git.c
         )
 
+target_compile_options(native-lib PRIVATE -Werror -Wall -Wextra -Wno-missing-field-initializers)
+
 # The order of these libraries is super dooper important
 # Otherwise you'll get linker errors
 target_link_libraries(native-lib git2-lib ssh2-lib openssl-lib crypto-lib android log)

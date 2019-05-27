@@ -13,6 +13,8 @@
 #define GJ_ERR_PULL_INVALID_STATE -955
 #define GJ_ERR_LAST -955
 
+#define UNUSED(x) (void)(x)
+
 void gj_log_internal(const char *format, ...)
 {
     char buffer[1024];
@@ -73,6 +75,9 @@ void gj_error_free(const gj_error *err)
 
 int match_cb(const char *path, const char *spec, void *payload)
 {
+    UNUSED(spec);
+    UNUSED(payload);
+
     gj_log_internal("Match: %s\n", path);
     return 0;
 }
@@ -111,6 +116,9 @@ cleanup:
 
 int rm_match_cb(const char *path, const char *spec, void *payload)
 {
+    UNUSED(spec);
+    UNUSED(payload);
+
     char *git_base_path = (char *)payload;
     if (!git_base_path)
     {
@@ -155,7 +163,6 @@ int gj_git_rm(const char *git_base_path, const char *pattern)
     char *paths[] = {(char *)pattern};
     git_strarray pathspec = {paths, 1};
 
-    void *payload = (void *)git_base_path;
     err = git_index_remove_all(index, &pathspec, rm_match_cb, (void *)git_base_path);
     if (err < 0)
         goto cleanup;
@@ -291,6 +298,8 @@ cleanup:
 
 int fetch_progress(const git_transfer_progress *stats, void *payload)
 {
+    UNUSED(payload);
+
     int fetch_percent =
         (100 * stats->received_objects) /
         stats->total_objects;
@@ -327,6 +336,8 @@ typedef struct
 int credentials_cb(git_cred **out, const char *url, const char *username_from_url,
                    unsigned int allowed_types, void *payload)
 {
+    UNUSED(url);
+
     if (!payload)
     {
         gj_log_internal("credentials_cb has no payload\n");
@@ -399,7 +410,6 @@ int gj_git_push(const char *git_base_path)
     int err = 0;
     git_repository *repo = NULL;
     git_remote *remote = NULL;
-    git_oid head_id;
 
     err = git_repository_open(&repo, git_base_path);
     if (err < 0)
@@ -433,8 +443,8 @@ cleanup:
 static int perform_fastforward(git_repository *repo, const git_oid *target_oid)
 {
     git_checkout_options ff_checkout_options = GIT_CHECKOUT_OPTIONS_INIT;
-    git_reference *target_ref;
-    git_reference *new_target_ref;
+    git_reference *target_ref = NULL;
+    git_reference *new_target_ref = NULL;
     git_object *target = NULL;
     int err = 0;
 
