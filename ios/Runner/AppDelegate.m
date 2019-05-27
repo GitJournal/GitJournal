@@ -1,6 +1,8 @@
 #include "AppDelegate.h"
 #include "GeneratedPluginRegistrant.h"
 
+#include <openssl/crypto.h>
+
 NSString* GetDirectoryOfType(NSSearchPathDirectory dir) {
     NSArray* paths = NSSearchPathForDirectoriesInDomains(dir, NSUserDomainMask, YES);
     return paths.firstObject;
@@ -9,6 +11,10 @@ NSString* GetDirectoryOfType(NSSearchPathDirectory dir) {
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+    const char *version = OpenSSL_version(0);
+    NSLog(@"VISH VERSION WOO HOO %s", version);
+
     FlutterViewController* controller = (FlutterViewController*)self.window.rootViewController;
 
     FlutterMethodChannel* gitChannel = [FlutterMethodChannel
