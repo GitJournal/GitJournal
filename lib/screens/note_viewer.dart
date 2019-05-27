@@ -81,7 +81,7 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
   }
 
   int _currentIndex() {
-    int currentIndex = pageController.page.toInt();
+    int currentIndex = pageController.page.round();
     assert(currentIndex >= 0);
     assert(currentIndex < widget.notes.length);
     return currentIndex;
