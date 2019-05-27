@@ -18,7 +18,8 @@ int handle_error(int err) {
     if (err != 0) {
         const gj_error *e = gj_error_info(err);
         if (e) {
-            __android_log_print("Error %d/%d: %s\n", err, e->code, e->message);
+            __android_log_print(ANDROID_LOG_ERROR, "GitJournalLib", "Error %d/%d: %s\n", err,
+                                e->code, e->message);
             gj_error_free(e);
         }
     }
