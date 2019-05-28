@@ -78,7 +78,7 @@ int match_cb(const char *path, const char *spec, void *payload)
     UNUSED(spec);
     UNUSED(payload);
 
-    gj_log_internal("Match: %s\n", path);
+    gj_log_internal("Add Match: %s\n", path);
     return 0;
 }
 
@@ -132,6 +132,7 @@ int rm_match_cb(const char *path, const char *spec, void *payload)
     strcat(full_path, "/"); // FIXME: Will not work on windows!
     strcat(full_path, path);
 
+    gj_log_internal("Removing File: %s\n", full_path);
     int err = remove(full_path);
     if (err != 0)
     {
@@ -502,8 +503,6 @@ int gj_git_pull(const char *git_base_path, const char *author_name, const char *
         err = GJ_ERR_PULL_INVALID_STATE;
         goto cleanup;
     }
-
-    // FIXME: Do not make a merge commit when not required!
 
     err = git_remote_lookup(&remote, repo, "origin");
     if (err < 0)
