@@ -351,7 +351,7 @@ int credentials_cb(git_cred **out, const char *url, const char *username_from_ur
     }
 
     gj_log_internal("UsernameProvided: %s\n", username_from_url);
-    gj_log_internal("Allowed Types: %d\n", allowed_types);
+    gj_log_internal("Url: %s\n", url);
 
     if (!(allowed_types & GIT_CREDTYPE_SSH_KEY))
     {
