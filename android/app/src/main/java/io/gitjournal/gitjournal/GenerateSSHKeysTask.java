@@ -3,13 +3,11 @@ package io.gitjournal.gitjournal;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.jcraft.jsch.*;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-
-import org.apache.commons.io.FileUtils;
 
 import io.flutter.plugin.common.MethodChannel.Result;
 
@@ -41,21 +39,10 @@ public class GenerateSSHKeysTask extends AsyncTask<String, Void, Void> {
             return null;
         }
 
-        // Generate key pair
-        try {
-            JSch jsch = new JSch();
-            KeyPair kpair = KeyPair.genKeyPair(jsch, KeyPair.RSA, 1024 * 4);
-
-            kpair.writePrivateKey(privateKeyPath);
-            kpair.writePublicKey(publicKeyPath, comment);
-            kpair.dispose();
-        } catch (JSchException ex) {
-            Log.d(TAG, ex.toString());
-            result.error("FAILED", ex.getMessage(), null);
-            return null;
-        } catch (IOException ex) {
-            Log.d(TAG, ex.toString());
-            result.error("FAILED", ex.getMessage(), null);
+        io.gitjournal.gitjournal.Git git = new io.gitjournal.gitjournal.Git();
+        String errorStr = git.generateKeys(privateKeyPath, publicKeyPath, comment);
+        if (!errorStr.isEmpty()) {
+            result.error("FAILED", errorStr, null);
             return null;
         }
 

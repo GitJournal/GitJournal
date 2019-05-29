@@ -102,8 +102,6 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 
-    implementation 'com.jcraft:jsch:0.1.54'
-
     // For reading a file to string
     implementation 'commons-io:commons-io:2.5'
 }
