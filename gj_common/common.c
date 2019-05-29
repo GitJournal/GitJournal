@@ -2,9 +2,11 @@
 
 #include <stdarg.h>
 #include <errno.h>
-#include <git2.h>
 #include <stdio.h>
 #include <string.h>
+
+#include <git2.h>
+#include <openssl/err.h>
 
 void gj_log_internal(const char *format, ...)
 {
@@ -23,7 +25,7 @@ gj_error *gj_error_info(int err)
 
     gj_error *error = (gj_error *)malloc(sizeof(gj_error));
     error->message_allocated = false;
-    if (err >= GJ_ERR_FIRST && err <= GJ_ERR_LAST)
+    if (err <= GJ_ERR_FIRST && err >= GJ_ERR_LAST)
     {
         switch (err)
         {
@@ -35,6 +37,13 @@ gj_error *gj_error_info(int err)
         case GJ_ERR_PULL_INVALID_STATE:
             error->code = err;
             error->message = "GitPull Invalid State";
+            break;
+
+        case GJ_ERR_OPENSSL:
+            error->code = ERR_peek_last_error();
+            error->message_allocated = true;
+            error->message = (char *)malloc(256);
+            ERR_error_string(error->code, error->message);
             break;
         }
         return error;

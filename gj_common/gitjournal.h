@@ -41,6 +41,7 @@ int gj_generate_ssh_keys(const char *private_key_path,
 #define GJ_ERR_FIRST -954
 #define GJ_ERR_EMPTY_COMMIT -954
 #define GJ_ERR_PULL_INVALID_STATE -955
-#define GJ_ERR_LAST -955
+#define GJ_ERR_OPENSSL -956
+#define GJ_ERR_LAST -956
 
 #endif

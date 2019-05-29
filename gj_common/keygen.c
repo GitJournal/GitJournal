@@ -148,5 +148,7 @@ cleanup:
    RSA_free(rsa);
    BN_free(bne);
 
-   return (ret == 1);
+   if (ret != 1)
+      return GJ_ERR_OPENSSL;
+   return 0;
 }
