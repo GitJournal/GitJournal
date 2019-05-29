@@ -106,7 +106,8 @@ cleanup:
 
    EVP_cleanup();
    ERR_free_strings();
-   return ret;
+
+   return ret > 0 ? 1 : ret;
 }
 
 int gj_generate_ssh_keys(const char *private_key_path,
@@ -130,18 +131,27 @@ int gj_generate_ssh_keys(const char *private_key_path,
    rsa = RSA_new();
    ret = RSA_generate_key_ex(rsa, bits, bne, NULL);
    if (ret != 1)
+   {
+      gj_log_internal("Failed to generate RSA key of %d bits\n", bits);
       goto cleanup;
+   }
 
    // Save private key
    bp_private = BIO_new_file(private_key_path, "w+");
    ret = PEM_write_bio_RSAPrivateKey(bp_private, rsa, NULL, NULL, 0, NULL, NULL);
    if (ret != 1)
+   {
+      gj_log_internal("Failed to write private key to %s\n", private_key_path);
       goto cleanup;
+   }
 
    // Save public key
    ret = write_rsa_public_key(rsa, public_key_path, comment);
    if (ret != 1)
+   {
+      gj_log_internal("Failed to write public key to %s\n", public_key_path);
       goto cleanup;
+   }
 
 cleanup:
    BIO_free_all(bp_private);
