@@ -268,6 +268,7 @@ void gj_set_ssh_keys_paths(char *public_key, char *private_key, char *passcode)
 typedef struct
 {
     bool first_time;
+    int error_code;
 } gj_credentials_payload;
 
 int credentials_cb(git_cred **out, const char *url, const char *username_from_url,
@@ -281,6 +282,7 @@ int credentials_cb(git_cred **out, const char *url, const char *username_from_ur
     gj_credentials_payload *gj_payload = (gj_credentials_payload *)payload;
     if (!gj_payload->first_time)
     {
+        gj_payload->error_code = GJ_ERR_INVALID_CREDENTIALS;
         gj_log_internal("GitJournal: Credentials have been tried and they failed\n");
         return -1;
     }
@@ -324,7 +326,7 @@ int gj_git_clone(const char *clone_url, const char *git_base_path)
     options.fetch_opts.callbacks.transfer_progress = fetch_progress;
     options.fetch_opts.callbacks.certificate_check = certificate_check_cb;
 
-    gj_credentials_payload gj_payload = {true};
+    gj_credentials_payload gj_payload = {true, 0};
     options.fetch_opts.callbacks.payload = (void *)&gj_payload;
     options.fetch_opts.callbacks.credentials = credentials_cb;
 
@@ -335,6 +337,8 @@ int gj_git_clone(const char *clone_url, const char *git_base_path)
 cleanup:
     git_repository_free(repo);
 
+    if (gj_payload.error_code != 0)
+        return gj_payload.error_code;
     return err;
 }
 

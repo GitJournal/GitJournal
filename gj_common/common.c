@@ -45,6 +45,11 @@ gj_error *gj_error_info(int err)
             error->message = (char *)malloc(256);
             ERR_error_string(error->code, error->message);
             break;
+
+        case GJ_ERR_INVALID_CREDENTIALS:
+            error->code = err;
+            error->message = "Invalid Credentials";
+            break;
         }
         return error;
     }
