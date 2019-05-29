@@ -180,12 +180,16 @@ int gj_git_commit(const char *git_base_path, const char *author_name,
     if (err < 0)
         goto cleanup;
 
+    /*
+    FIXME: This returns 0 when a file is set to be removed
+            How do we figure out when the index is empty?
     int numOps = git_index_entrycount(index);
     if (numOps == 0)
     {
         err = GJ_ERR_EMPTY_COMMIT;
         goto cleanup;
     }
+    */
 
     err = git_signature_now(&sig, author_name, author_email);
     if (err < 0)
