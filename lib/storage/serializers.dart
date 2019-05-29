@@ -27,16 +27,18 @@ class MarkdownYAMLSerializer implements NoteSerializer {
     if (str.startsWith("---\n")) {
       var parts = str.split("---\n");
       var map = <String, dynamic>{};
+      var yamlText = parts[1].trim();
 
       try {
-        var yamlMap = loadYaml(parts[1]);
-        yamlMap.forEach((key, value) {
-          map[key] = value;
-        });
-      } catch (err, stack) {
+        if (yamlText.isNotEmpty) {
+          var yamlMap = loadYaml(parts[1]);
+          yamlMap.forEach((key, value) {
+            map[key] = value;
+          });
+        }
+      } catch (err) {
         print(
-            'MarkdownYAMLSerializer::decode (${parts[1]}) -> ${err.toString()}');
-        print(stack.toString());
+            'MarkdownYAMLSerializer::decode("$yamlText") -> ${err.toString()}');
       }
       map['body'] = parts[2].trimLeft();
 
