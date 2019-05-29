@@ -33,7 +33,14 @@ void gj_error_free(const gj_error *err);
 // This must be implemented by you
 void gj_log(const char *message);
 
+void gj_log_internal(const char *format, ...);
+
 int gj_generate_ssh_keys(const char *private_key_path,
                          const char *public_key_path, const char *comment);
+
+#define GJ_ERR_FIRST -954
+#define GJ_ERR_EMPTY_COMMIT -954
+#define GJ_ERR_PULL_INVALID_STATE -955
+#define GJ_ERR_LAST -955
 
 #endif
