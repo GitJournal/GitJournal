@@ -4,90 +4,158 @@
 #include <string.h>
 #include <sys/stat.h>
 
-/*
-#include <libssh/libssh.h>
-#include <libssh/callbacks.h>
-*/
+#include <memory.h>
 
-#define UNUSED(x) (void)(x)
+#include <openssl/bio.h>
+#include <openssl/evp.h>
+#include <openssl/pem.h>
+#include <openssl/err.h>
+#include <openssl/rsa.h>
 
-void change_pubickey_comment(const char *filename, const char *comment)
+static unsigned char pSshHeader[11] = {0x00, 0x00, 0x00, 0x07, 0x73, 0x73, 0x68, 0x2D, 0x72, 0x73, 0x61};
+
+static int SshEncodeBuffer(unsigned char *pEncoding, int bufferLen, unsigned char *pBuffer)
 {
-    FILE *fp = fopen(filename, "r");
-    char buff[10000];
-    fgets(buff, 10000, fp);
-    fclose(fp);
-
-    // Remove the comment
-    char *end = strchr(strchr(buff, ' ') + 1, ' ');
-    int len = end - buff + 1;
-    buff[len] = 0;
-
-    // Add custom comment
-    strcat(buff, comment);
-    strcat(buff, "\n");
-
-    // Write the file back
-    fp = fopen(filename, "w");
-    fputs(buff, fp);
-    fclose(fp);
+   int adjustedLen = bufferLen, index;
+   if (*pBuffer & 0x80)
+   {
+      adjustedLen++;
+      pEncoding[4] = 0;
+      index = 5;
+   }
+   else
+   {
+      index = 4;
+   }
+   pEncoding[0] = (unsigned char)(adjustedLen >> 24);
+   pEncoding[1] = (unsigned char)(adjustedLen >> 16);
+   pEncoding[2] = (unsigned char)(adjustedLen >> 8);
+   pEncoding[3] = (unsigned char)(adjustedLen);
+   memcpy(&pEncoding[index], pBuffer, bufferLen);
+   return index + bufferLen;
 }
 
-void gj_ssh_log_callback(int priority, const char *function, const char *buffer, void *userdata)
+int write_rsa_public_key(RSA *pRsa, const char *file_path, const char *comment)
 {
-    UNUSED(userdata);
-    char log_str[1024];
-    sprintf(log_str, "LIB_SSH P%d : %s : %s\n", priority, function, buffer);
-    gj_log(log_str);
+   int iRet = 0;
+   int encodingLength = 0;
+   int index = 0;
+   unsigned char *nBytes = NULL, *eBytes = NULL;
+   unsigned char *pEncoding = NULL;
+   FILE *pFile = NULL;
+   BIO *bio, *b64;
+
+   ERR_load_crypto_strings();
+   OpenSSL_add_all_algorithms();
+
+   const BIGNUM *pRsa_mod = NULL;
+   const BIGNUM *pRsa_exp = NULL;
+
+   RSA_get0_key(pRsa, &pRsa_mod, &pRsa_exp, NULL);
+
+   // reading the modulus
+   int nLen = BN_num_bytes(pRsa_mod);
+   nBytes = (unsigned char *)malloc(nLen);
+   BN_bn2bin(pRsa_mod, nBytes);
+
+   // reading the public exponent
+   int eLen = BN_num_bytes(pRsa_exp);
+   eBytes = (unsigned char *)malloc(eLen);
+   BN_bn2bin(pRsa_exp, eBytes);
+
+   printf("nLen: %d\n", nLen);
+   printf("nLen2: %d\n", BN_num_bytes(pRsa_mod));
+   printf("eLen: %d\n", eLen);
+
+   encodingLength = 11 + 4 + eLen + 4 + nLen;
+   // correct depending on the MSB of e and N
+   if (eBytes[0] & 0x80)
+      encodingLength++;
+   if (nBytes[0] & 0x80)
+      encodingLength++;
+
+   pEncoding = (unsigned char *)malloc(encodingLength);
+   memset(pEncoding, 0, encodingLength);
+   memcpy(pEncoding, pSshHeader, 11);
+
+   index = SshEncodeBuffer(&pEncoding[11], eLen, eBytes);
+   index = SshEncodeBuffer(&pEncoding[11 + index], nLen, nBytes);
+
+   b64 = BIO_new(BIO_f_base64());
+   BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL);
+
+   pFile = fopen(file_path, "w");
+   bio = BIO_new_fp(pFile, BIO_CLOSE);
+   BIO_printf(bio, "ssh-rsa ");
+   bio = BIO_push(b64, bio);
+   BIO_write(bio, pEncoding, encodingLength);
+   BIO_flush(bio);
+   bio = BIO_pop(b64);
+   BIO_printf(bio, " %s\n", comment);
+   BIO_flush(bio);
+   BIO_free_all(bio);
+   BIO_free(b64);
+
+error:
+   if (pFile)
+      fclose(pFile);
+
+   free(nBytes);
+   free(eBytes);
+   free(pEncoding);
+
+   EVP_cleanup();
+   ERR_free_strings();
+   return iRet;
 }
 
 int gj_generate_ssh_keys(const char *private_key_path,
                          const char *public_key_path, const char *comment)
 {
-    UNUSED(private_key_path);
-    UNUSED(public_key_path);
-    UNUSED(comment);
+   int ret = 0;
+   RSA *rsa = NULL;
 
-    return 1;
-    /*
-    ssh_key key;
-    int err;
+   BIGNUM *bne = NULL;
+   BIO *bp_private = NULL;
 
-    ssh_set_log_level(SSH_LOG_FUNCTIONS);
-    ssh_set_log_callback(gj_ssh_log_callback);
+   int bits = 1024 * 4;
+   unsigned long e = RSA_F4;
 
-    err = ssh_pki_generate(SSH_KEYTYPE_RSA, 4096, &key);
-    if (err != SSH_OK)
-    {
-        gj_log("LIBSSH: ssh_pki_generate failed\n");
-        //printf("Error: %s", ssh_get_error());
-        return err;
-    }
+   // Generate rsa key
+   bne = BN_new();
+   ret = BN_set_word(bne, e);
+   if (ret != 1)
+   {
+      goto cleanup;
+   }
 
-    char *password = "";
-    err = ssh_pki_export_privkey_file(key, password, NULL, NULL, private_key_path);
-    if (err != SSH_OK)
-    {
-        gj_log("LIBSSH: ssh_pki_export_privkey_file failed\n");
-        return err;
-    }
+   rsa = RSA_new();
+   ret = RSA_generate_key_ex(rsa, bits, bne, NULL);
+   if (ret != 1)
+   {
+      goto cleanup;
+   }
 
-    err = ssh_pki_export_pubkey_file(key, public_key_path);
-    if (err != SSH_OK)
-    {
-        gj_log("LIBSSH: ssh_pki_export_pubkey_file failed\n");
-        return err;
-    }
+   // Save private key
+   bp_private = BIO_new_file(private_key_path, "w+");
+   ret = PEM_write_bio_RSAPrivateKey(bp_private, rsa, NULL, NULL, 0, NULL, NULL);
+   if (ret != 1)
+   {
 
-    ssh_key_free(key);
+      goto cleanup;
+   }
 
-    change_pubickey_comment(public_key_path, comment);
+   // Save public key
+   ret = write_rsa_public_key(rsa, public_key_path, comment);
+   if (ret != 1)
+   {
+      goto cleanup;
+   }
 
-    // Change file permissions
-    char mode[] = "0600";
-    int modeInt = strtol(mode, 0, 8);
-    chmod(private_key_path, modeInt);
+cleanup:
+   BIO_free_all(bp_private);
+   RSA_free(rsa);
+   BN_free(bne);
 
-    return 0;
-    */
+   return (ret == 1);
 }
