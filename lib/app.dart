@@ -26,6 +26,15 @@ class JournalApp extends StatelessWidget {
     var remoteGitRepoSubFolder = pref.getString("remoteGitRepoSubFolder") ?? "";
     var onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
 
+    print(" ---- Settings ---- ");
+    print("localGitRepoConfigured: $localGitRepoConfigured");
+    print("remoteGitRepoConfigured: $remoteGitRepoConfigured");
+    print("localGitRepoPath: $localGitRepoPath");
+    print("remoteGitRepoFolderName: $remoteGitRepoFolderName");
+    print("remoteGitRepoSubFolder: $remoteGitRepoSubFolder");
+    print("onBoardingCompleted: $onBoardingCompleted");
+    print(" ------------------ ");
+
     //
     // Check if in debugMode or not a real device
     //
