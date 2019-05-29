@@ -15,17 +15,21 @@ void gj_log(const char *message) {
 }
 
 
-// FIXME: Figure out better error handling!
-int handle_error(int err) {
+jstring handle_error(JNIEnv *env, int err) {
     if (err != 0) {
         const gj_error *e = gj_error_info(err);
         if (e) {
             __android_log_print(ANDROID_LOG_ERROR, "GitJournalLib", "Error %d/%d: %s\n", err,
                                 e->code, e->message);
+
+            jstring error = (*env)->NewStringUTF(env, e->message);
             gj_error_free(e);
+            return error;
         }
+        return (*env)->NewStringUTF(env, "Error");
     }
-    return err;
+
+    return (*env)->NewStringUTF(env, "");
 }
 
 
@@ -50,12 +54,7 @@ Java_io_gitjournal_gitjournal_Git_init(
     const char *git_base_path = (*env)->GetStringUTFChars(env, jni_git_base_path, 0);
 
     int err = gj_git_init(git_base_path);
-    if (err < 0) {
-        handle_error(err);
-        return (*env)->NewStringUTF(env, "Error");
-    }
-
-    return (*env)->NewStringUTF(env, "");
+    return handle_error(env, err);
 }
 
 JNIEXPORT jstring JNICALL
@@ -69,12 +68,7 @@ Java_io_gitjournal_gitjournal_Git_clone(
     const char *git_base_path = (*env)->GetStringUTFChars(env, jni_git_base_path, 0);
 
     int err = gj_git_clone(clone_url, git_base_path);
-    if (err < 0) {
-        handle_error(err);
-        return (*env)->NewStringUTF(env, "Error");
-    }
-
-    return (*env)->NewStringUTF(env, "");
+    return handle_error(env, err);
 }
 
 
@@ -91,12 +85,7 @@ Java_io_gitjournal_gitjournal_Git_pull(
     const char *author_email = (*env)->GetStringUTFChars(env, jni_author_email, 0);
 
     int err = gj_git_pull(git_base_path, author_name, author_email);
-    if (err < 0) {
-        handle_error(err);
-        return (*env)->NewStringUTF(env, "Error");
-    }
-
-    return (*env)->NewStringUTF(env, "");
+    return handle_error(env, err);
 }
 
 
@@ -109,12 +98,7 @@ Java_io_gitjournal_gitjournal_Git_push(
     const char *git_base_path = (*env)->GetStringUTFChars(env, jni_git_base_path, 0);
 
     int err = gj_git_push(git_base_path);
-    if (err < 0) {
-        handle_error(err);
-        return (*env)->NewStringUTF(env, "Error");
-    }
-
-    return (*env)->NewStringUTF(env, "");
+    return handle_error(env, err);
 }
 
 JNIEXPORT jstring JNICALL
@@ -132,12 +116,7 @@ Java_io_gitjournal_gitjournal_Git_commit(
     const char *message = (*env)->GetStringUTFChars(env, jni_message, 0);
 
     int err = gj_git_commit(git_base_path, author_name, author_email, message);
-    if (err < 0) {
-        handle_error(err);
-        return (*env)->NewStringUTF(env, "Error");
-    }
-
-    return (*env)->NewStringUTF(env, "");
+    return handle_error(env, err);
 }
 
 JNIEXPORT jstring JNICALL
@@ -151,12 +130,7 @@ Java_io_gitjournal_gitjournal_Git_resetHard(
     const char *ref = (*env)->GetStringUTFChars(env, jni_ref, 0);
 
     int err = gj_git_reset_hard(git_base_path, ref);
-    if (err < 0) {
-        handle_error(err);
-        return (*env)->NewStringUTF(env, "Error");
-    }
-
-    return (*env)->NewStringUTF(env, "");
+    return handle_error(env, err);
 }
 
 JNIEXPORT jstring JNICALL
@@ -171,12 +145,7 @@ Java_io_gitjournal_gitjournal_Git_add(
     const char *add_pattern = (*env)->GetStringUTFChars(env, jni_add_pattern, 0);
 
     int err = gj_git_add(git_base_path, add_pattern);
-    if (err < 0) {
-        handle_error(err);
-        return (*env)->NewStringUTF(env, "Error");
-    }
-
-    return (*env)->NewStringUTF(env, "");
+    return handle_error(env, err);
 }
 
 
@@ -192,12 +161,7 @@ Java_io_gitjournal_gitjournal_Git_rm(
     const char *pattern = (*env)->GetStringUTFChars(env, jni_pattern, 0);
 
     int err = gj_git_rm(git_base_path, pattern);
-    if (err < 0) {
-        handle_error(err);
-        return (*env)->NewStringUTF(env, "Error");
-    }
-
-    return (*env)->NewStringUTF(env, "");
+    return handle_error(env, err);
 }
 
 
@@ -230,10 +194,6 @@ Java_io_gitjournal_gitjournal_Git_generateKeys(
     const char *public_key_path = (*env)->GetStringUTFChars(env, jni_public_key_path, 0);
     const char *comment = (*env)->GetStringUTFChars(env, jni_comment, 0);
 
-    int ret = gj_generate_ssh_keys(private_key_path, public_key_path, comment);
-    if (ret != 0) {
-        return (*env)->NewStringUTF(env, "Error Generating SSH Keys");
-    }
-
-    return (*env)->NewStringUTF(env, "");
+    int err = gj_generate_ssh_keys(private_key_path, public_key_path, comment);
+    return handle_error(env, err);
 }
