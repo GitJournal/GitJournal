@@ -108,3 +108,9 @@ dependencies {
 
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'
+
+crashlytics {
+    enableNdk true
+    androidNdkOut "../../debugSymbols"
+    androidNdkLibsOut "../../build/app/intermediates/transforms/stripDebugSymbol/release/0/lib"
+}

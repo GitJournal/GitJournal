@@ -30,5 +30,8 @@ jobs:
           path: build/app/outputs/apk/release/app-release.apk
           destination: gitjournal.apk
       - run:
+          name: Upload Crashlytics Symbols
+          command: ./scripts/android_crashlytics.sh
+      - run:
           name: Publish Beta
           command: cd android && fastlane betaBuild
