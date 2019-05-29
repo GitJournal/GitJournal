@@ -273,8 +273,6 @@ typedef struct
 int credentials_cb(git_cred **out, const char *url, const char *username_from_url,
                    unsigned int allowed_types, void *payload)
 {
-    UNUSED(url);
-
     if (!payload)
     {
         gj_log_internal("credentials_cb has no payload\n");
@@ -287,7 +285,6 @@ int credentials_cb(git_cred **out, const char *url, const char *username_from_ur
         return -1;
     }
 
-    gj_log_internal("UsernameProvided: %s\n", username_from_url);
     gj_log_internal("Url: %s\n", url);
 
     if (!(allowed_types & GIT_CREDTYPE_SSH_KEY))
