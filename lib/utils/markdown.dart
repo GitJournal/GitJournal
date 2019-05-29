@@ -25,7 +25,10 @@ class MarkdownBuilder implements md.NodeVisitor {
     });
 
     var str = stringBuffer.toString();
-    return str.substring(0, str.length - 1);
+    if (str.isNotEmpty) {
+      return str.substring(0, str.length - 1);
+    }
+    return str;
   }
 
   @override
