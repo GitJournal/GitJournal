@@ -144,6 +144,7 @@ int gj_generate_ssh_keys(const char *private_key_path,
       gj_log_internal("Failed to write private key to %s\n", private_key_path);
       goto cleanup;
    }
+   chmod(private_key_path, 0600);
 
    // Save public key
    ret = write_rsa_public_key(rsa, public_key_path, comment);
