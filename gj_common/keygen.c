@@ -37,7 +37,7 @@ static int SshEncodeBuffer(unsigned char *pEncoding, int bufferLen, unsigned cha
 
 int write_rsa_public_key(RSA *pRsa, const char *file_path, const char *comment)
 {
-   int iRet = 0;
+   int ret = 0;
    int encodingLength = 0;
    int index = 0;
    unsigned char *nBytes = NULL, *eBytes = NULL;
@@ -56,16 +56,16 @@ int write_rsa_public_key(RSA *pRsa, const char *file_path, const char *comment)
    // reading the modulus
    int nLen = BN_num_bytes(pRsa_mod);
    nBytes = (unsigned char *)malloc(nLen);
-   BN_bn2bin(pRsa_mod, nBytes);
+   ret = BN_bn2bin(pRsa_mod, nBytes);
+   if (ret <= 0)
+      goto cleanup;
 
    // reading the public exponent
    int eLen = BN_num_bytes(pRsa_exp);
    eBytes = (unsigned char *)malloc(eLen);
-   BN_bn2bin(pRsa_exp, eBytes);
-
-   printf("nLen: %d\n", nLen);
-   printf("nLen2: %d\n", BN_num_bytes(pRsa_mod));
-   printf("eLen: %d\n", eLen);
+   ret = BN_bn2bin(pRsa_exp, eBytes);
+   if (ret <= 0)
+      goto cleanup;
 
    encodingLength = 11 + 4 + eLen + 4 + nLen;
    // correct depending on the MSB of e and N
@@ -96,7 +96,7 @@ int write_rsa_public_key(RSA *pRsa, const char *file_path, const char *comment)
    BIO_free_all(bio);
    BIO_free(b64);
 
-error:
+cleanup:
    if (pFile)
       fclose(pFile);
 
@@ -106,7 +106,7 @@ error:
 
    EVP_cleanup();
    ERR_free_strings();
-   return iRet;
+   return ret;
 }
 
 int gj_generate_ssh_keys(const char *private_key_path,
@@ -125,32 +125,23 @@ int gj_generate_ssh_keys(const char *private_key_path,
    bne = BN_new();
    ret = BN_set_word(bne, e);
    if (ret != 1)
-   {
       goto cleanup;
-   }
 
    rsa = RSA_new();
    ret = RSA_generate_key_ex(rsa, bits, bne, NULL);
    if (ret != 1)
-   {
       goto cleanup;
-   }
 
    // Save private key
    bp_private = BIO_new_file(private_key_path, "w+");
    ret = PEM_write_bio_RSAPrivateKey(bp_private, rsa, NULL, NULL, 0, NULL, NULL);
    if (ret != 1)
-   {
-
       goto cleanup;
-   }
 
    // Save public key
    ret = write_rsa_public_key(rsa, public_key_path, comment);
    if (ret != 1)
-   {
       goto cleanup;
-   }
 
 cleanup:
    BIO_free_all(bp_private);
