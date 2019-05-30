@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: Get NDK Libraries
-          command: apt-get update && apt-get install -y jq && ./scripts/install_ndk_libs.sh
+          command: apt-get update && apt-get install -y jq && ./scripts/download_ndk_libs.sh
       - run:
           name: Test
           command: flutter test
