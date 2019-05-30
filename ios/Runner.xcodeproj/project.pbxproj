@@ -16,6 +16,9 @@
 		7A2A0C1E229FEA4500FE4F1B /* libgit2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2A0C1C229FEA4500FE4F1B /* libgit2.framework */; };
 		7A2A0C1F229FEA4500FE4F1B /* libssh2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2A0C1D229FEA4500FE4F1B /* libssh2.framework */; };
 		7A2A0C21229FEFD700FE4F1B /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2A0C20229FEFD700FE4F1B /* libiconv.tbd */; };
+		7A2A0C25229FF84C00FE4F1B /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A0C22229FF84C00FE4F1B /* common.c */; };
+		7A2A0C26229FF84C00FE4F1B /* gitjournal.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A0C23229FF84C00FE4F1B /* gitjournal.c */; };
+		7A2A0C27229FF84C00FE4F1B /* keygen.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A0C24229FF84C00FE4F1B /* keygen.c */; };
 		7AD6EE48228EC97800E098B2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7AD6EE47228EC97800E098B2 /* GoogleService-Info.plist */; };
 		9705A1C61CF904A100538489 /* Flutter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9740EEBA1CF902C7004384FC /* Flutter.framework */; };
 		9705A1C71CF904A300538489 /* Flutter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9740EEBA1CF902C7004384FC /* Flutter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -54,6 +57,9 @@
 		7A2A0C1C229FEA4500FE4F1B /* libgit2.framework */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgit2.framework; path = libs/libgit2.framework; sourceTree = "<group>"; };
 		7A2A0C1D229FEA4500FE4F1B /* libssh2.framework */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.framework; path = libs/libssh2.framework; sourceTree = "<group>"; };
 		7A2A0C20229FEFD700FE4F1B /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		7A2A0C22229FF84C00FE4F1B /* common.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = common.c; path = ../gj_common/common.c; sourceTree = "<group>"; };
+		7A2A0C23229FF84C00FE4F1B /* gitjournal.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = gitjournal.c; path = ../gj_common/gitjournal.c; sourceTree = "<group>"; };
+		7A2A0C24229FF84C00FE4F1B /* keygen.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = keygen.c; path = ../gj_common/keygen.c; sourceTree = "<group>"; };
 		7AD6EE47228EC97800E098B2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
 		7AFFD8ED1D35381100E5BB4D /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -129,6 +135,9 @@
 		97C146E51CF9000F007C117D = {
 			isa = PBXGroup;
 			children = (
+				7A2A0C22229FF84C00FE4F1B /* common.c */,
+				7A2A0C23229FF84C00FE4F1B /* gitjournal.c */,
+				7A2A0C24229FF84C00FE4F1B /* keygen.c */,
 				7AD6EE47228EC97800E098B2 /* GoogleService-Info.plist */,
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
@@ -344,6 +353,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A2A0C25229FF84C00FE4F1B /* common.c in Sources */,
+				7A2A0C26229FF84C00FE4F1B /* gitjournal.c in Sources */,
+				7A2A0C27229FF84C00FE4F1B /* keygen.c in Sources */,
 				978B8F6F1D3862AE00F588F7 /* AppDelegate.m in Sources */,
 				97C146F31CF9000F007C117D /* main.m in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
@@ -498,6 +510,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/libs/include/";
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../gj_common/";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -526,6 +539,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/libs/include/";
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../gj_common/";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

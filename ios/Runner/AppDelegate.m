@@ -1,8 +1,11 @@
 #include "AppDelegate.h"
 #include "GeneratedPluginRegistrant.h"
 
-#include <openssl/crypto.h>
-#include <git2.h>
+#include "gitjournal.h"
+
+void gj_log(const char *message) {
+    NSLog(@"GitJournalLib: %s", message);
+}
 
 NSString* GetDirectoryOfType(NSSearchPathDirectory dir) {
     NSArray* paths = NSSearchPathForDirectoriesInDomains(dir, NSUserDomainMask, YES);
@@ -13,16 +16,7 @@ NSString* GetDirectoryOfType(NSSearchPathDirectory dir) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
-    const char *version = OpenSSL_version(0);
-    NSLog(@"VISH VERSION WOO HOO %s", version);
-
-    git_libgit2_init();
-    int major;
-    int minor;
-    int rev;
-    git_libgit2_version(&major, &minor, &rev);
-
-    NSLog(@"VISH LIBGIT2 VERSION %d . %d . %d", major, minor, rev);
+    gj_init();
 
     FlutterViewController* controller = (FlutterViewController*)self.window.rootViewController;
 
@@ -33,6 +27,11 @@ NSString* GetDirectoryOfType(NSSearchPathDirectory dir) {
         NSString *method = [call method];
         NSDictionary *arguments = [call arguments];
 
+        NSLog(@"Called %@ with args - ", method);
+        for (NSString *key in [arguments allKeys]) {
+            NSLog(@"  %@: %@", key, [arguments objectForKey:key]);
+        }
+
         NSString* filesDir = [self getApplicationDocumentsDirectory];
         if ([@"getBaseDirectory" isEqualToString:method]) {
             result(filesDir);
@@ -42,19 +41,25 @@ NSString* GetDirectoryOfType(NSSearchPathDirectory dir) {
             NSArray *components = [NSArray arrayWithObjects:filesDir, folderName, nil];
             NSString* dirPath = [NSString pathWithComponents:components];
 
-            NSError *error;
-            if (![[NSFileManager defaultManager] createDirectoryAtPath:dirPath
-                                      withIntermediateDirectories:NO
-                                      attributes:nil
-                                      error:&error])
-            {
-                NSLog(@"Create directory error: %@", error);
-                result([FlutterError errorWithCode:@"FAILED"
-                        message:@"Failed to perform fake gitInit" details:nil]);
+            int err = gj_git_init([dirPath UTF8String]);
+            if (err < 0) {
+                gj_error* error = gj_error_info(err);
+                if (error) {
+                    NSString* errorMessage = [NSString stringWithUTF8String:error->message];
+
+                    result([FlutterError errorWithCode:@"FAILED"
+                            message:errorMessage details:nil]);
+
+                    gj_error_free(error);
+                } else {
+                    result([FlutterError errorWithCode:@"FAILED"
+                            message:@"GitInit Failed" details:nil]);
+                }
+                return;
             }
-            else {
-                result(@YES);
-            }
+
+            NSLog(@"Success");
+            result(@YES);
         }
         else {
             result(FlutterMethodNotImplemented);
