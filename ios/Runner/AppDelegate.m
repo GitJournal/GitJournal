@@ -27,10 +27,10 @@ NSString* GetDirectoryOfType(NSSearchPathDirectory dir) {
         NSString *method = [call method];
         NSDictionary *arguments = [call arguments];
 
-        NSLog(@"Called %@ with args - ", method);
+        NSLog(@"Called %@", method);
         if (arguments != nil) {
             for (NSString *key in [arguments allKeys]) {
-                NSLog(@"  %@: %@", key, [arguments objectForKey:key]);
+                NSLog(@".  %@: %@", key, [arguments objectForKey:key]);
             }
         }
 
