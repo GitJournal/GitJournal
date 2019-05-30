@@ -13,6 +13,9 @@
 		3B80C3951E831B6300D905FE /* App.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3B80C3931E831B6300D905FE /* App.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7A2A0C1A229C2E3300FE4F1B /* libssl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2A0C18229C2E3300FE4F1B /* libssl.framework */; };
 		7A2A0C1B229C2E3300FE4F1B /* libcrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2A0C19229C2E3300FE4F1B /* libcrypto.framework */; };
+		7A2A0C1E229FEA4500FE4F1B /* libgit2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2A0C1C229FEA4500FE4F1B /* libgit2.framework */; };
+		7A2A0C1F229FEA4500FE4F1B /* libssh2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2A0C1D229FEA4500FE4F1B /* libssh2.framework */; };
+		7A2A0C21229FEFD700FE4F1B /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2A0C20229FEFD700FE4F1B /* libiconv.tbd */; };
 		7AD6EE48228EC97800E098B2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7AD6EE47228EC97800E098B2 /* GoogleService-Info.plist */; };
 		9705A1C61CF904A100538489 /* Flutter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9740EEBA1CF902C7004384FC /* Flutter.framework */; };
 		9705A1C71CF904A300538489 /* Flutter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9740EEBA1CF902C7004384FC /* Flutter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -48,6 +51,9 @@
 		3B80C3931E831B6300D905FE /* App.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = App.framework; path = Flutter/App.framework; sourceTree = "<group>"; };
 		7A2A0C18229C2E3300FE4F1B /* libssl.framework */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.framework; path = libs/libssl.framework; sourceTree = "<group>"; };
 		7A2A0C19229C2E3300FE4F1B /* libcrypto.framework */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.framework; path = libs/libcrypto.framework; sourceTree = "<group>"; };
+		7A2A0C1C229FEA4500FE4F1B /* libgit2.framework */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgit2.framework; path = libs/libgit2.framework; sourceTree = "<group>"; };
+		7A2A0C1D229FEA4500FE4F1B /* libssh2.framework */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.framework; path = libs/libssh2.framework; sourceTree = "<group>"; };
+		7A2A0C20229FEFD700FE4F1B /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		7AD6EE47228EC97800E098B2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
 		7AFFD8ED1D35381100E5BB4D /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -71,6 +77,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A2A0C21229FEFD700FE4F1B /* libiconv.tbd in Frameworks */,
+				7A2A0C1E229FEA4500FE4F1B /* libgit2.framework in Frameworks */,
+				7A2A0C1F229FEA4500FE4F1B /* libssh2.framework in Frameworks */,
 				7A2A0C1A229C2E3300FE4F1B /* libssl.framework in Frameworks */,
 				7A2A0C1B229C2E3300FE4F1B /* libcrypto.framework in Frameworks */,
 				9705A1C61CF904A100538489 /* Flutter.framework in Frameworks */,
@@ -94,6 +103,9 @@
 		889961847ACA832709E9B420 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7A2A0C20229FEFD700FE4F1B /* libiconv.tbd */,
+				7A2A0C1C229FEA4500FE4F1B /* libgit2.framework */,
+				7A2A0C1D229FEA4500FE4F1B /* libssh2.framework */,
 				7A2A0C19229C2E3300FE4F1B /* libcrypto.framework */,
 				7A2A0C18229C2E3300FE4F1B /* libssl.framework */,
 				D38B87A486DD982B0932A6EF /* Pods_Runner.framework */,
@@ -480,6 +492,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
+					"$(PROJECT_DIR)/libs",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.gitjournal.gitjournal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -507,6 +520,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
+					"$(PROJECT_DIR)/libs",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.gitjournal.gitjournal;
 				PRODUCT_NAME = "$(TARGET_NAME)";

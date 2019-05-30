@@ -2,6 +2,7 @@
 #include "GeneratedPluginRegistrant.h"
 
 #include <openssl/crypto.h>
+#include <git2.h>
 
 NSString* GetDirectoryOfType(NSSearchPathDirectory dir) {
     NSArray* paths = NSSearchPathForDirectoriesInDomains(dir, NSUserDomainMask, YES);
@@ -14,6 +15,14 @@ NSString* GetDirectoryOfType(NSSearchPathDirectory dir) {
 
     const char *version = OpenSSL_version(0);
     NSLog(@"VISH VERSION WOO HOO %s", version);
+
+    git_libgit2_init();
+    int major;
+    int minor;
+    int rev;
+    git_libgit2_version(&major, &minor, &rev);
+
+    NSLog(@"VISH LIBGIT2 VERSION %d . %d . %d", major, minor, rev);
 
     FlutterViewController* controller = (FlutterViewController*)self.window.rootViewController;
 
