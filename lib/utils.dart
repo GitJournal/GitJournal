@@ -21,9 +21,14 @@ Future<String> getVersionString() async {
 }
 
 Future<bool> shouldEnableAnalytics() async {
-  const _platform = const MethodChannel('gitjournal.io/git');
-  final bool result = await _platform.invokeMethod('shouldEnableAnalytics');
-  return result;
+  try {
+    const _platform = const MethodChannel('gitjournal.io/git');
+    final bool result = await _platform.invokeMethod('shouldEnableAnalytics');
+    return result;
+  } on MissingPluginException catch (e) {
+    print("shouldEnableAnalytics: $e");
+    return false;
+  }
 }
 
 /// adb logcat
