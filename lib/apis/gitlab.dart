@@ -18,7 +18,7 @@ class GitLab implements GitHost {
   var _stateOAuth = "";
 
   @override
-  void init(Function callback) {
+  void init(OAuthCallback callback) {
     Future _handleMessages(MethodCall call) async {
       if (call.method != "onURL") {
         print("GitLab Unknown Call: " + call.method);

@@ -22,6 +22,7 @@ dependencies:
   device_info: ^0.4.0+1
   flutter_markdown: ^0.2.0
   flutter_email_sender: ^2.0.2
+  function_types: ^0.0.2
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.0"

@@ -1,8 +1,9 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:function_types/function_types.dart';
 
 class OnBoardingScreen extends StatefulWidget {
-  final Function onCompletedFunction;
+  final Func0<void> onCompletedFunction;
 
   OnBoardingScreen(this.onCompletedFunction);
 
@@ -119,7 +120,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
 }
 
 class OnBoardingBottomButton extends StatelessWidget {
-  final Function onPressed;
+  final Func0<void> onPressed;
   final String text;
 
   OnBoardingBottomButton({

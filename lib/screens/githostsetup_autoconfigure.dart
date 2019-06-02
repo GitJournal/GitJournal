@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:function_types/function_types.dart';
 import 'package:journal/apis/git.dart';
 import 'package:journal/apis/githost_factory.dart';
 import 'package:journal/settings.dart';
@@ -9,7 +10,7 @@ import 'githostsetup_loading.dart';
 
 class GitHostSetupAutoConfigure extends StatefulWidget {
   final GitHostType gitHostType;
-  final Function onDone;
+  final Func1<String, void> onDone;
 
   GitHostSetupAutoConfigure({
     @required this.gitHostType,

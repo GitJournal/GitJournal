@@ -16,7 +16,7 @@ class GitHub implements GitHost {
   var _accessCode = "";
 
   @override
-  void init(Function callback) {
+  void init(OAuthCallback callback) {
     Future _handleMessages(MethodCall call) async {
       if (call.method != "onURL") {
         print("GitHub Unknown Call: " + call.method);

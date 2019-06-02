@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:function_types/function_types.dart';
 import 'package:journal/analytics.dart';
 
 class GitHostSetupButton extends StatelessWidget {
-  final Function onPressed;
+  final Func0<void> onPressed;
   final String text;
   final String iconUrl;
 

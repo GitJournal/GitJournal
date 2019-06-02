@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:function_types/function_types.dart';
 
 import 'githostsetup_button.dart';
 
 class GitHostSetupFolderPage extends StatelessWidget {
   final List<String> folders;
-  final Function rootFolderSelected;
-  final Function subFolderSelected;
+  final Func0<void> rootFolderSelected;
+  final Func1<String, void> subFolderSelected;
 
   GitHostSetupFolderPage({
     @required this.folders,
@@ -47,7 +48,7 @@ class GitHostSetupFolderPage extends StatelessWidget {
 // FIXME: This needs to be made much much prettier!
 class FolderListWidget extends StatelessWidget {
   final List<String> folders;
-  final Function onSelected;
+  final Func1<String, void> onSelected;
 
   FolderListWidget({
     @required this.folders,

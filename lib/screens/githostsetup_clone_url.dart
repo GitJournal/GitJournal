@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:function_types/function_types.dart';
 import 'package:journal/apis/githost_factory.dart';
 
 import 'githostsetup_button.dart';
 
 class GitCloneUrlPage extends StatefulWidget {
-  final Function doneFunction;
+  final Func1<String, void> doneFunction;
   final String initialValue;
 
   GitCloneUrlPage({
@@ -96,8 +97,8 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
 }
 
 class GitCloneUrlKnownProviderPage extends StatefulWidget {
-  final Function doneFunction;
-  final Function launchCreateUrlPage;
+  final Func1<String, void> doneFunction;
+  final Func0<void> launchCreateUrlPage;
   final GitHostType gitHostType;
   final String initialValue;
 

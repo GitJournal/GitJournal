@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:function_types/function_types.dart';
 import 'package:journal/analytics.dart';
 import 'package:journal/apis/git.dart';
 import 'package:journal/apis/githost_factory.dart';
@@ -18,7 +19,7 @@ import 'githostsetup_folder.dart';
 import 'githostsetup_sshkey.dart';
 
 class GitHostSetupScreen extends StatefulWidget {
-  final Function onCompletedFunction;
+  final Func1<String, void> onCompletedFunction;
 
   GitHostSetupScreen(this.onCompletedFunction);
 
@@ -471,8 +472,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 }
 
 class GitHostChoicePage extends StatelessWidget {
-  final Function onKnownGitHost;
-  final Function onCustomGitHost;
+  final Func1<GitHostType, void> onKnownGitHost;
+  final Func0<void> onCustomGitHost;
 
   GitHostChoicePage({
     @required this.onKnownGitHost,
@@ -525,7 +526,7 @@ enum GitHostSetupType {
 }
 
 class GitHostAutoConfigureChoicePage extends StatelessWidget {
-  final Function onDone;
+  final Func1<GitHostSetupType, void> onDone;
 
   GitHostAutoConfigureChoicePage({@required this.onDone});
 

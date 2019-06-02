@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:function_types/function_types.dart';
 
 import 'githostsetup_button.dart';
 import 'githostsetup_loading.dart';
 
-typedef CopyKeyFunction = void Function(BuildContext context);
-
 class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
-  final Function doneFunction;
-  final CopyKeyFunction copyKeyFunction;
+  final Func0<void> doneFunction;
+  final Func1<BuildContext, void> copyKeyFunction;
   final String publicKey;
 
-  final Function openDeployKeyPage;
+  final Func0<void> openDeployKeyPage;
 
   GitHostSetupSshKeyKnownProvider({
     @required this.doneFunction,
@@ -83,8 +82,8 @@ class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
 }
 
 class GitHostSetupSshKeyUnknownProvider extends StatelessWidget {
-  final Function doneFunction;
-  final CopyKeyFunction copyKeyFunction;
+  final Func0<void> doneFunction;
+  final Func1<BuildContext, void> copyKeyFunction;
   final String publicKey;
 
   GitHostSetupSshKeyUnknownProvider({
