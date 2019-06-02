@@ -199,6 +199,7 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
             } catch (IOException ex) {
                 Log.d("getSSHPublicKey", ex.toString());
                 result.error("FAILED", "Failed to read the public key", null);
+                return;
             }
 
             result.success(publicKey);
@@ -223,6 +224,7 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
             } catch (IOException ex) {
                 Log.d("setSshKeys", ex.toString());
                 result.error("FAILED", "Failed to write the ssh keys", null);
+                return;
             }
 
             result.success(publicKey);
@@ -235,9 +237,11 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
             } catch (Exception e) {
                 e.printStackTrace();
                 result.error("FAILED", e.toString(), null);
+                return;
             }
 
             result.success(filePath);
+            return;
         }
 
         result.notImplemented();
