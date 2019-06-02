@@ -229,7 +229,7 @@ class StateContainerState extends State<StateContainer> {
   }
 
   void completeGitHostSetup(String subFolder) {
-    setState(() async {
+    () async {
       appState.remoteGitRepoConfigured = true;
       appState.remoteGitRepoFolderName = "journal";
       appState.remoteGitRepoSubFolder = subFolder;
@@ -250,7 +250,9 @@ class StateContainerState extends State<StateContainer> {
       await _persistConfig();
       _loadNotesFromDisk();
       _syncNotes();
-    });
+
+      setState(() {});
+    }();
   }
 
   void completeOnBoarding() {
