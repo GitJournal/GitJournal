@@ -45,13 +45,13 @@ class JournalApp extends StatelessWidget {
 
       localGitRepoConfigured = true;
 
-      await pref.setBool("localGitRepoConfigured", localGitRepoConfigured);
-      await pref.setString("localGitRepoPath", localGitRepoPath);
+      pref.setBool("localGitRepoConfigured", localGitRepoConfigured);
+      pref.setString("localGitRepoPath", localGitRepoPath);
     }
 
     var dir = await getGitBaseDirectory();
 
-    await Settings.instance.load();
+    Settings.instance.load(pref);
 
     runApp(StateContainer(
       localGitRepoConfigured: localGitRepoConfigured,

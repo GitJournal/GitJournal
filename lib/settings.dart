@@ -7,8 +7,7 @@ class Settings {
   Settings._internal();
   static Settings get instance => _singleton;
 
-  Future load() async {
-    var pref = await SharedPreferences.getInstance();
+  void load(SharedPreferences pref) {
     gitAuthor = pref.getString("gitAuthor") ?? gitAuthor;
     gitAuthorEmail = pref.getString("gitAuthorEmail") ?? gitAuthorEmail;
   }
