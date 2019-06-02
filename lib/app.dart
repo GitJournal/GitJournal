@@ -7,6 +7,7 @@ import 'package:journal/screens/home_screen.dart';
 import 'package:journal/screens/settings_screen.dart';
 import 'package:journal/settings.dart';
 import 'package:journal/state_container.dart';
+import 'package:journal/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'screens/githostsetup_screens.dart';
@@ -35,24 +36,7 @@ class JournalApp extends StatelessWidget {
     print("onBoardingCompleted: $onBoardingCompleted");
     print(" ------------------ ");
 
-    //
-    // Check if in debugMode or not a real device
-    //
-    assert(JournalApp.isInDebugMode = true);
-    try {
-      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      if (androidInfo.isPhysicalDevice == false) {
-        print("Not running in a physcial device");
-        JournalApp.isInDebugMode = true;
-      }
-    } catch (e) {
-      print(e);
-    }
-
-    if (JournalApp.isInDebugMode) {
-      JournalApp.analytics.setAnalyticsCollectionEnabled(false);
-    }
+    _enableAnalyticsIfPossible();
 
     if (localGitRepoConfigured == false) {
       // FIXME: What about exceptions!
@@ -79,6 +63,29 @@ class JournalApp extends StatelessWidget {
       onBoardingCompleted: onBoardingCompleted,
       child: JournalApp(),
     ));
+  }
+
+  static void _enableAnalyticsIfPossible() async {
+    //
+    // Check if in debugMode or not a real device
+    //
+    assert(JournalApp.isInDebugMode = true);
+    try {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      if (androidInfo.isPhysicalDevice == false) {
+        print("Not running in a physcial device");
+        JournalApp.isInDebugMode = true;
+      }
+    } catch (e) {
+      print(e);
+    }
+
+    bool should = (JournalApp.isInDebugMode == false);
+    should = should && (await shouldEnableAnalytics());
+
+    print("Analytics Collection: $should");
+    JournalApp.analytics.setAnalyticsCollectionEnabled(should);
   }
 
   static FirebaseAnalytics analytics = FirebaseAnalytics();

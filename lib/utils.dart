@@ -20,6 +20,12 @@ Future<String> getVersionString() async {
   return versionText;
 }
 
+Future<bool> shouldEnableAnalytics() async {
+  const _platform = const MethodChannel('gitjournal.io/git');
+  final bool result = await _platform.invokeMethod('shouldEnableAnalytics');
+  return result;
+}
+
 /// adb logcat
 /// Returns the file path where the logs were dumped
 Future<String> dumpAppLogs() async {

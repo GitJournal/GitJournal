@@ -1,6 +1,8 @@
 package io.gitjournal.gitjournal;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.WindowManager;
 
@@ -38,7 +40,8 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
 
     @Override
     public void onMethodCall(MethodCall call, Result result) {
-        final String filesDir = PathUtils.getFilesDir(getApplicationContext());
+        Context context = getApplicationContext();
+        final String filesDir = PathUtils.getFilesDir(context);
         final String sshKeysLocation = filesDir + "/ssh";
         final String privateKeyPath = sshKeysLocation + "/id_rsa";
         final String publicKeyPath = sshKeysLocation + "/id_rsa.pub";
@@ -241,6 +244,20 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
             }
 
             result.success(filePath);
+            return;
+        } else if (call.method.equals("shouldEnableAnalytics")) {
+            boolean shouldBe = true;
+            String testLabSetting =
+                    Settings.System.getString(context.getContentResolver(), "firebase.test.lab");
+            if ("true".equals(testLabSetting)) {
+                shouldBe = false;
+            }
+
+            if (BuildConfig.DEBUG) {
+                shouldBe = false;
+            }
+
+            result.success(shouldBe);
             return;
         }
 
