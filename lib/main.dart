@@ -20,6 +20,8 @@ void main() async {
   runZoned<Future<void>>(() async {
     await JournalApp.main();
   }, onError: (Object error, StackTrace stackTrace) async {
+    print("Uncaught Exception: " + error.toString());
+    print(stackTrace);
     await FlutterCrashlytics()
         .reportCrash(error, stackTrace, forceCrash: false);
   });
