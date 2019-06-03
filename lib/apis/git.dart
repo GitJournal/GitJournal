@@ -70,7 +70,7 @@ Future<void> setSshKeys({
       'privateKey': privateKey,
     });
   } on PlatformException catch (e) {
-    print("Failed to generateSSHKeys: '${e.message}'.");
+    print("Failed to setSSHKeys: '${e.message}'.");
     rethrow;
   }
 }
