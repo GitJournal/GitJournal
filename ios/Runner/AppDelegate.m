@@ -264,7 +264,7 @@ NSString* GetDirectoryOfType(NSSearchPathDirectory dir) {
 
             NSError *error = nil;
             [[NSFileManager defaultManager] createDirectoryAtPath:sshDirPath
-                                           withIntermediateDirectories:NO
+                                           withIntermediateDirectories:YES
                                                             attributes:nil
                                                             error:&error];
 
@@ -334,7 +334,7 @@ NSString* GetDirectoryOfType(NSSearchPathDirectory dir) {
 
             NSError *error = nil;
             [[NSFileManager defaultManager] createDirectoryAtPath:sshDirPath
-                                      withIntermediateDirectories:NO
+                                      withIntermediateDirectories:YES
                                                        attributes:nil
                                                             error:&error];
 
