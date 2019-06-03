@@ -329,7 +329,22 @@ NSString* GetDirectoryOfType(NSSearchPathDirectory dir) {
                 return;
             }
 
+            NSArray *sshComponents = [NSArray arrayWithObjects:filesDir, @"ssh", nil];
+            NSString* sshDirPath = [NSString pathWithComponents:sshComponents];
+
             NSError *error = nil;
+            [[NSFileManager defaultManager] createDirectoryAtPath:sshDirPath
+                                      withIntermediateDirectories:NO
+                                                       attributes:nil
+                                                            error:&error];
+
+            if (error != nil) {
+                NSLog(@"Create directory error: %@", error);
+                result([FlutterError errorWithCode:@"FAILED"
+                                           message:[error localizedDescription] details:nil]);
+                return;
+            }
+
             [publicKey writeToFile:sshPublicKeyString atomically:YES encoding:NSUTF8StringEncoding error:&error];
 
             if (error != nil) {
