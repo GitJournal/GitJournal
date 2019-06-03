@@ -30,6 +30,10 @@ NSString* GetDirectoryOfType(NSSearchPathDirectory dir) {
         NSLog(@"Called %@", method);
         if (arguments != nil) {
             for (NSString *key in [arguments allKeys]) {
+                if ([key isEqualToString:@"privateKey"]) {
+                    NSLog(@".  privateKey: <hidden>");
+                    continue;
+                }
                 NSLog(@".  %@: %@", key, [arguments objectForKey:key]);
             }
         }
