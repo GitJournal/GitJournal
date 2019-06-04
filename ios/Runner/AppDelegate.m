@@ -45,6 +45,9 @@ static FlutterMethodChannel* gitChannel = 0;
         NSArray *sshPublicComponents = [NSArray arrayWithObjects:filesDir, @"ssh", @"id_rsa.pub", nil];
         NSString *sshPublicKeyString = [NSString pathWithComponents:sshPublicComponents];
 
+        NSArray *sshPrivateComponents = [NSArray arrayWithObjects:filesDir, @"ssh", @"id_rsa", nil];
+        NSString *sshPrivateKeyString = [NSString pathWithComponents:sshPrivateComponents];
+
         if ([@"getBaseDirectory" isEqualToString:method]) {
             result(filesDir);
         }
@@ -240,6 +243,14 @@ static FlutterMethodChannel* gitChannel = 0;
             }
 
             [publicKey writeToFile:sshPublicKeyString atomically:YES encoding:NSUTF8StringEncoding error:&error];
+
+            if (error != nil) {
+                result([FlutterError errorWithCode:@"FAILED"
+                                           message:[error localizedDescription] details:nil]);
+                return;
+            }
+
+            [privateKey writeToFile:sshPrivateKeyString atomically:YES encoding:NSUTF8StringEncoding error:&error];
 
             if (error != nil) {
                 result([FlutterError errorWithCode:@"FAILED"
