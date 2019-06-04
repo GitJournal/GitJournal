@@ -12,6 +12,8 @@ NSString* GetDirectoryOfType(NSSearchPathDirectory dir) {
     return paths.firstObject;
 }
 
+static FlutterMethodChannel* gitChannel = 0;
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -20,8 +22,8 @@ NSString* GetDirectoryOfType(NSSearchPathDirectory dir) {
 
     FlutterViewController* controller = (FlutterViewController*)self.window.rootViewController;
 
-    FlutterMethodChannel* gitChannel = [FlutterMethodChannel
-        methodChannelWithName:@"gitjournal.io/git" binaryMessenger:controller];
+    gitChannel = [FlutterMethodChannel methodChannelWithName:@"gitjournal.io/git"
+                                             binaryMessenger:controller];
 
     [gitChannel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
         NSString *method = [call method];
@@ -440,4 +442,17 @@ bool handleError(FlutterResult result, int err) {
     }
 }
 
+- (BOOL)application:(UIApplication *)app
+            openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
+    NSLog(@"openUrl called with url %@", url);
+    for (NSString *key in [options allKeys]) {
+        NSLog(@".  %@: %@", key, [options objectForKey:key]);
+    }
+
+    NSDictionary *args = @{@"URL": [url absoluteString]};
+    [gitChannel invokeMethod:@"onURL" arguments:args];
+
+    return true;
+}
 @end
