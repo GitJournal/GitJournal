@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:journal/analytics.dart';
 import 'package:journal/apis/git_migration.dart';
 import 'package:journal/appstate.dart';
 import 'package:journal/datetime_utils.dart';
@@ -107,12 +108,26 @@ class StateContainerState extends State<StateContainer> {
         appState.isLoadingFromDisk = false;
         appState.notes = loadedNotes;
         appState.hasJournalEntries = loadedNotes.isNotEmpty;
+
+        getAnalytics().logEvent(
+          name: "notes_loaded",
+          parameters: <String, dynamic>{
+            'count': loadedNotes.length,
+          },
+        );
       });
     }).catchError((err, stack) {
       setState(() {
         print("Load Notes From Disk Error: " + err.toString());
         print(stack.toString());
         appState.isLoadingFromDisk = false;
+
+        getAnalytics().logEvent(
+          name: "notes_loading_failed",
+          parameters: <String, dynamic>{
+            'error': err.toString(),
+          },
+        );
       });
     });
   }
