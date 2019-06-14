@@ -15,15 +15,11 @@
   <key>CFBundlePackageType</key>
   <string>FMWK</string>
   <key>CFBundleShortVersionString</key>
-  <string>$(FLUTTER_BUILD_NAME)</string>
+  <string>1.0</string>
   <key>CFBundleSignature</key>
   <string>????</string>
   <key>CFBundleVersion</key>
-  <string>$(FLUTTER_BUILD_NUMBER)</string>
-  <key>UIRequiredDeviceCapabilities</key>
-  <array>
-    <string>arm64</string>
-  </array>
+  <string>1.0</string>
   <key>MinimumOSVersion</key>
   <string>8.0</string>
 </dict>
