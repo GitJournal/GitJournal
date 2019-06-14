@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:device_info/device_info.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -70,15 +72,24 @@ class JournalApp extends StatelessWidget {
     // Check if in debugMode or not a real device
     //
     assert(JournalApp.isInDebugMode = true);
+
+    var isPhysicalDevice = true;
     try {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      if (androidInfo.isPhysicalDevice == false) {
-        print("Not running in a physcial device");
-        JournalApp.isInDebugMode = true;
+      if (Platform.isAndroid) {
+        var info = await deviceInfo.androidInfo;
+        isPhysicalDevice = info.isPhysicalDevice;
+      } else if (Platform.isIOS) {
+        var info = await deviceInfo.iosInfo;
+        isPhysicalDevice = info.isPhysicalDevice;
       }
     } catch (e) {
       print(e);
+    }
+
+    if (isPhysicalDevice == false) {
+      print("Not running in a physcial device");
+      JournalApp.isInDebugMode = true;
     }
 
     bool should = (JournalApp.isInDebugMode == false);
