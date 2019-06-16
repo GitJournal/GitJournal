@@ -49,9 +49,11 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
             child: Row(
               children: [
                 DotsIndicator(
-                  numberOfDot: pages.length,
+                  dotsCount: pages.length,
                   position: _currentPageIndex,
-                  dotActiveColor: Theme.of(context).primaryColorDark,
+                  decorator: DotsDecorator(
+                    activeColor: Theme.of(context).primaryColorDark,
+                  ),
                 ),
               ],
               mainAxisAlignment: MainAxisAlignment.center,

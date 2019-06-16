@@ -272,9 +272,11 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           children: <Widget>[
             pageView,
             DotsIndicator(
-              numberOfDot: _pageCount,
+              dotsCount: _pageCount,
               position: _currentPageIndex,
-              dotActiveColor: Theme.of(context).primaryColorDark,
+              decorator: DotsDecorator(
+                activeColor: Theme.of(context).primaryColorDark,
+              ),
             )
           ],
         ),
