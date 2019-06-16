@@ -91,6 +91,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
           setState(() {
             errorMessage = widget.gitHostType.toString() + ": " + e.toString();
           });
+          return;
         }
         widget.onDone(repo.cloneUrl);
       });
