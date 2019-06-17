@@ -13,6 +13,7 @@ class GitNoteRepository implements NoteRepository {
   final FileStorage _fileStorage;
   final String dirName;
   final String subDirName;
+  final GitRepo _gitRepo;
 
   bool cloned = false;
   bool checkForCloned = false;
@@ -21,9 +22,14 @@ class GitNoteRepository implements NoteRepository {
     @required this.dirName,
     @required this.subDirName,
     @required String baseDirectory,
-  }) : _fileStorage = FileStorage(
+  })  : _fileStorage = FileStorage(
           noteSerializer: MarkdownYAMLSerializer(),
           baseDirectory: p.join(baseDirectory, dirName, subDirName),
+        ),
+        _gitRepo = GitRepo(
+          folderName: dirName,
+          authorEmail: Settings.instance.gitAuthorEmail,
+          authorName: Settings.instance.gitAuthor,
         );
 
   @override
@@ -37,11 +43,8 @@ class GitNoteRepository implements NoteRepository {
       return result;
     }
 
-    await gitAdd(dirName, '.');
-    await gitCommit(
-      gitFolder: dirName,
-      authorEmail: Settings.instance.gitAuthorEmail,
-      authorName: Settings.instance.gitAuthor,
+    await _gitRepo.add(".");
+    await _gitRepo.commit(
       message: commitMessage,
     );
 
@@ -59,11 +62,8 @@ class GitNoteRepository implements NoteRepository {
     var baseDir = _fileStorage.baseDirectory;
     var filePath = result.noteFilePath.replaceFirst(baseDir + "/", "");
 
-    await gitRm(dirName, filePath);
-    await gitCommit(
-      gitFolder: dirName,
-      authorEmail: Settings.instance.gitAuthorEmail,
-      authorName: Settings.instance.gitAuthor,
+    await _gitRepo.rm(filePath);
+    await _gitRepo.commit(
       message: "Removed Journal entry",
     );
 
@@ -71,7 +71,7 @@ class GitNoteRepository implements NoteRepository {
   }
 
   Future<NoteRepoResult> resetLastCommit() async {
-    await gitResetLast(dirName);
+    await _gitRepo.resetLast();
     return NoteRepoResult(error: false);
   }
 
@@ -88,17 +88,13 @@ class GitNoteRepository implements NoteRepository {
   @override
   Future<bool> sync() async {
     try {
-      await gitPull(
-        folderName: dirName,
-        authorEmail: Settings.instance.gitAuthorEmail,
-        authorName: Settings.instance.gitAuthor,
-      );
+      await _gitRepo.pull();
     } on GitException catch (ex) {
       print(ex);
     }
 
     try {
-      await gitPush(dirName);
+      await _gitRepo.push();
     } on GitException catch (ex) {
       print(ex);
       rethrow;

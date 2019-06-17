@@ -34,13 +34,14 @@ Future migrateGitRepo({
     print("Migrating " + file.path + " --> " + toPath);
 
     await file.copy(toPath);
-    await gitAdd(toGitBaseFolder, fileName);
-    await gitCommit(
-      gitFolder: toGitBaseFolder,
+
+    var gitRepo = GitRepo(
+      folderName: toGitBaseFolder,
       authorEmail: Settings.instance.gitAuthorEmail,
       authorName: Settings.instance.gitAuthor,
-      message: "Added Journal Entry",
     );
+    await gitRepo.add(fileName);
+    await gitRepo.commit(message: "Added Journal Entry");
   }
   print("migrateGitRepo: Done");
 }

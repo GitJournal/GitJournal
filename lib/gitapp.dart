@@ -40,6 +40,12 @@ class GitApp extends StatelessWidget {
   }
 
   List<Widget> _buildGitButtons() {
+    var gitRepo = GitRepo(
+      folderName: basePath,
+      authorName: "Vishesh Handa",
+      authorEmail: "noemail@example.com",
+    );
+
     return <Widget>[
       RaisedButton(
           child: Text("Generate Keys"),
@@ -50,7 +56,7 @@ class GitApp extends StatelessWidget {
         child: Text("Git Clone"),
         onPressed: () async {
           try {
-            await gitClone(cloneUrl, basePath);
+            await GitRepo.clone(cloneUrl, basePath);
             _sendSuccess();
           } on GitException catch (ex) {
             print(ex);
@@ -61,32 +67,25 @@ class GitApp extends StatelessWidget {
       RaisedButton(
         child: Text("Git Pull"),
         onPressed: () async {
-          gitPull(
-            folderName: basePath,
-            authorEmail: "noemail@example.com",
-            authorName: "Vishesh Handa",
-          );
+          gitRepo.pull();
         },
       ),
       RaisedButton(
         child: Text("Git Add"),
         onPressed: () async {
-          await gitAdd(basePath, ".");
+          gitRepo.add(".");
         },
       ),
       RaisedButton(
         child: Text("Git Push"),
         onPressed: () async {
-          gitPush(basePath);
+          gitRepo.push();
         },
       ),
       RaisedButton(
         child: Text("Git Commit"),
         onPressed: () async {
-          gitCommit(
-            gitFolder: basePath,
-            authorEmail: "noemail@example.com",
-            authorName: "Vishesh Handa",
+          gitRepo.commit(
             message: "Default message from GitJournal",
             when: "2017-10-20T01:21:10+02:00",
           );
@@ -95,7 +94,7 @@ class GitApp extends StatelessWidget {
       RaisedButton(
         child: Text("Git Reset Last"),
         onPressed: () async {
-          gitResetLast(basePath);
+          gitRepo.resetLast();
         },
       ),
       RaisedButton(

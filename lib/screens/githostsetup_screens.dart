@@ -380,7 +380,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
     String error;
     try {
-      await gitClone(_gitCloneUrl, "journal");
+      await GitRepo.clone(_gitCloneUrl, "journal");
     } on GitException catch (e) {
       error = e.cause;
     }

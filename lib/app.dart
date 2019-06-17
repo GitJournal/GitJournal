@@ -43,7 +43,7 @@ class JournalApp extends StatelessWidget {
     if (localGitRepoConfigured == false) {
       // FIXME: What about exceptions!
       localGitRepoPath = "journal_local";
-      await gitInit(localGitRepoPath);
+      await GitRepo.init(localGitRepoPath);
 
       localGitRepoConfigured = true;
 

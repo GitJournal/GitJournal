@@ -75,7 +75,7 @@ class GitHub implements GitHost {
   }
 
   @override
-  Future<List<GitRepo>> listRepos() async {
+  Future<List<GitHostRepo>> listRepos() async {
     if (_accessCode.isEmpty) {
       throw GitHostException.MissingAccessCode;
     }
@@ -93,7 +93,7 @@ class GitHub implements GitHost {
     }
 
     List<dynamic> list = jsonDecode(response.body);
-    var repos = <GitRepo>[];
+    var repos = <GitHostRepo>[];
     list.forEach((dynamic d) {
       var map = Map<String, dynamic>.from(d);
       var repo = _repoFromJson(map);
@@ -105,7 +105,7 @@ class GitHub implements GitHost {
   }
 
   @override
-  Future<GitRepo> createRepo(String name) async {
+  Future<GitHostRepo> createRepo(String name) async {
     if (_accessCode.isEmpty) {
       throw GitHostException.MissingAccessCode;
     }
@@ -143,7 +143,7 @@ class GitHub implements GitHost {
   }
 
   @override
-  Future<GitRepo> getRepo(String name) async {
+  Future<GitHostRepo> getRepo(String name) async {
     if (_accessCode.isEmpty) {
       throw GitHostException.MissingAccessCode;
     }
@@ -201,8 +201,8 @@ class GitHub implements GitHost {
     return json.decode(response.body);
   }
 
-  GitRepo _repoFromJson(Map<String, dynamic> parsedJson) {
-    return GitRepo(
+  GitHostRepo _repoFromJson(Map<String, dynamic> parsedJson) {
+    return GitHostRepo(
       fullName: parsedJson['full_name'],
       cloneUrl: parsedJson['ssh_url'],
     );

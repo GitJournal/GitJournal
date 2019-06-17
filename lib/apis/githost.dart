@@ -9,9 +9,9 @@ abstract class GitHost {
   Future launchOAuthScreen();
 
   Future<UserInfo> getUserInfo();
-  Future<List<GitRepo>> listRepos();
-  Future<GitRepo> createRepo(String name);
-  Future<GitRepo> getRepo(String name);
+  Future<List<GitHostRepo>> listRepos();
+  Future<GitHostRepo> createRepo(String name);
+  Future<GitHostRepo> getRepo(String name);
   Future addDeployKey(String sshPublicKey, String repo);
 }
 
@@ -27,11 +27,11 @@ class UserInfo {
   });
 }
 
-class GitRepo {
+class GitHostRepo {
   String fullName;
   String cloneUrl;
 
-  GitRepo({this.fullName, this.cloneUrl});
+  GitHostRepo({this.fullName, this.cloneUrl});
 
   @override
   String toString() {

@@ -49,7 +49,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
         }
         print("GitHost Initalized: " + widget.gitHostType.toString());
 
-        GitRepo repo;
+        GitHostRepo repo;
         try {
           setState(() {
             _message = "Creating private repo";

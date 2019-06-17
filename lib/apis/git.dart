@@ -17,23 +17,115 @@ Future<Directory> getGitBaseDirectory() async {
   return Directory(path);
 }
 
-///
-/// It will be clone in gitBaseDirectory/folderName
-///
-Future<void> gitClone(String cloneUrl, String folderName) async {
-  print("Going to git clone");
-  try {
-    await _platform.invokeMethod('gitClone', {
-      'cloneUrl': cloneUrl,
-      'folderName': folderName,
-    });
-    print("Done");
-  } on PlatformException catch (e) {
-    print("gitClone Failed: '${e.message}'.");
-    throw createGitException(e.message);
+class GitRepo {
+  String folderName;
+  String authorName;
+  String authorEmail;
+
+  GitRepo({
+    @required this.folderName,
+    @required this.authorName,
+    @required this.authorEmail,
+  });
+
+  static Future<void> clone(String folderName, String cloneUrl) async {
+    try {
+      await _platform.invokeMethod('gitClone', {
+        'cloneUrl': cloneUrl,
+        'folderName': folderName,
+      });
+      print("Done");
+    } on PlatformException catch (e) {
+      print("gitClone Failed: '${e.message}'.");
+      throw createGitException(e.message);
+    }
   }
 
-  return null;
+  static Future<void> init(String folderName) async {
+    try {
+      await _platform.invokeMethod('gitInit', {
+        'folderName': folderName,
+      });
+    } on PlatformException catch (e) {
+      print("gitInit Failed: '${e.message}'.");
+      throw createGitException(e.message);
+    }
+  }
+
+  Future<void> pull() async {
+    try {
+      await _platform.invokeMethod('gitPull', {
+        'folderName': folderName,
+        'authorName': authorName,
+        'authorEmail': authorEmail,
+      });
+      print("Done");
+    } on PlatformException catch (e) {
+      print("gitPull Failed: '${e.message}'.");
+      throw createGitException(e.message);
+    }
+  }
+
+  Future<void> add(String filePattern) async {
+    try {
+      await _platform.invokeMethod('gitAdd', {
+        'folderName': folderName,
+        'filePattern': filePattern,
+      });
+    } on PlatformException catch (e) {
+      print("gitAdd Failed: '${e.message}'.");
+    }
+  }
+
+  Future<void> rm(String filePattern) async {
+    try {
+      await _platform.invokeMethod('gitRm', {
+        'folderName': folderName,
+        'filePattern': filePattern,
+      });
+    } on PlatformException catch (e) {
+      print("gitRm Failed: '${e.message}'.");
+    }
+  }
+
+  Future<void> push() async {
+    try {
+      await _platform.invokeMethod('gitPush', {
+        'folderName': folderName,
+      });
+    } on PlatformException catch (e) {
+      print("gitPush Failed: '${e.message}'.");
+      throw createGitException(e.message);
+    }
+  }
+
+  // FIXME: Change this method to just resetHard
+  Future<void> resetLast() async {
+    try {
+      await _platform.invokeMethod('gitResetLast', {
+        'folderName': folderName,
+      });
+    } on PlatformException catch (e) {
+      print("gitResetLast Failed: '${e.message}'.");
+      throw createGitException(e.message);
+    }
+  }
+
+  // FIXME: Change the datetime
+  // FIXME: Actually implement the 'when'
+  Future<void> commit({@required String message, String when}) async {
+    try {
+      await _platform.invokeMethod('gitCommit', {
+        'folderName': folderName,
+        'authorName': authorName,
+        'authorEmail': authorEmail,
+        'message': message,
+        'when': when,
+      });
+    } on PlatformException catch (e) {
+      print("gitCommit Failed: '${e.message}'.");
+    }
+  }
 }
 
 Future<String> generateSSHKeys({@required String comment}) async {
@@ -96,110 +188,4 @@ GitException createGitException(String msg) {
     return GitException("Nothing to push.");
   }
   return GitException(msg);
-}
-
-Future gitPull({
-  String folderName,
-  String authorName,
-  String authorEmail,
-}) async {
-  print("Going to git pull: $folderName");
-  try {
-    await _platform.invokeMethod('gitPull', {
-      'folderName': folderName,
-      'authorName': authorName,
-      'authorEmail': authorEmail,
-    });
-    print("Done");
-  } on PlatformException catch (e) {
-    print("gitPull Failed: '${e.message}'.");
-    throw createGitException(e.message);
-  }
-}
-
-Future gitAdd(String gitFolder, String filePattern) async {
-  print("Going to git add: " + filePattern);
-  try {
-    await _platform.invokeMethod('gitAdd', {
-      'folderName': gitFolder,
-      'filePattern': filePattern,
-    });
-    print("Done");
-  } on PlatformException catch (e) {
-    print("gitAdd Failed: '${e.message}'.");
-  }
-}
-
-Future gitRm(String gitFolder, String filePattern) async {
-  print("Going to git rm");
-  try {
-    await _platform.invokeMethod('gitRm', {
-      'folderName': gitFolder,
-      'filePattern': filePattern,
-    });
-    print("Done");
-  } on PlatformException catch (e) {
-    print("gitRm Failed: '${e.message}'.");
-  }
-}
-
-Future gitPush(String folderName) async {
-  print("Going to git push");
-  try {
-    await _platform.invokeMethod('gitPush', {
-      'folderName': folderName,
-    });
-    print("Done");
-  } on PlatformException catch (e) {
-    print("gitPush Failed: '${e.message}'.");
-    throw createGitException(e.message);
-  }
-}
-
-Future gitResetLast(String folderName) async {
-  print("Going to git reset last");
-  try {
-    await _platform.invokeMethod('gitResetLast', {
-      'folderName': folderName,
-    });
-    print("Done");
-  } on PlatformException catch (e) {
-    print("gitResetLast Failed: '${e.message}'.");
-    throw createGitException(e.message);
-  }
-}
-
-Future gitCommit({
-  @required String gitFolder,
-  @required String authorName,
-  @required String authorEmail,
-  @required String message,
-  String when,
-}) async {
-  print("Going to git commit");
-  try {
-    await _platform.invokeMethod('gitCommit', {
-      'folderName': gitFolder,
-      'authorName': authorName,
-      'authorEmail': authorEmail,
-      'message': message,
-      'when': when,
-    });
-    print("Done");
-  } on PlatformException catch (e) {
-    print("gitCommit Failed: '${e.message}'.");
-  }
-}
-
-Future gitInit(String folderName) async {
-  print("Going to git init");
-  try {
-    await _platform.invokeMethod('gitInit', {
-      'folderName': folderName,
-    });
-    print("Done");
-  } on PlatformException catch (e) {
-    print("gitInit Failed: '${e.message}'.");
-    throw createGitException(e.message);
-  }
 }
