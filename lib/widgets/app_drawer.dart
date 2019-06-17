@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:journal/analytics.dart';
@@ -85,10 +87,11 @@ class AppDrawer extends StatelessWidget {
             onTap: () async {
               var versionText = await getVersionString();
 
+              var platform = Platform.operatingSystem;
               var emailAddress = 'gitjournal.io+feedback@gmail.com';
               var subject = 'GitJournal Feedback';
               var body =
-                  "Hey!\n\nHere are some ways to improve GitJournal - \n \n\nVersion: $versionText";
+                  "Hey!\n\nHere are some ways to improve GitJournal - \n \n\nVersion: $versionText\nPlatform: $platform";
               var url = 'mailto:$emailAddress?subject=$subject&body=$body';
               launch(url);
 
