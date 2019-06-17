@@ -23,6 +23,7 @@ dependencies:
   flutter_markdown: ^0.2.0
   flutter_email_sender: ^2.0.2
   function_types: ^0.0.2
+  auto_size_text: ^2.0.1
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.2"

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:function_types/function_types.dart';
@@ -173,10 +174,11 @@ class OnBoardingPage1 extends StatelessWidget {
         children: <Widget>[
           Center(child: header),
           SizedBox(height: 64.0),
-          Text(
+          AutoSizeText(
             "A Journaling App focused on\nOpenness and Data Privacy",
             style: textTheme.headline,
             textAlign: TextAlign.center,
+            maxLines: 2,
           ),
         ],
         mainAxisAlignment: MainAxisAlignment.center,
@@ -208,10 +210,11 @@ class OnBoardingPage2 extends StatelessWidget {
         children: <Widget>[
           Center(child: header),
           SizedBox(height: 64.0),
-          Text(
-            "Your Journal Entries are stored in a standard Markdown + YAML Header format",
+          AutoSizeText(
+            "Your Journal Entries are stored in a\nstandard Markdown + YAML\nHeader format",
             style: textTheme.headline,
             textAlign: TextAlign.center,
+            maxLines: 3,
           ),
         ],
         mainAxisAlignment: MainAxisAlignment.center,
@@ -243,10 +246,11 @@ class OnBoardingPage3 extends StatelessWidget {
         children: <Widget>[
           Center(child: header),
           SizedBox(height: 64.0),
-          Text(
+          AutoSizeText(
             "Sync your Local Git Repo\nwith any provider",
             style: textTheme.headline,
             textAlign: TextAlign.center,
+            maxLines: 2,
           ),
         ],
         mainAxisAlignment: MainAxisAlignment.center,
