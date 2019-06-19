@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:journal/analytics.dart';
@@ -101,7 +102,7 @@ class StateContainerState extends State<StateContainer> {
   }
 
   void _loadNotesFromDisk() {
-    print("Loading Notes From Disk");
+    Fimber.d("Loading Notes From Disk");
     appState.isLoadingFromDisk = true;
     noteRepo.listNotes().then((loadedNotes) {
       setState(() {
@@ -118,8 +119,8 @@ class StateContainerState extends State<StateContainer> {
       });
     }).catchError((err, stack) {
       setState(() {
-        print("Load Notes From Disk Error: " + err.toString());
-        print(stack.toString());
+        Fimber.d("Load Notes From Disk Error: " + err.toString());
+        Fimber.d(stack.toString());
         appState.isLoadingFromDisk = false;
 
         getAnalytics().logEvent(
@@ -134,7 +135,7 @@ class StateContainerState extends State<StateContainer> {
 
   Future syncNotes() async {
     if (!appState.remoteGitRepoConfigured) {
-      print("Not syncing because RemoteRepo not configured");
+      Fimber.d("Not syncing because RemoteRepo not configured");
       return true;
     }
 
@@ -150,8 +151,8 @@ class StateContainerState extends State<StateContainer> {
       });
     } catch (err, stack) {
       setState(() {
-        print("Load Notes From Disk Error: " + err.toString());
-        print(stack.toString());
+        Fimber.d("Load Notes From Disk Error: " + err.toString());
+        Fimber.d(stack.toString());
         appState.isLoadingFromDisk = false;
       });
     }
@@ -161,16 +162,16 @@ class StateContainerState extends State<StateContainer> {
 
   void _syncNotes() {
     if (!appState.remoteGitRepoConfigured) {
-      print("Not syncing because RemoteRepo not configured");
+      Fimber.d("Not syncing because RemoteRepo not configured");
       return;
     }
 
-    print("Starting to syncNotes");
+    Fimber.d("Starting to syncNotes");
     noteRepo.sync().then((loaded) {
-      print("NotesRepo Synced: " + loaded.toString());
+      Fimber.d("NotesRepo Synced: " + loaded.toString());
       _loadNotesFromDisk();
     }).catchError((err) {
-      print("NotesRepo Sync: " + err.toString());
+      Fimber.d("NotesRepo Sync: " + err.toString());
     });
   }
 
@@ -213,7 +214,7 @@ class StateContainerState extends State<StateContainer> {
   }
 
   void insertNote(int index, Note note) {
-    print("State Container insertNote");
+    Fimber.d("State Container insertNote");
     setState(() {
       if (note.filePath == null || note.filePath.isEmpty) {
         note.filePath = toIso8601WithTimezone(note.created) + '.md';
@@ -227,7 +228,7 @@ class StateContainerState extends State<StateContainer> {
   }
 
   void updateNote(Note note) {
-    print("State Container updateNote");
+    Fimber.d("State Container updateNote");
     setState(() {
       // Update that specific note
       for (var i = 0; i < appState.notes.length; i++) {

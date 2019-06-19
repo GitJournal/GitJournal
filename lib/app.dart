@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
+import 'package:fimber/fimber.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,8 @@ import 'screens/onboarding_screens.dart';
 
 class JournalApp extends StatelessWidget {
   static Future main() async {
+    Fimber.plantTree(DebugTree.elapsed(useColors: true));
+
     var pref = await SharedPreferences.getInstance();
     JournalApp.preferences = pref;
 
@@ -29,14 +32,14 @@ class JournalApp extends StatelessWidget {
     var remoteGitRepoSubFolder = pref.getString("remoteGitRepoSubFolder") ?? "";
     var onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
 
-    print(" ---- Settings ---- ");
-    print("localGitRepoConfigured: $localGitRepoConfigured");
-    print("remoteGitRepoConfigured: $remoteGitRepoConfigured");
-    print("localGitRepoPath: $localGitRepoPath");
-    print("remoteGitRepoFolderName: $remoteGitRepoFolderName");
-    print("remoteGitRepoSubFolder: $remoteGitRepoSubFolder");
-    print("onBoardingCompleted: $onBoardingCompleted");
-    print(" ------------------ ");
+    Fimber.d(" ---- Settings ---- ");
+    Fimber.d("localGitRepoConfigured: $localGitRepoConfigured");
+    Fimber.d("remoteGitRepoConfigured: $remoteGitRepoConfigured");
+    Fimber.d("localGitRepoPath: $localGitRepoPath");
+    Fimber.d("remoteGitRepoFolderName: $remoteGitRepoFolderName");
+    Fimber.d("remoteGitRepoSubFolder: $remoteGitRepoSubFolder");
+    Fimber.d("onBoardingCompleted: $onBoardingCompleted");
+    Fimber.d(" ------------------ ");
 
     _enableAnalyticsIfPossible();
 
@@ -84,18 +87,18 @@ class JournalApp extends StatelessWidget {
         isPhysicalDevice = info.isPhysicalDevice;
       }
     } catch (e) {
-      print(e);
+      Fimber.d(e);
     }
 
     if (isPhysicalDevice == false) {
-      print("Not running in a physcial device");
+      Fimber.d("Not running in a physcial device");
       JournalApp.isInDebugMode = true;
     }
 
     bool should = (JournalApp.isInDebugMode == false);
     should = should && (await shouldEnableAnalytics());
 
-    print("Analytics Collection: $should");
+    Fimber.d("Analytics Collection: $should");
     JournalApp.analytics.setAnalyticsCollectionEnabled(should);
   }
 

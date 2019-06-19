@@ -1,3 +1,4 @@
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:function_types/function_types.dart';
 import 'package:journal/apis/git.dart';
@@ -36,7 +37,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
   }
 
   void _startAutoConfigure() {
-    print("Starting autoconfigure");
+    Fimber.d("Starting autoconfigure");
     setState(() {
       _configuringStarted = true;
     });
@@ -47,7 +48,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
         if (error != null) {
           throw error;
         }
-        print("GitHost Initalized: " + widget.gitHostType.toString());
+        Fimber.d("GitHost Initalized: " + widget.gitHostType.toString());
 
         GitHostRepo repo;
         try {
@@ -87,7 +88,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
           }
           Settings.instance.save();
         } on GitHostException catch (e) {
-          print("GitHostSetupAutoConfigure: " + e.toString());
+          Fimber.d("GitHostSetupAutoConfigure: " + e.toString());
           setState(() {
             errorMessage = widget.gitHostType.toString() + ": " + e.toString();
           });
@@ -97,7 +98,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
       });
       gitHost.launchOAuthScreen();
     } on GitHostException catch (e) {
-      print("GitHostSetupAutoConfigure: " + e.toString());
+      Fimber.d("GitHostSetupAutoConfigure: " + e.toString());
       setState(() {
         errorMessage = widget.gitHostType.toString() + ": " + e.toString();
       });

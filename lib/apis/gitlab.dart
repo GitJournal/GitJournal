@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:fimber/fimber.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -21,11 +22,11 @@ class GitLab implements GitHost {
   void init(OAuthCallback callback) {
     Future _handleMessages(MethodCall call) async {
       if (call.method != "onURL") {
-        print("GitLab Unknown Call: " + call.method);
+        Fimber.d("GitLab Unknown Call: " + call.method);
         return;
       }
 
-      print("GitLab: Called onUrl with " + call.arguments.toString());
+      Fimber.d("GitLab: Called onUrl with " + call.arguments.toString());
 
       String url = call.arguments["URL"];
       var queryParamters = url.substring(url.indexOf('#') + 1);
@@ -33,9 +34,9 @@ class GitLab implements GitHost {
 
       var state = map['state'];
       if (state != _stateOAuth) {
-        print("GitLab: OAuth State incorrect");
-        print("Required State: " + _stateOAuth);
-        print("Actual State: " + state);
+        Fimber.d("GitLab: OAuth State incorrect");
+        Fimber.d("Required State: " + _stateOAuth);
+        Fimber.d("Actual State: " + state);
         callback(GitHostException.OAuthFailed);
         return;
       }
@@ -50,7 +51,7 @@ class GitLab implements GitHost {
     }
 
     _platform.setMethodCallHandler(_handleMessages);
-    print("GitLab: Installed Handler");
+    Fimber.d("GitLab: Installed Handler");
   }
 
   @override
@@ -74,7 +75,7 @@ class GitLab implements GitHost {
 
     var response = await http.get(url);
     if (response.statusCode != 200) {
-      print("GitLab listRepos: Invalid response " +
+      Fimber.d("GitLab listRepos: Invalid response " +
           response.statusCode.toString() +
           ": " +
           response.body);
@@ -112,7 +113,7 @@ class GitLab implements GitHost {
     var response =
         await http.post(url, headers: headers, body: json.encode(data));
     if (response.statusCode != 201) {
-      print("GitLab createRepo: Invalid response " +
+      Fimber.d("GitLab createRepo: Invalid response " +
           response.statusCode.toString() +
           ": " +
           response.body);
@@ -126,7 +127,7 @@ class GitLab implements GitHost {
       throw GitHostException.CreateRepoFailed;
     }
 
-    print("GitLab createRepo: " + response.body);
+    Fimber.d("GitLab createRepo: " + response.body);
     Map<String, dynamic> map = json.decode(response.body);
     return _repoFromJson(map);
   }
@@ -144,7 +145,7 @@ class GitLab implements GitHost {
 
     var response = await http.get(url);
     if (response.statusCode != 200) {
-      print("GitLab getRepo: Invalid response " +
+      Fimber.d("GitLab getRepo: Invalid response " +
           response.statusCode.toString() +
           ": " +
           response.body);
@@ -152,7 +153,7 @@ class GitLab implements GitHost {
       throw GitHostException.GetRepoFailed;
     }
 
-    print("GitLab getRepo: " + response.body);
+    Fimber.d("GitLab getRepo: " + response.body);
     Map<String, dynamic> map = json.decode(response.body);
     return _repoFromJson(map);
   }
@@ -180,14 +181,14 @@ class GitLab implements GitHost {
     var response =
         await http.post(url, headers: headers, body: json.encode(data));
     if (response.statusCode != 201) {
-      print("GitLab addDeployKey: Invalid response " +
+      Fimber.d("GitLab addDeployKey: Invalid response " +
           response.statusCode.toString() +
           ": " +
           response.body);
       throw GitHostException.DeployKeyFailed;
     }
 
-    print("GitLab addDeployKey: " + response.body);
+    Fimber.d("GitLab addDeployKey: " + response.body);
     return json.decode(response.body);
   }
 
@@ -208,7 +209,7 @@ class GitLab implements GitHost {
 
     var response = await http.get(url);
     if (response.statusCode != 200) {
-      print("GitLab getUserInfo: Invalid response " +
+      Fimber.d("GitLab getUserInfo: Invalid response " +
           response.statusCode.toString() +
           ": " +
           response.body);
@@ -217,7 +218,7 @@ class GitLab implements GitHost {
 
     Map<String, dynamic> map = jsonDecode(response.body);
     if (map == null || map.isEmpty) {
-      print("GitLab getUserInfo: jsonDecode Failed " +
+      Fimber.d("GitLab getUserInfo: jsonDecode Failed " +
           response.statusCode.toString() +
           ": " +
           response.body);

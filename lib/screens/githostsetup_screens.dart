@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:function_types/function_types.dart';
@@ -50,7 +51,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   int _currentPageIndex = 0;
 
   Widget _buildPage(BuildContext context, int pos) {
-    print("_buildPage " + pos.toString());
+    Fimber.d("_buildPage " + pos.toString());
     assert(_pageCount >= 1);
 
     if (pos == 0) {
@@ -223,15 +224,15 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("build _pageCount " + _pageCount.toString());
-    print("build _currentPageIndex " + _currentPageIndex.toString());
+    Fimber.d("build _pageCount " + _pageCount.toString());
+    Fimber.d("build _currentPageIndex " + _currentPageIndex.toString());
 
     var pageView = PageView.builder(
       controller: pageController,
       itemBuilder: _buildPage,
       itemCount: _pageCount,
       onPageChanged: (int pageNum) {
-        print("PageView onPageChanged: " + pageNum.toString());
+        Fimber.d("PageView onPageChanged: " + pageNum.toString());
         /*
         String pageName = "";
         switch (pageNum) {
@@ -350,8 +351,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         await launch(gitLabUrl);
       }
     } catch (err, stack) {
-      print('_launchDeployKeyPage: ' + err.toString());
-      print(stack.toString());
+      Fimber.d('_launchDeployKeyPage: ' + err.toString());
+      Fimber.d(stack.toString());
     }
   }
 
@@ -366,8 +367,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       }
     } catch (err, stack) {
       // FIXME: Error handling?
-      print("_launchCreateRepoPage: " + err.toString());
-      print(stack);
+      Fimber.d("_launchCreateRepoPage: " + err.toString());
+      Fimber.d(stack.toString());
     }
   }
 
@@ -400,7 +401,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
     List<String> subFolders = await _getSubFoldersWithMdFiles(basePath);
     if (subFolders.isEmpty) {
-      print("Found no subfolders with md files");
+      Fimber.d("Found no subfolders with md files");
       _finish();
       return;
     }
@@ -417,7 +418,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     var dotGitDir = Directory(p.join(baseDir.path, ".git"));
     bool exists = await dotGitDir.exists();
     if (exists) {
-      print("Removing " + baseDir.path);
+      Fimber.d("Removing " + baseDir.path);
       await baseDir.delete(recursive: true);
       await baseDir.create();
     }

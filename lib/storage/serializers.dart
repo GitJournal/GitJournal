@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fimber/fimber.dart';
 import 'package:journal/note.dart';
 import 'package:yaml/yaml.dart';
 
@@ -37,7 +38,7 @@ class MarkdownYAMLSerializer implements NoteSerializer {
           });
         }
       } catch (err) {
-        print(
+        Fimber.d(
             'MarkdownYAMLSerializer::decode("$yamlText") -> ${err.toString()}');
       }
       map['body'] = parts[2].trimLeft();

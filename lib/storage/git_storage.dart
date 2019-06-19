@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:journal/apis/git.dart';
 import 'package:journal/note.dart';
@@ -90,13 +91,13 @@ class GitNoteRepository implements NoteRepository {
     try {
       await _gitRepo.pull();
     } on GitException catch (ex) {
-      print(ex);
+      Fimber.d(ex.toString());
     }
 
     try {
       await _gitRepo.push();
     } on GitException catch (ex) {
-      print(ex);
+      Fimber.d(ex.toString());
       rethrow;
     }
 

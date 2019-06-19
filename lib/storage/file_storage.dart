@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:journal/note.dart';
 import 'package:journal/storage/notes_repository.dart';
@@ -21,7 +22,7 @@ class FileStorage implements NoteRepository {
   }) {
     assert(baseDirectory != null);
     assert(baseDirectory.isNotEmpty);
-    print("FileStorage Directory: " + baseDirectory);
+    Fimber.d("FileStorage Directory: " + baseDirectory);
   }
 
   @override
@@ -61,7 +62,7 @@ class FileStorage implements NoteRepository {
   @override
   Future<NoteRepoResult> addNote(Note note) async {
     var filePath = p.join(baseDirectory, note.filePath);
-    print("FileStorage: Adding note in " + filePath);
+    Fimber.d("FileStorage: Adding note in " + filePath);
 
     var file = File(filePath);
     if (file == null) {

@@ -1,3 +1,4 @@
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:function_types/function_types.dart';
 import 'package:journal/analytics.dart';
@@ -46,7 +47,7 @@ class GitHostSetupButton extends StatelessWidget {
   }
 
   void _onPressedWithAnalytics() {
-    print("githostsetup_button_click " + text);
+    Fimber.d("githostsetup_button_click " + text);
     getAnalytics().logEvent(
       name: "githostsetup_button_click",
       parameters: <String, dynamic>{

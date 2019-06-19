@@ -1,3 +1,4 @@
+import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -94,7 +95,7 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
     stateContainer.removeNote(note);
     Navigator.pop(context);
 
-    print("Shwoing an undo snackbar");
+    Fimber.d("Shwoing an undo snackbar");
     var snackbar = buildUndoDeleteSnackbar(context, note, noteIndex);
     _scaffoldKey.currentState
       ..removeCurrentSnackBar()

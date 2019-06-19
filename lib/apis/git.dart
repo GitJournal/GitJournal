@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -34,9 +35,9 @@ class GitRepo {
         'cloneUrl': cloneUrl,
         'folderName': folderName,
       });
-      print("Done");
+      Fimber.d("Done");
     } on PlatformException catch (e) {
-      print("gitClone Failed: '${e.message}'.");
+      Fimber.d("gitClone Failed: '${e.message}'.");
       throw createGitException(e.message);
     }
   }
@@ -47,7 +48,7 @@ class GitRepo {
         'folderName': folderName,
       });
     } on PlatformException catch (e) {
-      print("gitInit Failed: '${e.message}'.");
+      Fimber.d("gitInit Failed: '${e.message}'.");
       throw createGitException(e.message);
     }
   }
@@ -59,9 +60,9 @@ class GitRepo {
         'authorName': authorName,
         'authorEmail': authorEmail,
       });
-      print("Done");
+      Fimber.d("Done");
     } on PlatformException catch (e) {
-      print("gitPull Failed: '${e.message}'.");
+      Fimber.d("gitPull Failed: '${e.message}'.");
       throw createGitException(e.message);
     }
   }
@@ -73,7 +74,7 @@ class GitRepo {
         'filePattern': filePattern,
       });
     } on PlatformException catch (e) {
-      print("gitAdd Failed: '${e.message}'.");
+      Fimber.d("gitAdd Failed: '${e.message}'.");
     }
   }
 
@@ -84,7 +85,7 @@ class GitRepo {
         'filePattern': filePattern,
       });
     } on PlatformException catch (e) {
-      print("gitRm Failed: '${e.message}'.");
+      Fimber.d("gitRm Failed: '${e.message}'.");
     }
   }
 
@@ -94,7 +95,7 @@ class GitRepo {
         'folderName': folderName,
       });
     } on PlatformException catch (e) {
-      print("gitPush Failed: '${e.message}'.");
+      Fimber.d("gitPush Failed: '${e.message}'.");
       throw createGitException(e.message);
     }
   }
@@ -106,7 +107,7 @@ class GitRepo {
         'folderName': folderName,
       });
     } on PlatformException catch (e) {
-      print("gitResetLast Failed: '${e.message}'.");
+      Fimber.d("gitResetLast Failed: '${e.message}'.");
       throw createGitException(e.message);
     }
   }
@@ -123,29 +124,29 @@ class GitRepo {
         'when': when,
       });
     } on PlatformException catch (e) {
-      print("gitCommit Failed: '${e.message}'.");
+      Fimber.d("gitCommit Failed: '${e.message}'.");
     }
   }
 }
 
 Future<String> generateSSHKeys({@required String comment}) async {
-  print("generateSSHKeyss: " + comment);
+  Fimber.d("generateSSHKeyss: " + comment);
   try {
     String publicKey = await _platform.invokeMethod('generateSSHKeys', {
       'comment': comment,
     });
-    print("Public Key " + publicKey);
+    Fimber.d("Public Key " + publicKey);
     return publicKey;
   } on PlatformException catch (e) {
-    print("Failed to generateSSHKeys: '${e.message}'.");
+    Fimber.d("Failed to generateSSHKeys: '${e.message}'.");
   }
 
   try {
     String publicKey = await _platform.invokeMethod('getSSHPublicKey');
-    print("Public Key " + publicKey);
+    Fimber.d("Public Key " + publicKey);
     return publicKey;
   } on PlatformException catch (e) {
-    print("Failed to getSSHPublicKey: '${e.message}'.");
+    Fimber.d("Failed to getSSHPublicKey: '${e.message}'.");
   }
 
   return "";
@@ -155,14 +156,14 @@ Future<void> setSshKeys({
   @required String publicKey,
   @required String privateKey,
 }) async {
-  print("setSshKeys");
+  Fimber.d("setSshKeys");
   try {
     await _platform.invokeMethod('setSshKeys', {
       'publicKey': publicKey,
       'privateKey': privateKey,
     });
   } on PlatformException catch (e) {
-    print("Failed to setSSHKeys: '${e.message}'.");
+    Fimber.d("Failed to setSSHKeys: '${e.message}'.");
     rethrow;
   }
 }

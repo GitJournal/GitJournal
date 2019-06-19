@@ -1,3 +1,4 @@
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
@@ -26,7 +27,7 @@ Future<bool> shouldEnableAnalytics() async {
     final bool result = await _platform.invokeMethod('shouldEnableAnalytics');
     return result;
   } on MissingPluginException catch (e) {
-    print("shouldEnableAnalytics: $e");
+    Fimber.d("shouldEnableAnalytics: $e");
     return false;
   }
 }
@@ -49,7 +50,7 @@ SnackBar buildUndoDeleteSnackbar(
     action: SnackBarAction(
       label: "Undo",
       onPressed: () {
-        print("Undoing delete");
+        Fimber.d("Undoing delete");
         var stateContainer = StateContainer.of(context);
         stateContainer.undoRemoveNote(deletedNote, deletedNoteIndex);
       },
