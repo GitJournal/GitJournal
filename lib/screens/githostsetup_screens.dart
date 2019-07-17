@@ -286,15 +286,16 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     );
 
     return WillPopScope(
-      onWillPop: () {
+      onWillPop: () async {
         if (_currentPageIndex != 0) {
           pageController.previousPage(
             duration: Duration(milliseconds: 200),
             curve: Curves.easeIn,
           );
-        } else {
-          Navigator.pop(context);
+          return false;
         }
+
+        return true;
       },
       child: scaffold,
     );

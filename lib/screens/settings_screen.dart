@@ -52,6 +52,7 @@ class SettingsListState extends State<SettingsList> {
           if (value.isEmpty) {
             return 'Please enter a name';
           }
+          return null;
         },
         textInputAction: TextInputAction.done,
         onFieldSubmitted: saveGitAuthor,
@@ -89,6 +90,7 @@ class SettingsListState extends State<SettingsList> {
           if (!emailValid) {
             return 'Please enter a valid email';
           }
+          return null;
         },
         textInputAction: TextInputAction.done,
         onFieldSubmitted: saveGitAuthorEmail,

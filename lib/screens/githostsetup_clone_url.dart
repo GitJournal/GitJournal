@@ -62,6 +62,8 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
           if (!regExp.hasMatch(value)) {
             return "Invalid Input";
           }
+
+          return null;
         },
         focusNode: inputFormFocus,
         textInputAction: TextInputAction.done,
@@ -158,6 +160,8 @@ class GitCloneUrlKnownProviderPageState
           if (!regExp.hasMatch(value)) {
             return "Invalid Input";
           }
+
+          return null;
         },
         focusNode: inputFormFocus,
         textInputAction: TextInputAction.done,
