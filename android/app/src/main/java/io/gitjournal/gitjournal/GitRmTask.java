@@ -5,13 +5,11 @@ import android.util.Log;
 
 import java.io.File;
 
-import io.flutter.plugin.common.MethodChannel.Result;
-
 public class GitRmTask extends AsyncTask<String, Void, Void> {
     private final static String TAG = "GitRm";
-    private Result result;
+    private AnyThreadResult result;
 
-    public GitRmTask(Result _result) {
+    public GitRmTask(AnyThreadResult _result) {
         result = _result;
     }
 

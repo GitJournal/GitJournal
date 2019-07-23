@@ -64,7 +64,8 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
 
             String cloneLocation = filesDir + "/" + folderName;
 
-            new GitCloneTask(result).execute(cloneUrl, cloneLocation, publicKeyPath, privateKeyPath);
+            AnyThreadResult anyResult = new AnyThreadResult(result);
+            new GitCloneTask(anyResult).execute(cloneUrl, cloneLocation, publicKeyPath, privateKeyPath);
             return;
         } else if (call.method.equals("gitPull")) {
             String folderName = call.argument("folderName");
@@ -86,7 +87,8 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
 
             String cloneLocation = filesDir + "/" + folderName;
 
-            new GitPullTask(result).execute(cloneLocation, publicKeyPath, privateKeyPath, authorName, authorEmail);
+            AnyThreadResult anyResult = new AnyThreadResult(result);
+            new GitPullTask(anyResult).execute(cloneLocation, publicKeyPath, privateKeyPath, authorName, authorEmail);
             return;
         } else if (call.method.equals("gitPush")) {
             String folderName = call.argument("folderName");
@@ -98,7 +100,8 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
 
             String cloneLocation = filesDir + "/" + folderName;
 
-            new GitPushTask(result).execute(cloneLocation, publicKeyPath, privateKeyPath);
+            AnyThreadResult anyResult = new AnyThreadResult(result);
+            new GitPushTask(anyResult).execute(cloneLocation, publicKeyPath, privateKeyPath);
             return;
         } else if (call.method.equals("gitAdd")) {
             String folderName = call.argument("folderName");
@@ -115,7 +118,8 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
 
             String cloneLocation = filesDir + "/" + folderName;
 
-            new GitAddTask(result).execute(cloneLocation, filePattern);
+            AnyThreadResult anyResult = new AnyThreadResult(result);
+            new GitAddTask(anyResult).execute(cloneLocation, filePattern);
             return;
         } else if (call.method.equals("gitRm")) {
             String folderName = call.argument("folderName");
@@ -132,7 +136,8 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
 
             String cloneLocation = filesDir + "/" + folderName;
 
-            new GitRmTask(result).execute(cloneLocation, filePattern);
+            AnyThreadResult anyResult = new AnyThreadResult(result);
+            new GitRmTask(anyResult).execute(cloneLocation, filePattern);
             return;
         } else if (call.method.equals("gitCommit")) {
             String folderName = call.argument("folderName");
@@ -160,7 +165,8 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
 
             String cloneLocation = filesDir + "/" + folderName;
 
-            new GitCommitTask(result).execute(cloneLocation, authorName, authorEmail, message, dateTimeStr);
+            AnyThreadResult anyResult = new AnyThreadResult(result);
+            new GitCommitTask(anyResult).execute(cloneLocation, authorName, authorEmail, message, dateTimeStr);
             return;
         } else if (call.method.equals("gitInit")) {
             String folderName = call.argument("folderName");
@@ -172,7 +178,8 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
 
             String initLocation = filesDir + "/" + folderName;
 
-            new GitInitTask(result).execute(initLocation);
+            AnyThreadResult anyResult = new AnyThreadResult(result);
+            new GitInitTask(anyResult).execute(initLocation);
             return;
         } else if (call.method.equals("gitResetLast")) {
             String folderName = call.argument("folderName");
@@ -184,7 +191,8 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
 
             String cloneLocation = filesDir + "/" + folderName;
 
-            new GitResetLastTask(result).execute(cloneLocation);
+            AnyThreadResult anyResult = new AnyThreadResult(result);
+            new GitResetLastTask(anyResult).execute(cloneLocation);
             return;
         } else if (call.method.equals("generateSSHKeys")) {
             String comment = call.argument("comment");
@@ -193,7 +201,8 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
                 comment = "Generated on Android";
             }
 
-            new GenerateSSHKeysTask(result).execute(sshKeysLocation, comment);
+            AnyThreadResult anyResult = new AnyThreadResult(result);
+            new GenerateSSHKeysTask(anyResult).execute(sshKeysLocation, comment);
             return;
         } else if (call.method.equals("getSSHPublicKey")) {
             String publicKey = "";

@@ -5,13 +5,11 @@ import android.util.Log;
 
 import java.io.File;
 
-import io.flutter.plugin.common.MethodChannel.Result;
-
 public class GitCloneTask extends AsyncTask<String, Void, Void> {
     private final static String TAG = "GitClone";
-    private Result result;
+    private AnyThreadResult result;
 
-    public GitCloneTask(Result _result) {
+    public GitCloneTask(AnyThreadResult _result) {
         result = _result;
     }
 

@@ -2,13 +2,11 @@ package io.gitjournal.gitjournal;
 
 import android.os.AsyncTask;
 
-import io.flutter.plugin.common.MethodChannel.Result;
-
 public class GitResetLastTask extends AsyncTask<String, Void, Void> {
     private final static String TAG = "GitResetLastTask";
-    private Result result;
+    private AnyThreadResult result;
 
-    public GitResetLastTask(Result _result) {
+    public GitResetLastTask(AnyThreadResult _result) {
         result = _result;
     }
 

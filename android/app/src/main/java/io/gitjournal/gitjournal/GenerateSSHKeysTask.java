@@ -9,13 +9,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import io.flutter.plugin.common.MethodChannel.Result;
-
 public class GenerateSSHKeysTask extends AsyncTask<String, Void, Void> {
     private final static String TAG = "GenerateSSHKeys";
-    private Result result;
+    private AnyThreadResult result;
 
-    public GenerateSSHKeysTask(Result _result) {
+    public GenerateSSHKeysTask(AnyThreadResult _result) {
         result = _result;
     }
 

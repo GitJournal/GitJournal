@@ -3,13 +3,11 @@ package io.gitjournal.gitjournal;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import io.flutter.plugin.common.MethodChannel.Result;
-
 public class GitInitTask extends AsyncTask<String, Void, Void> {
     private final static String TAG = "GitInit";
-    private Result result;
+    private AnyThreadResult result;
 
-    public GitInitTask(Result _result) {
+    public GitInitTask(AnyThreadResult _result) {
         result = _result;
     }
 
