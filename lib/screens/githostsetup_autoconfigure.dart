@@ -1,6 +1,7 @@
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:function_types/function_types.dart';
+import 'package:journal/analytics.dart';
 import 'package:journal/apis/git.dart';
 import 'package:journal/apis/githost_factory.dart';
 import 'package:journal/settings.dart';
@@ -91,6 +92,12 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
           Fimber.d("GitHostSetupAutoConfigure: " + e.toString());
           setState(() {
             errorMessage = widget.gitHostType.toString() + ": " + e.toString();
+            getAnalytics().logEvent(
+              name: "githostsetup_error",
+              parameters: <String, dynamic>{
+                'errorMessage': errorMessage,
+              },
+            );
           });
           return;
         }
@@ -101,6 +108,12 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
       Fimber.d("GitHostSetupAutoConfigure: " + e.toString());
       setState(() {
         errorMessage = widget.gitHostType.toString() + ": " + e.toString();
+        getAnalytics().logEvent(
+          name: "githostsetup_error",
+          parameters: <String, dynamic>{
+            'errorMessage': errorMessage,
+          },
+        );
       });
     }
   }
