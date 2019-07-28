@@ -43,7 +43,7 @@ class AppDrawer extends StatelessWidget {
         children: <Widget>[
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Theme.of(context).buttonColor,
+              color: Theme.of(context).highlightColor,
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
