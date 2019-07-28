@@ -56,7 +56,7 @@ class GitApp extends StatelessWidget {
         child: Text("Git Clone"),
         onPressed: () async {
           try {
-            await GitRepo.clone(cloneUrl, basePath);
+            await GitRepo.clone(basePath, cloneUrl);
             _sendSuccess();
           } on GitException catch (ex) {
             print(ex);
