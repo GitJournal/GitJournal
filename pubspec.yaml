@@ -9,7 +9,7 @@ dependencies:
   path: ^1.6.2
   uuid: ^2.0.1
   yaml: ^2.1.15
-  firebase_analytics: ^3.0.1
+  firebase_analytics: ^4.0.2
   flutter_crashlytics: ^1.0.0
   shared_preferences: ^0.5.2
   url_launcher: ^5.0.2
@@ -21,7 +21,7 @@ dependencies:
   launch_review: ^2.0.0
   device_info: ^0.4.0+1
   flutter_markdown: ^0.2.0
-  flutter_email_sender: ^2.0.2
+  flutter_email_sender: ^2.0.3
   function_types: ^0.0.2
   auto_size_text: ^2.0.1
   fimber: ^0.3.0

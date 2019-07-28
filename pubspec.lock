@@ -119,7 +119,7 @@ packages:
       name: firebase_analytics
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.3"
+    version: "4.0.2"
   flutter:
     dependency: "direct main"
     description: flutter
