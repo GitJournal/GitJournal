@@ -6,7 +6,7 @@ BUILD_NUM=`curl -s 'https://circleci.com/api/v1.1/project/github/GitJournal/GitJ
 echo "CircleCI Buld Number: $BUILD_NUM"
 
 URL=`curl -s https://circleci.com/api/v1.1/project/github/GitJournal/GitJournal/$BUILD_NUM/artifacts | jq .[0] | jq -r .url`
-APK_LOCATION="/tmp/gitjournal.apk"
+APK_LOCATION="/tmp/gitjournal.aab"
 
 echo "Downloading $URL"
 curl "$URL" -o "$APK_LOCATION"

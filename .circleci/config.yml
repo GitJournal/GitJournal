@@ -27,8 +27,8 @@ jobs:
           name: Build
           command: ./scripts/build.sh
       - store_artifacts:
-          path: build/app/outputs/apk/release/app-release.apk
-          destination: gitjournal.apk
+          path: build/app/outputs/bundle/release/app.aab
+          destination: gitjournal.aab
       - run:
           name: Upload Crashlytics Symbols
           command: ./scripts/android_crashlytics.sh
