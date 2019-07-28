@@ -15,8 +15,6 @@ public class GitAddTask extends AsyncTask<String, Void, Void> {
         final String cloneDirPath = params[0];
         final String filePattern = params[1];
 
-        Log.d("GitClone Directory", cloneDirPath);
-
         Git git = new Git();
         String errorStr = git.add(cloneDirPath, filePattern);
         if (!errorStr.isEmpty()) {

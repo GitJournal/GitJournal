@@ -25,7 +25,6 @@ public class GenerateSSHKeysTask extends AsyncTask<String, Void, Void> {
         }
 
         String comment = params[1];
-        Log.d(TAG, "Comment: " + comment);
 
         final String privateKeyPath = keysDir + "/id_rsa";
         final String publicKeyPath = keysDir + "/id_rsa.pub";
@@ -37,7 +36,7 @@ public class GenerateSSHKeysTask extends AsyncTask<String, Void, Void> {
             return null;
         }
 
-        io.gitjournal.gitjournal.Git git = new io.gitjournal.gitjournal.Git();
+        Git git = new Git();
         String errorStr = git.generateKeys(privateKeyPath, publicKeyPath, comment);
         if (!errorStr.isEmpty()) {
             result.error("FAILED", errorStr, null);

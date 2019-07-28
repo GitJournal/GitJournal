@@ -1,7 +1,6 @@
 package io.gitjournal.gitjournal;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.io.File;
 
@@ -21,7 +20,6 @@ public class GitCommitTask extends AsyncTask<String, Void, Void> {
         final String commitDateTimeStr = params[4];
 
         File cloneDir = new File(cloneDirPath);
-        Log.d("GitClone Directory", cloneDirPath);
 
         Git git = new Git();
         String errorStr = git.commit(cloneDirPath, authorName, authorEmail, message);

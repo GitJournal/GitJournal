@@ -1,7 +1,6 @@
 package io.gitjournal.gitjournal;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 public class GitPullTask extends AsyncTask<String, Void, Void> {
     private final static String TAG = "GitPull";
@@ -17,8 +16,6 @@ public class GitPullTask extends AsyncTask<String, Void, Void> {
         final String privateKeyPath = params[2];
         final String authorName = params[3];
         final String authorEmail = params[4];
-
-        Log.d("GitClone Directory", cloneDirPath);
 
         Git git = new Git();
         git.setSshKeys(publicKeyPath, privateKeyPath, "");

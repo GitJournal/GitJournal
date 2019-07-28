@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Map;
 
 import io.flutter.app.FlutterActivity;
 import io.flutter.plugin.common.MethodCall;
@@ -45,6 +46,14 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
         final String sshKeysLocation = filesDir + "/ssh";
         final String privateKeyPath = sshKeysLocation + "/id_rsa";
         final String publicKeyPath = sshKeysLocation + "/id_rsa.pub";
+
+        Log.d("GitJournalAndroid", "Called method " + call.method);
+        if (call.arguments instanceof Map) {
+            Map<String, Object> map = (Map<String, Object>) call.arguments;
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                Log.d("GitJournalAndroid", ".  " + entry.getKey() + ": " + entry.getValue().toString());
+            }
+        }
 
         if (call.method.equals("getBaseDirectory")) {
             result.success(filesDir);

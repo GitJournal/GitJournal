@@ -1,7 +1,6 @@
 package io.gitjournal.gitjournal;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.io.File;
 
@@ -18,7 +17,6 @@ public class GitRmTask extends AsyncTask<String, Void, Void> {
         final String filePattern = params[1];
 
         File cloneDir = new File(cloneDirPath);
-        Log.d("GitClone Directory", cloneDirPath);
 
         Git git = new Git();
         String errorStr = git.rm(cloneDirPath, filePattern);
