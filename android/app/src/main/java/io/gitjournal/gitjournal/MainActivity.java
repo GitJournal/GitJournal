@@ -51,7 +51,12 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
         if (call.arguments instanceof Map) {
             Map<String, Object> map = (Map<String, Object>) call.arguments;
             for (Map.Entry<String, Object> entry : map.entrySet()) {
-                Log.d("GitJournalAndroid", ".  " + entry.getKey() + ": " + entry.getValue().toString());
+                Object val = entry.getValue();
+                String objVal = "";
+                if (val != null) {
+                    objVal = val.toString();
+                }
+                Log.d("GitJournalAndroid", ".  " + entry.getKey() + ": " + val);
             }
         }
 
