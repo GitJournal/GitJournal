@@ -5,6 +5,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:journal/note.dart';
 import 'package:journal/state_container.dart';
 import 'package:journal/utils.dart';
+import 'package:journal/settings.dart';
 import 'package:journal/widgets/note_header.dart';
 import 'package:share/share.dart';
 
@@ -133,7 +134,8 @@ class NoteViewer extends StatelessWidget {
     ThemeData theme = Theme.of(context);
     theme = theme.copyWith(
       textTheme: theme.textTheme.copyWith(
-        body1: theme.textTheme.body1.copyWith(fontSize: 18.0),
+        body1: theme.textTheme.body1
+            .copyWith(fontSize: Settings.instance.getNoteViewerFontSize()),
       ),
     );
 
