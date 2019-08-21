@@ -33,5 +33,5 @@ jobs:
           name: Upload Crashlytics Symbols
           command: ./scripts/android_crashlytics.sh
       - run:
-          name: Publish Beta
-          command: cd android && fastlane betaBuild
+          name: Publish Alpha
+          command: cd android && fastlane alphaBuild
