@@ -89,33 +89,28 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
           }
           Settings.instance.save();
         } on GitHostException catch (e) {
-          Fimber.d("GitHostSetupAutoConfigure: " + e.toString());
-          setState(() {
-            errorMessage = widget.gitHostType.toString() + ": " + e.toString();
-            getAnalytics().logEvent(
-              name: "githostsetup_error",
-              parameters: <String, dynamic>{
-                'errorMessage': errorMessage,
-              },
-            );
-          });
+          _handleGitHostException(e);
           return;
         }
         widget.onDone(repo.cloneUrl);
       });
       gitHost.launchOAuthScreen();
     } on GitHostException catch (e) {
-      Fimber.d("GitHostSetupAutoConfigure: " + e.toString());
-      setState(() {
-        errorMessage = widget.gitHostType.toString() + ": " + e.toString();
-        getAnalytics().logEvent(
-          name: "githostsetup_error",
-          parameters: <String, dynamic>{
-            'errorMessage': errorMessage,
-          },
-        );
-      });
+      _handleGitHostException(e);
     }
+  }
+
+  void _handleGitHostException(GitHostException e) {
+    Fimber.d("GitHostSetupAutoConfigure: " + e.toString());
+    setState(() {
+      errorMessage = widget.gitHostType.toString() + ": " + e.toString();
+      getAnalytics().logEvent(
+        name: "githostsetup_error",
+        parameters: <String, dynamic>{
+          'errorMessage': errorMessage,
+        },
+      );
+    });
   }
 
   @override
