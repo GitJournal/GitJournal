@@ -1,5 +1,4 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/foundation.dart';
 
 enum NoteViewerFontSize { Normal, Small, ExtraSmall, Large, ExtraLarge }
 
