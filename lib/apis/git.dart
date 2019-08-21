@@ -5,13 +5,24 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
+
 const _platform = const MethodChannel('gitjournal.io/git');
+
+Future invokePlatformMethod(String method, [dynamic arguments]) async {
+  try {
+    return await _platform.invokeMethod(method, arguments);
+  } on PlatformException catch (e, stacktrace) {
+    await FlutterCrashlytics().logException(e, stacktrace);
+    throw e;
+  }
+}
 
 ///
 /// This gives us the directory where all the git repos will be stored
 ///
 Future<Directory> getGitBaseDirectory() async {
-  final String path = await _platform.invokeMethod('getBaseDirectory');
+  final String path = await invokePlatformMethod('getBaseDirectory');
   if (path == null) {
     return null;
   }
@@ -31,7 +42,7 @@ class GitRepo {
 
   static Future<void> clone(String folderName, String cloneUrl) async {
     try {
-      await _platform.invokeMethod('gitClone', {
+      await invokePlatformMethod('gitClone', {
         'cloneUrl': cloneUrl,
         'folderName': folderName,
       });
@@ -44,7 +55,7 @@ class GitRepo {
 
   static Future<void> init(String folderName) async {
     try {
-      await _platform.invokeMethod('gitInit', {
+      await invokePlatformMethod('gitInit', {
         'folderName': folderName,
       });
     } on PlatformException catch (e) {
@@ -55,7 +66,7 @@ class GitRepo {
 
   Future<void> pull() async {
     try {
-      await _platform.invokeMethod('gitPull', {
+      await invokePlatformMethod('gitPull', {
         'folderName': folderName,
         'authorName': authorName,
         'authorEmail': authorEmail,
@@ -69,7 +80,7 @@ class GitRepo {
 
   Future<void> add(String filePattern) async {
     try {
-      await _platform.invokeMethod('gitAdd', {
+      await invokePlatformMethod('gitAdd', {
         'folderName': folderName,
         'filePattern': filePattern,
       });
@@ -80,7 +91,7 @@ class GitRepo {
 
   Future<void> rm(String filePattern) async {
     try {
-      await _platform.invokeMethod('gitRm', {
+      await invokePlatformMethod('gitRm', {
         'folderName': folderName,
         'filePattern': filePattern,
       });
@@ -91,7 +102,7 @@ class GitRepo {
 
   Future<void> push() async {
     try {
-      await _platform.invokeMethod('gitPush', {
+      await invokePlatformMethod('gitPush', {
         'folderName': folderName,
       });
     } on PlatformException catch (e) {
@@ -103,7 +114,7 @@ class GitRepo {
   // FIXME: Change this method to just resetHard
   Future<void> resetLast() async {
     try {
-      await _platform.invokeMethod('gitResetLast', {
+      await invokePlatformMethod('gitResetLast', {
         'folderName': folderName,
       });
     } on PlatformException catch (e) {
@@ -116,7 +127,7 @@ class GitRepo {
   // FIXME: Actually implement the 'when'
   Future<void> commit({@required String message, String when}) async {
     try {
-      await _platform.invokeMethod('gitCommit', {
+      await invokePlatformMethod('gitCommit', {
         'folderName': folderName,
         'authorName': authorName,
         'authorEmail': authorEmail,
@@ -132,7 +143,7 @@ class GitRepo {
 Future<String> generateSSHKeys({@required String comment}) async {
   Fimber.d("generateSSHKeyss: " + comment);
   try {
-    String publicKey = await _platform.invokeMethod('generateSSHKeys', {
+    String publicKey = await invokePlatformMethod('generateSSHKeys', {
       'comment': comment,
     });
     Fimber.d("Public Key " + publicKey);
@@ -142,7 +153,7 @@ Future<String> generateSSHKeys({@required String comment}) async {
   }
 
   try {
-    String publicKey = await _platform.invokeMethod('getSSHPublicKey');
+    String publicKey = await invokePlatformMethod('getSSHPublicKey');
     Fimber.d("Public Key " + publicKey);
     return publicKey;
   } on PlatformException catch (e) {
@@ -158,7 +169,7 @@ Future<void> setSshKeys({
 }) async {
   Fimber.d("setSshKeys");
   try {
-    await _platform.invokeMethod('setSshKeys', {
+    await invokePlatformMethod('setSshKeys', {
       'publicKey': publicKey,
       'privateKey': privateKey,
     });
