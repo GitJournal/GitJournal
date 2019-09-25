@@ -125,13 +125,10 @@ class NoteSearch extends SearchDelegate<Note> {
     final appState = container.appState;
 
     // TODO: This should be made far more efficient
-    List<Note> filteredNotes = [];
     var q = query.toLowerCase();
-    appState.notes.forEach((note) {
-      if (note.body.toLowerCase().contains(query)) {
-        filteredNotes.add(note);
-      }
-    });
+    var filteredNotes = appState.notes.where((note) {
+      return note.body.toLowerCase().contains(q);
+    }).toList();
 
     Widget journalList = JournalList(
       notes: filteredNotes,
