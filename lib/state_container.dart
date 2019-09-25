@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:journal/analytics.dart';
 import 'package:journal/apis/git_migration.dart';
 import 'package:journal/appstate.dart';
-import 'package:journal/datetime_utils.dart';
 import 'package:journal/note.dart';
+import 'package:journal/note_fileName.dart';
 import 'package:journal/storage/git_storage.dart';
 import 'package:journal/storage/notes_repository.dart';
 import 'package:path/path.dart' as p;
@@ -217,7 +217,7 @@ class StateContainerState extends State<StateContainer> {
     Fimber.d("State Container insertNote");
     setState(() {
       if (note.filePath == null || note.filePath.isEmpty) {
-        note.filePath = toIso8601WithTimezone(note.created) + '.md';
+        note.filePath = getFileName(note);
       }
       appState.notes.insert(index, note);
       appState.hasJournalEntries = true;

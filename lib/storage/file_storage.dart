@@ -8,8 +8,6 @@ import 'package:journal/storage/notes_repository.dart';
 import 'package:journal/storage/serializers.dart';
 import 'package:path/path.dart' as p;
 
-typedef String NoteFileNameGenerator(Note note);
-
 /// Each Note is saved in a different file
 /// Each note must have a fileName which ends in a .md
 class FileStorage implements NoteRepository {

@@ -1,5 +1,9 @@
 import 'package:intl/intl.dart';
 
+String toIso8601(DateTime dt) {
+  return DateFormat("yyyy-MM-ddTHH:mm:ss").format(dt);
+}
+
 String toIso8601WithTimezone(DateTime dt) {
   var result = DateFormat("yyyy-MM-ddTHH:mm:ss").format(dt);
 
