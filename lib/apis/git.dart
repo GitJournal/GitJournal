@@ -9,11 +9,20 @@ import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 
 const _platform = const MethodChannel('gitjournal.io/git');
 
+bool shouldIgnorePlatformException(PlatformException ex) {
+  if (ex.message.contains("failed to resolve address for")) {
+    return true;
+  }
+  return false;
+}
+
 Future invokePlatformMethod(String method, [dynamic arguments]) async {
   try {
     return await _platform.invokeMethod(method, arguments);
   } on PlatformException catch (e, stacktrace) {
-    await FlutterCrashlytics().logException(e, stacktrace);
+    if (!shouldIgnorePlatformException(e)) {
+      await FlutterCrashlytics().logException(e, stacktrace);
+    }
     throw e;
   }
 }
