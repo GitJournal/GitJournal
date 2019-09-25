@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:journal/note.dart';
 import 'package:journal/apis/git.dart';
 import 'package:journal/screens/note_editor.dart';
 import 'package:journal/screens/note_viewer.dart';
@@ -26,9 +27,9 @@ class HomeScreen extends StatelessWidget {
       noteSelectedFunction: (noteIndex) {
         var route = MaterialPageRoute(
           builder: (context) => NoteBrowsingScreen(
-                notes: appState.notes,
-                noteIndex: noteIndex,
-              ),
+            notes: appState.notes,
+            noteIndex: noteIndex,
+          ),
         );
         Navigator.of(context).push(route);
       },
@@ -50,6 +51,17 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('GitJournal'),
         leading: appBarMenuButton,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: NoteSearch(),
+              );
+            },
+          )
+        ],
       ),
       floatingActionButton: createButton,
       body: Center(
@@ -72,5 +84,70 @@ class HomeScreen extends StatelessWidget {
   void _newPost(BuildContext context) {
     var route = MaterialPageRoute(builder: (context) => NoteEditor());
     Navigator.of(context).push(route);
+  }
+}
+
+class NoteSearch extends SearchDelegate<Note> {
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.close),
+        onPressed: () {
+          query = '';
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return buildJournalList(context, query);
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    if (query.isEmpty) {
+      return Container();
+    }
+    return buildJournalList(context, query);
+  }
+
+  JournalList buildJournalList(BuildContext context, String query) {
+    final container = StateContainer.of(context);
+    final appState = container.appState;
+
+    // TODO: This should be made far more efficient
+    List<Note> filteredNotes = [];
+    var q = query.toLowerCase();
+    appState.notes.forEach((note) {
+      if (note.body.toLowerCase().contains(query)) {
+        filteredNotes.add(note);
+      }
+    });
+
+    Widget journalList = JournalList(
+      notes: filteredNotes,
+      noteSelectedFunction: (noteIndex) {
+        var route = MaterialPageRoute(
+          builder: (context) => NoteBrowsingScreen(
+            notes: filteredNotes,
+            noteIndex: noteIndex,
+          ),
+        );
+        Navigator.of(context).push(route);
+      },
+    );
+    return journalList;
   }
 }
