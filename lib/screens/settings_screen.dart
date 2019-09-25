@@ -3,6 +3,7 @@ import 'package:journal/settings.dart';
 import 'package:journal/utils.dart';
 
 import 'package:preferences/preferences.dart';
+import 'package:dynamic_theme/dynamic_theme.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override
@@ -143,6 +144,24 @@ class SettingsListState extends State<SettingsList> {
 
     return PreferencePage([
       PreferenceTitle('Display Settings'),
+      DropdownPreference(
+        'Theme',
+        'theme',
+        defaultVal: "Light",
+        values: ["Light", "Dark"],
+        onChange: (newVal) {
+          var dynamicTheme = DynamicTheme.of(context);
+          switch (newVal) {
+            case "Dark":
+              dynamicTheme.setBrightness(Brightness.dark);
+              break;
+            case "Light":
+            case "default":
+              dynamicTheme.setBrightness(Brightness.light);
+              break;
+          }
+        },
+      ),
       DropdownPreference(
         'Font Size',
         'font_size',

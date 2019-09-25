@@ -12,6 +12,7 @@ import 'package:journal/settings.dart';
 import 'package:journal/state_container.dart';
 import 'package:journal/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dynamic_theme/dynamic_theme.dart';
 
 import 'screens/githostsetup_screens.dart';
 import 'screens/onboarding_screens.dart';
@@ -111,6 +112,32 @@ class JournalApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return DynamicTheme(
+      defaultBrightness: Brightness.light,
+      data: (brightness) {
+        if (brightness == Brightness.light) {
+          return ThemeData(
+            brightness: Brightness.light,
+            primaryColor: Color(0xFF66bb6a),
+            primaryColorLight: Color(0xFF98ee99),
+            primaryColorDark: Color(0xFF338a3e),
+            accentColor: Color(0xff6d4c41),
+          );
+        } else {
+          return ThemeData(
+            brightness: Brightness.dark,
+            primaryColor: Color(0xFF66bb6a),
+            primaryColorLight: Color(0xFF98ee99),
+            primaryColorDark: Color(0xFF338a3e),
+            accentColor: Color(0xff6d4c41),
+          );
+        }
+      },
+      themedWidgetBuilder: buildApp,
+    );
+  }
+
+  MaterialApp buildApp(BuildContext context, ThemeData themeData) {
     var stateContainer = StateContainer.of(context);
 
     var initialRoute = '/';
@@ -121,13 +148,7 @@ class JournalApp extends StatelessWidget {
     return MaterialApp(
       key: ValueKey("App"),
       title: 'GitJournal',
-      theme: ThemeData(
-        brightness: Brightness.light,
-        primaryColor: Color(0xFF66bb6a),
-        primaryColorLight: Color(0xFF98ee99),
-        primaryColorDark: Color(0xFF338a3e),
-        accentColor: Color(0xff6d4c41),
-      ),
+      theme: themeData,
       navigatorObservers: <NavigatorObserver>[JournalApp.observer],
       initialRoute: initialRoute,
       routes: {
