@@ -117,9 +117,6 @@ class NoteSearch extends SearchDelegate<Note> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    if (query.isEmpty) {
-      return Container();
-    }
     return buildJournalList(context, query);
   }
 
