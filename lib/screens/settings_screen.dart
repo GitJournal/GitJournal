@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:journal/settings.dart';
 import 'package:journal/utils.dart';
 
+import 'package:preferences/preferences.dart';
+
 class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,7 @@ class SettingsList extends StatefulWidget {
 class SettingsListState extends State<SettingsList> {
   final gitAuthorKey = GlobalKey<FormFieldState<String>>();
   final gitAuthorEmailKey = GlobalKey<FormFieldState<String>>();
+  final fontSizeKey = GlobalKey<FormFieldState<String>>();
 
   @override
   Widget build(BuildContext context) {
@@ -104,18 +107,84 @@ class SettingsListState extends State<SettingsList> {
       },
     );
 
-    var listView = ListView(children: <Widget>[
-      SettingsHeader("Git Settings"),
+    var fontSizeForm = Form(
+      child: TextFormField(
+        key: fontSizeKey,
+        style: Theme.of(context).textTheme.title,
+        decoration: const InputDecoration(
+          icon: Icon(Icons.email),
+          hintText: 'Who should author the changes?',
+          labelText: 'Git Author Email',
+        ),
+        validator: (String value) {
+          value = value.trim();
+          if (value.isEmpty) {
+            return 'Please enter an email';
+          }
+
+          bool emailValid =
+              RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
+          if (!emailValid) {
+            return 'Please enter a valid email';
+          }
+          return null;
+        },
+        textInputAction: TextInputAction.done,
+        onFieldSubmitted: saveGitAuthorEmail,
+        onSaved: saveGitAuthorEmail,
+        initialValue: Settings.instance.gitAuthorEmail,
+      ),
+      onChanged: () {
+        if (!gitAuthorEmailKey.currentState.validate()) return;
+        var gitAuthorEmail = gitAuthorEmailKey.currentState.value;
+        saveGitAuthorEmail(gitAuthorEmail);
+      },
+    );
+
+    return PreferencePage([
+      PreferenceTitle('Display Settings'),
+      DropdownPreference(
+        'Font Size',
+        'font_size',
+        defaultVal: "Normal",
+        values: [
+          "Extra Small",
+          "Small",
+          "Normal",
+          "Large",
+          "Extra Large",
+        ],
+        onChange: (newVal) {
+          NoteViewerFontSize fontSize;
+          switch (newVal) {
+            case "Extra Small":
+              fontSize = NoteViewerFontSize.ExtraSmall;
+              break;
+            case "Small":
+              fontSize = NoteViewerFontSize.Small;
+              break;
+            case "Normal":
+              fontSize = NoteViewerFontSize.Normal;
+              break;
+            case "Large":
+              fontSize = NoteViewerFontSize.Large;
+              break;
+            case "Extra Large":
+              fontSize = NoteViewerFontSize.ExtraLarge;
+              break;
+            default:
+              fontSize = NoteViewerFontSize.Normal;
+          }
+          Settings.instance.noteViewerFontSize = fontSize;
+          Settings.instance.save();
+        },
+      ),
+      PreferenceTitle("Git Settings"),
       ListTile(title: gitAuthorForm),
       ListTile(title: gitAuthorEmailForm),
       SizedBox(height: 16.0),
       VersionNumberTile(),
     ]);
-
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: listView,
-    );
   }
 }
 

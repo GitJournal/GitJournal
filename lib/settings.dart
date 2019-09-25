@@ -1,9 +1,14 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum NoteViewerFontSize { Normal, Small, ExtraSmall, Large, ExtraLarge }
+enum NoteFileNameFormat {
+  Iso8601,
+  Iso8601WithTimeZone,
+  Iso8601WithTimeZoneWithoutColon,
+}
 
 class Settings {
-  static List<Function> changeObservers;
+  static List<Function> changeObservers = [];
 
   // singleton
   static final Settings _singleton = Settings._internal();
@@ -14,6 +19,8 @@ class Settings {
   // Properties
   String gitAuthor = "GitJournal";
   String gitAuthorEmail = "app@gitjournal.io";
+  NoteFileNameFormat noteFileNameFormat =
+      NoteFileNameFormat.Iso8601WithTimeZone;
 
   NoteViewerFontSize noteViewerFontSize = NoteViewerFontSize.Normal;
 
@@ -21,17 +28,22 @@ class Settings {
     gitAuthor = pref.getString("gitAuthor") ?? gitAuthor;
     gitAuthorEmail = pref.getString("gitAuthorEmail") ?? gitAuthorEmail;
 
-    var str =
-        pref.getString("noteViewerFontSize") ?? noteViewerFontSize.toString();
-    print(NoteViewerFontSize.values);
+    String str;
+    str = pref.getString("noteViewerFontSize") ?? noteViewerFontSize.toString();
     noteViewerFontSize =
         NoteViewerFontSize.values.firstWhere((e) => e.toString() == str);
+
+    str = pref.getString("noteFileNameFormat") ?? noteFileNameFormat.toString();
+    noteFileNameFormat =
+        NoteFileNameFormat.values.firstWhere((e) => e.toString() == str);
   }
 
   Future save() async {
     var pref = await SharedPreferences.getInstance();
     pref.setString("gitAuthor", gitAuthor);
     pref.setString("gitAuthorEmail", gitAuthorEmail);
+    pref.setString("noteViewerFontSize", noteViewerFontSize.toString());
+    pref.setString("noteFileNameFormat", noteFileNameFormat.toString());
 
     // Shouldn't we check if something has actually changed?
     for (var f in changeObservers) {
