@@ -108,40 +108,6 @@ class SettingsListState extends State<SettingsList> {
       },
     );
 
-    var fontSizeForm = Form(
-      child: TextFormField(
-        key: fontSizeKey,
-        style: Theme.of(context).textTheme.title,
-        decoration: const InputDecoration(
-          icon: Icon(Icons.email),
-          hintText: 'Who should author the changes?',
-          labelText: 'Git Author Email',
-        ),
-        validator: (String value) {
-          value = value.trim();
-          if (value.isEmpty) {
-            return 'Please enter an email';
-          }
-
-          bool emailValid =
-              RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
-          if (!emailValid) {
-            return 'Please enter a valid email';
-          }
-          return null;
-        },
-        textInputAction: TextInputAction.done,
-        onFieldSubmitted: saveGitAuthorEmail,
-        onSaved: saveGitAuthorEmail,
-        initialValue: Settings.instance.gitAuthorEmail,
-      ),
-      onChanged: () {
-        if (!gitAuthorEmailKey.currentState.validate()) return;
-        var gitAuthorEmail = gitAuthorEmailKey.currentState.value;
-        saveGitAuthorEmail(gitAuthorEmail);
-      },
-    );
-
     return PreferencePage([
       PreferenceTitle('Display Settings'),
       DropdownPreference(
