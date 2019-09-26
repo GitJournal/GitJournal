@@ -6,10 +6,19 @@ import 'package:flutter/foundation.dart';
 import 'package:journal/apis/git.dart';
 import 'package:journal/note.dart';
 import 'package:journal/settings.dart';
-import 'package:journal/storage/notes_repository.dart';
 import 'package:path/path.dart' as p;
 
-class GitNoteRepository implements NoteRepository {
+class NoteRepoResult {
+  bool error;
+  String noteFilePath;
+
+  NoteRepoResult({
+    @required this.error,
+    this.noteFilePath,
+  });
+}
+
+class GitNoteRepository {
   final String dirName;
   final String subDirName;
   final String baseDirectory;
@@ -33,7 +42,6 @@ class GitNoteRepository implements NoteRepository {
     notesBasePath = p.join(baseDirectory, dirName, subDirName);
   }
 
-  @override
   Future<NoteRepoResult> addNote(Note note) async {
     return _addNote(note, "Added Journal Entry");
   }
@@ -48,7 +56,6 @@ class GitNoteRepository implements NoteRepository {
     return NoteRepoResult(noteFilePath: note.filePath, error: false);
   }
 
-  @override
   Future<NoteRepoResult> removeNote(Note note) async {
     var gitDir = p.join(baseDirectory, dirName);
     var pathSpec = note.filePath.replaceFirst(gitDir, "").substring(1);
@@ -67,12 +74,10 @@ class GitNoteRepository implements NoteRepository {
     return NoteRepoResult(error: false);
   }
 
-  @override
   Future<NoteRepoResult> updateNote(Note note) async {
     return _addNote(note, "Edited Journal Entry");
   }
 
-  @override
   Future<List<Note>> listNotes() async {
     final dir = Directory(notesBasePath);
 
@@ -91,7 +96,6 @@ class GitNoteRepository implements NoteRepository {
     return notes;
   }
 
-  @override
   Future<bool> sync() async {
     try {
       await _gitRepo.pull();

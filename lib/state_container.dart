@@ -10,7 +10,6 @@ import 'package:journal/appstate.dart';
 import 'package:journal/note.dart';
 import 'package:journal/note_fileName.dart';
 import 'package:journal/storage/git_storage.dart';
-import 'package:journal/storage/notes_repository.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 
