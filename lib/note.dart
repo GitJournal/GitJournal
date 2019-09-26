@@ -26,6 +26,10 @@ class Note implements Comparable<Note> {
     return data.body;
   }
 
+  set body(String newBody) {
+    data.body = newBody;
+  }
+
   bool hasValidDate() {
     // Arbitrary number, when we set the year = 0, it becomes 1, somehow
     return created.year > 10;
