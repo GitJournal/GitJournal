@@ -1,6 +1,9 @@
+import 'dart:collection';
 import 'dart:io';
 
+import 'package:journal/datetime_utils.dart';
 import 'package:journal/note.dart';
+import 'package:journal/storage/serializers.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
@@ -15,12 +18,20 @@ void main() {
       tempDir = await Directory.systemTemp.createTemp('__storage_test__');
 
       var dt = DateTime(2019, 12, 2, 5, 4, 2);
+      // ignore: prefer_collection_literals
+      var props = LinkedHashMap<String, dynamic>();
+      props['created'] = toIso8601WithTimezone(dt);
+
       n1Path = p.join(tempDir.path, "1.md");
       n2Path = p.join(tempDir.path, "2.md");
-      notes = <Note>[
-        Note(filePath: n1Path, body: "test", created: dt),
-        Note(filePath: n2Path, body: "test2", created: dt),
-      ];
+
+      var n1 = Note(n1Path);
+      n1.data = NoteData("test", props);
+
+      var n2 = Note(n2Path);
+      n2.data = NoteData("test2", props);
+
+      notes = [n1, n2];
     });
 
     tearDownAll(() async {
@@ -37,7 +48,7 @@ void main() {
 
       var loadedNotes = <Note>[];
       await Future.forEach(notes, (origNote) async {
-        var note = Note(filePath: origNote.filePath);
+        var note = Note(origNote.filePath);
         var r = await note.load();
         expect(r, NoteLoadState.Loaded);
 

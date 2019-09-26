@@ -1,11 +1,17 @@
+import 'dart:collection';
+
 import 'package:fimber/fimber.dart';
 import 'package:yaml/yaml.dart';
 
 class NoteData {
-  String body;
-  Map<String, dynamic> props = {};
+  String body = "";
+  LinkedHashMap<String, dynamic> props = LinkedHashMap<String, dynamic>();
 
-  NoteData(this.body, this.props);
+  NoteData([this.body, this.props]) {
+    body = body ?? "";
+    // ignore: prefer_collection_literals
+    props = props ?? LinkedHashMap<String, dynamic>();
+  }
 
   @override
   int get hashCode => body.hashCode ^ props.hashCode;
@@ -22,6 +28,11 @@ class NoteData {
     if (a.length != b.length) return false;
     return a.keys
         .every((dynamic key) => b.containsKey(key) && a[key] == b[key]);
+  }
+
+  @override
+  String toString() {
+    return 'NoteData{bodt: $body, props: $props}';
   }
 }
 
@@ -54,7 +65,7 @@ class MarkdownYAMLSerializer implements NoteSerializer {
       return NoteData(body, map);
     }
 
-    return NoteData(str, <String, dynamic>{});
+    return NoteData(str, LinkedHashMap<String, dynamic>());
   }
 
   @override

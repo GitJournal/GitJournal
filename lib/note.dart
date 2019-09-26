@@ -13,18 +13,17 @@ enum NoteLoadState {
 class Note implements Comparable<Note> {
   String filePath = "";
   DateTime created;
-  String body = "";
+  NoteData data = NoteData();
 
   var _loadState = NoteLoadState.None;
   var _serializer = MarkdownYAMLSerializer();
 
-  // FIXME: Make it an ordered Map
-  Map<String, dynamic> props = {};
-
-  Note({this.created, this.body, this.filePath, this.props}) {
+  Note([this.filePath]) {
     created = created ?? DateTime(0, 0, 0, 0, 0, 0, 0, 0);
-    props = props ?? <String, dynamic>{};
-    body = body ?? "";
+  }
+
+  String get body {
+    return data.body;
   }
 
   bool hasValidDate() {
@@ -45,15 +44,12 @@ class Note implements Comparable<Note> {
     }
 
     final string = await file.readAsString();
-    var noteData = _serializer.decode(string);
+    data = _serializer.decode(string);
 
-    body = noteData.body;
-    props = noteData.props;
-
-    if (props.containsKey("created")) {
-      var createdStr = props['created'].toString();
+    if (data.props.containsKey("created")) {
+      var createdStr = data.props['created'].toString();
       try {
-        created = DateTime.parse(props['created']).toLocal();
+        created = DateTime.parse(data.props['created']).toLocal();
       } catch (ex) {
         // Ignore it
       }
@@ -80,13 +76,16 @@ class Note implements Comparable<Note> {
   // FIXME: What about error handling?
   Future<void> save() async {
     assert(filePath != null);
+    assert(data != null);
+    assert(data.body != null);
+    assert(data.props != null);
 
     if (hasValidDate()) {
-      props['created'] = toIso8601WithTimezone(created);
+      data.props['created'] = toIso8601WithTimezone(created);
     }
 
     var file = File(filePath);
-    var contents = _serializer.encode(NoteData(body, props));
+    var contents = _serializer.encode(data);
     await file.writeAsString(contents);
   }
 
@@ -98,8 +97,7 @@ class Note implements Comparable<Note> {
 
   // FIXME: Can't this part be auto-generated?
   @override
-  int get hashCode =>
-      filePath.hashCode ^ created.hashCode ^ body.hashCode ^ props.hashCode;
+  int get hashCode => filePath.hashCode ^ created.hashCode ^ data.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -107,19 +105,11 @@ class Note implements Comparable<Note> {
       other is Note &&
           runtimeType == other.runtimeType &&
           filePath == other.filePath &&
-          body == other.body &&
-          created == other.created &&
-          _equalMaps(props, other.props);
-
-  static bool _equalMaps(Map a, Map b) {
-    if (a.length != b.length) return false;
-    return a.keys
-        .every((dynamic key) => b.containsKey(key) && a[key] == b[key]);
-  }
+          data == other.data;
 
   @override
   String toString() {
-    return 'Note{filePath: $filePath, body: $body, created: $created, props: $props}';
+    return 'Note{filePath: $filePath, created: $created, data: $data}';
   }
 
   @override

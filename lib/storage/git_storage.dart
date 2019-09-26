@@ -84,7 +84,7 @@ class GitNoteRepository {
     var notes = <Note>[];
     var lister = dir.list(recursive: false);
     await for (var fileEntity in lister) {
-      var note = Note(filePath: fileEntity.path);
+      var note = Note(fileEntity.path);
       if (!note.filePath.toLowerCase().endsWith('.md')) {
         continue;
       }

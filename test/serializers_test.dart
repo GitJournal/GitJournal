@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:journal/storage/serializers.dart';
 import 'package:journal/datetime_utils.dart';
 import 'package:test/test.dart';
@@ -10,7 +12,8 @@ DateTime nowWithoutMicro() {
 void main() {
   group('Serializers', () {
     var created = toIso8601WithTimezone(nowWithoutMicro());
-    var note = NoteData("This is the body", {"created": created});
+    var note =
+        NoteData("This is the body", LinkedHashMap.from({"created": created}));
 
     test('Markdown Serializer', () {
       var serializer = MarkdownYAMLSerializer();
@@ -47,7 +50,6 @@ Alright.""";
       expect(actualStr, note.body);
     });
 
-    /*
     test('Markdown Serializer YAML Order', () {
       var str = """---
 type: Journal
@@ -63,6 +65,5 @@ Alright.""";
 
       expect(actualStr, str);
     });
-    */
   });
 }
