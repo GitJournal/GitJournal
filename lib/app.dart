@@ -22,7 +22,6 @@ class JournalApp extends StatelessWidget {
     Fimber.plantTree(DebugTree.elapsed(useColors: true));
 
     var pref = await SharedPreferences.getInstance();
-    JournalApp.preferences = pref;
 
     var localGitRepoConfigured =
         pref.getBool("localGitRepoConfigured") ?? false;
@@ -108,7 +107,6 @@ class JournalApp extends StatelessWidget {
       FirebaseAnalyticsObserver(analytics: analytics);
 
   static bool isInDebugMode = false;
-  static SharedPreferences preferences;
 
   @override
   Widget build(BuildContext context) {
