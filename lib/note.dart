@@ -1,19 +1,32 @@
+import 'dart:io';
+
+import 'package:journal/storage/serializers.dart';
 import 'package:journal/datetime_utils.dart';
 
+enum NoteLoadState {
+  None,
+  Loading,
+  Loaded,
+  NotExists,
+}
+
 class Note implements Comparable<Note> {
-  String filePath;
+  String filePath = "";
   DateTime created;
-  String body;
+  String body = "";
 
-  Map<String, dynamic> extraProperties = <String, dynamic>{};
+  var _loadState = NoteLoadState.None;
+  var _serializer = MarkdownYAMLSerializer();
 
-  Note({this.created, this.body, this.filePath, this.extraProperties}) {
-    if (created == null) {
-      created = DateTime(0, 0, 0, 0, 0, 0, 0, 0);
-    }
-    if (extraProperties == null) {
-      extraProperties = <String, dynamic>{};
-    }
+  // FIXME: Make it an ordered Map
+  Map<String, dynamic> props = {};
+
+  Note({this.created, this.body, this.filePath, this.props}) {
+    created = created ?? DateTime(0, 0, 0, 0, 0, 0, 0, 0);
+    props = props ?? <String, dynamic>{};
+    body = body ?? "";
+
+    assert(filePath != null);
   }
 
   bool hasValidDate() {
@@ -21,18 +34,27 @@ class Note implements Comparable<Note> {
     return created.year > 10;
   }
 
-  factory Note.fromJson(Map<String, dynamic> json) {
-    String filePath = "";
-    if (json.containsKey("filePath")) {
-      filePath = json["filePath"].toString();
-      json.remove("filePath");
+  Future<NoteLoadState> load() async {
+    if (_loadState == NoteLoadState.Loading) {
+      return _loadState;
     }
 
-    DateTime created;
-    if (json.containsKey("created")) {
-      var createdStr = json['created'].toString();
+    final file = File(filePath);
+    if (!file.existsSync()) {
+      _loadState = NoteLoadState.NotExists;
+      return _loadState;
+    }
+
+    final string = await file.readAsString();
+    var noteData = _serializer.decode(string);
+
+    body = noteData.body;
+    props = noteData.props;
+
+    if (props.containsKey("created")) {
+      var createdStr = props['created'].toString();
       try {
-        created = DateTime.parse(json['created']).toLocal();
+        created = DateTime.parse(props['created']).toLocal();
       } catch (ex) {
         // Ignore it
       }
@@ -46,46 +68,37 @@ class Note implements Comparable<Note> {
           created = DateTime.parse(createdStr);
         }
       }
-
-      json.remove("created");
     }
 
     if (created == null) {
       created = DateTime(0, 0, 0, 0, 0, 0, 0, 0);
     }
 
-    String body = "";
-    if (json.containsKey("body")) {
-      body = json['body'];
-      json.remove("body");
-    }
-
-    return Note(
-      filePath: filePath,
-      created: created,
-      body: body,
-      extraProperties: json,
-    );
+    _loadState = NoteLoadState.Loaded;
+    return _loadState;
   }
 
-  Map<String, dynamic> toJson() {
-    var json = Map<String, dynamic>.from(extraProperties);
-    var createdStr = toIso8601WithTimezone(created);
-    if (!createdStr.startsWith("00")) {
-      json['created'] = createdStr;
+  // FIXME: What about error handling?
+  Future<void> save() async {
+    if (hasValidDate()) {
+      props['created'] = toIso8601WithTimezone(created);
     }
-    json['body'] = body;
-    json['filePath'] = filePath;
 
-    return json;
+    var file = File(filePath);
+    var contents = _serializer.encode(NoteData(body, props));
+    await file.writeAsString(contents);
   }
 
+  // FIXME: What about error handling?
+  Future<void> remove() async {
+    var file = File(filePath);
+    await file.delete();
+  }
+
+  // FIXME: Can't this part be auto-generated?
   @override
   int get hashCode =>
-      filePath.hashCode ^
-      created.hashCode ^
-      body.hashCode ^
-      extraProperties.hashCode;
+      filePath.hashCode ^ created.hashCode ^ body.hashCode ^ props.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -95,7 +108,7 @@ class Note implements Comparable<Note> {
           filePath == other.filePath &&
           body == other.body &&
           created == other.created &&
-          _equalMaps(extraProperties, other.extraProperties);
+          _equalMaps(props, other.props);
 
   static bool _equalMaps(Map a, Map b) {
     if (a.length != b.length) return false;
@@ -105,7 +118,7 @@ class Note implements Comparable<Note> {
 
   @override
   String toString() {
-    return 'Note{filePath: $filePath, body: $body, created: $created, extraProperties: $extraProperties}';
+    return 'Note{filePath: $filePath, body: $body, created: $created, props: $props}';
   }
 
   @override
