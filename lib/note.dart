@@ -33,7 +33,8 @@ class Note implements Comparable<Note> {
   }
 
   Future<NoteLoadState> load() async {
-    if (_loadState == NoteLoadState.Loading) {
+    if (_loadState == NoteLoadState.Loading ||
+        _loadState == NoteLoadState.Loaded) {
       return _loadState;
     }
 
