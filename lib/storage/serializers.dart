@@ -1,30 +1,38 @@
-import 'dart:convert';
-
 import 'package:fimber/fimber.dart';
-import 'package:journal/note.dart';
 import 'package:yaml/yaml.dart';
 
-abstract class NoteSerializer {
-  String encode(Note note);
-  Note decode(String str);
+class NoteData {
+  String body;
+  Map<String, dynamic> props = {};
+
+  NoteData(this.body, this.props);
+
+  @override
+  int get hashCode => body.hashCode ^ props.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is NoteData &&
+          runtimeType == other.runtimeType &&
+          body == other.body &&
+          _equalMaps(props, other.props);
+
+  static bool _equalMaps(Map a, Map b) {
+    if (a.length != b.length) return false;
+    return a.keys
+        .every((dynamic key) => b.containsKey(key) && a[key] == b[key]);
+  }
 }
 
-class JsonNoteSerializer implements NoteSerializer {
-  @override
-  Note decode(String str) {
-    final json = JsonDecoder().convert(str);
-    return Note.fromJson(json);
-  }
-
-  @override
-  String encode(Note note) {
-    return JsonEncoder().convert(note.toJson());
-  }
+abstract class NoteSerializer {
+  String encode(NoteData note);
+  NoteData decode(String str);
 }
 
 class MarkdownYAMLSerializer implements NoteSerializer {
   @override
-  Note decode(String str) {
+  NoteData decode(String str) {
     if (str.startsWith("---\n")) {
       var parts = str.split("---\n");
       var map = <String, dynamic>{};
@@ -41,27 +49,21 @@ class MarkdownYAMLSerializer implements NoteSerializer {
         Fimber.d(
             'MarkdownYAMLSerializer::decode("$yamlText") -> ${err.toString()}');
       }
-      map['body'] = parts[2].trimLeft();
+      var body = parts[2].trimLeft();
 
-      return Note.fromJson(map);
+      return NoteData(body, map);
     }
 
-    var map = <String, dynamic>{};
-    map['body'] = str;
-    return Note.fromJson(map);
+    return NoteData(str, <String, dynamic>{});
   }
 
   @override
-  String encode(Note note) {
+  String encode(NoteData note) {
     const serparator = '---\n';
     var str = "";
     str += serparator;
 
-    var metadata = note.toJson();
-    metadata.remove('body');
-    metadata.remove('filePath');
-
-    str += toYAML(metadata);
+    str += toYAML(note.props);
     str += serparator;
     str += '\n';
     str += note.body;

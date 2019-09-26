@@ -1,5 +1,5 @@
-import 'package:journal/note.dart';
 import 'package:journal/storage/serializers.dart';
+import 'package:journal/datetime_utils.dart';
 import 'package:test/test.dart';
 
 DateTime nowWithoutMicro() {
@@ -9,24 +9,13 @@ DateTime nowWithoutMicro() {
 
 void main() {
   group('Serializers', () {
-    var note = Note(
-        filePath: "2", body: "This is the body", created: nowWithoutMicro());
-
-    test('JSON Serializer', () {
-      var serializer = JsonNoteSerializer();
-      var str = serializer.encode(note);
-      var note2 = serializer.decode(str);
-
-      expect(note2, note);
-    });
+    var created = toIso8601WithTimezone(nowWithoutMicro());
+    var note = NoteData("This is the body", {"created": created});
 
     test('Markdown Serializer', () {
       var serializer = MarkdownYAMLSerializer();
       var str = serializer.encode(note);
       var note2 = serializer.decode(str);
-
-      // The YAML seriazlier loses the fileName by design
-      note2.filePath = note.filePath;
 
       expect(note2, note);
     });
