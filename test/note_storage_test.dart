@@ -48,6 +48,13 @@ void main() {
       notes.sort();
 
       expect(loadedNotes, notes);
+
+      await Future.forEach(notes, (Note note) async {
+        await note.remove();
+      });
+      expect(tempDir.listSync(recursive: true).length, 0);
+      expect(File(n1Path).existsSync(), isFalse);
+      expect(File(n2Path).existsSync(), isFalse);
     });
   });
 }
