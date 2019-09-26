@@ -13,6 +13,9 @@ bool shouldIgnorePlatformException(PlatformException ex) {
   if (ex.message.contains("failed to resolve address for")) {
     return true;
   }
+  if (ex.message.contains("No address associated with hostname")) {
+    return true;
+  }
   return false;
 }
 
