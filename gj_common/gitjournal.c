@@ -100,6 +100,7 @@ int gj_git_rm(const char *git_base_path, const char *pattern)
     char *paths[] = {(char *)pattern};
     git_strarray pathspec = {paths, 1};
 
+    gj_log_internal("Calling git rm with pathspec %s", pattern);
     err = git_index_remove_all(index, &pathspec, rm_match_cb, (void *)git_base_path);
     if (err < 0)
         goto cleanup;

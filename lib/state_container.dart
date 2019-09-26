@@ -217,7 +217,7 @@ class StateContainerState extends State<StateContainer> {
     Fimber.d("State Container insertNote");
     setState(() {
       if (note.filePath == null || note.filePath.isEmpty) {
-        note.filePath = getFileName(note);
+        note.filePath = p.join(noteRepo.notesBasePath, getFileName(note));
       }
       appState.notes.insert(index, note);
       appState.hasJournalEntries = true;

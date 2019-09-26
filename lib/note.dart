@@ -25,8 +25,6 @@ class Note implements Comparable<Note> {
     created = created ?? DateTime(0, 0, 0, 0, 0, 0, 0, 0);
     props = props ?? <String, dynamic>{};
     body = body ?? "";
-
-    assert(filePath != null);
   }
 
   bool hasValidDate() {
@@ -80,6 +78,8 @@ class Note implements Comparable<Note> {
 
   // FIXME: What about error handling?
   Future<void> save() async {
+    assert(filePath != null);
+
     if (hasValidDate()) {
       props['created'] = toIso8601WithTimezone(created);
     }

@@ -1,37 +1,37 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:journal/apis/git.dart';
 import 'package:journal/note.dart';
 import 'package:journal/settings.dart';
-import 'package:journal/storage/file_storage.dart';
 import 'package:journal/storage/notes_repository.dart';
-import 'package:journal/storage/serializers.dart';
 import 'package:path/path.dart' as p;
 
 class GitNoteRepository implements NoteRepository {
-  final FileStorage _fileStorage;
   final String dirName;
   final String subDirName;
+  final String baseDirectory;
+  String notesBasePath;
   final GitRepo _gitRepo;
 
   bool cloned = false;
   bool checkForCloned = false;
 
+  // vHanda: This no longer needs to be so complex. It will only ever take the baseDirectory + dirName
+  // The directory should already exist!
   GitNoteRepository({
     @required this.dirName,
     @required this.subDirName,
-    @required String baseDirectory,
-  })  : _fileStorage = FileStorage(
-          noteSerializer: MarkdownYAMLSerializer(),
-          baseDirectory: p.join(baseDirectory, dirName, subDirName),
-        ),
-        _gitRepo = GitRepo(
+    @required this.baseDirectory,
+  }) : _gitRepo = GitRepo(
           folderName: dirName,
           authorEmail: Settings.instance.gitAuthorEmail,
           authorName: Settings.instance.gitAuthor,
-        );
+        ) {
+    notesBasePath = p.join(baseDirectory, dirName, subDirName);
+  }
 
   @override
   Future<NoteRepoResult> addNote(Note note) async {
@@ -39,36 +39,27 @@ class GitNoteRepository implements NoteRepository {
   }
 
   Future<NoteRepoResult> _addNote(Note note, String commitMessage) async {
-    var result = await _fileStorage.addNote(note);
-    if (result.error) {
-      return result;
-    }
-
+    await note.save();
     await _gitRepo.add(".");
     await _gitRepo.commit(
       message: commitMessage,
     );
 
-    return result;
+    return NoteRepoResult(noteFilePath: note.filePath, error: false);
   }
 
   @override
   Future<NoteRepoResult> removeNote(Note note) async {
-    var result = await _fileStorage.addNote(note);
-    if (result.error) {
-      return result;
-    }
+    var gitDir = p.join(baseDirectory, dirName);
+    var pathSpec = note.filePath.replaceFirst(gitDir, "").substring(1);
 
-    // FIXME: '/' is not valid on all platforms
-    var baseDir = _fileStorage.baseDirectory;
-    var filePath = result.noteFilePath.replaceFirst(baseDir + "/", "");
-
-    await _gitRepo.rm(filePath);
+    // We are not calling note.remove() as gitRm will also remove the file
+    await _gitRepo.rm(pathSpec);
     await _gitRepo.commit(
       message: "Removed Journal entry",
     );
 
-    return result;
+    return NoteRepoResult(noteFilePath: note.filePath, error: false);
   }
 
   Future<NoteRepoResult> resetLastCommit() async {
@@ -82,8 +73,22 @@ class GitNoteRepository implements NoteRepository {
   }
 
   @override
-  Future<List<Note>> listNotes() {
-    return _fileStorage.listNotes();
+  Future<List<Note>> listNotes() async {
+    final dir = Directory(notesBasePath);
+
+    var notes = <Note>[];
+    var lister = dir.list(recursive: false);
+    await for (var fileEntity in lister) {
+      var note = Note(filePath: fileEntity.path);
+      if (!note.filePath.toLowerCase().endsWith('.md')) {
+        continue;
+      }
+      notes.add(note);
+    }
+
+    // Reverse sort
+    notes.sort((a, b) => b.compareTo(a));
+    return notes;
   }
 
   @override
