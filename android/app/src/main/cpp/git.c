@@ -115,7 +115,7 @@ Java_io_gitjournal_gitjournal_Git_commit(
     const char *author_email = (*env)->GetStringUTFChars(env, jni_author_email, 0);
     const char *message = (*env)->GetStringUTFChars(env, jni_message, 0);
 
-    int err = gj_git_commit(git_base_path, author_name, author_email, message);
+    int err = gj_git_commit(git_base_path, author_name, author_email, message, 0, 0);
     return handle_error(env, err);
 }
 

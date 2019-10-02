@@ -146,7 +146,7 @@ static FlutterMethodChannel* gitChannel = 0;
             NSString* dirPath = [NSString pathWithComponents:components];
 
             int err = gj_git_commit([dirPath UTF8String], [authorName UTF8String],
-                                    [authorEmail UTF8String], [message UTF8String]);
+                                    [authorEmail UTF8String], [message UTF8String], 0, 0);
             if (!handleError(result, err)) {
                 result(@YES);
                 return;

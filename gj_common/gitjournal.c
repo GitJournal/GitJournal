@@ -161,9 +161,8 @@ cleanup:
     return err;
 }
 
-// FIXME: Add a datetime str
 int gj_git_commit(const char *git_base_path, const char *author_name,
-                  const char *author_email, const char *message)
+                  const char *author_email, const char *message, long long commit_time, int commit_time_offset)
 {
     int err = 0;
     git_signature *sig = NULL;
@@ -193,9 +192,18 @@ int gj_git_commit(const char *git_base_path, const char *author_name,
     }
     */
 
-    err = git_signature_now(&sig, author_name, author_email);
-    if (err < 0)
-        goto cleanup;
+    if (commit_time == 0)
+    {
+        err = git_signature_now(&sig, author_name, author_email);
+        if (err < 0)
+            goto cleanup;
+    }
+    else
+    {
+        err = git_signature_new(&sig, author_name, author_email, commit_time, commit_time_offset);
+        if (err < 0)
+            goto cleanup;
+    }
 
     err = git_index_write_tree(&tree_id, index);
     if (err < 0)

@@ -25,8 +25,8 @@ int main(int argc, char *argv[])
 {
     gj_init();
 
-    char *publickey = "/Users/vishesh/.ssh/id_rsa.pub";
-    char *privatekey = "/Users/vishesh/.ssh/id_rsa";
+    char *publickey = "./.ssh/id_rsa.pub";
+    char *privatekey = "./.ssh/id_rsa";
     char *passphrase = "";
 
     gj_set_ssh_keys_paths(publickey, privatekey, passphrase);
@@ -34,7 +34,8 @@ int main(int argc, char *argv[])
     int err;
     char *git_base_path = "/tmp/test";
     //char *clone_url = "https://github.com/GitJournal/journal_test.git";
-    char *clone_url = "git@github.com:GitJournal/journal_test.git";
+    //char *clone_url = "git@github.com:GitJournal/journal_test.git";
+    char *clone_url = "git@github.com:vhanda/test_gj.git";
     //char *clone_url = "root@pi.local:git/test";
     char *add_pattern = ".";
     char *author_name = "TestMan";

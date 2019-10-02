@@ -12,8 +12,9 @@ int gj_git_clone(const char *clone_url, const char *git_base_path);
 int gj_git_pull(const char *git_base_path, const char *author_name, const char *author_email);
 int gj_git_push(const char *git_base_path);
 
+// commit_time_offset is in minutes
 int gj_git_commit(const char *git_base_path, const char *author_name,
-                  const char *author_email, const char *message);
+                  const char *author_email, const char *message, long long commit_time, int commit_time_offset);
 int gj_git_reset_hard(const char *git_base_path, const char *ref);
 int gj_git_add(const char *git_base_path, const char *pattern);
 int gj_git_rm(const char *git_base_path, const char *pattern);
