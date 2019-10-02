@@ -4,6 +4,7 @@
 #include <errno.h>
 #include <string.h>
 #include <stdio.h>
+#include <string.h>
 
 #include <git2.h>
 
@@ -347,12 +348,30 @@ cleanup:
     return err;
 }
 
-// FIXME: What if the 'HEAD" does not point to 'master'
+char *gj_branch_name(git_repository *repo)
+{
+    int err = 0;
+    git_reference *ref = NULL;
+    char *shorthand = NULL;
+
+    err = git_repository_head(&ref, repo);
+    if (err < 0)
+        goto cleanup;
+
+    shorthand = (char *)git_reference_shorthand(ref);
+
+cleanup:
+    git_reference_free(ref);
+
+    return shorthand;
+}
+
 int gj_git_push(const char *git_base_path)
 {
     int err = 0;
     git_repository *repo = NULL;
     git_remote *remote = NULL;
+    char *name = NULL;
 
     err = git_repository_open(&repo, git_base_path);
     if (err < 0)
@@ -362,7 +381,15 @@ int gj_git_push(const char *git_base_path)
     if (err < 0)
         goto cleanup;
 
-    char *name = "refs/heads/master";
+    // Get remote name
+    const char *branch_name = gj_branch_name(repo);
+    char *base_name = "refs/heads/";
+
+    int name_length = strlen(base_name) + strlen(branch_name);
+    name = (char *)malloc(name_length);
+    strcpy(name, base_name);
+    strcat(name, branch_name);
+
     const git_strarray refs = {&name, 1};
 
     git_push_options options = GIT_PUSH_OPTIONS_INIT;
@@ -376,6 +403,7 @@ int gj_git_push(const char *git_base_path)
         goto cleanup;
 
 cleanup:
+    free(name);
     git_remote_free(remote);
     git_repository_free(repo);
 
@@ -434,6 +462,7 @@ int gj_git_pull(const char *git_base_path, const char *author_name, const char *
     git_commit *origin_head_commit = NULL;
     git_tree *tree = NULL;
     git_oid tree_id;
+    char *name = NULL;
 
     err = git_repository_open(&repo, git_base_path);
     if (err < 0)
@@ -460,8 +489,16 @@ int gj_git_pull(const char *git_base_path, const char *author_name, const char *
     if (err < 0)
         goto cleanup;
 
-    // FIXME: Do not hardcode the master branch!
-    err = git_reference_lookup(&origin_head_ref, repo, "refs/remotes/origin/master");
+    // Get remote name
+    const char *branch_name = gj_branch_name(repo);
+    char *base_name = "refs/remotes/origin/";
+
+    int name_length = strlen(base_name) + strlen(branch_name);
+    name = (char *)malloc(name_length);
+    strcpy(name, base_name);
+    strcat(name, branch_name);
+
+    err = git_reference_lookup(&origin_head_ref, repo, name);
     if (err < 0)
         goto cleanup;
 
@@ -606,6 +643,7 @@ cleanup:
     git_annotated_commit_free(origin_annotated_commit);
     git_remote_free(remote);
     git_repository_free(repo);
+    free(name);
 
     return err;
 }
