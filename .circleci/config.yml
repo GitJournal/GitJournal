@@ -30,7 +30,7 @@ jobs:
           path: build/app/outputs/bundle/release/app.aab
           destination: gitjournal.aab
       - store_artifacts:
-          path: build/app/outputs/bundle/release/app.apk
+          path: build/app/outputs/apk/release/app-release.apk
           destination: gitjournal.apk
       - run:
           name: Upload Crashlytics Symbols
