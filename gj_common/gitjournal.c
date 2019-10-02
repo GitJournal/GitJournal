@@ -636,7 +636,8 @@ cleanup:
     git_commit_free(head_commit);
     git_commit_free(origin_head_commit);
     git_signature_free(sig);
-    git_repository_state_cleanup(repo);
+    if (repo != 0)
+        git_repository_state_cleanup(repo);
     git_index_conflict_iterator_free(conflict_iter);
     git_index_free(index);
     git_reference_free(origin_head_ref);
