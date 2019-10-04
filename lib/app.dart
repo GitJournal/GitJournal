@@ -11,6 +11,7 @@ import 'package:journal/screens/settings_screen.dart';
 import 'package:journal/settings.dart';
 import 'package:journal/state_container.dart';
 import 'package:journal/utils.dart';
+import 'package:journal/appstate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 
@@ -22,50 +23,28 @@ class JournalApp extends StatelessWidget {
     Fimber.plantTree(DebugTree.elapsed(useColors: true));
 
     var pref = await SharedPreferences.getInstance();
+    var appState = AppState(pref);
 
-    var localGitRepoConfigured =
-        pref.getBool("localGitRepoConfigured") ?? false;
-    var remoteGitRepoConfigured =
-        pref.getBool("remoteGitRepoConfigured") ?? false;
-    var localGitRepoPath = pref.getString("localGitRepoPath") ?? "";
-    var remoteGitRepoFolderName = pref.getString("remoteGitRepoPath") ?? "";
-    var remoteGitRepoSubFolder = pref.getString("remoteGitRepoSubFolder") ?? "";
-    var onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
-
-    Fimber.d(" ---- Settings ---- ");
-    Fimber.d("localGitRepoConfigured: $localGitRepoConfigured");
-    Fimber.d("remoteGitRepoConfigured: $remoteGitRepoConfigured");
-    Fimber.d("localGitRepoPath: $localGitRepoPath");
-    Fimber.d("remoteGitRepoFolderName: $remoteGitRepoFolderName");
-    Fimber.d("remoteGitRepoSubFolder: $remoteGitRepoSubFolder");
-    Fimber.d("onBoardingCompleted: $onBoardingCompleted");
-    Fimber.d(" ------------------ ");
+    appState.dumpToLog();
 
     _enableAnalyticsIfPossible();
 
-    if (localGitRepoConfigured == false) {
+    if (appState.localGitRepoConfigured == false) {
       // FIXME: What about exceptions!
-      localGitRepoPath = "journal_local";
-      await GitRepo.init(localGitRepoPath);
+      appState.localGitRepoPath = "journal_local";
+      await GitRepo.init(appState.localGitRepoPath);
 
-      localGitRepoConfigured = true;
-
-      pref.setBool("localGitRepoConfigured", localGitRepoConfigured);
-      pref.setString("localGitRepoPath", localGitRepoPath);
+      appState.localGitRepoConfigured = true;
+      appState.save(pref);
     }
 
     var dir = await getGitBaseDirectory();
+    appState.gitBaseDirectory = dir.path;
 
     Settings.instance.load(pref);
 
     runApp(StateContainer(
-      localGitRepoConfigured: localGitRepoConfigured,
-      remoteGitRepoConfigured: remoteGitRepoConfigured,
-      localGitRepoPath: localGitRepoPath,
-      remoteGitRepoFolderName: remoteGitRepoFolderName,
-      remoteGitRepoSubFolder: remoteGitRepoSubFolder,
-      gitBaseDirectory: dir.path,
-      onBoardingCompleted: onBoardingCompleted,
+      appState: appState,
       child: JournalApp(),
     ));
   }

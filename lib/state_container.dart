@@ -15,23 +15,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class StateContainer extends StatefulWidget {
   final Widget child;
-  final bool localGitRepoConfigured;
-  final bool remoteGitRepoConfigured;
-  final String localGitRepoPath;
-  final String remoteGitRepoFolderName;
-  final String remoteGitRepoSubFolder;
-
-  final String gitBaseDirectory;
-  final bool onBoardingCompleted;
-
+  final AppState appState;
   StateContainer({
-    @required this.localGitRepoConfigured,
-    @required this.remoteGitRepoConfigured,
-    @required this.localGitRepoPath,
-    @required this.remoteGitRepoFolderName,
-    @required this.remoteGitRepoSubFolder,
-    @required this.gitBaseDirectory,
-    @required this.onBoardingCompleted,
+    @required this.appState,
     @required this.child,
   });
 
@@ -43,22 +29,15 @@ class StateContainer extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    var st = StateContainerState();
-    st.appState.localGitRepoConfigured = localGitRepoConfigured;
-    st.appState.remoteGitRepoConfigured = remoteGitRepoConfigured;
-    st.appState.localGitRepoPath = localGitRepoPath;
-    st.appState.remoteGitRepoFolderName = remoteGitRepoFolderName;
-    st.appState.remoteGitRepoSubFolder = remoteGitRepoSubFolder;
-    st.appState.gitBaseDirectory = gitBaseDirectory;
-    st.appState.onBoardingCompleted = onBoardingCompleted;
-
-    return st;
+    return StateContainerState(appState);
   }
 }
 
 class StateContainerState extends State<StateContainer> {
-  AppState appState = AppState();
+  AppState appState;
   GitNoteRepository noteRepo;
+
+  StateContainerState(this.appState);
 
   @override
   void initState() {
@@ -279,12 +258,7 @@ class StateContainerState extends State<StateContainer> {
 
   Future _persistConfig() async {
     var pref = await SharedPreferences.getInstance();
-    await pref.setBool(
-        "remoteGitRepoConfigured", appState.remoteGitRepoConfigured);
-    await pref.setString("remoteGitRepoPath", appState.remoteGitRepoFolderName);
-    await pref.setString(
-        "remoteGitRepoSubFolder", appState.remoteGitRepoSubFolder);
-    await pref.setBool("onBoardingCompleted", appState.onBoardingCompleted);
+    await appState.save(pref);
   }
 
   @override
