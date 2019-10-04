@@ -88,6 +88,7 @@ class GitNoteRepository {
       if (!note.filePath.toLowerCase().endsWith('.md')) {
         continue;
       }
+      await note.load();
       notes.add(note);
     }
 
