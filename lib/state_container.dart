@@ -86,7 +86,6 @@ class StateContainerState extends State<StateContainer> {
       setState(() {
         appState.isLoadingFromDisk = false;
         appState.notes = loadedNotes;
-        appState.hasJournalEntries = loadedNotes.isNotEmpty;
 
         getAnalytics().logEvent(
           name: "notes_loaded",
@@ -125,7 +124,6 @@ class StateContainerState extends State<StateContainer> {
       setState(() {
         appState.isLoadingFromDisk = false;
         appState.notes = loadedNotes;
-        appState.hasJournalEntries = loadedNotes.isNotEmpty;
       });
     } catch (err, stack) {
       setState(() {
@@ -198,7 +196,6 @@ class StateContainerState extends State<StateContainer> {
         note.filePath = p.join(noteRepo.notesBasePath, getFileName(note));
       }
       appState.notes.insert(index, note);
-      appState.hasJournalEntries = true;
       noteRepo.addNote(note).then((NoteRepoResult _) {
         _syncNotes();
       });

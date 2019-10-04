@@ -22,7 +22,10 @@ class AppState {
   //
   /// This is the directory where all the git repos are stored
   String gitBaseDirectory = "";
-  bool hasJournalEntries = false;
+
+  bool get hasJournalEntries {
+    return notes.isNotEmpty;
+  }
 
   bool isLoadingFromDisk = false;
   List<Note> notes = [];
