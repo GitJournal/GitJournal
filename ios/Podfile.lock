@@ -129,11 +129,11 @@ SPEC CHECKSUMS:
   device_info: 3ebad48f726348f69abd802f3334a8d1ed795fbd
   Fabric: f6f21452846788bb44595d73e9909d79d328e617
   Firebase: fa80b9d987ca014a1ba9357496ef2a0178b28b12
-  firebase_analytics: e5181dde3c26c83748ab07aca073139a572ede7e
+  firebase_analytics: 5afaaf8f43ae6a640f200d98f3ecff32e9873538
   FirebaseAnalytics: 1743c5f4de3687d0745709dfdc4b1dea1484f44c
   FirebaseCore: e38f025287b413255a53acc1945d048a112047f7
   FirebaseInstanceID: 0e0348a3c00a734fa376a070f5ad4533ad975cb5
-  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_crashlytics: 7b5bba7233066381c8e18343435342ba05f3053c
   flutter_email_sender: f787522d0e82f50e5766c1213dbffff22fdcf009
   GoogleAppMeasurement: 7f028ea162b72c8f326daec74afc95d94f7a47d6
@@ -145,6 +145,6 @@ SPEC CHECKSUMS:
   shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
   url_launcher: 0067ddb8f10d36786672aa0722a21717dba3a298
 
-PODFILE CHECKSUM: c389cfdb8cb9f50beaf2214b6dc7de542e4bc41b
+PODFILE CHECKSUM: f5775539acfa3ab21530deaf45fed0b66ef8a6c3
 
 COCOAPODS: 1.6.1
