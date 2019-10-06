@@ -10,10 +10,14 @@ import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 const _platform = const MethodChannel('gitjournal.io/git');
 
 bool shouldIgnorePlatformException(PlatformException ex) {
-  if (ex.message.contains("failed to resolve address for")) {
+  var msg = ex.message.toLowerCase();
+  if (msg.contains("failed to resolve address for")) {
     return true;
   }
-  if (ex.message.contains("No address associated with hostname")) {
+  if (msg.contains("No address associated with hostname")) {
+    return true;
+  }
+  if (msg.contains("failed to connect to")) {
     return true;
   }
   return false;
