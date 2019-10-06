@@ -36,6 +36,12 @@ Features -
 <img src="https://github.com/GitJournal/GitJournal/raw/master/android/fastlane/metadata/android/en-GB/images/phoneScreenshots/6.jpeg" width="240" height="auto">
 </p>
 
+# Migrating from Existing Apps
+
+- [Google Keep](https://github.com/vHanda/google-keep-exporter)
+- [Day One Classic](https://gist.github.com/sanzoghenzo/fb5011aa566292a4eb1b62fc7a4a50cc)
+- [Narrate](https://gist.github.com/sanzoghenzo/fb5011aa566292a4eb1b62fc7a4a50cc)
+
 # License
 
 ```
