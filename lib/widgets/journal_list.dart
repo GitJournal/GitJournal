@@ -12,10 +12,12 @@ typedef void NoteSelectedFunction(int noteIndex);
 class JournalList extends StatelessWidget {
   final NoteSelectedFunction noteSelectedFunction;
   final List<Note> notes;
+  final String emptyText;
 
   JournalList({
     @required this.notes,
     @required this.noteSelectedFunction,
+    @required this.emptyText,
   });
 
   @override
@@ -23,7 +25,7 @@ class JournalList extends StatelessWidget {
     if (notes.isEmpty) {
       return Center(
         child: Text(
-          "Why not add your first\n Journal Entry?",
+          emptyText,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 28.0,

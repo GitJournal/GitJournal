@@ -33,6 +33,7 @@ class HomeScreen extends StatelessWidget {
         );
         Navigator.of(context).push(route);
       },
+      emptyText: "Why not add your first\n Journal Entry?",
     );
 
     bool shouldShowBadge =
@@ -141,6 +142,7 @@ class NoteSearch extends SearchDelegate<Note> {
         );
         Navigator.of(context).push(route);
       },
+      emptyText: "No Search Results Found",
     );
     return journalList;
   }
