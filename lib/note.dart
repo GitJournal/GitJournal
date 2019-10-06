@@ -15,6 +15,8 @@ class Note implements Comparable<Note> {
   DateTime created;
   NoteData data = NoteData();
 
+  DateTime _fileLastModified;
+
   var _loadState = NoteLoadState.None;
   var _serializer = MarkdownYAMLSerializer();
 
@@ -36,12 +38,18 @@ class Note implements Comparable<Note> {
   }
 
   Future<NoteLoadState> load() async {
-    if (_loadState == NoteLoadState.Loading ||
-        _loadState == NoteLoadState.Loaded) {
+    if (_loadState == NoteLoadState.Loading) {
       return _loadState;
     }
 
     final file = File(filePath);
+    if (_loadState == NoteLoadState.Loaded) {
+      var fileLastModified = file.lastModifiedSync();
+      if (fileLastModified == _fileLastModified) {
+        return _loadState;
+      }
+    }
+
     if (!file.existsSync()) {
       _loadState = NoteLoadState.NotExists;
       return _loadState;
@@ -73,7 +81,9 @@ class Note implements Comparable<Note> {
       created = DateTime(0, 0, 0, 0, 0, 0, 0, 0);
     }
 
+    _fileLastModified = file.lastModifiedSync();
     _loadState = NoteLoadState.Loaded;
+
     return _loadState;
   }
 
