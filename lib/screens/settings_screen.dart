@@ -197,6 +197,34 @@ class SettingsListState extends State<SettingsList> {
           Settings.instance.save();
         },
       ),
+      SizedBox(height: 16.0),
+      PreferenceTitle("Analytics"),
+      CheckboxPreference(
+        "Collect Anonymous Usage Statistics",
+        "usage_stats",
+        defaultVal: Settings.instance.collectUsageStatistics,
+        onEnable: () {
+          Settings.instance.collectUsageStatistics = true;
+          Settings.instance.save();
+        },
+        onDisable: () {
+          Settings.instance.collectUsageStatistics = false;
+          Settings.instance.save();
+        },
+      ),
+      CheckboxPreference(
+        "Collect Anonymous Crash Reports",
+        "crash_reports",
+        defaultVal: Settings.instance.collectCrashReports,
+        onEnable: () {
+          Settings.instance.collectCrashReports = true;
+          Settings.instance.save();
+        },
+        onDisable: () {
+          Settings.instance.collectCrashReports = false;
+          Settings.instance.save();
+        },
+      ),
       VersionNumberTile(),
     ]);
   }

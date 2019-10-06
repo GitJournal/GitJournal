@@ -19,15 +19,15 @@ import 'screens/githostsetup_screens.dart';
 import 'screens/onboarding_screens.dart';
 
 class JournalApp extends StatelessWidget {
-  static Future main() async {
+  static Future main(SharedPreferences pref) async {
     Fimber.plantTree(DebugTree.elapsed(useColors: true));
 
-    var pref = await SharedPreferences.getInstance();
     var appState = AppState(pref);
-
     appState.dumpToLog();
 
-    _enableAnalyticsIfPossible();
+    if (Settings.instance.collectUsageStatistics) {
+      _enableAnalyticsIfPossible();
+    }
 
     if (appState.localGitRepoConfigured == false) {
       // FIXME: What about exceptions!
@@ -40,8 +40,6 @@ class JournalApp extends StatelessWidget {
 
     var dir = await getGitBaseDirectory();
     appState.gitBaseDirectory = dir.path;
-
-    Settings.instance.load(pref);
 
     runApp(StateContainer(
       appState: appState,

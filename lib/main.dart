@@ -2,23 +2,32 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:journal/app.dart';
+import 'package:journal/settings.dart';
 
 void main() async {
+  var pref = await SharedPreferences.getInstance();
+  Settings.instance.load(pref);
+
+  var reportCrashes =
+      !JournalApp.isInDebugMode && Settings.instance.collectCrashReports;
+
   FlutterError.onError = (FlutterErrorDetails details) {
-    if (JournalApp.isInDebugMode) {
+    if (!reportCrashes) {
       FlutterError.dumpErrorToConsole(details);
     } else {
       Zone.current.handleUncaughtError(details.exception, details.stack);
     }
   };
 
-  if (!JournalApp.isInDebugMode) {
+  if (reportCrashes) {
     await FlutterCrashlytics().initialize();
   }
 
   runZoned<Future<void>>(() async {
-    await JournalApp.main();
+    await JournalApp.main(pref);
   }, onError: (Object error, StackTrace stackTrace) async {
     print("Uncaught Exception: " + error.toString());
     print(stackTrace);

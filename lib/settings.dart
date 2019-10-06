@@ -24,6 +24,9 @@ class Settings {
 
   NoteViewerFontSize noteViewerFontSize = NoteViewerFontSize.Normal;
 
+  bool collectUsageStatistics = true;
+  bool collectCrashReports = true;
+
   void load(SharedPreferences pref) {
     gitAuthor = pref.getString("gitAuthor") ?? gitAuthor;
     gitAuthorEmail = pref.getString("gitAuthorEmail") ?? gitAuthorEmail;
@@ -36,6 +39,11 @@ class Settings {
     str = pref.getString("noteFileNameFormat") ?? noteFileNameFormat.toString();
     noteFileNameFormat =
         NoteFileNameFormat.values.firstWhere((e) => e.toString() == str);
+
+    collectUsageStatistics =
+        pref.getBool("collectCrashReports") ?? collectUsageStatistics;
+    collectCrashReports =
+        pref.getBool("collectCrashReports") ?? collectCrashReports;
   }
 
   Future save() async {
@@ -44,6 +52,8 @@ class Settings {
     pref.setString("gitAuthorEmail", gitAuthorEmail);
     pref.setString("noteViewerFontSize", noteViewerFontSize.toString());
     pref.setString("noteFileNameFormat", noteFileNameFormat.toString());
+    pref.setBool("collectUsageStatistics", collectUsageStatistics);
+    pref.setBool("collectCrashReports", collectCrashReports);
 
     // Shouldn't we check if something has actually changed?
     for (var f in changeObservers) {
