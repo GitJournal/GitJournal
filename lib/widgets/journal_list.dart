@@ -5,6 +5,7 @@ import 'package:journal/note.dart';
 import 'package:journal/state_container.dart';
 import 'package:journal/utils.dart';
 import 'package:journal/utils/markdown.dart';
+import 'package:journal/widgets/icon_dismissable.dart';
 import 'package:path/path.dart';
 
 typedef void NoteSelectedFunction(int noteIndex);
@@ -48,31 +49,11 @@ class JournalList extends StatelessWidget {
         }
 
         var note = notes[i];
-        return Dismissible(
+        return IconDismissable(
           key: ValueKey("JournalList_" + note.filePath),
           child: _buildRow(context, note, i),
-          background: Container(
-            color: Colors.red[700],
-            alignment: AlignmentDirectional.centerStart,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 0.0),
-              child: Icon(
-                Icons.delete,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          secondaryBackground: Container(
-            color: Colors.red[700],
-            alignment: AlignmentDirectional.centerEnd,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
-              child: Icon(
-                Icons.delete,
-                color: Colors.white,
-              ),
-            ),
-          ),
+          backgroundColor: Colors.red[800],
+          iconData: Icons.delete,
           onDismissed: (direction) {
             final stateContainer = StateContainer.of(context);
             stateContainer.removeNote(note);
