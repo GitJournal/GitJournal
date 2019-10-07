@@ -128,40 +128,20 @@ class SettingsListState extends State<SettingsList> {
           }
         },
       ),
-      DropdownPreference(
-        'Font Size',
-        'font_size',
-        defaultVal: "Normal",
-        values: [
-          "Extra Small",
-          "Small",
-          "Normal",
-          "Large",
-          "Extra Large",
-        ],
-        onChange: (newVal) {
-          NoteViewerFontSize fontSize;
-          switch (newVal) {
-            case "Extra Small":
-              fontSize = NoteViewerFontSize.ExtraSmall;
-              break;
-            case "Small":
-              fontSize = NoteViewerFontSize.Small;
-              break;
-            case "Normal":
-              fontSize = NoteViewerFontSize.Normal;
-              break;
-            case "Large":
-              fontSize = NoteViewerFontSize.Large;
-              break;
-            case "Extra Large":
-              fontSize = NoteViewerFontSize.ExtraLarge;
-              break;
-            default:
-              fontSize = NoteViewerFontSize.Normal;
-          }
+      ListTile(
+        title: Text("Font Size"),
+        subtitle: Text(
+          Settings.noteViewerFontSizeToString(
+              Settings.instance.noteViewerFontSize),
+        ),
+        onTap: () async {
+          String result = await showDialog<String>(
+              context: context, builder: (context) => FontSizeSettingsDialog());
+
+          var fontSize = Settings.noteViewerFontSizeFromString(result);
           Settings.instance.noteViewerFontSize = fontSize;
           Settings.instance.save();
+          setState(() {});
         },
       ),
       SettingsHeader("Git Author Settings"),
@@ -280,6 +260,71 @@ class VersionNumberTileState extends State<VersionNumberTile> {
         textAlign: TextAlign.left,
       ),
       enabled: false,
+    );
+  }
+}
+
+class FontSizeSettingsDialog extends StatelessWidget {
+  final String title = "Font Size";
+
+  @override
+  Widget build(BuildContext context) {
+    var style = Theme.of(context).textTheme.body1;
+    var sizes = <Widget>[
+      ListTile(
+        title: Text("Extra Small",
+            style: style.copyWith(
+                fontSize: Settings.noteViewerFontSizeToDouble(
+                    NoteViewerFontSize.ExtraSmall))),
+        onTap: () {
+          Navigator.of(context).pop("Extra Small");
+        },
+      ),
+      ListTile(
+        title: Text("Small",
+            style: style.copyWith(
+                fontSize: Settings.noteViewerFontSizeToDouble(
+                    NoteViewerFontSize.Small))),
+        onTap: () {
+          Navigator.of(context).pop("Small");
+        },
+      ),
+      ListTile(
+        title: Text("Normal",
+            style: style.copyWith(
+                fontSize: Settings.noteViewerFontSizeToDouble(
+                    NoteViewerFontSize.Normal))),
+        onTap: () {
+          Navigator.of(context).pop("Normal");
+        },
+      ),
+      ListTile(
+        title: Text("Large",
+            style: style.copyWith(
+                fontSize: Settings.noteViewerFontSizeToDouble(
+                    NoteViewerFontSize.Large))),
+        onTap: () {
+          Navigator.of(context).pop("Large");
+        },
+      ),
+      ListTile(
+        title: Text("Extra Large",
+            style: style.copyWith(
+                fontSize: Settings.noteViewerFontSizeToDouble(
+                    NoteViewerFontSize.ExtraLarge))),
+        onTap: () {
+          Navigator.of(context).pop("Extra Large");
+        },
+      ),
+    ];
+
+    return AlertDialog(
+      title: Text(title),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: sizes,
+        ),
+      ),
     );
   }
 }

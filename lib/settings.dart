@@ -62,7 +62,11 @@ class Settings {
   }
 
   double getNoteViewerFontSize() {
-    switch (noteViewerFontSize) {
+    return noteViewerFontSizeToDouble(noteViewerFontSize);
+  }
+
+  static double noteViewerFontSizeToDouble(NoteViewerFontSize size) {
+    switch (size) {
       case NoteViewerFontSize.Normal:
         return 18.0;
       case NoteViewerFontSize.Small:
@@ -75,7 +79,42 @@ class Settings {
         return 26.0;
     }
 
-    assert(false, "getNoteViewerFontSize: We should never be here");
+    assert(false, "noteViewerFontSizeToDouble: We should never be here");
     return 50000.0;
+  }
+
+  static String noteViewerFontSizeToString(NoteViewerFontSize size) {
+    switch (size) {
+      case NoteViewerFontSize.Normal:
+        return "Normal";
+      case NoteViewerFontSize.Small:
+        return "Small";
+      case NoteViewerFontSize.ExtraSmall:
+        return "Extra Small";
+      case NoteViewerFontSize.Large:
+        return "Large";
+      case NoteViewerFontSize.ExtraLarge:
+        return "Extra Large";
+    }
+
+    assert(false, "noteViewerFontSizeToString: We should never be here");
+    return "";
+  }
+
+  static NoteViewerFontSize noteViewerFontSizeFromString(String val) {
+    switch (val) {
+      case "Extra Small":
+        return NoteViewerFontSize.ExtraSmall;
+      case "Small":
+        return NoteViewerFontSize.Small;
+      case "Normal":
+        return NoteViewerFontSize.Normal;
+      case "Large":
+        return NoteViewerFontSize.Large;
+      case "Extra Large":
+        return NoteViewerFontSize.ExtraLarge;
+      default:
+        return NoteViewerFontSize.Normal;
+    }
   }
 }
