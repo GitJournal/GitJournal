@@ -13,7 +13,7 @@ enum NoteLoadState {
 class Note implements Comparable<Note> {
   String filePath = "";
   DateTime created;
-  NoteData data = NoteData();
+  NoteData _data = NoteData();
 
   DateTime _fileLastModified;
 
@@ -30,6 +30,37 @@ class Note implements Comparable<Note> {
 
   set body(String newBody) {
     data.body = newBody;
+  }
+
+  NoteData get data {
+    return _data;
+  }
+
+  set data(NoteData data) {
+    _data = data;
+
+    if (data.props.containsKey("created")) {
+      var createdStr = data.props['created'].toString();
+      try {
+        created = DateTime.parse(data.props['created']).toLocal();
+      } catch (ex) {
+        // Ignore it
+      }
+
+      if (created == null) {
+        var regex = RegExp(
+            r"(\d{4})-(\d{2})-(\d{2})T(\d{2})\:(\d{2})\:(\d{2})\+(\d{2})\:(\d{2})");
+        if (regex.hasMatch(createdStr)) {
+          // FIXME: Handle the timezone!
+          createdStr = createdStr.substring(0, 19);
+          created = DateTime.parse(createdStr);
+        }
+      }
+    }
+
+    if (created == null) {
+      created = DateTime(0, 0, 0, 0, 0, 0, 0, 0);
+    }
   }
 
   bool hasValidDate() {
@@ -57,29 +88,6 @@ class Note implements Comparable<Note> {
 
     final string = await file.readAsString();
     data = _serializer.decode(string);
-
-    if (data.props.containsKey("created")) {
-      var createdStr = data.props['created'].toString();
-      try {
-        created = DateTime.parse(data.props['created']).toLocal();
-      } catch (ex) {
-        // Ignore it
-      }
-
-      if (created == null) {
-        var regex = RegExp(
-            r"(\d{4})-(\d{2})-(\d{2})T(\d{2})\:(\d{2})\:(\d{2})\+(\d{2})\:(\d{2})");
-        if (regex.hasMatch(createdStr)) {
-          // FIXME: Handle the timezone!
-          createdStr = createdStr.substring(0, 19);
-          created = DateTime.parse(createdStr);
-        }
-      }
-    }
-
-    if (created == null) {
-      created = DateTime(0, 0, 0, 0, 0, 0, 0, 0);
-    }
 
     _fileLastModified = file.lastModifiedSync();
     _loadState = NoteLoadState.Loaded;

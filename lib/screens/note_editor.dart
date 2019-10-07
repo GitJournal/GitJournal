@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/note.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/widgets/note_header.dart';
+import 'package:gitjournal/storage/serializers.dart';
+
+enum NoteEditorDropDownChoices { Discard, RawEditor }
 
 class NoteEditor extends StatefulWidget {
   final Note note;
@@ -23,6 +26,8 @@ class NoteEditorState extends State<NoteEditor> {
   Note note = Note();
   final bool newNote;
   TextEditingController _textController = TextEditingController();
+  bool rawEditor = false;
+  final serializer = MarkdownYAMLSerializer();
 
   NoteEditorState() : newNote = true {
     note.created = DateTime.now();
@@ -34,19 +39,15 @@ class NoteEditorState extends State<NoteEditor> {
 
   @override
   Widget build(BuildContext context) {
-    var bodyWidget = Form(
-      child: TextFormField(
-        autofocus: true,
-        keyboardType: TextInputType.multiline,
-        maxLines: null,
-        decoration: InputDecoration(
-          hintText: 'Write here',
-          border: InputBorder.none,
-        ),
-        controller: _textController,
-        textCapitalization: TextCapitalization.sentences,
-      ),
+    Widget editor = Column(
+      children: <Widget>[
+        NoteHeader(note),
+        NoteMarkdownEditor(_textController),
+      ],
     );
+    if (rawEditor) {
+      editor = NoteMarkdownEditor(_textController);
+    }
 
     var title = newNote ? "Journal Entry" : "Edit Journal Entry";
     var newJournalScreen = Scaffold(
@@ -57,7 +58,11 @@ class NoteEditorState extends State<NoteEditor> {
           icon: Icon(Icons.check),
           onPressed: () {
             final stateContainer = StateContainer.of(context);
-            note.body = _textController.text;
+            if (rawEditor == false) {
+              note.body = _textController.text;
+            } else {
+              note.data = serializer.decode(_textController.text);
+            }
             if (note.body.isNotEmpty) {
               newNote
                   ? stateContainer.addNote(note)
@@ -67,27 +72,44 @@ class NoteEditorState extends State<NoteEditor> {
           },
         ),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.close),
-            onPressed: () {
-              if (_noteModified()) {
-                showDialog(context: context, builder: _buildAlertDialog);
-              } else {
-                Navigator.pop(context);
+          PopupMenuButton<NoteEditorDropDownChoices>(
+            onSelected: (NoteEditorDropDownChoices choice) {
+              switch (choice) {
+                case NoteEditorDropDownChoices.Discard:
+                  if (_noteModified()) {
+                    showDialog(context: context, builder: _buildAlertDialog);
+                  } else {
+                    Navigator.pop(context);
+                  }
+                  break;
+                case NoteEditorDropDownChoices.RawEditor:
+                  setState(() {
+                    rawEditor = true;
+                    var noteData =
+                        NoteData(_textController.text, note.data.props);
+                    _textController.text = serializer.encode(noteData);
+                  });
+                  break;
               }
             },
+            itemBuilder: (BuildContext context) =>
+                <PopupMenuEntry<NoteEditorDropDownChoices>>[
+              const PopupMenuItem<NoteEditorDropDownChoices>(
+                value: NoteEditorDropDownChoices.Discard,
+                child: Text('Discard'),
+              ),
+              const PopupMenuItem<NoteEditorDropDownChoices>(
+                value: NoteEditorDropDownChoices.RawEditor,
+                child: Text('RawEditor'),
+              ),
+            ],
           ),
         ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              NoteHeader(note),
-              bodyWidget,
-            ],
-          ),
+          child: editor,
         ),
       ),
     );
@@ -127,9 +149,36 @@ class NoteEditorState extends State<NoteEditor> {
       return false;
     }
     if (note != null) {
-      return noteContent != note.body;
+      if (rawEditor) {
+        return serializer.encode(note.data) != noteContent;
+      } else {
+        return noteContent != note.body;
+      }
     }
 
     return false;
+  }
+}
+
+class NoteMarkdownEditor extends StatelessWidget {
+  final TextEditingController textController;
+
+  NoteMarkdownEditor(this.textController);
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      child: TextFormField(
+        autofocus: true,
+        keyboardType: TextInputType.multiline,
+        maxLines: null,
+        decoration: InputDecoration(
+          hintText: 'Write here',
+          border: InputBorder.none,
+        ),
+        controller: textController,
+        textCapitalization: TextCapitalization.sentences,
+      ),
+    );
   }
 }
