@@ -49,7 +49,7 @@ class SettingsListState extends State<SettingsList> {
         decoration: const InputDecoration(
           icon: Icon(Icons.person),
           hintText: 'Who should author the changes?',
-          labelText: 'Git Author',
+          labelText: 'Full Name',
         ),
         validator: (String value) {
           value = value.trim();
@@ -81,7 +81,7 @@ class SettingsListState extends State<SettingsList> {
         decoration: const InputDecoration(
           icon: Icon(Icons.email),
           hintText: 'Who should author the changes?',
-          labelText: 'Git Author Email',
+          labelText: 'Email',
         ),
         validator: (String value) {
           value = value.trim();
@@ -164,7 +164,7 @@ class SettingsListState extends State<SettingsList> {
           Settings.instance.save();
         },
       ),
-      PreferenceTitle("Git Settings"),
+      PreferenceTitle("Git Author Settings"),
       ListTile(title: gitAuthorForm),
       ListTile(title: gitAuthorEmailForm),
       SizedBox(height: 16.0),
