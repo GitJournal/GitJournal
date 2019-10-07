@@ -109,7 +109,7 @@ class SettingsListState extends State<SettingsList> {
     );
 
     return PreferencePage([
-      PreferenceTitle('Display Settings'),
+      SettingsHeader('Display Settings'),
       DropdownPreference(
         'Theme',
         'theme',
@@ -164,11 +164,11 @@ class SettingsListState extends State<SettingsList> {
           Settings.instance.save();
         },
       ),
-      PreferenceTitle("Git Author Settings"),
+      SettingsHeader("Git Author Settings"),
       ListTile(title: gitAuthorForm),
       ListTile(title: gitAuthorEmailForm),
       SizedBox(height: 16.0),
-      PreferenceTitle("Storage"),
+      SettingsHeader("Storage"),
       DropdownPreference(
         'File Name',
         'file_name',
@@ -198,7 +198,7 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
       SizedBox(height: 16.0),
-      PreferenceTitle("Analytics"),
+      SettingsHeader("Analytics"),
       CheckboxPreference(
         "Collect Anonymous Usage Statistics",
         "usage_stats",
@@ -236,13 +236,13 @@ class SettingsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      dense: true,
-      title: Text(
+    return Padding(
+      padding: EdgeInsets.only(left: 16.0, bottom: 0.0, top: 20.0),
+      child: Text(
         text,
-        style: Theme.of(context).textTheme.title,
+        style: TextStyle(
+            color: Theme.of(context).accentColor, fontWeight: FontWeight.bold),
       ),
-      enabled: false,
     );
   }
 }
