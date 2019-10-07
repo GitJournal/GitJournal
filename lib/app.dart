@@ -5,6 +5,7 @@ import 'package:fimber/fimber.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
+
 import 'package:journal/apis/git.dart';
 import 'package:journal/screens/home_screen.dart';
 import 'package:journal/screens/settings_screen.dart';
@@ -12,6 +13,8 @@ import 'package:journal/settings.dart';
 import 'package:journal/state_container.dart';
 import 'package:journal/utils.dart';
 import 'package:journal/appstate.dart';
+import 'package:journal/themes.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 
@@ -89,25 +92,7 @@ class JournalApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return DynamicTheme(
       defaultBrightness: Brightness.light,
-      data: (brightness) {
-        if (brightness == Brightness.light) {
-          return ThemeData(
-            brightness: Brightness.light,
-            primaryColor: Color(0xFF66bb6a),
-            primaryColorLight: Color(0xFF98ee99),
-            primaryColorDark: Color(0xFF338a3e),
-            accentColor: Color(0xff6d4c41),
-          );
-        } else {
-          return ThemeData(
-            brightness: Brightness.dark,
-            primaryColor: Color(0xFF66bb6a),
-            primaryColorLight: Color(0xFF98ee99),
-            primaryColorDark: Color(0xFF338a3e),
-            accentColor: Color(0xff6d4c41),
-          );
-        }
-      },
+      data: (b) => b == Brightness.light ? Themes.light : Themes.dark,
       themedWidgetBuilder: buildApp,
     );
   }
