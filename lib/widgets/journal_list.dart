@@ -51,7 +51,28 @@ class JournalList extends StatelessWidget {
         return Dismissible(
           key: ValueKey("JournalList_" + note.filePath),
           child: _buildRow(context, note, i),
-          background: Container(color: Theme.of(context).accentColor),
+          background: Container(
+            color: Colors.red[700],
+            alignment: AlignmentDirectional.centerStart,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 0.0),
+              child: Icon(
+                Icons.delete,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          secondaryBackground: Container(
+            color: Colors.red[700],
+            alignment: AlignmentDirectional.centerEnd,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
+              child: Icon(
+                Icons.delete,
+                color: Colors.white,
+              ),
+            ),
+          ),
           onDismissed: (direction) {
             final stateContainer = StateContainer.of(context);
             stateContainer.removeNote(note);
