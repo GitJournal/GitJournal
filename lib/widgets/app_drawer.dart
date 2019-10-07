@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:journal/analytics.dart';
-import 'package:journal/state_container.dart';
-import 'package:journal/utils.dart';
+import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/state_container.dart';
+import 'package:gitjournal/utils.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';

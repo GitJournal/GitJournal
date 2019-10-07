@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:journal/note.dart';
+import 'package:gitjournal/note.dart';
 
 class NoteHeader extends StatelessWidget {
   final Note note;

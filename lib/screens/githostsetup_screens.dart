@@ -5,10 +5,10 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:function_types/function_types.dart';
-import 'package:journal/analytics.dart';
-import 'package:journal/apis/git.dart';
-import 'package:journal/apis/githost_factory.dart';
-import 'package:journal/state_container.dart';
+import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/apis/git.dart';
+import 'package:gitjournal/apis/githost_factory.dart';
+import 'package:gitjournal/state_container.dart';
 import 'package:path/path.dart' as p;
 import 'package:url_launcher/url_launcher.dart';
 

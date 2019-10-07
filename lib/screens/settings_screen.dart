@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:journal/settings.dart';
-import 'package:journal/utils.dart';
+import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/utils.dart';
 
 import 'package:preferences/preferences.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';

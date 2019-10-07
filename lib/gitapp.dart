@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:journal/apis/git.dart';
-import 'package:journal/apis/git_migration.dart';
+import 'package:gitjournal/apis/git.dart';
+import 'package:gitjournal/apis/git_migration.dart';
 
 const basePath = "journal";
 String cloneUrl = "git@github.com:GitJournal/journal_test.git";

@@ -1,10 +1,10 @@
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:function_types/function_types.dart';
-import 'package:journal/analytics.dart';
-import 'package:journal/apis/git.dart';
-import 'package:journal/apis/githost_factory.dart';
-import 'package:journal/settings.dart';
+import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/apis/git.dart';
+import 'package:gitjournal/apis/githost_factory.dart';
+import 'package:gitjournal/settings.dart';
 
 import 'githostsetup_button.dart';
 import 'githostsetup_error.dart';

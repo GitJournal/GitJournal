@@ -1,7 +1,7 @@
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:function_types/function_types.dart';
-import 'package:journal/analytics.dart';
+import 'package:gitjournal/analytics.dart';
 
 class GitHostSetupButton extends StatelessWidget {
   final Func0<void> onPressed;

@@ -1,12 +1,12 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:journal/note.dart';
-import 'package:journal/apis/git.dart';
-import 'package:journal/screens/note_editor.dart';
-import 'package:journal/screens/note_viewer.dart';
-import 'package:journal/state_container.dart';
-import 'package:journal/widgets/app_drawer.dart';
-import 'package:journal/widgets/journal_list.dart';
+import 'package:gitjournal/note.dart';
+import 'package:gitjournal/apis/git.dart';
+import 'package:gitjournal/screens/note_editor.dart';
+import 'package:gitjournal/screens/note_viewer.dart';
+import 'package:gitjournal/state_container.dart';
+import 'package:gitjournal/widgets/app_drawer.dart';
+import 'package:gitjournal/widgets/journal_list.dart';
 
 class HomeScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();

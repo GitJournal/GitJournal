@@ -1,4 +1,4 @@
-import 'package:journal/utils/markdown.dart';
+import 'package:gitjournal/utils/markdown.dart';
 import 'package:test/test.dart';
 
 void main() {

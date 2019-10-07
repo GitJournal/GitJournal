@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_driver/driver_extension.dart';
-import 'package:journal/apis/git.dart';
-import 'package:journal/gitapp.dart';
+import 'package:gitjournal/apis/git.dart';
+import 'package:gitjournal/gitapp.dart';
 
 void main() async {
   // This line enables the extension

@@ -6,14 +6,14 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 
-import 'package:journal/apis/git.dart';
-import 'package:journal/screens/home_screen.dart';
-import 'package:journal/screens/settings_screen.dart';
-import 'package:journal/settings.dart';
-import 'package:journal/state_container.dart';
-import 'package:journal/utils.dart';
-import 'package:journal/appstate.dart';
-import 'package:journal/themes.dart';
+import 'package:gitjournal/apis/git.dart';
+import 'package:gitjournal/screens/home_screen.dart';
+import 'package:gitjournal/screens/settings_screen.dart';
+import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/state_container.dart';
+import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/appstate.dart';
+import 'package:gitjournal/themes.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';

@@ -2,11 +2,11 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:journal/note.dart';
-import 'package:journal/state_container.dart';
-import 'package:journal/utils.dart';
-import 'package:journal/settings.dart';
-import 'package:journal/widgets/note_header.dart';
+import 'package:gitjournal/note.dart';
+import 'package:gitjournal/state_container.dart';
+import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/widgets/note_header.dart';
 import 'package:share/share.dart';
 
 import 'note_editor.dart';

@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fimber/fimber.dart';
-import 'package:journal/note.dart';
+import 'package:gitjournal/note.dart';
 
 class AppState {
   //

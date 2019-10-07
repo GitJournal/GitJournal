@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:journal/note.dart';
-import 'package:journal/state_container.dart';
-import 'package:journal/widgets/note_header.dart';
+import 'package:gitjournal/note.dart';
+import 'package:gitjournal/state_container.dart';
+import 'package:gitjournal/widgets/note_header.dart';
 
 class NoteEditor extends StatefulWidget {
   final Note note;

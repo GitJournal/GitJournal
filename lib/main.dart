@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:journal/app.dart';
-import 'package:journal/settings.dart';
+import 'package:gitjournal/app.dart';
+import 'package:gitjournal/settings.dart';
 
 void main() async {
   var pref = await SharedPreferences.getInstance();

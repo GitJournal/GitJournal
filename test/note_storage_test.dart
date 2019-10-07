@@ -1,9 +1,9 @@
 import 'dart:collection';
 import 'dart:io';
 
-import 'package:journal/datetime_utils.dart';
-import 'package:journal/note.dart';
-import 'package:journal/storage/serializers.dart';
+import 'package:gitjournal/datetime_utils.dart';
+import 'package:gitjournal/note.dart';
+import 'package:gitjournal/storage/serializers.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 

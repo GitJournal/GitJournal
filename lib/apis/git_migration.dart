@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
-import 'package:journal/apis/git.dart';
-import 'package:journal/settings.dart';
+import 'package:gitjournal/apis/git.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:path/path.dart' as p;
 
 //

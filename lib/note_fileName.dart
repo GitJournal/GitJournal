@@ -1,6 +1,6 @@
-import 'package:journal/note.dart';
-import 'package:journal/datetime_utils.dart';
-import 'package:journal/settings.dart';
+import 'package:gitjournal/note.dart';
+import 'package:gitjournal/datetime_utils.dart';
+import 'package:gitjournal/settings.dart';
 
 String getFileName(Note note) {
   switch (Settings.instance.noteFileNameFormat) {

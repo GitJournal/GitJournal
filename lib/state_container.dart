@@ -4,12 +4,12 @@ import 'dart:io';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:journal/analytics.dart';
-import 'package:journal/apis/git_migration.dart';
-import 'package:journal/appstate.dart';
-import 'package:journal/note.dart';
-import 'package:journal/note_fileName.dart';
-import 'package:journal/storage/git_storage.dart';
+import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/apis/git_migration.dart';
+import 'package:gitjournal/appstate.dart';
+import 'package:gitjournal/note.dart';
+import 'package:gitjournal/note_fileName.dart';
+import 'package:gitjournal/storage/git_storage.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 

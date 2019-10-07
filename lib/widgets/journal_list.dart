@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:journal/note.dart';
-import 'package:journal/state_container.dart';
-import 'package:journal/utils.dart';
-import 'package:journal/utils/markdown.dart';
-import 'package:journal/widgets/icon_dismissable.dart';
+import 'package:gitjournal/note.dart';
+import 'package:gitjournal/state_container.dart';
+import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/utils/markdown.dart';
+import 'package:gitjournal/widgets/icon_dismissable.dart';
 import 'package:path/path.dart';
 
 typedef void NoteSelectedFunction(int noteIndex);
