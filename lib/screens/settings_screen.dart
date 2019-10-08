@@ -166,30 +166,22 @@ class SettingsListState extends State<SettingsList> {
       ),
       SizedBox(height: 16.0),
       SettingsHeader("Analytics"),
-      CheckboxPreference(
-        "Collect Anonymous Usage Statistics",
-        "usage_stats",
-        defaultVal: Settings.instance.collectUsageStatistics,
-        onEnable: () {
-          Settings.instance.collectUsageStatistics = true;
+      BoolPreference(
+        title: "Collect Anonymous Usage Statistics",
+        defaultValue: Settings.instance.collectUsageStatistics,
+        onChange: (bool val) {
+          Settings.instance.collectUsageStatistics = val;
           Settings.instance.save();
-        },
-        onDisable: () {
-          Settings.instance.collectUsageStatistics = false;
-          Settings.instance.save();
+          setState(() {});
         },
       ),
-      CheckboxPreference(
-        "Collect Anonymous Crash Reports",
-        "crash_reports",
-        defaultVal: Settings.instance.collectCrashReports,
-        onEnable: () {
-          Settings.instance.collectCrashReports = true;
+      BoolPreference(
+        title: "Collect Anonymous Crash Reports",
+        defaultValue: Settings.instance.collectUsageStatistics,
+        onChange: (bool val) {
+          Settings.instance.collectCrashReports = val;
           Settings.instance.save();
-        },
-        onDisable: () {
-          Settings.instance.collectCrashReports = false;
-          Settings.instance.save();
+          setState(() {});
         },
       ),
       VersionNumberTile(),
@@ -347,6 +339,30 @@ class ListPreference extends StatelessWidget {
           onChange(option);
         }
       },
+    );
+  }
+}
+
+class BoolPreference extends StatelessWidget {
+  final String title;
+  final bool defaultValue;
+  final Function(bool) onChange;
+
+  BoolPreference({
+    @required this.title,
+    @required this.defaultValue,
+    @required this.onChange,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(title),
+      trailing: Checkbox(
+        value: defaultValue,
+        onChanged: onChange,
+      ),
+      onTap: () => onChange(!defaultValue),
     );
   }
 }
