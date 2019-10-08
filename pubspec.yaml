@@ -25,7 +25,6 @@ dependencies:
   function_types: ^0.0.2
   auto_size_text: ^2.0.1
   fimber: ^0.3.0
-  preferences: ^4.0.0
   dynamic_theme: ^1.0.0
 
 dev_dependencies:

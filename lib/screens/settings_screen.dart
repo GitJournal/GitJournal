@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils.dart';
 
-import 'package:preferences/preferences.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -112,7 +111,7 @@ class SettingsListState extends State<SettingsList> {
 
     var brightness = DynamicTheme.of(context).brightness;
 
-    return PreferencePage([
+    return ListView(children: [
       SettingsHeader('Display Settings'),
       ListPreference(
         title: "Theme",
