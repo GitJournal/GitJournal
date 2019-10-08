@@ -296,7 +296,7 @@ class ListPreference extends StatelessWidget {
   final String title;
   final String currentOption;
   final List<String> options;
-  Function onChange;
+  final Function onChange;
 
   ListPreference({
     @required this.title,
