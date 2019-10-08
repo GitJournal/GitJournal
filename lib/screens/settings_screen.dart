@@ -136,12 +136,12 @@ class SettingsListState extends State<SettingsList> {
         onTap: () async {
           var fontSize = await showDialog<NoteFontSize>(
             context: context,
-            builder: (context) => FontSizeSettingsDialog(),
+            builder: (context) => FontSizeSettingsDialog(settings.noteFontSize),
           );
 
           if (fontSize != null) {
-            Settings.instance.noteFontSize = fontSize;
-            Settings.instance.save();
+            settings.noteFontSize = fontSize;
+            settings.save();
             setState(() {});
           }
         },
@@ -268,12 +268,16 @@ class VersionNumberTileState extends State<VersionNumberTile> {
 
 class FontSizeSettingsDialog extends StatelessWidget {
   final String title = "Font Size";
+  final NoteFontSize prevSize;
+
+  FontSizeSettingsDialog(this.prevSize);
 
   @override
   Widget build(BuildContext context) {
     var sizes = <Widget>[];
     for (var fontSize in NoteFontSize.options) {
-      var tile = _constructTile(context, fontSize);
+      var highlight = fontSize == prevSize;
+      var tile = _constructTile(context, fontSize, highlight);
       sizes.add(tile);
     }
 
@@ -287,15 +291,27 @@ class FontSizeSettingsDialog extends StatelessWidget {
     );
   }
 
-  ListTile _constructTile(BuildContext context, NoteFontSize fontSize) {
+  Widget _constructTile(
+    BuildContext context,
+    NoteFontSize fontSize,
+    bool highlight,
+  ) {
     var style = Theme.of(context).textTheme.body1;
     style = style.copyWith(fontSize: fontSize.toDouble());
 
-    return ListTile(
+    var tile = ListTile(
       title: Text(fontSize.toPublicString(), style: style),
       onTap: () {
         Navigator.of(context).pop(fontSize);
       },
+    );
+    if (!highlight) {
+      return tile;
+    }
+
+    return Container(
+      color: Theme.of(context).highlightColor,
+      child: tile,
     );
   }
 }
