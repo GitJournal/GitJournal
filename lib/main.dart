@@ -11,6 +11,7 @@ void main() async {
   var pref = await SharedPreferences.getInstance();
   Settings.instance.load(pref);
 
+  assert(JournalApp.isInDebugMode = true);
   var reportCrashes =
       !JournalApp.isInDebugMode && Settings.instance.collectCrashReports;
 
@@ -22,6 +23,7 @@ void main() async {
     }
   };
 
+  print("Report Crashes: $reportCrashes");
   if (reportCrashes) {
     await FlutterCrashlytics().initialize();
   }
