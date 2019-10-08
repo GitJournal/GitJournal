@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/note.dart';
+import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/apis/git.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/screens/note_viewer.dart';
@@ -72,9 +73,7 @@ class HomeScreen extends StatelessWidget {
               try {
                 await container.syncNotes();
               } on GitException catch (exp) {
-                _scaffoldKey.currentState
-                  ..removeCurrentSnackBar()
-                  ..showSnackBar(SnackBar(content: Text(exp.cause)));
+                showSnackbar(context, exp.cause);
               }
             }),
       ),

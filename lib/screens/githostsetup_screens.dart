@@ -9,6 +9,7 @@ import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/git.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/state_container.dart';
+import 'package:gitjournal/utils.dart';
 import 'package:path/path.dart' as p;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -319,10 +320,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
   void _copyKeyToClipboard(BuildContext context) {
     Clipboard.setData(ClipboardData(text: publicKey));
-    var text = "Public Key copied to Clipboard";
-    Scaffold.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(text)));
+    showSnackbar(context, "Public Key copied to Clipboard");
   }
 
   void _launchDeployKeyPage() async {

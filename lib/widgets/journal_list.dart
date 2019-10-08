@@ -58,8 +58,7 @@ class JournalList extends StatelessWidget {
             final stateContainer = StateContainer.of(context);
             stateContainer.removeNote(note);
 
-            Scaffold.of(context)
-                .showSnackBar(buildUndoDeleteSnackbar(context, note, i));
+            showUndoDeleteSnackbar(context, note, i);
           },
         );
       },

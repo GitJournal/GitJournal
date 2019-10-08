@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
 
+import 'package:flushbar/flushbar.dart';
+
 import 'app.dart';
 import 'note.dart';
 import 'state_container.dart';
@@ -40,22 +42,33 @@ Future<String> dumpAppLogs() async {
   return logsFilePath;
 }
 
-SnackBar buildUndoDeleteSnackbar(
+void showUndoDeleteSnackbar(
   BuildContext context,
   Note deletedNote,
   int deletedNoteIndex,
 ) {
-  var snackbar = SnackBar(
-    content: Text("Note Deleted"),
-    action: SnackBarAction(
-      label: "Undo",
+  var theme = Theme.of(context);
+
+  Flushbar(
+    message: "Note Deleted",
+    duration: Duration(seconds: 3),
+    mainButton: FlatButton(
+      child: Text(
+        "Undo",
+        style: TextStyle(color: theme.accentColor),
+      ),
       onPressed: () {
         Fimber.d("Undoing delete");
         var stateContainer = StateContainer.of(context);
         stateContainer.undoRemoveNote(deletedNote, deletedNoteIndex);
       },
     ),
-  );
+  ).show(context);
+}
 
-  return snackbar;
+void showSnackbar(BuildContext context, String message) {
+  Flushbar(
+    message: message,
+    duration: Duration(seconds: 3),
+  ).show(context);
 }

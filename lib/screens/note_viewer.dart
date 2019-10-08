@@ -28,7 +28,6 @@ class NoteBrowsingScreen extends StatefulWidget {
 
 class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
   PageController pageController;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   NoteBrowsingScreenState({@required int noteIndex}) {
     pageController = PageController(initialPage: noteIndex);
@@ -49,7 +48,6 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
     );
 
     return Scaffold(
-      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('TIMELINE'),
         actions: <Widget>[
@@ -97,10 +95,7 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
     Navigator.pop(context);
 
     Fimber.d("Shwoing an undo snackbar");
-    var snackbar = buildUndoDeleteSnackbar(context, note, noteIndex);
-    _scaffoldKey.currentState
-      ..removeCurrentSnackBar()
-      ..showSnackBar(snackbar);
+    showUndoDeleteSnackbar(context, note, noteIndex);
   }
 
   Widget _buildAlertDialog(BuildContext context) {
