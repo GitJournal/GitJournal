@@ -152,32 +152,16 @@ class SettingsListState extends State<SettingsList> {
       ListTile(title: gitAuthorEmailForm),
       SizedBox(height: 16.0),
       SettingsHeader("Storage"),
-      DropdownPreference(
-        'File Name',
-        'file_name',
-        defaultVal: "ISO8601 With TimeZone",
-        values: [
-          "ISO8601 With TimeZone",
-          "ISO8601",
-          "ISO8601 without Colons",
-        ],
-        onChange: (newVal) {
-          NoteFileNameFormat format;
-          switch (newVal) {
-            case "ISO8601 With TimeZone":
-              format = NoteFileNameFormat.Iso8601WithTimeZone;
-              break;
-            case "ISO8601":
-              format = NoteFileNameFormat.Iso8601;
-              break;
-            case "ISO8601 without Colons":
-              format = NoteFileNameFormat.Iso8601WithTimeZoneWithoutColon;
-              break;
-            default:
-              format = NoteFileNameFormat.Iso8601WithTimeZone;
-          }
+      ListPreference(
+        title: "File Name",
+        currentOption: settings.noteFileNameFormat.toPublicString(),
+        options:
+            NoteFileNameFormat.options.map((f) => f.toPublicString()).toList(),
+        onChange: (String publicStr) {
+          var format = NoteFileNameFormat.fromPublicString(publicStr);
           Settings.instance.noteFileNameFormat = format;
           Settings.instance.save();
+          setState(() {});
         },
       ),
       SizedBox(height: 16.0),

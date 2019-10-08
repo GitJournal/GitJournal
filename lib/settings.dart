@@ -1,11 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum NoteFileNameFormat {
-  Iso8601,
-  Iso8601WithTimeZone,
-  Iso8601WithTimeZoneWithoutColon,
-}
-
 class Settings {
   static List<Function> changeObservers = [];
 
@@ -18,8 +12,7 @@ class Settings {
   // Properties
   String gitAuthor = "GitJournal";
   String gitAuthorEmail = "app@gitjournal.io";
-  NoteFileNameFormat noteFileNameFormat =
-      NoteFileNameFormat.Iso8601WithTimeZone;
+  NoteFileNameFormat noteFileNameFormat;
 
   NoteFontSize noteFontSize;
 
@@ -33,10 +26,8 @@ class Settings {
     noteFontSize =
         NoteFontSize.fromInternalString(pref.getString("noteFontSize"));
 
-    String str;
-    str = pref.getString("noteFileNameFormat") ?? noteFileNameFormat.toString();
-    noteFileNameFormat =
-        NoteFileNameFormat.values.firstWhere((e) => e.toString() == str);
+    noteFileNameFormat = NoteFileNameFormat.fromInternalString(
+        pref.getString("noteFileNameFormat"));
 
     collectUsageStatistics =
         pref.getBool("collectCrashReports") ?? collectUsageStatistics;
@@ -49,7 +40,7 @@ class Settings {
     pref.setString("gitAuthor", gitAuthor);
     pref.setString("gitAuthorEmail", gitAuthorEmail);
     pref.setString("noteFontSize", noteFontSize.toInternalString());
-    pref.setString("noteFileNameFormat", noteFileNameFormat.toString());
+    pref.setString("noteFileNameFormat", noteFileNameFormat.toInternalString());
     pref.setBool("collectUsageStatistics", collectUsageStatistics);
     pref.setBool("collectCrashReports", collectCrashReports);
 
@@ -114,6 +105,59 @@ class NoteFontSize {
   @override
   String toString() {
     assert(false, "NoteFontSize toString should never be called");
+    return "";
+  }
+}
+
+class NoteFileNameFormat {
+  static const Iso8601WithTimeZone =
+      NoteFileNameFormat("Iso8601WithTimeZone", "ISO8601 With TimeZone");
+  static const Iso8601 = NoteFileNameFormat("Iso8601", "Iso8601");
+  static const Iso8601WithTimeZoneWithoutColon = NoteFileNameFormat(
+      "Iso8601WithTimeZoneWithoutColon", "ISO8601 without Colons");
+
+  static const Default = Iso8601WithTimeZone;
+
+  static const options = <NoteFileNameFormat>[
+    Iso8601,
+    Iso8601WithTimeZone,
+    Iso8601WithTimeZoneWithoutColon,
+  ];
+
+  static NoteFileNameFormat fromInternalString(String str) {
+    for (var opt in options) {
+      if (opt.toInternalString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  static NoteFileNameFormat fromPublicString(String str) {
+    for (var opt in options) {
+      if (opt.toPublicString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  final String _str;
+  final String _publicStr;
+
+  const NoteFileNameFormat(this._str, this._publicStr);
+
+  String toInternalString() {
+    return _str;
+  }
+
+  String toPublicString() {
+    return _publicStr;
+  }
+
+  @override
+  String toString() {
+    assert(false, "NoteFileNameFormat toString should never be called");
     return "";
   }
 }
