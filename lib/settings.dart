@@ -19,6 +19,8 @@ class Settings {
   bool collectUsageStatistics = true;
   bool collectCrashReports = true;
 
+  int version = 0;
+
   void load(SharedPreferences pref) {
     gitAuthor = pref.getString("gitAuthor") ?? gitAuthor;
     gitAuthorEmail = pref.getString("gitAuthorEmail") ?? gitAuthorEmail;
@@ -33,6 +35,8 @@ class Settings {
         pref.getBool("collectCrashReports") ?? collectUsageStatistics;
     collectCrashReports =
         pref.getBool("collectCrashReports") ?? collectCrashReports;
+
+    version = pref.getInt("settingsVersion") ?? version;
   }
 
   Future save() async {
@@ -43,11 +47,31 @@ class Settings {
     pref.setString("noteFileNameFormat", noteFileNameFormat.toInternalString());
     pref.setBool("collectUsageStatistics", collectUsageStatistics);
     pref.setBool("collectCrashReports", collectCrashReports);
+    pref.setInt("settingsVersion", version);
 
     // Shouldn't we check if something has actually changed?
     for (var f in changeObservers) {
       f();
     }
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      "gitAuthor": gitAuthor,
+      "gitAuthorEmail": gitAuthorEmail,
+      "noteFontSize": noteFontSize.toInternalString(),
+      "noteFileNameFormat": noteFileNameFormat.toInternalString(),
+      "collectUsageStatistics": collectUsageStatistics,
+      "collectCrashReports": collectCrashReports,
+      "version": version,
+    };
+  }
+
+  Map<String, dynamic> toLoggableMap() {
+    var m = toMap();
+    m.remove("gitAuthor");
+    m.remove("gitAuthorEmail");
+    return m;
   }
 }
 

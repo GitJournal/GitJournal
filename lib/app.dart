@@ -80,6 +80,13 @@ class JournalApp extends StatelessWidget {
 
     Fimber.d("Analytics Collection: $should");
     JournalApp.analytics.setAnalyticsCollectionEnabled(should);
+
+    if (should) {
+      JournalApp.analytics.logEvent(
+        name: "settings",
+        parameters: Settings.instance.toLoggableMap(),
+      );
+    }
   }
 
   static FirebaseAnalytics analytics = FirebaseAnalytics();
