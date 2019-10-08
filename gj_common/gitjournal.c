@@ -360,7 +360,7 @@ char *gj_branch_name(git_repository *repo)
 {
     int err = 0;
     git_reference *ref = NULL;
-    char *shorthand = NULL;
+    char *shorthand = "master";
 
     err = git_repository_head(&ref, repo);
     if (err < 0)
