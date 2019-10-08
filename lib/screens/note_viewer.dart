@@ -135,7 +135,7 @@ class NoteViewer extends StatelessWidget {
     theme = theme.copyWith(
       textTheme: theme.textTheme.copyWith(
         body1: theme.textTheme.body1
-            .copyWith(fontSize: Settings.instance.getNoteViewerFontSize()),
+            .copyWith(fontSize: Settings.instance.noteFontSize.toDouble()),
       ),
     );
 

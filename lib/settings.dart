@@ -1,6 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum NoteViewerFontSize { Normal, Small, ExtraSmall, Large, ExtraLarge }
 enum NoteFileNameFormat {
   Iso8601,
   Iso8601WithTimeZone,
@@ -22,7 +21,7 @@ class Settings {
   NoteFileNameFormat noteFileNameFormat =
       NoteFileNameFormat.Iso8601WithTimeZone;
 
-  NoteViewerFontSize noteViewerFontSize = NoteViewerFontSize.Normal;
+  NoteFontSize noteFontSize;
 
   bool collectUsageStatistics = true;
   bool collectCrashReports = true;
@@ -31,11 +30,10 @@ class Settings {
     gitAuthor = pref.getString("gitAuthor") ?? gitAuthor;
     gitAuthorEmail = pref.getString("gitAuthorEmail") ?? gitAuthorEmail;
 
-    String str;
-    str = pref.getString("noteViewerFontSize") ?? noteViewerFontSize.toString();
-    noteViewerFontSize =
-        NoteViewerFontSize.values.firstWhere((e) => e.toString() == str);
+    noteFontSize =
+        NoteFontSize.fromInternalString(pref.getString("noteFontSize"));
 
+    String str;
     str = pref.getString("noteFileNameFormat") ?? noteFileNameFormat.toString();
     noteFileNameFormat =
         NoteFileNameFormat.values.firstWhere((e) => e.toString() == str);
@@ -50,7 +48,7 @@ class Settings {
     var pref = await SharedPreferences.getInstance();
     pref.setString("gitAuthor", gitAuthor);
     pref.setString("gitAuthorEmail", gitAuthorEmail);
-    pref.setString("noteViewerFontSize", noteViewerFontSize.toString());
+    pref.setString("noteFontSize", noteFontSize.toInternalString());
     pref.setString("noteFileNameFormat", noteFileNameFormat.toString());
     pref.setBool("collectUsageStatistics", collectUsageStatistics);
     pref.setBool("collectCrashReports", collectCrashReports);
@@ -60,61 +58,62 @@ class Settings {
       f();
     }
   }
+}
 
-  double getNoteViewerFontSize() {
-    return noteViewerFontSizeToDouble(noteViewerFontSize);
+class NoteFontSize {
+  static const ExtraSmall = NoteFontSize("ExtraSmall", "Small", 12.0);
+  static const Small = NoteFontSize("Small", "Small", 16.0);
+  static const Normal = NoteFontSize("Normal", "Normal", 18.0);
+  static const Large = NoteFontSize("Large", "Large", 22.0);
+  static const ExtraLarge = NoteFontSize("ExtraLarge", "Extra Large", 26.0);
+
+  static const options = <NoteFontSize>[
+    ExtraSmall,
+    Small,
+    Normal,
+    Large,
+    ExtraLarge,
+  ];
+
+  static NoteFontSize fromInternalString(String str) {
+    for (var opt in options) {
+      if (opt.toInternalString() == str) {
+        return opt;
+      }
+    }
+    return Normal;
   }
 
-  static double noteViewerFontSizeToDouble(NoteViewerFontSize size) {
-    switch (size) {
-      case NoteViewerFontSize.Normal:
-        return 18.0;
-      case NoteViewerFontSize.Small:
-        return 15.0;
-      case NoteViewerFontSize.ExtraSmall:
-        return 12.0;
-      case NoteViewerFontSize.Large:
-        return 22.0;
-      case NoteViewerFontSize.ExtraLarge:
-        return 26.0;
+  static NoteFontSize fromPublicString(String str) {
+    for (var opt in options) {
+      if (opt.toPublicString() == str) {
+        return opt;
+      }
     }
-
-    assert(false, "noteViewerFontSizeToDouble: We should never be here");
-    return 50000.0;
+    return Normal;
   }
 
-  static String noteViewerFontSizeToString(NoteViewerFontSize size) {
-    switch (size) {
-      case NoteViewerFontSize.Normal:
-        return "Normal";
-      case NoteViewerFontSize.Small:
-        return "Small";
-      case NoteViewerFontSize.ExtraSmall:
-        return "Extra Small";
-      case NoteViewerFontSize.Large:
-        return "Large";
-      case NoteViewerFontSize.ExtraLarge:
-        return "Extra Large";
-    }
+  final String _str;
+  final String _publicStr;
+  final double _value;
 
-    assert(false, "noteViewerFontSizeToString: We should never be here");
+  const NoteFontSize(this._str, this._publicStr, this._value);
+
+  String toInternalString() {
+    return _str;
+  }
+
+  String toPublicString() {
+    return _publicStr;
+  }
+
+  double toDouble() {
+    return _value;
+  }
+
+  @override
+  String toString() {
+    assert(false, "NoteFontSize toString should never be called");
     return "";
-  }
-
-  static NoteViewerFontSize noteViewerFontSizeFromString(String val) {
-    switch (val) {
-      case "Extra Small":
-        return NoteViewerFontSize.ExtraSmall;
-      case "Small":
-        return NoteViewerFontSize.Small;
-      case "Normal":
-        return NoteViewerFontSize.Normal;
-      case "Large":
-        return NoteViewerFontSize.Large;
-      case "Extra Large":
-        return NoteViewerFontSize.ExtraLarge;
-      default:
-        return NoteViewerFontSize.Normal;
-    }
   }
 }
