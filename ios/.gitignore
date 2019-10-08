@@ -46,3 +46,5 @@ Pods/
 
 libs
 Flutter/flutter_export_environment.sh
+
+fastlane/report.xml
