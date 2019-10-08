@@ -110,14 +110,15 @@ class SettingsListState extends State<SettingsList> {
       },
     );
 
+    var brightness = DynamicTheme.of(context).brightness;
+
     return PreferencePage([
       SettingsHeader('Display Settings'),
-      DropdownPreference(
-        'Theme',
-        'theme',
-        defaultVal: "Light",
-        values: ["Light", "Dark"],
-        onChange: (newVal) {
+      ListPreference(
+        title: "Theme",
+        currentOption: brightness == Brightness.light ? "Light" : "Dark",
+        options: ["Light", "Dark"],
+        onChange: (String newVal) {
           var dynamicTheme = DynamicTheme.of(context);
           switch (newVal) {
             case "Dark":
@@ -312,6 +313,56 @@ class FontSizeSettingsDialog extends StatelessWidget {
     return Container(
       color: Theme.of(context).highlightColor,
       child: tile,
+    );
+  }
+}
+
+class ListPreference extends StatelessWidget {
+  final String title;
+  final String currentOption;
+  final List<String> options;
+  Function onChange;
+
+  ListPreference({
+    @required this.title,
+    @required this.currentOption,
+    @required this.options,
+    @required this.onChange,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(title),
+      subtitle: Text(currentOption),
+      onTap: () async {
+        var option = await showDialog<String>(
+            context: context,
+            builder: (BuildContext context) {
+              var children = <Widget>[];
+              for (var o in options) {
+                var tile = ListTile(
+                  title: Text(o),
+                  onTap: () {
+                    Navigator.of(context).pop(o);
+                  },
+                );
+                children.add(tile);
+              }
+              return AlertDialog(
+                title: Text(title),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: children,
+                  ),
+                ),
+              );
+            });
+
+        if (option != null) {
+          onChange(option);
+        }
+      },
     );
   }
 }
