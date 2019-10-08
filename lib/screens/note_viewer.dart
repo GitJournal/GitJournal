@@ -95,7 +95,7 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
     Navigator.pop(context);
 
     Fimber.d("Shwoing an undo snackbar");
-    showUndoDeleteSnackbar(context, note, noteIndex);
+    showUndoDeleteSnackbar(context, stateContainer, note, noteIndex);
   }
 
   Widget _buildAlertDialog(BuildContext context) {

@@ -44,6 +44,7 @@ Future<String> dumpAppLogs() async {
 
 void showUndoDeleteSnackbar(
   BuildContext context,
+  StateContainerState stateContainer,
   Note deletedNote,
   int deletedNoteIndex,
 ) {
@@ -59,7 +60,6 @@ void showUndoDeleteSnackbar(
       ),
       onPressed: () {
         Fimber.d("Undoing delete");
-        var stateContainer = StateContainer.of(context);
         stateContainer.undoRemoveNote(deletedNote, deletedNoteIndex);
       },
     ),
