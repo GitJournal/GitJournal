@@ -4,7 +4,7 @@ import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/widgets/note_header.dart';
 import 'package:gitjournal/storage/serializers.dart';
 
-enum NoteEditorDropDownChoices { Discard, RawEditor }
+enum NoteEditorDropDownChoices { Discard, SwitchEditor }
 
 class NoteEditor extends StatefulWidget {
   final Note note;
@@ -82,12 +82,18 @@ class NoteEditorState extends State<NoteEditor> {
                     Navigator.pop(context);
                   }
                   break;
-                case NoteEditorDropDownChoices.RawEditor:
+                case NoteEditorDropDownChoices.SwitchEditor:
                   setState(() {
-                    rawEditor = true;
-                    var noteData =
-                        NoteData(_textController.text, note.data.props);
-                    _textController.text = serializer.encode(noteData);
+                    if (rawEditor) {
+                      rawEditor = false;
+                      note.data = serializer.decode(_textController.text);
+                      _textController.text = note.body;
+                    } else {
+                      rawEditor = true;
+                      var noteData =
+                          NoteData(_textController.text, note.data.props);
+                      _textController.text = serializer.encode(noteData);
+                    }
                   });
                   break;
               }
@@ -98,9 +104,9 @@ class NoteEditorState extends State<NoteEditor> {
                 value: NoteEditorDropDownChoices.Discard,
                 child: Text('Discard'),
               ),
-              const PopupMenuItem<NoteEditorDropDownChoices>(
-                value: NoteEditorDropDownChoices.RawEditor,
-                child: Text('RawEditor'),
+              PopupMenuItem<NoteEditorDropDownChoices>(
+                value: NoteEditorDropDownChoices.SwitchEditor,
+                child: rawEditor ? Text('Rich Editor') : Text('Raw Editor'),
               ),
             ],
           ),
