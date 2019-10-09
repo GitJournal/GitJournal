@@ -106,14 +106,14 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
       actions: <Widget>[
         FlatButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Keep It'),
+          child: Text('Cancel'),
         ),
         FlatButton(
           onPressed: () {
             Navigator.pop(context); // Alert box
             _deleteNote(context);
           },
-          child: Text('Delete It'),
+          child: Text('Delete'),
         ),
       ],
     );
