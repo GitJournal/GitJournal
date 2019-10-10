@@ -79,7 +79,7 @@ int write_rsa_public_key(RSA *pRsa, const char *file_path, const char *comment)
    memcpy(pEncoding, pSshHeader, 11);
 
    index = SshEncodeBuffer(&pEncoding[11], eLen, eBytes);
-   index = SshEncodeBuffer(&pEncoding[11 + index], nLen, nBytes);
+   SshEncodeBuffer(&pEncoding[11 + index], nLen, nBytes);
 
    b64 = BIO_new(BIO_f_base64());
    BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL);

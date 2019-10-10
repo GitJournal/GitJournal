@@ -8,3 +8,6 @@ build-env: Dockerfile
 
 shell:
 	docker run --rm -it -v `pwd`:/code -w /code gitjournal_lib bash
+
+cppcheck:
+	cppcheck --enable=all --suppress=unusedFunction common.c gitjournal.c keygen.c
