@@ -182,6 +182,7 @@ class NoteMarkdownEditor extends StatelessWidget {
     return Form(
       child: TextFormField(
         autofocus: true,
+        autocorrect: false,
         keyboardType: TextInputType.multiline,
         maxLines: null,
         decoration: InputDecoration(
