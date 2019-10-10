@@ -73,7 +73,10 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(Icons.feedback, color: textStyle.color),
             title: Text('Rate Us', style: textStyle),
             onTap: () {
-              LaunchReview.launch();
+              LaunchReview.launch(
+                androidAppId: "io.gitjournal.gitjournal",
+                iOSAppId: "1466519634",
+              );
               Navigator.pop(context);
 
               getAnalytics().logEvent(
