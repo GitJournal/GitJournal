@@ -79,6 +79,7 @@ class SettingsListState extends State<SettingsList> {
       child: TextFormField(
         key: gitAuthorEmailKey,
         style: Theme.of(context).textTheme.title,
+        keyboardType: TextInputType.emailAddress,
         decoration: const InputDecoration(
           icon: Icon(Icons.email),
           hintText: 'Who should author the changes?',
