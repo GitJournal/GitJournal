@@ -38,6 +38,12 @@ class NoteEditorState extends State<NoteEditor> {
   }
 
   @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Widget editor = Column(
       children: <Widget>[
