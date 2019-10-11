@@ -176,7 +176,7 @@ class NoteEditorState extends State<NoteEditor> {
     } else {
       note.data = serializer.decode(_textController.text);
     }
-    if (note.body.isNotEmpty) {
+    if (!note.isEmpty()) {
       newNote ? stateContainer.addNote(note) : stateContainer.updateNote(note);
     }
   }

@@ -82,6 +82,10 @@ class Note implements Comparable<Note> {
     return created.year > 10;
   }
 
+  bool isEmpty() {
+    return body.isEmpty;
+  }
+
   Future<NoteLoadState> load() async {
     if (_loadState == NoteLoadState.Loading) {
       return _loadState;
