@@ -26,7 +26,8 @@ void main() {
       n2Path = p.join(tempDir.path, "2.md");
 
       var n1 = Note(n1Path);
-      n1.data = NoteData("test", props);
+      n1.body = "test";
+      n1.created = dt;
 
       var n2 = Note(n2Path);
       n2.data = NoteData("test2", props);

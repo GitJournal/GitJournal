@@ -12,7 +12,7 @@ enum NoteLoadState {
 
 class Note implements Comparable<Note> {
   String filePath = "";
-  DateTime created;
+  DateTime _created;
   NoteData _data = NoteData();
 
   DateTime _fileLastModified;
@@ -21,7 +21,21 @@ class Note implements Comparable<Note> {
   var _serializer = MarkdownYAMLSerializer();
 
   Note([this.filePath]) {
-    created = created ?? DateTime(0, 0, 0, 0, 0, 0, 0, 0);
+    _created = _created ?? DateTime(0, 0, 0, 0, 0, 0, 0, 0);
+  }
+
+  DateTime get created {
+    return _created;
+  }
+
+  set created(DateTime dt) {
+    _created = dt;
+
+    if (hasValidDate()) {
+      _data.props['created'] = toIso8601WithTimezone(created);
+    } else {
+      _data.props.remove('created');
+    }
   }
 
   String get body {
@@ -42,24 +56,24 @@ class Note implements Comparable<Note> {
     if (data.props.containsKey("created")) {
       var createdStr = data.props['created'].toString();
       try {
-        created = DateTime.parse(data.props['created']).toLocal();
+        _created = DateTime.parse(data.props['created']).toLocal();
       } catch (ex) {
         // Ignore it
       }
 
-      if (created == null) {
+      if (_created == null) {
         var regex = RegExp(
             r"(\d{4})-(\d{2})-(\d{2})T(\d{2})\:(\d{2})\:(\d{2})\+(\d{2})\:(\d{2})");
         if (regex.hasMatch(createdStr)) {
           // FIXME: Handle the timezone!
           createdStr = createdStr.substring(0, 19);
-          created = DateTime.parse(createdStr);
+          _created = DateTime.parse(createdStr);
         }
       }
     }
 
-    if (created == null) {
-      created = DateTime(0, 0, 0, 0, 0, 0, 0, 0);
+    if (_created == null) {
+      _created = DateTime(0, 0, 0, 0, 0, 0, 0, 0);
     }
   }
 
@@ -101,10 +115,6 @@ class Note implements Comparable<Note> {
     assert(data != null);
     assert(data.body != null);
     assert(data.props != null);
-
-    if (hasValidDate()) {
-      data.props['created'] = toIso8601WithTimezone(created);
-    }
 
     var file = File(filePath);
     var contents = _serializer.encode(data);
