@@ -48,11 +48,11 @@ class NoteEditorState extends State<NoteEditor> {
     Widget editor = Column(
       children: <Widget>[
         NoteHeader(note),
-        NoteMarkdownEditor(_textController),
+        NoteMarkdownEditor(_textController, false),
       ],
     );
     if (rawEditor) {
-      editor = NoteMarkdownEditor(_textController);
+      editor = NoteMarkdownEditor(_textController, true);
     }
 
     var title = newNote ? "Journal Entry" : "Edit Journal Entry";
@@ -174,17 +174,24 @@ class NoteEditorState extends State<NoteEditor> {
 
 class NoteMarkdownEditor extends StatelessWidget {
   final TextEditingController textController;
+  final bool useMonospace;
 
-  NoteMarkdownEditor(this.textController);
+  NoteMarkdownEditor(this.textController, this.useMonospace);
 
   @override
   Widget build(BuildContext context) {
+    var style = Theme.of(context).textTheme.subhead;
+    if (useMonospace) {
+      style = style.copyWith(fontFamily: "Roboto Mono");
+    }
+
     return Form(
       child: TextFormField(
         autofocus: true,
         autocorrect: false,
         keyboardType: TextInputType.multiline,
         maxLines: null,
+        style: style,
         decoration: InputDecoration(
           hintText: 'Write here',
           border: InputBorder.none,
