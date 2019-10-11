@@ -52,17 +52,17 @@ static FlutterMethodChannel* gitChannel = 0;
             result(filesDir);
         }
         else if ([@"gitClone" isEqualToString:method]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [self handleMethodCallAsync:call result:result];
             });
         }
         else if ([@"gitPull" isEqualToString:method]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [self handleMethodCallAsync:call result:result];
             });
         }
         else if ([@"gitPush" isEqualToString:method]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [self handleMethodCallAsync:call result:result];
             });
         }
@@ -189,7 +189,7 @@ static FlutterMethodChannel* gitChannel = 0;
             }
         }
         else if ([@"generateSSHKeys" isEqualToString:method]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [self handleMethodCallAsync:call result:result];
             });
         }
