@@ -63,17 +63,7 @@ class NoteEditorState extends State<NoteEditor> {
           key: ValueKey("NewEntry"),
           icon: Icon(Icons.check),
           onPressed: () {
-            final stateContainer = StateContainer.of(context);
-            if (rawEditor == false) {
-              note.body = _textController.text;
-            } else {
-              note.data = serializer.decode(_textController.text);
-            }
-            if (note.body.isNotEmpty) {
-              newNote
-                  ? stateContainer.addNote(note)
-                  : stateContainer.updateNote(note);
-            }
+            _saveNote(context);
             Navigator.pop(context);
           },
         ),
@@ -126,7 +116,13 @@ class NoteEditorState extends State<NoteEditor> {
       ),
     );
 
-    return newJournalScreen;
+    return WillPopScope(
+      onWillPop: () async {
+        _saveNote(context);
+        return true;
+      },
+      child: newJournalScreen,
+    );
   }
 
   Widget _buildAlertDialog(BuildContext context) {
@@ -169,6 +165,18 @@ class NoteEditorState extends State<NoteEditor> {
     }
 
     return false;
+  }
+
+  void _saveNote(BuildContext context) {
+    final stateContainer = StateContainer.of(context);
+    if (rawEditor == false) {
+      note.body = _textController.text;
+    } else {
+      note.data = serializer.decode(_textController.text);
+    }
+    if (note.body.isNotEmpty) {
+      newNote ? stateContainer.addNote(note) : stateContainer.updateNote(note);
+    }
   }
 }
 
