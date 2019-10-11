@@ -358,7 +358,7 @@ class BoolPreference extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(title),
-      trailing: Checkbox(
+      trailing: Switch(
         value: defaultValue,
         onChanged: onChange,
       ),
