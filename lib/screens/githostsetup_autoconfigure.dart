@@ -1,6 +1,8 @@
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:function_types/function_types.dart';
+
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/git.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
@@ -37,7 +39,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
     super.initState();
   }
 
-  void _startAutoConfigure() {
+  void _startAutoConfigure() async {
     Fimber.d("Starting autoconfigure");
     setState(() {
       _configuringStarted = true;
@@ -94,7 +96,14 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
         }
         widget.onDone(repo.cloneUrl);
       });
-      gitHost.launchOAuthScreen();
+
+      try {
+        await gitHost.launchOAuthScreen();
+      } on PlatformException catch (e, stack) {
+        print("LaunchOAuthScreen: Caught platform exception: " + e.toString());
+        print(stack);
+        print("Ignoring it, since I don't know what else to do");
+      }
     } on GitHostException catch (e) {
       _handleGitHostException(e);
     }
