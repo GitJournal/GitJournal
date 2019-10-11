@@ -83,3 +83,7 @@ class OAuthAppState extends State<OAuthApp> {
     );
   }
 }
+
+void main() async {
+  runApp(OAuthApp());
+}
