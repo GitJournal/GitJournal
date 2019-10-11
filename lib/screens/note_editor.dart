@@ -168,6 +168,8 @@ class NoteEditorState extends State<NoteEditor> {
   }
 
   void _saveNote(BuildContext context) {
+    if (!_noteModified()) return;
+
     final stateContainer = StateContainer.of(context);
     if (rawEditor == false) {
       note.body = _textController.text;
