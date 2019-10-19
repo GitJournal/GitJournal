@@ -113,12 +113,13 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(Icons.bug_report, color: textStyle.color),
             title: Text('Bug Report', style: textStyle),
             onTap: () async {
+              var platform = Platform.operatingSystem;
               var versionText = await getVersionString();
               var appLogsFilePath = await dumpAppLogs();
 
               final Email email = Email(
                 body:
-                    "Hey!\n\nI found a bug in GitJournal - \n \n\nVersion: $versionText",
+                    "Hey!\n\nI found a bug in GitJournal - \n \n\nVersion: $versionText\nPlatform: $platform",
                 subject: 'GitJournal Bug',
                 recipients: ['gitjournal.io+bugs@gmail.com'],
                 attachmentPath: appLogsFilePath,
