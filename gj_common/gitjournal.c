@@ -65,6 +65,11 @@ int rm_match_cb(const char *path, const char *spec, void *payload)
 
     int full_path_length = strlen(git_base_path) + 1 + strlen(path);
     char *full_path = (char *)malloc(full_path_length);
+    if (full_path == NULL)
+    {
+        gj_log_internal("rm_match_cb: Malloc Failed");
+        return 1;
+    }
     strcpy(full_path, git_base_path);
     strcat(full_path, "/"); // FIXME: Will not work on windows!
     strcat(full_path, path);
@@ -395,6 +400,12 @@ int gj_git_push(const char *git_base_path)
 
     int name_length = strlen(base_name) + strlen(branch_name);
     name = (char *)malloc(name_length);
+    if (name == NULL)
+    {
+        gj_log_internal("gj_git_push: malloc string failed. Length: %d", name_length);
+        err = 5000;
+        goto cleanup;
+    }
     strcpy(name, base_name);
     strcat(name, branch_name);
 
@@ -503,6 +514,12 @@ int gj_git_pull(const char *git_base_path, const char *author_name, const char *
 
     int name_length = strlen(base_name) + strlen(branch_name);
     name = (char *)malloc(name_length);
+    if (name == NULL)
+    {
+        gj_log_internal("gj_git_pull: malloc string failed. Length: %d", name_length);
+        err = 5000;
+        goto cleanup;
+    }
     strcpy(name, base_name);
     strcat(name, branch_name);
 

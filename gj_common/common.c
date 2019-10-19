@@ -24,6 +24,11 @@ gj_error *gj_error_info(int err)
         return NULL;
 
     gj_error *error = (gj_error *)malloc(sizeof(gj_error));
+    if (error == NULL)
+    {
+        gj_log_internal("Failed to allocate gj_error");
+        return NULL;
+    }
     error->message_allocated = false;
     if (err <= GJ_ERR_FIRST && err >= GJ_ERR_LAST)
     {
@@ -59,8 +64,15 @@ gj_error *gj_error_info(int err)
     {
         error->code = e->klass;
         error->message = (char *)malloc(strlen(e->message));
-        strcpy(error->message, e->message);
-        error->message_allocated = true;
+        if (error->message != NULL)
+        {
+            strcpy(error->message, e->message);
+            error->message_allocated = true;
+        }
+        else
+        {
+            error->message = "Unknown Error - Malloc Failed";
+        }
     }
     else
     {

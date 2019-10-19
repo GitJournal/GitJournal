@@ -63,6 +63,12 @@ int write_rsa_public_key(RSA *pRsa, const char *file_path, const char *comment)
    // reading the public exponent
    int eLen = BN_num_bytes(pRsa_exp);
    eBytes = (unsigned char *)malloc(eLen);
+   if (eBytes == NULL)
+   {
+      gj_log_internal("write_rsa_public_key malloc failed. Length: %d", eLen);
+      ret = -1;
+      goto cleanup;
+   }
    ret = BN_bn2bin(pRsa_exp, eBytes);
    if (ret <= 0)
       goto cleanup;
