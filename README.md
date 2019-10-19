@@ -42,6 +42,10 @@ Features -
 - [Day One Classic](https://gist.github.com/sanzoghenzo/fb5011aa566292a4eb1b62fc7a4a50cc)
 - [Narrate](https://gist.github.com/sanzoghenzo/fb5011aa566292a4eb1b62fc7a4a50cc)
 
+# Contributing
+
+Development is tracked over [here](https://github.com/orgs/GitJournal/projects/1). Please feel free to open an issue for any bug or feature request. Additionally, you can vote on existing Issues by reacting with a '👍'.
+
 # License
 
 ```
