@@ -91,7 +91,7 @@ class AppDrawer extends StatelessWidget {
               var versionText = await getVersionString();
 
               var platform = Platform.operatingSystem;
-              var emailAddress = 'gitjournal.io+feedback@gmail.com';
+              var emailAddress = 'feedback@gitjournal.io';
               var subject = 'GitJournal Feedback';
               var body =
                   "Hey!\n\nHere are some ways to improve GitJournal - \n \n\nVersion: $versionText\nPlatform: $platform";
@@ -121,7 +121,7 @@ class AppDrawer extends StatelessWidget {
                 body:
                     "Hey!\n\nI found a bug in GitJournal - \n \n\nVersion: $versionText\nPlatform: $platform",
                 subject: 'GitJournal Bug',
-                recipients: ['gitjournal.io+bugs@gmail.com'],
+                recipients: ['bugs@gitjournal.io'],
                 attachmentPath: appLogsFilePath,
               );
 
