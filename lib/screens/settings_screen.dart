@@ -245,8 +245,7 @@ class FontSizeSettingsDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     var sizes = <Widget>[];
     for (var fontSize in NoteFontSize.options) {
-      var highlight = fontSize == prevSize;
-      var tile = _constructTile(context, fontSize, highlight);
+      var tile = _constructTile(context, fontSize);
       sizes.add(tile);
     }
 
@@ -260,28 +259,20 @@ class FontSizeSettingsDialog extends StatelessWidget {
     );
   }
 
-  Widget _constructTile(
-    BuildContext context,
-    NoteFontSize fontSize,
-    bool highlight,
-  ) {
+  Widget _constructTile(BuildContext context, NoteFontSize fontSize) {
     var style = Theme.of(context).textTheme.body1;
     style = style.copyWith(fontSize: fontSize.toDouble());
 
-    var tile = ListTile(
+    var tile = RadioListTile<NoteFontSize>(
       title: Text(fontSize.toPublicString(), style: style),
-      onTap: () {
-        Navigator.of(context).pop(fontSize);
+      value: fontSize,
+      groupValue: prevSize,
+      onChanged: (NoteFontSize newVal) {
+        Navigator.of(context).pop(newVal);
       },
     );
-    if (!highlight) {
-      return tile;
-    }
 
-    return Container(
-      color: Theme.of(context).highlightColor,
-      child: tile,
-    );
+    return tile;
   }
 }
 
@@ -309,10 +300,12 @@ class ListPreference extends StatelessWidget {
             builder: (BuildContext context) {
               var children = <Widget>[];
               for (var o in options) {
-                var tile = ListTile(
+                var tile = RadioListTile<String>(
                   title: Text(o),
-                  onTap: () {
-                    Navigator.of(context).pop(o);
+                  value: o,
+                  groupValue: currentOption,
+                  onChanged: (String val) {
+                    Navigator.of(context).pop(val);
                   },
                 );
                 children.add(tile);
