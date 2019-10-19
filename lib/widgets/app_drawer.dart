@@ -95,10 +95,10 @@ class AppDrawer extends StatelessWidget {
               var subject = 'GitJournal Feedback';
               var body =
                   "Hey!\n\nHere are some ways to improve GitJournal - \n \n\nVersion: $versionText\nPlatform: $platform";
-              if (Platform.isIOS) {
-                subject = Uri.encodeComponent(subject);
-                body = Uri.encodeComponent(body);
-              }
+
+              subject = Uri.encodeComponent(subject);
+              body = Uri.encodeComponent(body);
+
               var url = 'mailto:$emailAddress?subject=$subject&body=$body';
               launch(url);
 
