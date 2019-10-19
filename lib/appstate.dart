@@ -27,7 +27,6 @@ class AppState {
     return notes.isNotEmpty;
   }
 
-  bool isLoadingFromDisk = false;
   List<Note> notes = [];
 
   AppState(SharedPreferences pref) {

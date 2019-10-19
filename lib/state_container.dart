@@ -81,10 +81,8 @@ class StateContainerState extends State<StateContainer> {
 
   void _loadNotesFromDisk() {
     Fimber.d("Loading Notes From Disk");
-    appState.isLoadingFromDisk = true;
     noteRepo.listNotes().then((loadedNotes) {
       setState(() {
-        appState.isLoadingFromDisk = false;
         appState.notes = loadedNotes;
 
         getAnalytics().logEvent(
@@ -98,7 +96,6 @@ class StateContainerState extends State<StateContainer> {
       setState(() {
         Fimber.d("Load Notes From Disk Error: " + err.toString());
         Fimber.d(stack.toString());
-        appState.isLoadingFromDisk = false;
 
         getAnalytics().logEvent(
           name: "notes_loading_failed",
@@ -119,17 +116,14 @@ class StateContainerState extends State<StateContainer> {
     await noteRepo.sync();
 
     try {
-      appState.isLoadingFromDisk = true;
       var loadedNotes = await noteRepo.listNotes();
       setState(() {
-        appState.isLoadingFromDisk = false;
         appState.notes = loadedNotes;
       });
     } catch (err, stack) {
       setState(() {
         Fimber.d("Load Notes From Disk Error: " + err.toString());
         Fimber.d(stack.toString());
-        appState.isLoadingFromDisk = false;
       });
     }
 
