@@ -256,6 +256,15 @@ class FontSizeSettingsDialog extends StatelessWidget {
           children: sizes,
         ),
       ),
+      contentPadding: EdgeInsets.all(0.0),
+      actions: <Widget>[
+        FlatButton(
+          child: Text('CANCEL'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        )
+      ],
     );
   }
 
@@ -317,6 +326,15 @@ class ListPreference extends StatelessWidget {
                     children: children,
                   ),
                 ),
+                contentPadding: EdgeInsets.all(0.0),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('CANCEL'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
               );
             });
 
