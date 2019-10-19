@@ -65,5 +65,19 @@ Alright.""";
 
       expect(actualStr, str);
     });
+
+    test('Markdown Serializer YAML Lists', () {
+      var str = """---
+foo: [bar, gar]
+---
+
+Alright.""";
+
+      var serializer = MarkdownYAMLSerializer();
+      var note = serializer.decode(str);
+      var actualStr = serializer.encode(note);
+
+      expect(actualStr, str);
+    });
   });
 }

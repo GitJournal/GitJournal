@@ -86,7 +86,8 @@ class MarkdownYAMLSerializer implements NoteSerializer {
     var str = "";
 
     map.forEach((key, value) {
-      str += key + ": " + value + "\n";
+      String val = value.toString();
+      str += key + ": " + val + "\n";
     });
     return str;
   }
