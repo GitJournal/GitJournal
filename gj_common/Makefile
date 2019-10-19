@@ -11,3 +11,6 @@ shell:
 
 cppcheck:
 	cppcheck --enable=all --suppress=unusedFunction common.c gitjournal.c keygen.c
+
+infer:
+	infer run -- make
