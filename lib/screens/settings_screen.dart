@@ -114,21 +114,13 @@ class SettingsListState extends State<SettingsList> {
 
     return ListView(children: [
       SettingsHeader('Display Settings'),
-      ListPreference(
-        title: "Theme",
-        currentOption: brightness == Brightness.light ? "Light" : "Dark",
-        options: ["Light", "Dark"],
-        onChange: (String newVal) {
+      BoolPreference(
+        title: "Dark Theme",
+        defaultValue: brightness == Brightness.dark,
+        onChange: (bool newVal) {
+          var b = newVal ? Brightness.dark : Brightness.light;
           var dynamicTheme = DynamicTheme.of(context);
-          switch (newVal) {
-            case "Dark":
-              dynamicTheme.setBrightness(Brightness.dark);
-              break;
-            case "Light":
-            case "default":
-              dynamicTheme.setBrightness(Brightness.light);
-              break;
-          }
+          dynamicTheme.setBrightness(b);
         },
       ),
       ListTile(
