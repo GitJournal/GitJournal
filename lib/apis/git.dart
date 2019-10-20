@@ -49,11 +49,11 @@ Future<Directory> getGitBaseDirectory() async {
 }
 
 class GitRepo {
-  String folderName;
-  String authorName;
-  String authorEmail;
+  final String folderName;
+  final String authorName;
+  final String authorEmail;
 
-  GitRepo({
+  const GitRepo({
     @required this.folderName,
     @required this.authorName,
     @required this.authorEmail,

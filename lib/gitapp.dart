@@ -40,7 +40,7 @@ class GitApp extends StatelessWidget {
   }
 
   List<Widget> _buildGitButtons() {
-    var gitRepo = GitRepo(
+    var gitRepo = const GitRepo(
       folderName: basePath,
       authorName: "Vishesh Handa",
       authorEmail: "noemail@example.com",
