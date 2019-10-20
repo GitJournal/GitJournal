@@ -25,9 +25,6 @@ class GitNoteRepository {
   String notesBasePath;
   final GitRepo _gitRepo;
 
-  bool cloned = false;
-  bool checkForCloned = false;
-
   // vHanda: This no longer needs to be so complex. It will only ever take the baseDirectory + dirName
   // The directory should already exist!
   GitNoteRepository({
