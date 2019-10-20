@@ -14,17 +14,17 @@ class NoteHeader extends StatelessWidget {
 
     var bigNum = Text(
       note.created.day.toString(),
-      style: TextStyle(fontSize: 40.0),
+      style: const TextStyle(fontSize: 40.0),
     );
 
     var dateText = Text(
       dateStr,
-      style: TextStyle(fontSize: 18.0),
+      style: const TextStyle(fontSize: 18.0),
     );
 
     var timeText = Text(
       timeStr,
-      style: TextStyle(fontSize: 18.0),
+      style: const TextStyle(fontSize: 18.0),
     );
 
     var w = Row(

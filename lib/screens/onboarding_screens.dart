@@ -101,7 +101,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         padding: const EdgeInsets.all(16.0),
       ),
       bottomNavigationBar: AnimatedSwitcher(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         child: bottomBar,
       ),
     );
@@ -116,7 +116,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
 
   void _nextPage() {
     pageController.nextPage(
-      duration: Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 200),
       curve: Curves.easeIn,
     );
   }

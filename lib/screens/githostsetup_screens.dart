@@ -304,7 +304,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       onWillPop: () async {
         if (_currentPageIndex != 0) {
           pageController.previousPage(
-            duration: Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 200),
             curve: Curves.easeIn,
           );
           return false;
@@ -318,7 +318,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
   void _nextPage() {
     pageController.nextPage(
-      duration: Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 200),
       curve: Curves.easeIn,
     );
   }

@@ -28,7 +28,7 @@ void main() {
       await driver.tap(buttonFinder);
       await driver.waitFor(
         find.text("Success"),
-        timeout: Duration(seconds: 15),
+        timeout: const Duration(seconds: 15),
       );
     });
   });

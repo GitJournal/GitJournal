@@ -52,7 +52,7 @@ void showUndoDeleteSnackbar(
 
   Flushbar(
     message: "Note Deleted",
-    duration: Duration(seconds: 3),
+    duration: const Duration(seconds: 3),
     mainButton: FlatButton(
       child: Text(
         "Undo",
@@ -69,6 +69,6 @@ void showUndoDeleteSnackbar(
 void showSnackbar(BuildContext context, String message) {
   Flushbar(
     message: message,
-    duration: Duration(seconds: 3),
+    duration: const Duration(seconds: 3),
   ).show(context);
 }
