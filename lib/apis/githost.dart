@@ -40,12 +40,12 @@ class GitHostRepo {
 }
 
 class GitHostException implements Exception {
-  static const OAuthFailed = const GitHostException("OAuthFailed");
-  static const MissingAccessCode = const GitHostException("MissingAccessCode");
-  static const RepoExists = const GitHostException("RepoExists");
-  static const CreateRepoFailed = const GitHostException("CreateRepoFailed");
-  static const DeployKeyFailed = const GitHostException("DeployKeyFailed");
-  static const GetRepoFailed = const GitHostException("GetRepoFailed");
+  static const OAuthFailed = GitHostException("OAuthFailed");
+  static const MissingAccessCode = GitHostException("MissingAccessCode");
+  static const RepoExists = GitHostException("RepoExists");
+  static const CreateRepoFailed = GitHostException("CreateRepoFailed");
+  static const DeployKeyFailed = GitHostException("DeployKeyFailed");
+  static const GetRepoFailed = GitHostException("GetRepoFailed");
 
   final String cause;
   const GitHostException(this.cause);

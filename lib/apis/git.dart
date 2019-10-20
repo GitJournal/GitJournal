@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 
-const _platform = const MethodChannel('gitjournal.io/git');
+const _platform = MethodChannel('gitjournal.io/git');
 
 bool shouldIgnorePlatformException(PlatformException ex) {
   var msg = ex.message.toLowerCase();

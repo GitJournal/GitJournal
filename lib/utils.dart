@@ -25,7 +25,7 @@ Future<String> getVersionString() async {
 
 Future<bool> shouldEnableAnalytics() async {
   try {
-    const _platform = const MethodChannel('gitjournal.io/git');
+    const _platform = MethodChannel('gitjournal.io/git');
     final bool result = await _platform.invokeMethod('shouldEnableAnalytics');
     return result;
   } on MissingPluginException catch (e) {
@@ -37,7 +37,7 @@ Future<bool> shouldEnableAnalytics() async {
 /// adb logcat
 /// Returns the file path where the logs were dumped
 Future<String> dumpAppLogs() async {
-  const _platform = const MethodChannel('gitjournal.io/git');
+  const _platform = MethodChannel('gitjournal.io/git');
   final String logsFilePath = await _platform.invokeMethod('dumpAppLogs');
   return logsFilePath;
 }
