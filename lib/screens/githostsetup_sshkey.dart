@@ -32,40 +32,40 @@ class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
           'In order to access this repository, this public key must be copied as a deploy key',
           style: Theme.of(context).textTheme.title,
         ),
-        SizedBox(height: 32.0),
+        const SizedBox(height: 32.0),
 
         // Step 1
         Text(
           '1. Copy the key',
           style: Theme.of(context).textTheme.subtitle,
         ),
-        SizedBox(height: 8.0),
+        const SizedBox(height: 8.0),
         PublicKeyWidget(publicKey),
-        SizedBox(height: 8.0),
+        const SizedBox(height: 8.0),
         GitHostSetupButton(
           text: "Copy Key",
           onPressed: () => copyKeyFunction(context),
         ),
-        SizedBox(height: 16.0),
+        const SizedBox(height: 16.0),
 
         // Step 2
         Text(
           '2. Open webpage, and paste the deploy key. Make sure it is given Write Access. ',
           style: Theme.of(context).textTheme.subtitle,
         ),
-        SizedBox(height: 8.0),
+        const SizedBox(height: 8.0),
         GitHostSetupButton(
           text: "Open Deploy Key Webpage",
           onPressed: openDeployKeyPage,
         ),
-        SizedBox(height: 16.0),
+        const SizedBox(height: 16.0),
 
         // Step 3
         Text(
           '3. Try Cloning ..',
           style: Theme.of(context).textTheme.subtitle,
         ),
-        SizedBox(height: 8.0),
+        const SizedBox(height: 8.0),
         GitHostSetupButton(
           text: "Clone Repo",
           onPressed: doneFunction,
@@ -106,35 +106,35 @@ class GitHostSetupSshKeyUnknownProvider extends StatelessWidget {
           'In order to access this repository, this public key must be copied as a deploy key',
           style: Theme.of(context).textTheme.title,
         ),
-        SizedBox(height: 32.0),
+        const SizedBox(height: 32.0),
 
         // Step 1
         Text(
           '1. Copy the key',
           style: Theme.of(context).textTheme.subtitle,
         ),
-        SizedBox(height: 8.0),
+        const SizedBox(height: 8.0),
         PublicKeyWidget(publicKey),
-        SizedBox(height: 8.0),
+        const SizedBox(height: 8.0),
         GitHostSetupButton(
           text: "Copy Key",
           onPressed: () => copyKeyFunction(context),
         ),
-        SizedBox(height: 16.0),
+        const SizedBox(height: 16.0),
 
         // Step 2
         Text(
           '2. Give this SSH Key access to the git repo. (You need to figure it out yourself)',
           style: Theme.of(context).textTheme.subtitle,
         ),
-        SizedBox(height: 16.0),
+        const SizedBox(height: 16.0),
 
         // Step 3
         Text(
           '3. Try Cloning ..',
           style: Theme.of(context).textTheme.subtitle,
         ),
-        SizedBox(height: 8.0),
+        const SizedBox(height: 8.0),
         GitHostSetupButton(
           text: "Clone Repo",
           onPressed: doneFunction,

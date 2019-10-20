@@ -281,7 +281,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           ),
         ],
       ),
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
     );
 
     var scaffold = Scaffold(
@@ -292,7 +292,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
             InkWell(
               child: Container(
                 child: Icon(Icons.arrow_back, size: 32.0),
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
               ),
               onTap: () => Navigator.of(context).pop(),
             ),
@@ -505,7 +505,7 @@ class GitHostChoicePage extends StatelessWidget {
             "Select a Git Hosting Provider -",
             style: Theme.of(context).textTheme.headline,
           ),
-          SizedBox(height: 16.0),
+          const SizedBox(height: 16.0),
           GitHostSetupButton(
             text: "GitHub",
             iconUrl: 'assets/icon/github-icon.png',
@@ -513,7 +513,7 @@ class GitHostChoicePage extends StatelessWidget {
               onKnownGitHost(GitHostType.GitHub);
             },
           ),
-          SizedBox(height: 8.0),
+          const SizedBox(height: 8.0),
           GitHostSetupButton(
             text: "GitLab",
             iconUrl: 'assets/icon/gitlab-icon.png',
@@ -521,7 +521,7 @@ class GitHostChoicePage extends StatelessWidget {
               onKnownGitHost(GitHostType.GitLab);
             },
           ),
-          SizedBox(height: 8.0),
+          const SizedBox(height: 8.0),
           GitHostSetupButton(
             text: "Custom",
             onPressed: () async {
@@ -555,14 +555,14 @@ class GitHostAutoConfigureChoicePage extends StatelessWidget {
             "How do you want to do this?",
             style: Theme.of(context).textTheme.headline,
           ),
-          SizedBox(height: 16.0),
+          const SizedBox(height: 16.0),
           GitHostSetupButton(
             text: "Setup Automatically",
             onPressed: () {
               onDone(GitHostSetupType.Auto);
             },
           ),
-          SizedBox(height: 8.0),
+          const SizedBox(height: 8.0),
           GitHostSetupButton(
             text: "Let me do it manually",
             onPressed: () async {

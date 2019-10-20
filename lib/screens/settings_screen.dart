@@ -9,7 +9,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
+        title: const Text('Settings'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -124,7 +124,7 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
       ListTile(
-        title: Text("Font Size"),
+        title: const Text("Font Size"),
         subtitle: Text(settings.noteFontSize.toPublicString()),
         onTap: () async {
           var fontSize = await showDialog<NoteFontSize>(
@@ -142,7 +142,7 @@ class SettingsListState extends State<SettingsList> {
       SettingsHeader("Git Author Settings"),
       ListTile(title: gitAuthorForm),
       ListTile(title: gitAuthorEmailForm),
-      SizedBox(height: 16.0),
+      const SizedBox(height: 16.0),
       SettingsHeader("Storage"),
       ListPreference(
         title: "File Name",
@@ -156,7 +156,7 @@ class SettingsListState extends State<SettingsList> {
           setState(() {});
         },
       ),
-      SizedBox(height: 16.0),
+      const SizedBox(height: 16.0),
       SettingsHeader("Analytics"),
       BoolPreference(
         title: "Collect Anonymous Usage Statistics",
@@ -188,7 +188,7 @@ class SettingsHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 16.0, bottom: 0.0, top: 20.0),
+      padding: const EdgeInsets.only(left: 16.0, bottom: 0.0, top: 20.0),
       child: Text(
         text,
         style: TextStyle(
@@ -256,10 +256,10 @@ class FontSizeSettingsDialog extends StatelessWidget {
           children: sizes,
         ),
       ),
-      contentPadding: EdgeInsets.all(0.0),
+      contentPadding: const EdgeInsets.all(0.0),
       actions: <Widget>[
         FlatButton(
-          child: Text('CANCEL'),
+          child: const Text('CANCEL'),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -326,10 +326,10 @@ class ListPreference extends StatelessWidget {
                     children: children,
                   ),
                 ),
-                contentPadding: EdgeInsets.all(0.0),
+                contentPadding: const EdgeInsets.all(0.0),
                 actions: <Widget>[
                   FlatButton(
-                    child: Text('CANCEL'),
+                    child: const Text('CANCEL'),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },

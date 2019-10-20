@@ -83,12 +83,12 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
             style: Theme.of(context).textTheme.headline,
           ),
         ),
-        SizedBox(height: 16.0),
+        const SizedBox(height: 16.0),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: inputForm,
         ),
-        SizedBox(height: 8.0),
+        const SizedBox(height: 8.0),
         GitHostSetupButton(
           text: "Next",
           onPressed: formSubmitted,
@@ -178,28 +178,28 @@ class GitCloneUrlKnownProviderPageState
           'Please create a new git repository -',
           style: Theme.of(context).textTheme.title,
         ),
-        SizedBox(height: 32.0),
+        const SizedBox(height: 32.0),
 
         // Step 1
         Text(
           '1. Go to the website, create a repo and copy its git clone URL',
           style: Theme.of(context).textTheme.subtitle,
         ),
-        SizedBox(height: 8.0),
+        const SizedBox(height: 8.0),
         GitHostSetupButton(
           text: "Open Create New Repo Webpage",
           onPressed: widget.launchCreateUrlPage,
         ),
-        SizedBox(height: 16.0),
+        const SizedBox(height: 16.0),
 
         // Step 2
         Text(
           '2. Enter the Git clone URL',
           style: Theme.of(context).textTheme.subtitle,
         ),
-        SizedBox(height: 8.0),
+        const SizedBox(height: 8.0),
         inputForm,
-        SizedBox(height: 16.0),
+        const SizedBox(height: 16.0),
         GitHostSetupButton(
           text: "Next",
           onPressed: formSubmitted,

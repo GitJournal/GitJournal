@@ -42,7 +42,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       var row = Row(
         children: <Widget>[
           OnBoardingBottomButton(
-            key: ValueKey("Skip"),
+            key: const ValueKey("Skip"),
             text: "Skip",
             onPressed: _finish,
           ),
@@ -61,7 +61,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
             ),
           ),
           OnBoardingBottomButton(
-            key: ValueKey("Next"),
+            key: const ValueKey("Next"),
             text: "Next",
             onPressed: _nextPage,
           ),
@@ -81,7 +81,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         width: double.infinity,
         height: _bottomBarHeight,
         child: RaisedButton(
-          key: ValueKey("GetStarted"),
+          key: const ValueKey("GetStarted"),
           child: Text(
             "Get Started",
             textAlign: TextAlign.center,
@@ -98,7 +98,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         width: double.infinity,
         height: double.infinity,
         child: pageView,
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
       ),
       bottomNavigationBar: AnimatedSwitcher(
         duration: Duration(milliseconds: 300),
@@ -161,7 +161,7 @@ class OnBoardingPage1 extends StatelessWidget {
           height: 200,
           fit: BoxFit.fill,
         ),
-        SizedBox(height: 16.0),
+        const SizedBox(height: 16.0),
         Text(
           "GitJournal",
           style: headerTextStyle,
@@ -173,7 +173,7 @@ class OnBoardingPage1 extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Center(child: header),
-          SizedBox(height: 64.0),
+          const SizedBox(height: 64.0),
           AutoSizeText(
             "A Journaling App focused on\nOpenness and Data Privacy",
             style: textTheme.headline,
@@ -201,7 +201,7 @@ class OnBoardingPage2 extends StatelessWidget {
           //height: 200,
           fit: BoxFit.fill,
         ),
-        SizedBox(height: 16.0),
+        const SizedBox(height: 16.0),
       ],
     );
 
@@ -209,7 +209,7 @@ class OnBoardingPage2 extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Center(child: header),
-          SizedBox(height: 64.0),
+          const SizedBox(height: 64.0),
           AutoSizeText(
             "Your Journal Entries are stored in a\nstandard Markdown + YAML\nHeader format",
             style: textTheme.headline,
@@ -237,7 +237,7 @@ class OnBoardingPage3 extends StatelessWidget {
           //height: 200,
           fit: BoxFit.fill,
         ),
-        SizedBox(height: 16.0),
+        const SizedBox(height: 16.0),
       ],
     );
 
@@ -245,7 +245,7 @@ class OnBoardingPage3 extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Center(child: header),
-          SizedBox(height: 64.0),
+          const SizedBox(height: 64.0),
           AutoSizeText(
             "Sync your Local Git Repo\nwith any provider",
             style: textTheme.headline,

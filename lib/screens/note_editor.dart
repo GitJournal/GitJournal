@@ -60,7 +60,7 @@ class NoteEditorState extends State<NoteEditor> {
       appBar: AppBar(
         title: Text(title),
         leading: IconButton(
-          key: ValueKey("NewEntry"),
+          key: const ValueKey("NewEntry"),
           icon: Icon(Icons.check),
           onPressed: () {
             _saveNote(context);
@@ -102,7 +102,7 @@ class NoteEditorState extends State<NoteEditor> {
               ),
               PopupMenuItem<NoteEditorDropDownChoices>(
                 value: NoteEditorDropDownChoices.SwitchEditor,
-                child: rawEditor ? Text('Rich Editor') : Text('Raw Editor'),
+                child: rawEditor ? const Text('Rich Editor') : const Text('Raw Editor'),
               ),
             ],
           ),

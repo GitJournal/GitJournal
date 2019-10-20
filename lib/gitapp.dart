@@ -15,7 +15,7 @@ class GitApp extends StatelessWidget {
       home: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: Text('Git Test'),
+          title: const Text('Git Test'),
         ),
         body: Column(
           children: _buildGitButtons(),
@@ -48,12 +48,12 @@ class GitApp extends StatelessWidget {
 
     return <Widget>[
       RaisedButton(
-          child: Text("Generate Keys"),
+          child: const Text("Generate Keys"),
           onPressed: () {
             generateSSHKeys(comment: "Git Sample App");
           }),
       RaisedButton(
-        child: Text("Git Clone"),
+        child: const Text("Git Clone"),
         onPressed: () async {
           try {
             await GitRepo.clone(basePath, cloneUrl);
@@ -65,25 +65,25 @@ class GitApp extends StatelessWidget {
         },
       ),
       RaisedButton(
-        child: Text("Git Pull"),
+        child: const Text("Git Pull"),
         onPressed: () async {
           gitRepo.pull();
         },
       ),
       RaisedButton(
-        child: Text("Git Add"),
+        child: const Text("Git Add"),
         onPressed: () async {
           gitRepo.add(".");
         },
       ),
       RaisedButton(
-        child: Text("Git Push"),
+        child: const Text("Git Push"),
         onPressed: () async {
           gitRepo.push();
         },
       ),
       RaisedButton(
-        child: Text("Git Commit"),
+        child: const Text("Git Commit"),
         onPressed: () async {
           gitRepo.commit(
             message: "Default message from GitJournal",
@@ -92,13 +92,13 @@ class GitApp extends StatelessWidget {
         },
       ),
       RaisedButton(
-        child: Text("Git Reset Last"),
+        child: const Text("Git Reset Last"),
         onPressed: () async {
           gitRepo.resetLast();
         },
       ),
       RaisedButton(
-        child: Text("Git Migrate"),
+        child: const Text("Git Migrate"),
         onPressed: () async {
           var baseGitPath = await getGitBaseDirectory();
           await migrateGitRepo(

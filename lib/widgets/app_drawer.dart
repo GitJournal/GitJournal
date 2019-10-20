@@ -50,7 +50,7 @@ class AppDrawer extends StatelessWidget {
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/icon/icon.png'),
+                    image: const AssetImage('assets/icon/icon.png'),
                   ),
                 ),
               ),

@@ -35,17 +35,17 @@ class OAuthAppState extends State<OAuthApp> {
       title: 'OAuth App',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('OAuth Test'),
+          title: const Text('OAuth Test'),
         ),
         body: Column(children: <Widget>[
           RaisedButton(
-            child: Text("Open OAuth URL"),
+            child: const Text("Open OAuth URL"),
             onPressed: () {
               githost.launchOAuthScreen();
             },
           ),
           RaisedButton(
-            child: Text("List Repos"),
+            child: const Text("List Repos"),
             onPressed: () async {
               try {
                 var repos = await githost.listRepos();
@@ -58,7 +58,7 @@ class OAuthAppState extends State<OAuthApp> {
             },
           ),
           RaisedButton(
-            child: Text("Create Repo"),
+            child: const Text("Create Repo"),
             onPressed: () async {
               try {
                 var repo = await githost.createRepo("journal_test2");
@@ -69,7 +69,7 @@ class OAuthAppState extends State<OAuthApp> {
             },
           ),
           RaisedButton(
-            child: Text("Add Deploy Key"),
+            child: const Text("Add Deploy Key"),
             onPressed: () async {
               try {
                 await githost.addDeployKey(key, "vhanda/journal_test2");

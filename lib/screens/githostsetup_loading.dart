@@ -15,9 +15,9 @@ class GitHostSetupLoadingPage extends StatelessWidget {
           style: Theme.of(context).textTheme.display1,
         ),
       ),
-      SizedBox(height: 8.0),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
+      const SizedBox(height: 8.0),
+      const Padding(
+        padding: EdgeInsets.all(8.0),
         child: CircularProgressIndicator(
           value: null,
         ),

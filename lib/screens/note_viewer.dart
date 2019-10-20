@@ -49,7 +49,7 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('TIMELINE'),
+        title: const Text('TIMELINE'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.delete),
@@ -106,14 +106,14 @@ class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
       actions: <Widget>[
         FlatButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
         FlatButton(
           onPressed: () {
             Navigator.pop(context); // Alert box
             _deleteNote(context);
           },
-          child: Text('Delete'),
+          child: const Text('Delete'),
         ),
       ],
     );
@@ -142,7 +142,7 @@ class NoteViewer extends StatelessWidget {
             data: note.body,
             styleSheet: MarkdownStyleSheet.fromTheme(theme),
           ),
-          SizedBox(height: 64.0),
+          const SizedBox(height: 64.0),
           // _buildFooter(context),
         ],
         crossAxisAlignment: CrossAxisAlignment.start,

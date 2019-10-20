@@ -30,7 +30,7 @@ class NoteHeader extends StatelessWidget {
     var w = Row(
       children: <Widget>[
         bigNum,
-        SizedBox(width: 8.0),
+        const SizedBox(width: 8.0),
         Column(
           children: <Widget>[
             dateText,
@@ -43,7 +43,7 @@ class NoteHeader extends StatelessWidget {
     );
 
     return Padding(
-      padding: EdgeInsets.only(top: 8.0, bottom: 18.0),
+      padding: const EdgeInsets.only(top: 8.0, bottom: 18.0),
       child: w,
     );
   }

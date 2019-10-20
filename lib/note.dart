@@ -72,9 +72,7 @@ class Note implements Comparable<Note> {
       }
     }
 
-    if (_created == null) {
-      _created = DateTime(0, 0, 0, 0, 0, 0, 0, 0);
-    }
+    _created ??= DateTime(0, 0, 0, 0, 0, 0, 0, 0);
   }
 
   bool hasValidDate() {

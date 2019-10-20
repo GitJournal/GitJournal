@@ -140,24 +140,24 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
           'We need permission to perform the following steps:',
           style: Theme.of(context).textTheme.title,
         ),
-        SizedBox(height: 32.0),
+        const SizedBox(height: 32.0),
 
         // Step 1
         Text(
           "1. Create a new private repo called 'journal' or use the existing one",
           style: Theme.of(context).textTheme.body2,
         ),
-        SizedBox(height: 8.0),
+        const SizedBox(height: 8.0),
         Text(
           "2. Generate an SSH Key on this device",
           style: Theme.of(context).textTheme.body2,
         ),
-        SizedBox(height: 8.0),
+        const SizedBox(height: 8.0),
         Text(
           "3. Add the key as a deploy key with write access to the created repo",
           style: Theme.of(context).textTheme.body2,
         ),
-        SizedBox(height: 32.0),
+        const SizedBox(height: 32.0),
 
         GitHostSetupButton(
           text: "Authorize GitJournal",

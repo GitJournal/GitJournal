@@ -86,13 +86,13 @@ class JournalList extends StatelessWidget {
     var children = <Widget>[];
     if (time.isNotEmpty) {
       children.addAll(<Widget>[
-        SizedBox(height: 4.0),
+        const SizedBox(height: 4.0),
         Text(time, style: textTheme.body1),
       ]);
     }
 
     children.addAll(<Widget>[
-      SizedBox(height: 4.0),
+      const SizedBox(height: 4.0),
       Text(
         body,
         maxLines: 3,
@@ -115,7 +115,7 @@ class JournalList extends StatelessWidget {
     );
 
     return Padding(
-      padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
       child: tile,
     );
   }

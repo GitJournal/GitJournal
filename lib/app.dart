@@ -113,7 +113,7 @@ class JournalApp extends StatelessWidget {
     }
 
     return MaterialApp(
-      key: ValueKey("App"),
+      key: const ValueKey("App"),
       title: 'GitJournal',
       theme: themeData,
       navigatorObservers: <NavigatorObserver>[JournalApp.observer],

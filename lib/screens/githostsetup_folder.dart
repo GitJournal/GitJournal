@@ -24,12 +24,12 @@ class GitHostSetupFolderPage extends StatelessWidget {
           'Would you like to store your journal entries in an existing folder?',
           style: Theme.of(context).textTheme.title,
         ),
-        SizedBox(height: 32.0),
+        const SizedBox(height: 32.0),
         FolderListWidget(
           folders: folders,
           onSelected: subFolderSelected,
         ),
-        SizedBox(height: 16.0),
+        const SizedBox(height: 16.0),
         GitHostSetupButton(
           text: "Ignore",
           onPressed: rootFolderSelected,
