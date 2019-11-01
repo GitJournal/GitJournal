@@ -17,10 +17,16 @@ bool shouldIgnorePlatformException(PlatformException ex) {
   if (msg.contains("failed to connect to")) {
     return true;
   }
-  if (msg.contains("No address associated with hostname")) {
+  if (msg.contains("no address associated with hostname")) {
     return true;
   }
   if (msg.contains("failed to connect to")) {
+    return true;
+  }
+  if (msg.contains("unauthorized")) {
+    return true;
+  }
+  if (msg.contains("failed to start ssh session")) {
     return true;
   }
   return false;
