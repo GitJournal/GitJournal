@@ -11,11 +11,11 @@ DateTime nowWithoutMicro() {
 
 void main() {
   group('Serializers', () {
-    var created = toIso8601WithTimezone(nowWithoutMicro());
-    var note =
-        NoteData("This is the body", LinkedHashMap.from({"created": created}));
-
     test('Markdown Serializer', () {
+      var created = toIso8601WithTimezone(nowWithoutMicro());
+      var note = NoteData(
+          "This is the body", LinkedHashMap.from({"created": created}));
+
       var serializer = MarkdownYAMLSerializer();
       var str = serializer.encode(note);
       var note2 = serializer.decode(str);
@@ -41,6 +41,18 @@ Alright.""";
       var inputNoteStr = """---
 ---
 
+Alright.""";
+
+      var serializer = MarkdownYAMLSerializer();
+      var note = serializer.decode(inputNoteStr);
+      var actualStr = "Alright.";
+
+      expect(actualStr, note.body);
+    });
+
+    test('Markdown Serializer with empty YAML and no \\n', () {
+      var inputNoteStr = """---
+---
 Alright.""";
 
       var serializer = MarkdownYAMLSerializer();
@@ -78,6 +90,55 @@ Alright.""";
       var actualStr = serializer.encode(note);
 
       expect(actualStr, str);
+    });
+
+    test('Note Starting with ---', () {
+      var str = """---
+
+Alright.""";
+
+      var serializer = MarkdownYAMLSerializer();
+      var note = serializer.decode(str);
+      var actualStr = serializer.encode(note);
+
+      expect(actualStr, str);
+    });
+
+    test('Plain Markdown', () {
+      var str = """Alright.""";
+
+      var serializer = MarkdownYAMLSerializer();
+      var note = serializer.decode(str);
+      var actualStr = serializer.encode(note);
+
+      expect(actualStr, str);
+    });
+
+    test('Markdown with --- in body', () {
+      var str = """---
+foo: [bar, gar]
+---
+
+Alright. ---\n Good boy --- Howdy""";
+
+      var serializer = MarkdownYAMLSerializer();
+      var note = serializer.decode(str);
+      var actualStr = serializer.encode(note);
+
+      expect(actualStr, str);
+    });
+
+    test('Markdown without \\n after yaml header', () {
+      var str = """---
+foo: [bar, gar]
+---
+Alright.""";
+
+      var serializer = MarkdownYAMLSerializer();
+      var note = serializer.decode(str);
+      var actualStr = "Alright.";
+
+      expect(actualStr, note.body);
     });
   });
 }

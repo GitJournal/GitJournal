@@ -32,7 +32,7 @@ class NoteData {
 
   @override
   String toString() {
-    return 'NoteData{bodt: $body, props: $props}';
+    return 'NoteData{body: $body, props: $props}';
   }
 }
 
@@ -44,14 +44,31 @@ abstract class NoteSerializer {
 class MarkdownYAMLSerializer implements NoteSerializer {
   @override
   NoteData decode(String str) {
-    if (str.startsWith("---\n")) {
-      var parts = str.split("---\n");
+    const startYamlStr = "---\n";
+    const endYamlStr = "\n---\n";
+    const emptyYamlHeaderStr = "---\n---\n";
+
+    if (str.startsWith(emptyYamlHeaderStr)) {
+      var bodyBeginingPos = emptyYamlHeaderStr.length;
+      if (str[bodyBeginingPos] == '\n') {
+        bodyBeginingPos += 1;
+      }
+      var body = str.substring(bodyBeginingPos);
+      return NoteData(body, LinkedHashMap<String, dynamic>());
+    }
+
+    if (str.startsWith(startYamlStr)) {
+      var endYamlPos = str.indexOf(endYamlStr, startYamlStr.length);
+      if (endYamlPos == -1) {
+        return NoteData(str, LinkedHashMap<String, dynamic>());
+      }
+
+      var yamlText = str.substring(4, endYamlPos);
       var map = <String, dynamic>{};
-      var yamlText = parts[1].trim();
 
       try {
         if (yamlText.isNotEmpty) {
-          var yamlMap = loadYaml(parts[1]);
+          var yamlMap = loadYaml(yamlText);
           yamlMap.forEach((key, value) {
             map[key] = value;
           });
@@ -60,7 +77,12 @@ class MarkdownYAMLSerializer implements NoteSerializer {
         Fimber.d(
             'MarkdownYAMLSerializer::decode("$yamlText") -> ${err.toString()}');
       }
-      var body = parts[2].trimLeft();
+
+      var bodyBeginingPos = endYamlPos + endYamlStr.length;
+      if (str[bodyBeginingPos] == '\n') {
+        bodyBeginingPos += 1;
+      }
+      var body = str.substring(bodyBeginingPos);
 
       return NoteData(body, map);
     }
@@ -70,6 +92,10 @@ class MarkdownYAMLSerializer implements NoteSerializer {
 
   @override
   String encode(NoteData note) {
+    if (note.props.isEmpty) {
+      return note.body;
+    }
+
     const serparator = '---\n';
     var str = "";
     str += serparator;
