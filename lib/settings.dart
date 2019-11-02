@@ -76,7 +76,7 @@ class Settings {
 }
 
 class NoteFontSize {
-  static const ExtraSmall = NoteFontSize("ExtraSmall", "Small", 12.0);
+  static const ExtraSmall = NoteFontSize("ExtraSmall", "Extra Small", 12.0);
   static const Small = NoteFontSize("Small", "Small", 16.0);
   static const Normal = NoteFontSize("Normal", "Normal", 18.0);
   static const Large = NoteFontSize("Large", "Large", 22.0);
