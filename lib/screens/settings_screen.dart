@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/screens/settings_widgets.dart';
 
 import 'package:dynamic_theme/dynamic_theme.dart';
 
@@ -282,90 +283,5 @@ class FontSizeSettingsDialog extends StatelessWidget {
     );
 
     return tile;
-  }
-}
-
-class ListPreference extends StatelessWidget {
-  final String title;
-  final String currentOption;
-  final List<String> options;
-  final Function onChange;
-
-  ListPreference({
-    @required this.title,
-    @required this.currentOption,
-    @required this.options,
-    @required this.onChange,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(title),
-      subtitle: Text(currentOption),
-      onTap: () async {
-        var option = await showDialog<String>(
-            context: context,
-            builder: (BuildContext context) {
-              var children = <Widget>[];
-              for (var o in options) {
-                var tile = RadioListTile<String>(
-                  title: Text(o),
-                  value: o,
-                  groupValue: currentOption,
-                  onChanged: (String val) {
-                    Navigator.of(context).pop(val);
-                  },
-                );
-                children.add(tile);
-              }
-              return AlertDialog(
-                title: Text(title),
-                content: SingleChildScrollView(
-                  child: ListBody(
-                    children: children,
-                  ),
-                ),
-                contentPadding: const EdgeInsets.all(0.0),
-                actions: <Widget>[
-                  FlatButton(
-                    child: const Text('CANCEL'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              );
-            });
-
-        if (option != null) {
-          onChange(option);
-        }
-      },
-    );
-  }
-}
-
-class BoolPreference extends StatelessWidget {
-  final String title;
-  final bool defaultValue;
-  final Function(bool) onChange;
-
-  BoolPreference({
-    @required this.title,
-    @required this.defaultValue,
-    @required this.onChange,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(title),
-      trailing: Switch(
-        value: defaultValue,
-        onChanged: onChange,
-      ),
-      onTap: () => onChange(!defaultValue),
-    );
   }
 }
