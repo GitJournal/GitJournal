@@ -44,7 +44,7 @@ Features -
 
 # Contributing
 
-Development is tracked over [here](https://github.com/orgs/GitJournal/projects/1). Please feel free to open an issue for any bug or feature request. Additionally, you can vote on existing Issues by reacting with a '👍'.
+Development is tracked over [here](https://github.com/orgs/GitJournal/projects/1). Please feel free to open an issue for any bug or feature request. Additionally, you can vote on existing [Issues](https://github.com/GitJournal/GitJournal/issues?q=is%3Aissue+is%3Aopen+sort%3Areactions-%2B1-desc) by reacting with a '👍'.
 
 # License
 
