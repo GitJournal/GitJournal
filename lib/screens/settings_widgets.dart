@@ -63,27 +63,3 @@ class ListPreference extends StatelessWidget {
     );
   }
 }
-
-class BoolPreference extends StatelessWidget {
-  final String title;
-  final bool defaultValue;
-  final Function(bool) onChange;
-
-  BoolPreference({
-    @required this.title,
-    @required this.defaultValue,
-    @required this.onChange,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(title),
-      trailing: Switch(
-        value: defaultValue,
-        onChanged: onChange,
-      ),
-      onTap: () => onChange(!defaultValue),
-    );
-  }
-}

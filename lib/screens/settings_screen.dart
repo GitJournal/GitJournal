@@ -115,10 +115,10 @@ class SettingsListState extends State<SettingsList> {
 
     return ListView(children: [
       SettingsHeader('Display Settings'),
-      BoolPreference(
-        title: "Dark Theme",
-        defaultValue: brightness == Brightness.dark,
-        onChange: (bool newVal) {
+      SwitchListTile(
+        title: const Text("Dark Theme"),
+        value: brightness == Brightness.dark,
+        onChanged: (bool newVal) {
           var b = newVal ? Brightness.dark : Brightness.light;
           var dynamicTheme = DynamicTheme.of(context);
           dynamicTheme.setBrightness(b);
@@ -159,19 +159,19 @@ class SettingsListState extends State<SettingsList> {
       ),
       const SizedBox(height: 16.0),
       SettingsHeader("Analytics"),
-      BoolPreference(
-        title: "Collect Anonymous Usage Statistics",
-        defaultValue: Settings.instance.collectUsageStatistics,
-        onChange: (bool val) {
+      SwitchListTile(
+        title: const Text("Collect Anonymous Usage Statistics"),
+        value: Settings.instance.collectUsageStatistics,
+        onChanged: (bool val) {
           Settings.instance.collectUsageStatistics = val;
           Settings.instance.save();
           setState(() {});
         },
       ),
-      BoolPreference(
-        title: "Collect Anonymous Crash Reports",
-        defaultValue: Settings.instance.collectUsageStatistics,
-        onChange: (bool val) {
+      SwitchListTile(
+        title: const Text("Collect Anonymous Crash Reports"),
+        value: Settings.instance.collectCrashReports,
+        onChanged: (bool val) {
           Settings.instance.collectCrashReports = val;
           Settings.instance.save();
           setState(() {});
