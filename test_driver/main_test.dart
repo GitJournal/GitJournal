@@ -43,13 +43,13 @@ void main() {
       await driver.tap(nextButton);
 
       // Page 3
-      await _takeScreenshot();
+      // await _takeScreenshot();
       await driver.tap(find.byValueKey("GetStarted"));
 
       // Main Screen
       final loadedFinder = find.text('Why not add your first\n Journal Entry?');
       await driver.waitFor(loadedFinder, timeout: const Duration(seconds: 5));
-      await _takeScreenshot();
+      // await _takeScreenshot();
 
       // Create a new note
       var fab = find.byValueKey("FAB");
@@ -57,11 +57,11 @@ void main() {
       await driver.tap(fab);
       await driver.waitFor(find.text('Write here'),
           timeout: const Duration(seconds: 2));
-      await _takeScreenshot();
+      //await _takeScreenshot();
 
       await driver.enterText(
           "Your notes will be saved in Markdown with a YAML header for the metadata.\n\nThe writing experience is clean and distraction free");
-      await _takeScreenshot();
+      // await _takeScreenshot();
       await driver.tap(find.byValueKey("NewEntry"));
 
       // Create another note
