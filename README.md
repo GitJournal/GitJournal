@@ -1,11 +1,11 @@
 <p align="center">
-  <img width="400" height="auto" src="https://gitjournal.io/img/logo.png">
+  <img width="400" height="auto" src="https://gitjournal.io/images/logo.png">
   <br/>A Journaling app built on top of <b>Git</b> for <b>Developers</b>
 </p>
 
 <p align="center">
-  <a href="https://play.google.com/store/apps/details?id=io.gitjournal.gitjournal&pcampaignid=github"><img alt="Get it on Google Play" src="https://gitjournal.io/img/en_badge_web_generic.png" height="75px"/></a>
-  <a href="https://apps.apple.com/us/app/gitjournal/id1466519634"><img alt="Download on the App Store" src="https://gitjournal.io/img/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" height="75px"/></a>
+  <a href="https://play.google.com/store/apps/details?id=io.gitjournal.gitjournal&pcampaignid=github"><img alt="Get it on Google Play" src="https://gitjournal.io/images/en_badge_web_generic.png" height="75px"/></a>
+  <a href="https://apps.apple.com/us/app/gitjournal/id1466519634"><img alt="Download on the App Store" src="https://gitjournal.io/images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" height="75px"/></a>
 </p>
 
 <p align="center">
