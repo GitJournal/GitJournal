@@ -11,6 +11,7 @@ void main() {
     // Connect to the Flutter driver before running any tests
     setUpAll(() async {
       driver = await FlutterDriver.connect();
+      await Future.delayed(const Duration(seconds: 5));
     });
 
     // Close the connection to the driver after the tests have completed
