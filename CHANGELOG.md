@@ -1,3 +1,6 @@
+## [1.19] - 2019-11-11
+* Bug: Allow cloning from a custom port
+
 ## [1.18] - 2019-11-02
 
 * Better handling of Markdown files without YAML headers
