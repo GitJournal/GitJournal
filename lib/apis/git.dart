@@ -26,6 +26,9 @@ bool shouldIgnorePlatformException(PlatformException ex) {
   if (msg.contains("unauthorized")) {
     return true;
   }
+  if (msg.contains("invalid credentials")) {
+    return true;
+  }
   if (msg.contains("failed to start ssh session")) {
     return true;
   }
