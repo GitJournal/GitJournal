@@ -70,11 +70,6 @@ class GitRepo {
 
   static Future<void> clone(String folderName, String cloneUrl) async {
     try {
-      if (!cloneUrl.startsWith('ssh://') &&
-          !cloneUrl.startsWith('http://') &&
-          !cloneUrl.startsWith('https://')) {
-        cloneUrl = 'ssh://' + cloneUrl;
-      }
       await invokePlatformMethod('gitClone', {
         'cloneUrl': cloneUrl,
         'folderName': folderName,
