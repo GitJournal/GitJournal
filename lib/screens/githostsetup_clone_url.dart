@@ -58,7 +58,7 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
             return 'Only SSH urls are currently accepted';
           }
 
-          RegExp regExp = RegExp(r"[a-zA-Z0-9.]+@[a-zA-Z0-9.]+:.+");
+          RegExp regExp = RegExp(r"[a-zA-Z0-9.]+@[a-zA-Z0-9.-]+:.+");
           if (!regExp.hasMatch(value)) {
             return "Invalid Input";
           }
