@@ -8,6 +8,7 @@ import 'package:gitjournal/screens/note_viewer.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/journal_list.dart';
+import 'package:gitjournal/themes.dart';
 
 class HomeScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -88,6 +89,19 @@ class HomeScreen extends StatelessWidget {
 }
 
 class NoteSearch extends SearchDelegate<Note> {
+  // Workaround because of https://github.com/flutter/flutter/issues/32180
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    var theme = Theme.of(context);
+    if (theme.brightness == Brightness.light) {
+      return theme;
+    }
+
+    return theme.copyWith(
+      primaryColor: Themes.dark.primaryColor,
+    );
+  }
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
