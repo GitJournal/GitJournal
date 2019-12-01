@@ -46,37 +46,37 @@ class MarkdownYAMLSerializer implements NoteSerializer {
   NoteData decode(String str) {
     const startYamlStr = "---\n";
     const endYamlStr = "\n---\n";
-    const emptyYamlHeaderStr = "---\n---\n";
+    const emptyYamlHeaderStr = "---\n---";
 
-    if (str.startsWith(emptyYamlHeaderStr)) {
-      var bodyBeginingPos = emptyYamlHeaderStr.length;
+    if (str == emptyYamlHeaderStr) {
+      return NoteData();
+    }
+    if (str.startsWith(emptyYamlHeaderStr + "\n")) {
+      var bodyBeginingPos = emptyYamlHeaderStr.length + 1;
       if (str[bodyBeginingPos] == '\n') {
         bodyBeginingPos += 1;
       }
       var body = str.substring(bodyBeginingPos);
-      return NoteData(body, LinkedHashMap<String, dynamic>());
+      return NoteData(body);
     }
 
     if (str.startsWith(startYamlStr)) {
       var endYamlPos = str.indexOf(endYamlStr, startYamlStr.length);
       if (endYamlPos == -1) {
-        return NoteData(str, LinkedHashMap<String, dynamic>());
+        // Try without the \n in the endYamlStr
+        const endYamlStrWithoutLineEding = "\n---";
+        if (str.endsWith(endYamlStrWithoutLineEding)) {
+          var yamlText =
+              str.substring(4, str.length - endYamlStrWithoutLineEding.length);
+          var map = _parseYamlText(yamlText);
+          return NoteData("", map);
+        }
+
+        return NoteData(str);
       }
 
       var yamlText = str.substring(4, endYamlPos);
-      var map = <String, dynamic>{};
-
-      try {
-        if (yamlText.isNotEmpty) {
-          var yamlMap = loadYaml(yamlText);
-          yamlMap.forEach((key, value) {
-            map[key] = value;
-          });
-        }
-      } catch (err) {
-        Fimber.d(
-            'MarkdownYAMLSerializer::decode("$yamlText") -> ${err.toString()}');
-      }
+      var map = _parseYamlText(yamlText);
 
       var bodyBeginingPos = endYamlPos + endYamlStr.length;
       if (str[bodyBeginingPos] == '\n') {
@@ -88,6 +88,25 @@ class MarkdownYAMLSerializer implements NoteSerializer {
     }
 
     return NoteData(str, LinkedHashMap<String, dynamic>());
+  }
+
+  LinkedHashMap<String, dynamic> _parseYamlText(String yamlText) {
+    LinkedHashMap<String, dynamic> map = LinkedHashMap<String, dynamic>();
+    if (yamlText.isEmpty) {
+      return map;
+    }
+
+    try {
+      var yamlMap = loadYaml(yamlText);
+      yamlMap.forEach((key, value) {
+        map[key] = value;
+      });
+    } catch (err) {
+      Fimber.d(
+          'MarkdownYAMLSerializer::decode("$yamlText") -> ${err.toString()}');
+    }
+
+    return map;
   }
 
   @override

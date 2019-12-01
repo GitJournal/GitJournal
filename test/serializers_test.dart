@@ -50,7 +50,7 @@ Alright.""";
       expect(actualStr, note.body);
     });
 
-    test('Markdown Serializer with empty YAML and no \\n', () {
+    test('Markdown Serializer with empty YAML and no \\n after body', () {
       var inputNoteStr = """---
 ---
 Alright.""";
@@ -60,6 +60,17 @@ Alright.""";
       var actualStr = "Alright.";
 
       expect(actualStr, note.body);
+    });
+
+    test('Markdown Serializer with empty YAML and doesn"t end with \\n', () {
+      var inputNoteStr = """---
+---""";
+
+      var serializer = MarkdownYAMLSerializer();
+      var note = serializer.decode(inputNoteStr);
+
+      expect("", note.body);
+      expect(0, note.props.length);
     });
 
     test('Markdown Serializer YAML Order', () {
@@ -139,6 +150,21 @@ Alright.""";
       var actualStr = "Alright.";
 
       expect(actualStr, note.body);
+    });
+
+    test('Only YAML Header without \\n', () {
+      var str = """---
+foo: bar
+---""";
+
+      var serializer = MarkdownYAMLSerializer();
+      var note = serializer.decode(str);
+
+      expect("", note.body);
+      expect({"foo": "bar"}, note.props);
+
+      var actualStr = serializer.encode(note);
+      expect(actualStr, str + '\n\n');
     });
   });
 }
