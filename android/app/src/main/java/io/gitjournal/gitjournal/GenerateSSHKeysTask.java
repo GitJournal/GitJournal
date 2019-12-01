@@ -31,9 +31,7 @@ public class GenerateSSHKeysTask extends AsyncTask<String, Void, Void> {
 
         File privateKeyFile = new File(privateKeyPath);
         if (privateKeyFile.exists()) {
-            Log.d(TAG, "Private key already exists");
-            result.error("FAILED", "Private key already exists", null);
-            return null;
+            Log.d(TAG, "Private key already exists. Overwriting");
         }
 
         Git git = new Git();
