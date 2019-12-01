@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:gitjournal/note.dart';
+import 'package:path/path.dart';
 
+// FIXME: Maybe the parent should be a part of the Note, and the NoteFolder
+//        or maybe also a part of the NoteFolder
 class NoteFSEntity {
   NoteFolder parent;
   NoteFolder folder;
@@ -26,6 +29,14 @@ class NoteFolder {
 
   NoteFolder(this.folderPath);
 
+  bool get isEmpty {
+    return entities.isEmpty;
+  }
+
+  String get name {
+    return basename(folderPath);
+  }
+
   // Recurisvely gets all Notes within this folder
   List<Note> getAllNotes() {
     var notes = <Note>[];
@@ -38,6 +49,10 @@ class NoteFolder {
       }
     }
     return notes;
+  }
+
+  List<Note> getNotes() {
+    return entities.where((e) => e.isNote).map((e) => e.note).toList();
   }
 
   // FIXME: This asynchronously loads everything. Maybe it should just list them, and the individual entities
