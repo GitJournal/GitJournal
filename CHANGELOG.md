@@ -1,3 +1,8 @@
+## [1.20]
+* Show all notes from all subdirectories
+* Improve appearance in dark mode
+* Bug: Fix ssh key not being regenerated error
+
 ## [1.18] - 2019-11-02
 
 * Better handling of Markdown files without YAML headers
