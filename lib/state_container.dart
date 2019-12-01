@@ -49,13 +49,11 @@ class StateContainerState extends State<StateContainer> {
       noteRepo = GitNoteRepository(
         baseDirectory: appState.gitBaseDirectory,
         dirName: appState.remoteGitRepoFolderName,
-        subDirName: appState.remoteGitRepoSubFolder,
       );
     } else if (appState.localGitRepoConfigured) {
       noteRepo = GitNoteRepository(
         baseDirectory: appState.gitBaseDirectory,
         dirName: appState.localGitRepoPath,
-        subDirName: "",
       );
     }
 
@@ -213,23 +211,20 @@ class StateContainerState extends State<StateContainer> {
     });
   }
 
-  void completeGitHostSetup(String subFolder) {
+  void completeGitHostSetup() {
     () async {
       appState.remoteGitRepoConfigured = true;
       appState.remoteGitRepoFolderName = "journal";
-      appState.remoteGitRepoSubFolder = subFolder;
 
       await migrateGitRepo(
         fromGitBasePath: appState.localGitRepoPath,
         toGitBaseFolder: appState.remoteGitRepoFolderName,
-        toGitBaseSubFolder: appState.remoteGitRepoSubFolder,
         gitBasePath: appState.gitBaseDirectory,
       );
 
       noteRepo = GitNoteRepository(
         baseDirectory: appState.gitBaseDirectory,
         dirName: appState.remoteGitRepoFolderName,
-        subDirName: appState.remoteGitRepoSubFolder,
       );
 
       await _persistConfig();

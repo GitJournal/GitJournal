@@ -14,12 +14,10 @@ Future migrateGitRepo({
   @required String gitBasePath,
   @required String fromGitBasePath,
   @required String toGitBaseFolder,
-  @required String toGitBaseSubFolder,
 }) async {
-  Fimber.d(
-      "migrateGitRepo $fromGitBasePath $toGitBaseFolder / $toGitBaseSubFolder");
+  Fimber.d("migrateGitRepo $fromGitBasePath $toGitBaseFolder");
   var fromBasePath = p.join(gitBasePath, fromGitBasePath);
-  var toGitRepoPath = p.join(gitBasePath, toGitBaseFolder, toGitBaseSubFolder);
+  var toGitRepoPath = p.join(gitBasePath, toGitBaseFolder);
   Fimber.d("toGitRemotePath $toGitRepoPath");
 
   final dir = Directory(fromBasePath);

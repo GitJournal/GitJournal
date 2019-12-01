@@ -20,7 +20,6 @@ class NoteRepoResult {
 
 class GitNoteRepository {
   final String dirName;
-  final String subDirName;
   final String baseDirectory;
   String notesBasePath;
   final GitRepo _gitRepo;
@@ -29,14 +28,13 @@ class GitNoteRepository {
   // The directory should already exist!
   GitNoteRepository({
     @required this.dirName,
-    @required this.subDirName,
     @required this.baseDirectory,
   }) : _gitRepo = GitRepo(
           folderName: dirName,
           authorEmail: Settings.instance.gitAuthorEmail,
           authorName: Settings.instance.gitAuthor,
         ) {
-    notesBasePath = p.join(baseDirectory, dirName, subDirName);
+    notesBasePath = p.join(baseDirectory, dirName);
   }
 
   Future<NoteRepoResult> addNote(Note note) async {

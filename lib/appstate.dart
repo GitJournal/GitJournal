@@ -12,7 +12,6 @@ class AppState {
 
   // FIXME: Rename from 'path' to folderName
   String remoteGitRepoFolderName = "";
-  String remoteGitRepoSubFolder = "";
   bool remoteGitRepoConfigured = false;
 
   bool onBoardingCompleted = false;
@@ -34,7 +33,6 @@ class AppState {
     remoteGitRepoConfigured = pref.getBool("remoteGitRepoConfigured") ?? false;
     localGitRepoPath = pref.getString("localGitRepoPath") ?? "";
     remoteGitRepoFolderName = pref.getString("remoteGitRepoPath") ?? "";
-    remoteGitRepoSubFolder = pref.getString("remoteGitRepoSubFolder") ?? "";
     onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
   }
 
@@ -44,7 +42,6 @@ class AppState {
     Fimber.d("remoteGitRepoConfigured: $remoteGitRepoConfigured");
     Fimber.d("localGitRepoPath: $localGitRepoPath");
     Fimber.d("remoteGitRepoFolderName: $remoteGitRepoFolderName");
-    Fimber.d("remoteGitRepoSubFolder: $remoteGitRepoSubFolder");
     Fimber.d("onBoardingCompleted: $onBoardingCompleted");
     Fimber.d(" ------------------ ");
   }
@@ -54,7 +51,6 @@ class AppState {
     await pref.setBool("remoteGitRepoConfigured", remoteGitRepoConfigured);
     await pref.setString("localGitRepoPath", localGitRepoPath);
     await pref.setString("remoteGitRepoPath", remoteGitRepoFolderName);
-    await pref.setString("remoteGitRepoSubFolder", remoteGitRepoSubFolder);
     await pref.setBool("onBoardingCompleted", onBoardingCompleted);
   }
 }

@@ -17,11 +17,10 @@ import 'githostsetup_autoconfigure.dart';
 import 'githostsetup_button.dart';
 import 'githostsetup_clone.dart';
 import 'githostsetup_clone_url.dart';
-import 'githostsetup_folder.dart';
 import 'githostsetup_sshkey.dart';
 
 class GitHostSetupScreen extends StatefulWidget {
-  final Func1<String, void> onCompletedFunction;
+  final Func0<void> onCompletedFunction;
 
   GitHostSetupScreen(this.onCompletedFunction);
 
@@ -46,7 +45,6 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   var _gitCloneUrl = "";
   var gitCloneErrorMessage = "";
   var publicKey = "";
-  var _subFolders = <String>[];
 
   var pageController = PageController();
   int _currentPageIndex = 0;
@@ -188,36 +186,12 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     }
 
     if (pos == 4) {
-      if (_pageChoice[0] == PageChoice0.CustomProvider) {
-        return GitHostSetupFolderPage(
-          folders: _subFolders,
-          subFolderSelected: _subFolderSelected,
-          rootFolderSelected: _finish,
-        );
-      }
-
       if (_pageChoice[1] == PageChoice1.Manual) {
         return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
-      } else if (_pageChoice[1] == PageChoice1.Auto) {
-        return GitHostSetupFolderPage(
-          folders: _subFolders,
-          subFolderSelected: _subFolderSelected,
-          rootFolderSelected: _finish,
-        );
       }
     }
 
     assert(_pageChoice[0] != PageChoice0.CustomProvider);
-
-    if (pos == 5) {
-      if (_pageChoice[1] == PageChoice1.Manual) {
-        return GitHostSetupFolderPage(
-          folders: _subFolders,
-          subFolderSelected: _subFolderSelected,
-          rootFolderSelected: _finish,
-        );
-      }
-    }
 
     assert(false);
     return null;
@@ -412,18 +386,12 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       return;
     }
 
-    List<String> subFolders = await _getSubFoldersWithMdFiles(basePath);
-    if (subFolders.isEmpty) {
-      Fimber.d("Found no subfolders with md files");
-      _finish();
-      return;
-    }
-
-    setState(() {
-      _subFolders = subFolders;
-      _pageCount += 1;
-      _nextPage();
-    });
+    getAnalytics().logEvent(
+      name: "onboarding_complete",
+      parameters: <String, dynamic>{},
+    );
+    Navigator.pop(context);
+    widget.onCompletedFunction();
   }
 
   Future _removeExistingClone(String baseDirPath) async {
@@ -435,55 +403,6 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       await baseDir.delete(recursive: true);
       await baseDir.create();
     }
-  }
-
-  Future<List<String>> _getSubFoldersWithMdFiles(String baseDirPath) async {
-    var subFolders = <String>[];
-
-    var gitRootDir = Directory(p.join(baseDirPath, "journal"));
-    var lister = gitRootDir.list(recursive: false);
-    await for (var fileEntity in lister) {
-      if (fileEntity is! Directory) {
-        continue;
-      }
-
-      Directory dir = fileEntity;
-      var hasMdFiles = await _hasMdFiles(dir);
-      if (hasMdFiles) {
-        subFolders.add(p.basename(dir.path));
-      }
-    }
-
-    return subFolders;
-  }
-
-  Future<bool> _hasMdFiles(Directory dir) async {
-    var lister = dir.list(recursive: false);
-    await for (var fileEntity in lister) {
-      if (fileEntity is! File) {
-        continue;
-      }
-
-      if (fileEntity.path.toLowerCase().endsWith('.md')) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  void _finish() {
-    String subFolder = "";
-    _subFolderSelected(subFolder);
-  }
-
-  void _subFolderSelected(String folder) {
-    getAnalytics().logEvent(
-      name: "onboarding_complete",
-      parameters: <String, dynamic>{},
-    );
-    Navigator.pop(context);
-    widget.onCompletedFunction(folder);
   }
 }
 
