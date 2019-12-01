@@ -78,11 +78,16 @@ class MarkdownYAMLSerializer implements NoteSerializer {
       var yamlText = str.substring(4, endYamlPos);
       var map = _parseYamlText(yamlText);
 
+      var body = "";
       var bodyBeginingPos = endYamlPos + endYamlStr.length;
-      if (str[bodyBeginingPos] == '\n') {
-        bodyBeginingPos += 1;
+      if (bodyBeginingPos < str.length) {
+        if (str[bodyBeginingPos] == '\n') {
+          bodyBeginingPos += 1;
+        }
+        if (bodyBeginingPos < str.length) {
+          body = str.substring(bodyBeginingPos);
+        }
       }
-      var body = str.substring(bodyBeginingPos);
 
       return NoteData(body, map);
     }

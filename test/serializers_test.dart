@@ -152,7 +152,7 @@ Alright.""";
       expect(actualStr, note.body);
     });
 
-    test('Only YAML Header without \\n', () {
+    test('Only YAML Header without \\n at end', () {
       var str = """---
 foo: bar
 ---""";
@@ -165,6 +165,22 @@ foo: bar
 
       var actualStr = serializer.encode(note);
       expect(actualStr, str + '\n\n');
+    });
+
+    test('Only YAML Header with \\n at end', () {
+      var str = """---
+foo: bar
+---
+""";
+
+      var serializer = MarkdownYAMLSerializer();
+      var note = serializer.decode(str);
+
+      expect("", note.body);
+      expect({"foo": "bar"}, note.props);
+
+      var actualStr = serializer.encode(note);
+      expect(actualStr, str + '\n');
     });
   });
 }
