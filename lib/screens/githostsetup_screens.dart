@@ -298,7 +298,12 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   }
 
   void _generateSshKey(BuildContext context) {
-    generateSSHKeys(comment: "GitJournal").then((String publicKey) {
+    var comment = "GitJournal " +
+        Platform.operatingSystem +
+        " " +
+        DateTime.now().toIso8601String().substring(0, 10); // only the date
+
+    generateSSHKeys(comment: comment).then((String publicKey) {
       setState(() {
         this.publicKey = publicKey;
         _copyKeyToClipboard(context);
