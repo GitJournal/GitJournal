@@ -5,6 +5,7 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gitjournal/apis/git.dart';
 import 'package:gitjournal/note.dart';
+import 'package:gitjournal/note_folder.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:path/path.dart' as p;
 
@@ -76,22 +77,39 @@ class GitNoteRepository {
   }
 
   Future<List<Note>> listNotes() async {
-    final dir = Directory(notesBasePath);
+    var noteFolder = await loadFolder(NoteFolder(notesBasePath));
+    var notes = noteFolder.getAllNotes();
+    notes.sort((a, b) => b.compareTo(a));
 
-    var notes = <Note>[];
-    var lister = dir.list(recursive: false);
-    await for (var fileEntity in lister) {
-      var note = Note(fileEntity.path);
+    return notes;
+  }
+
+  // FIXME: This asynchronously loads everything. Maybe it should just list them, and the individual entities
+  //        should be loaded as required?
+  Future<NoteFolder> loadFolder(NoteFolder rootFolder) async {
+    final dir = Directory(rootFolder.folderPath);
+
+    var lister = dir.list(recursive: false, followLinks: false);
+    await for (var fsEntity in lister) {
+      if (fsEntity is Directory) {
+        var subFolder = NoteFolder(fsEntity.path);
+        subFolder = await loadFolder(subFolder);
+
+        var noteFSEntity = NoteFSEntity(rootFolder, folder: subFolder);
+        rootFolder.entities.add(noteFSEntity);
+      }
+
+      var note = Note(fsEntity.path);
       if (!note.filePath.toLowerCase().endsWith('.md')) {
         continue;
       }
       await note.load();
-      notes.add(note);
+
+      var noteFSEntity = NoteFSEntity(rootFolder, note: note);
+      rootFolder.entities.add(noteFSEntity);
     }
 
-    // Reverse sort
-    notes.sort((a, b) => b.compareTo(a));
-    return notes;
+    return rootFolder;
   }
 
   Future<bool> sync() async {
