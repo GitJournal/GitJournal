@@ -1,39 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:gitjournal/note.dart';
 import 'package:gitjournal/state_container.dart';
-import 'package:gitjournal/widgets/note_header.dart';
+import 'package:gitjournal/widgets/journal_editor_header.dart';
 import 'package:gitjournal/storage/serializers.dart';
 
 enum NoteEditorDropDownChoices { Discard, SwitchEditor }
 
-class NoteEditor extends StatefulWidget {
+class JournalEditor extends StatefulWidget {
   final Note note;
 
-  NoteEditor() : note = null;
-  NoteEditor.fromNote(this.note);
+  JournalEditor() : note = null;
+  JournalEditor.fromNote(this.note);
 
   @override
-  NoteEditorState createState() {
+  JournalEditorState createState() {
     if (note == null) {
-      return NoteEditorState();
+      return JournalEditorState();
     } else {
-      return NoteEditorState.fromNote(note);
+      return JournalEditorState.fromNote(note);
     }
   }
 }
 
-class NoteEditorState extends State<NoteEditor> {
+class JournalEditorState extends State<JournalEditor> {
   Note note = Note();
   final bool newNote;
   TextEditingController _textController = TextEditingController();
   bool rawEditor = false;
   final serializer = MarkdownYAMLSerializer();
 
-  NoteEditorState() : newNote = true {
+  JournalEditorState() : newNote = true {
     note.created = DateTime.now();
   }
 
-  NoteEditorState.fromNote(this.note) : newNote = false {
+  JournalEditorState.fromNote(this.note) : newNote = false {
     _textController = TextEditingController(text: note.body);
   }
 
@@ -47,7 +47,7 @@ class NoteEditorState extends State<NoteEditor> {
   Widget build(BuildContext context) {
     Widget editor = Column(
       children: <Widget>[
-        NoteHeader(note),
+        JournalEditorHeader(note),
         NoteMarkdownEditor(_textController, false),
       ],
     );
@@ -102,7 +102,9 @@ class NoteEditorState extends State<NoteEditor> {
               ),
               PopupMenuItem<NoteEditorDropDownChoices>(
                 value: NoteEditorDropDownChoices.SwitchEditor,
-                child: rawEditor ? const Text('Rich Editor') : const Text('Raw Editor'),
+                child: rawEditor
+                    ? const Text('Rich Editor')
+                    : const Text('Raw Editor'),
               ),
             ],
           ),

@@ -6,10 +6,10 @@ import 'package:gitjournal/note.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/widgets/note_header.dart';
+import 'package:gitjournal/widgets/journal_editor_header.dart';
 import 'package:share/share.dart';
 
-import 'note_editor.dart';
+import 'journal_editor.dart';
 
 class JournalBrowsingScreen extends StatefulWidget {
   final List<Note> notes;
@@ -72,7 +72,7 @@ class JournalBrowsingScreenState extends State<JournalBrowsingScreen> {
         onPressed: () {
           var route = MaterialPageRoute(builder: (context) {
             Note note = widget.notes[_currentIndex()];
-            return NoteEditor.fromNote(note);
+            return JournalEditor.fromNote(note);
           });
           Navigator.of(context).push(route);
         },
@@ -137,7 +137,7 @@ class NoteViewer extends StatelessWidget {
     var view = SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          note.hasValidDate() ? NoteHeader(note) : Container(),
+          note.hasValidDate() ? JournalEditorHeader(note) : Container(),
           MarkdownBody(
             data: note.body,
             styleSheet: MarkdownStyleSheet.fromTheme(theme),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/note.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/apis/git.dart';
-import 'package:gitjournal/screens/note_editor.dart';
+import 'package:gitjournal/screens/journal_editor.dart';
 import 'package:gitjournal/screens/journal_browsing.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
@@ -83,7 +83,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   void _newPost(BuildContext context) {
-    var route = MaterialPageRoute(builder: (context) => NoteEditor());
+    var route = MaterialPageRoute(builder: (context) => JournalEditor());
     Navigator.of(context).push(route);
   }
 }
