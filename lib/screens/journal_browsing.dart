@@ -11,25 +11,25 @@ import 'package:share/share.dart';
 
 import 'note_editor.dart';
 
-class NoteBrowsingScreen extends StatefulWidget {
+class JournalBrowsingScreen extends StatefulWidget {
   final List<Note> notes;
   final int noteIndex;
 
-  const NoteBrowsingScreen({
+  const JournalBrowsingScreen({
     @required this.notes,
     @required this.noteIndex,
   });
 
   @override
-  NoteBrowsingScreenState createState() {
-    return NoteBrowsingScreenState(noteIndex: noteIndex);
+  JournalBrowsingScreenState createState() {
+    return JournalBrowsingScreenState(noteIndex: noteIndex);
   }
 }
 
-class NoteBrowsingScreenState extends State<NoteBrowsingScreen> {
+class JournalBrowsingScreenState extends State<JournalBrowsingScreen> {
   PageController pageController;
 
-  NoteBrowsingScreenState({@required int noteIndex}) {
+  JournalBrowsingScreenState({@required int noteIndex}) {
     pageController = PageController(initialPage: noteIndex);
   }
 

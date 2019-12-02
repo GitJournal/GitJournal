@@ -4,7 +4,7 @@ import 'package:gitjournal/note.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/apis/git.dart';
 import 'package:gitjournal/screens/note_editor.dart';
-import 'package:gitjournal/screens/note_viewer.dart';
+import 'package:gitjournal/screens/journal_browsing.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/journal_list.dart';
@@ -28,7 +28,7 @@ class HomeScreen extends StatelessWidget {
       notes: appState.notes,
       noteSelectedFunction: (noteIndex) {
         var route = MaterialPageRoute(
-          builder: (context) => NoteBrowsingScreen(
+          builder: (context) => JournalBrowsingScreen(
             notes: appState.notes,
             noteIndex: noteIndex,
           ),
@@ -148,7 +148,7 @@ class NoteSearch extends SearchDelegate<Note> {
       notes: filteredNotes,
       noteSelectedFunction: (noteIndex) {
         var route = MaterialPageRoute(
-          builder: (context) => NoteBrowsingScreen(
+          builder: (context) => JournalBrowsingScreen(
             notes: filteredNotes,
             noteIndex: noteIndex,
           ),
