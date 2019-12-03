@@ -97,7 +97,12 @@ class FolderTileState extends State<FolderTile> {
   }
 
   Widget _getChild() {
-    return _isExpanded ? widget.childList : Container();
+    if (!_isExpanded) return Container();
+
+    return Container(
+      margin: const EdgeInsets.only(left: 16.0),
+      child: widget.childList,
+    );
   }
 }
 
