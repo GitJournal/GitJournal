@@ -2,29 +2,21 @@ import 'package:flutter/material.dart';
 
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
+import 'package:gitjournal/state_container.dart';
+
+import 'package:gitjournal/note_folder.dart';
 
 typedef void ParentSelectChanged(bool isSelected);
 
-/// # Tree View
-///
-/// Creates a tree view widget. The widget is a List View with a [List] of
-/// [Parent] widgets. The [TreeView] is nested inside a [Scrollbar] if the
-/// [TreeView.hasScrollBar] property is true.
 class TreeView extends StatelessWidget {
   final List<Parent> parentList;
-  final bool hasScrollBar;
 
   TreeView({
     this.parentList = const <Parent>[],
-    this.hasScrollBar = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return hasScrollBar ? Scrollbar(child: _getTreeList()) : _getTreeList();
-  }
-
-  Widget _getTreeList() {
     return ListView.builder(
       itemBuilder: (context, index) {
         return parentList[index];
@@ -130,28 +122,11 @@ class ChildList extends StatelessWidget {
 class FolderListingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final container = StateContainer.of(context);
+    final appState = container.appState;
+
     var treeView = TreeView(
-      parentList: [
-        Parent(
-          parent: _buildFolderTile("Desktop"),
-          childList: ChildList(
-            children: <Widget>[
-              Parent(
-                parent: _buildFolderTile('documents'),
-                childList: ChildList(
-                  children: <Widget>[
-                    _buildFolderTile('Resume.docx'),
-                    _buildFolderTile('Billing-Info.docx'),
-                  ],
-                ),
-              ),
-              _buildFolderTile('MeetingReport.xls'),
-              _buildFolderTile('MeetingReport.pdf'),
-              _buildFolderTile('Demo.zip'),
-            ],
-          ),
-        ),
-      ],
+      parentList: _constructParentList(appState.noteFolder.entities),
     );
 
     return Scaffold(
@@ -162,6 +137,43 @@ class FolderListingScreen extends StatelessWidget {
       body: treeView,
       drawer: AppDrawer(),
     );
+  }
+
+  List<Parent> _constructParentList(List<NoteFSEntity> entities) {
+    var parents = <Parent>[];
+    entities.forEach((entity) {
+      if (entity.isNote) {
+        return;
+      }
+
+      var folder = entity.folder;
+      var p = Parent(
+        parent: _buildFolderTile(folder.name),
+        childList: _constructChildList(folder.entities),
+      );
+
+      parents.add(p);
+    });
+    return parents;
+  }
+
+  ChildList _constructChildList(List<NoteFSEntity> entities) {
+    var children = <Widget>[];
+    entities.forEach((entity) {
+      if (entity.isNote) {
+        return;
+      }
+
+      var folder = entity.folder;
+      var p = Parent(
+        parent: _buildFolderTile(folder.name),
+        childList: _constructChildList(folder.entities),
+      );
+
+      children.add(p);
+    });
+
+    return ChildList(children: children);
   }
 
   Widget _buildFolderTile(String name) {

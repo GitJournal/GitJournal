@@ -8,6 +8,7 @@ import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/git_migration.dart';
 import 'package:gitjournal/appstate.dart';
 import 'package:gitjournal/note.dart';
+import 'package:gitjournal/note_folder.dart';
 import 'package:gitjournal/note_fileName.dart';
 import 'package:gitjournal/storage/git_storage.dart';
 import 'package:path/path.dart' as p;
@@ -56,6 +57,7 @@ class StateContainerState extends State<StateContainer> {
         dirName: appState.localGitRepoPath,
       );
     }
+    appState.noteFolder = NoteFolder(noteRepo.notesBasePath);
 
     // Just a fail safe
     if (!appState.remoteGitRepoConfigured) {
@@ -77,9 +79,17 @@ class StateContainerState extends State<StateContainer> {
     }
   }
 
+  Future<List<Note>> _loadNotes() async {
+    await appState.noteFolder.loadRecursively();
+    var notes = appState.noteFolder.getAllNotes();
+    notes.sort((a, b) => b.compareTo(a));
+
+    return notes;
+  }
+
   void _loadNotesFromDisk() {
     Fimber.d("Loading Notes From Disk");
-    noteRepo.listNotes().then((loadedNotes) {
+    _loadNotes().then((loadedNotes) {
       setState(() {
         appState.notes = loadedNotes;
 
@@ -114,7 +124,7 @@ class StateContainerState extends State<StateContainer> {
     await noteRepo.sync();
 
     try {
-      var loadedNotes = await noteRepo.listNotes();
+      var loadedNotes = await _loadNotes();
       setState(() {
         appState.notes = loadedNotes;
       });
@@ -160,17 +170,6 @@ class StateContainerState extends State<StateContainer> {
       });
     });
   }
-
-  /*
-  String _getGitDir(BuildContext context) {
-    var state = StateContainer.of(context).appState;
-    if (state.remoteGitRepoConfigured) {
-      return state.remoteGitRepoFolderName;
-    } else {
-      return state.localGitRepoPath;
-    }
-  }
-  */
 
   void undoRemoveNote(Note note, int index) {
     setState(() {
@@ -226,6 +225,7 @@ class StateContainerState extends State<StateContainer> {
         baseDirectory: appState.gitBaseDirectory,
         dirName: appState.remoteGitRepoFolderName,
       );
+      appState.noteFolder = NoteFolder(noteRepo.notesBasePath);
 
       await _persistConfig();
       _loadNotesFromDisk();

@@ -4,7 +4,6 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gitjournal/apis/git.dart';
 import 'package:gitjournal/note.dart';
-import 'package:gitjournal/note_folder.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:path/path.dart' as p;
 
@@ -71,15 +70,6 @@ class GitNoteRepository {
 
   Future<NoteRepoResult> updateNote(Note note) async {
     return _addNote(note, "Edited Journal Entry");
-  }
-
-  Future<List<Note>> listNotes() async {
-    var noteFolder = NoteFolder(notesBasePath);
-    await noteFolder.load();
-    var notes = noteFolder.getAllNotes();
-    notes.sort((a, b) => b.compareTo(a));
-
-    return notes;
   }
 
   Future<bool> sync() async {

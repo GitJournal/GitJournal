@@ -57,14 +57,19 @@ class NoteFolder {
 
   // FIXME: This asynchronously loads everything. Maybe it should just list them, and the individual entities
   //        should be loaded as required?
-  Future<void> load() async {
+  // FIXME: This should not reconstruct the Notes or NotesFolders once constructed.
+  Future<void> loadRecursively() async {
     final dir = Directory(folderPath);
+    entities = [];
 
     var lister = dir.list(recursive: false, followLinks: false);
     await for (var fsEntity in lister) {
       if (fsEntity is Directory) {
         var subFolder = NoteFolder(fsEntity.path);
-        await subFolder.load();
+        if (subFolder.name.startsWith('.')) {
+          continue;
+        }
+        await subFolder.loadRecursively();
 
         var noteFSEntity = NoteFSEntity(this, folder: subFolder);
         entities.add(noteFSEntity);

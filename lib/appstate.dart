@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fimber/fimber.dart';
 import 'package:gitjournal/note.dart';
+import 'package:gitjournal/note_folder.dart';
 
 class AppState {
   //
@@ -27,6 +28,7 @@ class AppState {
   }
 
   List<Note> notes = [];
+  NoteFolder noteFolder;
 
   AppState(SharedPreferences pref) {
     localGitRepoConfigured = pref.getBool("localGitRepoConfigured") ?? false;
