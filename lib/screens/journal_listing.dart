@@ -1,4 +1,3 @@
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/note.dart';
 import 'package:gitjournal/utils.dart';
@@ -7,11 +6,11 @@ import 'package:gitjournal/screens/journal_editor.dart';
 import 'package:gitjournal/screens/journal_browsing.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
+import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/journal_list.dart';
 import 'package:gitjournal/themes.dart';
 
 class JournalListingScreen extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final List<Note> allNotes;
 
   JournalListingScreen(this.allNotes);
@@ -19,7 +18,6 @@ class JournalListingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final container = StateContainer.of(context);
-    final appState = container.appState;
 
     var createButton = FloatingActionButton(
       key: const ValueKey("FAB"),
@@ -41,22 +39,10 @@ class JournalListingScreen extends StatelessWidget {
       emptyText: "Why not add your first\n Journal Entry?",
     );
 
-    bool shouldShowBadge =
-        !appState.remoteGitRepoConfigured && appState.hasJournalEntries;
-    var appBarMenuButton = BadgeIconButton(
-      key: const ValueKey("DrawerButton"),
-      icon: const Icon(Icons.menu),
-      itemCount: shouldShowBadge ? 1 : 0,
-      onPressed: () {
-        _scaffoldKey.currentState.openDrawer();
-      },
-    );
-
     return Scaffold(
-      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('GitJournal'),
-        leading: appBarMenuButton,
+        leading: GJAppBarMenuButton(),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
