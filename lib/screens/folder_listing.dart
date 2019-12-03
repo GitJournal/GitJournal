@@ -9,10 +9,10 @@ import 'package:gitjournal/note_folder.dart';
 typedef void ParentSelectChanged(bool isSelected);
 
 class TreeView extends StatelessWidget {
-  final List<Parent> parentList;
+  final List<FolderTile> parentList;
 
   TreeView({
-    this.parentList = const <Parent>[],
+    this.parentList = const <FolderTile>[],
   });
 
   @override
@@ -26,38 +26,29 @@ class TreeView extends StatelessWidget {
   }
 }
 
-/// # Parent widget
-///
-/// The [Parent] widget holds the [Parent.parent] widget and
-/// [Parent.childList] which is a [List] of child widgets.
-///
-/// The [Parent] widget is wrapped around a [Column]. The [Parent.childList]
-/// is collapsed by default. When clicked the child widget is expanded.
-class Parent extends StatefulWidget {
-  final Widget parent;
+class FolderTile extends StatefulWidget {
+  final NoteFolder folder;
   final ChildList childList;
   final MainAxisSize mainAxisSize;
   final CrossAxisAlignment crossAxisAlignment;
   final MainAxisAlignment mainAxisAlignment;
   final ParentSelectChanged callback;
-  final Key key;
 
-  Parent({
-    @required this.parent,
+  FolderTile({
+    @required this.folder,
     @required this.childList,
     this.mainAxisAlignment = MainAxisAlignment.center,
     this.crossAxisAlignment = CrossAxisAlignment.start,
     this.mainAxisSize = MainAxisSize.min,
     this.callback,
-    this.key,
   });
 
   @override
-  ParentState createState() => ParentState();
+  FolderTileState createState() => FolderTileState();
 }
 
-class ParentState extends State<Parent> {
-  bool _isSelected = false;
+class FolderTileState extends State<FolderTile> {
+  bool _isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +58,7 @@ class ParentState extends State<Parent> {
       mainAxisAlignment: widget.mainAxisAlignment,
       children: <Widget>[
         GestureDetector(
-          child: widget.parent,
+          child: _buildFolderTile(),
           onTap: expand,
         ),
         _getChild(),
@@ -75,10 +66,29 @@ class ParentState extends State<Parent> {
     );
   }
 
+  Widget _buildFolderTile() {
+    var folder = widget.folder;
+    var ic = _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down;
+    var trailling = folder.hasSubFolders
+        ? IconButton(
+            icon: Icon(ic),
+            onPressed: expand,
+          )
+        : null;
+
+    return Card(
+      child: ListTile(
+        leading: Icon(Icons.folder),
+        title: Text(folder.name),
+        trailing: trailling,
+      ),
+    );
+  }
+
   void expand() {
-    if (widget.callback != null) widget.callback(_isSelected);
+    if (widget.callback != null) widget.callback(_isExpanded);
     setState(() {
-      _isSelected = _toggleBool(_isSelected);
+      _isExpanded = _toggleBool(_isExpanded);
     });
   }
 
@@ -87,14 +97,14 @@ class ParentState extends State<Parent> {
   }
 
   Widget _getChild() {
-    return _isSelected ? widget.childList : Container();
+    return _isExpanded ? widget.childList : Container();
   }
 }
 
 /// # ChildList widget
 ///
 /// The [ChildList] widget holds a [List] of widget which will be displayed as
-/// children of the [Parent] widget
+/// children of the [FolderTile] widget
 class ChildList extends StatelessWidget {
   final List<Widget> children;
   final MainAxisAlignment mainAxisAlignment;
@@ -139,16 +149,16 @@ class FolderListingScreen extends StatelessWidget {
     );
   }
 
-  List<Parent> _constructParentList(List<NoteFSEntity> entities) {
-    var parents = <Parent>[];
+  List<FolderTile> _constructParentList(List<NoteFSEntity> entities) {
+    var parents = <FolderTile>[];
     entities.forEach((entity) {
       if (entity.isNote) {
         return;
       }
 
       var folder = entity.folder;
-      var p = Parent(
-        parent: _buildFolderTile(folder.name),
+      var p = FolderTile(
+        folder: folder,
         childList: _constructChildList(folder.entities),
       );
 
@@ -165,8 +175,8 @@ class FolderListingScreen extends StatelessWidget {
       }
 
       var folder = entity.folder;
-      var p = Parent(
-        parent: _buildFolderTile(folder.name),
+      var p = FolderTile(
+        folder: folder,
         childList: _constructChildList(folder.entities),
       );
 
@@ -174,20 +184,5 @@ class FolderListingScreen extends StatelessWidget {
     });
 
     return ChildList(children: children);
-  }
-
-  Widget _buildFolderTile(String name) {
-    // FIXME: The trailing icon should change based on if it is expanded or not
-
-    return Card(
-      child: ListTile(
-        leading: Icon(Icons.folder),
-        title: Text(name),
-        trailing: IconButton(
-          icon: Icon(Icons.navigate_next),
-          onPressed: () {},
-        ),
-      ),
-    );
   }
 }

@@ -37,6 +37,14 @@ class NoteFolder {
     return basename(folderPath);
   }
 
+  bool get hasSubFolders {
+    return entities.firstWhere((e) => e.isFolder, orElse: () => null) != null;
+  }
+
+  bool get hasNotes {
+    return entities.firstWhere((e) => e.isNote, orElse: () => null) != null;
+  }
+
   // Recurisvely gets all Notes within this folder
   List<Note> getAllNotes() {
     var notes = <Note>[];
