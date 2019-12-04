@@ -20,6 +20,7 @@ import 'package:dynamic_theme/dynamic_theme.dart';
 
 import 'screens/githostsetup_screens.dart';
 import 'screens/onboarding_screens.dart';
+import 'screens/folder_listing.dart';
 
 class JournalApp extends StatelessWidget {
   static Future main(SharedPreferences pref) async {
@@ -120,6 +121,7 @@ class JournalApp extends StatelessWidget {
       initialRoute: initialRoute,
       routes: {
         '/': (context) => HomeScreen(),
+        '/folders': (context) => FolderListingScreen(),
         '/settings': (context) => SettingsScreen(),
         '/setupRemoteGit': (context) =>
             GitHostSetupScreen(stateContainer.completeGitHostSetup),

@@ -58,6 +58,31 @@ class AppDrawer extends StatelessWidget {
           ),
           setupGitButton,
           ListTile(
+            leading: Icon(Icons.note, color: textStyle.color),
+            title: Text('Notes', style: textStyle),
+            onTap: () {
+              var m = ModalRoute.of(context);
+              if (m.settings.name == "/") {
+                Navigator.pop(context);
+              } else {
+                Navigator.pop(context);
+                Navigator.pushReplacementNamed(context, '/');
+              }
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.folder, color: textStyle.color),
+            title: Text('Folders', style: textStyle),
+            onTap: () {
+              var m = ModalRoute.of(context);
+              if (m.settings.name == "/folders") {
+                Navigator.pop(context);
+              } else {
+                Navigator.popAndPushNamed(context, "/folders");
+              }
+            },
+          ),
+          ListTile(
             leading: Icon(Icons.share, color: textStyle.color),
             title: Text('Share App', style: textStyle),
             onTap: () {
