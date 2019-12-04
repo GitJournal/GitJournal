@@ -8,7 +8,7 @@ import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/git_migration.dart';
 import 'package:gitjournal/appstate.dart';
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/note_folder.dart';
+import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/note_fileName.dart';
 import 'package:gitjournal/storage/git_storage.dart';
 import 'package:path/path.dart' as p;
@@ -57,7 +57,7 @@ class StateContainerState extends State<StateContainer> {
         dirName: appState.localGitRepoPath,
       );
     }
-    appState.noteFolder = NoteFolder(noteRepo.notesBasePath);
+    appState.noteFolder = NotesFolder(noteRepo.notesBasePath);
 
     // Just a fail safe
     if (!appState.remoteGitRepoConfigured) {
@@ -225,7 +225,7 @@ class StateContainerState extends State<StateContainer> {
         baseDirectory: appState.gitBaseDirectory,
         dirName: appState.remoteGitRepoFolderName,
       );
-      appState.noteFolder = NoteFolder(noteRepo.notesBasePath);
+      appState.noteFolder = NotesFolder(noteRepo.notesBasePath);
 
       await _persistConfig();
       _loadNotesFromDisk();

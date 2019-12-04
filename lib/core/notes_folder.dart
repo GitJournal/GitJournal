@@ -5,11 +5,12 @@ import 'package:path/path.dart';
 import 'note.dart';
 import 'note_fs_entity.dart';
 
-class NoteFolder {
+class NotesFolder {
+  NotesFolder parent;
   List<NoteFSEntity> entities = [];
   String folderPath;
 
-  NoteFolder(this.folderPath);
+  NotesFolder(this.parent, this.folderPath);
 
   bool get isEmpty {
     return entities.isEmpty;
@@ -55,24 +56,55 @@ class NoteFolder {
     var lister = dir.list(recursive: false, followLinks: false);
     await for (var fsEntity in lister) {
       if (fsEntity is Directory) {
-        var subFolder = NoteFolder(fsEntity.path);
+        var subFolder = NotesFolder(this, fsEntity.path);
         if (subFolder.name.startsWith('.')) {
           continue;
         }
         await subFolder.loadRecursively();
 
-        var noteFSEntity = NoteFSEntity(this, folder: subFolder);
+        var noteFSEntity = NoteFSEntity(folder: subFolder);
         entities.add(noteFSEntity);
       }
 
-      var note = Note(fsEntity.path);
+      var note = Note(this, fsEntity.path);
       if (!note.filePath.toLowerCase().endsWith('.md')) {
         continue;
       }
       await note.load();
 
-      var noteFSEntity = NoteFSEntity(this, note: note);
+      var noteFSEntity = NoteFSEntity(note: note);
       entities.add(noteFSEntity);
     }
+  }
+
+  void add(Note note) {
+    assert(note.parent == this);
+    entities.add(NoteFSEntity(note: note));
+  }
+
+  void insert(int index, Note note) {
+    assert(note.parent == this);
+
+    for (var i = 0; i < entities.length; i++) {
+      var e = entities[i];
+      if (e is NotesFolder) continue;
+
+      if (index == 0) {
+        entities.insert(i, NoteFSEntity(note: note));
+        return;
+      }
+      index--;
+    }
+  }
+
+  void remove(Note note) {
+    assert(note.parent == this);
+    var i = entities.indexWhere((e) {
+      if (e.isFolder) return false;
+      return e.note.filePath == note.filePath;
+    });
+    assert(i != -1);
+
+    entities.removeAt(i);
   }
 }

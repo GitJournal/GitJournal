@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:gitjournal/core/note_folder.dart';
+import 'package:gitjournal/core/notes_folder.dart';
 
-typedef void FolderSelectedCallback(NoteFolder folder);
+typedef void FolderSelectedCallback(NotesFolder folder);
 
 class FolderTreeView extends StatelessWidget {
-  final NoteFolder rootFolder;
+  final NotesFolder rootFolder;
   final FolderSelectedCallback onFolderSelected;
 
   FolderTreeView({
@@ -29,7 +29,7 @@ class FolderTreeView extends StatelessWidget {
 }
 
 class FolderTile extends StatefulWidget {
-  final NoteFolder folder;
+  final NotesFolder folder;
   final FolderSelectedCallback onFolderSelected;
 
   FolderTile(this.folder, this.onFolderSelected);

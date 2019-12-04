@@ -4,7 +4,7 @@ import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/folder_tree_view.dart';
 import 'package:gitjournal/state_container.dart';
-import 'package:gitjournal/core/note_folder.dart';
+import 'package:gitjournal/core/notes_folder.dart';
 
 import 'journal_listing.dart';
 
@@ -16,7 +16,7 @@ class FolderListingScreen extends StatelessWidget {
 
     var treeView = FolderTreeView(
       rootFolder: appState.noteFolder,
-      onFolderSelected: (NoteFolder folder) {
+      onFolderSelected: (NotesFolder folder) {
         var route = MaterialPageRoute(
           builder: (context) => JournalListingScreen(
             noteFolder: folder,
