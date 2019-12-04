@@ -7,8 +7,6 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 
 import 'package:gitjournal/apis/git.dart';
-import 'package:gitjournal/screens/home_screen.dart';
-import 'package:gitjournal/screens/settings_screen.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
@@ -18,9 +16,11 @@ import 'package:gitjournal/themes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 
-import 'screens/githostsetup_screens.dart';
-import 'screens/onboarding_screens.dart';
 import 'screens/folder_listing.dart';
+import 'screens/githostsetup_screens.dart';
+import 'screens/home_screen.dart';
+import 'screens/onboarding_screens.dart';
+import 'screens/settings_screen.dart';
 
 class JournalApp extends StatelessWidget {
   static Future main(SharedPreferences pref) async {
