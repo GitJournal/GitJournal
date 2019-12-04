@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:gitjournal/note.dart';
+import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/markdown.dart';

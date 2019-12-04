@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gitjournal/note.dart';
-import 'package:gitjournal/note_folder.dart';
+import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/note_folder.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/apis/git.dart';
 import 'package:gitjournal/screens/journal_editor.dart';

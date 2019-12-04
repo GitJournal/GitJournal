@@ -1,4 +1,4 @@
-import 'package:gitjournal/datetime_utils.dart';
+import 'package:gitjournal/utils/datetime.dart';
 import 'package:test/test.dart';
 
 void main() {

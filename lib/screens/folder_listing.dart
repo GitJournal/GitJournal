@@ -4,7 +4,7 @@ import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/folder_tree_view.dart';
 import 'package:gitjournal/state_container.dart';
-import 'package:gitjournal/note_folder.dart';
+import 'package:gitjournal/core/note_folder.dart';
 
 import 'journal_listing.dart';
 

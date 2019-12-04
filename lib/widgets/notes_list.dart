@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:gitjournal/note.dart';
+import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/utils/markdown.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 

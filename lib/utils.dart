@@ -6,7 +6,7 @@ import 'package:package_info/package_info.dart';
 import 'package:flushbar/flushbar.dart';
 
 import 'app.dart';
-import 'note.dart';
+import 'core/note.dart';
 import 'state_container.dart';
 
 Future<String> getVersionString() async {

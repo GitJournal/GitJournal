@@ -1,5 +1,5 @@
-import 'package:gitjournal/note.dart';
-import 'package:gitjournal/datetime_utils.dart';
+import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/utils/datetime.dart';
 import 'package:gitjournal/settings.dart';
 
 String getFileName(Note note) {

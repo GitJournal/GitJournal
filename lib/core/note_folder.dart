@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:gitjournal/note.dart';
+import 'package:gitjournal/core/note.dart';
 import 'package:path/path.dart';
 
 // FIXME: Maybe the parent should be a part of the Note, and the NoteFolder

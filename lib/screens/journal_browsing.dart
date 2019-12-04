@@ -2,7 +2,7 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:gitjournal/note.dart';
+import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/settings.dart';

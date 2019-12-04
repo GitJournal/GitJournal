@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:gitjournal/storage/serializers.dart';
-import 'package:gitjournal/datetime_utils.dart';
+import 'package:gitjournal/utils/datetime.dart';
 import 'package:test/test.dart';
 
 DateTime nowWithoutMicro() {

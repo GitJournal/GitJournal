@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gitjournal/apis/git.dart';
-import 'package:gitjournal/note.dart';
+import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:path/path.dart' as p;
 

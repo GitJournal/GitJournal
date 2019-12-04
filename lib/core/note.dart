@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:gitjournal/storage/serializers.dart';
-import 'package:gitjournal/datetime_utils.dart';
+import 'package:gitjournal/utils/datetime.dart';
 
 enum NoteLoadState {
   None,

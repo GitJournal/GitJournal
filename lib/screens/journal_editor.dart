@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gitjournal/note.dart';
+import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/widgets/journal_editor_header.dart';
 import 'package:gitjournal/storage/serializers.dart';
