@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 
 import 'package:gitjournal/note_folder.dart';
 
-typedef void ParentSelectChanged(bool isSelected);
+typedef void FolderSelectedCallback(NoteFolder folder);
 
 class FolderTreeView extends StatelessWidget {
   final NoteFolder rootFolder;
+  final FolderSelectedCallback onFolderSelected;
 
-  FolderTreeView(this.rootFolder);
+  FolderTreeView({
+    @required this.rootFolder,
+    @required this.onFolderSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +19,7 @@ class FolderTreeView extends StatelessWidget {
     rootFolder.entities.forEach((entity) {
       if (entity.isNote) return;
 
-      folderTiles.add(FolderTile(entity.folder));
+      folderTiles.add(FolderTile(entity.folder, onFolderSelected));
     });
 
     return ListView(
@@ -26,9 +30,9 @@ class FolderTreeView extends StatelessWidget {
 
 class FolderTile extends StatefulWidget {
   final NoteFolder folder;
-  //final ParentSelectChanged callback;
+  final FolderSelectedCallback onFolderSelected;
 
-  FolderTile(this.folder);
+  FolderTile(this.folder, this.onFolderSelected);
 
   @override
   FolderTileState createState() => FolderTileState();
@@ -50,7 +54,7 @@ class FolderTileState extends State<FolderTile> {
       children: <Widget>[
         GestureDetector(
           child: _buildFolderTile(),
-          onTap: expand,
+          onTap: () => widget.onFolderSelected(widget.folder),
         ),
         _getChild(),
       ],
@@ -77,14 +81,9 @@ class FolderTileState extends State<FolderTile> {
   }
 
   void expand() {
-    //if (widget.callback != null) widget.callback(_isExpanded);
     setState(() {
-      _isExpanded = _toggleBool(_isExpanded);
+      _isExpanded = !_isExpanded;
     });
-  }
-
-  bool _toggleBool(bool b) {
-    return b ? false : true;
   }
 
   Widget _getChild() {
@@ -93,7 +92,7 @@ class FolderTileState extends State<FolderTile> {
     var children = <FolderTile>[];
     widget.folder.entities.forEach((entity) {
       if (entity.isNote) return;
-      children.add(FolderTile(entity.folder));
+      children.add(FolderTile(entity.folder, widget.onFolderSelected));
     });
 
     return Container(
