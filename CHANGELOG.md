@@ -1,5 +1,7 @@
-## [1.20]
-* Show all notes from all subdirectories
+## [1.20] - 2019-12-04
+
+* We now have basic Folder support
+* Notes can be managed inside any Folder
 * Improve appearance in dark mode
 * Bug: Fix ssh key not being regenerated error
 
