@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:gitjournal/storage/serializers.dart';
 import 'package:gitjournal/utils/datetime.dart';
 
+import 'notes_folder.dart';
+
 enum NoteLoadState {
   None,
   Loading,
@@ -11,7 +13,9 @@ enum NoteLoadState {
 }
 
 class Note implements Comparable<Note> {
+  NotesFolder parent;
   String filePath = "";
+
   DateTime _created;
   NoteData _data = NoteData();
 
@@ -20,7 +24,7 @@ class Note implements Comparable<Note> {
   var _loadState = NoteLoadState.None;
   var _serializer = MarkdownYAMLSerializer();
 
-  Note([this.filePath]) {
+  Note(this.parent, [this.filePath]) {
     _created = _created ?? DateTime(0, 0, 0, 0, 0, 0, 0, 0);
   }
 

@@ -25,11 +25,11 @@ void main() {
       n1Path = p.join(tempDir.path, "1.md");
       n2Path = p.join(tempDir.path, "2.md");
 
-      var n1 = Note(n1Path);
+      var n1 = Note(null, n1Path);
       n1.body = "test";
       n1.created = dt;
 
-      var n2 = Note(n2Path);
+      var n2 = Note(null, n2Path);
       n2.data = NoteData("test2", props);
 
       notes = [n1, n2];
@@ -49,7 +49,7 @@ void main() {
 
       var loadedNotes = <Note>[];
       await Future.forEach(notes, (origNote) async {
-        var note = Note(origNote.filePath);
+        var note = Note(null, origNote.filePath);
         var r = await note.load();
         expect(r, NoteLoadState.Loaded);
 

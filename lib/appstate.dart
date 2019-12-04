@@ -1,6 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fimber/fimber.dart';
-import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 
 class AppState {
@@ -24,11 +23,10 @@ class AppState {
   String gitBaseDirectory = "";
 
   bool get hasJournalEntries {
-    return notes.isNotEmpty;
+    return notesFolder.hasNotes;
   }
 
-  List<Note> notes = [];
-  NotesFolder noteFolder;
+  NotesFolder notesFolder;
 
   AppState(SharedPreferences pref) {
     localGitRepoConfigured = pref.getBool("localGitRepoConfigured") ?? false;

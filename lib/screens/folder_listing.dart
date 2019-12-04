@@ -15,11 +15,11 @@ class FolderListingScreen extends StatelessWidget {
     final appState = container.appState;
 
     var treeView = FolderTreeView(
-      rootFolder: appState.noteFolder,
+      rootFolder: appState.notesFolder,
       onFolderSelected: (NotesFolder folder) {
         var route = MaterialPageRoute(
           builder: (context) => JournalListingScreen(
-            noteFolder: folder,
+            notesFolder: folder,
           ),
         );
         Navigator.of(context).push(route);

@@ -57,7 +57,7 @@ class StateContainerState extends State<StateContainer> {
         dirName: appState.localGitRepoPath,
       );
     }
-    appState.noteFolder = NotesFolder(noteRepo.notesBasePath);
+    appState.notesFolder = NotesFolder(null, noteRepo.notesBasePath);
 
     // Just a fail safe
     if (!appState.remoteGitRepoConfigured) {
@@ -79,25 +79,16 @@ class StateContainerState extends State<StateContainer> {
     }
   }
 
-  Future<List<Note>> _loadNotes() async {
-    await appState.noteFolder.loadRecursively();
-    var notes = appState.noteFolder.getAllNotes();
-    notes.sort((a, b) => b.compareTo(a));
-
-    return notes;
+  Future<void> _loadNotes() async {
+    await appState.notesFolder.loadRecursively();
   }
 
   void _loadNotesFromDisk() {
     Fimber.d("Loading Notes From Disk");
-    _loadNotes().then((loadedNotes) {
+    _loadNotes().then((void _) {
       setState(() {
-        appState.notes = loadedNotes;
-
         getAnalytics().logEvent(
           name: "notes_loaded",
-          parameters: <String, dynamic>{
-            'count': loadedNotes.length,
-          },
         );
       });
     }).catchError((err, stack) {
@@ -124,9 +115,9 @@ class StateContainerState extends State<StateContainer> {
     await noteRepo.sync();
 
     try {
-      var loadedNotes = await _loadNotes();
+      await _loadNotes();
       setState(() {
-        appState.notes = loadedNotes;
+        // TODO: Inform exactly what notes have changed?
       });
     } catch (err, stack) {
       setState(() {
@@ -159,8 +150,8 @@ class StateContainerState extends State<StateContainer> {
 
   void removeNote(Note note) {
     setState(() {
-      appState.notes.remove(note);
-      noteRepo.removeNote(note).then((NoteRepoResult _) async {
+      note.parent.remove(note);
+      noteRepo.removeNote(note.filePath).then((NoteRepoResult _) async {
         // FIXME: Is there a way of figuring this amount dynamically?
         // The '4 seconds' is taken from snack_bar.dart -> _kSnackBarDisplayDuration
         // We wait an aritfical amount of time, so that the user has a change to undo
@@ -173,7 +164,7 @@ class StateContainerState extends State<StateContainer> {
 
   void undoRemoveNote(Note note, int index) {
     setState(() {
-      appState.notes.insert(index, note);
+      note.parent.insert(index, note);
       noteRepo.resetLastCommit().then((NoteRepoResult _) {
         _syncNotes();
       });
@@ -181,12 +172,15 @@ class StateContainerState extends State<StateContainer> {
   }
 
   void insertNote(int index, Note note) {
-    Fimber.d("State Container insertNote");
+    Fimber.d("State Container insertNote " + index.toString());
     setState(() {
       if (note.filePath == null || note.filePath.isEmpty) {
-        note.filePath = p.join(noteRepo.notesBasePath, getFileName(note));
+        var parentPath = note.parent != null
+            ? note.parent.folderPath
+            : noteRepo.notesBasePath;
+        note.filePath = p.join(parentPath, getFileName(note));
       }
-      appState.notes.insert(index, note);
+      note.parent.insert(index, note);
       noteRepo.addNote(note).then((NoteRepoResult _) {
         _syncNotes();
       });
@@ -196,14 +190,7 @@ class StateContainerState extends State<StateContainer> {
   void updateNote(Note note) {
     Fimber.d("State Container updateNote");
     setState(() {
-      // Update that specific note
-      for (var i = 0; i < appState.notes.length; i++) {
-        var n = appState.notes[i];
-        if (n.filePath == note.filePath) {
-          appState.notes[i] = note;
-        }
-      }
-
+      // Update the git repo
       noteRepo.updateNote(note).then((NoteRepoResult _) {
         _syncNotes();
       });
@@ -225,7 +212,7 @@ class StateContainerState extends State<StateContainer> {
         baseDirectory: appState.gitBaseDirectory,
         dirName: appState.remoteGitRepoFolderName,
       );
-      appState.noteFolder = NotesFolder(noteRepo.notesBasePath);
+      appState.notesFolder = NotesFolder(null, noteRepo.notesBasePath);
 
       await _persistConfig();
       _loadNotesFromDisk();

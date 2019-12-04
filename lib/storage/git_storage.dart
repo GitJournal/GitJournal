@@ -50,9 +50,9 @@ class GitNoteRepository {
     return NoteRepoResult(noteFilePath: note.filePath, error: false);
   }
 
-  Future<NoteRepoResult> removeNote(Note note) async {
+  Future<NoteRepoResult> removeNote(String noteFilePath) async {
     var gitDir = p.join(baseDirectory, dirName);
-    var pathSpec = note.filePath.replaceFirst(gitDir, "").substring(1);
+    var pathSpec = noteFilePath.replaceFirst(gitDir, "").substring(1);
 
     // We are not calling note.remove() as gitRm will also remove the file
     await _gitRepo.rm(pathSpec);
@@ -60,7 +60,7 @@ class GitNoteRepository {
       message: "Removed Journal entry",
     );
 
-    return NoteRepoResult(noteFilePath: note.filePath, error: false);
+    return NoteRepoResult(noteFilePath: noteFilePath, error: false);
   }
 
   Future<NoteRepoResult> resetLastCommit() async {

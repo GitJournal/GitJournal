@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/widgets/journal_editor_header.dart';
 import 'package:gitjournal/storage/serializers.dart';
@@ -8,14 +9,15 @@ enum NoteEditorDropDownChoices { Discard, SwitchEditor }
 
 class JournalEditor extends StatefulWidget {
   final Note note;
+  final NotesFolder notesFolder;
 
-  JournalEditor() : note = null;
-  JournalEditor.fromNote(this.note);
+  JournalEditor.fromNote(this.note) : notesFolder = null;
+  JournalEditor.newNote(this.notesFolder) : note = null;
 
   @override
   JournalEditorState createState() {
     if (note == null) {
-      return JournalEditorState();
+      return JournalEditorState.newNote(notesFolder);
     } else {
       return JournalEditorState.fromNote(note);
     }
@@ -23,13 +25,14 @@ class JournalEditor extends StatefulWidget {
 }
 
 class JournalEditorState extends State<JournalEditor> {
-  Note note = Note();
+  Note note;
   final bool newNote;
   TextEditingController _textController = TextEditingController();
   bool rawEditor = false;
   final serializer = MarkdownYAMLSerializer();
 
-  JournalEditorState() : newNote = true {
+  JournalEditorState.newNote(NotesFolder folder) : newNote = true {
+    note = Note(folder);
     note.created = DateTime.now();
   }
 
