@@ -10,6 +10,7 @@ class HomeScreen extends StatelessWidget {
     final container = StateContainer.of(context);
     final appState = container.appState;
 
-    return JournalListingScreen(appState.notes);
+    return JournalListingScreen(noteFolder: appState.noteFolder);
+    // return FolderListingScreen();
   }
 }

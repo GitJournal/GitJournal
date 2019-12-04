@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gitjournal/note.dart';
+import 'package:gitjournal/note_folder.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/apis/git.dart';
 import 'package:gitjournal/screens/journal_editor.dart';
@@ -11,9 +12,10 @@ import 'package:gitjournal/widgets/journal_list.dart';
 import 'package:gitjournal/themes.dart';
 
 class JournalListingScreen extends StatelessWidget {
-  final List<Note> allNotes;
+  final NoteFolder noteFolder;
+  final bool recursive;
 
-  JournalListingScreen(this.allNotes);
+  JournalListingScreen({@required this.noteFolder, this.recursive = false});
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +26,8 @@ class JournalListingScreen extends StatelessWidget {
       onPressed: () => _newPost(context),
       child: Icon(Icons.add),
     );
+
+    var allNotes = recursive ? noteFolder.getAllNotes() : noteFolder.getNotes();
 
     Widget journalList = JournalList(
       notes: allNotes,
