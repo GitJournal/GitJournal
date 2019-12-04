@@ -8,54 +8,49 @@ import 'package:gitjournal/note_folder.dart';
 
 typedef void ParentSelectChanged(bool isSelected);
 
-class TreeView extends StatelessWidget {
-  final List<FolderTile> parentList;
+class FolderTreeView extends StatelessWidget {
+  final NoteFolder rootFolder;
 
-  TreeView({
-    this.parentList = const <FolderTile>[],
-  });
+  FolderTreeView(this.rootFolder);
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (context, index) {
-        return parentList[index];
-      },
-      itemCount: parentList.length,
+    var folderTiles = <FolderTile>[];
+    rootFolder.entities.forEach((entity) {
+      if (entity.isNote) return;
+
+      folderTiles.add(FolderTile(entity.folder));
+    });
+
+    return ListView(
+      children: folderTiles,
     );
   }
 }
 
 class FolderTile extends StatefulWidget {
   final NoteFolder folder;
-  final ChildList childList;
-  final MainAxisSize mainAxisSize;
-  final CrossAxisAlignment crossAxisAlignment;
-  final MainAxisAlignment mainAxisAlignment;
-  final ParentSelectChanged callback;
+  //final ParentSelectChanged callback;
 
-  FolderTile({
-    @required this.folder,
-    @required this.childList,
-    this.mainAxisAlignment = MainAxisAlignment.center,
-    this.crossAxisAlignment = CrossAxisAlignment.start,
-    this.mainAxisSize = MainAxisSize.min,
-    this.callback,
-  });
+  FolderTile(this.folder);
 
   @override
   FolderTileState createState() => FolderTileState();
 }
 
 class FolderTileState extends State<FolderTile> {
+  final MainAxisSize mainAxisSize = MainAxisSize.min;
+  final CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.start;
+  final MainAxisAlignment mainAxisAlignment = MainAxisAlignment.center;
+
   bool _isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: widget.mainAxisSize,
-      crossAxisAlignment: widget.crossAxisAlignment,
-      mainAxisAlignment: widget.mainAxisAlignment,
+      mainAxisSize: mainAxisSize,
+      crossAxisAlignment: crossAxisAlignment,
+      mainAxisAlignment: mainAxisAlignment,
       children: <Widget>[
         GestureDetector(
           child: _buildFolderTile(),
@@ -86,7 +81,7 @@ class FolderTileState extends State<FolderTile> {
   }
 
   void expand() {
-    if (widget.callback != null) widget.callback(_isExpanded);
+    //if (widget.callback != null) widget.callback(_isExpanded);
     setState(() {
       _isExpanded = _toggleBool(_isExpanded);
     });
@@ -99,37 +94,20 @@ class FolderTileState extends State<FolderTile> {
   Widget _getChild() {
     if (!_isExpanded) return Container();
 
+    var children = <FolderTile>[];
+    widget.folder.entities.forEach((entity) {
+      if (entity.isNote) return;
+      children.add(FolderTile(entity.folder));
+    });
+
     return Container(
       margin: const EdgeInsets.only(left: 16.0),
-      child: widget.childList,
-    );
-  }
-}
-
-/// # ChildList widget
-///
-/// The [ChildList] widget holds a [List] of widget which will be displayed as
-/// children of the [FolderTile] widget
-class ChildList extends StatelessWidget {
-  final List<Widget> children;
-  final MainAxisAlignment mainAxisAlignment;
-  final CrossAxisAlignment crossAxisAlignment;
-  final MainAxisSize mainAxisSize;
-
-  ChildList({
-    this.children = const <Widget>[],
-    this.mainAxisSize = MainAxisSize.min,
-    this.crossAxisAlignment = CrossAxisAlignment.start,
-    this.mainAxisAlignment = MainAxisAlignment.center,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: mainAxisAlignment,
-      crossAxisAlignment: crossAxisAlignment,
-      mainAxisSize: mainAxisSize,
-      children: children,
+      child: Column(
+        mainAxisAlignment: mainAxisAlignment,
+        crossAxisAlignment: crossAxisAlignment,
+        mainAxisSize: mainAxisSize,
+        children: children,
+      ),
     );
   }
 }
@@ -140,9 +118,7 @@ class FolderListingScreen extends StatelessWidget {
     final container = StateContainer.of(context);
     final appState = container.appState;
 
-    var treeView = TreeView(
-      parentList: _constructParentList(appState.noteFolder.entities),
-    );
+    var treeView = FolderTreeView(appState.noteFolder);
 
     return Scaffold(
       appBar: AppBar(
@@ -152,42 +128,5 @@ class FolderListingScreen extends StatelessWidget {
       body: treeView,
       drawer: AppDrawer(),
     );
-  }
-
-  List<FolderTile> _constructParentList(List<NoteFSEntity> entities) {
-    var parents = <FolderTile>[];
-    entities.forEach((entity) {
-      if (entity.isNote) {
-        return;
-      }
-
-      var folder = entity.folder;
-      var p = FolderTile(
-        folder: folder,
-        childList: _constructChildList(folder.entities),
-      );
-
-      parents.add(p);
-    });
-    return parents;
-  }
-
-  ChildList _constructChildList(List<NoteFSEntity> entities) {
-    var children = <Widget>[];
-    entities.forEach((entity) {
-      if (entity.isNote) {
-        return;
-      }
-
-      var folder = entity.folder;
-      var p = FolderTile(
-        folder: folder,
-        childList: _constructChildList(folder.entities),
-      );
-
-      children.add(p);
-    });
-
-    return ChildList(children: children);
   }
 }
