@@ -36,7 +36,7 @@ class AppDrawer extends StatelessWidget {
       );
     }
 
-    var divider = Row(children: <Widget>[Expanded(child: Divider())]);
+    var divider = Row(children: <Widget>[const Expanded(child: Divider())]);
 
     return Drawer(
       child: ListView(
