@@ -67,8 +67,8 @@ class AppDrawer extends StatelessWidget {
               if (m.settings.name == "/") {
                 Navigator.pop(context);
               } else {
-                Navigator.pop(context);
-                Navigator.pushReplacementNamed(context, '/');
+                Navigator.popUntil(
+                    context, (route) => route.settings.name == '/');
               }
             },
           ),
