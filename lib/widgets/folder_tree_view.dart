@@ -70,11 +70,13 @@ class FolderTileState extends State<FolderTile> {
     if (folder.parent == null) {
       folderName = "Notes";
     }
+    var subtitle = folder.numberOfNotes.toString() + " Notes";
 
     return Card(
       child: ListTile(
         leading: Icon(Icons.folder),
         title: Text(folderName),
+        subtitle: Text(subtitle),
         trailing: trailling,
       ),
     );

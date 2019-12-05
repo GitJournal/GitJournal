@@ -29,6 +29,14 @@ class NotesFolder {
     return entities.firstWhere((e) => e.isNote, orElse: () => null) != null;
   }
 
+  int get numberOfNotes {
+    int i = 0;
+    entities.forEach((e) {
+      if (e.isNote) i++;
+    });
+    return i;
+  }
+
   // Recurisvely gets all Notes within this folder
   List<Note> getAllNotes() {
     var notes = <Note>[];
