@@ -38,7 +38,7 @@ class FolderTileState extends State<FolderTile> {
   final CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.start;
   final MainAxisAlignment mainAxisAlignment = MainAxisAlignment.center;
 
-  bool _isExpanded = false;
+  bool _isExpanded = true;
 
   @override
   Widget build(BuildContext context) {
