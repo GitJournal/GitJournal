@@ -58,7 +58,7 @@ class JournalEditorState extends State<JournalEditor> {
       editor = NoteMarkdownEditor(_textController, true);
     }
 
-    var title = newNote ? "Journal Entry" : "Edit Journal Entry";
+    var title = newNote ? "New Note" : "Edit Note";
     var newJournalScreen = Scaffold(
       appBar: AppBar(
         title: Text(title),
