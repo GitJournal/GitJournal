@@ -45,9 +45,11 @@ class JournalListingScreen extends StatelessWidget {
       emptyText: "Why not add your first\n Journal Entry?",
     );
 
+    var title = notesFolder.parent == null ? "Notes" : notesFolder.name;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('GitJournal'),
+        title: Text(title),
         leading: GJAppBarMenuButton(),
         actions: <Widget>[
           IconButton(
