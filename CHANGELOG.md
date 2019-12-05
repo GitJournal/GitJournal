@@ -1,3 +1,9 @@
+## [1.21] - 2019-12-06
+
+* Polish Folder support
+  - Allow new folders to be created
+* Make everything look a bit prettier
+
 ## [1.20] - 2019-12-04
 
 * We now have basic Folder support
