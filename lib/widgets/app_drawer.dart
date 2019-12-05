@@ -59,9 +59,10 @@ class AppDrawer extends StatelessWidget {
             ),
           ),
           if (setupGitButton != null) ...[setupGitButton, divider],
-          ListTile(
-            leading: Icon(Icons.note, color: textStyle.color),
-            title: Text('Notes', style: textStyle),
+          _buildDrawerTile(
+            context,
+            icon: Icons.note,
+            title: "Notes",
             onTap: () {
               var m = ModalRoute.of(context);
               if (m.settings.name == "/") {
@@ -72,9 +73,10 @@ class AppDrawer extends StatelessWidget {
               }
             },
           ),
-          ListTile(
-            leading: Icon(Icons.folder, color: textStyle.color),
-            title: Text('Folders', style: textStyle),
+          _buildDrawerTile(
+            context,
+            icon: Icons.folder,
+            title: "Folders",
             onTap: () {
               var m = ModalRoute.of(context);
               if (m.settings.name == "/folders") {
@@ -85,9 +87,10 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           divider,
-          ListTile(
-            leading: Icon(Icons.share, color: textStyle.color),
-            title: Text('Share App', style: textStyle),
+          _buildDrawerTile(
+            context,
+            icon: Icons.share,
+            title: 'Share App',
             onTap: () {
               Navigator.pop(context);
               Share.share('Checkout GitJournal https://gitjournal.io/');
@@ -97,9 +100,10 @@ class AppDrawer extends StatelessWidget {
               );
             },
           ),
-          ListTile(
-            leading: Icon(Icons.feedback, color: textStyle.color),
-            title: Text('Rate Us', style: textStyle),
+          _buildDrawerTile(
+            context,
+            icon: Icons.feedback,
+            title: 'Rate Us',
             onTap: () {
               LaunchReview.launch(
                 androidAppId: "io.gitjournal.gitjournal",
@@ -112,9 +116,10 @@ class AppDrawer extends StatelessWidget {
               );
             },
           ),
-          ListTile(
-            leading: Icon(Icons.rate_review, color: textStyle.color),
-            title: Text('Feedback', style: textStyle),
+          _buildDrawerTile(
+            context,
+            icon: Icons.rate_review,
+            title: 'Feedback',
             onTap: () async {
               var versionText = await getVersionString();
 
@@ -137,9 +142,10 @@ class AppDrawer extends StatelessWidget {
               );
             },
           ),
-          ListTile(
-            leading: Icon(Icons.bug_report, color: textStyle.color),
-            title: Text('Bug Report', style: textStyle),
+          _buildDrawerTile(
+            context,
+            icon: Icons.bug_report,
+            title: 'Bug Report',
             onTap: () async {
               var platform = Platform.operatingSystem;
               var versionText = await getVersionString();
@@ -162,9 +168,10 @@ class AppDrawer extends StatelessWidget {
               );
             },
           ),
-          ListTile(
-            leading: Icon(Icons.settings, color: textStyle.color),
-            title: Text('Settings', style: textStyle),
+          _buildDrawerTile(
+            context,
+            icon: Icons.settings,
+            title: 'Settings',
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, "/settings");
@@ -176,6 +183,21 @@ class AppDrawer extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  ListTile _buildDrawerTile(
+    BuildContext context, {
+    @required IconData icon,
+    @required String title,
+    @required Function onTap,
+  }) {
+    var textStyle = Theme.of(context).textTheme.body2;
+
+    return ListTile(
+      leading: Icon(icon, color: textStyle.color),
+      title: Text(title, style: textStyle),
+      onTap: onTap,
     );
   }
 }
