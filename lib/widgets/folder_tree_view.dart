@@ -15,15 +15,10 @@ class FolderTreeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var folderTiles = <FolderTile>[];
-    rootFolder.entities.forEach((entity) {
-      if (entity.isNote) return;
-
-      folderTiles.add(FolderTile(entity.folder, onFolderSelected));
-    });
-
     return ListView(
-      children: folderTiles,
+      children: <Widget>[
+        FolderTile(rootFolder, onFolderSelected),
+      ],
     );
   }
 }
@@ -71,10 +66,15 @@ class FolderTileState extends State<FolderTile> {
           )
         : null;
 
+    var folderName = folder.name;
+    if (folder.parent == null) {
+      folderName = "Notes";
+    }
+
     return Card(
       child: ListTile(
         leading: Icon(Icons.folder),
-        title: Text(folder.name),
+        title: Text(folderName),
         trailing: trailling,
       ),
     );
