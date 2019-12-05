@@ -144,6 +144,22 @@ class StateContainerState extends State<StateContainer> {
     });
   }
 
+  void createFolder(NotesFolder parent, String folderName) async {
+    var newFolderPath = p.join(parent.folderPath, folderName);
+    var newFolder = NotesFolder(parent, newFolderPath);
+    newFolder.create();
+
+    Fimber.d("Created New Folder: " + newFolderPath);
+    parent.addFolder(newFolder);
+
+    setState(() {
+      // Update the git repo
+      noteRepo.addFolder(newFolder).then((NoteRepoResult _) {
+        _syncNotes();
+      });
+    });
+  }
+
   void addNote(Note note) {
     insertNote(0, note);
   }

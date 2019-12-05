@@ -4,6 +4,7 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gitjournal/apis/git.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:path/path.dart' as p;
 
@@ -48,6 +49,15 @@ class GitNoteRepository {
     );
 
     return NoteRepoResult(noteFilePath: note.filePath, error: false);
+  }
+
+  Future<NoteRepoResult> addFolder(NotesFolder folder) async {
+    await _gitRepo.add(".");
+    await _gitRepo.commit(
+      message: "Created new folder",
+    );
+
+    return NoteRepoResult(noteFilePath: folder.folderPath, error: false);
   }
 
   Future<NoteRepoResult> removeNote(String noteFilePath) async {

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 
 import 'note.dart';
@@ -106,5 +107,20 @@ class NotesFolder {
     assert(i != -1);
 
     entities.removeAt(i);
+  }
+
+  void create() {
+    // Git doesn't track Directories, only files, so we create an empty .gitignore file
+    // in the directory instead.
+    var gitIgnoreFilePath = p.join(folderPath, ".gitignore");
+    var file = File(gitIgnoreFilePath);
+    if (!file.existsSync()) {
+      file.createSync(recursive: true);
+    }
+  }
+
+  void addFolder(NotesFolder folder) {
+    assert(folder.parent == this);
+    entities.add(NoteFSEntity(folder: folder));
   }
 }
