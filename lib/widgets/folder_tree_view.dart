@@ -78,7 +78,11 @@ class FolderTileState extends State<FolderTile> {
           width: 48,
           height: 48,
           alignment: Alignment.center,
-          child: Icon(Icons.folder, size: 36),
+          child: Icon(
+            Icons.folder,
+            size: 36,
+            color: Theme.of(context).accentColor,
+          ),
         ),
         title: Text(folderName),
         subtitle: Text(subtitle),
