@@ -12,7 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Widget setupGitButton = Container();
+    Widget setupGitButton;
     var appState = StateContainer.of(context).appState;
 
     var textStyle = Theme.of(context).textTheme.body2;
@@ -36,6 +36,8 @@ class AppDrawer extends StatelessWidget {
       );
     }
 
+    var divider = Row(children: <Widget>[Expanded(child: Divider())]);
+
     return Drawer(
       child: ListView(
         // Important: Remove any padding from the ListView.
@@ -56,7 +58,7 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
           ),
-          setupGitButton,
+          if (setupGitButton != null) ...[setupGitButton, divider],
           ListTile(
             leading: Icon(Icons.note, color: textStyle.color),
             title: Text('Notes', style: textStyle),
@@ -82,6 +84,7 @@ class AppDrawer extends StatelessWidget {
               }
             },
           ),
+          divider,
           ListTile(
             leading: Icon(Icons.share, color: textStyle.color),
             title: Text('Share App', style: textStyle),
