@@ -1,6 +1,6 @@
 <p align="center">
   <img width="400" height="auto" src="https://gitjournal.io/images/logo.png">
-  <br/>A Journaling app built on top of <b>Git</b> for <b>Developers</b>
+  <br/>Store your Markdown Notes in any Git Repo</b>
 </p>
 
 <p align="center">
