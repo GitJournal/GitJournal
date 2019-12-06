@@ -51,7 +51,16 @@ class JournalList extends StatelessWidget {
         var note = notes[i];
         return IconDismissable(
           key: ValueKey("JournalList_" + note.filePath),
-          child: _buildRow(context, note, i),
+          child: Hero(
+            tag: note.filePath,
+            child: _buildRow(context, note, i),
+            flightShuttleBuilder: (BuildContext flightContext,
+                    Animation<double> animation,
+                    HeroFlightDirection flightDirection,
+                    BuildContext fromHeroContext,
+                    BuildContext toHeroContext) =>
+                Material(child: toHeroContext.widget),
+          ),
           backgroundColor: Colors.red[800],
           iconData: Icons.delete,
           onDismissed: (direction) {

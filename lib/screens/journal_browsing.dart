@@ -150,7 +150,7 @@ class NoteViewer extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
     );
 
-    return view;
+    return Hero(tag: note.filePath, child: view);
   }
 
   /*
