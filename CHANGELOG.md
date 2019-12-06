@@ -1,3 +1,8 @@
+## [1.21] - 2019-12-07
+
+* Improve animations while nagivating
+* Allow folders to be renamed
+
 ## [1.21] - 2019-12-06
 
 * Polish Folder support
