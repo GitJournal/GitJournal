@@ -14,16 +14,14 @@
 
 # Summary
 
-GitJournal is a journaling app built with privacy and openness in mind. It stores all its notes in a standardized Markdown + YAML header format. The notes are stored in a Git Repo of your choice - GitHub / Gitlab / Custom-provider.
+GitJournal is a note taking app focused on privacy and data portability. It stores all its notes in a standardized Markdown + YAML header format. The notes are stored in a Git Repo of your choice - GitHub / Gitlab / Custom-provider. This means you can easily self host or host your notes in one of the many [Git providers](./docs/git_hosts.md).
 
 Features -
 
-- Private by design
+- Can be used with any Git Repository
+- Allows categorizing Notes based on Folders
 - No Account Required
 - Open source
-- Can easily be extended and integrated with other git tools
-- Git log clearly shows a history of changes
-- Built for developers
 
 # Screenshots
 
@@ -44,7 +42,9 @@ Features -
 
 # Contributing
 
-Development is tracked over [here](https://github.com/orgs/GitJournal/projects/1). Please feel free to open an issue for any bug or feature request. Additionally, you can vote on existing [Issues](https://github.com/GitJournal/GitJournal/issues?q=is%3Aissue+is%3Aopen+sort%3Areactions-%2B1-desc) by reacting with a '👍'.
+Development is tracked over [here](https://github.com/orgs/GitJournal/projects/1).
+
+Please feel free to [open an issue](https://github.com/GitJournal/GitJournal/issues/new) for any bug or feature request. Additionally, you can vote on existing [Issues](https://github.com/GitJournal/GitJournal/issues?q=is%3Aissue+is%3Aopen+sort%3Areactions-%2B1-desc) by reacting with a '👍'.
 
 # License
 
