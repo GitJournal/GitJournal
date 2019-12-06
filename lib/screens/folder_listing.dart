@@ -48,8 +48,8 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
       action = PopupMenuButton(
         itemBuilder: (context) {
           return [
-            PopupMenuItem<String>(
-              child: const Text("Rename Folder"),
+            const PopupMenuItem<String>(
+              child: Text("Rename Folder"),
               value: "Rename Folder",
             )
           ];
