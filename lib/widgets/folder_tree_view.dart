@@ -4,30 +4,71 @@ import 'package:gitjournal/core/notes_folder.dart';
 
 typedef void FolderSelectedCallback(NotesFolder folder);
 
-class FolderTreeView extends StatelessWidget {
+class FolderTreeView extends StatefulWidget {
   final NotesFolder rootFolder;
+
   final FolderSelectedCallback onFolderSelected;
+  final Function onFolderUnselected;
+  final FolderSelectedCallback onFolderEntered;
 
   FolderTreeView({
     @required this.rootFolder,
     @required this.onFolderSelected,
+    @required this.onFolderUnselected,
+    @required this.onFolderEntered,
   });
 
   @override
+  _FolderTreeViewState createState() => _FolderTreeViewState();
+}
+
+class _FolderTreeViewState extends State<FolderTreeView> {
+  bool inSelectionMode = false;
+  NotesFolder selectedFolder;
+
+  @override
   Widget build(BuildContext context) {
+    var tile = FolderTile(
+      folder: widget.rootFolder,
+      onTap: (NotesFolder folder) {
+        if (!inSelectionMode) {
+          widget.onFolderEntered(folder);
+        } else {
+          setState(() {
+            inSelectionMode = false;
+            selectedFolder = null;
+          });
+          widget.onFolderUnselected();
+        }
+      },
+      onLongPress: (folder) {
+        setState(() {
+          inSelectionMode = true;
+          selectedFolder = folder;
+        });
+        widget.onFolderSelected(folder);
+      },
+      selectedFolder: selectedFolder,
+    );
+
     return ListView(
-      children: <Widget>[
-        FolderTile(rootFolder, onFolderSelected),
-      ],
+      children: <Widget>[tile],
     );
   }
 }
 
 class FolderTile extends StatefulWidget {
   final NotesFolder folder;
-  final FolderSelectedCallback onFolderSelected;
+  final FolderSelectedCallback onTap;
+  final FolderSelectedCallback onLongPress;
+  final NotesFolder selectedFolder;
 
-  FolderTile(this.folder, this.onFolderSelected);
+  FolderTile({
+    @required this.folder,
+    @required this.onTap,
+    @required this.onLongPress,
+    @required this.selectedFolder,
+  });
 
   @override
   FolderTileState createState() => FolderTileState();
@@ -49,7 +90,8 @@ class FolderTileState extends State<FolderTile> {
       children: <Widget>[
         GestureDetector(
           child: _buildFolderTile(),
-          onTap: () => widget.onFolderSelected(widget.folder),
+          onTap: () => widget.onTap(widget.folder),
+          onLongPress: () => widget.onLongPress(widget.folder),
         ),
         _getChild(),
       ],
@@ -72,6 +114,9 @@ class FolderTileState extends State<FolderTile> {
     }
     var subtitle = folder.numberOfNotes.toString() + " Notes";
 
+    final theme = Theme.of(context);
+
+    var selected = widget.selectedFolder == widget.folder;
     return Card(
       child: ListTile(
         leading: Container(
@@ -87,7 +132,9 @@ class FolderTileState extends State<FolderTile> {
         title: Text(folderName),
         subtitle: Text(subtitle),
         trailing: trailling,
+        selected: selected,
       ),
+      color: selected ? theme.selectedRowColor : theme.cardColor,
     );
   }
 
@@ -102,7 +149,12 @@ class FolderTileState extends State<FolderTile> {
 
     var children = <FolderTile>[];
     widget.folder.getFolders().forEach((folder) {
-      children.add(FolderTile(folder, widget.onFolderSelected));
+      children.add(FolderTile(
+        folder: folder,
+        onTap: widget.onTap,
+        onLongPress: widget.onLongPress,
+        selectedFolder: widget.selectedFolder,
+      ));
     });
 
     return Container(

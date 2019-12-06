@@ -160,6 +160,21 @@ class StateContainerState extends State<StateContainer> {
     });
   }
 
+  void renameFolder(NotesFolder folder, String newFolderName) async {
+    var oldFolderPath = folder.folderPath;
+
+    setState(() {
+      folder.rename(newFolderName);
+
+      // Update the git repo
+      noteRepo
+          .renameFolder(oldFolderPath, folder.folderPath)
+          .then((NoteRepoResult _) {
+        _syncNotes();
+      });
+    });
+  }
+
   void addNote(Note note) {
     insertNote(0, note);
   }
