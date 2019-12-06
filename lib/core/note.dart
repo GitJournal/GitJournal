@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:gitjournal/storage/serializers.dart';
 import 'package:gitjournal/utils/datetime.dart';
 
@@ -12,7 +13,7 @@ enum NoteLoadState {
   NotExists,
 }
 
-class Note implements Comparable<Note> {
+class Note with ChangeNotifier implements Comparable<Note> {
   NotesFolder parent;
   String filePath = "";
 
@@ -40,6 +41,7 @@ class Note implements Comparable<Note> {
     } else {
       _data.props.remove('created');
     }
+    notifyListeners();
   }
 
   String get body {
@@ -48,6 +50,7 @@ class Note implements Comparable<Note> {
 
   set body(String newBody) {
     data.body = newBody;
+    notifyListeners();
   }
 
   NoteData get data {
@@ -77,6 +80,7 @@ class Note implements Comparable<Note> {
     }
 
     _created ??= DateTime(0, 0, 0, 0, 0, 0, 0, 0);
+    notifyListeners();
   }
 
   bool hasValidDate() {
@@ -103,6 +107,7 @@ class Note implements Comparable<Note> {
 
     if (!file.existsSync()) {
       _loadState = NoteLoadState.NotExists;
+      notifyListeners();
       return _loadState;
     }
 
@@ -112,6 +117,7 @@ class Note implements Comparable<Note> {
     _fileLastModified = file.lastModifiedSync();
     _loadState = NoteLoadState.Loaded;
 
+    notifyListeners();
     return _loadState;
   }
 

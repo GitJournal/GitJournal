@@ -1,20 +1,21 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 
 import 'note.dart';
 import 'note_fs_entity.dart';
 
-class NotesFolder {
+class NotesFolder with ChangeNotifier {
   NotesFolder parent;
-  List<NoteFSEntity> entities = [];
+  List<NoteFSEntity> _entities = [];
   String folderPath;
 
   NotesFolder(this.parent, this.folderPath);
 
   bool get isEmpty {
-    return entities.isEmpty;
+    return _entities.isEmpty;
   }
 
   String get name {
@@ -22,16 +23,16 @@ class NotesFolder {
   }
 
   bool get hasSubFolders {
-    return entities.firstWhere((e) => e.isFolder, orElse: () => null) != null;
+    return _entities.firstWhere((e) => e.isFolder, orElse: () => null) != null;
   }
 
   bool get hasNotes {
-    return entities.firstWhere((e) => e.isNote, orElse: () => null) != null;
+    return _entities.firstWhere((e) => e.isNote, orElse: () => null) != null;
   }
 
   int get numberOfNotes {
     int i = 0;
-    entities.forEach((e) {
+    _entities.forEach((e) {
       if (e.isNote) i++;
     });
     return i;
@@ -41,7 +42,7 @@ class NotesFolder {
   List<Note> getAllNotes() {
     var notes = <Note>[];
 
-    for (var entity in entities) {
+    for (var entity in _entities) {
       if (entity.isNote) {
         notes.add(entity.note);
       } else {
@@ -52,15 +53,19 @@ class NotesFolder {
   }
 
   List<Note> getNotes() {
-    return entities.where((e) => e.isNote).map((e) => e.note).toList();
+    return _entities.where((e) => e.isNote).map((e) => e.note).toList();
   }
 
-  // FIXME: This asynchronously loads everything. Maybe it should just list them, and the individual entities
+  List<NotesFolder> getFolders() {
+    return _entities.where((e) => e.isFolder).map((e) => e.folder).toList();
+  }
+
+  // FIXME: This asynchronously loads everything. Maybe it should just list them, and the individual _entities
   //        should be loaded as required?
   // FIXME: This should not reconstruct the Notes or NotesFolders once constructed.
   Future<void> loadRecursively() async {
     final dir = Directory(folderPath);
-    entities = [];
+    _entities = [];
 
     var lister = dir.list(recursive: false, followLinks: false);
     await for (var fsEntity in lister) {
@@ -72,7 +77,7 @@ class NotesFolder {
         await subFolder.loadRecursively();
 
         var noteFSEntity = NoteFSEntity(folder: subFolder);
-        entities.add(noteFSEntity);
+        _entities.add(noteFSEntity);
       }
 
       var note = Note(this, fsEntity.path);
@@ -82,24 +87,29 @@ class NotesFolder {
       await note.load();
 
       var noteFSEntity = NoteFSEntity(note: note);
-      entities.add(noteFSEntity);
+      _entities.add(noteFSEntity);
     }
+
+    notifyListeners();
   }
 
   void add(Note note) {
     assert(note.parent == this);
-    entities.add(NoteFSEntity(note: note));
+    _entities.add(NoteFSEntity(note: note));
+
+    notifyListeners();
   }
 
   void insert(int index, Note note) {
     assert(note.parent == this);
 
-    for (var i = 0; i < entities.length; i++) {
-      var e = entities[i];
+    for (var i = 0; i < _entities.length; i++) {
+      var e = _entities[i];
       if (e is NotesFolder) continue;
 
       if (index == 0) {
-        entities.insert(i, NoteFSEntity(note: note));
+        _entities.insert(i, NoteFSEntity(note: note));
+        notifyListeners();
         return;
       }
       index--;
@@ -108,13 +118,14 @@ class NotesFolder {
 
   void remove(Note note) {
     assert(note.parent == this);
-    var i = entities.indexWhere((e) {
+    var i = _entities.indexWhere((e) {
       if (e.isFolder) return false;
       return e.note.filePath == note.filePath;
     });
     assert(i != -1);
 
-    entities.removeAt(i);
+    _entities.removeAt(i);
+    notifyListeners();
   }
 
   void create() {
@@ -129,6 +140,8 @@ class NotesFolder {
 
   void addFolder(NotesFolder folder) {
     assert(folder.parent == this);
-    entities.add(NoteFSEntity(folder: folder));
+    _entities.add(NoteFSEntity(folder: folder));
+
+    notifyListeners();
   }
 }

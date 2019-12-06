@@ -101,9 +101,8 @@ class FolderTileState extends State<FolderTile> {
     if (!_isExpanded) return Container();
 
     var children = <FolderTile>[];
-    widget.folder.entities.forEach((entity) {
-      if (entity.isNote) return;
-      children.add(FolderTile(entity.folder, widget.onFolderSelected));
+    widget.folder.getFolders().forEach((folder) {
+      children.add(FolderTile(folder, widget.onFolderSelected));
     });
 
     return Container(
