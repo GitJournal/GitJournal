@@ -17,8 +17,8 @@ class AppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget setupGitButton;
     var appState = StateContainer.of(context).appState;
-
     var textStyle = Theme.of(context).textTheme.body2;
+    var currentRoute = ModalRoute.of(context).settings.name;
 
     if (!appState.remoteGitRepoConfigured) {
       setupGitButton = ListTile(
@@ -75,6 +75,7 @@ class AppDrawer extends StatelessWidget {
                     context, (route) => route.settings.name == '/');
               }
             },
+            selected: currentRoute == '/',
           ),
           _buildDrawerTile(
             context,
@@ -97,6 +98,7 @@ class AppDrawer extends StatelessWidget {
                 );
               }
             },
+            selected: currentRoute == null,
           ),
           divider,
           _buildDrawerTile(
@@ -198,18 +200,30 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-  ListTile _buildDrawerTile(
+  Widget _buildDrawerTile(
     BuildContext context, {
     @required IconData icon,
     @required String title,
     @required Function onTap,
+    bool selected = false,
   }) {
-    var textStyle = Theme.of(context).textTheme.body2;
+    selected = false; // Disable this as it looks very ugly in dark mode
 
-    return ListTile(
+    var theme = Theme.of(context);
+    var listTileTheme = ListTileTheme.of(context);
+    var textStyle = theme.textTheme.body2.copyWith(
+      color: selected ? theme.accentColor : listTileTheme.textColor,
+    );
+
+    var tile = ListTile(
       leading: Icon(icon, color: textStyle.color),
       title: Text(title, style: textStyle),
       onTap: onTap,
+      selected: selected,
+    );
+    return Container(
+      child: tile,
+      color: selected ? theme.selectedRowColor : theme.scaffoldBackgroundColor,
     );
   }
 }
