@@ -39,9 +39,7 @@ class JournalList extends StatelessWidget {
 
     return ListView.separated(
       separatorBuilder: (context, index) {
-        return Divider(
-          color: Theme.of(context).primaryColorLight,
-        );
+        return const Divider();
       },
       itemBuilder: (context, i) {
         if (i >= notes.length) {
