@@ -16,7 +16,6 @@ import 'package:gitjournal/themes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 
-import 'screens/folder_listing.dart';
 import 'screens/githostsetup_screens.dart';
 import 'screens/home_screen.dart';
 import 'screens/onboarding_screens.dart';
@@ -121,7 +120,6 @@ class JournalApp extends StatelessWidget {
       initialRoute: initialRoute,
       routes: {
         '/': (context) => HomeScreen(),
-        '/folders': (context) => FolderListingScreen(),
         '/settings': (context) => SettingsScreen(),
         '/setupRemoteGit': (context) =>
             GitHostSetupScreen(stateContainer.completeGitHostSetup),

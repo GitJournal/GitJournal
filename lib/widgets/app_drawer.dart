@@ -2,12 +2,15 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:gitjournal/analytics.dart';
-import 'package:gitjournal/state_container.dart';
-import 'package:gitjournal/utils.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:page_transition/page_transition.dart';
+
+import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/state_container.dart';
+import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/screens/folder_listing.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -87,7 +90,14 @@ class AppDrawer extends StatelessWidget {
               if (m.settings.name == "/folders") {
                 Navigator.pop(context);
               } else {
-                Navigator.popAndPushNamed(context, "/folders");
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    type: PageTransitionType.fade,
+                    child: FolderListingScreen(),
+                  ),
+                );
               }
             },
           ),
