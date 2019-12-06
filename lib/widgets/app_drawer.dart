@@ -82,7 +82,9 @@ class AppDrawer extends StatelessWidget {
             title: "Folders",
             onTap: () {
               var m = ModalRoute.of(context);
-              if (m.settings.name == "/folders") {
+              // FIXME: This is a terrible hack, I should figure out how to make
+              //        transitions work with named routes
+              if (m.settings.name == null) {
                 Navigator.pop(context);
               } else {
                 Navigator.pop(context);
