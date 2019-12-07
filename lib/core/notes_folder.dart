@@ -148,9 +148,9 @@ class NotesFolder with ChangeNotifier {
   void rename(String newName) {
     var dir = Directory(folderPath);
     var parentDirName = dirname(folderPath);
-    var newFullPath = p.join(parentDirName, newName);
+    folderPath = p.join(parentDirName, newName);
+    dir.renameSync(folderPath);
 
-    dir.renameSync(newFullPath);
     notifyListeners();
   }
 }
