@@ -151,5 +151,6 @@ class NotesFolder with ChangeNotifier {
     var newFullPath = p.join(parentDirName, newName);
 
     dir.renameSync(newFullPath);
+    notifyListeners();
   }
 }
