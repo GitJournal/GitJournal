@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
@@ -18,11 +19,10 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final container = StateContainer.of(context);
-    final appState = container.appState;
+    final notesFolder = Provider.of<NotesFolder>(context);
 
     var treeView = FolderTreeView(
-      rootFolder: appState.notesFolder,
+      rootFolder: notesFolder,
       onFolderEntered: (NotesFolder folder) {
         var route = MaterialPageRoute(
           builder: (context) => JournalListingScreen(
@@ -99,9 +99,9 @@ class _CreateFolderButtonState extends State<CreateFolderButton> {
             await showDialog(context: context, builder: _buildAlert);
         if (folderName is String) {
           final container = StateContainer.of(context);
-          final appState = container.appState;
+          final notesFolder = Provider.of<NotesFolder>(context);
 
-          container.createFolder(appState.notesFolder, folderName);
+          container.createFolder(notesFolder, folderName);
         }
       },
       child: Icon(Icons.add),

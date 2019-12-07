@@ -5,6 +5,7 @@ import 'package:fimber/fimber.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:gitjournal/apis/git.dart';
 import 'package:gitjournal/settings.dart';
@@ -46,7 +47,10 @@ class JournalApp extends StatelessWidget {
 
     runApp(StateContainer(
       appState: appState,
-      child: JournalApp(),
+      child: ChangeNotifierProvider(
+        child: JournalApp(),
+        create: (_) => appState.notesFolder,
+      ),
     ));
   }
 
