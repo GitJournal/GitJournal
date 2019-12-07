@@ -14,6 +14,22 @@ class NotesFolder with ChangeNotifier {
 
   NotesFolder(this.parent, this.folderPath);
 
+  @override
+  void dispose() {
+    _entities.forEach((e) {
+      if (e.isFolder) {
+        e.folder.removeListener(_entityChanged);
+      } else {
+        e.note.removeListener(_entityChanged);
+      }
+    });
+    super.dispose();
+  }
+
+  void _entityChanged() {
+    notifyListeners();
+  }
+
   bool get isEmpty {
     return _entities.isEmpty;
   }
@@ -65,6 +81,13 @@ class NotesFolder with ChangeNotifier {
   // FIXME: This should not reconstruct the Notes or NotesFolders once constructed.
   Future<void> loadRecursively() async {
     final dir = Directory(folderPath);
+    _entities.forEach((e) {
+      if (e.isFolder) {
+        e.folder.dispose();
+      } else {
+        e.note.dispose();
+      }
+    });
     _entities = [];
 
     var lister = dir.list(recursive: false, followLinks: false);
@@ -74,23 +97,28 @@ class NotesFolder with ChangeNotifier {
         if (subFolder.name.startsWith('.')) {
           continue;
         }
+        subFolder.addListener(_entityChanged);
         await subFolder.loadRecursively();
 
         var noteFSEntity = NoteFSEntity(folder: subFolder);
         _entities.add(noteFSEntity);
+        continue;
       }
 
       var note = Note(this, fsEntity.path);
       if (!note.filePath.toLowerCase().endsWith('.md')) {
         continue;
       }
+      note.addListener(_entityChanged);
       await note.load();
 
       var noteFSEntity = NoteFSEntity(note: note);
       _entities.add(noteFSEntity);
     }
 
-    notifyListeners();
+    if (_entities.isNotEmpty) {
+      notifyListeners();
+    }
   }
 
   void add(Note note) {
