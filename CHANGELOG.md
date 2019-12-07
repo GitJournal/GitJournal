@@ -1,6 +1,6 @@
-## [1.21] - 2019-12-07
+## [1.22] - 2019-12-07
 
-* Improve animations while nagivating
+* Improve animations while navigating
 * Allow folders to be renamed
 
 ## [1.21] - 2019-12-06
