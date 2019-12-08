@@ -18,6 +18,7 @@ class Note with ChangeNotifier implements Comparable<Note> {
   String filePath = "";
 
   DateTime _created;
+  DateTime _modified;
   NoteData _data = NoteData();
 
   DateTime _fileLastModified;
@@ -42,6 +43,25 @@ class Note with ChangeNotifier implements Comparable<Note> {
       _data.props.remove('created');
     }
     notifyListeners();
+  }
+
+  DateTime get modified {
+    return _modified;
+  }
+
+  set modified(DateTime dt) {
+    _modified = dt;
+
+    if (hasValidDate()) {
+      _data.props['modified'] = toIso8601WithTimezone(_modified);
+    } else {
+      _data.props.remove('modified');
+    }
+    notifyListeners();
+  }
+
+  void updateModified() {
+    modified = DateTime.now();
   }
 
   String get body {
@@ -153,7 +173,7 @@ class Note with ChangeNotifier implements Comparable<Note> {
 
   @override
   String toString() {
-    return 'Note{filePath: $filePath, created: $created, data: $data}';
+    return 'Note{filePath: $filePath, created: $created, modified: $modified, data: $data}';
   }
 
   @override
@@ -161,7 +181,7 @@ class Note with ChangeNotifier implements Comparable<Note> {
     if (other == null) {
       return -1;
     }
-    if (created == other.created) return filePath.compareTo(other.filePath);
-    return created.compareTo(other.created);
+    if (modified == other.modified) return filePath.compareTo(other.filePath);
+    return modified.compareTo(other.modified);
   }
 }

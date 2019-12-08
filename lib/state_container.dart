@@ -154,6 +154,7 @@ class StateContainerState extends State<StateContainer> {
       note.filePath = p.join(parentPath, getFileName(note));
     }
     note.parent.insert(index, note);
+    note.updateModified();
     _gitRepo.addNote(note).then((NoteRepoResult _) {
       syncNotes();
     });
@@ -161,6 +162,7 @@ class StateContainerState extends State<StateContainer> {
 
   void updateNote(Note note) {
     Fimber.d("State Container updateNote");
+    note.updateModified();
     _gitRepo.updateNote(note).then((NoteRepoResult _) {
       syncNotes();
     });
