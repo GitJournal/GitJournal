@@ -49,7 +49,10 @@ class JournalApp extends StatelessWidget {
       appState: appState,
       child: ChangeNotifierProvider(
         child: JournalApp(),
-        create: (_) => appState.notesFolder,
+        create: (_) {
+          assert(appState.notesFolder != null);
+          return appState.notesFolder;
+        },
       ),
     ));
   }

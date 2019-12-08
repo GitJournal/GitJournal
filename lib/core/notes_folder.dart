@@ -179,7 +179,16 @@ class NotesFolder with ChangeNotifier {
 
   void insert(int index, Note note) {
     assert(note.parent == this);
+    assert(index >= 0);
     note.addListener(_entityChanged);
+
+    if (_entities.isEmpty) {
+      var entity = NoteFSEntity(note: note);
+      _entities.add(entity);
+      _entityMap[note.filePath] = entity;
+      notifyListeners();
+      return;
+    }
 
     for (var i = 0; i < _entities.length; i++) {
       var e = _entities[i];
