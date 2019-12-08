@@ -13,9 +13,8 @@ import 'package:gitjournal/themes.dart';
 
 class JournalListingScreen extends StatelessWidget {
   final NotesFolder notesFolder;
-  final bool recursive;
 
-  JournalListingScreen({@required this.notesFolder, this.recursive = false});
+  JournalListingScreen({@required this.notesFolder});
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +26,7 @@ class JournalListingScreen extends StatelessWidget {
       child: Icon(Icons.add),
     );
 
-    var allNotes =
-        recursive ? notesFolder.getAllNotes() : notesFolder.getNotes();
+    var allNotes = notesFolder.getNotes();
     allNotes.sort((a, b) => b.compareTo(a));
 
     Widget journalList = JournalList(

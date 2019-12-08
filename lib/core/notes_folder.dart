@@ -56,20 +56,6 @@ class NotesFolder with ChangeNotifier {
     return i;
   }
 
-  // Recurisvely gets all Notes within this folder
-  List<Note> getAllNotes() {
-    var notes = <Note>[];
-
-    for (var entity in _entities) {
-      if (entity.isNote) {
-        notes.add(entity.note);
-      } else {
-        notes.addAll(entity.folder.getAllNotes());
-      }
-    }
-    return notes;
-  }
-
   List<Note> getNotes() {
     return _entities.where((e) => e.isNote).map((e) => e.note).toList();
   }
