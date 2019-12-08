@@ -78,8 +78,19 @@ class NotesFolder with ChangeNotifier {
 
   // FIXME: This asynchronously loads everything. Maybe it should just list them, and the individual _entities
   //        should be loaded as required?
-  // FIXME: This should not reconstruct the Notes or NotesFolders once constructed.
   Future<void> loadRecursively() async {
+    await load();
+    _entities.forEach((e) {
+      if (e.isFolder) {
+        e.folder.loadRecursively();
+      } else {
+        e.note.load();
+      }
+    });
+  }
+
+  // FIXME: This should not reconstruct the Notes or NotesFolders once constructed.
+  Future<void> load() async {
     final dir = Directory(folderPath);
     _entities.forEach((e) {
       if (e.isFolder) {
@@ -98,7 +109,6 @@ class NotesFolder with ChangeNotifier {
           continue;
         }
         subFolder.addListener(_entityChanged);
-        await subFolder.loadRecursively();
 
         var noteFSEntity = NoteFSEntity(folder: subFolder);
         _entities.add(noteFSEntity);
@@ -110,7 +120,6 @@ class NotesFolder with ChangeNotifier {
         continue;
       }
       note.addListener(_entityChanged);
-      await note.load();
 
       var noteFSEntity = NoteFSEntity(note: note);
       _entities.add(noteFSEntity);
