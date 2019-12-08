@@ -168,20 +168,27 @@ class NotesFolder with ChangeNotifier {
 
   void add(Note note) {
     assert(note.parent == this);
-    _entities.add(NoteFSEntity(note: note));
+    note.addListener(_entityChanged);
+
+    var entity = NoteFSEntity(note: note);
+    _entities.add(entity);
+    _entityMap[note.filePath] = entity;
 
     notifyListeners();
   }
 
   void insert(int index, Note note) {
     assert(note.parent == this);
+    note.addListener(_entityChanged);
 
     for (var i = 0; i < _entities.length; i++) {
       var e = _entities[i];
       if (e is NotesFolder) continue;
 
       if (index == 0) {
-        _entities.insert(i, NoteFSEntity(note: note));
+        var entity = NoteFSEntity(note: note);
+        _entities.insert(i, entity);
+        _entityMap[note.filePath] = entity;
         notifyListeners();
         return;
       }
@@ -191,6 +198,8 @@ class NotesFolder with ChangeNotifier {
 
   void remove(Note note) {
     assert(note.parent == this);
+    note.removeListener(_entityChanged);
+
     var i = _entities.indexWhere((e) {
       if (e.isFolder) return false;
       return e.note.filePath == note.filePath;
@@ -198,6 +207,8 @@ class NotesFolder with ChangeNotifier {
     assert(i != -1);
 
     _entities.removeAt(i);
+    _entityMap.remove(note.filePath);
+
     notifyListeners();
   }
 
@@ -209,11 +220,16 @@ class NotesFolder with ChangeNotifier {
     if (!file.existsSync()) {
       file.createSync(recursive: true);
     }
+    notifyListeners();
   }
 
   void addFolder(NotesFolder folder) {
     assert(folder.parent == this);
-    _entities.add(NoteFSEntity(folder: folder));
+    folder.addListener(_entityChanged);
+
+    var entity = NoteFSEntity(folder: folder);
+    _entities.add(entity);
+    _entityMap[folder.folderPath] = entity;
 
     notifyListeners();
   }
