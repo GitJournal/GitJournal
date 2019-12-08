@@ -8,9 +8,11 @@ import 'note.dart';
 import 'note_fs_entity.dart';
 
 class NotesFolder with ChangeNotifier {
-  NotesFolder parent;
-  List<NoteFSEntity> _entities = [];
+  final NotesFolder parent;
   String folderPath;
+
+  List<NoteFSEntity> _entities = [];
+  Map<String, NoteFSEntity> _entityMap = {};
 
   NotesFolder(this.parent, this.folderPath);
 
@@ -91,18 +93,25 @@ class NotesFolder with ChangeNotifier {
 
   // FIXME: This should not reconstruct the Notes or NotesFolders once constructed.
   Future<void> load() async {
-    final dir = Directory(folderPath);
-    _entities.forEach((e) {
-      if (e.isFolder) {
-        e.folder.dispose();
-      } else {
-        e.note.dispose();
-      }
-    });
-    _entities = [];
+    Set<String> pathsFound = {};
 
+    var entitiesAdded = false;
+    var entitiesRemoved = false;
+
+    final dir = Directory(folderPath);
     var lister = dir.list(recursive: false, followLinks: false);
     await for (var fsEntity in lister) {
+      if (fsEntity is Link) {
+        continue;
+      }
+
+      // If already seen before
+      var existingNoteFSEntity = _entityMap[fsEntity.path];
+      if (existingNoteFSEntity != null) {
+        pathsFound.add(fsEntity.path);
+        continue;
+      }
+
       if (fsEntity is Directory) {
         var subFolder = NotesFolder(this, fsEntity.path);
         if (subFolder.name.startsWith('.')) {
@@ -112,6 +121,10 @@ class NotesFolder with ChangeNotifier {
 
         var noteFSEntity = NoteFSEntity(folder: subFolder);
         _entities.add(noteFSEntity);
+        _entityMap[fsEntity.path] = noteFSEntity;
+
+        pathsFound.add(fsEntity.path);
+        entitiesAdded = true;
         continue;
       }
 
@@ -123,9 +136,32 @@ class NotesFolder with ChangeNotifier {
 
       var noteFSEntity = NoteFSEntity(note: note);
       _entities.add(noteFSEntity);
+      _entityMap[fsEntity.path] = noteFSEntity;
+
+      pathsFound.add(fsEntity.path);
+      entitiesAdded = true;
     }
 
-    if (_entities.isNotEmpty) {
+    Set<String> pathsRemoved = _entityMap.keys.toSet().difference(pathsFound);
+    pathsRemoved.forEach((path) {
+      var e = _entityMap[path];
+      assert(e != null);
+
+      if (e.isFolder) {
+        e.folder.removeListener(_entityChanged);
+      } else {
+        e.note.removeListener(_entityChanged);
+      }
+
+      _entityMap.remove(path);
+    });
+    _entities.removeWhere((e) {
+      String path = e.isFolder ? e.folder.folderPath : e.note.filePath;
+      return pathsRemoved.contains(path);
+    });
+
+    entitiesRemoved = pathsRemoved.isNotEmpty;
+    if (entitiesAdded || entitiesRemoved) {
       notifyListeners();
     }
   }
