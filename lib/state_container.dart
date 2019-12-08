@@ -35,7 +35,11 @@ class StateContainer extends StatefulWidget {
 }
 
 class StateContainerState extends State<StateContainer> {
-  AppState appState;
+  final AppState appState;
+
+  // FIXME: The gitRepo should never be changed once it has been setup
+  //        We should always just be modifying the 'git remotes'
+  //        With that, the StateContainer can be a StatelessWidget
   GitNoteRepository _gitRepo;
 
   StateContainerState(this.appState);
