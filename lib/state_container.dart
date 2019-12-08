@@ -36,7 +36,7 @@ class StateContainer extends StatefulWidget {
 
 class StateContainerState extends State<StateContainer> {
   AppState appState;
-  GitNoteRepository noteRepo;
+  GitNoteRepository _gitRepo;
 
   StateContainerState(this.appState);
 
@@ -47,17 +47,17 @@ class StateContainerState extends State<StateContainer> {
     assert(appState.localGitRepoConfigured);
 
     if (appState.remoteGitRepoConfigured) {
-      noteRepo = GitNoteRepository(
+      _gitRepo = GitNoteRepository(
         baseDirectory: appState.gitBaseDirectory,
         dirName: appState.remoteGitRepoFolderName,
       );
     } else if (appState.localGitRepoConfigured) {
-      noteRepo = GitNoteRepository(
+      _gitRepo = GitNoteRepository(
         baseDirectory: appState.gitBaseDirectory,
         dirName: appState.localGitRepoPath,
       );
     }
-    appState.notesFolder = NotesFolder(null, noteRepo.notesBasePath);
+    appState.notesFolder = NotesFolder(null, _gitRepo.notesBasePath);
 
     // Just a fail safe
     if (!appState.remoteGitRepoConfigured) {
@@ -112,7 +112,7 @@ class StateContainerState extends State<StateContainer> {
       return true;
     }
 
-    await noteRepo.sync();
+    await _gitRepo.sync();
 
     try {
       await _loadNotes();
@@ -136,7 +136,7 @@ class StateContainerState extends State<StateContainer> {
     }
 
     Fimber.d("Starting to syncNotes");
-    noteRepo.sync().then((loaded) {
+    _gitRepo.sync().then((loaded) {
       Fimber.d("NotesRepo Synced: " + loaded.toString());
       _loadNotesFromDisk();
     }).catchError((err) {
@@ -154,7 +154,7 @@ class StateContainerState extends State<StateContainer> {
 
     setState(() {
       // Update the git repo
-      noteRepo.addFolder(newFolder).then((NoteRepoResult _) {
+      _gitRepo.addFolder(newFolder).then((NoteRepoResult _) {
         _syncNotes();
       });
     });
@@ -167,7 +167,7 @@ class StateContainerState extends State<StateContainer> {
       folder.rename(newFolderName);
 
       // Update the git repo
-      noteRepo
+      _gitRepo
           .renameFolder(oldFolderPath, folder.folderPath)
           .then((NoteRepoResult _) {
         _syncNotes();
@@ -182,7 +182,7 @@ class StateContainerState extends State<StateContainer> {
   void removeNote(Note note) {
     setState(() {
       note.parent.remove(note);
-      noteRepo.removeNote(note.filePath).then((NoteRepoResult _) async {
+      _gitRepo.removeNote(note.filePath).then((NoteRepoResult _) async {
         // FIXME: Is there a way of figuring this amount dynamically?
         // The '4 seconds' is taken from snack_bar.dart -> _kSnackBarDisplayDuration
         // We wait an aritfical amount of time, so that the user has a change to undo
@@ -196,7 +196,7 @@ class StateContainerState extends State<StateContainer> {
   void undoRemoveNote(Note note, int index) {
     setState(() {
       note.parent.insert(index, note);
-      noteRepo.resetLastCommit().then((NoteRepoResult _) {
+      _gitRepo.resetLastCommit().then((NoteRepoResult _) {
         _syncNotes();
       });
     });
@@ -208,11 +208,11 @@ class StateContainerState extends State<StateContainer> {
       if (note.filePath == null || note.filePath.isEmpty) {
         var parentPath = note.parent != null
             ? note.parent.folderPath
-            : noteRepo.notesBasePath;
+            : _gitRepo.notesBasePath;
         note.filePath = p.join(parentPath, getFileName(note));
       }
       note.parent.insert(index, note);
-      noteRepo.addNote(note).then((NoteRepoResult _) {
+      _gitRepo.addNote(note).then((NoteRepoResult _) {
         _syncNotes();
       });
     });
@@ -222,7 +222,7 @@ class StateContainerState extends State<StateContainer> {
     Fimber.d("State Container updateNote");
     setState(() {
       // Update the git repo
-      noteRepo.updateNote(note).then((NoteRepoResult _) {
+      _gitRepo.updateNote(note).then((NoteRepoResult _) {
         _syncNotes();
       });
     });
@@ -239,11 +239,11 @@ class StateContainerState extends State<StateContainer> {
         gitBasePath: appState.gitBaseDirectory,
       );
 
-      noteRepo = GitNoteRepository(
+      _gitRepo = GitNoteRepository(
         baseDirectory: appState.gitBaseDirectory,
         dirName: appState.remoteGitRepoFolderName,
       );
-      appState.notesFolder = NotesFolder(null, noteRepo.notesBasePath);
+      appState.notesFolder = NotesFolder(null, _gitRepo.notesBasePath);
 
       await _persistConfig();
       _loadNotesFromDisk();
