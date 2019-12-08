@@ -1,5 +1,5 @@
 ## [1.23] - 2019-12-08
-* Massive performance boosts. We aren't just saying that, now notes are loaded asynchronously in the background, and we only re-parse them when they have changed.
+* Massive performance boosts. We aren't just saying that, now notes are loaded asynchronously in the background, and we only re-parse them when necessary.
 
 ## [1.22] - 2019-12-07
 
