@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'package:gitjournal/storage/serializers.dart';
+import 'package:gitjournal/core/serializers.dart';
 import 'package:gitjournal/utils/datetime.dart';
 import 'package:test/test.dart';
 

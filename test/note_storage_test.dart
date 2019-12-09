@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:gitjournal/utils/datetime.dart';
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/storage/serializers.dart';
+import 'package:gitjournal/core/serializers.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
