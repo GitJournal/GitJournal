@@ -35,6 +35,7 @@ class Note with ChangeNotifier implements Comparable<Note> {
 
   Note.newNote(this.parent) {
     _created = DateTime.now();
+    _data.props['created'] = toIso8601WithTimezone(created);
     _filePath = p.join(parent.folderPath, getFileName(this));
   }
 
