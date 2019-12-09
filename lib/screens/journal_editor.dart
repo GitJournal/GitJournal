@@ -4,7 +4,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/widgets/journal_editor_header.dart';
-import 'package:gitjournal/storage/serializers.dart';
+import 'package:gitjournal/core/serializers.dart';
 
 enum NoteEditorDropDownChoices { Discard, SwitchEditor }
 

@@ -72,6 +72,8 @@ class NotesFolder with ChangeNotifier {
       if (e.isFolder) {
         e.folder.loadRecursively();
       } else {
+        // FIXME: Collected all the Errors, and report them back, along with "WHY", and the contents of the Note
+        //        Each of these needs to be reported to crashlytics, as Note loading should never fail
         e.note.load();
       }
     });
