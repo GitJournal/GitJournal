@@ -8,7 +8,6 @@ import 'package:gitjournal/apis/git_migration.dart';
 import 'package:gitjournal/appstate.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
-import 'package:gitjournal/core/note_fileName.dart';
 import 'package:gitjournal/storage/git_storage.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -148,11 +147,6 @@ class StateContainerState extends State<StateContainer> {
 
   void insertNote(int index, Note note) {
     Fimber.d("State Container insertNote " + index.toString());
-    if (note.filePath == null || note.filePath.isEmpty) {
-      var parentPath =
-          note.parent != null ? note.parent.folderPath : _gitRepo.notesBasePath;
-      note.filePath = p.join(parentPath, getFileName(note));
-    }
     note.parent.insert(index, note);
     note.updateModified();
     _gitRepo.addNote(note).then((NoteRepoResult _) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/state_container.dart';
@@ -32,8 +33,7 @@ class JournalEditorState extends State<JournalEditor> {
   final serializer = MarkdownYAMLSerializer();
 
   JournalEditorState.newNote(NotesFolder folder) : newNote = true {
-    note = Note(folder);
-    note.created = DateTime.now();
+    note = Note.newNote(folder);
   }
 
   JournalEditorState.fromNote(this.note) : newNote = false {

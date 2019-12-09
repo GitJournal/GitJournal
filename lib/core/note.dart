@@ -1,9 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:path/path.dart' as p;
+
 import 'package:gitjournal/storage/serializers.dart';
 import 'package:gitjournal/utils/datetime.dart';
 
+import 'note_fileName.dart';
 import 'notes_folder.dart';
 
 enum NoteLoadState {
@@ -15,7 +18,7 @@ enum NoteLoadState {
 
 class Note with ChangeNotifier implements Comparable<Note> {
   NotesFolder parent;
-  String filePath = "";
+  String _filePath;
 
   DateTime _created;
   DateTime _modified;
@@ -26,8 +29,17 @@ class Note with ChangeNotifier implements Comparable<Note> {
   var _loadState = NoteLoadState.None;
   var _serializer = MarkdownYAMLSerializer();
 
-  Note(this.parent, [this.filePath]) {
-    _created = _created ?? DateTime(0, 0, 0, 0, 0, 0, 0, 0);
+  Note(this.parent, this._filePath) {
+    _created = DateTime(0, 0, 0, 0, 0, 0, 0, 0);
+  }
+
+  Note.newNote(this.parent) {
+    _created = DateTime.now();
+    _filePath = p.join(parent.folderPath, getFileName(this));
+  }
+
+  String get filePath {
+    return _filePath;
   }
 
   DateTime get created {
