@@ -22,4 +22,4 @@ rm -rf symbols.zip
 
 # Upload symbols to Crashlytics
 cd ../../android
-./gradlew crashlyticsUploadSymbolsRelease
+./gradlew crashlyticsUploadSymbolsProdRelease
