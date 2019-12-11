@@ -402,7 +402,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   Future _removeExistingClone(String baseDirPath) async {
     var baseDir = Directory(p.join(baseDirPath, "journal"));
     var dotGitDir = Directory(p.join(baseDir.path, ".git"));
-    bool exists = await dotGitDir.exists();
+    bool exists = dotGitDir.existsSync();
     if (exists) {
       Fimber.d("Removing " + baseDir.path);
       await baseDir.delete(recursive: true);

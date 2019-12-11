@@ -50,12 +50,12 @@ class AppDrawer extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).highlightColor,
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: const AssetImage('assets/icon/icon.png'),
+                    image: AssetImage('assets/icon/icon.png'),
                   ),
                 ),
               ),

@@ -21,8 +21,8 @@ class StateContainer extends StatefulWidget {
   });
 
   static StateContainerState of(BuildContext context) {
-    return (context.inheritFromWidgetOfExactType(_InheritedStateContainer)
-            as _InheritedStateContainer)
+    return context
+        .dependOnInheritedWidgetOfExactType<_InheritedStateContainer>()
         .data;
   }
 
@@ -75,7 +75,7 @@ class StateContainerState extends State<StateContainer> {
         p.join(appState.gitBaseDirectory, appState.remoteGitRepoFolderName));
     var dotGitDir = Directory(p.join(remoteGitDir.path, ".git"));
 
-    bool exists = await dotGitDir.exists();
+    bool exists = dotGitDir.existsSync();
     if (exists) {
       await remoteGitDir.delete(recursive: true);
     }
