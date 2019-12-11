@@ -52,20 +52,36 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
           return [
             const PopupMenuItem<String>(
               child: Text("Rename Folder"),
-              value: "Rename Folder",
+              value: "Rename",
+            ),
+            const PopupMenuItem<String>(
+              child: Text("Create Sub-Folder"),
+              value: "Create",
             )
           ];
         },
-        onSelected: (String _) async {
-          var folderName = await showDialog(
-            context: context,
-            builder: (_) => RenameFolderDialog(selectedFolder),
-          );
-          if (folderName is String) {
-            final container = StateContainer.of(context);
-            container.renameFolder(selectedFolder, folderName);
-            _folderTreeViewKey.currentState.resetSelection();
+        onSelected: (String value) async {
+          if (value == "Rename") {
+            var folderName = await showDialog(
+              context: context,
+              builder: (_) => RenameFolderDialog(selectedFolder),
+            );
+            if (folderName is String) {
+              final container = StateContainer.of(context);
+              container.renameFolder(selectedFolder, folderName);
+            }
+          } else if (value == "Create") {
+            var folderName = await showDialog(
+              context: context,
+              builder: (_) => CreateFolderAlertDialog(),
+            );
+            if (folderName is String) {
+              final container = StateContainer.of(context);
+              container.createFolder(selectedFolder, folderName);
+            }
           }
+
+          _folderTreeViewKey.currentState.resetSelection();
         },
       );
     }
@@ -97,21 +113,16 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
   }
 }
 
-class CreateFolderButton extends StatefulWidget {
-  @override
-  _CreateFolderButtonState createState() => _CreateFolderButtonState();
-}
-
-class _CreateFolderButtonState extends State<CreateFolderButton> {
-  final TextEditingController _textController = TextEditingController();
-
+class CreateFolderButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
       key: const ValueKey("FAB"),
       onPressed: () async {
-        var folderName =
-            await showDialog(context: context, builder: _buildAlert);
+        var folderName = await showDialog(
+          context: context,
+          builder: (_) => CreateFolderAlertDialog(),
+        );
         if (folderName is String) {
           final container = StateContainer.of(context);
           final notesFolder = Provider.of<NotesFolder>(context);
@@ -122,14 +133,19 @@ class _CreateFolderButtonState extends State<CreateFolderButton> {
       child: Icon(Icons.add),
     );
   }
+}
+
+class CreateFolderAlertDialog extends StatefulWidget {
+  @override
+  _CreateFolderAlertDialogState createState() =>
+      _CreateFolderAlertDialogState();
+}
+
+class _CreateFolderAlertDialogState extends State<CreateFolderAlertDialog> {
+  final TextEditingController _textController = TextEditingController();
 
   @override
-  void dispose() {
-    _textController.dispose();
-    super.dispose();
-  }
-
-  Widget _buildAlert(BuildContext context) {
+  Widget build(BuildContext context) {
     var form = Form(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -166,6 +182,12 @@ class _CreateFolderButtonState extends State<CreateFolderButton> {
       ],
       content: form,
     );
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
   }
 }
 
