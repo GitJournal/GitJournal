@@ -5,7 +5,7 @@ version: 1.23.0+10
 dependencies:
   flutter:
     sdk: flutter
-  intl: "^0.15.6"
+  intl: "^0.16.0"
   path: ^1.6.2
   uuid: ^2.0.1
   yaml: ^2.2.0
