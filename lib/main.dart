@@ -8,6 +8,8 @@ import 'package:gitjournal/app.dart';
 import 'package:gitjournal/settings.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   var pref = await SharedPreferences.getInstance();
   Settings.instance.load(pref);
 
