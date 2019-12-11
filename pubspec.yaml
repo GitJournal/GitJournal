@@ -9,7 +9,7 @@ dependencies:
   path: ^1.6.2
   uuid: ^2.0.1
   yaml: ^2.2.0
-  firebase_analytics: ^4.0.2
+  firebase_analytics: ^5.0.9
   flutter_crashlytics: ^1.0.0
   shared_preferences: ^0.5.2
   url_launcher: ^5.0.2
