@@ -27,10 +27,10 @@ jobs:
           name: Build
           command: ./scripts/build.sh
       - store_artifacts:
-          path: build/app/outputs/bundle/release/app.aab
+          path: build/app/outputs/bundle/prodRelease/app.aab
           destination: gitjournal.aab
       - store_artifacts:
-          path: build/app/outputs/apk/release/app-release.apk
+          path: build/app/outputs/apk/prod/release/app-prod-release.apk
           destination: gitjournal.apk
       - run:
           name: Upload Crashlytics Symbols

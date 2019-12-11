@@ -12,7 +12,7 @@ platform :android do
     # end
 
     upload_to_play_store(track: "alpha",
-      aab: "../build/app/outputs/bundle/release/app.aab",
+      aab: "../build/app/outputs/bundle/prodRelease/app.aab",
       skip_upload_metadata: true,
       skip_upload_images: true,
       skip_upload_screenshots: true,
