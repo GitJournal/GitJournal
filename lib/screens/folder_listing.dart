@@ -15,6 +15,7 @@ class FolderListingScreen extends StatefulWidget {
 }
 
 class _FolderListingScreenState extends State<FolderListingScreen> {
+  final _folderTreeViewKey = GlobalKey<FolderTreeViewState>();
   NotesFolder selectedFolder;
 
   @override
@@ -22,6 +23,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
     final notesFolder = Provider.of<NotesFolder>(context);
 
     var treeView = FolderTreeView(
+      key: _folderTreeViewKey,
       rootFolder: notesFolder,
       onFolderEntered: (NotesFolder folder) {
         var route = MaterialPageRoute(
@@ -62,15 +64,28 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
           if (folderName is String) {
             final container = StateContainer.of(context);
             container.renameFolder(selectedFolder, folderName);
+            _folderTreeViewKey.currentState.resetSelection();
           }
         },
       );
     }
 
+    var backButton = IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        _folderTreeViewKey.currentState.resetSelection();
+      },
+    );
+
+    var title = const Text("Folder");
+    if (selectedFolder != null) {
+      title = const Text("Folder Selected");
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Folders'),
-        leading: GJAppBarMenuButton(),
+        title: title,
+        leading: selectedFolder == null ? GJAppBarMenuButton() : backButton,
         actions: <Widget>[
           if (selectedFolder != null) action,
         ],

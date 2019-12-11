@@ -12,17 +12,18 @@ class FolderTreeView extends StatefulWidget {
   final FolderSelectedCallback onFolderEntered;
 
   FolderTreeView({
+    Key key,
     @required this.rootFolder,
     @required this.onFolderSelected,
     @required this.onFolderUnselected,
     @required this.onFolderEntered,
-  });
+  }) : super(key: key);
 
   @override
-  _FolderTreeViewState createState() => _FolderTreeViewState();
+  FolderTreeViewState createState() => FolderTreeViewState();
 }
 
-class _FolderTreeViewState extends State<FolderTreeView> {
+class FolderTreeViewState extends State<FolderTreeView> {
   bool inSelectionMode = false;
   NotesFolder selectedFolder;
 
@@ -54,6 +55,13 @@ class _FolderTreeViewState extends State<FolderTreeView> {
     return ListView(
       children: <Widget>[tile],
     );
+  }
+
+  void resetSelection() {
+    setState(() {
+      selectedFolder = null;
+    });
+    widget.onFolderUnselected();
   }
 }
 
