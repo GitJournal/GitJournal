@@ -7,7 +7,7 @@ cd "$(dirname "$0")"
 cd ../
 
 # Copy mergeJniLibs to debugSymbols
-cp -R ./build/app/intermediates/transforms/mergeJniLibs/release/0/lib debugSymbols
+cp -R ./build/app/intermediates/transforms/mergeJniLibs/prod/release/0/lib debugSymbols
 
 # The libflutter.so here is the same as in the artifacts.zip found with symbols.zip
 cd debugSymbols/armeabi-v7a
