@@ -57,7 +57,11 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
             const PopupMenuItem<String>(
               child: Text("Create Sub-Folder"),
               value: "Create",
-            )
+            ),
+            const PopupMenuItem<String>(
+              child: Text("Delete Folder"),
+              value: "Delete",
+            ),
           ];
         },
         onSelected: (String value) async {
@@ -78,6 +82,16 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
             if (folderName is String) {
               final container = StateContainer.of(context);
               container.createFolder(selectedFolder, folderName);
+            }
+          } else if (value == "Delete") {
+            if (selectedFolder.hasNotesRecursive) {
+              await showDialog(
+                context: context,
+                builder: (_) => FolderErrorDialog(),
+              );
+            } else {
+              final container = StateContainer.of(context);
+              container.removeFolder(selectedFolder);
             }
           }
 
@@ -252,5 +266,21 @@ class _RenameFolderDialogState extends State<RenameFolderDialog> {
   void dispose() {
     _textController.dispose();
     super.dispose();
+  }
+}
+
+class FolderErrorDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text("Error"),
+      content: const Text("Cannot delete a Folder which contains notes"),
+      actions: <Widget>[
+        FlatButton(
+          child: const Text("Ok"),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ],
+    );
   }
 }

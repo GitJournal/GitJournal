@@ -48,6 +48,23 @@ class NotesFolder with ChangeNotifier {
     return _entities.firstWhere((e) => e.isNote, orElse: () => null) != null;
   }
 
+  bool get hasNotesRecursive {
+    bool has = hasNotes;
+    if (has) return true;
+
+    for (var i = 0; i < _entities.length; i++) {
+      var e = _entities[i];
+      if (e.isNote) continue;
+
+      has = has || e.folder.hasNotes;
+      if (has) {
+        return true;
+      }
+    }
+
+    return has;
+  }
+
   int get numberOfNotes {
     int i = 0;
     _entities.forEach((e) {
@@ -227,6 +244,21 @@ class NotesFolder with ChangeNotifier {
     var entity = NoteFSEntity(folder: folder);
     _entities.add(entity);
     _entityMap[folder.folderPath] = entity;
+
+    notifyListeners();
+  }
+
+  void removeFolder(NotesFolder folder) {
+    folder.removeListener(_entityChanged);
+
+    var i = _entities.indexWhere((e) {
+      if (e.isNote) return false;
+      return e.folder.folderPath == folder.folderPath;
+    });
+    assert(i != -1);
+
+    _entities.removeAt(i);
+    _entityMap.remove(folder.folderPath);
 
     notifyListeners();
   }

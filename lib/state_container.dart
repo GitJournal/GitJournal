@@ -111,6 +111,15 @@ class StateContainerState extends State<StateContainer> {
     });
   }
 
+  void removeFolder(NotesFolder folder) {
+    Fimber.d("Removing Folder: " + folder.folderPath);
+
+    folder.parent.removeFolder(folder);
+    _gitRepo.removeFolder(folder.folderPath).then((NoteRepoResult _) {
+      syncNotes();
+    });
+  }
+
   void renameFolder(NotesFolder folder, String newFolderName) async {
     var oldFolderPath = folder.folderPath;
     folder.rename(newFolderName);

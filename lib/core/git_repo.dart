@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
@@ -84,6 +85,20 @@ class GitNoteRepository {
     );
 
     return NoteRepoResult(noteFilePath: noteFilePath, error: false);
+  }
+
+  Future<NoteRepoResult> removeFolder(String folderPath) async {
+    var gitDir = p.join(baseDirectory, dirName);
+    var pathSpec = folderPath.replaceFirst(gitDir, "").substring(1);
+
+    await _gitRepo.rm(pathSpec);
+    await _gitRepo.commit(
+      message: "Removed Folder " + pathSpec,
+    );
+
+    await Directory(folderPath).delete(recursive: true);
+
+    return NoteRepoResult(noteFilePath: folderPath, error: false);
   }
 
   Future<NoteRepoResult> resetLastCommit() async {
