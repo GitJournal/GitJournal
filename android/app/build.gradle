@@ -125,5 +125,5 @@ apply plugin: 'io.fabric'
 crashlytics {
     enableNdk true
     androidNdkOut "../../debugSymbols"
-    androidNdkLibsOut "../../build/app/intermediates/transforms/stripDebugSymbol/release/0/lib"
+    androidNdkLibsOut "../../build/app/intermediates/transforms/stripDebugSymbol/prod/release/0/lib"
 }
