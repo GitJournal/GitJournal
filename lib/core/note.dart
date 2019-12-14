@@ -94,22 +94,10 @@ class Note with ChangeNotifier implements Comparable<Note> {
     _data = data;
 
     if (data.props.containsKey("created")) {
-      var createdStr = data.props['created'].toString();
-      try {
-        _created = DateTime.parse(data.props['created']).toLocal();
-      } catch (ex) {
-        // Ignore it
-      }
-
-      if (_created == null) {
-        var regex = RegExp(
-            r"(\d{4})-(\d{2})-(\d{2})T(\d{2})\:(\d{2})\:(\d{2})\+(\d{2})\:(\d{2})");
-        if (regex.hasMatch(createdStr)) {
-          // FIXME: Handle the timezone!
-          createdStr = createdStr.substring(0, 19);
-          _created = DateTime.parse(createdStr);
-        }
-      }
+      _created = parseDateTime(data.props['created'].toString());
+    }
+    if (data.props.containsKey("modified")) {
+      _modified = parseDateTime(data.props['modified'].toString());
     }
 
     _created ??= DateTime(0, 0, 0, 0, 0, 0, 0, 0);

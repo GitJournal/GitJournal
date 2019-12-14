@@ -35,3 +35,24 @@ String toIso8601WithTimezone(DateTime dt, [Duration offset]) {
 
   return result + sign + hourStr + ':' + minutesStr;
 }
+
+DateTime parseDateTime(String str) {
+  DateTime dt;
+  try {
+    dt = DateTime.parse(str).toLocal();
+  } catch (ex) {
+    // Ignore it
+  }
+
+  if (dt == null) {
+    var regex = RegExp(
+        r"(\d{4})-(\d{2})-(\d{2})T(\d{2})\:(\d{2})\:(\d{2})\+(\d{2})\:(\d{2})");
+    if (regex.hasMatch(str)) {
+      // FIXME: Handle the timezone!
+      str = str.substring(0, 19);
+      dt = DateTime.parse(str);
+    }
+  }
+
+  return dt;
+}
