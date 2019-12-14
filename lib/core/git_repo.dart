@@ -39,7 +39,7 @@ class GitNoteRepository {
   }
 
   Future<NoteRepoResult> addNote(Note note) async {
-    return _addNote(note, "Added Journal Entry");
+    return _addNote(note, "Added Note");
   }
 
   Future<NoteRepoResult> _addNote(Note note, String commitMessage) async {
@@ -55,7 +55,7 @@ class GitNoteRepository {
   Future<NoteRepoResult> addFolder(NotesFolder folder) async {
     await _gitRepo.add(".");
     await _gitRepo.commit(
-      message: "Created new folder",
+      message: "Created New Folder",
     );
 
     return NoteRepoResult(noteFilePath: folder.folderPath, error: false);
@@ -68,7 +68,7 @@ class GitNoteRepository {
     // FIXME: This is a hacky way of adding the changes, ideally we should be calling rm + add or something
     await _gitRepo.add(".");
     await _gitRepo.commit(
-      message: "Renamed folder",
+      message: "Renamed Folder",
     );
 
     return NoteRepoResult(noteFilePath: newFullPath, error: false);
@@ -81,7 +81,7 @@ class GitNoteRepository {
     // We are not calling note.remove() as gitRm will also remove the file
     await _gitRepo.rm(pathSpec);
     await _gitRepo.commit(
-      message: "Removed Journal entry",
+      message: "Removed Note " + pathSpec,
     );
 
     return NoteRepoResult(noteFilePath: noteFilePath, error: false);
@@ -107,7 +107,7 @@ class GitNoteRepository {
   }
 
   Future<NoteRepoResult> updateNote(Note note) async {
-    return _addNote(note, "Edited Journal Entry");
+    return _addNote(note, "Edited Note");
   }
 
   Future<bool> sync() async {
