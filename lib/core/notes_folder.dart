@@ -7,7 +7,7 @@ import 'package:path/path.dart';
 import 'note.dart';
 import 'note_fs_entity.dart';
 
-class NotesFolder with ChangeNotifier {
+class NotesFolder with ChangeNotifier implements Comparable<NotesFolder> {
   final NotesFolder parent;
   String folderPath;
 
@@ -78,7 +78,9 @@ class NotesFolder with ChangeNotifier {
   }
 
   List<NotesFolder> getFolders() {
-    return _entities.where((e) => e.isFolder).map((e) => e.folder).toList();
+    var list = _entities.where((e) => e.isFolder).map((e) => e.folder).toList();
+    list.sort();
+    return list;
   }
 
   // FIXME: This asynchronously loads everything. Maybe it should just list them, and the individual _entities
@@ -270,5 +272,10 @@ class NotesFolder with ChangeNotifier {
     dir.renameSync(folderPath);
 
     notifyListeners();
+  }
+
+  @override
+  int compareTo(NotesFolder other) {
+    return folderPath.compareTo(other.folderPath);
   }
 }
