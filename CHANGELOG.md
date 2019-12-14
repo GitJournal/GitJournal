@@ -1,3 +1,6 @@
+## [1.25] - 2019-12-14
+* Fix sorting of Notes and Folders
+
 ## [1.24] - 2019-12-14
 * Improve Folder Support
   - Folders can now be deleted
