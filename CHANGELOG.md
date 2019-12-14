@@ -1,3 +1,11 @@
+## [1.24] - 2019-12-14
+* Improve Folder Support
+  - Folders can now be deleted
+  - Subfolders can be also created
+* Improve markdown support - we now support all of GitHub markdown minus HTML.
+* Mark when the note was last modified in the metadata.
+* Bug fixes related to datetime parsing and serializaiton.
+
 ## [1.23] - 2019-12-08
 * Massive performance boosts. We aren't just saying that, now notes are loaded asynchronously in the background, and we only re-parse them when necessary.
 
