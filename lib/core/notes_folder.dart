@@ -274,6 +274,13 @@ class NotesFolder with ChangeNotifier implements Comparable<NotesFolder> {
     notifyListeners();
   }
 
+  String pathSpec() {
+    if (parent == null) {
+      return "";
+    }
+    return p.join(parent.pathSpec(), name);
+  }
+
   @override
   int compareTo(NotesFolder other) {
     return folderPath.compareTo(other.folderPath);

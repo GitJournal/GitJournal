@@ -43,7 +43,7 @@ class JournalListingScreen extends StatelessWidget {
       emptyText: "Why not add your first\n Journal Entry?",
     );
 
-    var title = notesFolder.parent == null ? "Notes" : notesFolder.name;
+    var title = notesFolder.parent == null ? "Notes" : notesFolder.pathSpec();
 
     return Scaffold(
       appBar: AppBar(
