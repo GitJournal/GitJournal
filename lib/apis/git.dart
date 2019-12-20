@@ -58,21 +58,21 @@ Future<Directory> getGitBaseDirectory() async {
 }
 
 class GitRepo {
-  final String folderName;
+  final String folderPath;
   final String authorName;
   final String authorEmail;
 
   const GitRepo({
-    @required this.folderName,
+    @required this.folderPath,
     @required this.authorName,
     @required this.authorEmail,
   });
 
-  static Future<void> clone(String folderName, String cloneUrl) async {
+  static Future<void> clone(String folderPath, String cloneUrl) async {
     try {
       await invokePlatformMethod('gitClone', {
         'cloneUrl': cloneUrl,
-        'folderName': folderName,
+        'folderPath': folderPath,
       });
       Fimber.d("Done");
     } on PlatformException catch (e) {
@@ -81,10 +81,10 @@ class GitRepo {
     }
   }
 
-  static Future<void> init(String folderName) async {
+  static Future<void> init(String folderPath) async {
     try {
       await invokePlatformMethod('gitInit', {
-        'folderName': folderName,
+        'folderPath': folderPath,
       });
     } on PlatformException catch (e) {
       Fimber.d("gitInit Failed: '${e.message}'.");
@@ -95,7 +95,7 @@ class GitRepo {
   Future<void> pull() async {
     try {
       await invokePlatformMethod('gitPull', {
-        'folderName': folderName,
+        'folderPath': folderPath,
         'authorName': authorName,
         'authorEmail': authorEmail,
       });
@@ -109,7 +109,7 @@ class GitRepo {
   Future<void> add(String filePattern) async {
     try {
       await invokePlatformMethod('gitAdd', {
-        'folderName': folderName,
+        'folderPath': folderPath,
         'filePattern': filePattern,
       });
     } on PlatformException catch (e) {
@@ -120,7 +120,7 @@ class GitRepo {
   Future<void> rm(String filePattern) async {
     try {
       await invokePlatformMethod('gitRm', {
-        'folderName': folderName,
+        'folderPath': folderPath,
         'filePattern': filePattern,
       });
     } on PlatformException catch (e) {
@@ -131,7 +131,7 @@ class GitRepo {
   Future<void> push() async {
     try {
       await invokePlatformMethod('gitPush', {
-        'folderName': folderName,
+        'folderPath': folderPath,
       });
     } on PlatformException catch (e) {
       Fimber.d("gitPush Failed: '${e.message}'.");
@@ -143,7 +143,7 @@ class GitRepo {
   Future<void> resetLast() async {
     try {
       await invokePlatformMethod('gitResetLast', {
-        'folderName': folderName,
+        'folderPath': folderPath,
       });
     } on PlatformException catch (e) {
       Fimber.d("gitResetLast Failed: '${e.message}'.");
@@ -156,7 +156,7 @@ class GitRepo {
   Future<void> commit({@required String message, String when}) async {
     try {
       await invokePlatformMethod('gitCommit', {
-        'folderName': folderName,
+        'folderPath': folderPath,
         'authorName': authorName,
         'authorEmail': authorEmail,
         'message': message,

@@ -65,29 +65,27 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
             return;
         } else if (call.method.equals("gitClone")) {
             String cloneUrl = call.argument("cloneUrl");
-            String folderName = call.argument("folderName");
+            String folderPath = call.argument("folderPath");
 
             if (cloneUrl == null || cloneUrl.isEmpty()) {
                 result.error("Invalid Parameters", "cloneUrl Invalid", null);
                 return;
             }
-            if (folderName == null || folderName.isEmpty()) {
-                result.error("Invalid Parameters", "folderName Invalid", null);
+            if (folderPath == null || folderPath.isEmpty()) {
+                result.error("Invalid Parameters", "folderPath Invalid", null);
                 return;
             }
 
-            String cloneLocation = filesDir + "/" + folderName;
-
             AnyThreadResult anyResult = new AnyThreadResult(result);
-            new GitCloneTask(anyResult).execute(cloneUrl, cloneLocation, publicKeyPath, privateKeyPath);
+            new GitCloneTask(anyResult).execute(cloneUrl, folderPath, publicKeyPath, privateKeyPath);
             return;
         } else if (call.method.equals("gitPull")) {
-            String folderName = call.argument("folderName");
+            String folderPath = call.argument("folderPath");
             String authorName = call.argument("authorName");
             String authorEmail = call.argument("authorEmail");
 
-            if (folderName == null || folderName.isEmpty()) {
-                result.error("Invalid Parameters", "folderName Invalid", null);
+            if (folderPath == null || folderPath.isEmpty()) {
+                result.error("Invalid Parameters", "folderPath Invalid", null);
                 return;
             }
             if (authorName == null || authorName.isEmpty()) {
@@ -99,30 +97,26 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
                 return;
             }
 
-            String cloneLocation = filesDir + "/" + folderName;
-
             AnyThreadResult anyResult = new AnyThreadResult(result);
-            new GitPullTask(anyResult).execute(cloneLocation, publicKeyPath, privateKeyPath, authorName, authorEmail);
+            new GitPullTask(anyResult).execute(folderPath, publicKeyPath, privateKeyPath, authorName, authorEmail);
             return;
         } else if (call.method.equals("gitPush")) {
-            String folderName = call.argument("folderName");
+            String folderPath = call.argument("folderPath");
 
-            if (folderName == null || folderName.isEmpty()) {
-                result.error("Invalid Parameters", "folderName Invalid", null);
+            if (folderPath == null || folderPath.isEmpty()) {
+                result.error("Invalid Parameters", "folderPath Invalid", null);
                 return;
             }
 
-            String cloneLocation = filesDir + "/" + folderName;
-
             AnyThreadResult anyResult = new AnyThreadResult(result);
-            new GitPushTask(anyResult).execute(cloneLocation, publicKeyPath, privateKeyPath);
+            new GitPushTask(anyResult).execute(folderPath, publicKeyPath, privateKeyPath);
             return;
         } else if (call.method.equals("gitAdd")) {
-            String folderName = call.argument("folderName");
+            String folderPath = call.argument("folderPath");
             String filePattern = call.argument("filePattern");
 
-            if (folderName == null || folderName.isEmpty()) {
-                result.error("Invalid Parameters", "folderName Invalid", null);
+            if (folderPath == null || folderPath.isEmpty()) {
+                result.error("Invalid Parameters", "folderPath Invalid", null);
                 return;
             }
             if (filePattern == null || filePattern.isEmpty()) {
@@ -130,17 +124,15 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
                 return;
             }
 
-            String cloneLocation = filesDir + "/" + folderName;
-
             AnyThreadResult anyResult = new AnyThreadResult(result);
-            new GitAddTask(anyResult).execute(cloneLocation, filePattern);
+            new GitAddTask(anyResult).execute(folderPath, filePattern);
             return;
         } else if (call.method.equals("gitRm")) {
-            String folderName = call.argument("folderName");
+            String folderPath = call.argument("folderPath");
             String filePattern = call.argument("filePattern");
 
-            if (folderName == null || folderName.isEmpty()) {
-                result.error("Invalid Parameters", "folderName Invalid", null);
+            if (folderPath == null || folderPath.isEmpty()) {
+                result.error("Invalid Parameters", "folderPath Invalid", null);
                 return;
             }
             if (filePattern == null || filePattern.isEmpty()) {
@@ -148,20 +140,18 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
                 return;
             }
 
-            String cloneLocation = filesDir + "/" + folderName;
-
             AnyThreadResult anyResult = new AnyThreadResult(result);
-            new GitRmTask(anyResult).execute(cloneLocation, filePattern);
+            new GitRmTask(anyResult).execute(folderPath, filePattern);
             return;
         } else if (call.method.equals("gitCommit")) {
-            String folderName = call.argument("folderName");
+            String folderPath = call.argument("folderPath");
             String authorName = call.argument("authorName");
             String authorEmail = call.argument("authorEmail");
             String message = call.argument("message");
             String dateTimeStr = call.argument("when");
 
-            if (folderName == null || folderName.isEmpty()) {
-                result.error("Invalid Parameters", "folderName Invalid", null);
+            if (folderPath == null || folderPath.isEmpty()) {
+                result.error("Invalid Parameters", "folderPath Invalid", null);
                 return;
             }
             if (authorName == null || authorName.isEmpty()) {
@@ -177,36 +167,30 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
                 return;
             }
 
-            String cloneLocation = filesDir + "/" + folderName;
-
             AnyThreadResult anyResult = new AnyThreadResult(result);
-            new GitCommitTask(anyResult).execute(cloneLocation, authorName, authorEmail, message, dateTimeStr);
+            new GitCommitTask(anyResult).execute(folderPath, authorName, authorEmail, message, dateTimeStr);
             return;
         } else if (call.method.equals("gitInit")) {
-            String folderName = call.argument("folderName");
+            String folderPath = call.argument("folderPath");
 
-            if (folderName == null || folderName.isEmpty()) {
-                result.error("Invalid Parameters", "folderName Invalid", null);
+            if (folderPath == null || folderPath.isEmpty()) {
+                result.error("Invalid Parameters", "folderPath Invalid", null);
                 return;
             }
 
-            String initLocation = filesDir + "/" + folderName;
-
             AnyThreadResult anyResult = new AnyThreadResult(result);
-            new GitInitTask(anyResult).execute(initLocation);
+            new GitInitTask(anyResult).execute(folderPath);
             return;
         } else if (call.method.equals("gitResetLast")) {
-            String folderName = call.argument("folderName");
+            String folderPath = call.argument("folderPath");
 
-            if (folderName == null || folderName.isEmpty()) {
-                result.error("Invalid Parameters", "folderName Invalid", null);
+            if (folderPath == null || folderPath.isEmpty()) {
+                result.error("Invalid Parameters", "folderPath Invalid", null);
                 return;
             }
 
-            String cloneLocation = filesDir + "/" + folderName;
-
             AnyThreadResult anyResult = new AnyThreadResult(result);
-            new GitResetLastTask(anyResult).execute(cloneLocation);
+            new GitResetLastTask(anyResult).execute(folderPath);
             return;
         } else if (call.method.equals("generateSSHKeys")) {
             String comment = call.argument("comment");

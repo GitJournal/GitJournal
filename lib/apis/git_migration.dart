@@ -35,12 +35,12 @@ Future migrateGitRepo({
     await file.copy(toPath);
 
     var gitRepo = GitRepo(
-      folderName: toGitBaseFolder,
+      folderPath: toGitRepoPath,
       authorEmail: Settings.instance.gitAuthorEmail,
       authorName: Settings.instance.gitAuthor,
     );
     await gitRepo.add(fileName);
-    await gitRepo.commit(message: "Added Journal Entry");
+    await gitRepo.commit(message: "Added Note");
   }
   Fimber.d("migrateGitRepo: Done");
 }

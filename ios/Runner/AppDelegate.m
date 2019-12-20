@@ -67,12 +67,12 @@ static FlutterMethodChannel* gitChannel = 0;
             });
         }
         else if ([@"gitAdd" isEqualToString:method]) {
-            NSString *folderName = arguments[@"folderName"];
+            NSString *folderPath = arguments[@"folderPath"];
             NSString *filePattern = arguments[@"filePattern"];
 
-            if (folderName == nil || [folderName length] == 0) {
+            if (folderPath == nil || [folderPath length] == 0) {
                 result([FlutterError errorWithCode:@"InvalidParams"
-                                           message:@"Invalid folderName" details:nil]);
+                                           message:@"Invalid folderPath" details:nil]);
                 return;
             }
             if (filePattern == nil || [filePattern length] == 0) {
@@ -81,22 +81,19 @@ static FlutterMethodChannel* gitChannel = 0;
                 return;
             }
 
-            NSArray *components = [NSArray arrayWithObjects:filesDir, folderName, nil];
-            NSString* dirPath = [NSString pathWithComponents:components];
-
-            int err = gj_git_add([dirPath UTF8String], [filePattern UTF8String]);
+            int err = gj_git_add([folderPath UTF8String], [filePattern UTF8String]);
             if (!handleError(result, err)) {
                 result(@YES);
                 return;
             }
         }
         else if ([@"gitRm" isEqualToString:method]) {
-            NSString *folderName = arguments[@"folderName"];
+            NSString *folderPath = arguments[@"folderPath"];
             NSString *filePattern = arguments[@"filePattern"];
 
-            if (folderName == nil || [folderName length] == 0) {
+            if (folderPath == nil || [folderPath length] == 0) {
                 result([FlutterError errorWithCode:@"InvalidParams"
-                                           message:@"Invalid folderName" details:nil]);
+                                           message:@"Invalid folderPath" details:nil]);
                 return;
             }
             if (filePattern == nil || [filePattern length] == 0) {
@@ -105,25 +102,22 @@ static FlutterMethodChannel* gitChannel = 0;
                 return;
             }
 
-            NSArray *components = [NSArray arrayWithObjects:filesDir, folderName, nil];
-            NSString* dirPath = [NSString pathWithComponents:components];
-
-            int err = gj_git_rm([dirPath UTF8String], [filePattern UTF8String]);
+            int err = gj_git_rm([folderPath UTF8String], [filePattern UTF8String]);
             if (!handleError(result, err)) {
                 result(@YES);
                 return;
             }
         }
         else if ([@"gitCommit" isEqualToString:method]) {
-            NSString *folderName = arguments[@"folderName"];
+            NSString *folderPath = arguments[@"folderPath"];
             NSString *authorName = arguments[@"authorName"];
             NSString *authorEmail = arguments[@"authorEmail"];
             NSString *message = arguments[@"message"];
             //NSString *when = arguments[@"when"];
 
-            if (folderName == nil || [folderName length] == 0) {
+            if (folderPath == nil || [folderPath length] == 0) {
                 result([FlutterError errorWithCode:@"InvalidParams"
-                                           message:@"Invalid folderName" details:nil]);
+                                           message:@"Invalid folderPath" details:nil]);
                 return;
             }
             if (authorName == nil || [authorName length] == 0) {
@@ -142,10 +136,7 @@ static FlutterMethodChannel* gitChannel = 0;
                 return;
             }
 
-            NSArray *components = [NSArray arrayWithObjects:filesDir, folderName, nil];
-            NSString* dirPath = [NSString pathWithComponents:components];
-
-            int err = gj_git_commit([dirPath UTF8String], [authorName UTF8String],
+            int err = gj_git_commit([folderPath UTF8String], [authorName UTF8String],
                                     [authorEmail UTF8String], [message UTF8String], 0, 0);
             if (!handleError(result, err)) {
                 result(@YES);
@@ -153,36 +144,30 @@ static FlutterMethodChannel* gitChannel = 0;
             }
         }
         else if ([@"gitInit" isEqualToString:method]) {
-            NSString *folderName = arguments[@"folderName"];
+            NSString *folderPath = arguments[@"folderPath"];
 
-            if (folderName == nil || [folderName length] == 0) {
+            if (folderPath == nil || [folderPath length] == 0) {
                 result([FlutterError errorWithCode:@"InvalidParams"
-                        message:@"Invalid folderName" details:nil]);
+                        message:@"Invalid folderPath" details:nil]);
                 return;
             }
 
-            NSArray *components = [NSArray arrayWithObjects:filesDir, folderName, nil];
-            NSString* dirPath = [NSString pathWithComponents:components];
-
-            int err = gj_git_init([dirPath UTF8String]);
+            int err = gj_git_init([folderPath UTF8String]);
             if (!handleError(result, err)) {
                 result(@YES);
                 return;
             }
         }
         else if ([@"gitResetLast" isEqualToString:method]) {
-            NSString *folderName = arguments[@"folderName"];
+            NSString *folderPath = arguments[@"folderPath"];
 
-            if (folderName == nil || [folderName length] == 0) {
+            if (folderPath == nil || [folderPath length] == 0) {
                 result([FlutterError errorWithCode:@"InvalidParams"
-                                           message:@"Invalid folderName" details:nil]);
+                                           message:@"Invalid folderPath" details:nil]);
                 return;
             }
 
-            NSArray *components = [NSArray arrayWithObjects:filesDir, folderName, nil];
-            NSString* dirPath = [NSString pathWithComponents:components];
-
-            int err = gj_git_reset_hard([dirPath UTF8String], "HEAD^");
+            int err = gj_git_reset_hard([folderPath UTF8String], "HEAD^");
             if (!handleError(result, err)) {
                 result(@YES);
                 return;
@@ -330,38 +315,35 @@ bool handleError(FlutterResult result, int err) {
 
     if ([@"gitClone" isEqualToString:method]) {
         NSString *cloneUrl = arguments[@"cloneUrl"];
-        NSString *folderName = arguments[@"folderName"];
+        NSString *folderPath = arguments[@"folderPath"];
 
         if (cloneUrl == nil || [cloneUrl length] == 0) {
             result([FlutterError errorWithCode:@"InvalidParams"
                                        message:@"Invalid cloneUrl" details:nil]);
             return;
         }
-        if (folderName == nil || [folderName length] == 0) {
+        if (folderPath == nil || [folderPath length] == 0) {
             result([FlutterError errorWithCode:@"InvalidParams"
-                                       message:@"Invalid folderName" details:nil]);
+                                       message:@"Invalid folderPath" details:nil]);
             return;
         }
 
         gj_set_ssh_keys_paths((char*) sshPublicKeyPath, (char*) sshPrivateKeyPath, "");
 
-        NSArray *components = [NSArray arrayWithObjects:filesDir, folderName, nil];
-        NSString* dirPath = [NSString pathWithComponents:components];
-
-        int err = gj_git_clone([cloneUrl UTF8String], [dirPath UTF8String]);
+        int err = gj_git_clone([folderPath UTF8String], [dirPath UTF8String]);
         if (!handleError(result, err)) {
             result(@YES);
             return;
         }
     }
     else if ([@"gitPull" isEqualToString:method]) {
-        NSString *folderName = arguments[@"folderName"];
+        NSString *folderPath = arguments[@"folderPath"];
         NSString *authorName = arguments[@"authorName"];
         NSString *authorEmail = arguments[@"authorEmail"];
 
-        if (folderName == nil || [folderName length] == 0) {
+        if (folderPath == nil || [folderPath length] == 0) {
             result([FlutterError errorWithCode:@"InvalidParams"
-                                       message:@"Invalid folderName" details:nil]);
+                                       message:@"Invalid folderPath" details:nil]);
             return;
         }
         if (authorName == nil || [authorName length] == 0) {
@@ -377,30 +359,24 @@ bool handleError(FlutterResult result, int err) {
 
         gj_set_ssh_keys_paths((char*) sshPublicKeyPath, (char*) sshPrivateKeyPath, "");
 
-        NSArray *components = [NSArray arrayWithObjects:filesDir, folderName, nil];
-        NSString* dirPath = [NSString pathWithComponents:components];
-
-        int err = gj_git_pull([dirPath UTF8String], [authorName UTF8String], [authorEmail UTF8String]);
+        int err = gj_git_pull([folderPath UTF8String], [authorName UTF8String], [authorEmail UTF8String]);
         if (!handleError(result, err)) {
             result(@YES);
             return;
         }
     }
     else if ([@"gitPush" isEqualToString:method]) {
-        NSString *folderName = arguments[@"folderName"];
+        NSString *folderPath = arguments[@"folderPath"];
 
-        if (folderName == nil || [folderName length] == 0) {
+        if (folderPath == nil || [folderPath length] == 0) {
             result([FlutterError errorWithCode:@"InvalidParams"
-                                       message:@"Invalid folderName" details:nil]);
+                                       message:@"Invalid folderPath" details:nil]);
             return;
         }
 
         gj_set_ssh_keys_paths((char*) sshPublicKeyPath, (char*) sshPrivateKeyPath, "");
 
-        NSArray *components = [NSArray arrayWithObjects:filesDir, folderName, nil];
-        NSString* dirPath = [NSString pathWithComponents:components];
-
-        int err = gj_git_push([dirPath UTF8String]);
+        int err = gj_git_push([folderPath UTF8String]);
         if (!handleError(result, err)) {
             result(@YES);
             return;

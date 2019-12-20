@@ -1,12 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:gitjournal/apis/git.dart';
 import 'package:gitjournal/apis/git_migration.dart';
+import 'package:path/path.dart' as p;
 
-const basePath = "journal";
+const gitFolderName = "journal";
 String cloneUrl = "git@github.com:GitJournal/journal_test.git";
 
-class GitApp extends StatelessWidget {
+class GitApp extends StatefulWidget {
+  @override
+  _GitAppState createState() => _GitAppState();
+}
+
+class _GitAppState extends State<GitApp> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  GitRepo gitRepo;
+
+  @override
+  void initState() {
+    super.initState();
+
+    getGitBaseDirectory().then((dir) async {
+      var repoPath = p.join(dir.path, gitFolderName);
+      gitRepo = GitRepo(
+        folderPath: repoPath,
+        authorName: "Vishesh Handa",
+        authorEmail: "noemail@example.com",
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +61,6 @@ class GitApp extends StatelessWidget {
   }
 
   List<Widget> _buildGitButtons() {
-    var gitRepo = const GitRepo(
-      folderName: basePath,
-      authorName: "Vishesh Handa",
-      authorEmail: "noemail@example.com",
-    );
-
     return <Widget>[
       RaisedButton(
           child: const Text("Generate Keys"),
@@ -56,7 +71,7 @@ class GitApp extends StatelessWidget {
         child: const Text("Git Clone"),
         onPressed: () async {
           try {
-            await GitRepo.clone(basePath, cloneUrl);
+            await GitRepo.clone(gitRepo.folderPath, cloneUrl);
             _sendSuccess();
           } on GitException catch (ex) {
             print(ex);

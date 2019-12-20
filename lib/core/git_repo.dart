@@ -7,7 +7,6 @@ import 'package:gitjournal/apis/git.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/settings.dart';
-import 'package:path/path.dart' as p;
 
 class NoteRepoResult {
   bool error;
@@ -20,23 +19,16 @@ class NoteRepoResult {
 }
 
 class GitNoteRepository {
-  final String dirName;
-  final String baseDirectory;
-  String notesBasePath;
+  final String gitDirPath;
   final GitRepo _gitRepo;
 
-  // vHanda: This no longer needs to be so complex. It will only ever take the baseDirectory + dirName
-  // The directory should already exist!
   GitNoteRepository({
-    @required this.dirName,
-    @required this.baseDirectory,
+    @required this.gitDirPath,
   }) : _gitRepo = GitRepo(
-          folderName: dirName,
+          folderPath: gitDirPath,
           authorEmail: Settings.instance.gitAuthorEmail,
           authorName: Settings.instance.gitAuthor,
-        ) {
-    notesBasePath = p.join(baseDirectory, dirName);
-  }
+        );
 
   Future<NoteRepoResult> addNote(Note note) async {
     return _addNote(note, "Added Note");
@@ -75,8 +67,7 @@ class GitNoteRepository {
   }
 
   Future<NoteRepoResult> removeNote(String noteFilePath) async {
-    var gitDir = p.join(baseDirectory, dirName);
-    var pathSpec = noteFilePath.replaceFirst(gitDir, "").substring(1);
+    var pathSpec = noteFilePath.replaceFirst(gitDirPath, "").substring(1);
 
     // We are not calling note.remove() as gitRm will also remove the file
     await _gitRepo.rm(pathSpec);
@@ -88,8 +79,7 @@ class GitNoteRepository {
   }
 
   Future<NoteRepoResult> removeFolder(String folderPath) async {
-    var gitDir = p.join(baseDirectory, dirName);
-    var pathSpec = folderPath.replaceFirst(gitDir, "").substring(1);
+    var pathSpec = folderPath.replaceFirst(gitDirPath, "").substring(1);
 
     await _gitRepo.rm(pathSpec);
     await _gitRepo.commit(

@@ -48,18 +48,17 @@ class StateContainerState extends State<StateContainer> {
 
     assert(appState.localGitRepoConfigured);
 
+    String repoPath;
     if (appState.remoteGitRepoConfigured) {
-      _gitRepo = GitNoteRepository(
-        baseDirectory: appState.gitBaseDirectory,
-        dirName: appState.remoteGitRepoFolderName,
-      );
+      repoPath =
+          p.join(appState.gitBaseDirectory, appState.remoteGitRepoFolderName);
     } else if (appState.localGitRepoConfigured) {
-      _gitRepo = GitNoteRepository(
-        baseDirectory: appState.gitBaseDirectory,
-        dirName: appState.localGitRepoPath,
-      );
+      repoPath =
+          p.join(appState.gitBaseDirectory, appState.localGitRepoFolderName);
     }
-    appState.notesFolder = NotesFolder(null, _gitRepo.notesBasePath);
+
+    _gitRepo = GitNoteRepository(gitDirPath: repoPath);
+    appState.notesFolder = NotesFolder(null, _gitRepo.gitDirPath);
 
     // Just a fail safe
     if (!appState.remoteGitRepoConfigured) {
@@ -177,16 +176,15 @@ class StateContainerState extends State<StateContainer> {
       appState.remoteGitRepoFolderName = "journal";
 
       await migrateGitRepo(
-        fromGitBasePath: appState.localGitRepoPath,
+        fromGitBasePath: appState.localGitRepoFolderName,
         toGitBaseFolder: appState.remoteGitRepoFolderName,
         gitBasePath: appState.gitBaseDirectory,
       );
 
-      _gitRepo = GitNoteRepository(
-        baseDirectory: appState.gitBaseDirectory,
-        dirName: appState.remoteGitRepoFolderName,
-      );
-      appState.notesFolder.folderPath = _gitRepo.notesBasePath;
+      var repoPath =
+          p.join(appState.gitBaseDirectory, appState.remoteGitRepoFolderName);
+      _gitRepo = GitNoteRepository(gitDirPath: repoPath);
+      appState.notesFolder.folderPath = _gitRepo.gitDirPath;
 
       await _persistConfig();
       _loadNotes();

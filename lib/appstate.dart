@@ -6,11 +6,10 @@ class AppState {
   //
   // Saved on Disk
   //
-  // FIXME: Make these 2 final
-  String localGitRepoPath = "";
+  // FIXME: These should be figured out by querying the 'git remotes'
+  String localGitRepoFolderName = "";
   bool localGitRepoConfigured = false;
 
-  // FIXME: Rename from 'path' to folderName
   String remoteGitRepoFolderName = "";
   bool remoteGitRepoConfigured = false;
 
@@ -31,7 +30,7 @@ class AppState {
   AppState(SharedPreferences pref) {
     localGitRepoConfigured = pref.getBool("localGitRepoConfigured") ?? false;
     remoteGitRepoConfigured = pref.getBool("remoteGitRepoConfigured") ?? false;
-    localGitRepoPath = pref.getString("localGitRepoPath") ?? "";
+    localGitRepoFolderName = pref.getString("localGitRepoPath") ?? "";
     remoteGitRepoFolderName = pref.getString("remoteGitRepoPath") ?? "";
     onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
   }
@@ -40,7 +39,7 @@ class AppState {
     Fimber.d(" ---- Settings ---- ");
     Fimber.d("localGitRepoConfigured: $localGitRepoConfigured");
     Fimber.d("remoteGitRepoConfigured: $remoteGitRepoConfigured");
-    Fimber.d("localGitRepoPath: $localGitRepoPath");
+    Fimber.d("localGitRepoFolderName: $localGitRepoFolderName");
     Fimber.d("remoteGitRepoFolderName: $remoteGitRepoFolderName");
     Fimber.d("onBoardingCompleted: $onBoardingCompleted");
     Fimber.d(" ------------------ ");
@@ -49,7 +48,7 @@ class AppState {
   Future save(SharedPreferences pref) async {
     await pref.setBool("localGitRepoConfigured", localGitRepoConfigured);
     await pref.setBool("remoteGitRepoConfigured", remoteGitRepoConfigured);
-    await pref.setString("localGitRepoPath", localGitRepoPath);
+    await pref.setString("localGitRepoPath", localGitRepoFolderName);
     await pref.setString("remoteGitRepoPath", remoteGitRepoFolderName);
     await pref.setBool("onBoardingCompleted", onBoardingCompleted);
   }

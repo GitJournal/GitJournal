@@ -6,6 +6,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:path/path.dart' as p;
 
 import 'package:gitjournal/apis/git.dart';
 import 'package:gitjournal/settings.dart';
@@ -33,17 +34,18 @@ class JournalApp extends StatelessWidget {
       _enableAnalyticsIfPossible();
     }
 
+    var dir = await getGitBaseDirectory();
+    appState.gitBaseDirectory = dir.path;
+
     if (appState.localGitRepoConfigured == false) {
       // FIXME: What about exceptions!
-      appState.localGitRepoPath = "journal_local";
-      await GitRepo.init(appState.localGitRepoPath);
+      appState.localGitRepoFolderName = "journal_local";
+      var repoPath = p.join(dir.path, appState.localGitRepoFolderName);
+      await GitRepo.init(repoPath);
 
       appState.localGitRepoConfigured = true;
       appState.save(pref);
     }
-
-    var dir = await getGitBaseDirectory();
-    appState.gitBaseDirectory = dir.path;
 
     runApp(StateContainer(
       appState: appState,
