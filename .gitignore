@@ -20,4 +20,5 @@ android/fastlane/report.xml
 
 .externalNativeBuild
 
-android/app/libs/
+# Android NDK Debug symbols
+debugSymbols
