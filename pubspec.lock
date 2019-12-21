@@ -113,6 +113,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  fetch_app_logs:
+    dependency: "direct main"
+    description:
+      name: fetch_app_logs
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1"
   file:
     dependency: transitive
     description:

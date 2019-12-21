@@ -56,23 +56,9 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
         if (call.method.equals("getBaseDirectory")) {
             result.success(filesDir);
             return;
-        } else if (call.method.equals("dumpAppLogs")) {
-            String filePath = filesDir + "/app-logs.txt";
-
-            try {
-                LogDumper.dumpLogs(filePath);
-            } catch (Exception e) {
-                e.printStackTrace();
-                result.error("FAILED", e.toString(), null);
-                return;
-            }
-
-            result.success(filePath);
-            return;
         } else if (call.method.equals("shouldEnableAnalytics")) {
             boolean shouldBe = true;
-            String testLabSetting =
-                    Settings.System.getString(context.getContentResolver(), "firebase.test.lab");
+            String testLabSetting = Settings.System.getString(context.getContentResolver(), "firebase.test.lab");
             if ("true".equals(testLabSetting)) {
                 shouldBe = false;
             }

@@ -6,6 +6,7 @@ import 'package:launch_review/launch_review.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:fetch_app_logs/fetch_app_logs.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/state_container.dart';
@@ -163,7 +164,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () async {
               var platform = Platform.operatingSystem;
               var versionText = await getVersionString();
-              var appLogsFilePath = await dumpAppLogs();
+              var appLogsFilePath = await FetchAppLogs.dumpAppLogsToFile();
 
               final Email email = Email(
                 body:

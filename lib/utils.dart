@@ -34,14 +34,6 @@ Future<bool> shouldEnableAnalytics() async {
   }
 }
 
-/// adb logcat
-/// Returns the file path where the logs were dumped
-Future<String> dumpAppLogs() async {
-  const _platform = MethodChannel('gitjournal.io/git');
-  final String logsFilePath = await _platform.invokeMethod('dumpAppLogs');
-  return logsFilePath;
-}
-
 void showUndoDeleteSnackbar(
   BuildContext context,
   StateContainerState stateContainer,
