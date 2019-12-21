@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as p;
 
+import 'package:git_bindings/git.dart';
+
 import 'package:gitjournal/apis/git.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';

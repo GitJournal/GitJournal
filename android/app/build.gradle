@@ -44,18 +44,6 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        externalNativeBuild {
-            cmake {
-                cppFlags ""
-            }
-        }
-        sourceSets {
-            main {
-                jniLibs.srcDirs = ['libs']
-                java.srcDirs = ['src']
-            }
-        }
     }
 
     flavorDimensions "app"
@@ -93,12 +81,6 @@ android {
         }
     }
 
-    externalNativeBuild {
-        cmake {
-            path "src/main/cpp/CMakeLists.txt"
-        }
-    }
-
     dexOptions {
         preDexLibraries true
         jumboMode true
@@ -114,9 +96,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
-
-    // For reading a file to string
-    implementation 'commons-io:commons-io:2.5'
 }
 
 apply plugin: 'com.google.gms.google-services'
