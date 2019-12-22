@@ -49,22 +49,7 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
         decoration: const InputDecoration(
           hintText: 'git@github.com:GitJournal/GitJournal.git',
         ),
-        validator: (String value) {
-          value = value.trim();
-          if (value.isEmpty) {
-            return 'Please enter some text';
-          }
-          if (value.startsWith('https://') || value.startsWith('http://')) {
-            return 'Only SSH urls are currently accepted';
-          }
-
-          RegExp regExp = RegExp(r"[a-zA-Z0-9.]+@[a-zA-Z0-9.-]+:.+");
-          if (!regExp.hasMatch(value)) {
-            return "Invalid Input";
-          }
-
-          return null;
-        },
+        validator: _isCloneUrlValid,
         focusNode: inputFormFocus,
         textInputAction: TextInputAction.done,
         onFieldSubmitted: (String _) => formSubmitted(),
@@ -147,22 +132,7 @@ class GitCloneUrlKnownProviderPageState
         decoration: const InputDecoration(
           hintText: 'git@github.com:GitJournal/GitJournal.git',
         ),
-        validator: (String value) {
-          value = value.trim();
-          if (value.isEmpty) {
-            return 'Please enter some text';
-          }
-          if (value.startsWith('https://') || value.startsWith('http://')) {
-            return 'Only SSH urls are currently accepted';
-          }
-
-          RegExp regExp = RegExp(r"[a-zA-Z0-9.]+@[a-zA-Z0-9.]+:.+");
-          if (!regExp.hasMatch(value)) {
-            return "Invalid Input";
-          }
-
-          return null;
-        },
+        validator: _isCloneUrlValid,
         focusNode: inputFormFocus,
         textInputAction: TextInputAction.done,
         onFieldSubmitted: (String _) => formSubmitted(),
@@ -207,4 +177,22 @@ class GitCloneUrlKnownProviderPageState
       ],
     );
   }
+}
+
+// Returns null when valid
+String _isCloneUrlValid(String value) {
+  value = value.trim();
+  if (value.isEmpty) {
+    return 'Please enter some text';
+  }
+  if (value.startsWith('https://') || value.startsWith('http://')) {
+    return 'Only SSH urls are currently accepted';
+  }
+
+  RegExp regExp = RegExp(r".*@.*");
+  if (!regExp.hasMatch(value)) {
+    return "Invalid Input foo";
+  }
+
+  return null;
 }
