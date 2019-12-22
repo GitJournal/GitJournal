@@ -99,7 +99,7 @@ class JournalBrowsingScreenState extends State<JournalBrowsingScreen> {
   }
 
   Widget _buildAlertDialog(BuildContext context) {
-    var title = "Are you sure you want to delete this Journal Entry?";
+    var title = "Are you sure you want to delete this Note?";
 
     return AlertDialog(
       content: Text(title),

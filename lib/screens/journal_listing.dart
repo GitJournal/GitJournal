@@ -40,7 +40,7 @@ class JournalListingScreen extends StatelessWidget {
         );
         Navigator.of(context).push(route);
       },
-      emptyText: "Why not add your first\n Journal Entry?",
+      emptyText: "Let's add some notes?",
     );
 
     var title = notesFolder.parent == null ? "Notes" : notesFolder.pathSpec();

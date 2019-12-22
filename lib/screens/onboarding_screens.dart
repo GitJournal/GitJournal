@@ -175,7 +175,7 @@ class OnBoardingPage1 extends StatelessWidget {
           Center(child: header),
           const SizedBox(height: 64.0),
           AutoSizeText(
-            "A Journaling App focused on\nOpenness and Data Privacy",
+            "A Note Taking App built on top of Git",
             style: textTheme.headline,
             textAlign: TextAlign.center,
             maxLines: 2,
@@ -211,7 +211,7 @@ class OnBoardingPage2 extends StatelessWidget {
           Center(child: header),
           const SizedBox(height: 64.0),
           AutoSizeText(
-            "Your Journal Entries are stored in a\nstandard Markdown + YAML\nHeader format",
+            "Your Notes are stored in a\nstandard Markdown + YAML\nHeader format",
             style: textTheme.headline,
             textAlign: TextAlign.center,
             maxLines: 3,
