@@ -84,19 +84,38 @@ class AppDrawer extends StatelessWidget {
             title: "Folders",
             onTap: () {
               var m = ModalRoute.of(context);
-              // FIXME: This is a terrible hack, I should figure out how to make
-              //        transitions work with named routes
-              if (m.settings.name == null) {
-                Navigator.pop(context);
-              } else {
+              if (m.settings.name == '/') {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
                   PageTransition(
                     type: PageTransitionType.fade,
                     child: FolderListingScreen(),
+                    settings: const RouteSettings(name: '/folders'),
                   ),
                 );
+              } else if (m.settings.name == '/folders') {
+                Navigator.pop(context);
+              } else {
+                // Check if '/folders' is a parent
+                var wasParent = false;
+                Navigator.popUntil(
+                  context,
+                  (route) {
+                    wasParent = route.settings.name == '/folders';
+                    return wasParent;
+                  },
+                );
+                if (!wasParent) {
+                  Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.fade,
+                      child: FolderListingScreen(),
+                      settings: const RouteSettings(name: '/folders'),
+                    ),
+                  );
+                }
               }
             },
             selected: currentRoute == null,
