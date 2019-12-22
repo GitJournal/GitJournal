@@ -120,7 +120,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
           if (selectedFolder != null) action,
         ],
       ),
-      body: treeView,
+      body: Scrollbar(child: treeView),
       drawer: AppDrawer(),
       floatingActionButton: CreateFolderButton(),
     );

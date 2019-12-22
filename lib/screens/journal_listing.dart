@@ -64,7 +64,7 @@ class JournalListingScreen extends StatelessWidget {
       floatingActionButton: createButton,
       body: Center(
         child: RefreshIndicator(
-            child: journalList,
+            child: Scrollbar(child: journalList),
             onRefresh: () async {
               try {
                 await container.syncNotes();
