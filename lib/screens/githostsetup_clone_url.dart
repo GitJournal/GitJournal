@@ -195,7 +195,7 @@ String _isCloneUrlValid(String value) {
 
   RegExp regExp = RegExp(r".*@.*");
   if (!regExp.hasMatch(value)) {
-    return "Invalid Input foo";
+    return "Invalid Input";
   }
 
   return null;
