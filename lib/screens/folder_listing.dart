@@ -107,7 +107,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
       },
     );
 
-    var title = const Text("Folder");
+    var title = const Text("Folders");
     if (selectedFolder != null) {
       title = const Text("Folder Selected");
     }
