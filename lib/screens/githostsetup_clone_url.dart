@@ -185,7 +185,11 @@ String _isCloneUrlValid(String value) {
   if (value.isEmpty) {
     return 'Please enter some text';
   }
-  if (value.startsWith('https://') || value.startsWith('http://')) {
+  if (value.startsWith('https://') ||
+      value.startsWith('http://') ||
+      value.startsWith('git://') ||
+      value.startsWith('ssh+git://') ||
+      value.startsWith('git+ssh://')) {
     return 'Only SSH urls are currently accepted';
   }
 
