@@ -175,7 +175,7 @@ class OnBoardingPage1 extends StatelessWidget {
           Center(child: header),
           const SizedBox(height: 64.0),
           AutoSizeText(
-            "A Note Taking App built on top of Git",
+            "A Open Source Note Taking App\nbuilt on top of Git",
             style: textTheme.headline,
             textAlign: TextAlign.center,
             maxLines: 2,
