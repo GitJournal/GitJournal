@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/utils.dart';
-import 'package:git_bindings/git.dart';
+import 'package:git_bindings/git_bindings.dart';
 import 'package:gitjournal/screens/journal_editor.dart';
 import 'package:gitjournal/screens/journal_browsing.dart';
 import 'package:gitjournal/state_container.dart';

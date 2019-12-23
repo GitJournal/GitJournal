@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:function_types/function_types.dart';
-import 'package:git_bindings/git.dart';
+import 'package:git_bindings/git_bindings.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';

@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
-import 'package:git_bindings/git.dart';
+import 'package:git_bindings/git_bindings.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
