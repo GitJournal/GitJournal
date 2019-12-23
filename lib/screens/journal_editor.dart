@@ -200,20 +200,18 @@ class NoteMarkdownEditor extends StatelessWidget {
       style = style.copyWith(fontFamily: "Roboto Mono");
     }
 
-    return Form(
-      child: TextFormField(
-        autofocus: true,
-        autocorrect: false,
-        keyboardType: TextInputType.multiline,
-        maxLines: null,
-        style: style,
-        decoration: InputDecoration(
-          hintText: 'Write here',
-          border: InputBorder.none,
-        ),
-        controller: textController,
-        textCapitalization: TextCapitalization.sentences,
+    return TextField(
+      autofocus: true,
+      autocorrect: false,
+      keyboardType: TextInputType.multiline,
+      maxLines: null,
+      style: style,
+      decoration: InputDecoration(
+        hintText: 'Write here',
+        border: InputBorder.none,
       ),
+      controller: textController,
+      textCapitalization: TextCapitalization.sentences,
     );
   }
 }
