@@ -70,6 +70,7 @@ class JournalApp extends StatelessWidget {
       if (Platform.isAndroid) {
         var info = await deviceInfo.androidInfo;
         isPhysicalDevice = info.isPhysicalDevice;
+        Fimber.d("Device Fingerprint: " + info.fingerprint);
       } else if (Platform.isIOS) {
         var info = await deviceInfo.iosInfo;
         isPhysicalDevice = info.isPhysicalDevice;
