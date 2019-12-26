@@ -11,6 +11,7 @@ import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/git_repo.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 
 class StateContainer extends StatefulWidget {
   final Widget child;
@@ -102,11 +103,14 @@ class StateContainerState extends State<StateContainer> {
         Fimber.d("Synced!");
         appState.syncStatus = SyncStatus.Done;
       });
-    } catch (Exeception) {
+    } catch (e, stacktrace) {
       setState(() {
         Fimber.d("Failed to Sync");
         appState.syncStatus = SyncStatus.Error;
       });
+      if (shouldLogGitException(e)) {
+        await FlutterCrashlytics().logException(e, stacktrace);
+      }
       rethrow;
     }
     await _loadNotes();
