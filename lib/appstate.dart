@@ -1,6 +1,14 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fimber/fimber.dart';
+
 import 'package:gitjournal/core/notes_folder.dart';
+
+enum SyncStatus {
+  Unknown,
+  Done,
+  Loading,
+  Error,
+}
 
 class AppState {
   //
@@ -14,6 +22,8 @@ class AppState {
   bool remoteGitRepoConfigured = false;
 
   bool onBoardingCompleted = false;
+
+  SyncStatus syncStatus = SyncStatus.Unknown;
 
   //
   // Temporary

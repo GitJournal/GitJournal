@@ -85,16 +85,31 @@ class StateContainerState extends State<StateContainer> {
     await appState.notesFolder.loadRecursively();
   }
 
-  Future syncNotes() async {
+  Future<void> syncNotes() async {
     if (!appState.remoteGitRepoConfigured) {
       Fimber.d("Not syncing because RemoteRepo not configured");
       return true;
     }
 
-    await _gitRepo.sync();
-    await _loadNotes();
+    setState(() {
+      appState.syncStatus = SyncStatus.Loading;
+    });
 
-    return true;
+    try {
+      await _gitRepo.sync();
+
+      setState(() {
+        Fimber.d("Synced!");
+        appState.syncStatus = SyncStatus.Done;
+      });
+    } catch (Exeception) {
+      setState(() {
+        Fimber.d("Failed to Sync");
+        appState.syncStatus = SyncStatus.Error;
+      });
+      rethrow;
+    }
+    await _loadNotes();
   }
 
   void createFolder(NotesFolder parent, String folderName) async {

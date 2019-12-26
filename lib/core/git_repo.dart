@@ -102,7 +102,7 @@ class GitNoteRepository {
     return _addNote(note, "Edited Note");
   }
 
-  Future<bool> sync() async {
+  Future<void> sync() async {
     try {
       await _gitRepo.pull();
     } on GitException catch (e, stacktrace) {
@@ -120,8 +120,6 @@ class GitNoteRepository {
       }
       throw e;
     }
-
-    return true;
   }
 }
 
