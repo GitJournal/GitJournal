@@ -268,8 +268,8 @@ class NotesFolder with ChangeNotifier implements Comparable<NotesFolder> {
   void rename(String newName) {
     var dir = Directory(folderPath);
     var parentDirName = dirname(folderPath);
-    folderPath = p.join(parentDirName, newName);
     dir.renameSync(folderPath);
+    folderPath = p.join(parentDirName, newName);
 
     notifyListeners();
   }
