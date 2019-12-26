@@ -32,6 +32,7 @@ dependencies:
   provider: ^3.2.0
   git_bindings: ^0.0.6
   fetch_app_logs: ^0.0.2
+  flutter_runtime_env: ^0.0.1
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.2"

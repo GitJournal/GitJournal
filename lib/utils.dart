@@ -1,6 +1,5 @@
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
 
 import 'package:flushbar/flushbar.dart';
@@ -21,17 +20,6 @@ Future<String> getVersionString() async {
   }
 
   return versionText;
-}
-
-Future<bool> shouldEnableAnalytics() async {
-  try {
-    const _platform = MethodChannel('gitjournal.io/git');
-    final bool result = await _platform.invokeMethod('shouldEnableAnalytics');
-    return result;
-  } on MissingPluginException catch (e) {
-    Fimber.d("shouldEnableAnalytics: $e");
-    return false;
-  }
 }
 
 void showUndoDeleteSnackbar(

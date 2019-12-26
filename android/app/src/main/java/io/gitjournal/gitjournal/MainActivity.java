@@ -40,34 +40,8 @@ public class MainActivity extends FlutterActivity implements MethodCallHandler {
         Context context = getApplicationContext();
         final String filesDir = PathUtils.getFilesDir(context);
 
-        Log.d("GitJournalAndroid", "Called method " + call.method);
-        if (call.arguments instanceof Map) {
-            Map<String, Object> map = (Map<String, Object>) call.arguments;
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                Object val = entry.getValue();
-                String objVal = "";
-                if (val != null) {
-                    objVal = val.toString();
-                }
-                Log.d("GitJournalAndroid", ".  " + entry.getKey() + ": " + val);
-            }
-        }
-
         if (call.method.equals("getBaseDirectory")) {
             result.success(filesDir);
-            return;
-        } else if (call.method.equals("shouldEnableAnalytics")) {
-            boolean shouldBe = true;
-            String testLabSetting = Settings.System.getString(context.getContentResolver(), "firebase.test.lab");
-            if ("true".equals(testLabSetting)) {
-                shouldBe = false;
-            }
-
-            if (BuildConfig.DEBUG) {
-                shouldBe = false;
-            }
-
-            result.success(shouldBe);
             return;
         }
 

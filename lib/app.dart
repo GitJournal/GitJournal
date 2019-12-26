@@ -7,13 +7,13 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:flutter_runtime_env/flutter_runtime_env.dart' as runtime_env;
 
 import 'package:git_bindings/git_bindings.dart';
 
 import 'package:gitjournal/apis/git.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
-import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/appstate.dart';
 import 'package:gitjournal/themes.dart';
 
@@ -62,10 +62,7 @@ class JournalApp extends StatelessWidget {
   }
 
   static void _enableAnalyticsIfPossible() async {
-    //
-    // Check if in debugMode or not a real device
-    //
-    assert(JournalApp.isInDebugMode = true);
+    JournalApp.isInDebugMode = runtime_env.isInDebugMode();
 
     var isPhysicalDevice = true;
     try {
@@ -82,12 +79,11 @@ class JournalApp extends StatelessWidget {
     }
 
     if (isPhysicalDevice == false) {
-      Fimber.d("Not running in a physcial device");
       JournalApp.isInDebugMode = true;
     }
 
     bool should = (JournalApp.isInDebugMode == false);
-    should = should && (await shouldEnableAnalytics());
+    should = should && (await runtime_env.inFirebaseTestLab());
 
     Fimber.d("Analytics Collection: $should");
     JournalApp.analytics.setAnalyticsCollectionEnabled(should);
