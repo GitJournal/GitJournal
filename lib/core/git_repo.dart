@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
+
 import 'package:git_bindings/git_bindings.dart';
 
 import 'package:gitjournal/core/note.dart';
@@ -104,17 +105,48 @@ class GitNoteRepository {
   Future<bool> sync() async {
     try {
       await _gitRepo.pull();
-    } on GitException catch (ex) {
-      Fimber.d(ex.toString());
+    } on GitException catch (e, stacktrace) {
+      if (shouldLogGitException(e)) {
+        await FlutterCrashlytics().logException(e, stacktrace);
+      }
+      throw e;
     }
 
     try {
       await _gitRepo.push();
-    } on GitException catch (ex) {
-      Fimber.d(ex.toString());
-      rethrow;
+    } on GitException catch (e, stacktrace) {
+      if (shouldLogGitException(e)) {
+        await FlutterCrashlytics().logException(e, stacktrace);
+      }
+      throw e;
     }
 
     return true;
   }
+}
+
+bool shouldLogGitException(GitException ex) {
+  var msg = ex.cause.toLowerCase();
+  if (msg.contains("failed to resolve address for")) {
+    return false;
+  }
+  if (msg.contains("failed to connect to")) {
+    return false;
+  }
+  if (msg.contains("no address associated with hostname")) {
+    return false;
+  }
+  if (msg.contains("failed to connect to")) {
+    return false;
+  }
+  if (msg.contains("unauthorized")) {
+    return false;
+  }
+  if (msg.contains("invalid credentials")) {
+    return false;
+  }
+  if (msg.contains("failed to start ssh session")) {
+    return false;
+  }
+  return true;
 }
