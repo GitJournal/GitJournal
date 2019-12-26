@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:connectivity/connectivity.dart';
+
 import 'package:git_bindings/git_bindings.dart';
 import 'package:gitjournal/appstate.dart';
-
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/state_container.dart';
 
@@ -11,14 +14,44 @@ class SyncButton extends StatefulWidget {
 }
 
 class _SyncButtonState extends State<SyncButton> {
+  StreamSubscription<ConnectivityResult> subscription;
+  ConnectivityResult _connectivity;
+
+  @override
+  void initState() {
+    super.initState();
+    subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) {
+      setState(() {
+        _connectivity = result;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final container = StateContainer.of(context);
     final appState = container.appState;
 
+    if (_connectivity == ConnectivityResult.none) {
+      return IconButton(
+        icon: Icon(Icons.signal_wifi_off),
+        onPressed: () async {
+          _syncRepo();
+        },
+      );
+    }
     if (appState.syncStatus == SyncStatus.Loading) {
       return RotatingIcon();
     }
+
     return IconButton(
       icon: Icon(_syncStatusIcon()),
       onPressed: () async {
