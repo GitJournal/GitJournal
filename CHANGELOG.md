@@ -1,3 +1,11 @@
+## [1.26] - 2019-12-26
+* Support Git repos which do not have master branches
+* Add scrollbars
+* Add a button to show network state
+* Fix Folder Navigation
+* Split GitJournal into many plugins
+  - This way more people can build Git based apps
+
 ## [1.25] - 2019-12-14
 * Fix sorting of Notes and Folders
 
