@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:function_types/function_types.dart';
 
 import 'package:git_bindings/git_bindings.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
@@ -91,8 +92,8 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
             Settings.instance.gitAuthorEmail = userInfo.email;
           }
           Settings.instance.save();
-        } on GitHostException catch (e) {
-          _handleGitHostException(e);
+        } on Exception catch (e, stacktrace) {
+          _handleGitHostException(e, stacktrace);
           return;
         }
         widget.onDone(repo.cloneUrl);
@@ -105,12 +106,12 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
         print(stack);
         print("Ignoring it, since I don't know what else to do");
       }
-    } on GitHostException catch (e) {
-      _handleGitHostException(e);
+    } on Exception catch (e, stacktrace) {
+      _handleGitHostException(e, stacktrace);
     }
   }
 
-  void _handleGitHostException(GitHostException e) {
+  void _handleGitHostException(Exception e, StackTrace stacktrace) {
     Fimber.d("GitHostSetupAutoConfigure: " + e.toString());
     setState(() {
       errorMessage = widget.gitHostType.toString() + ": " + e.toString();
@@ -120,6 +121,8 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
           'errorMessage': errorMessage,
         },
       );
+
+      FlutterCrashlytics().logException(e, stacktrace);
     });
   }
 
