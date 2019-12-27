@@ -467,6 +467,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.2.0"
+  pub_cache:
+    dependency: transitive
+    description:
+      name: pub_cache
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.3"
   pub_semver:
     dependency: transitive
     description:
@@ -481,6 +488,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.5"
+  resource:
+    dependency: transitive
+    description:
+      name: resource
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.6"
+  screenshots:
+    dependency: "direct dev"
+    description:
+      name: screenshots
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.1"
   share:
     dependency: "direct main"
     description:
@@ -619,6 +640,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.15"
+  tool_base:
+    dependency: transitive
+    description:
+      name: tool_base
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.9.5+3"
+  tool_mobile:
+    dependency: transitive
+    description:
+      name: tool_mobile
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.9.5+1"
   typed_data:
     dependency: transitive
     description:

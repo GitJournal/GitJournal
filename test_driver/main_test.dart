@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
+import 'package:screenshots/screenshots.dart';
 
 void main() {
   group('Test', () {
     FlutterDriver driver;
     int screenshotNum = 0;
+    final config = Config();
 
     // Connect to the Flutter driver before running any tests
     setUpAll(() async {
@@ -22,16 +24,21 @@ void main() {
     });
 
     Future _takeScreenshot() async {
-      var filePath = screenshotNum.toString() + ".png";
       screenshotNum += 1;
+      /*
+      var filePath = screenshotNum.toString() + ".png";
 
       print("Taking screenshot $filePath");
       final file = await File(filePath).create(recursive: true);
       final pixels = await driver.screenshot();
       await file.writeAsBytes(pixels);
+      */
+
+      // Fancy Screenshot package
+      await screenshot(driver, config, screenshotNum.toString());
     }
 
-    test('Anonymous GitClone works', () async {
+    test('Normal Flow', () async {
       // OnBoarding
       var nextButton = find.text("Next");
       await driver.waitFor(nextButton, timeout: const Duration(seconds: 5));
@@ -56,7 +63,7 @@ void main() {
       await driver.waitFor(fab, timeout: const Duration(seconds: 2));
       await driver.tap(fab);
       await driver.waitFor(find.text('Write here'),
-          timeout: const Duration(seconds: 2));
+          timeout: const Duration(seconds: 5));
       //await _takeScreenshot();
 
       await driver.enterText(
@@ -68,7 +75,7 @@ void main() {
       await driver.waitFor(fab, timeout: const Duration(seconds: 2));
       await driver.tap(fab);
       await driver.waitFor(find.text('Write here'),
-          timeout: const Duration(seconds: 2));
+          timeout: const Duration(seconds: 5));
 
       await driver.enterText(
           "Journaling is a great way to clear your mind and get all your throughts down into paper. Well, not literal paper, as this is an app, but I think you get the point.");
@@ -87,7 +94,7 @@ void main() {
       // The Git Host setup screen
       await driver.tap(find.text("Setup Git Host"));
       await driver.waitFor(find.text("GitHub"),
-          timeout: const Duration(seconds: 2));
+          timeout: const Duration(seconds: 5));
       await _takeScreenshot();
       // FIXME: This doesn't seem to work!
       // await driver.tap(find.pageBack());

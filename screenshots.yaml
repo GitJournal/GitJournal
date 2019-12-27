@@ -1,0 +1,20 @@
+tests:
+  - test_driver/main.dart
+
+# Interim location of screenshots from tests
+staging: /tmp/screenshots
+
+# A list of locales supported by the app
+locales:
+  - en-GB
+
+# A map of devices to emulate
+devices:
+  #ios:
+  #  iPhone 8 Plus:
+  #  iPad Pro (12.9-inch) (3rd generation):
+  android:
+    Nexus 6P:
+    Nexus 9:
+
+frame: true
