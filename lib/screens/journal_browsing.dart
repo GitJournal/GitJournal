@@ -2,12 +2,14 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:share/share.dart';
+
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/widgets/journal_editor_header.dart';
-import 'package:share/share.dart';
 
 import 'journal_editor.dart';
 
@@ -70,11 +72,14 @@ class JournalBrowsingScreenState extends State<JournalBrowsingScreen> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.edit),
         onPressed: () {
-          var route = MaterialPageRoute(builder: (context) {
-            Note note = widget.notes[_currentIndex()];
-            return JournalEditor.fromNote(note);
-          });
-          Navigator.of(context).push(route);
+          Note note = widget.notes[_currentIndex()];
+          Navigator.push(
+            context,
+            PageTransition(
+              type: PageTransitionType.fade,
+              child: JournalEditor.fromNote(note),
+            ),
+          );
         },
       ),
     );
