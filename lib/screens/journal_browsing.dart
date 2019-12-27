@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/state_container.dart';
@@ -154,6 +155,10 @@ class NoteViewer extends StatelessWidget {
             child: MarkdownBody(
               data: note.body,
               styleSheet: MarkdownStyleSheet.fromTheme(theme),
+              onTapLink: (String link) {
+                print("Launching " + link);
+                launch(link);
+              },
             ),
           ),
           const SizedBox(height: 64.0),
