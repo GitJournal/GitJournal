@@ -20,6 +20,7 @@ class Note with ChangeNotifier implements Comparable<Note> {
   NotesFolder parent;
   String _filePath;
 
+  String _title = "";
   DateTime _created;
   DateTime _modified;
   NoteData _data = NoteData();
@@ -86,6 +87,21 @@ class Note with ChangeNotifier implements Comparable<Note> {
     notifyListeners();
   }
 
+  String get title {
+    return _title;
+  }
+
+  set title(String title) {
+    _title = title;
+
+    if (_title.isEmpty) {
+      _data.props.remove('title');
+    } else {
+      _data.props['title'] = title;
+    }
+    notifyListeners();
+  }
+
   NoteData get data {
     return _data;
   }
@@ -98,6 +114,9 @@ class Note with ChangeNotifier implements Comparable<Note> {
     }
     if (data.props.containsKey("modified")) {
       _modified = parseDateTime(data.props['modified'].toString());
+    }
+    if (data.props.containsKey("title")) {
+      _title = data.props['title'].toString();
     }
 
     _created ??= DateTime(0, 0, 0, 0, 0, 0, 0, 0);

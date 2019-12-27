@@ -49,7 +49,7 @@ class JournalBrowsingScreenState extends State<JournalBrowsingScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TIMELINE'),
+        title: const Text('BROWSE'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.delete),
@@ -124,6 +124,9 @@ class NoteViewer extends StatelessWidget {
   final Note note;
   const NoteViewer({Key key, @required this.note}) : super(key: key);
 
+  final bool showJournalHeader = false;
+  final bool showTitle = true;
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -137,10 +140,16 @@ class NoteViewer extends StatelessWidget {
     var view = SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          note.hasValidDate() ? JournalEditorHeader(note) : Container(),
-          MarkdownBody(
-            data: note.body,
-            styleSheet: MarkdownStyleSheet.fromTheme(theme),
+          if (note.hasValidDate() && showJournalHeader)
+            JournalEditorHeader(note),
+          if (showTitle && note.title.isNotEmpty)
+            NoteTitleHeader(note.title),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+            child: MarkdownBody(
+              data: note.body,
+              styleSheet: MarkdownStyleSheet.fromTheme(theme),
+            ),
           ),
           const SizedBox(height: 64.0),
           // _buildFooter(context),
@@ -178,4 +187,18 @@ class NoteViewer extends StatelessWidget {
     );
   }
   */
+}
+
+class NoteTitleHeader extends StatelessWidget {
+  final String header;
+  NoteTitleHeader(this.header);
+
+  @override
+  Widget build(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme;
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+      child: Text(header, style: textTheme.title),
+    );
+  }
 }

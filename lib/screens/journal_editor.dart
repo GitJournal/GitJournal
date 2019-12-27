@@ -29,8 +29,13 @@ class JournalEditorState extends State<JournalEditor> {
   Note note;
   final bool newNote;
   TextEditingController _textController = TextEditingController();
+  TextEditingController _titleTextController = TextEditingController();
+
   bool rawEditor = false;
   final serializer = MarkdownYAMLSerializer();
+
+  final bool journalMode = false;
+  final bool showTitle = true;
 
   JournalEditorState.newNote(NotesFolder folder) : newNote = true {
     note = Note.newNote(folder);
@@ -38,11 +43,13 @@ class JournalEditorState extends State<JournalEditor> {
 
   JournalEditorState.fromNote(this.note) : newNote = false {
     _textController = TextEditingController(text: note.body);
+    _titleTextController = TextEditingController(text: note.title);
   }
 
   @override
   void dispose() {
     _textController.dispose();
+    _titleTextController.dispose();
     super.dispose();
   }
 
@@ -50,7 +57,8 @@ class JournalEditorState extends State<JournalEditor> {
   Widget build(BuildContext context) {
     Widget editor = Column(
       children: <Widget>[
-        JournalEditorHeader(note),
+        if (journalMode) JournalEditorHeader(note),
+        if (showTitle && !rawEditor) NoteTitleEditor(_titleTextController),
         NoteMarkdownEditor(_textController, false),
       ],
     );
@@ -82,11 +90,13 @@ class JournalEditorState extends State<JournalEditor> {
                   }
                   break;
                 case NoteEditorDropDownChoices.SwitchEditor:
+                  note.title = _titleTextController.text.trim();
                   setState(() {
                     if (rawEditor) {
                       rawEditor = false;
                       note.data = serializer.decode(_textController.text);
                       _textController.text = note.body;
+                      _titleTextController.text = note.title;
                     } else {
                       rawEditor = true;
                       var noteData =
@@ -158,14 +168,15 @@ class JournalEditorState extends State<JournalEditor> {
 
   bool _noteModified() {
     var noteContent = _textController.text.trim();
-    if (noteContent.isEmpty) {
+    var titleContent = _titleTextController.text.trim();
+    if (noteContent.isEmpty && titleContent.isEmpty) {
       return false;
     }
     if (note != null) {
       if (rawEditor) {
         return serializer.encode(note.data) != noteContent;
       } else {
-        return noteContent != note.body;
+        return noteContent != note.body || titleContent != note.title;
       }
     }
 
@@ -177,7 +188,8 @@ class JournalEditorState extends State<JournalEditor> {
 
     final stateContainer = StateContainer.of(context);
     if (rawEditor == false) {
-      note.body = _textController.text;
+      note.body = _textController.text.trim();
+      note.title = _titleTextController.text.trim();
     } else {
       note.data = serializer.decode(_textController.text);
     }
@@ -209,6 +221,33 @@ class NoteMarkdownEditor extends StatelessWidget {
       decoration: InputDecoration(
         hintText: 'Write here',
         border: InputBorder.none,
+        isDense: true,
+      ),
+      controller: textController,
+      textCapitalization: TextCapitalization.sentences,
+      scrollPadding: const EdgeInsets.all(0.0),
+    );
+  }
+}
+
+class NoteTitleEditor extends StatelessWidget {
+  final TextEditingController textController;
+
+  NoteTitleEditor(this.textController);
+
+  @override
+  Widget build(BuildContext context) {
+    var style = Theme.of(context).textTheme.title;
+
+    return TextField(
+      autofocus: false,
+      keyboardType: TextInputType.text,
+      maxLines: 1,
+      style: style,
+      decoration: InputDecoration(
+        hintText: 'Title',
+        border: InputBorder.none,
+        isDense: true,
       ),
       controller: textController,
       textCapitalization: TextCapitalization.sentences,
