@@ -44,6 +44,10 @@ class Note with ChangeNotifier implements Comparable<Note> {
     return _filePath;
   }
 
+  String get fileName {
+    return p.basename(_filePath);
+  }
+
   DateTime get created {
     return _created;
   }

@@ -73,7 +73,58 @@ class JournalList extends StatelessWidget {
     );
   }
 
-  Widget _buildRow(BuildContext context, Note journal, int noteIndex) {
+  Widget _buildRow(BuildContext context, Note note, int noteIndex) {
+    var textTheme = Theme.of(context).textTheme;
+    var title = note.title;
+    Widget titleWidget = Text(title, style: textTheme.title);
+    if (title.isEmpty) {
+      var formatter = DateFormat('dd MMM, yyyy  ');
+      var date = formatter.format(note.created);
+
+      var timeFormatter = DateFormat('Hm');
+      var time = timeFormatter.format(note.created);
+
+      var timeColor = textTheme.body1.color.withAlpha(100);
+
+      titleWidget = Row(
+        children: <Widget>[
+          Text(date, style: textTheme.title),
+          Text(time, style: textTheme.body1.copyWith(color: timeColor)),
+        ],
+        crossAxisAlignment: CrossAxisAlignment.baseline,
+        textBaseline: TextBaseline.alphabetic,
+      );
+    }
+
+    var body = stripMarkdownFormatting(note.body);
+
+    var children = <Widget>[
+      const SizedBox(height: 8.0),
+      Text(
+        body,
+        maxLines: 3,
+        overflow: TextOverflow.ellipsis,
+        style: textTheme.body1,
+      ),
+    ];
+
+    var tile = ListTile(
+      isThreeLine: true,
+      title: titleWidget,
+      subtitle: Column(
+        children: children,
+        crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+      onTap: () => noteSelectedFunction(noteIndex),
+    );
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+      child: tile,
+    );
+  }
+
+  Widget _buildJournalRow(BuildContext context, Note journal, int noteIndex) {
     var title = "";
     var time = "";
 
