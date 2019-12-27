@@ -78,22 +78,28 @@ class JournalList extends StatelessWidget {
     var title = note.title;
     Widget titleWidget = Text(title, style: textTheme.title);
     if (title.isEmpty) {
-      var formatter = DateFormat('dd MMM, yyyy  ');
-      var date = formatter.format(note.created);
+      var date = note.created;
+      if (date != null && date.year < 10) date = note.modified;
+      if (date != null && date.year > 10) {
+        var formatter = DateFormat('dd MMM, yyyy  ');
+        var dateStr = formatter.format(date);
 
-      var timeFormatter = DateFormat('Hm');
-      var time = timeFormatter.format(note.created);
+        var timeFormatter = DateFormat('Hm');
+        var time = timeFormatter.format(date);
 
-      var timeColor = textTheme.body1.color.withAlpha(100);
+        var timeColor = textTheme.body1.color.withAlpha(100);
 
-      titleWidget = Row(
-        children: <Widget>[
-          Text(date, style: textTheme.title),
-          Text(time, style: textTheme.body1.copyWith(color: timeColor)),
-        ],
-        crossAxisAlignment: CrossAxisAlignment.baseline,
-        textBaseline: TextBaseline.alphabetic,
-      );
+        titleWidget = Row(
+          children: <Widget>[
+            Text(dateStr, style: textTheme.title),
+            Text(time, style: textTheme.body1.copyWith(color: timeColor)),
+          ],
+          crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
+        );
+      } else {
+        titleWidget = Text(note.fileName, style: textTheme.title);
+      }
     }
 
     var body = stripMarkdownFormatting(note.body);
