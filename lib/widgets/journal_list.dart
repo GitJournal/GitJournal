@@ -6,7 +6,6 @@ import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/markdown.dart';
 import 'package:gitjournal/widgets/icon_dismissable.dart';
-import 'package:path/path.dart';
 
 typedef void NoteSelectedFunction(int noteIndex);
 
@@ -130,6 +129,7 @@ class JournalList extends StatelessWidget {
     );
   }
 
+  /*
   Widget _buildJournalRow(BuildContext context, Note journal, int noteIndex) {
     var title = "";
     var time = "";
@@ -183,4 +183,5 @@ class JournalList extends StatelessWidget {
       child: tile,
     );
   }
+  */
 }
