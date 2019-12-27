@@ -1,3 +1,7 @@
+## [1.27] - 2019-12-27
+* Allow Note titles to be specified
+* Links can now be opened from Notes
+
 ## [1.26] - 2019-12-26
 * Support Git repos which do not have master branches
 * Add scrollbars
