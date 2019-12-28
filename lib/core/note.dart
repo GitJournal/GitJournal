@@ -101,7 +101,7 @@ class Note with ChangeNotifier implements Comparable<Note> {
     if (_title.isEmpty) {
       _data.props.remove('title');
     } else {
-      _data.props['title'] = title;
+      _data.props['title'] = "'" + title.replaceAll("'", "''") + "'";
     }
     notifyListeners();
   }
