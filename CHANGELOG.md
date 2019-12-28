@@ -1,3 +1,6 @@
+## [1.28] - 2019-12-28
+* Fix: Allow # to be used in the title
+
 ## [1.27] - 2019-12-27
 * Allow Note titles to be specified
 * Links can now be opened from Notes
