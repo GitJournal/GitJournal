@@ -745,6 +745,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.0"
+  yaml_serializer:
+    dependency: "direct main"
+    description:
+      name: yaml_serializer
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
 sdks:
   dart: ">=2.5.0 <3.0.0"
   flutter: ">=1.12.13+hotfix.4 <2.0.0"

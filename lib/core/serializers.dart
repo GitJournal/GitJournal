@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:fimber/fimber.dart';
 import 'package:yaml/yaml.dart';
+import 'package:yaml_serializer/yaml_serializer.dart';
 
 class NoteData {
   String body = "";
@@ -120,25 +121,15 @@ class MarkdownYAMLSerializer implements NoteSerializer {
       return note.body;
     }
 
-    const serparator = '---\n';
-    var str = "";
-    str += serparator;
-
-    str += toYAML(note.props);
-    str += serparator;
+    var str = toYamlHeader(note.props);
     str += '\n';
     str += note.body;
 
     return str;
   }
 
-  static String toYAML(Map<String, dynamic> map) {
-    var str = "";
-
-    map.forEach((key, value) {
-      String val = value.toString();
-      str += key + ": " + val + "\n";
-    });
-    return str;
+  static String toYamlHeader(Map<String, dynamic> data) {
+    var yaml = toYAML(data);
+    return "---\n" + yaml + "---\n";
   }
 }
