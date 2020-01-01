@@ -29,8 +29,14 @@ class NoteSerializer implements NoteSerializerInterface {
     else
       data.props.remove(settings.modifiedKey);
 
-    if (note.title != null && note.title.isNotEmpty)
-      data.props[settings.titleKey] = note.title;
+    if (note.title != null) {
+      var title = note.title.trim();
+      if (title.isNotEmpty)
+        data.props[settings.titleKey] = note.title;
+      else
+        data.props.remove(settings.titleKey);
+    } else
+      data.props.remove(settings.titleKey);
 
     data.body = note.body;
   }
@@ -40,6 +46,6 @@ class NoteSerializer implements NoteSerializerInterface {
     note.body = data.body;
     note.created = parseDateTime(data.props[settings.createdKey]?.toString());
     note.modified = parseDateTime(data.props[settings.modifiedKey]?.toString());
-    note.title = data.props[settings.titleKey]?.toString();
+    note.title = data.props[settings.titleKey]?.toString() ?? "";
   }
 }
