@@ -1,7 +1,7 @@
 import 'package:gitjournal/utils/datetime.dart';
 
 import 'note.dart';
-import 'serializers.dart';
+import 'note_data.dart';
 
 abstract class NoteSerializerInterface {
   void encode(Note note, NoteData data);

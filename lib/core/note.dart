@@ -3,10 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 
+import 'note_data.dart';
+import 'note_data_serializers.dart';
 import 'note_fileName.dart';
 import 'note_serializer.dart';
 import 'notes_folder.dart';
-import 'serializers.dart';
 
 enum NoteLoadState {
   None,
