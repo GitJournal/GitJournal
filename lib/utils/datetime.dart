@@ -37,6 +37,8 @@ String toIso8601WithTimezone(DateTime dt, [Duration offset]) {
 }
 
 DateTime parseDateTime(String str) {
+  if (str == null) return null;
+
   DateTime dt;
   try {
     dt = DateTime.parse(str).toLocal();

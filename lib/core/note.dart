@@ -3,9 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 
-import 'package:gitjournal/utils/datetime.dart';
-
 import 'note_fileName.dart';
+import 'note_serializer.dart';
 import 'notes_folder.dart';
 import 'serializers.dart';
 
@@ -30,13 +29,10 @@ class Note with ChangeNotifier implements Comparable<Note> {
   var _loadState = NoteLoadState.None;
   var _serializer = MarkdownYAMLSerializer();
 
-  Note(this.parent, this._filePath) {
-    _created = DateTime(0, 0, 0, 0, 0, 0, 0, 0);
-  }
+  Note(this.parent, this._filePath);
 
   Note.newNote(this.parent) {
     _created = DateTime.now();
-    _data.props['created'] = toIso8601WithTimezone(created);
     _filePath = p.join(parent.folderPath, getFileName(this));
   }
 
@@ -54,12 +50,6 @@ class Note with ChangeNotifier implements Comparable<Note> {
 
   set created(DateTime dt) {
     _created = dt;
-
-    if (hasValidDate()) {
-      _data.props['created'] = toIso8601WithTimezone(created);
-    } else {
-      _data.props.remove('created');
-    }
     notifyListeners();
   }
 
@@ -69,25 +59,20 @@ class Note with ChangeNotifier implements Comparable<Note> {
 
   set modified(DateTime dt) {
     _modified = dt;
-
-    if (hasValidDate()) {
-      _data.props['modified'] = toIso8601WithTimezone(_modified);
-    } else {
-      _data.props.remove('modified');
-    }
     notifyListeners();
   }
 
   void updateModified() {
     modified = DateTime.now();
+    notifyListeners();
   }
 
   String get body {
-    return data.body;
+    return _data.body;
   }
 
   set body(String newBody) {
-    data.body = newBody;
+    _data.body = newBody;
     notifyListeners();
   }
 
@@ -97,39 +82,24 @@ class Note with ChangeNotifier implements Comparable<Note> {
 
   set title(String title) {
     _title = title;
-
-    if (_title.isEmpty) {
-      _data.props.remove('title');
-    } else {
-      _data.props['title'] = title;
-    }
     notifyListeners();
   }
 
   NoteData get data {
+    var serializer = NoteSerializer();
+    serializer.encode(this, _data);
+
     return _data;
   }
 
   set data(NoteData data) {
     _data = data;
 
-    if (data.props.containsKey("created")) {
-      _created = parseDateTime(data.props['created'].toString());
-    }
-    if (data.props.containsKey("modified")) {
-      _modified = parseDateTime(data.props['modified'].toString());
-    }
-    if (data.props.containsKey("title")) {
-      _title = data.props['title'].toString();
-    }
+    // Fill the note's attributes from the data
+    var serializer = NoteSerializer();
+    serializer.decode(_data, this);
 
-    _created ??= DateTime(0, 0, 0, 0, 0, 0, 0, 0);
     notifyListeners();
-  }
-
-  bool hasValidDate() {
-    // Arbitrary number, when we set the year = 0, it becomes 1, somehow
-    return created.year > 10;
   }
 
   bool isEmpty() {
@@ -183,9 +153,8 @@ class Note with ChangeNotifier implements Comparable<Note> {
     await file.delete();
   }
 
-  // FIXME: Can't this part be auto-generated?
   @override
-  int get hashCode => filePath.hashCode ^ created.hashCode ^ data.hashCode;
+  int get hashCode => filePath.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -193,11 +162,11 @@ class Note with ChangeNotifier implements Comparable<Note> {
       other is Note &&
           runtimeType == other.runtimeType &&
           filePath == other.filePath &&
-          data == other.data;
+          _data == other._data;
 
   @override
   String toString() {
-    return 'Note{filePath: $filePath, created: $created, modified: $modified, data: $data}';
+    return 'Note{filePath: $filePath, created: $created, modified: $modified, data: $_data}';
   }
 
   @override

@@ -146,7 +146,7 @@ class NoteViewer extends StatelessWidget {
     var view = SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          if (note.hasValidDate() && showJournalHeader)
+          if (note.created != null && showJournalHeader)
             JournalEditorHeader(note),
           if (showTitle && note.title.isNotEmpty)
             NoteTitleHeader(note.title),
