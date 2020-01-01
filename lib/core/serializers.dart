@@ -37,12 +37,12 @@ class NoteData {
   }
 }
 
-abstract class NoteSerializer {
+abstract class NoteDataSerializer {
   String encode(NoteData note);
   NoteData decode(String str);
 }
 
-class MarkdownYAMLSerializer implements NoteSerializer {
+class MarkdownYAMLSerializer implements NoteDataSerializer {
   @override
   NoteData decode(String str) {
     const startYamlStr = "---\n";
