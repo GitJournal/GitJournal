@@ -178,10 +178,7 @@ class Note with ChangeNotifier implements Comparable<Note> {
 
     var dt = modified ?? created;
     var otherDt = other.modified ?? other.created;
-    if (dt == null && otherDt == null) {
-      return filePath.compareTo(other.filePath);
-    }
-    if (dt.year == 0 || otherDt.year == 0) {
+    if (dt == null || otherDt == null) {
       return filePath.compareTo(other.filePath);
     }
 
