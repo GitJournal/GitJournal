@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:fimber/fimber.dart';
 
 import 'package:git_bindings/git_bindings.dart';
 
@@ -102,8 +103,18 @@ class GitNoteRepository {
   }
 
   Future<void> sync() async {
-    await _gitRepo.pull();
-    await _gitRepo.push();
+    try {
+      await _gitRepo.pull();
+    } on GitException catch (ex) {
+      Fimber.d(ex.toString());
+    }
+
+    try {
+      await _gitRepo.push();
+    } on GitException catch (ex) {
+      Fimber.d(ex.toString());
+      rethrow;
+    }
   }
 }
 
