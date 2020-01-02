@@ -8,3 +8,7 @@ QA Process -
 * Remove a note
 
 * Try starting the app in Flight Mode
+
+--
+* Try setting up GitLab / GitHub - with existing repos
+  and try again with fresh repos
