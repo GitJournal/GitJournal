@@ -12,6 +12,7 @@ import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:path/path.dart' as p;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -373,9 +374,10 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     // Just in case it was half cloned because of an error
     await _removeExistingClone(basePath);
 
+    String repoPath = p.join(basePath, "journal");
     String error;
     try {
-      await GitRepo.clone(p.join(basePath, "journal"), _gitCloneUrl);
+      await GitRepo.clone(repoPath, _gitCloneUrl);
     } on GitException catch (e) {
       error = e.cause;
     }
@@ -391,6 +393,24 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         gitCloneErrorMessage = error;
       });
       return;
+    }
+
+    //
+    // Add a GitIgnore file. This way we always at least have one commit
+    // It makes doing a git pull and push easier
+    //
+    var gitIgnorePath = p.join(repoPath, ".gitignore");
+    var ignoreFile = File(gitIgnorePath);
+    if (!ignoreFile.existsSync()) {
+      ignoreFile.createSync();
+
+      var repo = GitRepo(
+        folderPath: repoPath,
+        authorName: Settings.instance.gitAuthor,
+        authorEmail: Settings.instance.gitAuthorEmail,
+      );
+      await repo.add('.gitignore');
+      await repo.commit(message: "Add gitignore file");
     }
 
     getAnalytics().logEvent(
