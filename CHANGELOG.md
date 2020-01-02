@@ -1,3 +1,6 @@
+## [1.28] - 2020-01-02
+* Fix: New repo in GitLab fix
+
 ## [1.28] - 2019-12-28
 * Fix: Allow # to be used in the title
 
