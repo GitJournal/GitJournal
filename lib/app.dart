@@ -83,13 +83,13 @@ class JournalApp extends StatelessWidget {
       JournalApp.isInDebugMode = true;
     }
 
-    bool should = (JournalApp.isInDebugMode == false);
-    should = should && (await runtime_env.inFirebaseTestLab());
+    bool inFireBaseTestLab = await runtime_env.inFirebaseTestLab();
+    bool enabled = !JournalApp.isInDebugMode && !inFireBaseTestLab;
 
-    Fimber.d("Analytics Collection: $should");
-    JournalApp.analytics.setAnalyticsCollectionEnabled(should);
+    Fimber.d("Analytics Collection: $enabled");
+    JournalApp.analytics.setAnalyticsCollectionEnabled(enabled);
 
-    if (should) {
+    if (enabled) {
       JournalApp.analytics.logEvent(
         name: "settings",
         parameters: Settings.instance.toLoggableMap(),
