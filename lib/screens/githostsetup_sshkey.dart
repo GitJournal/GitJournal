@@ -6,6 +6,7 @@ import 'githostsetup_loading.dart';
 
 class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
   final Func0<void> doneFunction;
+  final Func0<void> regenerateFunction;
   final Func1<BuildContext, void> copyKeyFunction;
   final String publicKey;
 
@@ -13,6 +14,7 @@ class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
 
   GitHostSetupSshKeyKnownProvider({
     @required this.doneFunction,
+    @required this.regenerateFunction,
     @required this.copyKeyFunction,
     @required this.openDeployKeyPage,
     @required this.publicKey,
@@ -42,9 +44,14 @@ class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
         const SizedBox(height: 8.0),
         PublicKeyWidget(publicKey),
         const SizedBox(height: 8.0),
+
         GitHostSetupButton(
           text: "Copy Key",
           onPressed: () => copyKeyFunction(context),
+        ),
+        GitHostSetupButton(
+          text: "Regenerate Key",
+          onPressed: regenerateFunction,
         ),
         const SizedBox(height: 16.0),
 
