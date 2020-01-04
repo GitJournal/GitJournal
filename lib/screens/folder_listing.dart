@@ -101,7 +101,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
     }
 
     var backButton = IconButton(
-      icon: Icon(Icons.arrow_back),
+      icon: const Icon(Icons.arrow_back),
       onPressed: () {
         _folderTreeViewKey.currentState.resetSelection();
       },
