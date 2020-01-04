@@ -53,7 +53,6 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   int _currentPageIndex = 0;
 
   Widget _buildPage(BuildContext context, int pos) {
-    Fimber.d("_buildPage " + pos.toString());
     assert(_pageCount >= 1);
 
     if (pos == 0) {
@@ -279,6 +278,10 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   }
 
   void _generateSshKey(BuildContext context) {
+    if (publicKey.isNotEmpty) {
+      return;
+    }
+
     var comment = "GitJournal " +
         Platform.operatingSystem +
         " " +
@@ -287,6 +290,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     generateSSHKeys(comment: comment).then((String publicKey) {
       setState(() {
         this.publicKey = publicKey;
+        Fimber.d("PublicKey: " + publicKey);
         _copyKeyToClipboard(context);
       });
     });
@@ -355,6 +359,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     String repoPath = p.join(basePath, "journal");
     String error;
     try {
+      Fimber.d("Cloning " + _gitCloneUrl);
       await GitRepo.clone(repoPath, _gitCloneUrl);
     } on GitException catch (e) {
       error = e.cause;
