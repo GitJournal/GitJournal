@@ -208,39 +208,11 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Fimber.d("build _pageCount " + _pageCount.toString());
-    Fimber.d("build _currentPageIndex " + _currentPageIndex.toString());
-
     var pageView = PageView.builder(
       controller: pageController,
       itemBuilder: _buildPage,
       itemCount: _pageCount,
       onPageChanged: (int pageNum) {
-        Fimber.d("PageView onPageChanged: " + pageNum.toString());
-        /*
-        String pageName = "";
-        switch (pageNum) {
-          case 0:
-            pageName = "OnBoardingGitUrl";
-            break;
-
-          case 1:
-            pageName = "OnBoardingSshKey";
-            break;
-
-          case 2:
-            pageName = "OnBoardingGitClone";
-            break;
-        }
-        getAnalytics().logEvent(
-          name: "onboarding_page_changed",
-          parameters: <String, dynamic>{
-            'page_num': pageNum,
-            'page_name': pageName,
-          },
-        );
-        */
-
         setState(() {
           _currentPageIndex = pageNum;
           _pageCount = _currentPageIndex + 1;
