@@ -1,3 +1,7 @@
+## [1.30] - 2020-01-04
+* Add support for AWS Code Commit
+* Expose the Git Remote in the Settings
+
 ## [1.28] - 2020-01-02
 * Fix: New repo in GitLab fix
 
