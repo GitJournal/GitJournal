@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
+import 'package:gitjournal/screens/settings_git_remote.dart';
 
 import 'package:dynamic_theme/dynamic_theme.dart';
 
@@ -143,6 +144,16 @@ class SettingsListState extends State<SettingsList> {
       SettingsHeader("Git Author Settings"),
       ListTile(title: gitAuthorForm),
       ListTile(title: gitAuthorEmailForm),
+      ListTile(
+        title: const Text("Git Remote Settings"),
+        subtitle: const Text("Configure where your notes are synced"),
+        onTap: () {
+          var route = MaterialPageRoute(
+            builder: (context) => GitRemoteSettingsScreen(),
+          );
+          Navigator.of(context).push(route);
+        },
+      ),
       const SizedBox(height: 16.0),
       SettingsHeader("Storage"),
       ListPreference(
