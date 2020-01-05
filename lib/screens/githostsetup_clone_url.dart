@@ -54,6 +54,8 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
         textInputAction: TextInputAction.done,
         onFieldSubmitted: (String _) => formSubmitted(),
         initialValue: widget.initialValue,
+        minLines: 1,
+        maxLines: 3,
       ),
     );
 
