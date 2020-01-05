@@ -43,9 +43,26 @@ class NoteSerializer implements NoteSerializerInterface {
 
   @override
   void decode(NoteData data, Note note) {
+    var modifiedKeyOptions = [
+      "modified",
+      "mod",
+      "lastModified",
+      "lastMod",
+      "lastmodified",
+      "lastmod",
+    ];
+    for (var i = 0; i < modifiedKeyOptions.length; i++) {
+      var possibleKey = modifiedKeyOptions[i];
+      var modifiedVal = data.props[possibleKey];
+      if (modifiedVal != null) {
+        note.modified = parseDateTime(modifiedVal.toString());
+        settings.modifiedKey = possibleKey;
+        break;
+      }
+    }
+
     note.body = data.body;
     note.created = parseDateTime(data.props[settings.createdKey]?.toString());
-    note.modified = parseDateTime(data.props[settings.modifiedKey]?.toString());
     note.title = data.props[settings.titleKey]?.toString() ?? "";
   }
 }
