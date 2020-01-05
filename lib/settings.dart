@@ -19,6 +19,7 @@ class Settings {
   bool collectUsageStatistics = true;
   bool collectCrashReports = true;
 
+  String yamlModifiedKey = "modified";
   int version = 0;
 
   void load(SharedPreferences pref) {
@@ -36,6 +37,7 @@ class Settings {
     collectCrashReports =
         pref.getBool("collectCrashReports") ?? collectCrashReports;
 
+    yamlModifiedKey = pref.getString("yamlModifiedKey") ?? yamlModifiedKey;
     version = pref.getInt("settingsVersion") ?? version;
   }
 
@@ -47,6 +49,7 @@ class Settings {
     pref.setString("noteFileNameFormat", noteFileNameFormat.toInternalString());
     pref.setBool("collectUsageStatistics", collectUsageStatistics);
     pref.setBool("collectCrashReports", collectCrashReports);
+    pref.setString("yamlModifiedKey", yamlModifiedKey);
     pref.setInt("settingsVersion", version);
 
     // Shouldn't we check if something has actually changed?
@@ -63,6 +66,7 @@ class Settings {
       "noteFileNameFormat": noteFileNameFormat.toInternalString(),
       "collectUsageStatistics": collectUsageStatistics,
       "collectCrashReports": collectCrashReports,
+      "yamlModifiedKey": yamlModifiedKey,
       "version": version,
     };
   }

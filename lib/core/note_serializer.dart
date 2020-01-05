@@ -1,4 +1,5 @@
 import 'package:gitjournal/utils/datetime.dart';
+import 'package:gitjournal/settings.dart';
 
 import 'note.dart';
 import 'note_data.dart';
@@ -9,7 +10,7 @@ abstract class NoteSerializerInterface {
 }
 
 class NoteSerializationSettings {
-  String modifiedKey = "modified";
+  String modifiedKey = Settings.instance.yamlModifiedKey;
   String createdKey = "created";
   String titleKey = "title";
 }
