@@ -350,6 +350,10 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   }
 
   void _startGitClone(BuildContext context) async {
+    setState(() {
+      gitCloneErrorMessage = "";
+    });
+
     var appState = StateContainer.of(context).appState;
     var basePath = appState.gitBaseDirectory;
 
