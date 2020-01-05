@@ -1,3 +1,9 @@
+## [1.31] - 2020-01-06
+* Allow the modified key in notes to be configured.
+  This improves compatibility with Hugo blog posts, as
+  GitJournal can now update the 'lastmod' field as used
+  by Hugo front matter.
+
 ## [1.30] - 2020-01-04
 * Add support for AWS Code Commit
 * Expose the Git Remote in the Settings
