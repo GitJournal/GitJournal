@@ -330,7 +330,7 @@ bool handleError(FlutterResult result, int err) {
 
         gj_set_ssh_keys_paths((char*) sshPublicKeyPath, (char*) sshPrivateKeyPath, "");
 
-        int err = gj_git_clone([folderPath UTF8String], [folderPath UTF8String]);
+        int err = gj_git_clone([cloneUrl UTF8String], [folderPath UTF8String]);
         if (!handleError(result, err)) {
             result(@YES);
             return;
