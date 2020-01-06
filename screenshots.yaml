@@ -10,9 +10,9 @@ locales:
 
 # A map of devices to emulate
 devices:
-  #ios:
-  #  iPhone 8 Plus:
-  #  iPad Pro (12.9-inch) (3rd generation):
+  ios:
+    iPhone 8 Plus:
+    iPad Pro (12.9-inch) (3rd generation):
   android:
     Nexus 6P:
     Nexus 9:
