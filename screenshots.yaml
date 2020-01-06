@@ -11,7 +11,9 @@ locales:
 # A map of devices to emulate
 devices:
   ios:
-    iPhone 8 Plus:
+    iPhone Xs Max: # 6.5 inches
+    iPhone 8 Plus: # 5.5 inches
+    iPad Pro (12.9-inch) (2nd generation):
     iPad Pro (12.9-inch) (3rd generation):
   android:
     Nexus 6P:
