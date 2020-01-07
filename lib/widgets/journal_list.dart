@@ -77,9 +77,8 @@ class JournalList extends StatelessWidget {
     var title = note.title;
     Widget titleWidget = Text(title, style: textTheme.title);
     if (title.isEmpty) {
-      var date = note.created;
-      if (date != null && date.year < 10) date = note.modified;
-      if (date != null && date.year > 10) {
+      var date = note.modified ?? note.created;
+      if (date != null) {
         var formatter = DateFormat('dd MMM, yyyy  ');
         var dateStr = formatter.format(date);
 

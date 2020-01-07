@@ -154,6 +154,7 @@ class StateContainerState extends State<StateContainer> {
   }
 
   void removeNote(Note note) {
+    // FIXME: What if the Note hasn't yet been saved?
     note.parent.remove(note);
     _gitRepo.removeNote(note.filePath).then((NoteRepoResult _) async {
       // FIXME: Is there a way of figuring this amount dynamically?
