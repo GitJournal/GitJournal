@@ -52,7 +52,6 @@ class JournalBrowsingScreenState extends State<JournalBrowsingScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('BROWSE'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.delete),
