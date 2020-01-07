@@ -35,15 +35,15 @@ class Note with ChangeNotifier implements Comparable<Note> {
 
   Note.newNote(this.parent) {
     _created = DateTime.now();
-    _filePath = p.join(parent.folderPath, getFileName(this));
   }
 
   String get filePath {
+    _filePath ??= p.join(parent.folderPath, getFileName(this));
     return _filePath;
   }
 
   String get fileName {
-    return p.basename(_filePath);
+    return p.basename(filePath);
   }
 
   DateTime get created {
@@ -104,11 +104,14 @@ class Note with ChangeNotifier implements Comparable<Note> {
   }
 
   Future<NoteLoadState> load() async {
+    assert(_filePath != null);
+    assert(_filePath.isNotEmpty);
+
     if (_loadState == NoteLoadState.Loading) {
       return _loadState;
     }
 
-    final file = File(filePath);
+    final file = File(_filePath);
     if (_loadState == NoteLoadState.Loaded) {
       var fileLastModified = file.lastModifiedSync();
       if (fileLastModified == _fileLastModified) {
@@ -134,7 +137,7 @@ class Note with ChangeNotifier implements Comparable<Note> {
 
   // FIXME: What about error handling?
   Future<void> save() async {
-    assert(filePath != null);
+    assert(_filePath != null);
     assert(data != null);
     assert(data.body != null);
     assert(data.props != null);
@@ -146,24 +149,26 @@ class Note with ChangeNotifier implements Comparable<Note> {
 
   // FIXME: What about error handling?
   Future<void> remove() async {
-    var file = File(filePath);
+    assert(_filePath != null);
+
+    var file = File(_filePath);
     await file.delete();
   }
 
   @override
-  int get hashCode => filePath.hashCode;
+  int get hashCode => _filePath.hashCode;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Note &&
           runtimeType == other.runtimeType &&
-          filePath == other.filePath &&
+          _filePath == other._filePath &&
           _data == other._data;
 
   @override
   String toString() {
-    return 'Note{filePath: $filePath, created: $created, modified: $modified, data: $_data}';
+    return 'Note{filePath: $_filePath, created: $created, modified: $modified, data: $_data}';
   }
 
   @override
@@ -175,7 +180,7 @@ class Note with ChangeNotifier implements Comparable<Note> {
     var dt = modified ?? created ?? _fileLastModified;
     var otherDt = other.modified ?? other.created ?? other._fileLastModified;
     if (dt == null || otherDt == null) {
-      return filePath.compareTo(other.filePath);
+      return _filePath.compareTo(other._filePath);
     }
 
     return dt.compareTo(otherDt);
