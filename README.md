@@ -49,7 +49,7 @@ Please feel free to [open an issue](https://github.com/GitJournal/GitJournal/iss
 # License
 
 ```
-Copyright 2018-2019 Vishesh Handa
+Copyright 2018-2020 Vishesh Handa
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
