@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' as foundation;
+
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,7 +15,7 @@ void main() async {
   var pref = await SharedPreferences.getInstance();
   Settings.instance.load(pref);
 
-  assert(JournalApp.isInDebugMode = true);
+  JournalApp.isInDebugMode = foundation.kDebugMode;
   var reportCrashes =
       !JournalApp.isInDebugMode && Settings.instance.collectCrashReports;
 
