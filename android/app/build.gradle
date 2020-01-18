@@ -28,6 +28,12 @@ def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+} else {
+    // to simplify local development
+    keystoreProperties['keyAlias'] = 'local'
+    keystoreProperties['keyPassword'] = 'local'
+    keystoreProperties['storeFile'] = 'local'
+    keystoreProperties['storePassword'] = 'local'
 }
 
 android {
