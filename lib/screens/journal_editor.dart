@@ -130,6 +130,13 @@ class JournalEditorState extends State<JournalEditor> {
           child: editor,
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.check),
+        onPressed: () {
+          _saveNote(context);
+          Navigator.pop(context);
+        },
+      ),
     );
 
     return WillPopScope(
