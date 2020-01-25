@@ -1,3 +1,6 @@
+## [1.32] - 2020-01-25
+* Save notes by default with the title as the filename
+
 ## [1.31] - 2020-01-06
 * Allow the modified key in notes to be configured.
   This improves compatibility with Hugo blog posts, as
