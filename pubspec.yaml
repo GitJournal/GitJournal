@@ -31,8 +31,8 @@ dependencies:
   page_transition: "^1.1.5"
   provider: ^3.2.0
   git_bindings: ^0.0.8
-  fetch_app_logs: ^0.0.2
-  flutter_runtime_env: ^0.0.1
+  fetch_app_logs: ^0.0.3
+  flutter_runtime_env: ^0.0.2
   yaml_serializer: ^0.0.2
   connectivity: ^0.4.6+1
 

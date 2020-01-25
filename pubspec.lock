@@ -133,7 +133,7 @@ packages:
       name: fetch_app_logs
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.2"
+    version: "0.0.3"
   file:
     dependency: transitive
     description:
@@ -206,7 +206,7 @@ packages:
       name: flutter_runtime_env
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1"
+    version: "0.0.2"
   flutter_staggered_grid_view:
     dependency: "direct main"
     description:
