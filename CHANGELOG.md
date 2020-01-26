@@ -1,5 +1,6 @@
 ## [1.32] - 2020-01-25
 * Save notes by default with the title as the filename
+* Fix bug where notes contents would disappear if app was switched while editing
 
 ## [1.31] - 2020-01-06
 * Allow the modified key in notes to be configured.
