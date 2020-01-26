@@ -99,6 +99,7 @@ linter:
     - prefer_void_to_null
     # - recursive_getters # https://github.com/dart-lang/linter/issues/452
     - slash_for_doc_comments
+    - curly_braces_in_flow_control_structures
     # - sort_constructors_first
     # - sort_unnamed_constructors_first
     # - type_annotate_public_apis # subset of always_specify_types

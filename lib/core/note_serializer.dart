@@ -20,24 +20,28 @@ class NoteSerializer implements NoteSerializerInterface {
 
   @override
   void encode(Note note, NoteData data) {
-    if (note.created != null)
+    if (note.created != null) {
       data.props[settings.createdKey] = toIso8601WithTimezone(note.created);
-    else
+    } else {
       data.props.remove(settings.createdKey);
+    }
 
-    if (note.modified != null)
+    if (note.modified != null) {
       data.props[settings.modifiedKey] = toIso8601WithTimezone(note.modified);
-    else
+    } else {
       data.props.remove(settings.modifiedKey);
+    }
 
     if (note.title != null) {
       var title = note.title.trim();
-      if (title.isNotEmpty)
+      if (title.isNotEmpty) {
         data.props[settings.titleKey] = note.title;
-      else
+      } else {
         data.props.remove(settings.titleKey);
-    } else
+      }
+    } else {
       data.props.remove(settings.titleKey);
+    }
 
     data.body = note.body;
   }
