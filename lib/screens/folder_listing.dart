@@ -70,7 +70,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
             var folderName = await showDialog(
               context: context,
               builder: (_) => RenameDialog(
-                oldName: selectedFolder.name,
+                oldPath: selectedFolder.folderPath,
                 inputDecoration: 'Folder Name',
                 dialogTitle: "Rename Folder",
               ),

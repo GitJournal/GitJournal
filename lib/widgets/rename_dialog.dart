@@ -1,12 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 
 class RenameDialog extends StatefulWidget {
-  final String oldName;
+  final String oldPath;
   final String inputDecoration;
   final String dialogTitle;
 
   RenameDialog({
-    @required this.oldName,
+    @required this.oldPath,
     @required this.inputDecoration,
     @required this.dialogTitle,
   });
@@ -15,27 +18,35 @@ class RenameDialog extends StatefulWidget {
   _RenameDialogState createState() => _RenameDialogState();
 }
 
-// FIXME: Do not allow paths which already exist!
-
 class _RenameDialogState extends State<RenameDialog> {
   TextEditingController _textController;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    _textController = TextEditingController(text: widget.oldName);
+    _textController = TextEditingController(text: basename(widget.oldPath));
   }
 
   @override
   Widget build(BuildContext context) {
     var form = Form(
+      key: _formKey,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           TextFormField(
             decoration: InputDecoration(labelText: widget.inputDecoration),
             validator: (value) {
-              if (value.isEmpty) return 'Please enter a name';
+              if (value.isEmpty) {
+                return 'Please enter a name';
+              }
+
+              var newPath = join(dirname(widget.oldPath), value);
+              if (FileSystemEntity.typeSync(newPath) !=
+                  FileSystemEntityType.notFound) {
+                return 'Already Exists';
+              }
               return "";
             },
             autofocus: true,
@@ -44,6 +55,7 @@ class _RenameDialogState extends State<RenameDialog> {
           ),
         ],
       ),
+      autovalidate: true,
     );
 
     return AlertDialog(
@@ -55,8 +67,10 @@ class _RenameDialogState extends State<RenameDialog> {
         ),
         FlatButton(
           onPressed: () {
-            var newFolderName = _textController.text;
-            return Navigator.of(context).pop(newFolderName);
+            if (_formKey.currentState.validate()) {
+              var newName = _textController.text;
+              Navigator.of(context).pop(newName);
+            }
           },
           child: const Text("Rename"),
         ),

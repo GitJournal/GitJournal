@@ -84,7 +84,7 @@ class JournalBrowsingScreenState extends State<JournalBrowsingScreen> {
                   var fileName = await showDialog(
                     context: context,
                     builder: (_) => RenameDialog(
-                      oldName: note.fileName,
+                      oldPath: note.filePath,
                       inputDecoration: 'File Name',
                       dialogTitle: "Rename File",
                     ),
