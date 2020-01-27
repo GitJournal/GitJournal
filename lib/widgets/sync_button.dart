@@ -3,9 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:connectivity/connectivity.dart';
 
-import 'package:git_bindings/git_bindings.dart';
 import 'package:gitjournal/appstate.dart';
-import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/state_container.dart';
 
 class SyncButton extends StatefulWidget {
@@ -62,11 +60,7 @@ class _SyncButtonState extends State<SyncButton> {
 
   void _syncRepo() async {
     final container = StateContainer.of(context);
-    try {
-      await container.syncNotes();
-    } on GitException catch (exp) {
-      showSnackbar(context, exp.cause);
-    }
+    await container.syncNotes();
   }
 
   IconData _syncStatusIcon() {
