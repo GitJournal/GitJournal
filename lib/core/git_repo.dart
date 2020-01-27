@@ -131,6 +131,8 @@ const ignoredMessages = [
   'failed to start ssh session',
   'failure while draining',
   'network is unreachable',
+  'software caused connection abort',
+  'unable to exchange encryption keys',
 ];
 
 bool shouldLogGitException(GitException ex) {
