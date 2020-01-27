@@ -1,3 +1,7 @@
+## [1.35] - 2020-01-27
+* Allow notes to be renamed
+* Dark Theme improvements
+
 ## [1.34] - 2020-01-27
 * Fix git host setup
 
