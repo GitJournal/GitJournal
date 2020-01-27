@@ -118,28 +118,24 @@ class GitNoteRepository {
   }
 }
 
+const ignoredMessages = [
+  'connection timed out',
+  'failed to resolve address for',
+  'failed to connect to',
+  'no address associated with hostname',
+  'unauthorized',
+  'invalid credentials',
+  'failed to start ssh session',
+  'failure while draining',
+  'network is unreachable',
+];
+
 bool shouldLogGitException(GitException ex) {
   var msg = ex.cause.toLowerCase();
-  if (msg.contains("failed to resolve address for")) {
-    return false;
-  }
-  if (msg.contains("failed to connect to")) {
-    return false;
-  }
-  if (msg.contains("no address associated with hostname")) {
-    return false;
-  }
-  if (msg.contains("failed to connect to")) {
-    return false;
-  }
-  if (msg.contains("unauthorized")) {
-    return false;
-  }
-  if (msg.contains("invalid credentials")) {
-    return false;
-  }
-  if (msg.contains("failed to start ssh session")) {
-    return false;
+  for (var i = 0; i < ignoredMessages.length; i++) {
+    if (msg.contains(ignoredMessages[i])) {
+      return false;
+    }
   }
   return true;
 }
