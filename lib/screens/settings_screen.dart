@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
 import 'package:gitjournal/screens/settings_git_remote.dart';
@@ -39,6 +40,8 @@ class SettingsListState extends State<SettingsList> {
 
   @override
   Widget build(BuildContext context) {
+    var remoteGitConfigured =
+        StateContainer.of(context).appState.remoteGitRepoConfigured;
     var settings = Settings.instance;
 
     var saveGitAuthor = (String gitAuthor) {
@@ -154,6 +157,7 @@ class SettingsListState extends State<SettingsList> {
           );
           Navigator.of(context).push(route);
         },
+        enabled: remoteGitConfigured,
       ),
       const SizedBox(height: 16.0),
       SettingsHeader("Storage"),
