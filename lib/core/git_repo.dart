@@ -112,6 +112,9 @@ class GitNoteRepository {
     try {
       await _gitRepo.push();
     } on GitException catch (ex) {
+      if (ex.cause == 'cannot push non-fastforwardable reference') {
+        return sync();
+      }
       Fimber.d(ex.toString());
       rethrow;
     }
