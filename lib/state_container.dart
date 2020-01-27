@@ -150,6 +150,15 @@ class StateContainerState extends State<StateContainer> {
     });
   }
 
+  void renameNote(Note note, String newFileName) async {
+    var oldNotePath = note.filePath;
+    note.rename(newFileName);
+
+    _gitRepo.renameNote(oldNotePath, note.filePath).then((NoteRepoResult _) {
+      syncNotes();
+    });
+  }
+
   void addNote(Note note) {
     insertNote(0, note);
   }

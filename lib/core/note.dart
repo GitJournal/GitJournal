@@ -155,6 +155,15 @@ class Note with ChangeNotifier implements Comparable<Note> {
     await file.delete();
   }
 
+  void rename(String newName) {
+    var parentDirName = p.dirname(filePath);
+    var newFilePath = p.join(parentDirName, newName);
+    File(filePath).renameSync(newFilePath);
+    _filePath = newFilePath;
+
+    notifyListeners();
+  }
+
   @override
   int get hashCode => _filePath.hashCode;
 

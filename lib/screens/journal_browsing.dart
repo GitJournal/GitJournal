@@ -11,8 +11,11 @@ import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/widgets/journal_editor_header.dart';
+import 'package:gitjournal/widgets/rename_dialog.dart';
 
 import 'journal_editor.dart';
+
+enum NoteBrowserDropDownChoices { Rename }
 
 class JournalBrowsingScreen extends StatefulWidget {
   final List<Note> notes;
@@ -31,9 +34,11 @@ class JournalBrowsingScreen extends StatefulWidget {
 
 class JournalBrowsingScreenState extends State<JournalBrowsingScreen> {
   PageController pageController;
+  int currentPage;
 
   JournalBrowsingScreenState({@required int noteIndex}) {
     pageController = PageController(initialPage: noteIndex);
+    currentPage = noteIndex;
   }
 
   @override
@@ -47,6 +52,11 @@ class JournalBrowsingScreenState extends State<JournalBrowsingScreen> {
           key: ValueKey("Viewer_" + note.filePath),
           note: widget.notes[pos],
         );
+      },
+      onPageChanged: (int pageNum) {
+        setState(() {
+          currentPage = pageNum;
+        });
       },
     );
 
@@ -65,6 +75,35 @@ class JournalBrowsingScreenState extends State<JournalBrowsingScreen> {
               Note note = widget.notes[_currentIndex()];
               Share.share(note.body);
             },
+          ),
+          PopupMenuButton<NoteBrowserDropDownChoices>(
+            onSelected: (NoteBrowserDropDownChoices choice) async {
+              var note = widget.notes[currentPage];
+              switch (choice) {
+                case NoteBrowserDropDownChoices.Rename:
+                  var fileName = await showDialog(
+                    context: context,
+                    builder: (_) => RenameDialog(
+                      oldName: note.fileName,
+                      inputDecoration: 'File Name',
+                      dialogTitle: "Rename File",
+                    ),
+                  );
+                  if (fileName is String) {
+                    final container = StateContainer.of(context);
+                    container.renameNote(note, fileName);
+                  }
+
+                  break;
+              }
+            },
+            itemBuilder: (BuildContext context) =>
+                <PopupMenuEntry<NoteBrowserDropDownChoices>>[
+              const PopupMenuItem<NoteBrowserDropDownChoices>(
+                value: NoteBrowserDropDownChoices.Rename,
+                child: Text('Rename File'),
+              ),
+            ],
           ),
         ],
       ),
