@@ -181,6 +181,26 @@ class NoteViewer extends StatelessWidget {
       ),
     );
 
+    // Copied from MarkdownStyleSheet except Grey is replaced with Highlight color
+    var markdownStyleSheet = MarkdownStyleSheet.fromTheme(theme).copyWith(
+      code: theme.textTheme.body1.copyWith(
+        backgroundColor: theme.dialogBackgroundColor,
+        fontFamily: "monospace",
+        fontSize: theme.textTheme.body1.fontSize * 0.85,
+      ),
+      tableBorder: TableBorder.all(color: theme.highlightColor, width: 0),
+      tableCellsDecoration: BoxDecoration(color: theme.dialogBackgroundColor),
+      codeblockDecoration: BoxDecoration(
+        color: theme.dialogBackgroundColor,
+        borderRadius: BorderRadius.circular(2.0),
+      ),
+      horizontalRuleDecoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(width: 5.0, color: theme.highlightColor),
+        ),
+      ),
+    );
+
     var view = SingleChildScrollView(
       child: Column(
         children: <Widget>[
@@ -192,7 +212,7 @@ class NoteViewer extends StatelessWidget {
             padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
             child: MarkdownBody(
               data: note.body,
-              styleSheet: MarkdownStyleSheet.fromTheme(theme),
+              styleSheet: markdownStyleSheet,
               onTapLink: (String link) {
                 print("Launching " + link);
                 launch(link);
