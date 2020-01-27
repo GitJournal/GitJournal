@@ -80,11 +80,12 @@ class NoteMetaDataExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var style = Theme.of(context).textTheme.subhead;
+    var theme = Theme.of(context);
+    var style = theme.textTheme.subhead;
     style = style.copyWith(fontFamily: "Roboto Mono");
 
     return Container(
-      color: Colors.grey[200],
+      color: theme.highlightColor,
       child: Text(yamlHeader, style: style),
       padding: const EdgeInsets.all(0),
     );
