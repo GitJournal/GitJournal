@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/folder_tree_view.dart';
+import 'package:gitjournal/widgets/rename_dialog.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 
@@ -68,7 +69,11 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
           if (value == "Rename") {
             var folderName = await showDialog(
               context: context,
-              builder: (_) => RenameFolderDialog(selectedFolder),
+              builder: (_) => RenameDialog(
+                oldName: selectedFolder.name,
+                inputDecoration: 'Folder Name',
+                dialogTitle: "Rename Folder",
+              ),
             );
             if (folderName is String) {
               final container = StateContainer.of(context);
@@ -192,70 +197,6 @@ class _CreateFolderAlertDialogState extends State<CreateFolderAlertDialog> {
             return Navigator.of(context).pop(newFolderName);
           },
           child: const Text("Create"),
-        ),
-      ],
-      content: form,
-    );
-  }
-
-  @override
-  void dispose() {
-    _textController.dispose();
-    super.dispose();
-  }
-}
-
-class RenameFolderDialog extends StatefulWidget {
-  final NotesFolder folder;
-
-  RenameFolderDialog(this.folder);
-
-  @override
-  _RenameFolderDialogState createState() => _RenameFolderDialogState();
-}
-
-class _RenameFolderDialogState extends State<RenameFolderDialog> {
-  TextEditingController _textController;
-
-  @override
-  void initState() {
-    super.initState();
-    _textController = TextEditingController(text: widget.folder.name);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var form = Form(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Folder Name'),
-            validator: (value) {
-              if (value.isEmpty) return 'Please enter a name';
-              return "";
-            },
-            autofocus: true,
-            keyboardType: TextInputType.text,
-            controller: _textController,
-          ),
-        ],
-      ),
-    );
-
-    return AlertDialog(
-      title: const Text("Rename Folder"),
-      actions: <Widget>[
-        FlatButton(
-          onPressed: () => Navigator.of(context).pop(false),
-          child: const Text("Cancel"),
-        ),
-        FlatButton(
-          onPressed: () {
-            var newFolderName = _textController.text;
-            return Navigator.of(context).pop(newFolderName);
-          },
-          child: const Text("Rename"),
         ),
       ],
       content: form,
