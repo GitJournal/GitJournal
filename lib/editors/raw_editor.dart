@@ -53,6 +53,14 @@ class RawEditorState extends State<RawEditor> {
       ),
     );
 
+    var fab = FloatingActionButton(
+      child: const Icon(Icons.check),
+      onPressed: () {
+        _updateNote();
+        widget.exitEditorSelected(note);
+      },
+    );
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -94,6 +102,7 @@ class RawEditorState extends State<RawEditor> {
         ],
       ),
       body: editor,
+      floatingActionButton: fab,
     );
   }
 
