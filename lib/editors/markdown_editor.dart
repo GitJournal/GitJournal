@@ -71,10 +71,11 @@ class MarkdownEditorState extends State<MarkdownEditor> {
 
     Widget body = editingMode ? editor : NoteViewer(note: note);
     var fab = FloatingActionButton(
-      child: editingMode
-          ? const Icon(Icons.remove_red_eye)
-          : const Icon(Icons.edit),
-      onPressed: _switchMode,
+      child: const Icon(Icons.check),
+      onPressed: () {
+        _updateNote();
+        widget.exitEditorSelected(note);
+      },
     );
 
     return Scaffold(
