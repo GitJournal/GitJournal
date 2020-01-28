@@ -156,9 +156,17 @@ class Note with ChangeNotifier implements Comparable<Note> {
   }
 
   void rename(String newName) {
+    // Do not let the user rename it to a non-markdown file
+    if (!newName.toLowerCase().endsWith('.md')) {
+      newName += '.md';
+    }
+
     var parentDirName = p.dirname(filePath);
     var newFilePath = p.join(parentDirName, newName);
-    File(filePath).renameSync(newFilePath);
+    if (_loadState != NoteLoadState.None) {
+      // for new notes
+      File(filePath).renameSync(newFilePath);
+    }
     _filePath = newFilePath;
 
     notifyListeners();

@@ -47,7 +47,7 @@ class _RenameDialogState extends State<RenameDialog> {
                   FileSystemEntityType.notFound) {
                 return 'Already Exists';
               }
-              return "";
+              return null;
             },
             autofocus: true,
             keyboardType: TextInputType.text,

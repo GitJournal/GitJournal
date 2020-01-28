@@ -26,7 +26,6 @@ void showUndoDeleteSnackbar(
   BuildContext context,
   StateContainerState stateContainer,
   Note deletedNote,
-  int deletedNoteIndex,
 ) {
   var theme = Theme.of(context);
 
@@ -40,7 +39,7 @@ void showUndoDeleteSnackbar(
       ),
       onPressed: () {
         Fimber.d("Undoing delete");
-        stateContainer.undoRemoveNote(deletedNote, deletedNoteIndex);
+        stateContainer.undoRemoveNote(deletedNote);
       },
     ),
   ).show(context);

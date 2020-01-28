@@ -151,11 +151,6 @@ class StateContainerState extends State<StateContainer> {
   }
 
   void renameNote(Note note, String newFileName) async {
-    // Do not let the user rename it to a non-markdown file
-    if (!newFileName.toLowerCase().endsWith('.md')) {
-      newFileName += '.md';
-    }
-
     var oldNotePath = note.filePath;
     note.rename(newFileName);
 
@@ -181,8 +176,8 @@ class StateContainerState extends State<StateContainer> {
     });
   }
 
-  void undoRemoveNote(Note note, int index) {
-    note.parent.insert(index, note);
+  void undoRemoveNote(Note note) {
+    note.parent.insert(0, note);
     _gitRepo.resetLastCommit().then((NoteRepoResult _) {
       syncNotes();
     });

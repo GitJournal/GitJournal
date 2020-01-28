@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
-import 'package:gitjournal/screens/journal_editor.dart';
-import 'package:gitjournal/screens/journal_browsing.dart';
+import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
@@ -33,11 +32,9 @@ class JournalListingScreen extends StatelessWidget {
     Widget journalList = JournalList(
       notes: allNotes,
       noteSelectedFunction: (noteIndex) {
+        var note = allNotes[noteIndex];
         var route = MaterialPageRoute(
-          builder: (context) => JournalBrowsingScreen(
-            notes: allNotes,
-            noteIndex: noteIndex,
-          ),
+          builder: (context) => NoteEditor.fromNote(note),
         );
         Navigator.of(context).push(route);
       },
@@ -81,7 +78,7 @@ class JournalListingScreen extends StatelessWidget {
 
   void _newPost(BuildContext context) {
     var route = MaterialPageRoute(
-        builder: (context) => JournalEditor.newNote(notesFolder));
+        builder: (context) => NoteEditor.newNote(notesFolder));
     Navigator.of(context).push(route);
   }
 }
@@ -146,11 +143,9 @@ class NoteSearch extends SearchDelegate<Note> {
     Widget journalList = JournalList(
       notes: filteredNotes,
       noteSelectedFunction: (noteIndex) {
+        var note = filteredNotes[noteIndex];
         var route = MaterialPageRoute(
-          builder: (context) => JournalBrowsingScreen(
-            notes: filteredNotes,
-            noteIndex: noteIndex,
-          ),
+          builder: (context) => NoteEditor.fromNote(note),
         );
         Navigator.of(context).push(route);
       },
