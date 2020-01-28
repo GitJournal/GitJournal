@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/state_container.dart';
-import 'package:gitjournal/widgets/journal_editor_header.dart';
 import 'package:gitjournal/core/note_data.dart';
 import 'package:gitjournal/core/note_data_serializers.dart';
+import 'package:gitjournal/widgets/note_viewer.dart';
 
 enum NoteEditorDropDownChoices { Discard, SwitchEditor }
 
@@ -33,10 +33,8 @@ class JournalEditorState extends State<JournalEditor> {
   TextEditingController _titleTextController = TextEditingController();
 
   bool rawEditor = false;
+  bool editingMode = false;
   final serializer = MarkdownYAMLSerializer();
-
-  final bool journalMode = false;
-  final bool showTitle = true;
 
   JournalEditorState.newNote(NotesFolder folder) : newNote = true {
     note = Note.newNote(folder);
@@ -56,30 +54,46 @@ class JournalEditorState extends State<JournalEditor> {
 
   @override
   Widget build(BuildContext context) {
-    Widget editor = Column(
+    var markdownEditor = Column(
       children: <Widget>[
-        if (journalMode) JournalEditorHeader(note),
-        if (showTitle && !rawEditor) NoteTitleEditor(_titleTextController),
+        if (!rawEditor) NoteTitleEditor(_titleTextController),
         NoteMarkdownEditor(_textController, false),
       ],
     );
-    if (rawEditor) {
-      editor = NoteMarkdownEditor(_textController, true);
-    }
 
-    var title = newNote ? "New Note" : "Edit Note";
+    var rawEditorWidget = NoteMarkdownEditor(_textController, true);
+
+    var editorW = rawEditor ? rawEditorWidget : markdownEditor;
+    var editor = Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: SingleChildScrollView(child: editorW),
+    );
+
+    Widget body = editingMode ? editor : NoteViewer(note: note);
+
     var newJournalScreen = Scaffold(
       appBar: AppBar(
-        title: Text(title),
         leading: IconButton(
           key: const ValueKey("NewEntry"),
-          icon: Icon(Icons.check),
+          icon: const Icon(Icons.check),
           onPressed: () {
             _saveNote(context);
             Navigator.pop(context);
           },
         ),
         actions: <Widget>[
+          !rawEditor
+              ? IconButton(
+                  icon: editingMode
+                      ? Icon(Icons.remove_red_eye)
+                      : Icon(Icons.edit),
+                  onPressed: () {
+                    setState(() {
+                      editingMode = !editingMode;
+                    });
+                  },
+                )
+              : Container(),
           PopupMenuButton<NoteEditorDropDownChoices>(
             onSelected: (NoteEditorDropDownChoices choice) {
               switch (choice) {
@@ -124,14 +138,9 @@ class JournalEditorState extends State<JournalEditor> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: editor,
-        ),
-      ),
+      body: body,
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.check),
+        child: const Icon(Icons.check),
         onPressed: () {
           _saveNote(context);
           Navigator.pop(context);
@@ -221,7 +230,7 @@ class NoteMarkdownEditor extends StatelessWidget {
     }
 
     return TextField(
-      autofocus: true,
+      autofocus: false,
       autocorrect: false,
       keyboardType: TextInputType.multiline,
       maxLines: null,
