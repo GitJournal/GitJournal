@@ -12,7 +12,7 @@ class MarkdownEditor extends StatefulWidget {
   final NoteCallback noteEditorChooserSelected;
   final NoteCallback exitEditorSelected;
   final NoteCallback renameNoteSelected;
-  final bool openEditorByDefault;
+  final bool autofocusOnEditor;
 
   MarkdownEditor({
     Key key,
@@ -21,7 +21,7 @@ class MarkdownEditor extends StatefulWidget {
     @required this.noteEditorChooserSelected,
     @required this.exitEditorSelected,
     @required this.renameNoteSelected,
-    this.openEditorByDefault = false,
+    this.autofocusOnEditor = false,
   }) : super(key: key);
 
   @override
@@ -35,17 +35,11 @@ class MarkdownEditorState extends State<MarkdownEditor> {
   TextEditingController _textController = TextEditingController();
   TextEditingController _titleTextController = TextEditingController();
 
-  bool editingMode = false;
+  bool editingMode = true;
 
   MarkdownEditorState(this.note) {
     _textController = TextEditingController(text: note.body);
     _titleTextController = TextEditingController(text: note.title);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    editingMode = widget.openEditorByDefault;
   }
 
   @override
@@ -63,7 +57,10 @@ class MarkdownEditorState extends State<MarkdownEditor> {
         child: Column(
           children: <Widget>[
             _NoteTitleEditor(_titleTextController),
-            _NoteBodyEditor(_textController),
+            _NoteBodyEditor(
+              _textController,
+              autofocus: widget.autofocusOnEditor,
+            ),
           ],
         ),
       ),
@@ -149,15 +146,16 @@ class MarkdownEditorState extends State<MarkdownEditor> {
 
 class _NoteBodyEditor extends StatelessWidget {
   final TextEditingController textController;
+  final bool autofocus;
 
-  _NoteBodyEditor(this.textController);
+  _NoteBodyEditor(this.textController, {this.autofocus = false});
 
   @override
   Widget build(BuildContext context) {
     var style = Theme.of(context).textTheme.subhead;
 
     return TextField(
-      autofocus: true,
+      autofocus: autofocus,
       autocorrect: false,
       keyboardType: TextInputType.multiline,
       maxLines: null,
