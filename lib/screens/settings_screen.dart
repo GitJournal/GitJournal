@@ -129,22 +129,6 @@ class SettingsListState extends State<SettingsList> {
           dynamicTheme.setBrightness(b);
         },
       ),
-      ListTile(
-        title: const Text("Font Size"),
-        subtitle: Text(settings.noteFontSize.toPublicString()),
-        onTap: () async {
-          var fontSize = await showDialog<NoteFontSize>(
-            context: context,
-            builder: (context) => FontSizeSettingsDialog(settings.noteFontSize),
-          );
-
-          if (fontSize != null) {
-            settings.noteFontSize = fontSize;
-            settings.save();
-            setState(() {});
-          }
-        },
-      ),
       SettingsHeader("Git Author Settings"),
       ListTile(title: gitAuthorForm),
       ListTile(title: gitAuthorEmailForm),
@@ -259,55 +243,5 @@ class VersionNumberTileState extends State<VersionNumberTile> {
       ),
       enabled: false,
     );
-  }
-}
-
-class FontSizeSettingsDialog extends StatelessWidget {
-  final String title = "Font Size";
-  final NoteFontSize prevSize;
-
-  FontSizeSettingsDialog(this.prevSize);
-
-  @override
-  Widget build(BuildContext context) {
-    var sizes = <Widget>[];
-    for (var fontSize in NoteFontSize.options) {
-      var tile = _constructTile(context, fontSize);
-      sizes.add(tile);
-    }
-
-    return AlertDialog(
-      title: Text(title),
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: sizes,
-        ),
-      ),
-      contentPadding: const EdgeInsets.all(0.0),
-      actions: <Widget>[
-        FlatButton(
-          child: const Text('CANCEL'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        )
-      ],
-    );
-  }
-
-  Widget _constructTile(BuildContext context, NoteFontSize fontSize) {
-    var style = Theme.of(context).textTheme.body1;
-    style = style.copyWith(fontSize: fontSize.toDouble());
-
-    var tile = RadioListTile<NoteFontSize>(
-      title: Text(fontSize.toPublicString(), style: style),
-      value: fontSize,
-      groupValue: prevSize,
-      onChanged: (NoteFontSize newVal) {
-        Navigator.of(context).pop(newVal);
-      },
-    );
-
-    return tile;
   }
 }

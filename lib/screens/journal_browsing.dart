@@ -9,7 +9,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
-import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/widgets/journal_editor_header.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
 
@@ -176,8 +175,7 @@ class NoteViewer extends StatelessWidget {
     ThemeData theme = Theme.of(context);
     theme = theme.copyWith(
       textTheme: theme.textTheme.copyWith(
-        body1: theme.textTheme.body1
-            .copyWith(fontSize: Settings.instance.noteFontSize.toDouble()),
+        body1: theme.textTheme.body1,
       ),
     );
 
