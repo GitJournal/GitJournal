@@ -175,7 +175,7 @@ class NoteViewer extends StatelessWidget {
     ThemeData theme = Theme.of(context);
     theme = theme.copyWith(
       textTheme: theme.textTheme.copyWith(
-        body1: theme.textTheme.body1,
+        body1: theme.textTheme.subhead,
       ),
     );
 
