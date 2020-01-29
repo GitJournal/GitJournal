@@ -160,6 +160,9 @@ class StateContainerState extends State<StateContainer> {
   }
 
   void moveNote(Note note, NotesFolder destFolder) {
+    if (destFolder.folderPath == note.parent.folderPath) {
+      return;
+    }
     var oldNotePath = note.filePath;
     note.move(destFolder);
 
