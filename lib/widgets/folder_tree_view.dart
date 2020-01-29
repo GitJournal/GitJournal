@@ -10,17 +10,21 @@ class FolderTreeView extends StatefulWidget {
   final FolderSelectedCallback onFolderSelected;
   final Function onFolderUnselected;
   final FolderSelectedCallback onFolderEntered;
+  final bool longPressAllowed;
 
   FolderTreeView({
     Key key,
     @required this.rootFolder,
-    @required this.onFolderSelected,
-    @required this.onFolderUnselected,
     @required this.onFolderEntered,
+    this.onFolderSelected = _doNothing,
+    this.onFolderUnselected = _doNothing,
+    this.longPressAllowed = true,
   }) : super(key: key);
 
   @override
   FolderTreeViewState createState() => FolderTreeViewState();
+
+  static void _doNothing(NotesFolder f) {}
 }
 
 class FolderTreeViewState extends State<FolderTreeView> {
@@ -43,6 +47,7 @@ class FolderTreeViewState extends State<FolderTreeView> {
         }
       },
       onLongPress: (folder) {
+        if (!widget.longPressAllowed) return;
         setState(() {
           inSelectionMode = true;
           selectedFolder = folder;

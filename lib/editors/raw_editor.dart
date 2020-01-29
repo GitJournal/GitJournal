@@ -4,7 +4,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_data_serializers.dart';
 
 typedef NoteCallback = void Function(Note);
-enum DropDownChoices { Rename }
+enum DropDownChoices { Rename, MoveToFolder }
 
 class RawEditor extends StatefulWidget {
   final Note note;
@@ -12,6 +12,7 @@ class RawEditor extends StatefulWidget {
   final NoteCallback noteEditorChooserSelected;
   final NoteCallback exitEditorSelected;
   final NoteCallback renameNoteSelected;
+  final NoteCallback moveNoteToFolderSelected;
 
   RawEditor({
     Key key,
@@ -20,6 +21,7 @@ class RawEditor extends StatefulWidget {
     @required this.noteEditorChooserSelected,
     @required this.exitEditorSelected,
     @required this.renameNoteSelected,
+    @required this.moveNoteToFolderSelected,
   }) : super(key: key);
 
   @override
@@ -88,14 +90,27 @@ class RawEditorState extends State<RawEditor> {
           ),
           PopupMenuButton<DropDownChoices>(
             onSelected: (DropDownChoices choice) {
-              _updateNote();
-              widget.renameNoteSelected(note);
+              switch (choice) {
+                case DropDownChoices.Rename:
+                  _updateNote();
+                  widget.renameNoteSelected(note);
+                  return;
+
+                case DropDownChoices.MoveToFolder:
+                  _updateNote();
+                  widget.moveNoteToFolderSelected(note);
+                  return;
+              }
             },
             itemBuilder: (BuildContext context) =>
                 <PopupMenuEntry<DropDownChoices>>[
               const PopupMenuItem<DropDownChoices>(
                 value: DropDownChoices.Rename,
                 child: Text('Edit File Name'),
+              ),
+              const PopupMenuItem<DropDownChoices>(
+                value: DropDownChoices.MoveToFolder,
+                child: Text('Move to Folder'),
               ),
             ],
           ),

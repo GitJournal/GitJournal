@@ -8,9 +8,8 @@ import 'package:gitjournal/editors/raw_editor.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/core/note_data_serializers.dart';
 import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
-
-enum NoteEditorDropDownChoices { Discard, SwitchEditor }
 
 class NoteEditor extends StatefulWidget {
   final Note note;
@@ -73,6 +72,7 @@ class NoteEditorState extends State<NoteEditor> {
           noteEditorChooserSelected: _noteEditorChooserSelected,
           exitEditorSelected: _exitEditorSelected,
           renameNoteSelected: _renameNoteSelected,
+          moveNoteToFolderSelected: _moveNoteToFolderSelected,
           autofocusOnEditor: _isNewNote,
         );
       case EditorType.Raw:
@@ -83,6 +83,7 @@ class NoteEditorState extends State<NoteEditor> {
           noteEditorChooserSelected: _noteEditorChooserSelected,
           exitEditorSelected: _exitEditorSelected,
           renameNoteSelected: _renameNoteSelected,
+          moveNoteToFolderSelected: _moveNoteToFolderSelected,
         );
     }
     return null;
@@ -226,5 +227,16 @@ class NoteEditorState extends State<NoteEditor> {
         return _rawEditorKey.currentState.getNote();
     }
     return null;
+  }
+
+  void _moveNoteToFolderSelected(Note note) async {
+    var destFolder = await showDialog<NotesFolder>(
+      context: context,
+      builder: (context) => FolderSelectionDialog(),
+    );
+    if (destFolder != null) {
+      final stateContainer = StateContainer.of(context);
+      stateContainer.moveNote(note, destFolder);
+    }
   }
 }

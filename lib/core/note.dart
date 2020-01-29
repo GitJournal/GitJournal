@@ -172,6 +172,22 @@ class Note with ChangeNotifier implements Comparable<Note> {
     notifyListeners();
   }
 
+  bool move(NotesFolder destFolder) {
+    var destPath = p.join(destFolder.folderPath, fileName);
+    if (File(destPath).existsSync()) {
+      return false;
+    }
+
+    File(filePath).renameSync(destPath);
+
+    parent.remove(this);
+    parent = destFolder;
+    destFolder.add(this);
+
+    notifyListeners();
+    return true;
+  }
+
   @override
   int get hashCode => _filePath.hashCode;
 

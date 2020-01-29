@@ -139,7 +139,7 @@ class StateContainerState extends State<StateContainer> {
     });
   }
 
-  void renameFolder(NotesFolder folder, String newFolderName) async {
+  void renameFolder(NotesFolder folder, String newFolderName) {
     var oldFolderPath = folder.folderPath;
     folder.rename(newFolderName);
 
@@ -150,11 +150,20 @@ class StateContainerState extends State<StateContainer> {
     });
   }
 
-  void renameNote(Note note, String newFileName) async {
+  void renameNote(Note note, String newFileName) {
     var oldNotePath = note.filePath;
     note.rename(newFileName);
 
     _gitRepo.renameNote(oldNotePath, note.filePath).then((NoteRepoResult _) {
+      syncNotes();
+    });
+  }
+
+  void moveNote(Note note, NotesFolder destFolder) {
+    var oldNotePath = note.filePath;
+    note.move(destFolder);
+
+    _gitRepo.moveNote(oldNotePath, note.filePath).then((NoteRepoResult _) {
       syncNotes();
     });
   }
