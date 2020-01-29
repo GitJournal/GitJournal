@@ -1,3 +1,8 @@
+## [1.36] - 2020-01-28
+* Automatically resolve merge conflicts
+* New combined editor / viewer
+* Allow Notes to moved to another Folder
+
 ## [1.35] - 2020-01-27
 * Allow notes to be renamed
 * Dark Theme improvements
