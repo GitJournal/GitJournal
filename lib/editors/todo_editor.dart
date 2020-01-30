@@ -56,10 +56,14 @@ class TodoEditorState extends State<TodoEditor> implements EditorState {
 
   @override
   Widget build(BuildContext context) {
-    var todoItemTiles = <TodoItemTile>[];
+    var todoItemTiles = <Widget>[];
     todos.forEach((TodoItem todo) {
       todoItemTiles.add(_buildTile(todo));
     });
+    todoItemTiles.add(AddTodoItemButton(
+      key: UniqueKey(),
+      onPressed: () {},
+    ));
 
     print("Building " + todos.toString());
     Widget todoList = ReorderableListView(
@@ -217,6 +221,32 @@ class _TodoItemTileState extends State<TodoItemTile> {
               onPressed: widget.todoRemoved,
             )
           : null,
+    );
+  }
+}
+
+class AddTodoItemButton extends StatelessWidget {
+  final Function onPressed;
+
+  AddTodoItemButton({Key key, @required this.onPressed}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var style = Theme.of(context).textTheme.subhead;
+
+    return ListTile(
+      dense: true,
+      leading: Row(
+        children: <Widget>[
+          Container(height: 24.0, width: 24.0),
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {},
+          )
+        ],
+        mainAxisSize: MainAxisSize.min,
+      ),
+      title: Text("Add Item", style: style),
     );
   }
 }
