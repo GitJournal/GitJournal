@@ -89,7 +89,7 @@ class _NoteEditor extends StatelessWidget {
       keyboardType: TextInputType.multiline,
       maxLines: null,
       style: style,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         hintText: 'Write here',
         border: InputBorder.none,
         isDense: true,

@@ -124,7 +124,7 @@ class _NoteBodyEditor extends StatelessWidget {
       keyboardType: TextInputType.multiline,
       maxLines: null,
       style: style,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         hintText: 'Write here',
         border: InputBorder.none,
         isDense: true,
@@ -149,7 +149,7 @@ class _NoteTitleEditor extends StatelessWidget {
       keyboardType: TextInputType.text,
       maxLines: 1,
       style: style,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         hintText: 'Title',
         border: InputBorder.none,
         isDense: true,
