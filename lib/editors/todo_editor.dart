@@ -170,11 +170,15 @@ class TodoItemTile extends StatefulWidget {
 
 class _TodoItemTileState extends State<TodoItemTile> {
   TextEditingController _textController;
+  FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
     _textController = TextEditingController(text: widget.todo.body);
+    _focusNode.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -182,6 +186,7 @@ class _TodoItemTileState extends State<TodoItemTile> {
     var style = Theme.of(context).textTheme.subhead;
 
     var editor = TextField(
+      focusNode: _focusNode,
       keyboardType: TextInputType.text,
       maxLines: 1,
       style: style,
@@ -194,6 +199,7 @@ class _TodoItemTileState extends State<TodoItemTile> {
     );
 
     return ListTile(
+      dense: true,
       leading: Row(
         children: <Widget>[
           Container(height: 24.0, width: 24.0, child: Icon(Icons.reorder)),
@@ -205,11 +211,12 @@ class _TodoItemTileState extends State<TodoItemTile> {
         mainAxisSize: MainAxisSize.min,
       ),
       title: editor,
-      trailing: IconButton(
-        icon: Icon(Icons.cancel),
-        onPressed: widget.todoRemoved,
-      ),
-      dense: true,
+      trailing: _focusNode.hasFocus
+          ? IconButton(
+              icon: Icon(Icons.cancel),
+              onPressed: widget.todoRemoved,
+            )
+          : null,
     );
   }
 }
@@ -217,4 +224,4 @@ class _TodoItemTileState extends State<TodoItemTile> {
 // FIXME: The body needs to be scrollable
 // FIXME: Add a new todo button
 // FIXME: Fix padding issue with todo items
-// FIXME: Only show 'x' when active
+// FIXME: When removing an item the focus should jump to the next/prev in line
