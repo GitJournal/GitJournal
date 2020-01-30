@@ -62,11 +62,20 @@ class TodoEditorState extends State<TodoEditor> implements EditorState {
     });
 
     print("Building " + todos.toString());
-    var todoList = ListView(
+    var todoList = ReorderableListView(
       children: todoItemTiles,
-    );
+      onReorder: (int oldIndex, int newIndex) {
+        setState(() {
+          var item = todos.removeAt(oldIndex);
 
-    // FIXME: The body needs to be scrollable
+          if (newIndex > oldIndex) {
+            todos.insert(newIndex - 1, item);
+          } else {
+            todos.insert(newIndex, item);
+          }
+        });
+      },
+    );
 
     var titleEditor = Padding(
       padding: const EdgeInsets.all(16.0),
@@ -90,6 +99,7 @@ class TodoEditorState extends State<TodoEditor> implements EditorState {
 
   TodoItemTile _buildTile(TodoItem todo) {
     return TodoItemTile(
+      key: UniqueKey(),
       todo: todo,
       statusChanged: (val) {
         setState(() {
@@ -140,7 +150,11 @@ class TodoItemTile extends StatefulWidget {
   final TodoItem todo;
   final Function statusChanged;
 
-  TodoItemTile({@required this.todo, @required this.statusChanged});
+  TodoItemTile({
+    Key key,
+    @required this.todo,
+    @required this.statusChanged,
+  }) : super(key: key);
 
   @override
   _TodoItemTileState createState() => _TodoItemTileState();
@@ -172,9 +186,15 @@ class _TodoItemTileState extends State<TodoItemTile> {
     );
 
     return ListTile(
-      leading: Checkbox(
-        value: widget.todo.checked,
-        onChanged: widget.statusChanged,
+      leading: Row(
+        children: <Widget>[
+          Container(height: 24.0, width: 24.0, child: Icon(Icons.reorder)),
+          Checkbox(
+            value: widget.todo.checked,
+            onChanged: widget.statusChanged,
+          ),
+        ],
+        mainAxisSize: MainAxisSize.min,
       ),
       title: editor,
       trailing: IconButton(
@@ -185,3 +205,9 @@ class _TodoItemTileState extends State<TodoItemTile> {
     );
   }
 }
+
+// FIXME: The body needs to be scrollable
+// FIXME: Add a new todo button
+// FIXME: Make the delete todo button work
+// FIXME: Fix padding issue with todo items
+// FIXME: Only show 'x' when active
