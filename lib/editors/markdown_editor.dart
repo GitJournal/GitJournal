@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/widgets/note_viewer.dart';
 
-typedef NoteCallback = void Function(Note);
-enum DropDownChoices { Rename, MoveToFolder }
-
-class MarkdownEditor extends StatefulWidget {
+class MarkdownEditor extends StatefulWidget implements Editor {
   final Note note;
+
+  @override
   final NoteCallback noteDeletionSelected;
+  @override
   final NoteCallback noteEditorChooserSelected;
+  @override
   final NoteCallback exitEditorSelected;
+  @override
   final NoteCallback renameNoteSelected;
+  @override
   final NoteCallback moveNoteToFolderSelected;
+
   final bool autofocusOnEditor;
 
   MarkdownEditor({
@@ -32,7 +37,7 @@ class MarkdownEditor extends StatefulWidget {
   }
 }
 
-class MarkdownEditorState extends State<MarkdownEditor> {
+class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
   Note note;
   TextEditingController _textController = TextEditingController();
   TextEditingController _titleTextController = TextEditingController();
@@ -69,75 +74,18 @@ class MarkdownEditorState extends State<MarkdownEditor> {
     );
 
     Widget body = editingMode ? editor : NoteViewer(note: note);
-    var fab = FloatingActionButton(
-      child: const Icon(Icons.check),
-      onPressed: () {
-        _updateNote();
-        widget.exitEditorSelected(note);
-      },
+
+    var extraButton = IconButton(
+      icon: editingMode
+          ? const Icon(Icons.remove_red_eye)
+          : const Icon(Icons.edit),
+      onPressed: _switchMode,
     );
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          key: const ValueKey("NewEntry"),
-          icon: const Icon(Icons.check),
-          onPressed: () {
-            _updateNote();
-            widget.exitEditorSelected(note);
-          },
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: editingMode
-                ? const Icon(Icons.remove_red_eye)
-                : const Icon(Icons.edit),
-            onPressed: _switchMode,
-          ),
-          IconButton(
-            icon: const Icon(Icons.library_books),
-            onPressed: () {
-              _updateNote();
-              widget.noteEditorChooserSelected(note);
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () {
-              _updateNote();
-              widget.noteDeletionSelected(note);
-            },
-          ),
-          PopupMenuButton<DropDownChoices>(
-            onSelected: (DropDownChoices choice) {
-              switch (choice) {
-                case DropDownChoices.Rename:
-                  _updateNote();
-                  widget.renameNoteSelected(note);
-                  return;
-
-                case DropDownChoices.MoveToFolder:
-                  _updateNote();
-                  widget.moveNoteToFolderSelected(note);
-                  return;
-              }
-            },
-            itemBuilder: (BuildContext context) =>
-                <PopupMenuEntry<DropDownChoices>>[
-              const PopupMenuItem<DropDownChoices>(
-                value: DropDownChoices.Rename,
-                child: Text('Edit File Name'),
-              ),
-              const PopupMenuItem<DropDownChoices>(
-                value: DropDownChoices.MoveToFolder,
-                child: Text('Move to Folder'),
-              ),
-            ],
-          ),
-        ],
-      ),
+      appBar: buildEditorAppBar(widget, this, extraButtons: [extraButton]),
+      floatingActionButton: buildFAB(widget, this),
       body: body,
-      floatingActionButton: fab,
     );
   }
 
@@ -153,6 +101,7 @@ class MarkdownEditorState extends State<MarkdownEditor> {
     note.body = _textController.text.trim();
   }
 
+  @override
   Note getNote() {
     _updateNote();
     return note;

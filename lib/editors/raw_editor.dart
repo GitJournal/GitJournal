@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_data_serializers.dart';
+import 'package:gitjournal/editors/common.dart';
 
-typedef NoteCallback = void Function(Note);
-enum DropDownChoices { Rename, MoveToFolder }
-
-class RawEditor extends StatefulWidget {
+class RawEditor extends StatefulWidget implements Editor {
   final Note note;
+
+  @override
   final NoteCallback noteDeletionSelected;
+  @override
   final NoteCallback noteEditorChooserSelected;
+  @override
   final NoteCallback exitEditorSelected;
+  @override
   final NoteCallback renameNoteSelected;
+  @override
   final NoteCallback moveNoteToFolderSelected;
 
   RawEditor({
@@ -30,7 +34,7 @@ class RawEditor extends StatefulWidget {
   }
 }
 
-class RawEditorState extends State<RawEditor> {
+class RawEditorState extends State<RawEditor> implements EditorState {
   Note note;
   TextEditingController _textController = TextEditingController();
 
@@ -55,78 +59,16 @@ class RawEditorState extends State<RawEditor> {
       ),
     );
 
-    var fab = FloatingActionButton(
-      child: const Icon(Icons.check),
-      onPressed: () {
-        _updateNote();
-        widget.exitEditorSelected(note);
-      },
-    );
-
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          key: const ValueKey("NewEntry"),
-          icon: const Icon(Icons.check),
-          onPressed: () {
-            _updateNote();
-            widget.exitEditorSelected(note);
-          },
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.library_books),
-            onPressed: () {
-              _updateNote();
-              widget.noteEditorChooserSelected(note);
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () {
-              _updateNote();
-              widget.noteDeletionSelected(note);
-            },
-          ),
-          PopupMenuButton<DropDownChoices>(
-            onSelected: (DropDownChoices choice) {
-              switch (choice) {
-                case DropDownChoices.Rename:
-                  _updateNote();
-                  widget.renameNoteSelected(note);
-                  return;
-
-                case DropDownChoices.MoveToFolder:
-                  _updateNote();
-                  widget.moveNoteToFolderSelected(note);
-                  return;
-              }
-            },
-            itemBuilder: (BuildContext context) =>
-                <PopupMenuEntry<DropDownChoices>>[
-              const PopupMenuItem<DropDownChoices>(
-                value: DropDownChoices.Rename,
-                child: Text('Edit File Name'),
-              ),
-              const PopupMenuItem<DropDownChoices>(
-                value: DropDownChoices.MoveToFolder,
-                child: Text('Move to Folder'),
-              ),
-            ],
-          ),
-        ],
-      ),
+      appBar: buildEditorAppBar(widget, this),
+      floatingActionButton: buildFAB(widget, this),
       body: editor,
-      floatingActionButton: fab,
     );
   }
 
-  void _updateNote() {
-    note.data = serializer.decode(_textController.text);
-  }
-
+  @override
   Note getNote() {
-    _updateNote();
+    note.data = serializer.decode(_textController.text);
     return note;
   }
 }
