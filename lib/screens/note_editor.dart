@@ -5,11 +5,14 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/editors/markdown_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
+import 'package:gitjournal/editors/todo_editor.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/core/note_data_serializers.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
+
+final todoEditorEnabled = false;
 
 class NoteEditor extends StatefulWidget {
   final Note note;
@@ -28,7 +31,7 @@ class NoteEditor extends StatefulWidget {
   }
 }
 
-enum EditorType { Markdown, Raw }
+enum EditorType { Markdown, Raw, Todo }
 
 class NoteEditorState extends State<NoteEditor> {
   Note note;
@@ -37,6 +40,7 @@ class NoteEditorState extends State<NoteEditor> {
 
   final _rawEditorKey = GlobalKey<RawEditorState>();
   final _markdownEditorKey = GlobalKey<MarkdownEditorState>();
+  final _todoEditorKey = GlobalKey<TodoEditorState>();
 
   bool get _isNewNote {
     return widget.note == null;
@@ -85,6 +89,16 @@ class NoteEditorState extends State<NoteEditor> {
           renameNoteSelected: _renameNoteSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
         );
+      case EditorType.Todo:
+        return TodoEditor(
+          key: _todoEditorKey,
+          note: note,
+          noteDeletionSelected: _noteDeletionSelected,
+          noteEditorChooserSelected: _noteEditorChooserSelected,
+          exitEditorSelected: _exitEditorSelected,
+          renameNoteSelected: _renameNoteSelected,
+          moveNoteToFolderSelected: _moveNoteToFolderSelected,
+        );
     }
     return null;
   }
@@ -106,6 +120,13 @@ class NoteEditorState extends State<NoteEditor> {
             groupValue: editorType,
             onChanged: (EditorType et) => Navigator.of(context).pop(et),
           ),
+          if (todoEditorEnabled)
+            RadioListTile<EditorType>(
+              title: const Text("Todo Editor"),
+              value: EditorType.Todo,
+              groupValue: editorType,
+              onChanged: (EditorType et) => Navigator.of(context).pop(et),
+            ),
         ];
 
         return AlertDialog(
@@ -225,6 +246,8 @@ class NoteEditorState extends State<NoteEditor> {
         return _markdownEditorKey.currentState.getNote();
       case EditorType.Raw:
         return _rawEditorKey.currentState.getNote();
+      case EditorType.Todo:
+        return _todoEditorKey.currentState.getNote();
     }
     return null;
   }
