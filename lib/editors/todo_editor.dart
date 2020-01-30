@@ -62,7 +62,7 @@ class TodoEditorState extends State<TodoEditor> implements EditorState {
     });
 
     print("Building " + todos.toString());
-    var todoList = ReorderableListView(
+    Widget todoList = ReorderableListView(
       children: todoItemTiles,
       onReorder: (int oldIndex, int newIndex) {
         setState(() {
@@ -104,6 +104,12 @@ class TodoEditorState extends State<TodoEditor> implements EditorState {
       statusChanged: (val) {
         setState(() {
           todo.checked = val;
+        });
+      },
+      todoRemoved: () {
+        setState(() {
+          // FIXME: The body isn't a good indicator, there could be multiple with the same body!
+          todos.removeWhere((t) => t.body == todo.body);
         });
       },
     );
@@ -149,11 +155,13 @@ class TodoItem {
 class TodoItemTile extends StatefulWidget {
   final TodoItem todo;
   final Function statusChanged;
+  final Function todoRemoved;
 
   TodoItemTile({
     Key key,
     @required this.todo,
     @required this.statusChanged,
+    @required this.todoRemoved,
   }) : super(key: key);
 
   @override
@@ -199,7 +207,7 @@ class _TodoItemTileState extends State<TodoItemTile> {
       title: editor,
       trailing: IconButton(
         icon: Icon(Icons.cancel),
-        onPressed: () {},
+        onPressed: widget.todoRemoved,
       ),
       dense: true,
     );
@@ -208,6 +216,5 @@ class _TodoItemTileState extends State<TodoItemTile> {
 
 // FIXME: The body needs to be scrollable
 // FIXME: Add a new todo button
-// FIXME: Make the delete todo button work
 // FIXME: Fix padding issue with todo items
 // FIXME: Only show 'x' when active
