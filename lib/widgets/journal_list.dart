@@ -36,10 +36,7 @@ class JournalList extends StatelessWidget {
       );
     }
 
-    return ListView.separated(
-      separatorBuilder: (context, index) {
-        return const Divider();
-      },
+    return ListView.builder(
       itemBuilder: (context, i) {
         if (i >= notes.length) {
           return null;
@@ -123,9 +120,21 @@ class JournalList extends StatelessWidget {
       onTap: () => noteSelectedFunction(noteIndex),
     );
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-      child: tile,
+    var dc = Theme.of(context).dividerColor;
+    var divider = Container(
+      height: 1.0,
+      child: Divider(color: dc.withOpacity(dc.opacity / 3)),
+    );
+
+    return Column(
+      children: <Widget>[
+        divider,
+        Padding(
+          padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+          child: tile,
+        ),
+        divider,
+      ],
     );
   }
 
