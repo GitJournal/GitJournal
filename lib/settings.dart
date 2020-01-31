@@ -18,6 +18,7 @@ class Settings {
   bool collectCrashReports = true;
 
   String yamlModifiedKey = "modified";
+  String defaultNewNoteFolder = "journal";
   int version = 0;
 
   void load(SharedPreferences pref) {
@@ -33,6 +34,8 @@ class Settings {
         pref.getBool("collectCrashReports") ?? collectCrashReports;
 
     yamlModifiedKey = pref.getString("yamlModifiedKey") ?? yamlModifiedKey;
+    defaultNewNoteFolder =
+        pref.getString("defaultNewNoteFolder") ?? defaultNewNoteFolder;
     version = pref.getInt("settingsVersion") ?? version;
   }
 
@@ -44,6 +47,7 @@ class Settings {
     pref.setBool("collectUsageStatistics", collectUsageStatistics);
     pref.setBool("collectCrashReports", collectCrashReports);
     pref.setString("yamlModifiedKey", yamlModifiedKey);
+    pref.setString("defaultNewNoteFolder", defaultNewNoteFolder);
     pref.setInt("settingsVersion", version);
 
     // Shouldn't we check if something has actually changed?
@@ -60,6 +64,7 @@ class Settings {
       "collectUsageStatistics": collectUsageStatistics,
       "collectCrashReports": collectCrashReports,
       "yamlModifiedKey": yamlModifiedKey,
+      "defaultNewNoteFolder": defaultNewNoteFolder,
       "version": version,
     };
   }
@@ -68,6 +73,7 @@ class Settings {
     var m = toMap();
     m.remove("gitAuthor");
     m.remove("gitAuthorEmail");
+    m.remove("defaultNewNoteFolder");
     return m;
   }
 }

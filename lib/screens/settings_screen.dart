@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
@@ -7,6 +8,9 @@ import 'package:gitjournal/screens/settings_git_remote.dart';
 import 'package:gitjournal/screens/settings_note_metadata.dart';
 
 import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:gitjournal/widgets/folder_selection_dialog.dart';
+
+var defaultFolderConfigurable = false;
 
 class SettingsScreen extends StatelessWidget {
   @override
@@ -129,6 +133,24 @@ class SettingsListState extends State<SettingsList> {
           dynamicTheme.setBrightness(b);
         },
       ),
+      SettingsHeader('Note Settings'),
+      if (defaultFolderConfigurable)
+        ListTile(
+          title: const Text("Default Folder for new notes"),
+          subtitle: Text(Settings.instance.defaultNewNoteFolder
+              .replaceFirst('journal', 'Notes')),
+          onTap: () async {
+            var destFolder = await showDialog<NotesFolder>(
+              context: context,
+              builder: (context) => FolderSelectionDialog(),
+            );
+            if (destFolder != null) {
+              Settings.instance.defaultNewNoteFolder = destFolder.fullName;
+              Settings.instance.save();
+              setState(() {});
+            }
+          },
+        ),
       SettingsHeader("Git Author Settings"),
       ListTile(title: gitAuthorForm),
       ListTile(title: gitAuthorEmailForm),

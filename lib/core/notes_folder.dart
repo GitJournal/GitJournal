@@ -40,6 +40,17 @@ class NotesFolder with ChangeNotifier implements Comparable<NotesFolder> {
     return basename(folderPath);
   }
 
+  String get fullName {
+    String n = name;
+    var par = parent;
+    while (par != null) {
+      n = p.join(par.name, n);
+      par = par.parent;
+    }
+
+    return n;
+  }
+
   bool get hasSubFolders {
     return _entities.firstWhere((e) => e.isFolder, orElse: () => null) != null;
   }
