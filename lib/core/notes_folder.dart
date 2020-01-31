@@ -96,18 +96,28 @@ class NotesFolder with ChangeNotifier implements Comparable<NotesFolder> {
 
   // FIXME: This asynchronously loads everything. Maybe it should just list them, and the individual _entities
   //        should be loaded as required?
-  // FIXME: This loads everything in one go. In some cases there can be too many files open and we hit the limit.
   Future<void> loadRecursively() async {
+    const maxParallel = 10;
+    var futures = <Future>[];
+
     await load();
-    _entities.forEach((e) {
+    for (var i = 0; i < _entities.length; i++) {
+      var e = _entities[i];
       if (e.isFolder) {
-        e.folder.loadRecursively();
+        var f = e.folder.loadRecursively();
+        futures.add(f);
       } else {
         // FIXME: Collected all the Errors, and report them back, along with "WHY", and the contents of the Note
         //        Each of these needs to be reported to crashlytics, as Note loading should never fail
-        e.note.load();
+        var f = e.note.load();
+        futures.add(f);
       }
-    });
+
+      if (futures.length >= maxParallel) {
+        await Future.wait(futures);
+        futures = <Future>[];
+      }
+    }
   }
 
   // FIXME: This should not reconstruct the Notes or NotesFolders once constructed.
