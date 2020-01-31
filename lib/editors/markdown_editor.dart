@@ -17,6 +17,8 @@ class MarkdownEditor extends StatefulWidget implements Editor {
   final NoteCallback renameNoteSelected;
   @override
   final NoteCallback moveNoteToFolderSelected;
+  @override
+  final NoteCallback discardChangesSelected;
 
   final bool autofocusOnEditor;
 
@@ -28,6 +30,7 @@ class MarkdownEditor extends StatefulWidget implements Editor {
     @required this.exitEditorSelected,
     @required this.renameNoteSelected,
     @required this.moveNoteToFolderSelected,
+    @required this.discardChangesSelected,
     this.autofocusOnEditor = false,
   }) : super(key: key);
 

@@ -16,6 +16,8 @@ class TodoEditor extends StatefulWidget implements Editor {
   final NoteCallback renameNoteSelected;
   @override
   final NoteCallback moveNoteToFolderSelected;
+  @override
+  final NoteCallback discardChangesSelected;
 
   TodoEditor({
     Key key,
@@ -25,6 +27,7 @@ class TodoEditor extends StatefulWidget implements Editor {
     @required this.exitEditorSelected,
     @required this.renameNoteSelected,
     @required this.moveNoteToFolderSelected,
+    @required this.discardChangesSelected,
   }) : super(key: key);
 
   @override

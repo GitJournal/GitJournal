@@ -12,7 +12,7 @@ import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
 
-final todoEditorEnabled = false;
+final todoEditorEnabled = true;
 
 class NoteEditor extends StatefulWidget {
   final Note note;
@@ -77,6 +77,7 @@ class NoteEditorState extends State<NoteEditor> {
           exitEditorSelected: _exitEditorSelected,
           renameNoteSelected: _renameNoteSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
+          discardChangesSelected: _discardChangesSelected,
           autofocusOnEditor: _isNewNote,
         );
       case EditorType.Raw:
@@ -88,6 +89,7 @@ class NoteEditorState extends State<NoteEditor> {
           exitEditorSelected: _exitEditorSelected,
           renameNoteSelected: _renameNoteSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
+          discardChangesSelected: _discardChangesSelected,
         );
       case EditorType.Todo:
         return TodoEditor(
@@ -98,6 +100,7 @@ class NoteEditorState extends State<NoteEditor> {
           exitEditorSelected: _exitEditorSelected,
           renameNoteSelected: _renameNoteSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
+          discardChangesSelected: _discardChangesSelected,
         );
     }
     return null;
@@ -261,5 +264,43 @@ class NoteEditorState extends State<NoteEditor> {
       final stateContainer = StateContainer.of(context);
       stateContainer.moveNote(note, destFolder);
     }
+  }
+
+  void _discardChangesSelected(Note note) {
+    if (_noteModified(note)) {
+      showDialog(context: context, builder: _buildDiscardChangesAlertDialog);
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
+  Widget _buildDiscardChangesAlertDialog(BuildContext context) {
+    var title = _isNewNote
+        ? "Do you want to discard this?"
+        : "Do you want to ignore the changes?";
+
+    var editText = _isNewNote ? "Keep Writing" : "Keep Editing";
+    var discardText = _isNewNote ? "Discard" : "Discard Changes";
+
+    return AlertDialog(
+      title: Text(title),
+      actions: <Widget>[
+        FlatButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: Text(editText),
+        ),
+        FlatButton(
+          onPressed: () {
+            // FIXME: This shouldn't be required. Why is the original note modified?
+            var serializer = MarkdownYAMLSerializer();
+            note.data = serializer.decode(noteSerialized);
+
+            Navigator.pop(context); // Alert box
+            Navigator.pop(context); // Note Editor
+          },
+          child: Text(discardText),
+        ),
+      ],
+    );
   }
 }

@@ -9,13 +9,14 @@ abstract class Editor {
   NoteCallback get exitEditorSelected;
   NoteCallback get renameNoteSelected;
   NoteCallback get moveNoteToFolderSelected;
+  NoteCallback get discardChangesSelected;
 }
 
 abstract class EditorState {
   Note getNote();
 }
 
-enum DropDownChoices { Rename, MoveToFolder }
+enum DropDownChoices { Rename, MoveToFolder, DiscardChanges }
 
 AppBar buildEditorAppBar(
   Editor editor,
@@ -58,6 +59,11 @@ AppBar buildEditorAppBar(
               var note = editorState.getNote();
               editor.moveNoteToFolderSelected(note);
               return;
+
+            case DropDownChoices.DiscardChanges:
+              var note = editorState.getNote();
+              editor.discardChangesSelected(note);
+              return;
           }
         },
         itemBuilder: (BuildContext context) =>
@@ -69,6 +75,10 @@ AppBar buildEditorAppBar(
           const PopupMenuItem<DropDownChoices>(
             value: DropDownChoices.MoveToFolder,
             child: Text('Move to Folder'),
+          ),
+          const PopupMenuItem<DropDownChoices>(
+            value: DropDownChoices.DiscardChanges,
+            child: Text('Discard Changes'),
           ),
         ],
       ),
