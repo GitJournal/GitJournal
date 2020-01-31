@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fimber/fimber.dart';
 
+import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/state_container.dart';
+import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/journal_list.dart';
@@ -28,18 +31,6 @@ class JournalListingScreen extends StatelessWidget {
     var allNotes = notesFolder.getNotes();
     allNotes.sort((a, b) => b.compareTo(a));
 
-    Widget journalList = JournalList(
-      notes: allNotes,
-      noteSelectedFunction: (noteIndex) {
-        var note = allNotes[noteIndex];
-        var route = MaterialPageRoute(
-          builder: (context) => NoteEditor.fromNote(note),
-        );
-        Navigator.of(context).push(route);
-      },
-      emptyText: "Let's add some notes?",
-    );
-
     var title = notesFolder.parent == null ? "Notes" : notesFolder.pathSpec();
 
     return Scaffold(
@@ -62,7 +53,7 @@ class JournalListingScreen extends StatelessWidget {
       floatingActionButton: createButton,
       body: Center(
         child: RefreshIndicator(
-          child: Scrollbar(child: journalList),
+          child: Scrollbar(child: buildJournalList(allNotes)),
           onRefresh: () async => _syncRepo(context),
         ),
       ),
@@ -79,5 +70,29 @@ class JournalListingScreen extends StatelessWidget {
     var route = MaterialPageRoute(
         builder: (context) => NoteEditor.newNote(notesFolder));
     Navigator.of(context).push(route);
+  }
+
+  Widget buildJournalList(List<Note> allNotes) {
+    return Builder(
+      builder: (context) {
+        return JournalList(
+          notes: allNotes,
+          noteSelectedFunction: (noteIndex) async {
+            var note = allNotes[noteIndex];
+            var route = MaterialPageRoute(
+              builder: (context) => NoteEditor.fromNote(note),
+            );
+            var showUndoSnackBar = await Navigator.of(context).push(route);
+            if (showUndoSnackBar != null) {
+              Fimber.d("Showing an undo snackbar");
+
+              var snackBar = buildUndoDeleteSnackbar(context, note);
+              Scaffold.of(context).showSnackBar(snackBar);
+            }
+          },
+          emptyText: "Let's add some notes?",
+        );
+      },
+    );
   }
 }

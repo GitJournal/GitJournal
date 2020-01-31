@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fimber/fimber.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/themes.dart';
+import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/journal_list.dart';
 
 class NoteSearchDelegate extends SearchDelegate<Note> {
@@ -64,12 +66,19 @@ class NoteSearchDelegate extends SearchDelegate<Note> {
 
     Widget journalList = JournalList(
       notes: filteredNotes,
-      noteSelectedFunction: (noteIndex) {
+      noteSelectedFunction: (noteIndex) async {
         var note = filteredNotes[noteIndex];
         var route = MaterialPageRoute(
           builder: (context) => NoteEditor.fromNote(note),
         );
-        Navigator.of(context).push(route);
+
+        var showUndoSnackBar = await Navigator.of(context).push(route);
+        if (showUndoSnackBar != null) {
+          Fimber.d("Showing an undo snackbar");
+
+          var snackBar = buildUndoDeleteSnackbar(context, note);
+          Scaffold.of(context).showSnackBar(snackBar);
+        }
       },
       emptyText: "No Search Results Found",
     );

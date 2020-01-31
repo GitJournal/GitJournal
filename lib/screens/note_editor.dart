@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fimber/fimber.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
@@ -8,11 +7,12 @@ import 'package:gitjournal/editors/raw_editor.dart';
 import 'package:gitjournal/editors/todo_editor.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/core/note_data_serializers.dart';
-import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
 
 final todoEditorEnabled = true;
+
+class ShowUndoSnackbar {}
 
 class NoteEditor extends StatefulWidget {
   final Note note;
@@ -195,32 +195,26 @@ class NoteEditorState extends State<NoteEditor> {
   }
 
   Widget _buildAlertDialog(BuildContext context) {
-    var title = "Do you want to delete this note?";
-    var editText = "Keep Writing";
-    var discardText = "Discard";
-
     return AlertDialog(
-      title: Text(title),
+      title: const Text('Do you want to delete this note?'),
       actions: <Widget>[
         FlatButton(
           onPressed: () => Navigator.of(context).pop(false),
-          child: Text(editText),
+          child: const Text('Keep Writing'),
         ),
         FlatButton(
           onPressed: () {
             _deleteNote(note);
 
             Navigator.pop(context); // Alert box
-            Navigator.pop(context); // Note Editor
 
-            if (!_isNewNote) {
-              Fimber.d("Showing an undo snackbar");
-
-              final stateContainer = StateContainer.of(context);
-              showUndoDeleteSnackbar(context, stateContainer, note);
+            if (_isNewNote) {
+              Navigator.pop(context); // Note Editor
+            } else {
+              Navigator.pop(context, ShowUndoSnackbar()); // Note Editor
             }
           },
-          child: Text(discardText),
+          child: const Text('Delete'),
         ),
       ],
     );

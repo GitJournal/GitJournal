@@ -22,27 +22,19 @@ Future<String> getVersionString() async {
   return versionText;
 }
 
-void showUndoDeleteSnackbar(
-  BuildContext context,
-  StateContainerState stateContainer,
-  Note deletedNote,
-) {
-  var theme = Theme.of(context);
-
-  Flushbar(
-    message: "Note Deleted",
-    duration: const Duration(seconds: 3),
-    mainButton: FlatButton(
-      child: Text(
-        "Undo",
-        style: TextStyle(color: theme.accentColor),
-      ),
+SnackBar buildUndoDeleteSnackbar(BuildContext context, Note deletedNote) {
+  return SnackBar(
+    content: const Text('Note Deleted'),
+    action: SnackBarAction(
+      label: "Undo",
       onPressed: () {
         Fimber.d("Undoing delete");
+
+        var stateContainer = StateContainer.of(context);
         stateContainer.undoRemoveNote(deletedNote);
       },
     ),
-  ).show(context);
+  );
 }
 
 void showSnackbar(BuildContext context, String message) {
