@@ -125,6 +125,7 @@ class Note with ChangeNotifier implements Comparable<Note> {
       return _loadState;
     }
 
+    // FIXME: This could throw an exception!
     final string = await file.readAsString();
     data = _serializer.decode(string);
 

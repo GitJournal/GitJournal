@@ -96,6 +96,7 @@ class NotesFolder with ChangeNotifier implements Comparable<NotesFolder> {
 
   // FIXME: This asynchronously loads everything. Maybe it should just list them, and the individual _entities
   //        should be loaded as required?
+  // FIXME: This loads everything in one go. In some cases there can be too many files open and we hit the limit.
   Future<void> loadRecursively() async {
     await load();
     _entities.forEach((e) {
