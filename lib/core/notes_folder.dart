@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 
 import 'note.dart';
 import 'note_fs_entity.dart';
+import 'notes_folder_notifier.dart';
 
-class NotesFolder with ChangeNotifier implements Comparable<NotesFolder> {
+class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
   final NotesFolder parent;
   String folderPath;
 
