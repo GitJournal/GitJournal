@@ -4,27 +4,24 @@ import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 
 import 'note.dart';
-import 'note_fs_entity.dart';
 import 'notes_folder_notifier.dart';
 
 class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
   final NotesFolder parent;
   String folderPath;
 
-  List<NoteFSEntity> _entities = [];
-  Map<String, NoteFSEntity> _entityMap = {};
+  List<Note> _notes = [];
+  List<NotesFolder> _folders = [];
+
+  Map<String, dynamic> _entityMap = {};
 
   NotesFolder(this.parent, this.folderPath);
 
   @override
   void dispose() {
-    _entities.forEach((e) {
-      if (e.isFolder) {
-        e.folder.removeListener(_entityChanged);
-      } else {
-        e.note.removeListener(_entityChanged);
-      }
-    });
+    _folders.forEach((f) => f.removeListener(_entityChanged));
+    _notes.forEach((f) => f.removeListener(_entityChanged));
+
     super.dispose();
   }
 
@@ -33,7 +30,7 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
   }
 
   bool get isEmpty {
-    return _entities.isEmpty;
+    return _notes.isEmpty && _folders.isEmpty;
   }
 
   String get name {
@@ -52,46 +49,36 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
   }
 
   bool get hasSubFolders {
-    return _entities.firstWhere((e) => e.isFolder, orElse: () => null) != null;
+    return _folders.isNotEmpty;
   }
 
   bool get hasNotes {
-    return _entities.firstWhere((e) => e.isNote, orElse: () => null) != null;
+    return _notes.isNotEmpty;
   }
 
   bool get hasNotesRecursive {
-    bool has = hasNotes;
-    if (has) return true;
+    if (_notes.isNotEmpty) {
+      return true;
+    }
 
-    for (var i = 0; i < _entities.length; i++) {
-      var e = _entities[i];
-      if (e.isNote) continue;
-
-      has = has || e.folder.hasNotes;
-      if (has) {
+    for (var folder in _folders) {
+      if (folder.hasNotesRecursive) {
         return true;
       }
     }
-
-    return has;
+    return false;
   }
 
   int get numberOfNotes {
-    int i = 0;
-    _entities.forEach((e) {
-      if (e.isNote) i++;
-    });
-    return i;
+    return _notes.length;
   }
 
   List<Note> getNotes() {
-    return _entities.where((e) => e.isNote).map((e) => e.note).toList();
+    return _notes;
   }
 
   List<NotesFolder> getFolders() {
-    var list = _entities.where((e) => e.isFolder).map((e) => e.folder).toList();
-    list.sort();
-    return list;
+    return _folders;
   }
 
   // FIXME: This asynchronously loads everything. Maybe it should just list them, and the individual _entities
@@ -101,23 +88,28 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
     var futures = <Future>[];
 
     await load();
-    for (var i = 0; i < _entities.length; i++) {
-      var e = _entities[i];
-      if (e.isFolder) {
-        var f = e.folder.loadRecursively();
-        futures.add(f);
-      } else {
-        // FIXME: Collected all the Errors, and report them back, along with "WHY", and the contents of the Note
-        //        Each of these needs to be reported to crashlytics, as Note loading should never fail
-        var f = e.note.load();
-        futures.add(f);
-      }
+
+    for (var note in _notes) {
+      // FIXME: Collected all the Errors, and report them back, along with "WHY", and the contents of the Note
+      //        Each of these needs to be reported to crashlytics, as Note loading should never fail
+      var f = note.load();
+      futures.add(f);
 
       if (futures.length >= maxParallel) {
         await Future.wait(futures);
         futures = <Future>[];
       }
     }
+
+    await Future.wait(futures);
+    futures = <Future>[];
+
+    for (var folder in _folders) {
+      var f = folder.loadRecursively();
+      futures.add(f);
+    }
+
+    return Future.wait(futures);
   }
 
   // FIXME: This should not reconstruct the Notes or NotesFolders once constructed.
@@ -148,9 +140,8 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
         }
         subFolder.addListener(_entityChanged);
 
-        var noteFSEntity = NoteFSEntity(folder: subFolder);
-        _entities.add(noteFSEntity);
-        _entityMap[fsEntity.path] = noteFSEntity;
+        _folders.add(subFolder);
+        _entityMap[fsEntity.path] = subFolder;
 
         pathsFound.add(fsEntity.path);
         entitiesAdded = true;
@@ -163,9 +154,8 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
       }
       note.addListener(_entityChanged);
 
-      var noteFSEntity = NoteFSEntity(note: note);
-      _entities.add(noteFSEntity);
-      _entityMap[fsEntity.path] = noteFSEntity;
+      _notes.add(note);
+      _entityMap[fsEntity.path] = note;
 
       pathsFound.add(fsEntity.path);
       entitiesAdded = true;
@@ -176,18 +166,13 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
       var e = _entityMap[path];
       assert(e != null);
 
-      if (e.isFolder) {
-        e.folder.removeListener(_entityChanged);
-      } else {
-        e.note.removeListener(_entityChanged);
-      }
-
+      assert(e is NotesFolder || e is Note);
+      e.removeListener(_entityChanged);
       _entityMap.remove(path);
     });
-    _entities.removeWhere((e) {
-      String path = e.isFolder ? e.folder.folderPath : e.note.filePath;
-      return pathsRemoved.contains(path);
-    });
+
+    _folders.removeWhere((f) => pathsRemoved.contains(f.folderPath));
+    _notes.removeWhere((n) => pathsRemoved.contains(n.filePath));
 
     entitiesRemoved = pathsRemoved.isNotEmpty;
     if (entitiesAdded || entitiesRemoved) {
@@ -199,9 +184,8 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
     assert(note.parent == this);
     note.addListener(_entityChanged);
 
-    var entity = NoteFSEntity(note: note);
-    _entities.add(entity);
-    _entityMap[note.filePath] = entity;
+    _notes.add(note);
+    _entityMap[note.filePath] = note;
 
     notifyListeners();
   }
@@ -211,40 +195,19 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
     assert(index >= 0);
     note.addListener(_entityChanged);
 
-    if (_entities.isEmpty) {
-      var entity = NoteFSEntity(note: note);
-      _entities.add(entity);
-      _entityMap[note.filePath] = entity;
-      notifyListeners();
-      return;
-    }
-
-    for (var i = 0; i < _entities.length; i++) {
-      var e = _entities[i];
-      if (e is NotesFolder) continue;
-
-      if (index == 0) {
-        var entity = NoteFSEntity(note: note);
-        _entities.insert(i, entity);
-        _entityMap[note.filePath] = entity;
-        notifyListeners();
-        return;
-      }
-      index--;
-    }
+    _notes.insert(index, note);
+    _entityMap[note.filePath] = note;
+    notifyListeners();
   }
 
   void remove(Note note) {
     assert(note.parent == this);
     note.removeListener(_entityChanged);
 
-    var i = _entities.indexWhere((e) {
-      if (e.isFolder) return false;
-      return e.note.filePath == note.filePath;
-    });
-    assert(i != -1);
+    assert(_notes.indexWhere((n) => n.filePath == note.filePath) != -1);
+    assert(_entityMap.containsKey(note.filePath));
 
-    _entities.removeAt(i);
+    _notes.removeWhere((n) => n.filePath == note.filePath);
     _entityMap.remove(note.filePath);
 
     notifyListeners();
@@ -265,9 +228,8 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
     assert(folder.parent == this);
     folder.addListener(_entityChanged);
 
-    var entity = NoteFSEntity(folder: folder);
-    _entities.add(entity);
-    _entityMap[folder.folderPath] = entity;
+    _folders.add(folder);
+    _entityMap[folder.folderPath] = folder;
 
     notifyListeners();
   }
@@ -275,13 +237,10 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
   void removeFolder(NotesFolder folder) {
     folder.removeListener(_entityChanged);
 
-    var i = _entities.indexWhere((e) {
-      if (e.isNote) return false;
-      return e.folder.folderPath == folder.folderPath;
-    });
-    assert(i != -1);
+    assert(_folders.indexWhere((f) => f.folderPath == folder.folderPath) != -1);
+    assert(_entityMap.containsKey(folder.folderPath));
 
-    _entities.removeAt(i);
+    _folders.removeWhere((f) => f.folderPath == folder.folderPath);
     _entityMap.remove(folder.folderPath);
 
     notifyListeners();
