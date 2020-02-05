@@ -226,7 +226,12 @@ class NoteEditorState extends State<NoteEditor> {
     }
     var serializer = MarkdownYAMLSerializer();
     var finalNoteSerialized = serializer.encode(note.data);
-    return finalNoteSerialized != noteSerialized;
+    bool modified = finalNoteSerialized != noteSerialized;
+    if (modified) {
+      print("Original Serialization: " + noteSerialized);
+      print("New Serialization: " + finalNoteSerialized);
+    }
+    return modified;
   }
 
   void _saveNote(Note note) {
