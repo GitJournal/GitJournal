@@ -8,7 +8,7 @@ import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/markdown.dart';
 import 'package:gitjournal/widgets/icon_dismissable.dart';
 
-typedef void NoteSelectedFunction(int noteIndex);
+typedef void NoteSelectedFunction(Note note);
 
 class JournalList extends StatefulWidget {
   final NoteSelectedFunction noteSelectedFunction;
@@ -65,7 +65,7 @@ class _JournalListState extends State<JournalList> {
     _listKey.currentState.removeItem(index, (context, animation) {
       var i = deletedViaDismissed.indexWhere((path) => path == note.filePath);
       if (i == -1) {
-        return _buildItem(context, 0, animation);
+        return _buildNote(context, note, animation);
       } else {
         deletedViaDismissed.removeAt(i);
         return Container();
@@ -98,16 +98,16 @@ class _JournalListState extends State<JournalList> {
 
   Widget _buildItem(BuildContext context, int i, Animation<double> animation) {
     var note = widget.notes[i];
-    return _buildNote(context, note, i, animation);
+    return _buildNote(context, note, animation);
   }
 
   Widget _buildNote(
-      BuildContext context, Note note, int i, Animation<double> animation) {
+      BuildContext context, Note note, Animation<double> animation) {
     var viewItem = IconDismissable(
       key: ValueKey("JournalList_" + note.filePath),
       child: Hero(
         tag: note.filePath,
-        child: _buildRow(context, note, i),
+        child: _buildRow(context, note),
         flightShuttleBuilder: (BuildContext flightContext,
                 Animation<double> animation,
                 HeroFlightDirection flightDirection,
@@ -136,7 +136,7 @@ class _JournalListState extends State<JournalList> {
     );
   }
 
-  Widget _buildRow(BuildContext context, Note note, int noteIndex) {
+  Widget _buildRow(BuildContext context, Note note) {
     var textTheme = Theme.of(context).textTheme;
     var title = note.title;
     Widget titleWidget = Text(title, style: textTheme.title);
@@ -183,7 +183,7 @@ class _JournalListState extends State<JournalList> {
         children: children,
         crossAxisAlignment: CrossAxisAlignment.start,
       ),
-      onTap: () => widget.noteSelectedFunction(noteIndex),
+      onTap: () => widget.noteSelectedFunction(note),
     );
 
     var dc = Theme.of(context).dividerColor;

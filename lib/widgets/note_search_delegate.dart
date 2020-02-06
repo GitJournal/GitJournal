@@ -67,8 +67,7 @@ class NoteSearchDelegate extends SearchDelegate<Note> {
     Widget journalList = JournalList(
       notes: filteredNotes,
       folder: null,
-      noteSelectedFunction: (noteIndex) async {
-        var note = filteredNotes[noteIndex];
+      noteSelectedFunction: (Note note) async {
         var route = MaterialPageRoute(
           builder: (context) => NoteEditor.fromNote(note),
         );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fimber/fimber.dart';
 
+import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/state_container.dart';
@@ -74,8 +75,7 @@ class JournalListingScreen extends StatelessWidget {
         return JournalList(
           folder: folder,
           notes: folder.notes,
-          noteSelectedFunction: (noteIndex) async {
-            var note = folder.notes[noteIndex];
+          noteSelectedFunction: (Note note) async {
             var route = MaterialPageRoute(
               builder: (context) => NoteEditor.fromNote(note),
             );
