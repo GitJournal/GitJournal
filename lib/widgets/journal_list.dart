@@ -29,6 +29,7 @@ class JournalList extends StatefulWidget {
 
 class _JournalListState extends State<JournalList> {
   var _listKey = GlobalKey<AnimatedListState>();
+  var deletedViaDismissed = <String>[];
 
   @override
   void initState() {
@@ -57,14 +58,19 @@ class _JournalListState extends State<JournalList> {
     _listKey.currentState.insertItem(index);
   }
 
-  void _noteRemoved(int index, Note _) {
+  void _noteRemoved(int index, Note note) {
     if (_listKey.currentState == null) {
       return;
     }
-    _listKey.currentState.removeItem(
-      index,
-      (context, animation) => _buildItem(context, 0, animation),
-    );
+    _listKey.currentState.removeItem(index, (context, animation) {
+      var i = deletedViaDismissed.indexWhere((path) => path == note.filePath);
+      if (i == -1) {
+        return _buildItem(context, 0, animation);
+      } else {
+        deletedViaDismissed.removeAt(i);
+        return Container();
+      }
+    });
   }
 
   @override
@@ -112,6 +118,8 @@ class _JournalListState extends State<JournalList> {
       backgroundColor: Colors.red[800],
       iconData: Icons.delete,
       onDismissed: (direction) {
+        deletedViaDismissed.add(note.filePath);
+
         final stateContainer = StateContainer.of(context);
         stateContainer.removeNote(note);
 
