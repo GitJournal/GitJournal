@@ -116,9 +116,6 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
   Future<void> load() async {
     Set<String> pathsFound = {};
 
-    var entitiesAdded = false;
-    var entitiesRemoved = false;
-
     final dir = Directory(folderPath);
     var lister = dir.list(recursive: false, followLinks: false);
     await for (var fsEntity in lister) {
@@ -144,7 +141,7 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
         _entityMap[fsEntity.path] = subFolder;
 
         pathsFound.add(fsEntity.path);
-        entitiesAdded = true;
+        notifyFolderAdded(_folders.length - 1, subFolder);
         continue;
       }
 
@@ -158,7 +155,7 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
       _entityMap[fsEntity.path] = note;
 
       pathsFound.add(fsEntity.path);
-      entitiesAdded = true;
+      notifyNoteAdded(_notes.length - 1, note);
     }
 
     Set<String> pathsRemoved = _entityMap.keys.toSet().difference(pathsFound);
@@ -169,15 +166,21 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
       assert(e is NotesFolder || e is Note);
       e.removeListener(_entityChanged);
       _entityMap.remove(path);
+
+      if (e is Note) {
+        var i = _notes.indexWhere((n) => n.filePath == path);
+        assert(i != -1);
+        var note = _notes[i];
+        _notes.removeAt(i);
+        notifyNoteRemoved(i, note);
+      } else {
+        var i = _folders.indexWhere((f) => f.folderPath == path);
+        assert(i != -1);
+        var folder = _folders[i];
+        _folders.removeAt(i);
+        notifyFolderRemoved(i, folder);
+      }
     });
-
-    _folders.removeWhere((f) => pathsRemoved.contains(f.folderPath));
-    _notes.removeWhere((n) => pathsRemoved.contains(n.filePath));
-
-    entitiesRemoved = pathsRemoved.isNotEmpty;
-    if (entitiesAdded || entitiesRemoved) {
-      notifyListeners();
-    }
   }
 
   void add(Note note) {
@@ -187,7 +190,7 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
     _notes.add(note);
     _entityMap[note.filePath] = note;
 
-    notifyListeners();
+    notifyNoteAdded(_notes.length - 1, note);
   }
 
   void insert(int index, Note note) {
@@ -197,7 +200,8 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
 
     _notes.insert(index, note);
     _entityMap[note.filePath] = note;
-    notifyListeners();
+
+    notifyNoteAdded(index, note);
   }
 
   void remove(Note note) {
@@ -207,10 +211,12 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
     assert(_notes.indexWhere((n) => n.filePath == note.filePath) != -1);
     assert(_entityMap.containsKey(note.filePath));
 
-    _notes.removeWhere((n) => n.filePath == note.filePath);
+    var index = _notes.indexWhere((n) => n.filePath == note.filePath);
+    assert(index != -1);
+    _notes.removeAt(index);
     _entityMap.remove(note.filePath);
 
-    notifyListeners();
+    notifyNoteRemoved(index, note);
   }
 
   void create() {
@@ -231,7 +237,7 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
     _folders.add(folder);
     _entityMap[folder.folderPath] = folder;
 
-    notifyListeners();
+    notifyFolderAdded(_folders.length - 1, folder);
   }
 
   void removeFolder(NotesFolder folder) {
@@ -240,10 +246,12 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
     assert(_folders.indexWhere((f) => f.folderPath == folder.folderPath) != -1);
     assert(_entityMap.containsKey(folder.folderPath));
 
-    _folders.removeWhere((f) => f.folderPath == folder.folderPath);
+    var index = _folders.indexWhere((f) => f.folderPath == folder.folderPath);
+    assert(index != -1);
+    _folders.removeAt(index);
     _entityMap.remove(folder.folderPath);
 
-    notifyListeners();
+    notifyFolderRemoved(index, folder);
   }
 
   void rename(String newName) {
