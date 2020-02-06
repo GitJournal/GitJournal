@@ -138,30 +138,16 @@ class _JournalListState extends State<JournalList> {
 
   Widget _buildRow(BuildContext context, Note note) {
     var textTheme = Theme.of(context).textTheme;
-    var title = note.title;
+
+    var title = note.title ?? note.fileName;
     Widget titleWidget = Text(title, style: textTheme.title);
-    if (title.isEmpty) {
-      var date = note.modified ?? note.created;
-      if (date != null) {
-        var formatter = DateFormat('dd MMM, yyyy  ');
-        var dateStr = formatter.format(date);
+    Widget trailing;
 
-        var timeFormatter = DateFormat('Hm');
-        var time = timeFormatter.format(date);
-
-        var timeColor = textTheme.body1.color.withAlpha(100);
-
-        titleWidget = Row(
-          children: <Widget>[
-            Text(dateStr, style: textTheme.title),
-            Text(time, style: textTheme.body1.copyWith(color: timeColor)),
-          ],
-          crossAxisAlignment: CrossAxisAlignment.baseline,
-          textBaseline: TextBaseline.alphabetic,
-        );
-      } else {
-        titleWidget = Text(note.fileName, style: textTheme.title);
-      }
+    var date = note.modified ?? note.created;
+    if (date != null) {
+      var formatter = DateFormat('dd MMM, yyyy');
+      var dateStr = formatter.format(date);
+      trailing = Text(dateStr, style: textTheme.caption);
     }
 
     var body = stripMarkdownFormatting(note.body);
@@ -179,6 +165,7 @@ class _JournalListState extends State<JournalList> {
     var tile = ListTile(
       isThreeLine: true,
       title: titleWidget,
+      trailing: trailing,
       subtitle: Column(
         children: children,
         crossAxisAlignment: CrossAxisAlignment.start,
