@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fimber/fimber.dart';
 
-import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/state_container.dart';
@@ -28,9 +27,6 @@ class JournalListingScreen extends StatelessWidget {
       child: Icon(Icons.add),
     );
 
-    var allNotes = notesFolder.getNotes();
-    allNotes.sort((a, b) => b.compareTo(a));
-
     var title = notesFolder.parent == null ? "Notes" : notesFolder.pathSpec();
 
     return Scaffold(
@@ -44,7 +40,7 @@ class JournalListingScreen extends StatelessWidget {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: NoteSearchDelegate(allNotes),
+                delegate: NoteSearchDelegate(notesFolder.notes),
               );
             },
           ),
@@ -53,7 +49,7 @@ class JournalListingScreen extends StatelessWidget {
       floatingActionButton: createButton,
       body: Center(
         child: RefreshIndicator(
-          child: Scrollbar(child: buildJournalList(allNotes)),
+          child: Scrollbar(child: buildJournalList(notesFolder)),
           onRefresh: () async => _syncRepo(context),
         ),
       ),
@@ -72,13 +68,14 @@ class JournalListingScreen extends StatelessWidget {
     Navigator.of(context).push(route);
   }
 
-  Widget buildJournalList(List<Note> allNotes) {
+  Widget buildJournalList(NotesFolder folder) {
     return Builder(
       builder: (context) {
         return JournalList(
-          notes: allNotes,
+          folder: folder,
+          notes: folder.notes,
           noteSelectedFunction: (noteIndex) async {
-            var note = allNotes[noteIndex];
+            var note = folder.notes[noteIndex];
             var route = MaterialPageRoute(
               builder: (context) => NoteEditor.fromNote(note),
             );

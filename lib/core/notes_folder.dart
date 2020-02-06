@@ -73,7 +73,7 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
     return _notes.length;
   }
 
-  List<Note> getNotes() {
+  List<Note> get notes {
     return _notes;
   }
 
