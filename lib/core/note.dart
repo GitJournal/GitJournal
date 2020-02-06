@@ -16,7 +16,7 @@ enum NoteLoadState {
   NotExists,
 }
 
-class Note with ChangeNotifier {
+class Note with ChangeNotifier implements Comparable<Note> {
   NotesFolder parent;
   String _filePath;
 
@@ -203,5 +203,20 @@ class Note with ChangeNotifier {
   @override
   String toString() {
     return 'Note{filePath: $_filePath, created: $created, modified: $modified, data: $_data}';
+  }
+
+  @override
+  int compareTo(Note other) {
+    if (other == null) {
+      return -1;
+    }
+
+    var dt = modified ?? created ?? _fileLastModified;
+    var otherDt = other.modified ?? other.created ?? other._fileLastModified;
+    if (dt == null || otherDt == null) {
+      return _filePath.compareTo(other._filePath);
+    }
+
+    return dt.compareTo(otherDt);
   }
 }
