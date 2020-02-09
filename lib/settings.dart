@@ -19,6 +19,8 @@ class Settings {
 
   String yamlModifiedKey = "modified";
   String defaultNewNoteFolder = "journal";
+
+  RemoteSyncFrequency remoteSyncFrequency = RemoteSyncFrequency.Default;
   int version = 0;
 
   void load(SharedPreferences pref) {
@@ -36,6 +38,10 @@ class Settings {
     yamlModifiedKey = pref.getString("yamlModifiedKey") ?? yamlModifiedKey;
     defaultNewNoteFolder =
         pref.getString("defaultNewNoteFolder") ?? defaultNewNoteFolder;
+
+    remoteSyncFrequency = RemoteSyncFrequency.fromInternalString(
+        pref.getString("remoteSyncFrequency"));
+
     version = pref.getInt("settingsVersion") ?? version;
   }
 
@@ -48,6 +54,8 @@ class Settings {
     pref.setBool("collectCrashReports", collectCrashReports);
     pref.setString("yamlModifiedKey", yamlModifiedKey);
     pref.setString("defaultNewNoteFolder", defaultNewNoteFolder);
+    pref.setString(
+        "remoteSyncFrequency", remoteSyncFrequency.toInternalString());
     pref.setInt("settingsVersion", version);
 
     // Shouldn't we check if something has actually changed?
@@ -130,5 +138,45 @@ class NoteFileNameFormat {
   String toString() {
     assert(false, "NoteFileNameFormat toString should never be called");
     return "";
+  }
+}
+
+class RemoteSyncFrequency {
+  static const Automatic = RemoteSyncFrequency("Automatic");
+  static const Manual = RemoteSyncFrequency("Manual");
+  static const Default = Automatic;
+
+  final String _str;
+  const RemoteSyncFrequency(this._str);
+
+  String toInternalString() {
+    return _str;
+  }
+
+  String toPublicString() {
+    return _str;
+  }
+
+  static const options = <RemoteSyncFrequency>[
+    Automatic,
+    Manual,
+  ];
+
+  static RemoteSyncFrequency fromInternalString(String str) {
+    for (var opt in options) {
+      if (opt.toInternalString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  static RemoteSyncFrequency fromPublicString(String str) {
+    for (var opt in options) {
+      if (opt.toPublicString() == str) {
+        return opt;
+      }
+    }
+    return Default;
   }
 }

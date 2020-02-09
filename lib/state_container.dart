@@ -9,6 +9,7 @@ import 'package:gitjournal/appstate.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/git_repo.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
@@ -116,7 +117,11 @@ class StateContainerState extends State<StateContainer> {
     await _loadNotes();
   }
 
-  Future<void> _syncNotes() {
+  Future<void> _syncNotes() async {
+    var freq = Settings.instance.remoteSyncFrequency;
+    if (freq != RemoteSyncFrequency.Automatic) {
+      return;
+    }
     return syncNotes(doNotThrow: true);
   }
 

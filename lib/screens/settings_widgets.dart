@@ -43,7 +43,6 @@ class ListPreference extends StatelessWidget {
                     children: children,
                   ),
                 ),
-                contentPadding: const EdgeInsets.all(0.0),
                 actions: <Widget>[
                   FlatButton(
                     child: const Text('CANCEL'),

@@ -6,6 +6,8 @@ import 'package:fimber/fimber.dart';
 
 import 'package:git_bindings/git_bindings.dart';
 import 'package:gitjournal/screens/githostsetup_sshkey.dart';
+import 'package:gitjournal/screens/settings_widgets.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils.dart';
 
 class GitRemoteSettingsScreen extends StatefulWidget {
@@ -30,6 +32,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
+    var settings = Settings.instance;
 
     var body = Column(
       children: <Widget>[
@@ -49,6 +52,19 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
         Button(
           text: "Regnerate Key",
           onPressed: () => _generateSshKey(context),
+        ),
+        ListPreference(
+          title: "Sync Frequency",
+          currentOption: settings.remoteSyncFrequency.toPublicString(),
+          options: RemoteSyncFrequency.options
+              .map((f) => f.toPublicString())
+              .toList(),
+          onChange: (String publicStr) {
+            var val = RemoteSyncFrequency.fromPublicString(publicStr);
+            Settings.instance.remoteSyncFrequency = val;
+            Settings.instance.save();
+            setState(() {});
+          },
         ),
       ],
       crossAxisAlignment: CrossAxisAlignment.start,
