@@ -20,7 +20,8 @@ void main() {
 
   final MarkdownBuilder builder = MarkdownBuilder();
   var nodes = doc.parseInline(text);
-  builder.build(nodes);
+  var elems = builder.build(nodes);
+  elems[0].attributes['checked'] = 'true';
 
   var renderer = CustomRenderer();
   var output = renderer.render(nodes);
@@ -49,6 +50,8 @@ class TaskListSyntax extends md.InlineSyntax {
 }
 
 class MarkdownBuilder implements md.NodeVisitor {
+  List<md.Element> list;
+
   @override
   bool visitElementBefore(md.Element element) {
     return true;
@@ -69,18 +72,20 @@ class MarkdownBuilder implements md.NodeVisitor {
       if (el is md.Element && el.attributes['type'] == 'checkbox') {
         bool val = el.attributes['checked'] != 'false';
         print("VAL $val");
+        list.add(el);
       }
     }
   }
 
-  String build(List<md.Node> nodes) {
+  List<md.Element> build(List<md.Node> nodes) {
     print("---build---");
+    list = <md.Element>[];
     for (md.Node node in nodes) {
       node.accept(this);
     }
     print("---build---");
 
-    return "";
+    return list;
   }
 }
 
