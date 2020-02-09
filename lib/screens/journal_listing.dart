@@ -80,7 +80,6 @@ class JournalListingScreen extends StatelessWidget {
       builder: (context) {
         return JournalList(
           folder: folder,
-          notes: folder.notes,
           noteSelectedFunction: (Note note) async {
             var route = MaterialPageRoute(
               builder: (context) => NoteEditor.fromNote(note),

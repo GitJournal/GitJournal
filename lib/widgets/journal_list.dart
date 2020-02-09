@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:gitjournal/core/sorted_notes_folder.dart';
 import 'package:intl/intl.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
@@ -13,12 +12,10 @@ typedef void NoteSelectedFunction(Note note);
 
 class JournalList extends StatefulWidget {
   final NoteSelectedFunction noteSelectedFunction;
-  final List<Note> notes;
   final NotesFolder folder;
   final String emptyText;
 
   JournalList({
-    @required this.notes,
     @required this.folder,
     @required this.noteSelectedFunction,
     @required this.emptyText,
@@ -31,23 +28,21 @@ class JournalList extends StatefulWidget {
 class _JournalListState extends State<JournalList> {
   var _listKey = GlobalKey<AnimatedListState>();
   var deletedViaDismissed = <String>[];
-  SortedNotesFolder folder;
 
   @override
   void initState() {
     super.initState();
 
-    folder = SortedNotesFolder(widget.folder);
-    folder.addNoteAddedListener(_noteAdded);
-    folder.addNoteRemovedListener(_noteRemoved);
-    folder.addListener(_folderChanged);
+    widget.folder.addNoteAddedListener(_noteAdded);
+    widget.folder.addNoteRemovedListener(_noteRemoved);
+    widget.folder.addListener(_folderChanged);
   }
 
   @override
   void dispose() {
-    folder.removeNoteAddedListener(_noteAdded);
-    folder.removeNoteRemovedListener(_noteRemoved);
-    folder.removeListener(_folderChanged);
+    widget.folder.removeNoteAddedListener(_noteAdded);
+    widget.folder.removeNoteRemovedListener(_noteRemoved);
+    widget.folder.removeListener(_folderChanged);
 
     super.dispose();
   }
@@ -80,7 +75,7 @@ class _JournalListState extends State<JournalList> {
 
   @override
   Widget build(BuildContext context) {
-    if (folder.notes.isEmpty) {
+    if (widget.folder.notes.isEmpty) {
       return Center(
         child: Text(
           widget.emptyText,
@@ -97,12 +92,17 @@ class _JournalListState extends State<JournalList> {
     return AnimatedList(
       key: _listKey,
       itemBuilder: _buildItem,
-      initialItemCount: folder.notes.length,
+      initialItemCount: widget.folder.notes.length,
     );
   }
 
   Widget _buildItem(BuildContext context, int i, Animation<double> animation) {
-    var note = folder.notes[i];
+    // vHanda FIXME: Why does this method get called with i >= length ?
+    if (i >= widget.folder.notes.length) {
+      return Container();
+    }
+
+    var note = widget.folder.notes[i];
     return _buildNote(context, note, animation);
   }
 

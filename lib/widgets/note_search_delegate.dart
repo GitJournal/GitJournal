@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fimber/fimber.dart';
 
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/virtual_notes_folder.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/themes.dart';
 import 'package:gitjournal/utils.dart';
@@ -69,8 +70,7 @@ class NoteSearchDelegate extends SearchDelegate<Note> {
     }).toList();
 
     Widget journalList = JournalList(
-      notes: filteredNotes,
-      folder: null,
+      folder: VirtualNotesFolder(filteredNotes),
       noteSelectedFunction: (Note note) async {
         var route = MaterialPageRoute(
           builder: (context) => NoteEditor.fromNote(note),
