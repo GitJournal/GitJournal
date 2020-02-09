@@ -13,10 +13,23 @@ import 'package:gitjournal/widgets/journal_list.dart';
 import 'package:gitjournal/widgets/note_search_delegate.dart';
 import 'package:gitjournal/widgets/sync_button.dart';
 
-class JournalListingScreen extends StatelessWidget {
+class JournalListingScreen extends StatefulWidget {
   final NotesFolder notesFolder;
 
   JournalListingScreen({@required this.notesFolder});
+
+  @override
+  _JournalListingScreenState createState() => _JournalListingScreenState();
+}
+
+class _JournalListingScreenState extends State<JournalListingScreen> {
+  SortedNotesFolder sortedNotesFolder;
+
+  @override
+  void initState() {
+    super.initState();
+    sortedNotesFolder = SortedNotesFolder(widget.notesFolder);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +42,9 @@ class JournalListingScreen extends StatelessWidget {
       child: Icon(Icons.add),
     );
 
-    var title = notesFolder.parent == null ? "Notes" : notesFolder.pathSpec();
+    var title = widget.notesFolder.parent == null
+        ? "Notes"
+        : widget.notesFolder.pathSpec();
 
     return Scaffold(
       appBar: AppBar(
@@ -42,7 +57,7 @@ class JournalListingScreen extends StatelessWidget {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: NoteSearchDelegate(notesFolder.notes),
+                delegate: NoteSearchDelegate(sortedNotesFolder.notes),
               );
             },
           ),
@@ -52,7 +67,7 @@ class JournalListingScreen extends StatelessWidget {
       body: Center(
         child: Builder(
           builder: (context) => RefreshIndicator(
-            child: Scrollbar(child: buildJournalList(notesFolder)),
+            child: Scrollbar(child: buildJournalList(sortedNotesFolder)),
             onRefresh: () async => _syncRepo(context),
           ),
         ),
@@ -72,7 +87,7 @@ class JournalListingScreen extends StatelessWidget {
 
   void _newPost(BuildContext context) {
     var route = MaterialPageRoute(
-        builder: (context) => NoteEditor.newNote(notesFolder));
+        builder: (context) => NoteEditor.newNote(widget.notesFolder));
     Navigator.of(context).push(route);
   }
 
