@@ -5,7 +5,7 @@ import 'package:gitjournal/core/note_data.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/editors/markdown_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
-import 'package:gitjournal/editors/todo_editor.dart';
+import 'package:gitjournal/editors/checklist_editor.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
@@ -31,7 +31,7 @@ class NoteEditor extends StatefulWidget {
   }
 }
 
-enum EditorType { Markdown, Raw, Todo }
+enum EditorType { Markdown, Raw, Checklist }
 
 class NoteEditorState extends State<NoteEditor> {
   Note note;
@@ -40,7 +40,7 @@ class NoteEditorState extends State<NoteEditor> {
 
   final _rawEditorKey = GlobalKey<RawEditorState>();
   final _markdownEditorKey = GlobalKey<MarkdownEditorState>();
-  final _todoEditorKey = GlobalKey<TodoEditorState>();
+  final _checklistEditorKey = GlobalKey<ChecklistEditorState>();
 
   bool get _isNewNote {
     return widget.note == null;
@@ -90,9 +90,9 @@ class NoteEditorState extends State<NoteEditor> {
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
         );
-      case EditorType.Todo:
-        return TodoEditor(
-          key: _todoEditorKey,
+      case EditorType.Checklist:
+        return ChecklistEditor(
+          key: _checklistEditorKey,
           note: note,
           noteDeletionSelected: _noteDeletionSelected,
           noteEditorChooserSelected: _noteEditorChooserSelected,
@@ -124,8 +124,8 @@ class NoteEditorState extends State<NoteEditor> {
           ),
           if (todoEditorEnabled)
             RadioListTile<EditorType>(
-              title: const Text("Todo Editor"),
-              value: EditorType.Todo,
+              title: const Text("Checklist Editor"),
+              value: EditorType.Checklist,
               groupValue: editorType,
               onChanged: (EditorType et) => Navigator.of(context).pop(et),
             ),
@@ -247,8 +247,8 @@ class NoteEditorState extends State<NoteEditor> {
         return _markdownEditorKey.currentState.getNote();
       case EditorType.Raw:
         return _rawEditorKey.currentState.getNote();
-      case EditorType.Todo:
-        return _todoEditorKey.currentState.getNote();
+      case EditorType.Checklist:
+        return _checklistEditorKey.currentState.getNote();
     }
     return null;
   }

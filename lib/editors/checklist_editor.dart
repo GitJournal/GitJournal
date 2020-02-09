@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
 
-class TodoEditor extends StatefulWidget implements Editor {
+class ChecklistEditor extends StatefulWidget implements Editor {
   final Note note;
 
   @override
@@ -19,7 +19,7 @@ class TodoEditor extends StatefulWidget implements Editor {
   @override
   final NoteCallback discardChangesSelected;
 
-  TodoEditor({
+  ChecklistEditor({
     Key key,
     @required this.note,
     @required this.noteDeletionSelected,
@@ -31,17 +31,18 @@ class TodoEditor extends StatefulWidget implements Editor {
   }) : super(key: key);
 
   @override
-  TodoEditorState createState() {
-    return TodoEditorState(note);
+  ChecklistEditorState createState() {
+    return ChecklistEditorState(note);
   }
 }
 
-class TodoEditorState extends State<TodoEditor> implements EditorState {
+class ChecklistEditorState extends State<ChecklistEditor>
+    implements EditorState {
   Note note;
   List<TodoItem> todos;
   TextEditingController _titleTextController = TextEditingController();
 
-  TodoEditorState(this.note) {
+  ChecklistEditorState(this.note) {
     _titleTextController = TextEditingController(text: note.title);
 
     todos = [
