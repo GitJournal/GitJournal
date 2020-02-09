@@ -31,7 +31,11 @@ class NoteSearchDelegate extends SearchDelegate<Note> {
       IconButton(
         icon: Icon(Icons.close),
         onPressed: () {
-          query = '';
+          if (query.isEmpty) {
+            close(context, null);
+          } else {
+            query = '';
+          }
         },
       ),
     ];
