@@ -81,10 +81,12 @@ class GitHub implements GitHost {
       throw GitHostException.MissingAccessCode;
     }
 
-    var url =
-        "https://api.github.com/user/repos?page=1&per_page=100&access_token=$_accessCode";
+    var url = "https://api.github.com/user/repos?page=1&per_page=100";
+    var headers = {
+      HttpHeaders.authorizationHeader: _buildAuthHeader(),
+    };
 
-    var response = await http.get(url);
+    var response = await http.get(url, headers: headers);
     if (response.statusCode != 200) {
       Fimber.d("Github listRepos: Invalid response " +
           response.statusCode.toString() +
@@ -111,7 +113,7 @@ class GitHub implements GitHost {
       throw GitHostException.MissingAccessCode;
     }
 
-    var url = "https://api.github.com/user/repos?access_token=$_accessCode";
+    var url = "https://api.github.com/user/repos";
     var data = <String, dynamic>{
       'name': name,
       'private': true,
@@ -119,6 +121,7 @@ class GitHub implements GitHost {
 
     var headers = {
       HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: _buildAuthHeader(),
     };
 
     var response =
@@ -151,10 +154,13 @@ class GitHub implements GitHost {
 
     var userInfo = await getUserInfo();
     var owner = userInfo.username;
-    var url =
-        "https://api.github.com/repos/$owner/$name?access_token=$_accessCode";
+    var url = "https://api.github.com/repos/$owner/$name";
 
-    var response = await http.get(url);
+    var headers = {
+      HttpHeaders.authorizationHeader: _buildAuthHeader(),
+    };
+
+    var response = await http.get(url, headers: headers);
     if (response.statusCode != 200) {
       Fimber.d("Github getRepo: Invalid response " +
           response.statusCode.toString() +
@@ -175,8 +181,7 @@ class GitHub implements GitHost {
       throw GitHostException.MissingAccessCode;
     }
 
-    var url =
-        "https://api.github.com/repos/$repo/keys?access_token=$_accessCode";
+    var url = "https://api.github.com/repos/$repo/keys";
 
     var data = <String, dynamic>{
       'title': "GitJournal",
@@ -186,6 +191,7 @@ class GitHub implements GitHost {
 
     var headers = {
       HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: _buildAuthHeader(),
     };
 
     var response =
@@ -215,9 +221,13 @@ class GitHub implements GitHost {
       throw GitHostException.MissingAccessCode;
     }
 
-    var url = "https://api.github.com/user?access_token=$_accessCode";
+    var url = "https://api.github.com/user";
 
-    var response = await http.get(url);
+    var headers = {
+      HttpHeaders.authorizationHeader: _buildAuthHeader(),
+    };
+
+    var response = await http.get(url, headers: headers);
     if (response.statusCode != 200) {
       Fimber.d("Github getUserInfo: Invalid response " +
           response.statusCode.toString() +
@@ -240,5 +250,9 @@ class GitHub implements GitHost {
       email: map['email'],
       username: map['login'],
     );
+  }
+
+  String _buildAuthHeader() {
+    return 'token $_accessCode';
   }
 }
