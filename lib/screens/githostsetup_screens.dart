@@ -243,12 +243,14 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         children: <Widget>[
           body,
           if (Platform.isIOS)
-            InkWell(
-              child: Container(
-                child: const Icon(Icons.arrow_back, size: 32.0),
-                padding: const EdgeInsets.all(8.0),
+            SafeArea(
+              child: InkWell(
+                child: Container(
+                  child: const Icon(Icons.arrow_back, size: 32.0),
+                  padding: const EdgeInsets.all(8.0),
+                ),
+                onTap: () => Navigator.of(context).pop(),
               ),
-              onTap: () => Navigator.of(context).pop(),
             ),
         ],
       ),
