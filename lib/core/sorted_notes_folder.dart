@@ -1,15 +1,23 @@
+import 'package:flutter/material.dart';
+
 import 'note.dart';
 import 'notes_folder.dart';
 import 'notes_folder_notifier.dart';
+
+enum SortingMode { Modified, Created }
 
 class SortedNotesFolder
     with NotesFolderNotifier
     implements NotesFolderReadOnly {
   final NotesFolder folder;
+  SortingMode sortingMode;
 
   List<Note> _notes = [];
 
-  SortedNotesFolder(this.folder) {
+  SortedNotesFolder({
+    @required this.folder,
+    @required this.sortingMode,
+  }) {
     _notes = List<Note>.from(folder.notes);
     _notes.sort(_compare);
 
@@ -68,11 +76,31 @@ class SortedNotesFolder
   }
 
   void _entityChanged() {
+    _notes.sort(_compare);
     notifyListeners();
   }
 
   int _compare(Note a, Note b) {
-    return b.compareTo(a);
+    switch (sortingMode) {
+      case SortingMode.Created:
+        // vHanda FIXME: We should use when the file was created in the FS, but that doesn't
+        //               seem to be acessible via dart
+        var aDt = a.created ?? a.modified ?? a.fileLastModified;
+        var bDt = b.created ?? b.modified ?? b.fileLastModified;
+        if (bDt == null || aDt == null) {
+          return 0;
+        }
+        return bDt.compareTo(aDt);
+
+      case SortingMode.Modified:
+        var aDt = a.modified ?? a.fileLastModified;
+        var bDt = b.modified ?? b.fileLastModified;
+        if (bDt == null || aDt == null) {
+          return 0;
+        }
+        return bDt.compareTo(aDt);
+    }
+    return 0;
   }
 
   @override
@@ -83,4 +111,10 @@ class SortedNotesFolder
 
   @override
   bool get isEmpty => folder.isEmpty;
+
+  void changeSortingMode(SortingMode sm) {
+    sortingMode = sm;
+    _notes.sort(_compare);
+    notifyListeners();
+  }
 }

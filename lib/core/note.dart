@@ -26,7 +26,7 @@ class Note with ChangeNotifier implements Comparable<Note> {
   NoteData _data = NoteData();
   NoteSerializer noteSerializer = NoteSerializer();
 
-  DateTime _fileLastModified;
+  DateTime fileLastModified;
 
   var _loadState = NoteLoadState.None;
   var _serializer = MarkdownYAMLSerializer();
@@ -114,7 +114,7 @@ class Note with ChangeNotifier implements Comparable<Note> {
     final file = File(_filePath);
     if (_loadState == NoteLoadState.Loaded) {
       var fileLastModified = file.lastModifiedSync();
-      if (fileLastModified == _fileLastModified) {
+      if (fileLastModified == fileLastModified) {
         return _loadState;
       }
     }
@@ -129,7 +129,7 @@ class Note with ChangeNotifier implements Comparable<Note> {
     final string = await file.readAsString();
     data = _serializer.decode(string);
 
-    _fileLastModified = file.lastModifiedSync();
+    fileLastModified = file.lastModifiedSync();
     _loadState = NoteLoadState.Loaded;
 
     notifyListeners();
@@ -211,8 +211,8 @@ class Note with ChangeNotifier implements Comparable<Note> {
       return -1;
     }
 
-    var dt = modified ?? created ?? _fileLastModified;
-    var otherDt = other.modified ?? other.created ?? other._fileLastModified;
+    var dt = modified ?? created ?? fileLastModified;
+    var otherDt = other.modified ?? other.created ?? other.fileLastModified;
     if (dt == null || otherDt == null) {
       return _filePath.compareTo(other._filePath);
     }

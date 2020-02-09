@@ -28,7 +28,10 @@ class _JournalListingScreenState extends State<JournalListingScreen> {
   @override
   void initState() {
     super.initState();
-    sortedNotesFolder = SortedNotesFolder(widget.notesFolder);
+    sortedNotesFolder = SortedNotesFolder(
+      folder: widget.notesFolder,
+      sortingMode: SortingMode.Modified,
+    );
   }
 
   @override
@@ -60,6 +63,10 @@ class _JournalListingScreenState extends State<JournalListingScreen> {
                 delegate: NoteSearchDelegate(sortedNotesFolder.notes),
               );
             },
+          ),
+          IconButton(
+            icon: Icon(Icons.sort),
+            onPressed: _sortButtonPressed,
           ),
         ],
       ),
@@ -112,5 +119,39 @@ class _JournalListingScreenState extends State<JournalListingScreen> {
         );
       },
     );
+  }
+
+  void _sortButtonPressed() async {
+    var newSortingMode = await showDialog<SortingMode>(
+      context: context,
+      builder: (BuildContext context) {
+        var children = <Widget>[
+          RadioListTile<SortingMode>(
+            title: const Text("Last Modified"),
+            value: SortingMode.Modified,
+            groupValue: sortedNotesFolder.sortingMode,
+            onChanged: (SortingMode sm) => Navigator.of(context).pop(sm),
+          ),
+          RadioListTile<SortingMode>(
+            title: const Text("Created"),
+            value: SortingMode.Created,
+            groupValue: sortedNotesFolder.sortingMode,
+            onChanged: (SortingMode sm) => Navigator.of(context).pop(sm),
+          ),
+        ];
+
+        return AlertDialog(
+          title: const Text("Sorting Criteria"),
+          content: Column(
+            children: children,
+            mainAxisSize: MainAxisSize.min,
+          ),
+        );
+      },
+    );
+
+    setState(() {
+      sortedNotesFolder.changeSortingMode(newSortingMode);
+    });
   }
 }
