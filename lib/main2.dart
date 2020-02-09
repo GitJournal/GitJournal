@@ -1,4 +1,3 @@
-import 'package:markdown/markdown.dart';
 import 'package:markdown/markdown.dart' as md;
 
 var text = """# Title 1
@@ -13,20 +12,19 @@ How are you doing?
 Booga Wooga""";
 
 void main() {
-  print(markdownToHtml(
-    text,
-    extensionSet: ExtensionSet.gitHubWeb,
-    inlineSyntaxes: [TaskListSyntax()],
-  ));
-
   var doc = md.Document(
     encodeHtml: false,
     inlineSyntaxes: [TaskListSyntax()],
-    extensionSet: ExtensionSet.gitHubWeb,
+    extensionSet: md.ExtensionSet.gitHubWeb,
   );
 
   final MarkdownBuilder builder = MarkdownBuilder();
-  builder.build(doc.parseInline(text));
+  var nodes = doc.parseInline(text);
+  builder.build(nodes);
+
+  var renderer = CustomRenderer();
+  var output = renderer.render(nodes);
+  print(output);
 }
 
 /// Parse [task list items](https://github.github.com/gfm/#task-list-items-extension-).
@@ -40,8 +38,11 @@ class TaskListSyntax extends md.InlineSyntax {
   bool onMatch(md.InlineParser parser, Match match) {
     md.Element el = md.Element.withTag('input');
     el.attributes['type'] = 'checkbox';
-    el.attributes['disabled'] = 'true';
     el.attributes['checked'] = '${match[1].trim().isNotEmpty}';
+    var m = match[1].trim();
+    if (m.isNotEmpty) {
+      el.attributes['xUpperCase'] = (m[0] == 'X').toString();
+    }
     parser.addNode(el);
     return true;
   }
@@ -80,5 +81,55 @@ class MarkdownBuilder implements md.NodeVisitor {
     print("---build---");
 
     return "";
+  }
+}
+
+class CustomRenderer implements md.NodeVisitor {
+  StringBuffer buffer;
+
+  @override
+  bool visitElementBefore(md.Element element) {
+    return true;
+  }
+
+  @override
+  void visitText(md.Text text) {
+    buffer.write(text.text);
+    print("text: ${text.text}");
+  }
+
+  @override
+  void visitElementAfter(md.Element element) {
+    final String tag = element.tag;
+
+    print("Tag: $tag");
+    if (tag == 'input') {
+      var el = element;
+      if (el is md.Element && el.attributes['type'] == 'checkbox') {
+        bool val = el.attributes['checked'] != 'false';
+        if (val) {
+          if (el.attributes['xUpperCase'] != 'false') {
+            buffer.write('[x] ');
+          } else {
+            buffer.write('[X] ');
+          }
+        } else {
+          buffer.write('[ ] ');
+        }
+        print("VAL $val");
+      }
+    }
+  }
+
+  String render(List<md.Node> nodes) {
+    print("---render---");
+    buffer = StringBuffer();
+
+    for (final node in nodes) {
+      node.accept(this);
+    }
+
+    print("---render---");
+    return buffer.toString();
   }
 }
