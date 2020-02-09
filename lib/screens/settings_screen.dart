@@ -133,7 +133,7 @@ class SettingsListState extends State<SettingsList> {
           dynamicTheme.setBrightness(b);
         },
       ),
-      SettingsHeader('Note Settings'),
+      if (defaultFolderConfigurable) SettingsHeader('Note Settings'),
       if (defaultFolderConfigurable)
         ListTile(
           title: const Text("Default Folder for new notes"),

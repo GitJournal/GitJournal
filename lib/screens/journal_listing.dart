@@ -5,6 +5,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/sorted_notes_folder.dart';
 import 'package:gitjournal/screens/note_editor.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
@@ -30,7 +31,7 @@ class _JournalListingScreenState extends State<JournalListingScreen> {
     super.initState();
     sortedNotesFolder = SortedNotesFolder(
       folder: widget.notesFolder,
-      sortingMode: SortingMode.Modified,
+      sortingMode: Settings.instance.sortingMode,
     );
   }
 
@@ -150,8 +151,12 @@ class _JournalListingScreenState extends State<JournalListingScreen> {
       },
     );
 
-    setState(() {
-      sortedNotesFolder.changeSortingMode(newSortingMode);
-    });
+    if (newSortingMode != null) {
+      setState(() {
+        sortedNotesFolder.changeSortingMode(newSortingMode);
+        Settings.instance.sortingMode = newSortingMode;
+        Settings.instance.save();
+      });
+    }
   }
 }

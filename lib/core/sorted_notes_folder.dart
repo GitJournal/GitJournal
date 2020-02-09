@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gitjournal/settings.dart';
 
 import 'note.dart';
 import 'notes_folder.dart';
 import 'notes_folder_notifier.dart';
-
-enum SortingMode { Modified, Created }
 
 class SortedNotesFolder
     with NotesFolderNotifier
