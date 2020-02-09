@@ -2,8 +2,6 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 
-import 'package:flushbar/flushbar.dart';
-
 import 'app.dart';
 import 'core/note.dart';
 import 'state_container.dart';
@@ -38,8 +36,6 @@ SnackBar buildUndoDeleteSnackbar(BuildContext context, Note deletedNote) {
 }
 
 void showSnackbar(BuildContext context, String message) {
-  Flushbar(
-    message: message,
-    duration: const Duration(seconds: 3),
-  ).show(context);
+  var snackBar = SnackBar(content: Text(message));
+  Scaffold.of(context).showSnackBar(snackBar);
 }
