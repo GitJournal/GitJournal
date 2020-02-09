@@ -49,9 +49,11 @@ class JournalListingScreen extends StatelessWidget {
       ),
       floatingActionButton: createButton,
       body: Center(
-        child: RefreshIndicator(
-          child: Scrollbar(child: buildJournalList(notesFolder)),
-          onRefresh: () async => _syncRepo(context),
+        child: Builder(
+          builder: (context) => RefreshIndicator(
+            child: Scrollbar(child: buildJournalList(notesFolder)),
+            onRefresh: () async => _syncRepo(context),
+          ),
         ),
       ),
       drawer: AppDrawer(),
@@ -59,8 +61,12 @@ class JournalListingScreen extends StatelessWidget {
   }
 
   void _syncRepo(BuildContext context) async {
-    final container = StateContainer.of(context);
-    await container.syncNotes();
+    try {
+      final container = StateContainer.of(context);
+      await container.syncNotes();
+    } catch (e) {
+      showSnackbar(context, e.toString());
+    }
   }
 
   void _newPost(BuildContext context) {

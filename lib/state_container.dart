@@ -68,7 +68,7 @@ class StateContainerState extends State<StateContainer> {
     }
 
     _loadNotes();
-    syncNotes();
+    _syncNotes();
   }
 
   void removeExistingRemoteClone() async {
@@ -87,7 +87,7 @@ class StateContainerState extends State<StateContainer> {
     await appState.notesFolder.loadRecursively();
   }
 
-  Future<void> syncNotes() async {
+  Future<void> syncNotes({bool doNotThrow = false}) async {
     if (!appState.remoteGitRepoConfigured) {
       Fimber.d("Not syncing because RemoteRepo not configured");
       return true;
@@ -112,9 +112,13 @@ class StateContainerState extends State<StateContainer> {
       if (shouldLogGitException(e)) {
         await FlutterCrashlytics().logException(e, stacktrace);
       }
-      showSnackbar(context, e.cause);
+      if (!doNotThrow) rethrow;
     }
     await _loadNotes();
+  }
+
+  Future<void> _syncNotes() {
+    return syncNotes(doNotThrow: true);
   }
 
   void createFolder(NotesFolder parent, String folderName) async {
@@ -126,7 +130,7 @@ class StateContainerState extends State<StateContainer> {
     parent.addFolder(newFolder);
 
     _gitRepo.addFolder(newFolder).then((NoteRepoResult _) {
-      syncNotes();
+      _syncNotes();
     });
   }
 
@@ -135,7 +139,7 @@ class StateContainerState extends State<StateContainer> {
 
     folder.parent.removeFolder(folder);
     _gitRepo.removeFolder(folder.folderPath).then((NoteRepoResult _) {
-      syncNotes();
+      _syncNotes();
     });
   }
 
@@ -146,7 +150,7 @@ class StateContainerState extends State<StateContainer> {
     _gitRepo
         .renameFolder(oldFolderPath, folder.folderPath)
         .then((NoteRepoResult _) {
-      syncNotes();
+      _syncNotes();
     });
   }
 
@@ -155,7 +159,7 @@ class StateContainerState extends State<StateContainer> {
     note.rename(newFileName);
 
     _gitRepo.renameNote(oldNotePath, note.filePath).then((NoteRepoResult _) {
-      syncNotes();
+      _syncNotes();
     });
   }
 
@@ -167,12 +171,17 @@ class StateContainerState extends State<StateContainer> {
     note.move(destFolder);
 
     _gitRepo.moveNote(oldNotePath, note.filePath).then((NoteRepoResult _) {
-      syncNotes();
+      _syncNotes();
     });
   }
 
   void addNote(Note note) {
-    insertNote(0, note);
+    Fimber.d("State Container addNote");
+    note.parent.insert(0, note);
+    note.updateModified();
+    _gitRepo.addNote(note).then((NoteRepoResult _) {
+      _syncNotes();
+    });
   }
 
   void removeNote(Note note) {
@@ -184,23 +193,14 @@ class StateContainerState extends State<StateContainer> {
       // We wait an aritfical amount of time, so that the user has a change to undo
       // their delete operation, and that commit is not synced with the server, till then.
       await Future.delayed(const Duration(seconds: 4));
-      syncNotes();
+      _syncNotes();
     });
   }
 
   void undoRemoveNote(Note note) {
     note.parent.insert(0, note);
     _gitRepo.resetLastCommit().then((NoteRepoResult _) {
-      syncNotes();
-    });
-  }
-
-  void insertNote(int index, Note note) {
-    Fimber.d("State Container insertNote " + index.toString());
-    note.parent.insert(index, note);
-    note.updateModified();
-    _gitRepo.addNote(note).then((NoteRepoResult _) {
-      syncNotes();
+      _syncNotes();
     });
   }
 
@@ -208,7 +208,7 @@ class StateContainerState extends State<StateContainer> {
     Fimber.d("State Container updateNote");
     note.updateModified();
     _gitRepo.updateNote(note).then((NoteRepoResult _) {
-      syncNotes();
+      _syncNotes();
     });
   }
 
@@ -230,7 +230,7 @@ class StateContainerState extends State<StateContainer> {
 
       await _persistConfig();
       _loadNotes();
-      syncNotes();
+      _syncNotes();
 
       setState(() {});
     }();

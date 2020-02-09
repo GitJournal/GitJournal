@@ -5,6 +5,7 @@ import 'package:connectivity/connectivity.dart';
 
 import 'package:gitjournal/appstate.dart';
 import 'package:gitjournal/state_container.dart';
+import 'package:gitjournal/utils.dart';
 
 class SyncButton extends StatefulWidget {
   @override
@@ -59,8 +60,12 @@ class _SyncButtonState extends State<SyncButton> {
   }
 
   void _syncRepo() async {
-    final container = StateContainer.of(context);
-    await container.syncNotes();
+    try {
+      final container = StateContainer.of(context);
+      await container.syncNotes();
+    } catch (e) {
+      showSnackbar(context, e.toString());
+    }
   }
 
   IconData _syncStatusIcon() {
