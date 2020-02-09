@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/note_data.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/editors/markdown_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
 import 'package:gitjournal/editors/todo_editor.dart';
 import 'package:gitjournal/state_container.dart';
-import 'package:gitjournal/core/note_data_serializers.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
 
@@ -36,7 +36,7 @@ enum EditorType { Markdown, Raw, Todo }
 class NoteEditorState extends State<NoteEditor> {
   Note note;
   EditorType editorType = EditorType.Markdown;
-  String noteSerialized = "";
+  NoteData originalNoteData = NoteData();
 
   final _rawEditorKey = GlobalKey<RawEditorState>();
   final _markdownEditorKey = GlobalKey<MarkdownEditorState>();
@@ -51,8 +51,7 @@ class NoteEditorState extends State<NoteEditor> {
   }
 
   NoteEditorState.fromNote(this.note) {
-    var serializer = MarkdownYAMLSerializer();
-    noteSerialized = serializer.encode(note.data);
+    originalNoteData = NoteData.from(note.data);
   }
 
   @override
@@ -224,14 +223,14 @@ class NoteEditorState extends State<NoteEditor> {
     if (_isNewNote) {
       return note.title.isNotEmpty || note.body.isNotEmpty;
     }
-    var serializer = MarkdownYAMLSerializer();
-    var finalNoteSerialized = serializer.encode(note.data);
-    bool modified = finalNoteSerialized != noteSerialized;
-    if (modified) {
-      print("Original Serialization: " + noteSerialized);
-      print("New Serialization: " + finalNoteSerialized);
+
+    if (note.data != originalNoteData) {
+      var newWithoutModified = NoteData.from(note.data);
+      newWithoutModified.props.remove(note.noteSerializer.settings.modifiedKey);
+
+      return newWithoutModified != originalNoteData;
     }
-    return modified;
+    return false;
   }
 
   void _saveNote(Note note) {
@@ -291,8 +290,7 @@ class NoteEditorState extends State<NoteEditor> {
         FlatButton(
           onPressed: () {
             // FIXME: This shouldn't be required. Why is the original note modified?
-            var serializer = MarkdownYAMLSerializer();
-            note.data = serializer.decode(noteSerialized);
+            note.data = originalNoteData;
 
             Navigator.pop(context); // Alert box
             Navigator.pop(context); // Note Editor

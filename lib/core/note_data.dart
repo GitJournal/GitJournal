@@ -10,6 +10,11 @@ class NoteData {
     props = props ?? LinkedHashMap<String, dynamic>();
   }
 
+  NoteData.from(NoteData other) {
+    body = String.fromCharCodes(other.body.codeUnits);
+    props = LinkedHashMap<String, dynamic>.from(other.props);
+  }
+
   @override
   int get hashCode => body.hashCode ^ props.hashCode;
 

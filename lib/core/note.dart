@@ -24,7 +24,7 @@ class Note with ChangeNotifier implements Comparable<Note> {
   DateTime _created;
   DateTime _modified;
   NoteData _data = NoteData();
-  NoteSerializer _noteSerializer = NoteSerializer();
+  NoteSerializer noteSerializer = NoteSerializer();
 
   DateTime _fileLastModified;
 
@@ -88,13 +88,13 @@ class Note with ChangeNotifier implements Comparable<Note> {
   }
 
   NoteData get data {
-    _noteSerializer.encode(this, _data);
+    noteSerializer.encode(this, _data);
     return _data;
   }
 
   set data(NoteData data) {
     _data = data;
-    _noteSerializer.decode(_data, this);
+    noteSerializer.decode(_data, this);
 
     notifyListeners();
   }
