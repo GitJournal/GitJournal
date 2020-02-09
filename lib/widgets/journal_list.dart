@@ -12,7 +12,7 @@ typedef void NoteSelectedFunction(Note note);
 
 class JournalList extends StatefulWidget {
   final NoteSelectedFunction noteSelectedFunction;
-  final NotesFolder folder;
+  final NotesFolderReadOnly folder;
   final String emptyText;
 
   JournalList({

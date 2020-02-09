@@ -2,7 +2,9 @@ import 'note.dart';
 import 'notes_folder.dart';
 import 'notes_folder_notifier.dart';
 
-class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
+class SortedNotesFolder
+    with NotesFolderNotifier
+    implements NotesFolderReadOnly {
   final NotesFolder folder;
 
   List<Note> _notes = [];
@@ -77,70 +79,8 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
   List<Note> get notes => _notes;
 
   @override
-  List<NotesFolder> getFolders() => folder.getFolders();
-
-  //
-  // Dumb Interface Implementation
-  //
-  @override
-  NotesFolder get parent => folder.parent;
-
-  @override
-  String get folderPath => folder.folderPath;
-
-  @override
-  bool get isEmpty => folder.isEmpty;
-
-  @override
-  String get name => folder.name;
-
-  @override
-  String get fullName => folder.fullName;
-
-  @override
-  bool get hasSubFolders => folder.hasSubFolders;
-
-  @override
   bool get hasNotes => folder.hasNotes;
 
   @override
-  bool get hasNotesRecursive => folder.hasNotesRecursive;
-
-  @override
-  int get numberOfNotes => folder.numberOfNotes;
-
-  @override
-  Future<void> loadRecursively() => folder.loadRecursively();
-
-  @override
-  Future<void> load() => folder.load();
-
-  @override
-  void add(Note note) => folder.add(note);
-
-  @override
-  void insert(int index, Note note) => folder.insert(index, note);
-
-  @override
-  void remove(Note note) => folder.remove(note);
-
-  @override
-  void create() => folder.create();
-
-  @override
-  void addFolder(NotesFolder folder) => folder.addFolder(folder);
-
-  @override
-  void removeFolder(NotesFolder folder) => folder.removeFolder(folder);
-
-  @override
-  void rename(String newName) => folder.rename(newName);
-
-  @override
-  String pathSpec() => folder.pathSpec();
-
-  @override
-  int compareTo(NotesFolder other) {
-    return folderPath.compareTo(other.folderPath);
-  }
+  bool get isEmpty => folder.isEmpty;
 }

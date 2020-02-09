@@ -91,11 +91,11 @@ class _JournalListingScreenState extends State<JournalListingScreen> {
     Navigator.of(context).push(route);
   }
 
-  Widget buildJournalList(NotesFolder folder) {
+  Widget buildJournalList(NotesFolderReadOnly folder) {
     return Builder(
       builder: (context) {
         return JournalList(
-          folder: SortedNotesFolder(folder),
+          folder: folder,
           noteSelectedFunction: (Note note) async {
             var route = MaterialPageRoute(
               builder: (context) => NoteEditor.fromNote(note),

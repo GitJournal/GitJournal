@@ -6,7 +6,15 @@ import 'package:path/path.dart';
 import 'note.dart';
 import 'notes_folder_notifier.dart';
 
-class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
+abstract class NotesFolderReadOnly implements NotesFolderNotifier {
+  bool get isEmpty;
+  bool get hasNotes;
+  List<Note> get notes;
+}
+
+class NotesFolder
+    with NotesFolderNotifier
+    implements NotesFolderReadOnly, Comparable<NotesFolder> {
   final NotesFolder parent;
   String _folderPath;
 
@@ -31,6 +39,7 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
 
   String get folderPath => _folderPath;
 
+  @override
   bool get isEmpty {
     return _notes.isEmpty && _folders.isEmpty;
   }
@@ -54,6 +63,7 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
     return _folders.isNotEmpty;
   }
 
+  @override
   bool get hasNotes {
     return _notes.isNotEmpty;
   }
@@ -75,6 +85,7 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
     return _notes.length;
   }
 
+  @override
   List<Note> get notes {
     return _notes;
   }
