@@ -8,14 +8,14 @@ import 'notes_folder_notifier.dart';
 
 class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
   final NotesFolder parent;
-  String folderPath;
+  String _folderPath;
 
   List<Note> _notes = [];
   List<NotesFolder> _folders = [];
 
   Map<String, dynamic> _entityMap = {};
 
-  NotesFolder(this.parent, this.folderPath);
+  NotesFolder(this.parent, this._folderPath);
 
   @override
   void dispose() {
@@ -28,6 +28,8 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
   void _entityChanged() {
     notifyListeners();
   }
+
+  String get folderPath => _folderPath;
 
   bool get isEmpty {
     return _notes.isEmpty && _folders.isEmpty;
@@ -258,7 +260,7 @@ class NotesFolder with NotesFolderNotifier implements Comparable<NotesFolder> {
     var dir = Directory(folderPath);
     var parentDirName = dirname(folderPath);
     dir.renameSync(folderPath);
-    folderPath = p.join(parentDirName, newName);
+    _folderPath = p.join(parentDirName, newName);
 
     notifyListeners();
   }
