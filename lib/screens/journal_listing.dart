@@ -3,6 +3,7 @@ import 'package:fimber/fimber.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/core/sorted_notes_folder.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
@@ -79,7 +80,7 @@ class JournalListingScreen extends StatelessWidget {
     return Builder(
       builder: (context) {
         return JournalList(
-          folder: folder,
+          folder: SortedNotesFolder(folder),
           noteSelectedFunction: (Note note) async {
             var route = MaterialPageRoute(
               builder: (context) => NoteEditor.fromNote(note),

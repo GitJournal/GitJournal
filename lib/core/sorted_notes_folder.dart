@@ -8,6 +8,9 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
   List<Note> _notes = [];
 
   SortedNotesFolder(this.folder) {
+    _notes = List<Note>.from(folder.notes);
+    _notes.sort(_compare);
+
     folder.addFolderAddedListener(_folderAddedListener);
     folder.addFolderRemovedListener(_folderRemovedListener);
 
@@ -15,9 +18,6 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
     folder.addNoteRemovedListener(_noteRemovedListener);
 
     folder.addListener(_entityChanged);
-
-    _notes = folder.notes;
-    _notes.sort(_compare);
   }
 
   @override
@@ -42,6 +42,8 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
   }
 
   void _noteAddedListener(int _, Note note) {
+    assert(folder.notes.length == _notes.length + 1);
+
     var i = 0;
     for (; i < _notes.length; i++) {
       var n = _notes[i];
@@ -54,6 +56,8 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
   }
 
   void _noteRemovedListener(int _, Note note) {
+    assert(folder.notes.length == _notes.length - 1);
+
     var index = _notes.indexWhere((n) => n.filePath == note.filePath);
     assert(index != -1);
     _notes.removeAt(index);
