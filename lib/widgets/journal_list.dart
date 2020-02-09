@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gitjournal/core/sorted_notes_folder.dart';
 import 'package:intl/intl.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
@@ -30,23 +31,23 @@ class JournalList extends StatefulWidget {
 class _JournalListState extends State<JournalList> {
   var _listKey = GlobalKey<AnimatedListState>();
   var deletedViaDismissed = <String>[];
+  SortedNotesFolder folder;
 
   @override
   void initState() {
     super.initState();
 
-    if (widget.folder != null) {
-      widget.folder.addNoteAddedListener(_noteAdded);
-      widget.folder.addNoteRemovedListener(_noteRemoved);
-    }
+    folder = SortedNotesFolder(widget.folder);
+    folder.addNoteAddedListener(_noteAdded);
+    folder.addNoteRemovedListener(_noteRemoved);
+    folder.addListener(_folderChanged);
   }
 
   @override
   void dispose() {
-    if (widget.folder != null) {
-      widget.folder.removeNoteAddedListener(_noteAdded);
-      widget.folder.removeNoteRemovedListener(_noteRemoved);
-    }
+    folder.removeNoteAddedListener(_noteAdded);
+    folder.removeNoteRemovedListener(_noteRemoved);
+    folder.removeListener(_folderChanged);
 
     super.dispose();
   }
@@ -73,9 +74,13 @@ class _JournalListState extends State<JournalList> {
     });
   }
 
+  void _folderChanged() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (widget.notes.isEmpty) {
+    if (folder.notes.isEmpty) {
       return Center(
         child: Text(
           widget.emptyText,
@@ -92,12 +97,12 @@ class _JournalListState extends State<JournalList> {
     return AnimatedList(
       key: _listKey,
       itemBuilder: _buildItem,
-      initialItemCount: widget.notes.length,
+      initialItemCount: folder.notes.length,
     );
   }
 
   Widget _buildItem(BuildContext context, int i, Animation<double> animation) {
-    var note = widget.notes[i];
+    var note = folder.notes[i];
     return _buildNote(context, note, animation);
   }
 
