@@ -1,3 +1,8 @@
+## [1.37] - 2020-02-09
+* Allow Note sorting to be configured
+* Allow git push frequency to be configured
+* Show animations when adding/removing a note
+
 ## [1.37] - 2020-01-31
 * Allow note changes to be discarded
 * Do not load too many notes in one go
