@@ -17,7 +17,7 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
     folder.addListener(_entityChanged);
 
     _notes = folder.notes;
-    _notes.sort();
+    _notes.sort(_compare);
   }
 
   @override
@@ -45,7 +45,7 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
     var i = 0;
     for (; i < _notes.length; i++) {
       var n = _notes[i];
-      if (n.compareTo(note) > 0) {
+      if (_compare(n, note) > 0) {
         break;
       }
     }
@@ -63,6 +63,10 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
 
   void _entityChanged() {
     notifyListeners();
+  }
+
+  int _compare(Note a, Note b) {
+    return b.compareTo(a);
   }
 
   @override
