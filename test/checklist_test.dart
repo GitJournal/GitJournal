@@ -63,6 +63,7 @@ Booga Wooga
       checklist.items[0].checked = true;
       checklist.items[1].checked = false;
       checklist.items[1].text = "Foo";
+      checklist.addItem(false, "Howdy");
 
       await checklist.note.save();
 
@@ -81,6 +82,7 @@ How are you doing?
 [ ] item 4
 
 Booga Wooga
+[ ] Howdy
 """;
 
       var actualContent = File(notePath).readAsStringSync();

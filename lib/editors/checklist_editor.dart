@@ -61,7 +61,11 @@ class ChecklistEditorState extends State<ChecklistEditor>
     });
     itemTiles.add(AddItemButton(
       key: UniqueKey(),
-      onPressed: () {},
+      onPressed: () {
+        setState(() {
+          checklist.addItem(false, "");
+        });
+      },
     ));
 
     print("Building " + checklist.toString());
@@ -107,10 +111,13 @@ class ChecklistEditorState extends State<ChecklistEditor>
     return ChecklistItemTile(
       key: UniqueKey(),
       item: item,
-      statusChanged: (val) {
+      statusChanged: (bool newVal) {
         setState(() {
-          item.checked = val;
+          item.checked = newVal;
         });
+      },
+      textChanged: (String newVal) {
+        item.text = newVal;
       },
       itemRemoved: () {
         setState(() {
@@ -146,15 +153,20 @@ class _NoteTitleEditor extends StatelessWidget {
   }
 }
 
+typedef TextChangedFunction = void Function(String);
+typedef StatusChangedFunction = void Function(bool);
+
 class ChecklistItemTile extends StatefulWidget {
   final ChecklistItem item;
-  final Function statusChanged;
+  final StatusChangedFunction statusChanged;
+  final TextChangedFunction textChanged;
   final Function itemRemoved;
 
   ChecklistItemTile({
     Key key,
     @required this.item,
     @required this.statusChanged,
+    @required this.textChanged,
     @required this.itemRemoved,
   }) : super(key: key);
 
@@ -170,9 +182,18 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
   void initState() {
     super.initState();
     _textController = TextEditingController(text: widget.item.text);
+    _textController.addListener(() {
+      widget.textChanged(_textController.value.text);
+    });
     _focusNode.addListener(() {
       setState(() {});
     });
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
   }
 
   @override
@@ -231,7 +252,7 @@ class AddItemButton extends StatelessWidget {
           Container(height: 24.0, width: 24.0),
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () {},
+            onPressed: onPressed,
           )
         ],
         mainAxisSize: MainAxisSize.min,

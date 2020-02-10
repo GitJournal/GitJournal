@@ -60,6 +60,17 @@ class Checklist {
       ']',
     ].join(' ');
   }
+
+  void addItem(bool value, String text) {
+    var elem = md.Element.withTag("input");
+    elem.attributes["type"] = "checkbox";
+    elem.attributes["checked"] = value.toString();
+    elem.attributes["xUpperCase"] = "false";
+    elem.attributes["text"] = text + "\n";
+
+    items.add(ChecklistItem.fromMarkdownElement(elem));
+    nodes.add(elem);
+  }
 }
 
 /// Copied from flutter-markdown - cannot be merged as we added xUpperCase and changed the regexp
