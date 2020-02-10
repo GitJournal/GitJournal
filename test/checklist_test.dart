@@ -45,19 +45,31 @@ Booga Wooga
       await note.load();
 
       var checklist = Checklist(note);
-      expect(checklist.items.length, equals(5));
+      var items = checklist.items;
+      expect(items.length, equals(5));
 
-      expect(checklist.items[0].checked, false);
-      expect(checklist.items[1].checked, true);
-      expect(checklist.items[2].checked, true);
-      expect(checklist.items[3].checked, false);
-      expect(checklist.items[4].checked, false);
+      expect(items[0].checked, false);
+      expect(items[1].checked, true);
+      expect(items[2].checked, true);
+      expect(items[3].checked, false);
+      expect(items[4].checked, false);
 
-      expect(checklist.items[0].text, "item 1");
-      expect(checklist.items[1].text, "item 2");
-      expect(checklist.items[2].text, "item 3");
-      expect(checklist.items[3].text, "item 4");
-      expect(checklist.items[4].text, "item 5");
+      expect(items[0].text, "item 1");
+      expect(items[1].text, "item 2");
+      expect(items[2].text, "item 3");
+      expect(items[3].text, "item 4");
+      expect(items[4].text, "item 5");
+
+      // Nodes
+      var nodes = checklist.nodes;
+      expect(nodes.length, equals(7));
+      expect(nodes[0].textContent, "# Title 1\n\nHow are you doing?\n\n");
+      expect(nodes[1], items[0].element);
+      expect(nodes[2], items[1].element);
+      expect(nodes[3], items[2].element);
+      expect(nodes[4], items[3].element);
+      expect(nodes[5], items[4].element);
+      expect(nodes[6].textContent, "\nBooga Wooga\n");
 
       //
       // Serialization

@@ -62,9 +62,6 @@ class Checklist {
   }
 
   void addItem(bool value, String text) {
-    if (!text.endsWith('\n')) {
-      text += '\n';
-    }
     var elem = md.Element.withTag("input");
     elem.attributes["type"] = "checkbox";
     elem.attributes["checked"] = value.toString();
@@ -175,6 +172,7 @@ class CustomRenderer implements md.NodeVisitor {
 
   @override
   void visitText(md.Text text) {
+    //print("visitText ${text.text}#");
     buffer.write(text.text);
   }
 
@@ -197,7 +195,9 @@ class CustomRenderer implements md.NodeVisitor {
         }
         var text = el.attributes['text'];
         buffer.write(text);
+        //print("writeElem $text#");
         if (!text.endsWith('\n')) {
+          //print("writeElem newLine#");
           buffer.write('\n');
         }
       }

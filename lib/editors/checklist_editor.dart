@@ -260,6 +260,8 @@ class AddItemButton extends StatelessWidget {
 }
 
 // FIXME: The body needs to be scrollable
-// FIXME: Add a new todo button
-// FIXME: Fix padding issue with todo items
+// FIXME: Add a new todo button -> clicking on text should be fine
+// FIXME: New item button -> clicking on + should give the new one focus
+// FIXME: Fix padding issue on top
 // FIXME: When removing an item the focus should jump to the next/prev in line
+// FIXME: Fix \n issue in the ChecklistEditor
