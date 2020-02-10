@@ -21,7 +21,6 @@ void main() {
     test('Should parse simple checklists', () async {
       var content = """---
 title: Foo
-modified: 2017-02-15T22:41:19+01:00
 ---
 
 # Title 1
@@ -86,7 +85,6 @@ Booga Wooga
 
       var expectedContent = """---
 title: Foo
-modified: 2017-02-15T22:41:19+01:00
 ---
 
 # Title 1
