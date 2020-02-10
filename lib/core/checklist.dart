@@ -82,6 +82,32 @@ class Checklist {
     nodes.remove(item.element);
     items.remove(item);
   }
+
+  ChecklistItem removeAt(int index) {
+    assert(index >= 0 && index <= items.length);
+
+    var item = items[index];
+    assert(nodes.contains(item.element));
+
+    nodes.remove(item.element);
+    items.removeAt(index);
+
+    return item;
+  }
+
+  void insertItem(int index, ChecklistItem item) {
+    if (index == 0) {
+      items.insert(0, item);
+      nodes.insert(0, item.element);
+      return;
+    }
+
+    var prevItem = items[index];
+    var nodeIndex = nodes.indexOf(prevItem.element);
+
+    nodes.insert(nodeIndex + 1, item.element);
+    items.insert(index, item);
+  }
 }
 
 /// Copied from flutter-markdown - cannot be merged as we added xUpperCase and changed the regexp

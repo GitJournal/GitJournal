@@ -73,15 +73,13 @@ class ChecklistEditorState extends State<ChecklistEditor>
       children: itemTiles,
       onReorder: (int oldIndex, int newIndex) {
         setState(() {
-          /*
-          var item = todos.removeAt(oldIndex);
+          var item = checklist.removeAt(oldIndex);
 
           if (newIndex > oldIndex) {
-            todos.insert(newIndex - 1, item);
+            checklist.insertItem(newIndex - 1, item);
           } else {
-            todos.insert(newIndex, item);
+            checklist.insertItem(newIndex, item);
           }
-          */
         });
       },
     );
