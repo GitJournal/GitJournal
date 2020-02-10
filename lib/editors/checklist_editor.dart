@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gitjournal/core/checklist.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
@@ -38,18 +39,12 @@ class ChecklistEditor extends StatefulWidget implements Editor {
 
 class ChecklistEditorState extends State<ChecklistEditor>
     implements EditorState {
-  Note note;
-  List<TodoItem> todos;
+  Checklist checklist;
   TextEditingController _titleTextController = TextEditingController();
 
-  ChecklistEditorState(this.note) {
+  ChecklistEditorState(Note note) {
     _titleTextController = TextEditingController(text: note.title);
-
-    todos = [
-      TodoItem(false, "First Item"),
-      TodoItem(true, "Second Item"),
-      TodoItem(false, "Third Item"),
-    ];
+    checklist = Checklist(note);
   }
 
   @override
@@ -60,20 +55,21 @@ class ChecklistEditorState extends State<ChecklistEditor>
 
   @override
   Widget build(BuildContext context) {
-    var todoItemTiles = <Widget>[];
-    todos.forEach((TodoItem todo) {
-      todoItemTiles.add(_buildTile(todo));
+    var itemTiles = <Widget>[];
+    checklist.items.forEach((ChecklistItem item) {
+      itemTiles.add(_buildTile(item));
     });
-    todoItemTiles.add(AddTodoItemButton(
+    itemTiles.add(AddItemButton(
       key: UniqueKey(),
       onPressed: () {},
     ));
 
-    print("Building " + todos.toString());
-    Widget todoList = ReorderableListView(
-      children: todoItemTiles,
+    print("Building " + checklist.toString());
+    Widget checklistWidget = ReorderableListView(
+      children: itemTiles,
       onReorder: (int oldIndex, int newIndex) {
         setState(() {
+          /*
           var item = todos.removeAt(oldIndex);
 
           if (newIndex > oldIndex) {
@@ -81,6 +77,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
           } else {
             todos.insert(newIndex, item);
           }
+          */
         });
       },
     );
@@ -94,30 +91,31 @@ class ChecklistEditorState extends State<ChecklistEditor>
       appBar: buildEditorAppBar(widget, this),
       floatingActionButton: buildFAB(widget, this),
       body: Column(
-        children: <Widget>[titleEditor, Expanded(child: todoList)],
+        children: <Widget>[titleEditor, Expanded(child: checklistWidget)],
       ),
     );
   }
 
   @override
   Note getNote() {
+    var note = checklist.note;
     note.title = _titleTextController.text.trim();
     return note;
   }
 
-  TodoItemTile _buildTile(TodoItem todo) {
-    return TodoItemTile(
+  ChecklistItemTile _buildTile(ChecklistItem item) {
+    return ChecklistItemTile(
       key: UniqueKey(),
-      todo: todo,
+      item: item,
       statusChanged: (val) {
         setState(() {
-          todo.checked = val;
+          item.checked = val;
         });
       },
-      todoRemoved: () {
+      itemRemoved: () {
         setState(() {
           // FIXME: The body isn't a good indicator, there could be multiple with the same body!
-          todos.removeWhere((t) => t.body == todo.body);
+          // todos.removeWhere((t) => t.body == todo.body);
         });
       },
     );
@@ -148,42 +146,30 @@ class _NoteTitleEditor extends StatelessWidget {
   }
 }
 
-class TodoItem {
-  bool checked;
-  String body;
-
-  TodoItem(this.checked, this.body);
-
-  @override
-  String toString() {
-    return 'TodoItem($checked, "$body")';
-  }
-}
-
-class TodoItemTile extends StatefulWidget {
-  final TodoItem todo;
+class ChecklistItemTile extends StatefulWidget {
+  final ChecklistItem item;
   final Function statusChanged;
-  final Function todoRemoved;
+  final Function itemRemoved;
 
-  TodoItemTile({
+  ChecklistItemTile({
     Key key,
-    @required this.todo,
+    @required this.item,
     @required this.statusChanged,
-    @required this.todoRemoved,
+    @required this.itemRemoved,
   }) : super(key: key);
 
   @override
-  _TodoItemTileState createState() => _TodoItemTileState();
+  _ChecklistItemTileState createState() => _ChecklistItemTileState();
 }
 
-class _TodoItemTileState extends State<TodoItemTile> {
+class _ChecklistItemTileState extends State<ChecklistItemTile> {
   TextEditingController _textController;
   FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    _textController = TextEditingController(text: widget.todo.body);
+    _textController = TextEditingController(text: widget.item.text);
     _focusNode.addListener(() {
       setState(() {});
     });
@@ -212,7 +198,7 @@ class _TodoItemTileState extends State<TodoItemTile> {
         children: <Widget>[
           Container(height: 24.0, width: 24.0, child: Icon(Icons.reorder)),
           Checkbox(
-            value: widget.todo.checked,
+            value: widget.item.checked,
             onChanged: widget.statusChanged,
           ),
         ],
@@ -222,17 +208,17 @@ class _TodoItemTileState extends State<TodoItemTile> {
       trailing: _focusNode.hasFocus
           ? IconButton(
               icon: Icon(Icons.cancel),
-              onPressed: widget.todoRemoved,
+              onPressed: widget.itemRemoved,
             )
           : null,
     );
   }
 }
 
-class AddTodoItemButton extends StatelessWidget {
+class AddItemButton extends StatelessWidget {
   final Function onPressed;
 
-  AddTodoItemButton({Key key, @required this.onPressed}) : super(key: key);
+  AddItemButton({Key key, @required this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -51,6 +51,15 @@ class Checklist {
 
     return _note;
   }
+
+  @override
+  String toString() {
+    return [
+      '[',
+      items.map((x) => x.toString()).join(', '),
+      ']',
+    ].join(' ');
+  }
 }
 
 /// Copied from flutter-markdown - cannot be merged as we added xUpperCase and changed the regexp
