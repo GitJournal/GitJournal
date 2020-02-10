@@ -214,7 +214,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
       dense: true,
       leading: Row(
         children: <Widget>[
-          Container(height: 24.0, width: 24.0, child: Icon(Icons.reorder)),
+          Container(height: 24.0, width: 24.0, child: Icon(Icons.drag_handle)),
           Checkbox(
             value: widget.item.checked,
             onChanged: widget.statusChanged,
