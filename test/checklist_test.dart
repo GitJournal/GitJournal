@@ -30,7 +30,7 @@ How are you doing?
 
 [ ] item 1
 [x] item 2
-[X] item 3
+[x] item 3
 [ ] item 4
 
 Booga Wooga
@@ -55,6 +55,36 @@ Booga Wooga
       expect(checklist.items[1].text, "item 2");
       expect(checklist.items[2].text, "item 3");
       expect(checklist.items[3].text, "item 4");
+
+      //
+      // Serialization
+      //
+
+      checklist.items[0].checked = true;
+      checklist.items[1].checked = false;
+      checklist.items[1].text = "Foo";
+
+      await checklist.note.save();
+
+      var expectedContent = """---
+title: Foo
+modified: 2017-02-15T22:41:19+01:00
+---
+
+# Title 1
+
+How are you doing?
+
+[x] item 1
+[ ] Foo
+[X] item 3
+[ ] item 4
+
+Booga Wooga
+""";
+
+      var actualContent = File(notePath).readAsStringSync();
+      expect(actualContent, equals(expectedContent));
     });
   });
 }

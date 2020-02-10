@@ -1,29 +1,55 @@
-import 'package:flutter/material.dart';
 import 'package:markdown/markdown.dart' as md;
 
 import 'package:gitjournal/core/note.dart';
 
 class ChecklistItem {
-  bool checked;
-  String text;
   md.Element element;
 
-  ChecklistItem({
-    @required this.checked,
-    @required this.text,
-    @required this.element,
-  });
+  bool get checked {
+    return element.attributes['checked'] != "false";
+  }
+
+  set checked(bool val) {
+    element.attributes['checked'] = val.toString();
+  }
+
+  String get text {
+    return element.attributes['text'];
+  }
+
+  set text(String val) {
+    element.attributes['text'] = val;
+  }
+
+  ChecklistItem.fromMarkdownElement(this.element);
 
   @override
   String toString() => 'ChecklistItem: $checked $text';
 }
 
 class Checklist {
-  Note note;
+  Note _note;
   List<ChecklistItem> items;
+  List<md.Node> nodes;
 
-  Checklist(this.note) {
-    items = ChecklistBuilder().parse(note.body);
+  Checklist(this._note) {
+    var doc = md.Document(
+      encodeHtml: false,
+      inlineSyntaxes: [TaskListSyntax()],
+      extensionSet: md.ExtensionSet.gitHubFlavored,
+    );
+
+    nodes = doc.parseInline(_note.body);
+    items = ChecklistBuilder().build(nodes);
+  }
+
+  Note get note {
+    if (nodes.isEmpty) return _note;
+
+    var renderer = CustomRenderer();
+    _note.body = renderer.render(nodes);
+
+    return _note;
   }
 }
 
@@ -62,19 +88,12 @@ class ChecklistBuilder implements md.NodeVisitor {
   void visitText(md.Text text) {}
 
   @override
-  void visitElementAfter(md.Element element) {
-    final String tag = element.tag;
+  void visitElementAfter(md.Element el) {
+    final String tag = el.tag;
 
     if (tag == 'input') {
-      var el = element;
       if (el is md.Element && el.attributes['type'] == 'checkbox') {
-        bool val = el.attributes['checked'] != 'false';
-        var item = ChecklistItem(
-          checked: val,
-          text: el.attributes['text'],
-          element: el,
-        );
-        list.add(item);
+        list.add(ChecklistItem.fromMarkdownElement(el));
       }
     }
   }
@@ -87,15 +106,49 @@ class ChecklistBuilder implements md.NodeVisitor {
 
     return list;
   }
+}
 
-  List<ChecklistItem> parse(String text) {
-    var doc = md.Document(
-      encodeHtml: false,
-      inlineSyntaxes: [TaskListSyntax()],
-      extensionSet: md.ExtensionSet.gitHubFlavored,
-    );
+class CustomRenderer implements md.NodeVisitor {
+  StringBuffer buffer;
 
-    var nodes = doc.parseInline(text);
-    return build(nodes);
+  @override
+  bool visitElementBefore(md.Element element) {
+    return true;
+  }
+
+  @override
+  void visitText(md.Text text) {
+    buffer.write(text.text);
+  }
+
+  @override
+  void visitElementAfter(md.Element element) {
+    final String tag = element.tag;
+
+    if (tag == 'input') {
+      var el = element;
+      if (el is md.Element && el.attributes['type'] == 'checkbox') {
+        bool val = el.attributes['checked'] != 'false';
+        if (val) {
+          if (el.attributes['xUpperCase'] != 'false') {
+            buffer.write('[x] ');
+          } else {
+            buffer.write('[X] ');
+          }
+        } else {
+          buffer.write('[ ] ');
+        }
+        buffer.write(el.attributes['text']);
+      }
+    }
+  }
+
+  String render(List<md.Node> nodes) {
+    buffer = StringBuffer();
+
+    for (final node in nodes) {
+      node.accept(this);
+    }
+    return buffer.toString();
   }
 }
