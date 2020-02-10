@@ -62,14 +62,25 @@ class Checklist {
   }
 
   void addItem(bool value, String text) {
+    if (!text.endsWith('\n')) {
+      text += '\n';
+    }
     var elem = md.Element.withTag("input");
     elem.attributes["type"] = "checkbox";
     elem.attributes["checked"] = value.toString();
     elem.attributes["xUpperCase"] = "false";
-    elem.attributes["text"] = text + "\n";
+    elem.attributes["text"] = text;
 
     items.add(ChecklistItem.fromMarkdownElement(elem));
     nodes.add(elem);
+  }
+
+  void removeItem(ChecklistItem item) {
+    assert(nodes.contains(item.element));
+    assert(items.contains(item));
+
+    nodes.remove(item.element);
+    items.remove(item);
   }
 }
 
@@ -77,7 +88,7 @@ class Checklist {
 /// Parse [task list items](https://github.github.com/gfm/#task-list-items-extension-).
 class TaskListSyntax extends md.InlineSyntax {
   // FIXME: Waiting for dart-lang/markdown#269 to land
-  static final String _pattern = r'^ *\[([ xX])\] +(.*)$';
+  static final String _pattern = r'^ *\[([ xX])\] +(.*)\n';
 
   TaskListSyntax() : super(_pattern);
 
@@ -158,7 +169,11 @@ class CustomRenderer implements md.NodeVisitor {
         } else {
           buffer.write('[ ] ');
         }
-        buffer.write(el.attributes['text']);
+        var text = el.attributes['text'];
+        buffer.write(text);
+        if (!text.endsWith('\n')) {
+          buffer.write('\n');
+        }
       }
     }
   }

@@ -121,8 +121,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
       },
       itemRemoved: () {
         setState(() {
-          // FIXME: The body isn't a good indicator, there could be multiple with the same body!
-          // todos.removeWhere((t) => t.body == todo.body);
+          checklist.removeItem(item);
         });
       },
     );

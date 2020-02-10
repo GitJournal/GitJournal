@@ -32,6 +32,7 @@ How are you doing?
 [x] item 2
 [x] item 3
 [ ] item 4
+[ ] item 5
 
 Booga Wooga
 """;
@@ -44,17 +45,19 @@ Booga Wooga
       await note.load();
 
       var checklist = Checklist(note);
-      expect(checklist.items.length, equals(4));
+      expect(checklist.items.length, equals(5));
 
       expect(checklist.items[0].checked, false);
       expect(checklist.items[1].checked, true);
       expect(checklist.items[2].checked, true);
       expect(checklist.items[3].checked, false);
+      expect(checklist.items[4].checked, false);
 
       expect(checklist.items[0].text, "item 1");
       expect(checklist.items[1].text, "item 2");
       expect(checklist.items[2].text, "item 3");
       expect(checklist.items[3].text, "item 4");
+      expect(checklist.items[4].text, "item 5");
 
       //
       // Serialization
@@ -64,6 +67,8 @@ Booga Wooga
       checklist.items[1].checked = false;
       checklist.items[1].text = "Foo";
       checklist.addItem(false, "Howdy");
+
+      checklist.removeItem(checklist.items[4]);
 
       await checklist.note.save();
 
