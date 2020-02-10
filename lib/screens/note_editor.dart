@@ -10,8 +10,6 @@ import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
 
-final todoEditorEnabled = true;
-
 class ShowUndoSnackbar {}
 
 class NoteEditor extends StatefulWidget {
@@ -122,13 +120,12 @@ class NoteEditorState extends State<NoteEditor> {
             groupValue: editorType,
             onChanged: (EditorType et) => Navigator.of(context).pop(et),
           ),
-          if (todoEditorEnabled)
-            RadioListTile<EditorType>(
-              title: const Text("Checklist Editor"),
-              value: EditorType.Checklist,
-              groupValue: editorType,
-              onChanged: (EditorType et) => Navigator.of(context).pop(et),
-            ),
+          RadioListTile<EditorType>(
+            title: const Text("Checklist Editor"),
+            value: EditorType.Checklist,
+            groupValue: editorType,
+            onChanged: (EditorType et) => Navigator.of(context).pop(et),
+          ),
         ];
 
         return AlertDialog(
