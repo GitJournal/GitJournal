@@ -42,15 +42,14 @@ class ChecklistEditor extends StatefulWidget implements Editor {
 class ChecklistEditorState extends State<ChecklistEditor>
     implements EditorState {
   Checklist checklist;
-  var focusNodes = <FocusNode>[];
+  var focusNodes = <ChecklistItem, FocusNode>{};
   TextEditingController _titleTextController = TextEditingController();
 
   ChecklistEditorState(Note note) {
     _titleTextController = TextEditingController(text: note.title);
     checklist = Checklist(note);
-    for (var i = 0; i < checklist.items.length + 1; i++) {
-      // extra 1 for new item
-      focusNodes.add(FocusNode());
+    for (var item in checklist.items) {
+      focusNodes[item] = FocusNode();
     }
   }
 
@@ -71,9 +70,9 @@ class ChecklistEditorState extends State<ChecklistEditor>
       key: UniqueKey(),
       onPressed: () {
         setState(() {
-          var fn = focusNodes[checklist.items.length];
-          focusNodes.add(FocusNode());
-          checklist.addItem(false, "");
+          var fn = FocusNode();
+          var item = checklist.addItem(false, "");
+          focusNodes[item] = fn;
 
           // FIXME: Make this happen on the next build
           Timer(const Duration(milliseconds: 50), () {
@@ -123,7 +122,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
     return ChecklistItemTile(
       key: UniqueKey(),
       item: item,
-      focusNode: focusNodes[index],
+      focusNode: focusNodes[item],
       statusChanged: (bool newVal) {
         setState(() {
           item.checked = newVal;
@@ -134,7 +133,24 @@ class ChecklistEditorState extends State<ChecklistEditor>
       },
       itemRemoved: () {
         setState(() {
+          // Give next item the focus
+          var nextIndex = index + 1;
+          if (index >= checklist.items.length - 1) {
+            nextIndex = index - 1;
+          }
+          print("Next focus index $nextIndex");
+          var nextItemForFocus = checklist.items[nextIndex];
+          var fn = focusNodes[nextItemForFocus];
+          print("Giving focus to $nextItemForFocus");
+
+          focusNodes.remove(item);
           checklist.removeItem(item);
+
+          // FIXME: Make this happen on the next build
+          Timer(const Duration(milliseconds: 300), () {
+            FocusScope.of(context).requestFocus(fn);
+            debugPrint("forced focus!");
+          });
         });
       },
     );
@@ -283,7 +299,7 @@ class AddItemButton extends StatelessWidget {
 }
 
 // FIXME: The body needs to be scrollable
-// FIXME: New item button -> clicking on + should give the new one focus
 // FIXME: Fix padding issue on top
 // FIXME: When removing an item the focus should jump to the next/prev in line
-// FIXME: Fix \n issue in the ChecklistEditor
+// FIXME: Support pressing Enter to add a new item
+// FIXME: Support removing an item when pressing backspace

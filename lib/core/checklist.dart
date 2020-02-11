@@ -61,15 +61,17 @@ class Checklist {
     ].join(' ');
   }
 
-  void addItem(bool value, String text) {
+  ChecklistItem addItem(bool value, String text) {
     var elem = md.Element.withTag("input");
     elem.attributes["type"] = "checkbox";
     elem.attributes["checked"] = value.toString();
     elem.attributes["xUpperCase"] = "false";
     elem.attributes["text"] = text;
 
-    items.add(ChecklistItem.fromMarkdownElement(elem));
+    var item = ChecklistItem.fromMarkdownElement(elem);
+    items.add(item);
     nodes.add(elem);
+    return item;
   }
 
   void removeItem(ChecklistItem item) {
