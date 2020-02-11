@@ -183,7 +183,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
       widget.textChanged(_textController.value.text);
     });
     _focusNode.addListener(() {
-      setState(() {});
+      setState(() {}); // rebuild to hide close button
     });
   }
 
@@ -254,13 +254,15 @@ class AddItemButton extends StatelessWidget {
         ],
         mainAxisSize: MainAxisSize.min,
       ),
-      title: Text("Add Item", style: style),
+      title: GestureDetector(
+        onTap: onPressed,
+        child: Text("Add Item", style: style),
+      ),
     );
   }
 }
 
 // FIXME: The body needs to be scrollable
-// FIXME: Add a new todo button -> clicking on text should be fine
 // FIXME: New item button -> clicking on + should give the new one focus
 // FIXME: Fix padding issue on top
 // FIXME: When removing an item the focus should jump to the next/prev in line
