@@ -37,6 +37,21 @@ class NotesFolder
     notifyListeners();
   }
 
+  void reset(String folderPath) {
+    _folderPath = folderPath;
+
+    var notesCopy = List<Note>.from(_notes);
+    notesCopy.forEach(remove);
+
+    var foldersCopy = List<NotesFolder>.from(_folders);
+    foldersCopy.forEach(removeFolder);
+
+    assert(_notes.isEmpty);
+    assert(_folders.isEmpty);
+
+    notifyListeners();
+  }
+
   String get folderPath => _folderPath;
 
   @override

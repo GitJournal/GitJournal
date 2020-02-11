@@ -202,7 +202,7 @@ class StateContainer with ChangeNotifier {
       var repoPath =
           p.join(appState.gitBaseDirectory, appState.remoteGitRepoFolderName);
       _gitRepo = GitNoteRepository(gitDirPath: repoPath);
-      appState.notesFolder = NotesFolder(null, _gitRepo.gitDirPath);
+      appState.notesFolder.reset(_gitRepo.gitDirPath);
 
       await _persistConfig();
       _loadNotes();
