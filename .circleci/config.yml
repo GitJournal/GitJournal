@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: Test
-          command: flutter test
+          command: flutter test -j 1
       - run:
           name: Analyze
           command: flutter analyze
