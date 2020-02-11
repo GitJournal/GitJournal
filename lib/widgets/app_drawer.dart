@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:launch_review/launch_review.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:page_transition/page_transition.dart';
@@ -17,7 +18,7 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget setupGitButton;
-    var appState = StateContainer.of(context).appState;
+    var appState = Provider.of<StateContainer>(context).appState;
     var textStyle = Theme.of(context).textTheme.body2;
     var currentRoute = ModalRoute.of(context).settings.name;
 

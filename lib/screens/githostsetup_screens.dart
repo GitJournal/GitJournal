@@ -14,6 +14,7 @@ import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:path/path.dart' as p;
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'githostsetup_autoconfigure.dart';
@@ -356,7 +357,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       gitCloneErrorMessage = "";
     });
 
-    var appState = StateContainer.of(context).appState;
+    var stateContainer = Provider.of<StateContainer>(context);
+    var appState = stateContainer.appState;
     var basePath = appState.gitBaseDirectory;
 
     // Just in case it was half cloned because of an error

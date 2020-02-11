@@ -13,6 +13,7 @@ import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/journal_list.dart';
 import 'package:gitjournal/widgets/note_search_delegate.dart';
 import 'package:gitjournal/widgets/sync_button.dart';
+import 'package:provider/provider.dart';
 
 class JournalListingScreen extends StatefulWidget {
   final NotesFolder notesFolder;
@@ -37,7 +38,7 @@ class _JournalListingScreenState extends State<JournalListingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final container = StateContainer.of(context);
+    var container = Provider.of<StateContainer>(context);
     final appState = container.appState;
 
     var createButton = FloatingActionButton(
@@ -86,7 +87,7 @@ class _JournalListingScreenState extends State<JournalListingScreen> {
 
   void _syncRepo(BuildContext context) async {
     try {
-      final container = StateContainer.of(context);
+      var container = Provider.of<StateContainer>(context, listen: false);
       await container.syncNotes();
     } catch (e) {
       showSnackbar(context, e.toString());

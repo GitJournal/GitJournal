@@ -6,6 +6,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:gitjournal/appstate.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
+import 'package:provider/provider.dart';
 
 class SyncButton extends StatefulWidget {
   @override
@@ -36,8 +37,7 @@ class _SyncButtonState extends State<SyncButton> {
 
   @override
   Widget build(BuildContext context) {
-    final container = StateContainer.of(context);
-    final appState = container.appState;
+    final appState = Provider.of<StateContainer>(context).appState;
 
     if (_connectivity == ConnectivityResult.none) {
       return IconButton(
@@ -61,7 +61,7 @@ class _SyncButtonState extends State<SyncButton> {
 
   void _syncRepo() async {
     try {
-      final container = StateContainer.of(context);
+      final container = Provider.of<StateContainer>(context, listen: false);
       await container.syncNotes();
     } catch (e) {
       showSnackbar(context, e.toString());
@@ -69,7 +69,7 @@ class _SyncButtonState extends State<SyncButton> {
   }
 
   IconData _syncStatusIcon() {
-    final container = StateContainer.of(context);
+    final container = Provider.of<StateContainer>(context);
     final appState = container.appState;
     switch (appState.syncStatus) {
       case SyncStatus.Error:

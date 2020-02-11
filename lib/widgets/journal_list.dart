@@ -6,6 +6,7 @@ import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/icon_dismissable.dart';
+import 'package:provider/provider.dart';
 
 typedef void NoteSelectedFunction(Note note);
 
@@ -124,7 +125,8 @@ class _JournalListState extends State<JournalList> {
       onDismissed: (direction) {
         deletedViaDismissed.add(note.filePath);
 
-        final stateContainer = StateContainer.of(context);
+        var stateContainer =
+            Provider.of<StateContainer>(context, listen: false);
         stateContainer.removeNote(note);
 
         var snackBar = buildUndoDeleteSnackbar(context, note);

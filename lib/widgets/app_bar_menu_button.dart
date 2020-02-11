@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
 
 import 'package:gitjournal/state_container.dart';
+import 'package:provider/provider.dart';
 
 class GJAppBarMenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final container = StateContainer.of(context);
+    var container = Provider.of<StateContainer>(context);
     final appState = container.appState;
 
     bool shouldShowBadge =

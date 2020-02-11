@@ -76,7 +76,8 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
               ),
             );
             if (folderName is String) {
-              final container = StateContainer.of(context);
+              var container =
+                  Provider.of<StateContainer>(context, listen: false);
               container.renameFolder(selectedFolder, folderName);
             }
           } else if (value == "Create") {
@@ -85,7 +86,8 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
               builder: (_) => CreateFolderAlertDialog(),
             );
             if (folderName is String) {
-              final container = StateContainer.of(context);
+              var container =
+                  Provider.of<StateContainer>(context, listen: false);
               container.createFolder(selectedFolder, folderName);
             }
           } else if (value == "Delete") {
@@ -95,7 +97,8 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
                 builder: (_) => FolderErrorDialog(),
               );
             } else {
-              final container = StateContainer.of(context);
+              var container =
+                  Provider.of<StateContainer>(context, listen: false);
               container.removeFolder(selectedFolder);
             }
           }
@@ -143,7 +146,7 @@ class CreateFolderButton extends StatelessWidget {
           builder: (_) => CreateFolderAlertDialog(),
         );
         if (folderName is String) {
-          final container = StateContainer.of(context);
+          var container = Provider.of<StateContainer>(context, listen: false);
           final notesFolder = Provider.of<NotesFolder>(context);
 
           container.createFolder(notesFolder, folderName);

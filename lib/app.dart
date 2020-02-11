@@ -49,8 +49,10 @@ class JournalApp extends StatelessWidget {
       appState.save(pref);
     }
 
-    runApp(StateContainer(
-      appState: appState,
+    runApp(ChangeNotifierProvider(
+      create: (_) {
+        return StateContainer(appState);
+      },
       child: ChangeNotifierProvider(
         child: JournalApp(),
         create: (_) {
@@ -113,7 +115,7 @@ class JournalApp extends StatelessWidget {
   }
 
   MaterialApp buildApp(BuildContext context, ThemeData themeData) {
-    var stateContainer = StateContainer.of(context);
+    var stateContainer = Provider.of<StateContainer>(context);
 
     var initialRoute = '/';
     if (!stateContainer.appState.onBoardingCompleted) {

@@ -14,27 +14,7 @@ import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 
-class StateContainer extends StatefulWidget {
-  final Widget child;
-  final AppState appState;
-  StateContainer({
-    @required this.appState,
-    @required this.child,
-  });
-
-  static StateContainerState of(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<_InheritedStateContainer>()
-        .data;
-  }
-
-  @override
-  State<StatefulWidget> createState() {
-    return StateContainerState(appState);
-  }
-}
-
-class StateContainerState extends State<StateContainer> {
+class StateContainer with ChangeNotifier {
   final AppState appState;
 
   // FIXME: The gitRepo should never be changed once it has been setup
@@ -42,12 +22,7 @@ class StateContainerState extends State<StateContainer> {
   //        With that, the StateContainer can be a StatelessWidget
   GitNoteRepository _gitRepo;
 
-  StateContainerState(this.appState);
-
-  @override
-  void initState() {
-    super.initState();
-
+  StateContainer(this.appState) {
     assert(appState.localGitRepoConfigured);
 
     String repoPath;
@@ -93,22 +68,19 @@ class StateContainerState extends State<StateContainer> {
       return true;
     }
 
-    setState(() {
-      appState.syncStatus = SyncStatus.Loading;
-    });
+    appState.syncStatus = SyncStatus.Loading;
+    notifyListeners();
 
     try {
       await _gitRepo.sync();
 
-      setState(() {
-        Fimber.d("Synced!");
-        appState.syncStatus = SyncStatus.Done;
-      });
+      Fimber.d("Synced!");
+      appState.syncStatus = SyncStatus.Done;
+      notifyListeners();
     } catch (e, stacktrace) {
-      setState(() {
-        Fimber.d("Failed to Sync");
-        appState.syncStatus = SyncStatus.Error;
-      });
+      Fimber.d("Failed to Sync");
+      appState.syncStatus = SyncStatus.Error;
+      notifyListeners();
       if (shouldLogGitException(e)) {
         await FlutterCrashlytics().logException(e, stacktrace);
       }
@@ -236,44 +208,18 @@ class StateContainerState extends State<StateContainer> {
       _loadNotes();
       _syncNotes();
 
-      setState(() {});
+      notifyListeners();
     }();
   }
 
   void completeOnBoarding() {
-    setState(() {
-      appState.onBoardingCompleted = true;
-      _persistConfig();
-    });
+    appState.onBoardingCompleted = true;
+    _persistConfig();
+    notifyListeners();
   }
 
   Future _persistConfig() async {
     var pref = await SharedPreferences.getInstance();
     await appState.save(pref);
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return _InheritedStateContainer(
-      data: this,
-      child: widget.child,
-    );
-  }
-}
-
-class _InheritedStateContainer extends InheritedWidget {
-  final StateContainerState data;
-
-  _InheritedStateContainer({
-    Key key,
-    @required this.data,
-    @required Widget child,
-  }) : super(key: key, child: child);
-
-  // Note: we could get fancy here and compare whether the old AppState is
-  // different than the current AppState. However, since we know this is the
-  // root Widget, when we make changes we also know we want to rebuild Widgets
-  // that depend on the StateContainer.
-  @override
-  bool updateShouldNotify(_InheritedStateContainer old) => true;
 }

@@ -9,6 +9,7 @@ import 'package:gitjournal/editors/checklist_editor.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
+import 'package:provider/provider.dart';
 
 class ShowUndoSnackbar {}
 
@@ -167,7 +168,7 @@ class NoteEditorState extends State<NoteEditor> {
           note.rename(fileName);
         });
       }
-      final container = StateContainer.of(context);
+      var container = Provider.of<StateContainer>(context, listen: false);
       container.renameNote(note, fileName);
     }
   }
@@ -186,7 +187,7 @@ class NoteEditorState extends State<NoteEditor> {
       return;
     }
 
-    final stateContainer = StateContainer.of(context);
+    var stateContainer = Provider.of<StateContainer>(context, listen: false);
     stateContainer.removeNote(note);
   }
 
@@ -234,7 +235,7 @@ class NoteEditorState extends State<NoteEditor> {
     if (!_noteModified(note)) return;
 
     print("Note modified - saving");
-    final stateContainer = StateContainer.of(context);
+    var stateContainer = Provider.of<StateContainer>(context, listen: false);
     _isNewNote ? stateContainer.addNote(note) : stateContainer.updateNote(note);
   }
 
@@ -256,7 +257,7 @@ class NoteEditorState extends State<NoteEditor> {
       builder: (context) => FolderSelectionDialog(),
     );
     if (destFolder != null) {
-      final stateContainer = StateContainer.of(context);
+      var stateContainer = Provider.of<StateContainer>(context, listen: false);
       stateContainer.moveNote(note, destFolder);
     }
   }

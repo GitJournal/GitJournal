@@ -1,6 +1,7 @@
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
+import 'package:provider/provider.dart';
 
 import 'app.dart';
 import 'core/note.dart';
@@ -28,7 +29,8 @@ SnackBar buildUndoDeleteSnackbar(BuildContext context, Note deletedNote) {
       onPressed: () {
         Fimber.d("Undoing delete");
 
-        var stateContainer = StateContainer.of(context);
+        var stateContainer =
+            Provider.of<StateContainer>(context, listen: false);
         stateContainer.undoRemoveNote(deletedNote);
       },
     ),

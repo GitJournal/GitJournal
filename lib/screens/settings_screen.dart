@@ -9,6 +9,7 @@ import 'package:gitjournal/screens/settings_note_metadata.dart';
 
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
+import 'package:provider/provider.dart';
 
 var defaultFolderConfigurable = false;
 
@@ -44,8 +45,9 @@ class SettingsListState extends State<SettingsList> {
 
   @override
   Widget build(BuildContext context) {
-    var remoteGitConfigured =
-        StateContainer.of(context).appState.remoteGitRepoConfigured;
+    var stateContainer = Provider.of<StateContainer>(context, listen: false);
+
+    var remoteGitConfigured = stateContainer.appState.remoteGitRepoConfigured;
     var settings = Settings.instance;
 
     var saveGitAuthor = (String gitAuthor) {
