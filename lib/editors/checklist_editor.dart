@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/checklist.dart';
 
@@ -40,11 +42,16 @@ class ChecklistEditor extends StatefulWidget implements Editor {
 class ChecklistEditorState extends State<ChecklistEditor>
     implements EditorState {
   Checklist checklist;
+  var focusNodes = <FocusNode>[];
   TextEditingController _titleTextController = TextEditingController();
 
   ChecklistEditorState(Note note) {
     _titleTextController = TextEditingController(text: note.title);
     checklist = Checklist(note);
+    for (var i = 0; i < checklist.items.length + 1; i++) {
+      // extra 1 for new item
+      focusNodes.add(FocusNode());
+    }
   }
 
   @override
@@ -56,19 +63,26 @@ class ChecklistEditorState extends State<ChecklistEditor>
   @override
   Widget build(BuildContext context) {
     var itemTiles = <Widget>[];
-    checklist.items.forEach((ChecklistItem item) {
-      itemTiles.add(_buildTile(item));
-    });
+    for (var i = 0; i < checklist.items.length; i++) {
+      var item = checklist.items[i];
+      itemTiles.add(_buildTile(item, i));
+    }
     itemTiles.add(AddItemButton(
       key: UniqueKey(),
       onPressed: () {
         setState(() {
+          var fn = focusNodes[checklist.items.length];
+          focusNodes.add(FocusNode());
           checklist.addItem(false, "");
+
+          // FIXME: Make this happen on the next build
+          Timer(const Duration(milliseconds: 50), () {
+            FocusScope.of(context).requestFocus(fn);
+          });
         });
       },
     ));
 
-    print("Building " + checklist.toString());
     Widget checklistWidget = ReorderableListView(
       children: itemTiles,
       onReorder: (int oldIndex, int newIndex) {
@@ -105,10 +119,11 @@ class ChecklistEditorState extends State<ChecklistEditor>
     return note;
   }
 
-  ChecklistItemTile _buildTile(ChecklistItem item) {
+  ChecklistItemTile _buildTile(ChecklistItem item, int index) {
     return ChecklistItemTile(
       key: UniqueKey(),
       item: item,
+      focusNode: focusNodes[index],
       statusChanged: (bool newVal) {
         setState(() {
           item.checked = newVal;
@@ -158,6 +173,7 @@ class ChecklistItemTile extends StatefulWidget {
   final StatusChangedFunction statusChanged;
   final TextChangedFunction textChanged;
   final Function itemRemoved;
+  final FocusNode focusNode;
 
   ChecklistItemTile({
     Key key,
@@ -165,6 +181,7 @@ class ChecklistItemTile extends StatefulWidget {
     @required this.statusChanged,
     @required this.textChanged,
     @required this.itemRemoved,
+    @required this.focusNode,
   }) : super(key: key);
 
   @override
@@ -173,7 +190,6 @@ class ChecklistItemTile extends StatefulWidget {
 
 class _ChecklistItemTileState extends State<ChecklistItemTile> {
   TextEditingController _textController;
-  FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -182,15 +198,19 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
     _textController.addListener(() {
       widget.textChanged(_textController.value.text);
     });
-    _focusNode.addListener(() {
-      setState(() {}); // rebuild to hide close button
-    });
+    widget.focusNode.addListener(_onFocus);
   }
 
   @override
   void dispose() {
     _textController.dispose();
+    widget.focusNode.removeListener(_onFocus);
+
     super.dispose();
+  }
+
+  void _onFocus() {
+    setState(() {}); // rebuild to hide close button
   }
 
   @override
@@ -198,7 +218,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
     var style = Theme.of(context).textTheme.subhead;
 
     var editor = TextField(
-      focusNode: _focusNode,
+      focusNode: widget.focusNode,
       keyboardType: TextInputType.text,
       maxLines: 1,
       style: style,
@@ -223,7 +243,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
         mainAxisSize: MainAxisSize.min,
       ),
       title: editor,
-      trailing: _focusNode.hasFocus
+      trailing: widget.focusNode.hasFocus
           ? IconButton(
               icon: Icon(Icons.cancel),
               onPressed: widget.itemRemoved,
