@@ -103,5 +103,30 @@ Booga Wooga
       var actualContent = File(notePath).readAsStringSync();
       expect(actualContent, equals(expectedContent));
     });
+
+    test('Should not add line breaks', () async {
+      var content = """
+[ ] item 1
+[x] item 2
+[x] item 3""";
+
+      var notePath = p.join(tempDir.path, "note2.md");
+      File(notePath).writeAsString(content);
+
+      var parentFolder = NotesFolder(null, tempDir.path);
+      var note = Note(parentFolder, notePath);
+      await note.load();
+
+      var checklist = Checklist(note);
+      var items = checklist.items;
+      expect(items.length, equals(3));
+
+      // Nodes
+      var nodes = checklist.nodes;
+      expect(nodes.length, equals(3));
+      expect(nodes[0], items[0].element);
+      expect(nodes[1], items[1].element);
+      expect(nodes[2], items[2].element);
+    });
   });
 }

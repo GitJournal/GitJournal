@@ -111,9 +111,9 @@ class Checklist {
 /// Parse [task list items](https://github.github.com/gfm/#task-list-items-extension-).
 class TaskListSyntax extends md.InlineSyntax {
   // FIXME: Waiting for dart-lang/markdown#269 to land
-  static final String _pattern = r'^ *\[([ xX])\] +(.*)\n';
+  static final String _pattern = r'^ *\[([ xX])\] +(.*)';
 
-  TaskListSyntax() : super(_pattern);
+  TaskListSyntax() : super(_pattern, startCharacter: '['.codeUnitAt(0));
 
   @override
   bool onMatch(md.InlineParser parser, Match match) {
@@ -126,7 +126,13 @@ class TaskListSyntax extends md.InlineSyntax {
     }
     el.attributes['text'] = '${match[2]}';
     parser.addNode(el);
-    return true;
+
+    var lenToConsume = match[0].length;
+    if (match.end + 1 < match.input.length) {
+      lenToConsume += 1; // Consume \n
+    }
+    parser.consume(lenToConsume);
+    return false; // We are advancing manually
   }
 }
 
@@ -139,7 +145,9 @@ class ChecklistBuilder implements md.NodeVisitor {
   }
 
   @override
-  void visitText(md.Text text) {}
+  void visitText(md.Text text) {
+    //print("builder text: ${text.text}#");
+  }
 
   @override
   void visitElementAfter(md.Element el) {
@@ -150,6 +158,7 @@ class ChecklistBuilder implements md.NodeVisitor {
         list.add(ChecklistItem.fromMarkdownElement(el));
       }
     }
+    //print("builder tag: $tag");
   }
 
   List<ChecklistItem> build(List<md.Node> nodes) {
