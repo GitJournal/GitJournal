@@ -261,7 +261,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
       title: editor,
       trailing: widget.focusNode.hasFocus
           ? IconButton(
-              icon: Icon(Icons.cancel),
+              icon: Icon(Icons.clear),
               onPressed: widget.itemRemoved,
             )
           : null,
