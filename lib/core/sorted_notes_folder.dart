@@ -84,8 +84,8 @@ class SortedNotesFolder
       case SortingMode.Created:
         // vHanda FIXME: We should use when the file was created in the FS, but that doesn't
         //               seem to be acessible via dart
-        var aDt = a.created ?? a.modified ?? a.fileLastModified;
-        var bDt = b.created ?? b.modified ?? b.fileLastModified;
+        var aDt = a.created ?? a.fileLastModified;
+        var bDt = b.created ?? b.fileLastModified;
         if (bDt == null || aDt == null) {
           return 0;
         }
