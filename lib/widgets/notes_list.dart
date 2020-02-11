@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/utils/markdown.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 typedef void NoteSelectedFunction(int noteIndex);
@@ -52,7 +51,7 @@ class NotesList extends StatelessWidget {
   }
 
   Widget _buildNoteCard(BuildContext context, Note journal, int noteIndex) {
-    var body = stripMarkdownFormatting(journal.body);
+    var body = journal.summary;
 
     var textTheme = Theme.of(context).textTheme;
     var tileContent = Padding(

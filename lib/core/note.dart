@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gitjournal/utils/markdown.dart';
 import 'package:path/path.dart' as p;
 
 import 'note_data.dart';
@@ -30,6 +31,8 @@ class Note with ChangeNotifier implements Comparable<Note> {
 
   var _loadState = NoteLoadState.None;
   var _serializer = MarkdownYAMLSerializer();
+
+  String _summary;
 
   Note(this.parent, this._filePath);
 
@@ -75,6 +78,7 @@ class Note with ChangeNotifier implements Comparable<Note> {
 
   set body(String newBody) {
     _data.body = newBody;
+    _summary = null;
     notifyListeners();
   }
 
@@ -101,6 +105,11 @@ class Note with ChangeNotifier implements Comparable<Note> {
 
   bool isEmpty() {
     return body.isEmpty;
+  }
+
+  String get summary {
+    _summary ??= stripMarkdownFormatting(body);
+    return _summary;
   }
 
   Future<NoteLoadState> load() async {

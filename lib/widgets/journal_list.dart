@@ -5,7 +5,6 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
-import 'package:gitjournal/utils/markdown.dart';
 import 'package:gitjournal/widgets/icon_dismissable.dart';
 
 typedef void NoteSelectedFunction(Note note);
@@ -169,12 +168,10 @@ class _JournalListState extends State<JournalList> {
       }
     }
 
-    var body = stripMarkdownFormatting(note.body);
-
     var children = <Widget>[
       const SizedBox(height: 8.0),
       Text(
-        body,
+        note.summary,
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
         style: textTheme.body1,
