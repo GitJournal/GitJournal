@@ -32,7 +32,7 @@ dependencies:
   git_bindings: ^0.0.11
   fetch_app_logs: ^0.0.3
   flutter_runtime_env: ^0.0.2
-  yaml_serializer: ^0.0.2
+  yaml_serializer: ^0.0.3
   connectivity: ^0.4.6+1
 
 dev_dependencies:
