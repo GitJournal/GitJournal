@@ -1,3 +1,7 @@
+## [1.39] - 2020-02-11
+* Add Experimental Checklist Editor
+* Performance improvements of about 22%
+
 ## [1.37] - 2020-02-09
 * Allow Note sorting to be configured
 * Allow git push frequency to be configured
