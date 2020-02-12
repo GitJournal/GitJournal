@@ -50,7 +50,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
           onPressed: () => _copyKeyToClipboard(context),
         ),
         Button(
-          text: "Regnerate Key",
+          text: "Regenerate Key",
           onPressed: () => _generateSshKey(context),
         ),
         ListPreference(
