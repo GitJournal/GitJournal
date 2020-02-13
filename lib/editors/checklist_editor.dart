@@ -274,12 +274,10 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
         mainAxisSize: MainAxisSize.min,
       ),
       title: editor,
-      trailing: widget.focusNode.hasFocus
-          ? IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: widget.itemRemoved,
-            )
-          : null,
+      trailing: IconButton(
+        icon: Icon(widget.focusNode.hasFocus ? Icons.clear : null),
+        onPressed: widget.itemRemoved,
+      ),
     );
   }
 }
