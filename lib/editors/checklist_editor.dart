@@ -250,7 +250,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
     var editor = TextField(
       focusNode: widget.focusNode,
       keyboardType: TextInputType.text,
-      maxLines: 1,
+      maxLines: null,
       style: style,
       textCapitalization: TextCapitalization.sentences,
       controller: _textController,
