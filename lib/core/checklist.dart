@@ -61,17 +61,14 @@ class Checklist {
     ].join(' ');
   }
 
-  ChecklistItem addItem(bool value, String text) {
+  ChecklistItem buildItem(bool value, String text) {
     var elem = md.Element.withTag("input");
     elem.attributes["type"] = "checkbox";
     elem.attributes["checked"] = value.toString();
     elem.attributes["xUpperCase"] = "false";
     elem.attributes["text"] = text;
 
-    var item = ChecklistItem.fromMarkdownElement(elem);
-    items.add(item);
-    nodes.add(elem);
-    return item;
+    return ChecklistItem.fromMarkdownElement(elem);
   }
 
   void removeItem(ChecklistItem item) {
@@ -94,10 +91,19 @@ class Checklist {
     return item;
   }
 
+  void addItem(ChecklistItem item) {
+    items.add(item);
+    nodes.add(item.element);
+  }
+
   void insertItem(int index, ChecklistItem item) {
     if (index == 0) {
       items.insert(0, item);
       nodes.insert(0, item.element);
+      return;
+    }
+    if (index == items.length) {
+      addItem(item);
       return;
     }
 

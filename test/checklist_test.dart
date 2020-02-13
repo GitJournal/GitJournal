@@ -77,7 +77,8 @@ Booga Wooga
       checklist.items[0].checked = true;
       checklist.items[1].checked = false;
       checklist.items[1].text = "Foo";
-      checklist.addItem(false, "Howdy");
+      var item = checklist.buildItem(false, "Howdy");
+      checklist.addItem(item);
 
       checklist.removeItem(checklist.items[4]);
 

@@ -71,7 +71,8 @@ class ChecklistEditorState extends State<ChecklistEditor>
       onPressed: () {
         setState(() {
           var fn = FocusNode();
-          var item = checklist.addItem(false, "");
+          var item = checklist.buildItem(false, "");
+          checklist.addItem(item);
           focusNodes[item] = fn;
 
           // FIXME: Make this happen on the next build
@@ -153,6 +154,17 @@ class ChecklistEditorState extends State<ChecklistEditor>
           });
         });
       },
+      itemFinished: () {
+        var fn = FocusNode();
+        var item = checklist.buildItem(false, "");
+        checklist.insertItem(index + 1, item);
+        focusNodes[item] = fn;
+
+        // FIXME: Make this happen on the next build
+        Timer(const Duration(milliseconds: 50), () {
+          FocusScope.of(context).requestFocus(fn);
+        });
+      },
     );
   }
 }
@@ -189,6 +201,7 @@ class ChecklistItemTile extends StatefulWidget {
   final StatusChangedFunction statusChanged;
   final TextChangedFunction textChanged;
   final Function itemRemoved;
+  final Function itemFinished;
   final FocusNode focusNode;
 
   ChecklistItemTile({
@@ -197,6 +210,7 @@ class ChecklistItemTile extends StatefulWidget {
     @required this.statusChanged,
     @required this.textChanged,
     @required this.itemRemoved,
+    @required this.itemFinished,
     @required this.focusNode,
   }) : super(key: key);
 
@@ -244,6 +258,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
         border: InputBorder.none,
         isDense: true,
       ),
+      onSubmitted: (_) => widget.itemFinished(),
     );
 
     return ListTile(
