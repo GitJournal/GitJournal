@@ -47,7 +47,7 @@ class NoteViewer extends StatelessWidget {
         children: <Widget>[
           if (note.created != null && showJournalHeader)
             JournalEditorHeader(note),
-          if (showTitle && note.title.isNotEmpty)
+          if (showTitle)
             NoteTitleHeader(note.title),
           Padding(
             padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
