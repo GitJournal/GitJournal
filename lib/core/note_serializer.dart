@@ -1,8 +1,8 @@
 import 'package:gitjournal/utils/datetime.dart';
 import 'package:gitjournal/settings.dart';
 
-import 'note.dart';
 import 'md_yaml_doc.dart';
+import 'note.dart';
 
 abstract class NoteSerializerInterface {
   void encode(Note note, MdYamlDoc data);
