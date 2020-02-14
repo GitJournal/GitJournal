@@ -246,6 +246,9 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
   @override
   Widget build(BuildContext context) {
     var style = Theme.of(context).textTheme.subhead;
+    if (widget.item.checked) {
+      style = style.copyWith(decoration: TextDecoration.lineThrough);
+    }
 
     var editor = TextField(
       focusNode: widget.focusNode,
