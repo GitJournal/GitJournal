@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/utils/markdown.dart';
 import 'package:path/path.dart' as p;
 
-import 'note_data.dart';
-import 'note_data_serializers.dart';
+import 'md_yaml_doc.dart';
+import 'md_yaml_doc_codec.dart';
 import 'note_fileName.dart';
 import 'note_serializer.dart';
 import 'notes_folder.dart';
@@ -24,13 +24,13 @@ class Note with ChangeNotifier implements Comparable<Note> {
   String _title = "";
   DateTime _created;
   DateTime _modified;
-  NoteData _data = NoteData();
+  MdYamlDoc _data = MdYamlDoc();
   NoteSerializer noteSerializer = NoteSerializer();
 
   DateTime fileLastModified;
 
   var _loadState = NoteLoadState.None;
-  var _serializer = MarkdownYAMLSerializer();
+  var _serializer = MarkdownYAMLCodec();
 
   String _summary;
 
@@ -91,12 +91,12 @@ class Note with ChangeNotifier implements Comparable<Note> {
     notifyListeners();
   }
 
-  NoteData get data {
+  MdYamlDoc get data {
     noteSerializer.encode(this, _data);
     return _data;
   }
 
-  set data(NoteData data) {
+  set data(MdYamlDoc data) {
     _data = data;
     noteSerializer.decode(_data, this);
 

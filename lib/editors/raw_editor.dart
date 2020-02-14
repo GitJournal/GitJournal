@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/note_data_serializers.dart';
+import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/editors/common.dart';
 
 class RawEditor extends StatefulWidget implements Editor {
@@ -41,7 +41,7 @@ class RawEditorState extends State<RawEditor> implements EditorState {
   Note note;
   TextEditingController _textController = TextEditingController();
 
-  final serializer = MarkdownYAMLSerializer();
+  final serializer = MarkdownYAMLCodec();
 
   RawEditorState(this.note) {
     _textController = TextEditingController(text: serializer.encode(note.data));

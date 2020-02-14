@@ -1,7 +1,7 @@
 import 'dart:collection';
 
-import 'package:gitjournal/core/note_data.dart';
-import 'package:gitjournal/core/note_data_serializers.dart';
+import 'package:gitjournal/core/md_yaml_doc.dart';
+import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/utils/datetime.dart';
 import 'package:test/test.dart';
 
@@ -14,10 +14,10 @@ void main() {
   group('Serializers', () {
     test('Markdown Serializer', () {
       var created = toIso8601WithTimezone(nowWithoutMicro());
-      var note = NoteData(
+      var note = MdYamlDoc(
           "This is the body", LinkedHashMap.from({"created": created}));
 
-      var serializer = MarkdownYAMLSerializer();
+      var serializer = MarkdownYAMLCodec();
       var str = serializer.encode(note);
       var note2 = serializer.decode(str);
 
@@ -31,7 +31,7 @@ type
 
 Alright.""";
 
-      var serializer = MarkdownYAMLSerializer();
+      var serializer = MarkdownYAMLCodec();
       var note = serializer.decode(inputNoteStr);
       var actualStr = "Alright.";
 
@@ -44,7 +44,7 @@ Alright.""";
 
 Alright.""";
 
-      var serializer = MarkdownYAMLSerializer();
+      var serializer = MarkdownYAMLCodec();
       var note = serializer.decode(inputNoteStr);
       var actualStr = "Alright.";
 
@@ -56,7 +56,7 @@ Alright.""";
 ---
 Alright.""";
 
-      var serializer = MarkdownYAMLSerializer();
+      var serializer = MarkdownYAMLCodec();
       var note = serializer.decode(inputNoteStr);
       var actualStr = "Alright.";
 
@@ -67,7 +67,7 @@ Alright.""";
       var inputNoteStr = """---
 ---""";
 
-      var serializer = MarkdownYAMLSerializer();
+      var serializer = MarkdownYAMLCodec();
       var note = serializer.decode(inputNoteStr);
 
       expect("", note.body);
@@ -83,7 +83,7 @@ foo: bar
 
 Alright.""";
 
-      var serializer = MarkdownYAMLSerializer();
+      var serializer = MarkdownYAMLCodec();
       var note = serializer.decode(str);
       var actualStr = serializer.encode(note);
 
@@ -97,7 +97,7 @@ foo: [bar, gar]
 
 Alright.""";
 
-      var serializer = MarkdownYAMLSerializer();
+      var serializer = MarkdownYAMLCodec();
       var note = serializer.decode(str);
       var actualStr = serializer.encode(note);
 
@@ -109,7 +109,7 @@ Alright.""";
 
 Alright.""";
 
-      var serializer = MarkdownYAMLSerializer();
+      var serializer = MarkdownYAMLCodec();
       var note = serializer.decode(str);
       var actualStr = serializer.encode(note);
 
@@ -119,7 +119,7 @@ Alright.""";
     test('Plain Markdown', () {
       var str = """Alright.""";
 
-      var serializer = MarkdownYAMLSerializer();
+      var serializer = MarkdownYAMLCodec();
       var note = serializer.decode(str);
       var actualStr = serializer.encode(note);
 
@@ -133,7 +133,7 @@ foo: [bar, gar]
 
 Alright. ---\n Good boy --- Howdy""";
 
-      var serializer = MarkdownYAMLSerializer();
+      var serializer = MarkdownYAMLCodec();
       var note = serializer.decode(str);
       var actualStr = serializer.encode(note);
 
@@ -146,7 +146,7 @@ foo: [bar, gar]
 ---
 Alright.""";
 
-      var serializer = MarkdownYAMLSerializer();
+      var serializer = MarkdownYAMLCodec();
       var note = serializer.decode(str);
       var actualStr = "Alright.";
 
@@ -158,7 +158,7 @@ Alright.""";
 foo: bar
 ---""";
 
-      var serializer = MarkdownYAMLSerializer();
+      var serializer = MarkdownYAMLCodec();
       var note = serializer.decode(str);
 
       expect("", note.body);
@@ -174,7 +174,7 @@ foo: bar
 ---
 """;
 
-      var serializer = MarkdownYAMLSerializer();
+      var serializer = MarkdownYAMLCodec();
       var note = serializer.decode(str);
 
       expect("", note.body);

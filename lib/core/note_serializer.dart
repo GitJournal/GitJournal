@@ -2,11 +2,11 @@ import 'package:gitjournal/utils/datetime.dart';
 import 'package:gitjournal/settings.dart';
 
 import 'note.dart';
-import 'note_data.dart';
+import 'md_yaml_doc.dart';
 
 abstract class NoteSerializerInterface {
-  void encode(Note note, NoteData data);
-  void decode(NoteData data, Note note);
+  void encode(Note note, MdYamlDoc data);
+  void decode(MdYamlDoc data, Note note);
 }
 
 class NoteSerializationSettings {
@@ -19,7 +19,7 @@ class NoteSerializer implements NoteSerializerInterface {
   var settings = NoteSerializationSettings();
 
   @override
-  void encode(Note note, NoteData data) {
+  void encode(Note note, MdYamlDoc data) {
     if (note.created != null) {
       data.props[settings.createdKey] = toIso8601WithTimezone(note.created);
     } else {
@@ -47,7 +47,7 @@ class NoteSerializer implements NoteSerializerInterface {
   }
 
   @override
-  void decode(NoteData data, Note note) {
+  void decode(MdYamlDoc data, Note note) {
     var modifiedKeyOptions = [
       "modified",
       "mod",

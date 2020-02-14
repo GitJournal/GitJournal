@@ -4,22 +4,16 @@ import 'package:fimber/fimber.dart';
 import 'package:yaml/yaml.dart';
 import 'package:yaml_serializer/yaml_serializer.dart';
 
-import 'note_data.dart';
+import 'md_yaml_doc.dart';
 
-abstract class NoteDataSerializer {
-  String encode(NoteData note);
-  NoteData decode(String str);
-}
-
-class MarkdownYAMLSerializer implements NoteDataSerializer {
-  @override
-  NoteData decode(String str) {
+class MarkdownYAMLCodec {
+  MdYamlDoc decode(String str) {
     const startYamlStr = "---\n";
     const endYamlStr = "\n---\n";
     const emptyYamlHeaderStr = "---\n---";
 
     if (str == emptyYamlHeaderStr) {
-      return NoteData();
+      return MdYamlDoc();
     }
     if (str.startsWith(emptyYamlHeaderStr + "\n")) {
       var bodyBeginingPos = emptyYamlHeaderStr.length + 1;
@@ -27,7 +21,7 @@ class MarkdownYAMLSerializer implements NoteDataSerializer {
         bodyBeginingPos += 1;
       }
       var body = str.substring(bodyBeginingPos);
-      return NoteData(body);
+      return MdYamlDoc(body);
     }
 
     if (str.startsWith(startYamlStr)) {
@@ -39,10 +33,10 @@ class MarkdownYAMLSerializer implements NoteDataSerializer {
           var yamlText =
               str.substring(4, str.length - endYamlStrWithoutLineEding.length);
           var map = _parseYamlText(yamlText);
-          return NoteData("", map);
+          return MdYamlDoc("", map);
         }
 
-        return NoteData(str);
+        return MdYamlDoc(str);
       }
 
       var yamlText = str.substring(4, endYamlPos);
@@ -59,10 +53,10 @@ class MarkdownYAMLSerializer implements NoteDataSerializer {
         }
       }
 
-      return NoteData(body, map);
+      return MdYamlDoc(body, map);
     }
 
-    return NoteData(str, LinkedHashMap<String, dynamic>());
+    return MdYamlDoc(str, LinkedHashMap<String, dynamic>());
   }
 
   LinkedHashMap<String, dynamic> _parseYamlText(String yamlText) {
@@ -84,8 +78,7 @@ class MarkdownYAMLSerializer implements NoteDataSerializer {
     return map;
   }
 
-  @override
-  String encode(NoteData note) {
+  String encode(MdYamlDoc note) {
     if (note.props.isEmpty) {
       return note.body;
     }

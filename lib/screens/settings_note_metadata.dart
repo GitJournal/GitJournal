@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
-import 'package:gitjournal/core/note_data_serializers.dart';
+import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 
 class NoteMetadataSettingsScreen extends StatefulWidget {
   @override
@@ -76,7 +76,7 @@ class NoteMetaDataExample extends StatelessWidget {
   final String yamlHeader;
 
   NoteMetaDataExample(Map<String, dynamic> data)
-      : yamlHeader = MarkdownYAMLSerializer.toYamlHeader(data);
+      : yamlHeader = MarkdownYAMLCodec.toYamlHeader(data);
 
   @override
   Widget build(BuildContext context) {

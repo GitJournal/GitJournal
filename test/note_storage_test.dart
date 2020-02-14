@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:gitjournal/utils/datetime.dart';
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/note_data.dart';
+import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
@@ -30,7 +30,7 @@ void main() {
       n1.created = dt;
 
       var n2 = Note(null, n2Path);
-      n2.data = NoteData("test2", props);
+      n2.data = MdYamlDoc("test2", props);
 
       notes = [n1, n2];
     });

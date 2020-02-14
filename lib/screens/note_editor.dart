@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/note_data.dart';
+import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/editors/markdown_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
@@ -35,7 +35,7 @@ enum EditorType { Markdown, Raw, Checklist }
 class NoteEditorState extends State<NoteEditor> {
   Note note;
   EditorType editorType = EditorType.Markdown;
-  NoteData originalNoteData = NoteData();
+  MdYamlDoc originalNoteData = MdYamlDoc();
 
   final _rawEditorKey = GlobalKey<RawEditorState>();
   final _markdownEditorKey = GlobalKey<MarkdownEditorState>();
@@ -50,7 +50,7 @@ class NoteEditorState extends State<NoteEditor> {
   }
 
   NoteEditorState.fromNote(this.note) {
-    originalNoteData = NoteData.from(note.data);
+    originalNoteData = MdYamlDoc.from(note.data);
   }
 
   @override
@@ -223,7 +223,7 @@ class NoteEditorState extends State<NoteEditor> {
     }
 
     if (note.data != originalNoteData) {
-      var newWithoutModified = NoteData.from(note.data);
+      var newWithoutModified = MdYamlDoc.from(note.data);
       newWithoutModified.props.remove(note.noteSerializer.settings.modifiedKey);
 
       return newWithoutModified != originalNoteData;

@@ -1,16 +1,16 @@
 import 'dart:collection';
 
-class NoteData {
+class MdYamlDoc {
   String body = "";
   LinkedHashMap<String, dynamic> props = LinkedHashMap<String, dynamic>();
 
-  NoteData([this.body, this.props]) {
+  MdYamlDoc([this.body, this.props]) {
     body = body ?? "";
     // ignore: prefer_collection_literals
     props = props ?? LinkedHashMap<String, dynamic>();
   }
 
-  NoteData.from(NoteData other) {
+  MdYamlDoc.from(MdYamlDoc other) {
     body = String.fromCharCodes(other.body.codeUnits);
     props = LinkedHashMap<String, dynamic>.from(other.props);
   }
@@ -21,7 +21,7 @@ class NoteData {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is NoteData &&
+      other is MdYamlDoc &&
           runtimeType == other.runtimeType &&
           body == other.body &&
           _equalMaps(props, other.props);
