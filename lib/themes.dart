@@ -15,5 +15,6 @@ class Themes {
     primaryColor: const Color(0xff212121),
     accentColor: const Color(0xff689f38),
     cursorColor: const Color(0xFF66bb6a),
+    toggleableActiveColor: const Color(0xFF66bb6a),
   );
 }
