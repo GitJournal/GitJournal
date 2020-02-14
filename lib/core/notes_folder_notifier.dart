@@ -11,11 +11,9 @@ typedef NoteNotificationCallback = void Function(int index, Note note);
 class NotesFolderNotifier implements ChangeNotifier {
   var _folderAddedListeners = ObserverList<FolderNotificationCallback>();
   var _folderRemovedListeners = ObserverList<FolderNotificationCallback>();
-  var _folderModifiedListeners = ObserverList<FolderNotificationCallback>();
 
   var _noteAddedListeners = ObserverList<NoteNotificationCallback>();
   var _noteRemovedListeners = ObserverList<NoteNotificationCallback>();
-  var _noteModifiedListeners = ObserverList<NoteNotificationCallback>();
 
   void addFolderRemovedListener(FolderNotificationCallback listener) {
     _folderRemovedListeners.add(listener);
@@ -31,14 +29,6 @@ class NotesFolderNotifier implements ChangeNotifier {
 
   void removeFolderAddedListener(FolderNotificationCallback listener) {
     _folderAddedListeners.remove(listener);
-  }
-
-  void addFolderModifiedListener(FolderNotificationCallback listener) {
-    _folderModifiedListeners.add(listener);
-  }
-
-  void removeFolderModifiedListener(FolderNotificationCallback listener) {
-    _folderModifiedListeners.remove(listener);
   }
 
   void addNoteAddedListener(NoteNotificationCallback listener) {
@@ -57,23 +47,13 @@ class NotesFolderNotifier implements ChangeNotifier {
     _noteRemovedListeners.remove(listener);
   }
 
-  void addNoteModifiedListener(NoteNotificationCallback listener) {
-    _noteModifiedListeners.add(listener);
-  }
-
-  void removeNoteModifiedListener(NoteNotificationCallback listener) {
-    _noteModifiedListeners.remove(listener);
-  }
-
   @mustCallSuper
   @override
   void dispose() {
     _folderAddedListeners = null;
     _folderRemovedListeners = null;
-    _folderModifiedListeners = null;
     _noteAddedListeners = null;
     _noteRemovedListeners = null;
-    _noteModifiedListeners = null;
 
     assert(_debugAssertNotDisposed());
     _listeners = null;
@@ -161,10 +141,6 @@ class NotesFolderNotifier implements ChangeNotifier {
 
   void notifyNoteRemoved(int index, Note note) {
     _notifyNoteCallback(_noteRemovedListeners, index, note);
-  }
-
-  void notifyNoteModified(int index, Note note) {
-    _notifyNoteCallback(_noteModifiedListeners, index, note);
   }
 
   //

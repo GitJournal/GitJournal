@@ -12,7 +12,6 @@ class SortedNotesFolder
   SortingMode sortingMode;
 
   List<Note> _notes = [];
-  var noteListeners = <Note, Function>{};
 
   SortedNotesFolder({
     @required this.folder,
@@ -20,13 +19,6 @@ class SortedNotesFolder
   }) {
     _notes = List<Note>.from(folder.notes);
     _notes.sort(_compare);
-    _notes.forEach((note) {
-      var listener = () {
-        _noteModified(note);
-      };
-      note.addListener(listener);
-      noteListeners[note] = listener;
-    });
 
     folder.addFolderAddedListener(_folderAddedListener);
     folder.addFolderRemovedListener(_folderRemovedListener);
@@ -39,11 +31,6 @@ class SortedNotesFolder
 
   @override
   void dispose() {
-    _notes.forEach((note) {
-      var listener = noteListeners[note];
-      note.removeListener(listener);
-    });
-
     folder.removeFolderAddedListener(_folderAddedListener);
     folder.removeFolderRemovedListener(_folderRemovedListener);
 
@@ -74,13 +61,6 @@ class SortedNotesFolder
       }
     }
     _notes.insert(i, note);
-
-    var listener = () {
-      _noteModified(note);
-    };
-    note.addListener(listener);
-    noteListeners[note] = listener;
-
     notifyNoteAdded(i, note);
   }
 
@@ -91,32 +71,7 @@ class SortedNotesFolder
     assert(index != -1);
     _notes.removeAt(index);
 
-    var listener = noteListeners[note];
-    note.removeListener(listener);
-
     notifyNoteRemoved(index, note);
-  }
-
-  void _noteModified(Note note) {
-    notifyNoteModified(-1, note);
-
-    // And insert it in the right location
-    var index = _notes.indexWhere((n) => n.filePath == note.filePath);
-    assert(index != -1);
-    _notes.removeAt(index);
-
-    notifyNoteRemoved(index, note);
-
-    var i = 0;
-    for (; i < _notes.length; i++) {
-      var n = _notes[i];
-      if (_compare(n, note) > 0) {
-        break;
-      }
-    }
-    _notes.insert(i, note);
-
-    notifyNoteAdded(i, note);
   }
 
   void _entityChanged() {
