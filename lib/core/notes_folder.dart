@@ -106,6 +106,8 @@ class NotesFolder
   }
 
   List<NotesFolder> getFolders() {
+    // FIXME: This is really not ideal
+    _folders.sort();
     return _folders;
   }
 
