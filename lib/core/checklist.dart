@@ -113,7 +113,7 @@ class Checklist {
     var prevItem = items[index];
     var nodeIndex = nodes.indexOf(prevItem.element);
 
-    nodes.insert(nodeIndex + 1, item.element);
+    nodes.insert(nodeIndex, item.element);
     items.insert(index, item);
   }
 }

@@ -149,5 +149,25 @@ Booga Wooga
       note = checklist.note;
       expect(note.body, "Hi.\n[ ] item\n");
     });
+
+    test('insertItem works', () async {
+      var content = "Hi.\n[ ] One\nTwo\n[ ] Three";
+
+      var notePath = p.join(tempDir.path, "note4.md");
+      File(notePath).writeAsString(content);
+
+      var parentFolder = NotesFolder(null, tempDir.path);
+      var note = Note(parentFolder, notePath);
+      await note.load();
+
+      var checklist = Checklist(note);
+      var items = checklist.items;
+      expect(items.length, equals(2));
+
+      checklist.insertItem(1, checklist.buildItem(false, "item"));
+
+      note = checklist.note;
+      expect(note.body, "Hi.\n[ ] One\nTwo\n[ ] item\n[ ] Three\n");
+    });
   });
 }
