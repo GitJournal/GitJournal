@@ -316,11 +316,8 @@ class AddItemButton extends StatelessWidget {
 
 // FIXME: The body needs to be scrollable
 // FIXME: Fix padding issue on top
-// FIXME: When removing an item the focus should jump to the next/prev in line
-// FIXME: Support pressing Enter to add a new item
 // FIXME: Support removing an item when pressing backspace
 // FIXME: Focus on + doesn't work on device
-// FIXME: Lines should wrap instead of continuing.
+// FIXME: Align the checkbox and close button on top
 // FIXME: The gap between the checkbox and text seems way too much.
 // FIXME: Move checked items to the bottom?
-// FIXME: When adding a new item to an existing markdown file, make a \n is added before
