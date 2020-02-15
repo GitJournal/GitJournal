@@ -99,7 +99,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
     );
 
     var titleEditor = Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
       child: _NoteTitleEditor(_titleTextController),
     );
 
