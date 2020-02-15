@@ -245,9 +245,13 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
 
   @override
   Widget build(BuildContext context) {
-    var style = Theme.of(context).textTheme.subhead;
+    var theme = Theme.of(context);
+    var style = theme.textTheme.subhead;
     if (widget.item.checked) {
-      style = style.copyWith(decoration: TextDecoration.lineThrough);
+      style = style.copyWith(
+        decoration: TextDecoration.lineThrough,
+        color: theme.disabledColor,
+      );
     }
 
     var editor = TextField(
@@ -281,6 +285,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
         icon: Icon(widget.focusNode.hasFocus ? Icons.clear : null),
         onPressed: widget.itemRemoved,
       ),
+      enabled: !widget.item.checked,
     );
   }
 }
