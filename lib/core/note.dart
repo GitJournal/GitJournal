@@ -24,6 +24,7 @@ class Note with ChangeNotifier implements Comparable<Note> {
   String _title = "";
   DateTime _created;
   DateTime _modified;
+  String _body = "";
   MdYamlDoc _data = MdYamlDoc();
   NoteSerializer noteSerializer = NoteSerializer();
 
@@ -73,11 +74,11 @@ class Note with ChangeNotifier implements Comparable<Note> {
   }
 
   String get body {
-    return _data.body;
+    return _body;
   }
 
   set body(String newBody) {
-    _data.body = newBody;
+    _body = newBody;
     _summary = null;
     notifyListeners();
   }

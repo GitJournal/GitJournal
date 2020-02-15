@@ -1,5 +1,6 @@
 import 'package:gitjournal/utils/datetime.dart';
 import 'package:gitjournal/settings.dart';
+import 'package:flutter_emoji/flutter_emoji.dart';
 
 import 'md_yaml_doc.dart';
 import 'note.dart';
@@ -8,6 +9,8 @@ abstract class NoteSerializerInterface {
   void encode(Note note, MdYamlDoc data);
   void decode(MdYamlDoc data, Note note);
 }
+
+var emojiParser = EmojiParser();
 
 class NoteSerializationSettings {
   String modifiedKey = Settings.instance.yamlModifiedKey;
@@ -35,7 +38,7 @@ class NoteSerializer implements NoteSerializerInterface {
     if (note.title != null) {
       var title = note.title.trim();
       if (title.isNotEmpty) {
-        data.props[settings.titleKey] = note.title;
+        data.props[settings.titleKey] = emojiParser.unemojify(note.title);
       } else {
         data.props.remove(settings.titleKey);
       }
@@ -43,7 +46,7 @@ class NoteSerializer implements NoteSerializerInterface {
       data.props.remove(settings.titleKey);
     }
 
-    data.body = note.body;
+    data.body = emojiParser.unemojify(note.body);
   }
 
   @override
@@ -66,8 +69,10 @@ class NoteSerializer implements NoteSerializerInterface {
       }
     }
 
-    note.body = data.body;
+    note.body = emojiParser.emojify(data.body);
     note.created = parseDateTime(data.props[settings.createdKey]?.toString());
-    note.title = data.props[settings.titleKey]?.toString() ?? "";
+
+    var title = data.props[settings.titleKey]?.toString() ?? "";
+    note.title = emojiParser.emojify(title);
   }
 }
