@@ -129,5 +129,25 @@ Booga Wooga
       expect(nodes[1], items[1].element);
       expect(nodes[2], items[2].element);
     });
+
+    test('Should add \\n before item when adding', () async {
+      var content = "Hi.";
+
+      var notePath = p.join(tempDir.path, "note3.md");
+      File(notePath).writeAsString(content);
+
+      var parentFolder = NotesFolder(null, tempDir.path);
+      var note = Note(parentFolder, notePath);
+      await note.load();
+
+      var checklist = Checklist(note);
+      var items = checklist.items;
+      expect(items.length, equals(0));
+
+      checklist.addItem(checklist.buildItem(false, "item"));
+
+      note = checklist.note;
+      expect(note.body, "Hi.\n[ ] item\n");
+    });
   });
 }

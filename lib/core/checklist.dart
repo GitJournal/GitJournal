@@ -93,6 +93,9 @@ class Checklist {
 
   void addItem(ChecklistItem item) {
     items.add(item);
+    if (!nodes.last.textContent.endsWith('\n')) {
+      nodes.add(md.Text("\n"));
+    }
     nodes.add(item.element);
   }
 
