@@ -46,7 +46,7 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
         key: sshUrlKey,
         textAlign: TextAlign.center,
         autofocus: true,
-        style: Theme.of(context).textTheme.title,
+        style: Theme.of(context).textTheme.subhead,
         decoration: const InputDecoration(
           hintText: 'git@github.com:GitJournal/GitJournal.git',
         ),
@@ -55,8 +55,6 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
         textInputAction: TextInputAction.done,
         onFieldSubmitted: (String _) => formSubmitted(),
         initialValue: widget.initialValue,
-        minLines: 1,
-        maxLines: 3,
       ),
     );
 
@@ -131,7 +129,7 @@ class GitCloneUrlKnownProviderPageState
         key: sshUrlKey,
         textAlign: TextAlign.center,
         autofocus: true,
-        style: Theme.of(context).textTheme.title,
+        style: Theme.of(context).textTheme.subhead,
         decoration: const InputDecoration(
           hintText: 'git@github.com:GitJournal/GitJournal.git',
         ),
@@ -140,8 +138,6 @@ class GitCloneUrlKnownProviderPageState
         textInputAction: TextInputAction.done,
         onFieldSubmitted: (String _) => formSubmitted(),
         initialValue: widget.initialValue,
-        minLines: 1,
-        maxLines: 3,
       ),
     );
 
