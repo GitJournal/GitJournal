@@ -112,7 +112,7 @@ Booga Wooga
 [x] item 3""";
 
       var notePath = p.join(tempDir.path, "note2.md");
-      File(notePath).writeAsString(content);
+      await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolder(null, tempDir.path);
       var note = Note(parentFolder, notePath);
@@ -134,7 +134,7 @@ Booga Wooga
       var content = "Hi.";
 
       var notePath = p.join(tempDir.path, "note3.md");
-      File(notePath).writeAsString(content);
+      await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolder(null, tempDir.path);
       var note = Note(parentFolder, notePath);
@@ -154,7 +154,7 @@ Booga Wooga
       var content = "Hi.\n[ ] One\nTwo\n[ ] Three";
 
       var notePath = p.join(tempDir.path, "note4.md");
-      File(notePath).writeAsString(content);
+      await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolder(null, tempDir.path);
       var note = Note(parentFolder, notePath);
@@ -174,7 +174,7 @@ Booga Wooga
       var content = "Hi.\n[ ] One\nTwo\n[ ]  \n[ ]  ";
 
       var notePath = p.join(tempDir.path, "note4.md");
-      File(notePath).writeAsString(content);
+      await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolder(null, tempDir.path);
       var note = Note(parentFolder, notePath);
