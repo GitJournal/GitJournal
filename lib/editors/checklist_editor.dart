@@ -273,9 +273,14 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
       leading: Row(
         children: <Widget>[
           Container(height: 24.0, width: 24.0, child: Icon(Icons.drag_handle)),
-          Checkbox(
-            value: widget.item.checked,
-            onChanged: widget.statusChanged,
+          const SizedBox(width: 8.0),
+          SizedBox(
+            height: 24.0,
+            width: 24.0,
+            child: Checkbox(
+              value: widget.item.checked,
+              onChanged: widget.statusChanged,
+            ),
           ),
         ],
         mainAxisSize: MainAxisSize.min,
@@ -304,10 +309,16 @@ class AddItemButton extends StatelessWidget {
       leading: Row(
         children: <Widget>[
           Container(height: 24.0, width: 24.0),
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: onPressed,
-          )
+          const SizedBox(width: 8.0),
+          Container(
+            padding: const EdgeInsets.all(0.0),
+            width: 24.0,
+            child: IconButton(
+              padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+              icon: Icon(Icons.add),
+              onPressed: onPressed,
+            ),
+          ),
         ],
         mainAxisSize: MainAxisSize.min,
       ),
@@ -320,7 +331,6 @@ class AddItemButton extends StatelessWidget {
 }
 
 // FIXME: The body needs to be scrollable
-// FIXME: Fix padding issue on top
 // FIXME: Support removing an item when pressing backspace
 // FIXME: Focus on + doesn't work on device
 // FIXME: Align the checkbox and close button on top
