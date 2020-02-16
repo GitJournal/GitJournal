@@ -169,5 +169,21 @@ Booga Wooga
       note = checklist.note;
       expect(note.body, "Hi.\n[ ] One\nTwo\n[ ] item\n[ ] Three\n");
     });
+
+    test('Removes empty trailing items', () async {
+      var content = "Hi.\n[ ] One\nTwo\n[ ]  \n[ ]  ";
+
+      var notePath = p.join(tempDir.path, "note4.md");
+      File(notePath).writeAsString(content);
+
+      var parentFolder = NotesFolder(null, tempDir.path);
+      var note = Note(parentFolder, notePath);
+      await note.load();
+
+      var checklist = Checklist(note);
+
+      note = checklist.note;
+      expect(note.body, "Hi.\n[ ] One\nTwo\n");
+    });
   });
 }

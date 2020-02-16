@@ -48,6 +48,16 @@ class ChecklistEditorState extends State<ChecklistEditor>
   ChecklistEditorState(Note note) {
     _titleTextController = TextEditingController(text: note.title);
     checklist = Checklist(note);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (checklist.items.isEmpty) {
+      var item = checklist.buildItem(false, "");
+      checklist.addItem(item);
+    }
+
     for (var item in checklist.items) {
       focusNodes[item] = FocusNode();
     }

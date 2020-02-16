@@ -46,6 +46,19 @@ class Checklist {
   Note get note {
     if (nodes.isEmpty) return _note;
 
+    // Remove empty trailing items
+    while (true) {
+      if (items.isEmpty) {
+        break;
+      }
+      var item = items.last;
+      if (item.checked == false && item.text.trim().isEmpty) {
+        removeAt(items.length - 1);
+      } else {
+        break;
+      }
+    }
+
     var renderer = CustomRenderer();
     _note.body = renderer.render(nodes);
 
