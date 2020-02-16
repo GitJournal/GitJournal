@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:git_url_parse2/git_url_parse2.dart';
 import 'package:function_types/function_types.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 
@@ -184,22 +185,19 @@ class GitCloneUrlKnownProviderPageState
 }
 
 // Returns null when valid
-String _isCloneUrlValid(String value) {
-  value = value.trim();
-  if (value.isEmpty) {
+String _isCloneUrlValid(String url) {
+  url = url.trim();
+  if (url.isEmpty) {
     return 'Please enter some text';
   }
-  if (value.startsWith('https://') ||
-      value.startsWith('http://') ||
-      value.startsWith('git://') ||
-      value.startsWith('ssh+git://') ||
-      value.startsWith('git+ssh://')) {
-    return 'Only SSH urls are currently accepted';
+
+  var result = gitUrlParse(url);
+  if (result == null) {
+    return 'Invalid Input';
   }
 
-  RegExp regExp = RegExp(r".*@.*");
-  if (!regExp.hasMatch(value)) {
-    return "Invalid Input";
+  if (result.protocol != 'ssh') {
+    return 'Only SSH urls are currently accepted';
   }
 
   return null;

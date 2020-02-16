@@ -35,6 +35,7 @@ dependencies:
   yaml_serializer: ^0.0.5
   connectivity: ^0.4.6+1
   flutter_emoji: ">= 2.0.0"
+  git_url_parse2: ^0.0.1
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.2"

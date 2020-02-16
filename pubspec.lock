@@ -224,6 +224,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  freezed_annotation:
+    dependency: transitive
+    description:
+      name: freezed_annotation
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.0"
   fuchsia_remote_debug_protocol:
     dependency: transitive
     description: flutter
@@ -243,6 +250,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.11"
+  git_url_parse2:
+    dependency: "direct main"
+    description:
+      name: git_url_parse2
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1"
   glob:
     dependency: transitive
     description:
@@ -306,6 +320,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.1+1"
+  json_annotation:
+    dependency: transitive
+    description:
+      name: json_annotation
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.1"
   json_rpc_2:
     dependency: transitive
     description:
@@ -753,5 +774,5 @@ packages:
     source: hosted
     version: "0.0.5"
 sdks:
-  dart: ">=2.5.0 <3.0.0"
+  dart: ">=2.7.0 <3.0.0"
   flutter: ">=1.12.13+hotfix.4 <2.0.0"
