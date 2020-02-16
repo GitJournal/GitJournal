@@ -1,6 +1,6 @@
 name: gitjournal
 description: A Note Taking App Built on top of Git
-version: 1.39.0+10
+version: 1.40.0+10
 
 dependencies:
   flutter:

@@ -344,5 +344,4 @@ class AddItemButton extends StatelessWidget {
 // FIXME: Support removing an item when pressing backspace
 // FIXME: Focus on + doesn't work on device
 // FIXME: Align the checkbox and close button on top
-// FIXME: The gap between the checkbox and text seems way too much.
 // FIXME: Move checked items to the bottom?
