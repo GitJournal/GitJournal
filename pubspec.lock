@@ -50,6 +50,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.6"
+  benchmark_harness:
+    dependency: "direct dev"
+    description:
+      name: benchmark_harness
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.5"
   boolean_selector:
     dependency: transitive
     description:
