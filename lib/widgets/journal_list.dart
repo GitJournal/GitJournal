@@ -147,7 +147,7 @@ class _JournalListState extends State<JournalList> {
     var title = note.title;
     Widget titleWidget = Text(title, style: textTheme.title);
     if (title.isEmpty) {
-      var date = note.modified ?? note.created;
+      var date = note.modified ?? note.created ?? note.fileLastModified;
       if (date != null) {
         var formatter = DateFormat('dd MMM, yyyy  ');
         var dateStr = formatter.format(date);
