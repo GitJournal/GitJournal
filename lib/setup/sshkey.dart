@@ -157,6 +157,121 @@ class GitHostSetupSshKeyUnknownProvider extends StatelessWidget {
   }
 }
 
+class GitHostSetupKeyChoice extends StatelessWidget {
+  final Func0<void> onGenerateKeys;
+  final Func0<void> onUserProvidedKeys;
+
+  GitHostSetupKeyChoice({
+    @required this.onGenerateKeys,
+    @required this.onUserProvidedKeys,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Text(
+            "We need SSH keys to authenticate -",
+            style: Theme.of(context).textTheme.headline,
+          ),
+          const SizedBox(height: 16.0),
+          GitHostSetupButton(
+            text: "Generate new keys",
+            onPressed: onGenerateKeys,
+          ),
+          const SizedBox(height: 8.0),
+          GitHostSetupButton(
+            text: "Provide Custom SSH Keys",
+            onPressed: onUserProvidedKeys,
+          ),
+        ],
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+    );
+  }
+}
+
+class GitHostUserProvidedKeys extends StatefulWidget {
+  final Func2<String, String, void> doneFunction;
+
+  GitHostUserProvidedKeys({
+    @required this.doneFunction,
+  });
+
+  @override
+  _GitHostUserProvidedKeysState createState() =>
+      _GitHostUserProvidedKeysState();
+}
+
+class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
+  final _publicKeyController = TextEditingController();
+  final _privateKeyController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Text(
+            "Public Key -",
+            style: Theme.of(context).textTheme.headline,
+          ),
+          const SizedBox(height: 8.0),
+          KeyEditor(_publicKeyController),
+          const SizedBox(height: 8.0),
+          Text(
+            "Private Key -",
+            style: Theme.of(context).textTheme.headline,
+          ),
+          KeyEditor(_privateKeyController),
+          const SizedBox(height: 16.0),
+          GitHostSetupButton(
+            text: "Next",
+            onPressed: () {
+              var publicKey = _publicKeyController.text.trim();
+              var privateKey = _privateKeyController.text.trim();
+              widget.doneFunction(publicKey, privateKey);
+            },
+          ),
+        ],
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+    );
+  }
+}
+
+// FIXME: vHanda: Add validation
+class KeyEditor extends StatelessWidget {
+  final TextEditingController controller;
+
+  KeyEditor(this.controller);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 80.0,
+      child: Container(
+        color: Theme.of(context).buttonColor,
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: controller,
+              textAlign: TextAlign.left,
+              maxLines: null,
+              style: Theme.of(context).textTheme.body1,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class PublicKeyWidget extends StatelessWidget {
   final String publicKey;
 
