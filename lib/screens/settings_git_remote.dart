@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:fimber/fimber.dart';
 
 import 'package:git_bindings/git_bindings.dart';
-import 'package:gitjournal/screens/githostsetup_sshkey.dart';
+import 'package:gitjournal/setup/sshkey.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils.dart';

@@ -17,11 +17,11 @@ import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'githostsetup_autoconfigure.dart';
-import 'githostsetup_button.dart';
-import 'githostsetup_clone.dart';
-import 'githostsetup_clone_url.dart';
-import 'githostsetup_sshkey.dart';
+import 'autoconfigure.dart';
+import 'button.dart';
+import 'clone.dart';
+import 'clone_url.dart';
+import 'sshkey.dart';
 
 class GitHostSetupScreen extends StatefulWidget {
   final Func0<void> onCompletedFunction;

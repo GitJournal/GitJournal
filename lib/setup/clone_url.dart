@@ -4,7 +4,7 @@ import 'package:git_url_parse2/git_url_parse2.dart';
 import 'package:function_types/function_types.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 
-import 'githostsetup_button.dart';
+import 'button.dart';
 
 class GitCloneUrlPage extends StatefulWidget {
   final Func1<String, void> doneFunction;

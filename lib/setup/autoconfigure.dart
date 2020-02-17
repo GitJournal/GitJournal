@@ -10,9 +10,9 @@ import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/settings.dart';
 
-import 'githostsetup_button.dart';
-import 'githostsetup_error.dart';
-import 'githostsetup_loading.dart';
+import 'button.dart';
+import 'error.dart';
+import 'loading.dart';
 
 class GitHostSetupAutoConfigure extends StatefulWidget {
   final GitHostType gitHostType;

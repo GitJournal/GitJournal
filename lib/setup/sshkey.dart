@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:function_types/function_types.dart';
 
-import 'githostsetup_button.dart';
-import 'githostsetup_loading.dart';
+import 'button.dart';
+import 'loading.dart';
 
 class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
   final Func0<void> doneFunction;

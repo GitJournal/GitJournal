@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'githostsetup_error.dart';
-import 'githostsetup_loading.dart';
+import 'error.dart';
+import 'loading.dart';
 
 class GitHostSetupGitClone extends StatelessWidget {
   final String errorMessage;
