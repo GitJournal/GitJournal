@@ -5,7 +5,7 @@ void main() {
   group('Markdown Remove Formatting', () {
     test('Test Headers', () {
       var input = '# Hello\nHow are you?';
-      expect(stripMarkdownFormatting(input), 'Hello How are you?');
+      expect(stripMarkdownFormatting(input), 'Hello How are you? ');
     });
 
     test('Test Header2', () {
@@ -15,7 +15,7 @@ void main() {
 Hello
       """;
 
-      expect(stripMarkdownFormatting(input), 'Test Header Hello');
+      expect(stripMarkdownFormatting(input), 'Test Header Hello ');
     });
 
     test('Itemized LIsts', () {
@@ -27,7 +27,19 @@ look like:
       """;
 
       expect(stripMarkdownFormatting(input),
-          'Itemized lists look like: this one that one');
+          'Itemized lists look like: * this one * that one ');
+    });
+
+    test('Checklist', () {
+      var input = """Itemized lists
+
+[ ] this one
+[x] that one
+[X] last
+      """;
+
+      expect(stripMarkdownFormatting(input),
+          'Itemized lists ☐ this one ☑ that one ☑ last ');
     });
   });
 }

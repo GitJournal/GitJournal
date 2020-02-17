@@ -1,56 +1,29 @@
+import 'dart:convert';
 import 'dart:core';
 
-import 'package:markdown/markdown.dart' as md;
-
-/// Builds a plain text [String] from parsed Markdown.
-class MarkdownBuilder implements md.NodeVisitor {
-  List<String> _texts = [];
-
-  String build(List<md.Node> nodes) {
-    _texts.clear();
-
-    for (md.Node node in nodes) {
-      node.accept(this);
-    }
-
-    var stringBuffer = StringBuffer();
-    _texts.forEach((String text) {
-      var t = text.trim();
-      if (t.isNotEmpty) {
-        t = t.replaceAll('\n', ' ');
-        t = t.trim();
-        stringBuffer.write(t);
-        stringBuffer.write(' ');
-      }
-    });
-
-    var str = stringBuffer.toString();
-    if (str.isNotEmpty) {
-      return str.substring(0, str.length - 1);
-    }
-    return str;
-  }
-
-  @override
-  void visitText(md.Text text) {
-    _texts.add(text.text);
-  }
-
-  @override
-  bool visitElementBefore(md.Element element) {
-    return true;
-  }
-
-  @override
-  void visitElementAfter(md.Element element) {
-    return;
-  }
-}
-
 String stripMarkdownFormatting(String markdown) {
-  final List<String> lines = markdown.replaceAll('\r\n', '\n').split('\n');
-  var doc = md.Document(encodeHtml: false);
+  var output = StringBuffer();
+  var regExp = RegExp('[a-zA-Z0-9]');
 
-  final MarkdownBuilder builder = MarkdownBuilder();
-  return builder.build(doc.parseLines(lines));
+  var lines = LineSplitter.split(markdown);
+  for (var line in lines) {
+    if (!line.contains(regExp)) {
+      continue;
+    }
+    line = line.trim();
+    if (line.startsWith('#')) {
+      line = line.replaceAll('#', '');
+    }
+    if (line.isEmpty) {
+      continue;
+    }
+    line = line.replaceFirst('[ ]', '☐');
+    line = line.replaceFirst('[x]', '☑');
+    line = line.replaceFirst('[X]', '☑');
+
+    output.write(line.trim());
+    output.write(' ');
+  }
+
+  return output.toString();
 }
