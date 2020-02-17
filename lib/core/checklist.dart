@@ -105,10 +105,9 @@ class Checklist {
   }
 
   void addItem(ChecklistItem item) {
+    _insertNewLineIfRequired(nodes.length - 1);
+
     items.add(item);
-    if (nodes.isNotEmpty && !nodes.last.textContent.endsWith('\n')) {
-      nodes.add(md.Text("\n"));
-    }
     nodes.add(item.element);
   }
 
@@ -126,8 +125,21 @@ class Checklist {
     var prevItem = items[index];
     var nodeIndex = nodes.indexOf(prevItem.element);
 
+    _insertNewLineIfRequired(nodeIndex);
+
     nodes.insert(nodeIndex, item.element);
     items.insert(index, item);
+  }
+
+  void _insertNewLineIfRequired(int pos) {
+    if (nodes.isEmpty) return;
+
+    var node = nodes[pos];
+    if (node is md.Text) {
+      if (!node.text.endsWith('\n')) {
+        nodes.add(md.Text("\n"));
+      }
+    }
   }
 }
 

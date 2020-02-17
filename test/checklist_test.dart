@@ -150,6 +150,26 @@ Booga Wooga
       expect(note.body, "Hi.\n[ ] item\n");
     });
 
+    test('Should not add \\n when adding after item', () async {
+      var content = "[ ] one";
+
+      var notePath = p.join(tempDir.path, "note13.md");
+      await File(notePath).writeAsString(content);
+
+      var parentFolder = NotesFolder(null, tempDir.path);
+      var note = Note(parentFolder, notePath);
+      await note.load();
+
+      var checklist = Checklist(note);
+      var items = checklist.items;
+      expect(items.length, equals(1));
+
+      checklist.addItem(checklist.buildItem(false, "item"));
+
+      note = checklist.note;
+      expect(note.body, "[ ] one\n[ ] item\n");
+    });
+
     test('insertItem works', () async {
       var content = "Hi.\n[ ] One\nTwo\n[ ] Three";
 
