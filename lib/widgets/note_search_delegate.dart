@@ -66,6 +66,9 @@ class NoteSearchDelegate extends SearchDelegate<Note> {
     // TODO: This should be made far more efficient
     var q = query.toLowerCase();
     var filteredNotes = notes.where((note) {
+      if (note.title.toLowerCase().contains(q)) {
+        return true;
+      }
       return note.body.toLowerCase().contains(q);
     }).toList();
 
