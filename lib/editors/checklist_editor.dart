@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gitjournal/core/checklist.dart';
 
 import 'package:gitjournal/core/note.dart';
@@ -42,7 +43,7 @@ class ChecklistEditor extends StatefulWidget implements Editor {
 class ChecklistEditorState extends State<ChecklistEditor>
     implements EditorState {
   Checklist checklist;
-  var focusNodes = <ChecklistItem, FocusNode>{};
+  var focusNodes = <ChecklistItem, FocusScopeNode>{};
   TextEditingController _titleTextController = TextEditingController();
 
   ChecklistEditorState(Note note) {
@@ -59,13 +60,15 @@ class ChecklistEditorState extends State<ChecklistEditor>
     }
 
     for (var item in checklist.items) {
-      focusNodes[item] = FocusNode();
+      focusNodes[item] = FocusScopeNode();
     }
   }
 
   @override
   void dispose() {
     _titleTextController.dispose();
+    focusNodes.values.forEach((fn) => fn.dispose());
+
     super.dispose();
   }
 
@@ -80,7 +83,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
       key: UniqueKey(),
       onPressed: () {
         setState(() {
-          var fn = FocusNode();
+          var fn = FocusScopeNode();
           var item = checklist.buildItem(false, "");
           checklist.addItem(item);
           focusNodes[item] = fn;
@@ -117,7 +120,10 @@ class ChecklistEditorState extends State<ChecklistEditor>
       appBar: buildEditorAppBar(widget, this),
       floatingActionButton: buildFAB(widget, this),
       body: Column(
-        children: <Widget>[titleEditor, Expanded(child: checklistWidget)],
+        children: <Widget>[
+          titleEditor,
+          Expanded(child: FocusScope(child: checklistWidget)),
+        ],
       ),
     );
   }
@@ -160,19 +166,21 @@ class ChecklistEditorState extends State<ChecklistEditor>
           // FIXME: Make this happen on the next build
           Timer(const Duration(milliseconds: 300), () {
             FocusScope.of(context).requestFocus(fn);
-            debugPrint("forced focus!");
           });
         });
       },
       itemFinished: () {
-        var fn = FocusNode();
-        var item = checklist.buildItem(false, "");
-        checklist.insertItem(index + 1, item);
-        focusNodes[item] = fn;
+        setState(() {
+          var fn = FocusScopeNode();
+          var item = checklist.buildItem(false, "");
+          checklist.insertItem(index + 1, item);
+          focusNodes[item] = fn;
 
-        // FIXME: Make this happen on the next build
-        Timer(const Duration(milliseconds: 50), () {
-          FocusScope.of(context).requestFocus(fn);
+          // FIXME: Make this happen on the next build
+          Timer(const Duration(milliseconds: 50), () {
+            print("Asking focus to ${index + 1}");
+            FocusScope.of(context).requestFocus(fn);
+          });
         });
       },
     );
@@ -251,6 +259,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
 
   void _onFocus() {
     setState(() {}); // rebuild to hide close button
+    SystemChannels.textInput.invokeMethod('TextInput.show');
   }
 
   @override
@@ -275,7 +284,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
         border: InputBorder.none,
         isDense: true,
       ),
-      onSubmitted: (_) => widget.itemFinished(),
+      onEditingComplete: widget.itemFinished,
     );
 
     return ListTile(
@@ -342,6 +351,5 @@ class AddItemButton extends StatelessWidget {
 
 // FIXME: The body needs to be scrollable
 // FIXME: Support removing an item when pressing backspace
-// FIXME: Focus on + doesn't work on device
 // FIXME: Align the checkbox and close button on top
 // FIXME: Move checked items to the bottom?
