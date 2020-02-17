@@ -156,16 +156,22 @@ class ChecklistEditorState extends State<ChecklistEditor>
             nextIndex = index - 1;
           }
           print("Next focus index $nextIndex");
-          var nextItemForFocus = checklist.items[nextIndex];
-          var fn = focusNodes[nextItemForFocus];
-          print("Giving focus to $nextItemForFocus");
+
+          FocusNode fn;
+          if (nextIndex >= 0) {
+            var nextItemForFocus = checklist.items[nextIndex];
+            fn = focusNodes[nextItemForFocus];
+            print("Giving focus to $nextItemForFocus");
+          }
 
           focusNodes.remove(item);
           checklist.removeItem(item);
 
           // FIXME: Make this happen on the next build
           Timer(const Duration(milliseconds: 300), () {
-            FocusScope.of(context).requestFocus(fn);
+            if (fn != null) {
+              FocusScope.of(context).requestFocus(fn);
+            }
           });
         });
       },
