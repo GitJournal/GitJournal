@@ -15,6 +15,11 @@ class _NoteMetadataSettingsScreenState
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
+    String yamlHeader = "                                      \n";
+    if (Settings.instance.yamlHeaderEnabled) {
+      var map = _buildMap();
+      yamlHeader = MarkdownYAMLCodec.toYamlHeader(map).trim();
+    }
 
     var body = Column(
       children: <Widget>[
@@ -26,9 +31,19 @@ class _NoteMetadataSettingsScreenState
           ),
         ),
         const SizedBox(height: 16.0),
-        NoteMetaDataExample(_buildMap()),
+        NoteMetaDataExample(yamlHeader),
         const SizedBox(height: 16.0),
         const Divider(),
+        SwitchListTile(
+          title: const Text("Enable YAML Header"),
+          value: Settings.instance.yamlHeaderEnabled,
+          onChanged: (bool newVal) {
+            setState(() {
+              Settings.instance.yamlHeaderEnabled = newVal;
+              Settings.instance.save();
+            });
+          },
+        ),
         ListPreference(
           title: "Modified Field",
           options: [
@@ -44,6 +59,7 @@ class _NoteMetadataSettingsScreenState
               Settings.instance.save();
             });
           },
+          enabled: Settings.instance.yamlHeaderEnabled,
         ),
       ],
     );
@@ -75,8 +91,7 @@ class _NoteMetadataSettingsScreenState
 class NoteMetaDataExample extends StatelessWidget {
   final String yamlHeader;
 
-  NoteMetaDataExample(Map<String, dynamic> data)
-      : yamlHeader = MarkdownYAMLCodec.toYamlHeader(data);
+  NoteMetaDataExample(this.yamlHeader);
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/markdown.dart';
 import 'package:path/path.dart' as p;
 
@@ -38,7 +39,7 @@ class Note with ChangeNotifier implements Comparable<Note> {
   Note(this.parent, this._filePath);
 
   Note.newNote(this.parent) {
-    _created = DateTime.now();
+    created = DateTime.now();
   }
 
   String get filePath {
@@ -55,6 +56,8 @@ class Note with ChangeNotifier implements Comparable<Note> {
   }
 
   set created(DateTime dt) {
+    if (!canHaveMetadata) return;
+
     _created = dt;
     notifyListeners();
   }
@@ -64,6 +67,8 @@ class Note with ChangeNotifier implements Comparable<Note> {
   }
 
   set modified(DateTime dt) {
+    if (!canHaveMetadata) return;
+
     _modified = dt;
     notifyListeners();
   }
@@ -88,8 +93,14 @@ class Note with ChangeNotifier implements Comparable<Note> {
   }
 
   set title(String title) {
+    if (!canHaveMetadata) return;
+
     _title = title;
     notifyListeners();
+  }
+
+  bool get canHaveMetadata {
+    return Settings.instance.yamlHeaderEnabled;
   }
 
   MdYamlDoc get data {

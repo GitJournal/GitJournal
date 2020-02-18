@@ -6,23 +6,25 @@ import 'package:gitjournal/settings.dart';
 import 'package:path/path.dart' as p;
 
 String getFileName(Note note) {
+  var date =
+      note.created ?? note.modified ?? note.fileLastModified ?? DateTime.now();
   switch (Settings.instance.noteFileNameFormat) {
     case NoteFileNameFormat.FromTitle:
       if (note.title.isNotEmpty) {
         return buildTitleFileName(note.parent.folderPath, note.title);
       } else {
-        return toIso8601WithTimezone(note.created) + ".md";
+        return toIso8601WithTimezone(date) + ".md";
       }
       break;
     case NoteFileNameFormat.Iso8601:
-      return toIso8601(note.created) + ".md";
+      return toIso8601(date) + ".md";
     case NoteFileNameFormat.Iso8601WithTimeZone:
-      return toIso8601WithTimezone(note.created) + ".md";
+      return toIso8601WithTimezone(date) + ".md";
     case NoteFileNameFormat.Iso8601WithTimeZoneWithoutColon:
-      return toIso8601WithTimezone(note.created).replaceAll(":", "_") + ".md";
+      return toIso8601WithTimezone(date).replaceAll(":", "_") + ".md";
   }
 
-  return note.created.toString();
+  return date.toString();
 }
 
 String buildTitleFileName(String parentDir, String title) {

@@ -18,6 +18,7 @@ class Settings {
   bool collectCrashReports = true;
 
   String yamlModifiedKey = "modified";
+  bool yamlHeaderEnabled = true;
   String defaultNewNoteFolder = "journal";
 
   RemoteSyncFrequency remoteSyncFrequency = RemoteSyncFrequency.Default;
@@ -38,6 +39,7 @@ class Settings {
         pref.getBool("collectCrashReports") ?? collectCrashReports;
 
     yamlModifiedKey = pref.getString("yamlModifiedKey") ?? yamlModifiedKey;
+    yamlHeaderEnabled = pref.getBool("yamlHeaderEnabled") ?? yamlHeaderEnabled;
     defaultNewNoteFolder =
         pref.getString("defaultNewNoteFolder") ?? defaultNewNoteFolder;
 
@@ -59,6 +61,7 @@ class Settings {
     pref.setBool("collectUsageStatistics", collectUsageStatistics);
     pref.setBool("collectCrashReports", collectCrashReports);
     pref.setString("yamlModifiedKey", yamlModifiedKey);
+    pref.setBool("yamlHeaderEnabled", yamlHeaderEnabled);
     pref.setString("defaultNewNoteFolder", defaultNewNoteFolder);
     pref.setString(
         "remoteSyncFrequency", remoteSyncFrequency.toInternalString());
@@ -80,6 +83,7 @@ class Settings {
       "collectUsageStatistics": collectUsageStatistics,
       "collectCrashReports": collectCrashReports,
       "yamlModifiedKey": yamlModifiedKey,
+      "yamlHeaderEnabled": yamlHeaderEnabled,
       "defaultNewNoteFolder": defaultNewNoteFolder,
       "defaultEditor": defaultEditor.toInternalString(),
       "version": version,
