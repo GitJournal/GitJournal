@@ -23,6 +23,8 @@ class ChecklistEditor extends StatefulWidget implements Editor {
   @override
   final NoteCallback discardChangesSelected;
 
+  final bool autofocusOnEditor;
+
   ChecklistEditor({
     Key key,
     @required this.note,
@@ -32,6 +34,7 @@ class ChecklistEditor extends StatefulWidget implements Editor {
     @required this.renameNoteSelected,
     @required this.moveNoteToFolderSelected,
     @required this.discardChangesSelected,
+    @required this.autofocusOnEditor,
   }) : super(key: key);
 
   @override

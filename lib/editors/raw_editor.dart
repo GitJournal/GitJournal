@@ -20,6 +20,8 @@ class RawEditor extends StatefulWidget implements Editor {
   @override
   final NoteCallback discardChangesSelected;
 
+  final bool autofocusOnEditor;
+
   RawEditor({
     Key key,
     @required this.note,
@@ -29,6 +31,7 @@ class RawEditor extends StatefulWidget implements Editor {
     @required this.renameNoteSelected,
     @required this.moveNoteToFolderSelected,
     @required this.discardChangesSelected,
+    @required this.autofocusOnEditor,
   }) : super(key: key);
 
   @override
@@ -58,7 +61,10 @@ class RawEditorState extends State<RawEditor> implements EditorState {
     var editor = Padding(
       padding: const EdgeInsets.all(16.0),
       child: SingleChildScrollView(
-        child: _NoteEditor(_textController),
+        child: _NoteEditor(
+          _textController,
+          autofocus: widget.autofocusOnEditor,
+        ),
       ),
     );
 
@@ -78,8 +84,9 @@ class RawEditorState extends State<RawEditor> implements EditorState {
 
 class _NoteEditor extends StatelessWidget {
   final TextEditingController textController;
+  final bool autofocus;
 
-  _NoteEditor(this.textController);
+  _NoteEditor(this.textController, {this.autofocus = false});
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +94,7 @@ class _NoteEditor extends StatelessWidget {
         Theme.of(context).textTheme.subhead.copyWith(fontFamily: "Roboto Mono");
 
     return TextField(
-      autofocus: false,
+      autofocus: autofocus,
       autocorrect: false,
       keyboardType: TextInputType.multiline,
       maxLines: null,

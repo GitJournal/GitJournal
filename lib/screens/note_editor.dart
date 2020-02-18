@@ -103,6 +103,7 @@ class NoteEditorState extends State<NoteEditor> {
           renameNoteSelected: _renameNoteSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
+          autofocusOnEditor: _isNewNote,
         );
       case EditorType.Checklist:
         return ChecklistEditor(
@@ -114,6 +115,7 @@ class NoteEditorState extends State<NoteEditor> {
           renameNoteSelected: _renameNoteSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
+          autofocusOnEditor: _isNewNote,
         );
     }
     return null;

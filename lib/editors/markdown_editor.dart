@@ -31,7 +31,7 @@ class MarkdownEditor extends StatefulWidget implements Editor {
     @required this.renameNoteSelected,
     @required this.moveNoteToFolderSelected,
     @required this.discardChangesSelected,
-    this.autofocusOnEditor = false,
+    @required this.autofocusOnEditor,
   }) : super(key: key);
 
   @override
