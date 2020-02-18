@@ -39,5 +39,7 @@ SnackBar buildUndoDeleteSnackbar(BuildContext context, Note deletedNote) {
 
 void showSnackbar(BuildContext context, String message) {
   var snackBar = SnackBar(content: Text(message));
-  Scaffold.of(context).showSnackBar(snackBar);
+  Scaffold.of(context)
+    ..removeCurrentSnackBar()
+    ..showSnackBar(snackBar);
 }
