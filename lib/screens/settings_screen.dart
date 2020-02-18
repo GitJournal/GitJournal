@@ -168,6 +168,19 @@ class SettingsListState extends State<SettingsList> {
         enabled: remoteGitConfigured,
       ),
       const SizedBox(height: 16.0),
+      SettingsHeader("Editor Settings"),
+      ListPreference(
+        title: "Default Editor",
+        currentOption: settings.defaultEditor.toPublicString(),
+        options:
+            SettingsEditorType.options.map((f) => f.toPublicString()).toList(),
+        onChange: (String publicStr) {
+          var val = SettingsEditorType.fromPublicString(publicStr);
+          Settings.instance.defaultEditor = val;
+          Settings.instance.save();
+          setState(() {});
+        },
+      ),
       SettingsHeader("Storage"),
       ListPreference(
         title: "File Name",

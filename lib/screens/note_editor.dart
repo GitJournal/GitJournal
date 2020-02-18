@@ -6,6 +6,7 @@ import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/editors/markdown_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
 import 'package:gitjournal/editors/checklist_editor.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
@@ -51,6 +52,20 @@ class NoteEditorState extends State<NoteEditor> {
 
   NoteEditorState.fromNote(this.note) {
     originalNoteData = MdYamlDoc.from(note.data);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    switch (Settings.instance.defaultEditor) {
+      case SettingsEditorType.Markdown:
+        editorType = EditorType.Markdown;
+        break;
+      case SettingsEditorType.Raw:
+        editorType = EditorType.Raw;
+        break;
+    }
   }
 
   @override

@@ -22,6 +22,7 @@ class Settings {
 
   RemoteSyncFrequency remoteSyncFrequency = RemoteSyncFrequency.Default;
   SortingMode sortingMode = SortingMode.Default;
+  SettingsEditorType defaultEditor = SettingsEditorType.Default;
   int version = 0;
 
   void load(SharedPreferences pref) {
@@ -44,6 +45,8 @@ class Settings {
         pref.getString("remoteSyncFrequency"));
 
     sortingMode = SortingMode.fromInternalString(pref.getString("sortingMode"));
+    defaultEditor =
+        SettingsEditorType.fromInternalString(pref.getString("defaultEditor"));
 
     version = pref.getInt("settingsVersion") ?? version;
   }
@@ -60,6 +63,7 @@ class Settings {
     pref.setString(
         "remoteSyncFrequency", remoteSyncFrequency.toInternalString());
     pref.setString("sortingMode", sortingMode.toInternalString());
+    pref.setString("defaultEditor", defaultEditor.toInternalString());
     pref.setInt("settingsVersion", version);
 
     // Shouldn't we check if something has actually changed?
@@ -77,6 +81,7 @@ class Settings {
       "collectCrashReports": collectCrashReports,
       "yamlModifiedKey": yamlModifiedKey,
       "defaultNewNoteFolder": defaultNewNoteFolder,
+      "defaultEditor": defaultEditor.toInternalString(),
       "version": version,
     };
   }
@@ -234,6 +239,53 @@ class SortingMode {
   @override
   String toString() {
     assert(false, "SortingMode toString should never be called");
+    return "";
+  }
+}
+
+class SettingsEditorType {
+  static const Markdown = SettingsEditorType("Markdown", "Markdown");
+  static const Raw = SettingsEditorType("Raw", "Raw");
+  static const Default = Markdown;
+
+  final String _str;
+  final String _publicString;
+  const SettingsEditorType(this._publicString, this._str);
+
+  String toInternalString() {
+    return _str;
+  }
+
+  String toPublicString() {
+    return _publicString;
+  }
+
+  static const options = <SettingsEditorType>[
+    Markdown,
+    Raw,
+  ];
+
+  static SettingsEditorType fromInternalString(String str) {
+    for (var opt in options) {
+      if (opt.toInternalString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  static SettingsEditorType fromPublicString(String str) {
+    for (var opt in options) {
+      if (opt.toPublicString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  @override
+  String toString() {
+    assert(false, "EditorType toString should never be called");
     return "";
   }
 }
