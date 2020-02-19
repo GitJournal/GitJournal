@@ -70,8 +70,6 @@ class ChecklistEditorState extends State<ChecklistEditor>
   @override
   void dispose() {
     _titleTextController.dispose();
-    focusNodes.values.forEach((fn) => fn.dispose());
-
     super.dispose();
   }
 
