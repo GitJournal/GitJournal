@@ -78,7 +78,9 @@ class ChecklistEditorState extends State<ChecklistEditor>
     var itemTiles = <Widget>[];
     for (var i = 0; i < checklist.items.length; i++) {
       var item = checklist.items[i];
-      itemTiles.add(_buildTile(item, i));
+      var autofocus =
+          widget.autofocusOnEditor && (i == checklist.items.length - 1);
+      itemTiles.add(_buildTile(item, i, autofocus));
     }
     itemTiles.add(AddItemButton(
       key: UniqueKey(),
@@ -136,11 +138,12 @@ class ChecklistEditorState extends State<ChecklistEditor>
     return note;
   }
 
-  ChecklistItemTile _buildTile(ChecklistItem item, int index) {
+  ChecklistItemTile _buildTile(ChecklistItem item, int index, bool autofocus) {
     return ChecklistItemTile(
       key: UniqueKey(),
       item: item,
       focusNode: focusNodes[item],
+      autofocus: autofocus,
       statusChanged: (bool newVal) {
         setState(() {
           item.checked = newVal;
@@ -228,6 +231,7 @@ class ChecklistItemTile extends StatefulWidget {
   final Function itemRemoved;
   final Function itemFinished;
   final FocusNode focusNode;
+  final bool autofocus;
 
   ChecklistItemTile({
     Key key,
@@ -237,6 +241,7 @@ class ChecklistItemTile extends StatefulWidget {
     @required this.itemRemoved,
     @required this.itemFinished,
     @required this.focusNode,
+    this.autofocus = false,
   }) : super(key: key);
 
   @override
@@ -281,6 +286,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
     }
 
     var editor = TextField(
+      autofocus: widget.autofocus,
       focusNode: widget.focusNode,
       keyboardType: TextInputType.text,
       maxLines: null,
