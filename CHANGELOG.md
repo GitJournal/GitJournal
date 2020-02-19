@@ -1,3 +1,8 @@
+## [1.41] - 2020-02-17
+* Support custom SSH Keys
+* Polish the Checklist Editor
+* Allow YAML Metadata to be disabled
+
 ## [1.40] - 2020-02-16
 * Polish the Checklist Editor
 * Add emoji support
