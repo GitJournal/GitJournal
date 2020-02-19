@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class PublicKeyEditor extends StatelessWidget {
-  final TextEditingController controller;
+  final Function valueChanged;
 
-  PublicKeyEditor(this.controller);
+  PublicKeyEditor(this.valueChanged);
 
   @override
   Widget build(BuildContext context) {
-    return KeyEditor(controller, _validator);
+    return KeyEditor(valueChanged, _validator);
   }
 
   String _validator(String val) {
@@ -19,13 +19,13 @@ class PublicKeyEditor extends StatelessWidget {
 }
 
 class PrivateKeyEditor extends StatelessWidget {
-  final TextEditingController controller;
+  final Function valueChanged;
 
-  PrivateKeyEditor(this.controller);
+  PrivateKeyEditor(this.valueChanged);
 
   @override
   Widget build(BuildContext context) {
-    return KeyEditor(controller, _validator);
+    return KeyEditor(valueChanged, _validator);
   }
 
   String _validator(String val) {
@@ -40,13 +40,33 @@ class PrivateKeyEditor extends StatelessWidget {
 }
 
 class KeyEditor extends StatelessWidget {
-  final TextEditingController controller;
+  final Function valueChanged;
   final Function validator;
 
-  KeyEditor(this.controller, this.validator);
+  KeyEditor(this.valueChanged, this.validator);
 
   @override
   Widget build(BuildContext context) {
+    var form = Form(
+      child: Builder(builder: (context) {
+        return TextFormField(
+          textAlign: TextAlign.left,
+          maxLines: null,
+          style: Theme.of(context).textTheme.body1,
+          autovalidate: true,
+          validator: validator,
+          onChanged: (String newVal) {
+            if (Form.of(context).validate()) {
+              valueChanged(newVal);
+            } else {
+              valueChanged("");
+            }
+          },
+        );
+      }),
+      autovalidate: true,
+    );
+
     return SizedBox(
       width: double.infinity,
       height: 80.0,
@@ -55,14 +75,7 @@ class KeyEditor extends StatelessWidget {
         child: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              controller: controller,
-              textAlign: TextAlign.left,
-              maxLines: null,
-              style: Theme.of(context).textTheme.body1,
-              autovalidate: true,
-              validator: validator,
-            ),
+            child: form,
           ),
         ),
       ),

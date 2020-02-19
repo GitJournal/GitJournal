@@ -207,11 +207,14 @@ class GitHostUserProvidedKeys extends StatefulWidget {
 }
 
 class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
+  String publicKey = "";
+  String privateKey = "";
   final _publicKeyController = TextEditingController();
   final _privateKeyController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    var nextEnabled = publicKey.isNotEmpty && privateKey.isNotEmpty;
     return Container(
       child: Column(
         children: <Widget>[
@@ -220,18 +223,30 @@ class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
             style: Theme.of(context).textTheme.headline,
           ),
           const SizedBox(height: 8.0),
-          PublicKeyEditor(_publicKeyController),
+          PublicKeyEditor((String newVal) {
+            setState(() {
+              publicKey = newVal;
+            });
+          }),
           const SizedBox(height: 8.0),
           Text(
             "Private Key -",
             style: Theme.of(context).textTheme.headline,
           ),
           const SizedBox(height: 8.0),
-          PrivateKeyEditor(_privateKeyController),
+          PrivateKeyEditor((String newVal) {
+            setState(() {
+              privateKey = newVal;
+            });
+          }),
           const SizedBox(height: 16.0),
           GitHostSetupButton(
             text: "Next",
             onPressed: () {
+              if (!nextEnabled) {
+                return;
+              }
+
               var publicKey = _publicKeyController.text.trim();
               var privateKey = _privateKeyController.text.trim();
               widget.doneFunction(publicKey, privateKey);
