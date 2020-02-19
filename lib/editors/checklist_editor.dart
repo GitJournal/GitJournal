@@ -124,7 +124,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
       floatingActionButton: buildFAB(widget, this),
       body: Column(
         children: <Widget>[
-          titleEditor,
+          if (widget.note.canHaveMetadata) titleEditor,
           Expanded(child: FocusScope(child: checklistWidget)),
         ],
       ),

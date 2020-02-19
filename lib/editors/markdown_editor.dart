@@ -66,7 +66,7 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            _NoteTitleEditor(_titleTextController),
+            if (note.canHaveMetadata) _NoteTitleEditor(_titleTextController),
             _NoteBodyEditor(
               _textController,
               autofocus: widget.autofocusOnEditor,
