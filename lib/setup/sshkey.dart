@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:function_types/function_types.dart';
 
 import 'button.dart';
-import 'loading.dart';
 import 'key_editors.dart';
+import 'loading.dart';
 
 class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
   final Func0<void> doneFunction;
