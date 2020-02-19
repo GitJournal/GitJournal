@@ -3,6 +3,7 @@ import 'package:function_types/function_types.dart';
 
 import 'button.dart';
 import 'loading.dart';
+import 'key_editors.dart';
 
 class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
   final Func0<void> doneFunction;
@@ -219,13 +220,14 @@ class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
             style: Theme.of(context).textTheme.headline,
           ),
           const SizedBox(height: 8.0),
-          KeyEditor(_publicKeyController),
+          PublicKeyEditor(_publicKeyController),
           const SizedBox(height: 8.0),
           Text(
             "Private Key -",
             style: Theme.of(context).textTheme.headline,
           ),
-          KeyEditor(_privateKeyController),
+          const SizedBox(height: 8.0),
+          PrivateKeyEditor(_privateKeyController),
           const SizedBox(height: 16.0),
           GitHostSetupButton(
             text: "Next",
@@ -238,35 +240,6 @@ class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
         ],
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
-      ),
-    );
-  }
-}
-
-// FIXME: vHanda: Add validation
-class KeyEditor extends StatelessWidget {
-  final TextEditingController controller;
-
-  KeyEditor(this.controller);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 80.0,
-      child: Container(
-        color: Theme.of(context).buttonColor,
-        child: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: controller,
-              textAlign: TextAlign.left,
-              maxLines: null,
-              style: Theme.of(context).textTheme.body1,
-            ),
-          ),
-        ),
       ),
     );
   }
