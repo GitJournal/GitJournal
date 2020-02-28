@@ -121,7 +121,6 @@ class ChecklistEditorState extends State<ChecklistEditor>
 
     return Scaffold(
       appBar: buildEditorAppBar(widget, this),
-      floatingActionButton: buildFAB(widget, this),
       body: Column(
         children: <Widget>[
           if (widget.note.canHaveMetadata) titleEditor,

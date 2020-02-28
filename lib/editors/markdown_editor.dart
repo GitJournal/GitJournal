@@ -87,7 +87,6 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
 
     return Scaffold(
       appBar: buildEditorAppBar(widget, this, extraButtons: [extraButton]),
-      floatingActionButton: buildFAB(widget, this),
       body: body,
     );
   }

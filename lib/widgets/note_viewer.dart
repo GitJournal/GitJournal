@@ -60,7 +60,6 @@ class NoteViewer extends StatelessWidget {
               },
             ),
           ),
-          const SizedBox(height: 64.0),
           // _buildFooter(context),
         ],
         crossAxisAlignment: CrossAxisAlignment.start,

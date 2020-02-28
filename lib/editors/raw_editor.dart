@@ -70,7 +70,6 @@ class RawEditorState extends State<RawEditor> implements EditorState {
 
     return Scaffold(
       appBar: buildEditorAppBar(widget, this),
-      floatingActionButton: buildFAB(widget, this),
       body: editor,
     );
   }

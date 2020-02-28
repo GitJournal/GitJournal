@@ -85,12 +85,3 @@ AppBar buildEditorAppBar(
     ],
   );
 }
-
-FloatingActionButton buildFAB(Editor editor, EditorState editorState) {
-  return FloatingActionButton(
-    child: const Icon(Icons.check),
-    onPressed: () {
-      editor.exitEditorSelected(editorState.getNote());
-    },
-  );
-}
