@@ -304,4 +304,13 @@ class NotesFolder
   int compareTo(NotesFolder other) {
     return folderPath.compareTo(other.folderPath);
   }
+
+  List<Note> getAllNotes() {
+    var notes = List.from(_notes);
+
+    for (var folder in _folders) {
+      notes.addAll(folder.getAllNotes());
+    }
+    return notes;
+  }
 }

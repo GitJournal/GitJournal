@@ -54,10 +54,43 @@ class NotesCache {
       }
 
       var note = Note(parent, fullFilePath);
+      note.load();
       parent.add(note);
     }
 
     return rootFolder;
+  }
+
+  Future buildCache(NotesFolder rootFolder, NotesCacheSortOrder sortOrder) {
+    // FIXME: This could be optimized quite a bit
+    var files = rootFolder.getAllNotes();
+    files.sort(_buildSortingFunc(sortOrder));
+    files = files.sublist(0, 10);
+    var fileList = files.map((f) => f.filePath);
+
+    return saveToDisk(fileList);
+  }
+
+  Function _buildSortingFunc(NotesCacheSortOrder order) {
+    switch (order) {
+      case NotesCacheSortOrder.Modified:
+        return (Note a, Note b) {
+          var a1 = a.modified ?? a.fileLastModified;
+          var b1 = b.modified ?? b.fileLastModified;
+          return a1.isBefore(b1);
+        };
+
+      // FIXE: We should have an actual created date!
+      case NotesCacheSortOrder.Created:
+        return (Note a, Note b) {
+          var a1 = a.created ?? a.fileLastModified;
+          var b1 = b.created ?? b.fileLastModified;
+          return a1.isBefore(b1);
+        };
+    }
+
+    assert(false, "Why is the sorting Func nill?");
+    return () => {};
   }
 
   @visibleForTesting
@@ -81,8 +114,3 @@ class NotesCache {
     return File(filePath).writeAsString(contents);
   }
 }
-
-//
-// To Add: buildCache(NotesFolder rootFolder)
-// To Add: either noteAdded / noteRemoved
-//         or monitor the root NotesFolder directly
