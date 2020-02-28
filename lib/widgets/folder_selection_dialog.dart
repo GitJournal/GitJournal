@@ -130,7 +130,7 @@ class FolderMiniTileState extends State<FolderMiniTile> {
     if (!_isExpanded) return Container();
 
     var children = <FolderMiniTile>[];
-    widget.folder.getFolders().forEach((folder) {
+    widget.folder.subFolders.forEach((folder) {
       children.add(FolderMiniTile(
         folder: folder,
         onTap: widget.onTap,

@@ -105,7 +105,7 @@ class NotesFolder
     return _notes;
   }
 
-  List<NotesFolder> getFolders() {
+  List<NotesFolder> get subFolders {
     // FIXME: This is really not ideal
     _folders.sort();
     return _folders;

@@ -160,9 +160,9 @@ class Note with ChangeNotifier implements Comparable<Note> {
   // FIXME: What about error handling?
   Future<void> save() async {
     assert(_filePath != null);
-    assert(data != null);
-    assert(data.body != null);
-    assert(data.props != null);
+    assert(_data != null);
+    assert(_data.body != null);
+    assert(_data.props != null);
 
     var file = File(filePath);
     var contents = _serializer.encode(data);
