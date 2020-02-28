@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/editors/journal_editor.dart';
 import 'package:gitjournal/editors/markdown_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
 import 'package:gitjournal/editors/checklist_editor.dart';
@@ -31,7 +32,7 @@ class NoteEditor extends StatefulWidget {
   }
 }
 
-enum EditorType { Markdown, Raw, Checklist }
+enum EditorType { Markdown, Raw, Checklist, Journal }
 
 class NoteEditorState extends State<NoteEditor> {
   Note note;
@@ -41,6 +42,7 @@ class NoteEditorState extends State<NoteEditor> {
   final _rawEditorKey = GlobalKey<RawEditorState>();
   final _markdownEditorKey = GlobalKey<MarkdownEditorState>();
   final _checklistEditorKey = GlobalKey<ChecklistEditorState>();
+  final _journalEditorKey = GlobalKey<JournalEditorState>();
 
   bool get _isNewNote {
     return widget.note == null;
@@ -117,11 +119,25 @@ class NoteEditorState extends State<NoteEditor> {
           discardChangesSelected: _discardChangesSelected,
           autofocusOnEditor: _isNewNote,
         );
+      case EditorType.Journal:
+        return JournalEditor(
+          key: _journalEditorKey,
+          note: note,
+          noteDeletionSelected: _noteDeletionSelected,
+          noteEditorChooserSelected: _noteEditorChooserSelected,
+          exitEditorSelected: _exitEditorSelected,
+          renameNoteSelected: _renameNoteSelected,
+          moveNoteToFolderSelected: _moveNoteToFolderSelected,
+          discardChangesSelected: _discardChangesSelected,
+          autofocusOnEditor: _isNewNote,
+        );
     }
     return null;
   }
 
   void _noteEditorChooserSelected(Note _note) async {
+    var onEditorChange = (EditorType et) => Navigator.of(context).pop(et);
+
     var newEditorType = await showDialog<EditorType>(
       context: context,
       builder: (BuildContext context) {
@@ -130,19 +146,25 @@ class NoteEditorState extends State<NoteEditor> {
             title: const Text("Markdown Editor"),
             value: EditorType.Markdown,
             groupValue: editorType,
-            onChanged: (EditorType et) => Navigator.of(context).pop(et),
+            onChanged: onEditorChange,
           ),
           RadioListTile<EditorType>(
             title: const Text("Raw Editor"),
             value: EditorType.Raw,
             groupValue: editorType,
-            onChanged: (EditorType et) => Navigator.of(context).pop(et),
+            onChanged: onEditorChange,
           ),
           RadioListTile<EditorType>(
             title: const Text("Checklist Editor"),
             value: EditorType.Checklist,
             groupValue: editorType,
-            onChanged: (EditorType et) => Navigator.of(context).pop(et),
+            onChanged: onEditorChange,
+          ),
+          RadioListTile<EditorType>(
+            title: const Text("Journal Editor"),
+            value: EditorType.Journal,
+            groupValue: editorType,
+            onChanged: onEditorChange,
           ),
         ];
 
@@ -264,6 +286,8 @@ class NoteEditorState extends State<NoteEditor> {
         return _rawEditorKey.currentState.getNote();
       case EditorType.Checklist:
         return _checklistEditorKey.currentState.getNote();
+      case EditorType.Journal:
+        return _journalEditorKey.currentState.getNote();
     }
     return null;
   }
