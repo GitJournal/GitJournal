@@ -4,14 +4,10 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/widgets/journal_editor_header.dart';
 
 class NoteViewer extends StatelessWidget {
   final Note note;
   const NoteViewer({Key key, @required this.note}) : super(key: key);
-
-  final bool showJournalHeader = false;
-  final bool showTitle = true;
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +41,7 @@ class NoteViewer extends StatelessWidget {
     var view = SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          if (note.created != null && showJournalHeader)
-            JournalEditorHeader(note),
-          if (showTitle && note.canHaveMetadata)
-            NoteTitleHeader(note.title),
+          if (note.canHaveMetadata) NoteTitleHeader(note.title),
           Padding(
             padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
             child: MarkdownBody(
