@@ -86,6 +86,12 @@ class SortedNotesFolder
         //               seem to be acessible via dart
         var aDt = a.created ?? a.fileLastModified;
         var bDt = b.created ?? b.fileLastModified;
+        if (aDt == null && bDt != null) {
+          return -1;
+        }
+        if (aDt != null && bDt == null) {
+          return -1;
+        }
         if (bDt == null || aDt == null) {
           return 0;
         }
@@ -94,6 +100,15 @@ class SortedNotesFolder
       case SortingMode.Modified:
         var aDt = a.modified ?? a.fileLastModified;
         var bDt = b.modified ?? b.fileLastModified;
+        if (aDt == null && bDt != null) {
+          return -1;
+        }
+        if (aDt != null && bDt == null) {
+          return -1;
+        }
+        if (bDt == null || aDt == null) {
+          return 0;
+        }
         if (bDt == null || aDt == null) {
           return 0;
         }
