@@ -306,7 +306,7 @@ class NotesFolder
   }
 
   List<Note> getAllNotes() {
-    var notes = List.from(_notes);
+    var notes = List<Note>.from(_notes);
 
     for (var folder in _folders) {
       notes.addAll(folder.getAllNotes());

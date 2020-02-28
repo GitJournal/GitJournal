@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/apis/git_migration.dart';
 import 'package:gitjournal/appstate.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes_cache.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/git_repo.dart';
 import 'package:gitjournal/settings.dart';
@@ -21,6 +22,7 @@ class StateContainer with ChangeNotifier {
   //        We should always just be modifying the 'git remotes'
   //        With that, the StateContainer can be a StatelessWidget
   GitNoteRepository _gitRepo;
+  NotesCache _notesCache;
 
   StateContainer(this.appState) {
     assert(appState.localGitRepoConfigured);
@@ -42,8 +44,19 @@ class StateContainer with ChangeNotifier {
       removeExistingRemoteClone();
     }
 
-    _loadNotes();
+    var cachePath = p.join(appState.gitBaseDirectory, "cache.json");
+    _notesCache = NotesCache(
+      filePath: cachePath,
+      notesBasePath: _gitRepo.gitDirPath,
+    );
+
+    _loadFromCache();
     _syncNotes();
+  }
+
+  void _loadFromCache() async {
+    await _notesCache.load(appState.notesFolder);
+    await _loadNotes();
   }
 
   void removeExistingRemoteClone() async {
@@ -60,6 +73,12 @@ class StateContainer with ChangeNotifier {
   Future<void> _loadNotes() async {
     // FIXME: We should report the notes that failed to load
     await appState.notesFolder.loadRecursively();
+
+    var sortOrder = NotesCacheSortOrder.Modified;
+    if (Settings.instance.sortingMode == SortingMode.Created) {
+      sortOrder = NotesCacheSortOrder.Created;
+    }
+    await _notesCache.buildCache(appState.notesFolder, sortOrder);
   }
 
   Future<void> syncNotes({bool doNotThrow = false}) async {

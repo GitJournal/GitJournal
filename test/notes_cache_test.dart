@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:gitjournal/core/notes_cache.dart';
+import 'package:gitjournal/core/notes_folder.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
@@ -38,7 +39,8 @@ void main() {
 
     test('Should create directory structure accurately', () async {
       await cache.saveToDisk(fileList);
-      var rootFolder = await cache.load();
+      var rootFolder = NotesFolder(null, '/base');
+      await cache.load(rootFolder);
 
       expect(rootFolder.subFolders.length, 2);
       expect(rootFolder.notes.length, 1);

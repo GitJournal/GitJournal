@@ -20,9 +20,8 @@ class NotesCache {
 
   void updateCache(NotesFolder rootFolder) {}
 
-  Future<NotesFolder> load() async {
+  Future load(NotesFolder rootFolder) async {
     var fileList = await loadFromDisk();
-    var rootFolder = NotesFolder(null, this.notesBasePath);
 
     var sep = Platform.pathSeparator;
     var notesBasePath = this.notesBasePath;
@@ -57,8 +56,6 @@ class NotesCache {
       note.load();
       parent.add(note);
     }
-
-    return rootFolder;
   }
 
   Future buildCache(NotesFolder rootFolder, NotesCacheSortOrder sortOrder) {
@@ -66,7 +63,7 @@ class NotesCache {
     var files = rootFolder.getAllNotes();
     files.sort(_buildSortingFunc(sortOrder));
     files = files.sublist(0, 10);
-    var fileList = files.map((f) => f.filePath);
+    var fileList = files.map((f) => f.filePath).toList();
 
     return saveToDisk(fileList);
   }
@@ -77,7 +74,7 @@ class NotesCache {
         return (Note a, Note b) {
           var a1 = a.modified ?? a.fileLastModified;
           var b1 = b.modified ?? b.fileLastModified;
-          return a1.isBefore(b1);
+          return b1.compareTo(a1);
         };
 
       // FIXE: We should have an actual created date!
@@ -85,7 +82,7 @@ class NotesCache {
         return (Note a, Note b) {
           var a1 = a.created ?? a.fileLastModified;
           var b1 = b.created ?? b.fileLastModified;
-          return a1.isBefore(b1);
+          return b1.compareTo(a1);
         };
     }
 
