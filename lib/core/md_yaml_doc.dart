@@ -34,6 +34,6 @@ class MdYamlDoc {
 
   @override
   String toString() {
-    return 'NoteData{body: $body, props: $props}';
+    return 'MdYamlDoc{body: "$body", props: $props}';
   }
 }

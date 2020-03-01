@@ -262,10 +262,20 @@ class NoteEditorState extends State<NoteEditor> {
     }
 
     if (note.data != originalNoteData) {
-      var newWithoutModified = MdYamlDoc.from(note.data);
-      newWithoutModified.props.remove(note.noteSerializer.settings.modifiedKey);
+      var newSimplified = MdYamlDoc.from(note.data);
+      newSimplified.props.remove(note.noteSerializer.settings.modifiedKey);
+      newSimplified.body = newSimplified.body.trim();
 
-      return newWithoutModified != originalNoteData;
+      var originalSimplified = MdYamlDoc.from(originalNoteData);
+      originalSimplified.props.remove(note.noteSerializer.settings.modifiedKey);
+      originalSimplified.body = originalSimplified.body.trim();
+
+      bool hasBeenModified = newSimplified != originalSimplified;
+      if (hasBeenModified) {
+        print("Note modified");
+        print("Original: $originalNoteData");
+        print("New: $newSimplified");
+      }
     }
     return false;
   }
