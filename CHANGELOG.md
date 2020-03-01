@@ -1,3 +1,8 @@
+## [1.42] - 2020-03-01
+* Add experimental Journal Editor
+* Improved loading time
+* Remove the FAB
+
 ## [1.41] - 2020-02-17
 * Support custom SSH Keys
 * Polish the Checklist Editor
