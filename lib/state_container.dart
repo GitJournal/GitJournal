@@ -56,7 +56,10 @@ class StateContainer with ChangeNotifier {
 
   void _loadFromCache() async {
     await _notesCache.load(appState.notesFolder);
+    Fimber.i("Finished loading the notes cache");
+
     await _loadNotes();
+    Fimber.i("Finished loading all the notes");
   }
 
   void removeExistingRemoteClone() async {
