@@ -57,6 +57,11 @@ class SortedNotesFolder
 
   void _noteAddedListener(int _, Note note) {
     assert(folder.notes.length == _notes.length + 1);
+    if (note.loadState != NoteLoadState.Loaded) {
+      _notes.add(note);
+      notifyNoteAdded(_notes.length - 1, note);
+      return;
+    }
 
     var i = 0;
     for (; i < _notes.length; i++) {
