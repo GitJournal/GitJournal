@@ -4,6 +4,7 @@ import 'package:fimber/fimber.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/sorted_notes_folder.dart';
+import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
@@ -13,6 +14,7 @@ import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/journal_list.dart';
 import 'package:gitjournal/widgets/note_search_delegate.dart';
 import 'package:gitjournal/widgets/sync_button.dart';
+
 import 'package:provider/provider.dart';
 
 class JournalListingScreen extends StatefulWidget {

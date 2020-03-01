@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/core/sorting_mode.dart';
 
 import 'note.dart';
 import 'notes_folder.dart';
