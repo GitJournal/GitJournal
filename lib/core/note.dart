@@ -120,6 +120,8 @@ class Note with ChangeNotifier implements Comparable<Note> {
   }
 
   String get summary {
+    if (_loadState != NoteLoadState.Loaded) return "";
+
     _summary ??= stripMarkdownFormatting(body);
     return _summary;
   }
