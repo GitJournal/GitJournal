@@ -40,6 +40,7 @@ class Note with ChangeNotifier implements Comparable<Note> {
 
   Note.newNote(this.parent) {
     created = DateTime.now();
+    _loadState = NoteLoadState.Loaded;
   }
 
   String get filePath {
