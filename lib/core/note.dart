@@ -124,6 +124,10 @@ class Note with ChangeNotifier implements Comparable<Note> {
     return _summary;
   }
 
+  NoteLoadState get loadState {
+    return _loadState;
+  }
+
   Future<NoteLoadState> load() async {
     assert(_filePath != null);
     assert(_filePath.isNotEmpty);

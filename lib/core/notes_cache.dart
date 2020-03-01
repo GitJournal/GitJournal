@@ -2,15 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:path/path.dart' as p;
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
-
-enum NotesCacheSortOrder {
-  Modified,
-  Created,
-}
 
 class NotesCache {
   final String filePath;
@@ -58,9 +54,12 @@ class NotesCache {
     }
   }
 
-  Future buildCache(NotesFolder rootFolder, NotesCacheSortOrder sortOrder) {
+  Future buildCache(NotesFolder rootFolder, SortingMode sortOrder) {
+    print("Saving the NotesCache");
     // FIXME: This could be optimized quite a bit
     var files = rootFolder.getAllNotes();
+    assert(files.every((n) => n.loadState == NoteLoadState.Loaded));
+
     files.sort(_buildSortingFunc(sortOrder));
     files = files.sublist(0, 10);
     var fileList = files.map((f) => f.filePath).toList();
@@ -68,21 +67,39 @@ class NotesCache {
     return saveToDisk(fileList);
   }
 
-  Function _buildSortingFunc(NotesCacheSortOrder order) {
+  Function _buildSortingFunc(SortingMode order) {
     switch (order) {
-      case NotesCacheSortOrder.Modified:
+      case SortingMode.Modified:
         return (Note a, Note b) {
-          var a1 = a.modified ?? a.fileLastModified;
-          var b1 = b.modified ?? b.fileLastModified;
-          return b1.compareTo(a1);
+          var aDt = a.modified ?? a.fileLastModified;
+          var bDt = b.modified ?? b.fileLastModified;
+          if (aDt == null && bDt != null) {
+            return -1;
+          }
+          if (aDt != null && bDt == null) {
+            return -1;
+          }
+          if (bDt == null || aDt == null) {
+            return 0;
+          }
+          return bDt.compareTo(aDt);
         };
 
       // FIXE: We should have an actual created date!
-      case NotesCacheSortOrder.Created:
+      case SortingMode.Created:
         return (Note a, Note b) {
-          var a1 = a.created ?? a.fileLastModified;
-          var b1 = b.created ?? b.fileLastModified;
-          return b1.compareTo(a1);
+          var aDt = a.created ?? a.fileLastModified;
+          var bDt = b.created ?? b.fileLastModified;
+          if (aDt == null && bDt != null) {
+            return -1;
+          }
+          if (aDt != null && bDt == null) {
+            return -1;
+          }
+          if (bDt == null || aDt == null) {
+            return 0;
+          }
+          return bDt.compareTo(aDt);
         };
     }
 
