@@ -62,7 +62,7 @@ class SortingMode {
             return -1;
           }
           if (bDt == null || aDt == null) {
-            return 0;
+            return b.fileName.compareTo(a.fileName);
           }
           return bDt.compareTo(aDt);
         };
@@ -79,7 +79,7 @@ class SortingMode {
             return -1;
           }
           if (bDt == null || aDt == null) {
-            return 0;
+            return b.fileName.compareTo(a.fileName);
           }
           return bDt.compareTo(aDt);
         };
