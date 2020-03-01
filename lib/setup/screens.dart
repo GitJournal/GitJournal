@@ -477,9 +477,20 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       await repo.commit(message: "Add gitignore file");
     }
 
+    String hostType = "Unknown";
+    if (_gitCloneUrl.contains("github.com")) {
+      hostType = "GitHub";
+    } else if (_gitCloneUrl.contains("gitlab.org")) {
+      hostType = "GitLab.org";
+    } else if (_gitCloneUrl.contains("gitlab")) {
+      hostType = "GitLab";
+    }
+
     getAnalytics().logEvent(
       name: "onboarding_complete",
-      parameters: <String, dynamic>{},
+      parameters: <String, dynamic>{
+        "host_type": hostType,
+      },
     );
     Navigator.pop(context);
     widget.onCompletedFunction();
