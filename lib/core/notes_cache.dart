@@ -54,57 +54,17 @@ class NotesCache {
     }
   }
 
-  Future buildCache(NotesFolder rootFolder, SortingMode sortOrder) {
+  Future buildCache(NotesFolder rootFolder, SortingMode sortingMode) {
     print("Saving the NotesCache");
     // FIXME: This could be optimized quite a bit
     var files = rootFolder.getAllNotes();
     assert(files.every((n) => n.loadState == NoteLoadState.Loaded));
 
-    files.sort(_buildSortingFunc(sortOrder));
+    files.sort(sortingMode.sortingFunction());
     files = files.sublist(0, 10);
     var fileList = files.map((f) => f.filePath).toList();
 
     return saveToDisk(fileList);
-  }
-
-  Function _buildSortingFunc(SortingMode order) {
-    switch (order) {
-      case SortingMode.Modified:
-        return (Note a, Note b) {
-          var aDt = a.modified ?? a.fileLastModified;
-          var bDt = b.modified ?? b.fileLastModified;
-          if (aDt == null && bDt != null) {
-            return -1;
-          }
-          if (aDt != null && bDt == null) {
-            return -1;
-          }
-          if (bDt == null || aDt == null) {
-            return 0;
-          }
-          return bDt.compareTo(aDt);
-        };
-
-      // FIXE: We should have an actual created date!
-      case SortingMode.Created:
-        return (Note a, Note b) {
-          var aDt = a.created ?? a.fileLastModified;
-          var bDt = b.created ?? b.fileLastModified;
-          if (aDt == null && bDt != null) {
-            return -1;
-          }
-          if (aDt != null && bDt == null) {
-            return -1;
-          }
-          if (bDt == null || aDt == null) {
-            return 0;
-          }
-          return bDt.compareTo(aDt);
-        };
-    }
-
-    assert(false, "Why is the sorting Func nill?");
-    return () => {};
   }
 
   @visibleForTesting

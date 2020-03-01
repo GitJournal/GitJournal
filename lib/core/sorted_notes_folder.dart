@@ -9,16 +9,21 @@ class SortedNotesFolder
     with NotesFolderNotifier
     implements NotesFolderReadOnly {
   final NotesFolder folder;
-  SortingMode sortingMode;
+
+  SortingMode _sortingMode;
+  NoteSortingFunction _sortFunc;
 
   List<Note> _notes = [];
 
   SortedNotesFolder({
     @required this.folder,
-    @required this.sortingMode,
+    @required SortingMode sortingMode,
   }) {
+    _sortingMode = sortingMode;
+    _sortFunc = _sortingMode.sortingFunction();
+
     _notes = List<Note>.from(folder.notes);
-    _notes.sort(_compare);
+    _notes.sort(_sortFunc);
 
     folder.addFolderAddedListener(_folderAddedListener);
     folder.addFolderRemovedListener(_folderRemovedListener);
@@ -56,7 +61,7 @@ class SortedNotesFolder
     var i = 0;
     for (; i < _notes.length; i++) {
       var n = _notes[i];
-      if (_compare(n, note) > 0) {
+      if (_sortFunc(n, note) > 0) {
         break;
       }
     }
@@ -75,46 +80,8 @@ class SortedNotesFolder
   }
 
   void _entityChanged() {
-    _notes.sort(_compare);
+    _notes.sort(_sortFunc);
     notifyListeners();
-  }
-
-  int _compare(Note a, Note b) {
-    switch (sortingMode) {
-      case SortingMode.Created:
-        // vHanda FIXME: We should use when the file was created in the FS, but that doesn't
-        //               seem to be acessible via dart
-        var aDt = a.created ?? a.fileLastModified;
-        var bDt = b.created ?? b.fileLastModified;
-        if (aDt == null && bDt != null) {
-          return -1;
-        }
-        if (aDt != null && bDt == null) {
-          return -1;
-        }
-        if (bDt == null || aDt == null) {
-          return 0;
-        }
-        return bDt.compareTo(aDt);
-
-      case SortingMode.Modified:
-        var aDt = a.modified ?? a.fileLastModified;
-        var bDt = b.modified ?? b.fileLastModified;
-        if (aDt == null && bDt != null) {
-          return -1;
-        }
-        if (aDt != null && bDt == null) {
-          return -1;
-        }
-        if (bDt == null || aDt == null) {
-          return 0;
-        }
-        if (bDt == null || aDt == null) {
-          return 0;
-        }
-        return bDt.compareTo(aDt);
-    }
-    return 0;
   }
 
   @override
@@ -127,8 +94,9 @@ class SortedNotesFolder
   bool get isEmpty => folder.isEmpty;
 
   void changeSortingMode(SortingMode sm) {
-    sortingMode = sm;
-    _notes.sort(_compare);
+    _notes.sort(_sortFunc);
     notifyListeners();
   }
+
+  SortingMode get sortingMode => _sortingMode;
 }
