@@ -144,7 +144,7 @@ class _JournalListState extends State<JournalList> {
 
   Widget _buildRow(BuildContext context, Note note) {
     var textTheme = Theme.of(context).textTheme;
-    var title = note.title;
+    var title = note.canHaveMetadata ? note.title : note.fileName;
     Widget titleWidget = Text(title, style: textTheme.title);
     if (title.isEmpty) {
       var date = note.modified ?? note.created ?? note.fileLastModified;
