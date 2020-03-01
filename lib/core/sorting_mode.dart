@@ -48,16 +48,15 @@ class SortingMode {
     return "";
   }
 
+  // vHanda FIXME: The modified and created should come from Git if not present in the document
   NoteSortingFunction sortingFunction() {
     switch (_str) {
       case "Created":
         return (Note a, Note b) {
-          // vHanda FIXME: We should use when the file was created in the FS, but that doesn't
-          //               seem to be acessible via dart
-          var aDt = a.created ?? a.fileLastModified;
-          var bDt = b.created ?? b.fileLastModified;
+          var aDt = a.created;
+          var bDt = b.created;
           if (aDt == null && bDt != null) {
-            return -1;
+            return 1;
           }
           if (aDt != null && bDt == null) {
             return -1;
@@ -71,16 +70,13 @@ class SortingMode {
       case "Modified":
       default:
         return (Note a, Note b) {
-          var aDt = a.modified ?? a.fileLastModified;
-          var bDt = b.modified ?? b.fileLastModified;
+          var aDt = a.modified;
+          var bDt = b.modified;
           if (aDt == null && bDt != null) {
-            return -1;
+            return 1;
           }
           if (aDt != null && bDt == null) {
             return -1;
-          }
-          if (bDt == null || aDt == null) {
-            return 0;
           }
           if (bDt == null || aDt == null) {
             return 0;
