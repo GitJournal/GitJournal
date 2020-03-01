@@ -477,23 +477,36 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       await repo.commit(message: "Add gitignore file");
     }
 
-    String hostType = "Unknown";
-    if (_gitCloneUrl.contains("github.com")) {
-      hostType = "GitHub";
-    } else if (_gitCloneUrl.contains("gitlab.org")) {
-      hostType = "GitLab.org";
-    } else if (_gitCloneUrl.contains("gitlab")) {
-      hostType = "GitLab";
-    }
-
     getAnalytics().logEvent(
       name: "onboarding_complete",
-      parameters: <String, dynamic>{
-        "host_type": hostType,
-      },
+      parameters: _buildOnboardingAnalytics(),
     );
     Navigator.pop(context);
     widget.onCompletedFunction();
+  }
+
+  Map<String, dynamic> _buildOnboardingAnalytics() {
+    var map = <String, dynamic>{};
+
+    if (_gitCloneUrl.contains("github.com")) {
+      map["host_type"] = "GitHub";
+    } else if (_gitCloneUrl.contains("gitlab.org")) {
+      map["host_type"] = "GitLab.org";
+    } else if (_gitCloneUrl.contains("gitlab")) {
+      map["host_type"] = "GitLab";
+    }
+
+    var ch0 = _pageChoice[0] as PageChoice0;
+    map["provider_choice"] = ch0.toString().replaceFirst("PageChoice0.", "");
+
+    var ch1 = _pageChoice[1] as PageChoice1;
+    map["setup_manner"] = ch1.toString().replaceFirst("PageChoice1.", "");
+
+    map["key_generation"] = _keyGenerationChoice
+        .toString()
+        .replaceFirst("KeyGenerationChoice.", "");
+
+    return map;
   }
 
   Future _removeExistingClone(String baseDirPath) async {
