@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
@@ -61,7 +62,7 @@ class NotesCache {
     assert(files.every((n) => n.loadState == NoteLoadState.Loaded));
 
     files.sort(sortingMode.sortingFunction());
-    files = files.sublist(0, 10);
+    files = files.sublist(0, min(10, files.length));
     var fileList = files.map((f) => f.filePath).toList();
 
     return saveToDisk(fileList);
