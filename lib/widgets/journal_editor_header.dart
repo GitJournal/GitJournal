@@ -9,6 +9,9 @@ class JournalEditorHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (note.created == null) {
+      return Container();
+    }
     var dateStr = DateFormat('MMMM, yyyy').format(note.created);
     var timeStr = DateFormat('EEEE HH:mm').format(note.created);
 
