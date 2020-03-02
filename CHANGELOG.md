@@ -1,3 +1,6 @@
+## [1.43] - 2020-03-02
+* BUG: Fix crash in NotesCache
+
 ## [1.42] - 2020-03-01
 * Add experimental Journal Editor
 * Improved loading time
