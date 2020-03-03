@@ -275,6 +275,7 @@ class NoteEditorState extends State<NoteEditor> {
         print("Note modified");
         print("Original: $originalNoteData");
         print("New: $newSimplified");
+        return true;
       }
     }
     return false;
