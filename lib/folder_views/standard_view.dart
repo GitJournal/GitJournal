@@ -33,35 +33,19 @@ class StandardView extends StatelessWidget {
 
   Widget _buildRow(BuildContext context, Note note) {
     var textTheme = Theme.of(context).textTheme;
-    var title = note.canHaveMetadata ? note.title : note.fileName;
+
+    var title = note.title;
+    if (title == null || title.isEmpty) {
+      title = note.fileName;
+    }
     Widget titleWidget = Text(title, style: textTheme.title);
-    if (title.isEmpty) {
-      DateTime date;
-      if (Settings.instance.sortingMode == SortingMode.Modified) {
-        date = note.modified;
-      } else if (Settings.instance.sortingMode == SortingMode.Created) {
-        date = note.created;
-      }
-      if (date != null) {
-        var formatter = DateFormat('dd MMM, yyyy  ');
-        var dateStr = formatter.format(date);
+    Widget trailing;
 
-        var timeFormatter = DateFormat('Hm');
-        var time = timeFormatter.format(date);
-
-        var timeColor = textTheme.body1.color.withAlpha(100);
-
-        titleWidget = Row(
-          children: <Widget>[
-            Text(dateStr, style: textTheme.title),
-            Text(time, style: textTheme.body1.copyWith(color: timeColor)),
-          ],
-          crossAxisAlignment: CrossAxisAlignment.baseline,
-          textBaseline: TextBaseline.alphabetic,
-        );
-      } else {
-        titleWidget = Text(note.fileName, style: textTheme.title);
-      }
+    var date = note.modified ?? note.created;
+    if (date != null) {
+      var formatter = DateFormat('dd MMM, yyyy');
+      var dateStr = formatter.format(date);
+      trailing = Text(dateStr, style: textTheme.caption);
     }
 
     var children = <Widget>[
@@ -77,6 +61,7 @@ class StandardView extends StatelessWidget {
     var tile = ListTile(
       isThreeLine: true,
       title: titleWidget,
+      trailing: trailing,
       subtitle: Column(
         children: children,
         crossAxisAlignment: CrossAxisAlignment.start,
