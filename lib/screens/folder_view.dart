@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fimber/fimber.dart';
 
-import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/sorted_notes_folder.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
@@ -11,9 +9,9 @@ import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
-import 'package:gitjournal/widgets/journal_list.dart';
 import 'package:gitjournal/widgets/note_search_delegate.dart';
 import 'package:gitjournal/widgets/sync_button.dart';
+import 'package:gitjournal/folder_views/common.dart';
 
 import 'package:provider/provider.dart';
 
@@ -28,6 +26,7 @@ class FolderView extends StatefulWidget {
 
 class _FolderViewState extends State<FolderView> {
   SortedNotesFolder sortedNotesFolder;
+  FolderViewType _viewType;
 
   @override
   void initState() {
@@ -36,6 +35,7 @@ class _FolderViewState extends State<FolderView> {
       folder: widget.notesFolder,
       sortingMode: Settings.instance.sortingMode,
     );
+    _viewType = FolderViewType.Standard;
   }
 
   @override
@@ -53,6 +53,18 @@ class _FolderViewState extends State<FolderView> {
         ? "Notes"
         : widget.notesFolder.pathSpec();
 
+    var folderView = Builder(
+      builder: (BuildContext context) {
+        const emptyText = "Let's add some notes?";
+        return buildFolderView(
+          context,
+          _viewType,
+          sortedNotesFolder,
+          emptyText,
+        );
+      },
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -64,7 +76,10 @@ class _FolderViewState extends State<FolderView> {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: NoteSearchDelegate(sortedNotesFolder.notes),
+                delegate: NoteSearchDelegate(
+                  sortedNotesFolder.notes,
+                  _viewType,
+                ),
               );
             },
           ),
@@ -78,7 +93,7 @@ class _FolderViewState extends State<FolderView> {
       body: Center(
         child: Builder(
           builder: (context) => RefreshIndicator(
-            child: Scrollbar(child: buildJournalList(sortedNotesFolder)),
+            child: Scrollbar(child: folderView),
             onRefresh: () async => _syncRepo(context),
           ),
         ),
@@ -100,29 +115,6 @@ class _FolderViewState extends State<FolderView> {
     var route = MaterialPageRoute(
         builder: (context) => NoteEditor.newNote(widget.notesFolder));
     Navigator.of(context).push(route);
-  }
-
-  Widget buildJournalList(NotesFolderReadOnly folder) {
-    return Builder(
-      builder: (context) {
-        return JournalList(
-          folder: folder,
-          noteSelectedFunction: (Note note) async {
-            var route = MaterialPageRoute(
-              builder: (context) => NoteEditor.fromNote(note),
-            );
-            var showUndoSnackBar = await Navigator.of(context).push(route);
-            if (showUndoSnackBar != null) {
-              Fimber.d("Showing an undo snackbar");
-
-              var snackBar = buildUndoDeleteSnackbar(context, note);
-              Scaffold.of(context).showSnackBar(snackBar);
-            }
-          },
-          emptyText: "Let's add some notes?",
-        );
-      },
-    );
   }
 
   void _sortButtonPressed() async {

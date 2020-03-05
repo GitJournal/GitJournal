@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:fimber/fimber.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/virtual_notes_folder.dart';
-import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/themes.dart';
-import 'package:gitjournal/utils.dart';
-import 'package:gitjournal/widgets/journal_list.dart';
+
+import 'package:gitjournal/folder_views/common.dart';
 
 class NoteSearchDelegate extends SearchDelegate<Note> {
   final List<Note> notes;
+  final FolderViewType viewType;
 
-  NoteSearchDelegate(this.notes);
+  NoteSearchDelegate(this.notes, this.viewType);
 
   // Workaround because of https://github.com/flutter/flutter/issues/32180
   @override
@@ -54,15 +53,15 @@ class NoteSearchDelegate extends SearchDelegate<Note> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return buildJournalList(context, query);
+    return buildView(context, query);
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return buildJournalList(context, query);
+    return buildView(context, query);
   }
 
-  JournalList buildJournalList(BuildContext context, String query) {
+  Widget buildView(BuildContext context, String query) {
     // TODO: This should be made far more efficient
     var q = query.toLowerCase();
     var filteredNotes = notes.where((note) {
@@ -72,23 +71,9 @@ class NoteSearchDelegate extends SearchDelegate<Note> {
       return note.body.toLowerCase().contains(q);
     }).toList();
 
-    Widget journalList = JournalList(
-      folder: VirtualNotesFolder(filteredNotes),
-      noteSelectedFunction: (Note note) async {
-        var route = MaterialPageRoute(
-          builder: (context) => NoteEditor.fromNote(note),
-        );
+    var folder = VirtualNotesFolder(filteredNotes);
+    const emptyText = "No Search Results Found";
 
-        var showUndoSnackBar = await Navigator.of(context).push(route);
-        if (showUndoSnackBar != null) {
-          Fimber.d("Showing an undo snackbar");
-
-          var snackBar = buildUndoDeleteSnackbar(context, note);
-          Scaffold.of(context).showSnackBar(snackBar);
-        }
-      },
-      emptyText: "No Search Results Found",
-    );
-    return journalList;
+    return buildFolderView(context, viewType, folder, emptyText);
   }
 }

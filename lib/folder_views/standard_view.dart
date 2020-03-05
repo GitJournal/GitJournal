@@ -1,33 +1,35 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
 import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/settings.dart';
-import 'package:intl/intl.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/icon_dismissable.dart';
-import 'package:provider/provider.dart';
 
 typedef void NoteSelectedFunction(Note note);
 
-class JournalList extends StatefulWidget {
+class StandardView extends StatefulWidget {
   final NoteSelectedFunction noteSelectedFunction;
   final NotesFolderReadOnly folder;
   final String emptyText;
 
-  JournalList({
+  StandardView({
     @required this.folder,
     @required this.noteSelectedFunction,
     @required this.emptyText,
   });
 
   @override
-  _JournalListState createState() => _JournalListState();
+  _StandardViewState createState() => _StandardViewState();
 }
 
-class _JournalListState extends State<JournalList> {
+class _StandardViewState extends State<StandardView> {
   var _listKey = GlobalKey<AnimatedListState>();
   var deletedViaDismissed = <String>[];
 
@@ -111,7 +113,7 @@ class _JournalListState extends State<JournalList> {
   Widget _buildNote(
       BuildContext context, Note note, Animation<double> animation) {
     var viewItem = IconDismissable(
-      key: ValueKey("JournalList_" + note.filePath),
+      key: ValueKey("StandardView_" + note.filePath),
       child: Hero(
         tag: note.filePath,
         child: _buildRow(context, note),
@@ -137,7 +139,7 @@ class _JournalListState extends State<JournalList> {
     );
 
     return SizeTransition(
-      key: ValueKey("JournalList_tr_" + note.filePath),
+      key: ValueKey("StandardView_tr_" + note.filePath),
       axis: Axis.vertical,
       sizeFactor: animation,
       child: viewItem,
