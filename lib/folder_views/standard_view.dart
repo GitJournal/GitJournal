@@ -4,8 +4,6 @@ import 'package:gitjournal/folder_views/list_view.dart';
 
 import 'package:intl/intl.dart';
 
-import 'package:gitjournal/core/sorting_mode.dart';
-import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 
