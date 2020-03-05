@@ -178,6 +178,12 @@ class _FolderViewState extends State<FolderView> {
             groupValue: _viewType,
             onChanged: onViewChange,
           ),
+          RadioListTile<FolderViewType>(
+            title: const Text("Compact View"),
+            value: FolderViewType.Compact,
+            groupValue: _viewType,
+            onChanged: onViewChange,
+          ),
         ];
 
         return AlertDialog(
