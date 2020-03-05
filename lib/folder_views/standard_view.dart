@@ -58,10 +58,16 @@ class StandardView extends StatelessWidget {
       ),
     ];
 
+    var titleRow = Row(
+      children: <Widget>[Expanded(child: titleWidget), trailing],
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
+    );
+
     var tile = ListTile(
       isThreeLine: true,
-      title: titleWidget,
-      trailing: trailing,
+      title: titleRow,
       subtitle: Column(
         children: children,
         crossAxisAlignment: CrossAxisAlignment.start,
