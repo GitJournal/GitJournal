@@ -1,3 +1,6 @@
+## [1.43.2] - 2020-03-05
+* Optimize the NotesCache
+
 ## [1.43] - 2020-03-02
 * BUG: Fix crash in NotesCache
 
