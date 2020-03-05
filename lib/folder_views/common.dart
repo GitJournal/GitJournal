@@ -2,6 +2,7 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/folder_views/journal_view.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/utils.dart';
 
@@ -33,8 +34,13 @@ Widget buildFolderView(
 
   switch (viewType) {
     case FolderViewType.Standard:
-    case FolderViewType.Journal:
       return StandardView(
+        folder: folder,
+        noteSelectedFunction: noteSelectionFn,
+        emptyText: emptyText,
+      );
+    case FolderViewType.Journal:
+      return JournalView(
         folder: folder,
         noteSelectedFunction: noteSelectionFn,
         emptyText: emptyText,

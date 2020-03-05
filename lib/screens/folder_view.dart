@@ -70,6 +70,10 @@ class _FolderViewState extends State<FolderView> {
         title: Text(title),
         leading: GJAppBarMenuButton(),
         actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.library_books),
+            onPressed: _folderViewChooserSelected,
+          ),
           if (appState.remoteGitRepoConfigured) SyncButton(),
           IconButton(
             icon: Icon(Icons.search),
@@ -151,6 +155,44 @@ class _FolderViewState extends State<FolderView> {
         sortedNotesFolder.changeSortingMode(newSortingMode);
         Settings.instance.sortingMode = newSortingMode;
         Settings.instance.save();
+      });
+    }
+  }
+
+  void _folderViewChooserSelected() async {
+    var onViewChange = (FolderViewType vt) => Navigator.of(context).pop(vt);
+
+    var newViewType = await showDialog<FolderViewType>(
+      context: context,
+      builder: (BuildContext context) {
+        var children = <Widget>[
+          RadioListTile<FolderViewType>(
+            title: const Text("Standard View"),
+            value: FolderViewType.Standard,
+            groupValue: _viewType,
+            onChanged: onViewChange,
+          ),
+          RadioListTile<FolderViewType>(
+            title: const Text("Journal View"),
+            value: FolderViewType.Journal,
+            groupValue: _viewType,
+            onChanged: onViewChange,
+          ),
+        ];
+
+        return AlertDialog(
+          title: const Text("Select View"),
+          content: Column(
+            children: children,
+            mainAxisSize: MainAxisSize.min,
+          ),
+        );
+      },
+    );
+
+    if (newViewType != null) {
+      setState(() {
+        _viewType = newViewType;
       });
     }
   }
