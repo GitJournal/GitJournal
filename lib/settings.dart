@@ -107,10 +107,13 @@ class NoteFileNameFormat {
   static const Iso8601WithTimeZoneWithoutColon = NoteFileNameFormat(
       "Iso8601WithTimeZoneWithoutColon", "ISO8601 without Colons");
   static const FromTitle = NoteFileNameFormat("FromTitle", "Title");
+  static const SimpleDate =
+      NoteFileNameFormat("SimpleDate", "yyyy-mm-dd-hh-mm-ss");
 
   static const Default = FromTitle;
 
   static const options = <NoteFileNameFormat>[
+    SimpleDate,
     FromTitle,
     Iso8601,
     Iso8601WithTimeZone,

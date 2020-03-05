@@ -9,11 +9,13 @@ String getFileName(Note note) {
   var date =
       note.created ?? note.modified ?? note.fileLastModified ?? DateTime.now();
   switch (Settings.instance.noteFileNameFormat) {
+    case NoteFileNameFormat.SimpleDate:
+      return toSimpleDateTime(date);
     case NoteFileNameFormat.FromTitle:
       if (note.title.isNotEmpty) {
         return buildTitleFileName(note.parent.folderPath, note.title);
       } else {
-        return toIso8601WithTimezone(date) + ".md";
+        return toSimpleDateTime(date) + ".md";
       }
       break;
     case NoteFileNameFormat.Iso8601:

@@ -38,7 +38,9 @@ class StandardView extends StatelessWidget {
     if (title == null || title.isEmpty) {
       title = note.fileName;
     }
-    Widget titleWidget = Text(title, style: textTheme.title);
+    var titleTheme =
+        textTheme.title.copyWith(fontSize: textTheme.title.fontSize * 0.95);
+    Widget titleWidget = Text(title, style: titleTheme);
     Widget trailing;
 
     var date = note.modified ?? note.created;

@@ -1,6 +1,10 @@
 import 'dart:core';
 import 'package:intl/intl.dart';
 
+String toSimpleDateTime(DateTime dt) {
+  return DateFormat("yyyy-MM-dd-HH-mm-ss").format(dt);
+}
+
 String toIso8601(DateTime dt) {
   return DateFormat("yyyy-MM-ddTHH:mm:ss").format(dt);
 }
