@@ -12,12 +12,12 @@ import 'package:gitjournal/core/sorting_mode.dart';
 class NotesCache {
   final String filePath;
   final String notesBasePath;
+  final bool enabled = true;
 
   NotesCache({@required this.filePath, @required this.notesBasePath});
 
-  void updateCache(NotesFolder rootFolder) {}
-
   Future load(NotesFolder rootFolder) async {
+    if (!enabled) return;
     var fileList = await loadFromDisk();
 
     var sep = Platform.pathSeparator;
@@ -55,7 +55,12 @@ class NotesCache {
     }
   }
 
-  Future buildCache(NotesFolder rootFolder, SortingMode sortingMode) {
+  Future<void> buildCache(
+    NotesFolder rootFolder,
+    SortingMode sortingMode,
+  ) async {
+    if (!enabled) return;
+
     print("Saving the NotesCache");
     // FIXME: This could be optimized quite a bit
     var files = rootFolder.getAllNotes();
@@ -84,7 +89,7 @@ class NotesCache {
   }
 
   @visibleForTesting
-  Future saveToDisk(List<String> files) {
+  Future<void> saveToDisk(List<String> files) {
     var contents = json.encode(files);
     return File(filePath).writeAsString(contents);
   }
