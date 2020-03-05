@@ -17,16 +17,16 @@ import 'package:gitjournal/widgets/sync_button.dart';
 
 import 'package:provider/provider.dart';
 
-class JournalListingScreen extends StatefulWidget {
+class FolderView extends StatefulWidget {
   final NotesFolder notesFolder;
 
-  JournalListingScreen({@required this.notesFolder});
+  FolderView({@required this.notesFolder});
 
   @override
-  _JournalListingScreenState createState() => _JournalListingScreenState();
+  _FolderViewState createState() => _FolderViewState();
 }
 
-class _JournalListingScreenState extends State<JournalListingScreen> {
+class _FolderViewState extends State<FolderView> {
   SortedNotesFolder sortedNotesFolder;
 
   @override

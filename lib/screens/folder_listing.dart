@@ -8,7 +8,7 @@ import 'package:gitjournal/widgets/rename_dialog.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 
-import 'journal_listing.dart';
+import 'folder_view.dart';
 
 class FolderListingScreen extends StatefulWidget {
   @override
@@ -28,7 +28,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
       rootFolder: notesFolder,
       onFolderEntered: (NotesFolder folder) {
         var route = MaterialPageRoute(
-          builder: (context) => JournalListingScreen(
+          builder: (context) => FolderView(
             notesFolder: folder,
           ),
         );
