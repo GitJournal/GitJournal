@@ -305,12 +305,16 @@ class NotesFolder
     return folderPath.compareTo(other.folderPath);
   }
 
-  List<Note> getAllNotes() {
-    var notes = List<Note>.from(_notes);
+  Iterable<Note> getAllNotes() sync* {
+    for (var note in _notes) {
+      yield note;
+    }
 
     for (var folder in _folders) {
-      notes.addAll(folder.getAllNotes());
+      var notes = folder.getAllNotes();
+      for (var note in notes) {
+        yield note;
+      }
     }
-    return notes;
   }
 }

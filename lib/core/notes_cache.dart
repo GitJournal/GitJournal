@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
+import 'package:collection/collection.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
@@ -62,15 +62,34 @@ class NotesCache {
     if (!enabled) return;
 
     print("Saving the NotesCache");
-    // FIXME: This could be optimized quite a bit
-    var files = rootFolder.getAllNotes();
-    assert(files.every((n) => n.loadState == NoteLoadState.Loaded));
 
-    files.sort(sortingMode.sortingFunction());
-    files = files.sublist(0, min(10, files.length));
-    var fileList = files.map((f) => f.filePath).toList();
-
+    var notes = rootFolder.getAllNotes();
+    var fileList =
+        _fetchFirst10(notes, sortingMode).map((f) => f.filePath).toList();
     return saveToDisk(fileList);
+  }
+
+  Iterable<Note> _fetchFirst10(
+    Iterable<Note> allNotes,
+    SortingMode sortingMode,
+  ) {
+    var origFn = sortingMode.sortingFunction();
+    var reversedFn = (Note a, Note b) {
+      var r = origFn(a, b);
+      if (r < 0) return 1;
+      if (r > 0) return -1;
+      return 0;
+    };
+    var heap = HeapPriorityQueue<Note>(reversedFn);
+
+    for (var note in allNotes) {
+      heap.add(note);
+      if (heap.length > 10) {
+        heap.removeFirst();
+      }
+    }
+
+    return heap.toList().reversed;
   }
 
   @visibleForTesting
