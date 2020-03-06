@@ -56,8 +56,9 @@ void main() {
         loadedNotes.add(note);
       });
 
-      loadedNotes.sort();
-      notes.sort();
+      var sortFn = (Note n1, Note n2) => n1.filePath.compareTo(n2.filePath);
+      loadedNotes.sort(sortFn);
+      notes.sort(sortFn);
 
       expect(loadedNotes, notes);
 
