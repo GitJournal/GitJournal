@@ -39,7 +39,7 @@ class StandardView extends StatelessWidget {
     var titleTheme =
         textTheme.title.copyWith(fontSize: textTheme.title.fontSize * 0.95);
     Widget titleWidget = Text(title, style: titleTheme);
-    Widget trailing;
+    Widget trailing = Container();
 
     var date = note.modified ?? note.created;
     if (date != null) {

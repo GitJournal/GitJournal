@@ -42,7 +42,7 @@ class CompactView extends StatelessWidget {
       style: titleTheme,
       overflow: TextOverflow.ellipsis,
     );
-    Widget trailing;
+    Widget trailing = Container();
 
     var date = note.modified ?? note.created;
     if (date != null) {
