@@ -61,8 +61,8 @@ class SortingMode {
           if (aDt != null && bDt == null) {
             return -1;
           }
-          if (bDt == null || aDt == null) {
-            return b.fileName.compareTo(a.fileName);
+          if (bDt == null && aDt == null) {
+            return a.fileName.compareTo(b.fileName);
           }
           return bDt.compareTo(aDt);
         };
@@ -78,8 +78,8 @@ class SortingMode {
           if (aDt != null && bDt == null) {
             return -1;
           }
-          if (bDt == null || aDt == null) {
-            return b.fileName.compareTo(a.fileName);
+          if (bDt == null && aDt == null) {
+            return a.fileName.compareTo(b.fileName);
           }
           return bDt.compareTo(aDt);
         };
