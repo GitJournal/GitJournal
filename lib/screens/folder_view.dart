@@ -26,7 +26,7 @@ class FolderView extends StatefulWidget {
 
 class _FolderViewState extends State<FolderView> {
   SortedNotesFolder sortedNotesFolder;
-  FolderViewType _viewType;
+  FolderViewType _viewType = FolderViewType.Standard;
 
   @override
   void initState() {
@@ -35,7 +35,18 @@ class _FolderViewState extends State<FolderView> {
       folder: widget.notesFolder,
       sortingMode: Settings.instance.sortingMode,
     );
-    _viewType = FolderViewType.Standard;
+
+    switch (Settings.instance.defaultView) {
+      case SettingsFolderViewType.Standard:
+        _viewType = FolderViewType.Standard;
+        break;
+      case SettingsFolderViewType.Compact:
+        _viewType = FolderViewType.Compact;
+        break;
+      case SettingsFolderViewType.Journal:
+        _viewType = FolderViewType.Journal;
+        break;
+    }
   }
 
   @override
@@ -199,6 +210,19 @@ class _FolderViewState extends State<FolderView> {
     if (newViewType != null) {
       setState(() {
         _viewType = newViewType;
+
+        switch (_viewType) {
+          case FolderViewType.Standard:
+            Settings.instance.defaultView = SettingsFolderViewType.Standard;
+            break;
+          case FolderViewType.Journal:
+            Settings.instance.defaultView = SettingsFolderViewType.Journal;
+            break;
+          case FolderViewType.Compact:
+            Settings.instance.defaultView = SettingsFolderViewType.Compact;
+            break;
+        }
+        Settings.instance.save();
       });
     }
   }

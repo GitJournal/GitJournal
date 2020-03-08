@@ -25,6 +25,7 @@ class Settings {
   RemoteSyncFrequency remoteSyncFrequency = RemoteSyncFrequency.Default;
   SortingMode sortingMode = SortingMode.Default;
   SettingsEditorType defaultEditor = SettingsEditorType.Default;
+  SettingsFolderViewType defaultView = SettingsFolderViewType.Default;
   int version = 0;
 
   void load(SharedPreferences pref) {
@@ -50,6 +51,8 @@ class Settings {
     sortingMode = SortingMode.fromInternalString(pref.getString("sortingMode"));
     defaultEditor =
         SettingsEditorType.fromInternalString(pref.getString("defaultEditor"));
+    defaultView = SettingsFolderViewType.fromInternalString(
+        pref.getString("defaultView"));
 
     version = pref.getInt("settingsVersion") ?? version;
   }
@@ -68,6 +71,7 @@ class Settings {
         "remoteSyncFrequency", remoteSyncFrequency.toInternalString());
     pref.setString("sortingMode", sortingMode.toInternalString());
     pref.setString("defaultEditor", defaultEditor.toInternalString());
+    pref.setString("defaultView", defaultView.toInternalString());
     pref.setInt("settingsVersion", version);
 
     // Shouldn't we check if something has actually changed?
@@ -87,6 +91,9 @@ class Settings {
       "yamlHeaderEnabled": yamlHeaderEnabled,
       "defaultNewNoteFolder": defaultNewNoteFolder,
       "defaultEditor": defaultEditor.toInternalString(),
+      "defaultView": defaultView.toInternalString(),
+      "sortingMode": sortingMode.toInternalString(),
+      "remoteSyncFrequency": remoteSyncFrequency.toInternalString(),
       "version": version,
     };
   }
@@ -247,6 +254,55 @@ class SettingsEditorType {
   @override
   String toString() {
     assert(false, "EditorType toString should never be called");
+    return "";
+  }
+}
+
+class SettingsFolderViewType {
+  static const Standard = SettingsFolderViewType("Standard", "Standard");
+  static const Journal = SettingsFolderViewType("Journal", "Journal");
+  static const Compact = SettingsFolderViewType("Compact", "Compact");
+  static const Default = Standard;
+
+  final String _str;
+  final String _publicString;
+  const SettingsFolderViewType(this._publicString, this._str);
+
+  String toInternalString() {
+    return _str;
+  }
+
+  String toPublicString() {
+    return _publicString;
+  }
+
+  static const options = <SettingsFolderViewType>[
+    Standard,
+    Journal,
+    Compact,
+  ];
+
+  static SettingsFolderViewType fromInternalString(String str) {
+    for (var opt in options) {
+      if (opt.toInternalString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  static SettingsFolderViewType fromPublicString(String str) {
+    for (var opt in options) {
+      if (opt.toPublicString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  @override
+  String toString() {
+    assert(false, "FolderViewType toString should never be called");
     return "";
   }
 }
