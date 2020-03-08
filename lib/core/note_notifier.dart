@@ -2,159 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
 import 'note.dart';
-import 'notes_folder.dart';
 
-typedef FolderNotificationCallback = void Function(
-    int index, NotesFolder folder);
-typedef NoteNotificationCallback = void Function(int index, Note note);
+typedef NoteModificationCallback = void Function(Note note);
 
-class NotesFolderNotifier implements ChangeNotifier {
-  var _folderAddedListeners = ObserverList<FolderNotificationCallback>();
-  var _folderRemovedListeners = ObserverList<FolderNotificationCallback>();
+class NotesNotifier implements ChangeNotifier {
+  var _modListeners = ObserverList<NoteModificationCallback>();
 
-  var _noteAddedListeners = ObserverList<NoteNotificationCallback>();
-  var _noteRemovedListeners = ObserverList<NoteNotificationCallback>();
-  var _noteModifiedListeners = ObserverList<NoteNotificationCallback>();
-
-  void addFolderRemovedListener(FolderNotificationCallback listener) {
-    _folderRemovedListeners.add(listener);
+  void addModifiedListener(NoteModificationCallback listener) {
+    _modListeners.add(listener);
   }
 
-  void removeFolderRemovedListener(FolderNotificationCallback listener) {
-    _folderRemovedListeners.remove(listener);
-  }
-
-  void addFolderAddedListener(FolderNotificationCallback listener) {
-    _folderAddedListeners.add(listener);
-  }
-
-  void removeFolderAddedListener(FolderNotificationCallback listener) {
-    _folderAddedListeners.remove(listener);
-  }
-
-  void addNoteAddedListener(NoteNotificationCallback listener) {
-    _noteAddedListeners.add(listener);
-  }
-
-  void removeNoteAddedListener(NoteNotificationCallback listener) {
-    _noteAddedListeners.remove(listener);
-  }
-
-  void addNoteRemovedListener(NoteNotificationCallback listener) {
-    _noteRemovedListeners.add(listener);
-  }
-
-  void removeNoteRemovedListener(NoteNotificationCallback listener) {
-    _noteRemovedListeners.remove(listener);
-  }
-
-  void addNoteModifiedListener(NoteNotificationCallback listener) {
-    _noteModifiedListeners.add(listener);
-  }
-
-  void removeNoteModifiedListener(NoteNotificationCallback listener) {
-    _noteModifiedListeners.remove(listener);
+  void removeModifiedListener(NoteModificationCallback listener) {
+    _modListeners.remove(listener);
   }
 
   @mustCallSuper
   @override
   void dispose() {
-    _folderAddedListeners = null;
-    _folderRemovedListeners = null;
-    _noteAddedListeners = null;
-    _noteRemovedListeners = null;
-    _noteModifiedListeners = null;
-
     assert(_debugAssertNotDisposed());
+    _modListeners = null;
     _listeners = null;
-  }
-
-  void _notifyFolderCallback(
-    ObserverList<FolderNotificationCallback> _listeners,
-    int index,
-    NotesFolder folder,
-  ) {
-    if (_listeners == null) {
-      return;
-    }
-    final localListeners = List<FolderNotificationCallback>.from(_listeners);
-    for (var listener in localListeners) {
-      try {
-        if (_listeners.contains(listener)) {
-          listener(index, folder);
-        }
-      } catch (exception, stack) {
-        FlutterError.reportError(FlutterErrorDetails(
-          exception: exception,
-          stack: stack,
-          library: 'GitJournal',
-          context: ErrorDescription(
-              'while dispatching notifications for $runtimeType'),
-          informationCollector: () sync* {
-            yield DiagnosticsProperty<ChangeNotifier>(
-              'The $runtimeType sending notification was',
-              this,
-              style: DiagnosticsTreeStyle.errorProperty,
-            );
-          },
-        ));
-      }
-    }
-    notifyListeners();
-  }
-
-  void notifyFolderAdded(int index, NotesFolder folder) {
-    _notifyFolderCallback(_folderAddedListeners, index, folder);
-  }
-
-  void notifyFolderRemoved(int index, NotesFolder folder) {
-    _notifyFolderCallback(_folderRemovedListeners, index, folder);
-  }
-
-  void _notifyNoteCallback(
-    ObserverList<NoteNotificationCallback> _listeners,
-    int index,
-    Note note,
-  ) {
-    if (_listeners == null) {
-      return;
-    }
-    final localListeners = List<NoteNotificationCallback>.from(_listeners);
-    for (var listener in localListeners) {
-      try {
-        if (_listeners.contains(listener)) {
-          listener(index, note);
-        }
-      } catch (exception, stack) {
-        FlutterError.reportError(FlutterErrorDetails(
-          exception: exception,
-          stack: stack,
-          library: 'GitJournal',
-          context: ErrorDescription(
-              'while dispatching notifications for $runtimeType'),
-          informationCollector: () sync* {
-            yield DiagnosticsProperty<ChangeNotifier>(
-              'The $runtimeType sending notification was',
-              this,
-              style: DiagnosticsTreeStyle.errorProperty,
-            );
-          },
-        ));
-      }
-    }
-    notifyListeners();
-  }
-
-  void notifyNoteAdded(int index, Note note) {
-    _notifyNoteCallback(_noteAddedListeners, index, note);
-  }
-
-  void notifyNoteRemoved(int index, Note note) {
-    _notifyNoteCallback(_noteRemovedListeners, index, note);
-  }
-
-  void notifyNoteModified(int index, Note note) {
-    _notifyNoteCallback(_noteModifiedListeners, index, note);
   }
 
   //
@@ -259,6 +126,35 @@ class NotesFolderNotifier implements ChangeNotifier {
         try {
           if (_listeners.contains(listener)) {
             listener();
+          }
+        } catch (exception, stack) {
+          FlutterError.reportError(FlutterErrorDetails(
+            exception: exception,
+            stack: stack,
+            library: 'foundation library',
+            context: ErrorDescription(
+                'while dispatching notifications for $runtimeType'),
+            informationCollector: () sync* {
+              yield DiagnosticsProperty<ChangeNotifier>(
+                'The $runtimeType sending notification was',
+                this,
+                style: DiagnosticsTreeStyle.errorProperty,
+              );
+            },
+          ));
+        }
+      }
+    }
+  }
+
+  void notifyModifiedListeners(Note note) {
+    assert(_debugAssertNotDisposed());
+    if (_modListeners != null) {
+      final localListeners = List<NoteModificationCallback>.from(_modListeners);
+      for (NoteModificationCallback listener in localListeners) {
+        try {
+          if (_modListeners.contains(listener)) {
+            listener(note);
           }
         } catch (exception, stack) {
           FlutterError.reportError(FlutterErrorDetails(

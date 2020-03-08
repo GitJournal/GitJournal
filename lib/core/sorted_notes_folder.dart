@@ -30,8 +30,7 @@ class SortedNotesFolder
 
     folder.addNoteAddedListener(_noteAddedListener);
     folder.addNoteRemovedListener(_noteRemovedListener);
-
-    folder.addListener(_entityChanged);
+    folder.addNoteModifiedListener(_noteModifiedListener);
   }
 
   @override
@@ -41,8 +40,7 @@ class SortedNotesFolder
 
     folder.removeNoteAddedListener(_noteAddedListener);
     folder.removeNoteRemovedListener(_noteRemovedListener);
-
-    folder.removeListener(_entityChanged);
+    folder.removeNoteModifiedListener(_noteModifiedListener);
 
     super.dispose();
   }
@@ -63,14 +61,7 @@ class SortedNotesFolder
       return;
     }
 
-    var i = 0;
-    for (; i < _notes.length; i++) {
-      var n = _notes[i];
-      if (_sortFunc(n, note) > 0) {
-        break;
-      }
-    }
-    _notes.insert(i, note);
+    var i = _insertInCorrectPos(note);
     notifyNoteAdded(i, note);
   }
 
@@ -84,9 +75,26 @@ class SortedNotesFolder
     notifyNoteRemoved(index, note);
   }
 
-  void _entityChanged() {
-    _notes.sort(_sortFunc);
+  void _noteModifiedListener(int _, Note note) {
+    var i = _notes.indexWhere((Note n) => note.filePath == n.filePath);
+    assert(i != -1);
+
+    _notes.removeAt(i);
+    _insertInCorrectPos(note);
+
     notifyListeners();
+  }
+
+  int _insertInCorrectPos(Note note) {
+    var i = 0;
+    for (; i < _notes.length; i++) {
+      var n = _notes[i];
+      if (_sortFunc(n, note) > 0) {
+        break;
+      }
+    }
+    _notes.insert(i, note);
+    return i;
   }
 
   @override

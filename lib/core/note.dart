@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:gitjournal/core/note_notifier.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/markdown.dart';
 import 'package:path/path.dart' as p;
@@ -18,7 +18,7 @@ enum NoteLoadState {
   NotExists,
 }
 
-class Note with ChangeNotifier {
+class Note with NotesNotifier {
   NotesFolder parent;
   String _filePath;
 
@@ -60,7 +60,7 @@ class Note with ChangeNotifier {
     if (!canHaveMetadata) return;
 
     _created = dt;
-    notifyListeners();
+    _notifyModified();
   }
 
   DateTime get modified {
@@ -71,12 +71,12 @@ class Note with ChangeNotifier {
     if (!canHaveMetadata) return;
 
     _modified = dt;
-    notifyListeners();
+    _notifyModified();
   }
 
   void updateModified() {
     modified = DateTime.now();
-    notifyListeners();
+    _notifyModified();
   }
 
   String get body {
@@ -86,7 +86,7 @@ class Note with ChangeNotifier {
   set body(String newBody) {
     _body = newBody;
     _summary = null;
-    notifyListeners();
+    _notifyModified();
   }
 
   String get title {
@@ -97,7 +97,7 @@ class Note with ChangeNotifier {
     if (!canHaveMetadata) return;
 
     _title = title;
-    notifyListeners();
+    _notifyModified();
   }
 
   bool get canHaveMetadata {
@@ -113,7 +113,7 @@ class Note with ChangeNotifier {
     _data = data;
     noteSerializer.decode(_data, this);
 
-    notifyListeners();
+    _notifyModified();
   }
 
   bool isEmpty() {
@@ -149,7 +149,7 @@ class Note with ChangeNotifier {
 
     if (!file.existsSync()) {
       _loadState = NoteLoadState.NotExists;
-      notifyListeners();
+      _notifyModified();
       return _loadState;
     }
 
@@ -160,7 +160,7 @@ class Note with ChangeNotifier {
     fileLastModified = file.lastModifiedSync();
     _loadState = NoteLoadState.Loaded;
 
-    notifyListeners();
+    _notifyModified();
     return _loadState;
   }
 
@@ -198,7 +198,7 @@ class Note with ChangeNotifier {
     }
     _filePath = newFilePath;
 
-    notifyListeners();
+    _notifyModified();
   }
 
   bool move(NotesFolder destFolder) {
@@ -213,7 +213,7 @@ class Note with ChangeNotifier {
     parent = destFolder;
     destFolder.add(this);
 
-    notifyListeners();
+    _notifyModified();
     return true;
   }
 
@@ -231,5 +231,10 @@ class Note with ChangeNotifier {
   @override
   String toString() {
     return 'Note{filePath: $_filePath, created: $created, modified: $modified, data: $_data}';
+  }
+
+  void _notifyModified() {
+    notifyModifiedListeners(this);
+    notifyListeners();
   }
 }

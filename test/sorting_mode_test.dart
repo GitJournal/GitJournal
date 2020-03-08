@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/sorting_mode.dart';

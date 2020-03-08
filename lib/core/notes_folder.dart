@@ -38,6 +38,10 @@ class NotesFolder
     notifyListeners();
   }
 
+  void _noteModified(Note note) {
+    notifyNoteModified(-1, note);
+  }
+
   void reset(String folderPath) {
     _folderPath = folderPath;
 
@@ -183,7 +187,7 @@ class NotesFolder
         continue;
       }
       Fimber.d("Found file ${fsEntity.path}");
-      note.addListener(_entityChanged);
+      note.addModifiedListener(_noteModified);
 
       _notes.add(note);
       _entityMap[fsEntity.path] = note;
@@ -198,11 +202,11 @@ class NotesFolder
       assert(e != null);
 
       assert(e is NotesFolder || e is Note);
-      e.removeListener(_entityChanged);
       _entityMap.remove(path);
 
       if (e is Note) {
         Fimber.d("File $path was no longer found");
+        e.removeModifiedListener(_noteModified);
         var i = _notes.indexWhere((n) => n.filePath == path);
         assert(i != -1);
         var note = _notes[i];
@@ -210,6 +214,7 @@ class NotesFolder
         notifyNoteRemoved(i, note);
       } else {
         Fimber.d("Folder $path was no longer found");
+        e.removeListener(_entityChanged);
         var i = _folders.indexWhere((f) => f.folderPath == path);
         assert(i != -1);
         var folder = _folders[i];
