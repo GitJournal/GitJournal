@@ -122,7 +122,6 @@ class _NoteBodyEditor extends StatelessWidget {
 
     return TextField(
       autofocus: autofocus,
-      autocorrect: false,
       keyboardType: TextInputType.multiline,
       maxLines: null,
       style: style,
