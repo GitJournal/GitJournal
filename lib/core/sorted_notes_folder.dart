@@ -1,3 +1,4 @@
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
 
@@ -107,6 +108,10 @@ class SortedNotesFolder
   bool get isEmpty => folder.isEmpty;
 
   void changeSortingMode(SortingMode sm) {
+    Fimber.d("Setting sorting to me ${sm.toInternalString()}");
+    _sortingMode = sm;
+    _sortFunc = _sortingMode.sortingFunction();
+
     _notes.sort(_sortFunc);
     notifyListeners();
   }
