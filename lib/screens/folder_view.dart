@@ -40,9 +40,6 @@ class _FolderViewState extends State<FolderView> {
       case SettingsFolderViewType.Standard:
         _viewType = FolderViewType.Standard;
         break;
-      case SettingsFolderViewType.Compact:
-        _viewType = FolderViewType.Compact;
-        break;
       case SettingsFolderViewType.Journal:
         _viewType = FolderViewType.Journal;
         break;
@@ -189,12 +186,6 @@ class _FolderViewState extends State<FolderView> {
             groupValue: _viewType,
             onChanged: onViewChange,
           ),
-          RadioListTile<FolderViewType>(
-            title: const Text("Compact View"),
-            value: FolderViewType.Compact,
-            groupValue: _viewType,
-            onChanged: onViewChange,
-          ),
         ];
 
         return AlertDialog(
@@ -217,9 +208,6 @@ class _FolderViewState extends State<FolderView> {
             break;
           case FolderViewType.Journal:
             Settings.instance.defaultView = SettingsFolderViewType.Journal;
-            break;
-          case FolderViewType.Compact:
-            Settings.instance.defaultView = SettingsFolderViewType.Compact;
             break;
         }
         Settings.instance.save();
