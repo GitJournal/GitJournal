@@ -226,7 +226,7 @@ class NotesFolder
 
   void add(Note note) {
     assert(note.parent == this);
-    note.addListener(_entityChanged);
+    note.addModifiedListener(_noteModified);
 
     _notes.add(note);
     _entityMap[note.filePath] = note;
@@ -237,7 +237,7 @@ class NotesFolder
   void insert(int index, Note note) {
     assert(note.parent == this);
     assert(index >= 0);
-    note.addListener(_entityChanged);
+    note.addModifiedListener(_noteModified);
 
     _notes.insert(index, note);
     _entityMap[note.filePath] = note;
@@ -247,7 +247,7 @@ class NotesFolder
 
   void remove(Note note) {
     assert(note.parent == this);
-    note.removeListener(_entityChanged);
+    note.removeModifiedListener(_noteModified);
 
     assert(_notes.indexWhere((n) => n.filePath == note.filePath) != -1);
     assert(_entityMap.containsKey(note.filePath));
