@@ -1,3 +1,8 @@
+## [1.44] - 2020-03-11
+* Allow the Folder View to be configured
+* Faster loading of notes
+* BugFix: Notes should update when modified in another repo
+
 ## [1.43.2] - 2020-03-05
 * Optimize the NotesCache
 
