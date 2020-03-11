@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:fimber/fimber.dart';
 import 'package:gitjournal/core/note_notifier.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/markdown.dart';
@@ -142,9 +143,10 @@ class Note with NotesNotifier {
     final file = File(_filePath);
     if (_loadState == NoteLoadState.Loaded) {
       var fileLastModified = file.lastModifiedSync();
-      if (fileLastModified == fileLastModified) {
+      if (this.fileLastModified == fileLastModified) {
         return _loadState;
       }
+      Fimber.d("Note modified: $_filePath");
     }
 
     if (!file.existsSync()) {
