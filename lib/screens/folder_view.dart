@@ -54,6 +54,8 @@ class _FolderViewState extends State<FolderView> {
         _viewType = FolderViewType.Journal;
         break;
     }
+
+    _showSummary = Settings.instance.showNoteSummary;
   }
 
   @override
@@ -216,6 +218,8 @@ class _FolderViewState extends State<FolderView> {
           setState(() {
             _showSummary = newVal;
           });
+          Settings.instance.showNoteSummary = newVal;
+          Settings.instance.save();
         };
 
         return StatefulBuilder(
