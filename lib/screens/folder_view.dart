@@ -56,6 +56,18 @@ class _FolderViewState extends State<FolderView> {
     }
 
     _showSummary = Settings.instance.showNoteSummary;
+
+    switch (Settings.instance.folderViewHeaderType) {
+      case "TitleGenerated":
+        _headerType = StandardViewHeader.TitleGenerated;
+        break;
+      case "FileName":
+        _headerType = StandardViewHeader.FileName;
+        break;
+      case "TitleOrFileName":
+        _headerType = StandardViewHeader.TitleOrFileName;
+        break;
+    }
   }
 
   @override
@@ -209,9 +221,24 @@ class _FolderViewState extends State<FolderView> {
       builder: (BuildContext context) {
         var headerTypeChanged = (StandardViewHeader newHeader) {
           setState(() {
-            print("CHanging headerType to $newHeader");
             _headerType = newHeader;
           });
+
+          String ht;
+          switch (newHeader) {
+            case StandardViewHeader.FileName:
+              ht = "FileName";
+              break;
+            case StandardViewHeader.TitleGenerated:
+              ht = "TitleGenerated";
+              break;
+            case StandardViewHeader.TitleOrFileName:
+              ht = "TitleOrFileName";
+              break;
+          }
+
+          Settings.instance.folderViewHeaderType = ht;
+          Settings.instance.save();
         };
 
         var summaryChanged = (bool newVal) {

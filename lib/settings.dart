@@ -27,6 +27,7 @@ class Settings {
   SettingsEditorType defaultEditor = SettingsEditorType.Default;
   SettingsFolderViewType defaultView = SettingsFolderViewType.Default;
   bool showNoteSummary = true;
+  String folderViewHeaderType = "TitleGenerated";
   int version = 0;
 
   void load(SharedPreferences pref) {
@@ -56,6 +57,8 @@ class Settings {
         pref.getString("defaultView"));
 
     showNoteSummary = pref.getBool("showNoteSummary") ?? showNoteSummary;
+    folderViewHeaderType =
+        pref.getString("folderViewHeaderType") ?? folderViewHeaderType;
 
     version = pref.getInt("settingsVersion") ?? version;
   }
@@ -76,6 +79,7 @@ class Settings {
     pref.setString("defaultEditor", defaultEditor.toInternalString());
     pref.setString("defaultView", defaultView.toInternalString());
     pref.setBool("showNoteSummary", showNoteSummary);
+    pref.setString("folderViewHeaderType", folderViewHeaderType);
     pref.setInt("settingsVersion", version);
 
     // Shouldn't we check if something has actually changed?
@@ -99,6 +103,7 @@ class Settings {
       "sortingMode": sortingMode.toInternalString(),
       "remoteSyncFrequency": remoteSyncFrequency.toInternalString(),
       "showNoteSummary": showNoteSummary,
+      "folderViewHeaderType": folderViewHeaderType,
       "version": version,
     };
   }
