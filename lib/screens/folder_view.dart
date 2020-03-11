@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/sorted_notes_folder.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
+import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/screens/note_editor.dart';
+import 'package:gitjournal/screens/settings_screen.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
@@ -14,6 +16,11 @@ import 'package:gitjournal/widgets/sync_button.dart';
 import 'package:gitjournal/folder_views/common.dart';
 
 import 'package:provider/provider.dart';
+
+enum DropDownChoices {
+  SortingOptions,
+  ViewOptions,
+}
 
 class FolderView extends StatefulWidget {
   final NotesFolder notesFolder;
@@ -27,6 +34,9 @@ class FolderView extends StatefulWidget {
 class _FolderViewState extends State<FolderView> {
   SortedNotesFolder sortedNotesFolder;
   FolderViewType _viewType = FolderViewType.Standard;
+
+  StandardViewHeader _headerType = StandardViewHeader.TitleGenerated;
+  bool _showSummary = true;
 
   @override
   void initState() {
@@ -69,8 +79,35 @@ class _FolderViewState extends State<FolderView> {
           _viewType,
           sortedNotesFolder,
           emptyText,
+          _headerType,
+          _showSummary,
         );
       },
+    );
+
+    var extraAction = PopupMenuButton<DropDownChoices>(
+      onSelected: (DropDownChoices choice) {
+        switch (choice) {
+          case DropDownChoices.SortingOptions:
+            _sortButtonPressed();
+            break;
+
+          case DropDownChoices.ViewOptions:
+            _configureViewButtonPressed();
+            break;
+        }
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<DropDownChoices>>[
+        const PopupMenuItem<DropDownChoices>(
+          value: DropDownChoices.SortingOptions,
+          child: Text('Sorting Options'),
+        ),
+        if (_viewType == FolderViewType.Standard)
+          const PopupMenuItem<DropDownChoices>(
+            value: DropDownChoices.ViewOptions,
+            child: Text('View Options'),
+          ),
+      ],
     );
 
     return Scaffold(
@@ -95,10 +132,7 @@ class _FolderViewState extends State<FolderView> {
               );
             },
           ),
-          IconButton(
-            icon: Icon(Icons.sort),
-            onPressed: _sortButtonPressed,
-          ),
+          extraAction,
         ],
       ),
       floatingActionButton: createButton,
@@ -165,6 +199,82 @@ class _FolderViewState extends State<FolderView> {
         Settings.instance.save();
       });
     }
+  }
+
+  void _configureViewButtonPressed() async {
+    await showDialog<SortingMode>(
+      context: context,
+      builder: (BuildContext context) {
+        var headerTypeChanged = (StandardViewHeader newHeader) {
+          setState(() {
+            print("CHanging headerType to $newHeader");
+            _headerType = newHeader;
+          });
+        };
+
+        var summaryChanged = (bool newVal) {
+          setState(() {
+            _showSummary = newVal;
+          });
+        };
+
+        return StatefulBuilder(
+          builder: (BuildContext context, Function setState) {
+            var children = <Widget>[
+              SettingsHeader("Header Options"),
+              RadioListTile<StandardViewHeader>(
+                title: const Text("Title or FileName"),
+                value: StandardViewHeader.TitleOrFileName,
+                groupValue: _headerType,
+                onChanged: (newVal) {
+                  headerTypeChanged(newVal);
+                  setState(() {});
+                },
+              ),
+              RadioListTile<StandardViewHeader>(
+                title: const Text("Auto Generated Title"),
+                value: StandardViewHeader.TitleGenerated,
+                groupValue: _headerType,
+                onChanged: (newVal) {
+                  headerTypeChanged(newVal);
+                  setState(() {});
+                },
+              ),
+              RadioListTile<StandardViewHeader>(
+                title: const Text("FileName"),
+                value: StandardViewHeader.FileName,
+                groupValue: _headerType,
+                onChanged: (newVal) {
+                  headerTypeChanged(newVal);
+                  setState(() {});
+                },
+              ),
+              SwitchListTile(
+                title: const Text("Show Summary"),
+                value: _showSummary,
+                onChanged: (bool newVal) {
+                  setState(() {
+                    _showSummary = newVal;
+                  });
+                  summaryChanged(newVal);
+                },
+              ),
+            ];
+
+            return AlertDialog(
+              title: const Text("Customize View"),
+              content: Column(
+                children: children,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+              ),
+            );
+          },
+        );
+      },
+    );
+
+    setState(() {});
   }
 
   void _folderViewChooserSelected() async {

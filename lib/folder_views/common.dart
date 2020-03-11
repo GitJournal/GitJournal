@@ -18,6 +18,8 @@ Widget buildFolderView(
   FolderViewType viewType,
   NotesFolderReadOnly folder,
   String emptyText,
+  StandardViewHeader header,
+  bool showSummary,
 ) {
   var noteSelectionFn = (Note note) async {
     var route = MaterialPageRoute(
@@ -38,6 +40,8 @@ Widget buildFolderView(
         folder: folder,
         noteSelectedFunction: noteSelectionFn,
         emptyText: emptyText,
+        headerType: header,
+        showSummary: showSummary,
       );
     case FolderViewType.Journal:
       return JournalView(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/virtual_notes_folder.dart';
+import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/themes.dart';
 
 import 'package:gitjournal/folder_views/common.dart';
@@ -74,6 +75,13 @@ class NoteSearchDelegate extends SearchDelegate<Note> {
     var folder = VirtualNotesFolder(filteredNotes);
     const emptyText = "No Search Results Found";
 
-    return buildFolderView(context, viewType, folder, emptyText);
+    return buildFolderView(
+      context,
+      viewType,
+      folder,
+      emptyText,
+      StandardViewHeader.TitleOrFileName,
+      true,
+    );
   }
 }

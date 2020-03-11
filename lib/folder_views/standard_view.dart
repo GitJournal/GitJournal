@@ -7,15 +7,26 @@ import 'package:intl/intl.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 
+enum StandardViewHeader {
+  TitleOrFileName,
+  FileName,
+  TitleGenerated,
+}
+
 class StandardView extends StatelessWidget {
   final NoteSelectedFunction noteSelectedFunction;
   final NotesFolderReadOnly folder;
   final String emptyText;
 
+  final StandardViewHeader headerType;
+  final bool showSummary;
+
   StandardView({
     @required this.folder,
     @required this.noteSelectedFunction,
     @required this.emptyText,
+    @required this.headerType,
+    @required this.showSummary,
   });
 
   @override
@@ -32,13 +43,32 @@ class StandardView extends StatelessWidget {
   Widget _buildRow(BuildContext context, Note note) {
     var textTheme = Theme.of(context).textTheme;
 
-    var title = note.title;
-    if (title == null || title.isEmpty) {
-      title = note.fileName;
+    String title;
+    switch (headerType) {
+      case StandardViewHeader.TitleOrFileName:
+        title = note.title;
+        if (title == null || title.isEmpty) {
+          title = note.fileName;
+        }
+        break;
+
+      case StandardViewHeader.FileName:
+        title = note.fileName;
+        break;
+
+      case StandardViewHeader.TitleGenerated:
+        title = note.summary;
+        break;
+
+      default:
+        assert(false, "StandardViewHeader must not be null");
     }
-    var titleTheme =
-        textTheme.title.copyWith(fontSize: textTheme.title.fontSize * 0.95);
-    Widget titleWidget = Text(title, style: titleTheme);
+
+    Widget titleWidget = Text(
+      title,
+      style: textTheme.title,
+      overflow: TextOverflow.ellipsis,
+    );
     Widget trailing = Container();
 
     var date = note.modified ?? note.created;
@@ -48,16 +78,6 @@ class StandardView extends StatelessWidget {
       trailing = Text(dateStr, style: textTheme.caption);
     }
 
-    var children = <Widget>[
-      const SizedBox(height: 8.0),
-      Text(
-        note.summary,
-        maxLines: 3,
-        overflow: TextOverflow.ellipsis,
-        style: textTheme.body1,
-      ),
-    ];
-
     var titleRow = Row(
       children: <Widget>[Expanded(child: titleWidget), trailing],
       mainAxisAlignment: MainAxisAlignment.start,
@@ -65,21 +85,50 @@ class StandardView extends StatelessWidget {
       textBaseline: TextBaseline.alphabetic,
     );
 
-    var tile = ListTile(
-      isThreeLine: true,
-      title: titleRow,
-      subtitle: Column(
-        children: children,
-        crossAxisAlignment: CrossAxisAlignment.start,
-      ),
-      onTap: () => noteSelectedFunction(note),
-    );
+    ListTile tile;
+    if (showSummary) {
+      var summary = <Widget>[
+        const SizedBox(height: 8.0),
+        Text(
+          note.summary,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
+          style: textTheme.body1,
+        ),
+      ];
+
+      tile = ListTile(
+        isThreeLine: true,
+        title: titleRow,
+        subtitle: Column(
+          children: summary,
+          crossAxisAlignment: CrossAxisAlignment.start,
+        ),
+        onTap: () => noteSelectedFunction(note),
+      );
+    } else {
+      tile = ListTile(
+        isThreeLine: false,
+        title: titleRow,
+        onTap: () => noteSelectedFunction(note),
+      );
+    }
 
     var dc = Theme.of(context).dividerColor;
     var divider = Container(
       height: 1.0,
       child: Divider(color: dc.withOpacity(dc.opacity / 3)),
     );
+
+    if (!showSummary) {
+      return Column(
+        children: <Widget>[
+          divider,
+          tile,
+          divider,
+        ],
+      );
+    }
 
     return Column(
       children: <Widget>[
