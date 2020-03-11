@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/folder_views/list_view.dart';
+import 'package:gitjournal/settings.dart';
 
 import 'package:intl/intl.dart';
 
@@ -71,7 +73,12 @@ class StandardView extends StatelessWidget {
     );
     Widget trailing = Container();
 
-    var date = note.modified ?? note.created;
+    DateTime date;
+    if (Settings.instance.sortingMode == SortingMode.Modified) {
+      date = note.modified;
+    } else if (Settings.instance.sortingMode == SortingMode.Created) {
+      date = note.created;
+    }
     if (date != null) {
       var formatter = DateFormat('dd MMM, yyyy');
       var dateStr = formatter.format(date);
