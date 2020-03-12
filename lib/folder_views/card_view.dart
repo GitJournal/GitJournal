@@ -66,7 +66,7 @@ class CardView extends StatelessWidget {
           if (note.title != null && note.title.isNotEmpty)
             Text(
               note.title,
-              maxLines: 1,
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: textTheme.title,
             ),
@@ -76,7 +76,7 @@ class CardView extends StatelessWidget {
             body,
             maxLines: 30,
             overflow: TextOverflow.ellipsis,
-            style: textTheme.body1,
+            style: textTheme.subhead,
           ),
         ],
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,7 +87,7 @@ class CardView extends StatelessWidget {
     var tile = Material(
       borderRadius: borderRadius,
       type: MaterialType.card,
-      child: tileContent,
+      child: Padding(padding: const EdgeInsets.all(4.0), child: tileContent),
     );
 
     /*var tile = Container(
