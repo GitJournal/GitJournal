@@ -54,6 +54,10 @@ class CardView extends StatelessWidget {
   Widget _buildNoteCard(BuildContext context, Note note) {
     var body = note.body.trimRight();
 
+    body = body.replaceAll('[ ]', '☐');
+    body = body.replaceAll('[x]', '☑');
+    body = body.replaceAll('[X]', '☑');
+
     var textTheme = Theme.of(context).textTheme;
     var tileContent = Padding(
       padding: const EdgeInsets.all(8.0),
