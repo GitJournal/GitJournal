@@ -57,11 +57,25 @@ class CardView extends StatelessWidget {
     var textTheme = Theme.of(context).textTheme;
     var tileContent = Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Text(
-        body,
-        maxLines: 30,
-        overflow: TextOverflow.ellipsis,
-        style: textTheme.body1,
+      child: Column(
+        children: <Widget>[
+          if (note.title != null && note.title.isNotEmpty)
+            Text(
+              note.title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: textTheme.title,
+            ),
+          if (note.title != null && note.title.isNotEmpty)
+            const SizedBox(height: 8.0),
+          Text(
+            body,
+            maxLines: 30,
+            overflow: TextOverflow.ellipsis,
+            style: textTheme.body1,
+          ),
+        ],
+        crossAxisAlignment: CrossAxisAlignment.start,
       ),
     );
 
