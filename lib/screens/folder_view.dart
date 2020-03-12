@@ -53,6 +53,9 @@ class _FolderViewState extends State<FolderView> {
       case SettingsFolderViewType.Journal:
         _viewType = FolderViewType.Journal;
         break;
+      case SettingsFolderViewType.Card:
+        _viewType = FolderViewType.Card;
+        break;
     }
 
     _showSummary = Settings.instance.showNoteSummary;
@@ -327,6 +330,12 @@ class _FolderViewState extends State<FolderView> {
             groupValue: _viewType,
             onChanged: onViewChange,
           ),
+          RadioListTile<FolderViewType>(
+            title: const Text("Card View (Experimental)"),
+            value: FolderViewType.Card,
+            groupValue: _viewType,
+            onChanged: onViewChange,
+          ),
         ];
 
         return AlertDialog(
@@ -349,6 +358,9 @@ class _FolderViewState extends State<FolderView> {
             break;
           case FolderViewType.Journal:
             Settings.instance.defaultView = SettingsFolderViewType.Journal;
+            break;
+          case FolderViewType.Card:
+            Settings.instance.defaultView = SettingsFolderViewType.Card;
             break;
         }
         Settings.instance.save();

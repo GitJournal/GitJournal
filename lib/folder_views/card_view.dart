@@ -2,23 +2,24 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:gitjournal/core/notes_folder.dart';
 
-typedef void NoteSelectedFunction(int noteIndex);
+typedef void NoteSelectedFunction(Note note);
 
-class NotesList extends StatelessWidget {
+class CardView extends StatelessWidget {
   final NoteSelectedFunction noteSelectedFunction;
-  final List<Note> notes;
+  final NotesFolderReadOnly folder;
   final String emptyText;
 
-  NotesList({
-    @required this.notes,
+  CardView({
+    @required this.folder,
     @required this.noteSelectedFunction,
     @required this.emptyText,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (notes.isEmpty) {
+    if (folder.isEmpty) {
       return Center(
         child: Text(
           emptyText,
@@ -34,10 +35,10 @@ class NotesList extends StatelessWidget {
 
     var gridView = StaggeredGridView.countBuilder(
       crossAxisCount: 4,
-      itemCount: notes.length,
+      itemCount: folder.notes.length,
       itemBuilder: (BuildContext context, int index) {
-        var note = notes[index];
-        return _buildNoteCard(context, note, index);
+        var note = folder.notes[index];
+        return _buildNoteCard(context, note);
       },
       staggeredTileBuilder: (int i) => const StaggeredTile.fit(2),
       mainAxisSpacing: 8.0,
@@ -50,8 +51,8 @@ class NotesList extends StatelessWidget {
     );
   }
 
-  Widget _buildNoteCard(BuildContext context, Note journal, int noteIndex) {
-    var body = journal.summary;
+  Widget _buildNoteCard(BuildContext context, Note note) {
+    var body = note.body;
 
     var textTheme = Theme.of(context).textTheme;
     var tileContent = Padding(
@@ -82,7 +83,7 @@ class NotesList extends StatelessWidget {
     return InkWell(
       child: tile,
       borderRadius: borderRadius,
-      //onTap: () => noteSelectedFunction(noteIndex),
+      onTap: () => noteSelectedFunction(note),
     );
   }
 }

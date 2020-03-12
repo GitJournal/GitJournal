@@ -271,6 +271,7 @@ class SettingsEditorType {
 class SettingsFolderViewType {
   static const Standard = SettingsFolderViewType("Standard", "Standard");
   static const Journal = SettingsFolderViewType("Journal", "Journal");
+  static const Card = SettingsFolderViewType("Card", "Card");
   static const Default = Standard;
 
   final String _str;
@@ -288,6 +289,7 @@ class SettingsFolderViewType {
   static const options = <SettingsFolderViewType>[
     Standard,
     Journal,
+    Card,
   ];
 
   static SettingsFolderViewType fromInternalString(String str) {
