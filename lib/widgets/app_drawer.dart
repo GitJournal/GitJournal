@@ -67,7 +67,7 @@ class AppDrawer extends StatelessWidget {
           _buildDrawerTile(
             context,
             icon: Icons.note,
-            title: "Notes",
+            title: "All Notes",
             onTap: () {
               var m = ModalRoute.of(context);
               if (m.settings.name == "/") {
