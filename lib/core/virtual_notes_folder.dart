@@ -13,8 +13,22 @@ class VirtualNotesFolder
   List<Note> get notes => _notes;
 
   @override
+  List<NotesFolder> get subFolders => [];
+
+  @override
   bool get isEmpty => _notes.isEmpty;
 
   @override
   bool get hasNotes => _notes.isNotEmpty;
+
+  @override
+  NotesFolder get parent => null;
+
+  @override
+  String pathSpec() => "";
+
+  @override
+  NotesFolder get fsFolder {
+    return null;
+  }
 }

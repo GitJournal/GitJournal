@@ -23,7 +23,7 @@ enum DropDownChoices {
 }
 
 class FolderView extends StatefulWidget {
-  final NotesFolder notesFolder;
+  final NotesFolderReadOnly notesFolder;
 
   FolderView({@required this.notesFolder});
 
@@ -173,7 +173,7 @@ class _FolderViewState extends State<FolderView> {
 
   void _newPost(BuildContext context) {
     var route = MaterialPageRoute(
-        builder: (context) => NoteEditor.newNote(widget.notesFolder));
+        builder: (context) => NoteEditor.newNote(widget.notesFolder.fsFolder));
     Navigator.of(context).push(route);
   }
 

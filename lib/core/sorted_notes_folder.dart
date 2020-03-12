@@ -9,7 +9,7 @@ import 'notes_folder_notifier.dart';
 class SortedNotesFolder
     with NotesFolderNotifier
     implements NotesFolderReadOnly {
-  final NotesFolder folder;
+  final NotesFolderReadOnly folder;
 
   SortingMode _sortingMode;
   NoteSortingFunction _sortFunc;
@@ -83,7 +83,7 @@ class SortedNotesFolder
     _notes.removeAt(i);
     _insertInCorrectPos(note);
 
-    notifyListeners();
+    notifyNoteModified(-1, note);
   }
 
   int _insertInCorrectPos(Note note) {
@@ -102,6 +102,9 @@ class SortedNotesFolder
   List<Note> get notes => _notes;
 
   @override
+  List<NotesFolder> get subFolders => folder.subFolders;
+
+  @override
   bool get hasNotes => folder.hasNotes;
 
   @override
@@ -117,4 +120,15 @@ class SortedNotesFolder
   }
 
   SortingMode get sortingMode => _sortingMode;
+
+  @override
+  NotesFolder get parent => folder.parent;
+
+  @override
+  String pathSpec() => folder.pathSpec();
+
+  @override
+  NotesFolder get fsFolder {
+    return folder;
+  }
 }

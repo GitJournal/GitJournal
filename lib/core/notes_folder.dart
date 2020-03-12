@@ -11,11 +11,17 @@ abstract class NotesFolderReadOnly implements NotesFolderNotifier {
   bool get isEmpty;
   bool get hasNotes;
   List<Note> get notes;
+  List<NotesFolder> get subFolders;
+  NotesFolderReadOnly get parent;
+  NotesFolder get fsFolder;
+
+  String pathSpec();
 }
 
 class NotesFolder
     with NotesFolderNotifier
     implements NotesFolderReadOnly, Comparable<NotesFolder> {
+  @override
   final NotesFolder parent;
   String _folderPath;
 
@@ -110,6 +116,7 @@ class NotesFolder
     return _notes;
   }
 
+  @override
   List<NotesFolder> get subFolders {
     // FIXME: This is really not ideal
     _folders.sort();
@@ -304,6 +311,7 @@ class NotesFolder
     notifyListeners();
   }
 
+  @override
   String pathSpec() {
     if (parent == null) {
       return "";
@@ -327,5 +335,10 @@ class NotesFolder
         yield note;
       }
     }
+  }
+
+  @override
+  NotesFolder get fsFolder {
+    return this;
   }
 }
