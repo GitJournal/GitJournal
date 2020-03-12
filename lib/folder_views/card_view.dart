@@ -52,7 +52,7 @@ class CardView extends StatelessWidget {
   }
 
   Widget _buildNoteCard(BuildContext context, Note note) {
-    var body = note.body;
+    var body = note.body.trimRight();
 
     var textTheme = Theme.of(context).textTheme;
     var tileContent = Padding(
