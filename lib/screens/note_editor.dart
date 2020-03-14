@@ -67,6 +67,9 @@ class NoteEditorState extends State<NoteEditor> {
       case SettingsEditorType.Raw:
         editorType = EditorType.Raw;
         break;
+      case SettingsEditorType.Journal:
+        editorType = EditorType.Journal;
+        break;
     }
   }
 

@@ -224,6 +224,7 @@ class RemoteSyncFrequency {
 class SettingsEditorType {
   static const Markdown = SettingsEditorType("Markdown", "Markdown");
   static const Raw = SettingsEditorType("Raw", "Raw");
+  static const Journal = SettingsEditorType("Journal", "Journal");
   static const Default = Markdown;
 
   final String _str;
@@ -241,6 +242,7 @@ class SettingsEditorType {
   static const options = <SettingsEditorType>[
     Markdown,
     Raw,
+    Journal,
   ];
 
   static SettingsEditorType fromInternalString(String str) {
