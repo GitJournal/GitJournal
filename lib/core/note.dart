@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:fimber/fimber.dart';
+import 'package:gitjournal/core/md_yaml_doc_loader.dart';
 import 'package:gitjournal/core/note_notifier.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/markdown.dart';
@@ -36,6 +37,8 @@ class Note with NotesNotifier {
   var _serializer = MarkdownYAMLCodec();
 
   String _summary;
+
+  static final _mdYamlDocLoader = MdYamlDocLoader();
 
   Note(this.parent, this._filePath);
 
@@ -149,15 +152,13 @@ class Note with NotesNotifier {
       Fimber.d("Note modified: $_filePath");
     }
 
-    if (!file.existsSync()) {
+    try {
+      data = await _mdYamlDocLoader.loadDoc(_filePath);
+    } on MdYamlDocNotFoundException catch (_) {
       _loadState = NoteLoadState.NotExists;
       _notifyModified();
       return _loadState;
     }
-
-    // FIXME: This could throw an exception!
-    final string = await file.readAsString();
-    data = _serializer.decode(string);
 
     fileLastModified = file.lastModifiedSync();
     _loadState = NoteLoadState.Loaded;
