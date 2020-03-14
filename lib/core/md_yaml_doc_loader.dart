@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:isolate';
 
+import 'package:synchronized/synchronized.dart';
+
 import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 
@@ -9,13 +11,19 @@ class MdYamlDocLoader {
   ReceivePort _receivePort = ReceivePort();
   SendPort _sendPort;
 
+  var _loadingLock = Lock();
+
   Future<void> _initIsolate() async {
     if (_isolate != null) return;
-    _isolate = await Isolate.spawn(_isolateMain, _receivePort.sendPort);
 
-    var data = await _receivePort.first;
-    assert(data is SendPort);
-    _sendPort = data as SendPort;
+    return await _loadingLock.synchronized(() async {
+      if (_isolate != null) return;
+      _isolate = await Isolate.spawn(_isolateMain, _receivePort.sendPort);
+
+      var data = await _receivePort.first;
+      assert(data is SendPort);
+      _sendPort = data as SendPort;
+    });
   }
 
   Future<MdYamlDoc> loadDoc(String filePath) async {
