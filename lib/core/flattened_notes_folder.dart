@@ -2,21 +2,19 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_notifier.dart';
 
-class FlattenedNotesFolder
-    with NotesFolderNotifier
-    implements NotesFolderReadOnly {
+class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   final NotesFolder _parentFolder;
 
   var _notes = <Note>[];
   var _noteExtraInfo = <Note, int>{};
 
-  var _folders = <NotesFolderReadOnly>[];
+  var _folders = <NotesFolder>[];
 
   FlattenedNotesFolder(this._parentFolder) {
     _addFolder(_parentFolder);
   }
 
-  void _addFolder(NotesFolderReadOnly folder) {
+  void _addFolder(NotesFolder folder) {
     _folders.add(folder);
 
     // Add Change notifiers
@@ -102,4 +100,7 @@ class FlattenedNotesFolder
   NotesFolder get fsFolder {
     return _parentFolder;
   }
+
+  @override
+  String get name => "All Notes";
 }

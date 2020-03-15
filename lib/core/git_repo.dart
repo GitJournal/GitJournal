@@ -7,7 +7,7 @@ import 'package:fimber/fimber.dart';
 import 'package:git_bindings/git_bindings.dart';
 
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/settings.dart';
 
 class NoteRepoResult {
@@ -46,7 +46,7 @@ class GitNoteRepository {
     return NoteRepoResult(noteFilePath: note.filePath, error: false);
   }
 
-  Future<NoteRepoResult> addFolder(NotesFolder folder) async {
+  Future<NoteRepoResult> addFolder(NotesFolderFS folder) async {
     await _gitRepo.add(".");
     await _gitRepo.commit(
       message: "Created New Folder",

@@ -6,7 +6,7 @@ import 'package:path/path.dart' as p;
 import 'package:collection/collection.dart';
 
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
 
 class NotesCache {
@@ -16,7 +16,7 @@ class NotesCache {
 
   NotesCache({@required this.filePath, @required this.notesBasePath});
 
-  Future load(NotesFolder rootFolder) async {
+  Future load(NotesFolderFS rootFolder) async {
     if (!enabled) return;
     var fileList = await loadFromDisk();
 
@@ -37,14 +37,14 @@ class NotesCache {
         var c = components.sublist(0, i + 1);
         var folderPath = p.join(this.notesBasePath, c.join(sep));
 
-        var folders = parent.subFolders;
+        var folders = parent.subFoldersFS;
         var folderIndex = folders.indexWhere((f) => f.folderPath == folderPath);
         if (folderIndex != -1) {
           parent = folders[folderIndex];
           continue;
         }
 
-        var subFolder = NotesFolder(parent, folderPath);
+        var subFolder = NotesFolderFS(parent, folderPath);
         parent.addFolder(subFolder);
         parent = subFolder;
       }
@@ -56,7 +56,7 @@ class NotesCache {
   }
 
   Future<void> buildCache(
-    NotesFolder rootFolder,
+    NotesFolderFS rootFolder,
     SortingMode sortingMode,
   ) async {
     if (!enabled) return;

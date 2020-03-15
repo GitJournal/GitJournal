@@ -8,7 +8,7 @@ import 'package:gitjournal/apis/git_migration.dart';
 import 'package:gitjournal/appstate.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_cache.dart';
-import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/git_repo.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:path/path.dart' as p;
@@ -37,7 +37,7 @@ class StateContainer with ChangeNotifier {
     }
 
     _gitRepo = GitNoteRepository(gitDirPath: repoPath);
-    appState.notesFolder = NotesFolder(null, _gitRepo.gitDirPath);
+    appState.notesFolder = NotesFolderFS(null, _gitRepo.gitDirPath);
 
     // Just a fail safe
     if (!appState.remoteGitRepoConfigured) {
@@ -117,9 +117,9 @@ class StateContainer with ChangeNotifier {
     return syncNotes(doNotThrow: true);
   }
 
-  void createFolder(NotesFolder parent, String folderName) async {
+  void createFolder(NotesFolderFS parent, String folderName) async {
     var newFolderPath = p.join(parent.folderPath, folderName);
-    var newFolder = NotesFolder(parent, newFolderPath);
+    var newFolder = NotesFolderFS(parent, newFolderPath);
     newFolder.create();
 
     Fimber.d("Created New Folder: " + newFolderPath);
@@ -130,16 +130,16 @@ class StateContainer with ChangeNotifier {
     });
   }
 
-  void removeFolder(NotesFolder folder) {
+  void removeFolder(NotesFolderFS folder) {
     Fimber.d("Removing Folder: " + folder.folderPath);
 
-    folder.parent.removeFolder(folder);
+    folder.parentFS.removeFolder(folder);
     _gitRepo.removeFolder(folder.folderPath).then((NoteRepoResult _) {
       _syncNotes();
     });
   }
 
-  void renameFolder(NotesFolder folder, String newFolderName) {
+  void renameFolder(NotesFolderFS folder, String newFolderName) {
     var oldFolderPath = folder.folderPath;
     folder.rename(newFolderName);
 
@@ -159,7 +159,7 @@ class StateContainer with ChangeNotifier {
     });
   }
 
-  void moveNote(Note note, NotesFolder destFolder) {
+  void moveNote(Note note, NotesFolderFS destFolder) {
     if (destFolder.folderPath == note.parent.folderPath) {
       return;
     }

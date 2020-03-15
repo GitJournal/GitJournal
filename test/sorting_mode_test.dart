@@ -1,12 +1,12 @@
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('Sorting Mode', () {
     test('Created', () async {
-      var folder = NotesFolder(null, '/tmp/');
+      var folder = NotesFolderFS(null, '/tmp/');
       var n1 = Note(folder, '/tmp/1.md');
       n1.created = DateTime(2020, 10, 01);
 
@@ -30,7 +30,7 @@ void main() {
     });
 
     test('Modified', () async {
-      var folder = NotesFolder(null, '/tmp/');
+      var folder = NotesFolderFS(null, '/tmp/');
       var n1 = Note(folder, '/tmp/1.md');
       n1.modified = DateTime(2020, 10, 01);
 

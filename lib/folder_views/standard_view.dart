@@ -17,7 +17,7 @@ enum StandardViewHeader {
 
 class StandardView extends StatelessWidget {
   final NoteSelectedFunction noteSelectedFunction;
-  final NotesFolderReadOnly folder;
+  final NotesFolder folder;
   final String emptyText;
 
   final StandardViewHeader headerType;

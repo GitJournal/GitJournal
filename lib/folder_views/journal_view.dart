@@ -11,7 +11,7 @@ import 'package:gitjournal/core/notes_folder.dart';
 
 class JournalView extends StatelessWidget {
   final NoteSelectedFunction noteSelectedFunction;
-  final NotesFolderReadOnly folder;
+  final NotesFolder folder;
   final String emptyText;
 
   JournalView({

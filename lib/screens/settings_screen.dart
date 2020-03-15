@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
@@ -142,7 +142,7 @@ class SettingsListState extends State<SettingsList> {
           subtitle: Text(Settings.instance.defaultNewNoteFolder
               .replaceFirst('journal', 'Notes')),
           onTap: () async {
-            var destFolder = await showDialog<NotesFolder>(
+            var destFolder = await showDialog<NotesFolderFS>(
               context: context,
               builder: (context) => FolderSelectionDialog(),
             );

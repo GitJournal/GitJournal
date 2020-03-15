@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fimber/fimber.dart';
 import 'package:gitjournal/core/md_yaml_doc_loader.dart';
 import 'package:gitjournal/core/note_notifier.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/markdown.dart';
 import 'package:path/path.dart' as p;
@@ -11,7 +12,6 @@ import 'md_yaml_doc.dart';
 import 'md_yaml_doc_codec.dart';
 import 'note_fileName.dart';
 import 'note_serializer.dart';
-import 'notes_folder.dart';
 
 enum NoteLoadState {
   None,
@@ -21,7 +21,7 @@ enum NoteLoadState {
 }
 
 class Note with NotesNotifier {
-  NotesFolder parent;
+  NotesFolderFS parent;
   String _filePath;
 
   String _title = "";
@@ -204,7 +204,7 @@ class Note with NotesNotifier {
     _notifyModified();
   }
 
-  bool move(NotesFolder destFolder) {
+  bool move(NotesFolderFS destFolder) {
     var destPath = p.join(destFolder.folderPath, fileName);
     if (File(destPath).existsSync()) {
       return false;

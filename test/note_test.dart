@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
@@ -28,7 +28,7 @@ Hello""";
       var notePath = p.join(tempDir.path, "note.md");
       File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolder(null, tempDir.path);
+      var parentFolder = NotesFolderFS(null, tempDir.path);
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -58,7 +58,7 @@ Hello""";
       var notePath = p.join(tempDir.path, "note.md");
       File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolder(null, tempDir.path);
+      var parentFolder = NotesFolderFS(null, tempDir.path);
       var note = Note(parentFolder, notePath);
       await note.load();
 

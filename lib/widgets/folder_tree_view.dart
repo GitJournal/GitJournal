@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 
-typedef void FolderSelectedCallback(NotesFolder folder);
+typedef void FolderSelectedCallback(NotesFolderFS folder);
 
 class FolderTreeView extends StatefulWidget {
-  final NotesFolder rootFolder;
+  final NotesFolderFS rootFolder;
 
   final FolderSelectedCallback onFolderSelected;
   final Function onFolderUnselected;
@@ -22,18 +22,18 @@ class FolderTreeView extends StatefulWidget {
   @override
   FolderTreeViewState createState() => FolderTreeViewState();
 
-  static void _doNothing(NotesFolder f) {}
+  static void _doNothing(NotesFolderFS f) {}
 }
 
 class FolderTreeViewState extends State<FolderTreeView> {
   bool inSelectionMode = false;
-  NotesFolder selectedFolder;
+  NotesFolderFS selectedFolder;
 
   @override
   Widget build(BuildContext context) {
     var tile = FolderTile(
       folder: widget.rootFolder,
-      onTap: (NotesFolder folder) {
+      onTap: (NotesFolderFS folder) {
         if (!inSelectionMode) {
           widget.onFolderEntered(folder);
         } else {
@@ -68,10 +68,10 @@ class FolderTreeViewState extends State<FolderTreeView> {
 }
 
 class FolderTile extends StatefulWidget {
-  final NotesFolder folder;
+  final NotesFolderFS folder;
   final FolderSelectedCallback onTap;
   final FolderSelectedCallback onLongPress;
-  final NotesFolder selectedFolder;
+  final NotesFolderFS selectedFolder;
 
   FolderTile({
     @required this.folder,

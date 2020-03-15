@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:gitjournal/core/notes_folder.dart';
 import 'package:provider/provider.dart';
 
-typedef NoteFolderCallback = void Function(NotesFolder);
+import 'package:gitjournal/core/notes_folder_fs.dart';
+
+typedef NoteFolderCallback = void Function(NotesFolderFS);
 
 class FolderSelectionDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final notesFolder = Provider.of<NotesFolder>(context);
+    final notesFolder = Provider.of<NotesFolderFS>(context);
 
     var body = Container(
       width: double.maxFinite,
       child: FolderTreeView(
         rootFolder: notesFolder,
-        onFolderEntered: (NotesFolder destFolder) {
+        onFolderEntered: (NotesFolderFS destFolder) {
           Navigator.of(context).pop(destFolder);
         },
       ),
@@ -26,10 +27,10 @@ class FolderSelectionDialog extends StatelessWidget {
   }
 }
 
-typedef void FolderSelectedCallback(NotesFolder folder);
+typedef void FolderSelectedCallback(NotesFolderFS folder);
 
 class FolderTreeView extends StatelessWidget {
-  final NotesFolder rootFolder;
+  final NotesFolderFS rootFolder;
   final FolderSelectedCallback onFolderEntered;
 
   FolderTreeView({
@@ -52,7 +53,7 @@ class FolderTreeView extends StatelessWidget {
 }
 
 class FolderMiniTile extends StatefulWidget {
-  final NotesFolder folder;
+  final NotesFolderFS folder;
   final FolderSelectedCallback onTap;
 
   FolderMiniTile({

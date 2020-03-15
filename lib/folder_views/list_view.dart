@@ -15,7 +15,7 @@ typedef Widget NoteTileBuilder(BuildContext context, Note note);
 class FolderListView extends StatefulWidget {
   final NoteTileBuilder noteTileBuilder;
   final NoteSelectedFunction noteSelectedFunction;
-  final NotesFolderReadOnly folder;
+  final NotesFolder folder;
   final String emptyText;
 
   FolderListView({

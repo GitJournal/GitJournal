@@ -8,7 +8,7 @@ typedef void NoteSelectedFunction(Note note);
 
 class CardView extends StatelessWidget {
   final NoteSelectedFunction noteSelectedFunction;
-  final NotesFolderReadOnly folder;
+  final NotesFolder folder;
   final String emptyText;
 
   CardView({

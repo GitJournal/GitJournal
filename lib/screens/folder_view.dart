@@ -23,7 +23,7 @@ enum DropDownChoices {
 }
 
 class FolderView extends StatefulWidget {
-  final NotesFolderReadOnly notesFolder;
+  final NotesFolder notesFolder;
 
   FolderView({@required this.notesFolder});
 

@@ -6,7 +6,7 @@ import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/folder_tree_view.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
 import 'package:gitjournal/state_container.dart';
-import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 
 import 'folder_view.dart';
 
@@ -17,16 +17,16 @@ class FolderListingScreen extends StatefulWidget {
 
 class _FolderListingScreenState extends State<FolderListingScreen> {
   final _folderTreeViewKey = GlobalKey<FolderTreeViewState>();
-  NotesFolder selectedFolder;
+  NotesFolderFS selectedFolder;
 
   @override
   Widget build(BuildContext context) {
-    final notesFolder = Provider.of<NotesFolder>(context);
+    final notesFolder = Provider.of<NotesFolderFS>(context);
 
     var treeView = FolderTreeView(
       key: _folderTreeViewKey,
       rootFolder: notesFolder,
-      onFolderEntered: (NotesFolder folder) {
+      onFolderEntered: (NotesFolderFS folder) {
         var route = MaterialPageRoute(
           builder: (context) => FolderView(
             notesFolder: folder,
@@ -147,7 +147,7 @@ class CreateFolderButton extends StatelessWidget {
         );
         if (folderName is String) {
           var container = Provider.of<StateContainer>(context, listen: false);
-          final notesFolder = Provider.of<NotesFolder>(context);
+          final notesFolder = Provider.of<NotesFolderFS>(context);
 
           container.createFolder(notesFolder, folderName);
         }

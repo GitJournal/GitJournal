@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fimber/fimber.dart';
 
-import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 
 enum SyncStatus {
   Unknown,
@@ -35,7 +35,7 @@ class AppState {
     return notesFolder.hasNotes;
   }
 
-  NotesFolder notesFolder;
+  NotesFolderFS notesFolder;
 
   AppState(SharedPreferences pref) {
     localGitRepoConfigured = pref.getBool("localGitRepoConfigured") ?? false;

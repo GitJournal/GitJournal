@@ -6,10 +6,8 @@ import 'note.dart';
 import 'notes_folder.dart';
 import 'notes_folder_notifier.dart';
 
-class SortedNotesFolder
-    with NotesFolderNotifier
-    implements NotesFolderReadOnly {
-  final NotesFolderReadOnly folder;
+class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
+  final NotesFolder folder;
 
   SortingMode _sortingMode;
   NoteSortingFunction _sortFunc;
@@ -126,6 +124,9 @@ class SortedNotesFolder
 
   @override
   String pathSpec() => folder.pathSpec();
+
+  @override
+  String get name => folder.name;
 
   @override
   NotesFolder get fsFolder {

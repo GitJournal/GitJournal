@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/core/flattened_notes_folder.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 
 import 'folder_view.dart';
 
@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      final rootFolder = Provider.of<NotesFolder>(context);
+      final rootFolder = Provider.of<NotesFolderFS>(context);
       setState(() {
         flattenedNotesFolder = FlattenedNotesFolder(rootFolder);
       });

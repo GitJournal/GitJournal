@@ -2,9 +2,7 @@ import 'note.dart';
 import 'notes_folder.dart';
 import 'notes_folder_notifier.dart';
 
-class VirtualNotesFolder
-    with NotesFolderNotifier
-    implements NotesFolderReadOnly {
+class VirtualNotesFolder with NotesFolderNotifier implements NotesFolder {
   final List<Note> _notes;
 
   VirtualNotesFolder(this._notes);
@@ -26,6 +24,9 @@ class VirtualNotesFolder
 
   @override
   String pathSpec() => "";
+
+  @override
+  String get name => "";
 
   @override
   NotesFolder get fsFolder {

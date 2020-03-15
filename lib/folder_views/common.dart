@@ -18,7 +18,7 @@ enum FolderViewType {
 Widget buildFolderView(
   BuildContext context,
   FolderViewType viewType,
-  NotesFolderReadOnly folder,
+  NotesFolder folder,
   String emptyText,
   StandardViewHeader header,
   bool showSummary,
