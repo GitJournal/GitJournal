@@ -32,7 +32,9 @@ Widget buildFolderView(
       Fimber.d("Showing an undo snackbar");
 
       var snackBar = buildUndoDeleteSnackbar(context, note);
-      Scaffold.of(context).showSnackBar(snackBar);
+      Scaffold.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(snackBar);
     }
   };
 

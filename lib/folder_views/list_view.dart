@@ -137,7 +137,9 @@ class _FolderListViewState extends State<FolderListView> {
         stateContainer.removeNote(note);
 
         var snackBar = buildUndoDeleteSnackbar(context, note);
-        Scaffold.of(context).showSnackBar(snackBar);
+        Scaffold.of(context)
+          ..removeCurrentSnackBar()
+          ..showSnackBar(snackBar);
       },
     );
 
