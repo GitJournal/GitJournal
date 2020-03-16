@@ -46,7 +46,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     var notesCopy = List<Note>.from(_notes);
     notesCopy.forEach(remove);
 
-    var foldersCopy = List<NotesFolder>.from(_folders);
+    var foldersCopy = List<NotesFolderFS>.from(_folders);
     foldersCopy.forEach(removeFolder);
 
     assert(_notes.isEmpty);
