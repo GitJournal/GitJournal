@@ -207,14 +207,23 @@ class GitHostUserProvidedKeys extends StatefulWidget {
 }
 
 class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
-  String publicKey = "";
-  String privateKey = "";
-  final _publicKeyController = TextEditingController();
-  final _privateKeyController = TextEditingController();
+  GlobalKey<FormState> _publicFormKey;
+  GlobalKey<FormState> _privateFormKey;
+  TextEditingController _publicKeyController;
+  TextEditingController _privateKeyController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _publicFormKey = GlobalKey<FormState>();
+    _privateFormKey = GlobalKey<FormState>();
+    _publicKeyController = TextEditingController();
+    _privateKeyController = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
-    var nextEnabled = publicKey.isNotEmpty && privateKey.isNotEmpty;
     return Container(
       child: Column(
         children: <Widget>[
@@ -223,32 +232,35 @@ class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
             style: Theme.of(context).textTheme.headline,
           ),
           const SizedBox(height: 8.0),
-          PublicKeyEditor((String newVal) {
-            setState(() {
-              publicKey = newVal;
-            });
-          }),
+          PublicKeyEditor(_publicFormKey, _publicKeyController),
           const SizedBox(height: 8.0),
           Text(
             "Private Key -",
             style: Theme.of(context).textTheme.headline,
           ),
           const SizedBox(height: 8.0),
-          PrivateKeyEditor((String newVal) {
-            setState(() {
-              privateKey = newVal;
-            });
-          }),
+          PrivateKeyEditor(_privateFormKey, _privateKeyController),
           const SizedBox(height: 16.0),
           GitHostSetupButton(
             text: "Next",
             onPressed: () {
-              if (!nextEnabled) {
+              var publicValid = _publicFormKey.currentState.validate();
+              var privateValid = _privateFormKey.currentState.validate();
+
+              if (!publicValid || !privateValid) {
                 return;
               }
 
               var publicKey = _publicKeyController.text.trim();
+              if (!publicKey.endsWith('\n')) {
+                publicKey += '\n';
+              }
+
               var privateKey = _privateKeyController.text.trim();
+              if (!privateKey.endsWith('\n')) {
+                privateKey += '\n';
+              }
+
               widget.doneFunction(publicKey, privateKey);
             },
           ),

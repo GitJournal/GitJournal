@@ -1,53 +1,64 @@
 import 'package:flutter/material.dart';
 
 class PublicKeyEditor extends StatelessWidget {
-  final Function valueChanged;
+  final Key formKey;
+  final TextEditingController _controller;
 
-  PublicKeyEditor(this.valueChanged);
+  PublicKeyEditor(this.formKey, this._controller);
 
   @override
   Widget build(BuildContext context) {
-    return KeyEditor(valueChanged, _validator);
+    return KeyEditor(formKey, _controller, _validator);
   }
 
   String _validator(String val) {
-    if (!val.startsWith("ssh-")) {
-      return "Invalid Public Key";
+    val = val.trim();
+    if (!val.startsWith("ssh-rsa ")) {
+      return "Invalid Public Key - Doesn't start with ssh-rsa";
     }
-    return "";
+    return null;
   }
 }
 
 class PrivateKeyEditor extends StatelessWidget {
-  final Function valueChanged;
+  final Key formKey;
+  final TextEditingController _controller;
 
-  PrivateKeyEditor(this.valueChanged);
+  PrivateKeyEditor(this.formKey, this._controller);
 
   @override
   Widget build(BuildContext context) {
-    return KeyEditor(valueChanged, _validator);
+    return KeyEditor(formKey, _controller, _validator);
   }
 
   String _validator(String val) {
-    if (!val.startsWith("-----BEGIN RSA PRIVATE KEY-----")) {
+    val = val.trim();
+    if (!val.startsWith("-----BEGIN ")) {
       return "Invalid Private Key";
     }
-    if (!val.startsWith("-----END RSA PRIVATE KEY-----")) {
+    if (!val.endsWith("PRIVATE KEY-----")) {
       return "Invalid Private Key";
     }
-    return "";
+
+    return null;
   }
 }
 
 class KeyEditor extends StatelessWidget {
-  final Function valueChanged;
+  final Key formKey;
+  final TextEditingController textEditingController;
   final Function validator;
 
-  KeyEditor(this.valueChanged, this.validator);
+  KeyEditor(this.formKey, this.textEditingController, this.validator) {
+    assert(formKey != null);
+    assert(textEditingController != null);
+    assert(validator != null);
+  }
 
   @override
   Widget build(BuildContext context) {
     var form = Form(
+      key: formKey,
       child: Builder(builder: (context) {
         return TextFormField(
           textAlign: TextAlign.left,
@@ -55,13 +66,7 @@ class KeyEditor extends StatelessWidget {
           style: Theme.of(context).textTheme.body1,
           autovalidate: true,
           validator: validator,
-          onChanged: (String newVal) {
-            if (Form.of(context).validate()) {
-              valueChanged(newVal);
-            } else {
-              valueChanged("");
-            }
-          },
+          controller: textEditingController,
         );
       }),
       autovalidate: true,
