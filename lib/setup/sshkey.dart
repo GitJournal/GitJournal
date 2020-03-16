@@ -91,11 +91,13 @@ class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
 
 class GitHostSetupSshKeyUnknownProvider extends StatelessWidget {
   final Func0<void> doneFunction;
+  final Func0<void> regenerateFunction;
   final Func1<BuildContext, void> copyKeyFunction;
   final String publicKey;
 
   GitHostSetupSshKeyUnknownProvider({
     @required this.doneFunction,
+    @required this.regenerateFunction,
     @required this.copyKeyFunction,
     @required this.publicKey,
   });
@@ -124,9 +126,14 @@ class GitHostSetupSshKeyUnknownProvider extends StatelessWidget {
         const SizedBox(height: 8.0),
         PublicKeyWidget(publicKey),
         const SizedBox(height: 8.0),
+
         GitHostSetupButton(
           text: "Copy Key",
           onPressed: () => copyKeyFunction(context),
+        ),
+        GitHostSetupButton(
+          text: "Regenerate Key",
+          onPressed: regenerateFunction,
         ),
         const SizedBox(height: 16.0),
 

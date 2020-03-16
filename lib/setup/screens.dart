@@ -180,6 +180,12 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
                 _startGitClone(context);
               });
             },
+            regenerateFunction: () {
+              setState(() {
+                publicKey = "";
+              });
+              _generateSshKey(context);
+            },
             publicKey: publicKey,
             copyKeyFunction: _copyKeyToClipboard,
           );
