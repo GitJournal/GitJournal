@@ -97,7 +97,7 @@ class StandardView extends StatelessWidget {
       var summary = <Widget>[
         const SizedBox(height: 8.0),
         Text(
-          note.summary,
+          note.summary + '\n', // no minLines option
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
           style: textTheme.body1,
