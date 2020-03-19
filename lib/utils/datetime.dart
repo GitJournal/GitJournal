@@ -1,16 +1,19 @@
 import 'dart:core';
 import 'package:intl/intl.dart';
 
+final _simpleDateFormat = DateFormat("yyyy-MM-dd-HH-mm-ss");
+final _iso8601DateFormat = DateFormat("yyyy-MM-ddTHH:mm:ss");
+
 String toSimpleDateTime(DateTime dt) {
-  return DateFormat("yyyy-MM-dd-HH-mm-ss").format(dt);
+  return _simpleDateFormat.format(dt);
 }
 
 String toIso8601(DateTime dt) {
-  return DateFormat("yyyy-MM-ddTHH:mm:ss").format(dt);
+  return _iso8601DateFormat.format(dt);
 }
 
 String toIso8601WithTimezone(DateTime dt, [Duration offset]) {
-  var result = DateFormat("yyyy-MM-ddTHH:mm:ss").format(dt);
+  var result = _iso8601DateFormat.format(dt);
 
   offset = offset ?? dt.timeZoneOffset;
   int minutes = (offset.inMinutes % 60);

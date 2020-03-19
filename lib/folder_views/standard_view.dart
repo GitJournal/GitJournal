@@ -23,6 +23,8 @@ class StandardView extends StatelessWidget {
   final StandardViewHeader headerType;
   final bool showSummary;
 
+  static final _dateFormat = DateFormat('dd MMM, yyyy');
+
   StandardView({
     @required this.folder,
     @required this.noteSelectedFunction,
@@ -80,8 +82,7 @@ class StandardView extends StatelessWidget {
       date = note.created;
     }
     if (date != null) {
-      var formatter = DateFormat('dd MMM, yyyy');
-      var dateStr = formatter.format(date);
+      var dateStr = _dateFormat.format(date);
       trailing = Text(dateStr, style: textTheme.caption);
     }
 

@@ -14,6 +14,9 @@ class JournalView extends StatelessWidget {
   final NotesFolder folder;
   final String emptyText;
 
+  static final _dateFormat = DateFormat('dd MMM, yyyy  ');
+  static final _timeFormat = DateFormat('Hm');
+
   JournalView({
     @required this.folder,
     @required this.noteSelectedFunction,
@@ -41,11 +44,8 @@ class JournalView extends StatelessWidget {
       date = note.created;
     }
     if (date != null) {
-      var formatter = DateFormat('dd MMM, yyyy  ');
-      var dateStr = formatter.format(date);
-
-      var timeFormatter = DateFormat('Hm');
-      var time = timeFormatter.format(date);
+      var dateStr = _dateFormat.format(date);
+      var time = _timeFormat.format(date);
 
       var timeColor = textTheme.body1.color.withAlpha(100);
 
