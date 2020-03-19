@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/sorted_notes_folder.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
@@ -80,7 +82,8 @@ class _FolderViewState extends State<FolderView> {
 
     var createButton = FloatingActionButton(
       key: const ValueKey("FAB"),
-      onPressed: () => _newPost(context),
+      onPressed: () =>
+          _newPost(context, Settings.instance.defaultEditor.toEditorType()),
       child: Icon(Icons.add),
     );
 
@@ -152,7 +155,6 @@ class _FolderViewState extends State<FolderView> {
           extraAction,
         ],
       ),
-      floatingActionButton: createButton,
       body: Center(
         child: Builder(
           builder: (context) => RefreshIndicator(
@@ -162,6 +164,39 @@ class _FolderViewState extends State<FolderView> {
         ),
       ),
       drawer: AppDrawer(),
+      floatingActionButton: createButton,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      bottomNavigationBar: BottomAppBar(
+        color: Theme.of(context).bottomAppBarColor,
+        shape: const CircularNotchedRectangle(),
+        child: Row(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: IconButton(
+                icon: const FaIcon(FontAwesomeIcons.tasks),
+                onPressed: () => _newPost(context, EditorType.Checklist),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: IconButton(
+                icon: const FaIcon(FontAwesomeIcons.markdown),
+                onPressed: () => _newPost(context, EditorType.Markdown),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: IconButton(
+                icon: const FaIcon(FontAwesomeIcons.book),
+                onPressed: () => _newPost(context, EditorType.Journal),
+              ),
+            ),
+          ],
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+        ),
+      ),
     );
   }
 
@@ -174,9 +209,10 @@ class _FolderViewState extends State<FolderView> {
     }
   }
 
-  void _newPost(BuildContext context) {
+  void _newPost(BuildContext context, EditorType editorType) {
     var route = MaterialPageRoute(
-        builder: (context) => NoteEditor.newNote(widget.notesFolder.fsFolder));
+        builder: (context) =>
+            NoteEditor.newNote(widget.notesFolder.fsFolder, editorType));
     Navigator.of(context).push(route);
   }
 

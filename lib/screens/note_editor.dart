@@ -7,7 +7,6 @@ import 'package:gitjournal/editors/journal_editor.dart';
 import 'package:gitjournal/editors/markdown_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
 import 'package:gitjournal/editors/checklist_editor.dart';
-import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
@@ -18,9 +17,10 @@ class ShowUndoSnackbar {}
 class NoteEditor extends StatefulWidget {
   final Note note;
   final NotesFolder notesFolder;
+  final EditorType defaultEditorType;
 
-  NoteEditor.fromNote(this.note) : notesFolder = null;
-  NoteEditor.newNote(this.notesFolder) : note = null;
+  NoteEditor.fromNote(this.note, this.defaultEditorType) : notesFolder = null;
+  NoteEditor.newNote(this.notesFolder, this.defaultEditorType) : note = null;
 
   @override
   NoteEditorState createState() {
@@ -59,18 +59,7 @@ class NoteEditorState extends State<NoteEditor> {
   @override
   void initState() {
     super.initState();
-
-    switch (Settings.instance.defaultEditor) {
-      case SettingsEditorType.Markdown:
-        editorType = EditorType.Markdown;
-        break;
-      case SettingsEditorType.Raw:
-        editorType = EditorType.Raw;
-        break;
-      case SettingsEditorType.Journal:
-        editorType = EditorType.Journal;
-        break;
-    }
+    editorType = widget.defaultEditorType;
   }
 
   @override

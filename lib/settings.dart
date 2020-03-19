@@ -1,3 +1,4 @@
+import 'package:gitjournal/screens/note_editor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
 
@@ -225,6 +226,7 @@ class SettingsEditorType {
   static const Markdown = SettingsEditorType("Markdown", "Markdown");
   static const Raw = SettingsEditorType("Raw", "Raw");
   static const Journal = SettingsEditorType("Journal", "Journal");
+  static const Checklist = SettingsEditorType("Checklist", "Checklist");
   static const Default = Markdown;
 
   final String _str;
@@ -239,10 +241,26 @@ class SettingsEditorType {
     return _publicString;
   }
 
+  EditorType toEditorType() {
+    switch (this) {
+      case Markdown:
+        return EditorType.Markdown;
+      case Raw:
+        return EditorType.Raw;
+      case Journal:
+        return EditorType.Journal;
+      case Checklist:
+        return EditorType.Checklist;
+      default:
+        return EditorType.Markdown;
+    }
+  }
+
   static const options = <SettingsEditorType>[
     Markdown,
     Raw,
     Journal,
+    Checklist,
   ];
 
   static SettingsEditorType fromInternalString(String str) {
