@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'dart:core';
 
+var _regExp = RegExp('[a-zA-Z0-9]');
+
 String stripMarkdownFormatting(String markdown) {
   var output = StringBuffer();
-  var regExp = RegExp('[a-zA-Z0-9]');
 
   var lines = LineSplitter.split(markdown);
   for (var line in lines) {
-    if (!line.contains(regExp)) {
+    if (!line.contains(_regExp)) {
       continue;
     }
     line = line.trim();
