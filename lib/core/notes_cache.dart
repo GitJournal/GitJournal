@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:path/path.dart' as p;
 import 'package:collection/collection.dart';
 
@@ -104,7 +106,13 @@ class NotesCache {
       rethrow;
     }
 
-    return json.decode(contents).cast<String>();
+    try {
+      return json.decode(contents).cast<String>();
+    } catch (ex, st) {
+      Fimber.e("Exception - $ex for contents: $contents");
+      await FlutterCrashlytics().logException(ex, st);
+      return [];
+    }
   }
 
   @visibleForTesting
