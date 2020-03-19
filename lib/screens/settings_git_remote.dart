@@ -45,13 +45,17 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
         PublicKeyWidget(publicKey),
         const SizedBox(height: 16.0),
         const Divider(),
-        Button(
-          text: "Copy Key",
-          onPressed: () => _copyKeyToClipboard(context),
+        Builder(
+          builder: (BuildContext context) => Button(
+            text: "Copy Key",
+            onPressed: () => _copyKeyToClipboard(context),
+          ),
         ),
-        Button(
-          text: "Regenerate Key",
-          onPressed: () => _generateSshKey(context),
+        Builder(
+          builder: (BuildContext context) => Button(
+            text: "Regenerate Key",
+            onPressed: () => _generateSshKey(context),
+          ),
         ),
         ListPreference(
           title: "Sync Frequency",
