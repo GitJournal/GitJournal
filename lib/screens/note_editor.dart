@@ -7,6 +7,7 @@ import 'package:gitjournal/editors/journal_editor.dart';
 import 'package:gitjournal/editors/markdown_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
 import 'package:gitjournal/editors/checklist_editor.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
@@ -19,7 +20,9 @@ class NoteEditor extends StatefulWidget {
   final NotesFolder notesFolder;
   final EditorType defaultEditorType;
 
-  NoteEditor.fromNote(this.note, this.defaultEditorType) : notesFolder = null;
+  NoteEditor.fromNote(this.note)
+      : notesFolder = null,
+        defaultEditorType = null;
   NoteEditor.newNote(this.notesFolder, this.defaultEditorType) : note = null;
 
   @override
@@ -59,7 +62,21 @@ class NoteEditorState extends State<NoteEditor> {
   @override
   void initState() {
     super.initState();
-    editorType = widget.defaultEditorType;
+    if (widget.defaultEditorType != null) {
+      editorType = widget.defaultEditorType;
+    } else {
+      switch (note.type) {
+        case NoteType.Journal:
+          editorType = EditorType.Journal;
+          break;
+        case NoteType.Checklist:
+          editorType = EditorType.Checklist;
+          break;
+        case NoteType.Unknown:
+          editorType = Settings.instance.defaultEditor.toEditorType();
+          break;
+      }
+    }
   }
 
   @override

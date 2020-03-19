@@ -16,6 +16,7 @@ class NoteSerializationSettings {
   String modifiedKey = Settings.instance.yamlModifiedKey;
   String createdKey = "created";
   String titleKey = "title";
+  String typeKey = "type";
 }
 
 class NoteSerializer implements NoteSerializerInterface {
@@ -46,6 +47,13 @@ class NoteSerializer implements NoteSerializerInterface {
       data.props.remove(settings.titleKey);
     }
 
+    if (note.type != NoteType.Unknown) {
+      var type = note.type.toString().substring(9); // Remove "NoteType."
+      data.props[settings.typeKey] = type;
+    } else {
+      data.props.remove(settings.typeKey);
+    }
+
     data.body = emojiParser.unemojify(note.body);
   }
 
@@ -74,5 +82,18 @@ class NoteSerializer implements NoteSerializerInterface {
 
     var title = data.props[settings.titleKey]?.toString() ?? "";
     note.title = emojiParser.emojify(title);
+
+    var type = data.props[settings.typeKey];
+    switch (type) {
+      case "Checklist":
+        note.type = NoteType.Checklist;
+        break;
+      case "Journal":
+        note.type = NoteType.Journal;
+        break;
+      default:
+        note.type = NoteType.Unknown;
+        break;
+    }
   }
 }

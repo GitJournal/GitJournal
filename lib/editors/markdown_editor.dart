@@ -101,6 +101,7 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
   void _updateNote() {
     note.title = _titleTextController.text.trim();
     note.body = _textController.text.trim();
+    note.type = NoteType.Unknown;
   }
 
   @override

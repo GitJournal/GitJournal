@@ -5,7 +5,6 @@ import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/folder_views/card_view.dart';
 import 'package:gitjournal/folder_views/journal_view.dart';
 import 'package:gitjournal/screens/note_editor.dart';
-import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils.dart';
 
 import 'standard_view.dart';
@@ -26,10 +25,7 @@ Widget buildFolderView(
 ) {
   var noteSelectionFn = (Note note) async {
     var route = MaterialPageRoute(
-      builder: (context) => NoteEditor.fromNote(
-        note,
-        Settings.instance.defaultEditor.toEditorType(),
-      ),
+      builder: (context) => NoteEditor.fromNote(note),
     );
     var showUndoSnackBar = await Navigator.of(context).push(route);
     if (showUndoSnackBar != null) {

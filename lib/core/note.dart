@@ -20,6 +20,12 @@ enum NoteLoadState {
   NotExists,
 }
 
+enum NoteType {
+  Unknown,
+  Checklist,
+  Journal,
+}
+
 class Note with NotesNotifier {
   NotesFolderFS parent;
   String _filePath;
@@ -28,6 +34,8 @@ class Note with NotesNotifier {
   DateTime _created;
   DateTime _modified;
   String _body = "";
+  NoteType _type = NoteType.Unknown;
+
   MdYamlDoc _data = MdYamlDoc();
   NoteSerializer noteSerializer = NoteSerializer();
 
@@ -101,6 +109,17 @@ class Note with NotesNotifier {
     if (!canHaveMetadata) return;
 
     _title = title;
+    _notifyModified();
+  }
+
+  NoteType get type {
+    return _type;
+  }
+
+  set type(NoteType type) {
+    if (!canHaveMetadata) return;
+
+    _type = type;
     _notifyModified();
   }
 

@@ -134,6 +134,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
   Note getNote() {
     var note = checklist.note;
     note.title = _titleTextController.text.trim();
+    note.type = NoteType.Checklist;
     return note;
   }
 

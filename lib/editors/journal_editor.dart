@@ -77,13 +77,10 @@ class JournalEditorState extends State<JournalEditor> implements EditorState {
     );
   }
 
-  void _updateNote() {
-    note.body = _textController.text.trim();
-  }
-
   @override
   Note getNote() {
-    _updateNote();
+    note.body = _textController.text.trim();
+    note.type = NoteType.Journal;
     return note;
   }
 }
