@@ -61,7 +61,10 @@ class StandardView extends StatelessWidget {
         break;
 
       case StandardViewHeader.TitleGenerated:
-        title = note.summary;
+        title = note.title;
+        if (title == null || title.isEmpty) {
+          title = note.summary;
+        }
         break;
 
       default:
