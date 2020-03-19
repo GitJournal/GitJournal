@@ -85,15 +85,28 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
   }
 
   int _insertInCorrectPos(Note note) {
-    var i = 0;
-    for (; i < _notes.length; i++) {
-      var n = _notes[i];
-      if (_sortFunc(n, note) > 0) {
-        break;
+    var i = _getInsertPos(note, 0, _notes.length);
+    _notes.insert(i, note);
+
+    return i;
+  }
+
+  int _getInsertPos(Note note, int low, int high) {
+    int mid;
+    while (low <= high) {
+      mid = low + ((high - low) ~/ 2);
+
+      var r = _sortFunc(_notes[mid], note);
+      if (r == 0) {
+        return mid;
+      } else if (r < 0) {
+        return low = mid + 1;
+      } else {
+        return high = mid - 1;
       }
     }
-    _notes.insert(i, note);
-    return i;
+
+    return mid;
   }
 
   @override
