@@ -1,3 +1,11 @@
+## [1.45] - 2020-03-20
+* Add an "All Notes" view
+* Allow quickly opening a note with a specific editor
+* Save the Note type (Checklist/Journal) in the metadata
+* Fix validation of custom ssh keys
+* Performance improvements for faster loading of Notes
+* Add experimental Cards view
+
 ## [1.44] - 2020-03-11
 * Allow the Folder View to be configured
 * Faster loading of notes
