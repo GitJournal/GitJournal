@@ -94,29 +94,27 @@ class GitNoteRepository {
     return NoteRepoResult(noteFilePath: newFullPath, error: false);
   }
 
-  Future<NoteRepoResult> removeNote(String noteFilePath) async {
-    var pathSpec = noteFilePath.replaceFirst(gitDirPath, "").substring(1);
-
+  Future<NoteRepoResult> removeNote(Note note) async {
     // We are not calling note.remove() as gitRm will also remove the file
-    await _gitRepo.rm(pathSpec);
+    var spec = note.pathSpec();
+    await _gitRepo.rm(spec);
     await _gitRepo.commit(
-      message: "Removed Note " + pathSpec,
+      message: "Removed Note " + spec,
     );
 
-    return NoteRepoResult(noteFilePath: noteFilePath, error: false);
+    return NoteRepoResult(noteFilePath: note.filePath, error: false);
   }
 
-  Future<NoteRepoResult> removeFolder(String folderPath) async {
-    var pathSpec = folderPath.replaceFirst(gitDirPath, "").substring(1);
-
-    await _gitRepo.rm(pathSpec);
+  Future<NoteRepoResult> removeFolder(NotesFolderFS folder) async {
+    var spec = folder.pathSpec();
+    await _gitRepo.rm(spec);
     await _gitRepo.commit(
-      message: "Removed Folder " + pathSpec,
+      message: "Removed Folder " + spec,
     );
 
-    await Directory(folderPath).delete(recursive: true);
+    await Directory(folder.folderPath).delete(recursive: true);
 
-    return NoteRepoResult(noteFilePath: folderPath, error: false);
+    return NoteRepoResult(noteFilePath: folder.folderPath, error: false);
   }
 
   Future<NoteRepoResult> resetLastCommit() async {

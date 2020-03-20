@@ -259,4 +259,11 @@ class Note with NotesNotifier {
     notifyModifiedListeners(this);
     notifyListeners();
   }
+
+  String pathSpec() {
+    if (parent == null) {
+      return fileName;
+    }
+    return p.join(parent.pathSpec(), fileName);
+  }
 }

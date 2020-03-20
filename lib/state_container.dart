@@ -140,7 +140,7 @@ class StateContainer with ChangeNotifier {
       Fimber.d("Removing Folder: " + folder.folderPath);
 
       folder.parentFS.removeFolder(folder);
-      _gitRepo.removeFolder(folder.folderPath).then((NoteRepoResult _) {
+      _gitRepo.removeFolder(folder).then((NoteRepoResult _) {
         _syncNotes();
       });
     });
@@ -199,7 +199,7 @@ class StateContainer with ChangeNotifier {
     return _opLock.synchronized(() async {
       // FIXME: What if the Note hasn't yet been saved?
       note.parent.remove(note);
-      _gitRepo.removeNote(note.filePath).then((NoteRepoResult _) async {
+      _gitRepo.removeNote(note).then((NoteRepoResult _) async {
         // FIXME: Is there a way of figuring this amount dynamically?
         // The '4 seconds' is taken from snack_bar.dart -> _kSnackBarDisplayDuration
         // We wait an aritfical amount of time, so that the user has a change to undo
