@@ -119,7 +119,7 @@ class AppDrawer extends StatelessWidget {
                 }
               }
             },
-            selected: currentRoute == null,
+            selected: currentRoute == "/folders",
           ),
           divider,
           _buildDrawerTile(
@@ -228,8 +228,6 @@ class AppDrawer extends StatelessWidget {
     @required Function onTap,
     bool selected = false,
   }) {
-    selected = false; // Disable this as it looks very ugly in dark mode
-
     var theme = Theme.of(context);
     var listTileTheme = ListTileTheme.of(context);
     var textStyle = theme.textTheme.body2.copyWith(
