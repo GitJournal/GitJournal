@@ -54,11 +54,6 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
 
   void _noteAddedListener(int _, Note note) {
     assert(folder.notes.length == _notes.length + 1);
-    if (note.loadState != NoteLoadState.Loaded) {
-      _notes.add(note);
-      notifyNoteAdded(_notes.length - 1, note);
-      return;
-    }
 
     var i = _insertInCorrectPos(note);
     notifyNoteAdded(i, note);
@@ -85,9 +80,8 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
   }
 
   int _insertInCorrectPos(Note note) {
-    var i = _getInsertPos(note, 0, _notes.length);
+    var i = _getInsertPos(note, 0, _notes.length - 1);
     _notes.insert(i, note);
-
     return i;
   }
 
@@ -100,9 +94,9 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
       if (r == 0) {
         return mid;
       } else if (r < 0) {
-        return low = mid + 1;
+        low = mid + 1;
       } else {
-        return high = mid - 1;
+        high = mid - 1;
       }
     }
 
