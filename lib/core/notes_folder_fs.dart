@@ -65,17 +65,6 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   @override
   String get name => basename(folderPath);
 
-  String get fullName {
-    String n = name;
-    var par = parent;
-    while (par != null) {
-      n = p.join(par.name, n);
-      par = par.parent;
-    }
-
-    return n;
-  }
-
   bool get hasSubFolders {
     return _folders.isNotEmpty;
   }
@@ -329,5 +318,21 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   @override
   NotesFolder get fsFolder {
     return this;
+  }
+
+  NotesFolderFS getFolderWithSpec(String spec) {
+    print("getFolderWithSpec $spec");
+    print("pathSpec " + pathSpec());
+    if (pathSpec() == spec) {
+      return this;
+    }
+    for (var f in _folders) {
+      var res = f.getFolderWithSpec(spec);
+      if (res != null) {
+        return res;
+      }
+    }
+
+    return null;
   }
 }

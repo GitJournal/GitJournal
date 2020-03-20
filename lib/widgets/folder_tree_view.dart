@@ -120,7 +120,7 @@ class FolderTileState extends State<FolderTile> {
 
     var folderName = folder.name;
     if (folder.parent == null) {
-      folderName = "Notes";
+      folderName = "Root Folder";
     }
     var subtitle = folder.numberOfNotes.toString() + " Notes";
 

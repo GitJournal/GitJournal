@@ -11,8 +11,6 @@ import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:provider/provider.dart';
 
-var defaultFolderConfigurable = false;
-
 class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -123,6 +121,10 @@ class SettingsListState extends State<SettingsList> {
     );
 
     var brightness = DynamicTheme.of(context).brightness;
+    var defaultNewFolder = Settings.instance.defaultNewNoteFolderSpec;
+    if (defaultNewFolder.isEmpty) {
+      defaultNewFolder = "Root Folder";
+    }
 
     return ListView(children: [
       SettingsHeader('Display Settings'),
@@ -135,24 +137,22 @@ class SettingsListState extends State<SettingsList> {
           dynamicTheme.setBrightness(b);
         },
       ),
-      if (defaultFolderConfigurable) SettingsHeader('Note Settings'),
-      if (defaultFolderConfigurable)
-        ListTile(
-          title: const Text("Default Folder for new notes"),
-          subtitle: Text(Settings.instance.defaultNewNoteFolder
-              .replaceFirst('journal', 'Notes')),
-          onTap: () async {
-            var destFolder = await showDialog<NotesFolderFS>(
-              context: context,
-              builder: (context) => FolderSelectionDialog(),
-            );
-            if (destFolder != null) {
-              Settings.instance.defaultNewNoteFolder = destFolder.fullName;
-              Settings.instance.save();
-              setState(() {});
-            }
-          },
-        ),
+      SettingsHeader('Note Settings'),
+      ListTile(
+        title: const Text("Default Folder for new notes"),
+        subtitle: Text(defaultNewFolder),
+        onTap: () async {
+          var destFolder = await showDialog<NotesFolderFS>(
+            context: context,
+            builder: (context) => FolderSelectionDialog(),
+          );
+          if (destFolder != null) {
+            Settings.instance.defaultNewNoteFolderSpec = destFolder.pathSpec();
+            Settings.instance.save();
+            setState(() {});
+          }
+        },
+      ),
       SettingsHeader("Git Author Settings"),
       ListTile(title: gitAuthorForm),
       ListTile(title: gitAuthorEmailForm),

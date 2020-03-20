@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/sorted_notes_folder.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
@@ -210,9 +211,15 @@ class _FolderViewState extends State<FolderView> {
   }
 
   void _newPost(BuildContext context, EditorType editorType) {
+    NotesFolderFS fsFolder = widget.notesFolder.fsFolder;
+    if (widget.notesFolder.name != fsFolder.name) {
+      var spec = Settings.instance.defaultNewNoteFolderSpec;
+      fsFolder = fsFolder.getFolderWithSpec(spec);
+    }
+
     var route = MaterialPageRoute(
-        builder: (context) =>
-            NoteEditor.newNote(widget.notesFolder.fsFolder, editorType));
+      builder: (context) => NoteEditor.newNote(fsFolder, editorType),
+    );
     Navigator.of(context).push(route);
   }
 

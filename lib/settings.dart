@@ -21,7 +21,7 @@ class Settings {
 
   String yamlModifiedKey = "modified";
   bool yamlHeaderEnabled = true;
-  String defaultNewNoteFolder = "journal";
+  String defaultNewNoteFolderSpec = "";
 
   RemoteSyncFrequency remoteSyncFrequency = RemoteSyncFrequency.Default;
   SortingMode sortingMode = SortingMode.Default;
@@ -45,8 +45,8 @@ class Settings {
 
     yamlModifiedKey = pref.getString("yamlModifiedKey") ?? yamlModifiedKey;
     yamlHeaderEnabled = pref.getBool("yamlHeaderEnabled") ?? yamlHeaderEnabled;
-    defaultNewNoteFolder =
-        pref.getString("defaultNewNoteFolder") ?? defaultNewNoteFolder;
+    defaultNewNoteFolderSpec =
+        pref.getString("defaultNewNoteFolderSpec") ?? defaultNewNoteFolderSpec;
 
     remoteSyncFrequency = RemoteSyncFrequency.fromInternalString(
         pref.getString("remoteSyncFrequency"));
@@ -73,7 +73,7 @@ class Settings {
     pref.setBool("collectCrashReports", collectCrashReports);
     pref.setString("yamlModifiedKey", yamlModifiedKey);
     pref.setBool("yamlHeaderEnabled", yamlHeaderEnabled);
-    pref.setString("defaultNewNoteFolder", defaultNewNoteFolder);
+    pref.setString("defaultNewNoteFolderSpec", defaultNewNoteFolderSpec);
     pref.setString(
         "remoteSyncFrequency", remoteSyncFrequency.toInternalString());
     pref.setString("sortingMode", sortingMode.toInternalString());
@@ -98,7 +98,7 @@ class Settings {
       "collectCrashReports": collectCrashReports,
       "yamlModifiedKey": yamlModifiedKey,
       "yamlHeaderEnabled": yamlHeaderEnabled,
-      "defaultNewNoteFolder": defaultNewNoteFolder,
+      "defaultNewNoteFolderSpec": defaultNewNoteFolderSpec,
       "defaultEditor": defaultEditor.toInternalString(),
       "defaultView": defaultView.toInternalString(),
       "sortingMode": sortingMode.toInternalString(),
@@ -113,7 +113,7 @@ class Settings {
     var m = toMap();
     m.remove("gitAuthor");
     m.remove("gitAuthorEmail");
-    m.remove("defaultNewNoteFolder");
+    m.remove("defaultNewNoteFolderSpec");
     return m;
   }
 }

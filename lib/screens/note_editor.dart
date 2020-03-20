@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/md_yaml_doc.dart';
-import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/editors/journal_editor.dart';
 import 'package:gitjournal/editors/markdown_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
@@ -17,7 +17,7 @@ class ShowUndoSnackbar {}
 
 class NoteEditor extends StatefulWidget {
   final Note note;
-  final NotesFolder notesFolder;
+  final NotesFolderFS notesFolder;
   final EditorType defaultEditorType;
 
   NoteEditor.fromNote(this.note)
@@ -51,7 +51,7 @@ class NoteEditorState extends State<NoteEditor> {
     return widget.note == null;
   }
 
-  NoteEditorState.newNote(NotesFolder folder) {
+  NoteEditorState.newNote(NotesFolderFS folder) {
     note = Note.newNote(folder);
   }
 
@@ -313,7 +313,7 @@ class NoteEditorState extends State<NoteEditor> {
   }
 
   void _moveNoteToFolderSelected(Note note) async {
-    var destFolder = await showDialog<NotesFolder>(
+    var destFolder = await showDialog<NotesFolderFS>(
       context: context,
       builder: (context) => FolderSelectionDialog(),
     );

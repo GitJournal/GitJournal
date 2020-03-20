@@ -100,7 +100,7 @@ class FolderMiniTileState extends State<FolderMiniTile> {
 
     var folderName = folder.name;
     if (folder.parent == null) {
-      folderName = "Notes";
+      folderName = "Root Folder";
     }
 
     return Card(
