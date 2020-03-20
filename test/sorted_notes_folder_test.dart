@@ -92,6 +92,29 @@ void main() {
       expect(sf.notes[5].body, "0");
     });
 
+    test('Should add new note to end works correctly', () async {
+      var sf = SortedNotesFolder(
+        folder: folder,
+        sortingMode: SortingMode.Modified,
+      );
+
+      var note = Note(folder, p.join(folder.folderPath, "new.md"));
+      note.modified = DateTime(2020, 1, 1);
+      note.body = "new";
+      await note.save();
+
+      folder.add(note);
+
+      expect(sf.notes.length, 6);
+
+      expect(sf.notes[0].body, "4");
+      expect(sf.notes[1].body, "3");
+      expect(sf.notes[2].body, "2");
+      expect(sf.notes[3].body, "1");
+      expect(sf.notes[4].body, "0");
+      expect(sf.notes[5].body, "new");
+    });
+
     test('If still sorted while loading the notes', () async {
       var folder = NotesFolderFS(null, tempDir.path);
       var sf = SortedNotesFolder(
@@ -113,7 +136,5 @@ void main() {
       expect(sf.notes[3].body, "1");
       expect(sf.notes[4].body, "0");
     });
-
-    // FIXME: Test if adding a note to the end works
   });
 }
