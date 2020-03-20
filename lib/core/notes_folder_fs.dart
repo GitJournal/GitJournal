@@ -156,7 +156,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       }
 
       if (fsEntity is Directory) {
-        Fimber.d("Found directory ${fsEntity.path}");
+        //Fimber.d("Found directory ${fsEntity.path}");
         var subFolder = NotesFolderFS(this, fsEntity.path);
         if (subFolder.name.startsWith('.')) {
           continue;
@@ -173,10 +173,10 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
       var note = Note(this, fsEntity.path);
       if (!note.filePath.toLowerCase().endsWith('.md')) {
-        Fimber.d("Ignoring file ${fsEntity.path}");
+        //Fimber.d("Ignoring file ${fsEntity.path}");
         continue;
       }
-      Fimber.d("Found file ${fsEntity.path}");
+      //Fimber.d("Found file ${fsEntity.path}");
       note.addModifiedListener(_noteModified);
 
       _notes.add(note);
