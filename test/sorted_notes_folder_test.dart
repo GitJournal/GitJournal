@@ -91,5 +91,29 @@ void main() {
       expect(sf.notes[4].body, "1");
       expect(sf.notes[5].body, "0");
     });
+
+    test('If still sorted while loading the notes', () async {
+      var folder = NotesFolderFS(null, tempDir.path);
+      var sf = SortedNotesFolder(
+        folder: folder,
+        sortingMode: SortingMode.Modified,
+      );
+
+      await folder.loadRecursively();
+
+      expect(sf.hasNotes, true);
+      expect(sf.isEmpty, false);
+      expect(sf.name.startsWith("__sorted_folder_test__"), true);
+      expect(sf.subFolders.length, 0);
+      expect(sf.notes.length, 5);
+
+      expect(sf.notes[0].body, "4");
+      expect(sf.notes[1].body, "3");
+      expect(sf.notes[2].body, "2");
+      expect(sf.notes[3].body, "1");
+      expect(sf.notes[4].body, "0");
+    });
+
+    // FIXME: Test if adding a note to the end works
   });
 }

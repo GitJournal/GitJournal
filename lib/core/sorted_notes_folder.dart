@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
@@ -80,26 +82,49 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
   }
 
   int _insertInCorrectPos(Note note) {
+    if (_notes.isEmpty) {
+      _notes.add(note);
+      return 0;
+    }
+
     var i = _getInsertPos(note, 0, _notes.length - 1);
-    _notes.insert(i, note);
+    if (i == _notes.length) {
+      _notes.add(note);
+    } else {
+      _notes.insert(i, note);
+    }
     return i;
   }
 
   int _getInsertPos(Note note, int low, int high) {
-    int mid;
+    assert(low <= high);
+
+    int mid = high;
+
     while (low <= high) {
       mid = low + ((high - low) ~/ 2);
 
       var r = _sortFunc(_notes[mid], note);
       if (r == 0) {
-        return mid;
-      } else if (r < 0) {
+        return low;
+      }
+
+      if (low == high) {
+        if (r < 0) {
+          return low + 1;
+        } else {
+          return low;
+        }
+      }
+
+      if (r < 0) {
         low = mid + 1;
       } else {
-        high = mid - 1;
+        high = max(low, mid - 1);
       }
     }
 
+    assert(false);
     return mid;
   }
 
