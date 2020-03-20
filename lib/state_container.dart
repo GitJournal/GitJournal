@@ -14,9 +14,12 @@ import 'package:gitjournal/settings.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
+import 'package:synchronized/synchronized.dart';
 
 class StateContainer with ChangeNotifier {
   final AppState appState;
+
+  final _opLock = Lock();
 
   // FIXME: The gitRepo should never be changed once it has been setup
   //        We should always just be modifying the 'git remotes'
@@ -118,93 +121,111 @@ class StateContainer with ChangeNotifier {
   }
 
   void createFolder(NotesFolderFS parent, String folderName) async {
-    var newFolderPath = p.join(parent.folderPath, folderName);
-    var newFolder = NotesFolderFS(parent, newFolderPath);
-    newFolder.create();
+    return _opLock.synchronized(() async {
+      var newFolderPath = p.join(parent.folderPath, folderName);
+      var newFolder = NotesFolderFS(parent, newFolderPath);
+      newFolder.create();
 
-    Fimber.d("Created New Folder: " + newFolderPath);
-    parent.addFolder(newFolder);
+      Fimber.d("Created New Folder: " + newFolderPath);
+      parent.addFolder(newFolder);
 
-    _gitRepo.addFolder(newFolder).then((NoteRepoResult _) {
-      _syncNotes();
+      _gitRepo.addFolder(newFolder).then((NoteRepoResult _) {
+        _syncNotes();
+      });
     });
   }
 
-  void removeFolder(NotesFolderFS folder) {
-    Fimber.d("Removing Folder: " + folder.folderPath);
+  void removeFolder(NotesFolderFS folder) async {
+    return _opLock.synchronized(() async {
+      Fimber.d("Removing Folder: " + folder.folderPath);
 
-    folder.parentFS.removeFolder(folder);
-    _gitRepo.removeFolder(folder.folderPath).then((NoteRepoResult _) {
-      _syncNotes();
+      folder.parentFS.removeFolder(folder);
+      _gitRepo.removeFolder(folder.folderPath).then((NoteRepoResult _) {
+        _syncNotes();
+      });
     });
   }
 
-  void renameFolder(NotesFolderFS folder, String newFolderName) {
-    var oldFolderPath = folder.folderPath;
-    folder.rename(newFolderName);
+  void renameFolder(NotesFolderFS folder, String newFolderName) async {
+    return _opLock.synchronized(() async {
+      var oldFolderPath = folder.folderPath;
+      folder.rename(newFolderName);
 
-    _gitRepo
-        .renameFolder(oldFolderPath, folder.folderPath)
-        .then((NoteRepoResult _) {
-      _syncNotes();
+      _gitRepo
+          .renameFolder(oldFolderPath, folder.folderPath)
+          .then((NoteRepoResult _) {
+        _syncNotes();
+      });
     });
   }
 
-  void renameNote(Note note, String newFileName) {
-    var oldNotePath = note.filePath;
-    note.rename(newFileName);
+  void renameNote(Note note, String newFileName) async {
+    return _opLock.synchronized(() async {
+      var oldNotePath = note.filePath;
+      note.rename(newFileName);
 
-    _gitRepo.renameNote(oldNotePath, note.filePath).then((NoteRepoResult _) {
-      _syncNotes();
+      _gitRepo.renameNote(oldNotePath, note.filePath).then((NoteRepoResult _) {
+        _syncNotes();
+      });
     });
   }
 
-  void moveNote(Note note, NotesFolderFS destFolder) {
+  void moveNote(Note note, NotesFolderFS destFolder) async {
     if (destFolder.folderPath == note.parent.folderPath) {
       return;
     }
-    var oldNotePath = note.filePath;
-    note.move(destFolder);
+    return _opLock.synchronized(() async {
+      var oldNotePath = note.filePath;
+      note.move(destFolder);
 
-    _gitRepo.moveNote(oldNotePath, note.filePath).then((NoteRepoResult _) {
-      _syncNotes();
+      _gitRepo.moveNote(oldNotePath, note.filePath).then((NoteRepoResult _) {
+        _syncNotes();
+      });
     });
   }
 
-  void addNote(Note note) {
-    Fimber.d("State Container addNote");
-    note.parent.insert(0, note);
-    note.updateModified();
-    _gitRepo.addNote(note).then((NoteRepoResult _) {
-      _syncNotes();
+  void addNote(Note note) async {
+    return _opLock.synchronized(() async {
+      Fimber.d("State Container addNote");
+      note.parent.insert(0, note);
+      note.updateModified();
+      _gitRepo.addNote(note).then((NoteRepoResult _) {
+        _syncNotes();
+      });
     });
   }
 
-  void removeNote(Note note) {
-    // FIXME: What if the Note hasn't yet been saved?
-    note.parent.remove(note);
-    _gitRepo.removeNote(note.filePath).then((NoteRepoResult _) async {
-      // FIXME: Is there a way of figuring this amount dynamically?
-      // The '4 seconds' is taken from snack_bar.dart -> _kSnackBarDisplayDuration
-      // We wait an aritfical amount of time, so that the user has a change to undo
-      // their delete operation, and that commit is not synced with the server, till then.
-      await Future.delayed(const Duration(seconds: 4));
-      _syncNotes();
+  void removeNote(Note note) async {
+    return _opLock.synchronized(() async {
+      // FIXME: What if the Note hasn't yet been saved?
+      note.parent.remove(note);
+      _gitRepo.removeNote(note.filePath).then((NoteRepoResult _) async {
+        // FIXME: Is there a way of figuring this amount dynamically?
+        // The '4 seconds' is taken from snack_bar.dart -> _kSnackBarDisplayDuration
+        // We wait an aritfical amount of time, so that the user has a change to undo
+        // their delete operation, and that commit is not synced with the server, till then.
+        await Future.delayed(const Duration(seconds: 4));
+        _syncNotes();
+      });
     });
   }
 
-  void undoRemoveNote(Note note) {
-    note.parent.insert(0, note);
-    _gitRepo.resetLastCommit().then((NoteRepoResult _) {
-      _syncNotes();
+  void undoRemoveNote(Note note) async {
+    return _opLock.synchronized(() async {
+      note.parent.insert(0, note);
+      _gitRepo.resetLastCommit().then((NoteRepoResult _) {
+        _syncNotes();
+      });
     });
   }
 
-  void updateNote(Note note) {
-    Fimber.d("State Container updateNote");
-    note.updateModified();
-    _gitRepo.updateNote(note).then((NoteRepoResult _) {
-      _syncNotes();
+  void updateNote(Note note) async {
+    return _opLock.synchronized(() async {
+      Fimber.d("State Container updateNote");
+      note.updateModified();
+      _gitRepo.updateNote(note).then((NoteRepoResult _) {
+        _syncNotes();
+      });
     });
   }
 
