@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fimber/fimber.dart';
 import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
+import 'package:synchronized/synchronized.dart';
 
 import 'note.dart';
 import 'notes_folder.dart';
@@ -11,6 +12,7 @@ import 'notes_folder_notifier.dart';
 class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   final NotesFolderFS _parent;
   String _folderPath;
+  var _lock = Lock();
 
   List<Note> _notes = [];
   List<NotesFolderFS> _folders = [];
@@ -137,8 +139,14 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     return Future.wait(futures);
   }
 
-  // FIXME: This should not reconstruct the Notes or NotesFolders once constructed.
   Future<void> load() async {
+    return _lock.synchronized(() async {
+      return _load();
+    });
+  }
+
+  // FIXME: This should not reconstruct the Notes or NotesFolders once constructed.
+  Future<void> _load() async {
     Set<String> pathsFound = {};
 
     final dir = Directory(folderPath);
