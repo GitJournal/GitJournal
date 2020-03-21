@@ -157,6 +157,8 @@ const ignoredMessages = [
   'network is unreachable',
   'software caused connection abort',
   'unable to exchange encryption keys',
+  'the key you are authenticating with has been marked as read only',
+  'transport read',
 ];
 
 bool shouldLogGitException(GitException ex) {
