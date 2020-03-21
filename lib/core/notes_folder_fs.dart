@@ -329,8 +329,6 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   }
 
   NotesFolderFS getFolderWithSpec(String spec) {
-    print("getFolderWithSpec $spec");
-    print("pathSpec " + pathSpec());
     if (pathSpec() == spec) {
       return this;
     }

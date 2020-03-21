@@ -95,6 +95,35 @@ void main() {
       expect(notes[8].body, "sub2-1");
     });
 
+    test('Should add a note properly', () async {
+      var f = FlattenedNotesFolder(rootFolder);
+
+      var p1 = (f.fsFolder as NotesFolderFS).getFolderWithSpec("sub1/p1");
+      var note = Note(p1, p.join(p1.folderPath, "new.md"));
+      note.modified = DateTime(2020, 2, 1);
+      note.body = "new";
+      await note.save();
+      p1.add(note);
+
+      expect(f.notes.length, 10);
+
+      var notes = List<Note>.from(f.notes);
+      notes.sort((Note n1, Note n2) => n1.body.compareTo(n2.body));
+
+      expect(notes[0].body, "0");
+      expect(notes[1].body, "1");
+      expect(notes[2].body, "2");
+      expect(notes[3].body, "new");
+      expect(notes[4].body, "p1-0");
+      expect(notes[5].body, "p1-1");
+      expect(notes[6].body, "sub1-0");
+      expect(notes[7].body, "sub1-1");
+      expect(notes[8].body, "sub2-0");
+      expect(notes[9].body, "sub2-1");
+
+      // FIXME: Check if the callback for added is called with the correct index
+    });
+
     // Test adding a note
     // Test removing a note
     // Test loading it incrementally
