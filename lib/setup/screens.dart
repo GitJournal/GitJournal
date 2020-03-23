@@ -364,9 +364,9 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       return;
     }
 
-    var comment = "GitJournal " +
+    var comment = "GitJournal-" +
         Platform.operatingSystem +
-        " " +
+        "-" +
         DateTime.now().toIso8601String().substring(0, 10); // only the date
 
     generateSSHKeys(comment: comment).then((String publicKey) {
