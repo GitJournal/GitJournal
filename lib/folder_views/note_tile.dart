@@ -41,14 +41,15 @@ class NoteTile extends StatelessWidget {
                   .copyWith(fontSize: textTheme.title.fontSize * 0.80),
             ),
           if (note.title != null && note.title.isNotEmpty)
-            const SizedBox(height: 12.0),
+            const SizedBox(height: 8.0),
           Flexible(
             flex: 1,
             child: Text(
               body,
               maxLines: 30,
               overflow: TextOverflow.ellipsis,
-              style: textTheme.subhead,
+              style: textTheme.subhead
+                  .copyWith(fontSize: textTheme.subhead.fontSize * 0.90),
             ),
           ),
         ],
