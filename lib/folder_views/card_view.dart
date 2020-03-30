@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/folder_views/note_tile.dart';
 
 typedef void NoteSelectedFunction(Note note);
 
@@ -38,7 +39,7 @@ class CardView extends StatelessWidget {
       itemCount: folder.notes.length,
       itemBuilder: (BuildContext context, int index) {
         var note = folder.notes[index];
-        return _buildNoteCard(context, note);
+        return NoteTile(note, noteSelectedFunction);
       },
       staggeredTileBuilder: (int i) => const StaggeredTile.fit(2),
       mainAxisSpacing: 8.0,
@@ -48,60 +49,6 @@ class CardView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: gridView,
-    );
-  }
-
-  Widget _buildNoteCard(BuildContext context, Note note) {
-    var body = note.body.trimRight();
-
-    body = body.replaceAll('[ ]', '☐');
-    body = body.replaceAll('[x]', '☑');
-    body = body.replaceAll('[X]', '☑');
-
-    var textTheme = Theme.of(context).textTheme;
-    var tileContent = Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: <Widget>[
-          if (note.title != null && note.title.isNotEmpty)
-            Text(
-              note.title,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: textTheme.title,
-            ),
-          if (note.title != null && note.title.isNotEmpty)
-            const SizedBox(height: 8.0),
-          Text(
-            body,
-            maxLines: 30,
-            overflow: TextOverflow.ellipsis,
-            style: textTheme.subhead,
-          ),
-        ],
-        crossAxisAlignment: CrossAxisAlignment.start,
-      ),
-    );
-
-    const borderRadius = BorderRadius.all(Radius.circular(8));
-    var tile = Material(
-      borderRadius: borderRadius,
-      type: MaterialType.card,
-      child: Padding(padding: const EdgeInsets.all(4.0), child: tileContent),
-    );
-
-    /*var tile = Container(
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey[200]),
-          color: Colors.white,
-          borderRadius: borderRadius,
-      child: tileContent,
-    );*/
-
-    return InkWell(
-      child: tile,
-      borderRadius: borderRadius,
-      onTap: () => noteSelectedFunction(note),
     );
   }
 }
