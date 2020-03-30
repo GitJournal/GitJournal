@@ -42,7 +42,7 @@ class GridFolderView extends StatelessWidget {
     );
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 16.0),
       child: gridView,
     );
   }

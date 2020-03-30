@@ -19,7 +19,7 @@ class NoteTile extends StatelessWidget {
 
     var theme = Theme.of(context);
     var textTheme = theme.textTheme;
-    var borderColor = theme.highlightColor.withAlpha(50);
+    var borderColor = theme.highlightColor.withAlpha(80);
     if (theme.brightness == Brightness.dark) {
       borderColor = theme.highlightColor.withAlpha(100);
     }
@@ -29,7 +29,7 @@ class NoteTile extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(8)),
         border: Border.all(color: borderColor),
       ),
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         children: <Widget>[
           if (note.title != null && note.title.isNotEmpty)
@@ -37,7 +37,8 @@ class NoteTile extends StatelessWidget {
               note.title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: textTheme.title,
+              style: textTheme.title
+                  .copyWith(fontSize: textTheme.title.fontSize * 0.80),
             ),
           if (note.title != null && note.title.isNotEmpty)
             const SizedBox(height: 12.0),
