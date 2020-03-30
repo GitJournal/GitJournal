@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
+import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/widgets/note_viewer.dart';
 
 class MarkdownEditor extends StatefulWidget implements Editor {
@@ -66,7 +67,7 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            if (note.canHaveMetadata) _NoteTitleEditor(_titleTextController),
+            if (note.canHaveMetadata) NoteTitleEditor(_titleTextController),
             _NoteBodyEditor(
               _textController,
               autofocus: widget.autofocusOnEditor,
@@ -134,30 +135,6 @@ class _NoteBodyEditor extends StatelessWidget {
       controller: textController,
       textCapitalization: TextCapitalization.sentences,
       scrollPadding: const EdgeInsets.all(0.0),
-    );
-  }
-}
-
-class _NoteTitleEditor extends StatelessWidget {
-  final TextEditingController textController;
-
-  _NoteTitleEditor(this.textController);
-
-  @override
-  Widget build(BuildContext context) {
-    var style = Theme.of(context).textTheme.title;
-
-    return TextField(
-      keyboardType: TextInputType.text,
-      maxLines: 1,
-      style: style,
-      decoration: const InputDecoration(
-        hintText: 'Title',
-        border: InputBorder.none,
-        isDense: true,
-      ),
-      controller: textController,
-      textCapitalization: TextCapitalization.sentences,
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:gitjournal/core/checklist.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
+import 'package:gitjournal/editors/note_title_editor.dart';
 
 class ChecklistEditor extends StatefulWidget implements Editor {
   final Note note;
@@ -116,7 +117,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
 
     var titleEditor = Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-      child: _NoteTitleEditor(_titleTextController),
+      child: NoteTitleEditor(_titleTextController),
     );
 
     return Scaffold(
@@ -193,30 +194,6 @@ class ChecklistEditorState extends State<ChecklistEditor>
           });
         });
       },
-    );
-  }
-}
-
-class _NoteTitleEditor extends StatelessWidget {
-  final TextEditingController textController;
-
-  _NoteTitleEditor(this.textController);
-
-  @override
-  Widget build(BuildContext context) {
-    var style = Theme.of(context).textTheme.title;
-
-    return TextField(
-      keyboardType: TextInputType.text,
-      maxLines: 1,
-      style: style,
-      decoration: const InputDecoration(
-        hintText: 'Title',
-        border: InputBorder.none,
-        isDense: true,
-      ),
-      controller: textController,
-      textCapitalization: TextCapitalization.sentences,
     );
   }
 }
