@@ -10,6 +10,7 @@ import 'package:gitjournal/editors/checklist_editor.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
+import 'package:gitjournal/widgets/note_editor_selector.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -145,45 +146,10 @@ class NoteEditorState extends State<NoteEditor> {
   }
 
   void _noteEditorChooserSelected(Note _note) async {
-    var onEditorChange = (EditorType et) => Navigator.of(context).pop(et);
-
     var newEditorType = await showDialog<EditorType>(
       context: context,
       builder: (BuildContext context) {
-        var children = <Widget>[
-          RadioListTile<EditorType>(
-            title: const Text("Markdown Editor"),
-            value: EditorType.Markdown,
-            groupValue: editorType,
-            onChanged: onEditorChange,
-          ),
-          RadioListTile<EditorType>(
-            title: const Text("Raw Editor"),
-            value: EditorType.Raw,
-            groupValue: editorType,
-            onChanged: onEditorChange,
-          ),
-          RadioListTile<EditorType>(
-            title: const Text("Checklist Editor"),
-            value: EditorType.Checklist,
-            groupValue: editorType,
-            onChanged: onEditorChange,
-          ),
-          RadioListTile<EditorType>(
-            title: const Text("Journal Editor"),
-            value: EditorType.Journal,
-            groupValue: editorType,
-            onChanged: onEditorChange,
-          ),
-        ];
-
-        return AlertDialog(
-          title: const Text("Choose Editor"),
-          content: Column(
-            children: children,
-            mainAxisSize: MainAxisSize.min,
-          ),
-        );
+        return NoteEditorSelector(editorType);
       },
     );
 
