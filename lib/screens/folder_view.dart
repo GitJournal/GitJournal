@@ -59,6 +59,9 @@ class _FolderViewState extends State<FolderView> {
       case SettingsFolderViewType.Card:
         _viewType = FolderViewType.Card;
         break;
+      case SettingsFolderViewType.Grid:
+        _viewType = FolderViewType.Grid;
+        break;
     }
 
     _showSummary = Settings.instance.showNoteSummary;
@@ -380,6 +383,12 @@ class _FolderViewState extends State<FolderView> {
             onChanged: onViewChange,
           ),
           RadioListTile<FolderViewType>(
+            title: const Text("Grid View"),
+            value: FolderViewType.Grid,
+            groupValue: _viewType,
+            onChanged: onViewChange,
+          ),
+          RadioListTile<FolderViewType>(
             title: const Text("Card View (Experimental)"),
             value: FolderViewType.Card,
             groupValue: _viewType,
@@ -410,6 +419,9 @@ class _FolderViewState extends State<FolderView> {
             break;
           case FolderViewType.Card:
             Settings.instance.defaultView = SettingsFolderViewType.Card;
+            break;
+          case FolderViewType.Grid:
+            Settings.instance.defaultView = SettingsFolderViewType.Grid;
             break;
         }
         Settings.instance.save();

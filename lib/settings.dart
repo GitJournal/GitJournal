@@ -292,6 +292,7 @@ class SettingsFolderViewType {
   static const Standard = SettingsFolderViewType("Standard", "Standard");
   static const Journal = SettingsFolderViewType("Journal", "Journal");
   static const Card = SettingsFolderViewType("Card", "Card");
+  static const Grid = SettingsFolderViewType("Grid", "Grid");
   static const Default = Standard;
 
   final String _str;
@@ -310,6 +311,7 @@ class SettingsFolderViewType {
     Standard,
     Journal,
     Card,
+    Grid,
   ];
 
   static SettingsFolderViewType fromInternalString(String str) {
