@@ -49,13 +49,13 @@ class _SyncButtonState extends State<SyncButton> {
     }
     if (appState.syncStatus == SyncStatus.Pulling) {
       return BlinkingIcon(
-        icon: Icon(Icons.arrow_downward),
+        icon: Icon(Icons.cloud_download),
       );
     }
 
     if (appState.syncStatus == SyncStatus.Pushing) {
       return BlinkingIcon(
-        icon: Icon(Icons.arrow_upward),
+        icon: Icon(Icons.cloud_upload),
       );
     }
 
