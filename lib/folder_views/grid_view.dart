@@ -35,7 +35,7 @@ class GridFolderView extends StatelessWidget {
         maxCrossAxisExtent: 200.0,
         mainAxisSpacing: 10.0,
         crossAxisSpacing: 10.0,
-        childAspectRatio: 1 / 1.2,
+        childAspectRatio: 1 / 1.1,
       ),
       itemBuilder: _buildItem,
       itemCount: folder.notes.length,
