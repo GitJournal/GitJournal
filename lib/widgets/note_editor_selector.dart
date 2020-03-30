@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/fa_icon.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 
 class NoteEditorSelector extends StatelessWidget {
@@ -8,42 +10,60 @@ class NoteEditorSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var onEditorChange = (EditorType et) => Navigator.of(context).pop(et);
-
-    var children = <Widget>[
-      // FIXME: Change this to ListTiles with nice icons
-      RadioListTile<EditorType>(
-        title: const Text("Markdown Editor"),
-        value: EditorType.Markdown,
-        groupValue: currentEditor,
-        onChanged: onEditorChange,
-      ),
-      RadioListTile<EditorType>(
-        title: const Text("Raw Editor"),
-        value: EditorType.Raw,
-        groupValue: currentEditor,
-        onChanged: onEditorChange,
-      ),
-      RadioListTile<EditorType>(
-        title: const Text("Checklist Editor"),
-        value: EditorType.Checklist,
-        groupValue: currentEditor,
-        onChanged: onEditorChange,
-      ),
-      RadioListTile<EditorType>(
-        title: const Text("Journal Editor"),
-        value: EditorType.Journal,
-        groupValue: currentEditor,
-        onChanged: onEditorChange,
-      ),
-    ];
+    var list = Column(
+      children: <Widget>[
+        _buildTile(
+          context,
+          EditorType.Markdown,
+          "Markdown Editor",
+          FontAwesomeIcons.markdown,
+        ),
+        _buildTile(
+          context,
+          EditorType.Raw,
+          "Raw Editor",
+          FontAwesomeIcons.dna,
+        ),
+        _buildTile(
+          context,
+          EditorType.Checklist,
+          "Checklist Editor",
+          FontAwesomeIcons.tasks,
+        ),
+        _buildTile(
+          context,
+          EditorType.Journal,
+          "Journal Editor",
+          FontAwesomeIcons.book,
+        ),
+      ],
+      mainAxisSize: MainAxisSize.min,
+    );
 
     return AlertDialog(
       title: const Text("Choose Editor"),
-      content: Column(
-        children: children,
-        mainAxisSize: MainAxisSize.min,
-      ),
+      content: list,
+    );
+  }
+
+  ListTile _buildTile(
+    BuildContext context,
+    EditorType et,
+    String text,
+    IconData iconData,
+  ) {
+    var selected = et == currentEditor;
+    var theme = Theme.of(context);
+    var listTileTheme = ListTileTheme.of(context);
+    var textStyle = theme.textTheme.body1.copyWith(
+      color: selected ? theme.primaryColor : listTileTheme.textColor,
+    );
+
+    return ListTile(
+      title: Text(text),
+      leading: FaIcon(iconData, color: textStyle.color),
+      onTap: () => Navigator.of(context).pop(et),
+      selected: selected,
     );
   }
 }
