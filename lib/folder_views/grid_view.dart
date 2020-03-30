@@ -66,8 +66,18 @@ class GridFolderView extends StatelessWidget {
     body = body.replaceAll('[x]', '☑');
     body = body.replaceAll('[X]', '☑');
 
-    var textTheme = Theme.of(context).textTheme;
-    var tileContent = Padding(
+    var theme = Theme.of(context);
+    var textTheme = theme.textTheme;
+    var borderColor = theme.highlightColor.withAlpha(50);
+    if (theme.brightness == Brightness.dark) {
+      borderColor = theme.highlightColor.withAlpha(100);
+    }
+
+    var tileContent = Container(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        border: Border.all(color: borderColor),
+      ),
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: <Widget>[
@@ -79,7 +89,7 @@ class GridFolderView extends StatelessWidget {
               style: textTheme.title,
             ),
           if (note.title != null && note.title.isNotEmpty)
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 12.0),
           Flexible(
             flex: 1,
             child: Text(
@@ -99,7 +109,7 @@ class GridFolderView extends StatelessWidget {
     var tile = Material(
       borderRadius: borderRadius,
       type: MaterialType.card,
-      child: Padding(padding: const EdgeInsets.all(4.0), child: tileContent),
+      child: tileContent,
     );
 
     /*var tile = Container(
