@@ -126,18 +126,21 @@ class GitNoteRepository {
     return _addNote(note, "Edited Note");
   }
 
-  Future<void> sync() async {
+  Future<void> pull() async {
     try {
       await _gitRepo.pull();
     } on GitException catch (ex) {
       Fimber.d(ex.toString());
     }
+  }
 
+  Future<void> push() async {
     try {
       await _gitRepo.push();
     } on GitException catch (ex) {
       if (ex.cause == 'cannot push non-fastforwardable reference') {
-        return sync();
+        await pull();
+        return push();
       }
       Fimber.d(ex.toString());
       rethrow;

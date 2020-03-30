@@ -47,8 +47,16 @@ class _SyncButtonState extends State<SyncButton> {
         },
       );
     }
-    if (appState.syncStatus == SyncStatus.Loading) {
-      return RotatingIcon();
+    if (appState.syncStatus == SyncStatus.Pulling) {
+      return BlinkingIcon(
+        icon: Icon(Icons.arrow_downward),
+      );
+    }
+
+    if (appState.syncStatus == SyncStatus.Pushing) {
+      return BlinkingIcon(
+        icon: Icon(Icons.arrow_upward),
+      );
     }
 
     return IconButton(
@@ -83,12 +91,18 @@ class _SyncButtonState extends State<SyncButton> {
   }
 }
 
-class RotatingIcon extends StatefulWidget {
+class BlinkingIcon extends StatefulWidget {
+  final Icon icon;
+  final int interval;
+
+  BlinkingIcon({@required this.icon, this.interval = 500, Key key})
+      : super(key: key);
+
   @override
-  _RotatingIconState createState() => _RotatingIconState();
+  _BlinkingIconState createState() => _BlinkingIconState();
 }
 
-class _RotatingIconState extends State<RotatingIcon>
+class _BlinkingIconState extends State<BlinkingIcon>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> _animation;
@@ -98,8 +112,8 @@ class _RotatingIconState extends State<RotatingIcon>
     super.initState();
 
     _controller = AnimationController(
+      duration: Duration(milliseconds: widget.interval),
       vsync: this,
-      duration: const Duration(milliseconds: 1800),
     );
     _animation = CurvedAnimation(
       parent: _controller,
@@ -117,14 +131,12 @@ class _RotatingIconState extends State<RotatingIcon>
 
   @override
   Widget build(BuildContext context) {
-    var button = IconButton(
-      icon: const Icon(Icons.loop),
-      onPressed: () {},
-    );
-
-    return RotationTransition(
-      child: button,
-      turns: _animation,
+    return FadeTransition(
+      opacity: _animation,
+      child: IconButton(
+        icon: widget.icon,
+        onPressed: () {},
+      ),
     );
   }
 }

@@ -91,11 +91,19 @@ class StateContainer with ChangeNotifier {
       return true;
     }
 
-    appState.syncStatus = SyncStatus.Loading;
+    appState.syncStatus = SyncStatus.Pulling;
     notifyListeners();
 
+    Future noteLoadingFuture;
     try {
-      await _gitRepo.sync();
+      await _gitRepo.pull();
+
+      appState.syncStatus = SyncStatus.Pushing;
+      notifyListeners();
+
+      noteLoadingFuture = _loadNotes();
+
+      await _gitRepo.push();
 
       Fimber.d("Synced!");
       appState.syncStatus = SyncStatus.Done;
@@ -109,7 +117,8 @@ class StateContainer with ChangeNotifier {
       }
       if (!doNotThrow) rethrow;
     }
-    await _loadNotes();
+
+    await noteLoadingFuture;
   }
 
   Future<void> _syncNotes() async {

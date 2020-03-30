@@ -6,7 +6,8 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 enum SyncStatus {
   Unknown,
   Done,
-  Loading,
+  Pulling,
+  Pushing,
   Error,
 }
 
