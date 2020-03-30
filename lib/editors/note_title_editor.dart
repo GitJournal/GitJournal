@@ -11,7 +11,6 @@ class NoteTitleEditor extends StatelessWidget {
 
     return TextField(
       keyboardType: TextInputType.text,
-      maxLines: 1,
       style: style,
       decoration: const InputDecoration(
         hintText: 'Title',
@@ -20,6 +19,7 @@ class NoteTitleEditor extends StatelessWidget {
       ),
       controller: textController,
       textCapitalization: TextCapitalization.sentences,
+      maxLines: null,
     );
   }
 }
