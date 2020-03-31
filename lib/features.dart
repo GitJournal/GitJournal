@@ -1,3 +1,3 @@
 class Features {
-  static bool perFolderConfig = true;
+  static bool perFolderConfig = false;
 }

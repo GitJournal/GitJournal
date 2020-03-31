@@ -8,8 +8,10 @@ import 'package:gitjournal/apis/git_migration.dart';
 import 'package:gitjournal/appstate.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_cache.dart';
+import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/git_repo.dart';
+import 'package:gitjournal/features.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -230,6 +232,20 @@ class StateContainer with ChangeNotifier {
       Fimber.d("State Container updateNote");
       note.updateModified();
       _gitRepo.updateNote(note).then((NoteRepoResult _) {
+        _syncNotes();
+      });
+    });
+  }
+
+  void saveFolderConfig(NotesFolderConfig config) async {
+    if (!Features.perFolderConfig) {
+      return;
+    }
+
+    return _opLock.synchronized(() async {
+      Fimber.d("State Container saveFolderConfig");
+      await config.saveToFS();
+      _gitRepo.addFolderConfig(config).then((NoteRepoResult _) {
         _syncNotes();
       });
     });

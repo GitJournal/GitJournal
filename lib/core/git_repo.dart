@@ -7,6 +7,7 @@ import 'package:fimber/fimber.dart';
 import 'package:git_bindings/git_bindings.dart';
 
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/settings.dart';
 
@@ -53,6 +54,18 @@ class GitNoteRepository {
     );
 
     return NoteRepoResult(noteFilePath: folder.folderPath, error: false);
+  }
+
+  Future<NoteRepoResult> addFolderConfig(NotesFolderConfig config) async {
+    var pathSpec = config.folder.pathSpec();
+    pathSpec = pathSpec.isNotEmpty ? pathSpec : '/';
+
+    await _gitRepo.add(".");
+    await _gitRepo.commit(
+      message: "Update folder config for $pathSpec",
+    );
+
+    return NoteRepoResult(noteFilePath: config.folder.folderPath, error: false);
   }
 
   Future<NoteRepoResult> renameFolder(

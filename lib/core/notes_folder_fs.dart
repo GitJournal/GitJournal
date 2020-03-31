@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:fimber/fimber.dart';
+import 'package:gitjournal/features.dart';
 import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 import 'package:synchronized/synchronized.dart';
@@ -18,6 +19,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   List<NotesFolderFS> _folders = [];
 
   Map<String, dynamic> _entityMap = {};
+  NotesFolderConfig _config;
 
   NotesFolderFS(this._parent, this._folderPath);
 
@@ -148,6 +150,11 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   // FIXME: This should not reconstruct the Notes or NotesFolders once constructed.
   Future<void> _load() async {
     Set<String> pathsFound = {};
+
+    // Load the Folder config if exists
+    if (Features.perFolderConfig) {
+      _config = await NotesFolderConfig.fromFS(this);
+    }
 
     final dir = Directory(folderPath);
     var lister = dir.list(recursive: false, followLinks: false);
@@ -344,11 +351,18 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
   @override
   NotesFolderConfig get config {
-    return NotesFolderConfig.fromSettings();
+    if (Features.perFolderConfig && _config != null) {
+      return _config;
+    }
+    return NotesFolderConfig.fromSettings(this);
   }
 
   @override
-  set config(NotesFolderConfig conf) {
-    conf.save();
+  set config(NotesFolderConfig config) {
+    if (Features.perFolderConfig) {
+      _config = config;
+    } else {
+      config.saveToSettings();
+    }
   }
 }

@@ -35,12 +35,12 @@ class VirtualNotesFolder with NotesFolderNotifier implements NotesFolder {
 
   @override
   NotesFolderConfig get config {
-    return NotesFolderConfig.fromSettings();
+    return NotesFolderConfig.fromSettings(fsFolder);
   }
 
   @override
   set config(NotesFolderConfig conf) {
     assert(false, "A Virtual Notes Folder Config cannot change");
-    conf.save();
+    conf.saveToSettings();
   }
 }

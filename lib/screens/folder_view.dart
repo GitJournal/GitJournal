@@ -237,10 +237,14 @@ class _FolderViewState extends State<FolderView> {
     );
 
     if (newSortingMode != null) {
+      sortedNotesFolder.config = sortedNotesFolder.config.copyWith(
+        sortingMode: newSortingMode,
+      );
+
+      var container = Provider.of<StateContainer>(context, listen: false);
+      container.saveFolderConfig(sortedNotesFolder.config);
+
       setState(() {
-        sortedNotesFolder.config = sortedNotesFolder.config.copyWith(
-          sortingMode: newSortingMode,
-        );
         sortedNotesFolder.changeSortingMode(newSortingMode);
       });
     }
@@ -258,7 +262,8 @@ class _FolderViewState extends State<FolderView> {
           sortedNotesFolder.config = sortedNotesFolder.config.copyWith(
             viewHeader: _headerType,
           );
-          sortedNotesFolder.config.save();
+          var container = Provider.of<StateContainer>(context, listen: false);
+          container.saveFolderConfig(sortedNotesFolder.config);
         };
 
         var summaryChanged = (bool newVal) {
@@ -269,7 +274,8 @@ class _FolderViewState extends State<FolderView> {
           sortedNotesFolder.config = sortedNotesFolder.config.copyWith(
             showNoteSummary: newVal,
           );
-          sortedNotesFolder.config.save();
+          var container = Provider.of<StateContainer>(context, listen: false);
+          container.saveFolderConfig(sortedNotesFolder.config);
         };
 
         return StatefulBuilder(
@@ -377,11 +383,14 @@ class _FolderViewState extends State<FolderView> {
     if (newViewType != null) {
       setState(() {
         _viewType = newViewType;
-        widget.notesFolder.config = widget.notesFolder.config.copyWith(
-          defaultView: newViewType,
-        );
-        widget.notesFolder.config.save();
       });
+
+      widget.notesFolder.config = widget.notesFolder.config.copyWith(
+        defaultView: newViewType,
+      );
+
+      var container = Provider.of<StateContainer>(context, listen: false);
+      container.saveFolderConfig(widget.notesFolder.config);
     }
   }
 }
