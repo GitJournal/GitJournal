@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:path/path.dart' as p;
 
 import 'package:gitjournal/core/note.dart';
 
@@ -51,6 +52,7 @@ class NoteViewer extends StatelessWidget {
                 print("Launching " + link);
                 launch(link);
               },
+              imageDirectory: note.parent.folderPath + p.separator,
             ),
           ),
           // _buildFooter(context),
