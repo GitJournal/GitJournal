@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/folder_views/list_view.dart';
-import 'package:gitjournal/settings.dart';
 
 import 'package:intl/intl.dart';
 
@@ -79,11 +78,13 @@ class StandardView extends StatelessWidget {
     Widget trailing = Container();
 
     DateTime date;
-    if (Settings.instance.sortingMode == SortingMode.Modified) {
+    var sortingMode = folder.config.sortingMode;
+    if (sortingMode == SortingMode.Modified) {
       date = note.modified;
-    } else if (Settings.instance.sortingMode == SortingMode.Created) {
+    } else if (sortingMode == SortingMode.Created) {
       date = note.created;
     }
+
     if (date != null) {
       var dateStr = _dateFormat.format(date);
       trailing = Text(dateStr, style: textTheme.caption);

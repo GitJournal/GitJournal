@@ -5,7 +5,6 @@ import 'package:gitjournal/folder_views/list_view.dart';
 import 'package:intl/intl.dart';
 
 import 'package:gitjournal/core/sorting_mode.dart';
-import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 
@@ -37,12 +36,15 @@ class JournalView extends StatelessWidget {
   Widget _buildRow(BuildContext context, Note note) {
     Widget titleWidget = Container();
     var textTheme = Theme.of(context).textTheme;
+
     DateTime date;
-    if (Settings.instance.sortingMode == SortingMode.Modified) {
+    var sortingMode = folder.config.sortingMode;
+    if (sortingMode == SortingMode.Modified) {
       date = note.modified;
-    } else if (Settings.instance.sortingMode == SortingMode.Created) {
+    } else if (sortingMode == SortingMode.Created) {
       date = note.created;
     }
+
     if (date != null) {
       var dateStr = _dateFormat.format(date);
       var time = _timeFormat.format(date);

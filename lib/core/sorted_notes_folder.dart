@@ -164,4 +164,14 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
   NotesFolder get fsFolder {
     return folder;
   }
+
+  @override
+  NotesFolderConfig get config {
+    return folder.config;
+  }
+
+  @override
+  set config(NotesFolderConfig config) {
+    folder.config = config;
+  }
 }

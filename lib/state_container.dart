@@ -79,10 +79,7 @@ class StateContainer with ChangeNotifier {
   Future<void> _loadNotes() async {
     // FIXME: We should report the notes that failed to load
     await appState.notesFolder.loadRecursively();
-    await _notesCache.buildCache(
-      appState.notesFolder,
-      Settings.instance.sortingMode,
-    );
+    await _notesCache.buildCache(appState.notesFolder);
   }
 
   Future<void> syncNotes({bool doNotThrow = false}) async {

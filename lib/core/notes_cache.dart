@@ -57,15 +57,13 @@ class NotesCache {
     }
   }
 
-  Future<void> buildCache(
-    NotesFolderFS rootFolder,
-    SortingMode sortingMode,
-  ) async {
+  Future<void> buildCache(NotesFolderFS rootFolder) async {
     if (!enabled) return;
 
     print("Saving the NotesCache");
 
     var notes = rootFolder.getAllNotes();
+    var sortingMode = rootFolder.config.sortingMode;
     var fileList =
         _fetchFirst10(notes, sortingMode).map((f) => f.filePath).toList();
     return saveToDisk(fileList);

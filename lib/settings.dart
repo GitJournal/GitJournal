@@ -1,3 +1,4 @@
+import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
@@ -256,6 +257,20 @@ class SettingsEditorType {
     }
   }
 
+  static SettingsEditorType fromEditorType(EditorType editorType) {
+    switch (editorType) {
+      case EditorType.Checklist:
+        return SettingsEditorType.Checklist;
+      case EditorType.Raw:
+        return SettingsEditorType.Raw;
+      case EditorType.Markdown:
+        return SettingsEditorType.Markdown;
+      case EditorType.Journal:
+        return SettingsEditorType.Journal;
+    }
+    return SettingsEditorType.Default;
+  }
+
   static const options = <SettingsEditorType>[
     Markdown,
     Raw,
@@ -336,5 +351,34 @@ class SettingsFolderViewType {
   String toString() {
     assert(false, "FolderViewType toString should never be called");
     return "";
+  }
+
+  FolderViewType toFolderViewType() {
+    switch (this) {
+      case Standard:
+        return FolderViewType.Standard;
+      case Journal:
+        return FolderViewType.Journal;
+      case Card:
+        return FolderViewType.Card;
+      case Grid:
+        return FolderViewType.Grid;
+    }
+
+    return FolderViewType.Standard;
+  }
+
+  static SettingsFolderViewType fromFolderViewType(FolderViewType viewType) {
+    switch (viewType) {
+      case FolderViewType.Standard:
+        return SettingsFolderViewType.Standard;
+      case FolderViewType.Journal:
+        return SettingsFolderViewType.Journal;
+      case FolderViewType.Card:
+        return SettingsFolderViewType.Card;
+      case FolderViewType.Grid:
+        return SettingsFolderViewType.Grid;
+    }
+    return SettingsFolderViewType.Default;
   }
 }

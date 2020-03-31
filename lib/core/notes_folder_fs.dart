@@ -341,4 +341,14 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
     return null;
   }
+
+  @override
+  NotesFolderConfig get config {
+    return NotesFolderConfig.fromSettings();
+  }
+
+  @override
+  set config(NotesFolderConfig conf) {
+    conf.save();
+  }
 }

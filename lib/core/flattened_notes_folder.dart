@@ -103,4 +103,14 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
 
   @override
   String get name => "All Notes";
+
+  @override
+  NotesFolderConfig get config {
+    return _parentFolder.config;
+  }
+
+  @override
+  set config(NotesFolderConfig conf) {
+    _parentFolder.config = conf;
+  }
 }

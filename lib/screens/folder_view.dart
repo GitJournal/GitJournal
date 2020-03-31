@@ -46,48 +46,23 @@ class _FolderViewState extends State<FolderView> {
     super.initState();
     sortedNotesFolder = SortedNotesFolder(
       folder: widget.notesFolder,
-      sortingMode: Settings.instance.sortingMode,
+      sortingMode: widget.notesFolder.config.sortingMode,
     );
 
-    switch (Settings.instance.defaultView) {
-      case SettingsFolderViewType.Standard:
-        _viewType = FolderViewType.Standard;
-        break;
-      case SettingsFolderViewType.Journal:
-        _viewType = FolderViewType.Journal;
-        break;
-      case SettingsFolderViewType.Card:
-        _viewType = FolderViewType.Card;
-        break;
-      case SettingsFolderViewType.Grid:
-        _viewType = FolderViewType.Grid;
-        break;
-    }
-
-    _showSummary = Settings.instance.showNoteSummary;
-
-    switch (Settings.instance.folderViewHeaderType) {
-      case "TitleGenerated":
-        _headerType = StandardViewHeader.TitleGenerated;
-        break;
-      case "FileName":
-        _headerType = StandardViewHeader.FileName;
-        break;
-      case "TitleOrFileName":
-        _headerType = StandardViewHeader.TitleOrFileName;
-        break;
-    }
+    _viewType = widget.notesFolder.config.defaultView;
+    _showSummary = widget.notesFolder.config.showNoteSummary;
+    _headerType = widget.notesFolder.config.viewHeader;
   }
 
   @override
   Widget build(BuildContext context) {
     var container = Provider.of<StateContainer>(context);
     final appState = container.appState;
+    final defaultEditor = widget.notesFolder.config.defaultEditor;
 
     var createButton = FloatingActionButton(
       key: const ValueKey("FAB"),
-      onPressed: () =>
-          _newPost(context, Settings.instance.defaultEditor.toEditorType()),
+      onPressed: () => _newPost(context, defaultEditor),
       child: Icon(Icons.add),
     );
 
@@ -263,9 +238,10 @@ class _FolderViewState extends State<FolderView> {
 
     if (newSortingMode != null) {
       setState(() {
+        sortedNotesFolder.config = sortedNotesFolder.config.copyWith(
+          sortingMode: newSortingMode,
+        );
         sortedNotesFolder.changeSortingMode(newSortingMode);
-        Settings.instance.sortingMode = newSortingMode;
-        Settings.instance.save();
       });
     }
   }
@@ -279,29 +255,21 @@ class _FolderViewState extends State<FolderView> {
             _headerType = newHeader;
           });
 
-          String ht;
-          switch (newHeader) {
-            case StandardViewHeader.FileName:
-              ht = "FileName";
-              break;
-            case StandardViewHeader.TitleGenerated:
-              ht = "TitleGenerated";
-              break;
-            case StandardViewHeader.TitleOrFileName:
-              ht = "TitleOrFileName";
-              break;
-          }
-
-          Settings.instance.folderViewHeaderType = ht;
-          Settings.instance.save();
+          sortedNotesFolder.config = sortedNotesFolder.config.copyWith(
+            viewHeader: _headerType,
+          );
+          sortedNotesFolder.config.save();
         };
 
         var summaryChanged = (bool newVal) {
           setState(() {
             _showSummary = newVal;
           });
-          Settings.instance.showNoteSummary = newVal;
-          Settings.instance.save();
+
+          sortedNotesFolder.config = sortedNotesFolder.config.copyWith(
+            showNoteSummary: newVal,
+          );
+          sortedNotesFolder.config.save();
         };
 
         return StatefulBuilder(
@@ -409,22 +377,10 @@ class _FolderViewState extends State<FolderView> {
     if (newViewType != null) {
       setState(() {
         _viewType = newViewType;
-
-        switch (_viewType) {
-          case FolderViewType.Standard:
-            Settings.instance.defaultView = SettingsFolderViewType.Standard;
-            break;
-          case FolderViewType.Journal:
-            Settings.instance.defaultView = SettingsFolderViewType.Journal;
-            break;
-          case FolderViewType.Card:
-            Settings.instance.defaultView = SettingsFolderViewType.Card;
-            break;
-          case FolderViewType.Grid:
-            Settings.instance.defaultView = SettingsFolderViewType.Grid;
-            break;
-        }
-        Settings.instance.save();
+        widget.notesFolder.config = widget.notesFolder.config.copyWith(
+          defaultView: newViewType,
+        );
+        widget.notesFolder.config.save();
       });
     }
   }

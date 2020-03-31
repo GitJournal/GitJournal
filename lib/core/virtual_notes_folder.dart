@@ -32,4 +32,14 @@ class VirtualNotesFolder with NotesFolderNotifier implements NotesFolder {
   NotesFolder get fsFolder {
     return null;
   }
+
+  @override
+  NotesFolderConfig get config {
+    return NotesFolderConfig.fromSettings();
+  }
+
+  @override
+  set config(NotesFolderConfig conf) {
+    conf.save();
+  }
 }
