@@ -40,6 +40,7 @@ class VirtualNotesFolder with NotesFolderNotifier implements NotesFolder {
 
   @override
   set config(NotesFolderConfig conf) {
+    assert(false, "A Virtual Notes Folder Config cannot change");
     conf.save();
   }
 }
