@@ -69,24 +69,14 @@ class NoteTile extends StatelessWidget {
     );
 
     const borderRadius = BorderRadius.all(Radius.circular(8));
-    var tile = Material(
+    return Material(
       borderRadius: borderRadius,
       type: MaterialType.card,
-      child: tileContent,
-    );
-
-    /*var tile = Container(
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey[200]),
-          color: Colors.white,
-          borderRadius: borderRadius,
-      child: tileContent,
-    );*/
-
-    return InkWell(
-      child: tile,
-      borderRadius: borderRadius,
-      onTap: () => noteSelectedFunction(note),
+      child: InkWell(
+        child: tileContent,
+        borderRadius: borderRadius,
+        onTap: () => noteSelectedFunction(note),
+      ),
     );
   }
 }
