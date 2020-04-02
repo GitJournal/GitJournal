@@ -46,7 +46,7 @@ class NoteTile extends StatelessWidget {
             flex: 1,
             child: Text(
               body,
-              maxLines: 30,
+              maxLines: 11,
               overflow: TextOverflow.ellipsis,
               style: textTheme.subhead
                   .copyWith(fontSize: textTheme.subhead.fontSize * 0.90),
