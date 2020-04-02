@@ -184,7 +184,12 @@ class AppDrawer extends StatelessWidget {
             onTap: () async {
               var platform = Platform.operatingSystem;
               var versionText = await getVersionString();
-              var appLogsFilePath = await FetchAppLogs.dumpAppLogsToFile();
+              String appLogsFilePath;
+              try {
+                appLogsFilePath = await FetchAppLogs.dumpAppLogsToFile();
+              } catch (e) {
+                print(e);
+              }
 
               final Email email = Email(
                 body:
