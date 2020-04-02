@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/utils/markdown.dart';
 
 typedef void NoteSelectedFunction(Note note);
 
@@ -11,11 +14,18 @@ class NoteTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var body = note.body.trimRight();
+    var buffer = StringBuffer();
+    var i = 0;
+    for (var line in LineSplitter.split(note.body)) {
+      line = replaceMarkdownChars(line);
+      buffer.writeln(line);
 
-    body = body.replaceAll('[ ]', '☐');
-    body = body.replaceAll('[x]', '☑');
-    body = body.replaceAll('[X]', '☑');
+      i += 1;
+      if (i == 12) {
+        break;
+      }
+    }
+    var body = buffer.toString();
 
     var theme = Theme.of(context);
     var textTheme = theme.textTheme;

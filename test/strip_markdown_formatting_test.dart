@@ -27,7 +27,7 @@ look like:
       """;
 
       expect(stripMarkdownFormatting(input),
-          'Itemized lists look like: * this one * that one ');
+          'Itemized lists look like: • this one • that one ');
     });
 
     test('Checklist', () {
@@ -40,6 +40,18 @@ look like:
 
       expect(stripMarkdownFormatting(input),
           'Itemized lists ☐ this one ☑ that one ☑ last ');
+    });
+
+    test('List', () {
+      var input = """Itemized lists
+
+* this one
+  * that one
+* four
+""";
+
+      expect(stripMarkdownFormatting(input),
+          'Itemized lists • this one • that one • four ');
     });
   });
 }
