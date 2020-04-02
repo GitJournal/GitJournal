@@ -25,20 +25,7 @@ Widget buildFolderView(
   StandardViewHeader header,
   bool showSummary,
 ) {
-  var noteSelectionFn = (Note note) async {
-    var route = MaterialPageRoute(
-      builder: (context) => NoteEditor.fromNote(note),
-    );
-    var showUndoSnackBar = await Navigator.of(context).push(route);
-    if (showUndoSnackBar != null) {
-      Fimber.d("Showing an undo snackbar");
-
-      var snackBar = buildUndoDeleteSnackbar(context, note);
-      Scaffold.of(context)
-        ..removeCurrentSnackBar()
-        ..showSnackBar(snackBar);
-    }
-  };
+  var noteSelectionFn = (Note note) => openNoteEditor(context, note);
 
   switch (viewType) {
     case FolderViewType.Standard:
@@ -71,4 +58,19 @@ Widget buildFolderView(
 
   assert(false, "Code path should never be executed");
   return Container();
+}
+
+void openNoteEditor(BuildContext context, Note note) async {
+  var route = MaterialPageRoute(
+    builder: (context) => NoteEditor.fromNote(note),
+  );
+  var showUndoSnackBar = await Navigator.of(context).push(route);
+  if (showUndoSnackBar != null) {
+    Fimber.d("Showing an undo snackbar");
+
+    var snackBar = buildUndoDeleteSnackbar(context, note);
+    Scaffold.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(snackBar);
+  }
 }

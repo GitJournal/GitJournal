@@ -349,6 +349,37 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     return null;
   }
 
+  Note getNoteWithSpec(String spec) {
+    var parts = spec.split(p.separator);
+    var folder = this;
+    while (parts.length != 1) {
+      var folderName = parts[0];
+
+      bool foundFolder = false;
+      for (var f in _folders) {
+        if (f.name == folderName) {
+          folder = f;
+          foundFolder = true;
+          break;
+        }
+      }
+
+      if (!foundFolder) {
+        return null;
+      }
+      parts.removeAt(0);
+    }
+
+    var fileName = parts[0];
+    for (var note in folder.notes) {
+      if (note.fileName == fileName) {
+        return note;
+      }
+    }
+
+    return null;
+  }
+
   @override
   NotesFolderConfig get config {
     if (Features.perFolderConfig && _config != null) {

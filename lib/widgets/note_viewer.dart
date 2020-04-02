@@ -1,10 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:gitjournal/folder_views/common.dart';
+import 'package:gitjournal/utils.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path/path.dart' as p;
 
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 
 class NoteViewer extends StatelessWidget {
   final Note note;
@@ -49,8 +53,19 @@ class NoteViewer extends StatelessWidget {
               data: note.body,
               styleSheet: markdownStyleSheet,
               onTapLink: (String link) {
-                print("Launching " + link);
-                launch(link);
+                if (link.startsWith('./')) {
+                  final rootFolder = Provider.of<NotesFolderFS>(context);
+                  var spec = link.substring(2);
+                  var note = rootFolder.getNoteWithSpec(spec);
+                  if (note != null) {
+                    openNoteEditor(context, note);
+                  } else {
+                    showSnackbar(context, "Link '$link' not found");
+                  }
+                } else {
+                  print("Launching " + link);
+                  launch(link);
+                }
               },
               imageDirectory: note.parent.folderPath + p.separator,
             ),
