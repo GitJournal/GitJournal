@@ -24,6 +24,7 @@ class GitHub implements GitHost {
         return;
       }
 
+      closeWebView();
       Fimber.d("GitHub: Called onUrl with " + call.arguments.toString());
 
       String url = call.arguments["URL"];

@@ -26,6 +26,7 @@ class GitLab implements GitHost {
         return;
       }
 
+      closeWebView();
       Fimber.d("GitLab: Called onUrl with " + call.arguments.toString());
 
       String url = call.arguments["URL"];
