@@ -1,3 +1,10 @@
+## [1.45] - 2020-04-02
+* Add a Grid View
+* Beautify the Cards Folder View
+* Show images if path is relative
+* Allow linking to other notes
+* EditorSelector: Make it prettier
+
 ## [1.45] - 2020-03-20
 * Add an "All Notes" view
 * Allow quickly opening a note with a specific editor
