@@ -25,7 +25,7 @@ class NoteTile extends StatelessWidget {
         break;
       }
     }
-    var body = buffer.toString();
+    var body = buffer.toString().trimRight();
 
     var theme = Theme.of(context);
     var textTheme = theme.textTheme;
