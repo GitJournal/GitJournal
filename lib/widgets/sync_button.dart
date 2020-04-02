@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:git_bindings/git_bindings.dart';
 
 import 'package:gitjournal/appstate.dart';
 import 'package:gitjournal/state_container.dart';
@@ -71,6 +72,8 @@ class _SyncButtonState extends State<SyncButton> {
     try {
       final container = Provider.of<StateContainer>(context, listen: false);
       await container.syncNotes();
+    } on GitException catch (e) {
+      showSnackbar(context, "Sync Error: ${e.cause}");
     } catch (e) {
       showSnackbar(context, e.toString());
     }

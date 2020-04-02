@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:git_bindings/git_bindings.dart';
 
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
@@ -189,6 +190,8 @@ class _FolderViewState extends State<FolderView> {
     try {
       var container = Provider.of<StateContainer>(context, listen: false);
       await container.syncNotes();
+    } on GitException catch (e) {
+      showSnackbar(context, "Sync Error: ${e.cause}");
     } catch (e) {
       showSnackbar(context, e.toString());
     }
