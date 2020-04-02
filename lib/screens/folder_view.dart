@@ -149,6 +149,7 @@ class _FolderViewState extends State<FolderView> {
           ),
         ),
       ),
+      extendBody: true,
       drawer: AppDrawer(),
       floatingActionButton: createButton,
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
