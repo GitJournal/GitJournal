@@ -29,9 +29,9 @@ class NoteTile extends StatelessWidget {
 
     var theme = Theme.of(context);
     var textTheme = theme.textTheme;
-    var borderColor = theme.highlightColor.withAlpha(80);
+    var borderColor = theme.highlightColor.withAlpha(100);
     if (theme.brightness == Brightness.dark) {
-      borderColor = theme.highlightColor.withAlpha(100);
+      borderColor = theme.highlightColor.withAlpha(30);
     }
 
     var tileContent = Container(
