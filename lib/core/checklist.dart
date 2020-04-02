@@ -40,7 +40,37 @@ class Checklist {
     );
 
     nodes = doc.parseInline(_note.body);
+    _cleanupNodes(nodes);
+
     items = ChecklistBuilder().build(nodes);
+  }
+
+  void _cleanupNodes(List<md.Node> nodes) {
+    if (nodes.length <= 1) {
+      return;
+    }
+
+    var last = nodes.last;
+    var secLast = nodes[nodes.length - 2];
+
+    if (last is! md.Text) {
+      return;
+    }
+    if (secLast is! md.Element) {
+      return;
+    }
+    var elem = secLast as md.Element;
+    if (elem.tag != 'input' || elem.attributes['type'] != 'checkbox') {
+      return;
+    }
+
+    // Some times we get an extra \n in the end, not sure why.
+    if (last.textContent == '\n') {
+      nodes.length = nodes.length - 1;
+      if (!elem.attributes["text"].endsWith('\n')) {
+        elem.attributes["text"] += '\n';
+      }
+    }
   }
 
   Note get note {

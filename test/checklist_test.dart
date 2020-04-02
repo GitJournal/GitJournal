@@ -205,5 +205,26 @@ Booga Wooga
       note = checklist.note;
       expect(note.body, "Hi.\n[ ] One\nTwo\n");
     });
+
+    test('Does not add extra new line', () async {
+      var content = "[ ] One\n[ ]Two\n[ ] Three\n[ ] Four\n";
+
+      var notePath = p.join(tempDir.path, "note449.md");
+      await File(notePath).writeAsString(content);
+
+      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var note = Note(parentFolder, notePath);
+      await note.load();
+
+      var checklist = Checklist(note);
+      /*
+      for (var node in checklist.nodes) {
+        print("node $node - '${node.textContent}'");
+      }*/
+      checklist.addItem(checklist.buildItem(false, "Five"));
+
+      note = checklist.note;
+      expect(note.body, "[ ] One\n[ ]Two\n[ ] Three\n[ ] Four\n[ ] Five\n");
+    });
   });
 }
