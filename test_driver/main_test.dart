@@ -106,6 +106,19 @@ void main() {
       await Future.delayed(const Duration(milliseconds: 100));
       await _takeScreenshot();
 
+      // Create yet another note
+      await driver.waitFor(fab, timeout: const Duration(seconds: 2));
+      await driver.tap(fab);
+      await driver.waitFor(find.text('Write here'),
+          timeout: const Duration(seconds: 5));
+
+      await driver.enterText("Is this real life?");
+      await _takeScreenshot();
+      await driver.tap(find.byValueKey("NewEntry"));
+
+      await Future.delayed(const Duration(milliseconds: 100));
+      await _takeScreenshot();
+
       // Folder View Selector
       print("Taking Screenshots of FolderViewSelector");
       var folderViewSelector = find.byValueKey("FolderViewSelector");
