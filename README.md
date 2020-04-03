@@ -23,6 +23,11 @@ Features -
 - No Account Required
 - Open source
 
+# Community
+
+- **Matrix Chat Room** - [#gitjournal:matrix.org](https://matrix.to/#/!EuyGuvUblHboWwroTf:matrix.org?via=matrix.org)
+- **Newsletter** - [Signup Here](https://gitjournal.io)
+
 # Screenshots
 
 <p float="left">
