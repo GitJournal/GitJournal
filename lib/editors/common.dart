@@ -34,6 +34,7 @@ AppBar buildEditorAppBar(
     actions: <Widget>[
       ...?extraButtons,
       IconButton(
+        key: const ValueKey("EditorSelector"),
         icon: const Icon(Icons.library_books),
         onPressed: () {
           var note = editorState.getNote();

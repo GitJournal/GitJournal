@@ -124,6 +124,7 @@ class _FolderViewState extends State<FolderView> {
           IconButton(
             icon: const Icon(Icons.library_books),
             onPressed: _folderViewChooserSelected,
+            key: const ValueKey("FolderViewSelector"),
           ),
           if (appState.remoteGitRepoConfigured) SyncButton(),
           IconButton(

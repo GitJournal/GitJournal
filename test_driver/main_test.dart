@@ -62,11 +62,34 @@ void main() {
       await driver.tap(fab);
       await driver.waitFor(find.text('Write here'),
           timeout: const Duration(seconds: 5));
-      //await _takeScreenshot();
+      await _takeScreenshot();
 
       await driver.enterText(
           "Your notes will be saved in Markdown with a YAML header for the metadata.\n\nThe writing experience is clean and distraction free");
-      // await _takeScreenshot();
+      await _takeScreenshot();
+
+      // Editor Selector
+      var editorSelector = find.byValueKey("EditorSelector");
+      await driver.tap(editorSelector);
+      await Future.delayed(const Duration(milliseconds: 100));
+      await _takeScreenshot();
+
+      // Raw Edtitor
+      var rawEditor = find.text("Raw Editor");
+      await driver.waitFor(rawEditor, timeout: const Duration(seconds: 2));
+      await driver.tap(rawEditor);
+      await Future.delayed(const Duration(milliseconds: 100));
+      await _takeScreenshot();
+
+      // Journal Editor
+      await driver.tap(editorSelector);
+      var journalEditor = find.text("Journal Editor");
+      await driver.waitFor(journalEditor, timeout: const Duration(seconds: 2));
+      await driver.tap(journalEditor);
+      await Future.delayed(const Duration(milliseconds: 100));
+      await _takeScreenshot();
+
+      // Go Back to home screen
       await driver.tap(find.byValueKey("NewEntry"));
 
       // Create another note
@@ -76,17 +99,47 @@ void main() {
           timeout: const Duration(seconds: 5));
 
       await driver.enterText(
-          "Journaling is a great way to clear your mind and get all your throughts down into paper. Well, not literal paper, as this is an app, but I think you get the point.");
+          "Taking Notes is a great way to clear your mind and get all your throughts down into paper. Well, not literal paper, as this is an app, but I think you get the point.");
       await _takeScreenshot();
       await driver.tap(find.byValueKey("NewEntry"));
 
-      await Future.delayed(const Duration(milliseconds: 500));
+      await Future.delayed(const Duration(milliseconds: 100));
+      await _takeScreenshot();
+
+      // Folder View Selector
+      print("Taking Screenshots of FolderViewSelector");
+      var folderViewSelector = find.byValueKey("FolderViewSelector");
+      await driver.tap(folderViewSelector);
+      await Future.delayed(const Duration(milliseconds: 100));
+      await _takeScreenshot();
+
+      // Select Card View
+      var cardView = find.text("Card View (Experimental)");
+      await driver.waitFor(cardView, timeout: const Duration(seconds: 2));
+      await driver.tap(cardView);
+      await Future.delayed(const Duration(milliseconds: 100));
+      await _takeScreenshot();
+
+      // Select Journal View
+      await driver.tap(folderViewSelector);
+      var journalView = find.text("Journal View");
+      await driver.waitFor(journalView, timeout: const Duration(seconds: 2));
+      await driver.tap(journalView);
+      await Future.delayed(const Duration(milliseconds: 100));
+      await _takeScreenshot();
+
+      // Select Grid View
+      await driver.tap(folderViewSelector);
+      var gridView = find.text("Grid View");
+      await driver.waitFor(gridView, timeout: const Duration(seconds: 2));
+      await driver.tap(gridView);
+      await Future.delayed(const Duration(milliseconds: 100));
       await _takeScreenshot();
 
       // Open the Drawer
       final drawerButtonFinder = find.byValueKey("DrawerButton");
       await driver.tap(drawerButtonFinder);
-      await Future.delayed(const Duration(milliseconds: 500));
+      await Future.delayed(const Duration(milliseconds: 100));
       await _takeScreenshot();
 
       // The Git Host setup screen
@@ -100,6 +153,6 @@ void main() {
       // Close the drawer
       // var app = find.byValueKey("App");
       // await driver.scroll(app, -300.0, 0.0, const Duration(milliseconds: 300));
-    });
+    }, timeout: const Timeout(Duration(minutes: 2)));
   });
 }
