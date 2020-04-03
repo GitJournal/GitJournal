@@ -142,6 +142,7 @@ class Checklist {
   }
 
   void insertItem(int index, ChecklistItem item) {
+    assert(index <= items.length, "Trying to insert beyond the end");
     if (index == 0) {
       items.insert(0, item);
       nodes.insert(0, item.element);
