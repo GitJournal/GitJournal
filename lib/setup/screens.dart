@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -13,6 +12,8 @@ import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/utils/logger.dart';
+
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -372,7 +373,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     generateSSHKeys(comment: comment).then((String publicKey) {
       setState(() {
         this.publicKey = publicKey;
-        Fimber.d("PublicKey: " + publicKey);
+        Log.d("PublicKey: " + publicKey);
         _copyKeyToClipboard(context);
       });
     });
@@ -410,8 +411,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         await launch(gitLabUrl);
       }
     } catch (err, stack) {
-      Fimber.d('_launchDeployKeyPage: ' + err.toString());
-      Fimber.d(stack.toString());
+      Log.d('_launchDeployKeyPage: ' + err.toString());
+      Log.d(stack.toString());
     }
   }
 
@@ -426,8 +427,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       }
     } catch (err, stack) {
       // FIXME: Error handling?
-      Fimber.d("_launchCreateRepoPage: " + err.toString());
-      Fimber.d(stack.toString());
+      Log.d("_launchCreateRepoPage: " + err.toString());
+      Log.d(stack.toString());
     }
   }
 
@@ -446,7 +447,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     String repoPath = p.join(basePath, "journal");
     String error;
     try {
-      Fimber.d("Cloning " + _gitCloneUrl);
+      Log.d("Cloning " + _gitCloneUrl);
       await GitRepo.clone(repoPath, _gitCloneUrl);
     } on GitException catch (e) {
       error = e.cause;
@@ -520,7 +521,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     var dotGitDir = Directory(p.join(baseDir.path, ".git"));
     bool exists = dotGitDir.existsSync();
     if (exists) {
-      Fimber.d("Removing " + baseDir.path);
+      Log.d("Removing " + baseDir.path);
       await baseDir.delete(recursive: true);
       await baseDir.create();
     }

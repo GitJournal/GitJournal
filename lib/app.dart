@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
-import 'package:fimber/fimber.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
+import 'package:gitjournal/utils/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:flutter_runtime_env/flutter_runtime_env.dart' as runtime_env;
@@ -27,7 +27,7 @@ import 'setup/screens.dart';
 
 class JournalApp extends StatelessWidget {
   static Future main(SharedPreferences pref) async {
-    Fimber.plantTree(DebugTree.elapsed(useColors: true));
+    Log.init();
 
     var appState = AppState(pref);
     appState.dumpToLog();
@@ -72,13 +72,13 @@ class JournalApp extends StatelessWidget {
       if (Platform.isAndroid) {
         var info = await deviceInfo.androidInfo;
         isPhysicalDevice = info.isPhysicalDevice;
-        Fimber.d("Device Fingerprint: " + info.fingerprint);
+        Log.d("Device Fingerprint: " + info.fingerprint);
       } else if (Platform.isIOS) {
         var info = await deviceInfo.iosInfo;
         isPhysicalDevice = info.isPhysicalDevice;
       }
     } catch (e) {
-      Fimber.d(e);
+      Log.d(e);
     }
 
     if (isPhysicalDevice == false) {
@@ -88,7 +88,7 @@ class JournalApp extends StatelessWidget {
     bool inFireBaseTestLab = await runtime_env.inFirebaseTestLab();
     bool enabled = !JournalApp.isInDebugMode && !inFireBaseTestLab;
 
-    Fimber.d("Analytics Collection: $enabled");
+    Log.d("Analytics Collection: $enabled");
     JournalApp.analytics.setAnalyticsCollectionEnabled(enabled);
 
     if (enabled) {

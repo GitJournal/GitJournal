@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:path/path.dart' as p;
@@ -10,6 +9,7 @@ import 'package:collection/collection.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
+import 'package:gitjournal/utils/logger.dart';
 
 class NotesCache {
   final String filePath;
@@ -109,7 +109,7 @@ class NotesCache {
     try {
       return json.decode(contents).cast<String>();
     } catch (ex, st) {
-      Fimber.e("Exception - $ex for contents: $contents");
+      Log.e("Exception - $ex for contents: $contents");
       await FlutterCrashlytics().logException(ex, st);
       return [];
     }

@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:fimber/fimber.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/utils/logger.dart';
 
 enum SyncStatus {
   Unknown,
@@ -47,13 +47,13 @@ class AppState {
   }
 
   void dumpToLog() {
-    Fimber.d(" ---- Settings ---- ");
-    Fimber.d("localGitRepoConfigured: $localGitRepoConfigured");
-    Fimber.d("remoteGitRepoConfigured: $remoteGitRepoConfigured");
-    Fimber.d("localGitRepoFolderName: $localGitRepoFolderName");
-    Fimber.d("remoteGitRepoFolderName: $remoteGitRepoFolderName");
-    Fimber.d("onBoardingCompleted: $onBoardingCompleted");
-    Fimber.d(" ------------------ ");
+    Log.d(" ---- Settings ---- ");
+    Log.d("localGitRepoConfigured: $localGitRepoConfigured");
+    Log.d("remoteGitRepoConfigured: $remoteGitRepoConfigured");
+    Log.d("localGitRepoFolderName: $localGitRepoFolderName");
+    Log.d("remoteGitRepoFolderName: $remoteGitRepoFolderName");
+    Log.d("onBoardingCompleted: $onBoardingCompleted");
+    Log.d(" ------------------ ");
   }
 
   Future save(SharedPreferences pref) async {

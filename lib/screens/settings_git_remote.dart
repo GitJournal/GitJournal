@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fimber/fimber.dart';
 
 import 'package:git_bindings/git_bindings.dart';
 import 'package:gitjournal/setup/sshkey.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/utils/logger.dart';
 
 class GitRemoteSettingsScreen extends StatefulWidget {
   @override
@@ -105,7 +105,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     generateSSHKeys(comment: comment).then((String publicKey) {
       setState(() {
         this.publicKey = publicKey;
-        Fimber.d("PublicKey: " + publicKey);
+        Log.d("PublicKey: " + publicKey);
         _copyKeyToClipboard(context);
       });
     });

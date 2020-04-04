@@ -1,11 +1,12 @@
 import 'dart:io';
 
-import 'package:fimber/fimber.dart';
 import 'package:gitjournal/core/md_yaml_doc_loader.dart';
 import 'package:gitjournal/core/note_notifier.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/markdown.dart';
+import 'package:gitjournal/utils/logger.dart';
+
 import 'package:path/path.dart' as p;
 
 import 'md_yaml_doc.dart';
@@ -168,7 +169,7 @@ class Note with NotesNotifier {
       if (this.fileLastModified == fileLastModified) {
         return _loadState;
       }
-      Fimber.d("Note modified: $_filePath");
+      Log.d("Note modified: $_filePath");
     }
 
     try {

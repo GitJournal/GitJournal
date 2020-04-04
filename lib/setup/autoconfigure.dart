@@ -1,4 +1,3 @@
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:function_types/function_types.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/utils/logger.dart';
 
 import 'button.dart';
 import 'error.dart';
@@ -42,7 +42,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
   }
 
   void _startAutoConfigure() async {
-    Fimber.d("Starting autoconfigure");
+    Log.d("Starting autoconfigure");
     setState(() {
       _configuringStarted = true;
     });
@@ -53,7 +53,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
         if (error != null) {
           throw error;
         }
-        Fimber.d("GitHost Initalized: " + widget.gitHostType.toString());
+        Log.d("GitHost Initalized: " + widget.gitHostType.toString());
 
         GitHostRepo repo;
         try {
@@ -112,7 +112,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
   }
 
   void _handleGitHostException(Exception e, StackTrace stacktrace) {
-    Fimber.d("GitHostSetupAutoConfigure: " + e.toString());
+    Log.d("GitHostSetupAutoConfigure: " + e.toString());
     setState(() {
       errorMessage = widget.gitHostType.toString() + ": " + e.toString();
       getAnalytics().logEvent(

@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:fimber/fimber.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:gitjournal/utils/logger.dart';
 import 'githost.dart';
 
 class GitHub implements GitHost {
@@ -20,24 +20,24 @@ class GitHub implements GitHost {
   void init(OAuthCallback callback) {
     Future _handleMessages(MethodCall call) async {
       if (call.method != "onURL") {
-        Fimber.d("GitHub Unknown Call: " + call.method);
+        Log.d("GitHub Unknown Call: " + call.method);
         return;
       }
 
       closeWebView();
-      Fimber.d("GitHub: Called onUrl with " + call.arguments.toString());
+      Log.d("GitHub: Called onUrl with " + call.arguments.toString());
 
       String url = call.arguments["URL"];
       var uri = Uri.parse(url);
       var authCode = uri.queryParameters['code'];
       if (authCode == null) {
-        Fimber.d("GitHub: Missing auth code. Now what?");
+        Log.d("GitHub: Missing auth code. Now what?");
         callback(GitHostException.OAuthFailed);
       }
 
       _accessCode = await _getAccessCode(authCode);
       if (_accessCode == null || _accessCode.isEmpty) {
-        Fimber.d("GitHub: AccessCode is invalid: " + _accessCode);
+        Log.d("GitHub: AccessCode is invalid: " + _accessCode);
         callback(GitHostException.OAuthFailed);
       }
 
@@ -45,7 +45,7 @@ class GitHub implements GitHost {
     }
 
     _platform.setMethodCallHandler(_handleMessages);
-    Fimber.d("GitHub: Installed Handler");
+    Log.d("GitHub: Installed Handler");
   }
 
   Future<String> _getAccessCode(String authCode) async {
@@ -54,13 +54,13 @@ class GitHub implements GitHost {
 
     var response = await http.post(url);
     if (response.statusCode != 200) {
-      Fimber.d("Github getAccessCode: Invalid response " +
+      Log.d("Github getAccessCode: Invalid response " +
           response.statusCode.toString() +
           ": " +
           response.body);
       throw GitHostException.OAuthFailed;
     }
-    Fimber.d("GithubResponse: " + response.body);
+    Log.d("GithubResponse: " + response.body);
 
     var map = Uri.splitQueryString(response.body);
     return map["access_token"];
@@ -89,7 +89,7 @@ class GitHub implements GitHost {
 
     var response = await http.get(url, headers: headers);
     if (response.statusCode != 200) {
-      Fimber.d("Github listRepos: Invalid response " +
+      Log.d("Github listRepos: Invalid response " +
           response.statusCode.toString() +
           ": " +
           response.body);
@@ -128,7 +128,7 @@ class GitHub implements GitHost {
     var response =
         await http.post(url, headers: headers, body: json.encode(data));
     if (response.statusCode != 201) {
-      Fimber.d("Github createRepo: Invalid response " +
+      Log.d("Github createRepo: Invalid response " +
           response.statusCode.toString() +
           ": " +
           response.body);
@@ -142,7 +142,7 @@ class GitHub implements GitHost {
       throw GitHostException.CreateRepoFailed;
     }
 
-    Fimber.d("GitHub createRepo: " + response.body);
+    Log.d("GitHub createRepo: " + response.body);
     Map<String, dynamic> map = json.decode(response.body);
     return _repoFromJson(map);
   }
@@ -163,7 +163,7 @@ class GitHub implements GitHost {
 
     var response = await http.get(url, headers: headers);
     if (response.statusCode != 200) {
-      Fimber.d("Github getRepo: Invalid response " +
+      Log.d("Github getRepo: Invalid response " +
           response.statusCode.toString() +
           ": " +
           response.body);
@@ -171,7 +171,7 @@ class GitHub implements GitHost {
       throw GitHostException.GetRepoFailed;
     }
 
-    Fimber.d("GitHub getRepo: " + response.body);
+    Log.d("GitHub getRepo: " + response.body);
     Map<String, dynamic> map = json.decode(response.body);
     return _repoFromJson(map);
   }
@@ -198,14 +198,14 @@ class GitHub implements GitHost {
     var response =
         await http.post(url, headers: headers, body: json.encode(data));
     if (response.statusCode != 201) {
-      Fimber.d("Github addDeployKey: Invalid response " +
+      Log.d("Github addDeployKey: Invalid response " +
           response.statusCode.toString() +
           ": " +
           response.body);
       throw GitHostException.DeployKeyFailed;
     }
 
-    Fimber.d("GitHub addDeployKey: " + response.body);
+    Log.d("GitHub addDeployKey: " + response.body);
     return json.decode(response.body);
   }
 
@@ -230,7 +230,7 @@ class GitHub implements GitHost {
 
     var response = await http.get(url, headers: headers);
     if (response.statusCode != 200) {
-      Fimber.d("Github getUserInfo: Invalid response " +
+      Log.d("Github getUserInfo: Invalid response " +
           response.statusCode.toString() +
           ": " +
           response.body);
@@ -239,7 +239,7 @@ class GitHub implements GitHost {
 
     Map<String, dynamic> map = jsonDecode(response.body);
     if (map == null || map.isEmpty) {
-      Fimber.d("Github getUserInfo: jsonDecode Failed " +
+      Log.d("Github getUserInfo: jsonDecode Failed " +
           response.statusCode.toString() +
           ": " +
           response.body);

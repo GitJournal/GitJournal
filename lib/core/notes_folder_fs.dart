@@ -1,7 +1,8 @@
 import 'dart:io';
 
-import 'package:fimber/fimber.dart';
 import 'package:gitjournal/features.dart';
+import 'package:gitjournal/utils/logger.dart';
+
 import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 import 'package:synchronized/synchronized.dart';
@@ -171,7 +172,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       }
 
       if (fsEntity is Directory) {
-        //Fimber.d("Found directory ${fsEntity.path}");
+        //Log.d("Found directory ${fsEntity.path}");
         var subFolder = NotesFolderFS(this, fsEntity.path);
         if (subFolder.name.startsWith('.')) {
           continue;
@@ -188,10 +189,10 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
       var note = Note(this, fsEntity.path);
       if (!note.filePath.toLowerCase().endsWith('.md')) {
-        //Fimber.d("Ignoring file ${fsEntity.path}");
+        //Log.d("Ignoring file ${fsEntity.path}");
         continue;
       }
-      //Fimber.d("Found file ${fsEntity.path}");
+      //Log.d("Found file ${fsEntity.path}");
       note.addModifiedListener(_noteModified);
 
       _notes.add(note);
@@ -210,7 +211,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       _entityMap.remove(path);
 
       if (e is Note) {
-        Fimber.d("File $path was no longer found");
+        Log.d("File $path was no longer found");
         e.removeModifiedListener(_noteModified);
         var i = _notes.indexWhere((n) => n.filePath == path);
         assert(i != -1);
@@ -218,7 +219,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         _notes.removeAt(i);
         notifyNoteRemoved(i, note);
       } else {
-        Fimber.d("Folder $path was no longer found");
+        Log.d("Folder $path was no longer found");
         e.removeListener(_entityChanged);
         var i = _folders.indexWhere((f) => f.folderPath == path);
         assert(i != -1);

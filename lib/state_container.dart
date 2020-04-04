@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import 'package:gitjournal/apis/git_migration.dart';
 import 'package:gitjournal/appstate.dart';
 import 'package:gitjournal/core/note.dart';
@@ -13,6 +13,8 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/git_repo.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/utils/logger.dart';
+
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
@@ -61,10 +63,10 @@ class StateContainer with ChangeNotifier {
 
   void _loadFromCache() async {
     await _notesCache.load(appState.notesFolder);
-    Fimber.i("Finished loading the notes cache");
+    Log.i("Finished loading the notes cache");
 
     await _loadNotes();
-    Fimber.i("Finished loading all the notes");
+    Log.i("Finished loading all the notes");
   }
 
   void removeExistingRemoteClone() async {
@@ -86,7 +88,7 @@ class StateContainer with ChangeNotifier {
 
   Future<void> syncNotes({bool doNotThrow = false}) async {
     if (!appState.remoteGitRepoConfigured) {
-      Fimber.d("Not syncing because RemoteRepo not configured");
+      Log.d("Not syncing because RemoteRepo not configured");
       return true;
     }
 
@@ -104,11 +106,11 @@ class StateContainer with ChangeNotifier {
 
       await _gitRepo.push();
 
-      Fimber.d("Synced!");
+      Log.d("Synced!");
       appState.syncStatus = SyncStatus.Done;
       notifyListeners();
     } catch (e, stacktrace) {
-      Fimber.d("Failed to Sync");
+      Log.d("Failed to Sync");
       appState.syncStatus = SyncStatus.Error;
       notifyListeners();
       if (shouldLogGitException(e)) {
@@ -134,7 +136,7 @@ class StateContainer with ChangeNotifier {
       var newFolder = NotesFolderFS(parent, newFolderPath);
       newFolder.create();
 
-      Fimber.d("Created New Folder: " + newFolderPath);
+      Log.d("Created New Folder: " + newFolderPath);
       parent.addFolder(newFolder);
 
       _gitRepo.addFolder(newFolder).then((NoteRepoResult _) {
@@ -145,7 +147,7 @@ class StateContainer with ChangeNotifier {
 
   void removeFolder(NotesFolderFS folder) async {
     return _opLock.synchronized(() async {
-      Fimber.d("Removing Folder: " + folder.folderPath);
+      Log.d("Removing Folder: " + folder.folderPath);
 
       folder.parentFS.removeFolder(folder);
       _gitRepo.removeFolder(folder).then((NoteRepoResult _) {
@@ -194,7 +196,7 @@ class StateContainer with ChangeNotifier {
 
   void addNote(Note note) async {
     return _opLock.synchronized(() async {
-      Fimber.d("State Container addNote");
+      Log.d("State Container addNote");
       note.parent.insert(0, note);
       note.updateModified();
       _gitRepo.addNote(note).then((NoteRepoResult _) {
@@ -229,7 +231,7 @@ class StateContainer with ChangeNotifier {
 
   void updateNote(Note note) async {
     return _opLock.synchronized(() async {
-      Fimber.d("State Container updateNote");
+      Log.d("State Container updateNote");
       note.updateModified();
       _gitRepo.updateNote(note).then((NoteRepoResult _) {
         _syncNotes();
@@ -243,7 +245,7 @@ class StateContainer with ChangeNotifier {
     }
 
     return _opLock.synchronized(() async {
-      Fimber.d("State Container saveFolderConfig");
+      Log.d("State Container saveFolderConfig");
       await config.saveToFS();
       _gitRepo.addFolderConfig(config).then((NoteRepoResult _) {
         _syncNotes();

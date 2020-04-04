@@ -1,8 +1,8 @@
 import 'dart:collection';
 
-import 'package:fimber/fimber.dart';
 import 'package:yaml/yaml.dart';
 import 'package:yaml_serializer/yaml_serializer.dart';
+import 'package:gitjournal/utils/logger.dart';
 
 import 'md_yaml_doc.dart';
 
@@ -71,8 +71,7 @@ class MarkdownYAMLCodec {
         map[key] = value;
       });
     } catch (err) {
-      Fimber.d(
-          'MarkdownYAMLSerializer::decode("$yamlText") -> ${err.toString()}');
+      Log.d('MarkdownYAMLSerializer::decode("$yamlText") -> ${err.toString()}');
     }
 
     return map;

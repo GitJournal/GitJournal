@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:fimber/fimber.dart';
 
 import 'package:git_bindings/git_bindings.dart';
 
@@ -10,6 +9,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/utils/logger.dart';
 
 class NoteRepoResult {
   bool error;
@@ -143,7 +143,7 @@ class GitNoteRepository {
     try {
       await _gitRepo.pull();
     } on GitException catch (ex) {
-      Fimber.d(ex.toString());
+      Log.d(ex.toString());
     }
   }
 
@@ -155,7 +155,7 @@ class GitNoteRepository {
         await pull();
         return push();
       }
-      Fimber.d(ex.toString());
+      Log.d(ex.toString());
       rethrow;
     }
   }

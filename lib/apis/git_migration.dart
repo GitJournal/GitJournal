@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:git_bindings/git_bindings.dart';
 
 import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/utils/logger.dart';
 import 'package:path/path.dart' as p;
 
 //
@@ -16,10 +16,10 @@ Future migrateGitRepo({
   @required String fromGitBasePath,
   @required String toGitBaseFolder,
 }) async {
-  Fimber.d("migrateGitRepo $fromGitBasePath $toGitBaseFolder");
+  Log.d("migrateGitRepo $fromGitBasePath $toGitBaseFolder");
   var fromBasePath = p.join(gitBasePath, fromGitBasePath);
   var toGitRepoPath = p.join(gitBasePath, toGitBaseFolder);
-  Fimber.d("toGitRemotePath $toGitRepoPath");
+  Log.d("toGitRemotePath $toGitRepoPath");
 
   final dir = Directory(fromBasePath);
   var lister = dir.list(recursive: false);
@@ -31,7 +31,7 @@ Future migrateGitRepo({
     var fileName = p.basename(file.path);
     var toPath = p.join(toGitRepoPath, fileName);
 
-    Fimber.d("Migrating " + file.path + " --> " + toPath);
+    Log.d("Migrating " + file.path + " --> " + toPath);
 
     await file.copy(toPath);
 
@@ -43,5 +43,5 @@ Future migrateGitRepo({
     await gitRepo.add(fileName);
     await gitRepo.commit(message: "Added Note");
   }
-  Fimber.d("migrateGitRepo: Done");
+  Log.d("migrateGitRepo: Done");
 }

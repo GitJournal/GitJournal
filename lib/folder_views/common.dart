@@ -1,5 +1,5 @@
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
+
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/folder_views/card_view.dart';
@@ -7,6 +7,7 @@ import 'package:gitjournal/folder_views/grid_view.dart';
 import 'package:gitjournal/folder_views/journal_view.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/utils/logger.dart';
 
 import 'standard_view.dart';
 
@@ -66,7 +67,7 @@ void openNoteEditor(BuildContext context, Note note) async {
   );
   var showUndoSnackBar = await Navigator.of(context).push(route);
   if (showUndoSnackBar != null) {
-    Fimber.d("Showing an undo snackbar");
+    Log.d("Showing an undo snackbar");
 
     var snackBar = buildUndoDeleteSnackbar(context, note);
     Scaffold.of(context)
