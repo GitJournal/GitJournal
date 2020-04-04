@@ -39,12 +39,10 @@ class GridFolderView extends StatelessWidget {
       ),
       itemBuilder: _buildItem,
       itemCount: folder.notes.length,
+      padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 16.0),
     );
 
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 16.0),
-      child: gridView,
-    );
+    return gridView;
   }
 
   Widget _buildItem(BuildContext context, int i) {

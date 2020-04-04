@@ -44,11 +44,9 @@ class CardView extends StatelessWidget {
       staggeredTileBuilder: (int i) => const StaggeredTile.fit(2),
       mainAxisSpacing: 8.0,
       crossAxisSpacing: 8.0,
+      padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 16.0),
     );
 
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 16.0),
-      child: gridView,
-    );
+    return gridView;
   }
 }
