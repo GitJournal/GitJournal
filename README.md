@@ -4,8 +4,8 @@
 </p>
 
 <p align="center">
-  <a href="https://play.google.com/store/apps/details?id=io.gitjournal.gitjournal&pcampaignid=github"><img alt="Get it on Google Play" src="https://gitjournal.io/images/en_badge_web_generic.png" height="75px"/></a>
-  <a href="https://apps.apple.com/us/app/gitjournal/id1466519634"><img alt="Download on the App Store" src="https://gitjournal.io/images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" height="75px"/></a>
+  <a href="https://play.google.com/store/apps/details?id=io.gitjournal.gitjournal&utm_source=github&utm_medium=link"><img alt="Get it on Google Play" src="https://gitjournal.io/images/en_badge_web_generic.png" height="75px"/></a>
+  <a href="https://apps.apple.com/app/gitjournal/id1466519634&utm_source=github&utm_medium=link"><img alt="Download on the App Store" src="https://gitjournal.io/images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" height="75px"/></a>
 </p>
 
 <p align="center">
