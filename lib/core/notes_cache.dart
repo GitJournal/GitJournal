@@ -16,6 +16,8 @@ class NotesCache {
   final String notesBasePath;
   final bool enabled = true;
 
+  static const CACHE_SIZE = 20;
+
   NotesCache({@required this.filePath, @required this.notesBasePath});
 
   Future load(NotesFolderFS rootFolder) async {
@@ -84,7 +86,7 @@ class NotesCache {
 
     for (var note in allNotes) {
       heap.add(note);
-      if (heap.length > 10) {
+      if (heap.length > CACHE_SIZE) {
         heap.removeFirst();
       }
     }
