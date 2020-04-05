@@ -327,9 +327,12 @@ class MarkdownRenderer implements md.NodeVisitor {
       var attr = element.attributes;
       print(attr);
       if (attr['class'] == 'todo' && attr['type'] == 'checkbox') {
-        bool val = attr.containsKey('checked');
-        if (val) {
-          buffer.write('[x]');
+        if (attr.containsKey('checked')) {
+          if (attr.containsKey('uppercase')) {
+            buffer.write('[X]');
+          } else {
+            buffer.write('[x]');
+          }
         } else {
           buffer.write('[ ]');
         }

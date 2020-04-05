@@ -229,7 +229,7 @@ How are you doing?
 
 - [ ] item 1
 - [x] item 2
-- [x] item 3
+- [X] item 3
 - [ ] item 4
 - [ ] item 5
 
@@ -282,7 +282,7 @@ How are you doing?
 
 - [x] item 1
 - [ ] Foo
-- [x] item 3
+- [X] item 3
 - [ ] item 4
 - [ ] Howdy
 
