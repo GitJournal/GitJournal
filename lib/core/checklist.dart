@@ -306,7 +306,6 @@ class MarkdownRenderer implements md.NodeVisitor {
         break;
 
       case 'p':
-      case 'ul':
         buffer.write('\n');
         break;
     }
@@ -360,6 +359,6 @@ class MarkdownRenderer implements md.NodeVisitor {
     for (final node in nodes) {
       node.accept(this);
     }
-    return buffer.toString();
+    return buffer.toString().trimLeft();
   }
 }
