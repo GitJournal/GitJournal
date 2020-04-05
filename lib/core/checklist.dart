@@ -1,27 +1,62 @@
-import 'package:markdown/markdown.dart' as md;
+import 'package:markd/markdown.dart' as md;
 
 import 'package:gitjournal/core/note.dart';
 
 class ChecklistItem {
+  md.Element parentListElement;
   md.Element element;
 
   bool get checked {
-    return element.attributes['checked'] != "false";
+    if (element.children == null || element.children.isEmpty) {
+      return false;
+    }
+
+    var inputEl = element.children[0] as md.Element;
+    assert(inputEl.attributes['class'] == 'todo');
+    return inputEl.attributes.containsKey('checked');
   }
 
   set checked(bool val) {
-    element.attributes['checked'] = val.toString();
+    if (element.children == null || element.children.isEmpty) {
+      return;
+    }
+    var inputEl = element.children[0] as md.Element;
+    assert(inputEl.attributes['class'] == 'todo');
+
+    if (val) {
+      inputEl.attributes["checked"] = "checked";
+    } else {
+      inputEl.attributes.remove('checked');
+    }
   }
 
   String get text {
-    return element.attributes['text'];
+    if (element.children == null || element.children.isEmpty) {
+      return "";
+    }
+    if (element.children.length > 1) {
+      return element.children[1].textContent.substring(1);
+    }
+    return "";
   }
 
   set text(String val) {
-    element.attributes['text'] = val;
+    if (element.children == null || element.children.isEmpty) {
+      return;
+    }
+    if (element.children.length > 1) {
+      element.children[1] = md.Text(" $val");
+    }
   }
 
-  ChecklistItem.fromMarkdownElement(this.element);
+  ChecklistItem.fromMarkdownElement(this.element, this.parentListElement) {
+    assert(element.children.isNotEmpty);
+
+    // FIXME: Maybe this shouldn't be allowed
+    if (parentListElement != null) {
+      assert(parentListElement.children.contains(element));
+    }
+  }
 
   @override
   String toString() => 'ChecklistItem: $checked $text';
@@ -30,51 +65,49 @@ class ChecklistItem {
 class Checklist {
   Note _note;
   List<ChecklistItem> items;
-  List<md.Node> nodes;
+
+  List<md.Node> _nodes;
 
   Checklist(this._note) {
     var doc = md.Document(
       encodeHtml: false,
-      inlineSyntaxes: [TaskListSyntax()],
-      extensionSet: md.ExtensionSet.gitHubFlavored,
+      blockSyntaxes: md.BlockParser.standardBlockSyntaxes,
+      extensionSet: md.ExtensionSet.gitHubWeb,
     );
 
-    nodes = doc.parseInline(_note.body);
-    _cleanupNodes(nodes);
-
-    items = ChecklistBuilder().build(nodes);
-  }
-
-  void _cleanupNodes(List<md.Node> nodes) {
-    if (nodes.length <= 1) {
-      return;
-    }
-
-    var last = nodes.last;
-    var secLast = nodes[nodes.length - 2];
-
-    if (last is! md.Text) {
-      return;
-    }
-    if (secLast is! md.Element) {
-      return;
-    }
-    var elem = secLast as md.Element;
-    if (elem.tag != 'input' || elem.attributes['type'] != 'checkbox') {
-      return;
-    }
-
-    // Some times we get an extra \n in the end, not sure why.
-    if (last.textContent == '\n') {
-      nodes.length = nodes.length - 1;
-      if (!elem.attributes["text"].endsWith('\n')) {
-        elem.attributes["text"] += '\n';
+    _nodes = doc.parseLines(_note.body.split('\n'));
+    for (var node in _nodes) {
+      if (node is md.Element) {
+        var elem = node;
+        _printElement(elem, "");
       }
     }
+    print('---------');
+
+    var builder = ChecklistBuilder();
+    items = builder.build(_nodes);
+  }
+
+  void _printElement(md.Element elem, String indent) {
+    print("$indent Begin ${elem.toString()}");
+    print("$indent E TAG ${elem.tag}");
+    print("$indent E ATTRIBUTES ${elem.attributes}");
+    print("$indent E generatedId ${elem.generatedId}");
+    print("$indent E children ${elem.children}");
+    if (elem.children != null) {
+      for (var child in elem.children) {
+        if (child is md.Element) {
+          _printElement(child, indent + "  ");
+        } else {
+          print("$indent $child - ${child.textContent}");
+        }
+      }
+    }
+    print("$indent End ${elem.toString()}");
   }
 
   Note get note {
-    if (nodes.isEmpty) return _note;
+    if (_nodes.isEmpty) return _note;
 
     // Remove empty trailing items
     while (true) {
@@ -89,8 +122,8 @@ class Checklist {
       }
     }
 
-    var renderer = CustomRenderer();
-    _note.body = renderer.render(nodes);
+    var renderer = MarkdownRenderer();
+    _note.body = renderer.render(_nodes);
 
     return _note;
   }
@@ -105,109 +138,103 @@ class Checklist {
   }
 
   ChecklistItem buildItem(bool value, String text) {
-    var elem = md.Element.withTag("input");
-    elem.attributes["type"] = "checkbox";
-    elem.attributes["checked"] = value.toString();
-    elem.attributes["xUpperCase"] = "false";
-    elem.attributes["text"] = text;
+    var inputElement = md.Element.withTag('input');
+    inputElement.attributes['class'] = 'todo';
+    inputElement.attributes['type'] = 'checkbox';
+    inputElement.attributes['disabled'] = 'disabled';
+    if (value) {
+      inputElement.attributes['checked'] = 'checked';
+    }
 
-    return ChecklistItem.fromMarkdownElement(elem);
+    var liElement = md.Element('li', [inputElement, md.Text(' $text')]);
+    liElement.attributes['class'] = 'todo';
+
+    // FIXME: Come on, there must be a simpler way
+    return ChecklistItem.fromMarkdownElement(liElement, null);
   }
 
   void removeItem(ChecklistItem item) {
-    assert(nodes.contains(item.element));
     assert(items.contains(item));
-
-    nodes.remove(item.element);
     items.remove(item);
+
+    bool foundChild = false;
+    var parentList = item.parentListElement;
+    for (var i = 0; i < parentList.children.length; i++) {
+      var child = parentList.children[i];
+      if (child == item.element) {
+        foundChild = true;
+        parentList.children.removeAt(i);
+        break;
+      }
+    }
+    assert(foundChild);
   }
 
   ChecklistItem removeAt(int index) {
     assert(index >= 0 && index <= items.length);
 
     var item = items[index];
-    assert(nodes.contains(item.element));
-
-    nodes.remove(item.element);
-    items.removeAt(index);
+    removeItem(item);
 
     return item;
   }
 
   void addItem(ChecklistItem item) {
-    _insertNewLineIfRequired(nodes.length - 1);
+    if (items.isEmpty) {
+      var listElement = md.Element.withTag('ul');
+      _nodes.add(listElement);
+      item.parentListElement = listElement;
+    } else {
+      var prevItem = items.last;
+      item.parentListElement = prevItem.parentListElement;
+    }
 
     items.add(item);
-    nodes.add(item.element);
+    item.parentListElement.children.add(item.element);
   }
 
   void insertItem(int index, ChecklistItem item) {
-    assert(index <= items.length, "Trying to insert beyond the end");
-    if (index == 0) {
-      items.insert(0, item);
-      nodes.insert(0, item.element);
+    if (index == 0 && items.isEmpty) {
+      addItem(item);
       return;
     }
+
+    assert(index <= items.length, "Trying to insert beyond the end");
     if (index == items.length) {
       addItem(item);
       return;
     }
 
-    var prevItem = items[index];
-    var nodeIndex = nodes.indexOf(prevItem.element);
+    var prevItem = index - 1 > 0 ? items[index - 1] : items[index];
+    item.parentListElement = prevItem.parentListElement;
+    var parentList = item.parentListElement;
 
-    _insertNewLineIfRequired(nodeIndex);
-
-    nodes.insert(nodeIndex, item.element);
-    items.insert(index, item);
-  }
-
-  void _insertNewLineIfRequired(int pos) {
-    if (nodes.isEmpty) return;
-
-    var node = nodes[pos];
-    if (node is md.Text) {
-      if (!node.text.endsWith('\n')) {
-        nodes.add(md.Text("\n"));
+    // Insert in correct place
+    bool foundChild = false;
+    for (var i = 0; i < parentList.children.length; i++) {
+      var child = parentList.children[i];
+      if (child == prevItem.element) {
+        foundChild = true;
+        parentList.children.insert(i, item.element);
+        break;
       }
     }
-  }
-}
+    assert(foundChild);
 
-/// Copied from flutter-markdown - cannot be merged as we added xUpperCase and changed the regexp
-/// Parse [task list items](https://github.github.com/gfm/#task-list-items-extension-).
-class TaskListSyntax extends md.InlineSyntax {
-  // FIXME: Waiting for dart-lang/markdown#269 to land
-  static final String _pattern = r'^ *\[([ xX])\] +(.*)';
-
-  TaskListSyntax() : super(_pattern, startCharacter: '['.codeUnitAt(0));
-
-  @override
-  bool onMatch(md.InlineParser parser, Match match) {
-    md.Element el = md.Element.withTag('input');
-    el.attributes['type'] = 'checkbox';
-    el.attributes['checked'] = '${match[1].trim().isNotEmpty}';
-    var m = match[1].trim();
-    if (m.isNotEmpty) {
-      el.attributes['xUpperCase'] = (m[0] == 'X').toString();
-    }
-    el.attributes['text'] = '${match[2]}';
-    parser.addNode(el);
-
-    var lenToConsume = match[0].length;
-    if (match.end + 1 < match.input.length) {
-      lenToConsume += 1; // Consume \n
-    }
-    parser.consume(lenToConsume);
-    return false; // We are advancing manually
+    items.insert(index, item);
   }
 }
 
 class ChecklistBuilder implements md.NodeVisitor {
   List<ChecklistItem> list;
+  md.Element listElement;
+  md.Element parent;
 
   @override
   bool visitElementBefore(md.Element element) {
+    if (element.tag == 'ul' || element.tag == 'ol') {
+      listElement = element;
+    }
     return true;
   }
 
@@ -220,9 +247,15 @@ class ChecklistBuilder implements md.NodeVisitor {
   void visitElementAfter(md.Element el) {
     final String tag = el.tag;
 
-    if (tag == 'input') {
-      if (el is md.Element && el.attributes['type'] == 'checkbox') {
-        list.add(ChecklistItem.fromMarkdownElement(el));
+    if (tag == 'ul' || tag == 'ol') {
+      listElement = null;
+      return;
+    }
+
+    if (tag == 'li') {
+      if (el.attributes['class'] == 'todo') {
+        list.add(ChecklistItem.fromMarkdownElement(el, listElement));
+        return;
       }
     }
     //print("builder tag: $tag");
@@ -238,11 +271,45 @@ class ChecklistBuilder implements md.NodeVisitor {
   }
 }
 
-class CustomRenderer implements md.NodeVisitor {
+class MarkdownRenderer implements md.NodeVisitor {
   StringBuffer buffer;
 
   @override
   bool visitElementBefore(md.Element element) {
+    switch (element.tag) {
+      case 'h1':
+        buffer.write('# ');
+        break;
+
+      case 'h2':
+        buffer.write('## ');
+        break;
+
+      case 'h3':
+        buffer.write('### ');
+        break;
+
+      case 'h4':
+        buffer.write('#### ');
+        break;
+
+      case 'h5':
+        buffer.write('##### ');
+        break;
+
+      case 'h6':
+        buffer.write('###### ');
+        break;
+
+      case 'li':
+        buffer.write('- ');
+        break;
+
+      case 'p':
+      case 'ul':
+        buffer.write('\n');
+        break;
+    }
     return true;
   }
 
@@ -257,26 +324,30 @@ class CustomRenderer implements md.NodeVisitor {
     final String tag = element.tag;
 
     if (tag == 'input') {
-      var el = element;
-      if (el is md.Element && el.attributes['type'] == 'checkbox') {
-        bool val = el.attributes['checked'] != 'false';
+      var attr = element.attributes;
+      print(attr);
+      if (attr['class'] == 'todo' && attr['type'] == 'checkbox') {
+        bool val = attr.containsKey('checked');
         if (val) {
-          if (el.attributes['xUpperCase'] != 'false') {
-            buffer.write('[x] ');
-          } else {
-            buffer.write('[X] ');
-          }
+          buffer.write('[x]');
         } else {
-          buffer.write('[ ] ');
-        }
-        var text = el.attributes['text'];
-        buffer.write(text);
-        //print("writeElem $text#");
-        if (!text.endsWith('\n')) {
-          //print("writeElem newLine#");
-          buffer.write('\n');
+          buffer.write('[ ]');
         }
       }
+      return;
+    }
+
+    switch (tag) {
+      case 'h1':
+      case 'h2':
+      case 'h3':
+      case 'h4':
+      case 'h5':
+      case 'h6':
+      case 'p':
+      case 'li':
+        buffer.write('\n');
+        break;
     }
   }
 
