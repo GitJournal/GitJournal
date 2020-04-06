@@ -21,6 +21,9 @@ jobs:
           name: Create Android Key file
           command: echo "$ANDROID_KEY_FILE" | base64 -di > android/key.properties
       - run:
+          name: Setup Flutter Env
+          command: dart ./scripts/setup_env.sh
+      - run:
           name: Build
           command: ./scripts/build.sh
       - store_artifacts:
