@@ -41,6 +41,7 @@ dependencies:
   font_awesome_flutter: ^8.7.0
   sentry: ">=3.0.0 <4.0.0"
   equatable: ^1.1.0
+  flutter_inapp_purchase: ^2.1.4
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.2"

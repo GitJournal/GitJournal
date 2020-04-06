@@ -4,6 +4,7 @@ import 'package:device_info/device_info.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
+import 'package:gitjournal/screens/purchase_screen.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as p;
@@ -135,6 +136,7 @@ class JournalApp extends StatelessWidget {
             GitHostSetupScreen(stateContainer.completeGitHostSetup),
         '/onBoarding': (context) =>
             OnBoardingScreen(stateContainer.completeOnBoarding),
+        '/purchase': (context) => PurchaseScreen(),
       },
       debugShowCheckedModeBanner: false,
       //debugShowMaterialGrid: true,

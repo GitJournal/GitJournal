@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:gitjournal/features.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -64,6 +65,21 @@ class AppDrawer extends StatelessWidget {
             ),
           ),
           if (setupGitButton != null) ...[setupGitButton, divider],
+          if (Features.purchaseProModeAvailable)
+            _buildDrawerTile(
+              context,
+              icon: Icons.power,
+              title: "Go Pro",
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, "/purchase");
+
+                getAnalytics().logEvent(
+                  name: "purchase_screen_open",
+                );
+              },
+            ),
+          if (Features.purchaseProModeAvailable) divider,
           _buildDrawerTile(
             context,
             icon: Icons.note,
