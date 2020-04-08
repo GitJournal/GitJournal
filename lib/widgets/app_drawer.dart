@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:gitjournal/features.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -65,11 +66,11 @@ class AppDrawer extends StatelessWidget {
             ),
           ),
           if (setupGitButton != null) ...[setupGitButton, divider],
-          if (Features.purchaseProModeAvailable)
+          if (Features.purchaseProModeAvailable && !Settings.instance.proMode)
             _buildDrawerTile(
               context,
               icon: Icons.power,
-              title: "Go Pro",
+              title: "Unlock Pro Version",
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, "/purchase");
@@ -79,7 +80,8 @@ class AppDrawer extends StatelessWidget {
                 );
               },
             ),
-          if (Features.purchaseProModeAvailable) divider,
+          if (Features.purchaseProModeAvailable && !!Settings.instance.proMode)
+            divider,
           _buildDrawerTile(
             context,
             icon: Icons.note,

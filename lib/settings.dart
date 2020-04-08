@@ -32,6 +32,8 @@ class Settings {
   String folderViewHeaderType = "TitleGenerated";
   int version = 0;
 
+  bool proMode = false;
+
   void load(SharedPreferences pref) {
     gitAuthor = pref.getString("gitAuthor") ?? gitAuthor;
     gitAuthorEmail = pref.getString("gitAuthorEmail") ?? gitAuthorEmail;
@@ -63,6 +65,7 @@ class Settings {
         pref.getString("folderViewHeaderType") ?? folderViewHeaderType;
 
     version = pref.getInt("settingsVersion") ?? version;
+    proMode = pref.getBool("proMode") ?? proMode;
   }
 
   Future save() async {
@@ -83,6 +86,7 @@ class Settings {
     pref.setBool("showNoteSummary", showNoteSummary);
     pref.setString("folderViewHeaderType", folderViewHeaderType);
     pref.setInt("settingsVersion", version);
+    pref.setBool("proMode", proMode);
 
     // Shouldn't we check if something has actually changed?
     for (var f in changeObservers) {
@@ -107,6 +111,7 @@ class Settings {
       "showNoteSummary": showNoteSummary,
       "folderViewHeaderType": folderViewHeaderType,
       "version": version,
+      "proMode": proMode,
     };
   }
 
