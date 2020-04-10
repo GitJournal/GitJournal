@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/flattened_notes_folder.dart';
+import 'package:gitjournal/iap.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
@@ -17,6 +18,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
+    InAppPurchases.confirmProPurchase();
+
     Future.delayed(Duration.zero, () {
       if (!mounted) return;
       final rootFolder = Provider.of<NotesFolderFS>(context);

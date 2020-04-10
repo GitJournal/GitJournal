@@ -80,7 +80,7 @@ class AppDrawer extends StatelessWidget {
                 );
               },
             ),
-          if (Features.purchaseProModeAvailable && !!Settings.instance.proMode)
+          if (Features.purchaseProModeAvailable && !Settings.instance.proMode)
             divider,
           _buildDrawerTile(
             context,
