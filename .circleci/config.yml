@@ -6,6 +6,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Setup Flutter Env
+          command: dart ./scripts/setup_env.sh
+      - run:
           name: Test
           command: flutter test -j 1
       - run:
@@ -20,9 +23,6 @@ jobs:
       - run:
           name: Create Android Key file
           command: echo "$ANDROID_KEY_FILE" | base64 -di > android/key.properties
-      - run:
-          name: Setup Flutter Env
-          command: dart ./scripts/setup_env.sh
       - run:
           name: Build
           command: ./scripts/build.sh
