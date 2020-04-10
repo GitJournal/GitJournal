@@ -213,6 +213,7 @@ class Note with NotesNotifier {
       newName += '.md';
     }
 
+    var oldFilePath = filePath;
     var parentDirName = p.dirname(filePath);
     var newFilePath = p.join(parentDirName, newName);
     if (_loadState != NoteLoadState.None) {
@@ -221,6 +222,7 @@ class Note with NotesNotifier {
     }
     _filePath = newFilePath;
 
+    notifyRenameListeners(this, oldFilePath);
     _notifyModified();
   }
 

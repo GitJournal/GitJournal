@@ -4,9 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'note.dart';
 
 typedef NoteModificationCallback = void Function(Note note);
+typedef NoteRenameCallback = void Function(Note note, String oldPath);
 
 class NotesNotifier implements ChangeNotifier {
   var _modListeners = ObserverList<NoteModificationCallback>();
+  var _renameListeners = ObserverList<NoteRenameCallback>();
 
   void addModifiedListener(NoteModificationCallback listener) {
     _modListeners.add(listener);
@@ -16,11 +18,20 @@ class NotesNotifier implements ChangeNotifier {
     _modListeners.remove(listener);
   }
 
+  void addRenameListener(NoteRenameCallback listener) {
+    _renameListeners.add(listener);
+  }
+
+  void removeRenameListener(NoteRenameCallback listener) {
+    _renameListeners.remove(listener);
+  }
+
   @mustCallSuper
   @override
   void dispose() {
     assert(_debugAssertNotDisposed());
     _modListeners = null;
+    _renameListeners = null;
     _listeners = null;
   }
 
@@ -151,10 +162,39 @@ class NotesNotifier implements ChangeNotifier {
     assert(_debugAssertNotDisposed());
     if (_modListeners != null) {
       final localListeners = List<NoteModificationCallback>.from(_modListeners);
-      for (NoteModificationCallback listener in localListeners) {
+      for (var listener in localListeners) {
         try {
           if (_modListeners.contains(listener)) {
             listener(note);
+          }
+        } catch (exception, stack) {
+          FlutterError.reportError(FlutterErrorDetails(
+            exception: exception,
+            stack: stack,
+            library: 'foundation library',
+            context: ErrorDescription(
+                'while dispatching notifications for $runtimeType'),
+            informationCollector: () sync* {
+              yield DiagnosticsProperty<ChangeNotifier>(
+                'The $runtimeType sending notification was',
+                this,
+                style: DiagnosticsTreeStyle.errorProperty,
+              );
+            },
+          ));
+        }
+      }
+    }
+  }
+
+  void notifyRenameListeners(Note note, String oldPath) {
+    assert(_debugAssertNotDisposed());
+    if (_renameListeners != null) {
+      final localListeners = List<NoteRenameCallback>.from(_renameListeners);
+      for (var listener in localListeners) {
+        try {
+          if (_renameListeners.contains(listener)) {
+            listener(note, oldPath);
           }
         } catch (exception, stack) {
           FlutterError.reportError(FlutterErrorDetails(

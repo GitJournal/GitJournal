@@ -7,6 +7,8 @@ import 'notes_folder.dart';
 typedef FolderNotificationCallback = void Function(
     int index, NotesFolder folder);
 typedef NoteNotificationCallback = void Function(int index, Note note);
+typedef NoteRenamedCallback = void Function(
+    int index, Note note, String oldPath);
 
 class NotesFolderNotifier implements ChangeNotifier {
   var _folderAddedListeners = ObserverList<FolderNotificationCallback>();
@@ -15,6 +17,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   var _noteAddedListeners = ObserverList<NoteNotificationCallback>();
   var _noteRemovedListeners = ObserverList<NoteNotificationCallback>();
   var _noteModifiedListeners = ObserverList<NoteNotificationCallback>();
+  var _noteRenameListeners = ObserverList<NoteRenamedCallback>();
 
   void addFolderRemovedListener(FolderNotificationCallback listener) {
     _folderRemovedListeners.add(listener);
@@ -56,6 +59,14 @@ class NotesFolderNotifier implements ChangeNotifier {
     _noteModifiedListeners.remove(listener);
   }
 
+  void addNoteRenameListener(NoteRenamedCallback listener) {
+    _noteRenameListeners.add(listener);
+  }
+
+  void removeNoteRenameListener(NoteRenamedCallback listener) {
+    _noteRenameListeners.remove(listener);
+  }
+
   @mustCallSuper
   @override
   void dispose() {
@@ -64,6 +75,7 @@ class NotesFolderNotifier implements ChangeNotifier {
     _noteAddedListeners = null;
     _noteRemovedListeners = null;
     _noteModifiedListeners = null;
+    _noteRenameListeners = null;
 
     assert(_debugAssertNotDisposed());
     _listeners = null;
@@ -155,6 +167,36 @@ class NotesFolderNotifier implements ChangeNotifier {
 
   void notifyNoteModified(int index, Note note) {
     _notifyNoteCallback(_noteModifiedListeners, index, note);
+  }
+
+  void notifyNoteRenamed(int index, Note note, String oldPath) {
+    if (_listeners == null) {
+      return;
+    }
+    final localListeners = List<NoteRenamedCallback>.from(_noteRenameListeners);
+    for (var listener in localListeners) {
+      try {
+        if (_listeners.contains(listener)) {
+          listener(index, note, oldPath);
+        }
+      } catch (exception, stack) {
+        FlutterError.reportError(FlutterErrorDetails(
+          exception: exception,
+          stack: stack,
+          library: 'GitJournal',
+          context: ErrorDescription(
+              'while dispatching notifications for $runtimeType'),
+          informationCollector: () sync* {
+            yield DiagnosticsProperty<ChangeNotifier>(
+              'The $runtimeType sending notification was',
+              this,
+              style: DiagnosticsTreeStyle.errorProperty,
+            );
+          },
+        ));
+      }
+    }
+    notifyListeners();
   }
 
   //

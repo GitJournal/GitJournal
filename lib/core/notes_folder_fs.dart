@@ -45,6 +45,12 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     notifyNoteModified(-1, note);
   }
 
+  void _noteRenamed(Note note, String oldPath) {
+    assert(_entityMap.containsKey(oldPath));
+    _entityMap.remove(oldPath);
+    _entityMap[note.filePath] = note;
+  }
+
   void reset(String folderPath) {
     _folderPath = folderPath;
 
@@ -194,6 +200,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       }
       //Log.d("Found file ${fsEntity.path}");
       note.addModifiedListener(_noteModified);
+      note.addRenameListener(_noteRenamed);
 
       _notes.add(note);
       _entityMap[fsEntity.path] = note;
@@ -254,6 +261,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   void remove(Note note) {
     assert(note.parent == this);
     note.removeModifiedListener(_noteModified);
+    note.removeRenameListener(_noteRenamed);
 
     assert(_notes.indexWhere((n) => n.filePath == note.filePath) != -1);
     assert(_entityMap.containsKey(note.filePath));
