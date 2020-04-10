@@ -9,10 +9,12 @@ import 'package:gitjournal/settings.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sentry/sentry.dart';
 
+import 'package:gitjournal/.env.dart';
+
 SentryClient _sentryClient;
 Future<SentryClient> _initSentry() async {
   return SentryClient(
-    dsn: 'https://35f34dbec289435fbe16483faacf49a5@sentry.io/5168082',
+    dsn: environment['sentry'],
     environmentAttributes: await _environmentEvent,
   );
 }
