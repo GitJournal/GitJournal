@@ -6,8 +6,6 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   final NotesFolder _parentFolder;
 
   var _notes = <Note>[];
-  var _noteExtraInfo = <Note, int>{};
-
   var _folders = <NotesFolder>[];
 
   FlattenedNotesFolder(this._parentFolder) {
@@ -60,17 +58,14 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
 
   void _noteAdded(int _, Note note) {
     _notes.add(note);
-    _noteExtraInfo[note] = _notes.length - 1;
-
     notifyNoteAdded(-1, note);
   }
 
   void _noteRemoved(int _, Note note) {
-    assert(_noteExtraInfo.containsKey(note));
+    var i = _notes.indexWhere((n) => n.filePath == note.filePath);
+    assert(i != -1);
 
-    var i = _noteExtraInfo[note];
     _notes.removeAt(i);
-
     notifyNoteRemoved(-1, note);
   }
 
