@@ -18,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
+      if (!mounted) return;
       final rootFolder = Provider.of<NotesFolderFS>(context);
       setState(() {
         flattenedNotesFolder = FlattenedNotesFolder(rootFolder);

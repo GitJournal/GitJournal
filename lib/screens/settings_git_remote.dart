@@ -23,6 +23,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
   void initState() {
     super.initState();
     getSSHPublicKey().then((String val) {
+      if (!mounted) return;
       setState(() {
         publicKey = val;
       });

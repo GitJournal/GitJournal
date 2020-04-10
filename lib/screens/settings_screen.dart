@@ -262,6 +262,7 @@ class VersionNumberTileState extends State<VersionNumberTile> {
 
     () async {
       var str = await getVersionString();
+      if (!mounted) return;
       setState(() {
         versionText = str;
       });
