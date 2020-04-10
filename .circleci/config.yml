@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: Setup Flutter Env
-          command: dart ./scripts/setup_env.sh
+          command: /opt/flutter/bin/cache/dart-sdk/bin/dart ./scripts/setup_env.dart
       - run:
           name: Test
           command: flutter test -j 1
