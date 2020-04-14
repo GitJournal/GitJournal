@@ -47,7 +47,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
       return const PurchaseLoadingScreen();
     }
     var offering = _offerings.current;
-    var monthly = offering.monthly;
+    var monthly = offering?.monthly;
 
     // FIXME: This screen needs to be made way way more beautiful
     //        It's an extrememly important screen
@@ -85,8 +85,10 @@ class PurchaseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var price = package != null ? package.product.priceString : "Dev Mode";
+
     return RaisedButton(
-      child: Text('Subscribe for ${package.product.priceString} / month'),
+      child: Text('Subscribe for $price / month'),
       onPressed: () async {
         try {
           var purchaserInfo = await Purchases.purchasePackage(package);
