@@ -1,4 +1,9 @@
-## [1.45] - 2020-04-02
+## [1.47] - 2020-04-14
+* Added Pro mode
+* Improved sync speed by avoiding unnecessary options
+* Polishing the UI
+
+## [1.46] - 2020-04-02
 * Add a Grid View
 * Beautify the Cards Folder View
 * Show images if path is relative
