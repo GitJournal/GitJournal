@@ -77,7 +77,7 @@ class _FolderViewState extends State<FolderView> {
           : widget.notesFolder.pathSpec();
     }
 
-    var folderView = Builder(
+    Widget folderView = Builder(
       builder: (BuildContext context) {
         const emptyText = "Let's add some notes?";
         return buildFolderView(
@@ -89,6 +89,12 @@ class _FolderViewState extends State<FolderView> {
           _showSummary,
         );
       },
+    );
+
+    // So the FAB doesn't hide parts of the last entry
+    folderView = Padding(
+      child: folderView,
+      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 48.0),
     );
 
     var extraAction = PopupMenuButton<DropDownChoices>(
