@@ -190,6 +190,9 @@ class SettingsListState extends State<SettingsList> {
           var val = SettingsEditorType.fromPublicString(publicStr);
           Settings.instance.defaultEditor = val;
           Settings.instance.save();
+          // TODO: Some dialog like
+          // "Do you want to move files to new location?"
+          // Also selecting folder on external storage before doing that
           setState(() {});
         },
       ),
