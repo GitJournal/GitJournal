@@ -247,7 +247,7 @@ class NoteEditorState extends State<NoteEditor> {
       bool hasBeenModified = newSimplified != originalSimplified;
       if (hasBeenModified) {
         print("Note modified");
-        print("Original: $originalNoteData");
+        print("Original: $originalSimplified");
         print("New: $newSimplified");
         return true;
       }
