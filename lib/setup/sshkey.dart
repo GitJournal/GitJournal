@@ -230,6 +230,14 @@ class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
   }
 
   @override
+  void dispose() {
+    _publicKeyController.dispose();
+    _privateKeyController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
