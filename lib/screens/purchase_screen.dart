@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/.env.dart';
-
-import 'package:flutter/services.dart';
 import 'package:gitjournal/settings.dart';
+
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 class PurchaseScreen extends StatefulWidget {
@@ -106,7 +107,10 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
       padding: const EdgeInsets.all(16.0),
     );
 
-    return WillPopScope(child: w, onWillPop: _onWillPop);
+    return WillPopScope(
+      child: Scaffold(appBar: EmptyAppBar(), body: w),
+      onWillPop: _onWillPop,
+    );
   }
 
   Future<bool> _onWillPop() async {
@@ -222,4 +226,14 @@ class PurchaseLoadingScreen extends StatelessWidget {
     );
     return true;
   }
+}
+
+class EmptyAppBar extends StatelessWidget implements PreferredSizeWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(color: Theme.of(context).primaryColor);
+  }
+
+  @override
+  Size get preferredSize => const Size(0.0, 0.0);
 }
