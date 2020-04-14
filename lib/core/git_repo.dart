@@ -11,6 +11,8 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
+import 'package:dart_git/git.dart' as git;
+
 class NoteRepoResult {
   bool error;
   String noteFilePath;
@@ -148,6 +150,14 @@ class GitNoteRepository {
   }
 
   Future<void> push() async {
+    // Only push if we have something we need to push
+    try {
+      var repo = await git.GitRepository.load(gitDirPath);
+      if ((await repo.canPush()) == false) {
+        return;
+      }
+    } catch (_) {}
+
     try {
       await _gitRepo.push();
     } on GitException catch (ex) {

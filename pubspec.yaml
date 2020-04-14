@@ -30,6 +30,9 @@ dependencies:
   page_transition: "^1.1.5"
   provider: ^3.2.0
   git_bindings: ^0.0.12
+  dart_git:
+    git: https://github.com/GitJournal/dart_git.git
+    #path: /Users/vishesh/src/gitjournal/dart_git
   fetch_app_logs: ^0.0.3
   flutter_runtime_env: ^0.0.2
   yaml_serializer: ^0.0.5
