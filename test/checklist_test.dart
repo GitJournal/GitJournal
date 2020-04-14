@@ -94,7 +94,7 @@ How are you doing?
 
 [x] item 1
 [ ] Foo
-[X] item 3
+[x] item 3
 [ ] item 4
 
 Booga Wooga
@@ -225,6 +225,22 @@ Booga Wooga
 
       note = checklist.note;
       expect(note.body, "[ ] One\n[ ]Two\n[ ] Three\n[ ] Four\n[ ] Five\n");
+    });
+
+    test('Maintain x case', () async {
+      var content = "[X] One\n[ ]Two";
+
+      var notePath = p.join(tempDir.path, "note448.md");
+      await File(notePath).writeAsString(content);
+
+      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var note = Note(parentFolder, notePath);
+      await note.load();
+
+      var checklist = Checklist(note);
+
+      note = checklist.note;
+      expect(note.body, content);
     });
   });
 }

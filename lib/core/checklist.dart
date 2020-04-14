@@ -190,6 +190,8 @@ class TaskListSyntax extends md.InlineSyntax {
     var m = match[1].trim();
     if (m.isNotEmpty) {
       el.attributes['xUpperCase'] = (m[0] == 'X').toString();
+    } else {
+      el.attributes['xUpperCase'] = "false";
     }
     el.attributes['text'] = '${match[2]}';
     parser.addNode(el);
@@ -259,12 +261,13 @@ class CustomRenderer implements md.NodeVisitor {
     if (tag == 'input') {
       var el = element;
       if (el is md.Element && el.attributes['type'] == 'checkbox') {
+        assert(el.attributes.containsKey('xUpperCase'));
         bool val = el.attributes['checked'] != 'false';
         if (val) {
           if (el.attributes['xUpperCase'] != 'false') {
-            buffer.write('[x] ');
-          } else {
             buffer.write('[X] ');
+          } else {
+            buffer.write('[x] ');
           }
         } else {
           buffer.write('[ ] ');
