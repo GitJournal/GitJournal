@@ -42,6 +42,7 @@ class AppState {
     localGitRepoConfigured = pref.getBool("localGitRepoConfigured") ?? false;
     remoteGitRepoConfigured = pref.getBool("remoteGitRepoConfigured") ?? false;
     localGitRepoFolderName = pref.getString("localGitRepoPath") ?? "";
+    remoteGitRepoFolderName = pref.getString("remoteGitRepoPath") ?? "";
     onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
   }
 
@@ -50,6 +51,7 @@ class AppState {
     Log.d("localGitRepoConfigured: $localGitRepoConfigured");
     Log.d("remoteGitRepoConfigured: $remoteGitRepoConfigured");
     Log.d("localGitRepoFolderName: $localGitRepoFolderName");
+    Log.d("remoteGitRepoFolderName: $remoteGitRepoFolderName");
     Log.d("onBoardingCompleted: $onBoardingCompleted");
     Log.d(" ------------------ ");
   }
@@ -58,6 +60,7 @@ class AppState {
     await pref.setBool("localGitRepoConfigured", localGitRepoConfigured);
     await pref.setBool("remoteGitRepoConfigured", remoteGitRepoConfigured);
     await pref.setString("localGitRepoPath", localGitRepoFolderName);
+    await pref.setString("remoteGitRepoPath", remoteGitRepoFolderName);
     await pref.setBool("onBoardingCompleted", onBoardingCompleted);
   }
 }
