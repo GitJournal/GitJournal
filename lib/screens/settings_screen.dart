@@ -138,6 +138,18 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
       SettingsHeader('Note Settings'),
+      ListPreference(
+        title: 'Storage selection',
+        currentOption: settings.storageLocation.getPublicString,
+        options: ['Internal', 'External'],
+        onChange: (newOption) {
+          var val = SettingsStorageLocation.fromPublicString(newOption);
+          // Idk why we can't use upper settings, but okay
+          Settings.instance.storageLocation = val;
+          Settings.instance.save();
+          setState(() {});
+        },
+      ),
       ListTile(
         title: const Text("Default Folder for new notes"),
         subtitle: Text(defaultNewFolder),

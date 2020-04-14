@@ -23,6 +23,7 @@ class Settings {
   String yamlModifiedKey = "modified";
   bool yamlHeaderEnabled = true;
   String defaultNewNoteFolderSpec = "";
+  SettingsStorageLocation storageLocation = SettingsStorageLocation.Default;
 
   RemoteSyncFrequency remoteSyncFrequency = RemoteSyncFrequency.Default;
   SortingMode sortingMode = SortingMode.Default;
@@ -122,6 +123,34 @@ class Settings {
     m.remove("defaultNewNoteFolderSpec");
     return m;
   }
+}
+
+class SettingsStorageLocation {
+  static const Internal = SettingsStorageLocation('Internal', false);
+  static const External = SettingsStorageLocation('External', true);
+  static const Default = Internal;
+
+  final String _publicString;
+  final bool _permissionRequired;
+
+  const SettingsStorageLocation(this._publicString, this._permissionRequired);
+
+  String get getPublicString => _publicString;
+
+  static const options = <SettingsStorageLocation>[
+    Internal,
+    External
+  ];
+
+  static SettingsStorageLocation fromPublicString(String str) {
+    for (var opt in options) {
+      if (opt.getPublicString == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
 }
 
 class NoteFileNameFormat {
