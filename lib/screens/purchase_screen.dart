@@ -97,8 +97,7 @@ class PurchaseButton extends StatelessWidget {
             Settings.instance.proMode = true;
             Settings.instance.save();
 
-            // vHanda FIXME: Show some screen to indicate bought purchase?
-            Navigator.of(context).pop();
+            Navigator.of(context).popAndPushNamed('/purchase_thank_you');
             return;
           }
         } on PlatformException catch (e) {
