@@ -52,10 +52,49 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     // FIXME: This screen needs to be made way way more beautiful
     //        It's an extrememly important screen
 
+    var features = <String>[
+      "Faster feature development",
+      "Multiple Git Repos (coming soon)",
+      "Custom settings per folder (coming soon)",
+      "View and search through your entire Git Log (coming soon)",
+      "Custom Git commits (coming soon)",
+      "Unlimited Pinned Folders / Queries (coming soon)",
+      "End-to-End encrypted Git Hosting (coming soon)",
+      "Maybe even your own custom feature (email me).",
+    ];
+
+    var body = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Support GitJournal by going Pro and additionally get -',
+          style: Theme.of(context).textTheme.title,
+        ),
+        const SizedBox(height: 16.0),
+        for (var f in features)
+          Column(
+            children: <Widget>[
+              Text(
+                "• $f",
+                style: Theme.of(context).textTheme.body2,
+              ),
+              const SizedBox(height: 8.0),
+            ],
+          ),
+      ],
+    );
+
+    var titleStyle = textTheme.display2.copyWith(color: textTheme.title.color);
+
     Widget w = Column(
       children: <Widget>[
-        Text('Pro Version', style: textTheme.display2),
-        Text('Support GitJournal by going Pro', style: textTheme.subhead),
+        Text(
+          'Pro Version',
+          style: titleStyle,
+          textAlign: TextAlign.center,
+        ),
+        body,
         PurchaseButton(monthly),
       ],
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -89,6 +128,8 @@ class PurchaseButton extends StatelessWidget {
 
     return RaisedButton(
       child: Text('Subscribe for $price / month'),
+      color: Theme.of(context).primaryColor,
+      padding: const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 16.0),
       onPressed: () async {
         try {
           var purchaserInfo = await Purchases.purchasePackage(package);
