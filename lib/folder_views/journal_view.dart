@@ -27,7 +27,6 @@ class JournalView extends StatelessWidget {
   Widget build(BuildContext context) {
     return FolderListView(
       folder: folder,
-      noteSelectedFunction: noteSelectedFunction,
       emptyText: emptyText,
       noteTileBuilder: _buildRow,
     );

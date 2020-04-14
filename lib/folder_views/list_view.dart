@@ -14,14 +14,12 @@ typedef Widget NoteTileBuilder(BuildContext context, Note note);
 
 class FolderListView extends StatefulWidget {
   final NoteTileBuilder noteTileBuilder;
-  final NoteSelectedFunction noteSelectedFunction;
   final NotesFolder folder;
   final String emptyText;
 
   FolderListView({
     @required this.folder,
     @required this.noteTileBuilder,
-    @required this.noteSelectedFunction,
     @required this.emptyText,
   });
 
