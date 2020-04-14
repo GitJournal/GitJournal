@@ -82,14 +82,10 @@ bool _initReportCrashes() {
   return !JournalApp.isInDebugMode && Settings.instance.collectCrashReports;
 }
 
-Future<FlutterCrashlytics> getCrashlyticsClient() async {
-  return _crashlytics ??= await _initCrashlytics();
-}
-
-FlutterCrashlytics _crashlytics;
-Future<FlutterCrashlytics> _initCrashlytics() async {
-  await FlutterCrashlytics().initialize();
-  return FlutterCrashlytics();
+Future<void> initCrashlytics() async {
+  if (reportCrashes) {
+    await FlutterCrashlytics().initialize();
+  }
 }
 
 Future<void> reportError(Object error, StackTrace stackTrace) async {
@@ -102,13 +98,6 @@ Future<void> reportError(Object error, StackTrace stackTrace) async {
       );
     } catch (e) {
       print("Failed to report with Sentry: $e");
-    }
-
-    try {
-      final crashlytics = await getCrashlyticsClient();
-      crashlytics.reportCrash(error, stackTrace, forceCrash: false);
-    } catch (e) {
-      print("Failed to report with Crashlytics: $e");
     }
   }
 
