@@ -38,13 +38,19 @@ class JournalApp extends StatelessWidget {
       _enableAnalyticsIfPossible();
     }
 
-    var dir = await getGitBaseDirectory();
-    appState.gitBaseDirectory = dir.path;
+    if (appState.gitBaseDirectory.isEmpty) {
+      var dir = await getGitBaseDirectory();
+      appState.gitBaseDirectory = dir.path;
+      appState.save(pref);
+    }
 
     if (appState.localGitRepoConfigured == false) {
       // FIXME: What about exceptions!
       appState.localGitRepoFolderName = "journal_local";
-      var repoPath = p.join(dir.path, appState.localGitRepoFolderName);
+      var repoPath = p.join(
+        appState.gitBaseDirectory,
+        appState.localGitRepoFolderName,
+      );
       await GitRepo.init(repoPath);
 
       appState.localGitRepoConfigured = true;

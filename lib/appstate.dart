@@ -44,6 +44,7 @@ class AppState {
     localGitRepoFolderName = pref.getString("localGitRepoPath") ?? "";
     remoteGitRepoFolderName = pref.getString("remoteGitRepoPath") ?? "";
     onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
+    gitBaseDirectory = pref.getString("gitBaseDirectory") ?? "";
   }
 
   void dumpToLog() {
@@ -62,5 +63,6 @@ class AppState {
     await pref.setString("localGitRepoPath", localGitRepoFolderName);
     await pref.setString("remoteGitRepoPath", remoteGitRepoFolderName);
     await pref.setBool("onBoardingCompleted", onBoardingCompleted);
+    await pref.setString("gitBaseDirectory", gitBaseDirectory);
   }
 }
