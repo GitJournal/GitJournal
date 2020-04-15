@@ -63,6 +63,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
       "Unlimited Pinned Folders / Queries (coming soon)",
       "End-to-End encrypted Git Hosting (coming soon)",
       "Maybe even your own custom feature (email me).",
+      "GitJournal stays Ad free",
     ];
 
     var body = Column(
