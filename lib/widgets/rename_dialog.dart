@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
+import 'package:path/path.dart' as p;
 
 class RenameDialog extends StatefulWidget {
   final String oldPath;
@@ -40,6 +41,10 @@ class _RenameDialogState extends State<RenameDialog> {
             validator: (value) {
               if (value.isEmpty) {
                 return 'Please enter a name';
+              }
+
+              if (value.contains(p.separator)) {
+                return 'Cannot contain ${p.separator}';
               }
 
               var newPath = join(dirname(widget.oldPath), value);
