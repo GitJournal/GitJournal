@@ -143,6 +143,10 @@ class PurchaseButton extends StatelessWidget {
             Settings.instance.proMode = true;
             Settings.instance.save();
 
+            getAnalytics().logEvent(
+              name: "purchase_screen_thank_you",
+            );
+
             Navigator.of(context).popAndPushNamed('/purchase_thank_you');
             return;
           }
