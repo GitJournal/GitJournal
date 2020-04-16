@@ -37,8 +37,11 @@ Features -
 <img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-5.png" width="240" height="auto">
 <img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-6.png" width="240" height="auto">
 <img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-7.png" width="240" height="auto">
+<img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-16.png" width="240" height="auto">
 <img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-11.png" width="240" height="auto">
 <img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-13.png" width="240" height="auto">
+<img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-18.png" width="240" height="auto">
+<img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-20.png" width="240" height="auto">
 </p>
 
 # Migrating from Existing Apps
@@ -52,4 +55,3 @@ Features -
 Development is tracked over [here](https://github.com/orgs/GitJournal/projects/1).
 
 Please feel free to [open an issue](https://github.com/GitJournal/GitJournal/issues/new) for any bug or feature request. Additionally, you can vote on existing [Issues](https://github.com/GitJournal/GitJournal/issues?q=is%3Aissue+is%3Aopen+sort%3Areactions-%2B1-desc) by reacting with a '👍'.
-
