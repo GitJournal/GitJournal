@@ -40,6 +40,7 @@ Features -
 <img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-16.png" width="240" height="auto">
 <img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-11.png" width="240" height="auto">
 <img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-13.png" width="240" height="auto">
+<img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-12.png" width="240" height="auto">
 <img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-18.png" width="240" height="auto">
 <img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-20.png" width="240" height="auto">
 </p>
