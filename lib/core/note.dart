@@ -165,9 +165,17 @@ class Note with NotesNotifier {
 
     final file = File(_filePath);
     if (_loadState == NoteLoadState.Loaded) {
-      var fileLastModified = file.lastModifiedSync();
-      if (this.fileLastModified == fileLastModified) {
-        return _loadState;
+      try {
+        var fileLastModified = file.lastModifiedSync();
+        if (this.fileLastModified == fileLastModified) {
+          return _loadState;
+        }
+      } on FileSystemException catch (e) {
+        if (e.osError.errorCode == 2 /* File Not Found */) {
+          _loadState = NoteLoadState.NotExists;
+          _notifyModified();
+          return _loadState;
+        }
       }
       Log.d("Note modified: $_filePath");
     }
