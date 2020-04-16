@@ -48,13 +48,13 @@ class AppState {
   }
 
   void dumpToLog() {
-    Log.d(" ---- Settings ---- ");
-    Log.d("localGitRepoConfigured: $localGitRepoConfigured");
-    Log.d("remoteGitRepoConfigured: $remoteGitRepoConfigured");
-    Log.d("localGitRepoFolderName: $localGitRepoFolderName");
-    Log.d("remoteGitRepoFolderName: $remoteGitRepoFolderName");
-    Log.d("onBoardingCompleted: $onBoardingCompleted");
-    Log.d(" ------------------ ");
+    Log.i(" ---- Settings ---- ");
+    Log.i("localGitRepoConfigured: $localGitRepoConfigured");
+    Log.i("remoteGitRepoConfigured: $remoteGitRepoConfigured");
+    Log.i("localGitRepoFolderName: $localGitRepoFolderName");
+    Log.i("remoteGitRepoFolderName: $remoteGitRepoFolderName");
+    Log.i("onBoardingCompleted: $onBoardingCompleted");
+    Log.i(" ------------------ ");
   }
 
   Future save(SharedPreferences pref) async {

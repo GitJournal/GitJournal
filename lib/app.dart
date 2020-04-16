@@ -34,6 +34,8 @@ class JournalApp extends StatelessWidget {
     var appState = AppState(pref);
     appState.dumpToLog();
 
+    Log.i("Setting ${Settings.instance.toLoggableMap()}");
+
     if (Settings.instance.collectUsageStatistics) {
       _enableAnalyticsIfPossible();
     }
