@@ -3,6 +3,8 @@ import 'package:gitjournal/screens/note_editor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
 
+import 'package:uuid/uuid.dart';
+
 class Settings {
   static List<Function> changeObservers = [];
 
@@ -33,6 +35,9 @@ class Settings {
   int version = 0;
 
   bool proMode = false;
+
+  String _pseudoId;
+  String get pseudoId => _pseudoId;
 
   void load(SharedPreferences pref) {
     gitAuthor = pref.getString("gitAuthor") ?? gitAuthor;
@@ -66,6 +71,12 @@ class Settings {
 
     version = pref.getInt("settingsVersion") ?? version;
     proMode = pref.getBool("proMode") ?? proMode;
+
+    _pseudoId = pref.getString("pseudoId");
+    if (_pseudoId == null) {
+      _pseudoId = Uuid().v4();
+      pref.setString("pseudoId", _pseudoId);
+    }
   }
 
   Future save() async {
@@ -112,6 +123,7 @@ class Settings {
       "folderViewHeaderType": folderViewHeaderType,
       "version": version,
       "proMode": proMode,
+      'pseudoId': pseudoId,
     };
   }
 

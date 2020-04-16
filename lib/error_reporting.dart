@@ -62,6 +62,9 @@ Future<Event> get _environmentEvent async {
         build: packageInfo.buildNumber,
       ),
     ),
+    userContext: User(
+      id: Settings.instance.pseudoId,
+    ),
   );
   return environment;
 }
