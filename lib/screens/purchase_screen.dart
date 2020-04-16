@@ -60,6 +60,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
       "Custom settings per folder (coming soon)",
       "View and search through your entire Git Log (coming soon)",
       "Custom Git commits (coming soon)",
+      "Note Templates (comming soon)",
       "Unlimited Pinned Folders / Queries (coming soon)",
       "End-to-End encrypted Git Hosting (coming soon)",
       "Maybe even your own custom feature (email me).",
