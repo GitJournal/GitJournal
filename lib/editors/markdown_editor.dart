@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/widgets/note_viewer.dart';
 
 class MarkdownEditor extends StatefulWidget implements Editor {
@@ -51,6 +52,9 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
   MarkdownEditorState(this.note) {
     _textController = TextEditingController(text: note.body);
     _titleTextController = TextEditingController(text: note.title);
+
+    editingMode = Settings.instance.markdownDefaultView ==
+        SettingsMarkdownDefaultView.Edit;
   }
 
   @override

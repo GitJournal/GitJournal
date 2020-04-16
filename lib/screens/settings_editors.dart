@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gitjournal/screens/settings_screen.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
 
@@ -12,7 +13,7 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
   Widget build(BuildContext context) {
     var settings = Settings.instance;
 
-    var body = Column(children: <Widget>[
+    var body = ListView(children: <Widget>[
       ListPreference(
         title: "Default Editor",
         currentOption: settings.defaultEditor.toPublicString(),
@@ -21,6 +22,20 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
         onChange: (String publicStr) {
           var val = SettingsEditorType.fromPublicString(publicStr);
           Settings.instance.defaultEditor = val;
+          Settings.instance.save();
+          setState(() {});
+        },
+      ),
+      SettingsHeader("Markdown Editor Settings"),
+      ListPreference(
+        title: "Default State",
+        currentOption: settings.markdownDefaultView.toPublicString(),
+        options: SettingsMarkdownDefaultView.options
+            .map((f) => f.toPublicString())
+            .toList(),
+        onChange: (String publicStr) {
+          var val = SettingsMarkdownDefaultView.fromPublicString(publicStr);
+          Settings.instance.markdownDefaultView = val;
           Settings.instance.save();
           setState(() {});
         },
@@ -37,10 +52,7 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: body,
-      ),
+      body: body,
     );
   }
 }

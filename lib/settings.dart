@@ -39,6 +39,9 @@ class Settings {
   String _pseudoId;
   String get pseudoId => _pseudoId;
 
+  SettingsMarkdownDefaultView markdownDefaultView =
+      SettingsMarkdownDefaultView.Default;
+
   void load(SharedPreferences pref) {
     gitAuthor = pref.getString("gitAuthor") ?? gitAuthor;
     gitAuthorEmail = pref.getString("gitAuthorEmail") ?? gitAuthorEmail;
@@ -64,6 +67,8 @@ class Settings {
         SettingsEditorType.fromInternalString(pref.getString("defaultEditor"));
     defaultView = SettingsFolderViewType.fromInternalString(
         pref.getString("defaultView"));
+    markdownDefaultView = SettingsMarkdownDefaultView.fromInternalString(
+        pref.getString("markdownDefaultView"));
 
     showNoteSummary = pref.getBool("showNoteSummary") ?? showNoteSummary;
     folderViewHeaderType =
@@ -94,6 +99,8 @@ class Settings {
     pref.setString("sortingMode", sortingMode.toInternalString());
     pref.setString("defaultEditor", defaultEditor.toInternalString());
     pref.setString("defaultView", defaultView.toInternalString());
+    pref.setString(
+        "markdownDefaultView", markdownDefaultView.toInternalString());
     pref.setBool("showNoteSummary", showNoteSummary);
     pref.setString("folderViewHeaderType", folderViewHeaderType);
     pref.setInt("settingsVersion", version);
@@ -124,6 +131,7 @@ class Settings {
       "version": version,
       "proMode": proMode,
       'pseudoId': pseudoId,
+      'markdownDefaultView': markdownDefaultView,
     };
   }
 
@@ -397,5 +405,52 @@ class SettingsFolderViewType {
         return SettingsFolderViewType.Grid;
     }
     return SettingsFolderViewType.Default;
+  }
+}
+
+class SettingsMarkdownDefaultView {
+  static const Edit = SettingsMarkdownDefaultView("Edit");
+  static const View = SettingsMarkdownDefaultView("View");
+  static const Default = Edit;
+
+  final String _str;
+  const SettingsMarkdownDefaultView(this._str);
+
+  String toInternalString() {
+    return _str;
+  }
+
+  String toPublicString() {
+    return _str;
+  }
+
+  static const options = <SettingsMarkdownDefaultView>[
+    Edit,
+    View,
+  ];
+
+  static SettingsMarkdownDefaultView fromInternalString(String str) {
+    for (var opt in options) {
+      if (opt.toInternalString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  static SettingsMarkdownDefaultView fromPublicString(String str) {
+    for (var opt in options) {
+      if (opt.toPublicString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  @override
+  String toString() {
+    assert(
+        false, "SettingsMarkdownDefaultView toString should never be called");
+    return "";
   }
 }
