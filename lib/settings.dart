@@ -131,7 +131,7 @@ class Settings {
       "version": version,
       "proMode": proMode,
       'pseudoId': pseudoId,
-      'markdownDefaultView': markdownDefaultView,
+      'markdownDefaultView': markdownDefaultView.toInternalString(),
     };
   }
 
