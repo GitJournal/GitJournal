@@ -2,22 +2,30 @@ import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 import 'package:screenshots/screenshots.dart';
 
+import 'isolates_workaround.dart';
+
 void main() {
   group('Test', () {
     FlutterDriver driver;
+    IsolatesWorkaround workaround;
+
     int screenshotNum = 0;
     final config = Config();
 
     // Connect to the Flutter driver before running any tests
     setUpAll(() async {
       driver = await FlutterDriver.connect();
+      workaround = IsolatesWorkaround(driver);
+      await workaround.resumeIsolates();
+
       await Future.delayed(const Duration(seconds: 5));
     });
 
     // Close the connection to the driver after the tests have completed
     tearDownAll(() async {
       if (driver != null) {
-        driver.close();
+        await driver.close();
+        await workaround.tearDown();
       }
     });
 
@@ -52,13 +60,13 @@ void main() {
       await driver.tap(find.byValueKey("GetStarted"));
 
       // Main Screen
-      final loadedFinder = find.text("Let's add some notes?");
-      await driver.waitFor(loadedFinder, timeout: const Duration(seconds: 5));
+      //final loadedFinder = find.text("Let's add some notes?");
+      // await driver.waitFor(loadedFinder, timeout: const Duration(seconds: 5));
       // await _takeScreenshot();
 
       // Create a new note
       var fab = find.byValueKey("FAB");
-      await driver.waitFor(fab, timeout: const Duration(seconds: 2));
+      await driver.waitFor(fab, timeout: const Duration(seconds: 5));
       await driver.tap(fab);
       await driver.waitFor(find.text('Write here'),
           timeout: const Duration(seconds: 5));
@@ -149,8 +157,30 @@ void main() {
       await Future.delayed(const Duration(milliseconds: 100));
       await _takeScreenshot();
 
+      // Select the Checklist
+      var checklist = find.text("Shopping List");
+      await driver.waitFor(checklist, timeout: const Duration(seconds: 2));
+      await driver.tap(checklist);
+      await Future.delayed(const Duration(milliseconds: 100));
+      await _takeScreenshot();
+      await driver.tap(find.byValueKey("NewEntry"));
+
       // Open the Drawer
       final drawerButtonFinder = find.byValueKey("DrawerButton");
+      await driver.tap(drawerButtonFinder);
+      await Future.delayed(const Duration(milliseconds: 100));
+      await _takeScreenshot();
+
+      // Folders View
+      var foldersButon = find.text("Folders");
+      await driver.waitFor(foldersButon, timeout: const Duration(seconds: 2));
+      await driver.tap(foldersButon);
+
+      var rootFolder = find.text("Root Folder");
+      await driver.waitFor(rootFolder, timeout: const Duration(seconds: 2));
+      await _takeScreenshot();
+
+      // Open the Drawer
       await driver.tap(drawerButtonFinder);
       await Future.delayed(const Duration(milliseconds: 100));
       await _takeScreenshot();
