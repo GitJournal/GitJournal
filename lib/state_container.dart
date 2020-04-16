@@ -24,6 +24,7 @@ class StateContainer with ChangeNotifier {
   final AppState appState;
 
   final _opLock = Lock();
+  final _loadLock = Lock();
 
   // FIXME: The gitRepo should never be changed once it has been setup
   //        We should always just be modifying the 'git remotes'
@@ -82,8 +83,10 @@ class StateContainer with ChangeNotifier {
 
   Future<void> _loadNotes() async {
     // FIXME: We should report the notes that failed to load
-    await appState.notesFolder.loadRecursively();
-    await _notesCache.buildCache(appState.notesFolder);
+    return _loadLock.synchronized(() async {
+      await appState.notesFolder.loadRecursively();
+      await _notesCache.buildCache(appState.notesFolder);
+    });
   }
 
   Future<void> syncNotes({bool doNotThrow = false}) async {
