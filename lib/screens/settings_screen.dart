@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/screens/settings_editors.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
@@ -168,17 +169,14 @@ class SettingsListState extends State<SettingsList> {
         enabled: remoteGitConfigured,
       ),
       const SizedBox(height: 16.0),
-      SettingsHeader("Editor Settings"),
-      ListPreference(
-        title: "Default Editor",
-        currentOption: settings.defaultEditor.toPublicString(),
-        options:
-            SettingsEditorType.options.map((f) => f.toPublicString()).toList(),
-        onChange: (String publicStr) {
-          var val = SettingsEditorType.fromPublicString(publicStr);
-          Settings.instance.defaultEditor = val;
-          Settings.instance.save();
-          setState(() {});
+      ListTile(
+        title: const Text("Editor Settings"),
+        subtitle: const Text("Configure how different editors work"),
+        onTap: () {
+          var route = MaterialPageRoute(
+            builder: (context) => SettingsEditorsScreen(),
+          );
+          Navigator.of(context).push(route);
         },
       ),
       SettingsHeader("Storage"),
