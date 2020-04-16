@@ -9,6 +9,9 @@ jobs:
           name: Setup Flutter Env
           command: /opt/flutter/bin/cache/dart-sdk/bin/dart ./scripts/setup_env.dart
       - run:
+          name: SSH Problem
+          command: echo 'Host *\n    StrictHostKeyChecking no' > ~/.ssh/config
+      - run:
           name: Test
           command: flutter test -j 1
       - run:
