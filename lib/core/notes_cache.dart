@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:path/path.dart' as p;
 import 'package:collection/collection.dart';

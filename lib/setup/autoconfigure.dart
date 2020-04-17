@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:function_types/function_types.dart';
 
 import 'package:git_bindings/git_bindings.dart';
-import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';

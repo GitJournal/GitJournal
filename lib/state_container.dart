@@ -18,7 +18,6 @@ import 'package:gitjournal/utils/logger.dart';
 
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:synchronized/synchronized.dart';
 
 class StateContainer with ChangeNotifier {
