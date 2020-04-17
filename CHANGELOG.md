@@ -1,3 +1,8 @@
+## [1.48] - 2020-04-17
+* Cache Network Images
+* Allow Markdown View/Edit mode to configured
+* Bug: Do not allow / in file names
+
 ## [1.47] - 2020-04-14
 * Added Pro mode
 * Improved sync speed by avoiding unnecessary options
