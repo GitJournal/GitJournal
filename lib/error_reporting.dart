@@ -107,3 +107,21 @@ Future<void> reportError(Object error, StackTrace stackTrace) async {
   print("Uncaught Exception: $error");
   print(stackTrace);
 }
+
+Future<void> logException(Exception e, StackTrace stackTrace) async {
+  if (!reportCrashes) {
+    return;
+  }
+
+  try {
+    final sentry = await getSentryClient();
+    await sentry.captureException(
+      exception: e,
+      stackTrace: stackTrace,
+    );
+  } catch (e) {
+    print("Failed to report with Sentry: $e");
+  }
+
+  return FlutterCrashlytics().logException(e, stackTrace);
+}

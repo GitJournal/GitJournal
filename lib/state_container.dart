@@ -11,6 +11,7 @@ import 'package:gitjournal/core/notes_cache.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/git_repo.dart';
+import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
@@ -117,7 +118,7 @@ class StateContainer with ChangeNotifier {
       appState.syncStatus = SyncStatus.Error;
       notifyListeners();
       if (shouldLogGitException(e)) {
-        await FlutterCrashlytics().logException(e, stacktrace);
+        await logException(e, stacktrace);
       }
       if (!doNotThrow) rethrow;
     }

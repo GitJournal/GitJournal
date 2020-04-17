@@ -7,6 +7,7 @@ import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
+import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
@@ -122,7 +123,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
         },
       );
 
-      FlutterCrashlytics().logException(e, stacktrace);
+      logException(e, stacktrace);
     });
   }
 
