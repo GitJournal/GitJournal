@@ -17,6 +17,7 @@ class PurchaseScreen extends StatefulWidget {
 
 class _PurchaseScreenState extends State<PurchaseScreen> {
   Offerings _offerings;
+  var _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -28,7 +29,17 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     Purchases.setDebugLogsEnabled(true);
     await Purchases.setup(environment['revenueCat']);
 
-    Offerings offerings = await Purchases.getOfferings();
+    Offerings offerings;
+    try {
+      offerings = await Purchases.getOfferings();
+    } catch (e) {
+      if (e is PlatformException) {
+        var snackBar = SnackBar(content: Text(e.details));
+        _scaffoldKey.currentState
+          ..removeCurrentSnackBar()
+          ..showSnackBar(snackBar);
+      }
+    }
 
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
@@ -42,12 +53,20 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return WillPopScope(
+      child: Scaffold(
+        key: _scaffoldKey,
+        appBar: EmptyAppBar(),
+        body: _offerings == null ? const LoadingWidget() : buildBody(context),
+      ),
+      onWillPop: _onWillPop,
+    );
+  }
+
+  Widget buildBody(BuildContext context) {
     var theme = Theme.of(context);
     var textTheme = theme.textTheme;
 
-    if (_offerings == null) {
-      return const PurchaseLoadingScreen();
-    }
     var offering = _offerings.current;
     var monthly = offering?.monthly;
 
@@ -104,14 +123,9 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
     );
 
-    w = _SingleChildScrollViewExpanded(
+    return _SingleChildScrollViewExpanded(
       child: SafeArea(child: w),
       padding: const EdgeInsets.all(16.0),
-    );
-
-    return WillPopScope(
-      child: Scaffold(appBar: EmptyAppBar(), body: w),
-      onWillPop: _onWillPop,
     );
   }
 
@@ -136,58 +150,60 @@ class PurchaseButton extends StatelessWidget {
       child: Text('Subscribe for $price / month'),
       color: Theme.of(context).primaryColor,
       padding: const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 16.0),
-      onPressed: () async {
-        try {
-          var purchaserInfo = await Purchases.purchasePackage(package);
-          var isPro = purchaserInfo.entitlements.all["pro"].isActive;
-          if (isPro) {
-            Settings.instance.proMode = true;
-            Settings.instance.save();
-
-            getAnalytics().logEvent(
-              name: "purchase_screen_thank_you",
-            );
-
-            Navigator.of(context).popAndPushNamed('/purchase_thank_you');
-            return;
-          }
-        } on PlatformException catch (e) {
-          var errorCode = PurchasesErrorHelper.getErrorCode(e);
-          var errorContent = "";
-          switch (errorCode) {
-            case PurchasesErrorCode.purchaseCancelledError:
-              errorContent = "User cancelled";
-              break;
-
-            case PurchasesErrorCode.purchaseNotAllowedError:
-              errorContent = "User not allowed to purchase";
-              break;
-
-            default:
-              errorContent = errorCode.toString();
-              break;
-          }
-
-          var dialog = AlertDialog(
-            title: const Text("Purchase Failed"),
-            content: Text(errorContent),
-            actions: <Widget>[
-              FlatButton(
-                child: const Text("OK"),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          );
-          await showDialog(context: context, builder: (context) => dialog);
-        }
-        return null;
-      },
+      onPressed: package != null ? () => _handlePurchase(context) : null,
     );
+  }
+
+  void _handlePurchase(BuildContext context) async {
+    try {
+      var purchaserInfo = await Purchases.purchasePackage(package);
+      var isPro = purchaserInfo.entitlements.all["pro"].isActive;
+      if (isPro) {
+        Settings.instance.proMode = true;
+        Settings.instance.save();
+
+        getAnalytics().logEvent(
+          name: "purchase_screen_thank_you",
+        );
+
+        Navigator.of(context).popAndPushNamed('/purchase_thank_you');
+        return;
+      }
+    } on PlatformException catch (e) {
+      var errorCode = PurchasesErrorHelper.getErrorCode(e);
+      var errorContent = "";
+      switch (errorCode) {
+        case PurchasesErrorCode.purchaseCancelledError:
+          errorContent = "User cancelled";
+          break;
+
+        case PurchasesErrorCode.purchaseNotAllowedError:
+          errorContent = "User not allowed to purchase";
+          break;
+
+        default:
+          errorContent = errorCode.toString();
+          break;
+      }
+
+      var dialog = AlertDialog(
+        title: const Text("Purchase Failed"),
+        content: Text(errorContent),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text("OK"),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      );
+      await showDialog(context: context, builder: (context) => dialog);
+    }
+    return null;
   }
 }
 
-class PurchaseLoadingScreen extends StatelessWidget {
-  const PurchaseLoadingScreen({Key key}) : super(key: key);
+class LoadingWidget extends StatelessWidget {
+  const LoadingWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -219,9 +235,10 @@ class PurchaseLoadingScreen extends StatelessWidget {
     return WillPopScope(
       onWillPop: _onWillPopLoading,
       child: Container(
-        child: SafeArea(child: w),
+        child: w,
         color: theme.scaffoldBackgroundColor,
         padding: const EdgeInsets.all(16.0),
+        constraints: const BoxConstraints.expand(),
       ),
     );
   }
