@@ -45,6 +45,7 @@ dependencies:
   sentry: ">=3.0.0 <4.0.0"
   equatable: ^1.1.0
   purchases_flutter: ^1.1.0
+  cached_network_image: ^2.1.0+1
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.2"

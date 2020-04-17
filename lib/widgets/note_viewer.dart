@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -67,7 +70,8 @@ class NoteViewer extends StatelessWidget {
                   launch(link);
                 }
               },
-              imageDirectory: note.parent.folderPath + p.separator,
+              imageBuilder: (url) => kDefaultImageBuilder(
+                  url, note.parent.folderPath + p.separator, null, null),
             ),
           ),
           // _buildFooter(context),
@@ -119,4 +123,61 @@ class NoteTitleHeader extends StatelessWidget {
       child: Text(header, style: textTheme.title),
     );
   }
+}
+
+//
+// Copied from flutter_markdown
+// But it uses CachedNetworkImage
+//
+typedef Widget ImageBuilder(
+    Uri uri, String imageDirectory, double width, double height);
+
+final ImageBuilder kDefaultImageBuilder = (
+  Uri uri,
+  String imageDirectory,
+  double width,
+  double height,
+) {
+  if (uri.scheme == 'http' || uri.scheme == 'https') {
+    return CachedNetworkImage(
+      imageUrl: uri.toString(),
+      width: width,
+      height: height,
+      placeholder: (context, url) => const CircularProgressIndicator(),
+      errorWidget: (context, url, error) => const Icon(Icons.error),
+    );
+  } else if (uri.scheme == 'data') {
+    return _handleDataSchemeUri(uri, width, height);
+  } else if (uri.scheme == "resource") {
+    return Image.asset(uri.path, width: width, height: height);
+  } else {
+    Uri fileUri = imageDirectory != null
+        ? Uri.parse(imageDirectory + uri.toString())
+        : uri;
+    if (fileUri.scheme == 'http' || fileUri.scheme == 'https') {
+      return CachedNetworkImage(
+        imageUrl: fileUri.toString(),
+        width: width,
+        height: height,
+        placeholder: (context, url) => const CircularProgressIndicator(),
+        errorWidget: (context, url, error) => const Icon(Icons.error),
+      );
+    } else {
+      return Image.file(File.fromUri(fileUri), width: width, height: height);
+    }
+  }
+};
+
+Widget _handleDataSchemeUri(Uri uri, final double width, final double height) {
+  final String mimeType = uri.data.mimeType;
+  if (mimeType.startsWith('image/')) {
+    return Image.memory(
+      uri.data.contentAsBytes(),
+      width: width,
+      height: height,
+    );
+  } else if (mimeType.startsWith('text/')) {
+    return Text(uri.data.contentAsString());
+  }
+  return const SizedBox();
 }
