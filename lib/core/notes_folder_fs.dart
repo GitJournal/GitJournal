@@ -247,17 +247,6 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     notifyNoteAdded(_notes.length - 1, note);
   }
 
-  void insert(int index, Note note) {
-    assert(note.parent == this);
-    assert(index >= 0);
-    note.addModifiedListener(_noteModified);
-
-    _notes.insert(index, note);
-    _entityMap[note.filePath] = note;
-
-    notifyNoteAdded(index, note);
-  }
-
   void remove(Note note) {
     assert(note.parent == this);
     note.removeModifiedListener(_noteModified);

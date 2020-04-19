@@ -200,7 +200,7 @@ class StateContainer with ChangeNotifier {
   void addNote(Note note) async {
     return _opLock.synchronized(() async {
       Log.d("State Container addNote");
-      note.parent.insert(0, note);
+      note.parent.add(note);
       note.updateModified();
       _gitRepo.addNote(note).then((NoteRepoResult _) {
         _syncNotes();
@@ -225,7 +225,7 @@ class StateContainer with ChangeNotifier {
 
   void undoRemoveNote(Note note) async {
     return _opLock.synchronized(() async {
-      note.parent.insert(0, note);
+      note.parent.add(note);
       _gitRepo.resetLastCommit().then((NoteRepoResult _) {
         _syncNotes();
       });
