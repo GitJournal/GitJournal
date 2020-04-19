@@ -69,6 +69,9 @@ class NoteSearchDelegate extends SearchDelegate<Note> {
       if (note.title.toLowerCase().contains(q)) {
         return true;
       }
+      if (note.fileName.toLowerCase().contains(q)) {
+        return true;
+      }
       return note.body.toLowerCase().contains(q);
     }).toList();
 
