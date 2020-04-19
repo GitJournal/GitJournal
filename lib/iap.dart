@@ -6,10 +6,6 @@ import 'package:gitjournal/.env.dart';
 
 class InAppPurchases {
   static void confirmProPurchase() async {
-    if (!Settings.instance.proMode) {
-      return;
-    }
-
     // FIXME: Only check this if pro mode is expired
 
     //Purchases.setDebugLogsEnabled(true);
