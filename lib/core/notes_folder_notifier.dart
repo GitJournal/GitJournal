@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 
 import 'note.dart';
 import 'notes_folder.dart';
 
 typedef FolderNotificationCallback = void Function(
     int index, NotesFolder folder);
+typedef FolderRenamedCallback = void Function(
+    NotesFolderFS folder, String oldPath);
 typedef NoteNotificationCallback = void Function(int index, Note note);
 typedef NoteRenamedCallback = void Function(
     int index, Note note, String oldPath);
@@ -13,6 +16,7 @@ typedef NoteRenamedCallback = void Function(
 class NotesFolderNotifier implements ChangeNotifier {
   var _folderAddedListeners = ObserverList<FolderNotificationCallback>();
   var _folderRemovedListeners = ObserverList<FolderNotificationCallback>();
+  var _thisFolderRenamedListeners = ObserverList<FolderRenamedCallback>();
 
   var _noteAddedListeners = ObserverList<NoteNotificationCallback>();
   var _noteRemovedListeners = ObserverList<NoteNotificationCallback>();
@@ -24,6 +28,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   }
 
   void removeFolderRemovedListener(FolderNotificationCallback listener) {
+    assert(_folderRemovedListeners.contains(listener));
     _folderRemovedListeners.remove(listener);
   }
 
@@ -32,7 +37,17 @@ class NotesFolderNotifier implements ChangeNotifier {
   }
 
   void removeFolderAddedListener(FolderNotificationCallback listener) {
+    assert(_folderAddedListeners.contains(listener));
     _folderAddedListeners.remove(listener);
+  }
+
+  void addThisFolderRenamedListener(FolderRenamedCallback listener) {
+    _thisFolderRenamedListeners.add(listener);
+  }
+
+  void removeThisFolderRenamedListener(FolderRenamedCallback listener) {
+    assert(_thisFolderRenamedListeners.contains(listener));
+    _thisFolderRenamedListeners.remove(listener);
   }
 
   void addNoteAddedListener(NoteNotificationCallback listener) {
@@ -40,6 +55,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   }
 
   void removeNoteAddedListener(NoteNotificationCallback listener) {
+    assert(_noteAddedListeners.contains(listener));
     _noteAddedListeners.remove(listener);
   }
 
@@ -48,6 +64,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   }
 
   void removeNoteRemovedListener(NoteNotificationCallback listener) {
+    assert(_noteRemovedListeners.contains(listener));
     _noteRemovedListeners.remove(listener);
   }
 
@@ -56,6 +73,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   }
 
   void removeNoteModifiedListener(NoteNotificationCallback listener) {
+    assert(_noteModifiedListeners.contains(listener));
     _noteModifiedListeners.remove(listener);
   }
 
@@ -64,6 +82,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   }
 
   void removeNoteRenameListener(NoteRenamedCallback listener) {
+    assert(_noteRenameListeners.contains(listener));
     _noteRenameListeners.remove(listener);
   }
 
@@ -72,6 +91,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   void dispose() {
     _folderAddedListeners = null;
     _folderRemovedListeners = null;
+    _thisFolderRenamedListeners = null;
     _noteAddedListeners = null;
     _noteRemovedListeners = null;
     _noteModifiedListeners = null;
@@ -123,6 +143,34 @@ class NotesFolderNotifier implements ChangeNotifier {
     _notifyFolderCallback(_folderRemovedListeners, index, folder);
   }
 
+  void notifyThisFolderRenamed(NotesFolderFS folder, String oldPath) {
+    final localListeners =
+        List<FolderRenamedCallback>.from(_thisFolderRenamedListeners);
+    for (var listener in localListeners) {
+      try {
+        if (_thisFolderRenamedListeners.contains(listener)) {
+          listener(folder, oldPath);
+        }
+      } catch (exception, stack) {
+        FlutterError.reportError(FlutterErrorDetails(
+          exception: exception,
+          stack: stack,
+          library: 'GitJournal',
+          context: ErrorDescription(
+              'while dispatching notifications for $runtimeType'),
+          informationCollector: () sync* {
+            yield DiagnosticsProperty<ChangeNotifier>(
+              'The $runtimeType sending notification was',
+              this,
+              style: DiagnosticsTreeStyle.errorProperty,
+            );
+          },
+        ));
+      }
+    }
+    notifyListeners();
+  }
+
   void _notifyNoteCallback(
     ObserverList<NoteNotificationCallback> _listeners,
     int index,
@@ -170,13 +218,10 @@ class NotesFolderNotifier implements ChangeNotifier {
   }
 
   void notifyNoteRenamed(int index, Note note, String oldPath) {
-    if (_listeners == null) {
-      return;
-    }
     final localListeners = List<NoteRenamedCallback>.from(_noteRenameListeners);
     for (var listener in localListeners) {
       try {
-        if (_listeners.contains(listener)) {
+        if (_noteRenameListeners.contains(listener)) {
           listener(index, note, oldPath);
         }
       } catch (exception, stack) {

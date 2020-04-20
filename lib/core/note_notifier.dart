@@ -15,6 +15,7 @@ class NotesNotifier implements ChangeNotifier {
   }
 
   void removeModifiedListener(NoteModificationCallback listener) {
+    assert(_modListeners.contains(listener));
     _modListeners.remove(listener);
   }
 
@@ -23,6 +24,7 @@ class NotesNotifier implements ChangeNotifier {
   }
 
   void removeRenameListener(NoteRenameCallback listener) {
+    assert(_renameListeners.contains(listener));
     _renameListeners.remove(listener);
   }
 

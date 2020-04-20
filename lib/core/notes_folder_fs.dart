@@ -49,6 +49,14 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     assert(_entityMap.containsKey(oldPath));
     _entityMap.remove(oldPath);
     _entityMap[note.filePath] = note;
+
+    notifyNoteRenamed(-1, note, oldPath);
+  }
+
+  void _subFolderRenamed(NotesFolderFS folder, String oldPath) {
+    assert(_entityMap.containsKey(oldPath));
+    _entityMap.remove(oldPath);
+    _entityMap[folder.folderPath] = folder;
   }
 
   void reset(String folderPath) {
@@ -183,7 +191,8 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         if (subFolder.name.startsWith('.')) {
           continue;
         }
-        subFolder.addListener(_entityChanged);
+        //Log.d("Found folder ${fsEntity.path}");
+        _addFolderListeners(subFolder);
 
         _folders.add(subFolder);
         _entityMap[fsEntity.path] = subFolder;
@@ -199,8 +208,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         continue;
       }
       //Log.d("Found file ${fsEntity.path}");
-      note.addModifiedListener(_noteModified);
-      note.addRenameListener(_noteRenamed);
+      _addNoteListeners(note);
 
       _notes.add(note);
       _entityMap[fsEntity.path] = note;
@@ -219,7 +227,8 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
       if (e is Note) {
         Log.d("File $path was no longer found");
-        e.removeModifiedListener(_noteModified);
+        _removeNoteListeners(e);
+
         var i = _notes.indexWhere((n) => n.filePath == path);
         assert(i != -1);
         var note = _notes[i];
@@ -227,7 +236,8 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         notifyNoteRemoved(i, note);
       } else {
         Log.d("Folder $path was no longer found");
-        e.removeListener(_entityChanged);
+        _removeFolderListeners(e);
+
         var i = _folders.indexWhere((f) => f.folderPath == path);
         assert(i != -1);
         var folder = _folders[i];
@@ -239,7 +249,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
   void add(Note note) {
     assert(note.parent == this);
-    note.addModifiedListener(_noteModified);
+    _addNoteListeners(note);
 
     _notes.add(note);
     _entityMap[note.filePath] = note;
@@ -249,8 +259,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
   void remove(Note note) {
     assert(note.parent == this);
-    note.removeModifiedListener(_noteModified);
-    note.removeRenameListener(_noteRenamed);
+    _removeNoteListeners(note);
 
     assert(_notes.indexWhere((n) => n.filePath == note.filePath) != -1);
     assert(_entityMap.containsKey(note.filePath));
@@ -261,6 +270,16 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     _entityMap.remove(note.filePath);
 
     notifyNoteRemoved(index, note);
+  }
+
+  void _addNoteListeners(Note note) {
+    note.addModifiedListener(_noteModified);
+    note.addRenameListener(_noteRenamed);
+  }
+
+  void _removeNoteListeners(Note note) {
+    note.removeModifiedListener(_noteModified);
+    note.removeRenameListener(_noteRenamed);
   }
 
   void create() {
@@ -276,7 +295,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
   void addFolder(NotesFolderFS folder) {
     assert(folder.parent == this);
-    folder.addListener(_entityChanged);
+    _addFolderListeners(folder);
 
     _folders.add(folder);
     _entityMap[folder.folderPath] = folder;
@@ -285,7 +304,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   }
 
   void removeFolder(NotesFolderFS folder) {
-    folder.removeListener(_entityChanged);
+    _removeFolderListeners(folder);
 
     assert(_folders.indexWhere((f) => f.folderPath == folder.folderPath) != -1);
     assert(_entityMap.containsKey(folder.folderPath));
@@ -299,12 +318,22 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   }
 
   void rename(String newName) {
-    var dir = Directory(folderPath);
-    var parentDirName = dirname(folderPath);
-    dir.renameSync(folderPath);
-    _folderPath = p.join(parentDirName, newName);
+    var oldPath = _folderPath;
+    var dir = Directory(_folderPath);
+    _folderPath = p.join(dirname(_folderPath), newName);
+    dir.renameSync(_folderPath);
 
-    notifyListeners();
+    notifyThisFolderRenamed(this, oldPath);
+  }
+
+  void _addFolderListeners(NotesFolderFS folder) {
+    folder.addListener(_entityChanged);
+    folder.addThisFolderRenamedListener(_subFolderRenamed);
+  }
+
+  void _removeFolderListeners(NotesFolderFS folder) {
+    folder.removeListener(_entityChanged);
+    folder.removeThisFolderRenamedListener(_subFolderRenamed);
   }
 
   @override

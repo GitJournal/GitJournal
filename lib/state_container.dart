@@ -162,6 +162,7 @@ class StateContainer with ChangeNotifier {
   void renameFolder(NotesFolderFS folder, String newFolderName) async {
     return _opLock.synchronized(() async {
       var oldFolderPath = folder.folderPath;
+      print("Renaming Folder from $oldFolderPath -> $newFolderName");
       folder.rename(newFolderName);
 
       _gitRepo
