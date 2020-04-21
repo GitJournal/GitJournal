@@ -4,6 +4,7 @@ import 'package:device_info/device_info.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
+import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/screens/purchase_screen.dart';
 import 'package:gitjournal/screens/purchase_thankyou_screen.dart';
 import 'package:gitjournal/utils/logger.dart';
@@ -109,9 +110,9 @@ class JournalApp extends StatelessWidget {
     }
   }
 
-  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static final analytics = Analytics();
   static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics);
+      FirebaseAnalyticsObserver(analytics: analytics.firebase);
 
   static bool isInDebugMode = false;
 
