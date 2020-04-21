@@ -93,15 +93,7 @@ Future<void> initCrashlytics() async {
 
 Future<void> reportError(Object error, StackTrace stackTrace) async {
   if (reportCrashes) {
-    try {
-      final sentry = await getSentryClient();
-      sentry.captureException(
-        exception: error,
-        stackTrace: stackTrace,
-      );
-    } catch (e) {
-      print("Failed to report with Sentry: $e");
-    }
+    captureSentryException(error, stackTrace);
   }
 
   print("Uncaught Exception: $error");
@@ -113,15 +105,34 @@ Future<void> logException(Exception e, StackTrace stackTrace) async {
     return;
   }
 
+  await captureSentryException(e, stackTrace);
+  return FlutterCrashlytics().logException(e, stackTrace);
+}
+
+List<Breadcrumb> breadcrumbs = [];
+
+void captureErrorBreadcrumb({
+  @required String name,
+  Map<String, dynamic> parameters,
+}) {
+  var b = Breadcrumb(name, DateTime.now(), data: parameters);
+  breadcrumbs.add(b);
+}
+
+Future<void> captureSentryException(
+  Exception exception,
+  StackTrace stackTrace,
+) async {
   try {
     final sentry = await getSentryClient();
-    await sentry.captureException(
-      exception: e,
+    final Event event = Event(
+      exception: exception,
       stackTrace: stackTrace,
+      breadcrumbs: breadcrumbs,
     );
+
+    return sentry.capture(event: event);
   } catch (e) {
     print("Failed to report with Sentry: $e");
   }
-
-  return FlutterCrashlytics().logException(e, stackTrace);
 }
