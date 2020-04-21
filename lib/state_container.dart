@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gitjournal/analytics.dart';
 
 import 'package:gitjournal/apis/git_migration.dart';
 import 'package:gitjournal/appstate.dart';
@@ -95,6 +96,7 @@ class StateContainer with ChangeNotifier {
       return true;
     }
 
+    logEvent(Event.RepoSynced);
     appState.syncStatus = SyncStatus.Pulling;
     notifyListeners();
 
@@ -134,6 +136,8 @@ class StateContainer with ChangeNotifier {
   }
 
   void createFolder(NotesFolderFS parent, String folderName) async {
+    logEvent(Event.FolderAdded);
+
     return _opLock.synchronized(() async {
       var newFolderPath = p.join(parent.folderPath, folderName);
       var newFolder = NotesFolderFS(parent, newFolderPath);
@@ -149,6 +153,8 @@ class StateContainer with ChangeNotifier {
   }
 
   void removeFolder(NotesFolderFS folder) async {
+    logEvent(Event.FolderDeleted);
+
     return _opLock.synchronized(() async {
       Log.d("Removing Folder: " + folder.folderPath);
 
@@ -160,6 +166,8 @@ class StateContainer with ChangeNotifier {
   }
 
   void renameFolder(NotesFolderFS folder, String newFolderName) async {
+    logEvent(Event.FolderRenamed);
+
     return _opLock.synchronized(() async {
       var oldFolderPath = folder.folderPath;
       print("Renaming Folder from $oldFolderPath -> $newFolderName");
@@ -174,6 +182,8 @@ class StateContainer with ChangeNotifier {
   }
 
   void renameNote(Note note, String newFileName) async {
+    logEvent(Event.NoteRenamed);
+
     return _opLock.synchronized(() async {
       var oldNotePath = note.filePath;
       note.rename(newFileName);
@@ -188,6 +198,8 @@ class StateContainer with ChangeNotifier {
     if (destFolder.folderPath == note.parent.folderPath) {
       return;
     }
+
+    logEvent(Event.NoteMoved);
     return _opLock.synchronized(() async {
       var oldNotePath = note.filePath;
       note.move(destFolder);
@@ -199,6 +211,8 @@ class StateContainer with ChangeNotifier {
   }
 
   void addNote(Note note) async {
+    logEvent(Event.NoteAdded);
+
     return _opLock.synchronized(() async {
       Log.d("State Container addNote");
       note.parent.add(note);
@@ -210,6 +224,8 @@ class StateContainer with ChangeNotifier {
   }
 
   void removeNote(Note note) async {
+    logEvent(Event.NoteDeleted);
+
     return _opLock.synchronized(() async {
       // FIXME: What if the Note hasn't yet been saved?
       note.parent.remove(note);
@@ -225,6 +241,8 @@ class StateContainer with ChangeNotifier {
   }
 
   void undoRemoveNote(Note note) async {
+    logEvent(Event.NoteUndoDeleted);
+
     return _opLock.synchronized(() async {
       note.parent.add(note);
       _gitRepo.resetLastCommit().then((NoteRepoResult _) {
@@ -234,6 +252,8 @@ class StateContainer with ChangeNotifier {
   }
 
   void updateNote(Note note) async {
+    logEvent(Event.NoteUpdated);
+
     return _opLock.synchronized(() async {
       Log.d("State Container updateNote");
       note.updateModified();
@@ -247,6 +267,7 @@ class StateContainer with ChangeNotifier {
     if (!Features.perFolderConfig) {
       return;
     }
+    logEvent(Event.FolderConfigUpdated);
 
     return _opLock.synchronized(() async {
       Log.d("State Container saveFolderConfig");
