@@ -54,7 +54,7 @@ String _eventToString(Event e) {
 }
 
 class Analytics {
-  FirebaseAnalytics firebase;
+  var firebase = FirebaseAnalytics();
   bool enabled = false;
 
   Future<void> logEvent({
