@@ -16,7 +16,8 @@ class PurchaseScreen extends StatefulWidget {
 }
 
 class _PurchaseScreenState extends State<PurchaseScreen> {
-  Offerings _offerings;
+  List<Offering> _offerings;
+  Offering _selectedOffering;
   var _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -27,19 +28,26 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
   Future<void> initPlatformState() async {
     Purchases.setDebugLogsEnabled(true);
-    await Purchases.setup(environment['revenueCat']);
+    await Purchases.setup(
+      environment['revenueCat'],
+      appUserId: Settings.instance.pseudoId,
+    );
 
     Offerings offerings;
     try {
       offerings = await Purchases.getOfferings();
     } catch (e) {
       if (e is PlatformException) {
-        var snackBar = SnackBar(content: Text(e.details));
+        var snackBar = SnackBar(content: Text(e.message));
         _scaffoldKey.currentState
           ..removeCurrentSnackBar()
           ..showSnackBar(snackBar);
       }
     }
+    var offeringList = offerings.all.values.toList();
+    offeringList.sort((Offering a, Offering b) =>
+        a.monthly.product.price.compareTo(b.monthly.product.price));
+    print("Offerings: $offeringList");
 
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
@@ -47,7 +55,12 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     if (!mounted) return;
 
     setState(() {
-      _offerings = offerings;
+      _offerings = offeringList;
+      _selectedOffering = _offerings.isNotEmpty ? _offerings.first : null;
+
+      if (_offerings.length > 1) {
+        _selectedOffering = _offerings[1];
+      }
     });
   }
 
@@ -66,9 +79,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   Widget buildBody(BuildContext context) {
     var theme = Theme.of(context);
     var textTheme = theme.textTheme;
-
-    var offering = _offerings.current;
-    var monthly = offering?.monthly;
 
     // FIXME: This screen needs to be made way way more beautiful
     //        It's an extrememly important screen
@@ -109,6 +119,36 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     );
 
     var titleStyle = textTheme.display2.copyWith(color: textTheme.title.color);
+    var slider = Slider(
+      min: _offerings.first.monthly.product.price,
+      max: _offerings.last.monthly.product.price + 0.50,
+      value: _selectedOffering.monthly.product.price,
+      onChanged: (double val) {
+        int i = -1;
+        for (i = 1; i < _offerings.length; i++) {
+          var prev = _offerings[i - 1].monthly.product;
+          var cur = _offerings[i].monthly.product;
+
+          if (prev.price < val && val <= cur.price) {
+            i--;
+            break;
+          }
+        }
+        if (val == _offerings.first.monthly.product.price) {
+          i = 0;
+        } else if (val >= _offerings.last.monthly.product.price) {
+          i = _offerings.length - 1;
+        }
+
+        if (i != -1) {
+          setState(() {
+            _selectedOffering = _offerings[i];
+          });
+        }
+      },
+      label: _selectedOffering.monthly.product.priceString,
+      divisions: _offerings.length,
+    );
 
     Widget w = Column(
       children: <Widget>[
@@ -118,7 +158,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           textAlign: TextAlign.center,
         ),
         body,
-        PurchaseButton(monthly),
+        slider,
+        PurchaseButton(_selectedOffering?.monthly),
       ],
       mainAxisAlignment: MainAxisAlignment.spaceAround,
     );
