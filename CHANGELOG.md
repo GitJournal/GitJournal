@@ -1,3 +1,9 @@
+## [1.49] - 2020-04-22
+* Allow Pay what you want for Pro version
+* Collect better crash information
+* Allow folders to be renamed
+* Search in filename as well
+
 ## [1.48] - 2020-04-17
 * Cache Network Images
 * Allow Markdown View/Edit mode to configured
