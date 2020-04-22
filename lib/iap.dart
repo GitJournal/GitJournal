@@ -6,10 +6,18 @@ import 'package:gitjournal/.env.dart';
 
 class InAppPurchases {
   static void confirmProPurchase() async {
-    // FIXME: Only check this if pro mode is expired
+    var currentDt = DateTime.now().toUtc().toIso8601String();
+    var exp = Settings.instance.proExpirationDate;
+    if (exp.isNotEmpty && exp.compareTo(currentDt) > 0) {
+      print("Not checking PurchaseInfo as exp = $exp and cur = $currentDt");
+      return;
+    }
 
-    //Purchases.setDebugLogsEnabled(true);
-    await Purchases.setup(environment['revenueCat']);
+    Purchases.setDebugLogsEnabled(false);
+    await Purchases.setup(
+      environment['revenueCat'],
+      appUserId: Settings.instance.pseudoId,
+    );
 
     PurchaserInfo purchaserInfo = await Purchases.getPurchaserInfo();
     print("Got PurchaserInfo $purchaserInfo");
@@ -19,6 +27,9 @@ class InAppPurchases {
     if (Settings.instance.proMode != isPro) {
       Log.i("Pro mode changed to $isPro");
       Settings.instance.proMode = isPro;
+      Settings.instance.save();
+    } else {
+      Settings.instance.proExpirationDate = purchaserInfo.latestExpirationDate;
       Settings.instance.save();
     }
   }

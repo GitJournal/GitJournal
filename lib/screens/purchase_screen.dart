@@ -201,6 +201,8 @@ class PurchaseButton extends StatelessWidget {
       var isPro = purchaserInfo.entitlements.all["pro"].isActive;
       if (isPro) {
         Settings.instance.proMode = true;
+        Settings.instance.proExpirationDate =
+            purchaserInfo.latestExpirationDate;
         Settings.instance.save();
 
         getAnalytics().logEvent(

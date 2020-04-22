@@ -35,6 +35,7 @@ class Settings {
   int version = 0;
 
   bool proMode = false;
+  String proExpirationDate = "";
 
   String _pseudoId;
   String get pseudoId => _pseudoId;
@@ -76,6 +77,8 @@ class Settings {
 
     version = pref.getInt("settingsVersion") ?? version;
     proMode = pref.getBool("proMode") ?? proMode;
+    proExpirationDate =
+        pref.getString("proExpirationDate") ?? proExpirationDate;
 
     _pseudoId = pref.getString("pseudoId");
     if (_pseudoId == null) {
@@ -103,6 +106,7 @@ class Settings {
         "markdownDefaultView", markdownDefaultView.toInternalString());
     pref.setBool("showNoteSummary", showNoteSummary);
     pref.setString("folderViewHeaderType", folderViewHeaderType);
+    pref.setString("proExpirationDate", proExpirationDate);
     pref.setInt("settingsVersion", version);
     pref.setBool("proMode", proMode);
 
