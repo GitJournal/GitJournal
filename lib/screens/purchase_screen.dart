@@ -45,6 +45,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
       }
     }
     var offeringList = offerings.all.values.toList();
+    offeringList.retainWhere((Offering o) => o.identifier.contains("monthly"));
     offeringList.sort((Offering a, Offering b) =>
         a.monthly.product.price.compareTo(b.monthly.product.price));
     print("Offerings: $offeringList");
