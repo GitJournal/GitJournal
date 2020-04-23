@@ -185,6 +185,9 @@ const ignoredMessages = [
   'unable to exchange encryption keys',
   'the key you are authenticating with has been marked as read only',
   'transport read',
+  "unpacking the sent packfile failed on the remote",
+  "key permission denied", // gogs
+  "failed getting response",
 ];
 
 bool shouldLogGitException(GitException ex) {
