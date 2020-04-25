@@ -20,7 +20,7 @@ class JournalEditor extends StatefulWidget implements Editor {
   @override
   final NoteCallback discardChangesSelected;
 
-  final bool autofocusOnEditor;
+  final bool isNewNote;
 
   JournalEditor({
     Key key,
@@ -31,7 +31,7 @@ class JournalEditor extends StatefulWidget implements Editor {
     @required this.renameNoteSelected,
     @required this.moveNoteToFolderSelected,
     @required this.discardChangesSelected,
-    this.autofocusOnEditor = false,
+    this.isNewNote = false,
   }) : super(key: key);
 
   @override
@@ -64,7 +64,7 @@ class JournalEditorState extends State<JournalEditor> implements EditorState {
             JournalEditorHeader(note),
             _NoteBodyEditor(
               _textController,
-              autofocus: widget.autofocusOnEditor,
+              autofocus: widget.isNewNote,
             ),
           ],
         ),

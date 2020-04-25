@@ -22,7 +22,7 @@ class MarkdownEditor extends StatefulWidget implements Editor {
   @override
   final NoteCallback discardChangesSelected;
 
-  final bool autofocusOnEditor;
+  final bool isNewNote;
 
   MarkdownEditor({
     Key key,
@@ -33,7 +33,7 @@ class MarkdownEditor extends StatefulWidget implements Editor {
     @required this.renameNoteSelected,
     @required this.moveNoteToFolderSelected,
     @required this.discardChangesSelected,
-    @required this.autofocusOnEditor,
+    @required this.isNewNote,
   }) : super(key: key);
 
   @override
@@ -74,7 +74,7 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
             if (note.canHaveMetadata) NoteTitleEditor(_titleTextController),
             _NoteBodyEditor(
               _textController,
-              autofocus: widget.autofocusOnEditor,
+              autofocus: widget.isNewNote,
             ),
           ],
         ),

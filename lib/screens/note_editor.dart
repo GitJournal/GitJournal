@@ -102,7 +102,7 @@ class NoteEditorState extends State<NoteEditor> {
           renameNoteSelected: _renameNoteSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
-          autofocusOnEditor: _isNewNote,
+          isNewNote: _isNewNote,
         );
       case EditorType.Raw:
         return RawEditor(
@@ -114,7 +114,7 @@ class NoteEditorState extends State<NoteEditor> {
           renameNoteSelected: _renameNoteSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
-          autofocusOnEditor: _isNewNote,
+          isNewNote: _isNewNote,
         );
       case EditorType.Checklist:
         return ChecklistEditor(
@@ -126,7 +126,7 @@ class NoteEditorState extends State<NoteEditor> {
           renameNoteSelected: _renameNoteSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
-          autofocusOnEditor: _isNewNote,
+          isNewNote: _isNewNote,
         );
       case EditorType.Journal:
         return JournalEditor(
@@ -138,7 +138,7 @@ class NoteEditorState extends State<NoteEditor> {
           renameNoteSelected: _renameNoteSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
-          autofocusOnEditor: _isNewNote,
+          isNewNote: _isNewNote,
         );
     }
     return null;

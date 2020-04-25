@@ -24,7 +24,7 @@ class ChecklistEditor extends StatefulWidget implements Editor {
   @override
   final NoteCallback discardChangesSelected;
 
-  final bool autofocusOnEditor;
+  final bool isNewNote;
 
   ChecklistEditor({
     Key key,
@@ -35,7 +35,7 @@ class ChecklistEditor extends StatefulWidget implements Editor {
     @required this.renameNoteSelected,
     @required this.moveNoteToFolderSelected,
     @required this.discardChangesSelected,
-    @required this.autofocusOnEditor,
+    @required this.isNewNote,
   }) : super(key: key);
 
   @override
@@ -79,8 +79,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
     var itemTiles = <Widget>[];
     for (var i = 0; i < checklist.items.length; i++) {
       var item = checklist.items[i];
-      var autofocus =
-          widget.autofocusOnEditor && (i == checklist.items.length - 1);
+      var autofocus = widget.isNewNote && (i == checklist.items.length - 1);
       itemTiles.add(_buildTile(item, i, autofocus));
     }
     itemTiles.add(AddItemButton(
@@ -144,7 +143,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
       key: UniqueKey(),
       item: item,
       focusNode: focusNodes[item],
-      autofocus: autofocus,
+      isNewNote: autofocus,
       statusChanged: (bool newVal) {
         setState(() {
           item.checked = newVal;
@@ -208,7 +207,7 @@ class ChecklistItemTile extends StatefulWidget {
   final Function itemRemoved;
   final Function itemFinished;
   final FocusNode focusNode;
-  final bool autofocus;
+  final bool isNewNote;
 
   ChecklistItemTile({
     Key key,
@@ -218,7 +217,7 @@ class ChecklistItemTile extends StatefulWidget {
     @required this.itemRemoved,
     @required this.itemFinished,
     @required this.focusNode,
-    this.autofocus = false,
+    this.isNewNote = false,
   }) : super(key: key);
 
   @override
@@ -263,7 +262,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
     }
 
     var editor = TextField(
-      autofocus: widget.autofocus,
+      autofocus: widget.isNewNote,
       focusNode: widget.focusNode,
       keyboardType: TextInputType.text,
       maxLines: null,

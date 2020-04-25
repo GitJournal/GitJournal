@@ -20,7 +20,7 @@ class RawEditor extends StatefulWidget implements Editor {
   @override
   final NoteCallback discardChangesSelected;
 
-  final bool autofocusOnEditor;
+  final bool isNewNote;
 
   RawEditor({
     Key key,
@@ -31,7 +31,7 @@ class RawEditor extends StatefulWidget implements Editor {
     @required this.renameNoteSelected,
     @required this.moveNoteToFolderSelected,
     @required this.discardChangesSelected,
-    @required this.autofocusOnEditor,
+    @required this.isNewNote,
   }) : super(key: key);
 
   @override
@@ -63,7 +63,7 @@ class RawEditorState extends State<RawEditor> implements EditorState {
       child: SingleChildScrollView(
         child: _NoteEditor(
           _textController,
-          autofocus: widget.autofocusOnEditor,
+          autofocus: widget.isNewNote,
         ),
       ),
     );
