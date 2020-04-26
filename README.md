@@ -28,7 +28,7 @@ Features -
 - **Matrix Chat Room** - [#gitjournal:matrix.org](https://matrix.to/#/!EuyGuvUblHboWwroTf:matrix.org?via=matrix.org)
 - **Reddit Community** - [Join Us](https://www.reddit.com/r/GitJournal/)
 - **Newsletter** - [Signup Here](https://gitjournal.io)
-- [**Twitter**](https://twitter.com/GitJournal_io)
+- **Twitter** - [Follow for Updates](https://twitter.com/GitJournal_io)
 
 # Screenshots
 
