@@ -117,7 +117,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
       errorMessage = widget.gitHostType.toString() + ": " + e.toString();
       getAnalytics().logEvent(
         name: "githostsetup_error",
-        parameters: <String, dynamic>{
+        parameters: <String, String>{
           'errorMessage': errorMessage,
         },
       );

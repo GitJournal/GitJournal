@@ -59,7 +59,7 @@ class Analytics {
 
   Future<void> logEvent({
     @required String name,
-    Map<String, dynamic> parameters,
+    Map<String, String> parameters,
   }) async {
     await firebase.logEvent(name: name, parameters: parameters);
     captureErrorBreadcrumb(name: name, parameters: parameters);
@@ -67,7 +67,7 @@ class Analytics {
 
   Future<void> log({
     @required Event e,
-    Map<String, dynamic> parameters,
+    Map<String, String> parameters,
   }) async {
     String name = _eventToString(e);
     await firebase.logEvent(name: name, parameters: parameters);
@@ -80,6 +80,6 @@ class Analytics {
   }
 }
 
-void logEvent(Event event, {Map<String, dynamic> parameters}) {
+void logEvent(Event event, {Map<String, String> parameters}) {
   getAnalytics().log(e: event, parameters: parameters);
 }

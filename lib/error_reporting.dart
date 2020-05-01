@@ -113,7 +113,7 @@ List<Breadcrumb> breadcrumbs = [];
 
 void captureErrorBreadcrumb({
   @required String name,
-  Map<String, dynamic> parameters,
+  Map<String, String> parameters,
 }) {
   var b = Breadcrumb(name, DateTime.now(), data: parameters);
   breadcrumbs.add(b);

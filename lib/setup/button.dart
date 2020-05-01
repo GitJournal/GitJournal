@@ -50,7 +50,7 @@ class GitHostSetupButton extends StatelessWidget {
     Log.d("githostsetup_button_click " + text);
     getAnalytics().logEvent(
       name: "githostsetup_button_click",
-      parameters: <String, dynamic>{
+      parameters: <String, String>{
         'text': text,
         'icon_url': iconUrl == null ? "" : iconUrl,
       },

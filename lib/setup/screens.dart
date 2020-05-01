@@ -457,7 +457,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       setState(() {
         getAnalytics().logEvent(
           name: "onboarding_gitClone_error",
-          parameters: <String, dynamic>{
+          parameters: <String, String>{
             'error': error,
           },
         );
@@ -492,8 +492,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     widget.onCompletedFunction();
   }
 
-  Map<String, dynamic> _buildOnboardingAnalytics() {
-    var map = <String, dynamic>{};
+  Map<String, String> _buildOnboardingAnalytics() {
+    var map = <String, String>{};
 
     if (_gitCloneUrl.contains("github.com")) {
       map["host_type"] = "GitHub";
