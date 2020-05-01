@@ -222,5 +222,21 @@ Booga Wooga
       note = checklist.note;
       expect(note.body, content);
     });
+
+    test('Migrate from old checklist format', () async {
+      var content = "[X] One\n[ ] Two";
+
+      var notePath = p.join(tempDir.path, "note448.md");
+      await File(notePath).writeAsString(content);
+
+      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var note = Note(parentFolder, notePath);
+      await note.load();
+
+      var checklist = Checklist(note);
+
+      note = checklist.note;
+      expect(note.body, "- [X] One\n- [ ] Two");
+    });
   });
 }

@@ -47,6 +47,12 @@ class Checklist {
     multiLine: false,
   );
 
+  // FIXME: Added on 2020-05-01: Remove after 3-4 months
+  static final _oldPattern = RegExp(
+    r'^ *\[([ xX])\] +(.*)$',
+    multiLine: false,
+  );
+
   Note _note;
   List<ChecklistItem> items = [];
 
@@ -59,6 +65,11 @@ class Checklist {
 
     for (var i = 0; i < _lines.length; i++) {
       var line = _lines[i];
+      var oldPatMatch = _oldPattern.firstMatch(line);
+      if (oldPatMatch != null) {
+        line = '- ' + line;
+      }
+
       var match = _pattern.firstMatch(line);
       if (match == null) {
         continue;
