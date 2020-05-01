@@ -173,7 +173,8 @@ class GitNoteRepository {
   Future<int> numChanges() async {
     try {
       var repo = await git.GitRepository.load(gitDirPath);
-      return repo.numChangesToPush();
+      var n = await repo.numChangesToPush();
+      return n;
     } catch (_) {}
     return 0;
   }
