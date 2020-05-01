@@ -55,6 +55,11 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
 
     editingMode = Settings.instance.markdownDefaultView ==
         SettingsMarkdownDefaultView.Edit;
+  }
+
+  @override
+  void initState() {
+    super.initState();
     if (widget.isNewNote) {
       editingMode = true;
     }
