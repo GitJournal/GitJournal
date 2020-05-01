@@ -413,13 +413,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.11.3+2"
-  markd:
-    dependency: "direct main"
-    description:
-      path: "/Users/vishesh/src/gitjournal/markd"
-      relative: false
-    source: path
-    version: "2.1.3+6"
   markdown:
     dependency: transitive
     description:

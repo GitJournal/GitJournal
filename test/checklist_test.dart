@@ -110,15 +110,6 @@ Booga Wooga
       var checklist = Checklist(note);
       var items = checklist.items;
       expect(items.length, equals(3));
-
-      // Nodes
-      /*
-      var nodes = checklist.nodes;
-      expect(nodes.length, equals(3));
-      expect(nodes[0], items[0].element);
-      expect(nodes[1], items[1].element);
-      expect(nodes[2], items[2].element);
-      */
     });
 
     test('Should add \\n before item when adding', () async {
@@ -136,9 +127,10 @@ Booga Wooga
       expect(items.length, equals(0));
 
       checklist.addItem(checklist.buildItem(false, "item"));
+      expect(items.length, 1);
 
       note = checklist.note;
-      expect(note.body, "Hi.\n- [ ] item\n");
+      expect(note.body, "Hi.\n- [ ] item");
     });
 
     test('Should not add \\n when adding after item', () async {
@@ -158,7 +150,7 @@ Booga Wooga
       checklist.addItem(checklist.buildItem(false, "item"));
 
       note = checklist.note;
-      expect(note.body, "- [ ] one\n- [ ] item\n");
+      expect(note.body, "- [ ] one\n- [ ] item");
     });
 
     test('insertItem works', () async {
@@ -173,12 +165,12 @@ Booga Wooga
 
       var checklist = Checklist(note);
       var items = checklist.items;
-      expect(items.length, equals(2));
+      expect(items.length, 2);
 
       checklist.insertItem(1, checklist.buildItem(false, "item"));
 
       note = checklist.note;
-      expect(note.body, "Hi.\n- [ ] One\n- Two\n- [ ] item\n- [ ] Three\n");
+      expect(note.body, "Hi.\n- [ ] One\n- Two\n- [ ] item\n- [ ] Three");
     });
 
     test('Does not Remove empty trailing items', () async {
@@ -194,7 +186,7 @@ Booga Wooga
       var checklist = Checklist(note);
 
       note = checklist.note;
-      expect(note.body, "Hi.\n- [ ] One\n- Two\n- [ ]  \n- [ ]  \n");
+      expect(note.body, "Hi.\n- [ ] One\n- Two\n- [ ] \n- [ ] ");
     });
 
     test('Does not add extra new line', () async {
@@ -216,7 +208,7 @@ Booga Wooga
     });
 
     test('Maintain x case', () async {
-      var content = "[X] One\n[ ]Two";
+      var content = "- [X] One\n- [ ]Two";
 
       var notePath = p.join(tempDir.path, "note448.md");
       await File(notePath).writeAsString(content);
