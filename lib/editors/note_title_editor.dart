@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class NoteTitleEditor extends StatelessWidget {
   final TextEditingController textController;
+  final Function onChanged;
 
-  NoteTitleEditor(this.textController);
+  NoteTitleEditor(this.textController, this.onChanged);
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,7 @@ class NoteTitleEditor extends StatelessWidget {
       controller: textController,
       textCapitalization: TextCapitalization.sentences,
       maxLines: null,
+      onChanged: (_) => onChanged(),
     );
   }
 }

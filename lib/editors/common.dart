@@ -21,12 +21,13 @@ enum DropDownChoices { Rename, MoveToFolder, DiscardChanges }
 AppBar buildEditorAppBar(
   Editor editor,
   EditorState editorState, {
+  @required bool noteModified,
   List<IconButton> extraButtons,
 }) {
   return AppBar(
     leading: IconButton(
       key: const ValueKey("NewEntry"),
-      icon: const Icon(Icons.check),
+      icon: Icon(noteModified ? Icons.check : Icons.close),
       onPressed: () {
         editor.exitEditorSelected(editorState.getNote());
       },

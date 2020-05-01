@@ -6,6 +6,7 @@ import 'package:gitjournal/widgets/journal_editor_header.dart';
 
 class JournalEditor extends StatefulWidget implements Editor {
   final Note note;
+  final bool noteModified;
 
   @override
   final NoteCallback noteDeletionSelected;
@@ -25,6 +26,7 @@ class JournalEditor extends StatefulWidget implements Editor {
   JournalEditor({
     Key key,
     @required this.note,
+    @required this.noteModified,
     @required this.noteDeletionSelected,
     @required this.noteEditorChooserSelected,
     @required this.exitEditorSelected,
@@ -43,9 +45,16 @@ class JournalEditor extends StatefulWidget implements Editor {
 class JournalEditorState extends State<JournalEditor> implements EditorState {
   Note note;
   TextEditingController _textController = TextEditingController();
+  bool _noteModified;
 
   JournalEditorState(this.note) {
     _textController = TextEditingController(text: note.body);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _noteModified = widget.noteModified;
   }
 
   @override
@@ -63,8 +72,9 @@ class JournalEditorState extends State<JournalEditor> implements EditorState {
           children: <Widget>[
             JournalEditorHeader(note),
             _NoteBodyEditor(
-              _textController,
+              textController: _textController,
               autofocus: widget.isNewNote,
+              onChanged: _noteTextChanged,
             ),
           ],
         ),
@@ -72,7 +82,7 @@ class JournalEditorState extends State<JournalEditor> implements EditorState {
     );
 
     return Scaffold(
-      appBar: buildEditorAppBar(widget, this),
+      appBar: buildEditorAppBar(widget, this, noteModified: _noteModified),
       body: editor,
     );
   }
@@ -83,13 +93,21 @@ class JournalEditorState extends State<JournalEditor> implements EditorState {
     note.type = NoteType.Journal;
     return note;
   }
+
+  void _noteTextChanged() {
+    if (_noteModified) return;
+    setState(() {
+      _noteModified = true;
+    });
+  }
 }
 
 class _NoteBodyEditor extends StatelessWidget {
   final TextEditingController textController;
   final bool autofocus;
+  final Function onChanged;
 
-  _NoteBodyEditor(this.textController, {this.autofocus = false});
+  _NoteBodyEditor({this.textController, this.autofocus, this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -108,6 +126,7 @@ class _NoteBodyEditor extends StatelessWidget {
       controller: textController,
       textCapitalization: TextCapitalization.sentences,
       scrollPadding: const EdgeInsets.all(0.0),
+      onChanged: (_) => onChanged(),
     );
   }
 }

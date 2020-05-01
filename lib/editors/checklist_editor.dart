@@ -10,6 +10,7 @@ import 'package:gitjournal/editors/note_title_editor.dart';
 
 class ChecklistEditor extends StatefulWidget implements Editor {
   final Note note;
+  final bool noteModified;
 
   @override
   final NoteCallback noteDeletionSelected;
@@ -29,6 +30,7 @@ class ChecklistEditor extends StatefulWidget implements Editor {
   ChecklistEditor({
     Key key,
     @required this.note,
+    @required this.noteModified,
     @required this.noteDeletionSelected,
     @required this.noteEditorChooserSelected,
     @required this.exitEditorSelected,
@@ -49,6 +51,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
   Checklist checklist;
   var focusNodes = <ChecklistItem, FocusScopeNode>{};
   TextEditingController _titleTextController = TextEditingController();
+  bool _noteModified;
 
   ChecklistEditorState(Note note) {
     _titleTextController = TextEditingController(text: note.title);
@@ -58,6 +61,8 @@ class ChecklistEditorState extends State<ChecklistEditor>
   @override
   void initState() {
     super.initState();
+    _noteModified = widget.noteModified;
+
     if (checklist.items.isEmpty) {
       var item = checklist.buildItem(false, "");
       checklist.addItem(item);
@@ -85,6 +90,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
     itemTiles.add(AddItemButton(
       key: UniqueKey(),
       onPressed: () {
+        _noteTextChanged();
         setState(() {
           var fn = FocusScopeNode();
           var item = checklist.buildItem(false, "");
@@ -102,6 +108,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
     Widget checklistWidget = ReorderableListView(
       children: itemTiles,
       onReorder: (int oldIndex, int newIndex) {
+        _noteTextChanged();
         setState(() {
           var item = checklist.removeAt(oldIndex);
 
@@ -116,11 +123,11 @@ class ChecklistEditorState extends State<ChecklistEditor>
 
     var titleEditor = Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-      child: NoteTitleEditor(_titleTextController),
+      child: NoteTitleEditor(_titleTextController, _noteTextChanged),
     );
 
     return Scaffold(
-      appBar: buildEditorAppBar(widget, this),
+      appBar: buildEditorAppBar(widget, this, noteModified: _noteModified),
       body: Column(
         children: <Widget>[
           if (widget.note.canHaveMetadata) titleEditor,
@@ -138,6 +145,13 @@ class ChecklistEditorState extends State<ChecklistEditor>
     return note;
   }
 
+  void _noteTextChanged() {
+    if (_noteModified) return;
+    setState(() {
+      _noteModified = true;
+    });
+  }
+
   ChecklistItemTile _buildTile(ChecklistItem item, int index, bool autofocus) {
     return ChecklistItemTile(
       key: UniqueKey(),
@@ -148,11 +162,14 @@ class ChecklistEditorState extends State<ChecklistEditor>
         setState(() {
           item.checked = newVal;
         });
+        _noteTextChanged();
       },
       textChanged: (String newVal) {
         item.text = newVal;
+        _noteTextChanged();
       },
       itemRemoved: () {
+        _noteTextChanged();
         setState(() {
           // Give next item the focus
           var nextIndex = index + 1;
@@ -180,6 +197,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
         });
       },
       itemFinished: () {
+        _noteTextChanged();
         setState(() {
           var fn = FocusScopeNode();
           var item = checklist.buildItem(false, "");

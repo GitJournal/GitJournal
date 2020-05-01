@@ -8,6 +8,7 @@ import 'package:gitjournal/widgets/note_viewer.dart';
 
 class MarkdownEditor extends StatefulWidget implements Editor {
   final Note note;
+  final bool noteModified;
 
   @override
   final NoteCallback noteDeletionSelected;
@@ -27,6 +28,7 @@ class MarkdownEditor extends StatefulWidget implements Editor {
   MarkdownEditor({
     Key key,
     @required this.note,
+    @required this.noteModified,
     @required this.noteDeletionSelected,
     @required this.noteEditorChooserSelected,
     @required this.exitEditorSelected,
@@ -48,6 +50,7 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
   TextEditingController _titleTextController = TextEditingController();
 
   bool editingMode = true;
+  bool _noteModified;
 
   MarkdownEditorState(this.note) {
     _textController = TextEditingController(text: note.body);
@@ -60,6 +63,7 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
   @override
   void initState() {
     super.initState();
+    _noteModified = widget.noteModified;
     if (widget.isNewNote) {
       editingMode = true;
     }
@@ -79,10 +83,15 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            if (note.canHaveMetadata) NoteTitleEditor(_titleTextController),
+            if (note.canHaveMetadata)
+              NoteTitleEditor(
+                _titleTextController,
+                _noteTextChanged,
+              ),
             _NoteBodyEditor(
-              _textController,
+              textController: _textController,
               autofocus: widget.isNewNote,
+              onChanged: _noteTextChanged,
             ),
           ],
         ),
@@ -99,7 +108,12 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
     );
 
     return Scaffold(
-      appBar: buildEditorAppBar(widget, this, extraButtons: [extraButton]),
+      appBar: buildEditorAppBar(
+        widget,
+        this,
+        noteModified: _noteModified,
+        extraButtons: [extraButton],
+      ),
       body: body,
     );
   }
@@ -122,13 +136,25 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
     _updateNote();
     return note;
   }
+
+  void _noteTextChanged() {
+    if (_noteModified) return;
+    setState(() {
+      _noteModified = true;
+    });
+  }
 }
 
 class _NoteBodyEditor extends StatelessWidget {
   final TextEditingController textController;
   final bool autofocus;
+  final Function onChanged;
 
-  _NoteBodyEditor(this.textController, {this.autofocus = false});
+  _NoteBodyEditor({
+    @required this.textController,
+    @required this.autofocus,
+    @required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -147,6 +173,7 @@ class _NoteBodyEditor extends StatelessWidget {
       controller: textController,
       textCapitalization: TextCapitalization.sentences,
       scrollPadding: const EdgeInsets.all(0.0),
+      onChanged: (_) => onChanged(),
     );
   }
 }

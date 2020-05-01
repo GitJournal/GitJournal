@@ -96,6 +96,7 @@ class NoteEditorState extends State<NoteEditor> {
         return MarkdownEditor(
           key: _markdownEditorKey,
           note: note,
+          noteModified: _noteModified(note),
           noteDeletionSelected: _noteDeletionSelected,
           noteEditorChooserSelected: _noteEditorChooserSelected,
           exitEditorSelected: _exitEditorSelected,
@@ -108,6 +109,7 @@ class NoteEditorState extends State<NoteEditor> {
         return RawEditor(
           key: _rawEditorKey,
           note: note,
+          noteModified: _noteModified(note),
           noteDeletionSelected: _noteDeletionSelected,
           noteEditorChooserSelected: _noteEditorChooserSelected,
           exitEditorSelected: _exitEditorSelected,
@@ -120,6 +122,7 @@ class NoteEditorState extends State<NoteEditor> {
         return ChecklistEditor(
           key: _checklistEditorKey,
           note: note,
+          noteModified: _noteModified(note),
           noteDeletionSelected: _noteDeletionSelected,
           noteEditorChooserSelected: _noteEditorChooserSelected,
           exitEditorSelected: _exitEditorSelected,
@@ -132,6 +135,7 @@ class NoteEditorState extends State<NoteEditor> {
         return JournalEditor(
           key: _journalEditorKey,
           note: note,
+          noteModified: _noteModified(note),
           noteDeletionSelected: _noteDeletionSelected,
           noteEditorChooserSelected: _noteEditorChooserSelected,
           exitEditorSelected: _exitEditorSelected,
