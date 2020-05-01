@@ -120,7 +120,7 @@ void captureErrorBreadcrumb({
 }
 
 Future<void> captureSentryException(
-  Exception exception,
+  Object exception,
   StackTrace stackTrace,
 ) async {
   try {
