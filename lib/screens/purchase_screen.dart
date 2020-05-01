@@ -61,6 +61,25 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
       if (_offerings.length > 1) {
         _selectedOffering = _offerings[1];
+      } else {
+        var fakePackageJson = {
+          'identifier': 'monthly_fake',
+          'product': {
+            'identifier': 'fake_product',
+            'title': 'Fake Product',
+            'priceString': '0 Fake',
+            'price': 0.0,
+          },
+        };
+
+        var fakeOffer = Offering.fromJson(<String, dynamic>{
+          'identifier': 'monthly_fake_offering',
+          'monthly': fakePackageJson,
+          'availablePackages': [fakePackageJson],
+        });
+
+        _offerings = [fakeOffer];
+        _selectedOffering = _offerings[0];
       }
     });
   }
