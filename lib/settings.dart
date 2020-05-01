@@ -25,6 +25,7 @@ class Settings {
   String yamlModifiedKey = "modified";
   bool yamlHeaderEnabled = true;
   String defaultNewNoteFolderSpec = "";
+  String journalEditordefaultNewNoteFolderSpec = "";
 
   RemoteSyncFrequency remoteSyncFrequency = RemoteSyncFrequency.Default;
   SortingMode sortingMode = SortingMode.Default;
@@ -59,6 +60,9 @@ class Settings {
     yamlHeaderEnabled = pref.getBool("yamlHeaderEnabled") ?? yamlHeaderEnabled;
     defaultNewNoteFolderSpec =
         pref.getString("defaultNewNoteFolderSpec") ?? defaultNewNoteFolderSpec;
+    journalEditordefaultNewNoteFolderSpec =
+        pref.getString("journalEditordefaultNewNoteFolderSpec") ??
+            journalEditordefaultNewNoteFolderSpec;
 
     remoteSyncFrequency = RemoteSyncFrequency.fromInternalString(
         pref.getString("remoteSyncFrequency"));
@@ -97,6 +101,8 @@ class Settings {
     pref.setString("yamlModifiedKey", yamlModifiedKey);
     pref.setBool("yamlHeaderEnabled", yamlHeaderEnabled);
     pref.setString("defaultNewNoteFolderSpec", defaultNewNoteFolderSpec);
+    pref.setString("journalEditordefaultNewNoteFolderSpec",
+        journalEditordefaultNewNoteFolderSpec);
     pref.setString(
         "remoteSyncFrequency", remoteSyncFrequency.toInternalString());
     pref.setString("sortingMode", sortingMode.toInternalString());
@@ -126,6 +132,8 @@ class Settings {
       "yamlModifiedKey": yamlModifiedKey,
       "yamlHeaderEnabled": yamlHeaderEnabled,
       "defaultNewNoteFolderSpec": defaultNewNoteFolderSpec,
+      "journalEditordefaultNewNoteFolderSpec":
+          journalEditordefaultNewNoteFolderSpec,
       "defaultEditor": defaultEditor.toInternalString(),
       "defaultView": defaultView.toInternalString(),
       "sortingMode": sortingMode.toInternalString(),

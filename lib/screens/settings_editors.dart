@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/screens/settings_screen.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 
 class SettingsEditorsScreen extends StatefulWidget {
   @override
@@ -12,6 +14,11 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
   @override
   Widget build(BuildContext context) {
     var settings = Settings.instance;
+    var defaultNewFolder =
+        Settings.instance.journalEditordefaultNewNoteFolderSpec;
+    if (defaultNewFolder.isEmpty) {
+      defaultNewFolder = "Root Folder";
+    }
 
     var body = ListView(children: <Widget>[
       ListPreference(
@@ -26,7 +33,7 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
           setState(() {});
         },
       ),
-      SettingsHeader("Markdown Editor Settings"),
+      SettingsHeader("Markdown Editor"),
       ListPreference(
         title: "Default State",
         currentOption: settings.markdownDefaultView.toPublicString(),
@@ -36,6 +43,22 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
         onChange: (String publicStr) {
           var val = SettingsMarkdownDefaultView.fromPublicString(publicStr);
           Settings.instance.markdownDefaultView = val;
+          Settings.instance.save();
+          setState(() {});
+        },
+      ),
+      SettingsHeader("Journal Editor"),
+      ListTile(
+        title: const Text("Default Folder"),
+        subtitle: Text(defaultNewFolder),
+        onTap: () async {
+          var destFolder = await showDialog<NotesFolderFS>(
+            context: context,
+            builder: (context) => FolderSelectionDialog(),
+          );
+
+          Settings.instance.journalEditordefaultNewNoteFolderSpec =
+              destFolder != null ? destFolder.pathSpec() : "";
           Settings.instance.save();
           setState(() {});
         },

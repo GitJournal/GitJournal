@@ -209,7 +209,16 @@ class _FolderViewState extends State<FolderView> {
     NotesFolderFS fsFolder = widget.notesFolder.fsFolder;
     if (widget.notesFolder.name != fsFolder.name) {
       var spec = Settings.instance.defaultNewNoteFolderSpec;
-      fsFolder = fsFolder.getFolderWithSpec(spec);
+      var journalSpec = Settings.instance.journalEditordefaultNewNoteFolderSpec;
+
+      switch (editorType) {
+        case EditorType.Journal:
+          fsFolder = fsFolder.getFolderWithSpec(journalSpec);
+          break;
+        default:
+          fsFolder = fsFolder.getFolderWithSpec(spec);
+          break;
+      }
     }
 
     var route = MaterialPageRoute(
