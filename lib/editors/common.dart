@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:share/share.dart';
 
 typedef NoteCallback = void Function(Note);
 
@@ -16,7 +17,7 @@ abstract class EditorState {
   Note getNote();
 }
 
-enum DropDownChoices { Rename, MoveToFolder, DiscardChanges }
+enum DropDownChoices { Rename, MoveToFolder, DiscardChanges, Share }
 
 AppBar buildEditorAppBar(
   Editor editor,
@@ -66,6 +67,11 @@ AppBar buildEditorAppBar(
               var note = editorState.getNote();
               editor.discardChangesSelected(note);
               return;
+
+            case DropDownChoices.Share:
+              var note = editorState.getNote();
+              Share.share(note.body);
+              return;
           }
         },
         itemBuilder: (BuildContext context) =>
@@ -81,6 +87,10 @@ AppBar buildEditorAppBar(
           const PopupMenuItem<DropDownChoices>(
             value: DropDownChoices.DiscardChanges,
             child: Text('Discard Changes'),
+          ),
+          const PopupMenuItem<DropDownChoices>(
+            value: DropDownChoices.Share,
+            child: Text('Share Note'),
           ),
         ],
       ),
