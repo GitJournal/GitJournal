@@ -48,7 +48,7 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
         },
       ),
       SettingsHeader("Journal Editor"),
-      ListTile(
+      ProListTile(
         title: const Text("Default Folder"),
         subtitle: Text(defaultNewFolder),
         onTap: () async {

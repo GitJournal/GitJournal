@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gitjournal/settings.dart';
 
 class ListPreference extends StatelessWidget {
   final String title;
@@ -59,6 +60,40 @@ class ListPreference extends StatelessWidget {
         }
       },
       enabled: enabled,
+    );
+  }
+}
+
+class ProListTile extends StatelessWidget {
+  final Widget title;
+  final Widget subtitle;
+  final Function onTap;
+
+  ProListTile({this.title, this.subtitle, this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    var isPro = Settings.instance.proMode;
+    var tile = ListTile(
+      title: title,
+      subtitle: subtitle,
+      onTap: onTap,
+    );
+
+    if (isPro) {
+      return tile;
+    }
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      child: Banner(
+        message: 'Pro',
+        location: BannerLocation.topStart,
+        color: Colors.purple,
+        child: IgnorePointer(child: tile),
+      ),
+      onTap: () {
+        Navigator.pushNamed(context, "/purchase");
+      },
     );
   }
 }
