@@ -122,15 +122,15 @@ class Settings {
     }
   }
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+  Map<String, String> toMap() {
+    return <String, String>{
       "gitAuthor": gitAuthor,
       "gitAuthorEmail": gitAuthorEmail,
       "noteFileNameFormat": noteFileNameFormat.toInternalString(),
-      "collectUsageStatistics": collectUsageStatistics,
-      "collectCrashReports": collectCrashReports,
+      "collectUsageStatistics": collectUsageStatistics.toString(),
+      "collectCrashReports": collectCrashReports.toString(),
       "yamlModifiedKey": yamlModifiedKey,
-      "yamlHeaderEnabled": yamlHeaderEnabled,
+      "yamlHeaderEnabled": yamlHeaderEnabled.toString(),
       "defaultNewNoteFolderSpec": defaultNewNoteFolderSpec,
       "journalEditordefaultNewNoteFolderSpec":
           journalEditordefaultNewNoteFolderSpec,
@@ -138,16 +138,16 @@ class Settings {
       "defaultView": defaultView.toInternalString(),
       "sortingMode": sortingMode.toInternalString(),
       "remoteSyncFrequency": remoteSyncFrequency.toInternalString(),
-      "showNoteSummary": showNoteSummary,
+      "showNoteSummary": showNoteSummary.toString(),
       "folderViewHeaderType": folderViewHeaderType,
-      "version": version,
-      "proMode": proMode,
+      "version": version.toString(),
+      "proMode": proMode.toString(),
       'pseudoId': pseudoId,
       'markdownDefaultView': markdownDefaultView.toInternalString(),
     };
   }
 
-  Map<String, dynamic> toLoggableMap() {
+  Map<String, String> toLoggableMap() {
     var m = toMap();
     m.remove("gitAuthor");
     m.remove("gitAuthorEmail");
