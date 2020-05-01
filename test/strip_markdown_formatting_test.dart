@@ -33,9 +33,9 @@ look like:
     test('Checklist', () {
       var input = """Itemized lists
 
-[ ] this one
-[x] that one
-[X] last
+- [ ] this one
+- [x] that one
+- [X] last
       """;
 
       expect(stripMarkdownFormatting(input),

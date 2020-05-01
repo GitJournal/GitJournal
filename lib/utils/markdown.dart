@@ -28,9 +28,9 @@ String stripMarkdownFormatting(String markdown) {
 }
 
 String replaceMarkdownChars(String line) {
-  line = line.replaceFirst('[ ]', '☐');
-  line = line.replaceFirst('[x]', '☑');
-  line = line.replaceFirst('[X]', '☑');
+  line = line.replaceFirst('- [ ]', '☐');
+  line = line.replaceFirst('- [x]', '☑');
+  line = line.replaceFirst('- [X]', '☑');
 
   line = replaceListChar(line, '*');
   line = replaceListChar(line, '-');
