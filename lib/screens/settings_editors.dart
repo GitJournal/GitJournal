@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gitjournal/features.dart';
 import 'package:gitjournal/screens/settings_screen.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
@@ -47,22 +48,23 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
           setState(() {});
         },
       ),
-      SettingsHeader("Journal Editor"),
-      ProListTile(
-        title: const Text("Default Folder"),
-        subtitle: Text(defaultNewFolder),
-        onTap: () async {
-          var destFolder = await showDialog<NotesFolderFS>(
-            context: context,
-            builder: (context) => FolderSelectionDialog(),
-          );
+      if (Features.purchaseProModeAvailable) SettingsHeader("Journal Editor"),
+      if (Features.purchaseProModeAvailable)
+        ProListTile(
+          title: const Text("Default Folder"),
+          subtitle: Text(defaultNewFolder),
+          onTap: () async {
+            var destFolder = await showDialog<NotesFolderFS>(
+              context: context,
+              builder: (context) => FolderSelectionDialog(),
+            );
 
-          Settings.instance.journalEditordefaultNewNoteFolderSpec =
-              destFolder != null ? destFolder.pathSpec() : "";
-          Settings.instance.save();
-          setState(() {});
-        },
-      ),
+            Settings.instance.journalEditordefaultNewNoteFolderSpec =
+                destFolder != null ? destFolder.pathSpec() : "";
+            Settings.instance.save();
+            setState(() {});
+          },
+        ),
     ]);
 
     return Scaffold(
