@@ -27,11 +27,11 @@ title: Foo
 
 How are you doing?
 
-[ ] item 1
-[x] item 2
-[x] item 3
-[ ] item 4
-[ ] item 5
+- [ ] item 1
+- [x] item 2
+- [X] item 3
+- [ ] item 4
+- [ ] item 5
 
 Booga Wooga
 """;
@@ -59,17 +59,6 @@ Booga Wooga
       expect(items[3].text, "item 4");
       expect(items[4].text, "item 5");
 
-      // Nodes
-      var nodes = checklist.nodes;
-      expect(nodes.length, equals(7));
-      expect(nodes[0].textContent, "# Title 1\n\nHow are you doing?\n\n");
-      expect(nodes[1], items[0].element);
-      expect(nodes[2], items[1].element);
-      expect(nodes[3], items[2].element);
-      expect(nodes[4], items[3].element);
-      expect(nodes[5], items[4].element);
-      expect(nodes[6].textContent, "\nBooga Wooga\n");
-
       //
       // Serialization
       //
@@ -92,13 +81,13 @@ title: Foo
 
 How are you doing?
 
-[x] item 1
-[ ] Foo
-[x] item 3
-[ ] item 4
+- [x] item 1
+- [ ] Foo
+- [X] item 3
+- [ ] item 4
+- [ ] Howdy
 
 Booga Wooga
-[ ] Howdy
 """;
 
       var actualContent = File(notePath).readAsStringSync();
@@ -107,9 +96,9 @@ Booga Wooga
 
     test('Should not add line breaks', () async {
       var content = """
-[ ] item 1
-[x] item 2
-[x] item 3""";
+- [ ] item 1
+- [x] item 2
+- [x] item 3""";
 
       var notePath = p.join(tempDir.path, "note2.md");
       await File(notePath).writeAsString(content);
@@ -123,11 +112,13 @@ Booga Wooga
       expect(items.length, equals(3));
 
       // Nodes
+      /*
       var nodes = checklist.nodes;
       expect(nodes.length, equals(3));
       expect(nodes[0], items[0].element);
       expect(nodes[1], items[1].element);
       expect(nodes[2], items[2].element);
+      */
     });
 
     test('Should add \\n before item when adding', () async {
@@ -147,11 +138,11 @@ Booga Wooga
       checklist.addItem(checklist.buildItem(false, "item"));
 
       note = checklist.note;
-      expect(note.body, "Hi.\n[ ] item\n");
+      expect(note.body, "Hi.\n- [ ] item\n");
     });
 
     test('Should not add \\n when adding after item', () async {
-      var content = "[ ] one";
+      var content = "- [ ] one";
 
       var notePath = p.join(tempDir.path, "note13.md");
       await File(notePath).writeAsString(content);
@@ -167,11 +158,11 @@ Booga Wooga
       checklist.addItem(checklist.buildItem(false, "item"));
 
       note = checklist.note;
-      expect(note.body, "[ ] one\n[ ] item\n");
+      expect(note.body, "- [ ] one\n- [ ] item\n");
     });
 
     test('insertItem works', () async {
-      var content = "Hi.\n[ ] One\nTwo\n[ ] Three";
+      var content = "Hi.\n- [ ] One\n- Two\n- [ ] Three";
 
       var notePath = p.join(tempDir.path, "note4.md");
       await File(notePath).writeAsString(content);
@@ -187,11 +178,11 @@ Booga Wooga
       checklist.insertItem(1, checklist.buildItem(false, "item"));
 
       note = checklist.note;
-      expect(note.body, "Hi.\n[ ] One\nTwo\n[ ] item\n[ ] Three\n");
+      expect(note.body, "Hi.\n- [ ] One\n- Two\n- [ ] item\n- [ ] Three\n");
     });
 
-    test('Removes empty trailing items', () async {
-      var content = "Hi.\n[ ] One\nTwo\n[ ]  \n[ ]  ";
+    test('Does not Remove empty trailing items', () async {
+      var content = "Hi.\n- [ ] One\n- Two\n- [ ]  \n- [ ]  ";
 
       var notePath = p.join(tempDir.path, "note4.md");
       await File(notePath).writeAsString(content);
@@ -203,11 +194,11 @@ Booga Wooga
       var checklist = Checklist(note);
 
       note = checklist.note;
-      expect(note.body, "Hi.\n[ ] One\nTwo\n");
+      expect(note.body, "Hi.\n- [ ] One\n- Two\n- [ ]  \n- [ ]  \n");
     });
 
     test('Does not add extra new line', () async {
-      var content = "[ ] One\n[ ]Two\n[ ] Three\n[ ] Four\n";
+      var content = "- [ ] One\n- [ ]Two\n- [ ] Three\n- [ ] Four\n";
 
       var notePath = p.join(tempDir.path, "note449.md");
       await File(notePath).writeAsString(content);
@@ -217,14 +208,11 @@ Booga Wooga
       await note.load();
 
       var checklist = Checklist(note);
-      /*
-      for (var node in checklist.nodes) {
-        print("node $node - '${node.textContent}'");
-      }*/
       checklist.addItem(checklist.buildItem(false, "Five"));
 
       note = checklist.note;
-      expect(note.body, "[ ] One\n[ ]Two\n[ ] Three\n[ ] Four\n[ ] Five\n");
+      expect(note.body,
+          "- [ ] One\n- [ ]Two\n- [ ] Three\n- [ ] Four\n- [ ] Five\n");
     });
 
     test('Maintain x case', () async {
