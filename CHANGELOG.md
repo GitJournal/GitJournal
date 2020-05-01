@@ -1,3 +1,10 @@
+## [1.50] - 2020-05-01
+* Show num of changes to be pushed
+* Follow GitHub's checklist format
+* Allow Sharing of Notes
+* Allow configuring of default Folder for Journal Editor
+* Editor: Show ✕ or ✓ in AppBar depending on if the note has been modified
+
 ## [1.49] - 2020-04-22
 * Allow Pay what you want for Pro version
 * Collect better crash information
