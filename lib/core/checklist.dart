@@ -43,7 +43,7 @@ class ChecklistItem {
 
 class Checklist {
   static final _pattern = RegExp(
-    r'^(.*)- \[([ xX])\] +(.*)$',
+    r'^(.*)- \[([ xX])\] ?(.*)$',
     multiLine: false,
   );
 

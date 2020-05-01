@@ -186,11 +186,11 @@ Booga Wooga
       var checklist = Checklist(note);
 
       note = checklist.note;
-      expect(note.body, "Hi.\n- [ ] One\n- Two\n- [ ] \n- [ ] ");
+      expect(note.body, "Hi.\n- [ ] One\n- Two\n- [ ]  \n- [ ]  ");
     });
 
     test('Does not add extra new line', () async {
-      var content = "- [ ] One\n- [ ]Two\n- [ ] Three\n- [ ] Four\n";
+      var content = "- [ ] One\n- [ ]Two\n- [ ] Three\n- [ ]Four\n";
 
       var notePath = p.join(tempDir.path, "note449.md");
       await File(notePath).writeAsString(content);
@@ -204,11 +204,11 @@ Booga Wooga
 
       note = checklist.note;
       expect(note.body,
-          "- [ ] One\n- [ ]Two\n- [ ] Three\n- [ ] Four\n- [ ] Five\n");
+          "- [ ] One\n- [ ] Two\n- [ ] Three\n- [ ] Four\n- [ ] Five\n");
     });
 
     test('Maintain x case', () async {
-      var content = "- [X] One\n- [ ]Two";
+      var content = "- [X] One\n- [ ] Two";
 
       var notePath = p.join(tempDir.path, "note448.md");
       await File(notePath).writeAsString(content);
