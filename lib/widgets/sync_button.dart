@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:git_bindings/git_bindings.dart';
+import 'package:badges/badges.dart';
 
 import 'package:gitjournal/appstate.dart';
 import 'package:gitjournal/state_container.dart';
@@ -60,11 +61,24 @@ class _SyncButtonState extends State<SyncButton> {
       );
     }
 
-    return IconButton(
-      icon: Icon(_syncStatusIcon()),
-      onPressed: () async {
-        _syncRepo();
-      },
+    var theme = Theme.of(context);
+    var darkMode = theme.brightness == Brightness.dark;
+    var style = theme.textTheme.caption.copyWith(
+      fontSize: 6.0,
+      color: darkMode ? Colors.black : Colors.white,
+    );
+
+    return Badge(
+      badgeContent: Text(appState.numChanges.toString(), style: style),
+      showBadge: appState.numChanges != 0,
+      badgeColor: theme.iconTheme.color,
+      position: BadgePosition.topRight(top: 10.0, right: 4.0),
+      child: IconButton(
+        icon: Icon(_syncStatusIcon()),
+        onPressed: () async {
+          _syncRepo();
+        },
+      ),
     );
   }
 

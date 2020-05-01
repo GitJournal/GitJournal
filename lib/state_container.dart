@@ -87,6 +87,9 @@ class StateContainer with ChangeNotifier {
     return _loadLock.synchronized(() async {
       await appState.notesFolder.loadRecursively();
       await _notesCache.buildCache(appState.notesFolder);
+
+      appState.numChanges = await _gitRepo.numChanges();
+      notifyListeners();
     });
   }
 
@@ -113,6 +116,7 @@ class StateContainer with ChangeNotifier {
 
       Log.d("Synced!");
       appState.syncStatus = SyncStatus.Done;
+      appState.numChanges = 0;
       notifyListeners();
     } catch (e, stacktrace) {
       Log.d("Failed to Sync");
@@ -148,6 +152,8 @@ class StateContainer with ChangeNotifier {
 
       _gitRepo.addFolder(newFolder).then((NoteRepoResult _) {
         _syncNotes();
+        appState.numChanges += 1;
+        notifyListeners();
       });
     });
   }
@@ -161,6 +167,8 @@ class StateContainer with ChangeNotifier {
       folder.parentFS.removeFolder(folder);
       _gitRepo.removeFolder(folder).then((NoteRepoResult _) {
         _syncNotes();
+        appState.numChanges += 1;
+        notifyListeners();
       });
     });
   }
@@ -177,6 +185,8 @@ class StateContainer with ChangeNotifier {
           .renameFolder(oldFolderPath, folder.folderPath)
           .then((NoteRepoResult _) {
         _syncNotes();
+        appState.numChanges += 1;
+        notifyListeners();
       });
     });
   }
@@ -190,6 +200,8 @@ class StateContainer with ChangeNotifier {
 
       _gitRepo.renameNote(oldNotePath, note.filePath).then((NoteRepoResult _) {
         _syncNotes();
+        appState.numChanges += 1;
+        notifyListeners();
       });
     });
   }
@@ -206,6 +218,8 @@ class StateContainer with ChangeNotifier {
 
       _gitRepo.moveNote(oldNotePath, note.filePath).then((NoteRepoResult _) {
         _syncNotes();
+        appState.numChanges += 1;
+        notifyListeners();
       });
     });
   }
@@ -219,6 +233,8 @@ class StateContainer with ChangeNotifier {
       note.updateModified();
       _gitRepo.addNote(note).then((NoteRepoResult _) {
         _syncNotes();
+        appState.numChanges += 1;
+        notifyListeners();
       });
     });
   }
@@ -230,6 +246,8 @@ class StateContainer with ChangeNotifier {
       // FIXME: What if the Note hasn't yet been saved?
       note.parent.remove(note);
       _gitRepo.removeNote(note).then((NoteRepoResult _) async {
+        appState.numChanges += 1;
+        notifyListeners();
         // FIXME: Is there a way of figuring this amount dynamically?
         // The '4 seconds' is taken from snack_bar.dart -> _kSnackBarDisplayDuration
         // We wait an aritfical amount of time, so that the user has a change to undo
@@ -247,6 +265,8 @@ class StateContainer with ChangeNotifier {
       note.parent.add(note);
       _gitRepo.resetLastCommit().then((NoteRepoResult _) {
         _syncNotes();
+        appState.numChanges -= 1;
+        notifyListeners();
       });
     });
   }
@@ -259,6 +279,8 @@ class StateContainer with ChangeNotifier {
       note.updateModified();
       _gitRepo.updateNote(note).then((NoteRepoResult _) {
         _syncNotes();
+        appState.numChanges += 1;
+        notifyListeners();
       });
     });
   }
@@ -274,6 +296,8 @@ class StateContainer with ChangeNotifier {
       await config.saveToFS();
       _gitRepo.addFolderConfig(config).then((NoteRepoResult _) {
         _syncNotes();
+        appState.numChanges += 1;
+        notifyListeners();
       });
     });
   }

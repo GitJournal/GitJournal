@@ -25,6 +25,7 @@ class AppState {
   bool onBoardingCompleted = false;
 
   SyncStatus syncStatus = SyncStatus.Unknown;
+  int numChanges = 0;
 
   //
   // Temporary

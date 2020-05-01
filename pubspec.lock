@@ -56,7 +56,7 @@ packages:
       name: badges
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.6"
+    version: "1.1.1"
   benchmark_harness:
     dependency: "direct dev"
     description:
@@ -146,7 +146,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "4c530f3a63b0de22d62ce854da22f2db8f0209ce"
+      resolved-ref: "27fe7ee9b5713c72dd7a3db3018ff16e6b06945b"
       url: "https://github.com/GitJournal/dart_git.git"
     source: git
     version: "0.0.1"

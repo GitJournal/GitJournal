@@ -16,7 +16,7 @@ dependencies:
   dots_indicator: ^0.0.3
   package_info: ^0.4.0+13
   http: ^0.12.0+1
-  badges: ^0.0.6
+  badges: ^1.1.1
   share: ^0.6.3+5
   launch_review: ^2.0.0
   device_info: ^0.4.1+4

@@ -169,6 +169,14 @@ class GitNoteRepository {
       rethrow;
     }
   }
+
+  Future<int> numChanges() async {
+    try {
+      var repo = await git.GitRepository.load(gitDirPath);
+      return repo.numChangesToPush();
+    } catch (_) {}
+    return 0;
+  }
 }
 
 const ignoredMessages = [
