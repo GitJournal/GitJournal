@@ -49,7 +49,9 @@ class ChecklistEditor extends StatefulWidget implements Editor {
 class ChecklistEditorState extends State<ChecklistEditor>
     implements EditorState {
   Checklist checklist;
-  var focusNodes = <ChecklistItem, FocusScopeNode>{};
+  var focusNodes = <UniqueKey, FocusScopeNode>{};
+  var keys = <UniqueKey, ChecklistItem>{};
+
   TextEditingController _titleTextController = TextEditingController();
   bool _noteModified;
 
@@ -67,9 +69,8 @@ class ChecklistEditorState extends State<ChecklistEditor>
       var item = checklist.buildItem(false, "");
       checklist.addItem(item);
     }
-
     for (var item in checklist.items) {
-      focusNodes[item] = FocusScopeNode();
+      keys[UniqueKey()] = item;
     }
   }
 
@@ -77,6 +78,29 @@ class ChecklistEditorState extends State<ChecklistEditor>
   void dispose() {
     _titleTextController.dispose();
     super.dispose();
+  }
+
+  UniqueKey _getKey(ChecklistItem item) {
+    for (var e in keys.entries) {
+      if (e.value == item) {
+        return e.key;
+      }
+    }
+
+    var key = UniqueKey();
+    keys[key] = item;
+    return key;
+  }
+
+  FocusScopeNode _getFn(ChecklistItem item) {
+    var key = _getKey(item);
+
+    var fn = focusNodes[key];
+    if (fn == null) {
+      fn = FocusScopeNode();
+      focusNodes[key] = fn;
+    }
+    return fn;
   }
 
   @override
@@ -92,13 +116,14 @@ class ChecklistEditorState extends State<ChecklistEditor>
       onPressed: () {
         _noteTextChanged();
         setState(() {
-          var fn = FocusScopeNode();
           var item = checklist.buildItem(false, "");
+          var fn = _getFn(item);
+
           checklist.addItem(item);
-          focusNodes[item] = fn;
 
           // FIXME: Make this happen on the next build
           Timer(const Duration(milliseconds: 50), () {
+            FocusScope.of(context).requestFocus();
             FocusScope.of(context).requestFocus(fn);
           });
         });
@@ -156,7 +181,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
     return ChecklistItemTile(
       key: UniqueKey(),
       item: item,
-      focusNode: focusNodes[item],
+      focusNode: _getFn(item),
       isNewNote: autofocus,
       statusChanged: (bool newVal) {
         setState(() {
@@ -181,16 +206,19 @@ class ChecklistEditorState extends State<ChecklistEditor>
           FocusNode fn;
           if (nextIndex >= 0) {
             var nextItemForFocus = checklist.items[nextIndex];
-            fn = focusNodes[nextItemForFocus];
+            fn = _getFn(nextItemForFocus);
             print("Giving focus to $nextItemForFocus");
           }
 
-          focusNodes.remove(item);
+          var k = _getKey(item);
+          focusNodes.remove(k);
+          keys.remove(k);
           checklist.removeItem(item);
 
           // FIXME: Make this happen on the next build
-          Timer(const Duration(milliseconds: 300), () {
+          Timer(const Duration(milliseconds: 200), () {
             if (fn != null) {
+              FocusScope.of(context).requestFocus();
               FocusScope.of(context).requestFocus(fn);
             }
           });
@@ -199,14 +227,14 @@ class ChecklistEditorState extends State<ChecklistEditor>
       itemFinished: () {
         _noteTextChanged();
         setState(() {
-          var fn = FocusScopeNode();
           var item = checklist.buildItem(false, "");
+          var fn = _getFn(item);
           checklist.insertItem(index + 1, item);
-          focusNodes[item] = fn;
 
           // FIXME: Make this happen on the next build
           Timer(const Duration(milliseconds: 50), () {
             print("Asking focus to ${index + 1}");
+            FocusScope.of(context).requestFocus();
             FocusScope.of(context).requestFocus(fn);
           });
         });
@@ -252,6 +280,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
     _textController.addListener(() {
       widget.textChanged(_textController.value.text);
     });
+    assert(widget.focusNode != null);
     widget.focusNode.addListener(_onFocus);
   }
 
@@ -264,8 +293,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
   }
 
   void _onFocus() {
-    setState(() {}); // rebuild to hide close button
-    SystemChannels.textInput.invokeMethod('TextInput.show');
+    setState(() {}); // rebuild to show/hide close button
   }
 
   @override

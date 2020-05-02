@@ -158,6 +158,7 @@ class Checklist {
 
     var prevItem = items.last;
     item.lineNo = prevItem.lineNo + 1;
+    items.add(item);
     _lines.insert(item.lineNo, item.toString());
   }
 
@@ -183,6 +184,7 @@ class Checklist {
     if (index == items.length) {
       var prevItem = items.last;
       item.lineNo = prevItem.lineNo + 1;
+      items.add(item);
       _lines.insert(item.lineNo, item.toString());
       return;
     }
