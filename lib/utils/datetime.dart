@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'package:gitjournal/utils/logger.dart';
 import 'package:intl/intl.dart';
 
 final _simpleDateFormat = DateFormat("yyyy-MM-dd-HH-mm-ss");
@@ -59,7 +60,11 @@ DateTime parseDateTime(String str) {
     if (regex.hasMatch(str)) {
       // FIXME: Handle the timezone!
       str = str.substring(0, 19);
-      dt = DateTime.parse(str);
+      try {
+        dt = DateTime.parse(str);
+      } catch (ex) {
+        Log.d("Note Date Parsing Failed: $ex");
+      }
     }
   }
 
