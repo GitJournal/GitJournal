@@ -1,128 +1,44 @@
+// Taken from : https://github.com/hoylen/ssh_key
+/*
+
+Copyright (c) 2020, Hoylen Sue
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the <organization> nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+*/
+
 import 'dart:convert';
-import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:steel_crypt/PointyCastleN/key_generators/rsa_key_generator.dart';
-import 'package:steel_crypt/PointyCastleN/pointycastle.dart';
-import 'package:steel_crypt/PointyCastleN/random/fortuna_random.dart';
-import 'package:steel_crypt/steel_crypt.dart';
-
-void main() {
-  var encrypter = RsaCrypt();
-  var keyPair = _getRsaKeyPair(_getSecureRandom());
-  var publicKey = keyPair.publicKey as RSAPublicKey;
-  var privateKey = keyPair.privateKey as RSAPrivateKey;
-
-  var crypted4 = encrypter.encrypt('word', keyPair.publicKey);
-  print("Encryped: $crypted4");
-  print("Decrypted: " + encrypter.decrypt(crypted4, keyPair.privateKey));
-
-  var ps = encrypter.encodeKeyToString(publicKey);
-  print("PS: $ps");
-
-  var priv = encrypter.encodeKeyToString(privateKey);
-  print("Priv: $priv");
-
-  print("");
-  var s = output(publicKey, "vish");
-  print(s);
-}
-
-SecureRandom _getSecureRandom() {
-  final secureRandom = FortunaRandom();
-  final random = Random.secure();
-  var seeds = List<int>.of([]);
-  for (var i = 0; i < 32; i++) {
-    seeds.add(random.nextInt(255));
-  }
-  secureRandom.seed(KeyParameter(Uint8List.fromList(seeds)));
-  return secureRandom;
-}
-
-///Create RSA keypair given SecureRandom.
-AsymmetricKeyPair<PublicKey, PrivateKey> _getRsaKeyPair(
-  SecureRandom secureRandom,
-) {
-  // See URL for why these values
-  // https://crypto.stackexchange.com/questions/15449/rsa-key-generation-parameters-public-exponent-certainty-string-to-key-count/15450#15450?newreg=e734eafab61e42f1b155b62839ccce8f
-  final rsapars = RSAKeyGeneratorParameters(BigInt.from(65537), 2048 * 2, 5);
-  final params = ParametersWithRandom(rsapars, secureRandom);
-  final keyGenerator = RSAKeyGenerator();
-  keyGenerator.init(params);
-  return keyGenerator.generateKeyPair();
-}
-
-String output(RSAPublicKey key, String comment) {
-  var data = BinaryLengthValue.encode([
-    BinaryLengthValue.fromString("ssh-rsa"),
-    BinaryLengthValue.fromBigInt(key.exponent),
-    BinaryLengthValue.fromBigInt(key.modulus),
-  ]);
-
-  if (comment.isNotEmpty) {
-    comment = comment.replaceAll('\r', ' ');
-    comment = comment.replaceAll('\n', ' ');
-    comment = ' $comment';
-  }
-
-  return 'ssh-rsa ${base64.encode(data)}$comment';
-}
-
-/*
-     const BIGNUM *pRsa_mod = NULL;
-   const BIGNUM *pRsa_exp = NULL;
-
-   RSA_get0_key(pRsa, &pRsa_mod, &pRsa_exp, NULL);
-
-   // reading the modulus
-   int nLen = BN_num_bytes(pRsa_mod);
-   nBytes = (unsigned char *)malloc(nLen);
-   ret = BN_bn2bin(pRsa_mod, nBytes);
-   if (ret <= 0)
-      goto cleanup;
-
-   // reading the public exponent
-   int eLen = BN_num_bytes(pRsa_exp);
-   eBytes = (unsigned char *)malloc(eLen);
-   if (eBytes == NULL)
-   {
-      gj_log_internal("write_rsa_public_key malloc failed. Length: %d", eLen);
-      ret = -1;
-      goto cleanup;
-   }
-   ret = BN_bn2bin(pRsa_exp, eBytes);
-   if (ret <= 0)
-      goto cleanup;
-
-   encodingLength = 11 + 4 + eLen + 4 + nLen;
-   // correct depending on the MSB of e and N
-   if (eBytes[0] & 0x80)
-      encodingLength++;
-   if (nBytes[0] & 0x80)
-      encodingLength++;
-
-   pEncoding = (unsigned char *)malloc(encodingLength);
-   memset(pEncoding, 0, encodingLength);
-   memcpy(pEncoding, pSshHeader, 11);
-
-   index = SshEncodeBuffer(&pEncoding[11], eLen, eBytes);
-   SshEncodeBuffer(&pEncoding[11 + index], nLen, nBytes);
-
-   b64 = BIO_new(BIO_f_base64());
-   BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL);
-
-   pFile = fopen(file_path, "w");
-   bio = BIO_new_fp(pFile, BIO_CLOSE);
-   BIO_printf(bio, "ssh-rsa ");
-   bio = BIO_push(b64, bio);
-   BIO_write(bio, pEncoding, encodingLength);
-   BIO_flush(bio);
-   bio = BIO_pop(b64);
-   BIO_printf(bio, " %s\n", comment);
-   BIO_flush(bio);
-   BIO_free_all(bio);
-   BIO_free(b64);
-   */
+//################################################################
+/// Represents a length-value encoding of a value.
+///
+/// Use the [BinaryLengthValue.encode] method to convert a list of
+/// [BinaryLengthValue] to a sequence of bytes. The items in that list can
+/// be created from Uint8List using the default constructor, from a BigInt
+/// with [BinaryLengthValue.fromBigInt] or from a String with
+/// [BinaryLengthValue.fromString].
 
 class BinaryLengthValue {
   //================================================================
@@ -271,8 +187,3 @@ class BinaryLengthValue {
     }
   }
 }
-
-// FIXME: Also need a parser for this format
-// FIXME: Also need tests for this format
-// FIXME: Same for the private key format!
-//        It's for the openssh format
