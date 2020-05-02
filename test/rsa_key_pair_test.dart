@@ -11,7 +11,7 @@ void main() {
   /*
   var publicKeySingleLine =
       'ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAgEAiL0jjDdFqK/kYThqKt7THrjABTPWvXmB3URIpGKCP/jZlSuCUP3Oc+IxuFeXSIMvVIYeW2PZAjXQGTn60XzPHr+M0NoGcPAvzZf2u57aX3YKaL93cZSBHR97H+XhcYdrm7ATwfjMDgfgj7+VTvW4nI46Z+qjxmYifc8uVELolg1TDHWY789ggcdvy92oGjB0VUgMEywrOP+LS0DgG4dmkoUBWGP9dvYcPZDUF4q0XY9ZHhvyPWEZ3o2vETTrEJr9QHYwgjmFfJn2VFNnD/4qeDDHOmSlDgEOfQcZIm+XUOn9eVsv//dAPSY/yMJXf8d0ZSm+VS29QShMjA4R+7yh5WhsIhouBRno2PpEVVb37Xwe3V6U3o9UnQ3ADtL75DbrZ5beNWcmKzlJ7jVX5QzHSBAnePbBx/fyeP/f144xPtJWB3jW/kXjtPyWjpzGndaPQ0WgXkbf8fvIuB3NJTTcZ7PeIKnLaMIzT5XNCR+xobvdC8J9d6k84/q/laJKF3G8KbRGPNwnoVg1cwWFez+dzqo2ypcTtv/20yAmz86EvuohZoWrtoWvkZLCoyxdqO93ymEjgHAn2bsIWyOODtXovxAJqPgk3dxM1f9PAEQwc1bG+Z/Gc1Fd8DncgxyhKSQzLsfWroTnIn8wsnmhPJtaZWNuT5BJa8GhnzX09g6nhbk=';
-  var publicKeyOther = '''---- BEGIN SSH2 PUBLIC KEY ----
+  var publicKeySsh2 = '''---- BEGIN SSH2 PUBLIC KEY ----
 Comment: "rsa-key-20160402"
 AAAAB3NzaC1yc2EAAAABJQAAAgEAiL0jjDdFqK/kYThqKt7THrjABTPWvXmB3URI
 pGKCP/jZlSuCUP3Oc+IxuFeXSIMvVIYeW2PZAjXQGTn60XzPHr+M0NoGcPAvzZf2
@@ -27,6 +27,18 @@ AEQwc1bG+Z/Gc1Fd8DncgxyhKSQzLsfWroTnIn8wsnmhPJtaZWNuT5BJa8GhnzX0
 9g6nhbk=
 ---- END SSH2 PUBLIC KEY ----''';
 
+  test('Should write public key string correctly', () async {
+    var pair = RsaKeyPair.fromStrings(
+      publicKey: publicKeySsh2,
+      privateKey: "",
+    );
+
+    expect(pair.publicKeyString(), publicKeySingleLine);
+  });
+
+  */
+
+  /*
   var privateOpenSshKey = '''-----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn
 NhAAAAAwEAAQAAAYEAnSgRJuxDPuTAyUQoGTF+tmA/7kT3FPg5DtM4RbcinIteCbkUWOoA
@@ -105,11 +117,5 @@ gsiY5pDTPJqEiGrO4wwz0Hj5Pn9cFl2l3zN1/HUSzNszuyIvZflI7HHWcguYXH9E
 FaG9LapMZjfIj7QTmJCqRpeOaSjoQx0a2Rtcgv7uo4haC502mYMcbhxllJWY4g0/
 0Shlq/1WGhnWLu8x+570q3eE9kF11Rpq95lSTdfP3RRPa43403Ld
 -----END RSA PRIVATE KEY-----''';
-
-  test('Should write public key string correctly', () async {
-    var pair = RsaKeyPair.generate();
-    expect(pair.isValid(), true);
-  });
-
   */
 }

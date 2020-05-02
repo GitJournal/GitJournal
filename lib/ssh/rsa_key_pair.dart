@@ -7,13 +7,20 @@ import 'package:steel_crypt/PointyCastleN/key_generators/rsa_key_generator.dart'
 import 'package:steel_crypt/PointyCastleN/pointycastle.dart';
 import 'package:steel_crypt/PointyCastleN/random/fortuna_random.dart';
 import 'package:steel_crypt/steel_crypt.dart';
+import 'package:meta/meta.dart';
 
 class RsaKeyPair {
   RSAPublicKey publicKey;
   RSAPrivateKey privateKey;
 
-  RsaKeyPair.fromFiles(priv, pub);
-  RsaKeyPair.fromStrings(priv, pub);
+  RsaKeyPair.fromStrings({
+    @required String privateKey,
+    @required String publicKey,
+  }) {
+    var encrypter = RsaCrypt();
+    publicKey = encrypter.parseKeyFromString(publicKey);
+    privateKey = encrypter.parseKeyFromString(privateKey);
+  }
 
   RsaKeyPair.generate() {
     var keyPair = _getRsaKeyPair(_getSecureRandom());
