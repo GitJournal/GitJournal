@@ -8,7 +8,7 @@ class InAppPurchases {
   static void confirmProPurchase() async {
     var currentDt = DateTime.now().toUtc().toIso8601String();
     var exp = Settings.instance.proExpirationDate;
-    if (exp.isNotEmpty && exp.compareTo(currentDt) > 0) {
+    if (exp != null && exp.isNotEmpty && exp.compareTo(currentDt) > 0) {
       print("Not checking PurchaseInfo as exp = $exp and cur = $currentDt");
       return;
     }
