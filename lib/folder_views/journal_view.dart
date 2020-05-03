@@ -38,10 +38,10 @@ class JournalView extends StatelessWidget {
 
     DateTime date;
     var sortingMode = folder.config.sortingMode;
-    if (sortingMode == SortingMode.Modified) {
-      date = note.modified;
-    } else if (sortingMode == SortingMode.Created) {
+    if (sortingMode == SortingMode.Created) {
       date = note.created;
+    } else {
+      date = note.modified;
     }
 
     if (date != null) {

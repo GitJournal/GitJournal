@@ -5,6 +5,8 @@ typedef NoteSortingFunction = int Function(Note a, Note b);
 class SortingMode {
   static const Modified = SortingMode("Last Modified", "Modified");
   static const Created = SortingMode("Created", "Created");
+  static const FileName = SortingMode("File Name", "FileName");
+  static const Title = SortingMode("Title", "Title");
   static const Default = Modified;
 
   final String _str;
@@ -22,6 +24,8 @@ class SortingMode {
   static const options = <SortingMode>[
     Modified,
     Created,
+    FileName,
+    Title,
   ];
 
   static SortingMode fromInternalString(String str) {
@@ -65,6 +69,28 @@ class SortingMode {
             return a.fileName.compareTo(b.fileName);
           }
           return bDt.compareTo(aDt);
+        };
+
+      case "Title":
+        return (Note a, Note b) {
+          var aTitleExists = a.title != null && a.title.isNotEmpty;
+          var bTitleExists = b.title != null && b.title.isNotEmpty;
+
+          if (!aTitleExists && bTitleExists) {
+            return 1;
+          }
+          if (aTitleExists && !bTitleExists) {
+            return -1;
+          }
+          if (!aTitleExists && !bTitleExists) {
+            return a.fileName.compareTo(b.fileName);
+          }
+          return a.title.compareTo(b.title);
+        };
+
+      case "FileName":
+        return (Note a, Note b) {
+          return a.fileName.compareTo(b.fileName);
         };
 
       case "Modified":

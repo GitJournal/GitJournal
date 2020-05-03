@@ -227,23 +227,24 @@ class _FolderViewState extends State<FolderView> {
     Navigator.of(context).push(route);
   }
 
+  RadioListTile<SortingMode> _buildSortingTile(SortingMode sm) {
+    return RadioListTile<SortingMode>(
+      title: Text(sm.toPublicString()),
+      value: sm,
+      groupValue: sortedNotesFolder.sortingMode,
+      onChanged: (SortingMode sm) => Navigator.of(context).pop(sm),
+    );
+  }
+
   void _sortButtonPressed() async {
     var newSortingMode = await showDialog<SortingMode>(
       context: context,
       builder: (BuildContext context) {
         var children = <Widget>[
-          RadioListTile<SortingMode>(
-            title: const Text("Last Modified"),
-            value: SortingMode.Modified,
-            groupValue: sortedNotesFolder.sortingMode,
-            onChanged: (SortingMode sm) => Navigator.of(context).pop(sm),
-          ),
-          RadioListTile<SortingMode>(
-            title: const Text("Created"),
-            value: SortingMode.Created,
-            groupValue: sortedNotesFolder.sortingMode,
-            onChanged: (SortingMode sm) => Navigator.of(context).pop(sm),
-          ),
+          _buildSortingTile(SortingMode.Modified),
+          _buildSortingTile(SortingMode.Created),
+          _buildSortingTile(SortingMode.Title),
+          _buildSortingTile(SortingMode.FileName),
         ];
 
         return AlertDialog(
