@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/ssh/binary_length_value.dart';
+import 'package:gitjournal/utils/logger.dart';
 import 'package:steel_crypt/PointyCastleN/key_generators/rsa_key_generator.dart';
 import 'package:steel_crypt/PointyCastleN/pointycastle.dart';
 import 'package:steel_crypt/PointyCastleN/random/fortuna_random.dart';
@@ -10,6 +13,7 @@ import 'package:steel_crypt/steel_crypt.dart';
 import 'package:meta/meta.dart';
 
 import 'package:ssh_key/ssh_key.dart' as ssh_key;
+import 'package:isolate/isolate_runner.dart';
 
 class RsaKeyPair {
   RSAPublicKey publicKey;
@@ -83,6 +87,19 @@ class RsaKeyPair {
     var encrypter = RsaCrypt();
     return encrypter.encodeKeyToString(privateKey);
   }
+
+  static Future<RsaKeyPair> generateAsync() async {
+    IsolateRunner iso = await IsolateRunner.spawn();
+    try {
+      return await iso.run(_gen, null);
+    } catch (e) {
+      Log.e(e);
+      logException(e, StackTrace.current);
+      return null;
+    } finally {
+      iso.close();
+    }
+  }
 }
 
 SecureRandom _getSecureRandom() {
@@ -107,4 +124,8 @@ AsymmetricKeyPair<PublicKey, PrivateKey> _getRsaKeyPair(
   final keyGenerator = RSAKeyGenerator();
   keyGenerator.init(params);
   return keyGenerator.generateKeyPair();
+}
+
+FutureOr<RsaKeyPair> _gen(void _) async {
+  return RsaKeyPair.generate();
 }

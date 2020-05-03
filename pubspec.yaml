@@ -48,6 +48,7 @@ dependencies:
   cached_network_image: ^2.1.0+1
   ssh_key:
     git: https://github.com/GitJournal/ssh_key.git
+  isolate: ^2.0.3
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.2"

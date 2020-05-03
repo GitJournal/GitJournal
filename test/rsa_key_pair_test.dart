@@ -8,6 +8,11 @@ void main() {
     expect(pair.isValid(), true);
   });
 
+  test('Should async generate and verify keys', () async {
+    var pair = await RsaKeyPair.generateAsync();
+    expect(pair.isValid(), true);
+  });
+
   var publicKeySingleLine =
       'ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAgEAiL0jjDdFqK/kYThqKt7THrjABTPWvXmB3URIpGKCP/jZlSuCUP3Oc+IxuFeXSIMvVIYeW2PZAjXQGTn60XzPHr+M0NoGcPAvzZf2u57aX3YKaL93cZSBHR97H+XhcYdrm7ATwfjMDgfgj7+VTvW4nI46Z+qjxmYifc8uVELolg1TDHWY789ggcdvy92oGjB0VUgMEywrOP+LS0DgG4dmkoUBWGP9dvYcPZDUF4q0XY9ZHhvyPWEZ3o2vETTrEJr9QHYwgjmFfJn2VFNnD/4qeDDHOmSlDgEOfQcZIm+XUOn9eVsv//dAPSY/yMJXf8d0ZSm+VS29QShMjA4R+7yh5WhsIhouBRno2PpEVVb37Xwe3V6U3o9UnQ3ADtL75DbrZ5beNWcmKzlJ7jVX5QzHSBAnePbBx/fyeP/f144xPtJWB3jW/kXjtPyWjpzGndaPQ0WgXkbf8fvIuB3NJTTcZ7PeIKnLaMIzT5XNCR+xobvdC8J9d6k84/q/laJKF3G8KbRGPNwnoVg1cwWFez+dzqo2ypcTtv/20yAmz86EvuohZoWrtoWvkZLCoyxdqO93ymEjgHAn2bsIWyOODtXovxAJqPgk3dxM1f9PAEQwc1bG+Z/Gc1Fd8DncgxyhKSQzLsfWroTnIn8wsnmhPJtaZWNuT5BJa8GhnzX09g6nhbk=';
   var publicKeySsh2 = '''---- BEGIN SSH2 PUBLIC KEY ----
