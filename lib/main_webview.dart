@@ -269,3 +269,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+/*
+
+html2canvas(document.body).then(function(canvas) {
+    var img = canvas.toDataURL("image/png");
+    console.log(img);
+});
+
+*/
