@@ -49,6 +49,8 @@ dependencies:
   ssh_key:
     git: https://github.com/GitJournal/ssh_key.git
   isolate: ^2.0.3
+  flutter_webview_plugin:
+    git: https://github.com/breez/flutter_webview_plugin.git
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.2"

@@ -282,6 +282,15 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_webview_plugin:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "045bd6357ce81162d05e367133a95a53ad291451"
+      url: "https://github.com/breez/flutter_webview_plugin.git"
+    source: git
+    version: "0.3.0+2"
   font_awesome_flutter:
     dependency: "direct main"
     description:
