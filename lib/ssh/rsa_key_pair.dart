@@ -9,6 +9,8 @@ import 'package:steel_crypt/PointyCastleN/random/fortuna_random.dart';
 import 'package:steel_crypt/steel_crypt.dart';
 import 'package:meta/meta.dart';
 
+import 'package:ssh_key/ssh_key.dart' as ssh_key;
+
 class RsaKeyPair {
   RSAPublicKey publicKey;
   RSAPrivateKey privateKey;
@@ -18,8 +20,30 @@ class RsaKeyPair {
     @required String publicKey,
   }) {
     var encrypter = RsaCrypt();
-    publicKey = encrypter.parseKeyFromString(publicKey);
-    privateKey = encrypter.parseKeyFromString(privateKey);
+
+    publicKey = publicKey.trim();
+    try {
+      var key = ssh_key.publicKeyDecode(publicKey);
+      if (key is ssh_key.RSAPublicKeyWithInfo) {
+        this.publicKey = RSAPublicKey(key.modulus, key.exponent);
+      }
+    } catch (e) {
+      // Ignore
+    }
+
+    if (publicKey == null) {
+      try {
+        this.publicKey = encrypter.parseKeyFromString(publicKey);
+      } catch (e) {
+        // Ignore
+      }
+    }
+
+    try {
+      this.privateKey = encrypter.parseKeyFromString(privateKey);
+    } catch (e) {
+      // Ignore
+    }
   }
 
   RsaKeyPair.generate() {
