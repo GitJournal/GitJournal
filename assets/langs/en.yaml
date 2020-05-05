@@ -1,1 +1,20 @@
-email: Email
+settings:
+  title: Settings
+  author:
+    label: Full Name
+    hint: Who should author the changes?
+    validator: Please enter a name
+  email:
+    label: Email
+    hint: Email Address
+    validator:
+      empty: Please enter an email
+      invalid: Please enter a valid email
+  display:
+    title: Display Settings
+    darkTheme: Dark Theme
+  gitAuthor: Git Author Settings
+  versionInfo: Version Info
+  analytics: Analytics
+  crashReports: Collect Anonymous Crash Reports
+  usageStats: Collect Anonymous Usage Statistics

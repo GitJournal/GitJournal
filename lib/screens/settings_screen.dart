@@ -19,7 +19,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text(tr('settings.title')),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -60,15 +60,15 @@ class SettingsListState extends State<SettingsList> {
       child: TextFormField(
         key: gitAuthorKey,
         style: Theme.of(context).textTheme.title,
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           icon: Icon(Icons.person),
-          hintText: 'Who should author the changes?',
-          labelText: 'Full Name',
+          hintText: tr('settings.author.hint'),
+          labelText: tr('settings.author.label'),
         ),
         validator: (String value) {
           value = value.trim();
           if (value.isEmpty) {
-            return 'Please enter a name';
+            return tr('settings.author.validator');
           }
           return null;
         },
@@ -95,20 +95,20 @@ class SettingsListState extends State<SettingsList> {
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           icon: Icon(Icons.email),
-          hintText: 'Who should author the changes?',
-          labelText: tr('email'),
+          hintText: tr('settings.email.hint'),
+          labelText: tr('settings.email.label'),
         ),
         validator: (String value) {
           value = value.trim();
           if (value.isEmpty) {
-            return 'Please enter an email';
+            return tr('settings.email.validator.empty');
           }
 
           bool emailValid =
               RegExp(r"^[a-zA-Z0-9.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z\-]+")
                   .hasMatch(value);
           if (!emailValid) {
-            return 'Please enter a valid email';
+            return tr('settings.email.validator.invalid');
           }
           return null;
         },
@@ -131,9 +131,9 @@ class SettingsListState extends State<SettingsList> {
     }
 
     return ListView(children: [
-      SettingsHeader('Display Settings'),
+      SettingsHeader(tr('settings.display.title')),
       SwitchListTile(
-        title: const Text("Dark Theme"),
+        title: Text(tr('settings.display.darkTheme')),
         value: brightness == Brightness.dark,
         onChanged: (bool newVal) {
           var b = newVal ? Brightness.dark : Brightness.light;
@@ -157,7 +157,7 @@ class SettingsListState extends State<SettingsList> {
           }
         },
       ),
-      SettingsHeader("Git Author Settings"),
+      SettingsHeader(tr('settings.gitAuthor')),
       ListTile(title: gitAuthorForm),
       ListTile(title: gitAuthorEmailForm),
       ListTile(
@@ -206,9 +206,9 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
       const SizedBox(height: 16.0),
-      SettingsHeader("Analytics"),
+      SettingsHeader(tr('settings.analytics')),
       SwitchListTile(
-        title: const Text("Collect Anonymous Usage Statistics"),
+        title: Text(tr('settings.usageStats')),
         value: Settings.instance.collectUsageStatistics,
         onChanged: (bool val) {
           Settings.instance.collectUsageStatistics = val;
@@ -217,7 +217,7 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
       SwitchListTile(
-        title: const Text("Collect Anonymous Crash Reports"),
+        title: Text(tr('settings.crashReports')),
         value: Settings.instance.collectCrashReports,
         onChanged: (bool val) {
           Settings.instance.collectCrashReports = val;
@@ -274,7 +274,7 @@ class VersionNumberTileState extends State<VersionNumberTile> {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     return ListTile(
-      title: Text("Version Info", style: textTheme.subhead),
+      title: Text(tr('settings.versionInfo'), style: textTheme.subhead),
       subtitle: Text(
         versionText,
         style: textTheme.body1,
