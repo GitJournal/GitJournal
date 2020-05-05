@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/screens/settings_editors.dart';
 import 'package:gitjournal/settings.dart';
@@ -91,10 +93,10 @@ class SettingsListState extends State<SettingsList> {
         key: gitAuthorEmailKey,
         style: Theme.of(context).textTheme.title,
         keyboardType: TextInputType.emailAddress,
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           icon: Icon(Icons.email),
           hintText: 'Who should author the changes?',
-          labelText: 'Email',
+          labelText: tr('email'),
         ),
         validator: (String value) {
           value = value.trim();

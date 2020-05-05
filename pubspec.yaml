@@ -5,6 +5,8 @@ version: 1.50.0+10
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   intl: "^0.16.0"
   path: ^1.6.2
   uuid: ^2.0.1
@@ -52,6 +54,8 @@ dependencies:
   flutter_webview_plugin:
     git: https://github.com/breez/flutter_webview_plugin.git
   image_picker: ^0.6.6+1
+  easy_localization: ^2.2.1
+  easy_localization_loader: ^0.0.2
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.2"
@@ -71,6 +75,7 @@ flutter:
     - "assets/icon/gitlab-icon.png"
     - "assets/OnBoardingMarkdown.png"
     - "assets/OnBoardingGitProviders.png"
+    - "assets/langs/en.yaml"
   fonts:
     - family: Lato
       fonts:

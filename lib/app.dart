@@ -11,6 +11,9 @@ import 'package:provider/provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:flutter_runtime_env/flutter_runtime_env.dart' as runtime_env;
 
+import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization_loader/easy_localization_loader.dart';
+
 import 'package:git_bindings/git_bindings.dart';
 
 import 'package:gitjournal/apis/git.dart';
@@ -59,7 +62,7 @@ class JournalApp extends StatelessWidget {
       appState.save(pref);
     }
 
-    runApp(ChangeNotifierProvider(
+    var app = ChangeNotifierProvider(
       create: (_) {
         return StateContainer(appState);
       },
@@ -70,6 +73,14 @@ class JournalApp extends StatelessWidget {
           return appState.notesFolder;
         },
       ),
+    );
+
+    runApp(EasyLocalization(
+      child: app,
+      supportedLocales: [const Locale('en', 'US')],
+      path: 'assets/langs',
+      useOnlyLangCode: true,
+      assetLoader: YamlAssetLoader(),
     ));
   }
 
@@ -135,6 +146,11 @@ class JournalApp extends StatelessWidget {
     return MaterialApp(
       key: const ValueKey("App"),
       title: 'GitJournal',
+
+      localizationsDelegates: EasyLocalization.of(context).delegates,
+      supportedLocales: EasyLocalization.of(context).supportedLocales,
+      locale: EasyLocalization.of(context).locale,
+
       theme: themeData,
       navigatorObservers: <NavigatorObserver>[JournalApp.observer],
       initialRoute: initialRoute,
