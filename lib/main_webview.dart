@@ -47,19 +47,19 @@ class MyApp extends StatelessWidget {
                 children: <Widget>[
                   IconButton(
                     icon: const Icon(Icons.arrow_back_ios),
-                    onPressed: () {
-                      flutterWebViewPlugin.goBack();
-                    },
+                    onPressed: flutterWebViewPlugin.goBack,
                   ),
                   IconButton(
                     icon: const Icon(Icons.arrow_forward_ios),
                     onPressed: () {
+                      print("");
                       flutterWebViewPlugin.goForward();
                     },
                   ),
                   IconButton(
                     icon: const Icon(Icons.autorenew),
                     onPressed: () {
+                      print("");
                       flutterWebViewPlugin.reload();
                     },
                   ),
@@ -127,8 +127,8 @@ class _MyHomePageState extends State<MyHomePage> {
     _onDestroy = flutterWebViewPlugin.onDestroy.listen((_) {
       if (mounted) {
         // Actions like show a info toast.
-        _scaffoldKey.currentState.showSnackBar(
-            const SnackBar(content: const Text('Webview Destroyed')));
+        _scaffoldKey.currentState
+            .showSnackBar(const SnackBar(content: Text('Webview Destroyed')));
       }
     });
 
@@ -246,6 +246,7 @@ class _MyHomePageState extends State<MyHomePage> {
             RaisedButton(
               onPressed: () {
                 setState(() {
+                  print("");
                   _history.clear();
                 });
                 flutterWebViewPlugin.close();
