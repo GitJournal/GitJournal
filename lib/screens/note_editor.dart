@@ -287,8 +287,14 @@ class NoteEditorState extends State<NoteEditor> {
       builder: (context) => FolderSelectionDialog(),
     );
     if (destFolder != null) {
-      var stateContainer = Provider.of<StateContainer>(context, listen: false);
-      stateContainer.moveNote(note, destFolder);
+      if (_isNewNote) {
+        note.parent = destFolder;
+        setState(() {});
+      } else {
+        var stateContainer =
+            Provider.of<StateContainer>(context, listen: false);
+        stateContainer.moveNote(note, destFolder);
+      }
     }
   }
 

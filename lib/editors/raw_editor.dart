@@ -81,6 +81,7 @@ class RawEditorState extends State<RawEditor> implements EditorState {
     return Scaffold(
       appBar: buildEditorAppBar(widget, this, noteModified: _noteModified),
       body: editor,
+      bottomNavigationBar: buildEditorBottonBar(context, widget, this, note),
     );
   }
 

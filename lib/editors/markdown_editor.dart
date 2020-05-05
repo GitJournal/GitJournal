@@ -115,6 +115,7 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
         extraButtons: [extraButton],
       ),
       body: body,
+      bottomNavigationBar: buildEditorBottonBar(context, widget, this, note),
     );
   }
 

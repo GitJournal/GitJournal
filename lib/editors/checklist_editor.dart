@@ -159,6 +159,8 @@ class ChecklistEditorState extends State<ChecklistEditor>
           Expanded(child: FocusScope(child: checklistWidget)),
         ],
       ),
+      bottomNavigationBar:
+          buildEditorBottonBar(context, widget, this, checklist.note),
     );
   }
 

@@ -17,7 +17,7 @@ abstract class EditorState {
   Note getNote();
 }
 
-enum DropDownChoices { Rename, MoveToFolder, DiscardChanges, Share }
+enum DropDownChoices { Rename, DiscardChanges, Share }
 
 AppBar buildEditorAppBar(
   Editor editor,
@@ -58,11 +58,6 @@ AppBar buildEditorAppBar(
               editor.renameNoteSelected(note);
               return;
 
-            case DropDownChoices.MoveToFolder:
-              var note = editorState.getNote();
-              editor.moveNoteToFolderSelected(note);
-              return;
-
             case DropDownChoices.DiscardChanges:
               var note = editorState.getNote();
               editor.discardChangesSelected(note);
@@ -81,10 +76,6 @@ AppBar buildEditorAppBar(
             child: Text('Edit File Name'),
           ),
           const PopupMenuItem<DropDownChoices>(
-            value: DropDownChoices.MoveToFolder,
-            child: Text('Move to Folder'),
-          ),
-          const PopupMenuItem<DropDownChoices>(
             value: DropDownChoices.DiscardChanges,
             child: Text('Discard Changes'),
           ),
@@ -95,5 +86,35 @@ AppBar buildEditorAppBar(
         ],
       ),
     ],
+  );
+}
+
+BottomAppBar buildEditorBottonBar(
+  BuildContext context,
+  Editor editor,
+  EditorState editorState,
+  Note note,
+) {
+  var folderName = note.parent.pathSpec();
+  if (folderName.isEmpty) {
+    folderName = "Root Folder";
+  }
+
+  return BottomAppBar(
+    elevation: 0.0,
+    color: Theme.of(context).scaffoldBackgroundColor,
+    child: Row(
+      children: <Widget>[
+        FlatButton.icon(
+          icon: Icon(Icons.folder),
+          label: Text(folderName),
+          onPressed: () {
+            var note = editorState.getNote();
+            editor.moveNoteToFolderSelected(note);
+          },
+        )
+      ],
+      mainAxisAlignment: MainAxisAlignment.center,
+    ),
   );
 }
