@@ -98,7 +98,7 @@ AppBar buildEditorAppBar(
   );
 }
 
-BottomAppBar buildEditorBottonBar(
+Widget buildEditorBottonBar(
   BuildContext context,
   Editor editor,
   EditorState editorState,
@@ -109,21 +109,36 @@ BottomAppBar buildEditorBottonBar(
     folderName = "Root Folder";
   }
 
-  return BottomAppBar(
-    elevation: 0.0,
-    color: Theme.of(context).scaffoldBackgroundColor,
-    child: Row(
-      children: <Widget>[
-        FlatButton.icon(
-          icon: Icon(Icons.folder),
-          label: Text(folderName),
-          onPressed: () {
-            var note = editorState.getNote();
-            editor.moveNoteToFolderSelected(note);
-          },
-        )
-      ],
-      mainAxisAlignment: MainAxisAlignment.center,
+  return StickyBottomAppBar(
+    child: BottomAppBar(
+      elevation: 0.0,
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: Row(
+        children: <Widget>[
+          FlatButton.icon(
+            icon: Icon(Icons.folder),
+            label: Text(folderName),
+            onPressed: () {
+              var note = editorState.getNote();
+              editor.moveNoteToFolderSelected(note);
+            },
+          )
+        ],
+        mainAxisAlignment: MainAxisAlignment.center,
+      ),
     ),
   );
+}
+
+class StickyBottomAppBar extends StatelessWidget {
+  final BottomAppBar child;
+  StickyBottomAppBar({@required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.translate(
+      offset: Offset(0.0, -1 * MediaQuery.of(context).viewInsets.bottom),
+      child: child,
+    );
+  }
 }
