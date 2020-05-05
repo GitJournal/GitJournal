@@ -51,6 +51,7 @@ dependencies:
   isolate: ^2.0.3
   flutter_webview_plugin:
     git: https://github.com/breez/flutter_webview_plugin.git
+  image_picker: ^0.6.6+1
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.2"

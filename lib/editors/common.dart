@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/error_reporting.dart';
 import 'package:share/share.dart';
+
+import 'package:image_picker/image_picker.dart';
 
 typedef NoteCallback = void Function(Note);
 
@@ -15,6 +20,7 @@ abstract class Editor {
 
 abstract class EditorState {
   Note getNote();
+  Future<void> addImage(File file);
 }
 
 enum DropDownChoices { Rename, DiscardChanges, Share }
@@ -93,27 +99,45 @@ Widget buildEditorBottonBar(
   BuildContext context,
   Editor editor,
   EditorState editorState,
-  Note note,
 ) {
+  var note = editorState.getNote();
   var folderName = note.parent.pathSpec();
   if (folderName.isEmpty) {
     folderName = "Root Folder";
   }
 
+  var s = Scaffold.of(context);
+  print("s $s");
   return StickyBottomAppBar(
     child: BottomAppBar(
       elevation: 0.0,
       color: Theme.of(context).scaffoldBackgroundColor,
       child: Row(
         children: <Widget>[
-          FlatButton.icon(
-            icon: Icon(Icons.folder),
-            label: Text(folderName),
+          IconButton(
+            icon: Icon(Icons.add),
             onPressed: () {
-              var note = editorState.getNote();
-              editor.moveNoteToFolderSelected(note);
+              showModalBottomSheet(
+                context: context,
+                builder: (c) => _buildAddBottomSheet(c, editor, editorState),
+                elevation: 0,
+              );
             },
-          )
+          ),
+          Expanded(
+            child: FlatButton.icon(
+              icon: Icon(Icons.folder),
+              label: Text(folderName),
+              onPressed: () {
+                var note = editorState.getNote();
+                editor.moveNoteToFolderSelected(note);
+              },
+            ),
+          ),
+          const SizedBox(
+            height: 32.0,
+            width: 32.0,
+          ),
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       ),
@@ -132,4 +156,54 @@ class StickyBottomAppBar extends StatelessWidget {
       child: child,
     );
   }
+}
+
+Widget _buildAddBottomSheet(
+  BuildContext context,
+  Editor editor,
+  EditorState editorState,
+) {
+  return Container(
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        ListTile(
+          leading: Icon(Icons.camera),
+          title: const Text("Take Photo"),
+          onTap: () async {
+            try {
+              var image = await ImagePicker.pickImage(
+                source: ImageSource.camera,
+              );
+
+              if (image != null) {
+                await editorState.addImage(image);
+              }
+            } catch (e) {
+              reportError(e, StackTrace.current);
+            }
+            Navigator.of(context).pop();
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.image),
+          title: const Text("Add Image"),
+          onTap: () async {
+            try {
+              var image = await ImagePicker.pickImage(
+                source: ImageSource.gallery,
+              );
+
+              if (image != null) {
+                await editorState.addImage(image);
+              }
+            } catch (e) {
+              reportError(e, StackTrace.current);
+            }
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    ),
+  );
 }

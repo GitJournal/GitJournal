@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
@@ -115,7 +116,9 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
         extraButtons: [extraButton],
       ),
       body: body,
-      bottomNavigationBar: buildEditorBottonBar(context, widget, this, note),
+      bottomNavigationBar: Builder(
+        builder: (context) => buildEditorBottonBar(context, widget, this),
+      ),
     );
   }
 
@@ -141,6 +144,15 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
   void _noteTextChanged() {
     if (_noteModified) return;
     setState(() {
+      _noteModified = true;
+    });
+  }
+
+  @override
+  Future<void> addImage(File file) async {
+    await getNote().addImage(file);
+    setState(() {
+      _textController.text = note.body;
       _noteModified = true;
     });
   }

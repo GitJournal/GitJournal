@@ -250,6 +250,14 @@ class Note with NotesNotifier {
     return true;
   }
 
+  Future<void> addImage(File file) async {
+    var imageFileName = p.basename(file.path);
+    var imagePath = p.join(parent.folderPath, imageFileName);
+    await file.copy(imagePath);
+
+    body = "$body\n ![Image](./$imageFileName)\n";
+  }
+
   @override
   int get hashCode => _filePath.hashCode;
 

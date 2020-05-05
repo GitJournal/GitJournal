@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
@@ -84,7 +85,9 @@ class JournalEditorState extends State<JournalEditor> implements EditorState {
     return Scaffold(
       appBar: buildEditorAppBar(widget, this, noteModified: _noteModified),
       body: editor,
-      bottomNavigationBar: buildEditorBottonBar(context, widget, this, note),
+      bottomNavigationBar: Builder(
+        builder: (context) => buildEditorBottonBar(context, widget, this),
+      ),
     );
   }
 
@@ -98,6 +101,15 @@ class JournalEditorState extends State<JournalEditor> implements EditorState {
   void _noteTextChanged() {
     if (_noteModified) return;
     setState(() {
+      _noteModified = true;
+    });
+  }
+
+  @override
+  Future<void> addImage(File file) async {
+    await getNote().addImage(file);
+    setState(() {
+      _textController.text = note.body;
       _noteModified = true;
     });
   }

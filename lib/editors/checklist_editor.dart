@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -159,8 +160,9 @@ class ChecklistEditorState extends State<ChecklistEditor>
           Expanded(child: FocusScope(child: checklistWidget)),
         ],
       ),
-      bottomNavigationBar:
-          buildEditorBottonBar(context, widget, this, checklist.note),
+      bottomNavigationBar: Builder(
+        builder: (context) => buildEditorBottonBar(context, widget, this),
+      ),
     );
   }
 
@@ -248,6 +250,17 @@ class ChecklistEditorState extends State<ChecklistEditor>
         });
       },
     );
+  }
+
+  @override
+  Future<void> addImage(File file) async {
+    var note = getNote();
+    await note.addImage(file);
+
+    setState(() {
+      checklist = Checklist(note);
+      _noteModified = true;
+    });
   }
 }
 
