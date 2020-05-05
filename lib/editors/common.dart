@@ -17,7 +17,7 @@ abstract class EditorState {
   Note getNote();
 }
 
-enum DropDownChoices { Rename, DiscardChanges, Share }
+enum DropDownChoices { Rename, MoveToFolder, DiscardChanges, Share }
 
 AppBar buildEditorAppBar(
   Editor editor,
@@ -58,6 +58,11 @@ AppBar buildEditorAppBar(
               editor.renameNoteSelected(note);
               return;
 
+            case DropDownChoices.MoveToFolder:
+              var note = editorState.getNote();
+              editor.moveNoteToFolderSelected(note);
+              return;
+
             case DropDownChoices.DiscardChanges:
               var note = editorState.getNote();
               editor.discardChangesSelected(note);
@@ -74,6 +79,10 @@ AppBar buildEditorAppBar(
           const PopupMenuItem<DropDownChoices>(
             value: DropDownChoices.Rename,
             child: Text('Edit File Name'),
+          ),
+          const PopupMenuItem<DropDownChoices>(
+            value: DropDownChoices.MoveToFolder,
+            child: Text('Move to Folder'),
           ),
           const PopupMenuItem<DropDownChoices>(
             value: DropDownChoices.DiscardChanges,
