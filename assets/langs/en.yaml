@@ -18,3 +18,5 @@ settings:
   analytics: Analytics
   crashReports: Collect Anonymous Crash Reports
   usageStats: Collect Anonymous Usage Statistics
+  debug: Debug App
+  debugLog: Look under the hood

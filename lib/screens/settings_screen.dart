@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/screens/debug_screen.dart';
 import 'package:gitjournal/screens/settings_editors.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
@@ -226,6 +227,16 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
       VersionNumberTile(),
+      ListTile(
+        title: Text(tr('settings.debug')),
+        subtitle: Text(tr('settings.debugLog')),
+        onTap: () {
+          var route = MaterialPageRoute(
+            builder: (context) => DebugScreen(),
+          );
+          Navigator.of(context).push(route);
+        },
+      ),
     ]);
   }
 }

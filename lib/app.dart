@@ -32,7 +32,7 @@ import 'setup/screens.dart';
 
 class JournalApp extends StatelessWidget {
   static Future main(SharedPreferences pref) async {
-    Log.init();
+    await Log.init();
 
     var appState = AppState(pref);
     appState.dumpToLog();

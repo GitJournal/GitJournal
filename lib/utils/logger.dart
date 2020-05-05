@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fimber/fimber.dart';
+import 'package:meta/meta.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
@@ -10,7 +11,7 @@ class Log {
   static String logFolderPath;
   static RandomAccessFile logFile;
 
-  static void init() async {
+  static Future<void> init() async {
     if (foundation.kDebugMode) {
       Fimber.plantTree(DebugTree.elapsed(useColors: true));
     } else {
@@ -25,7 +26,7 @@ class Log {
       // Ignore if it already exists
     }
 
-    setLogCapture(true);
+    await setLogCapture(true);
   }
 
   static void v(String msg, {dynamic ex, StackTrace stacktrace}) {
@@ -59,20 +60,25 @@ class Log {
     dynamic ex,
     StackTrace stackTrace,
   ) {
-    if (logFile == null) return;
-    var map = <String, dynamic>{
-      't': DateTime.now().millisecondsSinceEpoch,
-      'l': level,
-      'msg': msg.replaceAll('\n', ' '),
-      if (ex != null) 'ex': ex.toString().replaceAll('\n', ' '),
-      if (stackTrace != null)
-        'stack': stackTrace.toString().replaceAll('\n', ' '),
-    };
-    var str = json.encode(map);
+    if (logFile == null) {
+      return;
+    }
+
+    var logMsg = LogMessage(
+      t: DateTime.now().millisecondsSinceEpoch,
+      l: level,
+      msg: msg.replaceAll('\n', ' '),
+      ex: ex != null ? ex.toString().replaceAll('\n', ' ') : null,
+      stack: stackTrace != null
+          ? stackTrace.toString().replaceAll('\n', ' ')
+          : null,
+    );
+
+    var str = json.encode(logMsg.toMap());
     logFile.writeStringSync(str + '\n');
   }
 
-  static void setLogCapture(bool state) async {
+  static Future<void> setLogCapture(bool state) async {
     if (state) {
       var today = DateTime.now().toString().substring(0, 10);
       var logFilePath = p.join(logFolderPath, '$today.jsonl');
@@ -84,5 +90,54 @@ class Log {
       }
       logFile = null;
     }
+  }
+
+  static Iterable<LogMessage> fetchLogs() sync* {
+    var today = DateTime.now().toString().substring(0, 10);
+    for (var msg in fetchLogsForDate(today)) {
+      yield msg;
+    }
+  }
+
+  static Iterable<LogMessage> fetchLogsForDate(String date) sync* {
+    var file = File(p.join(logFolderPath, '$date.jsonl'));
+    var str = file.readAsStringSync();
+    for (var line in LineSplitter.split(str)) {
+      yield LogMessage.fromMap(json.decode(line));
+    }
+  }
+}
+
+class LogMessage {
+  int t;
+  String l;
+  String msg;
+  String ex;
+  String stack;
+
+  LogMessage({
+    @required this.t,
+    @required this.l,
+    @required this.msg,
+    this.ex,
+    this.stack,
+  });
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      't': t,
+      'l': l,
+      'msg': msg,
+      if (ex != null && ex.isNotEmpty) 'ex': ex,
+      if (stack != null && stack.isNotEmpty) 'stack': stack,
+    };
+  }
+
+  LogMessage.fromMap(Map<String, dynamic> map) {
+    t = map['t'];
+    l = map['l'];
+    msg = map['msg'];
+    ex = map['ex'];
+    stack = map['stack'];
   }
 }
