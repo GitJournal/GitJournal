@@ -86,7 +86,8 @@ class JournalEditorState extends State<JournalEditor> implements EditorState {
       appBar: buildEditorAppBar(widget, this, noteModified: _noteModified),
       body: editor,
       bottomNavigationBar: Builder(
-        builder: (context) => buildEditorBottonBar(context, widget, this),
+        builder: (context) =>
+            buildEditorBottonBar(context, widget, this, note.parent),
       ),
     );
   }

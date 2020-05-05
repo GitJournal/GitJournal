@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:share/share.dart';
 
@@ -99,9 +100,9 @@ Widget buildEditorBottonBar(
   BuildContext context,
   Editor editor,
   EditorState editorState,
+  NotesFolderFS parentFolder,
 ) {
-  var note = editorState.getNote();
-  var folderName = note.parent.pathSpec();
+  var folderName = parentFolder.pathSpec();
   if (folderName.isEmpty) {
     folderName = "Root Folder";
   }

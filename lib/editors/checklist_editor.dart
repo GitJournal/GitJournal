@@ -161,7 +161,8 @@ class ChecklistEditorState extends State<ChecklistEditor>
         ],
       ),
       bottomNavigationBar: Builder(
-        builder: (context) => buildEditorBottonBar(context, widget, this),
+        builder: (context) =>
+            buildEditorBottonBar(context, widget, this, widget.note.parent),
       ),
     );
   }
