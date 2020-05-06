@@ -77,13 +77,12 @@ class RawEditorState extends State<RawEditor> implements EditorState {
       ),
     );
 
-    return Scaffold(
-      appBar: buildEditorAppBar(widget, this, noteModified: _noteModified),
+    return EditorScaffold(
+      editor: widget,
+      editorState: this,
+      noteModified: _noteModified,
+      parentFolder: note.parent,
       body: editor,
-      bottomNavigationBar: Builder(
-        builder: (context) =>
-            buildEditorBottonBar(context, widget, this, note.parent),
-      ),
     );
   }
 

@@ -152,17 +152,16 @@ class ChecklistEditorState extends State<ChecklistEditor>
       child: NoteTitleEditor(_titleTextController, _noteTextChanged),
     );
 
-    return Scaffold(
-      appBar: buildEditorAppBar(widget, this, noteModified: _noteModified),
+    return EditorScaffold(
+      editor: widget,
+      editorState: this,
+      noteModified: _noteModified,
+      parentFolder: widget.note.parent,
       body: Column(
         children: <Widget>[
           if (widget.note.canHaveMetadata) titleEditor,
           Expanded(child: FocusScope(child: checklistWidget)),
         ],
-      ),
-      bottomNavigationBar: Builder(
-        builder: (context) =>
-            buildEditorBottonBar(context, widget, this, widget.note.parent),
       ),
     );
   }

@@ -106,18 +106,14 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
       onPressed: _switchMode,
     );
 
-    return Scaffold(
-      appBar: buildEditorAppBar(
-        widget,
-        this,
-        noteModified: _noteModified,
-        extraButtons: [extraButton],
-      ),
+    return EditorScaffold(
+      editor: widget,
+      editorState: this,
+      extraButton: extraButton,
+      noteModified: _noteModified,
+      parentFolder: note.parent,
+      allowEdits: editingMode,
       body: body,
-      bottomNavigationBar: Builder(
-        builder: (context) =>
-            buildEditorBottonBar(context, widget, this, note.parent),
-      ),
     );
   }
 

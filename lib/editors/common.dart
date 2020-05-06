@@ -26,104 +26,134 @@ abstract class EditorState {
 
 enum DropDownChoices { Rename, DiscardChanges, Share }
 
-AppBar buildEditorAppBar(
-  Editor editor,
-  EditorState editorState, {
-  @required bool noteModified,
-  List<IconButton> extraButtons,
-}) {
-  return AppBar(
-    leading: IconButton(
-      key: const ValueKey("NewEntry"),
-      icon: Icon(noteModified ? Icons.check : Icons.close),
-      onPressed: () {
-        editor.exitEditorSelected(editorState.getNote());
-      },
-    ),
-    actions: <Widget>[
-      ...?extraButtons,
-      IconButton(
-        key: const ValueKey("EditorSelector"),
-        icon: const Icon(Icons.library_books),
-        onPressed: () {
-          var note = editorState.getNote();
-          editor.noteEditorChooserSelected(note);
-        },
-      ),
-      IconButton(
-        icon: const Icon(Icons.delete),
-        onPressed: () {
-          var note = editorState.getNote();
-          editor.noteDeletionSelected(note);
-        },
-      ),
-      PopupMenuButton<DropDownChoices>(
-        onSelected: (DropDownChoices choice) {
-          switch (choice) {
-            case DropDownChoices.Rename:
-              var note = editorState.getNote();
-              editor.renameNoteSelected(note);
-              return;
+class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final Editor editor;
+  final EditorState editorState;
+  final bool noteModified;
+  final IconButton extraButton;
 
-            case DropDownChoices.DiscardChanges:
-              var note = editorState.getNote();
-              editor.discardChangesSelected(note);
-              return;
+  EditorAppBar({
+    Key key,
+    @required this.editor,
+    @required this.editorState,
+    @required this.noteModified,
+    this.extraButton,
+  })  : preferredSize = Size.fromHeight(kToolbarHeight),
+        super(key: key);
 
-            case DropDownChoices.Share:
-              var note = editorState.getNote();
-              Share.share(note.body);
-              return;
-          }
+  @override
+  final Size preferredSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      leading: IconButton(
+        key: const ValueKey("NewEntry"),
+        icon: Icon(noteModified ? Icons.check : Icons.close),
+        onPressed: () {
+          editor.exitEditorSelected(editorState.getNote());
         },
-        itemBuilder: (BuildContext context) =>
-            <PopupMenuEntry<DropDownChoices>>[
-          const PopupMenuItem<DropDownChoices>(
-            value: DropDownChoices.Rename,
-            child: Text('Edit File Name'),
-          ),
-          const PopupMenuItem<DropDownChoices>(
-            value: DropDownChoices.DiscardChanges,
-            child: Text('Discard Changes'),
-          ),
-          const PopupMenuItem<DropDownChoices>(
-            value: DropDownChoices.Share,
-            child: Text('Share Note'),
-          ),
-        ],
       ),
-    ],
-  );
+      actions: <Widget>[
+        if (extraButton != null) extraButton,
+        IconButton(
+          key: const ValueKey("EditorSelector"),
+          icon: const Icon(Icons.library_books),
+          onPressed: () {
+            var note = editorState.getNote();
+            editor.noteEditorChooserSelected(note);
+          },
+        ),
+        IconButton(
+          icon: const Icon(Icons.delete),
+          onPressed: () {
+            var note = editorState.getNote();
+            editor.noteDeletionSelected(note);
+          },
+        ),
+        PopupMenuButton<DropDownChoices>(
+          onSelected: (DropDownChoices choice) {
+            switch (choice) {
+              case DropDownChoices.Rename:
+                var note = editorState.getNote();
+                editor.renameNoteSelected(note);
+                return;
+
+              case DropDownChoices.DiscardChanges:
+                var note = editorState.getNote();
+                editor.discardChangesSelected(note);
+                return;
+
+              case DropDownChoices.Share:
+                var note = editorState.getNote();
+                Share.share(note.body);
+                return;
+            }
+          },
+          itemBuilder: (BuildContext context) =>
+              <PopupMenuEntry<DropDownChoices>>[
+            const PopupMenuItem<DropDownChoices>(
+              value: DropDownChoices.Rename,
+              child: Text('Edit File Name'),
+            ),
+            const PopupMenuItem<DropDownChoices>(
+              value: DropDownChoices.DiscardChanges,
+              child: Text('Discard Changes'),
+            ),
+            const PopupMenuItem<DropDownChoices>(
+              value: DropDownChoices.Share,
+              child: Text('Share Note'),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 }
 
-Widget buildEditorBottonBar(
-  BuildContext context,
-  Editor editor,
-  EditorState editorState,
-  NotesFolderFS parentFolder,
-) {
-  var folderName = parentFolder.pathSpec();
-  if (folderName.isEmpty) {
-    folderName = "Root Folder";
-  }
+class EditorBottomBar extends StatelessWidget {
+  final Editor editor;
+  final EditorState editorState;
+  final NotesFolderFS parentFolder;
+  final bool allowEdits;
 
-  var s = Scaffold.of(context);
-  print("s $s");
-  return StickyBottomAppBar(
-    child: BottomAppBar(
+  EditorBottomBar({
+    @required this.editor,
+    @required this.editorState,
+    @required this.parentFolder,
+    @required this.allowEdits,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var folderName = parentFolder.pathSpec();
+    if (folderName.isEmpty) {
+      folderName = "Root Folder";
+    }
+
+    var addIcon = IconButton(
+      icon: Icon(Icons.add),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (c) => _buildAddBottomSheet(c, editor, editorState),
+          elevation: 0,
+        );
+      },
+    );
+
+    return BottomAppBar(
       elevation: 0.0,
       color: Theme.of(context).scaffoldBackgroundColor,
       child: Row(
         children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (c) => _buildAddBottomSheet(c, editor, editorState),
-                elevation: 0,
-              );
-            },
+          Visibility(
+            child: addIcon,
+            visible: allowEdits,
+            maintainSize: true,
+            maintainAnimation: true,
+            maintainState: true,
+            maintainInteractivity: false,
           ),
           Expanded(
             child: FlatButton.icon(
@@ -135,26 +165,18 @@ Widget buildEditorBottonBar(
               },
             ),
           ),
-          const SizedBox(
-            height: 32.0,
-            width: 32.0,
+          // Just so there is equal padding on the right side
+          Visibility(
+            child: addIcon,
+            visible: false,
+            maintainSize: true,
+            maintainAnimation: true,
+            maintainState: true,
+            maintainInteractivity: false,
           ),
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       ),
-    ),
-  );
-}
-
-class StickyBottomAppBar extends StatelessWidget {
-  final BottomAppBar child;
-  StickyBottomAppBar({@required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Transform.translate(
-      offset: Offset(0.0, -1 * MediaQuery.of(context).viewInsets.bottom),
-      child: child,
     );
   }
 }
@@ -207,4 +229,47 @@ Widget _buildAddBottomSheet(
       ],
     ),
   );
+}
+
+class EditorScaffold extends StatelessWidget {
+  final Editor editor;
+  final EditorState editorState;
+  final bool noteModified;
+  final IconButton extraButton;
+  final Widget body;
+  final NotesFolderFS parentFolder;
+  final bool allowEdits;
+
+  EditorScaffold({
+    @required this.editor,
+    @required this.editorState,
+    @required this.noteModified,
+    @required this.body,
+    @required this.parentFolder,
+    this.extraButton,
+    this.allowEdits = true,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: EditorAppBar(
+        editor: editor,
+        editorState: editorState,
+        noteModified: noteModified,
+        extraButton: extraButton,
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(child: body),
+          EditorBottomBar(
+            editor: editor,
+            editorState: editorState,
+            parentFolder: parentFolder,
+            allowEdits: allowEdits,
+          ),
+        ],
+      ),
+    );
+  }
 }
