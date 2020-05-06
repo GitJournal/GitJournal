@@ -5,6 +5,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/widgets/editor_scroll_view.dart';
 import 'package:gitjournal/widgets/note_viewer.dart';
 
 class MarkdownEditor extends StatefulWidget implements Editor {
@@ -79,23 +80,20 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
 
   @override
   Widget build(BuildContext context) {
-    var editor = Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            if (note.canHaveMetadata)
-              NoteTitleEditor(
-                _titleTextController,
-                _noteTextChanged,
-              ),
-            _NoteBodyEditor(
-              textController: _textController,
-              autofocus: widget.isNewNote,
-              onChanged: _noteTextChanged,
+    var editor = EditorScrollView(
+      child: Column(
+        children: <Widget>[
+          if (note.canHaveMetadata)
+            NoteTitleEditor(
+              _titleTextController,
+              _noteTextChanged,
             ),
-          ],
-        ),
+          _NoteBodyEditor(
+            textController: _textController,
+            autofocus: widget.isNewNote,
+            onChanged: _noteTextChanged,
+          ),
+        ],
       ),
     );
 

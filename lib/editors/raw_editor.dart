@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/editors/common.dart';
+import 'package:gitjournal/widgets/editor_scroll_view.dart';
 
 class RawEditor extends StatefulWidget implements Editor {
   final Note note;
@@ -68,14 +69,11 @@ class RawEditorState extends State<RawEditor> implements EditorState {
 
   @override
   Widget build(BuildContext context) {
-    var editor = Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: SingleChildScrollView(
-        child: _NoteEditor(
-          textController: _textController,
-          autofocus: widget.isNewNote,
-          onChanged: _noteTextChanged,
-        ),
+    var editor = EditorScrollView(
+      child: _NoteEditor(
+        textController: _textController,
+        autofocus: widget.isNewNote,
+        onChanged: _noteTextChanged,
       ),
     );
 
