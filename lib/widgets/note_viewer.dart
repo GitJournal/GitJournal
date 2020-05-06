@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/widgets/editor_scroll_view.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path/path.dart' as p;
@@ -46,7 +47,7 @@ class NoteViewer extends StatelessWidget {
       ),
     );
 
-    var view = SingleChildScrollView(
+    var view = EditorScrollView(
       child: Column(
         children: <Widget>[
           if (note.canHaveMetadata) NoteTitleHeader(note.title),
@@ -78,7 +79,6 @@ class NoteViewer extends StatelessWidget {
         ],
         crossAxisAlignment: CrossAxisAlignment.start,
       ),
-      padding: const EdgeInsets.all(16.0),
     );
 
     return view;

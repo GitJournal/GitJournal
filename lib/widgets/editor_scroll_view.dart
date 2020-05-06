@@ -27,6 +27,7 @@ class EditorScrollView extends StatelessWidget {
           child: ConstrainedBox(
             constraints: BoxConstraints(
               minHeight: constraints.maxHeight,
+              minWidth: constraints.maxWidth,
             ),
             child: child,
           ),
