@@ -42,6 +42,8 @@ class _FolderViewState extends State<FolderView> {
   StandardViewHeader _headerType = StandardViewHeader.TitleGenerated;
   bool _showSummary = true;
 
+  var _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
@@ -123,6 +125,7 @@ class _FolderViewState extends State<FolderView> {
     );
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(title),
         leading: GJAppBarMenuButton(),
@@ -205,7 +208,7 @@ class _FolderViewState extends State<FolderView> {
     }
   }
 
-  void _newPost(BuildContext context, EditorType editorType) {
+  void _newPost(BuildContext context, EditorType editorType) async {
     NotesFolderFS fsFolder = widget.notesFolder.fsFolder;
     if (widget.notesFolder.name != fsFolder.name) {
       var spec = Settings.instance.defaultNewNoteFolderSpec;
@@ -224,7 +227,8 @@ class _FolderViewState extends State<FolderView> {
     var route = MaterialPageRoute(
       builder: (context) => NoteEditor.newNote(fsFolder, editorType),
     );
-    Navigator.of(context).push(route);
+    await Navigator.of(context).push(route);
+    _scaffoldKey.currentState.removeCurrentSnackBar();
   }
 
   RadioListTile<SortingMode> _buildSortingTile(SortingMode sm) {
