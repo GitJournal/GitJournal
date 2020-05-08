@@ -20,3 +20,6 @@ settings:
   usageStats: Collect Anonymous Usage Statistics
   debug: Debug App
   debugLog: Look under the hood
+editors:
+  checklist:
+    add: Add Item

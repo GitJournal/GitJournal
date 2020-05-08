@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gitjournal/core/checklist.dart';
@@ -379,7 +380,7 @@ class AddItemButton extends StatelessWidget {
   Widget build(BuildContext context) {
     var style = Theme.of(context).textTheme.subhead;
 
-    return ListTile(
+    var tile = ListTile(
       dense: true,
       leading: Row(
         children: <Widget>[
@@ -397,10 +398,12 @@ class AddItemButton extends StatelessWidget {
         ],
         mainAxisSize: MainAxisSize.min,
       ),
-      title: GestureDetector(
-        onTap: onPressed,
-        child: Text("Add Item", style: style),
-      ),
+      title: Text(tr("editors.checklist.add"), style: style),
+    );
+
+    return GestureDetector(
+      onTap: onPressed,
+      child: tile,
     );
   }
 }
