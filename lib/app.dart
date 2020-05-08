@@ -143,6 +143,9 @@ class JournalApp extends StatelessWidget {
     if (!stateContainer.appState.onBoardingCompleted) {
       initialRoute = '/onBoarding';
     }
+    if (Settings.instance.homeScreen == SettingsHomeScreen.AllFolders) {
+      initialRoute = '/folders';
+    }
 
     return MaterialApp(
       key: const ValueKey("App"),

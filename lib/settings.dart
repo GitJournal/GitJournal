@@ -41,6 +41,8 @@ class Settings {
   String _pseudoId;
   String get pseudoId => _pseudoId;
 
+  SettingsHomeScreen homeScreen = SettingsHomeScreen.Default;
+
   SettingsMarkdownDefaultView markdownDefaultView =
       SettingsMarkdownDefaultView.Default;
 
@@ -89,6 +91,9 @@ class Settings {
       _pseudoId = Uuid().v4();
       pref.setString("pseudoId", _pseudoId);
     }
+
+    homeScreen =
+        SettingsHomeScreen.fromInternalString(pref.getString("homeScreen"));
   }
 
   Future save() async {
@@ -115,6 +120,7 @@ class Settings {
     pref.setString("proExpirationDate", proExpirationDate);
     pref.setInt("settingsVersion", version);
     pref.setBool("proMode", proMode);
+    pref.setString("homeScreen", homeScreen.toInternalString());
 
     // Shouldn't we check if something has actually changed?
     for (var f in changeObservers) {
@@ -144,6 +150,7 @@ class Settings {
       "proMode": proMode.toString(),
       'pseudoId': pseudoId,
       'markdownDefaultView': markdownDefaultView.toInternalString(),
+      'homeScreen': homeScreen.toInternalString(),
     };
   }
 
@@ -463,6 +470,53 @@ class SettingsMarkdownDefaultView {
   String toString() {
     assert(
         false, "SettingsMarkdownDefaultView toString should never be called");
+    return "";
+  }
+}
+
+class SettingsHomeScreen {
+  static const AllNotes = SettingsHomeScreen("All Notes", "all_notes");
+  static const AllFolders = SettingsHomeScreen("All Folders", "all_folders");
+  static const Default = AllNotes;
+
+  final String _str;
+  final String _publicString;
+  const SettingsHomeScreen(this._publicString, this._str);
+
+  String toInternalString() {
+    return _str;
+  }
+
+  String toPublicString() {
+    return _publicString;
+  }
+
+  static const options = <SettingsHomeScreen>[
+    AllNotes,
+    AllFolders,
+  ];
+
+  static SettingsHomeScreen fromInternalString(String str) {
+    for (var opt in options) {
+      if (opt.toInternalString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  static SettingsHomeScreen fromPublicString(String str) {
+    for (var opt in options) {
+      if (opt.toPublicString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  @override
+  String toString() {
+    assert(false, "SettingsHomeScreen toString should never be called");
     return "";
   }
 }

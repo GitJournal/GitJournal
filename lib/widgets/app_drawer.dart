@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/utils/logger.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -84,43 +85,14 @@ class AppDrawer extends StatelessWidget {
             context,
             icon: Icons.note,
             title: "All Notes",
-            onTap: () {
-              var m = ModalRoute.of(context);
-              if (m.settings.name == "/") {
-                Navigator.pop(context);
-              } else {
-                Navigator.popUntil(
-                    context, (route) => route.settings.name == '/');
-              }
-            },
+            onTap: () => _navTopLevel(context, '/'),
             selected: currentRoute == '/',
           ),
           _buildDrawerTile(
             context,
             icon: Icons.folder,
             title: "Folders",
-            onTap: () {
-              var m = ModalRoute.of(context);
-              if (m.settings.name == '/') {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/folders');
-              } else if (m.settings.name == '/folders') {
-                Navigator.pop(context);
-              } else {
-                // Check if '/folders' is a parent
-                var wasParent = false;
-                Navigator.popUntil(
-                  context,
-                  (route) {
-                    wasParent = route.settings.name == '/folders';
-                    return wasParent;
-                  },
-                );
-                if (!wasParent) {
-                  Navigator.pushNamed(context, '/folders');
-                }
-              }
-            },
+            onTap: () => _navTopLevel(context, '/folders'),
             selected: currentRoute == "/folders",
           ),
           divider,
@@ -251,5 +223,35 @@ class AppDrawer extends StatelessWidget {
       child: tile,
       color: selected ? theme.selectedRowColor : theme.scaffoldBackgroundColor,
     );
+  }
+}
+
+void _navTopLevel(BuildContext context, String toRoute) {
+  var fromRoute = ModalRoute.of(context).settings.name;
+  Log.i("Routing from $fromRoute -> $toRoute");
+
+  // Always first pop the AppBar
+  Navigator.pop(context);
+
+  if (fromRoute == toRoute) {
+    return;
+  }
+
+  var wasParent = false;
+  Navigator.popUntil(
+    context,
+    (route) {
+      if (route.isFirst) {
+        return true;
+      }
+      wasParent = route.settings.name == toRoute;
+      if (wasParent) {
+        Log.i("Router popping ${route.settings.name}");
+      }
+      return wasParent;
+    },
+  );
+  if (!wasParent) {
+    Navigator.pushNamed(context, toRoute);
   }
 }

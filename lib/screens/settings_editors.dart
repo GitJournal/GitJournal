@@ -50,20 +50,22 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
       ),
       if (Features.purchaseProModeAvailable) SettingsHeader("Journal Editor"),
       if (Features.purchaseProModeAvailable)
-        ProListTile(
-          title: const Text("Default Folder"),
-          subtitle: Text(defaultNewFolder),
-          onTap: () async {
-            var destFolder = await showDialog<NotesFolderFS>(
-              context: context,
-              builder: (context) => FolderSelectionDialog(),
-            );
+        ProSettingOverlay(
+          child: ListTile(
+            title: const Text("Default Folder"),
+            subtitle: Text(defaultNewFolder),
+            onTap: () async {
+              var destFolder = await showDialog<NotesFolderFS>(
+                context: context,
+                builder: (context) => FolderSelectionDialog(),
+              );
 
-            Settings.instance.journalEditordefaultNewNoteFolderSpec =
-                destFolder != null ? destFolder.pathSpec() : "";
-            Settings.instance.save();
-            setState(() {});
-          },
+              Settings.instance.journalEditordefaultNewNoteFolderSpec =
+                  destFolder != null ? destFolder.pathSpec() : "";
+              Settings.instance.save();
+              setState(() {});
+            },
+          ),
         ),
     ]);
 

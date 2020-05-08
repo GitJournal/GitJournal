@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/settings.dart';
 
@@ -63,32 +64,23 @@ class ListPreference extends StatelessWidget {
   }
 }
 
-class ProListTile extends StatelessWidget {
-  final Widget title;
-  final Widget subtitle;
-  final Function onTap;
+class ProSettingOverlay extends StatelessWidget {
+  final Widget child;
 
-  ProListTile({this.title, this.subtitle, this.onTap});
+  ProSettingOverlay({@required this.child});
 
   @override
   Widget build(BuildContext context) {
-    var isPro = Settings.instance.proMode;
-    var tile = ListTile(
-      title: title,
-      subtitle: subtitle,
-      onTap: onTap,
-    );
-
-    if (isPro) {
-      return tile;
+    if (Settings.instance.proMode) {
+      return child;
     }
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       child: Banner(
-        message: 'Pro',
-        location: BannerLocation.topStart,
-        color: Colors.purple,
-        child: IgnorePointer(child: tile),
+        message: tr('pro'),
+        location: BannerLocation.topEnd,
+        color: Theme.of(context).accentColor,
+        child: IgnorePointer(child: Opacity(opacity: 0.5, child: child)),
       ),
       onTap: () {
         Navigator.pushNamed(context, "/purchase");

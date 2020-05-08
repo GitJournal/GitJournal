@@ -1,3 +1,4 @@
+import 'package:gitjournal/app.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
@@ -10,6 +11,10 @@ class InAppPurchases {
     var exp = Settings.instance.proExpirationDate;
     if (exp != null && exp.isNotEmpty && exp.compareTo(currentDt) > 0) {
       print("Not checking PurchaseInfo as exp = $exp and cur = $currentDt");
+      return;
+    }
+
+    if (JournalApp.isInDebugMode) {
       return;
     }
 

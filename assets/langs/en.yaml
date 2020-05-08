@@ -13,6 +13,7 @@ settings:
   display:
     title: Display Settings
     darkTheme: Dark Theme
+    homeScreen: Home Screen
   gitAuthor: Git Author Settings
   versionInfo: Version Info
   analytics: Analytics
@@ -23,3 +24,4 @@ settings:
 editors:
   checklist:
     add: Add Item
+pro: Pro

@@ -142,6 +142,21 @@ class SettingsListState extends State<SettingsList> {
           dynamicTheme.setBrightness(b);
         },
       ),
+      ProSettingOverlay(
+        child: ListPreference(
+          title: tr('settings.display.homeScreen'),
+          currentOption: settings.homeScreen.toPublicString(),
+          options: SettingsHomeScreen.options
+              .map((f) => f.toPublicString())
+              .toList(),
+          onChange: (String publicStr) {
+            var s = SettingsHomeScreen.fromPublicString(publicStr);
+            Settings.instance.homeScreen = s;
+            Settings.instance.save();
+            setState(() {});
+          },
+        ),
+      ),
       SettingsHeader('Note Settings'),
       ListTile(
         title: const Text("Default Folder for new notes"),
