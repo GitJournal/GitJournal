@@ -29,7 +29,7 @@ class _DebugScreenState extends State<DebugScreen> {
   }
 
   Widget _buildLogWidget(LogMessage msg) {
-    var textStyle = Theme.of(context).textTheme.subhead;
+    var textStyle = Theme.of(context).textTheme.subtitle1;
     textStyle = textStyle.copyWith(color: _colorForLevel(msg.l));
 
     var str = DateTime.fromMillisecondsSinceEpoch(msg.t).toIso8601String() +

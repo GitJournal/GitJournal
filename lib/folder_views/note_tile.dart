@@ -47,8 +47,8 @@ class NoteTile extends StatelessWidget {
               note.title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: textTheme.title
-                  .copyWith(fontSize: textTheme.title.fontSize * 0.80),
+              style: textTheme.headline6
+                  .copyWith(fontSize: textTheme.headline6.fontSize * 0.80),
             ),
           if (note.title != null && note.title.isNotEmpty)
             const SizedBox(height: 8.0),
@@ -58,8 +58,8 @@ class NoteTile extends StatelessWidget {
               body,
               maxLines: 11,
               overflow: TextOverflow.ellipsis,
-              style: textTheme.subhead
-                  .copyWith(fontSize: textTheme.subhead.fontSize * 0.90),
+              style: textTheme.subtitle1
+                  .copyWith(fontSize: textTheme.subtitle1.fontSize * 0.90),
             ),
           ),
         ],

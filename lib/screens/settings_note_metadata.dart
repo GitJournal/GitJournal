@@ -27,7 +27,7 @@ class _NoteMetadataSettingsScreenState
           padding: const EdgeInsets.all(16.0),
           child: Text(
             "Every note has some metadata which is stored in a YAML Header as follows -",
-            style: textTheme.body2,
+            style: textTheme.bodyText1,
           ),
         ),
         const SizedBox(height: 16.0),
@@ -96,7 +96,7 @@ class NoteMetaDataExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    var style = theme.textTheme.subhead;
+    var style = theme.textTheme.subtitle1;
     style = style.copyWith(fontFamily: "Roboto Mono");
 
     return Container(

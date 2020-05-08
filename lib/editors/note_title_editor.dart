@@ -8,7 +8,7 @@ class NoteTitleEditor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var style = Theme.of(context).textTheme.title;
+    var style = Theme.of(context).textTheme.headline6;
 
     return TextField(
       keyboardType: TextInputType.text,

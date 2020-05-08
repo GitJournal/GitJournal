@@ -60,7 +60,7 @@ class SettingsListState extends State<SettingsList> {
     var gitAuthorForm = Form(
       child: TextFormField(
         key: gitAuthorKey,
-        style: Theme.of(context).textTheme.title,
+        style: Theme.of(context).textTheme.headline6,
         decoration: InputDecoration(
           icon: Icon(Icons.person),
           hintText: tr('settings.author.hint'),
@@ -92,7 +92,7 @@ class SettingsListState extends State<SettingsList> {
     var gitAuthorEmailForm = Form(
       child: TextFormField(
         key: gitAuthorEmailKey,
-        style: Theme.of(context).textTheme.title,
+        style: Theme.of(context).textTheme.headline6,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           icon: Icon(Icons.email),
@@ -285,10 +285,10 @@ class VersionNumberTileState extends State<VersionNumberTile> {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     return ListTile(
-      title: Text(tr('settings.versionInfo'), style: textTheme.subhead),
+      title: Text(tr('settings.versionInfo'), style: textTheme.subtitle1),
       subtitle: Text(
         versionText,
-        style: textTheme.body1,
+        style: textTheme.bodyText2,
         textAlign: TextAlign.left,
       ),
       enabled: false,

@@ -21,7 +21,7 @@ class AppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget setupGitButton;
     var appState = Provider.of<StateContainer>(context).appState;
-    var textStyle = Theme.of(context).textTheme.body2;
+    var textStyle = Theme.of(context).textTheme.bodyText1;
     var currentRoute = ModalRoute.of(context).settings.name;
 
     if (!appState.remoteGitRepoConfigured) {
@@ -253,7 +253,7 @@ class AppDrawer extends StatelessWidget {
   }) {
     var theme = Theme.of(context);
     var listTileTheme = ListTileTheme.of(context);
-    var textStyle = theme.textTheme.body2.copyWith(
+    var textStyle = theme.textTheme.bodyText1.copyWith(
       color: selected ? theme.accentColor : listTileTheme.textColor,
     );
 

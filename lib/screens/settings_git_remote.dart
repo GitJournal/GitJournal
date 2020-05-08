@@ -39,7 +39,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
       children: <Widget>[
         Text(
           "SSH Public Key -",
-          style: textTheme.body2,
+          style: textTheme.bodyText1,
           textAlign: TextAlign.left,
         ),
         const SizedBox(height: 16.0),

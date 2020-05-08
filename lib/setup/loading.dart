@@ -12,7 +12,7 @@ class GitHostSetupLoadingPage extends StatelessWidget {
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.display1,
+          style: Theme.of(context).textTheme.headline4,
         ),
       ),
       const SizedBox(height: 8.0),

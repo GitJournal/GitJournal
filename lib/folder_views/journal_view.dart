@@ -48,12 +48,12 @@ class JournalView extends StatelessWidget {
       var dateStr = _dateFormat.format(date);
       var time = _timeFormat.format(date);
 
-      var timeColor = textTheme.body1.color.withAlpha(100);
+      var timeColor = textTheme.bodyText2.color.withAlpha(100);
 
       titleWidget = Row(
         children: <Widget>[
-          Text(dateStr, style: textTheme.title),
-          Text(time, style: textTheme.body1.copyWith(color: timeColor)),
+          Text(dateStr, style: textTheme.headline6),
+          Text(time, style: textTheme.bodyText2.copyWith(color: timeColor)),
         ],
         crossAxisAlignment: CrossAxisAlignment.baseline,
         textBaseline: TextBaseline.alphabetic,
@@ -66,7 +66,7 @@ class JournalView extends StatelessWidget {
         note.summary + '\n', // no minLines option
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
-        style: textTheme.body1,
+        style: textTheme.bodyText2,
       ),
     ];
 

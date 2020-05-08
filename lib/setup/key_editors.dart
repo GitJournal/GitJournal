@@ -63,7 +63,7 @@ class KeyEditor extends StatelessWidget {
         return TextFormField(
           textAlign: TextAlign.left,
           maxLines: null,
-          style: Theme.of(context).textTheme.body1,
+          style: Theme.of(context).textTheme.bodyText2,
           autovalidate: true,
           validator: validator,
           controller: textEditingController,

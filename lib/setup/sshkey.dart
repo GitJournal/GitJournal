@@ -33,14 +33,14 @@ class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
       children: <Widget>[
         Text(
           'In order to access this repository, this public key must be copied as a deploy key',
-          style: Theme.of(context).textTheme.title,
+          style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 32.0),
 
         // Step 1
         Text(
           '1. Copy the key',
-          style: Theme.of(context).textTheme.subtitle,
+          style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 8.0),
         PublicKeyWidget(publicKey),
@@ -59,7 +59,7 @@ class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
         // Step 2
         Text(
           '2. Open webpage, and paste the deploy key. Make sure it is given Write Access. ',
-          style: Theme.of(context).textTheme.subtitle,
+          style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 8.0),
         GitHostSetupButton(
@@ -71,7 +71,7 @@ class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
         // Step 3
         Text(
           '3. Try Cloning ..',
-          style: Theme.of(context).textTheme.subtitle,
+          style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 8.0),
         GitHostSetupButton(
@@ -114,14 +114,14 @@ class GitHostSetupSshKeyUnknownProvider extends StatelessWidget {
       children: <Widget>[
         Text(
           'In order to access this repository, this public key must be copied as a deploy key',
-          style: Theme.of(context).textTheme.title,
+          style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 32.0),
 
         // Step 1
         Text(
           '1. Copy the key',
-          style: Theme.of(context).textTheme.subtitle,
+          style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 8.0),
         PublicKeyWidget(publicKey),
@@ -140,14 +140,14 @@ class GitHostSetupSshKeyUnknownProvider extends StatelessWidget {
         // Step 2
         Text(
           '2. Give this SSH Key access to the git repo. (You need to figure it out yourself)',
-          style: Theme.of(context).textTheme.subtitle,
+          style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 16.0),
 
         // Step 3
         Text(
           '3. Try Cloning ..',
-          style: Theme.of(context).textTheme.subtitle,
+          style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 8.0),
         GitHostSetupButton(
@@ -181,7 +181,7 @@ class GitHostSetupKeyChoice extends StatelessWidget {
         children: <Widget>[
           Text(
             "We need SSH keys to authenticate -",
-            style: Theme.of(context).textTheme.headline,
+            style: Theme.of(context).textTheme.headline5,
           ),
           const SizedBox(height: 16.0),
           GitHostSetupButton(
@@ -244,14 +244,14 @@ class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
         children: <Widget>[
           Text(
             "Public Key -",
-            style: Theme.of(context).textTheme.headline,
+            style: Theme.of(context).textTheme.headline5,
           ),
           const SizedBox(height: 8.0),
           PublicKeyEditor(_publicFormKey, _publicKeyController),
           const SizedBox(height: 8.0),
           Text(
             "Private Key -",
-            style: Theme.of(context).textTheme.headline,
+            style: Theme.of(context).textTheme.headline5,
           ),
           const SizedBox(height: 8.0),
           PrivateKeyEditor(_privateFormKey, _privateKeyController),
@@ -305,7 +305,7 @@ class PublicKeyWidget extends StatelessWidget {
               publicKey,
               textAlign: TextAlign.left,
               maxLines: null,
-              style: Theme.of(context).textTheme.body1,
+              style: Theme.of(context).textTheme.bodyText2,
             ),
           ),
         ),

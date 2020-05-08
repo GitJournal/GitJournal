@@ -71,7 +71,7 @@ class StandardView extends StatelessWidget {
 
     Widget titleWidget = Text(
       title,
-      style: textTheme.title,
+      style: textTheme.headline6,
       overflow: TextOverflow.ellipsis,
     );
     Widget trailing = Container();
@@ -104,7 +104,7 @@ class StandardView extends StatelessWidget {
           note.summary + '\n', // no minLines option
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
-          style: textTheme.body1,
+          style: textTheme.bodyText2,
         ),
       ];
 

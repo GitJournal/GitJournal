@@ -7,10 +7,10 @@ class PurchaseThankYouScreen extends StatelessWidget {
     var textTheme = theme.textTheme;
     Widget w = Column(
       children: <Widget>[
-        Text('Thank you', style: textTheme.display2),
+        Text('Thank you', style: textTheme.headline3),
         Text(
           "You're awesome for supporting GitJournal",
-          style: textTheme.display1,
+          style: textTheme.headline4,
           textAlign: TextAlign.center,
         ),
         RaisedButton(

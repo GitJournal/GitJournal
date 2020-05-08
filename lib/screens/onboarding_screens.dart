@@ -151,7 +151,7 @@ class OnBoardingPage1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
-    var headerTextStyle = textTheme.display3.copyWith(fontFamily: "Lato");
+    var headerTextStyle = textTheme.headline2.copyWith(fontFamily: "Lato");
     var header = Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -176,7 +176,7 @@ class OnBoardingPage1 extends StatelessWidget {
           const SizedBox(height: 64.0),
           AutoSizeText(
             "A Open Source Note Taking App\nbuilt on top of Git",
-            style: textTheme.headline,
+            style: textTheme.headline5,
             textAlign: TextAlign.center,
             maxLines: 2,
           ),
@@ -212,7 +212,7 @@ class OnBoardingPage2 extends StatelessWidget {
           const SizedBox(height: 64.0),
           AutoSizeText(
             "Your Notes are stored in a\nstandard Markdown + YAML\nHeader format",
-            style: textTheme.headline,
+            style: textTheme.headline5,
             textAlign: TextAlign.center,
             maxLines: 3,
           ),
@@ -248,7 +248,7 @@ class OnBoardingPage3 extends StatelessWidget {
           const SizedBox(height: 64.0),
           AutoSizeText(
             "Sync your Local Git Repo\nwith any provider",
-            style: textTheme.headline,
+            style: textTheme.headline5,
             textAlign: TextAlign.center,
             maxLines: 2,
           ),

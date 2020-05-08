@@ -46,7 +46,7 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
         key: sshUrlKey,
         textAlign: TextAlign.center,
         autofocus: true,
-        style: Theme.of(context).textTheme.subhead,
+        style: Theme.of(context).textTheme.subtitle1,
         decoration: const InputDecoration(
           hintText: 'git@github.com:GitJournal/GitJournal.git',
         ),
@@ -66,7 +66,7 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
           padding: const EdgeInsets.all(8.0),
           child: Text(
             "Enter the Git Clone URL",
-            style: Theme.of(context).textTheme.headline,
+            style: Theme.of(context).textTheme.headline5,
           ),
         ),
         const SizedBox(height: 16.0),
@@ -129,7 +129,7 @@ class GitCloneUrlKnownProviderPageState
         key: sshUrlKey,
         textAlign: TextAlign.center,
         autofocus: true,
-        style: Theme.of(context).textTheme.subhead,
+        style: Theme.of(context).textTheme.subtitle1,
         decoration: const InputDecoration(
           hintText: 'git@github.com:GitJournal/GitJournal.git',
         ),
@@ -147,14 +147,14 @@ class GitCloneUrlKnownProviderPageState
       children: <Widget>[
         Text(
           'Please create a new git repository -',
-          style: Theme.of(context).textTheme.title,
+          style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 32.0),
 
         // Step 1
         Text(
           '1. Go to the website, create a repo and copy its git clone URL',
-          style: Theme.of(context).textTheme.subtitle,
+          style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 8.0),
         GitHostSetupButton(
@@ -166,7 +166,7 @@ class GitCloneUrlKnownProviderPageState
         // Step 2
         Text(
           '2. Enter the Git clone URL',
-          style: Theme.of(context).textTheme.subtitle,
+          style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 8.0),
         inputForm,

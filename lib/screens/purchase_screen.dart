@@ -122,7 +122,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
       children: <Widget>[
         Text(
           'Support GitJournal by going Pro and additionally get -',
-          style: Theme.of(context).textTheme.title,
+          style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 16.0),
         for (var f in features)
@@ -130,7 +130,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
             children: <Widget>[
               Text(
                 "• $f",
-                style: Theme.of(context).textTheme.body2,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
               const SizedBox(height: 8.0),
             ],
@@ -138,7 +138,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
       ],
     );
 
-    var titleStyle = textTheme.display2.copyWith(color: textTheme.title.color);
+    var titleStyle =
+        textTheme.headline3.copyWith(color: textTheme.headline6.color);
     var slider = Slider(
       min: _offerings.first.monthly.product.price,
       max: _offerings.last.monthly.product.price + 0.50,
@@ -277,7 +278,7 @@ class LoadingWidget extends StatelessWidget {
         child: Text(
           "Loading",
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.display1,
+          style: Theme.of(context).textTheme.headline4,
         ),
       ),
       const SizedBox(height: 8.0),
