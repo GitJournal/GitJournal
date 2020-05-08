@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:gitjournal/utils/logger.dart';
 
 Analytics getAnalytics() {
   return JournalApp.analytics;
@@ -82,4 +83,5 @@ class Analytics {
 
 void logEvent(Event event, {Map<String, String> parameters}) {
   getAnalytics().log(e: event, parameters: parameters);
+  Log.d("Event $event");
 }
