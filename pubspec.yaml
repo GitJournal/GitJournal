@@ -11,7 +11,7 @@ dependencies:
   path: ^1.6.2
   uuid: ^2.0.1
   yaml: ^2.2.0
-  firebase_analytics: ^5.0.9
+  firebase_analytics: ^5.0.11
   flutter_crashlytics: ^1.0.0
   shared_preferences: ^0.5.6
   url_launcher: ^5.4.1
@@ -47,7 +47,7 @@ dependencies:
   sentry: ">=3.0.0 <4.0.0"
   equatable: ^1.1.0
   purchases_flutter: ^1.1.0
-  cached_network_image: ^2.1.0+1
+  cached_network_image: ^2.2.0+1
   ssh_key:
     git: https://github.com/GitJournal/ssh_key.git
   isolate: ^2.0.3

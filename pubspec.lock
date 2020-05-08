@@ -84,7 +84,7 @@ packages:
       name: cached_network_image
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0+1"
+    version: "2.2.0+1"
   charcode:
     dependency: transitive
     description:
@@ -226,7 +226,7 @@ packages:
       name: firebase_analytics
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.9"
+    version: "5.0.11"
   flutter:
     dependency: "direct main"
     description: flutter
