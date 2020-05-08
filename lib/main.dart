@@ -32,7 +32,7 @@ void main() async {
     await reportError(isolateError.first, isolateError.last);
   }).sendPort);
 
-  runZoned<Future<void>>(() async {
+  runZonedGuarded(() async {
     await JournalApp.main(pref);
-  }, onError: reportError);
+  }, reportError);
 }
