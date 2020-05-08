@@ -23,7 +23,7 @@ dependencies:
   launch_review: ^2.0.0
   device_info: ^0.4.1+4
   flutter_markdown: ^0.3.2
-  flutter_email_sender: ^2.0.3
+  flutter_email_sender: ^3.0.1
   function_types: ^0.0.2
   auto_size_text: ^2.0.1
   fimber: ^0.3.0

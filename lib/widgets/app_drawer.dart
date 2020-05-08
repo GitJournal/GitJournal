@@ -214,7 +214,7 @@ class AppDrawer extends StatelessWidget {
                     "Hey!\n\nI found a bug in GitJournal - \n \n\nVersion: $versionText\nPlatform: $platform",
                 subject: 'GitJournal Bug',
                 recipients: ['bugs@gitjournal.io'],
-                attachmentPath: appLogsFilePath,
+                attachmentPaths: [appLogsFilePath],
               );
 
               await FlutterEmailSender.send(email);
