@@ -186,12 +186,12 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       }
 
       if (fsEntity is Directory) {
-        //Log.d("Found directory ${fsEntity.path}");
+        Log.v("Found directory ${fsEntity.path}");
         var subFolder = NotesFolderFS(this, fsEntity.path);
         if (subFolder.name.startsWith('.')) {
           continue;
         }
-        //Log.d("Found folder ${fsEntity.path}");
+        Log.v("Found folder ${fsEntity.path}");
         _addFolderListeners(subFolder);
 
         _folders.add(subFolder);
@@ -204,10 +204,10 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
       var note = Note(this, fsEntity.path);
       if (!note.filePath.toLowerCase().endsWith('.md')) {
-        //Log.d("Ignoring file ${fsEntity.path}");
+        Log.v("Ignoring file ${fsEntity.path}");
         continue;
       }
-      //Log.d("Found file ${fsEntity.path}");
+      Log.v("Found file ${fsEntity.path}");
       _addNoteListeners(note);
 
       _notes.add(note);
@@ -226,7 +226,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       _entityMap.remove(path);
 
       if (e is Note) {
-        Log.d("File $path was no longer found");
+        Log.v("File $path was no longer found");
         _removeNoteListeners(e);
 
         var i = _notes.indexWhere((n) => n.filePath == path);
@@ -235,7 +235,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         _notes.removeAt(i);
         notifyNoteRemoved(i, note);
       } else {
-        Log.d("Folder $path was no longer found");
+        Log.v("Folder $path was no longer found");
         _removeFolderListeners(e);
 
         var i = _folders.indexWhere((f) => f.folderPath == path);
