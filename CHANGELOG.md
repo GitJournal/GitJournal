@@ -1,3 +1,9 @@
+## [1.51] - 2020-05-08
+* Add a bottom bar in the NoteEditor to show the Folder
+* Add very basic Image support
+* Allow sorting by Title and Filename
+* Add a Debug screen for users to more easily debug issues
+
 ## [1.50] - 2020-05-01
 * Show num of changes to be pushed
 * Follow GitHub's checklist format
