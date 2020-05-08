@@ -27,8 +27,8 @@ class ListPreference extends StatelessWidget {
             builder: (BuildContext context) {
               var children = <Widget>[];
               for (var o in options) {
-                var tile = RadioListTile<String>(
-                  title: Text(o),
+                var tile = LabeledRadio(
+                  label: o,
                   value: o,
                   groupValue: currentOption,
                   onChanged: (String val) {
@@ -39,10 +39,9 @@ class ListPreference extends StatelessWidget {
               }
               return AlertDialog(
                 title: Text(title),
-                content: SingleChildScrollView(
-                  child: ListBody(
-                    children: children,
-                  ),
+                content: Column(
+                  children: children,
+                  mainAxisSize: MainAxisSize.min,
                 ),
                 actions: <Widget>[
                   FlatButton(
@@ -94,6 +93,39 @@ class ProListTile extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(context, "/purchase");
       },
+    );
+  }
+}
+
+class LabeledRadio extends StatelessWidget {
+  const LabeledRadio({
+    this.label,
+    this.groupValue,
+    this.value,
+    this.onChanged,
+  });
+
+  final String label;
+  final String groupValue;
+  final String value;
+  final Function onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        if (value != groupValue) onChanged(value);
+      },
+      child: Row(
+        children: <Widget>[
+          Radio<String>(
+            groupValue: groupValue,
+            value: value,
+            onChanged: onChanged,
+          ),
+          Text(label),
+        ],
+      ),
     );
   }
 }
