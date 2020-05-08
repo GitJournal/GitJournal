@@ -4,6 +4,7 @@ import 'package:device_info/device_info.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/screens/folder_listing.dart';
 import 'package:gitjournal/screens/purchase_screen.dart';
 import 'package:gitjournal/screens/purchase_thankyou_screen.dart';
 import 'package:gitjournal/utils/logger.dart';
@@ -154,18 +155,50 @@ class JournalApp extends StatelessWidget {
       theme: themeData,
       navigatorObservers: <NavigatorObserver>[JournalApp.observer],
       initialRoute: initialRoute,
-      routes: {
-        '/': (context) => HomeScreen(),
-        '/settings': (context) => SettingsScreen(),
-        '/setupRemoteGit': (context) =>
-            GitHostSetupScreen(stateContainer.completeGitHostSetup),
-        '/onBoarding': (context) =>
-            OnBoardingScreen(stateContainer.completeOnBoarding),
-        '/purchase': (context) => PurchaseScreen(),
-        '/purchase_thank_you': (context) => PurchaseThankYouScreen(),
-      },
       debugShowCheckedModeBanner: false,
       //debugShowMaterialGrid: true,
+      onGenerateRoute: (settings) {
+        if (settings.name == '/folders') {
+          return PageRouteBuilder(
+            settings: settings,
+            pageBuilder: (_, __, ___) =>
+                _screenForRoute(settings.name, stateContainer),
+            transitionsBuilder: (_, anim, __, child) {
+              return FadeTransition(opacity: anim, child: child);
+            },
+          );
+        }
+
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => _screenForRoute(
+            settings.name,
+            stateContainer,
+          ),
+        );
+      },
     );
+  }
+
+  Widget _screenForRoute(String route, StateContainer stateContainer) {
+    switch (route) {
+      case '/':
+        return HomeScreen();
+      case '/folders':
+        return FolderListingScreen();
+      case '/settings':
+        return SettingsScreen();
+      case '/setupRemoteGit':
+        return GitHostSetupScreen(stateContainer.completeGitHostSetup);
+      case '/onBoarding':
+        return OnBoardingScreen(stateContainer.completeOnBoarding);
+      case '/purchase':
+        return PurchaseScreen();
+      case '/purchase_thank_you':
+        return PurchaseThankYouScreen();
+    }
+
+    assert(false, "Not found named route in _screenForRoute");
+    return null;
   }
 }

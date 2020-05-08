@@ -8,13 +8,11 @@ import 'package:launch_review/launch_review.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:fetch_app_logs/fetch_app_logs.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
-import 'package:gitjournal/screens/folder_listing.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -105,14 +103,7 @@ class AppDrawer extends StatelessWidget {
               var m = ModalRoute.of(context);
               if (m.settings.name == '/') {
                 Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  PageTransition(
-                    type: PageTransitionType.fade,
-                    child: FolderListingScreen(),
-                    settings: const RouteSettings(name: '/folders'),
-                  ),
-                );
+                Navigator.pushNamed(context, '/folders');
               } else if (m.settings.name == '/folders') {
                 Navigator.pop(context);
               } else {
@@ -126,14 +117,7 @@ class AppDrawer extends StatelessWidget {
                   },
                 );
                 if (!wasParent) {
-                  Navigator.push(
-                    context,
-                    PageTransition(
-                      type: PageTransitionType.fade,
-                      child: FolderListingScreen(),
-                      settings: const RouteSettings(name: '/folders'),
-                    ),
-                  );
+                  Navigator.pushNamed(context, '/folders');
                 }
               }
             },
