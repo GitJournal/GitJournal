@@ -80,7 +80,6 @@ Hello""";
     test('Should read and write tags', () async {
       var content = """---
 title: Foo
-modified: 2017-02-15T22:41:19+01:00
 tags: [A, B]
 ---
 
@@ -105,7 +104,6 @@ Hello""";
 
       var expectedContent = """---
 title: Foo
-modified: 2017-02-15T22:41:19+01:00
 tags: [A, C, D]
 ---
 
