@@ -152,7 +152,7 @@ class CreateFolderButton extends StatelessWidget {
           container.createFolder(notesFolder, folderName);
         }
       },
-      child: Icon(Icons.add),
+      child: const Icon(Icons.add),
     );
   }
 }

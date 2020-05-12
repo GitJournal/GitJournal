@@ -66,7 +66,7 @@ class _FolderViewState extends State<FolderView> {
     var createButton = FloatingActionButton(
       key: const ValueKey("FAB"),
       onPressed: () => _newPost(context, defaultEditor),
-      child: Icon(Icons.add),
+      child: const Icon(Icons.add),
     );
 
     // If this is a Virtual folder which doesn't overwrite the FS folder's name

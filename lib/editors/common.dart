@@ -240,7 +240,7 @@ Widget _buildBottomMenuSheet(
           },
         ),
         ListTile(
-          leading: Icon(Icons.edit),
+          leading: const Icon(Icons.edit),
           title: Text(tr('editors.common.editFileName')),
           onTap: () {
             var note = editorState.getNote();

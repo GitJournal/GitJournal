@@ -394,7 +394,7 @@ class AddItemButton extends StatelessWidget {
             width: 24.0,
             child: IconButton(
               padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-              icon: Icon(Icons.add),
+              icon: const Icon(Icons.add),
               onPressed: onPressed,
             ),
           ),
