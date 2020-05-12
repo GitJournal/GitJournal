@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
@@ -16,6 +17,7 @@ abstract class Editor {
   NoteCallback get noteEditorChooserSelected;
   NoteCallback get exitEditorSelected;
   NoteCallback get renameNoteSelected;
+  NoteCallback get editTagsSelected;
   NoteCallback get moveNoteToFolderSelected;
   NoteCallback get discardChangesSelected;
 }
@@ -225,6 +227,16 @@ Widget _buildBottomMenuSheet(
             Navigator.of(context).pop();
 
             Share.share(note.body);
+          },
+        ),
+        ListTile(
+          leading: const FaIcon(FontAwesomeIcons.tag),
+          title: Text(tr('editors.common.tags')),
+          onTap: () {
+            var note = editorState.getNote();
+            Navigator.of(context).pop();
+
+            editor.editTagsSelected(note);
           },
         ),
         ListTile(

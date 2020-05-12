@@ -30,4 +30,5 @@ editors:
     takePhoto: Take Photo
     addImage: Add Image from Gallery
     editFileName: Edit File Name
+    tags: Edit Tags
 pro: Pro

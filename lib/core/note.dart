@@ -130,6 +130,7 @@ class Note with NotesNotifier {
   }
 
   set tags(Set<String> tags) {
+    assert(tags != null);
     if (!canHaveMetadata) return;
 
     _tags = tags;

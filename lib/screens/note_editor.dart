@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/md_yaml_doc.dart';
@@ -8,8 +9,10 @@ import 'package:gitjournal/editors/markdown_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
 import 'package:gitjournal/editors/checklist_editor.dart';
 import 'package:gitjournal/state_container.dart';
+import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/note_editor_selector.dart';
+import 'package:gitjournal/widgets/note_tag_editor.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -101,6 +104,7 @@ class NoteEditorState extends State<NoteEditor> {
           noteEditorChooserSelected: _noteEditorChooserSelected,
           exitEditorSelected: _exitEditorSelected,
           renameNoteSelected: _renameNoteSelected,
+          editTagsSelected: _editTagsSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
           isNewNote: _isNewNote,
@@ -114,6 +118,7 @@ class NoteEditorState extends State<NoteEditor> {
           noteEditorChooserSelected: _noteEditorChooserSelected,
           exitEditorSelected: _exitEditorSelected,
           renameNoteSelected: _renameNoteSelected,
+          editTagsSelected: _editTagsSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
           isNewNote: _isNewNote,
@@ -127,6 +132,7 @@ class NoteEditorState extends State<NoteEditor> {
           noteEditorChooserSelected: _noteEditorChooserSelected,
           exitEditorSelected: _exitEditorSelected,
           renameNoteSelected: _renameNoteSelected,
+          editTagsSelected: _editTagsSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
           isNewNote: _isNewNote,
@@ -140,6 +146,7 @@ class NoteEditorState extends State<NoteEditor> {
           noteEditorChooserSelected: _noteEditorChooserSelected,
           exitEditorSelected: _exitEditorSelected,
           renameNoteSelected: _renameNoteSelected,
+          editTagsSelected: _editTagsSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
           isNewNote: _isNewNote,
@@ -250,9 +257,9 @@ class NoteEditorState extends State<NoteEditor> {
 
       bool hasBeenModified = newSimplified != originalSimplified;
       if (hasBeenModified) {
-        print("Note modified");
-        print("Original: $originalSimplified");
-        print("New: $newSimplified");
+        Log.d("Note modified");
+        Log.d("Original: $originalSimplified");
+        Log.d("New: $newSimplified");
         return true;
       }
     }
@@ -262,7 +269,7 @@ class NoteEditorState extends State<NoteEditor> {
   void _saveNote(Note note) {
     if (!_noteModified(note)) return;
 
-    print("Note modified - saving");
+    Log.d("Note modified - saving");
     var stateContainer = Provider.of<StateContainer>(context, listen: false);
     _isNewNote ? stateContainer.addNote(note) : stateContainer.updateNote(note);
   }
@@ -333,5 +340,25 @@ class NoteEditorState extends State<NoteEditor> {
         ),
       ],
     );
+  }
+
+  void _editTagsSelected(Note _note) async {
+    Log.i("Note Tags: ${_note.tags}");
+    var route = MaterialPageRoute(
+      builder: (context) => NoteTagEditor(
+        selectedTags: note.tags,
+        allTags: note.tags,
+      ),
+    );
+    var newTags = await Navigator.of(context).push(route);
+    assert(newTags != null);
+
+    Function eq = const SetEquality().equals;
+    if (!eq(note.tags, newTags)) {
+      setState(() {
+        Log.i("Settings tags to: $newTags");
+        note.tags = newTags;
+      });
+    }
   }
 }

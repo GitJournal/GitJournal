@@ -1,4 +1,7 @@
 import 'dart:collection';
+import 'package:collection/collection.dart';
+
+Function _deepEq = const DeepCollectionEquality().equals;
 
 class MdYamlDoc {
   String body = "";
@@ -24,13 +27,7 @@ class MdYamlDoc {
       other is MdYamlDoc &&
           runtimeType == other.runtimeType &&
           body == other.body &&
-          _equalMaps(props, other.props);
-
-  static bool _equalMaps(Map a, Map b) {
-    if (a.length != b.length) return false;
-    return a.keys
-        .every((dynamic key) => b.containsKey(key) && a[key] == b[key]);
-  }
+          _deepEq(props, other.props);
 
   @override
   String toString() {
