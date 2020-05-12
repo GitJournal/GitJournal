@@ -132,7 +132,7 @@ class EditorBottomBar extends StatelessWidget {
     }
 
     var addIcon = IconButton(
-      icon: Icon(Icons.add),
+      icon: Icon(Icons.attach_file),
       onPressed: () {
         showModalBottomSheet(
           context: context,
