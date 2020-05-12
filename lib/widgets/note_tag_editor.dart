@@ -34,7 +34,7 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
 
-    return Scaffold(
+    var s = Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -53,6 +53,14 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
         ),
       ),
       body: buildView(_textController.text),
+    );
+
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.of(context).pop(_selectedTags);
+        return false;
+      },
+      child: s,
     );
   }
 
