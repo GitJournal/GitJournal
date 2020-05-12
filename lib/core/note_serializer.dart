@@ -1,6 +1,8 @@
 import 'package:gitjournal/utils/datetime.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
+import 'package:gitjournal/utils/logger.dart';
+import 'package:yaml/yaml.dart';
 
 import 'md_yaml_doc.dart';
 import 'note.dart';
@@ -17,6 +19,7 @@ class NoteSerializationSettings {
   String createdKey = "created";
   String titleKey = "title";
   String typeKey = "type";
+  String tagsKey = "tags";
 }
 
 class NoteSerializer implements NoteSerializerInterface {
@@ -52,6 +55,12 @@ class NoteSerializer implements NoteSerializerInterface {
       data.props[settings.typeKey] = type;
     } else {
       data.props.remove(settings.typeKey);
+    }
+
+    if (note.tags.isEmpty) {
+      data.props.remove(settings.tagsKey);
+    } else {
+      data.props[settings.tagsKey] = note.tags;
     }
 
     data.body = emojiParser.unemojify(note.body);
@@ -94,6 +103,15 @@ class NoteSerializer implements NoteSerializerInterface {
       default:
         note.type = NoteType.Unknown;
         break;
+    }
+
+    try {
+      var tags = data.props[settings.tagsKey] as YamlList;
+      if (tags != null) {
+        note.tags = tags.map((t) => t.toString()).toList();
+      }
+    } catch (e) {
+      Log.e("Note Decoding Failed: $e");
     }
   }
 }

@@ -76,5 +76,43 @@ Hello""";
       var actualContent = File(notePath).readAsStringSync();
       expect(actualContent, equals(expectedContent));
     });
+
+    test('Should read and write tags', () async {
+      var content = """---
+title: Foo
+modified: 2017-02-15T22:41:19+01:00
+tags: [A, B]
+---
+
+Hello""";
+
+      var notePath = p.join(tempDir.path, "note5.md");
+      File(notePath).writeAsString(content);
+
+      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var note = Note(parentFolder, notePath);
+      await note.load();
+
+      expect(note.tags[0], 'A');
+      expect(note.tags[1], 'B');
+      expect(note.tags.length, 2);
+
+      note.tags = [...note.tags]..add('C');
+      note.tags.add('D');
+      note.tags.remove('B');
+
+      await note.save();
+
+      var expectedContent = """---
+title: Foo
+modified: 2017-02-15T22:41:19+01:00
+tags: [A, C, D]
+---
+
+Hello""";
+
+      var actualContent = File(notePath).readAsStringSync();
+      expect(actualContent, equals(expectedContent));
+    });
   });
 }
