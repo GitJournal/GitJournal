@@ -60,7 +60,7 @@ class NoteSerializer implements NoteSerializerInterface {
     if (note.tags.isEmpty) {
       data.props.remove(settings.tagsKey);
     } else {
-      data.props[settings.tagsKey] = note.tags;
+      data.props[settings.tagsKey] = note.tags.toList();
     }
 
     data.body = emojiParser.unemojify(note.body);
@@ -108,7 +108,7 @@ class NoteSerializer implements NoteSerializerInterface {
     try {
       var tags = data.props[settings.tagsKey] as YamlList;
       if (tags != null) {
-        note.tags = tags.map((t) => t.toString()).toList();
+        note.tags = tags.map((t) => t.toString()).toSet();
       }
     } catch (e) {
       Log.e("Note Decoding Failed: $e");

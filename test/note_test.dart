@@ -93,11 +93,11 @@ Hello""";
       var note = Note(parentFolder, notePath);
       await note.load();
 
-      expect(note.tags[0], 'A');
-      expect(note.tags[1], 'B');
+      expect(note.tags.contains('A'), true);
+      expect(note.tags.contains('B'), true);
       expect(note.tags.length, 2);
 
-      note.tags = [...note.tags]..add('C');
+      note.tags = {...note.tags}..add('C');
       note.tags.add('D');
       note.tags.remove('B');
 

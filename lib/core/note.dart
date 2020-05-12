@@ -36,7 +36,7 @@ class Note with NotesNotifier {
   DateTime _modified;
   String _body = "";
   NoteType _type = NoteType.Unknown;
-  List<String> _tags = [];
+  Set<String> _tags = {};
 
   MdYamlDoc _data = MdYamlDoc();
   NoteSerializer noteSerializer = NoteSerializer();
@@ -125,11 +125,11 @@ class Note with NotesNotifier {
     _notifyModified();
   }
 
-  List<String> get tags {
+  Set<String> get tags {
     return _tags;
   }
 
-  set tags(List<String> tags) {
+  set tags(Set<String> tags) {
     if (!canHaveMetadata) return;
 
     _tags = tags;
