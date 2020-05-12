@@ -24,4 +24,10 @@ settings:
 editors:
   checklist:
     add: Add Item
+  common:
+    discard: Discard Changes
+    share: Share Note
+    takePhoto: Take Photo
+    addImage: Add Image from Gallery
+    editFileName: Edit File Name
 pro: Pro

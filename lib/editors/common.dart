@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
@@ -23,8 +24,6 @@ abstract class EditorState {
   Note getNote();
   Future<void> addImage(File file);
 }
-
-enum DropDownChoices { Rename, DiscardChanges, Share }
 
 class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Editor editor;
@@ -71,41 +70,6 @@ class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
             editor.noteDeletionSelected(note);
           },
         ),
-        PopupMenuButton<DropDownChoices>(
-          onSelected: (DropDownChoices choice) {
-            switch (choice) {
-              case DropDownChoices.Rename:
-                var note = editorState.getNote();
-                editor.renameNoteSelected(note);
-                return;
-
-              case DropDownChoices.DiscardChanges:
-                var note = editorState.getNote();
-                editor.discardChangesSelected(note);
-                return;
-
-              case DropDownChoices.Share:
-                var note = editorState.getNote();
-                Share.share(note.body);
-                return;
-            }
-          },
-          itemBuilder: (BuildContext context) =>
-              <PopupMenuEntry<DropDownChoices>>[
-            const PopupMenuItem<DropDownChoices>(
-              value: DropDownChoices.Rename,
-              child: Text('Edit File Name'),
-            ),
-            const PopupMenuItem<DropDownChoices>(
-              value: DropDownChoices.DiscardChanges,
-              child: Text('Discard Changes'),
-            ),
-            const PopupMenuItem<DropDownChoices>(
-              value: DropDownChoices.Share,
-              child: Text('Share Note'),
-            ),
-          ],
-        ),
       ],
     );
   }
@@ -142,6 +106,17 @@ class EditorBottomBar extends StatelessWidget {
       },
     );
 
+    var menuIcon = IconButton(
+      icon: Icon(Icons.more_vert),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (c) => _buildBottomMenuSheet(c, editor, editorState),
+          elevation: 0,
+        );
+      },
+    );
+
     return BottomAppBar(
       elevation: 0.0,
       color: Theme.of(context).scaffoldBackgroundColor,
@@ -165,15 +140,7 @@ class EditorBottomBar extends StatelessWidget {
               },
             ),
           ),
-          // Just so there is equal padding on the right side
-          Visibility(
-            child: addIcon,
-            visible: false,
-            maintainSize: true,
-            maintainAnimation: true,
-            maintainState: true,
-            maintainInteractivity: false,
-          ),
+          menuIcon,
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       ),
@@ -192,7 +159,7 @@ Widget _buildAddBottomSheet(
       children: <Widget>[
         ListTile(
           leading: Icon(Icons.camera),
-          title: const Text("Take Photo"),
+          title: Text(tr('editors.common.takePhoto')),
           onTap: () async {
             try {
               var image = await ImagePicker.pickImage(
@@ -210,7 +177,7 @@ Widget _buildAddBottomSheet(
         ),
         ListTile(
           leading: Icon(Icons.image),
-          title: const Text("Add Image"),
+          title: Text(tr('editors.common.addImage')),
           onTap: () async {
             try {
               var image = await ImagePicker.pickImage(
@@ -224,6 +191,50 @@ Widget _buildAddBottomSheet(
               reportError(e, StackTrace.current);
             }
             Navigator.of(context).pop();
+          },
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _buildBottomMenuSheet(
+  BuildContext context,
+  Editor editor,
+  EditorState editorState,
+) {
+  return Container(
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        ListTile(
+          leading: Icon(Icons.undo),
+          title: Text(tr('editors.common.discard')),
+          onTap: () {
+            var note = editorState.getNote();
+            Navigator.of(context).pop();
+
+            editor.discardChangesSelected(note);
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.share),
+          title: Text(tr('editors.common.share')),
+          onTap: () {
+            var note = editorState.getNote();
+            Navigator.of(context).pop();
+
+            Share.share(note.body);
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.edit),
+          title: Text(tr('editors.common.editFileName')),
+          onTap: () {
+            var note = editorState.getNote();
+            Navigator.of(context).pop();
+
+            editor.renameNoteSelected(note);
           },
         ),
       ],
