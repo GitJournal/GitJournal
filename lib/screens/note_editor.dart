@@ -3,6 +3,7 @@ import 'package:collection/collection.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/md_yaml_doc.dart';
+import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/editors/journal_editor.dart';
 import 'package:gitjournal/editors/markdown_editor.dart';
@@ -344,10 +345,15 @@ class NoteEditorState extends State<NoteEditor> {
 
   void _editTagsSelected(Note _note) async {
     Log.i("Note Tags: ${_note.tags}");
+
+    final rootFolder = Provider.of<NotesFolderFS>(context);
+    var allTags = _fetchTags(rootFolder, {});
+    Log.i("All Tags: $allTags");
+
     var route = MaterialPageRoute(
       builder: (context) => NoteTagEditor(
         selectedTags: note.tags,
-        allTags: note.tags,
+        allTags: allTags,
       ),
     );
     var newTags = await Navigator.of(context).push(route);
@@ -361,4 +367,16 @@ class NoteEditorState extends State<NoteEditor> {
       });
     }
   }
+}
+
+Set<String> _fetchTags(NotesFolder folder, Set<String> tags) {
+  for (var note in folder.notes) {
+    tags.addAll(note.tags);
+  }
+
+  for (var folder in folder.subFolders) {
+    tags = _fetchTags(folder, tags);
+  }
+
+  return tags;
 }
