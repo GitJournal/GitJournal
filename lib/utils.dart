@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/screens/note_editor.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 
@@ -42,4 +45,19 @@ void showSnackbar(BuildContext context, String message) {
   Scaffold.of(context)
     ..removeCurrentSnackBar()
     ..showSnackBar(snackBar);
+}
+
+NotesFolderFS getFolderForEditor(
+  NotesFolderFS rootFolder,
+  EditorType editorType,
+) {
+  var spec = Settings.instance.defaultNewNoteFolderSpec;
+  var journalSpec = Settings.instance.journalEditordefaultNewNoteFolderSpec;
+
+  switch (editorType) {
+    case EditorType.Journal:
+      return rootFolder.getFolderWithSpec(journalSpec);
+    default:
+      return rootFolder.getFolderWithSpec(spec);
+  }
 }

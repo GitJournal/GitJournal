@@ -10,7 +10,6 @@ import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/screens/settings_screen.dart';
-import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
@@ -209,19 +208,12 @@ class _FolderViewState extends State<FolderView> {
   }
 
   void _newPost(BuildContext context, EditorType editorType) async {
-    NotesFolderFS fsFolder = widget.notesFolder.fsFolder;
-    if (widget.notesFolder.name != fsFolder.name) {
-      var spec = Settings.instance.defaultNewNoteFolderSpec;
-      var journalSpec = Settings.instance.journalEditordefaultNewNoteFolderSpec;
-
-      switch (editorType) {
-        case EditorType.Journal:
-          fsFolder = fsFolder.getFolderWithSpec(journalSpec);
-          break;
-        default:
-          fsFolder = fsFolder.getFolderWithSpec(spec);
-          break;
-      }
+    var folder = widget.notesFolder;
+    NotesFolderFS fsFolder = folder.fsFolder;
+    var isVirtualFolder = folder.name != folder.fsFolder.name;
+    if (isVirtualFolder) {
+      var rootFolder = Provider.of<NotesFolderFS>(context);
+      fsFolder = getFolderForEditor(rootFolder, editorType);
     }
 
     var route = MaterialPageRoute(
