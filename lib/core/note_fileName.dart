@@ -15,15 +15,15 @@ String getFileName(Note note) {
       if (note.title.isNotEmpty) {
         return buildTitleFileName(note.parent.folderPath, note.title);
       } else {
-        return toSimpleDateTime(date) + ".md";
+        return toSimpleDateTime(date);
       }
       break;
     case NoteFileNameFormat.Iso8601:
-      return toIso8601(date) + ".md";
+      return toIso8601(date);
     case NoteFileNameFormat.Iso8601WithTimeZone:
-      return toIso8601WithTimezone(date) + ".md";
+      return toIso8601WithTimezone(date);
     case NoteFileNameFormat.Iso8601WithTimeZoneWithoutColon:
-      return toIso8601WithTimezone(date).replaceAll(":", "_") + ".md";
+      return toIso8601WithTimezone(date).replaceAll(":", "_");
   }
 
   return date.toString();
