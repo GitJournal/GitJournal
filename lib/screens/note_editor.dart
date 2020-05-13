@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 
@@ -25,22 +27,25 @@ class NoteEditor extends StatefulWidget {
   final EditorType defaultEditorType;
 
   final String existingText;
+  final List<String> existingImages;
 
   NoteEditor.fromNote(this.note)
       : notesFolder = note.parent,
         defaultEditorType = null,
-        existingText = null;
+        existingText = null,
+        existingImages = null;
 
   NoteEditor.newNote(
     this.notesFolder,
     this.defaultEditorType, {
     this.existingText,
+    this.existingImages,
   }) : note = null;
 
   @override
   NoteEditorState createState() {
     if (note == null) {
-      return NoteEditorState.newNote(notesFolder, existingText);
+      return NoteEditorState.newNote(notesFolder, existingText, existingImages);
     } else {
       return NoteEditorState.fromNote(note);
     }
@@ -63,10 +68,25 @@ class NoteEditorState extends State<NoteEditor> {
     return widget.note == null;
   }
 
-  NoteEditorState.newNote(NotesFolderFS folder, String existingText) {
+  NoteEditorState.newNote(
+    NotesFolderFS folder,
+    String existingText,
+    List<String> existingImages,
+  ) {
     note = Note.newNote(folder);
     if (existingText != null) {
       note.body = existingText;
+    }
+
+    if (existingImages != null) {
+      for (var imagePath in existingImages) {
+        try {
+          var file = File(imagePath);
+          note.addImageSync(file);
+        } catch (e) {
+          Log.e(e);
+        }
+      }
     }
   }
 

@@ -146,6 +146,7 @@ class _JournalAppState extends State<JournalApp> {
 
   StreamSubscription _intentDataStreamSubscription;
   String _sharedText;
+  List<String> _sharedImages;
 
   @override
   void initState() {
@@ -194,30 +195,8 @@ class _JournalAppState extends State<JournalApp> {
   }
 
   void _initShareSubscriptions() {
-    // For sharing images coming from outside the app while the app is in the memory
-    /*
-    _intentDataStreamSubscription =
-        ReceiveSharingIntent.getMediaStream().listen((List<SharedMediaFile> value) {
-      setState(() {
-        print("Shared:" + (_sharedFiles?.map((f)=> f.path)?.join(",") ?? ""));
-        _sharedFiles = value;
-      });
-    }, onError: (err) {
-      print("getIntentDataStream error: $err");
-    });
-
-    // For sharing images coming from outside the app while the app is closed
-    ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
-      setState(() {
-        _sharedFiles = value;
-      });
-    });
-    */
-
-    // For sharing or opening text coming from outside the app while the app is in the memory
     var handleShare = () {
-      print("handleShare $_sharedText");
-      if (_sharedText == null) {
+      if (_sharedText == null && _sharedImages == null) {
         return;
       }
 
@@ -225,9 +204,35 @@ class _JournalAppState extends State<JournalApp> {
       _navigatorKey.currentState.pushNamed("/newNote/$editor");
     };
 
+    // For sharing images coming from outside the app while the app is in the memory
+    _intentDataStreamSubscription = ReceiveSharingIntent.getMediaStream()
+        .listen((List<SharedMediaFile> value) {
+      Log.d("Received Share $value");
+      if (value == null) return;
+
+      setState(() {
+        _sharedImages = value.map((f) => f.path)?.toList();
+      });
+      WidgetsBinding.instance.addPostFrameCallback((_) => handleShare());
+    }, onError: (err) {
+      Log.e("getIntentDataStream error: $err");
+    });
+
+    // For sharing images coming from outside the app while the app is closed
+    ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
+      Log.d("Received Share with App running $value");
+      if (value == null) return;
+
+      setState(() {
+        _sharedImages = value.map((f) => f.path)?.toList();
+      });
+      WidgetsBinding.instance.addPostFrameCallback((_) => handleShare());
+    });
+
+    // For sharing or opening text coming from outside the app while the app is in the memory
     _intentDataStreamSubscription =
         ReceiveSharingIntent.getTextStream().listen((String value) {
-      Log.i("Received Share $value");
+      Log.d("Received Share $value");
       setState(() {
         _sharedText = value;
       });
@@ -238,7 +243,7 @@ class _JournalAppState extends State<JournalApp> {
 
     // For sharing or opening text coming from outside the app while the app is closed
     ReceiveSharingIntent.getInitialText().then((String value) {
-      Log.i("Received Share with App running $value");
+      Log.d("Received Share with App running $value");
       setState(() {
         _sharedText = value;
       });
@@ -335,10 +340,20 @@ class _JournalAppState extends State<JournalApp> {
       Log.i("EditorType: $et");
 
       var rootFolder = widget.appState.notesFolder;
+      var sharedImages = _sharedImages;
+      var sharedText = _sharedText;
+
+      _sharedText = null;
+      _sharedImages = null;
+
+      Log.d("sharedText: $sharedText");
+      Log.d("sharedImages: $sharedImages");
+
       return NoteEditor.newNote(
         getFolderForEditor(rootFolder, et),
         et,
-        existingText: _sharedText,
+        existingText: sharedText,
+        existingImages: sharedImages,
       );
     }
 

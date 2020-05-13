@@ -274,6 +274,14 @@ class Note with NotesNotifier {
     body = "$body\n ![Image](./$imageFileName)\n";
   }
 
+  Future<void> addImageSync(File file) async {
+    var imageFileName = p.basename(file.path);
+    var imagePath = p.join(parent.folderPath, imageFileName);
+    file.copySync(imagePath);
+
+    body = "$body\n ![Image](./$imageFileName)\n";
+  }
+
   @override
   int get hashCode => _filePath.hashCode;
 
