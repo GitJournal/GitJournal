@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
@@ -19,6 +20,7 @@ import 'package:easy_localization_loader/easy_localization_loader.dart';
 
 import 'package:git_bindings/git_bindings.dart';
 import 'package:quick_actions/quick_actions.dart';
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 import 'package:gitjournal/apis/git.dart';
 import 'package:gitjournal/settings.dart';
@@ -142,6 +144,9 @@ class _JournalAppState extends State<JournalApp> {
   final _navigatorKey = GlobalKey<NavigatorState>();
   String _pendingShortcut;
 
+  StreamSubscription _intentDataStreamSubscription;
+  String _sharedText;
+
   @override
   void initState() {
     super.initState();
@@ -176,6 +181,8 @@ class _JournalAppState extends State<JournalApp> {
     ]);
 
     print("Nav key $_navigatorKey");
+
+    _initShareSubscriptions();
   }
 
   void _afterBuild(BuildContext context) {
@@ -184,6 +191,65 @@ class _JournalAppState extends State<JournalApp> {
       _navigatorKey.currentState.pushNamed("/newNote/$_pendingShortcut");
       _pendingShortcut = null;
     }
+  }
+
+  void _initShareSubscriptions() {
+    // For sharing images coming from outside the app while the app is in the memory
+    /*
+    _intentDataStreamSubscription =
+        ReceiveSharingIntent.getMediaStream().listen((List<SharedMediaFile> value) {
+      setState(() {
+        print("Shared:" + (_sharedFiles?.map((f)=> f.path)?.join(",") ?? ""));
+        _sharedFiles = value;
+      });
+    }, onError: (err) {
+      print("getIntentDataStream error: $err");
+    });
+
+    // For sharing images coming from outside the app while the app is closed
+    ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
+      setState(() {
+        _sharedFiles = value;
+      });
+    });
+    */
+
+    // For sharing or opening text coming from outside the app while the app is in the memory
+    var handleShare = () {
+      print("handleShare $_sharedText");
+      if (_sharedText == null) {
+        return;
+      }
+
+      var editor = Settings.instance.defaultEditor.toInternalString();
+      _navigatorKey.currentState.pushNamed("/newNote/$editor");
+    };
+
+    _intentDataStreamSubscription =
+        ReceiveSharingIntent.getTextStream().listen((String value) {
+      Log.i("Received Share $value");
+      setState(() {
+        _sharedText = value;
+      });
+      WidgetsBinding.instance.addPostFrameCallback((_) => handleShare());
+    }, onError: (err) {
+      Log.e("getLinkStream error: $err");
+    });
+
+    // For sharing or opening text coming from outside the app while the app is closed
+    ReceiveSharingIntent.getInitialText().then((String value) {
+      Log.i("Received Share with App running $value");
+      setState(() {
+        _sharedText = value;
+      });
+      WidgetsBinding.instance.addPostFrameCallback((_) => handleShare());
+    });
+  }
+
+  @override
+  void dispose() {
+    _intentDataStreamSubscription.cancel();
+    super.dispose();
   }
 
   @override
@@ -269,7 +335,11 @@ class _JournalAppState extends State<JournalApp> {
       Log.i("EditorType: $et");
 
       var rootFolder = widget.appState.notesFolder;
-      return NoteEditor.newNote(getFolderForEditor(rootFolder, et), et);
+      return NoteEditor.newNote(
+        getFolderForEditor(rootFolder, et),
+        et,
+        existingText: _sharedText,
+      );
     }
 
     assert(false, "Not found named route in _screenForRoute");

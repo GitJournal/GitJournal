@@ -24,15 +24,23 @@ class NoteEditor extends StatefulWidget {
   final NotesFolderFS notesFolder;
   final EditorType defaultEditorType;
 
+  final String existingText;
+
   NoteEditor.fromNote(this.note)
       : notesFolder = note.parent,
-        defaultEditorType = null;
-  NoteEditor.newNote(this.notesFolder, this.defaultEditorType) : note = null;
+        defaultEditorType = null,
+        existingText = null;
+
+  NoteEditor.newNote(
+    this.notesFolder,
+    this.defaultEditorType, {
+    this.existingText,
+  }) : note = null;
 
   @override
   NoteEditorState createState() {
     if (note == null) {
-      return NoteEditorState.newNote(notesFolder);
+      return NoteEditorState.newNote(notesFolder, existingText);
     } else {
       return NoteEditorState.fromNote(note);
     }
@@ -55,8 +63,11 @@ class NoteEditorState extends State<NoteEditor> {
     return widget.note == null;
   }
 
-  NoteEditorState.newNote(NotesFolderFS folder) {
+  NoteEditorState.newNote(NotesFolderFS folder, String existingText) {
     note = Note.newNote(folder);
+    if (existingText != null) {
+      note.body = existingText;
+    }
   }
 
   NoteEditorState.fromNote(this.note) {

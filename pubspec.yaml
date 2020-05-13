@@ -56,6 +56,7 @@ dependencies:
   easy_localization: ^2.2.1
   easy_localization_loader: ^0.0.2
   quick_actions: ^0.4.0+5
+  receive_sharing_intent: ^1.4.0+2
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.2"
