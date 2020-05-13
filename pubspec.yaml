@@ -36,7 +36,7 @@ dependencies:
     #path: /Users/vishesh/src/gitjournal/dart_git
   fetch_app_logs: ^0.0.3
   flutter_runtime_env: ^0.0.2
-  yaml_serializer: ^0.0.5
+  yaml_serializer: ^0.0.6
   connectivity: ^0.4.6+1
   flutter_emoji: ">= 2.0.0"
   git_url_parse2: ^0.0.1
