@@ -5,8 +5,10 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/screens/folder_listing.dart';
+import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/screens/purchase_screen.dart';
 import 'package:gitjournal/screens/purchase_thankyou_screen.dart';
+import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as p;
@@ -16,6 +18,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 
 import 'package:git_bindings/git_bindings.dart';
+import 'package:quick_actions/quick_actions.dart';
 
 import 'package:gitjournal/apis/git.dart';
 import 'package:gitjournal/settings.dart';
@@ -31,7 +34,9 @@ import 'screens/onboarding_screens.dart';
 import 'screens/settings_screen.dart';
 import 'setup/screens.dart';
 
-class JournalApp extends StatelessWidget {
+class JournalApp extends StatefulWidget {
+  final AppState appState;
+
   static Future main(SharedPreferences pref) async {
     await Log.init();
 
@@ -68,7 +73,7 @@ class JournalApp extends StatelessWidget {
         return StateContainer(appState);
       },
       child: ChangeNotifierProvider(
-        child: JournalApp(),
+        child: JournalApp(appState),
         create: (_) {
           assert(appState.notesFolder != null);
           return appState.notesFolder;
@@ -127,6 +132,60 @@ class JournalApp extends StatelessWidget {
 
   static bool isInDebugMode = false;
 
+  JournalApp(this.appState);
+
+  @override
+  _JournalAppState createState() => _JournalAppState();
+}
+
+class _JournalAppState extends State<JournalApp> {
+  final _navigatorKey = GlobalKey<NavigatorState>();
+  String _pendingShortcut;
+
+  @override
+  void initState() {
+    super.initState();
+    final QuickActions quickActions = QuickActions();
+    quickActions.initialize((String shortcutType) {
+      Log.i("Quick Action Open: $shortcutType");
+      if (_navigatorKey.currentState == null) {
+        Log.i("Quick Action delegating for after build");
+        WidgetsBinding.instance
+            .addPostFrameCallback((_) => _afterBuild(context));
+        setState(() {
+          _pendingShortcut = shortcutType;
+        });
+        return;
+      }
+      _navigatorKey.currentState.pushNamed("/newNote/$shortcutType");
+    });
+
+    quickActions.setShortcutItems(<ShortcutItem>[
+      ShortcutItem(
+        type: 'Markdown',
+        localizedTitle: tr('actions.newNote'),
+      ),
+      ShortcutItem(
+        type: 'Checklist',
+        localizedTitle: tr('actions.newChecklist'),
+      ),
+      ShortcutItem(
+        type: 'Journal',
+        localizedTitle: tr('actions.newJournal'),
+      ),
+    ]);
+
+    print("Nav key $_navigatorKey");
+  }
+
+  void _afterBuild(BuildContext context) {
+    print("_afterBuild $_pendingShortcut");
+    if (_pendingShortcut != null) {
+      _navigatorKey.currentState.pushNamed("/newNote/$_pendingShortcut");
+      _pendingShortcut = null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return DynamicTheme(
@@ -149,6 +208,7 @@ class JournalApp extends StatelessWidget {
 
     return MaterialApp(
       key: const ValueKey("App"),
+      navigatorKey: _navigatorKey,
       title: 'GitJournal',
 
       localizationsDelegates: EasyLocalization.of(context).delegates,
@@ -199,6 +259,17 @@ class JournalApp extends StatelessWidget {
         return PurchaseScreen();
       case '/purchase_thank_you':
         return PurchaseThankYouScreen();
+    }
+
+    if (route.startsWith('/newNote/')) {
+      var type = route.substring('/newNote/'.length);
+      var et = SettingsEditorType.fromInternalString(type).toEditorType();
+
+      Log.i("New Note - $route");
+      Log.i("EditorType: $et");
+
+      var rootFolder = widget.appState.notesFolder;
+      return NoteEditor.newNote(getFolderForEditor(rootFolder, et), et);
     }
 
     assert(false, "Not found named route in _screenForRoute");
