@@ -30,6 +30,9 @@ String getFileName(Note note) {
 }
 
 String buildTitleFileName(String parentDir, String title) {
+  // Sanitize the title - these characters are not allowed in Windows
+  title = title.replaceAll(RegExp(r'[/<\>":|?*]'), '_');
+
   var fileName = title + ".md";
   var fullPath = p.join(parentDir, fileName);
   var file = File(fullPath);
