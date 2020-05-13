@@ -54,7 +54,7 @@ class Settings {
         pref.getString("noteFileNameFormat"));
 
     collectUsageStatistics =
-        pref.getBool("collectCrashReports") ?? collectUsageStatistics;
+        pref.getBool("collectUsageStatistics") ?? collectUsageStatistics;
     collectCrashReports =
         pref.getBool("collectCrashReports") ?? collectCrashReports;
 
