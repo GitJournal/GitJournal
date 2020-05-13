@@ -35,13 +35,13 @@ Future migrateGitRepo({
 
     await file.copy(toPath);
 
-    var gitRepo = GitRepo(
-      folderPath: toGitRepoPath,
+    var gitRepo = GitRepo(folderPath: toGitRepoPath);
+    await gitRepo.add(fileName);
+    await gitRepo.commit(
+      message: "Added Note",
       authorEmail: Settings.instance.gitAuthorEmail,
       authorName: Settings.instance.gitAuthor,
     );
-    await gitRepo.add(fileName);
-    await gitRepo.commit(message: "Added Note");
   }
   Log.d("migrateGitRepo: Done");
 }

@@ -477,11 +477,13 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
       var repo = GitRepo(
         folderPath: repoPath,
-        authorName: Settings.instance.gitAuthor,
-        authorEmail: Settings.instance.gitAuthorEmail,
       );
       await repo.add('.gitignore');
-      await repo.commit(message: "Add gitignore file");
+      await repo.commit(
+        message: "Add gitignore file",
+        authorEmail: Settings.instance.gitAuthorEmail,
+        authorName: Settings.instance.gitAuthor,
+      );
     }
 
     getAnalytics().logEvent(

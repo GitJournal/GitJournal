@@ -29,11 +29,7 @@ class GitNoteRepository {
 
   GitNoteRepository({
     @required this.gitDirPath,
-  }) : _gitRepo = GitRepo(
-          folderPath: gitDirPath,
-          authorEmail: Settings.instance.gitAuthorEmail,
-          authorName: Settings.instance.gitAuthor,
-        );
+  }) : _gitRepo = GitRepo(folderPath: gitDirPath);
 
   Future<NoteRepoResult> addNote(Note note) async {
     return _addNote(note, "Added Note");
@@ -44,6 +40,8 @@ class GitNoteRepository {
     await _gitRepo.add(".");
     await _gitRepo.commit(
       message: commitMessage,
+      authorEmail: Settings.instance.gitAuthorEmail,
+      authorName: Settings.instance.gitAuthor,
     );
 
     return NoteRepoResult(noteFilePath: note.filePath, error: false);
@@ -53,6 +51,8 @@ class GitNoteRepository {
     await _gitRepo.add(".");
     await _gitRepo.commit(
       message: "Created New Folder",
+      authorEmail: Settings.instance.gitAuthorEmail,
+      authorName: Settings.instance.gitAuthor,
     );
 
     return NoteRepoResult(noteFilePath: folder.folderPath, error: false);
@@ -65,6 +65,8 @@ class GitNoteRepository {
     await _gitRepo.add(".");
     await _gitRepo.commit(
       message: "Update folder config for $pathSpec",
+      authorEmail: Settings.instance.gitAuthorEmail,
+      authorName: Settings.instance.gitAuthor,
     );
 
     return NoteRepoResult(noteFilePath: config.folder.folderPath, error: false);
@@ -78,6 +80,8 @@ class GitNoteRepository {
     await _gitRepo.add(".");
     await _gitRepo.commit(
       message: "Renamed Folder",
+      authorEmail: Settings.instance.gitAuthorEmail,
+      authorName: Settings.instance.gitAuthor,
     );
 
     return NoteRepoResult(noteFilePath: newFullPath, error: false);
@@ -91,6 +95,8 @@ class GitNoteRepository {
     await _gitRepo.add(".");
     await _gitRepo.commit(
       message: "Renamed Note",
+      authorEmail: Settings.instance.gitAuthorEmail,
+      authorName: Settings.instance.gitAuthor,
     );
 
     return NoteRepoResult(noteFilePath: newFullPath, error: false);
@@ -104,6 +110,8 @@ class GitNoteRepository {
     await _gitRepo.add(".");
     await _gitRepo.commit(
       message: "Note Moved",
+      authorEmail: Settings.instance.gitAuthorEmail,
+      authorName: Settings.instance.gitAuthor,
     );
 
     return NoteRepoResult(noteFilePath: newFullPath, error: false);
@@ -115,6 +123,8 @@ class GitNoteRepository {
     await _gitRepo.rm(spec);
     await _gitRepo.commit(
       message: "Removed Note " + spec,
+      authorEmail: Settings.instance.gitAuthorEmail,
+      authorName: Settings.instance.gitAuthor,
     );
 
     return NoteRepoResult(noteFilePath: note.filePath, error: false);
@@ -125,6 +135,8 @@ class GitNoteRepository {
     await _gitRepo.rm(spec);
     await _gitRepo.commit(
       message: "Removed Folder " + spec,
+      authorEmail: Settings.instance.gitAuthorEmail,
+      authorName: Settings.instance.gitAuthor,
     );
 
     await Directory(folder.folderPath).delete(recursive: true);
@@ -143,7 +155,10 @@ class GitNoteRepository {
 
   Future<void> pull() async {
     try {
-      await _gitRepo.pull();
+      await _gitRepo.pull(
+        authorEmail: Settings.instance.gitAuthorEmail,
+        authorName: Settings.instance.gitAuthor,
+      );
     } on GitException catch (ex) {
       Log.d(ex.toString());
     }

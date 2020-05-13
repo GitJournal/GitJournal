@@ -356,7 +356,7 @@ packages:
       name: git_bindings
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.12"
+    version: "0.0.13"
   git_url_parse2:
     dependency: "direct main"
     description:
