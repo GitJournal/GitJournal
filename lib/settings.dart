@@ -17,7 +17,7 @@ class Settings {
   // Properties
   String gitAuthor = "GitJournal";
   String gitAuthorEmail = "app@gitjournal.io";
-  NoteFileNameFormat noteFileNameFormat;
+  NoteFileNameFormat noteFileNameFormat = NoteFileNameFormat.Default;
 
   bool collectUsageStatistics = true;
   bool collectCrashReports = true;
@@ -98,33 +98,88 @@ class Settings {
 
   Future save() async {
     var pref = await SharedPreferences.getInstance();
-    pref.setString("gitAuthor", gitAuthor);
-    pref.setString("gitAuthorEmail", gitAuthorEmail);
-    pref.setString("noteFileNameFormat", noteFileNameFormat.toInternalString());
-    pref.setBool("collectUsageStatistics", collectUsageStatistics);
-    pref.setBool("collectCrashReports", collectCrashReports);
-    pref.setString("yamlModifiedKey", yamlModifiedKey);
-    pref.setBool("yamlHeaderEnabled", yamlHeaderEnabled);
-    pref.setString("defaultNewNoteFolderSpec", defaultNewNoteFolderSpec);
-    pref.setString("journalEditordefaultNewNoteFolderSpec",
-        journalEditordefaultNewNoteFolderSpec);
-    pref.setString(
-        "remoteSyncFrequency", remoteSyncFrequency.toInternalString());
-    pref.setString("sortingMode", sortingMode.toInternalString());
-    pref.setString("defaultEditor", defaultEditor.toInternalString());
-    pref.setString("defaultView", defaultView.toInternalString());
-    pref.setString(
-        "markdownDefaultView", markdownDefaultView.toInternalString());
-    pref.setBool("showNoteSummary", showNoteSummary);
-    pref.setString("folderViewHeaderType", folderViewHeaderType);
-    pref.setString("proExpirationDate", proExpirationDate);
+    var defaultSet = Settings._internal();
+
+    _setString(pref, "gitAuthor", gitAuthor, defaultSet.gitAuthor);
+    _setString(
+        pref, "gitAuthorEmail", gitAuthorEmail, defaultSet.gitAuthorEmail);
+    _setString(
+        pref,
+        "noteFileNameFormat",
+        noteFileNameFormat.toInternalString(),
+        defaultSet.noteFileNameFormat.toInternalString());
+    _setBool(pref, "collectUsageStatistics", collectUsageStatistics,
+        defaultSet.collectUsageStatistics);
+    _setBool(pref, "collectCrashReports", collectCrashReports,
+        defaultSet.collectCrashReports);
+    _setString(
+        pref, "yamlModifiedKey", yamlModifiedKey, defaultSet.yamlModifiedKey);
+    _setBool(pref, "yamlHeaderEnabled", yamlHeaderEnabled,
+        defaultSet.yamlHeaderEnabled);
+    _setString(pref, "defaultNewNoteFolderSpec", defaultNewNoteFolderSpec,
+        defaultSet.defaultNewNoteFolderSpec);
+    _setString(
+        pref,
+        "journalEditordefaultNewNoteFolderSpec",
+        journalEditordefaultNewNoteFolderSpec,
+        defaultSet.journalEditordefaultNewNoteFolderSpec);
+    _setString(
+        pref,
+        "remoteSyncFrequency",
+        remoteSyncFrequency.toInternalString(),
+        defaultSet.remoteSyncFrequency.toInternalString());
+    _setString(pref, "sortingMode", sortingMode.toInternalString(),
+        defaultSet.sortingMode.toInternalString());
+    _setString(pref, "defaultEditor", defaultEditor.toInternalString(),
+        defaultSet.defaultEditor.toInternalString());
+    _setString(pref, "defaultView", defaultView.toInternalString(),
+        defaultSet.defaultView.toInternalString());
+    _setString(
+        pref,
+        "markdownDefaultView",
+        markdownDefaultView.toInternalString(),
+        defaultSet.markdownDefaultView.toInternalString());
+    _setBool(
+        pref, "showNoteSummary", showNoteSummary, defaultSet.showNoteSummary);
+    _setString(pref, "folderViewHeaderType", folderViewHeaderType,
+        defaultSet.folderViewHeaderType);
+    _setString(pref, "proExpirationDate", proExpirationDate,
+        defaultSet.proExpirationDate);
+    _setBool(pref, "proMode", proMode, defaultSet.proMode);
+    _setString(pref, "homeScreen", homeScreen.toInternalString(),
+        defaultSet.homeScreen.toInternalString());
+
     pref.setInt("settingsVersion", version);
-    pref.setBool("proMode", proMode);
-    pref.setString("homeScreen", homeScreen.toInternalString());
 
     // Shouldn't we check if something has actually changed?
     for (var f in changeObservers) {
       f();
+    }
+  }
+
+  Future<void> _setString(
+    SharedPreferences pref,
+    String key,
+    String value,
+    String defaultValue,
+  ) async {
+    if (value == defaultValue) {
+      await pref.remove(key);
+    } else {
+      await pref.setString(key, value);
+    }
+  }
+
+  Future<void> _setBool(
+    SharedPreferences pref,
+    String key,
+    bool value,
+    bool defaultValue,
+  ) async {
+    if (value == defaultValue) {
+      await pref.remove(key);
+    } else {
+      await pref.setBool(key, value);
     }
   }
 
