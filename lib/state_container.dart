@@ -53,6 +53,12 @@ class StateContainer with ChangeNotifier {
       removeExistingRemoteClone();
     }
 
+    // Makes it easier to filter the analytics
+    getAnalytics().firebase.setUserProperty(
+          name: 'onboarded',
+          value: appState.remoteGitRepoConfigured.toString(),
+        );
+
     var cachePath = p.join(appState.gitBaseDirectory, "cache.json");
     _notesCache = NotesCache(
       filePath: cachePath,
