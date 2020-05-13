@@ -221,11 +221,11 @@ class _JournalAppState extends State<JournalApp> {
       debugShowCheckedModeBanner: false,
       //debugShowMaterialGrid: true,
       onGenerateRoute: (settings) {
-        if (settings.name == '/folders') {
+        var route = settings.name;
+        if (route == '/folders') {
           return PageRouteBuilder(
             settings: settings,
-            pageBuilder: (_, __, ___) =>
-                _screenForRoute(settings.name, stateContainer),
+            pageBuilder: (_, __, ___) => _screenForRoute(route, stateContainer),
             transitionsBuilder: (_, anim, __, child) {
               return FadeTransition(opacity: anim, child: child);
             },
@@ -235,7 +235,7 @@ class _JournalAppState extends State<JournalApp> {
         return MaterialPageRoute(
           settings: settings,
           builder: (context) => _screenForRoute(
-            settings.name,
+            route,
             stateContainer,
           ),
         );
