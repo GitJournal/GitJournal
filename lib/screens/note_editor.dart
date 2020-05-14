@@ -5,7 +5,6 @@ import 'package:collection/collection.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/md_yaml_doc.dart';
-import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/editors/journal_editor.dart';
 import 'package:gitjournal/editors/markdown_editor.dart';

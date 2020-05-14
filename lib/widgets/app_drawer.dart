@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:gitjournal/features.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:launch_review/launch_review.dart';
@@ -65,7 +65,7 @@ class AppDrawer extends StatelessWidget {
             ),
           ),
           if (setupGitButton != null) ...[setupGitButton, divider],
-          if (Features.purchaseProModeAvailable && !Settings.instance.proMode)
+          if (!Settings.instance.proMode)
             _buildDrawerTile(
               context,
               icon: Icons.power,
@@ -79,8 +79,7 @@ class AppDrawer extends StatelessWidget {
                 );
               },
             ),
-          if (Features.purchaseProModeAvailable && !Settings.instance.proMode)
-            divider,
+          if (!Settings.instance.proMode) divider,
           _buildDrawerTile(
             context,
             icon: Icons.note,
@@ -94,6 +93,14 @@ class AppDrawer extends StatelessWidget {
             title: "Folders",
             onTap: () => _navTopLevel(context, '/folders'),
             selected: currentRoute == "/folders",
+          ),
+          _buildDrawerTile(
+            context,
+            icon: FontAwesomeIcons.tag,
+            isFontAwesome: true,
+            title: "Tags",
+            onTap: () => _navTopLevel(context, '/tags'),
+            selected: currentRoute == "/tags",
           ),
           divider,
           _buildDrawerTile(
@@ -205,6 +212,7 @@ class AppDrawer extends StatelessWidget {
     @required IconData icon,
     @required String title,
     @required Function onTap,
+    bool isFontAwesome = false,
     bool selected = false,
   }) {
     var theme = Theme.of(context);
@@ -213,8 +221,12 @@ class AppDrawer extends StatelessWidget {
       color: selected ? theme.accentColor : listTileTheme.textColor,
     );
 
+    var iconW = !isFontAwesome
+        ? Icon(icon, color: textStyle.color)
+        : FaIcon(icon, color: textStyle.color);
+
     var tile = ListTile(
-      leading: Icon(icon, color: textStyle.color),
+      leading: iconW,
       title: Text(title, style: textStyle),
       onTap: onTap,
       selected: selected,

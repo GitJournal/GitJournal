@@ -6,6 +6,7 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/screens/folder_listing.dart';
+import 'package:gitjournal/screens/tag_listing.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/screens/purchase_screen.dart';
 import 'package:gitjournal/screens/purchase_thankyou_screen.dart';
@@ -293,7 +294,7 @@ class _JournalAppState extends State<JournalApp> {
       //debugShowMaterialGrid: true,
       onGenerateRoute: (settings) {
         var route = settings.name;
-        if (route == '/folders') {
+        if (route == '/folders' || route == '/tags') {
           return PageRouteBuilder(
             settings: settings,
             pageBuilder: (_, __, ___) => _screenForRoute(route, stateContainer),
@@ -320,6 +321,8 @@ class _JournalAppState extends State<JournalApp> {
         return HomeScreen();
       case '/folders':
         return FolderListingScreen();
+      case '/tags':
+        return TagListingScreen();
       case '/settings':
         return SettingsScreen();
       case '/setupRemoteGit':

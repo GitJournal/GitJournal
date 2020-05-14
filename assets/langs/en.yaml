@@ -54,6 +54,8 @@ screens:
       delete: Delete Folder
       decoration: Folder Name
       empty: Please enter a name
+  tags:
+    title: Tags
 widgets:
   rename:
     yes: Rename
