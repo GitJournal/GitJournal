@@ -36,11 +36,6 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
   bool _configuringStarted = false;
   String _message = "Waiting for Permissions ...";
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   void _startAutoConfigure() async {
     Log.d("Starting autoconfigure");
     setState(() {
