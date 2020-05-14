@@ -8,6 +8,7 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/screens/folder_view.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
+import 'package:gitjournal/widgets/pro_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -29,7 +30,7 @@ class TagListingScreen extends StatelessWidget {
         title: Text(tr('screens.tags.title')),
         leading: GJAppBarMenuButton(),
       ),
-      body: Scrollbar(child: listView),
+      body: Scrollbar(child: ProOverlay(child: listView)),
       drawer: AppDrawer(),
     );
   }
