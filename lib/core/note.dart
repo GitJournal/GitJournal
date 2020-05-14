@@ -298,7 +298,7 @@ class Note with NotesNotifier {
 
   @override
   String toString() {
-    return 'Note{filePath: $_filePath, created: $created, modified: $modified, data: $_data}';
+    return 'Note{filePath: $_filePath, created: $created, modified: $modified, data: $_data, loadState: $_loadState}';
   }
 
   void _notifyModified() {
