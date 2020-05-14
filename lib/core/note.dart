@@ -58,10 +58,13 @@ class Note with NotesNotifier {
   }
 
   String get filePath {
-    _filePath ??= p.join(parent.folderPath, getFileName(this));
-    if (!_filePath.toLowerCase().endsWith('.md')) {
-      _filePath += '.md';
+    if (_filePath == null) {
+      _filePath = p.join(parent.folderPath, getFileName(this));
+      if (!_filePath.toLowerCase().endsWith('.md')) {
+        _filePath += '.md';
+      }
     }
+
     return _filePath;
   }
 
