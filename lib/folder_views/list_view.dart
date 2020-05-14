@@ -34,19 +34,35 @@ class _FolderListViewState extends State<FolderListView> {
   @override
   void initState() {
     super.initState();
-
-    widget.folder.addNoteAddedListener(_noteAdded);
-    widget.folder.addNoteRemovedListener(_noteRemoved);
-    widget.folder.addListener(_folderChanged);
+    _addListeners(widget.folder, this);
   }
 
   @override
   void dispose() {
-    widget.folder.removeNoteAddedListener(_noteAdded);
-    widget.folder.removeNoteRemovedListener(_noteRemoved);
-    widget.folder.removeListener(_folderChanged);
-
+    _removeListeners(widget.folder, this);
     super.dispose();
+  }
+
+  static void _addListeners(NotesFolder folder, _FolderListViewState st) {
+    folder.addNoteAddedListener(st._noteAdded);
+    folder.addNoteRemovedListener(st._noteRemoved);
+    folder.addListener(st._folderChanged);
+  }
+
+  static void _removeListeners(NotesFolder folder, _FolderListViewState st) {
+    folder.removeNoteAddedListener(st._noteAdded);
+    folder.removeNoteRemovedListener(st._noteRemoved);
+    folder.removeListener(st._folderChanged);
+  }
+
+  @override
+  void didUpdateWidget(FolderListView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.folder != widget.folder) {
+      _removeListeners(oldWidget.folder, this);
+      _addListeners(widget.folder, this);
+    }
   }
 
   void _noteAdded(int index, Note _) {
