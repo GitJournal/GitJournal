@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/screens/settings_widgets.dart';
+import 'package:gitjournal/widgets/pro_overlay.dart';
 import 'package:share/share.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -230,7 +230,7 @@ Widget _buildBottomMenuSheet(
             Share.share(note.body);
           },
         ),
-        ProSettingOverlay(
+        ProOverlay(
           child: ListTile(
             leading: const FaIcon(FontAwesomeIcons.tag),
             title: Text(tr('editors.common.tags')),

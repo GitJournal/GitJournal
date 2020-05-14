@@ -13,6 +13,7 @@ import 'package:gitjournal/screens/settings_note_metadata.dart';
 
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
+import 'package:gitjournal/widgets/pro_overlay.dart';
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -142,7 +143,7 @@ class SettingsListState extends State<SettingsList> {
           dynamicTheme.setBrightness(b);
         },
       ),
-      ProSettingOverlay(
+      ProOverlay(
         child: ListPreference(
           title: tr('settings.display.homeScreen'),
           currentOption: settings.homeScreen.toPublicString(),

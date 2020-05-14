@@ -4,6 +4,7 @@ import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
+import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class SettingsEditorsScreen extends StatefulWidget {
   @override
@@ -48,7 +49,7 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
         },
       ),
       SettingsHeader("Journal Editor"),
-      ProSettingOverlay(
+      ProOverlay(
         child: ListTile(
           title: const Text("Default Folder"),
           subtitle: Text(defaultNewFolder),

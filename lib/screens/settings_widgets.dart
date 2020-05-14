@@ -1,6 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:gitjournal/settings.dart';
 
 class ListPreference extends StatelessWidget {
   final String title;
@@ -60,31 +58,6 @@ class ListPreference extends StatelessWidget {
         }
       },
       enabled: enabled,
-    );
-  }
-}
-
-class ProSettingOverlay extends StatelessWidget {
-  final Widget child;
-
-  ProSettingOverlay({@required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    if (Settings.instance.proMode) {
-      return child;
-    }
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      child: Banner(
-        message: tr('pro'),
-        location: BannerLocation.topEnd,
-        color: Theme.of(context).accentColor,
-        child: IgnorePointer(child: Opacity(opacity: 0.5, child: child)),
-      ),
-      onTap: () {
-        Navigator.pushNamed(context, "/purchase");
-      },
     );
   }
 }
