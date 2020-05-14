@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path/path.dart' as p;
@@ -40,17 +41,17 @@ class _RenameDialogState extends State<RenameDialog> {
             decoration: InputDecoration(labelText: widget.inputDecoration),
             validator: (value) {
               if (value.isEmpty) {
-                return 'Please enter a name';
+                return tr('widgets.rename.validator.empty');
               }
 
               if (value.contains(p.separator)) {
-                return 'Cannot contain ${p.separator}';
+                return tr('widgets.rename.validator.contains');
               }
 
               var newPath = join(dirname(widget.oldPath), value);
               if (FileSystemEntity.typeSync(newPath) !=
                   FileSystemEntityType.notFound) {
-                return 'Already Exists';
+                return tr('widgets.rename.validator.exists');
               }
               return null;
             },
@@ -68,7 +69,7 @@ class _RenameDialogState extends State<RenameDialog> {
       actions: <Widget>[
         FlatButton(
           onPressed: () => Navigator.of(context).pop(false),
-          child: const Text("Cancel"),
+          child: Text(tr('widgets.rename.no')),
         ),
         FlatButton(
           onPressed: () {
@@ -77,7 +78,7 @@ class _RenameDialogState extends State<RenameDialog> {
               Navigator.of(context).pop(newName);
             }
           },
-          child: const Text("Rename"),
+          child: Text(tr('widgets.rename.yes')),
         ),
       ],
       content: form,

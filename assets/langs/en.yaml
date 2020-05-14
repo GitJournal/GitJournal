@@ -36,3 +36,29 @@ actions:
   newNote: New Note
   newJournal: New Journal Entry
   newChecklist: New Checklist
+screens:
+  folders:
+    title: Folders
+    selected: Folder Selected
+    dialog:
+      title: Create new Folder
+      create: Create
+      discard: Discard
+    errorDialog:
+      title: Error
+      content: Cannot delete a Folder which contains notes
+      ok: Ok
+    actions:
+      rename: Rename Folder
+      subFolder: Create Sub-Folder
+      delete: Delete Folder
+      decoration: Folder Name
+      empty: Please enter a name
+widgets:
+  rename:
+    yes: Rename
+    no: Cancel
+    validator:
+      empty: Please enter a name
+      exists: Already Exists
+      contains: Cannot contain /

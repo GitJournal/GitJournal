@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,16 +52,16 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
       action = PopupMenuButton(
         itemBuilder: (context) {
           return [
-            const PopupMenuItem<String>(
-              child: Text("Rename Folder"),
+            PopupMenuItem<String>(
+              child: Text(tr("screens.folders.actions.rename")),
               value: "Rename",
             ),
-            const PopupMenuItem<String>(
-              child: Text("Create Sub-Folder"),
+            PopupMenuItem<String>(
+              child: Text(tr("screens.folders.actions.subFolder")),
               value: "Create",
             ),
-            const PopupMenuItem<String>(
-              child: Text("Delete Folder"),
+            PopupMenuItem<String>(
+              child: Text(tr("screens.folders.actions.delete")),
               value: "Delete",
             ),
           ];
@@ -71,8 +72,8 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
               context: context,
               builder: (_) => RenameDialog(
                 oldPath: selectedFolder.folderPath,
-                inputDecoration: 'Folder Name',
-                dialogTitle: "Rename Folder",
+                inputDecoration: tr("screens.folders.actions.decoration"),
+                dialogTitle: tr("screens.folders.actions.rename"),
               ),
             );
             if (folderName is String) {
@@ -115,9 +116,9 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
       },
     );
 
-    var title = const Text("Folders");
+    var title = Text(tr('screens.folders.title'));
     if (selectedFolder != null) {
-      title = const Text("Folder Selected");
+      title = Text(tr("screens.folders.selected"));
     }
 
     return Scaffold(
@@ -173,9 +174,11 @@ class _CreateFolderAlertDialogState extends State<CreateFolderAlertDialog> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           TextFormField(
-            decoration: const InputDecoration(labelText: 'Folder Name'),
+            decoration: InputDecoration(
+              labelText: tr("screens.folders.actions.decoration"),
+            ),
             validator: (value) {
-              if (value.isEmpty) return 'Please enter a name';
+              if (value.isEmpty) return tr("screens.folders.actions.empty");
               return "";
             },
             autofocus: true,
@@ -188,18 +191,18 @@ class _CreateFolderAlertDialogState extends State<CreateFolderAlertDialog> {
     );
 
     return AlertDialog(
-      title: const Text("Create new Folder"),
+      title: Text(tr("screens.folders.dialog.title")),
       actions: <Widget>[
         FlatButton(
           onPressed: () => Navigator.of(context).pop(false),
-          child: const Text("Discard"),
+          child: Text(tr("screens.folders.dialog.create")),
         ),
         FlatButton(
           onPressed: () {
             var newFolderName = _textController.text;
             return Navigator.of(context).pop(newFolderName);
           },
-          child: const Text("Create"),
+          child: Text(tr("screens.folders.dialog.discard")),
         ),
       ],
       content: form,
@@ -217,11 +220,11 @@ class FolderErrorDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Error"),
-      content: const Text("Cannot delete a Folder which contains notes"),
+      title: Text(tr("screens.folders.errorDialog.title")),
+      content: Text(tr("screens.folders.errorDialog.content")),
       actions: <Widget>[
         FlatButton(
-          child: const Text("Ok"),
+          child: Text(tr("screens.folders.errorDialog.ok")),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ],
