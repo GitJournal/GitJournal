@@ -1,3 +1,8 @@
+## [1.52] - 2020-05-14
+* Added Tags support
+* Allow sharing files to GitJournal
+* Add App Shortcuts
+
 ## [1.51] - 2020-05-08
 * Add a bottom bar in the NoteEditor to show the Folder
 * Add very basic Image support
