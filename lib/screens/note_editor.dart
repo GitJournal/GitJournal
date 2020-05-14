@@ -378,7 +378,7 @@ class NoteEditorState extends State<NoteEditor> {
     Log.i("Note Tags: ${_note.tags}");
 
     final rootFolder = Provider.of<NotesFolderFS>(context);
-    var allTags = _fetchTags(rootFolder, {});
+    var allTags = rootFolder.getNoteTagsRecursively();
     Log.i("All Tags: $allTags");
 
     var route = MaterialPageRoute(
@@ -398,16 +398,4 @@ class NoteEditorState extends State<NoteEditor> {
       });
     }
   }
-}
-
-Set<String> _fetchTags(NotesFolder folder, Set<String> tags) {
-  for (var note in folder.notes) {
-    tags.addAll(note.tags);
-  }
-
-  for (var folder in folder.subFolders) {
-    tags = _fetchTags(folder, tags);
-  }
-
-  return tags;
 }

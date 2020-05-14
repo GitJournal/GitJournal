@@ -423,4 +423,20 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       config.saveToSettings();
     }
   }
+
+  Set<String> getNoteTagsRecursively() {
+    return _fetchTags(this, {});
+  }
+}
+
+Set<String> _fetchTags(NotesFolder folder, Set<String> tags) {
+  for (var note in folder.notes) {
+    tags.addAll(note.tags);
+  }
+
+  for (var folder in folder.subFolders) {
+    tags = _fetchTags(folder, tags);
+  }
+
+  return tags;
 }
