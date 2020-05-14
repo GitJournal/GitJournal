@@ -71,6 +71,15 @@ class RawEditorState extends State<RawEditor> implements EditorState {
   }
 
   @override
+  void didUpdateWidget(RawEditor oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.noteModified != widget.noteModified) {
+      _noteModified = widget.noteModified;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     var editor = EditorScrollView(
       child: _NoteEditor(

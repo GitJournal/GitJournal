@@ -69,6 +69,15 @@ class JournalEditorState extends State<JournalEditor> implements EditorState {
   }
 
   @override
+  void didUpdateWidget(JournalEditor oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.noteModified != widget.noteModified) {
+      _noteModified = widget.noteModified;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     var editor = EditorScrollView(
       child: Column(

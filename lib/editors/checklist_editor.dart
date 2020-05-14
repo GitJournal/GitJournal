@@ -85,6 +85,15 @@ class ChecklistEditorState extends State<ChecklistEditor>
     super.dispose();
   }
 
+  @override
+  void didUpdateWidget(ChecklistEditor oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.noteModified != widget.noteModified) {
+      _noteModified = widget.noteModified;
+    }
+  }
+
   UniqueKey _getKey(ChecklistItem item) {
     for (var e in keys.entries) {
       if (e.value == item) {

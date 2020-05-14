@@ -82,6 +82,15 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
   }
 
   @override
+  void didUpdateWidget(MarkdownEditor oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.noteModified != widget.noteModified) {
+      _noteModified = widget.noteModified;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     var editor = EditorScrollView(
       child: Column(
