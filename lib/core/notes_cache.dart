@@ -85,7 +85,9 @@ class NotesCache {
     var heap = HeapPriorityQueue<Note>(reversedFn);
 
     for (var note in allNotes) {
-      heap.add(note);
+      if (!heap.contains(note)) {
+        heap.add(note);
+      }
       if (heap.length > CACHE_SIZE) {
         heap.removeFirst();
       }
