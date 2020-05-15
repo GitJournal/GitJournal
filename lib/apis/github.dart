@@ -210,9 +210,16 @@ class GitHub implements GitHost {
   }
 
   GitHostRepo _repoFromJson(Map<String, dynamic> parsedJson) {
+    DateTime updatedAt;
+    try {
+      updatedAt = DateTime.parse(parsedJson['updated_at'].toString());
+    } catch (e) {
+      Log.e(e);
+    }
     return GitHostRepo(
       fullName: parsedJson['full_name'],
       cloneUrl: parsedJson['ssh_url'],
+      updatedAt: updatedAt,
     );
   }
 

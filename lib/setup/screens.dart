@@ -9,6 +9,8 @@ import 'package:git_bindings/git_bindings.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
+import 'package:gitjournal/setup/autoconfigure_complete.dart';
+import 'package:gitjournal/setup/repo_selector.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/settings.dart';
@@ -49,6 +51,9 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   var _keyGenerationChoice = KeyGenerationChoice.Unknown;
 
   var _gitHostType = GitHostType.Unknown;
+  GitHost _gitHost;
+  GitHostRepo _gitHostRepo;
+
   var _gitCloneUrl = "";
   var gitCloneErrorMessage = "";
   var publicKey = "";
@@ -156,13 +161,12 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       } else if (_pageChoice[1] == PageChoice1.Auto) {
         return GitHostSetupAutoConfigure(
           gitHostType: _gitHostType,
-          onDone: (String gitCloneUrl) {
+          onDone: (GitHost gitHost) {
             setState(() {
-              _gitCloneUrl = gitCloneUrl;
+              _gitHost = gitHost;
               _pageCount = pos + 2;
 
               _nextPage();
-              _startGitClone(context);
             });
           },
         );
@@ -225,7 +229,16 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           },
         );
       } else if (_pageChoice[1] == PageChoice1.Auto) {
-        return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
+        return GitHostSetupRepoSelector(
+          gitHost: _gitHost,
+          onDone: (GitHostRepo repo) {
+            setState(() {
+              _gitHostRepo = repo;
+              _pageCount = pos + 2;
+              _nextPage();
+            });
+          },
+        );
       }
 
       assert(false);
@@ -271,18 +284,30 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
             },
           );
         }
+      } else if (_pageChoice[1] == PageChoice1.Auto) {
+        return GitHostSetupAutoConfigureComplete(
+          gitHost: _gitHost,
+          repo: _gitHostRepo,
+          onDone: (String gitCloneUrl) {
+            setState(() {
+              _gitCloneUrl = gitCloneUrl;
+              _pageCount = pos + 2;
+
+              _nextPage();
+              _startGitClone(context);
+            });
+          },
+        );
       }
     }
 
     if (pos == 5) {
-      if (_pageChoice[1] == PageChoice1.Manual) {
-        return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
-      }
+      return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
     }
 
     assert(_pageChoice[0] != PageChoice0.CustomProvider);
 
-    assert(false);
+    assert(false, "Pos is $pos");
     return null;
   }
 
@@ -450,6 +475,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       Log.d("Cloning " + _gitCloneUrl);
       await GitRepo.clone(repoPath, _gitCloneUrl);
     } on GitException catch (e) {
+      Log.e(e.toString());
       error = e.cause;
     }
 

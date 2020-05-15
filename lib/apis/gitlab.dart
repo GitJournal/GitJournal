@@ -194,9 +194,17 @@ class GitLab implements GitHost {
   }
 
   GitHostRepo _repoFromJson(Map<String, dynamic> parsedJson) {
+    DateTime updatedAt;
+    try {
+      updatedAt = DateTime.parse(parsedJson['last_activity_at'].toString());
+    } catch (e) {
+      Log.e(e);
+    }
+
     return GitHostRepo(
       fullName: parsedJson['path_with_namespace'],
       cloneUrl: parsedJson['ssh_url_to_repo'],
+      updatedAt: updatedAt,
     );
   }
 

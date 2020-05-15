@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:function_types/function_types.dart';
 
-import 'package:git_bindings/git_bindings.dart';
-
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
@@ -16,7 +14,7 @@ import 'loading.dart';
 
 class GitHostSetupAutoConfigure extends StatefulWidget {
   final GitHostType gitHostType;
-  final Func1<String, void> onDone;
+  final Func1<GitHost, void> onDone;
 
   GitHostSetupAutoConfigure({
     @required this.gitHostType,
@@ -50,34 +48,10 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
         }
         Log.d("GitHost Initalized: " + widget.gitHostType.toString());
 
-        GitHostRepo repo;
         try {
           setState(() {
-            _message = "Creating private repo";
+            _message = "Reading User Info";
           });
-
-          try {
-            repo = await gitHost.createRepo("journal");
-          } on GitHostException catch (e) {
-            if (e.cause != GitHostException.RepoExists.cause) {
-              rethrow;
-            }
-
-            setState(() {
-              _message = "Using existing repo";
-            });
-            repo = await gitHost.getRepo("journal");
-          }
-
-          setState(() {
-            _message = "Generating SSH Key";
-          });
-          var publicKey = await generateSSHKeys(comment: "GitJournal");
-
-          setState(() {
-            _message = "Adding as a Deploy Key";
-          });
-          await gitHost.addDeployKey(publicKey, repo.fullName);
 
           var userInfo = await gitHost.getUserInfo();
           if (userInfo.name != null && userInfo.name.isNotEmpty) {
@@ -91,7 +65,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
           _handleGitHostException(e, stacktrace);
           return;
         }
-        widget.onDone(repo.cloneUrl);
+        widget.onDone(gitHost);
       });
 
       try {
@@ -143,7 +117,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
 
         // Step 1
         Text(
-          "1. Create a new private repo called 'journal' or use the existing one",
+          "1. List your existing repos or create a new repo",
           style: Theme.of(context).textTheme.bodyText1,
         ),
         const SizedBox(height: 8.0),

@@ -12,7 +12,7 @@ abstract class GitHost {
   Future<List<GitHostRepo>> listRepos();
   Future<GitHostRepo> createRepo(String name);
   Future<GitHostRepo> getRepo(String name);
-  Future addDeployKey(String sshPublicKey, String repo);
+  Future addDeployKey(String sshPublicKey, String repoFullName);
 }
 
 class UserInfo {
@@ -28,14 +28,19 @@ class UserInfo {
 }
 
 class GitHostRepo {
-  String fullName;
-  String cloneUrl;
+  final String fullName;
+  final String cloneUrl;
+  final DateTime updatedAt;
 
-  GitHostRepo({this.fullName, this.cloneUrl});
+  GitHostRepo({
+    @required this.fullName,
+    @required this.cloneUrl,
+    @required this.updatedAt,
+  });
 
   @override
   String toString() {
-    return 'GitRepo{fulleName: $fullName, cloneUrl: $cloneUrl}';
+    return 'GitRepo{fulleName: $fullName, cloneUrl: $cloneUrl, updatedAt: $updatedAt}';
   }
 }
 
