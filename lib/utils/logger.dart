@@ -103,7 +103,11 @@ class Log {
     var file = File(p.join(logFolderPath, '$date.jsonl'));
     var str = file.readAsStringSync();
     for (var line in LineSplitter.split(str)) {
-      yield LogMessage.fromMap(json.decode(line));
+      try {
+        yield LogMessage.fromMap(json.decode(line));
+      } catch (e) {
+        Log.e(e);
+      }
     }
   }
 }
