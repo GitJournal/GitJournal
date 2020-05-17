@@ -25,6 +25,7 @@ class NotesFolderConfig extends Equatable {
 
   final StandardViewHeader viewHeader;
   final bool showNoteSummary;
+  final NoteFileNameFormat fileNameFormat;
   final NotesFolderFS folder;
   //int _version = 1;
 
@@ -34,6 +35,7 @@ class NotesFolderConfig extends Equatable {
     @required this.defaultView,
     @required this.viewHeader,
     @required this.showNoteSummary,
+    @required this.fileNameFormat,
     @required this.folder,
   });
 
@@ -43,6 +45,7 @@ class NotesFolderConfig extends Equatable {
         defaultEditor,
         defaultView,
         viewHeader,
+        fileNameFormat,
         folder,
       ];
 
@@ -68,6 +71,7 @@ class NotesFolderConfig extends Equatable {
       sortingMode: settings.sortingMode,
       showNoteSummary: settings.showNoteSummary,
       viewHeader: viewHeader,
+      fileNameFormat: settings.noteFileNameFormat,
       folder: folder,
     );
   }
@@ -93,6 +97,7 @@ class NotesFolderConfig extends Equatable {
         break;
     }
     Settings.instance.folderViewHeaderType = ht;
+    Settings.instance.noteFileNameFormat = fileNameFormat;
     Settings.instance.save();
   }
 
@@ -102,6 +107,7 @@ class NotesFolderConfig extends Equatable {
     FolderViewType defaultView,
     StandardViewHeader viewHeader,
     bool showNoteSummary,
+    NoteFileNameFormat fileNameFormat,
     NotesFolderFS folder,
   }) {
     return NotesFolderConfig(
@@ -110,6 +116,7 @@ class NotesFolderConfig extends Equatable {
       defaultView: defaultView ?? this.defaultView,
       viewHeader: viewHeader ?? this.viewHeader,
       showNoteSummary: showNoteSummary ?? this.showNoteSummary,
+      fileNameFormat: fileNameFormat ?? this.fileNameFormat,
       folder: folder ?? this.folder,
     );
   }
@@ -154,12 +161,15 @@ class NotesFolderConfig extends Equatable {
         break;
     }
 
+    var fileNameFormat = map['noteFileNameFormat']?.toString();
+
     return NotesFolderConfig(
       defaultEditor: defaultEditor.toEditorType(),
       defaultView: defaultView.toFolderViewType(),
       sortingMode: sortingMode,
       showNoteSummary: showNoteSummary,
       viewHeader: viewHeader,
+      fileNameFormat: NoteFileNameFormat.fromInternalString(fileNameFormat),
       folder: folder,
     );
   }
@@ -186,6 +196,7 @@ class NotesFolderConfig extends Equatable {
           .toInternalString(),
       "showNoteSummary": showNoteSummary,
       "folderViewHeaderType": ht,
+      "noteFileNameFormat": fileNameFormat.toInternalString(),
     };
 
     var yaml = toYAML(map);

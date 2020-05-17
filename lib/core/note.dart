@@ -6,12 +6,12 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/markdown.dart';
 import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/utils/datetime.dart';
 
 import 'package:path/path.dart' as p;
 
 import 'md_yaml_doc.dart';
 import 'md_yaml_doc_codec.dart';
-import 'note_fileName.dart';
 import 'note_serializer.dart';
 
 enum NoteLoadState {
@@ -59,7 +59,7 @@ class Note with NotesNotifier {
 
   String get filePath {
     if (_filePath == null) {
-      _filePath = p.join(parent.folderPath, getFileName(this));
+      _filePath = p.join(parent.folderPath, _buildFileName());
       if (!_filePath.toLowerCase().endsWith('.md')) {
         _filePath += '.md';
       }
@@ -311,5 +311,49 @@ class Note with NotesNotifier {
       return fileName;
     }
     return p.join(parent.pathSpec(), fileName);
+  }
+
+  String _buildFileName() {
+    var date = created ?? modified ?? fileLastModified ?? DateTime.now();
+    switch (parent.config.fileNameFormat) {
+      case NoteFileNameFormat.SimpleDate:
+        return toSimpleDateTime(date);
+      case NoteFileNameFormat.FromTitle:
+        if (title.isNotEmpty) {
+          return buildTitleFileName(parent.folderPath, title);
+        } else {
+          return toSimpleDateTime(date);
+        }
+        break;
+      case NoteFileNameFormat.Iso8601:
+        return toIso8601(date);
+      case NoteFileNameFormat.Iso8601WithTimeZone:
+        return toIso8601WithTimezone(date);
+      case NoteFileNameFormat.Iso8601WithTimeZoneWithoutColon:
+        return toIso8601WithTimezone(date).replaceAll(":", "_");
+    }
+
+    return date.toString();
+  }
+}
+
+String buildTitleFileName(String parentDir, String title) {
+  // Sanitize the title - these characters are not allowed in Windows
+  title = title.replaceAll(RegExp(r'[/<\>":|?*]'), '_');
+
+  var fileName = title + ".md";
+  var fullPath = p.join(parentDir, fileName);
+  var file = File(fullPath);
+  if (!file.existsSync()) {
+    return fileName;
+  }
+
+  for (var i = 1;; i++) {
+    var fileName = title + "_$i.md";
+    var fullPath = p.join(parentDir, fileName);
+    var file = File(fullPath);
+    if (!file.existsSync()) {
+      return fileName;
+    }
   }
 }

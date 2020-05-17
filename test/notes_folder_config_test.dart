@@ -6,6 +6,7 @@ import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/screens/note_editor.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
@@ -29,6 +30,7 @@ void main() {
         showNoteSummary: true,
         sortingMode: SortingMode.Modified,
         viewHeader: StandardViewHeader.TitleOrFileName,
+        fileNameFormat: NoteFileNameFormat.Default,
         folder: folder,
       );
 
