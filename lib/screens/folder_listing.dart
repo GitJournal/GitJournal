@@ -68,6 +68,14 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
         },
         onSelected: (String value) async {
           if (value == "Rename") {
+            if (selectedFolder.pathSpec().isEmpty) {
+              await showDialog(
+                context: context,
+                builder: (_) => RenameFolderErrorDialog(),
+              );
+              _folderTreeViewKey.currentState.resetSelection();
+              return;
+            }
             var folderName = await showDialog(
               context: context,
               builder: (_) => RenameDialog(
@@ -95,7 +103,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
             if (selectedFolder.hasNotesRecursive) {
               await showDialog(
                 context: context,
-                builder: (_) => FolderErrorDialog(),
+                builder: (_) => DeleteFolderErrorDialog(),
               );
             } else {
               var container =
@@ -217,11 +225,15 @@ class _CreateFolderAlertDialogState extends State<CreateFolderAlertDialog> {
 }
 
 class FolderErrorDialog extends StatelessWidget {
+  final String content;
+
+  FolderErrorDialog(this.content);
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(tr("screens.folders.errorDialog.title")),
-      content: Text(tr("screens.folders.errorDialog.content")),
+      content: Text(content),
       actions: <Widget>[
         FlatButton(
           child: Text(tr("screens.folders.errorDialog.ok")),
@@ -229,5 +241,19 @@ class FolderErrorDialog extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class DeleteFolderErrorDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FolderErrorDialog(tr("screens.folders.errorDialog.deleteContent"));
+  }
+}
+
+class RenameFolderErrorDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FolderErrorDialog(tr("screens.folders.errorDialog.renameContent"));
   }
 }

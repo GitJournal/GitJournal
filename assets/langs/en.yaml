@@ -46,7 +46,8 @@ screens:
       discard: Discard
     errorDialog:
       title: Error
-      content: Cannot delete a Folder which contains notes
+      deleteContent: Cannot delete a Folder which contains notes
+      renameContent: Cannot rename Root Folder
       ok: Ok
     actions:
       rename: Rename Folder
