@@ -70,7 +70,7 @@ class _DebugScreenState extends State<DebugScreen> {
     textStyle = textStyle.copyWith(color: _colorForLevel(msg.l));
 
     var dt = DateTime.fromMillisecondsSinceEpoch(msg.t);
-    var timeStr = dt.toIso8601String().substring(11);
+    var timeStr = dt.toIso8601String().substring(11, 11 + 8);
     var str = ' ' + msg.msg;
 
     if (msg.ex != null) {
@@ -83,7 +83,7 @@ class _DebugScreenState extends State<DebugScreen> {
     var props = <TextSpan>[];
     msg.props?.forEach((key, value) {
       var emptySpace = TextSpan(
-          text: '\n             ',
+          text: '\n         ',
           style: textStyle.copyWith(fontWeight: FontWeight.bold));
       props.add(emptySpace);
 
