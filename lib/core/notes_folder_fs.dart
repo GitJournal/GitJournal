@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/utils/logger.dart';
 
@@ -361,7 +362,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   String get publicName {
     var spec = pathSpec();
     if (spec.isEmpty) {
-      return "Root Folder";
+      return tr("rootFolder");
     }
     return spec;
   }

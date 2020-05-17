@@ -129,7 +129,7 @@ class SettingsListState extends State<SettingsList> {
     var brightness = DynamicTheme.of(context).brightness;
     var defaultNewFolder = Settings.instance.defaultNewNoteFolderSpec;
     if (defaultNewFolder.isEmpty) {
-      defaultNewFolder = "Root Folder";
+      defaultNewFolder = tr("rootFolder");
     }
 
     return ListView(children: [

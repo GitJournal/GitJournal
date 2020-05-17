@@ -64,3 +64,4 @@ widgets:
       empty: Please enter a name
       exists: Already Exists
       contains: Cannot contain /
+rootFolder: Root Folder

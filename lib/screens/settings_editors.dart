@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/screens/settings_screen.dart';
 import 'package:gitjournal/settings.dart';
@@ -18,7 +19,7 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
     var defaultNewFolder =
         Settings.instance.journalEditordefaultNewNoteFolderSpec;
     if (defaultNewFolder.isEmpty) {
-      defaultNewFolder = "Root Folder";
+      defaultNewFolder = tr("rootFolder");
     }
 
     var body = ListView(children: <Widget>[
