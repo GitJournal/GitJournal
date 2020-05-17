@@ -208,8 +208,8 @@ class _JournalAppState extends State<JournalApp> {
     // For sharing images coming from outside the app while the app is in the memory
     _intentDataStreamSubscription = ReceiveSharingIntent.getMediaStream()
         .listen((List<SharedMediaFile> value) {
-      Log.d("Received Share $value");
       if (value == null) return;
+      Log.d("Received Share $value");
 
       setState(() {
         _sharedImages = value.map((f) => f.path)?.toList();
@@ -221,8 +221,8 @@ class _JournalAppState extends State<JournalApp> {
 
     // For sharing images coming from outside the app while the app is closed
     ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
-      Log.d("Received Share with App running $value");
       if (value == null) return;
+      Log.d("Received Share with App running $value");
 
       setState(() {
         _sharedImages = value.map((f) => f.path)?.toList();
