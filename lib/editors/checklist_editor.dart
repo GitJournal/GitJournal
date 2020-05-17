@@ -209,7 +209,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
       key: UniqueKey(),
       item: item,
       focusNode: _getFn(item),
-      isNewNote: autofocus,
+      autofocus: autofocus,
       statusChanged: (bool newVal) {
         setState(() {
           item.checked = newVal;
@@ -291,7 +291,7 @@ class ChecklistItemTile extends StatefulWidget {
   final Function itemRemoved;
   final Function itemFinished;
   final FocusNode focusNode;
-  final bool isNewNote;
+  final bool autofocus;
 
   ChecklistItemTile({
     Key key,
@@ -301,7 +301,7 @@ class ChecklistItemTile extends StatefulWidget {
     @required this.itemRemoved,
     @required this.itemFinished,
     @required this.focusNode,
-    this.isNewNote = false,
+    this.autofocus = false,
   }) : super(key: key);
 
   @override
@@ -346,7 +346,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
     }
 
     var editor = TextField(
-      autofocus: widget.isNewNote,
+      autofocus: widget.autofocus,
       focusNode: widget.focusNode,
       keyboardType: TextInputType.text,
       maxLines: null,
