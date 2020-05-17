@@ -14,13 +14,23 @@ class _DebugScreenState extends State<DebugScreen> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _controller.animateTo(
-        _controller.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 10),
-        curve: Curves.easeOut,
-      );
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
+  }
+
+  void _scrollToTop() {
+    _controller.animateTo(
+      _controller.position.minScrollExtent,
+      duration: const Duration(milliseconds: 10),
+      curve: Curves.easeOut,
+    );
+  }
+
+  void _scrollToBottom() {
+    _controller.animateTo(
+      _controller.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 10),
+      curve: Curves.easeOut,
+    );
   }
 
   @override
@@ -34,6 +44,16 @@ class _DebugScreenState extends State<DebugScreen> {
             Navigator.of(context).pop();
           },
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.arrow_upward),
+            onPressed: _scrollToTop,
+          ),
+          IconButton(
+            icon: const Icon(Icons.arrow_downward),
+            onPressed: _scrollToBottom,
+          ),
+        ],
       ),
       body: Scrollbar(
         child: ListView(
