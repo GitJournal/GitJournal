@@ -181,13 +181,17 @@ class ChecklistEditorState extends State<ChecklistEditor>
 
   @override
   Note getNote() {
-    var note = checklist.note;
-    if (checklist.items.length == 1) {
-      var item = checklist.items.first;
-      if (item.checked == false && item.text.trim().isEmpty) {
-        note.body = "";
+    // Remove trailing empty items
+    while (checklist.items.isNotEmpty) {
+      var last = checklist.items.last;
+      if (last.checked == false && last.text.trim().isEmpty) {
+        checklist.removeAt(checklist.items.length - 1);
+      } else {
+        break;
       }
     }
+
+    var note = checklist.note;
     note.title = _titleTextController.text.trim();
     note.type = NoteType.Checklist;
     return note;
