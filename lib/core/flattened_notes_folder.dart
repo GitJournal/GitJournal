@@ -125,6 +125,9 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   String get name => title ?? "All Notes";
 
   @override
+  String get publicName => title ?? "All Notes";
+
+  @override
   NotesFolderConfig get config {
     return _parentFolder.config;
   }

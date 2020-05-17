@@ -161,6 +161,9 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
   String get name => folder.name;
 
   @override
+  String get publicName => folder.publicName;
+
+  @override
   NotesFolder get fsFolder {
     return folder;
   }

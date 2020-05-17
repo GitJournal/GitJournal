@@ -118,10 +118,6 @@ class FolderTileState extends State<FolderTile> {
           )
         : null;
 
-    var folderName = folder.name;
-    if (folder.parent == null) {
-      folderName = "Root Folder";
-    }
     var subtitle = folder.numberOfNotes.toString() + " Notes";
 
     final theme = Theme.of(context);
@@ -139,7 +135,7 @@ class FolderTileState extends State<FolderTile> {
             color: Theme.of(context).accentColor,
           ),
         ),
-        title: Text(folderName),
+        title: Text(folder.publicName),
         subtitle: Text(subtitle),
         trailing: trailling,
         selected: selected,

@@ -357,6 +357,15 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     return p.join(parent.pathSpec(), name);
   }
 
+  @override
+  String get publicName {
+    var spec = pathSpec();
+    if (spec.isEmpty) {
+      return "Root Folder";
+    }
+    return spec;
+  }
+
   Iterable<Note> getAllNotes() sync* {
     for (var note in _notes) {
       yield note;

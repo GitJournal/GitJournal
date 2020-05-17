@@ -98,11 +98,6 @@ class FolderMiniTileState extends State<FolderMiniTile> {
           )
         : null;
 
-    var folderName = folder.name;
-    if (folder.parent == null) {
-      folderName = "Root Folder";
-    }
-
     return Card(
       child: ListTile(
         leading: Container(
@@ -115,7 +110,7 @@ class FolderMiniTileState extends State<FolderMiniTile> {
             color: Theme.of(context).accentColor,
           ),
         ),
-        title: Text(folderName),
+        title: Text(folder.publicName),
         trailing: trailling,
       ),
     );

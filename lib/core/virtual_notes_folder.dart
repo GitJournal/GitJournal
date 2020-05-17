@@ -29,6 +29,9 @@ class VirtualNotesFolder with NotesFolderNotifier implements NotesFolder {
   String get name => "";
 
   @override
+  String get publicName => "";
+
+  @override
   NotesFolder get fsFolder {
     return null;
   }

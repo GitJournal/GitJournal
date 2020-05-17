@@ -8,6 +8,7 @@ abstract class NotesFolder implements NotesFolderNotifier {
   bool get isEmpty;
   bool get hasNotes;
   String get name;
+  String get publicName;
 
   List<Note> get notes;
   List<NotesFolder> get subFolders;

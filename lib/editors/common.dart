@@ -93,11 +93,6 @@ class EditorBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var folderName = parentFolder.pathSpec();
-    if (folderName.isEmpty) {
-      folderName = "Root Folder";
-    }
-
     var addIcon = IconButton(
       icon: Icon(Icons.attach_file),
       onPressed: () {
@@ -136,7 +131,7 @@ class EditorBottomBar extends StatelessWidget {
           Expanded(
             child: FlatButton.icon(
               icon: Icon(Icons.folder),
-              label: Text(folderName),
+              label: Text(parentFolder.publicName),
               onPressed: () {
                 var note = editorState.getNote();
                 editor.moveNoteToFolderSelected(note);

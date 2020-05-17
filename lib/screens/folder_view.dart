@@ -68,16 +68,7 @@ class _FolderViewState extends State<FolderView> {
       child: const Icon(Icons.add),
     );
 
-    // If this is a Virtual folder which doesn't overwrite the FS folder's name
-    // then we should use it's given name as the title
-    String title = widget.notesFolder.name;
-    var fsFolder = widget.notesFolder.fsFolder;
-    if (fsFolder.name == widget.notesFolder.name) {
-      title = widget.notesFolder.parent == null
-          ? "Root Folder"
-          : widget.notesFolder.pathSpec();
-    }
-
+    String title = widget.notesFolder.publicName;
     Widget folderView = Builder(
       builder: (BuildContext context) {
         const emptyText = "Let's add some notes?";
