@@ -149,6 +149,7 @@ class StateContainer with ChangeNotifier {
     logEvent(Event.FolderAdded);
 
     return _opLock.synchronized(() async {
+      Log.d("Got createFolder lock");
       var newFolderPath = p.join(parent.folderPath, folderName);
       var newFolder = NotesFolderFS(parent, newFolderPath);
       newFolder.create();
@@ -168,6 +169,7 @@ class StateContainer with ChangeNotifier {
     logEvent(Event.FolderDeleted);
 
     return _opLock.synchronized(() async {
+      Log.d("Got removeFolder lock");
       Log.d("Removing Folder: " + folder.folderPath);
 
       folder.parentFS.removeFolder(folder);
@@ -183,6 +185,8 @@ class StateContainer with ChangeNotifier {
     logEvent(Event.FolderRenamed);
 
     return _opLock.synchronized(() async {
+      Log.d("Got renameFolder lock");
+
       var oldFolderPath = folder.folderPath;
       print("Renaming Folder from $oldFolderPath -> $newFolderName");
       folder.rename(newFolderName);
@@ -201,6 +205,8 @@ class StateContainer with ChangeNotifier {
     logEvent(Event.NoteRenamed);
 
     return _opLock.synchronized(() async {
+      Log.d("Got renameNote lock");
+
       var oldNotePath = note.filePath;
       note.rename(newFileName);
 
@@ -219,6 +225,8 @@ class StateContainer with ChangeNotifier {
 
     logEvent(Event.NoteMoved);
     return _opLock.synchronized(() async {
+      Log.d("Got moveNote lock");
+
       var oldNotePath = note.filePath;
       note.move(destFolder);
 
@@ -234,7 +242,8 @@ class StateContainer with ChangeNotifier {
     logEvent(Event.NoteAdded);
 
     return _opLock.synchronized(() async {
-      Log.d("State Container addNote");
+      Log.d("Got addNote lock");
+
       note.parent.add(note);
       note.updateModified();
       _gitRepo.addNote(note).then((NoteRepoResult _) {
@@ -249,6 +258,8 @@ class StateContainer with ChangeNotifier {
     logEvent(Event.NoteDeleted);
 
     return _opLock.synchronized(() async {
+      Log.d("Got removeNote lock");
+
       // FIXME: What if the Note hasn't yet been saved?
       note.parent.remove(note);
       _gitRepo.removeNote(note).then((NoteRepoResult _) async {
@@ -268,6 +279,8 @@ class StateContainer with ChangeNotifier {
     logEvent(Event.NoteUndoDeleted);
 
     return _opLock.synchronized(() async {
+      Log.d("Got undoRemoveNote lock");
+
       note.parent.add(note);
       _gitRepo.resetLastCommit().then((NoteRepoResult _) {
         _syncNotes();
@@ -281,7 +294,8 @@ class StateContainer with ChangeNotifier {
     logEvent(Event.NoteUpdated);
 
     return _opLock.synchronized(() async {
-      Log.d("State Container updateNote");
+      Log.d("Got updateNote lock");
+
       note.updateModified();
       _gitRepo.updateNote(note).then((NoteRepoResult _) {
         _syncNotes();
@@ -298,7 +312,8 @@ class StateContainer with ChangeNotifier {
     logEvent(Event.FolderConfigUpdated);
 
     return _opLock.synchronized(() async {
-      Log.d("State Container saveFolderConfig");
+      Log.d("Got saveFolderConfig lock");
+
       await config.saveToFS();
       _gitRepo.addFolderConfig(config).then((NoteRepoResult _) {
         _syncNotes();
