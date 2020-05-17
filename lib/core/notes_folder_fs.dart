@@ -186,12 +186,15 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       }
 
       if (fsEntity is Directory) {
-        Log.v("Found directory ${fsEntity.path}");
         var subFolder = NotesFolderFS(this, fsEntity.path);
         if (subFolder.name.startsWith('.')) {
+          Log.v("Ignoring Folder", props: {
+            "path": fsEntity.path,
+            "reason": "Hidden folder",
+          });
           continue;
         }
-        Log.v("Found folder ${fsEntity.path}");
+        Log.v("Found Folder", props: {"path": fsEntity.path});
         _addFolderListeners(subFolder);
 
         _folders.add(subFolder);
@@ -203,11 +206,21 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       }
 
       var note = Note(this, fsEntity.path);
-      if (!note.filePath.toLowerCase().endsWith('.md')) {
-        Log.v("Ignoring file ${fsEntity.path}");
+      if (note.fileName.startsWith('.')) {
+        Log.v("Ignoring file", props: {
+          "path": fsEntity.path,
+          "reason": "Starts with a .",
+        });
         continue;
       }
-      Log.v("Found file ${fsEntity.path}");
+      if (!note.filePath.toLowerCase().endsWith('.md')) {
+        Log.v("Ignoring file", props: {
+          "path": fsEntity.path,
+          "reason": "Doesn't end with a .md",
+        });
+        continue;
+      }
+      Log.v("Found file", props: {"path": fsEntity.path});
       _addNoteListeners(note);
 
       _notes.add(note);

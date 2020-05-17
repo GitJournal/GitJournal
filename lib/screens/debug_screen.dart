@@ -79,12 +79,33 @@ class _DebugScreenState extends State<DebugScreen> {
     if (msg.stack != null) {
       str += ' ' + msg.stack;
     }
+
+    var props = <TextSpan>[];
+    msg.props?.forEach((key, value) {
+      var emptySpace = TextSpan(
+          text: '\n             ',
+          style: textStyle.copyWith(fontWeight: FontWeight.bold));
+      props.add(emptySpace);
+
+      var keySpan = TextSpan(
+        text: '$key: ',
+        style: textStyle.copyWith(
+          fontWeight: FontWeight.bold,
+        ),
+      );
+      var valueSpan = TextSpan(text: value.toString());
+
+      props.add(keySpan);
+      props.add(valueSpan);
+    });
+
     return RichText(
       text: TextSpan(children: [
         TextSpan(
             text: timeStr,
             style: textStyle.copyWith(fontWeight: FontWeight.bold)),
         TextSpan(text: str),
+        ...props,
       ], style: textStyle),
     );
   }

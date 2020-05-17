@@ -29,29 +29,34 @@ class Log {
     await setLogCapture(true);
   }
 
-  static void v(String msg, {dynamic ex, StackTrace stacktrace}) {
+  static void v(String msg,
+      {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
     Fimber.v(msg, ex: ex, stacktrace: stacktrace);
-    _write('v', msg, ex, stacktrace);
+    _write('v', msg, ex, stacktrace, props);
   }
 
-  static void d(String msg, {dynamic ex, StackTrace stacktrace}) {
+  static void d(String msg,
+      {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
     Fimber.d(msg, ex: ex, stacktrace: stacktrace);
-    _write('d', msg, ex, stacktrace);
+    _write('d', msg, ex, stacktrace, props);
   }
 
-  static void i(String msg, {dynamic ex, StackTrace stacktrace}) {
+  static void i(String msg,
+      {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
     Fimber.i(msg, ex: ex, stacktrace: stacktrace);
-    _write('i', msg, ex, stacktrace);
+    _write('i', msg, ex, stacktrace, props);
   }
 
-  static void e(String msg, {dynamic ex, StackTrace stacktrace}) {
+  static void e(String msg,
+      {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
     Fimber.e(msg, ex: ex, stacktrace: stacktrace);
-    _write('e', msg, ex, stacktrace);
+    _write('e', msg, ex, stacktrace, props);
   }
 
-  static void w(String msg, {dynamic ex, StackTrace stacktrace}) {
+  static void w(String msg,
+      {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
     Fimber.w(msg, ex: ex, stacktrace: stacktrace);
-    _write('w', msg, ex, stacktrace);
+    _write('w', msg, ex, stacktrace, props);
   }
 
   static void _write(
@@ -59,6 +64,7 @@ class Log {
     String msg,
     dynamic ex,
     StackTrace stackTrace,
+    Map<String, dynamic> props,
   ) {
     if (logFile == null) {
       return;
@@ -72,6 +78,7 @@ class Log {
       stack: stackTrace != null
           ? stackTrace.toString().replaceAll('\n', ' ')
           : null,
+      props: props,
     );
 
     var str = json.encode(logMsg.toMap());
@@ -118,6 +125,7 @@ class LogMessage {
   String msg;
   String ex;
   String stack;
+  Map<String, dynamic> props;
 
   LogMessage({
     @required this.t,
@@ -125,6 +133,7 @@ class LogMessage {
     @required this.msg,
     this.ex,
     this.stack,
+    this.props,
   });
 
   Map<String, dynamic> toMap() {
@@ -134,6 +143,7 @@ class LogMessage {
       'msg': msg,
       if (ex != null && ex.isNotEmpty) 'ex': ex,
       if (stack != null && stack.isNotEmpty) 'stack': stack,
+      if (props != null && props.isNotEmpty) 'p': props,
     };
   }
 
@@ -143,5 +153,6 @@ class LogMessage {
     msg = map['msg'];
     ex = map['ex'];
     stack = map['stack'];
+    props = map['p'];
   }
 }
