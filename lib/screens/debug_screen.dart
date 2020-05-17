@@ -8,6 +8,21 @@ class DebugScreen extends StatefulWidget {
 }
 
 class _DebugScreenState extends State<DebugScreen> {
+  ScrollController _controller = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller.animateTo(
+        _controller.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 10),
+        curve: Curves.easeOut,
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,21 +35,43 @@ class _DebugScreenState extends State<DebugScreen> {
           },
         ),
       ),
-      body: ListView(
-        children: <Widget>[
-          for (var msg in Log.fetchLogs()) _buildLogWidget(msg),
-        ],
+      body: Scrollbar(
+        child: ListView(
+          controller: _controller,
+          children: <Widget>[
+            ..._fetchLogWidgets(),
+          ],
+          padding: const EdgeInsets.all(16.0),
+        ),
       ),
     );
   }
 
+  Iterable<Widget> _fetchLogWidgets() sync* {
+    var prevDate = "";
+    for (var msg in Log.fetchLogs()) {
+      var dt = DateTime.fromMillisecondsSinceEpoch(msg.t);
+      var date = dt.toIso8601String().substring(0, 10);
+      if (date != prevDate) {
+        yield _buildDateWidget(dt);
+        prevDate = date;
+      }
+
+      yield _buildLogWidget(msg);
+    }
+  }
+
   Widget _buildLogWidget(LogMessage msg) {
-    var textStyle = Theme.of(context).textTheme.subtitle1;
+    var textStyle = Theme.of(context)
+        .textTheme
+        .bodyText2
+        .copyWith(fontFamily: "Roboto Mono");
+
     textStyle = textStyle.copyWith(color: _colorForLevel(msg.l));
 
-    var str = DateTime.fromMillisecondsSinceEpoch(msg.t).toIso8601String() +
-        ' ' +
-        msg.msg;
+    var dt = DateTime.fromMillisecondsSinceEpoch(msg.t);
+    var timeStr = dt.toIso8601String().substring(11);
+    var str = ' ' + msg.msg;
 
     if (msg.ex != null) {
       str += ' ' + msg.ex;
@@ -42,7 +79,14 @@ class _DebugScreenState extends State<DebugScreen> {
     if (msg.stack != null) {
       str += ' ' + msg.stack;
     }
-    return Text(str, style: textStyle);
+    return RichText(
+      text: TextSpan(children: [
+        TextSpan(
+            text: timeStr,
+            style: textStyle.copyWith(fontWeight: FontWeight.bold)),
+        TextSpan(text: str),
+      ], style: textStyle),
+    );
   }
 
   Color _colorForLevel(String l) {
@@ -51,5 +95,22 @@ class _DebugScreenState extends State<DebugScreen> {
         return Colors.red;
     }
     return Colors.black;
+  }
+
+  Widget _buildDateWidget(DateTime dt) {
+    var textStyle = Theme.of(context)
+        .textTheme
+        .headline6
+        .copyWith(fontFamily: "Roboto Mono");
+
+    var text = dt.toIso8601String().substring(0, 10);
+    return Padding(
+      child: Text(
+        text,
+        style: textStyle,
+        textAlign: TextAlign.center,
+      ),
+      padding: const EdgeInsets.all(8.0),
+    );
   }
 }
