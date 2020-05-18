@@ -119,6 +119,9 @@ class RawEditorState extends State<RawEditor> implements EditorState {
       _noteModified = true;
     });
   }
+
+  @override
+  bool get noteModified => _noteModified;
 }
 
 class _NoteEditor extends StatelessWidget {

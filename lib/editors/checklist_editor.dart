@@ -279,6 +279,9 @@ class ChecklistEditorState extends State<ChecklistEditor>
       _noteModified = true;
     });
   }
+
+  @override
+  bool get noteModified => _noteModified;
 }
 
 typedef TextChangedFunction = void Function(String);

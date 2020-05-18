@@ -123,6 +123,9 @@ class JournalEditorState extends State<JournalEditor> implements EditorState {
       _noteModified = true;
     });
   }
+
+  @override
+  bool get noteModified => _noteModified;
 }
 
 class _NoteBodyEditor extends StatelessWidget {

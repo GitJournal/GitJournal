@@ -26,6 +26,8 @@ abstract class Editor {
 abstract class EditorState {
   Note getNote();
   Future<void> addImage(File file);
+
+  bool get noteModified;
 }
 
 class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -214,6 +216,7 @@ Widget _buildBottomMenuSheet(
 
             editor.discardChangesSelected(note);
           },
+          enabled: editorState.noteModified,
         ),
         ListTile(
           leading: Icon(Icons.share),
