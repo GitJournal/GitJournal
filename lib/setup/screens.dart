@@ -246,7 +246,10 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
     if (pos == 4) {
       if (_pageChoice[0] == PageChoice0.CustomProvider) {
-        return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
+        return GitHostSetupLoadingErrorPage(
+          loadingMessage: "Cloning ...",
+          errorMessage: gitCloneErrorMessage,
+        );
       }
 
       if (_pageChoice[1] == PageChoice1.Manual) {
@@ -302,7 +305,10 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     }
 
     if (pos == 5) {
-      return GitHostSetupGitClone(errorMessage: gitCloneErrorMessage);
+      return GitHostSetupLoadingErrorPage(
+        loadingMessage: "Cloning ...",
+        errorMessage: gitCloneErrorMessage,
+      );
     }
 
     assert(_pageChoice[0] != PageChoice0.CustomProvider);
