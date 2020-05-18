@@ -338,39 +338,10 @@ class NoteEditorState extends State<NoteEditor> {
 
   void _discardChangesSelected(Note note) {
     if (_noteModified(note)) {
-      showDialog(context: context, builder: _buildDiscardChangesAlertDialog);
-    } else {
-      Navigator.pop(context);
+      note.data = originalNoteData;
     }
-  }
 
-  Widget _buildDiscardChangesAlertDialog(BuildContext context) {
-    var title = _isNewNote
-        ? "Do you want to discard this?"
-        : "Do you want to ignore the changes?";
-
-    var editText = _isNewNote ? "Keep Writing" : "Keep Editing";
-    var discardText = _isNewNote ? "Discard" : "Discard Changes";
-
-    return AlertDialog(
-      title: Text(title),
-      actions: <Widget>[
-        FlatButton(
-          onPressed: () => Navigator.of(context).pop(false),
-          child: Text(editText),
-        ),
-        FlatButton(
-          onPressed: () {
-            // FIXME: This shouldn't be required. Why is the original note modified?
-            note.data = originalNoteData;
-
-            Navigator.pop(context); // Alert box
-            Navigator.pop(context); // Note Editor
-          },
-          child: Text(discardText),
-        ),
-      ],
-    );
+    Navigator.pop(context);
   }
 
   void _editTagsSelected(Note _note) async {
