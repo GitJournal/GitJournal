@@ -1,21 +1,20 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:gitjournal/core/note.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/folder_views/note_tile.dart';
-
-typedef void NoteSelectedFunction(Note note);
 
 class CardView extends StatelessWidget {
   final NoteSelectedFunction noteSelectedFunction;
   final NotesFolder folder;
   final String emptyText;
+  final bool fixedHeight;
 
   CardView({
     @required this.folder,
     @required this.noteSelectedFunction,
     @required this.emptyText,
+    this.fixedHeight = false,
   });
 
   @override
@@ -34,6 +33,13 @@ class CardView extends StatelessWidget {
       );
     }
 
+    StaggeredTile stagTile;
+    if (fixedHeight) {
+      stagTile = const StaggeredTile.extent(1, 200.0);
+    } else {
+      stagTile = const StaggeredTile.fit(1);
+    }
+
     var gridView = StaggeredGridView.extentBuilder(
       itemCount: folder.notes.length,
       itemBuilder: (BuildContext context, int index) {
@@ -41,7 +47,7 @@ class CardView extends StatelessWidget {
         return NoteTile(note, noteSelectedFunction);
       },
       maxCrossAxisExtent: 200.0,
-      staggeredTileBuilder: (int i) => const StaggeredTile.fit(1),
+      staggeredTileBuilder: (int i) => stagTile,
       mainAxisSpacing: 8.0,
       crossAxisSpacing: 8.0,
       padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 16.0),
