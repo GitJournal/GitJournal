@@ -1,3 +1,7 @@
+## [1.53] - 2020-05-18
+* Allow a repo to be chosen in the Automatic Git Host Setup
+* Polished the Debug screen
+
 ## [1.52] - 2020-05-14
 * Added Tags support
 * Allow sharing files to GitJournal
