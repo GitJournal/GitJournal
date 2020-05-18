@@ -97,7 +97,11 @@ PODS:
   - purchases_flutter (1.1.0):
     - Flutter
     - Purchases (~> 3.2.2)
+  - quick_actions (0.0.1):
+    - Flutter
   - Reachability (3.2)
+  - receive_sharing_intent (0.0.1):
+    - Flutter
   - share (0.5.2):
     - Flutter
   - shared_preferences (0.0.1):
@@ -134,6 +138,8 @@ DEPENDENCIES:
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - path_provider_macos (from `.symlinks/plugins/path_provider_macos/ios`)
   - purchases_flutter (from `.symlinks/plugins/purchases_flutter/ios`)
+  - quick_actions (from `.symlinks/plugins/quick_actions/ios`)
+  - receive_sharing_intent (from `.symlinks/plugins/receive_sharing_intent/ios`)
   - share (from `.symlinks/plugins/share/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - shared_preferences_macos (from `.symlinks/plugins/shared_preferences_macos/ios`)
@@ -194,6 +200,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider_macos/ios"
   purchases_flutter:
     :path: ".symlinks/plugins/purchases_flutter/ios"
+  quick_actions:
+    :path: ".symlinks/plugins/quick_actions/ios"
+  receive_sharing_intent:
+    :path: ".symlinks/plugins/receive_sharing_intent/ios"
   share:
     :path: ".symlinks/plugins/share/ios"
   shared_preferences:
@@ -218,7 +228,7 @@ SPEC CHECKSUMS:
   Fabric: f6f21452846788bb44595d73e9909d79d328e617
   fetch_app_logs: ab35bf4e695dbe05f36a74d2cd585e8e8f3ad947
   Firebase: fa80b9d987ca014a1ba9357496ef2a0178b28b12
-  firebase_analytics: d83001d25b9a58ca5eda8db0ef566c02d7af5258
+  firebase_analytics: dacdcfc524d722fff13dcff942f0dfa47e6be567
   FirebaseAnalytics: 1743c5f4de3687d0745709dfdc4b1dea1484f44c
   FirebaseCore: e38f025287b413255a53acc1945d048a112047f7
   FirebaseInstanceID: 0e0348a3c00a734fa376a070f5ad4533ad975cb5
@@ -240,7 +250,9 @@ SPEC CHECKSUMS:
   path_provider_macos: f760a3c5b04357c380e2fddb6f9db6f3015897e0
   Purchases: 392c729893c011c7d4d37d7f7c9f863e597d4a9b
   purchases_flutter: 329011208c046353be37f984026815e9dd046456
+  quick_actions: 6cb2390c4dab0e737c94573c27e18d9666710720
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  receive_sharing_intent: c0d87310754e74c0f9542947e7cbdf3a0335a3b1
   share: bae0a282aab4483288913fc4dc0b935d4b491f2e
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   shared_preferences_macos: f3f29b71ccbb56bf40c9dd6396c9acf15e214087
