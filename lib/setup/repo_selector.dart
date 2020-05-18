@@ -136,9 +136,13 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
     var textField = TextField(
       controller: _textController,
       maxLines: 1,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         hintText: 'Type to Search or Create a Repo',
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
+        suffixIcon: IconButton(
+          onPressed: () => _textController.clear(),
+          icon: Icon(Icons.clear),
+        ),
       ),
     );
 
