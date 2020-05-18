@@ -9,7 +9,7 @@ import 'package:git_bindings/git_bindings.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
-import 'package:gitjournal/setup/autoconfigure_complete.dart';
+import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/setup/repo_selector.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
@@ -22,8 +22,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'autoconfigure.dart';
 import 'button.dart';
-import 'clone.dart';
 import 'clone_url.dart';
+import 'loading_error.dart';
 import 'sshkey.dart';
 
 class GitHostSetupScreen extends StatefulWidget {
@@ -53,6 +53,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   var _gitHostType = GitHostType.Unknown;
   GitHost _gitHost;
   GitHostRepo _gitHostRepo;
+  String _autoConfigureMessage = "";
+  String _autoConfigureErrorMessage = "";
 
   var _gitCloneUrl = "";
   var gitCloneErrorMessage = "";
@@ -236,6 +238,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
               _gitHostRepo = repo;
               _pageCount = pos + 2;
               _nextPage();
+              _completeAutoConfigure();
             });
           },
         );
@@ -288,18 +291,9 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           );
         }
       } else if (_pageChoice[1] == PageChoice1.Auto) {
-        return GitHostSetupAutoConfigureComplete(
-          gitHost: _gitHost,
-          repo: _gitHostRepo,
-          onDone: (String gitCloneUrl) {
-            setState(() {
-              _gitCloneUrl = gitCloneUrl;
-              _pageCount = pos + 2;
-
-              _nextPage();
-              _startGitClone(context);
-            });
-          },
+        return GitHostSetupLoadingErrorPage(
+          loadingMessage: _autoConfigureMessage,
+          errorMessage: _autoConfigureErrorMessage,
         );
       }
     }
@@ -528,6 +522,49 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     );
     Navigator.pop(context);
     widget.onCompletedFunction();
+  }
+
+  Future<void> _completeAutoConfigure() async {
+    Log.d("Starting autoconfigure copletion");
+
+    try {
+      Log.i("Generating SSH Key");
+      setState(() {
+        _autoConfigureMessage = "Generating SSH Key";
+      });
+      var publicKey = await generateSSHKeys(comment: "GitJournal");
+
+      Log.i("Adding as a deploy key");
+      _autoConfigureMessage = "Adding as a Deploy Key";
+
+      await _gitHost.addDeployKey(publicKey, _gitHostRepo.fullName);
+    } on Exception catch (e, stacktrace) {
+      _handleGitHostException(e, stacktrace);
+      return;
+    }
+
+    setState(() {
+      _gitCloneUrl = _gitHostRepo.cloneUrl;
+      _pageCount += 1;
+
+      _nextPage();
+      _startGitClone(context);
+    });
+  }
+
+  void _handleGitHostException(Exception e, StackTrace stacktrace) {
+    Log.d("GitHostSetupAutoConfigureComplete: " + e.toString());
+    setState(() {
+      _autoConfigureErrorMessage = e.toString();
+      getAnalytics().logEvent(
+        name: "githostsetup_error",
+        parameters: <String, String>{
+          'errorMessage': _autoConfigureErrorMessage,
+        },
+      );
+
+      logException(e, stacktrace);
+    });
   }
 
   Map<String, String> _buildOnboardingAnalytics() {
