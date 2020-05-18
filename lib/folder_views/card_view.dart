@@ -34,14 +34,14 @@ class CardView extends StatelessWidget {
       );
     }
 
-    var gridView = StaggeredGridView.countBuilder(
-      crossAxisCount: 4,
+    var gridView = StaggeredGridView.extentBuilder(
       itemCount: folder.notes.length,
       itemBuilder: (BuildContext context, int index) {
         var note = folder.notes[index];
         return NoteTile(note, noteSelectedFunction);
       },
-      staggeredTileBuilder: (int i) => const StaggeredTile.fit(2),
+      maxCrossAxisExtent: 200.0,
+      staggeredTileBuilder: (int i) => const StaggeredTile.fit(1),
       mainAxisSpacing: 8.0,
       crossAxisSpacing: 8.0,
       padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 16.0),
