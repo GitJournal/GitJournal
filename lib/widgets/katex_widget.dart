@@ -72,7 +72,7 @@ class _KatexWidgetState extends State<KatexWidget> {
     throwOnError: false
 });
 
-html2canvas(document.body).then(function(canvas) {
+html2canvas(document.body, {backgroundColor: 'rgba(0, 0, 0, 0)', removeContainer: true,}).then(function(canvas) {
     var img = canvas.toDataURL("image/png");
     Print.postMessage(img);
 });
