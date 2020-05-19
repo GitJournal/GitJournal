@@ -203,14 +203,14 @@ class _CreateFolderAlertDialogState extends State<CreateFolderAlertDialog> {
       actions: <Widget>[
         FlatButton(
           onPressed: () => Navigator.of(context).pop(false),
-          child: Text(tr("screens.folders.dialog.create")),
+          child: Text(tr("screens.folders.dialog.discard")),
         ),
         FlatButton(
           onPressed: () {
             var newFolderName = _textController.text;
             return Navigator.of(context).pop(newFolderName);
           },
-          child: Text(tr("screens.folders.dialog.discard")),
+          child: Text(tr("screens.folders.dialog.create")),
         ),
       ],
       content: form,
