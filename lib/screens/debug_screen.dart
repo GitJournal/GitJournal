@@ -194,11 +194,11 @@ class _DebugScreenState extends State<DebugScreen> {
       title: const Text("Purchase Failed"),
       content: Column(
         children: <Widget>[
-          FilterListTile('Error', 'e', filterLevel == 'e'),
-          FilterListTile('Warning', 'w', filterLevel == 'w'),
-          FilterListTile('Info', 'i', filterLevel == 'i'),
-          FilterListTile('Debug', 'd', filterLevel == 'd'),
-          FilterListTile('Verbose', 'v', filterLevel == 'v'),
+          FilterListTile('Error', 'e', filterLevel),
+          FilterListTile('Warning', 'w', filterLevel),
+          FilterListTile('Info', 'i', filterLevel),
+          FilterListTile('Debug', 'd', filterLevel),
+          FilterListTile('Verbose', 'v', filterLevel),
         ],
         mainAxisSize: MainAxisSize.min,
       ),
@@ -213,9 +213,9 @@ class _DebugScreenState extends State<DebugScreen> {
 class FilterListTile extends StatelessWidget {
   final String publicLevel;
   final String internalLevel;
-  final bool selected;
+  final String currentLevel;
 
-  FilterListTile(this.publicLevel, this.internalLevel, this.selected);
+  FilterListTile(this.publicLevel, this.internalLevel, this.currentLevel);
 
   @override
   Widget build(BuildContext context) {
@@ -225,14 +225,14 @@ class FilterListTile extends StatelessWidget {
       onTap: () {
         Navigator.pop(context, internalLevel);
       },
-      selected: selected,
+      selected: _isSelected(),
     );
   }
 
   Icon _getIcon(BuildContext context) {
     var theme = Theme.of(context);
     var color = theme.textTheme.headline6.color;
-    if (selected) {
+    if (_isSelected()) {
       switch (theme.brightness) {
         case Brightness.light:
           color = theme.primaryColor;
@@ -257,5 +257,32 @@ class FilterListTile extends StatelessWidget {
     }
 
     return Icon(Icons.all_inclusive, color: color);
+  }
+
+  bool _isSelected() {
+    if (currentLevel == 'v') {
+      return true;
+    }
+    if (currentLevel == 'd' && internalLevel == 'v') {
+      return false;
+    }
+    if (currentLevel == 'i' && (internalLevel == 'v' || internalLevel == 'd')) {
+      return false;
+    }
+    if (currentLevel == 'w' &&
+        (internalLevel == 'v' ||
+            internalLevel == 'd' ||
+            internalLevel == 'i')) {
+      return false;
+    }
+    if (currentLevel == 'e' &&
+        (internalLevel == 'v' ||
+            internalLevel == 'd' ||
+            internalLevel == 'i' ||
+            internalLevel == 'w')) {
+      return false;
+    }
+
+    return true;
   }
 }
