@@ -255,8 +255,8 @@ class SettingsListState extends State<SettingsList> {
       ),
       VersionNumberTile(),
       ListTile(
-        title: Text(tr('settings.debug')),
-        subtitle: Text(tr('settings.debugLog')),
+        title: Text(tr('settings.debug.title')),
+        subtitle: Text(tr('settings.debug.subtitle')),
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) => DebugScreen(),

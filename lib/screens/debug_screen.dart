@@ -38,7 +38,7 @@ class _DebugScreenState extends State<DebugScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr('settings.debug')),
+        title: Text(tr('settings.debug.title')),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -191,7 +191,7 @@ class _DebugScreenState extends State<DebugScreen> {
 
   void _showFilterSelection() async {
     var dialog = AlertDialog(
-      title: const Text("Purchase Failed"),
+      title: Text(tr('settings.debug.levels')),
       content: Column(
         children: <Widget>[
           FilterListTile('Error', 'e', filterLevel),

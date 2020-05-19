@@ -19,8 +19,10 @@ settings:
   analytics: Analytics
   crashReports: Collect Anonymous Crash Reports
   usageStats: Collect Anonymous Usage Statistics
-  debug: Debug App
-  debugLog: Look under the hood
+  debug:
+    title: Debug App
+    subtitle: Look under the hood
+    levels: Select Level
   images:
     title: Image Settings
     subtitle: Configure how Images are stored
