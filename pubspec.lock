@@ -318,12 +318,10 @@ packages:
   flutter_webview_plugin:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "045bd6357ce81162d05e367133a95a53ad291451"
-      url: "https://github.com/breez/flutter_webview_plugin.git"
-    source: git
-    version: "0.3.0+2"
+      name: flutter_webview_plugin
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.11"
   font_awesome_flutter:
     dependency: "direct main"
     description:
