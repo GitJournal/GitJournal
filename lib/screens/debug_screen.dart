@@ -164,11 +164,12 @@ class _DebugScreenState extends State<DebugScreen> {
   }
 
   Color _colorForLevel(String l) {
+    var theme = Theme.of(context);
     switch (l) {
       case 'e':
         return Colors.red;
     }
-    return Colors.black;
+    return theme.brightness == Brightness.light ? Colors.black : Colors.white;
   }
 
   Widget _buildDateWidget(DateTime dt) {
