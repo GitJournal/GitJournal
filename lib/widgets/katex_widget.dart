@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:path/path.dart' as p;
 import 'package:mutex/mutex.dart';
+import 'package:crypto/crypto.dart';
 
 class KatexWidget extends StatefulWidget {
   final String input;
@@ -30,6 +32,9 @@ class _KatexWidgetState extends State<KatexWidget> {
   void initState() {
     super.initState();
 
+    var inputHash = md5.convert(utf8.encode(widget.input)).toString();
+    imagePath = p.join(Directory.systemTemp.path, "katex_$inputHash.png");
+
     jsChannel = JavascriptChannel(
       name: 'Print',
       onMessageReceived: (JavascriptMessage message) {
@@ -37,23 +42,11 @@ class _KatexWidgetState extends State<KatexWidget> {
         print(message.message);
 
         var uri = UriData.parse(message.message);
+        File(imagePath).writeAsBytesSync(uri.contentAsBytes());
 
-        String tmpFile;
-        var num = 0;
-        while (true) {
-          tmpFile = p.join(Directory.systemTemp.path, "katex_$num.png");
-          if (!File(tmpFile).existsSync()) {
-            break;
-          }
-          num += 1;
-        }
-        File(tmpFile).writeAsBytesSync(uri.contentAsBytes());
-
+        // Underlying image file has been modified
         if (mounted) {
-          setState(() {
-            print("State has been set $tmpFile");
-            imagePath = tmpFile;
-          });
+          setState(() {});
         }
 
         flutterWebViewPlugin.close();
@@ -65,7 +58,11 @@ class _KatexWidgetState extends State<KatexWidget> {
       },
     );
 
-    _initAsync();
+    if (File(imagePath).existsSync()) {
+      print("Katex ${widget.input} in cache");
+    } else {
+      _initAsync();
+    }
   }
 
   void _initAsync() async {
@@ -119,7 +116,7 @@ html2canvas(document.body, {backgroundColor: 'rgba(0, 0, 0, 0)', removeContainer
 
   @override
   Widget build(BuildContext context) {
-    if (imagePath == null) {
+    if (!File(imagePath).existsSync()) {
       return Container();
     }
 
