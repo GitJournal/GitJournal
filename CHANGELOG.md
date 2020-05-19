@@ -1,5 +1,6 @@
 ## [1.53] - 2020-05-18
-* Allow a repo to be chosen in the Automatic Git Host Setup
+* Allow a custom repo to be chosen in the Automatic Git Host Setup
+* Make Card View responsive to screen size
 * Polished the Debug screen
 
 ## [1.52] - 2020-05-14
