@@ -204,9 +204,11 @@ class _DebugScreenState extends State<DebugScreen> {
       ),
     );
     var l = await showDialog(context: context, builder: (context) => dialog);
-    setState(() {
-      filterLevel = l;
-    });
+    if (l != null) {
+      setState(() {
+        filterLevel = l;
+      });
+    }
   }
 }
 
