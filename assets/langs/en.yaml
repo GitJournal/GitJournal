@@ -21,6 +21,12 @@ settings:
   usageStats: Collect Anonymous Usage Statistics
   debug: Debug App
   debugLog: Look under the hood
+  images:
+    title: Image Settings
+    subtitle: Configure how Images are stored
+    imageLocation: Image Location
+    currentFolder: Same Folder as Note
+    customFolder: Custom Folder
 editors:
   checklist:
     add: Add Item

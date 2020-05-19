@@ -46,6 +46,8 @@ class Settings {
   SettingsMarkdownDefaultView markdownDefaultView =
       SettingsMarkdownDefaultView.Default;
 
+  String imageLocationSpec = "."; // . means the same folder
+
   void load(SharedPreferences pref) {
     gitAuthor = pref.getString("gitAuthor") ?? gitAuthor;
     gitAuthorEmail = pref.getString("gitAuthorEmail") ?? gitAuthorEmail;
@@ -94,6 +96,9 @@ class Settings {
 
     homeScreen =
         SettingsHomeScreen.fromInternalString(pref.getString("homeScreen"));
+
+    imageLocationSpec =
+        pref.getString("imageLocationSpec") ?? imageLocationSpec;
   }
 
   Future save() async {
@@ -148,6 +153,8 @@ class Settings {
     _setBool(pref, "proMode", proMode, defaultSet.proMode);
     _setString(pref, "homeScreen", homeScreen.toInternalString(),
         defaultSet.homeScreen.toInternalString());
+    _setString(pref, "imageLocationSpec", imageLocationSpec,
+        defaultSet.imageLocationSpec);
 
     pref.setInt("settingsVersion", version);
 
@@ -206,6 +213,7 @@ class Settings {
       'pseudoId': pseudoId,
       'markdownDefaultView': markdownDefaultView.toInternalString(),
       'homeScreen': homeScreen.toInternalString(),
+      'imageLocationSpec': imageLocationSpec,
     };
   }
 

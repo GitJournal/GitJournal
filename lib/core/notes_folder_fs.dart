@@ -399,6 +399,14 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     return null;
   }
 
+  NotesFolderFS get rootFolder {
+    var folder = this;
+    while (folder.parent != null) {
+      folder = folder.parent;
+    }
+    return folder;
+  }
+
   Note getNoteWithSpec(String spec) {
     var parts = spec.split(p.separator);
     var folder = this;

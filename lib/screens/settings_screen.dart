@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/screens/debug_screen.dart';
 import 'package:gitjournal/screens/settings_editors.dart';
+import 'package:gitjournal/screens/settings_images.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
@@ -218,6 +219,16 @@ class SettingsListState extends State<SettingsList> {
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) => NoteMetadataSettingsScreen(),
+          );
+          Navigator.of(context).push(route);
+        },
+      ),
+      ListTile(
+        title: Text(tr('settings.images.title')),
+        subtitle: Text(tr('settings.images.subtitle')),
+        onTap: () {
+          var route = MaterialPageRoute(
+            builder: (context) => SettingsImagesScreen(),
           );
           Navigator.of(context).push(route);
         },

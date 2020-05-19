@@ -270,19 +270,50 @@ class Note with NotesNotifier {
   }
 
   Future<void> addImage(File file) async {
-    var imageFileName = p.basename(file.path);
-    var imagePath = p.join(parent.folderPath, imageFileName);
-    await file.copy(imagePath);
+    var absImagePath = _buildImagePath(file);
+    await file.copy(absImagePath);
 
-    body = "$body\n ![Image](./$imageFileName)\n";
+    var relativeImagePath = p.relative(absImagePath, from: parent.folderPath);
+    if (!relativeImagePath.startsWith('.')) {
+      relativeImagePath = './$relativeImagePath';
+    }
+    var imageMarkdown = "![Image]($relativeImagePath)\n";
+    if (body.isEmpty) {
+      body = imageMarkdown;
+    } else {
+      body = "$body\n$imageMarkdown";
+    }
   }
 
   Future<void> addImageSync(File file) async {
-    var imageFileName = p.basename(file.path);
-    var imagePath = p.join(parent.folderPath, imageFileName);
-    file.copySync(imagePath);
+    var absImagePath = _buildImagePath(file);
+    file.copySync(absImagePath);
 
-    body = "$body\n ![Image](./$imageFileName)\n";
+    var relativeImagePath = p.relative(absImagePath, from: parent.folderPath);
+    if (!relativeImagePath.startsWith('.')) {
+      relativeImagePath = './$relativeImagePath';
+    }
+    var imageMarkdown = "![Image]($relativeImagePath)\n";
+    if (body.isEmpty) {
+      body = imageMarkdown;
+    } else {
+      body = "$body\n$imageMarkdown";
+    }
+  }
+
+  String _buildImagePath(File file) {
+    String baseFolder;
+
+    var imageSpec = Settings.instance.imageLocationSpec;
+    if (imageSpec == '.') {
+      baseFolder = parent.folderPath;
+    } else {
+      baseFolder = parent.rootFolder.getFolderWithSpec(imageSpec).folderPath;
+      baseFolder ??= parent.folderPath;
+    }
+
+    var imageFileName = p.basename(file.path);
+    return p.join(baseFolder, imageFileName);
   }
 
   @override
