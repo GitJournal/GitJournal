@@ -9,6 +9,7 @@ class DebugScreen extends StatefulWidget {
 
 class _DebugScreenState extends State<DebugScreen> {
   ScrollController _controller = ScrollController();
+  String filterLevel = 'v';
 
   @override
   void initState() {
@@ -46,6 +47,10 @@ class _DebugScreenState extends State<DebugScreen> {
         ),
         actions: <Widget>[
           IconButton(
+            icon: const Icon(Icons.filter_list),
+            onPressed: _showFilterSelection,
+          ),
+          IconButton(
             icon: const Icon(Icons.arrow_upward),
             onPressed: _scrollToTop,
           ),
@@ -67,9 +72,37 @@ class _DebugScreenState extends State<DebugScreen> {
     );
   }
 
+  bool _shouldDisplay(LogMessage msg) {
+    if (filterLevel == null || filterLevel.isEmpty) {
+      return true;
+    }
+
+    if (filterLevel == 'v') {
+      return true;
+    }
+    if (filterLevel == 'd' && msg.l == 'v') {
+      return false;
+    }
+    if (filterLevel == 'i' && (msg.l == 'v' || msg.l == 'd')) {
+      return false;
+    }
+    if (filterLevel == 'w' && (msg.l == 'v' || msg.l == 'd' || msg.l == 'i')) {
+      return false;
+    }
+    if (filterLevel == 'e' &&
+        (msg.l == 'v' || msg.l == 'd' || msg.l == 'i' || msg.l == 'w')) {
+      return false;
+    }
+    return true;
+  }
+
   Iterable<Widget> _fetchLogWidgets() sync* {
     var prevDate = "";
     for (var msg in Log.fetchLogs()) {
+      if (!_shouldDisplay(msg)) {
+        continue;
+      }
+
       var dt = DateTime.fromMillisecondsSinceEpoch(msg.t);
       var date = dt.toIso8601String().substring(0, 10);
       if (date != prevDate) {
@@ -153,5 +186,75 @@ class _DebugScreenState extends State<DebugScreen> {
       ),
       padding: const EdgeInsets.all(8.0),
     );
+  }
+
+  void _showFilterSelection() async {
+    var dialog = AlertDialog(
+      title: const Text("Purchase Failed"),
+      content: Column(
+        children: <Widget>[
+          FilterListTile('Error', 'e', filterLevel == 'e'),
+          FilterListTile('Warning', 'w', filterLevel == 'w'),
+          FilterListTile('Info', 'i', filterLevel == 'i'),
+          FilterListTile('Debug', 'd', filterLevel == 'd'),
+          FilterListTile('Verbose', 'v', filterLevel == 'v'),
+        ],
+        mainAxisSize: MainAxisSize.min,
+      ),
+    );
+    var l = await showDialog(context: context, builder: (context) => dialog);
+    setState(() {
+      filterLevel = l;
+    });
+  }
+}
+
+class FilterListTile extends StatelessWidget {
+  final String publicLevel;
+  final String internalLevel;
+  final bool selected;
+
+  FilterListTile(this.publicLevel, this.internalLevel, this.selected);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: _getIcon(context),
+      title: Text(publicLevel),
+      onTap: () {
+        Navigator.pop(context, internalLevel);
+      },
+      selected: selected,
+    );
+  }
+
+  Icon _getIcon(BuildContext context) {
+    var theme = Theme.of(context);
+    var color = theme.textTheme.headline6.color;
+    if (selected) {
+      switch (theme.brightness) {
+        case Brightness.light:
+          color = theme.primaryColor;
+          break;
+        case Brightness.dark:
+          color = theme.accentColor;
+          break;
+      }
+    }
+
+    switch (internalLevel) {
+      case 'e':
+        return Icon(Icons.error, color: color);
+      case 'w':
+        return Icon(Icons.warning, color: color);
+      case 'i':
+        return Icon(Icons.info, color: color);
+      case 'd':
+        return Icon(Icons.bug_report, color: color);
+      case 'v':
+        return Icon(Icons.all_inclusive, color: color);
+    }
+
+    return Icon(Icons.all_inclusive, color: color);
   }
 }
