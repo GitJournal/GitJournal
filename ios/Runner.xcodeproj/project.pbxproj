@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
+		7A0DAA2E2475DD8D00C0E570 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A0DAA2D2475DD8D00C0E570 /* StoreKit.framework */; };
 		7A2A0C1A229C2E3300FE4F1B /* libssl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2A0C18229C2E3300FE4F1B /* libssl.framework */; };
 		7A2A0C1B229C2E3300FE4F1B /* libcrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2A0C19229C2E3300FE4F1B /* libcrypto.framework */; };
 		7A2A0C1E229FEA4500FE4F1B /* libgit2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2A0C1C229FEA4500FE4F1B /* libgit2.framework */; };
@@ -43,6 +44,7 @@
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
+		7A0DAA2D2475DD8D00C0E570 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		7A2A0C18229C2E3300FE4F1B /* libssl.framework */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.framework; path = libs/libssl.framework; sourceTree = "<group>"; };
 		7A2A0C19229C2E3300FE4F1B /* libcrypto.framework */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.framework; path = libs/libcrypto.framework; sourceTree = "<group>"; };
 		7A2A0C1C229FEA4500FE4F1B /* libgit2.framework */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgit2.framework; path = libs/libgit2.framework; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A2A0C21229FEFD700FE4F1B /* libiconv.tbd in Frameworks */,
+				7A0DAA2E2475DD8D00C0E570 /* StoreKit.framework in Frameworks */,
 				7A2A0C1E229FEA4500FE4F1B /* libgit2.framework in Frameworks */,
 				7A2A0C1F229FEA4500FE4F1B /* libssh2.framework in Frameworks */,
 				7A2A0C1A229C2E3300FE4F1B /* libssl.framework in Frameworks */,
@@ -97,6 +100,7 @@
 		889961847ACA832709E9B420 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7A0DAA2D2475DD8D00C0E570 /* StoreKit.framework */,
 				7A2A0C20229FEFD700FE4F1B /* libiconv.tbd */,
 				7A2A0C1C229FEA4500FE4F1B /* libgit2.framework */,
 				7A2A0C1D229FEA4500FE4F1B /* libssh2.framework */,
