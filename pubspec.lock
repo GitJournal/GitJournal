@@ -818,12 +818,10 @@ packages:
   ssh_key:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "60e088a136a62cd1afe553e8858558f76df00f2d"
-      url: "https://github.com/GitJournal/ssh_key.git"
-    source: git
-    version: "0.5.0"
+      name: ssh_key
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.1"
   stack_trace:
     dependency: transitive
     description:

@@ -48,8 +48,7 @@ dependencies:
   equatable: ^1.1.0
   purchases_flutter: ^1.1.0
   cached_network_image: ^2.2.0+1
-  ssh_key:
-    git: https://github.com/GitJournal/ssh_key.git
+  ssh_key: ^0.5.1
   isolate: ^2.0.3
   flutter_webview_plugin: ^0.3.11
   image_picker: ^0.6.6+1
