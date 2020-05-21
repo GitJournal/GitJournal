@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -186,6 +187,22 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
       ],
       mainAxisAlignment: MainAxisAlignment.spaceAround,
     );
+
+    if (Platform.isIOS) {
+      w = Stack(
+        alignment: FractionalOffset.topLeft,
+        children: <Widget>[
+          w,
+          InkWell(
+            child: Container(
+              child: const Icon(Icons.arrow_back, size: 32.0),
+              padding: const EdgeInsets.all(8.0),
+            ),
+            onTap: () => Navigator.of(context).pop(),
+          ),
+        ],
+      );
+    }
 
     return _SingleChildScrollViewExpanded(
       child: SafeArea(child: w),
