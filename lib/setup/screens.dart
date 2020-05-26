@@ -27,9 +27,10 @@ import 'loading_error.dart';
 import 'sshkey.dart';
 
 class GitHostSetupScreen extends StatefulWidget {
-  final Func0<void> onCompletedFunction;
+  final String repoFolderName;
+  final Func1<String, void> onCompletedFunction;
 
-  GitHostSetupScreen(this.onCompletedFunction);
+  GitHostSetupScreen(this.repoFolderName, this.onCompletedFunction);
 
   @override
   GitHostSetupScreenState createState() {
@@ -469,9 +470,9 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     var basePath = appState.gitBaseDirectory;
 
     // Just in case it was half cloned because of an error
-    await _removeExistingClone(basePath);
+    String repoPath = p.join(basePath, widget.repoFolderName);
+    await _removeExistingClone(repoPath);
 
-    String repoPath = p.join(basePath, "journal");
     String error;
     try {
       Log.d("Cloning " + _gitCloneUrl);
@@ -523,7 +524,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       parameters: _buildOnboardingAnalytics(),
     );
     Navigator.pop(context);
-    widget.onCompletedFunction();
+    widget.onCompletedFunction(widget.repoFolderName);
   }
 
   Future<void> _completeAutoConfigure() async {
@@ -594,7 +595,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   }
 
   Future _removeExistingClone(String baseDirPath) async {
-    var baseDir = Directory(p.join(baseDirPath, "journal"));
+    var baseDir = Directory(baseDirPath);
     var dotGitDir = Directory(p.join(baseDir.path, ".git"));
     bool exists = dotGitDir.existsSync();
     if (exists) {

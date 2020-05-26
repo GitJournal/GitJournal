@@ -329,7 +329,10 @@ class _JournalAppState extends State<JournalApp> {
       case '/settings':
         return SettingsScreen();
       case '/setupRemoteGit':
-        return GitHostSetupScreen(stateContainer.completeGitHostSetup);
+        return GitHostSetupScreen(
+          "journal",
+          stateContainer.completeGitHostSetup,
+        );
       case '/onBoarding':
         return OnBoardingScreen(stateContainer.completeOnBoarding);
       case '/purchase':

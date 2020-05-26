@@ -323,10 +323,10 @@ class StateContainer with ChangeNotifier {
     });
   }
 
-  void completeGitHostSetup() {
+  void completeGitHostSetup(String repoFolderName) {
     () async {
       appState.remoteGitRepoConfigured = true;
-      appState.remoteGitRepoFolderName = "journal";
+      appState.remoteGitRepoFolderName = repoFolderName;
 
       await migrateGitRepo(
         fromGitBasePath: appState.localGitRepoFolderName,
