@@ -76,6 +76,7 @@ class NoteViewer extends StatelessWidget {
                   url, note.parent.folderPath + p.separator, null, null),
             ),
           ),
+          const SizedBox(height: 16.0),
           NoteBacklinkRenderer(note: note, rootFolder: rootFolder),
           // _buildFooter(context),
         ],

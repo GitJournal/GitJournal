@@ -406,6 +406,10 @@ class Note with NotesNotifier {
     _links = links;
     return links;
   }
+
+  List<Link> links() {
+    return _links;
+  }
 }
 
 String buildTitleFileName(String parentDir, String title) {

@@ -73,4 +73,13 @@ widgets:
       empty: Please enter a name
       exists: Already Exists
       contains: Cannot contain /
+  backlinks:
+    title:
+      zero: ""
+      one: "{} Note links to this Note"
+      many: "{} Notes link to this Note"
+      two: "{} Notes link to this Note"
+      few: "{} Notes link to this Note"
+      other: "{} Notes link to this Note"
+
 rootFolder: Root Folder

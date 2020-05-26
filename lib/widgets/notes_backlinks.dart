@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/folder_views/common.dart';
@@ -51,49 +52,110 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
       return Container();
     }
 
+    var title = widget.note.title;
+    if (title.isEmpty) {
+      title = widget.note.fileName;
+    }
+
+    var num = linkedNotes.length;
     var textTheme = Theme.of(context).textTheme;
     var c = Column(
       children: <Widget>[
-        Text('BackLinks', style: textTheme.headline5),
+        Text(
+          plural("widgets.backlinks.title", num),
+          style: textTheme.headline6,
+        ),
         const SizedBox(height: 8.0),
-        for (var n in linkedNotes)
-          NoteSnippet(n, () {
-            openNoteEditor(context, n);
-          }),
+        for (var note in linkedNotes)
+          NoteSnippet(
+            note: note,
+            parentNote: widget.note,
+            onTap: () {
+              openNoteEditor(context, note);
+            },
+          ),
       ],
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
     );
 
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 16.0),
-      child: c,
+    var backgroundColor = Colors.grey[200];
+    if (Theme.of(context).brightness == Brightness.dark) {
+      backgroundColor = Theme.of(context).backgroundColor;
+    }
+    return Container(
+      color: backgroundColor,
+      width: MediaQuery.of(context).size.width,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+        child: c,
+      ),
     );
   }
 }
 
 class NoteSnippet extends StatelessWidget {
   final Note note;
+  final Note parentNote;
   final Function onTap;
 
-  NoteSnippet(this.note, this.onTap);
+  NoteSnippet({
+    @required this.note,
+    @required this.parentNote,
+    @required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    var textTheme = Theme.of(context).textTheme;
+    var theme = Theme.of(context);
+    var textTheme = theme.textTheme;
     var title = note.title;
     if (title.isEmpty) {
       title = note.fileName;
     }
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0, 8.0),
-      child: GestureDetector(
-        onTap: () {
-          openNoteEditor(context, note);
-        },
-        child: Text('-   $title', style: textTheme.bodyText1),
+      padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
+      child: Container(
+        color: theme.scaffoldBackgroundColor,
+        width: MediaQuery.of(context).size.width,
+        child: GestureDetector(
+          onTap: () {
+            openNoteEditor(context, note);
+          },
+          child: Column(
+            children: <Widget>[
+              Text('$title', style: textTheme.bodyText1),
+              const SizedBox(height: 8.0),
+              _buildSummary(context),
+            ],
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+          ),
+        ),
       ),
+    );
+  }
+
+  Widget _buildSummary(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme;
+    var links = note.links();
+    if (links == null) {
+      return Container();
+    }
+
+    var link = links.where((l) => l.filePath == parentNote.filePath).first;
+    var body = note.body.split('\n');
+    var paragraph = body.firstWhere(
+      (line) => line.contains('[${link.term}]'),
+      orElse: () => "",
+    );
+    // vHanda: This isn't a very fool proof way of figuring out the line
+
+    return Text(
+      paragraph,
+      style: textTheme.bodyText2,
+      maxLines: 3,
     );
   }
 }
