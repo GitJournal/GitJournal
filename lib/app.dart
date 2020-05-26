@@ -288,7 +288,10 @@ class _JournalAppState extends State<JournalApp> {
       locale: EasyLocalization.of(context).locale,
 
       theme: themeData,
-      navigatorObservers: <NavigatorObserver>[JournalApp.observer],
+      navigatorObservers: <NavigatorObserver>[
+        JournalApp.observer,
+        CustomRouteObserver(),
+      ],
       initialRoute: initialRoute,
       debugShowCheckedModeBanner: false,
       //debugShowMaterialGrid: true,

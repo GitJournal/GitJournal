@@ -356,6 +356,7 @@ class NoteEditorState extends State<NoteEditor> {
         selectedTags: note.tags,
         allTags: allTags,
       ),
+      settings: const RouteSettings(name: '/editTags/'),
     );
     var newTags = await Navigator.of(context).push(route);
     assert(newTags != null);

@@ -43,16 +43,19 @@ class TagListingScreen extends StatelessWidget {
       leading: FaIcon(FontAwesomeIcons.tag, color: titleColor),
       title: Text(tag),
       onTap: () {
-        var route = MaterialPageRoute(builder: (context) {
-          var rootFolder = Provider.of<NotesFolderFS>(context);
-          var folder = FlattenedNotesFolder(
-            rootFolder,
-            filter: (Note n) => n.tags.contains(tag),
-            title: tag,
-          );
+        var route = MaterialPageRoute(
+          builder: (context) {
+            var rootFolder = Provider.of<NotesFolderFS>(context);
+            var folder = FlattenedNotesFolder(
+              rootFolder,
+              filter: (Note n) => n.tags.contains(tag),
+              title: tag,
+            );
 
-          return FolderView(notesFolder: folder);
-        });
+            return FolderView(notesFolder: folder);
+          },
+          settings: const RouteSettings(name: '/tags/'),
+        );
         Navigator.of(context).push(route);
       },
     );

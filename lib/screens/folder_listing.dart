@@ -32,6 +32,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
           builder: (context) => FolderView(
             notesFolder: folder,
           ),
+          settings: const RouteSettings(name: '/folder/'),
         );
         Navigator.of(context).push(route);
       },

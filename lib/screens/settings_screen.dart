@@ -184,6 +184,7 @@ class SettingsListState extends State<SettingsList> {
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) => GitRemoteSettingsScreen(),
+            settings: const RouteSettings(name: '/settings/gitRemote'),
           );
           Navigator.of(context).push(route);
         },
@@ -196,6 +197,7 @@ class SettingsListState extends State<SettingsList> {
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) => SettingsEditorsScreen(),
+            settings: const RouteSettings(name: '/settings/editors'),
           );
           Navigator.of(context).push(route);
         },
@@ -219,6 +221,7 @@ class SettingsListState extends State<SettingsList> {
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) => NoteMetadataSettingsScreen(),
+            settings: const RouteSettings(name: '/settings/noteMetaData'),
           );
           Navigator.of(context).push(route);
         },
@@ -229,6 +232,7 @@ class SettingsListState extends State<SettingsList> {
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) => SettingsImagesScreen(),
+            settings: const RouteSettings(name: '/settings/images'),
           );
           Navigator.of(context).push(route);
         },
@@ -260,6 +264,7 @@ class SettingsListState extends State<SettingsList> {
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) => DebugScreen(),
+            settings: const RouteSettings(name: '/settings/debug'),
           );
           Navigator.of(context).push(route);
         },

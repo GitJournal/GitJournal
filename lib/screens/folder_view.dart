@@ -10,6 +10,7 @@ import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/screens/settings_screen.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
@@ -207,8 +208,11 @@ class _FolderViewState extends State<FolderView> {
       fsFolder = getFolderForEditor(rootFolder, editorType);
     }
 
+    var routeType =
+        SettingsEditorType.fromEditorType(editorType).toInternalString();
     var route = MaterialPageRoute(
       builder: (context) => NoteEditor.newNote(fsFolder, editorType),
+      settings: RouteSettings(name: '/newNote/$routeType'),
     );
     await Navigator.of(context).push(route);
     _scaffoldKey.currentState.removeCurrentSnackBar();

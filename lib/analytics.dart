@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/error_reporting.dart';
@@ -84,4 +86,42 @@ class Analytics {
 void logEvent(Event event, {Map<String, String> parameters}) {
   getAnalytics().log(e: event, parameters: parameters);
   Log.d("Event $event");
+}
+
+class CustomRouteObserver extends RouteObserver<PageRoute<dynamic>> {
+  void _sendScreenView(PageRoute<dynamic> route) {
+    final String screenName = route.settings.name;
+    assert(screenName != null, "Screen name is null $route");
+  }
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic> previousRoute) {
+    super.didPush(route, previousRoute);
+    if (route is PageRoute) {
+      _sendScreenView(route);
+    } else {
+      print("route in not a PageRoute! $route");
+    }
+  }
+
+  @override
+  void didReplace({Route<dynamic> newRoute, Route<dynamic> oldRoute}) {
+    super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
+    if (newRoute is PageRoute) {
+      _sendScreenView(newRoute);
+    } else {
+      print("newRoute in not a PageRoute! $newRoute");
+    }
+  }
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
+    super.didPop(route, previousRoute);
+    if (previousRoute is PageRoute && route is PageRoute) {
+      _sendScreenView(previousRoute);
+    } else {
+      print("previousRoute in not a PageRoute! $previousRoute");
+      print("route in not a PageRoute! $route");
+    }
+  }
 }
