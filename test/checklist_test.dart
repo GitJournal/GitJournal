@@ -238,5 +238,39 @@ Booga Wooga
       note = checklist.note;
       expect(note.body, "- [X] One\n- [ ] Two");
     });
+
+    test('Empty Checklist', () async {
+      var content = "[X] One\n";
+
+      var notePath = p.join(tempDir.path, "note449.md");
+      await File(notePath).writeAsString(content);
+
+      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var note = Note(parentFolder, notePath);
+      await note.load();
+
+      var checklist = Checklist(note);
+      checklist.removeAt(0);
+
+      note = checklist.note;
+      expect(note.body, "\n");
+    });
+
+    test('Checklist Header only', () async {
+      var content = "#Title\n[X] One\n";
+
+      var notePath = p.join(tempDir.path, "note429.md");
+      await File(notePath).writeAsString(content);
+
+      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var note = Note(parentFolder, notePath);
+      await note.load();
+
+      var checklist = Checklist(note);
+      checklist.removeAt(0);
+
+      note = checklist.note;
+      expect(note.body, "#Title\n");
+    });
   });
 }

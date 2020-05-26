@@ -91,8 +91,6 @@ class Checklist {
   }
 
   Note get note {
-    if (_lines.isEmpty) return _note;
-
     for (var item in items) {
       _lines[item.lineNo] = item.toString();
     }
