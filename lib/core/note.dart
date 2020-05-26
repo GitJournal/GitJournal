@@ -49,7 +49,9 @@ class Note with NotesNotifier {
   var _loadState = NoteLoadState.None;
   var _serializer = MarkdownYAMLCodec();
 
+  // Computed from body
   String _summary;
+  List<Link> _links;
 
   static final _mdYamlDocLoader = MdYamlDocLoader();
 
@@ -109,6 +111,7 @@ class Note with NotesNotifier {
   set body(String newBody) {
     _body = newBody;
     _summary = null;
+    _links = null;
     _notifyModified();
   }
 
@@ -371,6 +374,10 @@ class Note with NotesNotifier {
   }
 
   Future<List<Link>> fetchLinks() async {
+    if (_links != null) {
+      return _links;
+    }
+
     final doc = md.Document(
       encodeHtml: false,
       extensionSet: md.ExtensionSet.gitHubFlavored,
@@ -392,11 +399,11 @@ class Note with NotesNotifier {
     }
 
     doc.linkReferences.forEach((key, value) {
-      print(value);
       var filePath = value.destination;
       links.add(Link(term: key, filePath: filePath));
     });
 
+    _links = links;
     return links;
   }
 }
