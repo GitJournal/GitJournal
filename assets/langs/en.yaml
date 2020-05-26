@@ -29,6 +29,12 @@ settings:
     imageLocation: Image Location
     currentFolder: Same Folder as Note
     customFolder: Custom Folder
+  gitRemote:
+    changeHost:
+      title: Reconfigure Git Host?
+      subtitle: Notes which have not been synced will be lost
+      ok: Ok
+      cancel: Cancel
 editors:
   checklist:
     add: Add Item

@@ -1,14 +1,20 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:git_bindings/git_bindings.dart';
+import 'package:gitjournal/setup/screens.dart';
 import 'package:gitjournal/setup/sshkey.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
 import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
+import 'package:provider/provider.dart';
+
+import 'package:path/path.dart' as p;
 
 class GitRemoteSettingsScreen extends StatefulWidget {
   @override
@@ -71,6 +77,10 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
             setState(() {});
           },
         ),
+        RedButton(
+          text: "Reset Git Host",
+          onPressed: () => _resetGitHost(context),
+        ),
       ],
       crossAxisAlignment: CrossAxisAlignment.start,
     );
@@ -111,6 +121,41 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
       });
     });
   }
+
+  void _resetGitHost(BuildContext context) async {
+    var ok = await showDialog(
+      context: context,
+      builder: (_) => HostChangeConfirmationDialog(),
+    );
+    if (ok == null) {
+      return;
+    }
+
+    var stateContainer = Provider.of<StateContainer>(context);
+    var gitDir = stateContainer.appState.gitBaseDirectory;
+
+    // Figure out the next available folder
+    String repoFolderName = "journal_";
+    var num = 0;
+    while (true) {
+      var repoFolderPath = p.join(gitDir, "$repoFolderName$num");
+      if (!Directory(repoFolderPath).existsSync()) {
+        break;
+      }
+      num++;
+    }
+    repoFolderName = repoFolderName + num.toString();
+
+    var route = MaterialPageRoute(
+      builder: (context) => GitHostSetupScreen(
+        repoFolderName,
+        stateContainer.completeGitHostSetup,
+      ),
+      settings: const RouteSettings(name: '/setupRemoteGit'),
+    );
+    await Navigator.of(context).push(route);
+    Navigator.of(context).popUntil((route) => route.isFirst);
+  }
 }
 
 class Button extends StatelessWidget {
@@ -132,6 +177,49 @@ class Button extends StatelessWidget {
         color: Theme.of(context).primaryColor,
         onPressed: onPressed,
       ),
+    );
+  }
+}
+
+class RedButton extends StatelessWidget {
+  final String text;
+  final Function onPressed;
+
+  RedButton({@required this.text, @required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: RaisedButton(
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.button,
+        ),
+        color: Colors.red,
+        onPressed: onPressed,
+      ),
+    );
+  }
+}
+
+class HostChangeConfirmationDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(tr("settings.gitRemote.changeHost.title")),
+      content: Text(tr("settings.gitRemote.changeHost.subtitle")),
+      actions: <Widget>[
+        FlatButton(
+          child: Text(tr("settings.gitRemote.changeHost.ok")),
+          onPressed: () => Navigator.of(context).pop(true),
+        ),
+        FlatButton(
+          child: Text(tr("settings.gitRemote.changeHost.cancel")),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ],
     );
   }
 }

@@ -59,6 +59,11 @@ class NotesCache {
     }
   }
 
+  Future<void> clear() async {
+    if (!enabled) return;
+    return File(filePath).delete();
+  }
+
   Future<void> buildCache(NotesFolderFS rootFolder) async {
     if (!enabled) return;
 

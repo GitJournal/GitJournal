@@ -325,14 +325,18 @@ class StateContainer with ChangeNotifier {
 
   void completeGitHostSetup(String repoFolderName) {
     () async {
+      var reconfiguringRemote = appState.remoteGitRepoConfigured;
+
       appState.remoteGitRepoConfigured = true;
       appState.remoteGitRepoFolderName = repoFolderName;
 
-      await migrateGitRepo(
-        fromGitBasePath: appState.localGitRepoFolderName,
-        toGitBaseFolder: appState.remoteGitRepoFolderName,
-        gitBasePath: appState.gitBaseDirectory,
-      );
+      if (!reconfiguringRemote) {
+        await migrateGitRepo(
+          fromGitBasePath: appState.localGitRepoFolderName,
+          toGitBaseFolder: appState.remoteGitRepoFolderName,
+          gitBasePath: appState.gitBaseDirectory,
+        );
+      }
 
       var repoPath =
           p.join(appState.gitBaseDirectory, appState.remoteGitRepoFolderName);
@@ -340,6 +344,7 @@ class StateContainer with ChangeNotifier {
       appState.notesFolder.reset(_gitRepo.gitDirPath);
 
       await _persistConfig();
+      await _notesCache.clear();
       _loadNotes();
       _syncNotes();
 
