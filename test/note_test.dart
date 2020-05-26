@@ -112,5 +112,32 @@ Hello""";
       var actualContent = File(notePath).readAsStringSync();
       expect(actualContent, equals(expectedContent));
     });
+
+    test('Should parse links', () async {
+      var content = """---
+title: Foo
+---
+
+[Hi](./foo.md)
+[Hi2](./po/../food.md)
+[Web](http://example.com)
+""";
+
+      var notePath = p.join(tempDir.path, "note6.md");
+      File(notePath).writeAsString(content);
+
+      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var note = Note(parentFolder, notePath);
+      await note.load();
+
+      var links = await note.fetchLinks();
+      expect(links[0].filePath, p.join(tempDir.path, "foo.md"));
+      expect(links[0].term, "Hi");
+
+      expect(links[1].filePath, p.join(tempDir.path, "food.md"));
+      expect(links[1].term, "Hi2");
+
+      expect(links.length, 2);
+    });
   });
 }
