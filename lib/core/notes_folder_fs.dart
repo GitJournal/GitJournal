@@ -458,7 +458,32 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   Set<String> getNoteTagsRecursively() {
     return _fetchTags(this, {});
   }
+
+  Future<List<Note>> matchNotes(NoteMatcherAsync pred) async {
+    var matchedNotes = <Note>[];
+    await _matchNotes(matchedNotes, pred);
+    return matchedNotes;
+  }
+
+  Future<List<Note>> _matchNotes(
+    List<Note> matchedNotes,
+    NoteMatcherAsync pred,
+  ) async {
+    for (var note in _notes) {
+      var matches = await pred(note);
+      if (matches) {
+        matchedNotes.add(note);
+      }
+    }
+
+    for (var folder in _folders) {
+      await folder._matchNotes(matchedNotes, pred);
+    }
+    return matchedNotes;
+  }
 }
+
+typedef NoteMatcherAsync = Future<bool> Function(Note n);
 
 Set<String> _fetchTags(NotesFolder folder, Set<String> tags) {
   for (var note in folder.notes) {

@@ -437,6 +437,11 @@ class Link {
       other is Note &&
           runtimeType == other.runtimeType &&
           filePath == other.filePath;
+
+  @override
+  String toString() {
+    return 'Link{term: $term, filePath: $filePath}';
+  }
 }
 
 class LinkExtractor implements md.NodeVisitor {
