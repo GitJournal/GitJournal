@@ -109,6 +109,10 @@ class Note with NotesNotifier {
   }
 
   set body(String newBody) {
+    if (newBody == _body) {
+      return;
+    }
+
     _body = newBody;
     _summary = null;
     _links = null;
