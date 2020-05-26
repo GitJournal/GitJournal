@@ -427,12 +427,14 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     final gitHubUrl = 'https://github.com/' + repoName + '/settings/keys/new';
     final gitLabUrl = 'https://gitlab.com/' +
         repoName +
-        '/settings/repository/#js-deploy-keys-settings';
+        '/-/settings/repository/#js-deploy-keys-settings';
 
     try {
       if (_gitCloneUrl.startsWith("git@github.com:")) {
+        Log.i("Launching $gitHubUrl");
         await launch(gitHubUrl);
       } else if (_gitCloneUrl.startsWith("git@gitlab.com:")) {
+        Log.i("Launching $gitLabUrl");
         await launch(gitLabUrl);
       }
     } catch (err, stack) {
