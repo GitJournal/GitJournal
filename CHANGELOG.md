@@ -1,3 +1,8 @@
+## [1.54] - 2020-05-27
+* Allow the Git Remote Host to be reset
+* Allow the default Image location to be configured
+* Experimental support for backlinks
+
 ## [1.53] - 2020-05-18
 * Allow a custom repo to be chosen in the Automatic Git Host Setup
 * Make Card View responsive to screen size
