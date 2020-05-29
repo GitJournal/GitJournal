@@ -47,6 +47,7 @@ class Settings {
       SettingsMarkdownDefaultView.Default;
 
   String imageLocationSpec = "."; // . means the same folder
+  String debugLogLevel = 'v';
 
   void load(SharedPreferences pref) {
     gitAuthor = pref.getString("gitAuthor") ?? gitAuthor;
@@ -99,6 +100,8 @@ class Settings {
 
     imageLocationSpec =
         pref.getString("imageLocationSpec") ?? imageLocationSpec;
+
+    debugLogLevel = pref.getString("debugLogLevel") ?? debugLogLevel;
   }
 
   Future save() async {
@@ -155,6 +158,7 @@ class Settings {
         defaultSet.homeScreen.toInternalString());
     _setString(pref, "imageLocationSpec", imageLocationSpec,
         defaultSet.imageLocationSpec);
+    _setString(pref, "debugLogLevel", debugLogLevel, defaultSet.debugLogLevel);
 
     pref.setInt("settingsVersion", version);
 
@@ -214,6 +218,7 @@ class Settings {
       'markdownDefaultView': markdownDefaultView.toInternalString(),
       'homeScreen': homeScreen.toInternalString(),
       'imageLocationSpec': imageLocationSpec,
+      'debugLogLevel': debugLogLevel,
     };
   }
 

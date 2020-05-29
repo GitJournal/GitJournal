@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 class DebugScreen extends StatefulWidget {
@@ -9,7 +10,7 @@ class DebugScreen extends StatefulWidget {
 
 class _DebugScreenState extends State<DebugScreen> {
   ScrollController _controller = ScrollController();
-  String filterLevel = 'v';
+  String filterLevel = Settings.instance.debugLogLevel;
 
   @override
   void initState() {
@@ -206,6 +207,9 @@ class _DebugScreenState extends State<DebugScreen> {
     var l = await showDialog(context: context, builder: (context) => dialog);
     if (l != null) {
       setState(() {
+        Settings.instance.debugLogLevel = l;
+        Settings.instance.save();
+
         filterLevel = l;
       });
     }
