@@ -152,8 +152,8 @@ class _DebugScreenState extends State<DebugScreen> {
       props.add(valueSpan);
     });
 
-    return RichText(
-      text: TextSpan(children: [
+    return SelectableText.rich(
+      TextSpan(children: [
         TextSpan(
             text: timeStr,
             style: textStyle.copyWith(fontWeight: FontWeight.bold)),
@@ -180,7 +180,7 @@ class _DebugScreenState extends State<DebugScreen> {
 
     var text = dt.toIso8601String().substring(0, 10);
     return Padding(
-      child: Text(
+      child: SelectableText(
         text,
         style: textStyle,
         textAlign: TextAlign.center,
