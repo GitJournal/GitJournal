@@ -3,6 +3,7 @@ import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
+import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class NoteMetadataSettingsScreen extends StatefulWidget {
   @override
@@ -44,22 +45,24 @@ class _NoteMetadataSettingsScreenState
             });
           },
         ),
-        ListPreference(
-          title: "Modified Field",
-          options: [
-            "modified",
-            "mod",
-            "lastmodified",
-            "lastmod",
-          ],
-          currentOption: Settings.instance.yamlModifiedKey,
-          onChange: (String newVal) {
-            setState(() {
-              Settings.instance.yamlModifiedKey = newVal;
-              Settings.instance.save();
-            });
-          },
-          enabled: Settings.instance.yamlHeaderEnabled,
+        ProOverlay(
+          child: ListPreference(
+            title: "Modified Field",
+            options: [
+              "modified",
+              "mod",
+              "lastmodified",
+              "lastmod",
+            ],
+            currentOption: Settings.instance.yamlModifiedKey,
+            onChange: (String newVal) {
+              setState(() {
+                Settings.instance.yamlModifiedKey = newVal;
+                Settings.instance.save();
+              });
+            },
+            enabled: Settings.instance.yamlHeaderEnabled,
+          ),
         ),
       ],
     );
