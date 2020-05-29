@@ -87,7 +87,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Git Remote Settings'),
+        title: Text(tr("settings.gitRemote.title")),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

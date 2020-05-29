@@ -179,8 +179,8 @@ class SettingsListState extends State<SettingsList> {
       ListTile(title: gitAuthorForm),
       ListTile(title: gitAuthorEmailForm),
       ListTile(
-        title: const Text("Git Remote Settings"),
-        subtitle: const Text("Configure where your notes are synced"),
+        title: Text(tr("settings.gitRemote.title")),
+        subtitle: Text(tr("settings.gitRemote.subtitle")),
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) => GitRemoteSettingsScreen(),
