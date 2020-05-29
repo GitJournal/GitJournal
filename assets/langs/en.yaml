@@ -35,6 +35,15 @@ settings:
       subtitle: Notes which have not been synced will be lost
       ok: Ok
       cancel: Cancel
+  noteMetaData:
+    title: Note Metadata Settings
+    subtitle: Configure how the YAML Metadata is saved
+    text: Every note has some metadata which is stored in a YAML Header as follows -
+    enableHeader: Enable YAML Header
+    modified: Modified Field
+    example:
+      title: Example Title
+
 editors:
   checklist:
     add: Add Item

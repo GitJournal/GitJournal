@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
@@ -27,7 +28,7 @@ class _NoteMetadataSettingsScreenState
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            "Every note has some metadata which is stored in a YAML Header as follows -",
+            tr("settings.noteMetaData.text"),
             style: textTheme.bodyText1,
           ),
         ),
@@ -36,7 +37,7 @@ class _NoteMetadataSettingsScreenState
         const SizedBox(height: 16.0),
         const Divider(),
         SwitchListTile(
-          title: const Text("Enable YAML Header"),
+          title: Text(tr("settings.noteMetaData.enableHeader")),
           value: Settings.instance.yamlHeaderEnabled,
           onChanged: (bool newVal) {
             setState(() {
@@ -47,7 +48,7 @@ class _NoteMetadataSettingsScreenState
         ),
         ProOverlay(
           child: ListPreference(
-            title: "Modified Field",
+            title: tr("settings.noteMetaData.modified"),
             options: [
               "modified",
               "mod",
@@ -69,7 +70,7 @@ class _NoteMetadataSettingsScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Note Metadata Settings'),
+        title: Text(tr("settings.noteMetaData.title")),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -86,7 +87,7 @@ class _NoteMetadataSettingsScreenState
     return {
       'created': toIso8601WithTimezone(created),
       Settings.instance.yamlModifiedKey: toIso8601WithTimezone(created),
-      'title': 'Example Title',
+      'title': tr("settings.noteMetaData.example.title"),
     };
   }
 }

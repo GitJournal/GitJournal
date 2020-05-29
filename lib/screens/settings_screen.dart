@@ -216,8 +216,8 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
       ListTile(
-        title: const Text("Note Metadata Settings"),
-        subtitle: const Text("Configure how the YAML Metadata is saved"),
+        title: Text(tr("settings.noteMetaData.title")),
+        subtitle: Text(tr("settings.noteMetaData.subtitle")),
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) => NoteMetadataSettingsScreen(),
