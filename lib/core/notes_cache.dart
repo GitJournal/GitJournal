@@ -117,7 +117,7 @@ class NotesCache {
       return json.decode(contents).cast<String>();
     } catch (ex, st) {
       Log.e("Exception - $ex for contents: $contents");
-      await logException(ex, st);
+      await logExceptionWarning(ex, st);
       return [];
     }
   }

@@ -109,6 +109,15 @@ Future<void> logException(Exception e, StackTrace stackTrace) async {
   return FlutterCrashlytics().logException(e, stackTrace);
 }
 
+Future<void> logExceptionWarning(Exception e, StackTrace stackTrace) async {
+  if (!reportCrashes) {
+    return;
+  }
+
+  await captureSentryException(e, stackTrace, level: SeverityLevel.warning);
+  return FlutterCrashlytics().logException(e, stackTrace);
+}
+
 List<Breadcrumb> breadcrumbs = [];
 
 void captureErrorBreadcrumb({
@@ -121,14 +130,16 @@ void captureErrorBreadcrumb({
 
 Future<void> captureSentryException(
   Object exception,
-  StackTrace stackTrace,
-) async {
+  StackTrace stackTrace, {
+  SeverityLevel level = SeverityLevel.error,
+}) async {
   try {
     final sentry = await getSentryClient();
     final Event event = Event(
       exception: exception,
       stackTrace: stackTrace,
       breadcrumbs: breadcrumbs,
+      level: level,
     );
 
     return sentry.capture(event: event);
