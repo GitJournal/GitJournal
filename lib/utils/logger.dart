@@ -31,31 +31,36 @@ class Log {
 
   static void v(String msg,
       {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
-    Fimber.v(msg, ex: ex, stacktrace: stacktrace);
+    Fimber.log("V", msg,
+        ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
     _write('v', msg, ex, stacktrace, props);
   }
 
   static void d(String msg,
       {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
-    Fimber.d(msg, ex: ex, stacktrace: stacktrace);
+    Fimber.log("D", msg,
+        ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
     _write('d', msg, ex, stacktrace, props);
   }
 
   static void i(String msg,
       {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
-    Fimber.i(msg, ex: ex, stacktrace: stacktrace);
+    Fimber.log("I", msg,
+        ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
     _write('i', msg, ex, stacktrace, props);
   }
 
   static void e(String msg,
       {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
-    Fimber.e(msg, ex: ex, stacktrace: stacktrace);
+    Fimber.log("E", msg,
+        ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
     _write('e', msg, ex, stacktrace, props);
   }
 
   static void w(String msg,
       {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
-    Fimber.w(msg, ex: ex, stacktrace: stacktrace);
+    Fimber.log("W", msg,
+        ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
     _write('w', msg, ex, stacktrace, props);
   }
 
