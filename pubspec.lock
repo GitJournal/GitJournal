@@ -290,7 +290,7 @@ packages:
       name: flutter_runtime_env
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.2"
+    version: "0.0.3"
   flutter_staggered_grid_view:
     dependency: "direct main"
     description:
