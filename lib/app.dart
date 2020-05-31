@@ -19,7 +19,8 @@ import 'package:flutter_runtime_env/flutter_runtime_env.dart' as runtime_env;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 
-import 'package:git_bindings/git_bindings.dart';
+import 'package:dart_git/git.dart';
+
 import 'package:quick_actions/quick_actions.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
@@ -65,7 +66,7 @@ class JournalApp extends StatefulWidget {
         appState.gitBaseDirectory,
         appState.localGitRepoFolderName,
       );
-      await GitRepo.init(repoPath);
+      await GitRepository.init(repoPath);
 
       appState.localGitRepoConfigured = true;
       appState.save(pref);
