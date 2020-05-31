@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_driver/driver_extension.dart';
-import 'package:gitjournal/apis/git.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/appstate.dart';
@@ -24,7 +24,7 @@ void main() async {
 
 // Generate lots of notes and folders better screenshots
 Future<void> populateWithData(SharedPreferences pref) async {
-  var dir = await getGitBaseDirectory();
+  var dir = await getApplicationDocumentsDirectory();
 
   var appState = AppState(pref);
   appState.gitBaseDirectory = dir.path;

@@ -48,10 +48,7 @@ static FlutterMethodChannel* gitChannel = 0;
         NSArray *sshPrivateComponents = [NSArray arrayWithObjects:filesDir, @"ssh", @"id_rsa", nil];
         NSString *sshPrivateKeyString = [NSString pathWithComponents:sshPrivateComponents];
 
-        if ([@"getBaseDirectory" isEqualToString:method]) {
-            result(filesDir);
-        }
-        else if ([@"gitClone" isEqualToString:method]) {
+        if ([@"gitClone" isEqualToString:method]) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [self handleMethodCallAsync:call result:result];
             });

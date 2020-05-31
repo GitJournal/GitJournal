@@ -24,7 +24,6 @@ import 'package:dart_git/git.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
-import 'package:gitjournal/apis/git.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/appstate.dart';
@@ -32,6 +31,7 @@ import 'package:gitjournal/themes.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'screens/home_screen.dart';
 import 'screens/onboarding_screens.dart';
@@ -54,7 +54,7 @@ class JournalApp extends StatefulWidget {
     }
 
     if (appState.gitBaseDirectory.isEmpty) {
-      var dir = await getGitBaseDirectory();
+      var dir = await getApplicationDocumentsDirectory();
       appState.gitBaseDirectory = dir.path;
       appState.save(pref);
     }
