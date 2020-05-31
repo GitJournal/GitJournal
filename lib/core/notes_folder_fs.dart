@@ -318,6 +318,12 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   }
 
   void removeFolder(NotesFolderFS folder) {
+    var notesCopy = List<Note>.from(folder._notes);
+    notesCopy.forEach(folder.remove);
+
+    var foldersCopy = List<NotesFolderFS>.from(folder._folders);
+    foldersCopy.forEach(folder.removeFolder);
+
     _removeFolderListeners(folder);
 
     assert(_folders.indexWhere((f) => f.folderPath == folder.folderPath) != -1);
