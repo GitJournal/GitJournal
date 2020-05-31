@@ -1,0 +1,7 @@
+application-name: "GitJournal"
+#executable-name: "gitjournal" # Uncomment to modify this value. Only lowercase a-z, numbers, underscores and no spaces
+#package-name: "gitjournal" # Uncomment to modify this value. Only lowercase a-z, numbers and no underscores or spaces
+license: "AGPL-3.0-or-later"
+target: lib/main.dart
+docker: false
+engine-version: "" # change to a engine version commit
