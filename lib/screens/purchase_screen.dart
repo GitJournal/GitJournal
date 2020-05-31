@@ -43,6 +43,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
         _scaffoldKey.currentState
           ..removeCurrentSnackBar()
           ..showSnackBar(snackBar);
+        return;
       }
     }
     var offeringList = offerings.all.values.toList();
