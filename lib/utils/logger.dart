@@ -14,8 +14,6 @@ class Log {
   static Future<void> init() async {
     if (foundation.kDebugMode) {
       Fimber.plantTree(DebugTree.elapsed(useColors: true));
-    } else {
-      Fimber.plantTree(DebugTree.elapsed(useColors: false));
     }
 
     var cacheDir = await getTemporaryDirectory();
@@ -31,36 +29,46 @@ class Log {
 
   static void v(String msg,
       {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
-    Fimber.log("V", msg,
-        ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
+    if (foundation.kDebugMode) {
+      Fimber.log("V", msg,
+          ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
+    }
     _write('v', msg, ex, stacktrace, props);
   }
 
   static void d(String msg,
       {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
-    Fimber.log("D", msg,
-        ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
+    if (foundation.kDebugMode) {
+      Fimber.log("D", msg,
+          ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
+    }
     _write('d', msg, ex, stacktrace, props);
   }
 
   static void i(String msg,
       {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
-    Fimber.log("I", msg,
-        ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
+    if (foundation.kDebugMode) {
+      Fimber.log("I", msg,
+          ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
+    }
     _write('i', msg, ex, stacktrace, props);
   }
 
   static void e(String msg,
       {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
-    Fimber.log("E", msg,
-        ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
+    if (foundation.kDebugMode) {
+      Fimber.log("E", msg,
+          ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
+    }
     _write('e', msg, ex, stacktrace, props);
   }
 
   static void w(String msg,
       {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
-    Fimber.log("W", msg,
-        ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
+    if (foundation.kDebugMode) {
+      Fimber.log("W", msg,
+          ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
+    }
     _write('w', msg, ex, stacktrace, props);
   }
 
