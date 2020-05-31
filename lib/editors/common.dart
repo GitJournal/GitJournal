@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
@@ -188,6 +189,10 @@ Widget _buildAddBottomSheet(
                 await editorState.addImage(image);
               }
             } catch (e) {
+              if (e is PlatformException && e.code == "photo_access_denied") {
+                Navigator.of(context).pop();
+                return;
+              }
               reportError(e, StackTrace.current);
             }
             Navigator.of(context).pop();
