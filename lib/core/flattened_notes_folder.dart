@@ -26,6 +26,7 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
     folder.addNoteAddedListener(_noteAdded);
     folder.addNoteRemovedListener(_noteRemoved);
     folder.addNoteModifiedListener(_noteModified);
+    folder.addNoteRenameListener(_noteRenamed);
 
     // Add Individual Notes
     for (var note in folder.notes) {
@@ -58,6 +59,7 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
     folder.removeNoteAddedListener(_noteAdded);
     folder.removeNoteRemovedListener(_noteRemoved);
     folder.removeNoteModifiedListener(_noteModified);
+    folder.removeNoteRenameListener(_noteRenamed);
   }
 
   void _noteAdded(int _, Note note) {
@@ -96,6 +98,10 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
         _noteAdded(-1, note);
       }
     }
+  }
+
+  void _noteRenamed(int i, Note note, String oldPath) {
+    notifyNoteRenamed(i, note, oldPath);
   }
 
   @override
