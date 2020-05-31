@@ -149,10 +149,14 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
   }
 
   void _noteTextChanged() {
-    if (_noteModified) return;
-    setState(() {
-      _noteModified = true;
-    });
+    if (_noteModified && !widget.isNewNote) return;
+
+    var newState = !(widget.isNewNote && _textController.text.trim().isEmpty);
+    if (newState != _noteModified) {
+      setState(() {
+        _noteModified = newState;
+      });
+    }
   }
 
   @override
