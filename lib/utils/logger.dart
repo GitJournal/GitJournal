@@ -130,6 +130,11 @@ class Log {
       }
     }
   }
+
+  static String filePathForDate(DateTime dt) {
+    var date = dt.toString().substring(0, 10);
+    return p.join(logFolderPath, '$date.jsonl');
+  }
 }
 
 class LogMessage {

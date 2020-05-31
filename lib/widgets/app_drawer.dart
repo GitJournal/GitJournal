@@ -9,7 +9,6 @@ import 'package:launch_review/launch_review.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:fetch_app_logs/fetch_app_logs.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/state_container.dart';
@@ -165,12 +164,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () async {
               var platform = Platform.operatingSystem;
               var versionText = await getVersionString();
-              String appLogsFilePath;
-              try {
-                appLogsFilePath = await FetchAppLogs.dumpAppLogsToFile();
-              } catch (e) {
-                print(e);
-              }
+              var appLogsFilePath = Log.filePathForDate(DateTime.now());
 
               final Email email = Email(
                 body:
