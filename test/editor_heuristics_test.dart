@@ -28,5 +28,14 @@ void main() {
       expect(result.text, "Hello\n* One\n* \n* Three");
       expect(result.cursorPos, 14);
     });
+
+    test('Adds a numbered list at the end', () {
+      var origText = "Hello\n1. One";
+      var newText = "Hello\n1. One\n";
+
+      var result = autoAddBulletList(origText, newText, newText.length);
+      expect(result.text, "Hello\n1. One\n1. ");
+      expect(result.cursorPos, result.text.length);
+    });
   });
 }

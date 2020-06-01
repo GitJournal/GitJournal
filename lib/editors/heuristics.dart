@@ -21,7 +21,7 @@ EditorHeuristicResult autoAddBulletList(
   prevLineStart = prevLineStart == -1 ? 0 : prevLineStart + 1;
   var prevLine = curText.substring(prevLineStart, cursorPos - 1);
 
-  var pattern = RegExp(r'^(\s*)([*\-])');
+  var pattern = RegExp(r'^(\s*)([*\-]|[0-9]\.)');
   var match = pattern.firstMatch(prevLine);
   if (match == null) {
     return null;
