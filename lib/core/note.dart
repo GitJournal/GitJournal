@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:gitjournal/core/md_yaml_doc_loader.dart';
 import 'package:gitjournal/core/note_notifier.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/markdown.dart';
 import 'package:gitjournal/utils/logger.dart';
@@ -22,12 +23,18 @@ enum NoteLoadState {
   Loading,
   Loaded,
   NotExists,
+  Error,
 }
 
 enum NoteType {
   Unknown,
   Checklist,
   Journal,
+}
+
+enum NoteFileFormat {
+  Markdown,
+  Txt,
 }
 
 class Note with NotesNotifier {
@@ -40,6 +47,8 @@ class Note with NotesNotifier {
   String _body = "";
   NoteType _type = NoteType.Unknown;
   Set<String> _tags = {};
+
+  NoteFileFormat _fileFormat;
 
   MdYamlDoc _data = MdYamlDoc();
   NoteSerializer noteSerializer = NoteSerializer();
@@ -65,8 +74,17 @@ class Note with NotesNotifier {
   String get filePath {
     if (_filePath == null) {
       _filePath = p.join(parent.folderPath, _buildFileName());
-      if (!_filePath.toLowerCase().endsWith('.md')) {
-        _filePath += '.md';
+      switch (_fileFormat) {
+        case NoteFileFormat.Markdown:
+          if (!_filePath.toLowerCase().endsWith('.md')) {
+            _filePath += '.md';
+          }
+          break;
+        case NoteFileFormat.Txt:
+          if (!_filePath.toLowerCase().endsWith('.txt')) {
+            _filePath += '.txt';
+          }
+          break;
       }
     }
 
@@ -154,6 +172,9 @@ class Note with NotesNotifier {
   }
 
   bool get canHaveMetadata {
+    if (_fileFormat == NoteFileFormat.Txt) {
+      return false;
+    }
     return Settings.instance.yamlHeaderEnabled;
   }
 
@@ -199,20 +220,49 @@ class Note with NotesNotifier {
         if (this.fileLastModified == fileLastModified) {
           return _loadState;
         }
-      } on FileSystemException catch (e) {
-        if (e.osError.errorCode == 2 /* File Not Found */) {
+        this.fileLastModified = fileLastModified;
+      } catch (e, stackTrace) {
+        if (e is FileSystemException &&
+            e.osError.errorCode == 2 /* File Not Found */) {
           _loadState = NoteLoadState.NotExists;
           _notifyModified();
           return _loadState;
         }
+
+        logExceptionWarning(e, stackTrace);
+        _loadState = NoteLoadState.Error;
+        _notifyModified();
+        return _loadState;
       }
       Log.d("Note modified: $_filePath");
     }
 
-    try {
-      data = await _mdYamlDocLoader.loadDoc(_filePath);
-    } on MdYamlDocNotFoundException catch (_) {
-      _loadState = NoteLoadState.NotExists;
+    var fpLowerCase = _filePath.toLowerCase();
+    var isMarkdown = fpLowerCase.endsWith('.md');
+    var isTxt = fpLowerCase.endsWith('.txt');
+
+    if (isMarkdown) {
+      try {
+        data = await _mdYamlDocLoader.loadDoc(_filePath);
+        _fileFormat = NoteFileFormat.Markdown;
+      } on MdYamlDocNotFoundException catch (_) {
+        _loadState = NoteLoadState.NotExists;
+        _notifyModified();
+        return _loadState;
+      }
+    } else if (isTxt) {
+      try {
+        body = await File(_filePath).readAsString();
+        _fileFormat = NoteFileFormat.Txt;
+      } catch (e, stackTrace) {
+        logExceptionWarning(e, stackTrace);
+
+        _loadState = NoteLoadState.Error;
+        _notifyModified();
+        return _loadState;
+      }
+    } else {
+      _loadState = NoteLoadState.Error;
       _notifyModified();
       return _loadState;
     }
@@ -246,8 +296,18 @@ class Note with NotesNotifier {
 
   void rename(String newName) {
     // Do not let the user rename it to a non-markdown file
-    if (!newName.toLowerCase().endsWith('.md')) {
-      newName += '.md';
+    switch (_fileFormat) {
+      case NoteFileFormat.Markdown:
+        if (!newName.toLowerCase().endsWith('.md')) {
+          newName += '.md';
+        }
+        break;
+
+      case NoteFileFormat.Txt:
+        if (!newName.toLowerCase().endsWith('.txt')) {
+          newName += '.txt';
+        }
+        break;
     }
 
     var oldFilePath = filePath;
@@ -413,6 +473,10 @@ class Note with NotesNotifier {
 
   List<Link> links() {
     return _links;
+  }
+
+  NoteFileFormat get fileFormat {
+    return _fileFormat;
   }
 }
 

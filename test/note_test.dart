@@ -26,7 +26,7 @@ modified: 2017-02-15T22:41:19+01:00
 Hello""";
 
       var notePath = p.join(tempDir.path, "note.md");
-      File(notePath).writeAsString(content);
+      await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path);
       var note = Note(parentFolder, notePath);
@@ -56,7 +56,7 @@ mod: 2017-02-15T22:41:19+01:00
 Hello""";
 
       var notePath = p.join(tempDir.path, "note.md");
-      File(notePath).writeAsString(content);
+      await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path);
       var note = Note(parentFolder, notePath);
@@ -86,7 +86,7 @@ tags: [A, B]
 Hello""";
 
       var notePath = p.join(tempDir.path, "note5.md");
-      File(notePath).writeAsString(content);
+      await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path);
       var note = Note(parentFolder, notePath);
@@ -124,7 +124,7 @@ title: Foo
 """;
 
       var notePath = p.join(tempDir.path, "note6.md");
-      File(notePath).writeAsString(content);
+      await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path);
       var note = Note(parentFolder, notePath);
@@ -138,6 +138,37 @@ title: Foo
       expect(links[1].term, "Hi2");
 
       expect(links.length, 2);
+    });
+
+    test('Should detect file format', () async {
+      var content = """---
+title: Foo
+---
+
+Gee
+""";
+
+      var notePath = p.join(tempDir.path, "note16.md");
+      await File(notePath).writeAsString(content);
+
+      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var note = Note(parentFolder, notePath);
+      await note.load();
+
+      expect(note.fileFormat, NoteFileFormat.Markdown);
+
+      //
+      // Txt files
+      //
+      var txtNotePath = p.join(tempDir.path, "note16.txt");
+      await File(txtNotePath).writeAsString(content);
+
+      var txtNote = Note(parentFolder, txtNotePath);
+      await txtNote.load();
+
+      expect(txtNote.fileFormat, NoteFileFormat.Txt);
+      expect(txtNote.canHaveMetadata, false);
+      expect(txtNote.title.isEmpty, true);
     });
   });
 }

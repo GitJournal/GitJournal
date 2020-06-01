@@ -214,10 +214,13 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         });
         continue;
       }
-      if (!note.filePath.toLowerCase().endsWith('.md')) {
+      var noteFilePath = note.filePath.toLowerCase();
+      var isMarkdownFile = noteFilePath.endsWith('.md');
+      var isTxtFile = noteFilePath.endsWith('.txt');
+      if (!isMarkdownFile && !isTxtFile) {
         Log.v("Ignoring file", props: {
           "path": fsEntity.path,
-          "reason": "Doesn't end with a .md",
+          "reason": "Doesn't end with .md or .txt",
         });
         continue;
       }

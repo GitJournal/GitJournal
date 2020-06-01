@@ -8,5 +8,6 @@ Future<void> main() async {
   };
 
   final filename = 'lib/.env.dart';
-  File(filename).writeAsString('final environment = ${json.encode(config)};');
+  await File(filename)
+      .writeAsString('final environment = ${json.encode(config)};');
 }
