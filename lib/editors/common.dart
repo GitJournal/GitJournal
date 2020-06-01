@@ -163,12 +163,12 @@ Widget _buildAddBottomSheet(
           title: Text(tr('editors.common.takePhoto')),
           onTap: () async {
             try {
-              var image = await ImagePicker.pickImage(
+              var image = await ImagePicker().getImage(
                 source: ImageSource.camera,
               );
 
               if (image != null) {
-                await editorState.addImage(image);
+                await editorState.addImage(File(image.path));
               }
             } catch (e) {
               reportError(e, StackTrace.current);
@@ -181,12 +181,12 @@ Widget _buildAddBottomSheet(
           title: Text(tr('editors.common.addImage')),
           onTap: () async {
             try {
-              var image = await ImagePicker.pickImage(
+              var image = await ImagePicker().getImage(
                 source: ImageSource.gallery,
               );
 
               if (image != null) {
-                await editorState.addImage(image);
+                await editorState.addImage(File(image.path));
               }
             } catch (e) {
               if (e is PlatformException && e.code == "photo_access_denied") {
