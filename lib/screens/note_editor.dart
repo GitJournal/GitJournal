@@ -111,6 +111,12 @@ class NoteEditorState extends State<NoteEditor> {
           break;
       }
     }
+
+    // Txt files
+    if (note.fileFormat == NoteFileFormat.Txt &&
+        editorType == EditorType.Markdown) {
+      editorType = EditorType.Raw;
+    }
   }
 
   @override
@@ -190,7 +196,7 @@ class NoteEditorState extends State<NoteEditor> {
     var newEditorType = await showDialog<EditorType>(
       context: context,
       builder: (BuildContext context) {
-        return NoteEditorSelector(editorType);
+        return NoteEditorSelector(editorType, _note.fileFormat);
       },
     );
 

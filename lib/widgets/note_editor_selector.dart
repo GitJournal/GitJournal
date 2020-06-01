@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/fa_icon.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 
 class NoteEditorSelector extends StatelessWidget {
   final EditorType currentEditor;
+  final NoteFileFormat fileFormat;
 
-  NoteEditorSelector(this.currentEditor);
+  NoteEditorSelector(this.currentEditor, this.fileFormat);
 
   @override
   Widget build(BuildContext context) {
     var list = Column(
       children: <Widget>[
-        _buildTile(
-          context,
-          EditorType.Markdown,
-          "Markdown Editor",
-          FontAwesomeIcons.markdown,
-        ),
+        if (fileFormat != NoteFileFormat.Txt)
+          _buildTile(
+            context,
+            EditorType.Markdown,
+            "Markdown Editor",
+            FontAwesomeIcons.markdown,
+          ),
         _buildTile(
           context,
           EditorType.Raw,
