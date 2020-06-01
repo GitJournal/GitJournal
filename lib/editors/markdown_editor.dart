@@ -152,7 +152,11 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
   }
 
   void _noteTextChanged() {
-    _insertExtraCharactersOnEnter();
+    try {
+      _insertExtraCharactersOnEnter();
+    } catch (e) {
+      print(e);
+    }
     if (_noteModified && !widget.isNewNote) return;
 
     var newState = !(widget.isNewNote && _textController.text.trim().isEmpty);
@@ -170,12 +174,19 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
       return;
     }
     _textLength = text.length;
-    if (!text.endsWith('\n')) {
+
+    var selection = _textController.selection;
+    if (selection.baseOffset != selection.extentOffset) {
       return;
     }
-    var prevLineStart = text.lastIndexOf('\n', text.length - 2);
+
+    var cursorPos = selection.baseOffset;
+    if (cursorPos != _textLength || text[cursorPos - 1] != '\n') {
+      return;
+    }
+    var prevLineStart = text.lastIndexOf('\n', cursorPos - 2);
     prevLineStart = prevLineStart == -1 ? 0 : prevLineStart + 1;
-    var prevLine = text.substring(prevLineStart, text.length - 2);
+    var prevLine = text.substring(prevLineStart, cursorPos - 1);
 
     var pattern = RegExp(r'^(\s*)([*\-])');
     var match = pattern.firstMatch(prevLine);
@@ -183,8 +194,9 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
       return;
     }
 
-    var indentation = match.group(1) ?? "";
-    _textController.text = text + indentation + match.group(2) + ' ';
+    var indent = match.group(1) ?? "";
+    _textController.text =
+        text.substring(0, cursorPos) + indent + match.group(2) + ' ';
     _textLength = _textController.text.length;
     _textController.selection = TextSelection.collapsed(offset: _textLength);
   }
