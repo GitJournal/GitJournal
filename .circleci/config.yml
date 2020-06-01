@@ -32,9 +32,6 @@ jobs:
       - store_artifacts:
           path: build/app/outputs/bundle/prodRelease/app.aab
           destination: gitjournal.aab
-      - store_artifacts:
-          path: build/app/outputs/apk/prod/release/app-prod-release.apk
-          destination: gitjournal.apk
       - run:
           name: Upload Crashlytics Symbols
           command: ./scripts/android_crashlytics.sh
