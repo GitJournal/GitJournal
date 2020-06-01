@@ -54,12 +54,15 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
   TextEditingController _textController = TextEditingController();
   TextEditingController _titleTextController = TextEditingController();
 
+  int _textLength;
+
   bool editingMode = true;
   bool _noteModified;
 
   MarkdownEditorState(this.note) {
     _textController = TextEditingController(text: note.body);
     _titleTextController = TextEditingController(text: note.title);
+    _textLength = note.body.length;
 
     editingMode = Settings.instance.markdownDefaultView ==
         SettingsMarkdownDefaultView.Edit;
@@ -149,6 +152,7 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
   }
 
   void _noteTextChanged() {
+    _insertExtraCharactersOnEnter();
     if (_noteModified && !widget.isNewNote) return;
 
     var newState = !(widget.isNewNote && _textController.text.trim().isEmpty);
@@ -157,6 +161,32 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
         _noteModified = newState;
       });
     }
+  }
+
+  void _insertExtraCharactersOnEnter() {
+    var text = _textController.text;
+    if (text.length <= _textLength) {
+      _textLength = text.length;
+      return;
+    }
+    _textLength = text.length;
+    if (!text.endsWith('\n')) {
+      return;
+    }
+    var prevLineStart = text.lastIndexOf('\n', text.length - 2);
+    prevLineStart = prevLineStart == -1 ? 0 : prevLineStart + 1;
+    var prevLine = text.substring(prevLineStart, text.length - 2);
+
+    var pattern = RegExp(r'^(\s*)([*\-])');
+    var match = pattern.firstMatch(prevLine);
+    if (match == null) {
+      return;
+    }
+
+    var indentation = match.group(1) ?? "";
+    _textController.text = text + indentation + match.group(2) + ' ';
+    _textLength = _textController.text.length;
+    _textController.selection = TextSelection.collapsed(offset: _textLength);
   }
 
   @override
