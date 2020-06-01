@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
+import 'package:gitjournal/editors/heuristics.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/widgets/editor_scroll_view.dart';
@@ -54,7 +55,7 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
   TextEditingController _textController = TextEditingController();
   TextEditingController _titleTextController = TextEditingController();
 
-  int _textLength;
+  String _oldText;
 
   bool editingMode = true;
   bool _noteModified;
@@ -62,7 +63,7 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
   MarkdownEditorState(this.note) {
     _textController = TextEditingController(text: note.body);
     _titleTextController = TextEditingController(text: note.title);
-    _textLength = note.body.length;
+    _oldText = note.body;
 
     editingMode = Settings.instance.markdownDefaultView ==
         SettingsMarkdownDefaultView.Edit;
@@ -153,7 +154,7 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
 
   void _noteTextChanged() {
     try {
-      _insertExtraCharactersOnEnter();
+      _applyHeuristics();
     } catch (e) {
       print(e);
     }
@@ -167,38 +168,23 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
     }
   }
 
-  void _insertExtraCharactersOnEnter() {
-    var text = _textController.text;
-    if (text.length <= _textLength) {
-      _textLength = text.length;
-      return;
-    }
-    _textLength = text.length;
-
+  void _applyHeuristics() {
     var selection = _textController.selection;
     if (selection.baseOffset != selection.extentOffset) {
+      _oldText = _textController.text;
       return;
     }
 
-    var cursorPos = selection.baseOffset;
-    if (cursorPos != _textLength || text[cursorPos - 1] != '\n') {
-      return;
-    }
-    var prevLineStart = text.lastIndexOf('\n', cursorPos - 2);
-    prevLineStart = prevLineStart == -1 ? 0 : prevLineStart + 1;
-    var prevLine = text.substring(prevLineStart, cursorPos - 1);
+    var r =
+        autoAddBulletList(_oldText, _textController.text, selection.baseOffset);
+    _oldText = _textController.text;
 
-    var pattern = RegExp(r'^(\s*)([*\-])');
-    var match = pattern.firstMatch(prevLine);
-    if (match == null) {
+    if (r == null) {
       return;
     }
 
-    var indent = match.group(1) ?? "";
-    _textController.text =
-        text.substring(0, cursorPos) + indent + match.group(2) + ' ';
-    _textLength = _textController.text.length;
-    _textController.selection = TextSelection.collapsed(offset: _textLength);
+    _textController.text = r.text;
+    _textController.selection = TextSelection.collapsed(offset: r.cursorPos);
   }
 
   @override
