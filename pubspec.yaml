@@ -50,8 +50,8 @@ dependencies:
   ssh_key: ^0.5.1
   isolate: ^2.0.3
   flutter_webview_plugin: ^0.3.11
-  image_picker: ^0.6.6+1
-  easy_localization: ^2.2.1
+  image_picker: ^0.6.7
+  easy_localization: ^2.3.2
   easy_localization_loader: ^0.0.2
   quick_actions: ^0.4.0+5
   receive_sharing_intent: ^1.4.0+2
