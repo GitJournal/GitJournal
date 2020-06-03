@@ -32,9 +32,9 @@ jobs:
       - store_artifacts:
           path: build/app/outputs/bundle/prodRelease/app.aab
           destination: gitjournal.aab
-      - run:
-          name: Upload Crashlytics Symbols
-          command: ./scripts/android_crashlytics.sh
+#      - run:
+#          name: Upload Crashlytics Symbols
+#          command: ./scripts/android_crashlytics.sh
       - run:
           name: Publish Alpha
           command: cd android && fastlane alphaBuild
