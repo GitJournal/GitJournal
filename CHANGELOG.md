@@ -1,3 +1,8 @@
+## [1.55] - 2020-06-03
+* Add txt file support
+* Automatically add list items when editing in markdown
+* Better log collection for bug reports
+
 ## [1.54] - 2020-05-27
 * Allow the Git Remote Host to be reset
 * Allow the default Image location to be configured
