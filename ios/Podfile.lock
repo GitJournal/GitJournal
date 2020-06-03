@@ -7,8 +7,6 @@ PODS:
   - device_info (0.0.1):
     - Flutter
   - Fabric (1.10.1)
-  - fetch_app_logs (0.0.1):
-    - Flutter
   - Firebase/Analytics (6.0.0):
     - Firebase/Core
   - Firebase/Core (6.0.0):
@@ -123,7 +121,6 @@ PODS:
 DEPENDENCIES:
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
-  - fetch_app_logs (from `.symlinks/plugins/fetch_app_logs/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - Flutter (from `Flutter`)
   - flutter_crashlytics (from `.symlinks/plugins/flutter_crashlytics/ios`)
@@ -170,8 +167,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/connectivity/ios"
   device_info:
     :path: ".symlinks/plugins/device_info/ios"
-  fetch_app_logs:
-    :path: ".symlinks/plugins/fetch_app_logs/ios"
   firebase_analytics:
     :path: ".symlinks/plugins/firebase_analytics/ios"
   Flutter:
@@ -226,7 +221,6 @@ SPEC CHECKSUMS:
   Crashlytics: 5aa8e90dcbf2f34898b4f5a0037787531246cca0
   device_info: cbf09d2ec12aa7110e0b09fabe54b5bd6c8efe74
   Fabric: f6f21452846788bb44595d73e9909d79d328e617
-  fetch_app_logs: ab35bf4e695dbe05f36a74d2cd585e8e8f3ad947
   Firebase: fa80b9d987ca014a1ba9357496ef2a0178b28b12
   firebase_analytics: dacdcfc524d722fff13dcff942f0dfa47e6be567
   FirebaseAnalytics: 1743c5f4de3687d0745709dfdc4b1dea1484f44c
