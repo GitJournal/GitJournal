@@ -6,7 +6,7 @@ class EditorHeuristicResult {
 }
 
 EditorHeuristicResult autoAddBulletList(
-    String oldText, String curText, int cursorPos) {
+    String oldText, String curText, final int cursorPos) {
   // We only want to do this on inserts
   if (curText.length <= oldText.length) {
     return null;
@@ -14,6 +14,7 @@ EditorHeuristicResult autoAddBulletList(
 
   // Only when adding a new line
   if (curText[cursorPos - 1] != '\n') {
+    //print("Not a newline #${curText[cursorPos - 1]}#");
     return null;
   }
 
@@ -21,19 +22,45 @@ EditorHeuristicResult autoAddBulletList(
   prevLineStart = prevLineStart == -1 ? 0 : prevLineStart + 1;
   var prevLine = curText.substring(prevLineStart, cursorPos - 1);
 
-  var pattern = RegExp(r'^(\s*)([*\-]|[0-9]\.)');
+  var pattern = RegExp(r'^(\s*)([*\-]|[0-9]\.)(\s*)([^\s]*)$');
   var match = pattern.firstMatch(prevLine);
   if (match == null) {
+    //print("no match");
     return null;
   }
 
   var indent = match.group(1) ?? "";
-  var text = curText.substring(0, cursorPos) + indent + match.group(2) + ' ';
-  if (cursorPos == curText.length) {
-    return EditorHeuristicResult(text, text.length);
+  var bulletType = match.group(2);
+  var spacesBeforeContent = match.group(3);
+  var contents = match.group(4);
+  var remainingText =
+      curText.length > cursorPos ? curText.substring(cursorPos) : "";
+
+  /*
+  print("CursorPos: $cursorPos");
+  print("Text Length: ${curText.length}");
+  if (remainingText.isNotEmpty) {
+    print("At cursor: #${curText[cursorPos]}#");
+  }
+  print("Indent: #$indent#");
+  print("bulletType: $bulletType");
+  print("contents: #$contents#");
+  print("spacesBeforeContent: #$spacesBeforeContent#");
+  print("Remaining Text: #$remainingText#");
+  */
+
+  if (contents.trim().isEmpty) {
+    var text = curText.substring(0, prevLineStart);
+    var newCursorPos = text.length;
+
+    text += remainingText;
+    return EditorHeuristicResult(text, newCursorPos);
   }
 
-  text += '\n' + curText.substring(cursorPos + 1);
-  var extraChars = indent.length + match.group(2).length + 1;
-  return EditorHeuristicResult(text, cursorPos + extraChars);
+  var extraText = indent + bulletType + spacesBeforeContent;
+  var text = curText.substring(0, cursorPos) + extraText;
+  var newCursorPos = text.length;
+  text += remainingText;
+
+  return EditorHeuristicResult(text, newCursorPos);
 }
