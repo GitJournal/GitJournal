@@ -16,6 +16,7 @@ import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override
@@ -267,6 +268,18 @@ class SettingsListState extends State<SettingsList> {
             settings: const RouteSettings(name: '/settings/debug'),
           );
           Navigator.of(context).push(route);
+        },
+      ),
+      ListTile(
+        title: Text(tr('settings.privacy')),
+        onTap: () {
+          launch("https://gitjournal.io/privacy");
+        },
+      ),
+      ListTile(
+        title: Text(tr('settings.terms')),
+        onTap: () {
+          launch("https://gitjournal.io/terms");
         },
       ),
     ]);

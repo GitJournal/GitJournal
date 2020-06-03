@@ -45,6 +45,8 @@ settings:
     modified: Modified Field
     example:
       title: Example Title
+  privacy: Privacy Policy
+  terms: Terms and Conditions
 
 editors:
   checklist:
