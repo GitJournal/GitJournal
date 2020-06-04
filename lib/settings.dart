@@ -240,6 +240,7 @@ class NoteFileNameFormat {
   static const FromTitle = NoteFileNameFormat("FromTitle", "Title");
   static const SimpleDate =
       NoteFileNameFormat("SimpleDate", "yyyy-mm-dd-hh-mm-ss");
+  static const UuidV4 = NoteFileNameFormat("uuidv4", "Uuid V4");
 
   static const Default = FromTitle;
 
@@ -249,6 +250,7 @@ class NoteFileNameFormat {
     Iso8601,
     Iso8601WithTimeZone,
     Iso8601WithTimeZoneWithoutColon,
+    UuidV4,
   ];
 
   static NoteFileNameFormat fromInternalString(String str) {

@@ -13,6 +13,7 @@ import 'package:path/path.dart' as p;
 import 'package:meta/meta.dart';
 
 import 'package:markdown/markdown.dart' as md;
+import 'package:uuid/uuid.dart';
 
 import 'md_yaml_doc.dart';
 import 'md_yaml_doc_codec.dart';
@@ -432,6 +433,8 @@ class Note with NotesNotifier {
         return toIso8601WithTimezone(date);
       case NoteFileNameFormat.Iso8601WithTimeZoneWithoutColon:
         return toIso8601WithTimezone(date).replaceAll(":", "_");
+      case NoteFileNameFormat.UuidV4:
+        return Uuid().v4();
     }
 
     return date.toString();
