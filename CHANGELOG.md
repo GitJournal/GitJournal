@@ -1,3 +1,8 @@
+## [1.56] - 2020-06-04
+* Bug fix for Folder Names
+* Make it easier to add a new tags
+* Allow filenames to be UUID
+
 ## [1.55] - 2020-06-03
 * Add txt file support
 * Automatically add list items when editing in markdown
