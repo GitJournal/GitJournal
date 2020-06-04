@@ -14,11 +14,11 @@ void main() {
 
     setUp(() async {
       tempDir = await Directory.systemTemp.createTemp('__flat_folder_test__');
-      print("TempDir: ${tempDir.path}");
+      // print("TempDir: ${tempDir.path}");
 
       var random = Random();
       for (var i = 0; i < 300; i++) {
-        print("Building Note $i");
+        // print("Building Note $i");
         await _writeRandomNote(random, tempDir.path);
       }
 
@@ -27,7 +27,7 @@ void main() {
     });
 
     tearDown(() async {
-      print("Cleaning Up TempDir: ${tempDir.path}");
+      // print("Cleaning Up TempDir: ${tempDir.path}");
       tempDir.deleteSync(recursive: true);
     });
 
