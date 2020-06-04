@@ -278,12 +278,12 @@ packages:
     source: hosted
     version: "0.3.2"
   flutter_plugin_android_lifecycle:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_plugin_android_lifecycle
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.7"
+    version: "1.0.8"
   flutter_runtime_env:
     dependency: "direct main"
     description:

@@ -55,6 +55,7 @@ dependencies:
   easy_localization_loader: ^0.0.2
   quick_actions: ^0.4.0+5
   receive_sharing_intent: ^1.4.0+2
+  flutter_plugin_android_lifecycle: ^1.0.8 # for fixing the build
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.2"
