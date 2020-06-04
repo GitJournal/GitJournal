@@ -122,6 +122,14 @@ class FolderTileState extends State<FolderTile> {
 
     final theme = Theme.of(context);
 
+    var publicName = folder.publicName;
+    if (folder.parent != null) {
+      publicName = publicName.substring(folder.parent.pathSpec().length);
+      if (publicName.startsWith('/')) {
+        publicName = publicName.substring(1);
+      }
+    }
+
     var selected = widget.selectedFolder == widget.folder;
     return Card(
       child: ListTile(
@@ -135,7 +143,7 @@ class FolderTileState extends State<FolderTile> {
             color: Theme.of(context).accentColor,
           ),
         ),
-        title: Text(folder.publicName),
+        title: Text(publicName),
         subtitle: Text(subtitle),
         trailing: trailling,
         selected: selected,
