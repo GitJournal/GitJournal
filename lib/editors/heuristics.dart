@@ -11,6 +11,9 @@ EditorHeuristicResult autoAddBulletList(
   if (curText.length <= oldText.length) {
     return null;
   }
+  if (cursorPos <= 0) {
+    return null;
+  }
 
   // Only when adding a new line
   if (curText[cursorPos - 1] != '\n') {
@@ -18,7 +21,19 @@ EditorHeuristicResult autoAddBulletList(
     return null;
   }
 
+  /*
+  print("CursorPos: $cursorPos");
+  print("Text Length: ${curText.length}");
+  */
+
+  if (cursorPos - 2 < 0) {
+    return null;
+  }
+
   var prevLineStart = curText.lastIndexOf('\n', cursorPos - 2);
+  if (prevLineStart < 0 || (cursorPos - 1) < 0) {
+    return null;
+  }
   prevLineStart = prevLineStart == -1 ? 0 : prevLineStart + 1;
   var prevLine = curText.substring(prevLineStart, cursorPos - 1);
 
@@ -37,8 +52,6 @@ EditorHeuristicResult autoAddBulletList(
       curText.length > cursorPos ? curText.substring(cursorPos) : "";
 
   /*
-  print("CursorPos: $cursorPos");
-  print("Text Length: ${curText.length}");
   if (remainingText.isNotEmpty) {
     print("At cursor: #${curText[cursorPos]}#");
   }

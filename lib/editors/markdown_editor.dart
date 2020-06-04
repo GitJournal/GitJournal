@@ -5,7 +5,9 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/heuristics.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
+import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/editor_scroll_view.dart';
 import 'package:gitjournal/widgets/note_viewer.dart';
 
@@ -155,8 +157,9 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
   void _noteTextChanged() {
     try {
       _applyHeuristics();
-    } catch (e) {
-      print(e);
+    } catch (e, stackTrace) {
+      Log.e("EditorHeuristics: $e");
+      logExceptionWarning(e, stackTrace);
     }
     if (_noteModified && !widget.isNewNote) return;
 
