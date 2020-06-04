@@ -31,9 +31,6 @@ EditorHeuristicResult autoAddBulletList(
   }
 
   var prevLineStart = curText.lastIndexOf('\n', cursorPos - 2);
-  if (prevLineStart < 0 || (cursorPos - 1) < 0) {
-    return null;
-  }
   prevLineStart = prevLineStart == -1 ? 0 : prevLineStart + 1;
   var prevLine = curText.substring(prevLineStart, cursorPos - 1);
 
