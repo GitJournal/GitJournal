@@ -14,10 +14,14 @@ class MdYamlDocLoader {
   var _loadingLock = Lock();
 
   Future<void> _initIsolate() async {
-    if (_isolate != null) return;
+    if (_isolate != null && _sendPort != null) return;
 
     return await _loadingLock.synchronized(() async {
-      if (_isolate != null) return;
+      if (_isolate != null && _sendPort != null) return;
+      if (_isolate != null) {
+        _isolate.kill(priority: Isolate.immediate);
+        _isolate = null;
+      }
       _isolate = await Isolate.spawn(_isolateMain, _receivePort.sendPort);
 
       var data = await _receivePort.first;
