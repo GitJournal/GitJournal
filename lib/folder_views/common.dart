@@ -6,8 +6,10 @@ import 'package:gitjournal/folder_views/card_view.dart';
 import 'package:gitjournal/folder_views/grid_view.dart';
 import 'package:gitjournal/folder_views/journal_view.dart';
 import 'package:gitjournal/screens/note_editor.dart';
+import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
+import 'package:provider/provider.dart';
 
 import 'standard_view.dart';
 
@@ -70,7 +72,8 @@ void openNoteEditor(BuildContext context, Note note) async {
   if (showUndoSnackBar != null) {
     Log.d("Showing an undo snackbar");
 
-    var snackBar = buildUndoDeleteSnackbar(context, note);
+    var stateContainer = Provider.of<StateContainer>(context, listen: false);
+    var snackBar = buildUndoDeleteSnackbar(stateContainer, note);
     Scaffold.of(context)
       ..removeCurrentSnackBar()
       ..showSnackBar(snackBar);

@@ -3,7 +3,6 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:package_info/package_info.dart';
-import 'package:provider/provider.dart';
 
 import 'app.dart';
 import 'core/note.dart';
@@ -24,16 +23,14 @@ Future<String> getVersionString() async {
   return versionText;
 }
 
-SnackBar buildUndoDeleteSnackbar(BuildContext context, Note deletedNote) {
+SnackBar buildUndoDeleteSnackbar(
+    StateContainer stateContainer, Note deletedNote) {
   return SnackBar(
     content: const Text('Note Deleted'),
     action: SnackBarAction(
       label: "Undo",
       onPressed: () {
         Log.d("Undoing delete");
-
-        var stateContainer =
-            Provider.of<StateContainer>(context, listen: false);
         stateContainer.undoRemoveNote(deletedNote);
       },
     ),
