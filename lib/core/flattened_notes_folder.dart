@@ -71,10 +71,12 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   }
 
   void _noteRemoved(int _, Note note) {
-    if (filter != null && !filter(note)) {
+    var i = _notes.indexWhere((n) => n.filePath == note.filePath);
+    assert(filter == null ? i != -1 : true);
+
+    if (i == -1) {
       return;
     }
-    var i = _notes.indexWhere((n) => n.filePath == note.filePath);
     assert(i != -1);
 
     _notes.removeAt(i);
