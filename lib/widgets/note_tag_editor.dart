@@ -14,6 +14,7 @@ class NoteTagEditor extends StatefulWidget {
 
 class _NoteTagEditorState extends State<NoteTagEditor> {
   TextEditingController _textController;
+  FocusNode _focusNode;
 
   Set<String> _selectedTags;
   Set<String> _allTags;
@@ -24,6 +25,7 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
 
     _selectedTags = Set<String>.from(widget.selectedTags);
     _allTags = Set<String>.from(widget.allTags);
+    _focusNode = FocusNode();
     _textController = TextEditingController();
     _textController.addListener(() {
       setState(() {});
@@ -43,6 +45,7 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
           },
         ),
         title: TextField(
+          focusNode: _focusNode,
           controller: _textController,
           style: theme.textTheme.headline6,
           decoration: InputDecoration(
@@ -53,6 +56,12 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
         ),
       ),
       body: buildView(_textController.text),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          _focusNode.requestFocus();
+        },
+      ),
     );
 
     return WillPopScope(
