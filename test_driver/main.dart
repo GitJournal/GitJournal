@@ -102,10 +102,10 @@ title: Shopping List
 type: Checklist
 ---
 
-[ ] Bananas
-[ ] Rice
-[ ] Cat Food
-[x] Tomatoes
+- [ ] Bananas
+- [ ] Rice
+- [ ] Cat Food
+- [x] Tomatoes
 """;
 
   File(filePath).writeAsStringSync(content);
