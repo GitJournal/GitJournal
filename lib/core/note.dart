@@ -70,20 +70,22 @@ class Note with NotesNotifier {
   Note.newNote(this.parent) {
     created = DateTime.now();
     _loadState = NoteLoadState.Loaded;
+    _fileFormat = NoteFileFormat.Markdown;
   }
 
   String get filePath {
     if (_filePath == null) {
       _filePath = p.join(parent.folderPath, _buildFileName());
       switch (_fileFormat) {
-        case NoteFileFormat.Markdown:
-          if (!_filePath.toLowerCase().endsWith('.md')) {
-            _filePath += '.md';
-          }
-          break;
         case NoteFileFormat.Txt:
           if (!_filePath.toLowerCase().endsWith('.txt')) {
             _filePath += '.txt';
+          }
+          break;
+        case NoteFileFormat.Markdown:
+        default:
+          if (!_filePath.toLowerCase().endsWith('.md')) {
+            _filePath += '.md';
           }
           break;
       }
