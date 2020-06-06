@@ -170,5 +170,12 @@ Gee
       expect(txtNote.canHaveMetadata, false);
       expect(txtNote.title.isEmpty, true);
     });
+
+    test('New Notes have a file extension', () async {
+      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var note = Note.newNote(parentFolder);
+      var path = note.filePath;
+      expect(path.endsWith('.md'), true);
+    });
   });
 }
