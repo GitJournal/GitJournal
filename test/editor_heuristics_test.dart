@@ -74,15 +74,31 @@ void main() {
       expect(result.cursorPos, result.text.length);
     });
 
-    /*
+    test('Adds a numbered list in the first line', () {
+      var origText = "1. Hello";
+      var newText = origText + '\n';
+
+      var result = autoAddBulletList(origText, newText, newText.length);
+      expect(result.text, "1. Hello\n1. ");
+      expect(result.cursorPos, result.text.length);
+    });
+
     test('Adds a bullet point with many spaces - in the middle', () {
       var origText = "*   One\nFire";
-      var newText = origText + '\n';
+      var newText = "*   One\n\nFire";
 
       var result = autoAddBulletList(origText, newText, 8);
       expect(result.text, "*   One\n*   \nFire");
       expect(result.cursorPos, 12);
     });
-    */
+
+    test('Works with item with spaces', () {
+      var origText = "* Hi There";
+      var newText = origText + '\n';
+
+      var result = autoAddBulletList(origText, newText, newText.length);
+      expect(result.text, "* Hi There\n* ");
+      expect(result.cursorPos, result.text.length);
+    });
   });
 }
