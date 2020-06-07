@@ -450,6 +450,7 @@ class Note with NotesNotifier {
     final doc = md.Document(
       encodeHtml: false,
       extensionSet: md.ExtensionSet.gitHubFlavored,
+      inlineSyntaxes: [MetaLinkSyntax()],
     );
 
     var lines = body.replaceAll('\r\n', '\n').split('\n');
@@ -459,6 +460,11 @@ class Note with NotesNotifier {
     var links = <Link>[];
     for (var l in possibleLinks) {
       var path = l.filePath;
+      if (path == null) {
+        links.add(l);
+        continue;
+      }
+
       var isLocal = (path.startsWith('/') || path.startsWith('.')) &&
           !path.contains('://');
       if (isLocal) {

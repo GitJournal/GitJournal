@@ -140,6 +140,26 @@ title: Foo
       expect(links.length, 2);
     });
 
+    test('Should parse wiki style links', () async {
+      var content = "[[GitJournal]] needs some [[Wild Fire]]";
+
+      var notePath = p.join(tempDir.path, "note63.md");
+      await File(notePath).writeAsString(content);
+
+      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var note = Note(parentFolder, notePath);
+      await note.load();
+
+      var links = await note.fetchLinks();
+      expect(links[0].filePath, null);
+      expect(links[0].term, "GitJournal");
+
+      expect(links[1].filePath, null);
+      expect(links[1].term, "Wild Fire");
+
+      expect(links.length, 2);
+    });
+
     test('Should detect file format', () async {
       var content = """---
 title: Foo

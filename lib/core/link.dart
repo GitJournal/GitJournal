@@ -51,6 +51,14 @@ class LinkExtractor implements md.NodeVisitor {
       var url = el.attributes['href'];
       var link = Link(term: title, filePath: url);
       links.add(link);
+      return;
+    }
+
+    if (tag == 'wikiLink') {
+      var value = el.attributes['value'];
+      var link = Link(term: value, filePath: null);
+      links.add(link);
+      return;
     }
   }
 
@@ -59,5 +67,19 @@ class LinkExtractor implements md.NodeVisitor {
       node.accept(this);
     }
     return links;
+  }
+}
+
+class MetaLinkSyntax extends md.InlineSyntax {
+  static final String _pattern = '\\[\\[([^\\[\\]]+)\\]\\]';
+
+  MetaLinkSyntax() : super(_pattern);
+
+  @override
+  bool onMatch(md.InlineParser parser, Match match) {
+    md.Element el = md.Element.withTag('wikiLink');
+    el.attributes['value'] = '${match[1].trim()}';
+    parser.addNode(el);
+    return true;
   }
 }
