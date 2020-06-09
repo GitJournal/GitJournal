@@ -72,6 +72,10 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         onKnownGitHost: (GitHostType gitHostType) {
           setState(() {
             _gitHostType = gitHostType;
+            gitCloneErrorMessage = "";
+            _autoConfigureErrorMessage = "";
+            _autoConfigureMessage = "";
+
             _pageChoice[0] = PageChoice0.KnownProvider;
             _pageCount = pos + 2;
             _nextPage();
