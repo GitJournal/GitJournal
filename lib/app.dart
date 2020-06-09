@@ -59,6 +59,14 @@ class JournalApp extends StatefulWidget {
       appState.save(pref);
     }
 
+    if (!Directory(appState.gitBaseDirectory).existsSync()) {
+      Log.w("Applications Documents Directory no longer exists");
+      var dir = await getApplicationDocumentsDirectory();
+      appState.gitBaseDirectory = dir.path;
+      appState.save(pref);
+      Log.i("New Documents Directory Path ${dir.path}");
+    }
+
     if (appState.localGitRepoConfigured == false) {
       // FIXME: What about exceptions!
       appState.localGitRepoFolderName = "journal_local";

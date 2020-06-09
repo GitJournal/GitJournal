@@ -55,6 +55,7 @@ class AppState {
     Log.i("localGitRepoFolderName: $localGitRepoFolderName");
     Log.i("remoteGitRepoFolderName: $remoteGitRepoFolderName");
     Log.i("onBoardingCompleted: $onBoardingCompleted");
+    Log.i("gitBaseDirectory: $gitBaseDirectory");
     Log.i(" ------------------ ");
   }
 
