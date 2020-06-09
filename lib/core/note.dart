@@ -75,7 +75,13 @@ class Note with NotesNotifier {
 
   String get filePath {
     if (_filePath == null) {
-      _filePath = p.join(parent.folderPath, _buildFileName());
+      try {
+        _filePath = p.join(parent.folderPath, _buildFileName());
+      } catch (e, stackTrace) {
+        Log.e("_buildFileName: $e");
+        logExceptionWarning(e, stackTrace);
+        _filePath = p.join(parent.folderPath, Uuid().v4());
+      }
       switch (_fileFormat) {
         case NoteFileFormat.Txt:
           if (!_filePath.toLowerCase().endsWith('.txt')) {

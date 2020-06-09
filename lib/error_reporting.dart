@@ -100,7 +100,10 @@ Future<void> reportError(Object error, StackTrace stackTrace) async {
   print(stackTrace);
 }
 
-Future<void> logException(Exception e, StackTrace stackTrace) async {
+// Dart makes a distiction between Errors and Exceptions
+// so we need to use dynamic
+Future<void> logException(Object e, StackTrace stackTrace) async {
+  assert(e is Exception || e is Error);
   if (!reportCrashes) {
     return;
   }
@@ -109,7 +112,8 @@ Future<void> logException(Exception e, StackTrace stackTrace) async {
   return FlutterCrashlytics().logException(e, stackTrace);
 }
 
-Future<void> logExceptionWarning(Exception e, StackTrace stackTrace) async {
+Future<void> logExceptionWarning(Object e, StackTrace stackTrace) async {
+  assert(e is Exception || e is Error);
   if (!reportCrashes) {
     return;
   }
