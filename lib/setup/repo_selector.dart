@@ -189,7 +189,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
   }
 
   Widget _buildRepoTile(GitHostRepo repo) {
-    final _dateFormat = DateFormat('dd MMM, yyyy');
+    final _dateFormat = DateFormat('dd MMM, yyyy', 'en');
 
     Widget trailing = Container();
     if (repo.updatedAt != null) {

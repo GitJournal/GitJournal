@@ -12,8 +12,8 @@ class JournalEditorHeader extends StatelessWidget {
     if (note.created == null) {
       return Container();
     }
-    var dateStr = DateFormat('MMMM, yyyy').format(note.created);
-    var timeStr = DateFormat('EEEE HH:mm').format(note.created);
+    var dateStr = DateFormat('MMMM, yyyy', 'en').format(note.created);
+    var timeStr = DateFormat('EEEE HH:mm', 'en').format(note.created);
 
     var bigNum = Text(
       note.created.day.toString(),

@@ -22,7 +22,7 @@ class StandardView extends StatelessWidget {
   final StandardViewHeader headerType;
   final bool showSummary;
 
-  static final _dateFormat = DateFormat('dd MMM, yyyy');
+  static final _dateFormat = DateFormat('dd MMM, yyyy', 'en');
 
   StandardView({
     @required this.folder,
