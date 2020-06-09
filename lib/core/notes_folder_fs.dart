@@ -7,10 +7,22 @@ import 'package:gitjournal/utils/logger.dart';
 import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 import 'package:synchronized/synchronized.dart';
+import 'package:meta/meta.dart';
 
 import 'note.dart';
 import 'notes_folder.dart';
 import 'notes_folder_notifier.dart';
+
+class IgnoredFile {
+  String filePath;
+  String reason;
+
+  IgnoredFile({@required this.filePath, @required this.reason});
+
+  String get fileName {
+    return p.basename(filePath);
+  }
+}
 
 class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   final NotesFolderFS _parent;
@@ -19,6 +31,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
   List<Note> _notes = [];
   List<NotesFolderFS> _folders = [];
+  List<IgnoredFile> _ignoredFiles = [];
 
   Map<String, dynamic> _entityMap = {};
   NotesFolderConfig _config;
@@ -119,6 +132,8 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   @override
   List<NotesFolder> get subFolders => subFoldersFS;
 
+  List<IgnoredFile> get ignoredFiles => _ignoredFiles;
+
   List<NotesFolderFS> get subFoldersFS {
     // FIXME: This is really not ideal
     _folders.sort((NotesFolderFS a, NotesFolderFS b) =>
@@ -172,6 +187,8 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       _config = await NotesFolderConfig.fromFS(this);
     }
 
+    _ignoredFiles = <IgnoredFile>[];
+
     final dir = Directory(folderPath);
     var lister = dir.list(recursive: false, followLinks: false);
     await for (var fsEntity in lister) {
@@ -208,9 +225,15 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
       var note = Note(this, fsEntity.path);
       if (note.fileName.startsWith('.')) {
+        var ignoredFile = IgnoredFile(
+          filePath: fsEntity.path,
+          reason: tr("ignoredFiles.dot"),
+        );
+        _ignoredFiles.add(ignoredFile);
+
         Log.v("Ignoring file", props: {
-          "path": fsEntity.path,
-          "reason": "Starts with a .",
+          "path": ignoredFile.filePath,
+          "reason": ignoredFile.reason,
         });
         continue;
       }
@@ -218,9 +241,15 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       var isMarkdownFile = noteFilePath.endsWith('.md');
       var isTxtFile = noteFilePath.endsWith('.txt');
       if (!isMarkdownFile && !isTxtFile) {
+        var ignoredFile = IgnoredFile(
+          filePath: fsEntity.path,
+          reason: tr("ignoredFiles.ext"),
+        );
+        _ignoredFiles.add(ignoredFile);
+
         Log.v("Ignoring file", props: {
-          "path": fsEntity.path,
-          "reason": "Doesn't end with .md or .txt",
+          "path": ignoredFile.filePath,
+          "reason": ignoredFile.reason,
         });
         continue;
       }

@@ -102,6 +102,21 @@ class GitNoteRepository {
     return NoteRepoResult(noteFilePath: newFullPath, error: false);
   }
 
+  Future<NoteRepoResult> renameFile(
+    String oldFullPath,
+    String newFullPath,
+  ) async {
+    // FIXME: This is a hacky way of adding the changes, ideally we should be calling rm + add or something
+    await _gitRepo.add(".");
+    await _gitRepo.commit(
+      message: "Renamed File",
+      authorEmail: Settings.instance.gitAuthorEmail,
+      authorName: Settings.instance.gitAuthor,
+    );
+
+    return NoteRepoResult(noteFilePath: newFullPath, error: false);
+  }
+
   Future<NoteRepoResult> moveNote(
     String oldFullPath,
     String newFullPath,

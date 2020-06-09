@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gitjournal/features.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:launch_review/launch_review.dart';
@@ -93,6 +94,15 @@ class AppDrawer extends StatelessWidget {
             onTap: () => _navTopLevel(context, '/folders'),
             selected: currentRoute == "/folders",
           ),
+          if (Features.showFileSystem)
+            _buildDrawerTile(
+              context,
+              icon: FontAwesomeIcons.solidFolderOpen,
+              isFontAwesome: true,
+              title: "File System",
+              onTap: () => _navTopLevel(context, '/filesystem'),
+              selected: currentRoute == "/filesystem",
+            ),
           _buildDrawerTile(
             context,
             icon: FontAwesomeIcons.tag,

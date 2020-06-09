@@ -84,6 +84,14 @@ screens:
       empty: Please enter a name
   tags:
     title: Tags
+  filesystem:
+    ignoredFile:
+      title: File Ignored
+      ok: Ok
+      rename: Rename
+    rename:
+      decoration: File Name
+      title: Rename
 widgets:
   rename:
     yes: Rename
@@ -102,3 +110,6 @@ widgets:
       other: "{} Notes link to this Note"
 
 rootFolder: Root Folder
+ignoredFiles:
+  dot: Starts with a .
+  ext: Doesn't end with .md or .txt

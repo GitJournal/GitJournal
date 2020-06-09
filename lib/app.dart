@@ -5,6 +5,7 @@ import 'package:device_info/device_info.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/screens/filesystem_screen.dart';
 import 'package:gitjournal/screens/folder_listing.dart';
 import 'package:gitjournal/screens/tag_listing.dart';
 import 'package:gitjournal/screens/note_editor.dart';
@@ -306,7 +307,7 @@ class _JournalAppState extends State<JournalApp> {
       //debugShowMaterialGrid: true,
       onGenerateRoute: (settings) {
         var route = settings.name;
-        if (route == '/folders' || route == '/tags') {
+        if (route == '/folders' || route == '/tags' || route == '/filesystem') {
           return PageRouteBuilder(
             settings: settings,
             pageBuilder: (_, __, ___) => _screenForRoute(route, stateContainer),
@@ -333,6 +334,8 @@ class _JournalAppState extends State<JournalApp> {
         return HomeScreen();
       case '/folders':
         return FolderListingScreen();
+      case '/filesystem':
+        return FileSystemScreen();
       case '/tags':
         return TagListingScreen();
       case '/settings':

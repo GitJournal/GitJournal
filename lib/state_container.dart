@@ -218,6 +218,24 @@ class StateContainer with ChangeNotifier {
     });
   }
 
+  void renameFile(String oldPath, String newFileName) async {
+    logEvent(Event.NoteRenamed);
+
+    return _opLock.synchronized(() async {
+      Log.d("Got renameNote lock");
+
+      var newPath = p.join(p.dirname(oldPath), newFileName);
+      await File(oldPath).rename(newPath);
+      notifyListeners();
+
+      _gitRepo.renameFile(oldPath, newPath).then((NoteRepoResult _) {
+        _syncNotes();
+        appState.numChanges += 1;
+        notifyListeners();
+      });
+    });
+  }
+
   void moveNote(Note note, NotesFolderFS destFolder) async {
     if (destFolder.folderPath == note.parent.folderPath) {
       return;

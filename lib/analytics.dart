@@ -17,6 +17,7 @@ enum Event {
   NoteUndoDeleted,
   NoteRenamed,
   NoteMoved,
+  FileRenamed,
   FolderAdded,
   FolderDeleted,
   FolderRenamed,
@@ -38,6 +39,9 @@ String _eventToString(Event e) {
       return "note_renamed";
     case Event.NoteMoved:
       return "note_moved";
+
+    case Event.FileRenamed:
+      return "file_renamed";
 
     case Event.FolderAdded:
       return "folder_added";
