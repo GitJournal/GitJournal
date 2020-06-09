@@ -20,13 +20,6 @@ class OAuthAppState extends State<OAuthApp> {
     super.initState();
 
     githost = createGitHost(GitHostType.GitHub);
-    githost.init((GitHostException e) {
-      if (e != null) {
-        print("Got exeception: $e");
-      } else {
-        print("GitHost initialized and has access code");
-      }
-    });
   }
 
   @override
@@ -41,7 +34,7 @@ class OAuthAppState extends State<OAuthApp> {
           RaisedButton(
             child: const Text("Open OAuth URL"),
             onPressed: () {
-              githost.launchOAuthScreen();
+              githost.init();
             },
           ),
           RaisedButton(

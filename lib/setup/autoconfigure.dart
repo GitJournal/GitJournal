@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:function_types/function_types.dart';
 
 import 'package:gitjournal/analytics.dart';
