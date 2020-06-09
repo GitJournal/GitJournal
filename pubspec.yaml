@@ -16,7 +16,7 @@ dependencies:
   shared_preferences: ^0.5.6
   url_launcher: ^5.4.1
   dots_indicator: ^0.0.3
-  package_info: ^0.4.0+13
+  package_info: ">=0.4.1 <2.0.0"
   http: ^0.12.0+1
   badges: ^1.1.1
   share: ^0.6.3+5
