@@ -1,8 +1,11 @@
 import 'package:gitjournal/utils/markdown.dart';
 import 'package:test/test.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
   group('Markdown Remove Formatting', () {
+    initializeDateFormatting('en');
+
     test('Test Headers', () {
       var input = '# Hello\nHow are you?';
       expect(stripMarkdownFormatting(input), 'Hello How are you? ');

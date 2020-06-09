@@ -6,9 +6,12 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
   group('Flattened Notes Folder Large Test', () {
+    initializeDateFormatting('en');
+
     Directory tempDir;
     NotesFolderFS rootFolder;
 
