@@ -5,8 +5,7 @@ import 'package:flutter/foundation.dart';
 typedef OAuthCallback = void Function(GitHostException);
 
 abstract class GitHost {
-  void init(OAuthCallback oAuthCallback);
-  Future launchOAuthScreen();
+  Future<void> init();
 
   Future<UserInfo> getUserInfo();
   Future<List<GitHostRepo>> listRepos();

@@ -3,9 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_web_auth/flutter_web_auth.dart';
 
 import 'package:gitjournal/utils/logger.dart';
 import 'githost.dart';
@@ -14,54 +13,48 @@ class GitLab implements GitHost {
   static const _clientID =
       "faf33c3716faf05bfb701b1b31e36c83a23c3ec2d7161f4ff00fba2275524d09";
 
-  var _platform = const MethodChannel('gitjournal.io/git');
   var _accessCode = "";
   var _stateOAuth = "";
 
   @override
-  void init(OAuthCallback callback) {
-    Future _handleMessages(MethodCall call) async {
-      if (call.method != "onURL") {
-        Log.d("GitLab Unknown Call: " + call.method);
-        return;
-      }
-
-      closeWebView();
-      Log.d("GitLab: Called onUrl with " + call.arguments.toString());
-
-      String url = call.arguments["URL"];
-      var queryParamters = url.substring(url.indexOf('#') + 1);
-      var map = Uri.splitQueryString(queryParamters);
-
-      var state = map['state'];
-      if (state != _stateOAuth) {
-        Log.d("GitLab: OAuth State incorrect");
-        Log.d("Required State: " + _stateOAuth);
-        Log.d("Actual State: " + state);
-        callback(GitHostException.OAuthFailed);
-        return;
-      }
-
-      _accessCode = map['access_token'];
-      if (_accessCode == null) {
-        callback(GitHostException.OAuthFailed);
-        return;
-      }
-
-      callback(null);
-    }
-
-    _platform.setMethodCallHandler(_handleMessages);
-    Log.d("GitLab: Installed Handler");
-  }
-
-  @override
-  Future launchOAuthScreen() async {
+  Future<void> init() async {
     _stateOAuth = _randomString(10);
 
-    var url =
+    var launchUrl =
         "https://gitlab.com/oauth/authorize?client_id=$_clientID&response_type=token&state=$_stateOAuth&redirect_uri=gitjournal://login.oauth2";
-    return launch(url);
+
+    var url = await FlutterWebAuth.authenticate(
+        url: launchUrl, callbackUrlScheme: "gitjournal");
+
+    var receievedState = _fetchQueryParam(url, "state");
+    if (receievedState != _stateOAuth) {
+      Log.d("GitLab: OAuth State incorrect");
+      Log.d("Required State: $_stateOAuth");
+      Log.d("Actual State: $receievedState");
+      throw GitHostException.OAuthFailed;
+    }
+
+    _accessCode = _fetchQueryParam(url, "access_token");
+    if (_accessCode == null) {
+      throw GitHostException.OAuthFailed;
+    }
+  }
+
+  // Example: gitjournal://login.oauth2#access_token=49ce9d1s11145acc7bddf0b6b2a5fbe2a15496e4975808731e054eceeb49468f&token_type=Bearer&state=qxpYY%5CckY%5D
+  String _fetchQueryParam(String url, String param) {
+    var map = Uri.parse(url).queryParameters;
+    var value = map[param];
+    if (value != null && value.isNotEmpty) {
+      return value;
+    }
+
+    var paramIndex = url.indexOf("$param=");
+    if (paramIndex != -1) {
+      var stateStr = url.substring(paramIndex + "$param=".length).split('&')[0];
+      return Uri.decodeQueryComponent(stateStr);
+    }
+
+    return "";
   }
 
   @override

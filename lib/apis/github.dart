@@ -2,9 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_web_auth/flutter_web_auth.dart';
 
 import 'package:gitjournal/utils/logger.dart';
 import 'githost.dart';
@@ -13,39 +12,29 @@ class GitHub implements GitHost {
   static const _clientID = "aa3072cbfb02b1db14ed";
   static const _clientSecret = "010d303ea99f82330f2b228977cef9ddbf7af2cd";
 
-  var _platform = const MethodChannel('gitjournal.io/git');
   var _accessCode = "";
 
   @override
-  void init(OAuthCallback callback) {
-    Future _handleMessages(MethodCall call) async {
-      if (call.method != "onURL") {
-        Log.d("GitHub Unknown Call: " + call.method);
-        return;
-      }
+  Future<void> init() async {
+    var url = "https://github.com/login/oauth/authorize?client_id=" +
+        _clientID +
+        "&scope=repo";
 
-      closeWebView();
-      Log.d("GitHub: Called onUrl with " + call.arguments.toString());
+    var resultUrl = await FlutterWebAuth.authenticate(
+        url: url, callbackUrlScheme: "gitjournal");
 
-      String url = call.arguments["URL"];
-      var uri = Uri.parse(url);
-      var authCode = uri.queryParameters['code'];
-      if (authCode == null) {
-        Log.d("GitHub: Missing auth code. Now what?");
-        callback(GitHostException.OAuthFailed);
-      }
-
-      _accessCode = await _getAccessCode(authCode);
-      if (_accessCode == null || _accessCode.isEmpty) {
-        Log.d("GitHub: AccessCode is invalid: " + _accessCode);
-        callback(GitHostException.OAuthFailed);
-      }
-
-      callback(null);
+    var uri = Uri.parse(resultUrl);
+    var authCode = uri.queryParameters['code'];
+    if (authCode == null) {
+      Log.d("GitHub: Missing auth code. Now what?");
+      throw GitHostException.OAuthFailed;
     }
 
-    _platform.setMethodCallHandler(_handleMessages);
-    Log.d("GitHub: Installed Handler");
+    _accessCode = await _getAccessCode(authCode);
+    if (_accessCode == null || _accessCode.isEmpty) {
+      Log.d("GitHub: AccessCode is invalid: " + _accessCode);
+      throw GitHostException.OAuthFailed;
+    }
   }
 
   Future<String> _getAccessCode(String authCode) async {
@@ -64,16 +53,6 @@ class GitHub implements GitHost {
 
     var map = Uri.splitQueryString(response.body);
     return map["access_token"];
-  }
-
-  @override
-  Future launchOAuthScreen() async {
-    // FIXME: Add some 'state' over here!
-
-    var url = "https://github.com/login/oauth/authorize?client_id=" +
-        _clientID +
-        "&scope=repo";
-    return launch(url);
   }
 
   @override

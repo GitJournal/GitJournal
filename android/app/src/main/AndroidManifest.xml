@@ -53,15 +53,12 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".UriReceiverActivity"
-            android:parentActivityName=".MainActivity">
+        <activity android:name="com.linusu.flutter_web_auth.CallbackActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="gitjournal" android:host="login.oauth2" />
-                <!-- Triggering URI would be gitjournal://login.oauth2 -->
+                <data android:scheme="gitjournal" />
             </intent-filter>
         </activity>
 
