@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gitjournal/core/link.dart';
 import 'package:path/path.dart' as p;
 
 import 'package:gitjournal/folder_views/common.dart';
@@ -117,6 +118,8 @@ class NoteSnippet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    assert(note != null);
+
     var theme = Theme.of(context);
     var textTheme = theme.textTheme;
     var title = note.title;
@@ -169,12 +172,44 @@ class NoteSnippet extends StatelessWidget {
       (line) => line.contains('[${link.term}]'),
       orElse: () => "",
     );
-    // vHanda: This isn't a very fool proof way of figuring out the line
 
-    return Text(
-      paragraph,
-      style: textTheme.bodyText2,
+    // vHanda: This isn't a very fool proof way of figuring out the line
+    // FIXME: Ideally, we should be parsing the entire markdown properly and rendering all of it
+    return RichText(
+      text: TextSpan(children: _extraMetaLinks(textTheme.bodyText2, paragraph)),
       maxLines: 3,
     );
   }
+}
+
+List<TextSpan> _extraMetaLinks(TextStyle textStyle, String line) {
+  var regExp = MetaLinkSyntax().pattern;
+
+  var spans = <TextSpan>[];
+
+  while (true) {
+    var match = regExp.firstMatch(line);
+    if (match == null) {
+      break;
+    }
+    var text = line.substring(0, match.start);
+    spans.add(TextSpan(style: textStyle, text: text));
+
+    text = match.group(0);
+    spans.add(TextSpan(
+        style: textStyle.copyWith(fontWeight: FontWeight.bold), text: text));
+
+    if (match.end < line.length) {
+      line = line.substring(match.end);
+    } else {
+      line = "";
+      break;
+    }
+  }
+
+  if (line.isNotEmpty) {
+    spans.add(TextSpan(style: textStyle, text: line));
+  }
+
+  return spans;
 }
