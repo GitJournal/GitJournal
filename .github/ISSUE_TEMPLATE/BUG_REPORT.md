@@ -8,7 +8,7 @@ about: Something is crashing or not working as intended
 
 **App version:**  <!-- Add branch if necessary -->  
 **Device information:**
- - SO name and version:
+ - OS name and version:
  - Manufacturer:
  - Model:
 

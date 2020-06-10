@@ -8,7 +8,7 @@ about: Suggest an idea for this project
 
 **App version:**
 **Device information:**
- - SO name and version:
+ - OS name and version:
  - Manufacturer:
  - Model:
 
