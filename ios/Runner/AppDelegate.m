@@ -426,4 +426,17 @@ bool handleError(FlutterResult result, int err) {
     }
 }
 
+- (BOOL)application:(UIApplication *)app
+            openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
+    NSLog(@"openUrl called with url %@", url);
+    for (NSString *key in [options allKeys]) {
+        NSLog(@".  %@: %@", key, [options objectForKey:key]);
+    }
+
+    NSDictionary *args = @{@"URL": [url absoluteString]};
+    [gitChannel invokeMethod:@"onURL" arguments:args];
+
+    return true;
+}
 @end

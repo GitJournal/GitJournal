@@ -57,7 +57,6 @@ dependencies:
   quick_actions: ^0.4.0+5
   receive_sharing_intent: ^1.4.0+2
   flutter_plugin_android_lifecycle: ^1.0.8 # for fixing the build
-  flutter_web_auth: ^0.2.4
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.2"

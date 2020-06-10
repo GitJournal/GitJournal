@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:function_types/function_types.dart';
 
 import 'package:gitjournal/analytics.dart';
@@ -41,28 +42,39 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
 
     gitHost = createGitHost(widget.gitHostType);
     try {
-      await gitHost.init();
+      gitHost.init((Exception error) async {
+        if (error != null) {
+          throw error;
+        }
+        Log.d("GitHost Initalized: " + widget.gitHostType.toString());
 
-      Log.d("GitHost Initalized: " + widget.gitHostType.toString());
+        try {
+          setState(() {
+            _message = "Reading User Info";
+          });
+
+          var userInfo = await gitHost.getUserInfo();
+          if (userInfo.name != null && userInfo.name.isNotEmpty) {
+            Settings.instance.gitAuthor = userInfo.name;
+          }
+          if (userInfo.email != null && userInfo.email.isNotEmpty) {
+            Settings.instance.gitAuthorEmail = userInfo.email;
+          }
+          Settings.instance.save();
+        } on Exception catch (e, stacktrace) {
+          _handleGitHostException(e, stacktrace);
+          return;
+        }
+        widget.onDone(gitHost);
+      });
 
       try {
-        setState(() {
-          _message = "Reading User Info";
-        });
-
-        var userInfo = await gitHost.getUserInfo();
-        if (userInfo.name != null && userInfo.name.isNotEmpty) {
-          Settings.instance.gitAuthor = userInfo.name;
-        }
-        if (userInfo.email != null && userInfo.email.isNotEmpty) {
-          Settings.instance.gitAuthorEmail = userInfo.email;
-        }
-        Settings.instance.save();
-      } on Exception catch (e, stacktrace) {
-        _handleGitHostException(e, stacktrace);
-        return;
+        await gitHost.launchOAuthScreen();
+      } on PlatformException catch (e, stack) {
+        print("LaunchOAuthScreen: Caught platform exception: " + e.toString());
+        print(stack);
+        print("Ignoring it, since I don't know what else to do");
       }
-      widget.onDone(gitHost);
     } on Exception catch (e, stacktrace) {
       _handleGitHostException(e, stacktrace);
     }
