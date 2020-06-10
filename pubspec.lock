@@ -421,10 +421,12 @@ packages:
   intl:
     dependency: "direct main"
     description:
-      name: intl
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.16.1"
+      path: "."
+      ref: HEAD
+      resolved-ref: bdad67e32fedd828ca61004b7007fd7a07087635
+      url: "https://github.com/GitJournal/intl.git"
+    source: git
+    version: "0.17.0-dev"
   io:
     dependency: transitive
     description:

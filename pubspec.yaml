@@ -7,7 +7,8 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  intl: "^0.16.0"
+  intl:
+    git: https://github.com/GitJournal/intl.git
   path: ^1.6.2
   uuid: ^2.0.1
   yaml: ^2.2.0
@@ -67,6 +68,10 @@ dev_dependencies:
   flutter_driver:
     sdk: flutter
   benchmark_harness: any
+
+dependency_overrides:
+  intl:
+    git: https://github.com/GitJournal/intl.git
 
 flutter:
   uses-material-design: true
