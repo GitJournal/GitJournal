@@ -204,11 +204,11 @@ class StateContainer with ChangeNotifier {
   void renameNote(Note note, String newFileName) async {
     logEvent(Event.NoteRenamed);
 
+    var oldNotePath = note.filePath;
+    note.rename(newFileName);
+
     return _opLock.synchronized(() async {
       Log.d("Got renameNote lock");
-
-      var oldNotePath = note.filePath;
-      note.rename(newFileName);
 
       _gitRepo.renameNote(oldNotePath, note.filePath).then((NoteRepoResult _) {
         _syncNotes();
