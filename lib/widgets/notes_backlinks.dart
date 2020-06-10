@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart' as p;
+
 import 'package:gitjournal/folder_views/common.dart';
 
 import 'package:gitjournal/core/note.dart';
@@ -33,7 +35,15 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
     var predicate = (Note n) async {
       var links = await n.fetchLinks();
       var matchedLink = links.firstWhere(
-        (l) => l.filePath == widget.note.filePath,
+        (l) {
+          if (l.filePath != null) {
+            return l.filePath == widget.note.filePath;
+          }
+
+          var term = widget.note.pathSpec();
+          term = p.basenameWithoutExtension(term);
+          return term == l.term;
+        },
         orElse: () => null,
       );
       return matchedLink != null;
@@ -140,11 +150,20 @@ class NoteSnippet extends StatelessWidget {
   Widget _buildSummary(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     var links = note.links();
-    if (links == null) {
+    if (links == null || links.isEmpty) {
       return Container();
     }
 
-    var link = links.where((l) => l.filePath == parentNote.filePath).first;
+    var link = links.where((l) {
+      if (l.filePath != null) {
+        return l.filePath == note.filePath;
+      }
+
+      var term = parentNote.pathSpec();
+      term = p.basenameWithoutExtension(term);
+      return term == l.term;
+    }).first;
+
     var body = note.body.split('\n');
     var paragraph = body.firstWhere(
       (line) => line.contains('[${link.term}]'),
