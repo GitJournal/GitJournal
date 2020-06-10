@@ -116,13 +116,13 @@ class NoteSnippet extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
-      child: Container(
-        color: theme.scaffoldBackgroundColor,
-        width: MediaQuery.of(context).size.width,
-        child: GestureDetector(
-          onTap: () {
-            openNoteEditor(context, note);
-          },
+      child: GestureDetector(
+        onTap: () {
+          openNoteEditor(context, note);
+        },
+        child: Container(
+          color: theme.scaffoldBackgroundColor,
+          width: MediaQuery.of(context).size.width,
           child: Column(
             children: <Widget>[
               Text('$title', style: textTheme.bodyText1),
