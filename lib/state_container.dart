@@ -188,7 +188,7 @@ class StateContainer with ChangeNotifier {
       Log.d("Got renameFolder lock");
 
       var oldFolderPath = folder.folderPath;
-      print("Renaming Folder from $oldFolderPath -> $newFolderName");
+      Log.d("Renaming Folder from $oldFolderPath -> $newFolderName");
       folder.rename(newFolderName);
 
       _gitRepo

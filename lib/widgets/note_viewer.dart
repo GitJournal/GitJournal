@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/editor_scroll_view.dart';
 import 'package:gitjournal/widgets/notes_backlinks.dart';
 import 'package:provider/provider.dart';
@@ -68,7 +69,7 @@ class NoteViewer extends StatelessWidget {
                     showSnackbar(context, "Link '$link' not found");
                   }
                 } else {
-                  print("Launching " + link);
+                  Log.i("Launching $link");
                   launch(link);
                 }
               },

@@ -93,12 +93,11 @@ Future<void> initCrashlytics() async {
 }
 
 Future<void> reportError(Object error, StackTrace stackTrace) async {
+  Log.e("Uncaught Exception", ex: error, stacktrace: stackTrace);
+
   if (reportCrashes) {
     captureSentryException(error, stackTrace);
   }
-
-  print("Uncaught Exception: $error");
-  print(stackTrace);
 }
 
 // Dart makes a distiction between Errors and Exceptions

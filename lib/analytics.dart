@@ -103,7 +103,7 @@ class CustomRouteObserver extends RouteObserver<PageRoute<dynamic>> {
     if (route is PageRoute) {
       _sendScreenView(route);
     } else {
-      print("route in not a PageRoute! $route");
+      // print("route in not a PageRoute! $route");
     }
   }
 
@@ -113,7 +113,7 @@ class CustomRouteObserver extends RouteObserver<PageRoute<dynamic>> {
     if (newRoute is PageRoute) {
       _sendScreenView(newRoute);
     } else {
-      print("newRoute in not a PageRoute! $newRoute");
+      // print("newRoute in not a PageRoute! $newRoute");
     }
   }
 
@@ -123,8 +123,8 @@ class CustomRouteObserver extends RouteObserver<PageRoute<dynamic>> {
     if (previousRoute is PageRoute && route is PageRoute) {
       _sendScreenView(previousRoute);
     } else {
-      print("previousRoute in not a PageRoute! $previousRoute");
-      print("route in not a PageRoute! $route");
+      // print("previousRoute in not a PageRoute! $previousRoute");
+      // print("route in not a PageRoute! $route");
     }
   }
 }

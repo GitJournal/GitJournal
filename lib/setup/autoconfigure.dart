@@ -71,9 +71,9 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
       try {
         await gitHost.launchOAuthScreen();
       } on PlatformException catch (e, stack) {
-        print("LaunchOAuthScreen: Caught platform exception: " + e.toString());
-        print(stack);
-        print("Ignoring it, since I don't know what else to do");
+        Log.d("LaunchOAuthScreen: Caught platform exception:",
+            ex: e, stacktrace: stack);
+        Log.d("Ignoring it, since I don't know what else to do");
       }
     } on Exception catch (e, stacktrace) {
       _handleGitHostException(e, stacktrace);

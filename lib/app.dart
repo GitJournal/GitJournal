@@ -194,13 +194,10 @@ class _JournalAppState extends State<JournalApp> {
       ),
     ]);
 
-    print("Nav key $_navigatorKey");
-
     _initShareSubscriptions();
   }
 
   void _afterBuild(BuildContext context) {
-    print("_afterBuild $_pendingShortcut");
     if (_pendingShortcut != null) {
       _navigatorKey.currentState.pushNamed("/newNote/$_pendingShortcut");
       _pendingShortcut = null;
