@@ -109,6 +109,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
       "Faster feature development",
       "Note Tagging",
       "Custom Home Screen",
+      "Note BackLinks",
       "Multiple Git Repos (coming soon)",
       "Custom settings per folder (coming soon)",
       "View and search through your entire Git Log (coming soon)",
