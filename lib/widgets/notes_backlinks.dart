@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/link.dart';
+import 'package:gitjournal/widgets/pro_overlay.dart';
 import 'package:path/path.dart' as p;
 
 import 'package:gitjournal/folder_views/common.dart';
@@ -94,7 +95,7 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
     if (Theme.of(context).brightness == Brightness.dark) {
       backgroundColor = Theme.of(context).backgroundColor;
     }
-    return Container(
+    var child = Container(
       color: backgroundColor,
       width: MediaQuery.of(context).size.width,
       child: Padding(
@@ -102,6 +103,7 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
         child: c,
       ),
     );
+    return ProOverlay(child: child);
   }
 }
 

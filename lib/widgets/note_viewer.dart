@@ -9,7 +9,6 @@ import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/editor_scroll_view.dart';
 import 'package:gitjournal/widgets/notes_backlinks.dart';
-import 'package:gitjournal/widgets/pro_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path/path.dart' as p;
@@ -80,9 +79,7 @@ class NoteViewer extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16.0),
-          ProOverlay(
-            child: NoteBacklinkRenderer(note: note, rootFolder: rootFolder),
-          ),
+          NoteBacklinkRenderer(note: note, rootFolder: rootFolder),
           // _buildFooter(context),
         ],
         crossAxisAlignment: CrossAxisAlignment.start,
