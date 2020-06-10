@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/utils/logger.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sentry/sentry.dart';
 
@@ -104,6 +105,8 @@ Future<void> reportError(Object error, StackTrace stackTrace) async {
 // so we need to use dynamic
 Future<void> logException(Object e, StackTrace stackTrace) async {
   assert(e is Exception || e is Error);
+  Log.e("Got Exception", ex: e, stacktrace: stackTrace);
+
   if (!reportCrashes) {
     return;
   }
@@ -114,6 +117,8 @@ Future<void> logException(Object e, StackTrace stackTrace) async {
 
 Future<void> logExceptionWarning(Object e, StackTrace stackTrace) async {
   assert(e is Exception || e is Error);
+  Log.e("Got Exception", ex: e, stacktrace: stackTrace);
+
   if (!reportCrashes) {
     return;
   }
