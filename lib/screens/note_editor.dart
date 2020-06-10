@@ -10,6 +10,7 @@ import 'package:gitjournal/editors/journal_editor.dart';
 import 'package:gitjournal/editors/markdown_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
 import 'package:gitjournal/editors/checklist_editor.dart';
+import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
@@ -303,12 +304,18 @@ class NoteEditorState extends State<NoteEditor> {
     return false;
   }
 
-  void _saveNote(Note note) {
+  void _saveNote(Note note) async {
     if (!_noteModified(note)) return;
 
     Log.d("Note modified - saving");
-    var stateContainer = Provider.of<StateContainer>(context, listen: false);
-    _isNewNote ? stateContainer.addNote(note) : stateContainer.updateNote(note);
+    try {
+      var stateContainer = Provider.of<StateContainer>(context, listen: false);
+      _isNewNote
+          ? await stateContainer.addNote(note)
+          : await stateContainer.updateNote(note);
+    } catch (e, stackTrace) {
+      logException(e, stackTrace);
+    }
   }
 
   Note _getNoteFromEditor() {

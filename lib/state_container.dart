@@ -256,7 +256,7 @@ class StateContainer with ChangeNotifier {
     });
   }
 
-  void addNote(Note note) async {
+  Future<void> addNote(Note note) async {
     logEvent(Event.NoteAdded);
 
     note.parent.add(note);
@@ -310,7 +310,7 @@ class StateContainer with ChangeNotifier {
     });
   }
 
-  void updateNote(Note note) async {
+  Future<void> updateNote(Note note) async {
     logEvent(Event.NoteUpdated);
 
     note.updateModified();
