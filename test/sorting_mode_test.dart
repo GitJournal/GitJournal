@@ -2,12 +2,9 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:test/test.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
   group('Sorting Mode', () {
-    initializeDateFormatting('en');
-
     test('Created', () async {
       var folder = NotesFolderFS(null, '/tmp/');
       var n1 = Note(folder, '/tmp/1.md');

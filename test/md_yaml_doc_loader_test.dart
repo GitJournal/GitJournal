@@ -3,12 +3,9 @@ import 'dart:io';
 import 'package:gitjournal/core/md_yaml_doc_loader.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
   group('MdYamlDocLoader', () {
-    initializeDateFormatting('en');
-
     Directory tempDir;
     String filePath;
     var contents = """---

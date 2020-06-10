@@ -2,11 +2,8 @@ import 'dart:collection';
 
 import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:test/test.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
-  initializeDateFormatting('en');
-
   test('Equality', () {
     // ignore: prefer_collection_literals
     var aProps = LinkedHashMap<String, dynamic>();

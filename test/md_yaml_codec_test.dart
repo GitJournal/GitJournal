@@ -4,7 +4,6 @@ import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/utils/datetime.dart';
 import 'package:test/test.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 DateTime nowWithoutMicro() {
   var dt = DateTime.now();
@@ -13,8 +12,6 @@ DateTime nowWithoutMicro() {
 
 void main() {
   group('Serializers', () {
-    initializeDateFormatting('en');
-
     test('Markdown Serializer', () {
       var created = toIso8601WithTimezone(nowWithoutMicro());
       var note = MdYamlDoc(

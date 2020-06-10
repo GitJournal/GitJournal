@@ -13,8 +13,8 @@ class JournalView extends StatelessWidget {
   final NotesFolder folder;
   final String emptyText;
 
-  static final _dateFormat = DateFormat('dd MMM, yyyy  ', 'en');
-  static final _timeFormat = DateFormat('Hm', 'en');
+  static final _dateFormat = DateFormat('dd MMM, yyyy  ');
+  static final _timeFormat = DateFormat('Hm');
 
   JournalView({
     @required this.folder,

@@ -2,8 +2,8 @@ import 'dart:core';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:intl/intl.dart';
 
-final _simpleDateFormat = DateFormat("yyyy-MM-dd-HH-mm-ss", 'en');
-final _iso8601DateFormat = DateFormat("yyyy-MM-ddTHH:mm:ss", 'en');
+final _simpleDateFormat = DateFormat("yyyy-MM-dd-HH-mm-ss");
+final _iso8601DateFormat = DateFormat("yyyy-MM-ddTHH:mm:ss");
 
 String toSimpleDateTime(DateTime dt) {
   return _simpleDateFormat.format(dt);
