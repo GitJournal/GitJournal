@@ -59,6 +59,7 @@ class NoteViewer extends StatelessWidget {
             padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
             child: MarkdownBody(
               data: note.body,
+              selectable: true,
               styleSheet: markdownStyleSheet,
               onTapLink: (String link) {
                 if (link.startsWith('./')) {
