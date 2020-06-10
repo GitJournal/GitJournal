@@ -229,6 +229,7 @@ class NoteEditorState extends State<NoteEditor> {
           note = _note;
           note.rename(fileName);
         });
+        return;
       }
       var container = Provider.of<StateContainer>(context, listen: false);
       container.renameNote(note, fileName);

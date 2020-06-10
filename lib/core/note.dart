@@ -306,15 +306,16 @@ class Note with NotesNotifier {
   void rename(String newName) {
     // Do not let the user rename it to a non-markdown file
     switch (_fileFormat) {
-      case NoteFileFormat.Markdown:
-        if (!newName.toLowerCase().endsWith('.md')) {
-          newName += '.md';
-        }
-        break;
-
       case NoteFileFormat.Txt:
         if (!newName.toLowerCase().endsWith('.txt')) {
           newName += '.txt';
+        }
+        break;
+
+      case NoteFileFormat.Markdown:
+      default:
+        if (!newName.toLowerCase().endsWith('.md')) {
+          newName += '.md';
         }
         break;
     }
@@ -322,8 +323,9 @@ class Note with NotesNotifier {
     var oldFilePath = filePath;
     var parentDirName = p.dirname(filePath);
     var newFilePath = p.join(parentDirName, newName);
-    if (_loadState != NoteLoadState.None) {
-      // for new notes
+
+    // The file will not exist for new notes
+    if (File(oldFilePath).existsSync()) {
       File(filePath).renameSync(newFilePath);
     }
     _filePath = newFilePath;
