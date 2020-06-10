@@ -173,8 +173,8 @@ class GitNoteRepository {
         authorEmail: Settings.instance.gitAuthorEmail,
         authorName: Settings.instance.gitAuthor,
       );
-    } on GitException catch (ex) {
-      Log.d(ex.toString());
+    } on GitException catch (ex, stackTrace) {
+      Log.e("GitPull Failed", ex: ex, stacktrace: stackTrace);
     }
   }
 
@@ -189,12 +189,12 @@ class GitNoteRepository {
 
     try {
       await _gitRepo.push();
-    } on GitException catch (ex) {
+    } on GitException catch (ex, stackTrace) {
       if (ex.cause == 'cannot push non-fastforwardable reference') {
         await pull();
         return push();
       }
-      Log.d(ex.toString());
+      Log.e("GitPush Failed", ex: ex, stacktrace: stackTrace);
       rethrow;
     }
   }
