@@ -1,6 +1,7 @@
 ## [1.57] - 2020-06-10
 * Better support for auto adding list items when typing
 * Bug fix in iOS where notes would no longer be shown
+* Improve error handling
 
 ## [1.56] - 2020-06-04
 * Bug fix for Folder Names
