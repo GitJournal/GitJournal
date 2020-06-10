@@ -42,37 +42,38 @@ class _SyncButtonState extends State<SyncButton> {
     final appState = Provider.of<StateContainer>(context).appState;
 
     if (_connectivity == ConnectivityResult.none) {
-      return IconButton(
-        icon: Icon(Icons.signal_wifi_off),
-        onPressed: () async {
-          _syncRepo();
-        },
+      return GitPendingChangesBadge(
+        child: IconButton(
+          icon: Icon(Icons.signal_wifi_off),
+          onPressed: () async {
+            _syncRepo();
+          },
+        ),
       );
     }
     if (appState.syncStatus == SyncStatus.Pulling) {
       return BlinkingIcon(
-        icon: Icon(Icons.cloud_download),
+        child: GitPendingChangesBadge(
+          child: IconButton(
+            icon: Icon(Icons.cloud_download),
+            onPressed: () {},
+          ),
+        ),
       );
     }
 
     if (appState.syncStatus == SyncStatus.Pushing) {
       return BlinkingIcon(
-        icon: Icon(Icons.cloud_upload),
+        child: GitPendingChangesBadge(
+          child: IconButton(
+            icon: Icon(Icons.cloud_upload),
+            onPressed: () {},
+          ),
+        ),
       );
     }
 
-    var theme = Theme.of(context);
-    var darkMode = theme.brightness == Brightness.dark;
-    var style = theme.textTheme.caption.copyWith(
-      fontSize: 6.0,
-      color: darkMode ? Colors.black : Colors.white,
-    );
-
-    return Badge(
-      badgeContent: Text(appState.numChanges.toString(), style: style),
-      showBadge: appState.numChanges != 0,
-      badgeColor: theme.iconTheme.color,
-      position: BadgePosition.topRight(top: 10.0, right: 4.0),
+    return GitPendingChangesBadge(
       child: IconButton(
         icon: Icon(_syncStatusIcon()),
         onPressed: () async {
@@ -109,10 +110,10 @@ class _SyncButtonState extends State<SyncButton> {
 }
 
 class BlinkingIcon extends StatefulWidget {
-  final Icon icon;
+  final Widget child;
   final int interval;
 
-  BlinkingIcon({@required this.icon, this.interval = 500, Key key})
+  BlinkingIcon({@required this.child, this.interval = 500, Key key})
       : super(key: key);
 
   @override
@@ -150,10 +151,33 @@ class _BlinkingIconState extends State<BlinkingIcon>
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: _animation,
-      child: IconButton(
-        icon: widget.icon,
-        onPressed: () {},
-      ),
+      child: widget.child,
+    );
+  }
+}
+
+class GitPendingChangesBadge extends StatelessWidget {
+  final Widget child;
+
+  GitPendingChangesBadge({@required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    var darkMode = theme.brightness == Brightness.dark;
+    var style = theme.textTheme.caption.copyWith(
+      fontSize: 6.0,
+      color: darkMode ? Colors.black : Colors.white,
+    );
+
+    final appState = Provider.of<StateContainer>(context).appState;
+
+    return Badge(
+      badgeContent: Text(appState.numChanges.toString(), style: style),
+      showBadge: appState.numChanges != 0,
+      badgeColor: theme.iconTheme.color,
+      position: BadgePosition.topRight(top: 10.0, right: 4.0),
+      child: child,
     );
   }
 }
