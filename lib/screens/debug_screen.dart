@@ -12,10 +12,13 @@ class _DebugScreenState extends State<DebugScreen> {
   ScrollController _controller = ScrollController();
   String filterLevel = Settings.instance.debugLogLevel;
 
+  List<LogMessage> _logs;
+
   @override
   void initState() {
     super.initState();
 
+    _logs = Log.fetchLogs().toList();
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
   }
 
@@ -99,7 +102,7 @@ class _DebugScreenState extends State<DebugScreen> {
 
   Iterable<Widget> _fetchLogWidgets() sync* {
     var prevDate = "";
-    for (var msg in Log.fetchLogs()) {
+    for (var msg in _logs) {
       if (!_shouldDisplay(msg)) {
         continue;
       }
