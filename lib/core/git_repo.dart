@@ -36,7 +36,6 @@ class GitNoteRepository {
   }
 
   Future<NoteRepoResult> _addNote(Note note, String commitMessage) async {
-    await note.save();
     await _gitRepo.add(".");
     await _gitRepo.commit(
       message: commitMessage,

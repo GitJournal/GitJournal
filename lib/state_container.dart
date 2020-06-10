@@ -259,11 +259,13 @@ class StateContainer with ChangeNotifier {
   void addNote(Note note) async {
     logEvent(Event.NoteAdded);
 
+    note.parent.add(note);
+    note.updateModified();
+    await note.save();
+
     return _opLock.synchronized(() async {
       Log.d("Got addNote lock");
 
-      note.parent.add(note);
-      note.updateModified();
       _gitRepo.addNote(note).then((NoteRepoResult _) {
         _syncNotes();
         appState.numChanges += 1;
@@ -311,10 +313,12 @@ class StateContainer with ChangeNotifier {
   void updateNote(Note note) async {
     logEvent(Event.NoteUpdated);
 
+    note.updateModified();
+    await note.save();
+
     return _opLock.synchronized(() async {
       Log.d("Got updateNote lock");
 
-      note.updateModified();
       _gitRepo.updateNote(note).then((NoteRepoResult _) {
         _syncNotes();
         appState.numChanges += 1;
