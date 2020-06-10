@@ -1,9 +1,6 @@
 ## [1.57] - 2020-06-10
 * Better support for auto adding list items when typing
 * Bug fix in iOS where notes would no longer be shown
-* Improve OAuth initialization
-  - On Android the app is kept alive during the OAuth process
-  - On iOS we close the browser properly
 
 ## [1.56] - 2020-06-04
 * Bug fix for Folder Names
