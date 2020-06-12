@@ -28,7 +28,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   }
 
   Future<void> initPlatformState() async {
-    Purchases.setDebugLogsEnabled(true);
     await Purchases.setup(
       environment['revenueCat'],
       appUserId: Settings.instance.pseudoId,
