@@ -10,7 +10,7 @@ class InAppPurchases {
     var currentDt = DateTime.now().toUtc().toIso8601String();
     var exp = Settings.instance.proExpirationDate;
     if (exp != null && exp.isNotEmpty && exp.compareTo(currentDt) > 0) {
-      print("Not checking PurchaseInfo as exp = $exp and cur = $currentDt");
+      Log.i("Not checking PurchaseInfo as exp = $exp and cur = $currentDt");
       return;
     }
 
@@ -18,16 +18,15 @@ class InAppPurchases {
       return;
     }
 
-    Purchases.setDebugLogsEnabled(false);
     await Purchases.setup(
       environment['revenueCat'],
       appUserId: Settings.instance.pseudoId,
     );
 
     PurchaserInfo purchaserInfo = await Purchases.getPurchaserInfo();
-    print("Got PurchaserInfo $purchaserInfo");
+    Log.i("Got PurchaserInfo $purchaserInfo");
     var isPro = purchaserInfo.entitlements.active.containsKey("pro");
-    print("IsPro $isPro");
+    Log.i("IsPro $isPro");
 
     if (Settings.instance.proMode != isPro) {
       Log.i("Pro mode changed to $isPro");
