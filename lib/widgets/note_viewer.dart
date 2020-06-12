@@ -44,7 +44,7 @@ class NoteViewer extends StatelessWidget {
       ),
       horizontalRuleDecoration: BoxDecoration(
         border: Border(
-          top: BorderSide(width: 5.0, color: theme.highlightColor),
+          top: BorderSide(width: 3.0, color: theme.highlightColor),
         ),
       ),
     );
