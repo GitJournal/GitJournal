@@ -185,7 +185,7 @@ class NoteSnippet extends StatelessWidget {
 }
 
 List<TextSpan> _extraMetaLinks(TextStyle textStyle, String line) {
-  var regExp = MetaLinkSyntax().pattern;
+  var regExp = WikiLinkSyntax().pattern;
 
   var spans = <TextSpan>[];
 

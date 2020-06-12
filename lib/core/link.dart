@@ -55,8 +55,8 @@ class LinkExtractor implements md.NodeVisitor {
     }
 
     if (tag == 'wikiLink') {
-      var value = el.attributes['value'];
-      var link = Link(term: value, filePath: null);
+      var term = el.attributes['term'];
+      var link = Link(term: term, filePath: null);
       links.add(link);
       return;
     }
@@ -70,15 +70,15 @@ class LinkExtractor implements md.NodeVisitor {
   }
 }
 
-class MetaLinkSyntax extends md.InlineSyntax {
+class WikiLinkSyntax extends md.InlineSyntax {
   static final String _pattern = '\\[\\[([^\\[\\]]+)\\]\\]';
 
-  MetaLinkSyntax() : super(_pattern);
+  WikiLinkSyntax() : super(_pattern);
 
   @override
   bool onMatch(md.InlineParser parser, Match match) {
     md.Element el = md.Element.withTag('wikiLink');
-    el.attributes['value'] = '${match[1].trim()}';
+    el.attributes['term'] = '${match[1].trim()}';
     parser.addNode(el);
     return true;
   }

@@ -458,7 +458,7 @@ class Note with NotesNotifier {
     final doc = md.Document(
       encodeHtml: false,
       extensionSet: md.ExtensionSet.gitHubFlavored,
-      inlineSyntaxes: [MetaLinkSyntax()],
+      inlineSyntaxes: [WikiLinkSyntax()],
     );
 
     var lines = body.replaceAll('\r\n', '\n').split('\n');
