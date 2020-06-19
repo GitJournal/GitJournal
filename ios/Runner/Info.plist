@@ -75,5 +75,7 @@
 		<key>NSAllowsArbitraryLoadsInWebContent</key>
 		<true/>
 	</dict>
+	<key>SentryDSN</key>
+	<string>https://35f34dbec289435fbe16483faacf49a5@sentry.io/5168082</string>
 </dict>
 </plist>

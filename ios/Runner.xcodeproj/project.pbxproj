@@ -18,6 +18,7 @@
 		7A2A0C25229FF84C00FE4F1B /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A0C22229FF84C00FE4F1B /* common.c */; };
 		7A2A0C26229FF84C00FE4F1B /* gitjournal.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A0C23229FF84C00FE4F1B /* gitjournal.c */; };
 		7A2A0C27229FF84C00FE4F1B /* keygen.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A0C24229FF84C00FE4F1B /* keygen.c */; };
+		7A742348249CE14500B2C46B /* empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A742347249CE14500B2C46B /* empty.swift */; };
 		7AD6EE48228EC97800E098B2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7AD6EE47228EC97800E098B2 /* GoogleService-Info.plist */; };
 		978B8F6F1D3862AE00F588F7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AFFD8EE1D35381100E5BB4D /* AppDelegate.m */; };
 		97C146F31CF9000F007C117D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 97C146F21CF9000F007C117D /* main.m */; };
@@ -53,6 +54,8 @@
 		7A2A0C22229FF84C00FE4F1B /* common.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = common.c; path = ../gj_common/common.c; sourceTree = "<group>"; };
 		7A2A0C23229FF84C00FE4F1B /* gitjournal.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = gitjournal.c; path = ../gj_common/gitjournal.c; sourceTree = "<group>"; };
 		7A2A0C24229FF84C00FE4F1B /* keygen.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = keygen.c; path = ../gj_common/keygen.c; sourceTree = "<group>"; };
+		7A742346249CE14400B2C46B /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
+		7A742347249CE14500B2C46B /* empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = empty.swift; sourceTree = "<group>"; };
 		7AD6EE47228EC97800E098B2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
 		7AFFD8ED1D35381100E5BB4D /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -157,6 +160,8 @@
 				97C146F11CF9000F007C117D /* Supporting Files */,
 				1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */,
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
+				7A742347249CE14500B2C46B /* empty.swift */,
+				7A742346249CE14400B2C46B /* Runner-Bridging-Header.h */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -207,6 +212,7 @@
 					97C146ED1CF9000F007C117D = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 4NYTN6RU3N;
+						LastSwiftMigration = 1130;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -336,6 +342,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A2A0C25229FF84C00FE4F1B /* common.c in Sources */,
+				7A742348249CE14500B2C46B /* empty.swift in Sources */,
 				7A2A0C26229FF84C00FE4F1B /* gitjournal.c in Sources */,
 				7A2A0C27229FF84C00FE4F1B /* keygen.c in Sources */,
 				978B8F6F1D3862AE00F588F7 /* AppDelegate.m in Sources */,
@@ -479,9 +486,10 @@
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 4NYTN6RU3N;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -499,6 +507,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = io.gitjournal.gitjournal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/libs/include/";
 				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../gj_common/";
@@ -511,9 +521,10 @@
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 4NYTN6RU3N;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -531,6 +542,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = io.gitjournal.gitjournal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/libs/include/";
 				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../gj_common/";

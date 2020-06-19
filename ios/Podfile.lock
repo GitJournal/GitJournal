@@ -45,6 +45,9 @@ PODS:
     - Flutter
   - flutter_runtime_env (0.0.1):
     - Flutter
+  - flutter_sentry (0.0.1):
+    - Flutter
+    - Sentry (~> 5.0)
   - flutter_webview_plugin (0.0.1):
     - Flutter
   - FMDB (2.7.5):
@@ -100,6 +103,9 @@ PODS:
   - Reachability (3.2)
   - receive_sharing_intent (0.0.1):
     - Flutter
+  - Sentry (5.1.4):
+    - Sentry/Core (= 5.1.4)
+  - Sentry/Core (5.1.4)
   - share (0.5.2):
     - Flutter
   - shared_preferences (0.0.1):
@@ -127,6 +133,7 @@ DEPENDENCIES:
   - flutter_email_sender (from `.symlinks/plugins/flutter_email_sender/ios`)
   - flutter_plugin_android_lifecycle (from `.symlinks/plugins/flutter_plugin_android_lifecycle/ios`)
   - flutter_runtime_env (from `.symlinks/plugins/flutter_runtime_env/ios`)
+  - flutter_sentry (from `.symlinks/plugins/flutter_sentry/ios`)
   - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
   - git_bindings (from `.symlinks/plugins/git_bindings/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
@@ -161,6 +168,7 @@ SPEC REPOS:
     - FMDB
     - Purchases
     - Reachability
+    - Sentry
 
 EXTERNAL SOURCES:
   connectivity:
@@ -179,6 +187,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_plugin_android_lifecycle/ios"
   flutter_runtime_env:
     :path: ".symlinks/plugins/flutter_runtime_env/ios"
+  flutter_sentry:
+    :path: ".symlinks/plugins/flutter_sentry/ios"
   flutter_webview_plugin:
     :path: ".symlinks/plugins/flutter_webview_plugin/ios"
   git_bindings:
@@ -219,7 +229,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   connectivity: 6e94255659cc86dcbef1d452ad3e0491bb1b3e75
   Crashlytics: 5aa8e90dcbf2f34898b4f5a0037787531246cca0
-  device_info: cbf09d2ec12aa7110e0b09fabe54b5bd6c8efe74
+  device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   Fabric: f6f21452846788bb44595d73e9909d79d328e617
   Firebase: fa80b9d987ca014a1ba9357496ef2a0178b28b12
   firebase_analytics: dacdcfc524d722fff13dcff942f0dfa47e6be567
@@ -231,6 +241,7 @@ SPEC CHECKSUMS:
   flutter_email_sender: f787522d0e82f50e5766c1213dbffff22fdcf009
   flutter_plugin_android_lifecycle: dc0b544e129eebb77a6bfb1239d4d1c673a60a35
   flutter_runtime_env: c247c6cbe8cfbbc59237c50cbf4df91307d88322
+  flutter_sentry: e7e66f0717b5fba24f96891e879562bdd8985d36
   flutter_webview_plugin: ed9e8a6a96baf0c867e90e1bce2673913eeac694
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   git_bindings: 2136dc93ecfd22b3fdcafd03b582e7b64debf2b6
@@ -247,6 +258,7 @@ SPEC CHECKSUMS:
   quick_actions: 6cb2390c4dab0e737c94573c27e18d9666710720
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   receive_sharing_intent: c0d87310754e74c0f9542947e7cbdf3a0335a3b1
+  Sentry: 74f2ad93a20a5567a1badaedf5b3f60b142ad082
   share: bae0a282aab4483288913fc4dc0b935d4b491f2e
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   shared_preferences_macos: f3f29b71ccbb56bf40c9dd6396c9acf15e214087

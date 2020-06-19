@@ -45,6 +45,7 @@ dependencies:
   steel_crypt: ^1.7.1+1
   font_awesome_flutter: ^8.7.0
   sentry: ">=3.0.0 <4.0.0"
+  flutter_sentry: ^0.4.2
   equatable: ^1.1.0
   purchases_flutter: ^1.1.0
   cached_network_image: ^2.2.0+1
