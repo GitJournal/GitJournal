@@ -74,7 +74,7 @@ class NoteViewer extends StatelessWidget {
                   launch(link);
                 }
               },
-              imageBuilder: (url) => kDefaultImageBuilder(
+              imageBuilder: (url, title, alt) => kDefaultImageBuilder(
                   url, note.parent.folderPath + p.separator, null, null),
             ),
           ),
