@@ -63,9 +63,9 @@ class NoteViewer extends StatelessWidget {
               onTapLink: (String link) {
                 if (link.startsWith('./')) {
                   var spec = link.substring(2);
-                  var note = rootFolder.getNoteWithSpec(spec);
-                  if (note != null) {
-                    openNoteEditor(context, note);
+                  var linkedNote = note.parent.getNoteWithSpec(spec);
+                  if (linkedNote != null) {
+                    openNoteEditor(context, linkedNote);
                   } else {
                     showSnackbar(context, "Link '$link' not found");
                   }
