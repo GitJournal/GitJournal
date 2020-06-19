@@ -161,7 +161,7 @@ class NoteSnippet extends StatelessWidget {
 
     var link = links.where((l) {
       if (l.filePath != null) {
-        return l.filePath == note.filePath;
+        return l.filePath == parentNote.filePath;
       }
 
       var term = parentNote.pathSpec();
