@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' as foundation;
+
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/screens/filesystem_screen.dart';
 import 'package:gitjournal/screens/folder_listing.dart';
@@ -15,7 +17,7 @@ import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as p;
-import 'package:flutter_runtime_env/flutter_runtime_env.dart' as runtime_env;
+import 'package:flutter_sentry/flutter_sentry.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
@@ -106,7 +108,7 @@ class JournalApp extends StatefulWidget {
   }
 
   static void _enableAnalyticsIfPossible() async {
-    JournalApp.isInDebugMode = runtime_env.isInDebugMode();
+    JournalApp.isInDebugMode = foundation.kDebugMode;
 
     var isPhysicalDevice = true;
     try {
@@ -127,7 +129,7 @@ class JournalApp extends StatefulWidget {
       JournalApp.isInDebugMode = true;
     }
 
-    bool inFireBaseTestLab = await runtime_env.inFirebaseTestLab();
+    bool inFireBaseTestLab = await FlutterSentry.isFirebaseTestLab();
     bool enabled = !JournalApp.isInDebugMode && !inFireBaseTestLab;
 
     Log.d("Analytics Collection: $enabled");
