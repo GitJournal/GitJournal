@@ -1,9 +1,10 @@
+import 'dart:io' show Platform;
+
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/utils/logger.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 
 import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/.env.dart';
 
 class InAppPurchases {
   static void confirmProPurchase() async {
@@ -15,17 +16,12 @@ class InAppPurchases {
     }
 
     if (JournalApp.isInDebugMode) {
+      Log.d("Ignoring IAP pro check - debug mode");
       return;
     }
 
-    await Purchases.setup(
-      environment['revenueCat'],
-      appUserId: Settings.instance.pseudoId,
-    );
-
-    PurchaserInfo purchaserInfo = await Purchases.getPurchaserInfo();
-    Log.i("Got PurchaserInfo $purchaserInfo");
-    var isPro = purchaserInfo.entitlements.active.containsKey("pro");
+    var sub = await _subscriptionStatus();
+    var isPro = sub == null ? false : sub.isPro;
     Log.i("IsPro $isPro");
 
     if (Settings.instance.proMode != isPro) {
@@ -33,8 +29,53 @@ class InAppPurchases {
       Settings.instance.proMode = isPro;
       Settings.instance.save();
     } else {
-      Settings.instance.proExpirationDate = purchaserInfo.latestExpirationDate;
+      Settings.instance.proExpirationDate = sub.expiryDate.toIso8601String();
       Settings.instance.save();
     }
   }
+
+  static Future<SubscriptionStatus> _subscriptionStatus() async {
+    InAppPurchaseConnection.enablePendingPurchases();
+    var iapConn = InAppPurchaseConnection.instance;
+
+    if (Platform.isIOS) {
+      //var history = await iapConn.refreshPurchaseVerificationData();
+    } else if (Platform.isAndroid) {
+      var response = await iapConn.queryPastPurchases();
+      if (response.pastPurchases.isEmpty) {
+        return null;
+      }
+
+      for (var purchase in response.pastPurchases) {
+        var dt = DateTime.fromMillisecondsSinceEpoch(
+            int.parse(purchase.transactionDate));
+        return SubscriptionStatus(true, dt.add(const Duration(days: 31)));
+      }
+    }
+
+    return null;
+    /*
+    for (var purchase in response.pastPurchases) {
+      var difference =
+        DateTime.now().difference(purchase.transactionDate);
+      print(purchase);
+      print(purchase.productID);
+      print(purchase.purchaseID);
+      print(purchase.transactionDate);
+      print(purchase.verificationData);
+      print(purchase.verificationData.localVerificationData);
+      print(purchase.verificationData.serverVerificationData);
+      print(purchase.verificationData.source);
+
+      InAppPurchaseConnection.instance.
+    }
+    */
+  }
+}
+
+class SubscriptionStatus {
+  final bool isPro;
+  final DateTime expiryDate;
+
+  SubscriptionStatus(this.isPro, this.expiryDate);
 }
