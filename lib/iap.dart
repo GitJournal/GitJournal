@@ -14,6 +14,10 @@ class InAppPurchases {
       Log.i("Not checking PurchaseInfo as exp = $exp and cur = $currentDt");
       return;
     }
+    if (exp == "-") {
+      Log.d("Ignoring IAP pro check - already checked");
+      return;
+    }
 
     if (JournalApp.isInDebugMode) {
       Log.d("Ignoring IAP pro check - debug mode");
@@ -29,7 +33,8 @@ class InAppPurchases {
       Settings.instance.proMode = isPro;
       Settings.instance.save();
     } else {
-      Settings.instance.proExpirationDate = sub.expiryDate.toIso8601String();
+      Settings.instance.proExpirationDate =
+          sub != null ? sub.expiryDate.toIso8601String() : "-";
       Settings.instance.save();
     }
   }
