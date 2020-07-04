@@ -1,3 +1,9 @@
+## [1.58] - 2020-07-04
+* Send crash reports to Sentry
+* Allow experimental features to be controlled
+* Basic support for wiki links [[word]]
+* Fix Pro mode occasionally not being detected
+
 ## [1.57] - 2020-06-10
 * Better support for auto adding list items when typing
 * Bug fix in iOS where notes would no longer be shown
