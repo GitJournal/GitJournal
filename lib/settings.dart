@@ -49,6 +49,8 @@ class Settings {
   String imageLocationSpec = "."; // . means the same folder
   String debugLogLevel = 'v';
 
+  bool experimentalBacklinks = true;
+
   void load(SharedPreferences pref) {
     gitAuthor = pref.getString("gitAuthor") ?? gitAuthor;
     gitAuthorEmail = pref.getString("gitAuthorEmail") ?? gitAuthorEmail;
@@ -102,6 +104,8 @@ class Settings {
         pref.getString("imageLocationSpec") ?? imageLocationSpec;
 
     debugLogLevel = pref.getString("debugLogLevel") ?? debugLogLevel;
+    experimentalBacklinks =
+        pref.getBool("experimentalBacklinks") ?? experimentalBacklinks;
   }
 
   Future save() async {
@@ -159,6 +163,8 @@ class Settings {
     _setString(pref, "imageLocationSpec", imageLocationSpec,
         defaultSet.imageLocationSpec);
     _setString(pref, "debugLogLevel", debugLogLevel, defaultSet.debugLogLevel);
+    _setBool(pref, "experimentalBacklinks", experimentalBacklinks,
+        defaultSet.experimentalBacklinks);
 
     pref.setInt("settingsVersion", version);
 
@@ -219,6 +225,7 @@ class Settings {
       'homeScreen': homeScreen.toInternalString(),
       'imageLocationSpec': imageLocationSpec,
       'debugLogLevel': debugLogLevel,
+      'experimentalBacklinks': experimentalBacklinks.toString(),
     };
   }
 

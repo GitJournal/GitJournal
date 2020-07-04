@@ -47,6 +47,10 @@ settings:
       title: Example Title
   privacy: Privacy Policy
   terms: Terms and Conditions
+  experimental:
+    title: Experimental Features
+    subtitle: Try out features in Development
+    backlinks: Show Backlinks in Markdown Preview
 
 editors:
   checklist:

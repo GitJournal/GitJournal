@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:gitjournal/folder_views/common.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/editor_scroll_view.dart';
@@ -79,7 +80,8 @@ class NoteViewer extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16.0),
-          NoteBacklinkRenderer(note: note, rootFolder: rootFolder),
+          if (Settings.instance.experimentalBacklinks)
+            NoteBacklinkRenderer(note: note, rootFolder: rootFolder),
           // _buildFooter(context),
         ],
         crossAxisAlignment: CrossAxisAlignment.start,
