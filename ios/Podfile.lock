@@ -43,8 +43,6 @@ PODS:
     - Flutter
   - flutter_plugin_android_lifecycle (0.0.1):
     - Flutter
-  - flutter_runtime_env (0.0.1):
-    - Flutter
   - flutter_sentry (0.0.1):
     - Flutter
     - Sentry (~> 5.0)
@@ -80,6 +78,8 @@ PODS:
   - GoogleUtilities/UserDefaults (6.1.0):
     - GoogleUtilities/Logger
   - image_picker (0.0.1):
+    - Flutter
+  - in_app_purchase (0.0.1):
     - Flutter
   - launch_review (0.0.1):
     - Flutter
@@ -132,11 +132,11 @@ DEPENDENCIES:
   - flutter_crashlytics (from `.symlinks/plugins/flutter_crashlytics/ios`)
   - flutter_email_sender (from `.symlinks/plugins/flutter_email_sender/ios`)
   - flutter_plugin_android_lifecycle (from `.symlinks/plugins/flutter_plugin_android_lifecycle/ios`)
-  - flutter_runtime_env (from `.symlinks/plugins/flutter_runtime_env/ios`)
   - flutter_sentry (from `.symlinks/plugins/flutter_sentry/ios`)
   - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
   - git_bindings (from `.symlinks/plugins/git_bindings/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - in_app_purchase (from `.symlinks/plugins/in_app_purchase/ios`)
   - launch_review (from `.symlinks/plugins/launch_review/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
@@ -185,8 +185,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_email_sender/ios"
   flutter_plugin_android_lifecycle:
     :path: ".symlinks/plugins/flutter_plugin_android_lifecycle/ios"
-  flutter_runtime_env:
-    :path: ".symlinks/plugins/flutter_runtime_env/ios"
   flutter_sentry:
     :path: ".symlinks/plugins/flutter_sentry/ios"
   flutter_webview_plugin:
@@ -195,6 +193,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/git_bindings/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
+  in_app_purchase:
+    :path: ".symlinks/plugins/in_app_purchase/ios"
   launch_review:
     :path: ".symlinks/plugins/launch_review/ios"
   package_info:
@@ -240,7 +240,6 @@ SPEC CHECKSUMS:
   flutter_crashlytics: 7b5bba7233066381c8e18343435342ba05f3053c
   flutter_email_sender: f787522d0e82f50e5766c1213dbffff22fdcf009
   flutter_plugin_android_lifecycle: dc0b544e129eebb77a6bfb1239d4d1c673a60a35
-  flutter_runtime_env: c247c6cbe8cfbbc59237c50cbf4df91307d88322
   flutter_sentry: e7e66f0717b5fba24f96891e879562bdd8985d36
   flutter_webview_plugin: ed9e8a6a96baf0c867e90e1bce2673913eeac694
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
@@ -248,6 +247,7 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: 7f028ea162b72c8f326daec74afc95d94f7a47d6
   GoogleUtilities: 84df567c76ca84f67b7bb40e769fdd4acc746a10
   image_picker: 66aa71bc96850a90590a35d4c4a2907b0d823109
+  in_app_purchase: 3e2155afa9d03d4fa32d9e62d567885080ce97d6
   launch_review: 75d5a956ba8eaa493e9c9d4bf4c05e505e8d5ed0
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
