@@ -220,6 +220,7 @@ class Settings {
       "folderViewHeaderType": folderViewHeaderType,
       "version": version.toString(),
       "proMode": proMode.toString(),
+      'proExpirationDate': proExpirationDate,
       'pseudoId': pseudoId,
       'markdownDefaultView': markdownDefaultView.toInternalString(),
       'homeScreen': homeScreen.toInternalString(),

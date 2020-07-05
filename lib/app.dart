@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' as foundation;
 
 import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/iap.dart';
 import 'package:gitjournal/screens/filesystem_screen.dart';
 import 'package:gitjournal/screens/folder_listing.dart';
 import 'package:gitjournal/screens/tag_listing.dart';
@@ -95,6 +96,8 @@ class JournalApp extends StatefulWidget {
         },
       ),
     );
+
+    InAppPurchases.confirmProPurchase();
 
     runApp(EasyLocalization(
       child: app,

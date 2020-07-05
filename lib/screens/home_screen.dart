@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/flattened_notes_folder.dart';
 import 'package:gitjournal/core/notes_folder.dart';
-import 'package:gitjournal/iap.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -22,8 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     initializeDateFormatting();
-
-    InAppPurchases.confirmProPurchase();
     Future.delayed(Duration.zero, _initFolder);
   }
 

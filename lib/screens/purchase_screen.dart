@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/.env.dart';
+import 'package:gitjournal/iap.dart';
 import 'package:gitjournal/settings.dart';
 
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -28,6 +29,11 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   }
 
   Future<void> initPlatformState() async {
+    await InAppPurchases.confirmProPurchase();
+    if (Settings.instance.proMode) {
+      Navigator.of(context).pop();
+    }
+
     await Purchases.setup(
       environment['revenueCat'],
       appUserId: Settings.instance.pseudoId,

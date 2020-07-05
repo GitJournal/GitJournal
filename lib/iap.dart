@@ -7,15 +7,13 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:gitjournal/settings.dart';
 
 class InAppPurchases {
-  static void confirmProPurchase() async {
+  static Future<void> confirmProPurchase() async {
+    Log.i("Checking if ProMode should be enabled");
+
     var currentDt = DateTime.now().toUtc().toIso8601String();
     var exp = Settings.instance.proExpirationDate;
     if (exp != null && exp.isNotEmpty && exp.compareTo(currentDt) > 0) {
       Log.i("Not checking PurchaseInfo as exp = $exp and cur = $currentDt");
-      return;
-    }
-    if (exp == "-") {
-      Log.d("Ignoring IAP pro check - already checked");
       return;
     }
 
@@ -26,15 +24,16 @@ class InAppPurchases {
 
     var sub = await _subscriptionStatus();
     var isPro = sub == null ? false : sub.isPro;
-    Log.i("IsPro $isPro");
+    var expiryDate = sub == null ? "" : sub.expiryDate.toIso8601String();
+    Log.i(sub.toString());
 
     if (Settings.instance.proMode != isPro) {
       Log.i("Pro mode changed to $isPro");
       Settings.instance.proMode = isPro;
+      Settings.instance.proExpirationDate = expiryDate;
       Settings.instance.save();
     } else {
-      Settings.instance.proExpirationDate =
-          sub != null ? sub.expiryDate.toIso8601String() : "-";
+      Settings.instance.proExpirationDate = expiryDate;
       Settings.instance.save();
     }
   }
@@ -48,6 +47,7 @@ class InAppPurchases {
     } else if (Platform.isAndroid) {
       var response = await iapConn.queryPastPurchases();
       if (response.pastPurchases.isEmpty) {
+        Log.i("No Past Purchases Found");
         return null;
       }
 
@@ -83,4 +83,8 @@ class SubscriptionStatus {
   final DateTime expiryDate;
 
   SubscriptionStatus(this.isPro, this.expiryDate);
+
+  @override
+  String toString() =>
+      "SubscriptionStatus{isPro: $isPro, expiryDate: $expiryDate}";
 }
