@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/link.dart';
+import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 import 'package:path/path.dart' as p;
 
@@ -35,6 +36,8 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
 
   Future<void> _initStateAsync() async {
     var predicate = (Note n) async {
+      Log.d("NoteBacklinkRenderer Predicate", props: {"filePath": n.filePath});
+
       var links = await n.fetchLinks();
       var matchedLink = links.firstWhere(
         (l) {
@@ -48,6 +51,8 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
         },
         orElse: () => null,
       );
+
+      Log.d("NoteBacklinkRenderer Predicate ${matchedLink != null}");
       return matchedLink != null;
     };
 
