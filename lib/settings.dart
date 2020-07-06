@@ -45,6 +45,8 @@ class Settings {
 
   SettingsMarkdownDefaultView markdownDefaultView =
       SettingsMarkdownDefaultView.Default;
+  SettingsMarkdownDefaultView markdownLastUsedView =
+      SettingsMarkdownDefaultView.Edit;
 
   String imageLocationSpec = "."; // . means the same folder
   String debugLogLevel = 'v';
@@ -79,8 +81,11 @@ class Settings {
         SettingsEditorType.fromInternalString(pref.getString("defaultEditor"));
     defaultView = SettingsFolderViewType.fromInternalString(
         pref.getString("defaultView"));
+
     markdownDefaultView = SettingsMarkdownDefaultView.fromInternalString(
         pref.getString("markdownDefaultView"));
+    markdownLastUsedView = SettingsMarkdownDefaultView.fromInternalString(
+        pref.getString("markdownLastUsedView"));
 
     showNoteSummary = pref.getBool("showNoteSummary") ?? showNoteSummary;
     folderViewHeaderType =
@@ -151,6 +156,11 @@ class Settings {
         "markdownDefaultView",
         markdownDefaultView.toInternalString(),
         defaultSet.markdownDefaultView.toInternalString());
+    _setString(
+        pref,
+        "markdownLastUsedView",
+        markdownLastUsedView.toInternalString(),
+        defaultSet.markdownLastUsedView.toInternalString());
     _setBool(
         pref, "showNoteSummary", showNoteSummary, defaultSet.showNoteSummary);
     _setString(pref, "folderViewHeaderType", folderViewHeaderType,
@@ -223,6 +233,7 @@ class Settings {
       'proExpirationDate': proExpirationDate,
       'pseudoId': pseudoId,
       'markdownDefaultView': markdownDefaultView.toInternalString(),
+      'markdownLastUsedView': markdownLastUsedView.toInternalString(),
       'homeScreen': homeScreen.toInternalString(),
       'imageLocationSpec': imageLocationSpec,
       'debugLogLevel': debugLogLevel,
@@ -508,7 +519,8 @@ class SettingsFolderViewType {
 class SettingsMarkdownDefaultView {
   static const Edit = SettingsMarkdownDefaultView("Edit");
   static const View = SettingsMarkdownDefaultView("View");
-  static const Default = Edit;
+  static const LastUsed = SettingsMarkdownDefaultView("Last Used");
+  static const Default = LastUsed;
 
   final String _str;
   const SettingsMarkdownDefaultView(this._str);
@@ -524,6 +536,7 @@ class SettingsMarkdownDefaultView {
   static const options = <SettingsMarkdownDefaultView>[
     Edit,
     View,
+    LastUsed,
   ];
 
   static SettingsMarkdownDefaultView fromInternalString(String str) {

@@ -67,8 +67,14 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
     _titleTextController = TextEditingController(text: note.title);
     _oldText = note.body;
 
-    editingMode = Settings.instance.markdownDefaultView ==
-        SettingsMarkdownDefaultView.Edit;
+    var settings = Settings.instance;
+    if (settings.markdownDefaultView == SettingsMarkdownDefaultView.LastUsed) {
+      editingMode =
+          settings.markdownLastUsedView == SettingsMarkdownDefaultView.Edit;
+    } else {
+      editingMode =
+          settings.markdownDefaultView == SettingsMarkdownDefaultView.Edit;
+    }
   }
 
   @override
@@ -138,6 +144,17 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
   void _switchMode() {
     setState(() {
       editingMode = !editingMode;
+      switch (editingMode) {
+        case true:
+          Settings.instance.markdownLastUsedView =
+              SettingsMarkdownDefaultView.Edit;
+          break;
+        case false:
+          Settings.instance.markdownLastUsedView =
+              SettingsMarkdownDefaultView.View;
+          break;
+      }
+      Settings.instance.save();
       _updateNote();
     });
   }
