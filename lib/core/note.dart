@@ -473,8 +473,7 @@ class Note with NotesNotifier {
         continue;
       }
 
-      var isLocal = (path.startsWith('/') || path.startsWith('.')) &&
-          !path.contains('://');
+      var isLocal = !path.contains('://');
       if (isLocal) {
         l.filePath = p.join(parent.folderPath, p.normalize(l.filePath));
         links.add(l);
