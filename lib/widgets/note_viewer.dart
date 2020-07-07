@@ -61,18 +61,38 @@ class NoteViewer extends StatelessWidget {
               data: note.body,
               // selectable: false, -> making this true breaks link navigation
               styleSheet: markdownStyleSheet,
-              onTapLink: (String link) {
+              onTapLink: (String link) async {
+                var spec = link;
                 if (link.startsWith('./')) {
-                  var spec = link.substring(2);
-                  var linkedNote = note.parent.getNoteWithSpec(spec);
+                  spec = link.substring(2);
+                }
+
+                var linkedNote = note.parent.getNoteWithSpec(spec);
+                if (linkedNote != null) {
+                  openNoteEditor(context, linkedNote);
+                  return;
+                }
+
+                if (!spec.endsWith('.md')) {
+                  linkedNote = note.parent.getNoteWithSpec(spec + '.md');
                   if (linkedNote != null) {
                     openNoteEditor(context, linkedNote);
-                  } else {
-                    showSnackbar(context, "Link '$link' not found");
+                    return;
                   }
-                } else {
-                  Log.i("Launching $link");
-                  launch(link);
+                }
+                if (!spec.endsWith('.txt')) {
+                  linkedNote = note.parent.getNoteWithSpec(spec + '.txt');
+                  if (linkedNote != null) {
+                    openNoteEditor(context, linkedNote);
+                    return;
+                  }
+                }
+
+                try {
+                  await launch(link);
+                } catch (e, stackTrace) {
+                  Log.e("Opening Link", ex: e, stacktrace: stackTrace);
+                  showSnackbar(context, "Link '$link' not found");
                 }
               },
               imageBuilder: (url, title, alt) => kDefaultImageBuilder(
