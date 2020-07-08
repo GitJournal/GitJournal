@@ -3,19 +3,22 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:markdown/markdown.dart' as md;
+
+import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/editor_scroll_view.dart';
 import 'package:gitjournal/widgets/notes_backlinks.dart';
+
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path/path.dart' as p;
-
-import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/notes_folder_fs.dart';
 
 class NoteViewer extends StatelessWidget {
   final Note note;
@@ -50,6 +53,12 @@ class NoteViewer extends StatelessWidget {
       ),
     );
 
+    // It's important to add both these inline syntaxes before the other
+    // syntaxes as the LinkSyntax intefers with both of these
+    var markdownExtensions = md.ExtensionSet.gitHubFlavored;
+    markdownExtensions.inlineSyntaxes.insert(0, WikiLinkSyntax2());
+    markdownExtensions.inlineSyntaxes.insert(1, TaskListSyntax());
+
     final rootFolder = Provider.of<NotesFolderFS>(context);
     var view = EditorScrollView(
       child: Column(
@@ -63,6 +72,14 @@ class NoteViewer extends StatelessWidget {
               styleSheet: markdownStyleSheet,
               onTapLink: (String link) async {
                 var spec = link;
+
+                if (link.startsWith('[[') &&
+                    link.endsWith(']]') &&
+                    link.length > 4) {
+                  // FIXME: What if the case is different?
+                  spec = link.substring(2, link.length - 2) + ".md";
+                }
+
                 if (link.startsWith('./')) {
                   spec = link.substring(2);
                 }
@@ -97,6 +114,7 @@ class NoteViewer extends StatelessWidget {
               },
               imageBuilder: (url, title, alt) => kDefaultImageBuilder(
                   url, note.parent.folderPath + p.separator, null, null),
+              extensionSet: markdownExtensions,
             ),
           ),
           const SizedBox(height: 16.0),
@@ -207,4 +225,24 @@ Widget _handleDataSchemeUri(Uri uri, final double width, final double height) {
     return Text(uri.data.contentAsString());
   }
   return const SizedBox();
+}
+
+/// Parse [[term]]
+class WikiLinkSyntax2 extends md.InlineSyntax {
+  static final String _pattern = r'\[\[([^\[\]]+)\]\]';
+
+  WikiLinkSyntax2() : super(_pattern);
+
+  @override
+  bool onMatch(md.InlineParser parser, Match match) {
+    // print("-------- WIKI LINK -------");
+    var term = match[1].trim();
+
+    var el = md.Element('a', [md.Text(term)]);
+    el.attributes['type'] = 'wiki';
+    el.attributes['href'] = '[[$term]]';
+
+    parser.addNode(el);
+    return true;
+  }
 }
