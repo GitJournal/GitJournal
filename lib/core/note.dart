@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:gitjournal/core/md_yaml_doc_loader.dart';
+import 'package:gitjournal/core/links_loader.dart';
 import 'package:gitjournal/core/note_notifier.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
@@ -11,7 +12,6 @@ import 'package:gitjournal/utils/datetime.dart';
 
 import 'package:path/path.dart' as p;
 
-import 'package:markdown/markdown.dart' as md;
 import 'package:uuid/uuid.dart';
 
 import 'link.dart';
@@ -64,6 +64,7 @@ class Note with NotesNotifier {
   List<Link> _links;
 
   static final _mdYamlDocLoader = MdYamlDocLoader();
+  static final _linksLoader = LinksLoader();
 
   Note(this.parent, this._filePath);
 
@@ -455,38 +456,8 @@ class Note with NotesNotifier {
       return _links;
     }
 
-    final doc = md.Document(
-      encodeHtml: false,
-      extensionSet: md.ExtensionSet.gitHubFlavored,
-      inlineSyntaxes: [WikiLinkSyntax()],
-    );
-
-    var lines = body.replaceAll('\r\n', '\n').split('\n');
-    var nodes = doc.parseLines(lines);
-    var possibleLinks = LinkExtractor().visit(nodes);
-
-    var links = <Link>[];
-    for (var l in possibleLinks) {
-      var path = l.filePath;
-      if (path == null) {
-        links.add(l);
-        continue;
-      }
-
-      var isLocal = !path.contains('://');
-      if (isLocal) {
-        l.filePath = p.join(parent.folderPath, p.normalize(l.filePath));
-        links.add(l);
-      }
-    }
-
-    doc.linkReferences.forEach((key, value) {
-      var filePath = value.destination;
-      links.add(Link(term: key, filePath: filePath));
-    });
-
-    _links = links;
-    return links;
+    _links = await _linksLoader.parseLinks(_body, parent.folderPath);
+    return _links;
   }
 
   List<Link> links() {
