@@ -7,6 +7,7 @@ import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/.env.dart';
 import 'package:gitjournal/iap.dart';
 import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/widgets/purchase_slider.dart';
 
 import 'package:purchases_flutter/purchases_flutter.dart';
 
@@ -163,36 +164,30 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
         : buildBody(context);
   }
 
+  PaymentInfo _fromOffering(Offering o) {
+    var prod = o.monthly.product;
+    return PaymentInfo(prod.price, prod.priceString);
+  }
+
+  Offering _fromPaymentInfo(PaymentInfo info) {
+    for (var o in _offerings) {
+      if (o.monthly.product.priceString == info.text) {
+        return o;
+      }
+    }
+    assert(false);
+    return null;
+  }
+
   Widget buildBody(BuildContext context) {
-    var slider = Slider(
-      min: _offerings.first.monthly.product.price,
-      max: _offerings.last.monthly.product.price + 0.50,
-      value: _selectedOffering.monthly.product.price,
-      onChanged: (double val) {
-        int i = -1;
-        for (i = 1; i < _offerings.length; i++) {
-          var prev = _offerings[i - 1].monthly.product;
-          var cur = _offerings[i].monthly.product;
-
-          if (prev.price < val && val <= cur.price) {
-            i--;
-            break;
-          }
-        }
-        if (val == _offerings.first.monthly.product.price) {
-          i = 0;
-        } else if (val >= _offerings.last.monthly.product.price) {
-          i = _offerings.length - 1;
-        }
-
-        if (i != -1) {
-          setState(() {
-            _selectedOffering = _offerings[i];
-          });
-        }
+    var slider = PurchaseSlider(
+      values: _offerings.map(_fromOffering).toList(),
+      selectedValue: _fromOffering(_selectedOffering),
+      onChanged: (PaymentInfo info) {
+        setState(() {
+          _selectedOffering = _fromPaymentInfo(info);
+        });
       },
-      label: _selectedOffering.monthly.product.priceString,
-      divisions: _offerings.length,
     );
 
     return Column(
