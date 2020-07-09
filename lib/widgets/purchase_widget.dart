@@ -88,6 +88,8 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
   Offering _selectedOffering;
   var _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  final defaultSku = "sku_monthly_min2";
+
   @override
   void initState() {
     super.initState();
@@ -133,7 +135,13 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
       _selectedOffering = _offerings.isNotEmpty ? _offerings.first : null;
 
       if (_offerings.length > 1) {
-        _selectedOffering = _offerings[1];
+        for (var o in _offerings) {
+          var prod = o.monthly.product;
+          if (prod.identifier == defaultSku) {
+            _selectedOffering = o;
+            break;
+          }
+        }
       } else {
         var fakePackageJson = {
           'identifier': 'monthly_fake',
