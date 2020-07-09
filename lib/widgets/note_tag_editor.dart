@@ -53,6 +53,7 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
             hintText: tr('editors.common.tags'),
             hintStyle: theme.inputDecorationTheme.hintStyle,
           ),
+          onSubmitted: _addTag,
         ),
       ),
       body: buildView(_textController.text),
@@ -109,13 +110,15 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
     return ListTile(
       leading: const Icon(Icons.add),
       title: Text(tag),
-      onTap: () {
-        setState(() {
-          _selectedTags.add(tag);
-          _allTags.add(tag);
-          _textController.text = "";
-        });
-      },
+      onTap: () => _addTag(tag),
     );
+  }
+
+  void _addTag(String tag) {
+    setState(() {
+      _selectedTags.add(tag);
+      _allTags.add(tag);
+      _textController.text = "";
+    });
   }
 }
