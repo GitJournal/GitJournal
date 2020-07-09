@@ -68,10 +68,17 @@ class Note with NotesNotifier {
 
   Note(this.parent, this._filePath);
 
-  Note.newNote(this.parent) {
+  Note.newNote(this.parent, {Map<String, dynamic> extraProps = const {}}) {
     created = DateTime.now();
     _loadState = NoteLoadState.Loaded;
     _fileFormat = NoteFileFormat.Markdown;
+
+    if (extraProps.isNotEmpty) {
+      extraProps.forEach((key, value) {
+        _data.props[key] = value;
+      });
+      noteSerializer.decode(_data, this);
+    }
   }
 
   String get filePath {

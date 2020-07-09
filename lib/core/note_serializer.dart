@@ -106,9 +106,15 @@ class NoteSerializer implements NoteSerializerInterface {
     }
 
     try {
-      var tags = data.props[settings.tagsKey] as YamlList;
+      var tags = data.props[settings.tagsKey];
       if (tags != null) {
-        note.tags = tags.map((t) => t.toString()).toSet();
+        if (tags is YamlList) {
+          note.tags = tags.map((t) => t.toString()).toSet();
+        } else if (tags is List) {
+          note.tags = tags.map((t) => t.toString()).toSet();
+        } else {
+          Log.e("Note Tags Decoding Failed: $tags");
+        }
       }
     } catch (e) {
       Log.e("Note Decoding Failed: $e");

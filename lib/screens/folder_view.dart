@@ -28,8 +28,12 @@ enum DropDownChoices {
 
 class FolderView extends StatefulWidget {
   final NotesFolder notesFolder;
+  final Map<String, dynamic> newNoteExtraProps;
 
-  FolderView({@required this.notesFolder});
+  FolderView({
+    @required this.notesFolder,
+    this.newNoteExtraProps = const {},
+  });
 
   @override
   _FolderViewState createState() => _FolderViewState();
@@ -211,7 +215,11 @@ class _FolderViewState extends State<FolderView> {
     var routeType =
         SettingsEditorType.fromEditorType(editorType).toInternalString();
     var route = MaterialPageRoute(
-      builder: (context) => NoteEditor.newNote(fsFolder, editorType),
+      builder: (context) => NoteEditor.newNote(
+        fsFolder,
+        editorType,
+        newNoteExtraProps: widget.newNoteExtraProps,
+      ),
       settings: RouteSettings(name: '/newNote/$routeType'),
     );
     await Navigator.of(context).push(route);

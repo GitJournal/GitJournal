@@ -29,23 +29,32 @@ class NoteEditor extends StatefulWidget {
   final String existingText;
   final List<String> existingImages;
 
+  final Map<String, dynamic> newNoteExtraProps;
+
   NoteEditor.fromNote(this.note)
       : notesFolder = note.parent,
         defaultEditorType = null,
         existingText = null,
-        existingImages = null;
+        existingImages = null,
+        newNoteExtraProps = null;
 
   NoteEditor.newNote(
     this.notesFolder,
     this.defaultEditorType, {
     this.existingText,
     this.existingImages,
+    this.newNoteExtraProps = const {},
   }) : note = null;
 
   @override
   NoteEditorState createState() {
     if (note == null) {
-      return NoteEditorState.newNote(notesFolder, existingText, existingImages);
+      return NoteEditorState.newNote(
+        notesFolder,
+        existingText,
+        existingImages,
+        newNoteExtraProps,
+      );
     } else {
       return NoteEditorState.fromNote(note);
     }
@@ -72,8 +81,9 @@ class NoteEditorState extends State<NoteEditor> {
     NotesFolderFS folder,
     String existingText,
     List<String> existingImages,
+    Map<String, dynamic> extraProps,
   ) {
-    note = Note.newNote(folder);
+    note = Note.newNote(folder, extraProps: extraProps);
     if (existingText != null) {
       note.body = existingText;
     }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:gitjournal/core/flattened_notes_folder.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/note_serializer.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/screens/folder_view.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
@@ -52,7 +53,13 @@ class TagListingScreen extends StatelessWidget {
               title: tag,
             );
 
-            return FolderView(notesFolder: folder);
+            final propNames = NoteSerializationSettings();
+            return FolderView(
+              notesFolder: folder,
+              newNoteExtraProps: {
+                propNames.tagsKey: [tag],
+              },
+            );
           },
           settings: const RouteSettings(name: '/tags/'),
         );
