@@ -8,10 +8,11 @@ import 'package:gitjournal/settings.dart';
 
 class InAppPurchases {
   static Future<void> confirmProPurchase() async {
-    Log.i("Checking if ProMode should be enabled");
-
     var currentDt = DateTime.now().toUtc().toIso8601String();
     var exp = Settings.instance.proExpirationDate;
+
+    Log.i("Checking if ProMode should be enabled. Exp: $exp");
+
     if (exp != null && exp.isNotEmpty && exp.compareTo(currentDt) > 0) {
       Log.i("Not checking PurchaseInfo as exp = $exp and cur = $currentDt");
       return;
