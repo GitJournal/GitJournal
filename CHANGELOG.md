@@ -1,3 +1,8 @@
+## [1.59] - 2020-07-09
+* Render wiki style links
+* Avoid blocking the UI when loading Notes
+* Improve the pro purchasing screen
+
 ## [1.58] - 2020-07-04
 * Send crash reports to Sentry
 * Allow experimental features to be controlled
