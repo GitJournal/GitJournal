@@ -77,55 +77,6 @@ class PurchaseButton extends StatelessWidget {
   }
 }
 
-class LoadingWidget extends StatelessWidget {
-  const LoadingWidget({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    var children = <Widget>[
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          "Loading",
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline4,
-        ),
-      ),
-      const SizedBox(height: 8.0),
-      const Padding(
-        padding: EdgeInsets.all(8.0),
-        child: CircularProgressIndicator(
-          value: null,
-        ),
-      ),
-    ];
-
-    var w = Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: children,
-    );
-
-    return WillPopScope(
-      onWillPop: _onWillPopLoading,
-      child: Container(
-        child: w,
-        color: theme.scaffoldBackgroundColor,
-        padding: const EdgeInsets.all(16.0),
-        constraints: const BoxConstraints.expand(),
-      ),
-    );
-  }
-
-  Future<bool> _onWillPopLoading() async {
-    getAnalytics().logEvent(
-      name: "purchase_screen_close_loading",
-    );
-    return true;
-  }
-}
-
 class PurchaseWidget extends StatefulWidget {
   @override
   _PurchaseWidgetState createState() => _PurchaseWidgetState();
@@ -207,7 +158,9 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return _offerings == null ? const LoadingWidget() : buildBody(context);
+    return _offerings == null
+        ? const CircularProgressIndicator()
+        : buildBody(context);
   }
 
   Widget buildBody(BuildContext context) {

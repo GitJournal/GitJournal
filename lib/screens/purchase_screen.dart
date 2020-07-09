@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -48,6 +47,7 @@ class PurchaseScreen extends StatelessWidget {
     var body = Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Text(
           'Support GitJournal by going Pro and additionally get -',
@@ -77,10 +77,13 @@ class PurchaseScreen extends StatelessWidget {
           style: titleStyle,
           textAlign: TextAlign.center,
         ),
+        const SizedBox(height: 32.0),
         body,
+        const SizedBox(height: 32.0),
         PurchaseWidget(),
       ],
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
     );
 
     if (Platform.isIOS) {
@@ -99,10 +102,17 @@ class PurchaseScreen extends StatelessWidget {
       );
     }
 
-    return _SingleChildScrollViewExpanded(
-      child: SafeArea(child: w),
-      padding: const EdgeInsets.all(16.0),
-    );
+    w = Padding(padding: const EdgeInsets.all(16.0), child: w);
+
+    return SafeArea(
+        child: CustomScrollView(
+      slivers: [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: w,
+        ),
+      ],
+    ));
   }
 
   Future<bool> _onWillPop() async {
@@ -121,27 +131,4 @@ class EmptyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size(0.0, 0.0);
-}
-
-class _SingleChildScrollViewExpanded extends StatelessWidget {
-  final Widget child;
-  final EdgeInsetsGeometry padding;
-
-  _SingleChildScrollViewExpanded({this.child, this.padding});
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints.tightFor(
-                height: max(100, constraints.maxHeight)),
-            child: child,
-          ),
-          padding: padding,
-        );
-      },
-    );
-  }
 }
