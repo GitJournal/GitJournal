@@ -192,11 +192,69 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
 
     return Column(
       children: <Widget>[
-        slider,
+        Row(
+          children: <Widget>[
+            _PurchaseSliderButton(
+              icon: Icon(Icons.arrow_left),
+              onPressed: () {
+                setState(() {
+                  _selectedOffering = _prevOffering();
+                });
+              },
+            ),
+            Expanded(child: slider),
+            _PurchaseSliderButton(
+              icon: Icon(Icons.arrow_right),
+              onPressed: () {
+                setState(() {
+                  _selectedOffering = _nextOffering();
+                });
+              },
+            ),
+          ],
+          mainAxisSize: MainAxisSize.max,
+        ),
         const SizedBox(height: 16.0),
         PurchaseButton(_selectedOffering?.monthly),
       ],
       mainAxisAlignment: MainAxisAlignment.spaceAround,
+    );
+  }
+
+  Offering _prevOffering() {
+    for (var i = 0; i < _offerings.length; i++) {
+      if (_offerings[i] == _selectedOffering) {
+        return i > 0 ? _offerings[i - 1] : _offerings[i];
+      }
+    }
+
+    return null;
+  }
+
+  Offering _nextOffering() {
+    for (var i = 0; i < _offerings.length; i++) {
+      if (_offerings[i] == _selectedOffering) {
+        return i < _offerings.length - 1 ? _offerings[i + 1] : _offerings[i];
+      }
+    }
+
+    return null;
+  }
+}
+
+class _PurchaseSliderButton extends StatelessWidget {
+  final Widget icon;
+  final Function onPressed;
+
+  _PurchaseSliderButton({@required this.icon, @required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: icon,
+      padding: const EdgeInsets.all(0.0),
+      iconSize: 64.0,
+      onPressed: onPressed,
     );
   }
 }
