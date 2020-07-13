@@ -62,7 +62,9 @@ editors:
     addImage: Add Image from Gallery
     editFileName: Edit File Name
     tags: Edit Tags
-    saveNoteFailed: Failed to Save Note
+    saveNoteFailed:
+      title: Failed to Save Note
+      message: We're sorry, but we cannot seem to save the Note. It has been copied to the clipboard to avoid data loss.
 pro: Pro
 actions:
   newNote: New Note

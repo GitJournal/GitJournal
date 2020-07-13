@@ -303,6 +303,10 @@ class Note with NotesNotifier {
     await file.writeAsString(contents);
   }
 
+  String serialize() {
+    return _serializer.encode(data);
+  }
+
   // FIXME: What about error handling?
   Future<void> remove() async {
     assert(_filePath != null);

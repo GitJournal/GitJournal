@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/services.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/md_yaml_doc.dart';
@@ -331,11 +332,12 @@ class NoteEditorState extends State<NoteEditor> {
           : await stateContainer.updateNote(note);
     } catch (e, stackTrace) {
       logException(e, stackTrace);
+      Clipboard.setData(ClipboardData(text: note.serialize()));
 
       await showAlertDialog(
         context,
-        tr("editors.common.saveNoteFailed"),
-        e.toString(),
+        tr("editors.common.saveNoteFailed.title"),
+        tr("editors.common.saveNoteFailed.message"),
       );
       return false;
     }
