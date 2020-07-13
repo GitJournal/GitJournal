@@ -62,6 +62,7 @@ editors:
     addImage: Add Image from Gallery
     editFileName: Edit File Name
     tags: Edit Tags
+    saveNoteFailed: Failed to Save Note
 pro: Pro
 actions:
   newNote: New Note

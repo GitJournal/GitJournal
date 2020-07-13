@@ -58,3 +58,12 @@ NotesFolderFS getFolderForEditor(
       return rootFolder.getFolderWithSpec(spec);
   }
 }
+
+Future<void> showAlertDialog(
+    BuildContext context, String title, String message) async {
+  var dialog = AlertDialog(
+    title: Text(title),
+    content: Text(message),
+  );
+  return showDialog(context: context, builder: (context) => dialog);
+}

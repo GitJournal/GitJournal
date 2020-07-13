@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 
@@ -12,6 +13,7 @@ import 'package:gitjournal/editors/raw_editor.dart';
 import 'package:gitjournal/editors/checklist_editor.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/state_container.dart';
+import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/note_editor_selector.dart';
@@ -134,8 +136,8 @@ class NoteEditorState extends State<NoteEditor> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        _saveNote(_getNoteFromEditor());
-        return true;
+        var savedNote = await _saveNote(_getNoteFromEditor());
+        return savedNote;
       },
       child: _getEditor(),
     );
@@ -219,9 +221,11 @@ class NoteEditorState extends State<NoteEditor> {
     }
   }
 
-  void _exitEditorSelected(Note note) {
-    _saveNote(note);
-    Navigator.pop(context);
+  void _exitEditorSelected(Note note) async {
+    var saved = await _saveNote(note);
+    if (saved) {
+      Navigator.pop(context);
+    }
   }
 
   void _renameNoteSelected(Note _note) async {
@@ -315,8 +319,9 @@ class NoteEditorState extends State<NoteEditor> {
     return false;
   }
 
-  void _saveNote(Note note) async {
-    if (!_noteModified(note)) return;
+  // Returns bool indicating if the note was successfully saved
+  Future<bool> _saveNote(Note note) async {
+    if (!_noteModified(note)) return true;
 
     Log.d("Note modified - saving");
     try {
@@ -326,7 +331,16 @@ class NoteEditorState extends State<NoteEditor> {
           : await stateContainer.updateNote(note);
     } catch (e, stackTrace) {
       logException(e, stackTrace);
+
+      await showAlertDialog(
+        context,
+        tr("editors.common.saveNoteFailed"),
+        e.toString(),
+      );
+      return false;
     }
+
+    return true;
   }
 
   Note _getNoteFromEditor() {

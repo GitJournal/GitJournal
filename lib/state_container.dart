@@ -259,9 +259,10 @@ class StateContainer with ChangeNotifier {
   Future<void> addNote(Note note) async {
     logEvent(Event.NoteAdded);
 
-    note.parent.add(note);
     note.updateModified();
     await note.save();
+
+    note.parent.add(note);
 
     return _opLock.synchronized(() async {
       Log.d("Got addNote lock");
