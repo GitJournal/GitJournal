@@ -50,7 +50,14 @@ class InAppPurchases {
       for (var purchase in response.pastPurchases) {
         var dt = DateTime.fromMillisecondsSinceEpoch(
             int.parse(purchase.transactionDate));
-        return SubscriptionStatus(true, dt.add(const Duration(days: 31)));
+        Log.i("ios Purchase dt: $dt");
+        Log.i(purchase.verificationData.serverVerificationData);
+
+        dt = dt.add(const Duration(days: 31));
+        if (!dt.isAfter(DateTime.now())) {
+          continue;
+        }
+        return SubscriptionStatus(true, dt);
       }
     } else if (Platform.isAndroid) {
       var response = await iapConn.queryPastPurchases();
