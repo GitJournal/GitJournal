@@ -7,13 +7,10 @@ import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/widgets/purchase_widget.dart';
 
 class PurchaseScreen extends StatelessWidget {
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       child: Scaffold(
-        key: _scaffoldKey,
         appBar: EmptyAppBar(),
         body: buildBody(context),
       ),

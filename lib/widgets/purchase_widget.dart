@@ -86,7 +86,6 @@ class PurchaseWidget extends StatefulWidget {
 class _PurchaseWidgetState extends State<PurchaseWidget> {
   List<Offering> _offerings;
   Offering _selectedOffering;
-  var _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final defaultSku = "sku_monthly_min2";
 
@@ -113,7 +112,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
     } catch (e) {
       if (e is PlatformException) {
         var snackBar = SnackBar(content: Text(e.message));
-        _scaffoldKey.currentState
+        Scaffold.of(context)
           ..removeCurrentSnackBar()
           ..showSnackBar(snackBar);
         return;
