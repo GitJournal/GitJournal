@@ -44,7 +44,14 @@ class InAppPurchases {
     var iapConn = InAppPurchaseConnection.instance;
 
     if (Platform.isIOS) {
-      //var history = await iapConn.refreshPurchaseVerificationData();
+      await iapConn.refreshPurchaseVerificationData();
+
+      var response = await iapConn.queryPastPurchases();
+      for (var purchase in response.pastPurchases) {
+        var dt = DateTime.fromMillisecondsSinceEpoch(
+            int.parse(purchase.transactionDate));
+        return SubscriptionStatus(true, dt.add(const Duration(days: 31)));
+      }
     } else if (Platform.isAndroid) {
       var response = await iapConn.queryPastPurchases();
       if (response.pastPurchases.isEmpty) {
