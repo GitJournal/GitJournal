@@ -133,7 +133,7 @@ packages:
       name: crypto
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.4"
+    version: "2.1.5"
   csslib:
     dependency: transitive
     description:
@@ -199,6 +199,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.1"
+  fake_async:
+    dependency: transitive
+    description:
+      name: fake_async
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   file:
     dependency: transitive
     description:
@@ -461,7 +468,7 @@ packages:
       name: json_rpc_2
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "2.2.0"
   launch_review:
     dependency: "direct main"
     description:
@@ -568,7 +575,7 @@ packages:
       name: path
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.4"
+    version: "1.7.0"
   path_provider:
     dependency: transitive
     description:
@@ -638,7 +645,7 @@ packages:
       name: process
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.12"
+    version: "3.0.13"
   provider:
     dependency: "direct main"
     description:
@@ -881,21 +888,21 @@ packages:
       name: test
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.14.3"
+    version: "1.14.7"
   test_api:
     dependency: transitive
     description:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.15"
+    version: "0.2.16"
   test_core:
     dependency: transitive
     description:
       name: test_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.4"
+    version: "0.3.7"
   tool_base:
     dependency: transitive
     description:
