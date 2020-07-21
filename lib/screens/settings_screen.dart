@@ -66,7 +66,7 @@ class SettingsListState extends State<SettingsList> {
         key: gitAuthorKey,
         style: Theme.of(context).textTheme.headline6,
         decoration: InputDecoration(
-          icon: Icon(Icons.person),
+          icon: const Icon(Icons.person),
           hintText: tr('settings.author.hint'),
           labelText: tr('settings.author.label'),
         ),
@@ -99,7 +99,7 @@ class SettingsListState extends State<SettingsList> {
         style: Theme.of(context).textTheme.headline6,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-          icon: Icon(Icons.email),
+          icon: const Icon(Icons.email),
           hintText: tr('settings.email.hint'),
           labelText: tr('settings.email.label'),
         ),

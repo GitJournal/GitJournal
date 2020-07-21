@@ -43,7 +43,7 @@ class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
     @required this.editorState,
     @required this.noteModified,
     this.extraButton,
-  })  : preferredSize = Size.fromHeight(kToolbarHeight),
+  })  : preferredSize = const Size.fromHeight(kToolbarHeight),
         super(key: key);
 
   @override
@@ -97,7 +97,7 @@ class EditorBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var addIcon = IconButton(
-      icon: Icon(Icons.attach_file),
+      icon: const Icon(Icons.attach_file),
       onPressed: () {
         showModalBottomSheet(
           context: context,
@@ -108,7 +108,7 @@ class EditorBottomBar extends StatelessWidget {
     );
 
     var menuIcon = IconButton(
-      icon: Icon(Icons.more_vert),
+      icon: const Icon(Icons.more_vert),
       onPressed: () {
         showModalBottomSheet(
           context: context,
@@ -133,7 +133,7 @@ class EditorBottomBar extends StatelessWidget {
           ),
           Expanded(
             child: FlatButton.icon(
-              icon: Icon(Icons.folder),
+              icon: const Icon(Icons.folder),
               label: Text(parentFolder.publicName),
               onPressed: () {
                 var note = editorState.getNote();
@@ -159,7 +159,7 @@ Widget _buildAddBottomSheet(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         ListTile(
-          leading: Icon(Icons.camera),
+          leading: const Icon(Icons.camera),
           title: Text(tr('editors.common.takePhoto')),
           onTap: () async {
             try {
@@ -177,7 +177,7 @@ Widget _buildAddBottomSheet(
           },
         ),
         ListTile(
-          leading: Icon(Icons.image),
+          leading: const Icon(Icons.image),
           title: Text(tr('editors.common.addImage')),
           onTap: () async {
             try {
@@ -213,7 +213,7 @@ Widget _buildBottomMenuSheet(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         ListTile(
-          leading: Icon(Icons.undo),
+          leading: const Icon(Icons.undo),
           title: Text(tr('editors.common.discard')),
           onTap: () {
             var note = editorState.getNote();
@@ -224,7 +224,7 @@ Widget _buildBottomMenuSheet(
           enabled: editorState.noteModified,
         ),
         ListTile(
-          leading: Icon(Icons.share),
+          leading: const Icon(Icons.share),
           title: Text(tr('editors.common.share')),
           onTap: () {
             var note = editorState.getNote();

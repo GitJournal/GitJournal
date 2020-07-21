@@ -367,7 +367,11 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
       dense: true,
       leading: Row(
         children: <Widget>[
-          Container(height: 24.0, width: 24.0, child: Icon(Icons.drag_handle)),
+          Container(
+            height: 24.0,
+            width: 24.0,
+            child: const Icon(Icons.drag_handle),
+          ),
           const SizedBox(width: 8.0),
           SizedBox(
             height: 24.0,

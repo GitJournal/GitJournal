@@ -108,7 +108,7 @@ class FileSystemView extends StatelessWidget {
 
   Widget _buildFolderTile(NotesFolderFS folder) {
     return ListTile(
-      leading: Icon(Icons.folder),
+      leading: const Icon(Icons.folder),
       title: Text(folder.name),
       dense: true,
       onTap: () => onFolderSelected(folder),
@@ -117,7 +117,7 @@ class FileSystemView extends StatelessWidget {
 
   Widget _buildNoteTile(Note note) {
     return ListTile(
-      leading: Icon(Icons.note),
+      leading: const Icon(Icons.note),
       title: Text(note.fileName),
       dense: true,
       onTap: () => onNoteSelected(note),
@@ -127,7 +127,7 @@ class FileSystemView extends StatelessWidget {
   Widget _buildIgnoredFileTile(IgnoredFile ignoredFile) {
     // FIXME: Paint with Ignored colours
     return ListTile(
-      leading: Icon(Icons.broken_image),
+      leading: const Icon(Icons.broken_image),
       title: Text(ignoredFile.fileName),
       dense: true,
       enabled: true,

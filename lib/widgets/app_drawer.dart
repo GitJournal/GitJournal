@@ -27,7 +27,7 @@ class AppDrawer extends StatelessWidget {
       setupGitButton = ListTile(
         leading: Icon(Icons.sync, color: textStyle.color),
         title: Text('Setup Git Host', style: textStyle),
-        trailing: Icon(
+        trailing: const Icon(
           Icons.info,
           color: Colors.red,
         ),

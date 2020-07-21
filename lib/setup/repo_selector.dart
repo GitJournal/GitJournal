@@ -141,7 +141,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
         border: const OutlineInputBorder(),
         suffixIcon: IconButton(
           onPressed: () => _textController.clear(),
-          icon: Icon(Icons.clear),
+          icon: const Icon(Icons.clear),
         ),
       ),
     );

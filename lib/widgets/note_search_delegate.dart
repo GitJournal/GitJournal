@@ -30,7 +30,7 @@ class NoteSearchDelegate extends SearchDelegate<Note> {
   List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
-        icon: Icon(Icons.close),
+        icon: const Icon(Icons.close),
         onPressed: () {
           if (query.isEmpty) {
             close(context, null);

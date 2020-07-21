@@ -202,7 +202,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
         Row(
           children: <Widget>[
             _PurchaseSliderButton(
-              icon: Icon(Icons.arrow_left),
+              icon: const Icon(Icons.arrow_left),
               onPressed: () {
                 setState(() {
                   _selectedOffering = _prevOffering();
@@ -211,7 +211,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
             ),
             Expanded(child: slider),
             _PurchaseSliderButton(
-              icon: Icon(Icons.arrow_right),
+              icon: const Icon(Icons.arrow_right),
               onPressed: () {
                 setState(() {
                   _selectedOffering = _nextOffering();

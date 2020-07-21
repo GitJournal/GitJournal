@@ -132,7 +132,7 @@ class _FolderViewState extends State<FolderView> {
           ),
           if (appState.remoteGitRepoConfigured) SyncButton(),
           IconButton(
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             onPressed: () {
               showSearch(
                 context: context,

@@ -44,7 +44,7 @@ class _SyncButtonState extends State<SyncButton> {
     if (_connectivity == ConnectivityResult.none) {
       return GitPendingChangesBadge(
         child: IconButton(
-          icon: Icon(Icons.signal_wifi_off),
+          icon: const Icon(Icons.signal_wifi_off),
           onPressed: () async {
             _syncRepo();
           },
@@ -55,7 +55,7 @@ class _SyncButtonState extends State<SyncButton> {
       return BlinkingIcon(
         child: GitPendingChangesBadge(
           child: IconButton(
-            icon: Icon(Icons.cloud_download),
+            icon: const Icon(Icons.cloud_download),
             onPressed: () {},
           ),
         ),
@@ -66,7 +66,7 @@ class _SyncButtonState extends State<SyncButton> {
       return BlinkingIcon(
         child: GitPendingChangesBadge(
           child: IconButton(
-            icon: Icon(Icons.cloud_upload),
+            icon: const Icon(Icons.cloud_upload),
             onPressed: () {},
           ),
         ),

@@ -18,8 +18,8 @@ class IconDismissable extends Dismissible {
           background: Container(
             color: backgroundColor,
             alignment: AlignmentDirectional.centerStart,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 0.0),
+            child: const Padding(
+              padding: EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 0.0),
               child: Icon(
                 Icons.delete,
                 color: Colors.white,
@@ -29,8 +29,8 @@ class IconDismissable extends Dismissible {
           secondaryBackground: Container(
             color: backgroundColor,
             alignment: AlignmentDirectional.centerEnd,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
+            child: const Padding(
+              padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
               child: Icon(
                 Icons.delete,
                 color: Colors.white,
