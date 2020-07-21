@@ -1,3 +1,8 @@
+## [1.60] - 2020-07-21
+* Make sure pro mode is correctly detected
+* Ensure notes are never lost when saving
+* Support for hardened ssh servers
+
 ## [1.59] - 2020-07-09
 * Render wiki style links
 * Avoid blocking the UI when loading Notes
