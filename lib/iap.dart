@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io' show Platform;
 
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:gitjournal/settings.dart';
 
@@ -24,8 +26,13 @@ class InAppPurchases {
     }
 
     var sub = await _subscriptionStatus();
-    var isPro = sub == null ? false : sub.isPro;
-    var expiryDate = sub == null ? "" : sub.expiryDate.toIso8601String();
+    if (sub == null) {
+      Log.i("Failed to get subscription status");
+      return;
+    }
+
+    var isPro = sub.isPro;
+    var expiryDate = sub.expiryDate.toIso8601String();
     Log.i(sub.toString());
 
     if (Settings.instance.proMode != isPro) {
@@ -44,53 +51,65 @@ class InAppPurchases {
     var iapConn = InAppPurchaseConnection.instance;
 
     if (Platform.isIOS) {
-      await iapConn.refreshPurchaseVerificationData();
+      var verificationData = await iapConn.refreshPurchaseVerificationData();
+      var dt = await getExpiryDate(verificationData.serverVerificationData, "");
+      var isPro = dt != null ? dt.isAfter(DateTime.now()) : false;
 
+      return SubscriptionStatus(isPro, dt);
+    } else if (Platform.isAndroid) {
       var response = await iapConn.queryPastPurchases();
       for (var purchase in response.pastPurchases) {
-        var dt = DateTime.fromMillisecondsSinceEpoch(
-            int.parse(purchase.transactionDate));
-        Log.i("ios Purchase dt: $dt");
-        Log.i(purchase.verificationData.serverVerificationData);
-
-        dt = dt.add(const Duration(days: 31));
-        if (!dt.isAfter(DateTime.now())) {
+        var dt = await getExpiryDate(
+            purchase.verificationData.serverVerificationData,
+            purchase.productID);
+        if (dt == null || !dt.isAfter(DateTime.now())) {
           continue;
         }
         return SubscriptionStatus(true, dt);
       }
-    } else if (Platform.isAndroid) {
-      var response = await iapConn.queryPastPurchases();
-      if (response.pastPurchases.isEmpty) {
-        Log.i("No Past Purchases Found");
-        return null;
-      }
-
-      for (var purchase in response.pastPurchases) {
-        var dt = DateTime.fromMillisecondsSinceEpoch(
-            int.parse(purchase.transactionDate));
-        return SubscriptionStatus(true, dt.add(const Duration(days: 31)));
-      }
+      return SubscriptionStatus(false, DateTime.now().toUtc());
     }
 
     return null;
-    /*
-    for (var purchase in response.pastPurchases) {
-      var difference =
-        DateTime.now().difference(purchase.transactionDate);
-      print(purchase);
-      print(purchase.productID);
-      print(purchase.purchaseID);
-      print(purchase.transactionDate);
-      print(purchase.verificationData);
-      print(purchase.verificationData.localVerificationData);
-      print(purchase.verificationData.serverVerificationData);
-      print(purchase.verificationData.source);
-
-      InAppPurchaseConnection.instance.
-    }
-    */
   }
+}
+
+const base_url = 'https://us-central1-gitjournal-io.cloudfunctions.net';
+const ios_url = '$base_url/IAPIosVerify';
+const android_url = '$base_url/IAPAndroidVerify';
+
+Future<DateTime> getExpiryDate(String receipt, String sku) async {
+  assert(receipt.isNotEmpty);
+
+  var body = {
+    'receipt': receipt,
+    "sku": sku,
+  };
+  Log.i("getExpiryDate ${json.encode(body)}");
+
+  var url = Platform.isIOS ? ios_url : android_url;
+  var response = await http.post(url, body: json.encode(body));
+  if (response.statusCode != 200) {
+    Log.e("Received Invalid Status Code from GCP IAP Verify", props: {
+      "code": response.statusCode,
+      "body": response.body,
+    });
+    return null;
+  }
+
+  Log.i("IAP Verify body: ${response.body}");
+
+  var b = json.decode(response.body) as Map;
+  if (b == null || !b.containsKey("expiry_date")) {
+    Log.e("Received Invalid Body from GCP IAP Verify", props: {
+      "code": response.statusCode,
+      "body": response.body,
+    });
+    return null;
+  }
+
+  var expiryDateMs = b['expiry_date'] as int;
+  return DateTime.fromMillisecondsSinceEpoch(expiryDateMs);
 }
 
 class SubscriptionStatus {
