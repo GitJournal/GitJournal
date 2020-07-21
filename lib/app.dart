@@ -97,7 +97,7 @@ class JournalApp extends StatefulWidget {
       ),
     );
 
-    InAppPurchases.confirmProPurchase();
+    InAppPurchases.confirmProPurchaseBoot();
 
     runApp(EasyLocalization(
       child: app,
