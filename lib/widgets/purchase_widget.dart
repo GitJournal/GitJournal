@@ -7,6 +7,7 @@ import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/.env.dart';
 import 'package:gitjournal/iap.dart';
 import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/purchase_slider.dart';
 
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -88,6 +89,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
   Offering _selectedOffering;
 
   final defaultSku = "sku_monthly_min2";
+  String error = "";
 
   @override
   void initState() {
@@ -110,19 +112,17 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
     try {
       offerings = await Purchases.getOfferings();
     } catch (e) {
-      if (e is PlatformException) {
-        var snackBar = SnackBar(content: Text(e.message));
-        Scaffold.of(context)
-          ..removeCurrentSnackBar()
-          ..showSnackBar(snackBar);
-        return;
-      }
+      setState(() {
+        error = e.toString();
+      });
+      return;
     }
+
     var offeringList = offerings.all.values.toList();
     offeringList.retainWhere((Offering o) => o.identifier.contains("monthly"));
     offeringList.sort((Offering a, Offering b) =>
         a.monthly.product.price.compareTo(b.monthly.product.price));
-    print("Offerings: $offeringList");
+    Log.i("Offerings: $offeringList");
 
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
@@ -166,6 +166,9 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (error.isNotEmpty) {
+      return Text("Failed to load: $error");
+    }
     return _offerings == null
         ? const CircularProgressIndicator()
         : buildBody(context);
