@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/.env.dart';
+import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/iap.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
@@ -111,7 +112,8 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
     Offerings offerings;
     try {
       offerings = await Purchases.getOfferings();
-    } catch (e) {
+    } catch (e, stackTrace) {
+      logExceptionWarning(e, stackTrace);
       setState(() {
         error = e.toString();
       });
