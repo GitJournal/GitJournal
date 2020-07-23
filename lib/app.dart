@@ -71,6 +71,21 @@ class JournalApp extends StatefulWidget {
       Log.i("New Documents Directory Path ${dir.path}");
     }
 
+    if (appState.remoteGitRepoConfigured) {
+      var gitBaseDir = appState.gitBaseDirectory;
+      // Something major has gone wrong.
+      var repoFolder = p.join(gitBaseDir, appState.remoteGitRepoFolderName);
+      if (!File(repoFolder).existsSync()) {
+        // Reset the state
+        appState.remoteGitRepoConfigured = false;
+        appState.localGitRepoConfigured = false;
+
+        // Local Folder
+        var localRepoDir = p.join(gitBaseDir, appState.localGitRepoFolderName);
+        await Directory(localRepoDir).delete(recursive: true);
+      }
+    }
+
     // Handle migrations - Remove this code in 2021
     var localConfigured = appState.localGitRepoConfigured;
     if (localConfigured && appState.remoteGitRepoConfigured == false) {
