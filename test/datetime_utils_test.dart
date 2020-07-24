@@ -1,5 +1,6 @@
-import 'package:gitjournal/utils/datetime.dart';
 import 'package:test/test.dart';
+
+import 'package:gitjournal/utils/datetime.dart';
 
 void main() {
   group('DateTime Utils', () {

@@ -1,9 +1,10 @@
 import 'dart:collection';
 
+import 'package:test/test.dart';
+
 import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/utils/datetime.dart';
-import 'package:test/test.dart';
 
 DateTime nowWithoutMicro() {
   var dt = DateTime.now();

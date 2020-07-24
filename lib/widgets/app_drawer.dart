@@ -1,19 +1,20 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:gitjournal/features.dart';
-import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/utils/logger.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/features.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/utils/logger.dart';
 
 class AppDrawer extends StatelessWidget {
   @override

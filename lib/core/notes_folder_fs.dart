@@ -1,14 +1,13 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:gitjournal/features.dart';
-import 'package:gitjournal/utils/logger.dart';
-
+import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 import 'package:synchronized/synchronized.dart';
-import 'package:meta/meta.dart';
 
+import 'package:gitjournal/features.dart';
+import 'package:gitjournal/utils/logger.dart';
 import 'note.dart';
 import 'notes_folder.dart';
 import 'notes_folder_notifier.dart';

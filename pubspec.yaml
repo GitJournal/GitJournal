@@ -63,6 +63,7 @@ dev_dependencies:
   flutter_launcher_icons: "^0.7.2"
   screenshots: ^2.1.1
   test: ^1.5.1
+  import_sorter: ^4.2.1
   flutter_test:
     sdk: flutter
   flutter_driver:

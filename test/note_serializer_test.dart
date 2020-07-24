@@ -1,8 +1,9 @@
 import 'dart:collection';
 
+import 'package:test/test.dart';
+
 import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/note.dart';
-import 'package:test/test.dart';
 import 'package:gitjournal/core/note_serializer.dart';
 
 void main() {

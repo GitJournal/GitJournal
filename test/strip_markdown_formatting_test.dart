@@ -1,5 +1,6 @@
-import 'package:gitjournal/utils/markdown.dart';
 import 'package:test/test.dart';
+
+import 'package:gitjournal/utils/markdown.dart';
 
 void main() {
   group('Markdown Remove Formatting', () {

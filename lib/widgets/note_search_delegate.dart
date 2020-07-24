@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/virtual_notes_folder.dart';
+import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/themes.dart';
-
-import 'package:gitjournal/folder_views/common.dart';
 
 class NoteSearchDelegate extends SearchDelegate<Note> {
   final List<Note> notes;

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+
+import 'package:package_info/package_info.dart';
+
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/settings.dart';
-import 'package:package_info/package_info.dart';
-
 import 'app.dart';
 import 'core/note.dart';
 import 'state_container.dart';

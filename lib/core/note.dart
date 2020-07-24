@@ -1,19 +1,17 @@
 import 'dart:io';
 
-import 'package:gitjournal/core/md_yaml_doc_loader.dart';
+import 'package:path/path.dart' as p;
+import 'package:uuid/uuid.dart';
+
 import 'package:gitjournal/core/links_loader.dart';
+import 'package:gitjournal/core/md_yaml_doc_loader.dart';
 import 'package:gitjournal/core/note_notifier.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/utils/markdown.dart';
-import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/utils/datetime.dart';
-
-import 'package:path/path.dart' as p;
-
-import 'package:uuid/uuid.dart';
-
+import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/utils/markdown.dart';
 import 'link.dart';
 import 'md_yaml_doc.dart';
 import 'md_yaml_doc_codec.dart';

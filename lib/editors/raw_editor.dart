@@ -1,8 +1,9 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 
-import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
+import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/widgets/editor_scroll_view.dart';
 

@@ -2,24 +2,23 @@ import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:git_bindings/git_bindings.dart';
+import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/sorted_notes_folder.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
+import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/screens/settings_screen.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
-import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
+import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/note_search_delegate.dart';
 import 'package:gitjournal/widgets/sync_button.dart';
-import 'package:gitjournal/folder_views/common.dart';
-
-import 'package:provider/provider.dart';
 
 enum DropDownChoices {
   SortingOptions,

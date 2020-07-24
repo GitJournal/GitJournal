@@ -1,5 +1,11 @@
 import 'dart:io';
 
+import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
+import 'package:path/path.dart' as p;
+import 'package:yaml/yaml.dart';
+import 'package:yaml_serializer/yaml_serializer.dart';
+
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/folder_views/common.dart';
@@ -7,13 +13,6 @@ import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
-
-import 'package:meta/meta.dart';
-import 'package:path/path.dart' as p;
-
-import 'package:yaml/yaml.dart';
-import 'package:yaml_serializer/yaml_serializer.dart';
-import 'package:equatable/equatable.dart';
 
 @immutable
 class NotesFolderConfig extends Equatable {

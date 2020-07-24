@@ -1,9 +1,9 @@
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
+
+import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/screens/note_editor.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:gitjournal/core/sorting_mode.dart';
-
-import 'package:uuid/uuid.dart';
 
 class Settings {
   static List<Function> changeObservers = [];

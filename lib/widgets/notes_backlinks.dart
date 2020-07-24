@@ -1,15 +1,15 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:gitjournal/core/link.dart';
-import 'package:gitjournal/utils/logger.dart';
-import 'package:gitjournal/widgets/pro_overlay.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:path/path.dart' as p;
 
-import 'package:gitjournal/folder_views/common.dart';
-
+import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/folder_views/common.dart';
+import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class NoteBacklinkRenderer extends StatefulWidget {
   final Note note;

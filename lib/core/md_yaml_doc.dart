@@ -1,4 +1,5 @@
 import 'dart:collection';
+
 import 'package:collection/collection.dart';
 
 Function _deepEq = const DeepCollectionEquality().equals;

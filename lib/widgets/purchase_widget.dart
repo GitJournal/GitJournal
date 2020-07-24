@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:gitjournal/analytics.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
+
 import 'package:gitjournal/.env.dart';
+import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/iap.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/purchase_slider.dart';
-
-import 'package:purchases_flutter/purchases_flutter.dart';
 
 class PurchaseButton extends StatelessWidget {
   final Package package;

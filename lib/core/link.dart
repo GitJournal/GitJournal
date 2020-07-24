@@ -1,5 +1,5 @@
-import 'package:meta/meta.dart';
 import 'package:markdown/markdown.dart' as md;
+import 'package:meta/meta.dart';
 
 class Link {
   String term;

@@ -4,10 +4,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:path/path.dart' as p;
-import 'package:mutex/mutex.dart';
 import 'package:crypto/crypto.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:mutex/mutex.dart';
+import 'package:path/path.dart' as p;
 
 class KatexWidget extends StatefulWidget {
   final String input;

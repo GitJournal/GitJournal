@@ -1,11 +1,14 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown/markdown.dart' as md;
+import 'package:path/path.dart' as p;
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
@@ -15,10 +18,6 @@ import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/editor_scroll_view.dart';
 import 'package:gitjournal/widgets/notes_backlinks.dart';
-
-import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:path/path.dart' as p;
 
 class NoteViewer extends StatelessWidget {
   final Note note;

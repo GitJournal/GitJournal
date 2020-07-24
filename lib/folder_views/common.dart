@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/folder_views/card_view.dart';
@@ -9,8 +11,6 @@ import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
-import 'package:provider/provider.dart';
-
 import 'standard_view.dart';
 
 enum FolderViewType {

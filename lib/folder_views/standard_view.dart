@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:gitjournal/core/sorting_mode.dart';
-import 'package:gitjournal/folder_views/list_view.dart';
 
 import 'package:intl/intl.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/core/sorting_mode.dart';
+import 'package:gitjournal/folder_views/list_view.dart';
 
 enum StandardViewHeader {
   TitleOrFileName,

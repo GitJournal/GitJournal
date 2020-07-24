@@ -1,11 +1,12 @@
 import 'dart:collection';
 import 'dart:io';
 
-import 'package:gitjournal/utils/datetime.dart';
-import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
+
+import 'package:gitjournal/core/md_yaml_doc.dart';
+import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/utils/datetime.dart';
 
 void main() {
   group('NoteStorage', () {

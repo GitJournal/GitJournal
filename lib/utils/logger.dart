@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart' as foundation;
+
 import 'package:fimber/fimber.dart';
 import 'package:meta/meta.dart';
-import 'package:flutter/foundation.dart' as foundation;
-import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
 class Log {
   static String logFolderPath;

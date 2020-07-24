@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:path/path.dart' as p;
+import 'package:test/test.dart';
+
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
@@ -7,8 +10,6 @@ import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/settings.dart';
-import 'package:path/path.dart' as p;
-import 'package:test/test.dart';
 
 void main() {
   group('Notes Folder Config', () {

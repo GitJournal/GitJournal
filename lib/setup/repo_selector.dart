@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:function_types/function_types.dart';
+import 'package:intl/intl.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/utils/logger.dart';
-import 'package:intl/intl.dart';
-
 import 'button.dart';
 import 'error.dart';
 import 'loading.dart';

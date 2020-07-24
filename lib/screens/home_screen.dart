@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:provider/provider.dart';
+
 import 'package:gitjournal/core/flattened_notes_folder.dart';
 import 'package:gitjournal/core/notes_folder.dart';
-import 'package:provider/provider.dart';
-import 'package:intl/date_symbol_data_local.dart';
-
 import 'package:gitjournal/core/notes_folder_fs.dart';
-
 import 'folder_view.dart';
 
 class HomeScreen extends StatefulWidget {

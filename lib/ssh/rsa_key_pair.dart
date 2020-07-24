@@ -3,17 +3,17 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/ssh/binary_length_value.dart';
-import 'package:gitjournal/utils/logger.dart';
+import 'package:isolate/isolate_runner.dart';
+import 'package:meta/meta.dart';
+import 'package:ssh_key/ssh_key.dart' as ssh_key;
 import 'package:steel_crypt/PointyCastleN/key_generators/rsa_key_generator.dart';
 import 'package:steel_crypt/PointyCastleN/pointycastle.dart';
 import 'package:steel_crypt/PointyCastleN/random/fortuna_random.dart';
 import 'package:steel_crypt/steel_crypt.dart';
-import 'package:meta/meta.dart';
 
-import 'package:ssh_key/ssh_key.dart' as ssh_key;
-import 'package:isolate/isolate_runner.dart';
+import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/ssh/binary_length_value.dart';
+import 'package:gitjournal/utils/logger.dart';
 
 class RsaKeyPair {
   RSAPublicKey publicKey;

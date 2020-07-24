@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:gitjournal/error_reporting.dart';
 import 'package:meta/meta.dart';
 
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/error_reporting.dart';
 
 class ChecklistItem {
   bool checked;

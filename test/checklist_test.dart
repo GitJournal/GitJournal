@@ -1,10 +1,11 @@
 import 'dart:io';
 
+import 'package:path/path.dart' as p;
+import 'package:test/test.dart';
+
 import 'package:gitjournal/core/checklist.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:path/path.dart' as p;
-import 'package:test/test.dart';
 
 void main() {
   group('Note', () {

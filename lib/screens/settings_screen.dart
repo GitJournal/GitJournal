@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
+
+import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/screens/debug_screen.dart';
 import 'package:gitjournal/screens/settings_editors.dart';
 import 'package:gitjournal/screens/settings_experimental.dart';
+import 'package:gitjournal/screens/settings_git_remote.dart';
 import 'package:gitjournal/screens/settings_images.dart';
+import 'package:gitjournal/screens/settings_note_metadata.dart';
+import 'package:gitjournal/screens/settings_widgets.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
-import 'package:gitjournal/screens/settings_widgets.dart';
-import 'package:gitjournal/screens/settings_git_remote.dart';
-import 'package:gitjournal/screens/settings_note_metadata.dart';
-
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
-import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override

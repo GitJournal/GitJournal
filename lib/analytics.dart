@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
+
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 Analytics getAnalytics() {

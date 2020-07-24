@@ -1,9 +1,10 @@
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:path/path.dart' as p;
+import 'package:path/path.dart';
 
 class RenameDialog extends StatefulWidget {
   final String oldPath;

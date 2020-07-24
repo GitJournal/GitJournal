@@ -1,11 +1,12 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:gitjournal/core/flattened_notes_folder.dart';
-import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/core/note.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
+
+import 'package:gitjournal/core/flattened_notes_folder.dart';
+import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 
 void main() {
   group('Flattened Notes Folder Test', () {

@@ -1,7 +1,11 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+
 import 'package:easy_localization/easy_localization.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+
 import 'package:gitjournal/core/flattened_notes_folder.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_serializer.dart';
@@ -10,8 +14,6 @@ import 'package:gitjournal/screens/folder_view.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
-import 'package:provider/provider.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TagListingScreen extends StatelessWidget {
   @override

@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'dart:isolate';
 
-import 'package:gitjournal/core/link.dart';
-import 'package:synchronized/synchronized.dart';
-import 'package:path/path.dart' as p;
-
 import 'package:markdown/markdown.dart' as md;
+import 'package:path/path.dart' as p;
+import 'package:synchronized/synchronized.dart';
+
+import 'package:gitjournal/core/link.dart';
 
 class LinksLoader {
   Isolate _isolate;

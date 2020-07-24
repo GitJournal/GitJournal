@@ -2,11 +2,12 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+
 import 'package:git_bindings/git_bindings.dart';
+import 'package:path/path.dart' as p;
 
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
-import 'package:path/path.dart' as p;
 
 //
 // FIXME: This isn't ideal as we are skipping all the edits / deletes

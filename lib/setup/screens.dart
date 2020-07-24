@@ -1,25 +1,23 @@
 import 'dart:io';
 
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:function_types/function_types.dart';
 import 'package:git_bindings/git_bindings.dart';
-
-import 'package:gitjournal/analytics.dart';
-import 'package:gitjournal/apis/githost_factory.dart';
-import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/setup/repo_selector.dart';
-import 'package:gitjournal/state_container.dart';
-import 'package:gitjournal/utils.dart';
-import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/utils/logger.dart';
-
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/apis/githost_factory.dart';
+import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/setup/repo_selector.dart';
+import 'package:gitjournal/state_container.dart';
+import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/utils/logger.dart';
 import 'autoconfigure.dart';
 import 'button.dart';
 import 'clone_url.dart';

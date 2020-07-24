@@ -1,9 +1,11 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+
+import 'package:easy_localization/easy_localization.dart';
+
+import 'package:gitjournal/core/md_yaml_doc_codec.dart';
+import 'package:gitjournal/screens/settings_widgets.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
-import 'package:gitjournal/screens/settings_widgets.dart';
-import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class NoteMetadataSettingsScreen extends StatefulWidget {

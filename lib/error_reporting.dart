@@ -1,16 +1,17 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:device_info/device_info.dart';
 import 'package:flutter/foundation.dart';
+
+import 'package:device_info/device_info.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
-import 'package:gitjournal/app.dart';
-import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/utils/logger.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sentry/sentry.dart';
 
 import 'package:gitjournal/.env.dart';
+import 'package:gitjournal/app.dart';
+import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/utils/logger.dart';
 
 SentryClient _sentryClient;
 Future<SentryClient> _initSentry() async {

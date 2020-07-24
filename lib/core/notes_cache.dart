@@ -2,13 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:gitjournal/error_reporting.dart';
-import 'package:path/path.dart' as p;
+
 import 'package:collection/collection.dart';
+import 'package:path/path.dart' as p;
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
+import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 class NotesCache {

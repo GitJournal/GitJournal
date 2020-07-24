@@ -1,42 +1,37 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:device_info/device_info.dart';
-import 'package:firebase_analytics/observer.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' as foundation;
+import 'package:flutter/material.dart';
+
+import 'package:dart_git/git.dart';
+import 'package:device_info/device_info.dart';
+import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization_loader/easy_localization_loader.dart';
+import 'package:firebase_analytics/observer.dart';
+import 'package:flutter_sentry/flutter_sentry.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:quick_actions/quick_actions.dart';
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/appstate.dart';
 import 'package:gitjournal/iap.dart';
 import 'package:gitjournal/screens/filesystem_screen.dart';
 import 'package:gitjournal/screens/folder_listing.dart';
-import 'package:gitjournal/screens/tag_listing.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/screens/purchase_screen.dart';
 import 'package:gitjournal/screens/purchase_thankyou_screen.dart';
-import 'package:gitjournal/utils.dart';
-import 'package:gitjournal/utils/logger.dart';
-import 'package:provider/provider.dart';
-import 'package:path/path.dart' as p;
-import 'package:flutter_sentry/flutter_sentry.dart';
-
-import 'package:easy_localization/easy_localization.dart';
-import 'package:easy_localization_loader/easy_localization_loader.dart';
-
-import 'package:dart_git/git.dart';
-
-import 'package:quick_actions/quick_actions.dart';
-import 'package:receive_sharing_intent/receive_sharing_intent.dart';
-
+import 'package:gitjournal/screens/tag_listing.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
-import 'package:gitjournal/appstate.dart';
 import 'package:gitjournal/themes.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:dynamic_theme/dynamic_theme.dart';
-import 'package:path_provider/path_provider.dart';
-
+import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/utils/logger.dart';
 import 'screens/home_screen.dart';
 import 'screens/onboarding_screens.dart';
 import 'screens/settings_screen.dart';

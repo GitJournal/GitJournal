@@ -1,16 +1,17 @@
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:share/share.dart';
+
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
-import 'package:share/share.dart';
-
-import 'package:image_picker/image_picker.dart';
 
 typedef NoteCallback = void Function(Note);
 

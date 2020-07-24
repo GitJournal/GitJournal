@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:isolate';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' as foundation;
+import 'package:flutter/material.dart';
 
-import 'package:gitjournal/error_reporting.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/app.dart';
+import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings.dart';
 
 void main() async {

@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+
 import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/utils/logger.dart';
-
 import 'note.dart';
 import 'notes_folder.dart';
 import 'notes_folder_notifier.dart';

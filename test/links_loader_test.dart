@@ -1,5 +1,6 @@
-import 'package:gitjournal/core/links_loader.dart';
 import 'package:test/test.dart';
+
+import 'package:gitjournal/core/links_loader.dart';
 
 void main() {
   group('LinksLoader', () {
