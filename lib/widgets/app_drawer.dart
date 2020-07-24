@@ -50,21 +50,7 @@ class AppDrawer extends StatelessWidget {
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
-            decoration: BoxDecoration(
-              color: Theme.of(context).highlightColor,
-            ),
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/icon/icon.png'),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          _AppDrawerHeader(),
           if (setupGitButton != null) ...[setupGitButton, divider],
           if (!Settings.instance.proMode)
             _buildDrawerTile(
@@ -270,5 +256,53 @@ void _navTopLevel(BuildContext context, String toRoute) {
   );
   if (!wasParent) {
     Navigator.pushNamed(context, toRoute);
+  }
+}
+
+class _AppDrawerHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        DrawerHeader(
+          decoration: BoxDecoration(
+            color: Theme.of(context).highlightColor,
+          ),
+          child: const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/icon/icon.png'),
+                ),
+              ),
+            ),
+          ),
+        ),
+        /*
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: IconButton(
+              padding: const EdgeInsets.all(0),
+              icon: Icon(Icons.arrow_left, size: 42.0),
+              onPressed: () {},
+            ),
+          ),
+        ),
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: IconButton(
+              padding: const EdgeInsets.all(0),
+              icon: Icon(Icons.arrow_right, size: 42.0),
+              onPressed: () {},
+            ),
+          ),
+        ),
+        */
+      ],
+      fit: StackFit.passthrough,
+    );
   }
 }
