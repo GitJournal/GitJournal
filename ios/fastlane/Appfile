@@ -1,5 +1,5 @@
 app_identifier("io.gitjournal.gitjournal") # The bundle identifier of your app
-apple_id("me@vhanda.in") # Your Apple email address
+apple_id("ios.ci@gitjournal.io") # Your Apple email address
 
 itc_team_id("119823857") # App Store Connect Team ID
 team_id("4NYTN6RU3N") # Developer Portal Team ID
