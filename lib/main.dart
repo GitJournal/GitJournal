@@ -19,10 +19,6 @@ void main() async {
   JournalApp.isInDebugMode = foundation.kDebugMode;
   FlutterError.onError = flutterOnErrorHandler;
 
-  // Make sure Crashlytics is initialized so we get Android/iOS errors
-  // But for Flutter errors, lets just rely on Sentry.
-  initCrashlytics();
-
   Isolate.current.addErrorListener(RawReceivePort((dynamic pair) async {
     var isolateError = pair as List<dynamic>;
     assert(isolateError.length == 2);

@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 
 import 'package:device_info/device_info.dart';
-import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sentry/sentry.dart';
 
@@ -87,12 +86,6 @@ bool _initReportCrashes() {
   return !JournalApp.isInDebugMode && Settings.instance.collectCrashReports;
 }
 
-Future<void> initCrashlytics() async {
-  if (reportCrashes) {
-    await FlutterCrashlytics().initialize();
-  }
-}
-
 Future<void> reportError(Object error, StackTrace stackTrace) async {
   Log.e("Uncaught Exception", ex: error, stacktrace: stackTrace);
 
@@ -112,7 +105,6 @@ Future<void> logException(Object e, StackTrace stackTrace) async {
   }
 
   await captureSentryException(e, stackTrace);
-  return FlutterCrashlytics().logException(e, stackTrace);
 }
 
 Future<void> logExceptionWarning(Object e, StackTrace stackTrace) async {
@@ -124,7 +116,6 @@ Future<void> logExceptionWarning(Object e, StackTrace stackTrace) async {
   }
 
   await captureSentryException(e, stackTrace, level: SeverityLevel.warning);
-  return FlutterCrashlytics().logException(e, stackTrace);
 }
 
 List<Breadcrumb> breadcrumbs = [];

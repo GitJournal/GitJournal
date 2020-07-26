@@ -150,7 +150,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
     for (var note in _notes) {
       // FIXME: Collected all the Errors, and report them back, along with "WHY", and the contents of the Note
-      //        Each of these needs to be reported to crashlytics, as Note loading should never fail
+      //        Each of these needs to be reported to sentry, as Note loading should never fail
       var f = note.load();
       futures.add(f);
 
