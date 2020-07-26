@@ -93,6 +93,7 @@ Future<DateTime> getExpiryDate(String receipt, String sku) async {
   var body = {
     'receipt': receipt,
     "sku": sku,
+    'pseudoId': Settings.instance.pseudoId,
   };
   Log.i("getExpiryDate ${json.encode(body)}");
 
