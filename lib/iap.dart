@@ -33,9 +33,22 @@ class InAppPurchases {
   }
 
   static Future<void> confirmProPurchase() async {
-    var sub = await _subscriptionStatus();
-    if (sub == null) {
-      Log.i("Failed to get subscription status");
+    SubscriptionStatus sub;
+
+    try {
+      sub = await _subscriptionStatus();
+      if (sub == null) {
+        Log.i("Failed to get subscription status");
+        return;
+      }
+    } catch (e, stackTrace) {
+      Log.e("Failed to get subscription status", ex: e, stacktrace: stackTrace);
+      Log.i("Disabling Pro mode as it has probably expired");
+
+      Settings.instance.proMode = false;
+      Settings.instance.proExpirationDate = "";
+      Settings.instance.save();
+
       return;
     }
 
