@@ -83,6 +83,15 @@ class PurchaseScreen extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
     );
 
+    w = CustomScrollView(
+      slivers: [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Padding(padding: const EdgeInsets.all(16.0), child: w),
+        ),
+      ],
+    );
+
     if (Platform.isIOS) {
       w = Stack(
         alignment: FractionalOffset.topLeft,
@@ -99,17 +108,9 @@ class PurchaseScreen extends StatelessWidget {
       );
     }
 
-    w = Padding(padding: const EdgeInsets.all(16.0), child: w);
-
     return SafeArea(
-        child: CustomScrollView(
-      slivers: [
-        SliverFillRemaining(
-          hasScrollBody: false,
-          child: w,
-        ),
-      ],
-    ));
+      child: w,
+    );
   }
 
   Future<bool> _onWillPop() async {
