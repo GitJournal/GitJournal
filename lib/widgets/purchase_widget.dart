@@ -1,83 +1,56 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 
-import 'package:gitjournal/.env.dart';
 import 'package:gitjournal/analytics.dart';
-import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/iap.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/purchase_slider.dart';
 
 class PurchaseButton extends StatelessWidget {
-  final Package package;
+  final ProductDetails product;
 
-  PurchaseButton(this.package);
+  PurchaseButton(this.product);
 
   @override
   Widget build(BuildContext context) {
-    var price = package != null ? package.product.priceString : "Dev Mode";
+    var price = product != null ? product.price : "Dev Mode";
 
     return RaisedButton(
       child: Text('Subscribe for $price / month'),
       color: Theme.of(context).primaryColor,
       padding: const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 16.0),
-      onPressed: package != null ? () => _handlePurchase(context) : null,
+      onPressed: product != null ? () => _initPurchase(context) : null,
     );
   }
 
-  void _handlePurchase(BuildContext context) async {
-    try {
-      var purchaserInfo = await Purchases.purchasePackage(package);
-      var isPro = purchaserInfo.entitlements.all["pro"].isActive;
-      if (isPro) {
-        Settings.instance.proMode = true;
-        Settings.instance.proExpirationDate =
-            purchaserInfo.latestExpirationDate;
-        Settings.instance.save();
+  void _initPurchase(BuildContext context) async {
+    var purchaseParam = PurchaseParam(productDetails: product);
+    var sentSuccess = await InAppPurchaseConnection.instance
+        .buyNonConsumable(purchaseParam: purchaseParam);
 
-        getAnalytics().logEvent(
-          name: "purchase_screen_thank_you",
-        );
-
-        Navigator.of(context).popAndPushNamed('/purchase_thank_you');
-        return;
-      }
-    } on PlatformException catch (e) {
-      var errorCode = PurchasesErrorHelper.getErrorCode(e);
-      var errorContent = "";
-      switch (errorCode) {
-        case PurchasesErrorCode.purchaseCancelledError:
-          errorContent = "User cancelled";
-          break;
-
-        case PurchasesErrorCode.purchaseNotAllowedError:
-          errorContent = "User not allowed to purchase";
-          break;
-
-        default:
-          errorContent = errorCode.toString();
-          break;
-      }
-
-      var dialog = AlertDialog(
-        title: const Text("Purchase Failed"),
-        content: Text(errorContent),
-        actions: <Widget>[
-          FlatButton(
-            child: const Text("OK"),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ],
-      );
+    if (!sentSuccess) {
+      var err = "Failed to send purchase request";
+      var dialog = PurchaseFailedDialog(err);
       await showDialog(context: context, builder: (context) => dialog);
+      return;
     }
+
     return null;
   }
+}
+
+Set<String> _generateSkus() {
+  var list = <String>{'sku_monthly_min'};
+  for (var i = 0; i < 50; i++) {
+    list.add("sku_monthly_min$i");
+  }
+  print(list);
+  return list;
 }
 
 class PurchaseWidget extends StatefulWidget {
@@ -86,11 +59,13 @@ class PurchaseWidget extends StatefulWidget {
 }
 
 class _PurchaseWidgetState extends State<PurchaseWidget> {
-  List<Offering> _offerings;
-  Offering _selectedOffering;
+  List<ProductDetails> _products;
+  ProductDetails _selectedProduct;
+  StreamSubscription<List<PurchaseDetails>> _subscription;
 
   final defaultSku = "sku_monthly_min2";
   String error = "";
+  bool pendingPurchase = false;
 
   @override
   void initState() {
@@ -99,32 +74,30 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
   }
 
   Future<void> initPlatformState() async {
-    await InAppPurchases.confirmProPurchase();
-    if (Settings.instance.proMode) {
-      Navigator.of(context).pop();
-    }
+    // In parallel check if the purchase has been made
+    InAppPurchases.confirmProPurchase().then((void _) {
+      if (Settings.instance.proMode) {
+        Navigator.of(context).pop();
+      }
+    });
 
-    await Purchases.setup(
-      environment['revenueCat'],
-      appUserId: Settings.instance.pseudoId,
-    );
+    final iapCon = InAppPurchaseConnection.instance;
 
-    Offerings offerings;
-    try {
-      offerings = await Purchases.getOfferings();
-    } catch (e, stackTrace) {
-      logExceptionWarning(e, stackTrace);
+    final bool available = await iapCon.isAvailable();
+    if (!available) {
       setState(() {
-        error = e.toString();
+        error = "Store cannot be reached";
       });
       return;
     }
 
-    var offeringList = offerings.all.values.toList();
-    offeringList.retainWhere((Offering o) => o.identifier.contains("monthly"));
-    offeringList.sort((Offering a, Offering b) =>
-        a.monthly.product.price.compareTo(b.monthly.product.price));
-    Log.i("Offerings: $offeringList");
+    final response = await iapCon.queryProductDetails(_generateSkus());
+    if (response.error != null) {
+      Log.e("IAP queryProductDetails: ${response.error}");
+    }
+    var products = response.productDetails;
+    products.sort((a, b) => a.price.compareTo(b.price));
+    Log.i("Products: ${products.map((e) => '${e.id} ${e.price}')}");
 
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
@@ -132,38 +105,87 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
     if (!mounted) return;
 
     setState(() {
-      _offerings = offeringList;
-      _selectedOffering = _offerings.isNotEmpty ? _offerings.first : null;
+      _products = products;
+      _selectedProduct = _products.isNotEmpty ? _products.first : null;
 
-      if (_offerings.length > 1) {
-        for (var o in _offerings) {
-          var prod = o.monthly.product;
-          if (prod.identifier == defaultSku) {
-            _selectedOffering = o;
+      if (_products.length > 1) {
+        for (var p in _products) {
+          if (p.id == defaultSku) {
+            _selectedProduct = p;
             break;
           }
         }
       } else {
-        var fakePackageJson = {
-          'identifier': 'monthly_fake',
-          'product': {
-            'identifier': 'fake_product',
-            'title': 'Fake Product',
-            'priceString': '0 Fake',
-            'price': 0.0,
-          },
-        };
-
-        var fakeOffer = Offering.fromJson(<String, dynamic>{
-          'identifier': 'monthly_fake_offering',
-          'monthly': fakePackageJson,
-          'availablePackages': [fakePackageJson],
-        });
-
-        _offerings = [fakeOffer];
-        _selectedOffering = _offerings[0];
+        // FIXME: Add a fake product for development
       }
     });
+
+    // Start listening for changes
+    final purchaseUpdates = iapCon.purchaseUpdatedStream;
+    _subscription = purchaseUpdates.listen(_listenToPurchaseUpdated);
+  }
+
+  void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
+    purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+      if (purchaseDetails.status == PurchaseStatus.pending) {
+        //showPendingUI();
+        Log.i("Pending - ${purchaseDetails.productID}");
+        setState(() {
+          pendingPurchase = true;
+        });
+        return;
+      }
+
+      setState(() {
+        pendingPurchase = false;
+      });
+      if (purchaseDetails.status == PurchaseStatus.error) {
+        _handleIAPError(purchaseDetails.error);
+      } else if (purchaseDetails.status == PurchaseStatus.purchased) {
+        var subStatus = await verifyPurchase(purchaseDetails);
+        if (subStatus.isPro) {
+          _deliverProduct(subStatus);
+        } else {
+          _handleError("Failed to purchase product");
+          return;
+        }
+      }
+      if (Platform.isAndroid) {
+        await InAppPurchaseConnection.instance.consumePurchase(purchaseDetails);
+      }
+      if (purchaseDetails.pendingCompletePurchase) {
+        await InAppPurchaseConnection.instance
+            .completePurchase(purchaseDetails);
+      }
+    });
+  }
+
+  void _handleIAPError(IAPError err) {
+    var msg = "${err.code} - ${err.message} - ${err.details}";
+    _handleError(msg);
+  }
+
+  void _handleError(String err) {
+    var dialog = PurchaseFailedDialog(err);
+    showDialog(context: context, builder: (context) => dialog);
+  }
+
+  void _deliverProduct(SubscriptionStatus status) {
+    Settings.instance.proMode = status.isPro;
+    Settings.instance.proExpirationDate = status.expiryDate.toIso8601String();
+    Settings.instance.save();
+
+    getAnalytics().logEvent(
+      name: "purchase_screen_thank_you",
+    );
+
+    Navigator.of(context).popAndPushNamed('/purchase_thank_you');
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
   }
 
   @override
@@ -171,20 +193,35 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
     if (error.isNotEmpty) {
       return Text("Failed to load: $error");
     }
-    return _offerings == null
+    if (pendingPurchase) {
+      return const CircularProgressIndicator();
+    }
+    return _products == null
         ? const CircularProgressIndicator()
         : buildBody(context);
   }
 
-  PaymentInfo _fromOffering(Offering o) {
-    var prod = o.monthly.product;
-    return PaymentInfo(prod.price, prod.priceString);
+  PaymentInfo _fromProductDetail(ProductDetails pd) {
+    if (pd == null) return null;
+
+    double value = -1;
+    if (pd.skProduct != null) {
+      value = double.parse(pd.skProduct.price);
+    } else if (pd.skuDetail != null) {
+      value = pd.skuDetail.originalPriceAmountMicros.toDouble() / 100000;
+    }
+
+    return PaymentInfo(
+      id: pd.id,
+      text: pd.price,
+      value: value,
+    );
   }
 
-  Offering _fromPaymentInfo(PaymentInfo info) {
-    for (var o in _offerings) {
-      if (o.monthly.product.priceString == info.text) {
-        return o;
+  ProductDetails _fromPaymentInfo(PaymentInfo info) {
+    for (var p in _products) {
+      if (p.id == info.id) {
+        return p;
       }
     }
     assert(false);
@@ -193,11 +230,11 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
 
   Widget buildBody(BuildContext context) {
     var slider = PurchaseSlider(
-      values: _offerings.map(_fromOffering).toList(),
-      selectedValue: _fromOffering(_selectedOffering),
+      values: _products.map(_fromProductDetail).toList(),
+      selectedValue: _fromProductDetail(_selectedProduct),
       onChanged: (PaymentInfo info) {
         setState(() {
-          _selectedOffering = _fromPaymentInfo(info);
+          _selectedProduct = _fromPaymentInfo(info);
         });
       },
     );
@@ -210,7 +247,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
               icon: const Icon(Icons.arrow_left),
               onPressed: () {
                 setState(() {
-                  _selectedOffering = _prevOffering();
+                  _selectedProduct = _prevProduct();
                 });
               },
             ),
@@ -219,7 +256,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
               icon: const Icon(Icons.arrow_right),
               onPressed: () {
                 setState(() {
-                  _selectedOffering = _nextOffering();
+                  _selectedProduct = _nextProduct();
                 });
               },
             ),
@@ -227,26 +264,26 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
           mainAxisSize: MainAxisSize.max,
         ),
         const SizedBox(height: 16.0),
-        PurchaseButton(_selectedOffering?.monthly),
+        PurchaseButton(_selectedProduct),
       ],
       mainAxisAlignment: MainAxisAlignment.spaceAround,
     );
   }
 
-  Offering _prevOffering() {
-    for (var i = 0; i < _offerings.length; i++) {
-      if (_offerings[i] == _selectedOffering) {
-        return i > 0 ? _offerings[i - 1] : _offerings[i];
+  ProductDetails _prevProduct() {
+    for (var i = 0; i < _products.length; i++) {
+      if (_products[i] == _selectedProduct) {
+        return i > 0 ? _products[i - 1] : _products[i];
       }
     }
 
     return null;
   }
 
-  Offering _nextOffering() {
-    for (var i = 0; i < _offerings.length; i++) {
-      if (_offerings[i] == _selectedOffering) {
-        return i < _offerings.length - 1 ? _offerings[i + 1] : _offerings[i];
+  ProductDetails _nextProduct() {
+    for (var i = 0; i < _products.length; i++) {
+      if (_products[i] == _selectedProduct) {
+        return i < _products.length - 1 ? _products[i + 1] : _products[i];
       }
     }
 
@@ -267,6 +304,26 @@ class _PurchaseSliderButton extends StatelessWidget {
       padding: const EdgeInsets.all(0.0),
       iconSize: 64.0,
       onPressed: onPressed,
+    );
+  }
+}
+
+class PurchaseFailedDialog extends StatelessWidget {
+  final String text;
+
+  PurchaseFailedDialog(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text("Purchase Failed"),
+      content: Text(text),
+      actions: <Widget>[
+        FlatButton(
+          child: const Text("OK"),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ],
     );
   }
 }

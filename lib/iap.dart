@@ -57,6 +57,7 @@ class InAppPurchases {
   static Future<SubscriptionStatus> _subscriptionStatus() async {
     InAppPurchaseConnection.enablePendingPurchases();
     var iapConn = InAppPurchaseConnection.instance;
+    var dtNow = DateTime.now().toUtc();
 
     if (Platform.isIOS) {
       var verificationData = await iapConn.refreshPurchaseVerificationData();
@@ -70,12 +71,12 @@ class InAppPurchases {
         var dt = await getExpiryDate(
             purchase.verificationData.serverVerificationData,
             purchase.productID);
-        if (dt == null || !dt.isAfter(DateTime.now())) {
+        if (dt == null || !dt.isAfter(dtNow)) {
           continue;
         }
         return SubscriptionStatus(true, dt);
       }
-      return SubscriptionStatus(false, DateTime.now().toUtc());
+      return SubscriptionStatus(false, dtNow);
     }
 
     return null;
@@ -117,7 +118,7 @@ Future<DateTime> getExpiryDate(String receipt, String sku) async {
   }
 
   var expiryDateMs = b['expiry_date'] as int;
-  return DateTime.fromMillisecondsSinceEpoch(expiryDateMs);
+  return DateTime.fromMillisecondsSinceEpoch(expiryDateMs, isUtc: true);
 }
 
 class SubscriptionStatus {
@@ -129,4 +130,15 @@ class SubscriptionStatus {
   @override
   String toString() =>
       "SubscriptionStatus{isPro: $isPro, expiryDate: $expiryDate}";
+}
+
+Future<SubscriptionStatus> verifyPurchase(PurchaseDetails purchase) async {
+  var dt = await getExpiryDate(
+    purchase.verificationData.serverVerificationData,
+    purchase.productID,
+  );
+  if (dt == null || !dt.isAfter(DateTime.now())) {
+    return SubscriptionStatus(false, dt);
+  }
+  return SubscriptionStatus(true, dt);
 }

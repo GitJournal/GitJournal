@@ -105,10 +105,6 @@ PODS:
   - path_provider_macos (0.0.1):
     - Flutter
   - PromisesObjC (1.2.9)
-  - Purchases (3.2.2)
-  - purchases_flutter (1.1.0):
-    - Flutter
-    - Purchases (~> 3.2.2)
   - quick_actions (0.0.1):
     - Flutter
   - Reachability (3.2)
@@ -152,7 +148,6 @@ DEPENDENCIES:
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - path_provider_macos (from `.symlinks/plugins/path_provider_macos/ios`)
-  - purchases_flutter (from `.symlinks/plugins/purchases_flutter/ios`)
   - quick_actions (from `.symlinks/plugins/quick_actions/ios`)
   - receive_sharing_intent (from `.symlinks/plugins/receive_sharing_intent/ios`)
   - share (from `.symlinks/plugins/share/ios`)
@@ -179,7 +174,6 @@ SPEC REPOS:
     - GoogleUtilities
     - nanopb
     - PromisesObjC
-    - Purchases
     - Reachability
     - Sentry
 
@@ -216,8 +210,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider/ios"
   path_provider_macos:
     :path: ".symlinks/plugins/path_provider_macos/ios"
-  purchases_flutter:
-    :path: ".symlinks/plugins/purchases_flutter/ios"
   quick_actions:
     :path: ".symlinks/plugins/quick_actions/ios"
   receive_sharing_intent:
@@ -269,8 +261,6 @@ SPEC CHECKSUMS:
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
   path_provider_macos: f760a3c5b04357c380e2fddb6f9db6f3015897e0
   PromisesObjC: b48e0338dbbac2207e611750777895f7a5811b75
-  Purchases: 392c729893c011c7d4d37d7f7c9f863e597d4a9b
-  purchases_flutter: 329011208c046353be37f984026815e9dd046456
   quick_actions: 6cb2390c4dab0e737c94573c27e18d9666710720
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   receive_sharing_intent: c0d87310754e74c0f9542947e7cbdf3a0335a3b1

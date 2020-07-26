@@ -5,11 +5,12 @@ import 'package:equatable/equatable.dart';
 class PaymentInfo extends Equatable {
   final double value;
   final String text;
+  final String id;
 
-  PaymentInfo(this.value, this.text);
+  PaymentInfo({@required this.id, @required this.value, @required this.text});
 
   @override
-  List<Object> get props => [value, text];
+  List<Object> get props => [value, text, id];
 }
 
 typedef PaymentSliderChanged = Function(PaymentInfo);
