@@ -6,8 +6,6 @@ import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 
 class Settings {
-  static List<Function> changeObservers = [];
-
   // singleton
   static final Settings _singleton = Settings._internal();
   factory Settings() => _singleton;
@@ -180,11 +178,6 @@ class Settings {
         defaultSet.experimentalBacklinks);
 
     pref.setInt("settingsVersion", version);
-
-    // Shouldn't we check if something has actually changed?
-    for (var f in changeObservers) {
-      f();
-    }
   }
 
   Future<void> _setString(
