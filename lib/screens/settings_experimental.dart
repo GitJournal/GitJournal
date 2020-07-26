@@ -38,6 +38,15 @@ class _ExperimentalSettingsScreenState
                 setState(() {});
               },
             ),
+            SwitchListTile(
+              title: Text(tr('settings.experimental.fs')),
+              value: settings.experimentalFs,
+              onChanged: (bool newVal) {
+                settings.experimentalFs = newVal;
+                settings.save();
+                setState(() {});
+              },
+            ),
           ],
           padding: const EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 0.0),
         ),

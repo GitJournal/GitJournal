@@ -51,6 +51,7 @@ settings:
     title: Experimental Features
     subtitle: Try out features in Development
     backlinks: Show Backlinks in Markdown Preview
+    fs: Show File System
 
 editors:
   checklist:

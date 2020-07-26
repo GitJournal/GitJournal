@@ -10,7 +10,6 @@ import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/analytics.dart';
-import 'package:gitjournal/features.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
@@ -81,7 +80,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () => _navTopLevel(context, '/folders'),
             selected: currentRoute == "/folders",
           ),
-          if (Features.showFileSystem)
+          if (Settings.instance.experimentalFs)
             _buildDrawerTile(
               context,
               icon: FontAwesomeIcons.solidFolderOpen,

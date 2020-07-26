@@ -50,6 +50,7 @@ class Settings {
   String debugLogLevel = 'v';
 
   bool experimentalBacklinks = true;
+  bool experimentalFs = false;
 
   void load(SharedPreferences pref) {
     gitAuthor = pref.getString("gitAuthor") ?? gitAuthor;
@@ -112,6 +113,7 @@ class Settings {
     debugLogLevel = pref.getString("debugLogLevel") ?? debugLogLevel;
     experimentalBacklinks =
         pref.getBool("experimentalBacklinks") ?? experimentalBacklinks;
+    experimentalFs = pref.getBool("experimentalFs") ?? experimentalFs;
   }
 
   Future save() async {
@@ -176,6 +178,7 @@ class Settings {
     _setString(pref, "debugLogLevel", debugLogLevel, defaultSet.debugLogLevel);
     _setBool(pref, "experimentalBacklinks", experimentalBacklinks,
         defaultSet.experimentalBacklinks);
+    _setBool(pref, "experimentalFs", experimentalFs, defaultSet.experimentalFs);
 
     pref.setInt("settingsVersion", version);
   }
@@ -234,6 +237,7 @@ class Settings {
       'imageLocationSpec': imageLocationSpec,
       'debugLogLevel': debugLogLevel,
       'experimentalBacklinks': experimentalBacklinks.toString(),
+      'experimentalFs': experimentalFs.toString(),
     };
   }
 
