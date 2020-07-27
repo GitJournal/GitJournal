@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/editors/common.dart';
+import 'package:gitjournal/settings.dart';
 
 class EditorScaffold extends StatefulWidget {
   final Editor editor;
@@ -27,13 +28,13 @@ class EditorScaffold extends StatefulWidget {
 }
 
 class _EditorScaffoldState extends State<EditorScaffold> {
-  var zenMode = false;
   var hideUIElements = false;
 
   @override
   void initState() {
     super.initState();
 
+    hideUIElements = Settings.instance.zenMode;
     widget.editorState.addListener(_editorChanged);
   }
 
@@ -45,7 +46,7 @@ class _EditorScaffoldState extends State<EditorScaffold> {
   }
 
   void _editorChanged() {
-    if (zenMode && !hideUIElements) {
+    if (Settings.instance.zenMode && !hideUIElements) {
       setState(() {
         hideUIElements = true;
       });
@@ -71,7 +72,7 @@ class _EditorScaffoldState extends State<EditorScaffold> {
             child: GestureDetector(
               child: widget.body,
               onTap: () {
-                if (zenMode) {
+                if (Settings.instance.zenMode) {
                   setState(() {
                     hideUIElements = false;
                   });
@@ -88,11 +89,13 @@ class _EditorScaffoldState extends State<EditorScaffold> {
               editorState: widget.editorState,
               parentFolder: widget.parentFolder,
               allowEdits: widget.allowEdits,
-              zenMode: zenMode,
+              zenMode: Settings.instance.zenMode,
               onZenModeChanged: () {
                 setState(() {
-                  zenMode = !zenMode;
-                  if (zenMode) {
+                  Settings.instance.zenMode = !Settings.instance.zenMode;
+                  Settings.instance.save();
+
+                  if (Settings.instance.zenMode) {
                     hideUIElements = true;
                   }
                 });

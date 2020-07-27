@@ -52,6 +52,8 @@ class Settings {
   bool experimentalBacklinks = true;
   bool experimentalFs = false;
 
+  bool zenMode = false;
+
   void load(SharedPreferences pref) {
     gitAuthor = pref.getString("gitAuthor") ?? gitAuthor;
     gitAuthorEmail = pref.getString("gitAuthorEmail") ?? gitAuthorEmail;
@@ -114,6 +116,8 @@ class Settings {
     experimentalBacklinks =
         pref.getBool("experimentalBacklinks") ?? experimentalBacklinks;
     experimentalFs = pref.getBool("experimentalFs") ?? experimentalFs;
+
+    zenMode = pref.getBool("zenMode") ?? zenMode;
   }
 
   Future save() async {
@@ -179,6 +183,7 @@ class Settings {
     _setBool(pref, "experimentalBacklinks", experimentalBacklinks,
         defaultSet.experimentalBacklinks);
     _setBool(pref, "experimentalFs", experimentalFs, defaultSet.experimentalFs);
+    _setBool(pref, "zenMode", zenMode, defaultSet.zenMode);
 
     pref.setInt("settingsVersion", version);
   }
@@ -238,6 +243,7 @@ class Settings {
       'debugLogLevel': debugLogLevel,
       'experimentalBacklinks': experimentalBacklinks.toString(),
       'experimentalFs': experimentalFs.toString(),
+      'zenMode': zenMode.toString(),
     };
   }
 
