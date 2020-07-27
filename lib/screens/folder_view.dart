@@ -64,11 +64,11 @@ class _FolderViewState extends State<FolderView> {
   Widget build(BuildContext context) {
     var container = Provider.of<StateContainer>(context);
     final appState = container.appState;
-    final defaultEditor = widget.notesFolder.config.defaultEditor;
 
     var createButton = FloatingActionButton(
       key: const ValueKey("FAB"),
-      onPressed: () => _newPost(context, defaultEditor),
+      onPressed: () =>
+          _newPost(context, widget.notesFolder.config.defaultEditor),
       child: const Icon(Icons.add),
     );
 
