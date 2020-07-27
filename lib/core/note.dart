@@ -291,7 +291,6 @@ class Note with NotesNotifier {
 
   // FIXME: What about error handling?
   Future<void> save() async {
-    assert(_filePath != null);
     assert(_data != null);
     assert(_data.body != null);
     assert(_data.props != null);
