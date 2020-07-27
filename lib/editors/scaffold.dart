@@ -88,6 +88,7 @@ class _EditorScaffoldState extends State<EditorScaffold> {
               editorState: widget.editorState,
               parentFolder: widget.parentFolder,
               allowEdits: widget.allowEdits,
+              zenMode: zenMode,
               onZenModeChanged: () {
                 setState(() {
                   zenMode = !zenMode;

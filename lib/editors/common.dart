@@ -90,6 +90,7 @@ class EditorBottomBar extends StatelessWidget {
   final EditorState editorState;
   final NotesFolderFS parentFolder;
   final bool allowEdits;
+  final bool zenMode;
   final Func0<void> onZenModeChanged;
 
   EditorBottomBar({
@@ -97,6 +98,7 @@ class EditorBottomBar extends StatelessWidget {
     @required this.editorState,
     @required this.parentFolder,
     @required this.allowEdits,
+    @required this.zenMode,
     @required this.onZenModeChanged,
   });
 
@@ -118,8 +120,13 @@ class EditorBottomBar extends StatelessWidget {
       onPressed: () {
         showModalBottomSheet(
           context: context,
-          builder: (c) =>
-              _buildBottomMenuSheet(c, editor, editorState, onZenModeChanged),
+          builder: (c) => _buildBottomMenuSheet(
+            c,
+            editor,
+            editorState,
+            zenMode,
+            onZenModeChanged,
+          ),
           elevation: 0,
         );
       },
@@ -214,6 +221,7 @@ Widget _buildBottomMenuSheet(
   BuildContext context,
   Editor editor,
   EditorState editorState,
+  bool zenModeEnabled,
   Func0<void> zenModeChanged,
 ) {
   return Container(
@@ -266,7 +274,9 @@ Widget _buildBottomMenuSheet(
         ProOverlay(
           child: ListTile(
             leading: const FaIcon(FontAwesomeIcons.peace),
-            title: Text(tr('editors.common.zen')),
+            title: Text(tr(zenModeEnabled
+                ? 'editors.common.zen.disable'
+                : 'editors.common.zen.enable')),
             onTap: () {
               zenModeChanged();
               Navigator.of(context).pop();
