@@ -30,6 +30,7 @@ class PurchaseScreen extends StatelessWidget {
       "Note Tagging",
       "Custom Home Screen",
       "Note BackLinks",
+      "Zen Mode",
       "Multiple Git Repos (coming soon)",
       "Custom settings per folder (coming soon)",
       "View and search through your entire Git Log (coming soon)",
