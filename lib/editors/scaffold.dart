@@ -56,51 +56,49 @@ class _EditorScaffoldState extends State<EditorScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          _AnimatedOpacityIgnorePointer(
-            visible: !hideUIElements,
-            child: EditorAppBar(
-              editor: widget.editor,
-              editorState: widget.editorState,
-              noteModified: widget.noteModified,
-              extraButton: widget.extraButton,
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          if (Settings.instance.zenMode) {
+            setState(() {
+              hideUIElements = false;
+            });
+          }
+        },
+        child: Column(
+          children: <Widget>[
+            _AnimatedOpacityIgnorePointer(
+              visible: !hideUIElements,
+              child: EditorAppBar(
+                editor: widget.editor,
+                editorState: widget.editorState,
+                noteModified: widget.noteModified,
+                extraButton: widget.extraButton,
+              ),
             ),
-          ),
-          Expanded(
-            child: GestureDetector(
-              child: widget.body,
-              onTap: () {
-                if (Settings.instance.zenMode) {
+            Expanded(child: widget.body),
+            _AnimatedOpacityIgnorePointer(
+              visible: !hideUIElements,
+              child: EditorBottomBar(
+                editor: widget.editor,
+                editorState: widget.editorState,
+                parentFolder: widget.parentFolder,
+                allowEdits: widget.allowEdits,
+                zenMode: Settings.instance.zenMode,
+                onZenModeChanged: () {
                   setState(() {
-                    hideUIElements = false;
-                  });
-                }
-              },
-              behavior: HitTestBehavior.translucent,
-            ),
-          ),
-          _AnimatedOpacityIgnorePointer(
-            visible: !hideUIElements,
-            child: EditorBottomBar(
-              editor: widget.editor,
-              editorState: widget.editorState,
-              parentFolder: widget.parentFolder,
-              allowEdits: widget.allowEdits,
-              zenMode: Settings.instance.zenMode,
-              onZenModeChanged: () {
-                setState(() {
-                  Settings.instance.zenMode = !Settings.instance.zenMode;
-                  Settings.instance.save();
+                    Settings.instance.zenMode = !Settings.instance.zenMode;
+                    Settings.instance.save();
 
-                  if (Settings.instance.zenMode) {
-                    hideUIElements = true;
-                  }
-                });
-              },
-            ),
-          )
-        ],
+                    if (Settings.instance.zenMode) {
+                      hideUIElements = true;
+                    }
+                  });
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
