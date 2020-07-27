@@ -53,6 +53,7 @@ class ChecklistEditor extends StatefulWidget implements Editor {
 }
 
 class ChecklistEditorState extends State<ChecklistEditor>
+    with ChangeNotifier
     implements EditorState {
   Checklist checklist;
   var focusNodes = <UniqueKey, FocusScopeNode>{};
@@ -199,6 +200,8 @@ class ChecklistEditorState extends State<ChecklistEditor>
   }
 
   void _noteTextChanged() {
+    notifyListeners();
+
     if (_noteModified) return;
     setState(() {
       _noteModified = true;

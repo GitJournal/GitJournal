@@ -63,6 +63,7 @@ editors:
     addImage: Add Image from Gallery
     editFileName: Edit File Name
     tags: Edit Tags
+    zen: Toggle Zen Mode
     saveNoteFailed:
       title: Failed to Save Note
       message: We're sorry, but we cannot seem to save the Note. It has been copied to the clipboard to avoid data loss.

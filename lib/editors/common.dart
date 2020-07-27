@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:function_types/function_types.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:share/share.dart';
 
@@ -25,7 +26,7 @@ abstract class Editor {
   NoteCallback get discardChangesSelected;
 }
 
-abstract class EditorState {
+abstract class EditorState with ChangeNotifier {
   Note getNote();
   Future<void> addImage(File file);
 
@@ -87,12 +88,14 @@ class EditorBottomBar extends StatelessWidget {
   final EditorState editorState;
   final NotesFolderFS parentFolder;
   final bool allowEdits;
+  final Func0<void> onZenModeChanged;
 
   EditorBottomBar({
     @required this.editor,
     @required this.editorState,
     @required this.parentFolder,
     @required this.allowEdits,
+    @required this.onZenModeChanged,
   });
 
   @override
@@ -113,7 +116,8 @@ class EditorBottomBar extends StatelessWidget {
       onPressed: () {
         showModalBottomSheet(
           context: context,
-          builder: (c) => _buildBottomMenuSheet(c, editor, editorState),
+          builder: (c) =>
+              _buildBottomMenuSheet(c, editor, editorState, onZenModeChanged),
           elevation: 0,
         );
       },
@@ -208,6 +212,7 @@ Widget _buildBottomMenuSheet(
   BuildContext context,
   Editor editor,
   EditorState editorState,
+  Func0<void> zenModeChanged,
 ) {
   return Container(
     child: Column(
@@ -256,12 +261,22 @@ Widget _buildBottomMenuSheet(
             editor.renameNoteSelected(note);
           },
         ),
+        ProOverlay(
+          child: ListTile(
+            leading: const FaIcon(FontAwesomeIcons.peace),
+            title: Text(tr('editors.common.zen')),
+            onTap: () {
+              zenModeChanged();
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
       ],
     ),
   );
 }
 
-class EditorScaffold extends StatelessWidget {
+class EditorScaffold extends StatefulWidget {
   final Editor editor;
   final EditorState editorState;
   final bool noteModified;
@@ -281,23 +296,81 @@ class EditorScaffold extends StatelessWidget {
   });
 
   @override
+  _EditorScaffoldState createState() => _EditorScaffoldState();
+}
+
+class _EditorScaffoldState extends State<EditorScaffold> {
+  var zenMode = false;
+  var hideUIElements = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    widget.editorState.addListener(_editorChanged);
+  }
+
+  @override
+  void dispose() {
+    widget.editorState.removeListener(_editorChanged);
+
+    super.dispose();
+  }
+
+  void _editorChanged() {
+    if (zenMode && !hideUIElements) {
+      setState(() {
+        hideUIElements = true;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: EditorAppBar(
-        editor: editor,
-        editorState: editorState,
-        noteModified: noteModified,
-        extraButton: extraButton,
-      ),
       body: Column(
         children: <Widget>[
-          Expanded(child: body),
-          EditorBottomBar(
-            editor: editor,
-            editorState: editorState,
-            parentFolder: parentFolder,
-            allowEdits: allowEdits,
+          AnimatedOpacity(
+            duration: const Duration(milliseconds: 500),
+            opacity: hideUIElements ? 0.0 : 1.0,
+            child: EditorAppBar(
+              editor: widget.editor,
+              editorState: widget.editorState,
+              noteModified: widget.noteModified,
+              extraButton: widget.extraButton,
+            ),
           ),
+          Expanded(
+            child: GestureDetector(
+              child: widget.body,
+              onTap: () {
+                if (zenMode) {
+                  setState(() {
+                    hideUIElements = false;
+                  });
+                }
+              },
+              behavior: HitTestBehavior.translucent,
+            ),
+          ),
+          AnimatedOpacity(
+            duration: const Duration(milliseconds: 500),
+            opacity: hideUIElements ? 0.0 : 1.0,
+            child: EditorBottomBar(
+              editor: widget.editor,
+              editorState: widget.editorState,
+              parentFolder: widget.parentFolder,
+              allowEdits: widget.allowEdits,
+              onZenModeChanged: () {
+                setState(() {
+                  zenMode = !zenMode;
+                  if (zenMode) {
+                    hideUIElements = true;
+                  }
+                });
+              },
+            ),
+          )
         ],
       ),
     );

@@ -48,7 +48,9 @@ class RawEditor extends StatefulWidget implements Editor {
   }
 }
 
-class RawEditorState extends State<RawEditor> implements EditorState {
+class RawEditorState extends State<RawEditor>
+    with ChangeNotifier
+    implements EditorState {
   Note note;
   bool _noteModified;
   TextEditingController _textController = TextEditingController();
@@ -106,6 +108,8 @@ class RawEditorState extends State<RawEditor> implements EditorState {
   }
 
   void _noteTextChanged() {
+    notifyListeners();
+
     if (_noteModified) return;
     setState(() {
       _noteModified = true;

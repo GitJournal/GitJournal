@@ -48,7 +48,9 @@ class JournalEditor extends StatefulWidget implements Editor {
   }
 }
 
-class JournalEditorState extends State<JournalEditor> implements EditorState {
+class JournalEditorState extends State<JournalEditor>
+    with ChangeNotifier
+    implements EditorState {
   Note note;
   TextEditingController _textController = TextEditingController();
   bool _noteModified;
@@ -110,7 +112,10 @@ class JournalEditorState extends State<JournalEditor> implements EditorState {
   }
 
   void _noteTextChanged() {
-    if (_noteModified && !widget.isNewNote) return;
+    if (_noteModified && !widget.isNewNote) {
+      notifyListeners();
+      return;
+    }
 
     var newState = !(widget.isNewNote && _textController.text.trim().isEmpty);
     if (newState != _noteModified) {
@@ -118,6 +123,8 @@ class JournalEditorState extends State<JournalEditor> implements EditorState {
         _noteModified = newState;
       });
     }
+
+    notifyListeners();
   }
 
   @override

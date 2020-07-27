@@ -53,7 +53,9 @@ class MarkdownEditor extends StatefulWidget implements Editor {
   }
 }
 
-class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
+class MarkdownEditorState extends State<MarkdownEditor>
+    with ChangeNotifier
+    implements EditorState {
   Note note;
   TextEditingController _textController = TextEditingController();
   TextEditingController _titleTextController = TextEditingController();
@@ -187,6 +189,8 @@ class MarkdownEditorState extends State<MarkdownEditor> implements EditorState {
         _noteModified = newState;
       });
     }
+
+    notifyListeners();
   }
 
   void _applyHeuristics() {
