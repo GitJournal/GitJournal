@@ -58,9 +58,8 @@ class _EditorScaffoldState extends State<EditorScaffold> {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          AnimatedOpacity(
-            duration: const Duration(milliseconds: 500),
-            opacity: hideUIElements ? 0.0 : 1.0,
+          _AnimatedOpacityIgnorePointer(
+            visible: !hideUIElements,
             child: EditorAppBar(
               editor: widget.editor,
               editorState: widget.editorState,
@@ -81,9 +80,8 @@ class _EditorScaffoldState extends State<EditorScaffold> {
               behavior: HitTestBehavior.translucent,
             ),
           ),
-          AnimatedOpacity(
-            duration: const Duration(milliseconds: 500),
-            opacity: hideUIElements ? 0.0 : 1.0,
+          _AnimatedOpacityIgnorePointer(
+            visible: !hideUIElements,
             child: EditorBottomBar(
               editor: widget.editor,
               editorState: widget.editorState,
@@ -103,6 +101,26 @@ class _EditorScaffoldState extends State<EditorScaffold> {
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class _AnimatedOpacityIgnorePointer extends StatelessWidget {
+  final bool visible;
+  final Widget child;
+
+  _AnimatedOpacityIgnorePointer({@required this.visible, @required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    var opacity = visible ? 1.0 : 0.0;
+    return IgnorePointer(
+      ignoring: !visible,
+      child: AnimatedOpacity(
+        duration: const Duration(milliseconds: 500),
+        opacity: opacity,
+        child: child,
       ),
     );
   }
