@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
+import 'package:gitjournal/editors/disposable_change_notifier.dart';
 import 'package:gitjournal/editors/heuristics.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/error_reporting.dart';
@@ -54,7 +55,7 @@ class MarkdownEditor extends StatefulWidget implements Editor {
 }
 
 class MarkdownEditorState extends State<MarkdownEditor>
-    with ChangeNotifier
+    with DisposableChangeNotifier
     implements EditorState {
   Note note;
   TextEditingController _textController = TextEditingController();
@@ -93,6 +94,8 @@ class MarkdownEditorState extends State<MarkdownEditor>
   void dispose() {
     _textController.dispose();
     _titleTextController.dispose();
+
+    super.disposeListenables();
     super.dispose();
   }
 

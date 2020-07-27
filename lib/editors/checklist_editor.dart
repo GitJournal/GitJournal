@@ -9,6 +9,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:gitjournal/core/checklist.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
+import 'package:gitjournal/editors/disposable_change_notifier.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
 
 class ChecklistEditor extends StatefulWidget implements Editor {
@@ -53,7 +54,7 @@ class ChecklistEditor extends StatefulWidget implements Editor {
 }
 
 class ChecklistEditorState extends State<ChecklistEditor>
-    with ChangeNotifier
+    with DisposableChangeNotifier
     implements EditorState {
   Checklist checklist;
   var focusNodes = <UniqueKey, FocusScopeNode>{};
@@ -84,6 +85,8 @@ class ChecklistEditorState extends State<ChecklistEditor>
   @override
   void dispose() {
     _titleTextController.dispose();
+
+    super.disposeListenables();
     super.dispose();
   }
 

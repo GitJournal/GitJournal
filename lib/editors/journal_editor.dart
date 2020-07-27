@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
+import 'package:gitjournal/editors/disposable_change_notifier.dart';
 import 'package:gitjournal/widgets/editor_scroll_view.dart';
 import 'package:gitjournal/widgets/journal_editor_header.dart';
 
@@ -49,7 +50,7 @@ class JournalEditor extends StatefulWidget implements Editor {
 }
 
 class JournalEditorState extends State<JournalEditor>
-    with ChangeNotifier
+    with DisposableChangeNotifier
     implements EditorState {
   Note note;
   TextEditingController _textController = TextEditingController();
@@ -68,6 +69,8 @@ class JournalEditorState extends State<JournalEditor>
   @override
   void dispose() {
     _textController.dispose();
+
+    super.disposeListenables();
     super.dispose();
   }
 
