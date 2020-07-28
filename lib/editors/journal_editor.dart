@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/disposable_change_notifier.dart';
+import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/widgets/editor_scroll_view.dart';
 import 'package:gitjournal/widgets/journal_editor_header.dart';
 
@@ -89,7 +90,7 @@ class JournalEditorState extends State<JournalEditor>
       child: Column(
         children: <Widget>[
           JournalEditorHeader(note),
-          _NoteBodyEditor(
+          NoteBodyEditor(
             textController: _textController,
             autofocus: widget.isNewNote,
             onChanged: _noteTextChanged,
@@ -141,33 +142,4 @@ class JournalEditorState extends State<JournalEditor>
 
   @override
   bool get noteModified => _noteModified;
-}
-
-class _NoteBodyEditor extends StatelessWidget {
-  final TextEditingController textController;
-  final bool autofocus;
-  final Function onChanged;
-
-  _NoteBodyEditor({this.textController, this.autofocus, this.onChanged});
-
-  @override
-  Widget build(BuildContext context) {
-    var style = Theme.of(context).textTheme.subtitle1;
-
-    return TextField(
-      autofocus: autofocus,
-      keyboardType: TextInputType.multiline,
-      maxLines: null,
-      style: style,
-      decoration: const InputDecoration(
-        hintText: 'Write here',
-        border: InputBorder.none,
-        isDense: true,
-      ),
-      controller: textController,
-      textCapitalization: TextCapitalization.sentences,
-      scrollPadding: const EdgeInsets.all(0.0),
-      onChanged: (_) => onChanged(),
-    );
-  }
 }

@@ -6,6 +6,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/disposable_change_notifier.dart';
 import 'package:gitjournal/editors/heuristics.dart';
+import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings.dart';
@@ -118,7 +119,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
               _titleTextController,
               _noteTextChanged,
             ),
-          _NoteBodyEditor(
+          NoteBodyEditor(
             textController: _textController,
             autofocus: widget.isNewNote,
             onChanged: _noteTextChanged,
@@ -226,37 +227,4 @@ class MarkdownEditorState extends State<MarkdownEditor>
 
   @override
   bool get noteModified => _noteModified;
-}
-
-class _NoteBodyEditor extends StatelessWidget {
-  final TextEditingController textController;
-  final bool autofocus;
-  final Function onChanged;
-
-  _NoteBodyEditor({
-    @required this.textController,
-    @required this.autofocus,
-    @required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    var style = Theme.of(context).textTheme.subtitle1;
-
-    return TextField(
-      autofocus: autofocus,
-      keyboardType: TextInputType.multiline,
-      maxLines: null,
-      style: style,
-      decoration: const InputDecoration(
-        hintText: 'Write here',
-        border: InputBorder.none,
-        isDense: true,
-      ),
-      controller: textController,
-      textCapitalization: TextCapitalization.sentences,
-      scrollPadding: const EdgeInsets.all(0.0),
-      onChanged: (_) => onChanged(),
-    );
-  }
 }
