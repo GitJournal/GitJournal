@@ -1,3 +1,6 @@
+## [1.61] - 2020-07-28
+* Add Zen Mode
+
 ## [1.60] - 2020-07-21
 * Make sure pro mode is correctly detected
 * Ensure notes are never lost when saving
