@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:yaml/yaml.dart';
 
@@ -20,6 +22,8 @@ class NoteSerializationSettings {
   String titleKey = "title";
   String typeKey = "type";
   String tagsKey = "tags";
+
+  bool saveTitleAsH1 = Settings.instance.saveTitleInH1;
 }
 
 class NoteSerializer implements NoteSerializerInterface {
@@ -27,6 +31,8 @@ class NoteSerializer implements NoteSerializerInterface {
 
   @override
   void encode(Note note, MdYamlDoc data) {
+    data.body = emojiParser.unemojify(note.body);
+
     if (note.created != null) {
       data.props[settings.createdKey] = toIso8601WithTimezone(note.created);
     } else {
@@ -40,11 +46,17 @@ class NoteSerializer implements NoteSerializerInterface {
     }
 
     if (note.title != null) {
-      var title = note.title.trim();
-      if (title.isNotEmpty) {
-        data.props[settings.titleKey] = emojiParser.unemojify(note.title);
+      var title = emojiParser.unemojify(note.title.trim());
+      if (settings.saveTitleAsH1) {
+        if (title.isNotEmpty) {
+          data.body = '# $title\n\n${data.body}';
+        }
       } else {
-        data.props.remove(settings.titleKey);
+        if (title.isNotEmpty) {
+          data.props[settings.titleKey] = title;
+        } else {
+          data.props.remove(settings.titleKey);
+        }
       }
     } else {
       data.props.remove(settings.titleKey);
@@ -62,8 +74,6 @@ class NoteSerializer implements NoteSerializerInterface {
     } else {
       data.props[settings.tagsKey] = note.tags.toList();
     }
-
-    data.body = emojiParser.unemojify(note.body);
   }
 
   @override
@@ -89,8 +99,29 @@ class NoteSerializer implements NoteSerializerInterface {
     note.body = emojiParser.emojify(data.body);
     note.created = parseDateTime(data.props[settings.createdKey]?.toString());
 
-    var title = data.props[settings.titleKey]?.toString() ?? "";
-    note.title = emojiParser.emojify(title);
+    //
+    // Title parsing
+    //
+    if (settings.saveTitleAsH1) {
+      if (note.body.startsWith('#')) {
+        var titleEndIndex = note.body.indexOf('\n');
+        if (titleEndIndex == -1 || titleEndIndex == note.body.length) {
+          note.title = note.body.substring(1).trim();
+          note.body = "";
+        } else {
+          note.title = note.body.substring(1, titleEndIndex).trim();
+          note.body = note.body.substring(titleEndIndex + 1).trim();
+        }
+      }
+      for (var line in LineSplitter.split(note.body)) {
+        if (note.title.isEmpty && line.trim().isEmpty) {
+          continue;
+        }
+      }
+    } else {
+      var title = data.props[settings.titleKey]?.toString() ?? "";
+      note.title = emojiParser.emojify(title);
+    }
 
     var type = data.props[settings.typeKey];
     switch (type) {

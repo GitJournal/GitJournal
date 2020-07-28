@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:gitjournal/core/md_yaml_doc.dart';
 
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
+import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/note_serializer.dart';
+import 'package:gitjournal/editors/note_body_editor.dart';
+import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
 import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/utils/datetime.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class NoteMetadataSettingsScreen extends StatefulWidget {
@@ -19,11 +23,12 @@ class _NoteMetadataSettingsScreenState
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
-    String yamlHeader = "                                      \n";
-    if (Settings.instance.yamlHeaderEnabled) {
-      var map = _buildMap();
-      yamlHeader = MarkdownYAMLCodec.toYamlHeader(map).trim();
-    }
+
+    // FIXME: Translate these
+    var note = Note(null, "fileName.md");
+    note.title = "Pigeons";
+    note.body = _buildBody();
+    note.created = DateTime.now();
 
     var body = Column(
       children: <Widget>[
@@ -35,7 +40,9 @@ class _NoteMetadataSettingsScreenState
           ),
         ),
         const SizedBox(height: 16.0),
-        NoteMetaDataExample(yamlHeader),
+        NoteInputExample(note),
+        const SizedBox(height: 16.0),
+        NoteOutputExample(note),
         const SizedBox(height: 16.0),
         const Divider(),
         SwitchListTile(
@@ -44,6 +51,9 @@ class _NoteMetadataSettingsScreenState
           onChanged: (bool newVal) {
             setState(() {
               Settings.instance.yamlHeaderEnabled = newVal;
+              if (newVal == false) {
+                Settings.instance.saveTitleInH1 = true;
+              }
               Settings.instance.save();
             });
           },
@@ -67,6 +77,26 @@ class _NoteMetadataSettingsScreenState
             enabled: Settings.instance.yamlHeaderEnabled,
           ),
         ),
+        ProOverlay(
+          child: ListPreference(
+            title: tr("settings.noteMetaData.titleMetaData.title"),
+            options: [
+              tr("settings.noteMetaData.titleMetaData.fromH1"),
+              if (Settings.instance.yamlHeaderEnabled)
+                tr("settings.noteMetaData.titleMetaData.fromYaml"),
+            ],
+            currentOption: Settings.instance.saveTitleInH1
+                ? tr("settings.noteMetaData.titleMetaData.fromH1")
+                : tr("settings.noteMetaData.titleMetaData.fromYaml"),
+            onChange: (String newVal) {
+              setState(() {
+                Settings.instance.saveTitleInH1 =
+                    newVal == tr("settings.noteMetaData.titleMetaData.fromH1");
+                Settings.instance.save();
+              });
+            },
+          ),
+        ),
       ],
     );
 
@@ -80,24 +110,20 @@ class _NoteMetadataSettingsScreenState
           },
         ),
       ),
-      body: body,
+      body: SingleChildScrollView(child: body),
     );
   }
 
-  Map<String, dynamic> _buildMap() {
-    var created = DateTime.now();
-    return {
-      'created': toIso8601WithTimezone(created),
-      Settings.instance.yamlModifiedKey: toIso8601WithTimezone(created),
-      'title': tr("settings.noteMetaData.example.title"),
-    };
+  // FIXME: Add some random text
+  String _buildBody() {
+    return "I think they might be evil. Even more evil than penguins.";
   }
 }
 
-class NoteMetaDataExample extends StatelessWidget {
-  final String yamlHeader;
+class NoteOutputExample extends StatelessWidget {
+  final Note note;
 
-  NoteMetaDataExample(this.yamlHeader);
+  NoteOutputExample(this.note);
 
   @override
   Widget build(BuildContext context) {
@@ -105,10 +131,82 @@ class NoteMetaDataExample extends StatelessWidget {
     var style = theme.textTheme.subtitle1;
     style = style.copyWith(fontFamily: "Roboto Mono");
 
+    var doc = MdYamlDoc();
+    NoteSerializer().encode(note, doc);
+
+    var codec = MarkdownYAMLCodec();
+    var noteStr = codec.encode(doc);
+
     return Container(
       color: theme.highlightColor,
-      child: Text(yamlHeader, style: style),
-      padding: const EdgeInsets.all(0),
+      child: Stack(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Text(noteStr, style: style),
+          ),
+          _FileNameText(note.fileName),
+        ],
+      ),
+    );
+  }
+}
+
+class NoteInputExample extends StatelessWidget {
+  final Note note;
+
+  NoteInputExample(this.note);
+
+  @override
+  Widget build(BuildContext context) {
+    final titleController = TextEditingController(text: note.title);
+    final bodyController = TextEditingController(text: note.body);
+
+    var theme = Theme.of(context);
+
+    return IgnorePointer(
+      child: Container(
+        color: theme.highlightColor,
+        child: Stack(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Column(
+                children: <Widget>[
+                  NoteTitleEditor(titleController, () {}),
+                  NoteBodyEditor(
+                    textController: bodyController,
+                    autofocus: false,
+                    onChanged: () {},
+                  ),
+                ],
+              ),
+            ),
+            _FileNameText(note.fileName),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _FileNameText extends StatelessWidget {
+  final String text;
+
+  _FileNameText(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme;
+
+    return Positioned.fill(
+      child: Align(
+        alignment: Alignment.topRight,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(text, style: textTheme.caption),
+        ),
+      ),
     );
   }
 }

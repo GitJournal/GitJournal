@@ -53,6 +53,7 @@ class Settings {
   bool experimentalFs = false;
 
   bool zenMode = false;
+  bool saveTitleInH1 = true;
 
   void load(SharedPreferences pref) {
     gitAuthor = pref.getString("gitAuthor") ?? gitAuthor;
@@ -118,6 +119,7 @@ class Settings {
     experimentalFs = pref.getBool("experimentalFs") ?? experimentalFs;
 
     zenMode = pref.getBool("zenMode") ?? zenMode;
+    saveTitleInH1 = pref.getBool("saveTitleInH1") ?? saveTitleInH1;
   }
 
   Future save() async {
@@ -184,6 +186,7 @@ class Settings {
         defaultSet.experimentalBacklinks);
     _setBool(pref, "experimentalFs", experimentalFs, defaultSet.experimentalFs);
     _setBool(pref, "zenMode", zenMode, defaultSet.zenMode);
+    _setBool(pref, "saveTitleInH1", saveTitleInH1, defaultSet.saveTitleInH1);
 
     pref.setInt("settingsVersion", version);
   }
@@ -244,6 +247,7 @@ class Settings {
       'experimentalBacklinks': experimentalBacklinks.toString(),
       'experimentalFs': experimentalFs.toString(),
       'zenMode': zenMode.toString(),
+      'saveTitleInH1': saveTitleInH1.toString(),
     };
   }
 

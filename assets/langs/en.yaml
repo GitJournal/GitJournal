@@ -45,6 +45,10 @@ settings:
     modified: Modified Field
     example:
       title: Example Title
+    titleMetaData:
+      title: Title
+      fromH1: Text Header 1
+      fromYaml: From YAML 'title'
   privacy: Privacy Policy
   terms: Terms and Conditions
   experimental:
