@@ -177,7 +177,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
       parentFolder: widget.note.parent,
       body: Column(
         children: <Widget>[
-          if (widget.note.canHaveMetadata) titleEditor,
+          titleEditor,
           Expanded(child: FocusScope(child: checklistWidget)),
         ],
       ),

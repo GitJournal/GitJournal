@@ -62,7 +62,7 @@ class NoteViewer extends StatelessWidget {
     var view = EditorScrollView(
       child: Column(
         children: <Widget>[
-          if (note.canHaveMetadata) NoteTitleHeader(note.title),
+          NoteTitleHeader(note.title),
           Padding(
             padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
             child: MarkdownBody(
