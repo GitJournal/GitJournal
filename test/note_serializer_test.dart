@@ -51,6 +51,32 @@ void main() {
       expect(doc.props.length, 0);
     });
 
+    test('Test Title Reading with blank lines', () {
+      var props = <String, dynamic>{};
+      var doc = MdYamlDoc("\n# Why not :coffee:?\n\nI :heart: you", props);
+
+      var serializer = NoteSerializer();
+
+      var note = Note(null, "file-path-not-important");
+      serializer.decode(doc, note);
+
+      expect(note.body, "I ❤️ you");
+      expect(note.title, "Why not ☕?");
+    });
+
+    test('Test Title Reading with blank lines and no body', () {
+      var props = <String, dynamic>{};
+      var doc = MdYamlDoc("\n# Why not :coffee:?", props);
+
+      var serializer = NoteSerializer();
+
+      var note = Note(null, "file-path-not-important");
+      serializer.decode(doc, note);
+
+      expect(note.body.length, 0);
+      expect(note.title, "Why not ☕?");
+    });
+
     test('Test Old Title Serialization', () {
       var props = LinkedHashMap<String, dynamic>.from(
           <String, dynamic>{"title": "Why not :coffee:?"});

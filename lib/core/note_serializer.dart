@@ -106,22 +106,28 @@ class NoteSerializer implements NoteSerializerInterface {
     if (data.props.containsKey(settings.titleKey)) {
       var title = data.props[settings.titleKey]?.toString() ?? "";
       note.title = emojiParser.emojify(title);
-    } else if (note.body.startsWith('#')) {
-      var titleEndIndex = note.body.indexOf('\n');
-      if (titleEndIndex == -1 || titleEndIndex == note.body.length) {
-        note.title = note.body.substring(1).trim();
-        note.body = "";
-      } else {
-        note.title = note.body.substring(1, titleEndIndex).trim();
-        note.body = note.body.substring(titleEndIndex + 1).trim();
-      }
-      /*
+    } else {
+      var startsWithH1 = false;
       for (var line in LineSplitter.split(note.body)) {
-        if (note.title.isEmpty && line.trim().isEmpty) {
+        if (line.trim().isEmpty) {
           continue;
         }
+        startsWithH1 = line.startsWith('#');
+        break;
       }
-      */
+
+      if (startsWithH1) {
+        var titleStartIndex = note.body.indexOf('#');
+        var titleEndIndex = note.body.indexOf('\n', titleStartIndex);
+        if (titleEndIndex == -1 || titleEndIndex == note.body.length) {
+          note.title = note.body.substring(titleStartIndex + 1).trim();
+          note.body = "";
+        } else {
+          note.title =
+              note.body.substring(titleStartIndex + 1, titleEndIndex).trim();
+          note.body = note.body.substring(titleEndIndex + 1).trim();
+        }
+      }
     }
 
     var type = data.props[settings.typeKey];
