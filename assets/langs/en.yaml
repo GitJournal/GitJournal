@@ -49,6 +49,8 @@ settings:
       title: Title
       fromH1: Text Header 1
       fromYaml: From YAML 'title'
+    exampleTitle: Pigeons
+    exampleBody: I think they might be evil. Even more evil than penguins.
   privacy: Privacy Policy
   terms: Terms and Conditions
   experimental:

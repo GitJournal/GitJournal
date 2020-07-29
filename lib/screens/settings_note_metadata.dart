@@ -24,10 +24,9 @@ class _NoteMetadataSettingsScreenState
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
 
-    // FIXME: Translate these
     var note = Note(null, "fileName.md");
-    note.title = "Pigeons";
-    note.body = _buildBody();
+    note.title = tr("settings.noteMetaData.exampleTitle");
+    note.body = tr("settings.noteMetaData.exampleBody");
     note.created = DateTime.now().add(const Duration(days: -1));
     note.modified = DateTime.now();
 
@@ -113,11 +112,6 @@ class _NoteMetadataSettingsScreenState
       ),
       body: SingleChildScrollView(child: body),
     );
-  }
-
-  // FIXME: Add some random text
-  String _buildBody() {
-    return "I think they might be evil. Even more evil than penguins.";
   }
 }
 
