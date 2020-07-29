@@ -28,7 +28,8 @@ class _NoteMetadataSettingsScreenState
     var note = Note(null, "fileName.md");
     note.title = "Pigeons";
     note.body = _buildBody();
-    note.created = DateTime.now();
+    note.created = DateTime.now().add(const Duration(days: -1));
+    note.modified = DateTime.now();
 
     var body = Column(
       children: <Widget>[
