@@ -50,6 +50,7 @@ class NoteSerializer implements NoteSerializerInterface {
       if (settings.saveTitleAsH1) {
         if (title.isNotEmpty) {
           data.body = '# $title\n\n${data.body}';
+          data.props.remove(settings.titleKey);
         }
       } else {
         if (title.isNotEmpty) {
@@ -102,25 +103,25 @@ class NoteSerializer implements NoteSerializerInterface {
     //
     // Title parsing
     //
-    if (settings.saveTitleAsH1) {
-      if (note.body.startsWith('#')) {
-        var titleEndIndex = note.body.indexOf('\n');
-        if (titleEndIndex == -1 || titleEndIndex == note.body.length) {
-          note.title = note.body.substring(1).trim();
-          note.body = "";
-        } else {
-          note.title = note.body.substring(1, titleEndIndex).trim();
-          note.body = note.body.substring(titleEndIndex + 1).trim();
-        }
+    if (data.props.containsKey(settings.titleKey)) {
+      var title = data.props[settings.titleKey]?.toString() ?? "";
+      note.title = emojiParser.emojify(title);
+    } else if (note.body.startsWith('#')) {
+      var titleEndIndex = note.body.indexOf('\n');
+      if (titleEndIndex == -1 || titleEndIndex == note.body.length) {
+        note.title = note.body.substring(1).trim();
+        note.body = "";
+      } else {
+        note.title = note.body.substring(1, titleEndIndex).trim();
+        note.body = note.body.substring(titleEndIndex + 1).trim();
       }
+      /*
       for (var line in LineSplitter.split(note.body)) {
         if (note.title.isEmpty && line.trim().isEmpty) {
           continue;
         }
       }
-    } else {
-      var title = data.props[settings.titleKey]?.toString() ?? "";
-      note.title = emojiParser.emojify(title);
+      */
     }
 
     var type = data.props[settings.typeKey];
