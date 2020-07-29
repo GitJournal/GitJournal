@@ -20,7 +20,7 @@ void main() {
 
     test('Should respect modified key as modified', () async {
       var content = """---
-title: Foo
+bar: Foo
 modified: 2017-02-15T22:41:19+01:00
 ---
 
@@ -38,7 +38,7 @@ Hello""";
       await note.save();
 
       var expectedContent = """---
-title: Foo
+bar: Foo
 modified: 2019-12-02T04:00:00+00:00
 ---
 
@@ -50,7 +50,7 @@ Hello""";
 
     test('Should respect modified key as mod', () async {
       var content = """---
-title: Foo
+bar: Foo
 mod: 2017-02-15T22:41:19+01:00
 ---
 
@@ -68,7 +68,7 @@ Hello""";
       await note.save();
 
       var expectedContent = """---
-title: Foo
+bar: Foo
 mod: 2019-12-02T04:00:00+00:00
 ---
 
@@ -80,7 +80,7 @@ Hello""";
 
     test('Should read and write tags', () async {
       var content = """---
-title: Foo
+bar: Foo
 tags: [A, B]
 ---
 
@@ -104,7 +104,7 @@ Hello""";
       await note.save();
 
       var expectedContent = """---
-title: Foo
+bar: Foo
 tags: [A, C, D]
 ---
 
@@ -116,7 +116,7 @@ Hello""";
 
     test('Should parse links', () async {
       var content = """---
-title: Foo
+bar: Foo
 ---
 
 [Hi](./foo.md)
@@ -163,7 +163,7 @@ title: Foo
 
     test('Should detect file format', () async {
       var content = """---
-title: Foo
+bar: Foo
 ---
 
 Gee
@@ -190,6 +190,7 @@ Gee
       expect(txtNote.fileFormat, NoteFileFormat.Txt);
       expect(txtNote.canHaveMetadata, false);
       expect(txtNote.title.isEmpty, true);
+      expect(txtNote.body, content);
     });
 
     test('New Notes have a file extension', () async {

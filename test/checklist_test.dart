@@ -21,10 +21,10 @@ void main() {
 
     test('Should parse simple checklists', () async {
       var content = """---
-title: Foo
+bar: Foo
 ---
 
-# Title 1
+Title 1
 
 How are you doing?
 
@@ -75,10 +75,10 @@ Booga Wooga
       await checklist.note.save();
 
       var expectedContent = """---
-title: Foo
+bar: Foo
 ---
 
-# Title 1
+Title 1
 
 How are you doing?
 
@@ -271,7 +271,8 @@ Booga Wooga
       checklist.removeAt(0);
 
       note = checklist.note;
-      expect(note.body, "#Title\n");
+      expect(note.body, "");
+      expect(note.title, "Title");
     });
   });
 }
