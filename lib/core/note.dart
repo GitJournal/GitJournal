@@ -157,8 +157,6 @@ class Note with NotesNotifier {
   }
 
   set title(String title) {
-    if (!canHaveMetadata) return;
-
     _title = title;
     _notifyModified();
   }
