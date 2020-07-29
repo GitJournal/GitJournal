@@ -145,7 +145,8 @@ class NoteOutputExample extends StatelessWidget {
             padding: const EdgeInsets.all(32.0),
             child: Text(noteStr, style: style),
           ),
-          _FileNameText(note.fileName),
+          _HeaderText(note.fileName, Alignment.topRight),
+          _HeaderText("Output", Alignment.topLeft),
         ],
       ),
     );
@@ -182,7 +183,8 @@ class NoteInputExample extends StatelessWidget {
                 ],
               ),
             ),
-            _FileNameText(note.fileName),
+            _HeaderText(note.fileName, Alignment.topRight),
+            _HeaderText("Input", Alignment.topLeft),
           ],
         ),
       ),
@@ -190,10 +192,11 @@ class NoteInputExample extends StatelessWidget {
   }
 }
 
-class _FileNameText extends StatelessWidget {
+class _HeaderText extends StatelessWidget {
   final String text;
+  final Alignment alignment;
 
-  _FileNameText(this.text);
+  _HeaderText(this.text, this.alignment);
 
   @override
   Widget build(BuildContext context) {
@@ -201,7 +204,7 @@ class _FileNameText extends StatelessWidget {
 
     return Positioned.fill(
       child: Align(
-        alignment: Alignment.topRight,
+        alignment: alignment,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(text, style: textTheme.caption),
