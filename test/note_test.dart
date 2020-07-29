@@ -199,5 +199,23 @@ Gee
       var path = note.filePath;
       expect(path.endsWith('.md'), true);
     });
+
+    test('Txt files header is not read', () async {
+      var content = """# Hello
+
+Gee
+""";
+      var txtNotePath = p.join(tempDir.path, "note163.txt");
+      await File(txtNotePath).writeAsString(content);
+
+      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var txtNote = Note(parentFolder, txtNotePath);
+      await txtNote.load();
+
+      expect(txtNote.fileFormat, NoteFileFormat.Txt);
+      expect(txtNote.canHaveMetadata, false);
+      expect(txtNote.title.isEmpty, true);
+      expect(txtNote.body, content);
+    });
   });
 }
