@@ -1,3 +1,7 @@
+## [1.62] - 2020-07-30
+* Allow title metadata to be configured
+* Bug: Fix GitJournal sometimes reseting its config
+
 ## [1.61] - 2020-07-28
 * Add Zen Mode
 
