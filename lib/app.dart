@@ -66,21 +66,7 @@ class JournalApp extends StatefulWidget {
       Log.i("New Documents Directory Path ${dir.path}");
     }
 
-    // Handle migrations - Remove this code in 2021
-    var localConfigured = appState.localGitRepoConfigured;
-    if (localConfigured && appState.remoteGitRepoConfigured == false) {
-      appState.localGitRepoFolderName = "journal_local";
-      var repoPath = p.join(
-        appState.gitBaseDirectory,
-        appState.localGitRepoFolderName,
-      );
-
-      if (!Directory(repoPath).existsSync()) {
-        localConfigured = false;
-      }
-    }
-
-    if (localConfigured == false) {
+    if (appState.localGitRepoConfigured == false) {
       // FIXME: What about exceptions!
       appState.localGitRepoFolderName = "journal_local";
       var repoPath = p.join(
