@@ -1,25 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:touchable/touchable.dart';
 
-class MyExampleWidget extends StatelessWidget {
+class MyExampleWidget extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    FocusScope.of(context).nextFocus();
-    return CanvasTouchDetector(
-      builder: (context) {
-        return CustomPaint(
-          painter: MyPainter(context),
-        );
-      },
-    );
-  }
+  _MyExampleWidgetState createState() => _MyExampleWidgetState();
 }
 
-class MyPainter extends CustomPainter {
-  final BuildContext context;
+class _MyExampleWidgetState extends State<MyExampleWidget> {
   Graph graph;
 
-  MyPainter(this.context) {
+  @override
+  void initState() {
+    super.initState();
+
     var a = Node("A", 30, 30);
     var b = Node("B", 200, 200);
     var c = Node("C", 200, 100);
@@ -40,7 +33,27 @@ class MyPainter extends CustomPainter {
   }
 
   @override
+  Widget build(BuildContext context) {
+    FocusScope.of(context).nextFocus();
+    return CanvasTouchDetector(
+      builder: (context) {
+        return CustomPaint(
+          painter: MyPainter(context, graph),
+        );
+      },
+    );
+  }
+}
+
+class MyPainter extends CustomPainter {
+  final BuildContext context;
+  final Graph graph;
+
+  MyPainter(this.context, this.graph) : super(repaint: graph);
+
+  @override
   void paint(Canvas canvas, Size size) {
+    print("Paint");
     var myCanvas = TouchyCanvas(context, canvas);
 
     // Draw all the edges
@@ -63,17 +76,29 @@ class MyPainter extends CustomPainter {
         Offset(node.x, node.y),
         30,
         Paint()..color = Colors.orange,
-        /*
         onPanStart: (tapdetail) {
           node.pressed = true;
           print('$node Pan start - $tapdetail');
+
+          node.x = tapdetail.localPosition.dx;
+          node.y = tapdetail.localPosition.dy;
+
+          graph.notify();
         },
         onPanDown: (tapdetail) {
           node.pressed = false;
           print('$node PanEnd - $tapdetail');
-        },*/
+          node.x = tapdetail.localPosition.dx;
+          node.y = tapdetail.localPosition.dy;
+
+          graph.notify();
+        },
         onPanUpdate: (tapdetail) {
           print('$node PanUpdate - $tapdetail');
+
+          node.x = tapdetail.localPosition.dx;
+          node.y = tapdetail.localPosition.dy;
+          graph.notify();
         },
         /*
         onTapDown: (details) {
@@ -111,9 +136,13 @@ class Edge {
   Edge(this.a, this.b);
 }
 
-class Graph {
+class Graph extends ChangeNotifier {
   List<Node> nodes = [];
   List<Edge> edges = [];
+
+  void notify() {
+    notifyListeners();
+  }
 }
 
 void main() => runApp(MyApp());
@@ -148,3 +177,5 @@ class MyWidget extends StatelessWidget {
     );
   }
 }
+
+// FIXME: Possibly use directed_graph library?
