@@ -204,8 +204,8 @@ class SettingsListState extends State<SettingsList> {
       ),
       const SizedBox(height: 16.0),
       ListTile(
-        title: const Text("Editor Settings"),
-        subtitle: const Text("Configure how different editors work"),
+        title: Text(tr("settings.editors.title")),
+        subtitle: Text(tr("settings.editors.subtitle")),
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) => SettingsEditorsScreen(),

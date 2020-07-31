@@ -36,7 +36,7 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
 
     var body = ListView(children: <Widget>[
       ListPreference(
-        title: "Default Editor",
+        title: tr("settings.editors.defaultEditor"),
         currentOption: settings.defaultEditor.toPublicString(),
         options:
             SettingsEditorType.options.map((f) => f.toPublicString()).toList(),
@@ -47,9 +47,9 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
           setState(() {});
         },
       ),
-      SettingsHeader("Markdown Editor"),
+      SettingsHeader(tr("settings.editors.markdownEditor")),
       ListPreference(
-        title: "Default State",
+        title: tr("settings.editors.defaultState"),
         currentOption: settings.markdownDefaultView.toPublicString(),
         options: SettingsMarkdownDefaultView.options
             .map((f) => f.toPublicString())
@@ -61,10 +61,10 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
           setState(() {});
         },
       ),
-      SettingsHeader("Journal Editor"),
+      SettingsHeader(tr("settings.editors.journalEditor")),
       ProOverlay(
         child: ListTile(
-          title: const Text("Default Folder"),
+          title: Text(tr("settings.editors.defaultFolder")),
           subtitle: Text(defaultNewFolder),
           onTap: () async {
             var destFolder = await showDialog<NotesFolderFS>(
@@ -83,7 +83,7 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editor Settings'),
+        title: Text(tr("settings.editors.title")),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

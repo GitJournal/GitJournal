@@ -58,6 +58,14 @@ settings:
     subtitle: Try out features in Development
     backlinks: Show Backlinks in Markdown Preview
     fs: Show File System
+  editors:
+    title: Editor Settings
+    subtitle: Configure how different editors work
+    defaultEditor: Default Editor
+    defaultState: Default State
+    markdownEditor: Markdown Editor
+    journalEditor: Journal Editor
+    defaultFolder: Default Folder
 
 editors:
   checklist:
