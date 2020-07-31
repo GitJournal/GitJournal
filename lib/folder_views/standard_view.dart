@@ -15,7 +15,8 @@ enum StandardViewHeader {
 }
 
 class StandardView extends StatelessWidget {
-  final NoteSelectedFunction noteSelectedFunction;
+  final NoteSelectedFunction noteTapped;
+  final NoteSelectedFunction noteLongPressed;
   final NotesFolder folder;
   final String emptyText;
 
@@ -26,7 +27,8 @@ class StandardView extends StatelessWidget {
 
   StandardView({
     @required this.folder,
-    @required this.noteSelectedFunction,
+    @required this.noteTapped,
+    @required this.noteLongPressed,
     @required this.emptyText,
     @required this.headerType,
     @required this.showSummary,
@@ -115,13 +117,15 @@ class StandardView extends StatelessWidget {
           children: summary,
           crossAxisAlignment: CrossAxisAlignment.start,
         ),
-        onTap: () => noteSelectedFunction(note),
+        onTap: () => noteTapped(note),
+        onLongPress: () => noteLongPressed(note),
       );
     } else {
       tile = ListTile(
         isThreeLine: false,
         title: titleRow,
-        onTap: () => noteSelectedFunction(note),
+        onTap: () => noteTapped(note),
+        onLongPress: () => noteLongPressed(note),
       );
     }
 

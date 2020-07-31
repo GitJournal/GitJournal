@@ -9,9 +9,14 @@ typedef void NoteSelectedFunction(Note note);
 
 class NoteTile extends StatelessWidget {
   final Note note;
-  final NoteSelectedFunction noteSelectedFunction;
+  final NoteSelectedFunction noteTapped;
+  final NoteSelectedFunction noteLongPressed;
 
-  NoteTile(this.note, this.noteSelectedFunction);
+  NoteTile({
+    @required this.note,
+    @required this.noteTapped,
+    @required this.noteLongPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +81,8 @@ class NoteTile extends StatelessWidget {
       child: InkWell(
         child: tileContent,
         borderRadius: borderRadius,
-        onTap: () => noteSelectedFunction(note),
+        onTap: () => noteTapped(note),
+        onLongPress: () => noteLongPressed(note),
       ),
     );
   }

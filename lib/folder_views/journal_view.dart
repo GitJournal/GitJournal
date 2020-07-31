@@ -9,7 +9,8 @@ import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/folder_views/list_view.dart';
 
 class JournalView extends StatelessWidget {
-  final NoteSelectedFunction noteSelectedFunction;
+  final NoteSelectedFunction noteTapped;
+  final NoteSelectedFunction noteLongPressed;
   final NotesFolder folder;
   final String emptyText;
 
@@ -18,7 +19,8 @@ class JournalView extends StatelessWidget {
 
   JournalView({
     @required this.folder,
-    @required this.noteSelectedFunction,
+    @required this.noteTapped,
+    @required this.noteLongPressed,
     @required this.emptyText,
   });
 
@@ -77,7 +79,8 @@ class JournalView extends StatelessWidget {
         children: children,
         crossAxisAlignment: CrossAxisAlignment.start,
       ),
-      onTap: () => noteSelectedFunction(note),
+      onTap: () => noteTapped(note),
+      onLongPress: () => noteLongPressed(note),
     );
 
     var dc = Theme.of(context).dividerColor;

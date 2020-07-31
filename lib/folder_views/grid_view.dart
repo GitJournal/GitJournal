@@ -6,13 +6,15 @@ import 'package:gitjournal/folder_views/card_view.dart';
 import 'package:gitjournal/folder_views/note_tile.dart';
 
 class GridFolderView extends StatelessWidget {
-  final NoteSelectedFunction noteSelectedFunction;
+  final NoteSelectedFunction noteTapped;
+  final NoteSelectedFunction noteLongPressed;
   final NotesFolder folder;
   final String emptyText;
 
   GridFolderView({
     @required this.folder,
-    @required this.noteSelectedFunction,
+    @required this.noteTapped,
+    @required this.noteLongPressed,
     @required this.emptyText,
   });
 
@@ -20,7 +22,8 @@ class GridFolderView extends StatelessWidget {
   Widget build(BuildContext context) {
     return CardView(
       folder: folder,
-      noteSelectedFunction: noteSelectedFunction,
+      noteTapped: noteTapped,
+      noteLongPressed: noteLongPressed,
       emptyText: emptyText,
       fixedHeight: true,
     );

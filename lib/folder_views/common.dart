@@ -29,12 +29,14 @@ Widget buildFolderView(
   bool showSummary,
 ) {
   var noteSelectionFn = (Note note) => openNoteEditor(context, note);
+  var noteLongPressedFn = (Note note) {};
 
   switch (viewType) {
     case FolderViewType.Standard:
       return StandardView(
         folder: folder,
-        noteSelectedFunction: noteSelectionFn,
+        noteTapped: noteSelectionFn,
+        noteLongPressed: noteLongPressedFn,
         emptyText: emptyText,
         headerType: header,
         showSummary: showSummary,
@@ -42,19 +44,22 @@ Widget buildFolderView(
     case FolderViewType.Journal:
       return JournalView(
         folder: folder,
-        noteSelectedFunction: noteSelectionFn,
+        noteTapped: noteSelectionFn,
+        noteLongPressed: noteLongPressedFn,
         emptyText: emptyText,
       );
     case FolderViewType.Card:
       return CardView(
         folder: folder,
-        noteSelectedFunction: noteSelectionFn,
+        noteTapped: noteSelectionFn,
+        noteLongPressed: noteLongPressedFn,
         emptyText: emptyText,
       );
     case FolderViewType.Grid:
       return GridFolderView(
         folder: folder,
-        noteSelectedFunction: noteSelectionFn,
+        noteTapped: noteSelectionFn,
+        noteLongPressed: noteLongPressedFn,
         emptyText: emptyText,
       );
   }

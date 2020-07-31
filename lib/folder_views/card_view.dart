@@ -7,14 +7,16 @@ import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/folder_views/note_tile.dart';
 
 class CardView extends StatelessWidget {
-  final NoteSelectedFunction noteSelectedFunction;
+  final NoteSelectedFunction noteTapped;
+  final NoteSelectedFunction noteLongPressed;
   final NotesFolder folder;
   final String emptyText;
   final bool fixedHeight;
 
   CardView({
     @required this.folder,
-    @required this.noteSelectedFunction,
+    @required this.noteTapped,
+    @required this.noteLongPressed,
     @required this.emptyText,
     this.fixedHeight = false,
   });
@@ -46,7 +48,11 @@ class CardView extends StatelessWidget {
       itemCount: folder.notes.length,
       itemBuilder: (BuildContext context, int index) {
         var note = folder.notes[index];
-        return NoteTile(note, noteSelectedFunction);
+        return NoteTile(
+          note: note,
+          noteTapped: noteTapped,
+          noteLongPressed: noteLongPressed,
+        );
       },
       maxCrossAxisExtent: 200.0,
       staggeredTileBuilder: (int i) => stagTile,
