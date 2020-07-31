@@ -21,6 +21,12 @@ class SettingsImagesScreenState extends State<SettingsImagesScreen> {
     var folder = Provider.of<NotesFolderFS>(context)
         .getFolderWithSpec(settings.imageLocationSpec);
 
+    // If the Custom Folder specified no longer exists
+    if (settings.imageLocationSpec != "." && folder == null) {
+      Settings.instance.imageLocationSpec = ".";
+      Settings.instance.save();
+    }
+
     var sameFolder = tr("settings.images.currentFolder");
     var customFolder = tr("settings.images.customFolder");
 
@@ -72,15 +78,3 @@ class SettingsImagesScreenState extends State<SettingsImagesScreen> {
     );
   }
 }
-
-//
-// Options to expose
-// - Image Location
-//   - Note Directory
-//   - Custom Directory
-// Bool use relative path if possible
-// - Image FileName
-//   - Original Name
-//   - Note FileName + _num
-//   - Custom Name
-//

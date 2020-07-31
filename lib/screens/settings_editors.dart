@@ -6,6 +6,7 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/screens/settings_screen.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
 import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
@@ -22,6 +23,15 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
         Settings.instance.journalEditordefaultNewNoteFolderSpec;
     if (defaultNewFolder.isEmpty) {
       defaultNewFolder = tr("rootFolder");
+    } else {
+      if (!folderWithSpecExists(context, defaultNewFolder)) {
+        setState(() {
+          defaultNewFolder = tr("rootFolder");
+
+          Settings.instance.journalEditordefaultNewNoteFolderSpec = "";
+          Settings.instance.save();
+        });
+      }
     }
 
     var body = ListView(children: <Widget>[

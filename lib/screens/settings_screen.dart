@@ -134,6 +134,15 @@ class SettingsListState extends State<SettingsList> {
     var defaultNewFolder = Settings.instance.defaultNewNoteFolderSpec;
     if (defaultNewFolder.isEmpty) {
       defaultNewFolder = tr("rootFolder");
+    } else {
+      if (!folderWithSpecExists(context, defaultNewFolder)) {
+        setState(() {
+          defaultNewFolder = tr("rootFolder");
+
+          Settings.instance.defaultNewNoteFolderSpec = "";
+          Settings.instance.save();
+        });
+      }
     }
 
     return ListView(children: [
