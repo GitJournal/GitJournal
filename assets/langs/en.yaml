@@ -66,6 +66,11 @@ settings:
     markdownEditor: Markdown Editor
     journalEditor: Journal Editor
     defaultFolder: Default Folder
+  sortingMode:
+    modified: Last Modified
+    created: Created
+    filename: File Name
+    title: Title
 
 editors:
   checklist:

@@ -1,12 +1,26 @@
+import 'package:easy_localization/easy_localization.dart';
+
 import 'package:gitjournal/core/note.dart';
 
 typedef NoteSortingFunction = int Function(Note a, Note b);
 
 class SortingMode {
-  static const Modified = SortingMode("Last Modified", "Modified");
-  static const Created = SortingMode("Created", "Created");
-  static const FileName = SortingMode("File Name", "FileName");
-  static const Title = SortingMode("Title", "Title");
+  static const Modified = SortingMode(
+    "settings.sortingMode.modified",
+    "Modified",
+  );
+  static const Created = SortingMode(
+    "settings.sortingMode.created",
+    "Created",
+  );
+  static const FileName = SortingMode(
+    "settings.sortingMode.filename",
+    "FileName",
+  );
+  static const Title = SortingMode(
+    "settings.sortingMode.title",
+    "Title",
+  );
   static const Default = Modified;
 
   final String _str;
@@ -18,7 +32,7 @@ class SortingMode {
   }
 
   String toPublicString() {
-    return _publicString;
+    return tr(_publicString);
   }
 
   static const options = <SortingMode>[
