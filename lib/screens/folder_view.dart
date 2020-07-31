@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:git_bindings/git_bindings.dart';
-import 'package:gitjournal/core/note.dart';
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/sorted_notes_folder.dart';
@@ -18,6 +17,7 @@ import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
+import 'package:gitjournal/widgets/new_note_nav_bar.dart';
 import 'package:gitjournal/widgets/note_search_delegate.dart';
 import 'package:gitjournal/widgets/sync_button.dart';
 
@@ -68,8 +68,7 @@ class _FolderViewState extends State<FolderView> {
   Widget build(BuildContext context) {
     var createButton = FloatingActionButton(
       key: const ValueKey("FAB"),
-      onPressed: () =>
-          _newPost(context, widget.notesFolder.config.defaultEditor),
+      onPressed: () => _newPost(widget.notesFolder.config.defaultEditor),
       child: const Icon(Icons.add),
     );
 
@@ -148,37 +147,7 @@ class _FolderViewState extends State<FolderView> {
       drawer: AppDrawer(),
       floatingActionButton: createButton,
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      bottomNavigationBar: BottomAppBar(
-        color: Theme.of(context).bottomAppBarColor,
-        shape: const CircularNotchedRectangle(),
-        child: Row(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: IconButton(
-                icon: const FaIcon(FontAwesomeIcons.tasks),
-                onPressed: () => _newPost(context, EditorType.Checklist),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: IconButton(
-                icon: const FaIcon(FontAwesomeIcons.markdown),
-                onPressed: () => _newPost(context, EditorType.Markdown),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: IconButton(
-                icon: const FaIcon(FontAwesomeIcons.book),
-                onPressed: () => _newPost(context, EditorType.Journal),
-              ),
-            ),
-          ],
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-        ),
-      ),
+      bottomNavigationBar: NewNoteNavBar(onPressed: _newPost),
     );
   }
 
@@ -193,7 +162,7 @@ class _FolderViewState extends State<FolderView> {
     }
   }
 
-  void _newPost(BuildContext context, EditorType editorType) async {
+  void _newPost(EditorType editorType) async {
     var folder = widget.notesFolder;
     NotesFolderFS fsFolder = folder.fsFolder;
     var isVirtualFolder = folder.name != folder.fsFolder.name;
