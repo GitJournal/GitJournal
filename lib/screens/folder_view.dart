@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:git_bindings/git_bindings.dart';
+import 'package:gitjournal/core/note.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/notes_folder.dart';
@@ -45,6 +46,9 @@ class _FolderViewState extends State<FolderView> {
   StandardViewHeader _headerType = StandardViewHeader.TitleGenerated;
   bool _showSummary = true;
 
+  bool inSelectionMode = false;
+  Note selectedNote;
+
   var _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -62,9 +66,6 @@ class _FolderViewState extends State<FolderView> {
 
   @override
   Widget build(BuildContext context) {
-    var container = Provider.of<StateContainer>(context);
-    final appState = container.appState;
-
     var createButton = FloatingActionButton(
       key: const ValueKey("FAB"),
       onPressed: () =>
@@ -72,17 +73,40 @@ class _FolderViewState extends State<FolderView> {
       child: const Icon(Icons.add),
     );
 
-    String title = widget.notesFolder.publicName;
+    var title = widget.notesFolder.publicName;
+    if (inSelectionMode) {
+      title = "Note Selected";
+    }
+
     Widget folderView = Builder(
       builder: (BuildContext context) {
         const emptyText = "Let's add some notes?";
         return buildFolderView(
-          context,
-          _viewType,
-          sortedNotesFolder,
-          emptyText,
-          _headerType,
-          _showSummary,
+          viewType: _viewType,
+          folder: sortedNotesFolder,
+          emptyText: emptyText,
+          header: _headerType,
+          showSummary: _showSummary,
+          noteTapped: (Note note) {
+            if (!inSelectionMode) {
+              openNoteEditor(context, note);
+            } else {
+              setState(() {
+                inSelectionMode = false;
+                selectedNote = null;
+              });
+            }
+          },
+          noteLongPressed: (Note note) {
+            // Disabled for now, until I figure out how to render
+            // the selected note differently
+            /*
+            setState(() {
+              inSelectionMode = true;
+              selectedNote = note;
+            });
+            */
+          },
         );
       },
     );
@@ -93,57 +117,24 @@ class _FolderViewState extends State<FolderView> {
       padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 48.0),
     );
 
-    var extraAction = PopupMenuButton<DropDownChoices>(
-      onSelected: (DropDownChoices choice) {
-        switch (choice) {
-          case DropDownChoices.SortingOptions:
-            _sortButtonPressed();
-            break;
-
-          case DropDownChoices.ViewOptions:
-            _configureViewButtonPressed();
-            break;
-        }
+    var backButton = IconButton(
+      icon: const Icon(Icons.arrow_back),
+      onPressed: () {
+        setState(() {
+          inSelectionMode = false;
+          selectedNote = null;
+        });
       },
-      itemBuilder: (BuildContext context) => <PopupMenuEntry<DropDownChoices>>[
-        const PopupMenuItem<DropDownChoices>(
-          value: DropDownChoices.SortingOptions,
-          child: Text('Sorting Options'),
-        ),
-        if (_viewType == FolderViewType.Standard)
-          const PopupMenuItem<DropDownChoices>(
-            value: DropDownChoices.ViewOptions,
-            child: Text('View Options'),
-          ),
-      ],
     );
 
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(title),
-        leading: GJAppBarMenuButton(),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.library_books),
-            onPressed: _folderViewChooserSelected,
-            key: const ValueKey("FolderViewSelector"),
-          ),
-          if (appState.remoteGitRepoConfigured) SyncButton(),
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: NoteSearchDelegate(
-                  sortedNotesFolder.notes,
-                  _viewType,
-                ),
-              );
-            },
-          ),
-          extraAction,
-        ],
+        leading: inSelectionMode ? backButton : GJAppBarMenuButton(),
+        actions: inSelectionMode
+            ? _buildInSelectionNoteActions()
+            : _buildNoteActions(),
       ),
       body: Center(
         child: Builder(
@@ -411,5 +402,60 @@ class _FolderViewState extends State<FolderView> {
       var container = Provider.of<StateContainer>(context, listen: false);
       container.saveFolderConfig(widget.notesFolder.config);
     }
+  }
+
+  List<Widget> _buildNoteActions() {
+    final appState = Provider.of<StateContainer>(context).appState;
+
+    var extraActions = PopupMenuButton<DropDownChoices>(
+      onSelected: (DropDownChoices choice) {
+        switch (choice) {
+          case DropDownChoices.SortingOptions:
+            _sortButtonPressed();
+            break;
+
+          case DropDownChoices.ViewOptions:
+            _configureViewButtonPressed();
+            break;
+        }
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<DropDownChoices>>[
+        const PopupMenuItem<DropDownChoices>(
+          value: DropDownChoices.SortingOptions,
+          child: Text('Sorting Options'),
+        ),
+        if (_viewType == FolderViewType.Standard)
+          const PopupMenuItem<DropDownChoices>(
+            value: DropDownChoices.ViewOptions,
+            child: Text('View Options'),
+          ),
+      ],
+    );
+
+    return <Widget>[
+      IconButton(
+        icon: const Icon(Icons.library_books),
+        onPressed: _folderViewChooserSelected,
+        key: const ValueKey("FolderViewSelector"),
+      ),
+      if (appState.remoteGitRepoConfigured) SyncButton(),
+      IconButton(
+        icon: const Icon(Icons.search),
+        onPressed: () {
+          showSearch(
+            context: context,
+            delegate: NoteSearchDelegate(
+              sortedNotesFolder.notes,
+              _viewType,
+            ),
+          );
+        },
+      ),
+      extraActions,
+    ];
+  }
+
+  List<Widget> _buildInSelectionNoteActions() {
+    return [];
   }
 }

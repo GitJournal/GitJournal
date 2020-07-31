@@ -78,12 +78,13 @@ class NoteSearchDelegate extends SearchDelegate<Note> {
     const emptyText = "No Search Results Found";
 
     return buildFolderView(
-      context,
-      viewType,
-      folder,
-      emptyText,
-      StandardViewHeader.TitleOrFileName,
-      true,
+      viewType: viewType,
+      folder: folder,
+      emptyText: emptyText,
+      header: StandardViewHeader.TitleOrFileName,
+      showSummary: true,
+      noteTapped: (Note note) => openNoteEditor(context, note),
+      noteLongPressed: (Note note) {},
     );
   }
 }

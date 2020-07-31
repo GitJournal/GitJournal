@@ -20,23 +20,23 @@ enum FolderViewType {
   Grid,
 }
 
-Widget buildFolderView(
-  BuildContext context,
-  FolderViewType viewType,
-  NotesFolder folder,
-  String emptyText,
-  StandardViewHeader header,
-  bool showSummary,
-) {
-  var noteSelectionFn = (Note note) => openNoteEditor(context, note);
-  var noteLongPressedFn = (Note note) {};
+typedef void NoteSelectedFunction(Note note);
 
+Widget buildFolderView({
+  @required FolderViewType viewType,
+  @required NotesFolder folder,
+  @required String emptyText,
+  @required StandardViewHeader header,
+  @required bool showSummary,
+  @required NoteSelectedFunction noteTapped,
+  @required NoteSelectedFunction noteLongPressed,
+}) {
   switch (viewType) {
     case FolderViewType.Standard:
       return StandardView(
         folder: folder,
-        noteTapped: noteSelectionFn,
-        noteLongPressed: noteLongPressedFn,
+        noteTapped: noteTapped,
+        noteLongPressed: noteLongPressed,
         emptyText: emptyText,
         headerType: header,
         showSummary: showSummary,
@@ -44,22 +44,22 @@ Widget buildFolderView(
     case FolderViewType.Journal:
       return JournalView(
         folder: folder,
-        noteTapped: noteSelectionFn,
-        noteLongPressed: noteLongPressedFn,
+        noteTapped: noteTapped,
+        noteLongPressed: noteLongPressed,
         emptyText: emptyText,
       );
     case FolderViewType.Card:
       return CardView(
         folder: folder,
-        noteTapped: noteSelectionFn,
-        noteLongPressed: noteLongPressedFn,
+        noteTapped: noteTapped,
+        noteLongPressed: noteLongPressed,
         emptyText: emptyText,
       );
     case FolderViewType.Grid:
       return GridFolderView(
         folder: folder,
-        noteTapped: noteSelectionFn,
-        noteLongPressed: noteLongPressedFn,
+        noteTapped: noteTapped,
+        noteLongPressed: noteLongPressed,
         emptyText: emptyText,
       );
   }
