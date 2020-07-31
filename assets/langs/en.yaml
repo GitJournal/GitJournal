@@ -133,6 +133,8 @@ widgets:
       two: "{} Notes link to this Note"
       few: "{} Notes link to this Note"
       other: "{} Notes link to this Note"
+  SortingOrderSelector:
+    title: Sorting Criteria
 
 rootFolder: Root Folder
 ignoredFiles:

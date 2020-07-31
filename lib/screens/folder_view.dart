@@ -19,6 +19,7 @@ import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/new_note_nav_bar.dart';
 import 'package:gitjournal/widgets/note_search_delegate.dart';
+import 'package:gitjournal/widgets/sorting_order_selector.dart';
 import 'package:gitjournal/widgets/sync_button.dart';
 
 enum DropDownChoices {
@@ -185,34 +186,11 @@ class _FolderViewState extends State<FolderView> {
     _scaffoldKey.currentState.removeCurrentSnackBar();
   }
 
-  RadioListTile<SortingMode> _buildSortingTile(SortingMode sm) {
-    return RadioListTile<SortingMode>(
-      title: Text(sm.toPublicString()),
-      value: sm,
-      groupValue: sortedNotesFolder.sortingMode,
-      onChanged: (SortingMode sm) => Navigator.of(context).pop(sm),
-    );
-  }
-
   void _sortButtonPressed() async {
     var newSortingMode = await showDialog<SortingMode>(
       context: context,
-      builder: (BuildContext context) {
-        var children = <Widget>[
-          _buildSortingTile(SortingMode.Modified),
-          _buildSortingTile(SortingMode.Created),
-          _buildSortingTile(SortingMode.Title),
-          _buildSortingTile(SortingMode.FileName),
-        ];
-
-        return AlertDialog(
-          title: const Text("Sorting Criteria"),
-          content: Column(
-            children: children,
-            mainAxisSize: MainAxisSize.min,
-          ),
-        );
-      },
+      builder: (BuildContext context) =>
+          SortingOrderSelector(sortedNotesFolder.sortingMode),
     );
 
     if (newSortingMode != null) {
