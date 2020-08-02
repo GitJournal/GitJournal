@@ -36,17 +36,7 @@ class _MyExampleWidgetState extends State<MyExampleWidget> {
     graph.edges = edges;
 
     graph.assignRandomPositions(400, 650);
-
-    const interval = Duration(milliseconds: 25);
-    bool shouldStop = false;
-    var timer = Timer.periodic(interval, (Timer t) {
-      if (shouldStop) {
-        return;
-      }
-      shouldStop = updateGraphPositions(graph);
-    });
-
-    Timer(const Duration(seconds: 5), () => timer.cancel());
+    graph.startLayout();
   }
 
   @override
@@ -229,6 +219,30 @@ class Graph extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  Timer layoutTimer;
+
+  void startLayout() {
+    if (layoutTimer != null) {
+      return;
+    }
+
+    const interval = Duration(milliseconds: 25);
+    layoutTimer = Timer.periodic(interval, (Timer t) {
+      bool shouldStop = updateGraphPositions(this);
+      if (shouldStop) {
+        layoutTimer.cancel();
+        layoutTimer = null;
+      }
+    });
+
+    Timer(const Duration(seconds: 5), () {
+      if (layoutTimer != null) {
+        layoutTimer.cancel();
+        layoutTimer = null;
+      }
+    });
   }
 }
 
