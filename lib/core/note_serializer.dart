@@ -18,7 +18,7 @@ var emojiParser = EmojiParser();
 
 class NoteSerializationSettings {
   String modifiedKey = Settings.instance.yamlModifiedKey;
-  String createdKey = "created";
+  String createdKey = Settings.instance.yamlCreatedKey;
   String titleKey = "title";
   String typeKey = "type";
   String tagsKey = "tags";
@@ -87,18 +87,29 @@ class NoteSerializer implements NoteSerializerInterface {
       "lastmodified",
       "lastmod",
     ];
-    for (var i = 0; i < modifiedKeyOptions.length; i++) {
-      var possibleKey = modifiedKeyOptions[i];
-      var modifiedVal = data.props[possibleKey];
-      if (modifiedVal != null) {
-        note.modified = parseDateTime(modifiedVal.toString());
+    for (var possibleKey in modifiedKeyOptions) {
+      var val = data.props[possibleKey];
+      if (val != null) {
+        note.modified = parseDateTime(val.toString());
         settings.modifiedKey = possibleKey;
         break;
       }
     }
 
     note.body = emojiParser.emojify(data.body);
-    note.created = parseDateTime(data.props[settings.createdKey]?.toString());
+
+    var createdKeyOptions = [
+      "created",
+      "date",
+    ];
+    for (var possibleKey in createdKeyOptions) {
+      var val = data.props[possibleKey];
+      if (val != null) {
+        note.created = parseDateTime(val.toString());
+        settings.createdKey = possibleKey;
+        break;
+      }
+    }
 
     //
     // Title parsing

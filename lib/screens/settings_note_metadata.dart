@@ -79,6 +79,23 @@ class _NoteMetadataSettingsScreenState
         ),
         ProOverlay(
           child: ListPreference(
+            title: tr("settings.noteMetaData.created"),
+            options: [
+              "created",
+              "date",
+            ],
+            currentOption: Settings.instance.yamlCreatedKey,
+            onChange: (String newVal) {
+              setState(() {
+                Settings.instance.yamlCreatedKey = newVal;
+                Settings.instance.save();
+              });
+            },
+            enabled: Settings.instance.yamlHeaderEnabled,
+          ),
+        ),
+        ProOverlay(
+          child: ListPreference(
             title: tr("settings.noteMetaData.titleMetaData.title"),
             options: [
               tr("settings.noteMetaData.titleMetaData.fromH1"),

@@ -43,6 +43,7 @@ settings:
     text: Every note has some metadata which is stored in a YAML Header as follows -
     enableHeader: Enable YAML Header
     modified: Modified Field
+    created: Created Field
     example:
       title: Example Title
     titleMetaData:

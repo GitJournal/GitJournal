@@ -21,6 +21,8 @@ class Settings {
   bool collectCrashReports = true;
 
   String yamlModifiedKey = "modified";
+  String yamlCreatedKey = "created";
+
   bool yamlHeaderEnabled = true;
   String defaultNewNoteFolderSpec = "";
   String journalEditordefaultNewNoteFolderSpec = "";
@@ -68,6 +70,8 @@ class Settings {
         pref.getBool("collectCrashReports") ?? collectCrashReports;
 
     yamlModifiedKey = pref.getString("yamlModifiedKey") ?? yamlModifiedKey;
+    yamlCreatedKey = pref.getString("yamlCreatedKey") ?? yamlCreatedKey;
+
     yamlHeaderEnabled = pref.getBool("yamlHeaderEnabled") ?? yamlHeaderEnabled;
     defaultNewNoteFolderSpec =
         pref.getString("defaultNewNoteFolderSpec") ?? defaultNewNoteFolderSpec;
@@ -140,6 +144,8 @@ class Settings {
         defaultSet.collectCrashReports);
     _setString(
         pref, "yamlModifiedKey", yamlModifiedKey, defaultSet.yamlModifiedKey);
+    _setString(
+        pref, "yamlCreatedKey", yamlCreatedKey, defaultSet.yamlCreatedKey);
     _setBool(pref, "yamlHeaderEnabled", yamlHeaderEnabled,
         defaultSet.yamlHeaderEnabled);
     _setString(pref, "defaultNewNoteFolderSpec", defaultNewNoteFolderSpec,
@@ -225,6 +231,7 @@ class Settings {
       "collectUsageStatistics": collectUsageStatistics.toString(),
       "collectCrashReports": collectCrashReports.toString(),
       "yamlModifiedKey": yamlModifiedKey,
+      "yamlCreatedKey": yamlCreatedKey,
       "yamlHeaderEnabled": yamlHeaderEnabled.toString(),
       "defaultNewNoteFolderSpec": defaultNewNoteFolderSpec,
       "journalEditordefaultNewNoteFolderSpec":
