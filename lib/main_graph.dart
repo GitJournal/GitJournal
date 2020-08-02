@@ -159,7 +159,7 @@ class Graph extends ChangeNotifier {
   List<Node> nodes = [];
   List<Edge> edges = [];
 
-  Map<String, List<int>> _neighbours = {};
+  Map<String, Set<int>> _neighbours = {};
   Map<String, int> _nodeIndexes;
 
   void notify() {
@@ -177,7 +177,7 @@ class Graph extends ChangeNotifier {
 
     var _nodes = _neighbours[n.label];
     if (_nodes != null) {
-      return _nodes;
+      return _nodes.union(computeOverlappingNodes(n)).toList();
     }
 
     var nodes = <int>{};
@@ -193,8 +193,30 @@ class Graph extends ChangeNotifier {
       }
     }
 
-    _nodes = nodes.toList();
     _neighbours[n.label] = _nodes;
+    return nodes.union(computeOverlappingNodes(n)).toList();
+  }
+
+// These nodes aren't actually neighbours, but we don't want nodes to
+  // ever overlap, so I'm making the ones that are close by neighbours
+  Set<int> computeOverlappingNodes(Node n) {
+    var _nodes = <int>{};
+    for (var i = 0; i < nodes.length; i++) {
+      var node = nodes[i];
+      if (node.label == n.label) {
+        continue;
+      }
+
+      var dx = node.x - n.x;
+      var dy = node.y - n.y;
+
+      var dist = sqrt((dx * dx) + (dy * dy));
+      if (dist <= 60) {
+        // print('${node.label} and ${n.label} are too close - $dist');
+        _nodes.add(i);
+      }
+    }
+
     return _nodes;
   }
 
