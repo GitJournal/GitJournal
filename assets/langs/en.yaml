@@ -62,6 +62,7 @@ settings:
     subtitle: Try out features in Development
     backlinks: Show Backlinks in Markdown Preview
     fs: Show File System
+    markdownToolbar: Show Markdown Toolbar in Editor
   editors:
     title: Editor Settings
     subtitle: Configure how different editors work

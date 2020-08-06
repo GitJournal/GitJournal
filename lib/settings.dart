@@ -54,6 +54,7 @@ class Settings {
 
   bool experimentalBacklinks = true;
   bool experimentalFs = false;
+  bool experimentalMarkdownToolbar = false;
 
   bool zenMode = false;
   bool saveTitleInH1 = true;
@@ -123,6 +124,8 @@ class Settings {
     experimentalBacklinks =
         pref.getBool("experimentalBacklinks") ?? experimentalBacklinks;
     experimentalFs = pref.getBool("experimentalFs") ?? experimentalFs;
+    experimentalMarkdownToolbar = pref.getBool("experimentalMarkdownToolbar") ??
+        experimentalMarkdownToolbar;
 
     zenMode = pref.getBool("zenMode") ?? zenMode;
     saveTitleInH1 = pref.getBool("saveTitleInH1") ?? saveTitleInH1;
@@ -194,6 +197,8 @@ class Settings {
     _setBool(pref, "experimentalBacklinks", experimentalBacklinks,
         defaultSet.experimentalBacklinks);
     _setBool(pref, "experimentalFs", experimentalFs, defaultSet.experimentalFs);
+    _setBool(pref, "experimentalMarkdownToolbar", experimentalMarkdownToolbar,
+        defaultSet.experimentalMarkdownToolbar);
     _setBool(pref, "zenMode", zenMode, defaultSet.zenMode);
     _setBool(pref, "saveTitleInH1", saveTitleInH1, defaultSet.saveTitleInH1);
 
@@ -257,6 +262,7 @@ class Settings {
       'debugLogLevel': debugLogLevel,
       'experimentalBacklinks': experimentalBacklinks.toString(),
       'experimentalFs': experimentalFs.toString(),
+      'experimentalMarkdownToolbar': experimentalMarkdownToolbar.toString(),
       'zenMode': zenMode.toString(),
       'saveTitleInH1': saveTitleInH1.toString(),
     };
