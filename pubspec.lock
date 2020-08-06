@@ -505,14 +505,12 @@ packages:
     source: hosted
     version: "0.11.3+2"
   markdown:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "2e87055c39b4b29939bb99ceff593880e2bcf20a"
-      url: "https://github.com/GitJournal/markdown.git"
-    source: git
-    version: "2.1.5"
+      name: markdown
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.7"
   matcher:
     dependency: transitive
     description:
