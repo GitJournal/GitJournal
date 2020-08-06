@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import 'package:touchable/touchable.dart';
 
@@ -267,10 +268,16 @@ class MyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        height: 700,
-        width: 500,
-        child: MyExampleWidget(),
+      body: Center(
+        //child: MyExampleWidget(),
+        child: GraphView(
+          children: <Widget>[
+            Container(width: 50, height: 50, color: Colors.orange),
+            Container(width: 50, height: 50, color: Colors.blue),
+            Container(width: 50, height: 50, color: Colors.red),
+            Container(width: 50, height: 50, color: Colors.yellow),
+          ],
+        ),
       ),
     );
   }
@@ -382,4 +389,109 @@ bool updateGraphPositions(Graph g) {
 
   g.notify();
   return allBelowThreshold;
+}
+
+class GraphRenderObjectParentData extends ContainerBoxParentData<RenderBox> {
+  double x = -1;
+  double y = -1;
+
+  GraphRenderObjectParentData();
+}
+
+const maxX = 400;
+const maxY = 650;
+
+class GraphRenderBox extends RenderBox
+    with
+        ContainerRenderObjectMixin<RenderBox, GraphRenderObjectParentData>,
+        RenderBoxContainerDefaultsMixin<RenderBox,
+            GraphRenderObjectParentData> {
+  @override
+  void setupParentData(RenderBox child) {
+    if (child.parentData is! GraphRenderObjectParentData) {
+      child.parentData = GraphRenderObjectParentData();
+    }
+  }
+
+  @override
+  double computeDistanceToActualBaseline(TextBaseline baseline) =>
+      defaultComputeDistanceToFirstActualBaseline(baseline);
+
+  @override
+  void performLayout() {
+    print('performLayout');
+    size = const Size(400, 650);
+
+    var random = Random(DateTime.now().millisecondsSinceEpoch);
+
+    // Assign each of the children their value
+    var child = firstChild;
+    while (child != null) {
+      child.layout(constraints, parentUsesSize: true);
+      // child.size gives size
+
+      final childParentData = child.parentData as GraphRenderObjectParentData;
+
+      if (childParentData.x == -1 && childParentData.y == -1) {
+        var x = random.nextInt(maxX).toDouble();
+        var y = random.nextInt(maxY).toDouble();
+        childParentData.x = x;
+        childParentData.y = y;
+      }
+
+      childParentData.offset = Offset(childParentData.x, childParentData.y);
+      print(childParentData.offset);
+
+      child = childParentData.nextSibling;
+
+      // FIXME: Do not let them intersect
+      //        Do not let them go over the max size
+      //        Computer a proper size
+    }
+    print('performLayout done');
+  }
+
+  @override
+  bool hitTestChildren(BoxHitTestResult result, {Offset position}) {
+    return defaultHitTestChildren(result, position: position);
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    //
+    // Paint Edges
+    //
+
+    var child = firstChild;
+    final childParentData = child.parentData as GraphRenderObjectParentData;
+
+    var secondChild = childParentData.nextSibling;
+    var secondChildParentData =
+        secondChild.parentData as GraphRenderObjectParentData;
+
+    var paint = Paint();
+    paint.color = Colors.grey;
+    paint.strokeWidth = 3.0;
+
+    context.canvas.drawLine(
+      childParentData.offset.translate(child.size.width / 2, child.size.height),
+      secondChildParentData.offset
+          .translate(child.size.width / 2, child.size.height),
+      paint,
+    );
+
+    defaultPaint(context, offset);
+  }
+}
+
+class GraphView extends MultiChildRenderObjectWidget {
+  GraphView({
+    Key key,
+    List<Widget> children = const <Widget>[],
+  }) : super(key: key, children: children);
+
+  @override
+  GraphRenderBox createRenderObject(BuildContext context) {
+    return GraphRenderBox();
+  }
 }
