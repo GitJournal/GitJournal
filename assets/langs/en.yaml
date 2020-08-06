@@ -44,6 +44,7 @@ settings:
     enableHeader: Enable YAML Header
     modified: Modified Field
     created: Created Field
+    tags: Tags Field
     example:
       title: Example Title
     titleMetaData:
@@ -52,6 +53,8 @@ settings:
       fromYaml: From YAML 'title'
     exampleTitle: Pigeons
     exampleBody: I think they might be evil. Even more evil than penguins.
+    exampleTag1: Birds
+    exampleTag2: Evil
   privacy: Privacy Policy
   terms: Terms and Conditions
   experimental:

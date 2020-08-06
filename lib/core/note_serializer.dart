@@ -21,7 +21,7 @@ class NoteSerializationSettings {
   String createdKey = Settings.instance.yamlCreatedKey;
   String titleKey = "title";
   String typeKey = "type";
-  String tagsKey = "tags";
+  String tagsKey = Settings.instance.yamlTagsKey;
 
   bool saveTitleAsH1 = Settings.instance.saveTitleInH1;
 }
@@ -155,14 +155,23 @@ class NoteSerializer implements NoteSerializerInterface {
     }
 
     try {
-      var tags = data.props[settings.tagsKey];
-      if (tags != null) {
-        if (tags is YamlList) {
-          note.tags = tags.map((t) => t.toString()).toSet();
-        } else if (tags is List) {
-          note.tags = tags.map((t) => t.toString()).toSet();
-        } else {
-          Log.e("Note Tags Decoding Failed: $tags");
+      var tagKeyOptions = [
+        "tags",
+        "categories",
+      ];
+      for (var possibleKey in tagKeyOptions) {
+        var tags = data.props[possibleKey];
+        if (tags != null) {
+          if (tags is YamlList) {
+            note.tags = tags.map((t) => t.toString()).toSet();
+          } else if (tags is List) {
+            note.tags = tags.map((t) => t.toString()).toSet();
+          } else {
+            Log.e("Note Tags Decoding Failed: $tags");
+          }
+
+          settings.tagsKey = possibleKey;
+          break;
         }
       }
     } catch (e) {

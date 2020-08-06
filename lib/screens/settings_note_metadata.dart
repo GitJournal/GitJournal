@@ -29,6 +29,10 @@ class _NoteMetadataSettingsScreenState
     note.body = tr("settings.noteMetaData.exampleBody");
     note.created = DateTime.now().add(const Duration(days: -1));
     note.modified = DateTime.now();
+    note.tags = {
+      tr("settings.noteMetaData.exampleTag1"),
+      tr("settings.noteMetaData.exampleTag2"),
+    };
 
     var body = Column(
       children: <Widget>[
@@ -88,6 +92,23 @@ class _NoteMetadataSettingsScreenState
             onChange: (String newVal) {
               setState(() {
                 Settings.instance.yamlCreatedKey = newVal;
+                Settings.instance.save();
+              });
+            },
+            enabled: Settings.instance.yamlHeaderEnabled,
+          ),
+        ),
+        ProOverlay(
+          child: ListPreference(
+            title: tr("settings.noteMetaData.tags"),
+            options: [
+              "tags",
+              "categories",
+            ],
+            currentOption: Settings.instance.yamlTagsKey,
+            onChange: (String newVal) {
+              setState(() {
+                Settings.instance.yamlTagsKey = newVal;
                 Settings.instance.save();
               });
             },
@@ -192,7 +213,10 @@ class NoteInputExample extends StatelessWidget {
                     autofocus: false,
                     onChanged: () {},
                   ),
+                  Container(height: 8.0),
+                  TagsWidget(note.tags),
                 ],
+                crossAxisAlignment: CrossAxisAlignment.start,
               ),
             ),
             _HeaderText(note.fileName, Alignment.topRight),
@@ -222,6 +246,47 @@ class _HeaderText extends StatelessWidget {
           child: Text(text, style: textTheme.caption),
         ),
       ),
+    );
+  }
+}
+
+class _Tag extends StatelessWidget {
+  final String text;
+
+  _Tag(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(50),
+        color: theme.scaffoldBackgroundColor,
+        boxShadow: [
+          const BoxShadow(color: Colors.grey, spreadRadius: 1),
+        ],
+      ),
+      padding: const EdgeInsets.all(8.0),
+      child: Text(text, style: theme.textTheme.button),
+    );
+  }
+}
+
+class TagsWidget extends StatelessWidget {
+  final Set<String> tags;
+
+  TagsWidget(this.tags);
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      children: [
+        for (var tagText in tags) _Tag(tagText),
+      ],
+      alignment: WrapAlignment.start,
+      spacing: 8.0,
+      runSpacing: 8.0,
     );
   }
 }
