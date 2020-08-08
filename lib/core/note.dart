@@ -50,7 +50,7 @@ class Note with NotesNotifier {
   NoteFileFormat _fileFormat;
 
   MdYamlDoc _data = MdYamlDoc();
-  NoteSerializer noteSerializer = NoteSerializer();
+  NoteSerializer noteSerializer = NoteSerializer.fromSettings(Settings.instance);
 
   DateTime fileLastModified;
 

@@ -13,7 +13,7 @@ void main() {
           <String, dynamic>{"title": "Why not :coffee:?"});
       var doc = MdYamlDoc("I :heart: you", props);
 
-      var serializer = NoteSerializer();
+      var serializer = NoteSerializer.raw();
       serializer.settings.saveTitleAsH1 = false;
 
       var note = Note(null, "file-path-not-important");
@@ -34,7 +34,7 @@ void main() {
       var props = <String, dynamic>{};
       var doc = MdYamlDoc("# Why not :coffee:?\n\nI :heart: you", props);
 
-      var serializer = NoteSerializer();
+      var serializer = NoteSerializer.raw();
       serializer.settings.saveTitleAsH1 = true;
 
       var note = Note(null, "file-path-not-important");
@@ -55,7 +55,7 @@ void main() {
       var props = <String, dynamic>{};
       var doc = MdYamlDoc("\n# Why not :coffee:?\n\nI :heart: you", props);
 
-      var serializer = NoteSerializer();
+      var serializer = NoteSerializer.raw();
 
       var note = Note(null, "file-path-not-important");
       serializer.decode(doc, note);
@@ -68,7 +68,7 @@ void main() {
       var props = <String, dynamic>{};
       var doc = MdYamlDoc("\n# Why not :coffee:?", props);
 
-      var serializer = NoteSerializer();
+      var serializer = NoteSerializer.raw();
 
       var note = Note(null, "file-path-not-important");
       serializer.decode(doc, note);
@@ -82,7 +82,7 @@ void main() {
           <String, dynamic>{"title": "Why not :coffee:?"});
       var doc = MdYamlDoc("I :heart: you", props);
 
-      var serializer = NoteSerializer();
+      var serializer = NoteSerializer.raw();
       serializer.settings.saveTitleAsH1 = true;
 
       var note = Note(null, "file-path-not-important");

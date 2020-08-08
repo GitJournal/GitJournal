@@ -17,17 +17,26 @@ abstract class NoteSerializerInterface {
 var emojiParser = EmojiParser();
 
 class NoteSerializationSettings {
-  String modifiedKey = Settings.instance.yamlModifiedKey;
-  String createdKey = Settings.instance.yamlCreatedKey;
+  String modifiedKey = "modified";
+  String createdKey = "created";
   String titleKey = "title";
   String typeKey = "type";
-  String tagsKey = Settings.instance.yamlTagsKey;
+  String tagsKey = "tags";
 
-  bool saveTitleAsH1 = Settings.instance.saveTitleInH1;
+  bool saveTitleAsH1 = true;
 }
 
 class NoteSerializer implements NoteSerializerInterface {
   var settings = NoteSerializationSettings();
+
+  NoteSerializer.fromSettings(Settings globalSettings) {
+    settings.modifiedKey = globalSettings.yamlModifiedKey;
+    settings.createdKey = globalSettings.yamlCreatedKey;
+    settings.tagsKey = globalSettings.yamlTagsKey;
+    settings.saveTitleAsH1 = globalSettings.saveTitleInH1;
+  }
+
+  NoteSerializer.raw();
 
   @override
   void encode(Note note, MdYamlDoc data) {

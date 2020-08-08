@@ -167,7 +167,8 @@ class NoteOutputExample extends StatelessWidget {
     style = style.copyWith(fontFamily: "Roboto Mono");
 
     var doc = MdYamlDoc();
-    NoteSerializer().encode(note, doc);
+    var settings = Provider.of<Settings>(context);
+    NoteSerializer.fromSettings(settings).encode(note, doc);
 
     var codec = MarkdownYAMLCodec();
     var noteStr = codec.encode(doc);
