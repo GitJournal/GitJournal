@@ -217,7 +217,8 @@ class _JournalAppState extends State<JournalApp> {
         return;
       }
 
-      var editor = Settings.instance.defaultEditor.toInternalString();
+      var settings = Provider.of<Settings>(context, listen: false);
+      var editor = settings.defaultEditor.toInternalString();
       _navigatorKey.currentState.pushNamed("/newNote/$editor");
     };
 

@@ -32,6 +32,8 @@ class NoteViewer extends StatelessWidget {
       ),
     );
 
+    var settings = Provider.of<Settings>(context);
+
     // Copied from MarkdownStyleSheet except Grey is replaced with Highlight color
     var markdownStyleSheet = MarkdownStyleSheet.fromTheme(theme).copyWith(
       code: theme.textTheme.bodyText2.copyWith(
@@ -117,7 +119,7 @@ class NoteViewer extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16.0),
-          if (Settings.instance.experimentalBacklinks)
+          if (settings.experimentalBacklinks)
             NoteBacklinkRenderer(note: note, rootFolder: rootFolder),
           // _buildFooter(context),
         ],
