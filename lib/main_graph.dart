@@ -495,3 +495,11 @@ class GraphView extends MultiChildRenderObjectWidget {
     return GraphRenderBox();
   }
 }
+
+// TODO:
+// 1. Get this to accept a builder function to draw the widgets (instead of them always being drawn)
+// 2. Implement a getEdges function
+// 3. Place them in some initial order?
+// 4. Update their positions based on
+
+// Maybe use CustomMultiChildLayout instead?
