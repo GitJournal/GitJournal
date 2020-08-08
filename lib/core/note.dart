@@ -188,7 +188,7 @@ class Note with NotesNotifier {
     if (_fileFormat == NoteFileFormat.Txt) {
       return false;
     }
-    return Settings.instance.yamlHeaderEnabled;
+    return parent.config.yamlHeaderEnabled;
   }
 
   MdYamlDoc get data {

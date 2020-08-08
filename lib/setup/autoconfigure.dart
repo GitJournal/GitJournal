@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:function_types/function_types.dart';
+import 'package:provider/provider.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
@@ -54,13 +55,14 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
           });
 
           var userInfo = await gitHost.getUserInfo();
+          var settings = Provider.of<Settings>(context, listen: false);
           if (userInfo.name != null && userInfo.name.isNotEmpty) {
-            Settings.instance.gitAuthor = userInfo.name;
+            settings.gitAuthor = userInfo.name;
           }
           if (userInfo.email != null && userInfo.email.isNotEmpty) {
-            Settings.instance.gitAuthorEmail = userInfo.email;
+            settings.gitAuthorEmail = userInfo.email;
           }
-          Settings.instance.save();
+          settings.save();
         } on Exception catch (e, stacktrace) {
           _handleGitHostException(e, stacktrace);
           return;

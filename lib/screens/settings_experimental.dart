@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:provider/provider.dart';
 
 import 'package:gitjournal/settings.dart';
 
@@ -14,7 +15,7 @@ class _ExperimentalSettingsScreenState
     extends State<ExperimentalSettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    var settings = Settings.instance;
+    var settings = Provider.of<Settings>(context);
 
     return Scaffold(
       appBar: AppBar(

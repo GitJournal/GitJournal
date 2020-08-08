@@ -26,6 +26,7 @@ class NotesFolderConfig extends Equatable {
   final bool showNoteSummary;
   final NoteFileNameFormat fileNameFormat;
   final NotesFolderFS folder;
+  final bool yamlHeaderEnabled;
   //int _version = 1;
 
   NotesFolderConfig({
@@ -36,6 +37,7 @@ class NotesFolderConfig extends Equatable {
     @required this.showNoteSummary,
     @required this.fileNameFormat,
     @required this.folder,
+    @required this.yamlHeaderEnabled,
   });
 
   @override
@@ -46,6 +48,7 @@ class NotesFolderConfig extends Equatable {
         viewHeader,
         fileNameFormat,
         folder,
+        yamlHeaderEnabled,
       ];
 
   static NotesFolderConfig fromSettings(NotesFolderFS folder) {
@@ -72,15 +75,17 @@ class NotesFolderConfig extends Equatable {
       viewHeader: viewHeader,
       fileNameFormat: settings.noteFileNameFormat,
       folder: folder,
+      yamlHeaderEnabled: settings.yamlHeaderEnabled,
     );
   }
 
   Future<void> saveToSettings() async {
-    Settings.instance.sortingMode = sortingMode;
-    Settings.instance.showNoteSummary = showNoteSummary;
-    Settings.instance.defaultEditor =
-        SettingsEditorType.fromEditorType(defaultEditor);
-    Settings.instance.defaultView =
+    var settings = Settings.instance;
+
+    settings.sortingMode = sortingMode;
+    settings.showNoteSummary = showNoteSummary;
+    settings.defaultEditor = SettingsEditorType.fromEditorType(defaultEditor);
+    settings.defaultView =
         SettingsFolderViewType.fromFolderViewType(defaultView);
 
     String ht;
@@ -95,9 +100,10 @@ class NotesFolderConfig extends Equatable {
         ht = "TitleOrFileName";
         break;
     }
-    Settings.instance.folderViewHeaderType = ht;
-    Settings.instance.noteFileNameFormat = fileNameFormat;
-    Settings.instance.save();
+    settings.folderViewHeaderType = ht;
+    settings.noteFileNameFormat = fileNameFormat;
+    settings.yamlHeaderEnabled = yamlHeaderEnabled;
+    settings.save();
   }
 
   NotesFolderConfig copyWith({
@@ -108,6 +114,7 @@ class NotesFolderConfig extends Equatable {
     bool showNoteSummary,
     NoteFileNameFormat fileNameFormat,
     NotesFolderFS folder,
+    bool yamlHeaderEnabled,
   }) {
     return NotesFolderConfig(
       sortingMode: sortingMode ?? this.sortingMode,
@@ -117,6 +124,7 @@ class NotesFolderConfig extends Equatable {
       showNoteSummary: showNoteSummary ?? this.showNoteSummary,
       fileNameFormat: fileNameFormat ?? this.fileNameFormat,
       folder: folder ?? this.folder,
+      yamlHeaderEnabled: yamlHeaderEnabled ?? this.yamlHeaderEnabled,
     );
   }
 
@@ -161,6 +169,7 @@ class NotesFolderConfig extends Equatable {
     }
 
     var fileNameFormat = map['noteFileNameFormat']?.toString();
+    var yamlHeaderEnabled = map["yamlHeaderEnabled"].toString() != "false";
 
     return NotesFolderConfig(
       defaultEditor: defaultEditor.toEditorType(),
@@ -170,6 +179,7 @@ class NotesFolderConfig extends Equatable {
       viewHeader: viewHeader,
       fileNameFormat: NoteFileNameFormat.fromInternalString(fileNameFormat),
       folder: folder,
+      yamlHeaderEnabled: yamlHeaderEnabled,
     );
   }
 
@@ -196,6 +206,7 @@ class NotesFolderConfig extends Equatable {
       "showNoteSummary": showNoteSummary,
       "folderViewHeaderType": ht,
       "noteFileNameFormat": fileNameFormat.toInternalString(),
+      'yamlHeaderEnabled': yamlHeaderEnabled,
     };
 
     var yaml = toYAML(map);

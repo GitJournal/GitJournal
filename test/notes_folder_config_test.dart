@@ -33,6 +33,7 @@ void main() {
         viewHeader: StandardViewHeader.TitleOrFileName,
         fileNameFormat: NoteFileNameFormat.Default,
         folder: folder,
+        yamlHeaderEnabled: true,
       );
 
       await config.saveToFS();
