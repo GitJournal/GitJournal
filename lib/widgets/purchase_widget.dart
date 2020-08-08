@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:provider/provider.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/iap.dart';
@@ -171,9 +172,10 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
   }
 
   void _deliverProduct(SubscriptionStatus status) {
-    Settings.instance.proMode = status.isPro;
-    Settings.instance.proExpirationDate = status.expiryDate.toIso8601String();
-    Settings.instance.save();
+    var settings = Provider.of<Settings>(context);
+    settings.proMode = status.isPro;
+    settings.proExpirationDate = status.expiryDate.toIso8601String();
+    settings.save();
 
     getAnalytics().logEvent(
       name: "purchase_screen_thank_you",

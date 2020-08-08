@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
@@ -23,6 +24,7 @@ class _NoteMetadataSettingsScreenState
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
+    var settings = Provider.of<Settings>(context);
 
     var note = Note(null, "fileName.md");
     note.title = tr("settings.noteMetaData.exampleTitle");
@@ -51,14 +53,14 @@ class _NoteMetadataSettingsScreenState
         const Divider(),
         SwitchListTile(
           title: Text(tr("settings.noteMetaData.enableHeader")),
-          value: Settings.instance.yamlHeaderEnabled,
+          value: settings.yamlHeaderEnabled,
           onChanged: (bool newVal) {
             setState(() {
-              Settings.instance.yamlHeaderEnabled = newVal;
+              settings.yamlHeaderEnabled = newVal;
               if (newVal == false) {
-                Settings.instance.saveTitleInH1 = true;
+                settings.saveTitleInH1 = true;
               }
-              Settings.instance.save();
+              settings.save();
             });
           },
         ),
@@ -71,14 +73,14 @@ class _NoteMetadataSettingsScreenState
               "lastmodified",
               "lastmod",
             ],
-            currentOption: Settings.instance.yamlModifiedKey,
+            currentOption: settings.yamlModifiedKey,
             onChange: (String newVal) {
               setState(() {
-                Settings.instance.yamlModifiedKey = newVal;
-                Settings.instance.save();
+                settings.yamlModifiedKey = newVal;
+                settings.save();
               });
             },
-            enabled: Settings.instance.yamlHeaderEnabled,
+            enabled: settings.yamlHeaderEnabled,
           ),
         ),
         ProOverlay(
@@ -88,14 +90,14 @@ class _NoteMetadataSettingsScreenState
               "created",
               "date",
             ],
-            currentOption: Settings.instance.yamlCreatedKey,
+            currentOption: settings.yamlCreatedKey,
             onChange: (String newVal) {
               setState(() {
-                Settings.instance.yamlCreatedKey = newVal;
-                Settings.instance.save();
+                settings.yamlCreatedKey = newVal;
+                settings.save();
               });
             },
-            enabled: Settings.instance.yamlHeaderEnabled,
+            enabled: settings.yamlHeaderEnabled,
           ),
         ),
         ProOverlay(
@@ -105,14 +107,14 @@ class _NoteMetadataSettingsScreenState
               "tags",
               "categories",
             ],
-            currentOption: Settings.instance.yamlTagsKey,
+            currentOption: settings.yamlTagsKey,
             onChange: (String newVal) {
               setState(() {
-                Settings.instance.yamlTagsKey = newVal;
-                Settings.instance.save();
+                settings.yamlTagsKey = newVal;
+                settings.save();
               });
             },
-            enabled: Settings.instance.yamlHeaderEnabled,
+            enabled: settings.yamlHeaderEnabled,
           ),
         ),
         ProOverlay(
@@ -120,17 +122,17 @@ class _NoteMetadataSettingsScreenState
             title: tr("settings.noteMetaData.titleMetaData.title"),
             options: [
               tr("settings.noteMetaData.titleMetaData.fromH1"),
-              if (Settings.instance.yamlHeaderEnabled)
+              if (settings.yamlHeaderEnabled)
                 tr("settings.noteMetaData.titleMetaData.fromYaml"),
             ],
-            currentOption: Settings.instance.saveTitleInH1
+            currentOption: settings.saveTitleInH1
                 ? tr("settings.noteMetaData.titleMetaData.fromH1")
                 : tr("settings.noteMetaData.titleMetaData.fromYaml"),
             onChange: (String newVal) {
               setState(() {
-                Settings.instance.saveTitleInH1 =
+                settings.saveTitleInH1 =
                     newVal == tr("settings.noteMetaData.titleMetaData.fromH1");
-                Settings.instance.save();
+                settings.save();
               });
             },
           ),

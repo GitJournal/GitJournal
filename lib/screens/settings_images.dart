@@ -17,14 +17,14 @@ class SettingsImagesScreen extends StatefulWidget {
 class SettingsImagesScreenState extends State<SettingsImagesScreen> {
   @override
   Widget build(BuildContext context) {
-    var settings = Settings.instance;
+    var settings = Provider.of<Settings>(context);
     var folder = Provider.of<NotesFolderFS>(context)
         .getFolderWithSpec(settings.imageLocationSpec);
 
     // If the Custom Folder specified no longer exists
     if (settings.imageLocationSpec != "." && folder == null) {
-      Settings.instance.imageLocationSpec = ".";
-      Settings.instance.save();
+      settings.imageLocationSpec = ".";
+      settings.save();
     }
 
     var sameFolder = tr("settings.images.currentFolder");
@@ -38,11 +38,11 @@ class SettingsImagesScreenState extends State<SettingsImagesScreen> {
         options: [sameFolder, customFolder],
         onChange: (String publicStr) {
           if (publicStr == sameFolder) {
-            Settings.instance.imageLocationSpec = ".";
+            settings.imageLocationSpec = ".";
           } else {
-            Settings.instance.imageLocationSpec = "";
+            settings.imageLocationSpec = "";
           }
-          Settings.instance.save();
+          settings.save();
           setState(() {});
         },
       ),
@@ -56,9 +56,9 @@ class SettingsImagesScreenState extends State<SettingsImagesScreen> {
               builder: (context) => FolderSelectionDialog(),
             );
 
-            Settings.instance.imageLocationSpec =
+            settings.imageLocationSpec =
                 destFolder != null ? destFolder.pathSpec() : "";
-            Settings.instance.save();
+            settings.save();
             setState(() {});
           },
         ),

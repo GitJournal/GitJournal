@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:provider/provider.dart';
 
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
@@ -12,7 +13,6 @@ class DebugScreen extends StatefulWidget {
 
 class _DebugScreenState extends State<DebugScreen> {
   ScrollController _controller = ScrollController();
-  String filterLevel = Settings.instance.debugLogLevel;
 
   List<LogMessage> _logs;
 
@@ -79,6 +79,9 @@ class _DebugScreenState extends State<DebugScreen> {
   }
 
   bool _shouldDisplay(LogMessage msg) {
+    var settings = Provider.of<Settings>(context);
+    var filterLevel = settings.debugLogLevel;
+
     if (filterLevel == null || filterLevel.isEmpty) {
       return true;
     }
@@ -196,6 +199,9 @@ class _DebugScreenState extends State<DebugScreen> {
   }
 
   void _showFilterSelection() async {
+    var settings = Provider.of<Settings>(context);
+    var filterLevel = settings.debugLogLevel;
+
     var dialog = AlertDialog(
       title: Text(tr('settings.debug.levels')),
       content: Column(
@@ -211,12 +217,8 @@ class _DebugScreenState extends State<DebugScreen> {
     );
     var l = await showDialog(context: context, builder: (context) => dialog);
     if (l != null) {
-      setState(() {
-        Settings.instance.debugLogLevel = l;
-        Settings.instance.save();
-
-        filterLevel = l;
-      });
+      settings.debugLogLevel = l;
+      settings.save();
     }
   }
 }

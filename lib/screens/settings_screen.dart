@@ -54,11 +54,11 @@ class SettingsListState extends State<SettingsList> {
     var stateContainer = Provider.of<StateContainer>(context, listen: false);
 
     var remoteGitConfigured = stateContainer.appState.remoteGitRepoConfigured;
-    var settings = Settings.instance;
+    var settings = Provider.of<Settings>(context);
 
     var saveGitAuthor = (String gitAuthor) {
-      Settings.instance.gitAuthor = gitAuthor;
-      Settings.instance.save();
+      settings.gitAuthor = gitAuthor;
+      settings.save();
     };
 
     var gitAuthorForm = Form(
@@ -80,7 +80,7 @@ class SettingsListState extends State<SettingsList> {
         textInputAction: TextInputAction.done,
         onFieldSubmitted: saveGitAuthor,
         onSaved: saveGitAuthor,
-        initialValue: Settings.instance.gitAuthor,
+        initialValue: settings.gitAuthor,
       ),
       onChanged: () {
         if (!gitAuthorKey.currentState.validate()) return;
@@ -90,8 +90,8 @@ class SettingsListState extends State<SettingsList> {
     );
 
     var saveGitAuthorEmail = (String gitAuthorEmail) {
-      Settings.instance.gitAuthorEmail = gitAuthorEmail;
-      Settings.instance.save();
+      settings.gitAuthorEmail = gitAuthorEmail;
+      settings.save();
     };
     var gitAuthorEmailForm = Form(
       child: TextFormField(
@@ -121,7 +121,7 @@ class SettingsListState extends State<SettingsList> {
         textInputAction: TextInputAction.done,
         onFieldSubmitted: saveGitAuthorEmail,
         onSaved: saveGitAuthorEmail,
-        initialValue: Settings.instance.gitAuthorEmail,
+        initialValue: settings.gitAuthorEmail,
       ),
       onChanged: () {
         if (!gitAuthorEmailKey.currentState.validate()) return;
@@ -131,7 +131,7 @@ class SettingsListState extends State<SettingsList> {
     );
 
     var brightness = DynamicTheme.of(context).brightness;
-    var defaultNewFolder = Settings.instance.defaultNewNoteFolderSpec;
+    var defaultNewFolder = settings.defaultNewNoteFolderSpec;
     if (defaultNewFolder.isEmpty) {
       defaultNewFolder = tr("rootFolder");
     } else {
@@ -139,8 +139,8 @@ class SettingsListState extends State<SettingsList> {
         setState(() {
           defaultNewFolder = tr("rootFolder");
 
-          Settings.instance.defaultNewNoteFolderSpec = "";
-          Settings.instance.save();
+          settings.defaultNewNoteFolderSpec = "";
+          settings.save();
         });
       }
     }
@@ -165,8 +165,8 @@ class SettingsListState extends State<SettingsList> {
               .toList(),
           onChange: (String publicStr) {
             var s = SettingsHomeScreen.fromPublicString(publicStr);
-            Settings.instance.homeScreen = s;
-            Settings.instance.save();
+            settings.homeScreen = s;
+            settings.save();
             setState(() {});
           },
         ),
@@ -181,8 +181,8 @@ class SettingsListState extends State<SettingsList> {
             builder: (context) => FolderSelectionDialog(),
           );
           if (destFolder != null) {
-            Settings.instance.defaultNewNoteFolderSpec = destFolder.pathSpec();
-            Settings.instance.save();
+            settings.defaultNewNoteFolderSpec = destFolder.pathSpec();
+            settings.save();
             setState(() {});
           }
         },
@@ -222,8 +222,8 @@ class SettingsListState extends State<SettingsList> {
             NoteFileNameFormat.options.map((f) => f.toPublicString()).toList(),
         onChange: (String publicStr) {
           var format = NoteFileNameFormat.fromPublicString(publicStr);
-          Settings.instance.noteFileNameFormat = format;
-          Settings.instance.save();
+          settings.noteFileNameFormat = format;
+          settings.save();
           setState(() {});
         },
       ),
@@ -253,19 +253,19 @@ class SettingsListState extends State<SettingsList> {
       SettingsHeader(tr('settings.analytics')),
       SwitchListTile(
         title: Text(tr('settings.usageStats')),
-        value: Settings.instance.collectUsageStatistics,
+        value: settings.collectUsageStatistics,
         onChanged: (bool val) {
-          Settings.instance.collectUsageStatistics = val;
-          Settings.instance.save();
+          settings.collectUsageStatistics = val;
+          settings.save();
           setState(() {});
         },
       ),
       SwitchListTile(
         title: Text(tr('settings.crashReports')),
-        value: Settings.instance.collectCrashReports,
+        value: settings.collectCrashReports,
         onChanged: (bool val) {
-          Settings.instance.collectCrashReports = val;
-          Settings.instance.save();
+          settings.collectCrashReports = val;
+          settings.save();
           setState(() {});
         },
       ),

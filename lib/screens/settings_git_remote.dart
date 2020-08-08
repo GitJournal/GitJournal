@@ -39,7 +39,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
-    var settings = Settings.instance;
+    var settings = Provider.of<Settings>(context);
 
     var body = Column(
       children: <Widget>[
@@ -72,8 +72,8 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
               .toList(),
           onChange: (String publicStr) {
             var val = RemoteSyncFrequency.fromPublicString(publicStr);
-            Settings.instance.remoteSyncFrequency = val;
-            Settings.instance.save();
+            settings.remoteSyncFrequency = val;
+            settings.save();
             setState(() {});
           },
         ),

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -5,7 +7,7 @@ import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 
-class Settings {
+class Settings extends ChangeNotifier {
   // singleton
   static final Settings _singleton = Settings._internal();
   factory Settings() => _singleton;
@@ -203,6 +205,8 @@ class Settings {
     _setBool(pref, "saveTitleInH1", saveTitleInH1, defaultSet.saveTitleInH1);
 
     pref.setInt("settingsVersion", version);
+
+    notifyListeners();
   }
 
   Future<void> _setString(

@@ -514,10 +514,12 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         folderPath: repoPath,
       );
       await repo.add('.gitignore');
+
+      var settings = Provider.of<Settings>(context, listen: false);
       await repo.commit(
         message: "Add gitignore file",
-        authorEmail: Settings.instance.gitAuthorEmail,
-        authorName: Settings.instance.gitAuthor,
+        authorEmail: settings.gitAuthorEmail,
+        authorName: settings.gitAuthor,
       );
     }
 

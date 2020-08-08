@@ -46,10 +46,11 @@ class JournalApp extends StatefulWidget {
     var appState = AppState(pref);
     appState.dumpToLog();
 
-    Log.i("Setting ${Settings.instance.toLoggableMap()}");
+    var settings = Settings.instance;
+    Log.i("Setting ${settings.toLoggableMap()}");
 
-    if (Settings.instance.collectUsageStatistics) {
-      _enableAnalyticsIfPossible();
+    if (settings.collectUsageStatistics) {
+      _enableAnalyticsIfPossible(settings);
     }
 
     if (appState.gitBaseDirectory.isEmpty) {
@@ -79,16 +80,19 @@ class JournalApp extends StatefulWidget {
       appState.save(pref);
     }
 
-    var app = ChangeNotifierProvider(
-      create: (_) {
-        return StateContainer(appState);
-      },
+    var app = ChangeNotifierProvider.value(
+      value: settings,
       child: ChangeNotifierProvider(
-        child: JournalApp(appState),
         create: (_) {
-          assert(appState.notesFolder != null);
-          return appState.notesFolder;
+          return StateContainer(appState);
         },
+        child: ChangeNotifierProvider(
+          child: JournalApp(appState),
+          create: (_) {
+            assert(appState.notesFolder != null);
+            return appState.notesFolder;
+          },
+        ),
       ),
     );
 
@@ -105,7 +109,7 @@ class JournalApp extends StatefulWidget {
     ));
   }
 
-  static void _enableAnalyticsIfPossible() async {
+  static void _enableAnalyticsIfPossible(Settings settings) async {
     JournalApp.isInDebugMode = foundation.kDebugMode;
 
     var isPhysicalDevice = true;
@@ -136,7 +140,7 @@ class JournalApp extends StatefulWidget {
     if (enabled) {
       JournalApp.analytics.logEvent(
         name: "settings",
-        parameters: Settings.instance.toLoggableMap(),
+        parameters: settings.toLoggableMap(),
       );
     }
   }
@@ -281,12 +285,13 @@ class _JournalAppState extends State<JournalApp> {
 
   MaterialApp buildApp(BuildContext context, ThemeData themeData) {
     var stateContainer = Provider.of<StateContainer>(context);
+    var settings = Provider.of<Settings>(context);
 
     var initialRoute = '/';
     if (!stateContainer.appState.onBoardingCompleted) {
       initialRoute = '/onBoarding';
     }
-    if (Settings.instance.homeScreen == SettingsHomeScreen.AllFolders) {
+    if (settings.homeScreen == SettingsHomeScreen.AllFolders) {
       initialRoute = '/folders';
     }
 

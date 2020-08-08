@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/disposable_change_notifier.dart';
@@ -129,7 +131,8 @@ class MarkdownEditorState extends State<MarkdownEditor>
 
     Widget body = editingMode ? editor : NoteViewer(note: note);
 
-    if (Settings.instance.experimentalMarkdownToolbar && editingMode) {
+    var settings = Provider.of<Settings>(context);
+    if (settings.experimentalMarkdownToolbar && editingMode) {
       body = Container(
         height: 600,
         child: Column(
@@ -165,19 +168,19 @@ class MarkdownEditorState extends State<MarkdownEditor>
   }
 
   void _switchMode() {
+    var settings = Provider.of<Settings>(context);
+
     setState(() {
       editingMode = !editingMode;
       switch (editingMode) {
         case true:
-          Settings.instance.markdownLastUsedView =
-              SettingsMarkdownDefaultView.Edit;
+          settings.markdownLastUsedView = SettingsMarkdownDefaultView.Edit;
           break;
         case false:
-          Settings.instance.markdownLastUsedView =
-              SettingsMarkdownDefaultView.View;
+          settings.markdownLastUsedView = SettingsMarkdownDefaultView.View;
           break;
       }
-      Settings.instance.save();
+      settings.save();
       _updateNote();
     });
   }

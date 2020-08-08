@@ -43,6 +43,7 @@ class AppDrawer extends StatelessWidget {
     }
 
     var divider = Row(children: <Widget>[const Expanded(child: Divider())]);
+    var settings = Provider.of<Settings>(context);
 
     return Drawer(
       child: ListView(
@@ -51,7 +52,7 @@ class AppDrawer extends StatelessWidget {
         children: <Widget>[
           _AppDrawerHeader(),
           if (setupGitButton != null) ...[setupGitButton, divider],
-          if (!Settings.instance.proMode)
+          if (!settings.proMode)
             _buildDrawerTile(
               context,
               icon: Icons.power,
@@ -65,7 +66,7 @@ class AppDrawer extends StatelessWidget {
                 );
               },
             ),
-          if (!Settings.instance.proMode) divider,
+          if (!settings.proMode) divider,
           _buildDrawerTile(
             context,
             icon: Icons.note,
@@ -80,7 +81,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () => _navTopLevel(context, '/folders'),
             selected: currentRoute == "/folders",
           ),
-          if (Settings.instance.experimentalFs)
+          if (settings.experimentalFs)
             _buildDrawerTile(
               context,
               icon: FontAwesomeIcons.solidFolderOpen,

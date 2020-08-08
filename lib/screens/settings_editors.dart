@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/screens/settings_screen.dart';
@@ -18,9 +19,8 @@ class SettingsEditorsScreen extends StatefulWidget {
 class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
   @override
   Widget build(BuildContext context) {
-    var settings = Settings.instance;
-    var defaultNewFolder =
-        Settings.instance.journalEditordefaultNewNoteFolderSpec;
+    var settings = Provider.of<Settings>(context);
+    var defaultNewFolder = settings.journalEditordefaultNewNoteFolderSpec;
     if (defaultNewFolder.isEmpty) {
       defaultNewFolder = tr("rootFolder");
     } else {
@@ -28,8 +28,8 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
         setState(() {
           defaultNewFolder = tr("rootFolder");
 
-          Settings.instance.journalEditordefaultNewNoteFolderSpec = "";
-          Settings.instance.save();
+          settings.journalEditordefaultNewNoteFolderSpec = "";
+          settings.save();
         });
       }
     }
@@ -42,8 +42,8 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
             SettingsEditorType.options.map((f) => f.toPublicString()).toList(),
         onChange: (String publicStr) {
           var val = SettingsEditorType.fromPublicString(publicStr);
-          Settings.instance.defaultEditor = val;
-          Settings.instance.save();
+          settings.defaultEditor = val;
+          settings.save();
           setState(() {});
         },
       ),
@@ -56,8 +56,8 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
             .toList(),
         onChange: (String publicStr) {
           var val = SettingsMarkdownDefaultView.fromPublicString(publicStr);
-          Settings.instance.markdownDefaultView = val;
-          Settings.instance.save();
+          settings.markdownDefaultView = val;
+          settings.save();
           setState(() {});
         },
       ),
@@ -72,9 +72,9 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
               builder: (context) => FolderSelectionDialog(),
             );
 
-            Settings.instance.journalEditordefaultNewNoteFolderSpec =
+            settings.journalEditordefaultNewNoteFolderSpec =
                 destFolder != null ? destFolder.pathSpec() : "";
-            Settings.instance.save();
+            settings.save();
             setState(() {});
           },
         ),
