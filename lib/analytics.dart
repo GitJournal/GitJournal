@@ -24,6 +24,13 @@ enum Event {
   FolderRenamed,
   FolderConfigUpdated,
   RepoSynced,
+
+  DrawerSetupGitHost,
+  DrawerShare,
+  DrawerRate,
+  DrawerFeedback,
+  DrawerBugReport,
+  DrawerSettings,
 }
 
 String _eventToString(Event e) {
@@ -55,6 +62,19 @@ String _eventToString(Event e) {
 
     case Event.RepoSynced:
       return "repo_synced";
+
+    case Event.DrawerSetupGitHost:
+      return "drawer_setupGitHost";
+    case Event.DrawerShare:
+      return "drawer_share";
+    case Event.DrawerRate:
+      return "drawer_rate";
+    case Event.DrawerFeedback:
+      return "drawer_feedback";
+    case Event.DrawerBugReport:
+      return "drawer_bugreport";
+    case Event.DrawerSettings:
+      return "drawer_settings";
   }
 
   return "unknown_event";

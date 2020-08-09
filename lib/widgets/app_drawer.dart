@@ -35,9 +35,7 @@ class AppDrawer extends StatelessWidget {
           Navigator.pop(context);
           Navigator.pushNamed(context, "/setupRemoteGit");
 
-          getAnalytics().logEvent(
-            name: "drawer_setupGitHost",
-          );
+          logEvent(Event.DrawerSetupGitHost);
         },
       );
     }
@@ -107,9 +105,7 @@ class AppDrawer extends StatelessWidget {
               Navigator.pop(context);
               Share.share('Checkout GitJournal https://gitjournal.io/');
 
-              getAnalytics().logEvent(
-                name: "drawer_share",
-              );
+              logEvent(Event.DrawerShare);
             },
           ),
           _buildDrawerTile(
@@ -121,11 +117,9 @@ class AppDrawer extends StatelessWidget {
                 androidAppId: "io.gitjournal.gitjournal",
                 iOSAppId: "1466519634",
               );
-              Navigator.pop(context);
 
-              getAnalytics().logEvent(
-                name: "drawer_rate",
-              );
+              Navigator.pop(context);
+              logEvent(Event.DrawerRate);
             },
           ),
           _buildDrawerTile(
@@ -148,10 +142,7 @@ class AppDrawer extends StatelessWidget {
               launch(url);
 
               Navigator.pop(context);
-
-              getAnalytics().logEvent(
-                name: "drawer_feedback",
-              );
+              logEvent(Event.DrawerFeedback);
             },
           ),
           _buildDrawerTile(
@@ -174,10 +165,7 @@ class AppDrawer extends StatelessWidget {
               await FlutterEmailSender.send(email);
 
               Navigator.pop(context);
-
-              getAnalytics().logEvent(
-                name: "drawer_bugreport",
-              );
+              logEvent(Event.DrawerBugReport);
             },
           ),
           _buildDrawerTile(
@@ -188,9 +176,7 @@ class AppDrawer extends StatelessWidget {
               Navigator.pop(context);
               Navigator.pushNamed(context, "/settings");
 
-              getAnalytics().logEvent(
-                name: "drawer_settings",
-              );
+              logEvent(Event.DrawerSettings);
             },
           ),
         ],
