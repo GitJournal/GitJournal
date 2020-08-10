@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +34,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
   String errorMessage = "";
 
   bool _configuringStarted = false;
-  String _message = "Waiting for Permissions ...";
+  String _message = tr('setup.autoconfigure.waitPerm');
 
   void _startAutoConfigure() async {
     Log.d("Starting autoconfigure");
@@ -51,7 +52,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
 
         try {
           setState(() {
-            _message = "Reading User Info";
+            _message = tr('setup.autoconfigure.readUser');
           });
 
           var userInfo = await gitHost.getUserInfo();
@@ -112,30 +113,30 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'We need permission to perform the following steps:',
+          tr('setup.autoconfigure.title'),
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 32.0),
 
         // Step 1
         Text(
-          "1. List your existing repos or create a new repo",
+          tr('setup.autoconfigure.step1'),
           style: Theme.of(context).textTheme.bodyText1,
         ),
         const SizedBox(height: 8.0),
         Text(
-          "2. Generate an SSH Key on this device",
+          tr('setup.autoconfigure.step2'),
           style: Theme.of(context).textTheme.bodyText1,
         ),
         const SizedBox(height: 8.0),
         Text(
-          "3. Add the key as a deploy key with write access to the created repo",
+          tr('setup.autoconfigure.step3'),
           style: Theme.of(context).textTheme.bodyText1,
         ),
         const SizedBox(height: 32.0),
 
         GitHostSetupButton(
-          text: "Authorize GitJournal",
+          text: tr('setup.autoconfigure.authorize'),
           onPressed: _startAutoConfigure,
         ),
       ],

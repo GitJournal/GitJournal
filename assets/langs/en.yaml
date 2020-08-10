@@ -161,6 +161,15 @@ drawer:
   rate: Rate Us
   feedback: Feedback
   bug: Bug Report
+setup:
+  autoconfigure:
+    title: We need permission to perform the following steps
+    step1: 1. List your existing repos or create a new repo
+    step2: 2. Generate an SSH Key on this device
+    step3: 3. Add the key as a deploy key with write access to the created repo
+    authorize: Authorize GitJournal
+    waitPerm: Waiting for Permissions ...
+    readUser: Reading User Info
 features:
   darkMode: Dark Mode
   rawEditor: Raw Editor
