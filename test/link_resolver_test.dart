@@ -75,6 +75,14 @@ void main() {
     var resolvedNote = linkResolver.resolve('[[zeplin]]');
     expect(resolvedNote.filePath, p.join(tempDir.path, 'zeplin.txt'));
   });
+
+  test('Non base path [[Fire]] should resolve to [[Fire.md]]', () {
+    var note = rootFolder.getNoteWithSpec('Folder/Water.md');
+    var linkResolver = LinkResolver(note);
+
+    var resolvedNote = linkResolver.resolve('[[Fire]]');
+    expect(resolvedNote.filePath, p.join(tempDir.path, 'Fire.md'));
+  });
 }
 
 Future<void> generateNote(String basePath, String path) async {
