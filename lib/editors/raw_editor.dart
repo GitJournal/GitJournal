@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
@@ -151,8 +153,8 @@ class _NoteEditor extends StatelessWidget {
       keyboardType: TextInputType.multiline,
       maxLines: null,
       style: style,
-      decoration: const InputDecoration(
-        hintText: 'Write here',
+      decoration: InputDecoration(
+        hintText: tr('editors.common.defaultBodyHint'),
         border: InputBorder.none,
         isDense: true,
       ),

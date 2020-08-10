@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class NoteTitleEditor extends StatelessWidget {
   final TextEditingController textController;
   final Function onChanged;
@@ -13,8 +15,8 @@ class NoteTitleEditor extends StatelessWidget {
     return TextField(
       keyboardType: TextInputType.text,
       style: style,
-      decoration: const InputDecoration(
-        hintText: 'Title',
+      decoration: InputDecoration(
+        hintText: tr('editors.common.defaultTitleHint'),
         border: InputBorder.none,
         isDense: true,
       ),

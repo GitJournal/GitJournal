@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class NoteBodyEditor extends StatelessWidget {
   final TextEditingController textController;
   final bool autofocus;
@@ -16,8 +18,8 @@ class NoteBodyEditor extends StatelessWidget {
       keyboardType: TextInputType.multiline,
       maxLines: null,
       style: style,
-      decoration: const InputDecoration(
-        hintText: 'Write here',
+      decoration: InputDecoration(
+        hintText: tr('editors.common.defaultBodyHint'),
         border: InputBorder.none,
         isDense: true,
       ),

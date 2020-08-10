@@ -81,6 +81,8 @@ editors:
   checklist:
     add: Add Item
   common:
+    defaultBodyHint: Write Here
+    defaultTitleHint: Title
     discard: Discard Changes
     share: Share Note
     takePhoto: Take Photo
