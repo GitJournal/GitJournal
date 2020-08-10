@@ -80,8 +80,14 @@ class WikiLinkSyntax extends md.InlineSyntax {
   @override
   bool onMatch(md.InlineParser parser, Match match) {
     var term = match[1].trim();
+    var displayText = term;
+    if (term.contains('|')) {
+      var s = term.split('|');
+      term = s[0].trimRight();
+      displayText = s[1].trimLeft();
+    }
 
-    var el = md.Element('a', [md.Text(term)]);
+    var el = md.Element('a', [md.Text(displayText)]);
     el.attributes['type'] = 'wiki';
     el.attributes['href'] = '[[$term]]';
     el.attributes['term'] = term;
