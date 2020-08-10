@@ -19,6 +19,7 @@ void main() {
     await generateNote(tempDir.path, "Fire.md");
     await generateNote(tempDir.path, "Folder/Water.md");
     await generateNote(tempDir.path, "Air Bender.md");
+    await generateNote(tempDir.path, "zeplin.txt");
 
     await rootFolder.loadRecursively();
   });
@@ -58,6 +59,22 @@ void main() {
     var resolvedNote = linkResolver.resolve('[[Air Bender]]');
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Air Bender.md'));
   });
+
+  test('WikiLinks with extra spaces resolves correctly', () {
+    var note = rootFolder.notes[0];
+    var linkResolver = LinkResolver(note);
+
+    var resolvedNote = linkResolver.resolve('[[Hello ]]');
+    expect(resolvedNote.filePath, p.join(tempDir.path, 'Hello.md'));
+  });
+
+  test('Resolves to txt files as well', () {
+    var note = rootFolder.notes[0];
+    var linkResolver = LinkResolver(note);
+
+    var resolvedNote = linkResolver.resolve('[[zeplin]]');
+    expect(resolvedNote.filePath, p.join(tempDir.path, 'zeplin.txt'));
+  });
 }
 
 Future<void> generateNote(String basePath, String path) async {
@@ -78,8 +95,6 @@ Hello""";
 }
 
 // Test to write
-// 6. [[Hello Dear ]] check how it works in Obsidian (ignored extra spaces)
-// 7. Should resolve to 'txt' files as well
 // 8. Non base path [[Fire]] should resolve to [[Fire.md]]
 
 // Normal Links

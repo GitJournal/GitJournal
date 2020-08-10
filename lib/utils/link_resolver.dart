@@ -11,7 +11,7 @@ class LinkResolver {
 
     if (link.startsWith('[[') && link.endsWith(']]') && link.length > 4) {
       // FIXME: What if the case is different?
-      spec = link.substring(2, link.length - 2);
+      spec = link.substring(2, link.length - 2).trim();
     }
 
     if (link.startsWith('./')) {
