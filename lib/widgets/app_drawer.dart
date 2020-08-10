@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:launch_review/launch_review.dart';
@@ -26,7 +27,7 @@ class AppDrawer extends StatelessWidget {
     if (!appState.remoteGitRepoConfigured) {
       setupGitButton = ListTile(
         leading: Icon(Icons.sync, color: textStyle.color),
-        title: Text('Setup Git Host', style: textStyle),
+        title: Text(tr('drawer.setup'), style: textStyle),
         trailing: const Icon(
           Icons.info,
           color: Colors.red,
@@ -54,7 +55,7 @@ class AppDrawer extends StatelessWidget {
             _buildDrawerTile(
               context,
               icon: Icons.power,
-              title: "Unlock Pro Version",
+              title: tr('drawer.pro'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, "/purchase");
@@ -68,14 +69,14 @@ class AppDrawer extends StatelessWidget {
           _buildDrawerTile(
             context,
             icon: Icons.note,
-            title: "All Notes",
+            title: tr('drawer.all'),
             onTap: () => _navTopLevel(context, '/'),
             selected: currentRoute == '/',
           ),
           _buildDrawerTile(
             context,
             icon: Icons.folder,
-            title: "Folders",
+            title: tr('drawer.folders'),
             onTap: () => _navTopLevel(context, '/folders'),
             selected: currentRoute == "/folders",
           ),
@@ -84,7 +85,7 @@ class AppDrawer extends StatelessWidget {
               context,
               icon: FontAwesomeIcons.solidFolderOpen,
               isFontAwesome: true,
-              title: "File System",
+              title: tr('drawer.fs'),
               onTap: () => _navTopLevel(context, '/filesystem'),
               selected: currentRoute == "/filesystem",
             ),
@@ -92,7 +93,7 @@ class AppDrawer extends StatelessWidget {
             context,
             icon: FontAwesomeIcons.tag,
             isFontAwesome: true,
-            title: "Tags",
+            title: tr('drawer.tags'),
             onTap: () => _navTopLevel(context, '/tags'),
             selected: currentRoute == "/tags",
           ),
@@ -100,7 +101,7 @@ class AppDrawer extends StatelessWidget {
           _buildDrawerTile(
             context,
             icon: Icons.share,
-            title: 'Share App',
+            title: tr('drawer.share'),
             onTap: () {
               Navigator.pop(context);
               Share.share('Checkout GitJournal https://gitjournal.io/');
@@ -111,7 +112,7 @@ class AppDrawer extends StatelessWidget {
           _buildDrawerTile(
             context,
             icon: Icons.feedback,
-            title: 'Rate Us',
+            title: tr('drawer.rate'),
             onTap: () {
               LaunchReview.launch(
                 androidAppId: "io.gitjournal.gitjournal",
@@ -125,7 +126,7 @@ class AppDrawer extends StatelessWidget {
           _buildDrawerTile(
             context,
             icon: Icons.rate_review,
-            title: 'Feedback',
+            title: tr('drawer.feedback'),
             onTap: () async {
               var versionText = await getVersionString();
 
@@ -148,7 +149,7 @@ class AppDrawer extends StatelessWidget {
           _buildDrawerTile(
             context,
             icon: Icons.bug_report,
-            title: 'Bug Report',
+            title: tr('drawer.bug'),
             onTap: () async {
               var platform = Platform.operatingSystem;
               var versionText = await getVersionString();
@@ -171,7 +172,7 @@ class AppDrawer extends StatelessWidget {
           _buildDrawerTile(
             context,
             icon: Icons.settings,
-            title: 'Settings',
+            title: tr('settings.title'),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, "/settings");

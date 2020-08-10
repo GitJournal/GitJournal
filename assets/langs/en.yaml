@@ -150,6 +150,17 @@ rootFolder: Root Folder
 ignoredFiles:
   dot: Starts with a .
   ext: Doesn't end with .md or .txt
+drawer:
+  setup: Setup Git Host
+  pro: Unlock Pro Version
+  all: All Notes
+  folders: Folders
+  fs: File System
+  tags: Tags
+  share: Share App
+  rate: Rate Us
+  feedback: Feedback
+  bug: Bug Report
 features:
   darkMode: Dark Mode
   rawEditor: Raw Editor
