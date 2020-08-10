@@ -37,7 +37,7 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
 
   Future<void> _initStateAsync() async {
     var predicate = (Note n) async {
-      Log.d("NoteBacklinkRenderer Predicate", props: {"filePath": n.filePath});
+      // Log.d("NoteBacklinkRenderer Predicate", props: {"filePath": n.filePath});
 
       var links = await n.fetchLinks();
       var matchedLink = links.firstWhere(
@@ -53,7 +53,7 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
         orElse: () => null,
       );
 
-      Log.d("NoteBacklinkRenderer Predicate ${matchedLink != null}");
+      // Log.d("NoteBacklinkRenderer Predicate ${matchedLink != null}");
       return matchedLink != null;
     };
 
