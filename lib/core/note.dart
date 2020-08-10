@@ -50,7 +50,8 @@ class Note with NotesNotifier {
   NoteFileFormat _fileFormat;
 
   MdYamlDoc _data = MdYamlDoc();
-  NoteSerializer noteSerializer = NoteSerializer.fromSettings(Settings.instance);
+  NoteSerializer noteSerializer =
+      NoteSerializer.fromSettings(Settings.instance);
 
   DateTime fileLastModified;
 
@@ -295,7 +296,7 @@ class Note with NotesNotifier {
 
     var file = File(filePath);
     var contents = _serializer.encode(data);
-    await file.writeAsString(contents);
+    await file.writeAsString(contents, flush: true);
   }
 
   String serialize() {
