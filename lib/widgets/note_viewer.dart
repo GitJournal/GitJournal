@@ -16,6 +16,7 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/utils/link_resolver.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/editor_scroll_view.dart';
 import 'package:gitjournal/widgets/notes_backlinks.dart';
@@ -67,40 +68,15 @@ class NoteViewer extends StatelessWidget {
               // selectable: false, -> making this true breaks link navigation
               styleSheet: markdownStyleSheet,
               onTapLink: (String link) async {
-                var spec = link;
+                final linkResolver = LinkResolver(note);
 
-                if (link.startsWith('[[') &&
-                    link.endsWith(']]') &&
-                    link.length > 4) {
-                  // FIXME: What if the case is different?
-                  spec = link.substring(2, link.length - 2) + ".md";
-                }
-
-                if (link.startsWith('./')) {
-                  spec = link.substring(2);
-                }
-
-                var linkedNote = note.parent.getNoteWithSpec(spec);
+                var linkedNote = linkResolver.resolve(link);
                 if (linkedNote != null) {
                   openNoteEditor(context, linkedNote);
                   return;
                 }
 
-                if (!spec.endsWith('.md')) {
-                  linkedNote = note.parent.getNoteWithSpec(spec + '.md');
-                  if (linkedNote != null) {
-                    openNoteEditor(context, linkedNote);
-                    return;
-                  }
-                }
-                if (!spec.endsWith('.txt')) {
-                  linkedNote = note.parent.getNoteWithSpec(spec + '.txt');
-                  if (linkedNote != null) {
-                    openNoteEditor(context, linkedNote);
-                    return;
-                  }
-                }
-
+                // External Link
                 try {
                   await launch(link);
                 } catch (e, stackTrace) {

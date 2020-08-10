@@ -1,5 +1,5 @@
-import 'package:test/test.dart';
 import 'package:markdown/markdown.dart' as md;
+import 'package:test/test.dart';
 
 import 'package:gitjournal/widgets/note_viewer.dart';
 
