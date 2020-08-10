@@ -172,7 +172,7 @@ setup:
     authorize: Authorize GitJournal
     waitPerm: Waiting for Permissions ...
     readUser: Reading User Info
-features:
+feature:
   darkMode: Dark Mode
   rawEditor: Raw Editor
   folderSupport: Folder Support
