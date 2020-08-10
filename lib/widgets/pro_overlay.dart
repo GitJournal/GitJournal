@@ -11,7 +11,9 @@ class ProOverlay extends StatelessWidget {
   final Widget child;
   final Feature feature;
 
-  ProOverlay({@required this.child, @required this.feature});
+  ProOverlay({@required this.child, @required this.feature}) {
+    assert(feature.pro == true);
+  }
 
   @override
   Widget build(BuildContext context) {
