@@ -39,6 +39,14 @@ class LinkExtractor implements md.NodeVisitor {
     final String tag = el.tag;
 
     if (tag == 'a') {
+      var type = el.attributes['type'] ?? "";
+      if (type == "wiki") {
+        var term = el.attributes['term'];
+        var link = Link(term: term, filePath: null);
+        links.add(link);
+        return;
+      }
+
       var title = el.attributes['title'] ?? "";
       if (title.isEmpty) {
         for (var child in el.children) {
@@ -53,13 +61,6 @@ class LinkExtractor implements md.NodeVisitor {
       links.add(link);
       return;
     }
-
-    if (tag == 'wikiLink') {
-      var term = el.attributes['term'];
-      var link = Link(term: term, filePath: null);
-      links.add(link);
-      return;
-    }
   }
 
   List<Link> visit(List<md.Node> nodes) {
@@ -70,15 +71,21 @@ class LinkExtractor implements md.NodeVisitor {
   }
 }
 
+/// Parse [[term]]
 class WikiLinkSyntax extends md.InlineSyntax {
-  static final String _pattern = '\\[\\[([^\\[\\]]+)\\]\\]';
+  static final String _pattern = r'\[\[([^\[\]]+)\]\]';
 
   WikiLinkSyntax() : super(_pattern);
 
   @override
   bool onMatch(md.InlineParser parser, Match match) {
-    md.Element el = md.Element.withTag('wikiLink');
-    el.attributes['term'] = '${match[1].trim()}';
+    var term = match[1].trim();
+
+    var el = md.Element('a', [md.Text(term)]);
+    el.attributes['type'] = 'wiki';
+    el.attributes['href'] = '[[$term]]';
+    el.attributes['term'] = term;
+
     parser.addNode(el);
     return true;
   }
