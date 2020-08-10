@@ -31,6 +31,8 @@ enum Event {
   DrawerFeedback,
   DrawerBugReport,
   DrawerSettings,
+
+  PurchaseScreenOpen,
 }
 
 String _eventToString(Event e) {
@@ -75,6 +77,9 @@ String _eventToString(Event e) {
       return "drawer_bugreport";
     case Event.DrawerSettings:
       return "drawer_settings";
+
+    case Event.PurchaseScreenOpen:
+      return "purchase_screen_open";
   }
 
   return "unknown_event";

@@ -60,8 +60,9 @@ class AppDrawer extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, "/purchase");
 
-                getAnalytics().logEvent(
-                  name: "purchase_screen_open",
+                logEvent(
+                  Event.PurchaseScreenOpen,
+                  parameters: {"from": "drawer"},
                 );
               },
             ),
