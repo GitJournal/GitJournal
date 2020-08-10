@@ -6,6 +6,7 @@ import 'package:test/test.dart';
 
 import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/utils/datetime.dart';
 
 void main() {
@@ -26,11 +27,12 @@ void main() {
       n1Path = p.join(tempDir.path, "1.md");
       n2Path = p.join(tempDir.path, "2.md");
 
-      var n1 = Note(null, n1Path);
+      var parent = NotesFolderFS(null, tempDir.path);
+      var n1 = Note(parent, n1Path);
       n1.body = "test";
       n1.created = dt;
 
-      var n2 = Note(null, n2Path);
+      var n2 = Note(parent, n2Path);
       n2.data = MdYamlDoc("test2", props);
 
       notes = [n1, n2];
@@ -49,8 +51,10 @@ void main() {
       expect(File(n2Path).existsSync(), isTrue);
 
       var loadedNotes = <Note>[];
+      var parent = NotesFolderFS(null, tempDir.path);
+
       await Future.forEach(notes, (origNote) async {
-        var note = Note(null, origNote.filePath);
+        var note = Note(parent, origNote.filePath);
         var r = await note.load();
         expect(r, NoteLoadState.Loaded);
 

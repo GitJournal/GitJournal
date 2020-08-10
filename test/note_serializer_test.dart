@@ -5,9 +5,12 @@ import 'package:test/test.dart';
 import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_serializer.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 
 void main() {
   group('Note Serializer Test', () {
+    var parent = NotesFolderFS(null, '/tmp');
+
     test('Test emojis', () {
       var props = LinkedHashMap<String, dynamic>.from(
           <String, dynamic>{"title": "Why not :coffee:?"});
@@ -16,7 +19,7 @@ void main() {
       var serializer = NoteSerializer.raw();
       serializer.settings.saveTitleAsH1 = false;
 
-      var note = Note(null, "file-path-not-important");
+      var note = Note(parent, "file-path-not-important");
       serializer.decode(doc, note);
 
       expect(note.body, "I ❤️ you");
@@ -37,7 +40,7 @@ void main() {
       var serializer = NoteSerializer.raw();
       serializer.settings.saveTitleAsH1 = true;
 
-      var note = Note(null, "file-path-not-important");
+      var note = Note(parent, "file-path-not-important");
       serializer.decode(doc, note);
 
       expect(note.body, "I ❤️ you");
@@ -57,7 +60,7 @@ void main() {
 
       var serializer = NoteSerializer.raw();
 
-      var note = Note(null, "file-path-not-important");
+      var note = Note(parent, "file-path-not-important");
       serializer.decode(doc, note);
 
       expect(note.body, "I ❤️ you");
@@ -70,7 +73,7 @@ void main() {
 
       var serializer = NoteSerializer.raw();
 
-      var note = Note(null, "file-path-not-important");
+      var note = Note(parent, "file-path-not-important");
       serializer.decode(doc, note);
 
       expect(note.body.length, 0);
@@ -85,7 +88,7 @@ void main() {
       var serializer = NoteSerializer.raw();
       serializer.settings.saveTitleAsH1 = true;
 
-      var note = Note(null, "file-path-not-important");
+      var note = Note(parent, "file-path-not-important");
       serializer.decode(doc, note);
 
       expect(note.body, "I ❤️ you");
