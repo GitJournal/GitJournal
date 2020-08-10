@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/features.dart';
 import 'package:gitjournal/screens/debug_screen.dart';
 import 'package:gitjournal/screens/settings_editors.dart';
 import 'package:gitjournal/screens/settings_experimental.dart';
@@ -157,6 +158,7 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
       ProOverlay(
+        feature: Feature.customizeHomeScreen,
         child: ListPreference(
           title: tr('settings.display.homeScreen'),
           currentOption: settings.homeScreen.toPublicString(),

@@ -12,6 +12,7 @@ import 'package:share/share.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/features.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
 export 'package:gitjournal/editors/scaffold.dart';
@@ -250,6 +251,7 @@ Widget _buildBottomMenuSheet(
           },
         ),
         ProOverlay(
+          feature: Feature.tags,
           child: ListTile(
             leading: const FaIcon(FontAwesomeIcons.tag),
             title: Text(tr('editors.common.tags')),
@@ -272,6 +274,7 @@ Widget _buildBottomMenuSheet(
           },
         ),
         ProOverlay(
+          feature: Feature.zenMode,
           child: ListTile(
             leading: const FaIcon(FontAwesomeIcons.peace),
             title: Text(tr(zenModeEnabled

@@ -9,6 +9,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_serializer.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
+import 'package:gitjournal/features.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
@@ -65,6 +66,7 @@ class _NoteMetadataSettingsScreenState
           },
         ),
         ProOverlay(
+          feature: Feature.yamlModifiedKey,
           child: ListPreference(
             title: tr("settings.noteMetaData.modified"),
             options: [
@@ -84,6 +86,7 @@ class _NoteMetadataSettingsScreenState
           ),
         ),
         ProOverlay(
+          feature: Feature.yamlCreatedKey,
           child: ListPreference(
             title: tr("settings.noteMetaData.created"),
             options: [
@@ -101,6 +104,7 @@ class _NoteMetadataSettingsScreenState
           ),
         ),
         ProOverlay(
+          feature: Feature.yamlTagsKey,
           child: ListPreference(
             title: tr("settings.noteMetaData.tags"),
             options: [
@@ -118,6 +122,7 @@ class _NoteMetadataSettingsScreenState
           ),
         ),
         ProOverlay(
+          feature: Feature.metaDataTitle,
           child: ListPreference(
             title: tr("settings.noteMetaData.titleMetaData.title"),
             options: [

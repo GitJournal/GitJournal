@@ -10,6 +10,7 @@ import 'package:gitjournal/core/flattened_notes_folder.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_serializer.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/features.dart';
 import 'package:gitjournal/screens/folder_view.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
@@ -33,7 +34,12 @@ class TagListingScreen extends StatelessWidget {
         title: Text(tr('screens.tags.title')),
         leading: GJAppBarMenuButton(),
       ),
-      body: Scrollbar(child: ProOverlay(child: listView)),
+      body: Scrollbar(
+        child: ProOverlay(
+          feature: Feature.tags,
+          child: listView,
+        ),
+      ),
       drawer: AppDrawer(),
     );
   }

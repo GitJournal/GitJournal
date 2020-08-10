@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/features.dart';
 import 'package:gitjournal/screens/settings_screen.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
 import 'package:gitjournal/settings.dart';
@@ -63,6 +64,7 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
       ),
       SettingsHeader(tr("settings.editors.journalEditor")),
       ProOverlay(
+        feature: Feature.journalEditorDefaultFolder,
         child: ListTile(
           title: Text(tr("settings.editors.defaultFolder")),
           subtitle: Text(defaultNewFolder),

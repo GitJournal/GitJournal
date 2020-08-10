@@ -180,7 +180,7 @@ features:
   noteMetaDataCustomize:
     title: Customize Note Metadata
     subtitle: Allows GitJorunal to be used with static website generators
-  autoMergeConflict: Automation Merge Conflict Resolution
+  autoMergeConflicts: Automation Merge Conflict Resolution
   noteSorting: Configurable Note Sorting
   gitPushFreq: Configurable Git Sync Frequency
   checklistEditor: Checklist Editor
@@ -194,3 +194,9 @@ features:
   txtFiles: Txt File Support
   wikiLinks: Wiki Style Links Support
   metaDataTitle: Customize Title MetaData
+  journalEditorDefaultFolder: Customize Default Folder for Journal Editor
+  yamlModifiedKey: Customize the YAML modified key
+  yamlCreatedKey: Customize the YAML created key
+  yamlTagsKey: Customize the YAML tags key
+  disableYamlHeader: Disable YAML Metadata Header
+  customizeHomeScreen: Customize Home Screen
