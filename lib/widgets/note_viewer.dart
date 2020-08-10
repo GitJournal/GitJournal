@@ -55,12 +55,6 @@ class NoteViewer extends StatelessWidget {
       ),
     );
 
-    // It's important to add both these inline syntaxes before the other
-    // syntaxes as the LinkSyntax intefers with both of these
-    var markdownExtensions = md.ExtensionSet.gitHubFlavored;
-    markdownExtensions.inlineSyntaxes.insert(0, WikiLinkSyntax());
-    markdownExtensions.inlineSyntaxes.insert(1, TaskListSyntax());
-
     final rootFolder = Provider.of<NotesFolderFS>(context);
     var view = EditorScrollView(
       child: Column(
@@ -116,7 +110,7 @@ class NoteViewer extends StatelessWidget {
               },
               imageBuilder: (url, title, alt) => kDefaultImageBuilder(
                   url, note.parent.folderPath + p.separator, null, null),
-              extensionSet: markdownExtensions,
+              extensionSet: markdownExtensions(),
             ),
           ),
           const SizedBox(height: 16.0),
@@ -129,6 +123,15 @@ class NoteViewer extends StatelessWidget {
     );
 
     return view;
+  }
+
+  static md.ExtensionSet markdownExtensions() {
+    // It's important to add both these inline syntaxes before the other
+    // syntaxes as the LinkSyntax intefers with both of these
+    var markdownExtensions = md.ExtensionSet.gitHubFlavored;
+    markdownExtensions.inlineSyntaxes.insert(0, WikiLinkSyntax());
+    markdownExtensions.inlineSyntaxes.insert(1, TaskListSyntax());
+    return markdownExtensions;
   }
 
   /*
