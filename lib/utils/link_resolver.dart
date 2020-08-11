@@ -1,3 +1,5 @@
+import 'package:path/path.dart' as p;
+
 import 'package:gitjournal/core/note.dart';
 
 class LinkResolver {
@@ -16,6 +18,10 @@ class LinkResolver {
 
     if (link.startsWith('./')) {
       spec = link.substring(2);
+    }
+
+    if (spec.contains(p.separator)) {
+      spec = p.normalize(spec);
     }
 
     var linkedNote = rootFolder.getNoteWithSpec(spec);

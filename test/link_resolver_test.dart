@@ -20,6 +20,7 @@ void main() {
     await generateNote(tempDir.path, "Folder/Water.md");
     await generateNote(tempDir.path, "Air Bender.md");
     await generateNote(tempDir.path, "zeplin.txt");
+    await generateNote(tempDir.path, "Goat  Sim.md");
 
     await rootFolder.loadRecursively();
   });
@@ -83,6 +84,54 @@ void main() {
     var resolvedNote = linkResolver.resolve('[[Fire]]');
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Fire.md'));
   });
+
+  test('Non existing wiki link fails', () {
+    var note = rootFolder.notes[0];
+    var linkResolver = LinkResolver(note);
+
+    var resolvedNote = linkResolver.resolve('[[Hello2]]');
+    expect(resolvedNote, null);
+  });
+
+  test('WikiLinks with extra spaces in the middle resolves correctly', () {
+    var note = rootFolder.notes[0];
+    var linkResolver = LinkResolver(note);
+
+    var resolvedNote = linkResolver.resolve('[[Goat  Sim]]');
+    expect(resolvedNote.filePath, p.join(tempDir.path, 'Goat  Sim.md'));
+  });
+
+  test('Normal relative link', () {
+    var note = rootFolder.notes[0];
+    var linkResolver = LinkResolver(note);
+
+    var resolvedNote = linkResolver.resolve('./Hello.md');
+    expect(resolvedNote.filePath, p.join(tempDir.path, 'Hello.md'));
+  });
+
+  test('Normal relative link without ./', () {
+    var note = rootFolder.notes[0];
+    var linkResolver = LinkResolver(note);
+
+    var resolvedNote = linkResolver.resolve('Hello.md');
+    expect(resolvedNote.filePath, p.join(tempDir.path, 'Hello.md'));
+  });
+
+  test('Non existing relative link fails', () {
+    var note = rootFolder.notes[0];
+    var linkResolver = LinkResolver(note);
+
+    var resolvedNote = linkResolver.resolve('Hello2.md');
+    expect(resolvedNote, null);
+  });
+
+  test('Complex relative link', () {
+    var note = rootFolder.notes[0];
+    var linkResolver = LinkResolver(note);
+
+    var resolvedNote = linkResolver.resolve('./Air Bender/../Goat  Sim.md');
+    expect(resolvedNote.filePath, p.join(tempDir.path, 'Goat  Sim.md'));
+  });
 }
 
 Future<void> generateNote(String basePath, String path) async {
@@ -101,12 +150,3 @@ Hello""";
 
   return File(filePath).writeAsString(content, flush: true);
 }
-
-// Test to write
-// 8. Non base path [[Fire]] should resolve to [[Fire.md]]
-
-// Normal Links
-// 4. ./Fire.md -> resovles
-// 5. Fire.md -> resolves
-// 6. Fire2.md -> fails to resolve
-// 7. Complex path ../../Foo/../bar/d.md
