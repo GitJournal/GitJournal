@@ -200,3 +200,6 @@ feature:
   yamlTagsKey: Customize the YAML tags key
   disableYamlHeader: Disable YAML Metadata Header
   customizeHomeScreen: Customize Home Screen
+  emojiSupport:
+    title: Emoji Support
+    subtitle: "Convert :heart: to ❤️"

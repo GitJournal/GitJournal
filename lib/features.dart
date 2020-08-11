@@ -13,6 +13,7 @@ class Features {
     Feature.yamlModifiedKey,
     Feature.noteSorting,
     Feature.gitPushFreq,
+    Feature.emojiSupport,
     Feature.checkListEditor,
     Feature.disableYamlHeader,
     Feature.journalEditor,
@@ -111,6 +112,14 @@ class Feature {
     DateTime(2020, 02, 09),
     tr("feature.gitPushFreq"),
     "",
+    false,
+  );
+
+  static final emojiSupport = Feature(
+    "EmojiSupport",
+    DateTime(2020, 02, 14),
+    tr("feature.emojiSupport.title"),
+    tr("feature.emojiSupport.subtitle"),
     false,
   );
 
@@ -250,3 +259,8 @@ class Feature {
     true,
   );
 }
+
+// Feature Adding checklist
+// 1. Add to this Feature class
+// 2. Add to all features
+// 3. Make sure strings are translatable
