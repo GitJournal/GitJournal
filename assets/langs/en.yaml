@@ -76,6 +76,9 @@ settings:
     created: Created
     filename: File Name
     title: Title
+  remoteSync:
+    auto: Automatic
+    manual: Manual
 
 editors:
   checklist:

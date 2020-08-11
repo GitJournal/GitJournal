@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -342,19 +343,22 @@ class NoteFileNameFormat {
 }
 
 class RemoteSyncFrequency {
-  static const Automatic = RemoteSyncFrequency("Automatic");
-  static const Manual = RemoteSyncFrequency("Manual");
+  static const Automatic =
+      RemoteSyncFrequency("settings.remoteSync.auto", "automatic");
+  static const Manual =
+      RemoteSyncFrequency("settings.remoteSync.manual", "manual");
   static const Default = Automatic;
 
   final String _str;
-  const RemoteSyncFrequency(this._str);
+  final String _publicString;
+  const RemoteSyncFrequency(this._publicString, this._str);
 
   String toInternalString() {
     return _str;
   }
 
   String toPublicString() {
-    return _str;
+    return tr(_publicString);
   }
 
   static const options = <RemoteSyncFrequency>[
