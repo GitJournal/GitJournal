@@ -1,3 +1,10 @@
+## [1.63] - 2020-08-11
+* Resolve Wiki Links the same way as Obsidian
+* Support piped WikiLinks format [[fileName | what-to-show ]]
+* Allow 'tags' metadata field to be configured
+* Allow 'created' metadata field to be configured
+* Fix annoying cursor not showing spaces bug
+
 ## [1.62] - 2020-07-30
 * Allow title metadata to be configured
 * Bug: Fix GitJournal sometimes reseting its config
