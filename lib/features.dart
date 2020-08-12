@@ -4,6 +4,7 @@ class Features {
   static bool perFolderConfig = false;
 
   static final all = <Feature>[
+    Feature.basicSearch,
     Feature.darkMode,
     Feature.rawEditor,
     Feature.folderSupport,
@@ -17,6 +18,7 @@ class Features {
     Feature.checkListEditor,
     Feature.disableYamlHeader,
     Feature.journalEditor,
+    Feature.allNotesView,
     Feature.diffViews,
     Feature.journalEditorDefaultFolder,
     Feature.customizeHomeScreen,
@@ -42,6 +44,14 @@ class Feature {
   final bool pro;
 
   Feature(this.featureName, this.date, this.title, this.subtitle, this.pro);
+
+  static final basicSearch = Feature(
+    "DarkMode",
+    DateTime(2019, 09, 15),
+    tr("feature.basicSearch"),
+    "",
+    false,
+  );
 
   static final darkMode = Feature(
     "DarkMode",
@@ -143,6 +153,14 @@ class Feature {
     "JournalEditor",
     DateTime(2020, 03, 01),
     tr("feature.journalEditor"),
+    "",
+    false,
+  );
+
+  static final allNotesView = Feature(
+    "AllNotesView",
+    DateTime(2020, 03, 15),
+    tr("feature.allNotesView"),
     "",
     false,
   );

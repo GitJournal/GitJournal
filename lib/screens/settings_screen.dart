@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:gitjournal/screens/feature_timeline_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -252,7 +253,17 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
       const SizedBox(height: 16.0),
-      SettingsHeader(tr('settings.analytics')),
+      ListTile(
+        title: Text(tr("feature_timeline.title")),
+        onTap: () {
+          var route = MaterialPageRoute(
+            builder: (context) => FeatureTimelineScreen(),
+            settings: const RouteSettings(name: '/featureTimeline'),
+          );
+          Navigator.of(context).push(route);
+        },
+      ),
+      const SizedBox(height: 16.0),
       SwitchListTile(
         title: Text(tr('settings.usageStats')),
         value: settings.collectUsageStatistics,

@@ -182,7 +182,7 @@ feature:
   fileNameCustomize: Customize Note FileName
   noteMetaDataCustomize:
     title: Customize Note Metadata
-    subtitle: Allows GitJorunal to be used with static website generators
+    subtitle: Allows GitJournal to be used with static website generators
   autoMergeConflicts: Automation Merge Conflict Resolution
   noteSorting: Configurable Note Sorting
   gitPushFreq: Configurable Git Sync Frequency
@@ -203,6 +203,12 @@ feature:
   yamlTagsKey: Customize the YAML tags key
   disableYamlHeader: Disable YAML Metadata Header
   customizeHomeScreen: Customize Home Screen
+  zenMode: Zen Writing Mode
   emojiSupport:
     title: Emoji Support
     subtitle: "Convert :heart: to ❤️"
+  allNotesView: Add a screen to show "All Notes"
+  basicSearch: Basic Search
+
+feature_timeline:
+  title: Feature Timeline
