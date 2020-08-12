@@ -4,60 +4,59 @@ import 'package:test/test.dart';
 import 'package:gitjournal/widgets/markdown_toolbar.dart';
 
 void main() {
-  test('Adds a header to the first line correctly', () {
-    var val = const TextEditingValue(
-      text: 'Hello',
-      selection: TextSelection.collapsed(offset: 5),
+  void _testH1({
+    @required String before,
+    @required int beforeOffset,
+    @required String after,
+    @required int afterOffset,
+  }) {
+    var val = TextEditingValue(
+      text: before,
+      selection: TextSelection.collapsed(offset: beforeOffset),
     );
 
-    var expectedVal = const TextEditingValue(
-      text: '# Hello',
-      selection: TextSelection.collapsed(offset: 7),
+    var expectedVal = TextEditingValue(
+      text: after,
+      selection: TextSelection.collapsed(offset: afterOffset),
     );
 
     expect(modifyCurrentLine(val, '# '), expectedVal);
+  }
+
+  test('Adds a header to the first line correctly', () {
+    _testH1(
+      before: 'Hello',
+      beforeOffset: 5,
+      after: '# Hello',
+      afterOffset: 7,
+    );
   });
 
   test('Adds a header to the last line correctly', () {
-    var val = const TextEditingValue(
-      text: 'Hi\nHello',
-      selection: TextSelection.collapsed(offset: 8),
+    _testH1(
+      before: 'Hi\nHello',
+      beforeOffset: 8,
+      after: 'Hi\n# Hello',
+      afterOffset: 10,
     );
-
-    var expectedVal = const TextEditingValue(
-      text: 'Hi\n# Hello',
-      selection: TextSelection.collapsed(offset: 10),
-    );
-
-    expect(modifyCurrentLine(val, '# '), expectedVal);
   });
 
   test('Adds a header to a middle line correctly', () {
-    var val = const TextEditingValue(
-      text: 'Hi\nHello\nFire',
-      selection: TextSelection.collapsed(offset: 8),
+    _testH1(
+      before: 'Hi\nHello\nFire',
+      beforeOffset: 8,
+      after: 'Hi\n# Hello\nFire',
+      afterOffset: 10,
     );
-
-    var expectedVal = const TextEditingValue(
-      text: 'Hi\n# Hello\nFire',
-      selection: TextSelection.collapsed(offset: 10),
-    );
-
-    expect(modifyCurrentLine(val, '# '), expectedVal);
   });
 
   test('Adds a header to a middle line middle word correctly', () {
-    var val = const TextEditingValue(
-      text: 'Hi\nHello Darkness\nFire',
-      selection: TextSelection.collapsed(offset: 8),
+    _testH1(
+      before: 'Hi\nHello Darkness\nFire',
+      beforeOffset: 8,
+      after: 'Hi\n# Hello Darkness\nFire',
+      afterOffset: 10,
     );
-
-    var expectedVal = const TextEditingValue(
-      text: 'Hi\n# Hello Darkness\nFire',
-      selection: TextSelection.collapsed(offset: 10),
-    );
-
-    expect(modifyCurrentLine(val, '# '), expectedVal);
   });
 
   // Removes from first line
