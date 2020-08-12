@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -74,13 +75,6 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
   }
 
   Future<void> initPlatformState() async {
-    // In parallel check if the purchase has been made
-    InAppPurchases.confirmProPurchase().then((void _) {
-      if (Settings.instance.proMode) {
-        Navigator.of(context).pop();
-      }
-    });
-
     final iapCon = InAppPurchaseConnection.instance;
 
     final bool available = await iapCon.isAvailable();
@@ -332,6 +326,33 @@ class PurchaseFailedDialog extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ],
+    );
+  }
+}
+
+class RestorePurchaseButton extends StatefulWidget {
+  @override
+  _RestorePurchaseButtonState createState() => _RestorePurchaseButtonState();
+}
+
+class _RestorePurchaseButtonState extends State<RestorePurchaseButton> {
+  bool computing = false;
+
+  @override
+  Widget build(BuildContext context) {
+    var text = computing ? '...' : tr('purchase_screen.restore');
+
+    return OutlineButton(
+      child: Text(text),
+      onPressed: () async {
+        setState(() {
+          computing = true;
+        });
+        await InAppPurchases.confirmProPurchase();
+        if (Settings.instance.proMode) {
+          Navigator.of(context).pop();
+        }
+      },
     );
   }
 }

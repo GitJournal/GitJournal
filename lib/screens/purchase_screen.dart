@@ -23,7 +23,6 @@ class PurchaseScreen extends StatelessWidget {
   }
 
   Widget buildBody(BuildContext context) {
-
     Widget w = Column(
       children: <Widget>[
         Text(
@@ -43,6 +42,8 @@ class PurchaseScreen extends StatelessWidget {
         ),
         const SizedBox(height: 64.0),
         PurchaseWidget(),
+        const SizedBox(height: 32.0),
+        RestorePurchaseButton(),
       ],
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
