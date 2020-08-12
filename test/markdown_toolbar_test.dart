@@ -21,6 +21,7 @@ void main() {
     );
 
     expect(modifyCurrentLine(val, '# '), expectedVal);
+    expect(modifyCurrentLine(expectedVal, '# '), val);
   }
 
   test('Adds a header to the first line correctly', () {
@@ -59,12 +60,6 @@ void main() {
     );
   });
 
-  // Removes from first line
-  // Removes from last line
-  // Removes from middle line
-  // Removes when cursor is in the middle of a word
   // Removes when cursor is at the start of the line
   // Removes when cursor is in between '#' and ' '
-
-  // TODO: Simplify the tests, avoid all this code duplication
 }
