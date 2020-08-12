@@ -212,3 +212,12 @@ feature:
 
 feature_timeline:
   title: Feature Timeline
+
+purchase_screen:
+  title: Pro Version
+  desc: 'GitJournal is completely open source and is the result of significant development work. It has no venture capital or corporation backing. Your support directly sustains development.
+
+
+Paying a monthly subscription helps you support development and gives you access to
+a number of "Pro" only features. We operate on a "pay what you want model". No matter what you pay
+you will get access to all the Pro features.'

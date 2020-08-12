@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/screens/feature_timeline_screen.dart';
 import 'package:gitjournal/widgets/purchase_widget.dart';
 
 class PurchaseScreen extends StatelessWidget {
@@ -11,7 +14,7 @@ class PurchaseScreen extends StatelessWidget {
     return WillPopScope(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Pro Version'),
+          title: Text(tr('purchase_screen.title')),
         ),
         body: buildBody(context),
       ),
@@ -20,53 +23,25 @@ class PurchaseScreen extends StatelessWidget {
   }
 
   Widget buildBody(BuildContext context) {
-    // FIXME: This screen needs to be made way way more beautiful
-    //        It's an extrememly important screen
-
-    var features = <String>[
-      "Faster feature development",
-      "Note Tagging",
-      "Custom Home Screen",
-      "Note BackLinks",
-      "Zen Mode",
-      "Multiple Git Repos (coming soon)",
-      "Custom settings per folder (coming soon)",
-      "View and search through your entire Git Log (coming soon)",
-      "Custom Git commits (coming soon)",
-      "Note Templates (comming soon)",
-      "Unlimited Pinned Folders / Queries (coming soon)",
-      "End-to-End encrypted Git Hosting (coming soon)",
-      "Maybe even your own custom feature (email me).",
-      "GitJournal stays Ad free",
-    ];
-
-    var body = Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Text(
-          'Support GitJournal by going Pro and additionally get -',
-          style: Theme.of(context).textTheme.headline6,
-        ),
-        const SizedBox(height: 16.0),
-        for (var f in features)
-          Column(
-            children: <Widget>[
-              Text(
-                "• $f",
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-              const SizedBox(height: 8.0),
-            ],
-          ),
-      ],
-    );
 
     Widget w = Column(
       children: <Widget>[
-        body,
-        const SizedBox(height: 32.0),
+        Text(
+          tr('purchase_screen.desc'),
+          style: Theme.of(context).textTheme.bodyText2,
+        ),
+        const SizedBox(height: 16.0),
+        OutlineButton(
+          child: Text(tr("feature_timeline.title")),
+          onPressed: () {
+            var route = MaterialPageRoute(
+              builder: (context) => FeatureTimelineScreen(),
+              settings: const RouteSettings(name: '/featureTimeline'),
+            );
+            Navigator.of(context).push(route);
+          },
+        ),
+        const SizedBox(height: 64.0),
         PurchaseWidget(),
       ],
       mainAxisAlignment: MainAxisAlignment.start,
