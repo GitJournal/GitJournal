@@ -114,9 +114,19 @@ TextEditingValue modifyCurrentLine(
   // Check if already present
   if (text.startsWith(char, lineStartPos)) {
     //print('Removing `$char`');
+    var endOffset = cursorPos;
+    //print("End Offset: $endOffset");
+    if (endOffset > lineStartPos) {
+      endOffset -= char.length;
+      //print("End Offset min char: $endOffset");
+    }
+    if (endOffset < lineStartPos) {
+      endOffset = lineStartPos;
+      //print("End Offset equal LineStartPos: $endOffset");
+    }
     return TextEditingValue(
       text: text.replaceFirst(char, '', lineStartPos),
-      selection: TextSelection.collapsed(offset: cursorPos - char.length),
+      selection: TextSelection.collapsed(offset: endOffset),
     );
   }
 

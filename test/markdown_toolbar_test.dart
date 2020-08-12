@@ -4,11 +4,12 @@ import 'package:test/test.dart';
 import 'package:gitjournal/widgets/markdown_toolbar.dart';
 
 void main() {
-  void _testH1({
+  void _testLine({
     @required String before,
     @required int beforeOffset,
     @required String after,
     @required int afterOffset,
+    @required String char,
   }) {
     var val = TextEditingValue(
       text: before,
@@ -20,8 +21,30 @@ void main() {
       selection: TextSelection.collapsed(offset: afterOffset),
     );
 
-    expect(modifyCurrentLine(val, '# '), expectedVal);
-    expect(modifyCurrentLine(expectedVal, '# '), val);
+    expect(modifyCurrentLine(val, char), expectedVal);
+  }
+
+  void _testH1({
+    @required String before,
+    @required int beforeOffset,
+    @required String after,
+    @required int afterOffset,
+  }) {
+    _testLine(
+      before: before,
+      beforeOffset: beforeOffset,
+      after: after,
+      afterOffset: afterOffset,
+      char: '# ',
+    );
+
+    _testLine(
+      before: after,
+      beforeOffset: afterOffset,
+      after: before,
+      afterOffset: beforeOffset,
+      char: '# ',
+    );
   }
 
   test('Adds a header to the first line correctly', () {
@@ -60,6 +83,23 @@ void main() {
     );
   });
 
-  // Removes when cursor is at the start of the line
-  // Removes when cursor is in between '#' and ' '
+  test('Removes header when cursor is at the start of the line', () {
+    _testLine(
+      before: 'Hi\n# Hello Darkness\nFire',
+      beforeOffset: 3,
+      after: 'Hi\nHello Darkness\nFire',
+      afterOffset: 3,
+      char: '# ',
+    );
+  });
+
+  test("Removes header when cursor is in between '#' and ' '", () {
+    _testLine(
+      before: 'Hi\n# Hello Darkness\nFire',
+      beforeOffset: 4,
+      after: 'Hi\nHello Darkness\nFire',
+      afterOffset: 3,
+      char: '# ',
+    );
+  });
 }
