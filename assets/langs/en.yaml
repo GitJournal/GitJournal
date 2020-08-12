@@ -209,6 +209,7 @@ feature:
     subtitle: "Convert :heart: to ❤️"
   allNotesView: Add a screen to show "All Notes"
   basicSearch: Basic Search
+  customSSHKeys: Provide your own SSH Keys
 
 feature_timeline:
   title: Feature Timeline

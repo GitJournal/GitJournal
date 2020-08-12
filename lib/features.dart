@@ -16,6 +16,7 @@ class Features {
     Feature.gitPushFreq,
     Feature.emojiSupport,
     Feature.checkListEditor,
+    Feature.customSSHKeys,
     Feature.disableYamlHeader,
     Feature.journalEditor,
     Feature.allNotesView,
@@ -137,6 +138,14 @@ class Feature {
     "CheckListEditor",
     DateTime(2020, 02, 15),
     tr("feature.checklistEditor"),
+    "",
+    false,
+  );
+
+  static final customSSHKeys = Feature(
+    "CustomSSHKeys",
+    DateTime(2020, 02, 17),
+    tr("feature.customSSHKeys"),
     "",
     false,
   );
