@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MarkdownToolBar extends StatelessWidget {
-  final Function onHeader1;
-  final Function onItallics;
-  final Function onBold;
+  final TextEditingController textController;
 
   MarkdownToolBar({
-    @required this.onHeader1,
-    @required this.onItallics,
-    @required this.onBold,
+    @required this.textController,
   });
 
   @override
@@ -17,17 +13,107 @@ class MarkdownToolBar extends StatelessWidget {
       children: [
         IconButton(
           icon: const Text('H1'),
-          onPressed: onHeader1,
+          onPressed: () => _modifyCurrentLine('# '),
         ),
         IconButton(
           icon: const Text('I'),
-          onPressed: onItallics,
+          onPressed: () => _modifyCurrentWord('*'),
         ),
         IconButton(
           icon: const Text('B'),
-          onPressed: onBold,
+          onPressed: () => _modifyCurrentWord('**'),
         ),
       ],
     );
+  }
+
+  void _modifyCurrentLine(String char) {
+    var selection = textController.value.selection;
+    var text = textController.value.text;
+
+    print('Base offset: ${selection.baseOffset}');
+    print('Extent offset: ${selection.extentOffset}');
+    var cursorPos = selection.baseOffset;
+    if (cursorPos == -1) {
+      cursorPos = 0;
+    }
+    print('CursorPos: $cursorPos');
+
+    var lineStartPos =
+        text.lastIndexOf('\n', cursorPos == 0 ? 0 : cursorPos - 1);
+    if (lineStartPos == -1) {
+      lineStartPos = 0;
+    }
+
+    var lineEndPos = text.indexOf('\n', cursorPos);
+    if (lineEndPos == -1) {
+      lineEndPos = text.length;
+    }
+
+    print('Line Start: $lineStartPos');
+    print('Line End: $lineEndPos');
+    print('Line: ${text.substring(lineStartPos, lineEndPos)}');
+
+    // Check if already present
+    if (text.startsWith(char, lineStartPos)) {
+      print('Removing `$char`');
+      textController.text = text.replaceFirst(char, '', lineStartPos);
+      textController.selection =
+          TextSelection.collapsed(offset: cursorPos - char.length);
+      return;
+    }
+
+    print('Adding `$char`');
+    textController.text = text.replaceRange(lineStartPos, lineStartPos, char);
+    textController.selection =
+        TextSelection.collapsed(offset: cursorPos + char.length);
+  }
+
+  void _modifyCurrentWord(String char) {
+    var selection = textController.value.selection;
+    var text = textController.value.text;
+
+    print('Base offset: ${selection.baseOffset}');
+    print('Extent offset: ${selection.extentOffset}');
+    var cursorPos = selection.baseOffset;
+    if (cursorPos == -1) {
+      cursorPos = 0;
+    }
+    print('CursorPos: $cursorPos');
+
+    var wordStartPos =
+        text.lastIndexOf(' ', cursorPos == 0 ? 0 : cursorPos - 1);
+    if (wordStartPos == -1) {
+      wordStartPos = 0;
+    }
+
+    var wordEndPos = text.indexOf(' ', cursorPos);
+    if (wordEndPos == -1) {
+      wordEndPos = text.length;
+    }
+
+    print('Word Start: $wordStartPos');
+    print('Word End: $wordEndPos');
+    print('Word: ${text.substring(wordStartPos, wordEndPos)}');
+
+    // Check if already present
+    if (text.startsWith(char, wordStartPos)) {
+      print('Removing `$char`');
+      textController.text = text.replaceFirst(char, '', wordStartPos);
+      textController.selection =
+          TextSelection.collapsed(offset: cursorPos - (char.length * 2));
+      return;
+    }
+
+    print('Adding `$char`');
+    textController.text = text.replaceRange(wordStartPos, wordStartPos, char);
+    wordEndPos += char.length;
+
+    textController.text =
+        text.replaceRange(wordEndPos - 1, wordEndPos - 1, char);
+    textController.selection =
+        TextSelection.collapsed(offset: cursorPos + (char.length * 2));
+
+    print('$char');
   }
 }

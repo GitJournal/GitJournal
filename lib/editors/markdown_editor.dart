@@ -14,6 +14,7 @@ import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/editor_scroll_view.dart';
+import 'package:gitjournal/widgets/markdown_toolbar.dart';
 import 'package:gitjournal/widgets/note_viewer.dart';
 
 class MarkdownEditor extends StatefulWidget implements Editor {
@@ -139,9 +140,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
           children: <Widget>[
             Expanded(child: editor),
             MarkdownToolBar(
-              onHeader1: () => _modifyCurrentLine('# '),
-              onItallics: () => _modifyCurrentWord('*'),
-              onBold: () => _modifyCurrentWord('**'),
+              textController: _textController,
             ),
           ],
           mainAxisSize: MainAxisSize.min,
@@ -246,126 +245,4 @@ class MarkdownEditorState extends State<MarkdownEditor>
 
   @override
   bool get noteModified => _noteModified;
-
-  void _modifyCurrentLine(String char) {
-    var selection = _textController.value.selection;
-    var text = _textController.value.text;
-
-    print('Base offset: ${selection.baseOffset}');
-    print('Extent offset: ${selection.extentOffset}');
-    var cursorPos = selection.baseOffset;
-    if (cursorPos == -1) {
-      cursorPos = 0;
-    }
-    print('CursorPos: $cursorPos');
-
-    var lineStartPos =
-        text.lastIndexOf('\n', cursorPos == 0 ? 0 : cursorPos - 1);
-    if (lineStartPos == -1) {
-      lineStartPos = 0;
-    }
-
-    var lineEndPos = text.indexOf('\n', cursorPos);
-    if (lineEndPos == -1) {
-      lineEndPos = text.length;
-    }
-
-    print('Line Start: $lineStartPos');
-    print('Line End: $lineEndPos');
-    print('Line: ${text.substring(lineStartPos, lineEndPos)}');
-
-    // Check if already present
-    if (text.startsWith(char, lineStartPos)) {
-      print('Removing `$char`');
-      _textController.text = text.replaceFirst(char, '', lineStartPos);
-      _textController.selection =
-          TextSelection.collapsed(offset: cursorPos - char.length);
-      return;
-    }
-
-    print('Adding `$char`');
-    _textController.text = text.replaceRange(lineStartPos, lineStartPos, char);
-    _textController.selection =
-        TextSelection.collapsed(offset: cursorPos + char.length);
-  }
-
-  void _modifyCurrentWord(String char) {
-    var selection = _textController.value.selection;
-    var text = _textController.value.text;
-
-    print('Base offset: ${selection.baseOffset}');
-    print('Extent offset: ${selection.extentOffset}');
-    var cursorPos = selection.baseOffset;
-    if (cursorPos == -1) {
-      cursorPos = 0;
-    }
-    print('CursorPos: $cursorPos');
-
-    var wordStartPos =
-        text.lastIndexOf(' ', cursorPos == 0 ? 0 : cursorPos - 1);
-    if (wordStartPos == -1) {
-      wordStartPos = 0;
-    }
-
-    var wordEndPos = text.indexOf(' ', cursorPos);
-    if (wordEndPos == -1) {
-      wordEndPos = text.length;
-    }
-
-    print('Word Start: $wordStartPos');
-    print('Word End: $wordEndPos');
-    print('Word: ${text.substring(wordStartPos, wordEndPos)}');
-
-    // Check if already present
-    if (text.startsWith(char, wordStartPos)) {
-      print('Removing `$char`');
-      _textController.text = text.replaceFirst(char, '', wordStartPos);
-      _textController.selection =
-          TextSelection.collapsed(offset: cursorPos - (char.length * 2));
-      return;
-    }
-
-    print('Adding `$char`');
-    _textController.text = text.replaceRange(wordStartPos, wordStartPos, char);
-    wordEndPos += char.length;
-
-    _textController.text =
-        text.replaceRange(wordEndPos - 1, wordEndPos - 1, char);
-    _textController.selection =
-        TextSelection.collapsed(offset: cursorPos + (char.length * 2));
-
-    print('$char');
-  }
-}
-
-class MarkdownToolBar extends StatelessWidget {
-  final Function onHeader1;
-  final Function onItallics;
-  final Function onBold;
-
-  MarkdownToolBar({
-    @required this.onHeader1,
-    @required this.onItallics,
-    @required this.onBold,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(
-          icon: const Text('H1'),
-          onPressed: onHeader1,
-        ),
-        IconButton(
-          icon: const Text('I'),
-          onPressed: onItallics,
-        ),
-        IconButton(
-          icon: const Text('B'),
-          onPressed: onBold,
-        ),
-      ],
-    );
-  }
 }
