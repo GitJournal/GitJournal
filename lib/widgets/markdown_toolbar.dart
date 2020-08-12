@@ -98,6 +98,8 @@ TextEditingValue modifyCurrentLine(
   var lineStartPos = text.lastIndexOf('\n', cursorPos == 0 ? 0 : cursorPos - 1);
   if (lineStartPos == -1) {
     lineStartPos = 0;
+  } else {
+    lineStartPos += 1;
   }
 
   var lineEndPos = text.indexOf('\n', cursorPos);
