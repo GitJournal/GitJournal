@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 
@@ -11,7 +10,9 @@ class PurchaseScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       child: Scaffold(
-        appBar: EmptyAppBar(),
+        appBar: AppBar(
+          title: const Text('Pro Version'),
+        ),
         body: buildBody(context),
       ),
       onWillPop: _onWillPop,
@@ -19,9 +20,6 @@ class PurchaseScreen extends StatelessWidget {
   }
 
   Widget buildBody(BuildContext context) {
-    var theme = Theme.of(context);
-    var textTheme = theme.textTheme;
-
     // FIXME: This screen needs to be made way way more beautiful
     //        It's an extrememly important screen
 
@@ -65,17 +63,8 @@ class PurchaseScreen extends StatelessWidget {
       ],
     );
 
-    var titleStyle =
-        textTheme.headline3.copyWith(color: textTheme.headline6.color);
-
     Widget w = Column(
       children: <Widget>[
-        Text(
-          'Pro Version',
-          style: titleStyle,
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 32.0),
         body,
         const SizedBox(height: 32.0),
         PurchaseWidget(),
@@ -84,33 +73,13 @@ class PurchaseScreen extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
     );
 
-    w = CustomScrollView(
+    return CustomScrollView(
       slivers: [
         SliverFillRemaining(
           hasScrollBody: false,
           child: Padding(padding: const EdgeInsets.all(16.0), child: w),
         ),
       ],
-    );
-
-    if (Platform.isIOS) {
-      w = Stack(
-        alignment: FractionalOffset.topLeft,
-        children: <Widget>[
-          w,
-          InkWell(
-            child: Container(
-              child: const Icon(Icons.arrow_back, size: 32.0),
-              padding: const EdgeInsets.all(8.0),
-            ),
-            onTap: () => Navigator.of(context).pop(),
-          ),
-        ],
-      );
-    }
-
-    return SafeArea(
-      child: w,
     );
   }
 
@@ -120,14 +89,4 @@ class PurchaseScreen extends StatelessWidget {
     );
     return true;
   }
-}
-
-class EmptyAppBar extends StatelessWidget implements PreferredSizeWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(color: Theme.of(context).primaryColor);
-  }
-
-  @override
-  Size get preferredSize => const Size(0.0, 0.0);
 }
