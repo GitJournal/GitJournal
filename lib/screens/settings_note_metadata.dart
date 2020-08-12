@@ -7,6 +7,7 @@ import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_serializer.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/features.dart';
@@ -27,7 +28,8 @@ class _NoteMetadataSettingsScreenState
     var textTheme = Theme.of(context).textTheme;
     var settings = Provider.of<Settings>(context);
 
-    var note = Note(null, "fileName.md");
+    var parent = NotesFolderFS(null, '');
+    var note = Note(parent, "fileName.md");
     note.title = tr("settings.noteMetaData.exampleTitle");
     note.body = tr("settings.noteMetaData.exampleBody");
     note.created = DateTime.now().add(const Duration(days: -1));
