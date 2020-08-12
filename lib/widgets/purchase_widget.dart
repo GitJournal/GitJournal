@@ -97,8 +97,15 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
       Log.e("IAP queryProductDetails: ${response.error}");
     }
     var products = response.productDetails;
-    products.sort((a, b) => a.price.compareTo(b.price));
-    Log.i("Products: ${products.map((e) => '${e.id} ${e.price}')}");
+    products.sort((a, b) {
+      var pa = _fromProductDetail(a);
+      var pb = _fromProductDetail(b);
+      return pa.value.compareTo(pb.value);
+    });
+    Log.i("Products: ${products.length}");
+    for (var p in products) {
+      Log.i("Product ${p.id} -> ${p.price}");
+    }
 
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
