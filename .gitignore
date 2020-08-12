@@ -22,3 +22,5 @@ android/fastlane/report.xml
 
 # Android NDK Debug symbols
 debugSymbols
+
+test/.test_coverage.dart.

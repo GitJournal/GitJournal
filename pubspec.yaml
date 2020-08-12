@@ -68,6 +68,7 @@ dev_dependencies:
   flutter_driver:
     sdk: flutter
   benchmark_harness: any
+  test_coverage: ^0.4.3
 
 dependency_overrides:
   intl:
