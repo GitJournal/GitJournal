@@ -28,45 +28,7 @@ class MarkdownToolBar extends StatelessWidget {
   }
 
   void _modifyCurrentLine(String char) {
-    var selection = textController.value.selection;
-    var text = textController.value.text;
-
-    print('Base offset: ${selection.baseOffset}');
-    print('Extent offset: ${selection.extentOffset}');
-    var cursorPos = selection.baseOffset;
-    if (cursorPos == -1) {
-      cursorPos = 0;
-    }
-    print('CursorPos: $cursorPos');
-
-    var lineStartPos =
-        text.lastIndexOf('\n', cursorPos == 0 ? 0 : cursorPos - 1);
-    if (lineStartPos == -1) {
-      lineStartPos = 0;
-    }
-
-    var lineEndPos = text.indexOf('\n', cursorPos);
-    if (lineEndPos == -1) {
-      lineEndPos = text.length;
-    }
-
-    print('Line Start: $lineStartPos');
-    print('Line End: $lineEndPos');
-    print('Line: ${text.substring(lineStartPos, lineEndPos)}');
-
-    // Check if already present
-    if (text.startsWith(char, lineStartPos)) {
-      print('Removing `$char`');
-      textController.text = text.replaceFirst(char, '', lineStartPos);
-      textController.selection =
-          TextSelection.collapsed(offset: cursorPos - char.length);
-      return;
-    }
-
-    print('Adding `$char`');
-    textController.text = text.replaceRange(lineStartPos, lineStartPos, char);
-    textController.selection =
-        TextSelection.collapsed(offset: cursorPos + char.length);
+    textController.value = modifyCurrentLine(textController.value, char);
   }
 
   void _modifyCurrentWord(String char) {
@@ -116,4 +78,48 @@ class MarkdownToolBar extends StatelessWidget {
 
     print('$char');
   }
+}
+
+TextEditingValue modifyCurrentLine(
+  TextEditingValue textEditingValue,
+  String char,
+) {
+  var selection = textEditingValue.selection;
+  var text = textEditingValue.text;
+
+  //print('Base offset: ${selection.baseOffset}');
+  //print('Extent offset: ${selection.extentOffset}');
+  var cursorPos = selection.baseOffset;
+  if (cursorPos == -1) {
+    cursorPos = 0;
+  }
+  //print('CursorPos: $cursorPos');
+
+  var lineStartPos = text.lastIndexOf('\n', cursorPos == 0 ? 0 : cursorPos - 1);
+  if (lineStartPos == -1) {
+    lineStartPos = 0;
+  }
+
+  var lineEndPos = text.indexOf('\n', cursorPos);
+  if (lineEndPos == -1) {
+    lineEndPos = text.length;
+  }
+
+  //print('Line Start: $lineStartPos');
+  //print('Line End: $lineEndPos');
+  //print('Line: ${text.substring(lineStartPos, lineEndPos)}');
+
+  // Check if already present
+  if (text.startsWith(char, lineStartPos)) {
+    //print('Removing `$char`');
+    return TextEditingValue(
+      text: text.replaceFirst(char, '', lineStartPos),
+      selection: TextSelection.collapsed(offset: cursorPos - char.length),
+    );
+  }
+
+  return TextEditingValue(
+    text: text.replaceRange(lineStartPos, lineStartPos, char),
+    selection: TextSelection.collapsed(offset: cursorPos + char.length),
+  );
 }
