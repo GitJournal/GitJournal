@@ -188,7 +188,7 @@ feature:
   gitPushFreq: Configurable Git Sync Frequency
   checklistEditor: Checklist Editor
   journalEditor: Journal Editor
-  diffViews: Different Folder Views - Journal, Card, Grid, Standard
+  diffViews: Different Folder Views - Journal, Grid, Standard
   imageSupport: Image Support
   tags: Note Tags
   appShortcuts: App Shortcuts
