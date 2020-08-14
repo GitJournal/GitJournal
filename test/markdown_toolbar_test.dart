@@ -103,4 +103,47 @@ void main() {
       char: '# ',
     );
   });
+
+  //
+  // Word based
+  //
+  void _testWord({
+    @required String before,
+    @required int beforeOffset,
+    @required String after,
+    @required int afterOffset,
+    @required String char,
+  }) {
+    var val = TextEditingValue(
+      text: before,
+      selection: TextSelection.collapsed(offset: beforeOffset),
+    );
+
+    var expectedVal = TextEditingValue(
+      text: after,
+      selection: TextSelection.collapsed(offset: afterOffset),
+    );
+
+    expect(modifyCurrentWord(val, char), expectedVal);
+  }
+
+  test("Surrounds the first word", () {
+    _testWord(
+      before: 'Hello',
+      beforeOffset: 3,
+      after: '**Hello**',
+      afterOffset: 7,
+      char: '**',
+    );
+  });
+
+  test("Removing from the first word", () {
+    _testWord(
+      before: '**Hello**',
+      beforeOffset: 3,
+      after: 'Hello',
+      afterOffset: 5,
+      char: '**',
+    );
+  });
 }

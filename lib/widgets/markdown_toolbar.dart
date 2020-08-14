@@ -32,51 +32,7 @@ class MarkdownToolBar extends StatelessWidget {
   }
 
   void _modifyCurrentWord(String char) {
-    var selection = textController.value.selection;
-    var text = textController.value.text;
-
-    print('Base offset: ${selection.baseOffset}');
-    print('Extent offset: ${selection.extentOffset}');
-    var cursorPos = selection.baseOffset;
-    if (cursorPos == -1) {
-      cursorPos = 0;
-    }
-    print('CursorPos: $cursorPos');
-
-    var wordStartPos =
-        text.lastIndexOf(' ', cursorPos == 0 ? 0 : cursorPos - 1);
-    if (wordStartPos == -1) {
-      wordStartPos = 0;
-    }
-
-    var wordEndPos = text.indexOf(' ', cursorPos);
-    if (wordEndPos == -1) {
-      wordEndPos = text.length;
-    }
-
-    print('Word Start: $wordStartPos');
-    print('Word End: $wordEndPos');
-    print('Word: ${text.substring(wordStartPos, wordEndPos)}');
-
-    // Check if already present
-    if (text.startsWith(char, wordStartPos)) {
-      print('Removing `$char`');
-      textController.text = text.replaceFirst(char, '', wordStartPos);
-      textController.selection =
-          TextSelection.collapsed(offset: cursorPos - (char.length * 2));
-      return;
-    }
-
-    print('Adding `$char`');
-    textController.text = text.replaceRange(wordStartPos, wordStartPos, char);
-    wordEndPos += char.length;
-
-    textController.text =
-        text.replaceRange(wordEndPos - 1, wordEndPos - 1, char);
-    textController.selection =
-        TextSelection.collapsed(offset: cursorPos + (char.length * 2));
-
-    print('$char');
+    textController.value = modifyCurrentWord(textController.value, char);
   }
 }
 
@@ -133,5 +89,58 @@ TextEditingValue modifyCurrentLine(
   return TextEditingValue(
     text: text.replaceRange(lineStartPos, lineStartPos, char),
     selection: TextSelection.collapsed(offset: cursorPos + char.length),
+  );
+}
+
+TextEditingValue modifyCurrentWord(
+  TextEditingValue textEditingValue,
+  String char,
+) {
+  var selection = textEditingValue.selection;
+  var text = textEditingValue.text;
+
+  print('Base offset: ${selection.baseOffset}');
+  print('Extent offset: ${selection.extentOffset}');
+  var cursorPos = selection.baseOffset;
+  if (cursorPos == -1) {
+    cursorPos = 0;
+  }
+  print('CursorPos: $cursorPos');
+
+  var wordStartPos = text.lastIndexOf(' ', cursorPos == 0 ? 0 : cursorPos - 1);
+  if (wordStartPos == -1) {
+    wordStartPos = 0;
+  }
+
+  var wordEndPos = text.indexOf(' ', cursorPos);
+  if (wordEndPos == -1) {
+    wordEndPos = text.length;
+  }
+
+  print('Word Start: $wordStartPos');
+  print('Word End: $wordEndPos');
+  print('Word: ${text.substring(wordStartPos, wordEndPos)}');
+
+  // Check if already present
+  if (text.startsWith(char, wordStartPos) &&
+      text.startsWith(char, wordEndPos - char.length)) {
+    text = text.replaceFirst(char, '', wordStartPos);
+    wordEndPos -= char.length;
+
+    return TextEditingValue(
+      text: text.replaceFirst(char, '', wordEndPos - char.length),
+      selection: TextSelection.collapsed(
+        offset: wordEndPos - char.length,
+      ),
+    );
+  }
+
+  print('Adding `$char`');
+  text = text.replaceRange(wordStartPos, wordStartPos, char);
+  wordEndPos += char.length;
+
+  return TextEditingValue(
+    text: text.replaceRange(wordEndPos, wordEndPos, char),
+    selection: TextSelection.collapsed(offset: wordEndPos),
   );
 }
