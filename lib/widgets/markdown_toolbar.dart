@@ -23,6 +23,14 @@ class MarkdownToolBar extends StatelessWidget {
           icon: const Text('B'),
           onPressed: () => _modifyCurrentWord('**'),
         ),
+        IconButton(
+          icon: const Icon(Icons.navigate_before),
+          onPressed: _navigateToPrevWord,
+        ),
+        IconButton(
+          icon: const Icon(Icons.navigate_next),
+          onPressed: _navigateToNextWord,
+        ),
       ],
     );
   }
@@ -33,6 +41,16 @@ class MarkdownToolBar extends StatelessWidget {
 
   void _modifyCurrentWord(String char) {
     textController.value = modifyCurrentWord(textController.value, char);
+  }
+
+  void _navigateToPrevWord() {
+    var offset = nextWordPos(textController.value);
+    textController.selection = TextSelection.collapsed(offset: offset);
+  }
+
+  void _navigateToNextWord() {
+    var offset = prevWordPos(textController.value);
+    textController.selection = TextSelection.collapsed(offset: offset);
   }
 }
 
@@ -145,4 +163,29 @@ TextEditingValue modifyCurrentWord(
     text: text.replaceRange(wordEndPos, wordEndPos, char),
     selection: TextSelection.collapsed(offset: wordEndPos),
   );
+}
+
+// FIXME: This will fail in non space delimited languages
+int nextWordPos(TextEditingValue textEditingValue) {
+  var cursorPos = textEditingValue.selection.baseOffset;
+  var text = textEditingValue.text;
+
+  var nextSpacePos = text.indexOf(RegExp('\s'), cursorPos);
+  if (nextSpacePos == -1) {
+    return text.length;
+  }
+
+  return nextSpacePos;
+}
+
+int prevWordPos(TextEditingValue textEditingValue) {
+  var cursorPos = textEditingValue.selection.baseOffset;
+  var text = textEditingValue.text;
+
+  var lastSpacePos = text.lastIndexOf(RegExp('\s'), cursorPos);
+  if (lastSpacePos == -1) {
+    return 0;
+  }
+
+  return lastSpacePos;
 }

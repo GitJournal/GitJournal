@@ -166,4 +166,40 @@ void main() {
       char: '**',
     );
   });
+
+  //
+  // Navigation
+  //
+  test('Navigation with only 1 word', () {
+    var val = const TextEditingValue(
+      text: 'Hello',
+      selection: TextSelection.collapsed(offset: 3),
+    );
+
+    expect(nextWordPos(val), 5);
+
+    val = const TextEditingValue(
+      text: 'Hello',
+      selection: TextSelection.collapsed(offset: 5),
+    );
+
+    expect(nextWordPos(val), 5);
+
+    val = const TextEditingValue(
+      text: 'Hello',
+      selection: TextSelection.collapsed(offset: 3),
+    );
+
+    expect(prevWordPos(val), 0);
+
+    val = const TextEditingValue(
+      text: 'Hello',
+      selection: TextSelection.collapsed(offset: 5),
+    );
+
+    expect(prevWordPos(val), 0);
+  });
+
+  // Test for navigating between punctuations
+  // Test for navigating between newlines
 }
