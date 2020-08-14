@@ -75,6 +75,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
   }
 
   Future<void> initPlatformState() async {
+    InAppPurchaseConnection.enablePendingPurchases();
     final iapCon = InAppPurchaseConnection.instance;
 
     final bool available = await iapCon.isAvailable();
