@@ -110,6 +110,8 @@ TextEditingValue modifyCurrentWord(
   var wordStartPos = text.lastIndexOf(' ', cursorPos == 0 ? 0 : cursorPos - 1);
   if (wordStartPos == -1) {
     wordStartPos = 0;
+  } else {
+    wordStartPos += 1;
   }
 
   var wordEndPos = text.indexOf(' ', cursorPos);

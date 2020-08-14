@@ -146,4 +146,24 @@ void main() {
       char: '**',
     );
   });
+
+  test("Surrounds the middle word", () {
+    _testWord(
+      before: 'Hello Hydra Person',
+      beforeOffset: 8,
+      after: 'Hello **Hydra** Person',
+      afterOffset: 13,
+      char: '**',
+    );
+  });
+
+  test("Removes the middle word", () {
+    _testWord(
+      before: 'Hello **Hydra** Person',
+      beforeOffset: 9,
+      after: 'Hello Hydra Person',
+      afterOffset: 11,
+      char: '**',
+    );
+  });
 }
