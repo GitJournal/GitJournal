@@ -1,3 +1,8 @@
+## [1.65] - 2020-08-14
+* Allow the sorting order to be controller
+* Fix: Purchasing Pro would sometimes fail
+* Fix: Backlinks and actual links were different
+
 ## [1.64] - 2020-08-12
 * Showcase list of Features in Purchase Screen
 * Fix: Payment slider being glitchy
