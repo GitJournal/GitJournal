@@ -18,6 +18,7 @@ void main() {
     await generateNote(tempDir.path, "Hello.md");
     await generateNote(tempDir.path, "Fire.md");
     await generateNote(tempDir.path, "Folder/Water.md");
+    await generateNote(tempDir.path, "Folder/Sodium.md");
     await generateNote(tempDir.path, "Air Bender.md");
     await generateNote(tempDir.path, "zeplin.txt");
     await generateNote(tempDir.path, "Goat  Sim.md");
@@ -107,6 +108,14 @@ void main() {
 
     var resolvedNote = linkResolver.resolve('./Hello.md');
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Hello.md'));
+  });
+
+  test('Normal relative link inside a subFolder', () {
+    var note = rootFolder.getNoteWithSpec('Folder/Water.md');
+    var linkResolver = LinkResolver(note);
+
+    var resolvedNote = linkResolver.resolve('./Sodium.md');
+    expect(resolvedNote.filePath, p.join(tempDir.path, 'Folder/Sodium.md'));
   });
 
   test('Normal relative link without ./', () {
