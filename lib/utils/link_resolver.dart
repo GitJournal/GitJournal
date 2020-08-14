@@ -1,11 +1,19 @@
 import 'package:path/path.dart' as p;
 
+import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/note.dart';
 
 class LinkResolver {
   final Note inputNote;
 
   LinkResolver(this.inputNote);
+
+  Note resolveLink(Link l) {
+    var href = l.filePath;
+    href ??= '[[${l.term}]]';
+
+    return resolve(href);
+  }
 
   Note resolve(String link) {
     var spec = link;

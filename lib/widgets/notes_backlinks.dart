@@ -9,6 +9,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/folder_views/common.dart';
+import 'package:gitjournal/utils/link_resolver.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class NoteBacklinkRenderer extends StatefulWidget {
@@ -39,15 +40,15 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
       // Log.d("NoteBacklinkRenderer Predicate", props: {"filePath": n.filePath});
 
       var links = await n.fetchLinks();
+      var linkResolver = LinkResolver(n);
       var matchedLink = links.firstWhere(
         (l) {
-          if (l.filePath != null) {
-            return l.filePath == widget.note.filePath;
+          var matchedNote = linkResolver.resolveLink(l);
+          if (matchedNote == null) {
+            return false;
           }
 
-          var term = widget.note.pathSpec();
-          term = p.basenameWithoutExtension(term);
-          return term == l.term;
+          return matchedNote.filePath == widget.note.filePath;
         },
         orElse: () => null,
       );
