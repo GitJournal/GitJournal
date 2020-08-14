@@ -1,4 +1,6 @@
 settings:
+  ok: Ok
+  cancel: Cancel
   title: Settings
   author:
     label: Full Name
@@ -71,11 +73,17 @@ settings:
     markdownEditor: Markdown Editor
     journalEditor: Journal Editor
     defaultFolder: Default Folder
-  sortingMode:
+  sortingField:
     modified: Last Modified
     created: Created
     filename: File Name
     title: Title
+  sortingOrder:
+    asc: Ascending
+    desc: Descending
+  sortingMode:
+    field: Field
+    order: Order
   remoteSync:
     auto: Automatic
     manual: Manual

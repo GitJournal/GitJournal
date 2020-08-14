@@ -39,8 +39,8 @@ class JournalView extends StatelessWidget {
     var textTheme = Theme.of(context).textTheme;
 
     DateTime date;
-    var sortingMode = folder.config.sortingMode;
-    if (sortingMode == SortingMode.Created) {
+    var sortingField = folder.config.sortingMode.field;
+    if (sortingField == SortingField.Created) {
       date = note.created;
     } else {
       date = note.modified;

@@ -32,7 +32,8 @@ class Settings extends ChangeNotifier {
   String journalEditordefaultNewNoteFolderSpec = "";
 
   RemoteSyncFrequency remoteSyncFrequency = RemoteSyncFrequency.Default;
-  SortingMode sortingMode = SortingMode.Default;
+  SortingField sortingField = SortingField.Default;
+  SortingOrder sortingOrder = SortingOrder.Default;
   SettingsEditorType defaultEditor = SettingsEditorType.Default;
   SettingsFolderViewType defaultView = SettingsFolderViewType.Default;
   bool showNoteSummary = true;
@@ -88,7 +89,10 @@ class Settings extends ChangeNotifier {
     remoteSyncFrequency = RemoteSyncFrequency.fromInternalString(
         pref.getString("remoteSyncFrequency"));
 
-    sortingMode = SortingMode.fromInternalString(pref.getString("sortingMode"));
+    sortingField =
+        SortingField.fromInternalString(pref.getString("sortingField"));
+    sortingOrder =
+        SortingOrder.fromInternalString(pref.getString("sortingOrder"));
     defaultEditor =
         SettingsEditorType.fromInternalString(pref.getString("defaultEditor"));
     defaultView = SettingsFolderViewType.fromInternalString(
@@ -169,8 +173,10 @@ class Settings extends ChangeNotifier {
         "remoteSyncFrequency",
         remoteSyncFrequency.toInternalString(),
         defaultSet.remoteSyncFrequency.toInternalString());
-    _setString(pref, "sortingMode", sortingMode.toInternalString(),
-        defaultSet.sortingMode.toInternalString());
+    _setString(pref, "sortingField", sortingField.toInternalString(),
+        defaultSet.sortingField.toInternalString());
+    _setString(pref, "sortingOrder", sortingOrder.toInternalString(),
+        defaultSet.sortingOrder.toInternalString());
     _setString(pref, "defaultEditor", defaultEditor.toInternalString(),
         defaultSet.defaultEditor.toInternalString());
     _setString(pref, "defaultView", defaultView.toInternalString(),
@@ -252,7 +258,8 @@ class Settings extends ChangeNotifier {
           journalEditordefaultNewNoteFolderSpec,
       "defaultEditor": defaultEditor.toInternalString(),
       "defaultView": defaultView.toInternalString(),
-      "sortingMode": sortingMode.toInternalString(),
+      "sortingField": sortingField.toInternalString(),
+      "sortingOrder": sortingOrder.toInternalString(),
       "remoteSyncFrequency": remoteSyncFrequency.toInternalString(),
       "showNoteSummary": showNoteSummary.toString(),
       "folderViewHeaderType": folderViewHeaderType,

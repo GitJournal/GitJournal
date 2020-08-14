@@ -29,7 +29,8 @@ void main() {
         defaultEditor: EditorType.Checklist,
         defaultView: FolderViewType.Standard,
         showNoteSummary: true,
-        sortingMode: SortingMode.Modified,
+        sortingMode:
+            SortingMode(SortingField.Modified, SortingOrder.Descending),
         viewHeader: StandardViewHeader.TitleOrFileName,
         fileNameFormat: NoteFileNameFormat.Default,
         folder: folder,

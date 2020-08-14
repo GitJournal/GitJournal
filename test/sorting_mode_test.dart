@@ -21,7 +21,8 @@ void main() {
       n4.created = null;
 
       var notes = [n1, n2, n3, n4];
-      var sortFn = SortingMode.Created.sortingFunction();
+      var sortFn = SortingMode(SortingField.Created, SortingOrder.Descending)
+          .sortingFunction();
 
       notes.sort(sortFn);
       expect(notes[0], n2);
@@ -45,7 +46,8 @@ void main() {
       n4.modified = null;
 
       var notes = [n1, n2, n3, n4];
-      var sortFn = SortingMode.Modified.sortingFunction();
+      var sortFn = SortingMode(SortingField.Modified, SortingOrder.Descending)
+          .sortingFunction();
 
       notes.sort(sortFn);
       expect(notes[0], n2);

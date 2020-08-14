@@ -141,7 +141,8 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
   bool get isEmpty => folder.isEmpty;
 
   void changeSortingMode(SortingMode sm) {
-    Log.d("Setting sorting to me ${sm.toInternalString()}");
+    Log.d(
+        "Setting sorting to me ${sm.field.toInternalString()} ${sm.order.toInternalString()}");
     _sortingMode = sm;
     _sortFunc = _sortingMode.sortingFunction();
 

@@ -19,7 +19,7 @@ import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/new_note_nav_bar.dart';
 import 'package:gitjournal/widgets/note_search_delegate.dart';
-import 'package:gitjournal/widgets/sorting_order_selector.dart';
+import 'package:gitjournal/widgets/sorting_mode_selector.dart';
 import 'package:gitjournal/widgets/sync_button.dart';
 
 enum DropDownChoices {
@@ -190,7 +190,7 @@ class _FolderViewState extends State<FolderView> {
     var newSortingMode = await showDialog<SortingMode>(
       context: context,
       builder: (BuildContext context) =>
-          SortingOrderSelector(sortedNotesFolder.sortingMode),
+          SortingModeSelector(sortedNotesFolder.sortingMode),
     );
 
     if (newSortingMode != null) {

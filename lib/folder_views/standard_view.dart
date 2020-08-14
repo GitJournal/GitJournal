@@ -79,10 +79,10 @@ class StandardView extends StatelessWidget {
     Widget trailing = Container();
 
     DateTime date;
-    var sortingMode = folder.config.sortingMode;
-    if (sortingMode == SortingMode.Modified) {
+    var sortingField = folder.config.sortingMode.field;
+    if (sortingField == SortingField.Modified) {
       date = note.modified;
-    } else if (sortingMode == SortingMode.Created) {
+    } else if (sortingField == SortingField.Created) {
       date = note.created;
     }
 

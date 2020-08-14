@@ -39,7 +39,8 @@ void main() {
     test('Should load the notes sorted', () async {
       var sf = SortedNotesFolder(
         folder: folder,
-        sortingMode: SortingMode.Modified,
+        sortingMode:
+            SortingMode(SortingField.Modified, SortingOrder.Descending),
       );
       expect(sf.hasNotes, true);
       expect(sf.isEmpty, false);
@@ -57,7 +58,8 @@ void main() {
     test('Should on modification remains sorted', () async {
       var sf = SortedNotesFolder(
         folder: folder,
-        sortingMode: SortingMode.Modified,
+        sortingMode:
+            SortingMode(SortingField.Modified, SortingOrder.Descending),
       );
 
       var i = sf.notes.indexWhere((n) => n.body == "1");
@@ -73,7 +75,8 @@ void main() {
     test('Should add new note correctly', () async {
       var sf = SortedNotesFolder(
         folder: folder,
-        sortingMode: SortingMode.Modified,
+        sortingMode:
+            SortingMode(SortingField.Modified, SortingOrder.Descending),
       );
 
       var note = Note(folder, p.join(folder.folderPath, "new.md"));
@@ -96,7 +99,8 @@ void main() {
     test('Should add new note to end works correctly', () async {
       var sf = SortedNotesFolder(
         folder: folder,
-        sortingMode: SortingMode.Modified,
+        sortingMode:
+            SortingMode(SortingField.Modified, SortingOrder.Descending),
       );
 
       var note = Note(folder, p.join(folder.folderPath, "new.md"));
@@ -120,7 +124,8 @@ void main() {
       var folder = NotesFolderFS(null, tempDir.path);
       var sf = SortedNotesFolder(
         folder: folder,
-        sortingMode: SortingMode.Modified,
+        sortingMode:
+            SortingMode(SortingField.Modified, SortingOrder.Descending),
       );
 
       await folder.loadRecursively();

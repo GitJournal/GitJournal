@@ -4,28 +4,14 @@ import 'package:gitjournal/core/note.dart';
 
 typedef NoteSortingFunction = int Function(Note a, Note b);
 
-class SortingMode {
-  static const Modified = SortingMode(
-    "settings.sortingMode.modified",
-    "Modified",
-  );
-  static const Created = SortingMode(
-    "settings.sortingMode.created",
-    "Created",
-  );
-  static const FileName = SortingMode(
-    "settings.sortingMode.filename",
-    "FileName",
-  );
-  static const Title = SortingMode(
-    "settings.sortingMode.title",
-    "Title",
-  );
-  static const Default = Modified;
+class SortingOrder {
+  static const Ascending = SortingOrder("settings.sortingOrder.asc", "asc");
+  static const Descending = SortingOrder("settings.sortingOrder.desc", "desc");
+  static const Default = Descending;
 
   final String _str;
   final String _publicString;
-  const SortingMode(this._publicString, this._str);
+  const SortingOrder(this._publicString, this._str);
 
   String toInternalString() {
     return _str;
@@ -35,14 +21,12 @@ class SortingMode {
     return tr(_publicString);
   }
 
-  static const options = <SortingMode>[
-    Modified,
-    Created,
-    FileName,
-    Title,
+  static const options = <SortingOrder>[
+    Ascending,
+    Descending,
   ];
 
-  static SortingMode fromInternalString(String str) {
+  static SortingOrder fromInternalString(String str) {
     for (var opt in options) {
       if (opt.toInternalString() == str) {
         return opt;
@@ -51,7 +35,7 @@ class SortingMode {
     return Default;
   }
 
-  static SortingMode fromPublicString(String str) {
+  static SortingOrder fromPublicString(String str) {
     for (var opt in options) {
       if (opt.toPublicString() == str) {
         return opt;
@@ -62,67 +46,166 @@ class SortingMode {
 
   @override
   String toString() {
-    assert(false, "SortingMode toString should never be called");
+    assert(false, "SortingOrder toString should never be called");
     return "";
   }
+}
 
-  // vHanda FIXME: The modified and created should come from Git if not present in the document
+class SortingField {
+  static const Modified = SortingField(
+    "settings.sortingField.modified",
+    "Modified",
+  );
+  static const Created = SortingField(
+    "settings.sortingField.created",
+    "Created",
+  );
+  static const FileName = SortingField(
+    "settings.sortingField.filename",
+    "FileName",
+  );
+  static const Title = SortingField(
+    "settings.sortingField.title",
+    "Title",
+  );
+
+  static const Default = Modified;
+
+  final String _str;
+  final String _publicString;
+  const SortingField(this._publicString, this._str);
+
+  String toInternalString() {
+    return _str;
+  }
+
+  String toPublicString() {
+    return tr(_publicString);
+  }
+
+  static const options = <SortingField>[
+    Modified,
+    Created,
+    FileName,
+    Title,
+  ];
+
+  static SortingField fromInternalString(String str) {
+    for (var opt in options) {
+      if (opt.toInternalString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  @override
+  String toString() {
+    assert(false, "SortingField toString should never be called");
+    return "";
+  }
+}
+
+class SortingMode {
+  final SortingField field;
+  final SortingOrder order;
+
+  SortingMode(this.field, this.order);
+
   NoteSortingFunction sortingFunction() {
-    switch (_str) {
-      case "Created":
-        return (Note a, Note b) {
-          var aDt = a.created;
-          var bDt = b.created;
-          if (aDt == null && bDt != null) {
-            return 1;
-          }
-          if (aDt != null && bDt == null) {
-            return -1;
-          }
-          if (bDt == null && aDt == null) {
-            return a.fileName.compareTo(b.fileName);
-          }
-          return bDt.compareTo(aDt);
-        };
+    switch (field) {
+      case SortingField.Created:
+        return order == SortingOrder.Descending
+            ? _sortCreatedDesc
+            : _reverse(_sortCreatedDesc);
 
-      case "Title":
-        return (Note a, Note b) {
-          var aTitleExists = a.title != null && a.title.isNotEmpty;
-          var bTitleExists = b.title != null && b.title.isNotEmpty;
+      case SortingField.Title:
+        return order == SortingOrder.Descending
+            ? _reverse(_sortTitleAsc)
+            : _sortTitleAsc;
 
-          if (!aTitleExists && bTitleExists) {
-            return 1;
-          }
-          if (aTitleExists && !bTitleExists) {
-            return -1;
-          }
-          if (!aTitleExists && !bTitleExists) {
-            return a.fileName.compareTo(b.fileName);
-          }
-          return a.title.compareTo(b.title);
-        };
+      case SortingField.FileName:
+        return order == SortingOrder.Descending
+            ? _reverse(_sortFileNameAsc)
+            : _sortFileNameAsc;
 
-      case "FileName":
-        return (Note a, Note b) {
-          return a.fileName.compareTo(b.fileName);
-        };
-
-      case "Modified":
+      case SortingField.Modified:
       default:
-        return (Note a, Note b) {
-          var aDt = a.modified;
-          var bDt = b.modified;
-          if (aDt == null && bDt != null) {
-            return 1;
-          }
-          if (aDt != null && bDt == null) {
-            return -1;
-          }
-          if (bDt == null && aDt == null) {
-            return a.fileName.compareTo(b.fileName);
-          }
-          return bDt.compareTo(aDt);
-        };
+        return order == SortingOrder.Descending
+            ? _sortModifiedDesc
+            : _reverse(_sortModifiedDesc);
     }
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SortingMode && other.field == field && other.order == order;
+
+  @override
+  int get hashCode => order.hashCode ^ field.hashCode;
+}
+
+int _sortCreatedDesc(Note a, Note b) {
+  var aDt = a.created;
+  var bDt = b.created;
+  if (aDt == null && bDt != null) {
+    return 1;
+  }
+  if (aDt != null && bDt == null) {
+    return -1;
+  }
+  if (bDt == null && aDt == null) {
+    return a.fileName.compareTo(b.fileName);
+  }
+  return bDt.compareTo(aDt);
+}
+
+int _sortModifiedDesc(Note a, Note b) {
+  var aDt = a.modified;
+  var bDt = b.modified;
+  if (aDt == null && bDt != null) {
+    return 1;
+  }
+  if (aDt != null && bDt == null) {
+    return -1;
+  }
+  if (bDt == null && aDt == null) {
+    return a.fileName.compareTo(b.fileName);
+  }
+  return bDt.compareTo(aDt);
+}
+
+int _sortTitleAsc(Note a, Note b) {
+  var aTitleExists = a.title != null && a.title.isNotEmpty;
+  var bTitleExists = b.title != null && b.title.isNotEmpty;
+
+  if (!aTitleExists && bTitleExists) {
+    return 1;
+  }
+  if (aTitleExists && !bTitleExists) {
+    return -1;
+  }
+  if (!aTitleExists && !bTitleExists) {
+    return a.fileName.compareTo(b.fileName);
+  }
+  return a.title.compareTo(b.title);
+}
+
+int _sortFileNameAsc(Note a, Note b) {
+  return a.fileName.compareTo(b.fileName);
+}
+
+NoteSortingFunction _reverse(NoteSortingFunction func) {
+  return (Note a, Note b) {
+    int r = func(a, b);
+    if (r == 0) {
+      return r;
+    }
+    if (r < 0) {
+      return 1;
+    } else {
+      return -1;
+    }
+  };
 }

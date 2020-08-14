@@ -70,7 +70,7 @@ class NotesFolderConfig extends Equatable {
     return NotesFolderConfig(
       defaultEditor: settings.defaultEditor.toEditorType(),
       defaultView: settings.defaultView.toFolderViewType(),
-      sortingMode: settings.sortingMode,
+      sortingMode: SortingMode(settings.sortingField, settings.sortingOrder),
       showNoteSummary: settings.showNoteSummary,
       viewHeader: viewHeader,
       fileNameFormat: settings.noteFileNameFormat,
@@ -82,7 +82,8 @@ class NotesFolderConfig extends Equatable {
   Future<void> saveToSettings() async {
     var settings = Settings.instance;
 
-    settings.sortingMode = sortingMode;
+    settings.sortingField = sortingMode.field;
+    settings.sortingOrder = sortingMode.order;
     settings.showNoteSummary = showNoteSummary;
     settings.defaultEditor = SettingsEditorType.fromEditorType(defaultEditor);
     settings.defaultView =
@@ -145,8 +146,12 @@ class NotesFolderConfig extends Equatable {
       Log.d('NotesFolderConfig::decode("$contents") -> ${err.toString()}');
     }
 
-    var sortingMode =
-        SortingMode.fromInternalString(map["sortingMode"]?.toString());
+    var sortingField =
+        SortingField.fromInternalString(map["sortingField"]?.toString());
+    var sortingOrder =
+        SortingOrder.fromInternalString(map["sortingOrder"]?.toString());
+    var sortingMode = SortingMode(sortingField, sortingOrder);
+
     var defaultEditor =
         SettingsEditorType.fromInternalString(map["defaultEditor"]?.toString());
     var defaultView = SettingsFolderViewType.fromInternalString(
@@ -198,7 +203,8 @@ class NotesFolderConfig extends Equatable {
     }
 
     var map = <String, dynamic>{
-      "sortingMode": sortingMode.toInternalString(),
+      "sortingField": sortingMode.field.toInternalString(),
+      "sortingOrder": sortingMode.order.toInternalString(),
       "defaultEditor":
           SettingsEditorType.fromEditorType(defaultEditor).toInternalString(),
       "defaultView": SettingsFolderViewType.fromFolderViewType(defaultView)
