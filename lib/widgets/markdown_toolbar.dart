@@ -9,21 +9,24 @@ class MarkdownToolBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme;
+    var style = textTheme.bodyText2.copyWith(fontWeight: FontWeight.bold);
+
     return Container(
       child: Row(
         children: [
           IconButton(
-            icon: const Text('H1'),
+            icon: Text('H1', style: style),
             padding: const EdgeInsets.all(0.0),
             onPressed: () => _modifyCurrentLine('# '),
           ),
           IconButton(
-            icon: const Text('I'),
+            icon: Text('I', style: style),
             padding: const EdgeInsets.all(0.0),
             onPressed: () => _modifyCurrentWord('*'),
           ),
           IconButton(
-            icon: const Text('B'),
+            icon: Text('B', style: style),
             padding: const EdgeInsets.all(0.0),
             onPressed: () => _modifyCurrentWord('**'),
           ),
