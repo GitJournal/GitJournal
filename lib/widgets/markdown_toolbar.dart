@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 class MarkdownToolBar extends StatelessWidget {
   final TextEditingController textController;
 
@@ -29,6 +31,21 @@ class MarkdownToolBar extends StatelessWidget {
             icon: Text('B', style: style),
             padding: const EdgeInsets.all(0.0),
             onPressed: () => _modifyCurrentWord('**'),
+          ),
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.listUl),
+            padding: const EdgeInsets.all(0.0),
+            onPressed: () => _modifyCurrentLine('- '),
+          ),
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.listOl),
+            padding: const EdgeInsets.all(0.0),
+            onPressed: () => _modifyCurrentLine('1. '),
+          ),
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.tasks),
+            padding: const EdgeInsets.all(0.0),
+            onPressed: () => _modifyCurrentLine('- [ ] '),
           ),
           Container(
             height: 20,
