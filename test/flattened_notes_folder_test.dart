@@ -9,6 +9,20 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 
 void main() {
+  var random = Random(DateTime.now().millisecondsSinceEpoch);
+
+  String _getRandomFilePath(String basePath) {
+    while (true) {
+      var filePath = p.join(basePath, "${random.nextInt(1000)}.md");
+      if (File(filePath).existsSync()) {
+        filePath = null;
+        continue;
+      }
+
+      return filePath;
+    }
+  }
+
   group('Flattened Notes Folder Test', () {
     Directory tempDir;
     NotesFolderFS rootFolder;
@@ -18,12 +32,8 @@ void main() {
 
       rootFolder = NotesFolderFS(null, tempDir.path);
 
-      var random = Random();
       for (var i = 0; i < 3; i++) {
-        var note = Note(
-          rootFolder,
-          p.join(rootFolder.folderPath, "${random.nextInt(1000)}.md"),
-        );
+        var note = Note(rootFolder, _getRandomFilePath(rootFolder.folderPath));
         note.modified = DateTime(2020, 1, 10 + (i * 2));
         note.body = "$i";
         await note.save();
@@ -37,7 +47,7 @@ void main() {
       for (var i = 0; i < 2; i++) {
         var note = Note(
           sub1Folder,
-          p.join(rootFolder.folderPath, "${random.nextInt(1000)}.md"),
+          _getRandomFilePath(sub1Folder.folderPath),
         );
         note.modified = DateTime(2020, 1, 10 + (i * 2));
         note.body = "sub1-$i";
@@ -48,7 +58,7 @@ void main() {
       for (var i = 0; i < 2; i++) {
         var note = Note(
           sub2Folder,
-          p.join(rootFolder.folderPath, "${random.nextInt(1000)}.md"),
+          _getRandomFilePath(sub2Folder.folderPath),
         );
         note.modified = DateTime(2020, 1, 10 + (i * 2));
         note.body = "sub2-$i";
@@ -60,7 +70,7 @@ void main() {
       for (var i = 0; i < 2; i++) {
         var note = Note(
           p1Folder,
-          p.join(rootFolder.folderPath, "${random.nextInt(1000)}.md"),
+          _getRandomFilePath(p1Folder.folderPath),
         );
         note.modified = DateTime(2020, 1, 10 + (i * 2));
         note.body = "p1-$i";
