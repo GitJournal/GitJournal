@@ -44,12 +44,12 @@ class MarkdownToolBar extends StatelessWidget {
   }
 
   void _navigateToPrevWord() {
-    var offset = nextWordPos(textController.value);
+    var offset = prevWordPos(textController.value);
     textController.selection = TextSelection.collapsed(offset: offset);
   }
 
   void _navigateToNextWord() {
-    var offset = prevWordPos(textController.value);
+    var offset = nextWordPos(textController.value);
     textController.selection = TextSelection.collapsed(offset: offset);
   }
 }
@@ -117,13 +117,13 @@ TextEditingValue modifyCurrentWord(
   var selection = textEditingValue.selection;
   var text = textEditingValue.text;
 
-  print('Base offset: ${selection.baseOffset}');
-  print('Extent offset: ${selection.extentOffset}');
+  //print('Base offset: ${selection.baseOffset}');
+  //print('Extent offset: ${selection.extentOffset}');
   var cursorPos = selection.baseOffset;
   if (cursorPos == -1) {
     cursorPos = 0;
   }
-  print('CursorPos: $cursorPos');
+  //print('CursorPos: $cursorPos');
 
   var wordStartPos = text.lastIndexOf(' ', cursorPos == 0 ? 0 : cursorPos - 1);
   if (wordStartPos == -1) {
@@ -137,9 +137,9 @@ TextEditingValue modifyCurrentWord(
     wordEndPos = text.length;
   }
 
-  print('Word Start: $wordStartPos');
-  print('Word End: $wordEndPos');
-  print('Word: ${text.substring(wordStartPos, wordEndPos)}');
+  //print('Word Start: $wordStartPos');
+  //print('Word End: $wordEndPos');
+  //print('Word: ${text.substring(wordStartPos, wordEndPos)}');
 
   // Check if already present
   if (text.startsWith(char, wordStartPos) &&
@@ -155,7 +155,7 @@ TextEditingValue modifyCurrentWord(
     );
   }
 
-  print('Adding `$char`');
+  //print('Adding `$char`');
   text = text.replaceRange(wordStartPos, wordStartPos, char);
   wordEndPos += char.length;
 
@@ -170,9 +170,15 @@ int nextWordPos(TextEditingValue textEditingValue) {
   var cursorPos = textEditingValue.selection.baseOffset;
   var text = textEditingValue.text;
 
-  var nextSpacePos = text.indexOf(RegExp('\s'), cursorPos);
+  var nextSpacePos = text.indexOf(RegExp('(\\s|[.!?])'), cursorPos);
   if (nextSpacePos == -1) {
     return text.length;
+  }
+  if (nextSpacePos == cursorPos) {
+    nextSpacePos++;
+  }
+  if (nextSpacePos > text.length) {
+    nextSpacePos = text.length;
   }
 
   return nextSpacePos;
@@ -182,9 +188,16 @@ int prevWordPos(TextEditingValue textEditingValue) {
   var cursorPos = textEditingValue.selection.baseOffset;
   var text = textEditingValue.text;
 
-  var lastSpacePos = text.lastIndexOf(RegExp('\s'), cursorPos);
+  var lastSpacePos = text.lastIndexOf(RegExp('(\\s|[.!?])'), cursorPos);
   if (lastSpacePos == -1) {
     return 0;
+  }
+  if (lastSpacePos == cursorPos) {
+    lastSpacePos = text.lastIndexOf(RegExp('(\\s|[.!?])'), cursorPos - 1);
+    if (lastSpacePos == -1) {
+      return 0;
+    }
+    lastSpacePos++;
   }
 
   return lastSpacePos;

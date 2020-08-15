@@ -170,36 +170,50 @@ void main() {
   //
   // Navigation
   //
+  void _testNextWord(String text, int offset, int expectedOffset) {
+    var val = TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: offset),
+    );
+
+    expect(nextWordPos(val), expectedOffset);
+  }
+
+  void _testPrevWord(String text, int offset, int expectedOffset) {
+    var val = TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: offset),
+    );
+
+    expect(prevWordPos(val), expectedOffset);
+  }
+
   test('Navigation with only 1 word', () {
-    var val = const TextEditingValue(
-      text: 'Hello',
-      selection: TextSelection.collapsed(offset: 3),
-    );
+    const text = 'Hello';
 
-    expect(nextWordPos(val), 5);
+    _testNextWord(text, 3, 5);
+    _testNextWord(text, 5, 5);
 
-    val = const TextEditingValue(
-      text: 'Hello',
-      selection: TextSelection.collapsed(offset: 5),
-    );
-
-    expect(nextWordPos(val), 5);
-
-    val = const TextEditingValue(
-      text: 'Hello',
-      selection: TextSelection.collapsed(offset: 3),
-    );
-
-    expect(prevWordPos(val), 0);
-
-    val = const TextEditingValue(
-      text: 'Hello',
-      selection: TextSelection.collapsed(offset: 5),
-    );
-
-    expect(prevWordPos(val), 0);
+    _testPrevWord(text, 3, 0);
+    _testPrevWord(text, 5, 0);
   });
 
-  // Test for navigating between punctuations
+  test('Navigation with multiple words', () {
+    const text = 'Hello there Obiwan.';
+
+    _testNextWord(text, 3, 5);
+    _testNextWord(text, 5, 6);
+    _testNextWord(text, 6, 11);
+    _testNextWord(text, 11, 12);
+    _testNextWord(text, 12, 18);
+    _testNextWord(text, 18, 19);
+
+    _testPrevWord(text, 19, 18);
+    _testPrevWord(text, 18, 12);
+    _testPrevWord(text, 12, 11);
+    _testPrevWord(text, 11, 6);
+    _testPrevWord(text, 6, 5);
+    _testPrevWord(text, 5, 0);
+  });
   // Test for navigating between newlines
 }
