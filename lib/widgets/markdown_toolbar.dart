@@ -30,6 +30,10 @@ class MarkdownToolBar extends StatelessWidget {
             padding: const EdgeInsets.all(0.0),
             onPressed: () => _modifyCurrentWord('**'),
           ),
+          Container(
+            height: 20,
+            child: const VerticalDivider(),
+          ),
           IconButton(
             icon: const Icon(Icons.navigate_before),
             padding: const EdgeInsets.all(0.0),
