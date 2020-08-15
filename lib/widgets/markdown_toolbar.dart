@@ -132,14 +132,15 @@ TextEditingValue modifyCurrentWord(
   }
   //print('CursorPos: $cursorPos');
 
-  var wordStartPos = text.lastIndexOf(' ', cursorPos == 0 ? 0 : cursorPos - 1);
+  var wordStartPos =
+      text.lastIndexOf(RegExp('\\s'), cursorPos == 0 ? 0 : cursorPos - 1);
   if (wordStartPos == -1) {
     wordStartPos = 0;
   } else {
     wordStartPos += 1;
   }
 
-  var wordEndPos = text.indexOf(' ', cursorPos);
+  var wordEndPos = text.indexOf(RegExp('\\s'), cursorPos);
   if (wordEndPos == -1) {
     wordEndPos = text.length;
   }

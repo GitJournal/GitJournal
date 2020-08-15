@@ -167,6 +167,16 @@ void main() {
     );
   });
 
+  test("Surrounds the middle word with a newline", () {
+    _testWord(
+      before: 'Hello\nHydra Person',
+      beforeOffset: 8,
+      after: 'Hello\n**Hydra** Person',
+      afterOffset: 13,
+      char: '**',
+    );
+  });
+
   //
   // Navigation
   //
