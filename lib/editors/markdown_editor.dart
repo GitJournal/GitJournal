@@ -135,7 +135,6 @@ class MarkdownEditorState extends State<MarkdownEditor>
     var settings = Provider.of<Settings>(context);
     if (settings.experimentalMarkdownToolbar && editingMode) {
       body = Container(
-        height: 600,
         child: Column(
           children: <Widget>[
             Expanded(child: editor),

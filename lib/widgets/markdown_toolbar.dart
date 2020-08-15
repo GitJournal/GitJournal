@@ -9,29 +9,36 @@ class MarkdownToolBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(
-          icon: const Text('H1'),
-          onPressed: () => _modifyCurrentLine('# '),
-        ),
-        IconButton(
-          icon: const Text('I'),
-          onPressed: () => _modifyCurrentWord('*'),
-        ),
-        IconButton(
-          icon: const Text('B'),
-          onPressed: () => _modifyCurrentWord('**'),
-        ),
-        IconButton(
-          icon: const Icon(Icons.navigate_before),
-          onPressed: _navigateToPrevWord,
-        ),
-        IconButton(
-          icon: const Icon(Icons.navigate_next),
-          onPressed: _navigateToNextWord,
-        ),
-      ],
+    return Container(
+      child: Row(
+        children: [
+          IconButton(
+            icon: const Text('H1'),
+            padding: const EdgeInsets.all(0.0),
+            onPressed: () => _modifyCurrentLine('# '),
+          ),
+          IconButton(
+            icon: const Text('I'),
+            padding: const EdgeInsets.all(0.0),
+            onPressed: () => _modifyCurrentWord('*'),
+          ),
+          IconButton(
+            icon: const Text('B'),
+            padding: const EdgeInsets.all(0.0),
+            onPressed: () => _modifyCurrentWord('**'),
+          ),
+          IconButton(
+            icon: const Icon(Icons.navigate_before),
+            padding: const EdgeInsets.all(0.0),
+            onPressed: _navigateToPrevWord,
+          ),
+          IconButton(
+            icon: const Icon(Icons.navigate_next),
+            padding: const EdgeInsets.all(0.0),
+            onPressed: _navigateToNextWord,
+          ),
+        ],
+      ),
     );
   }
 
