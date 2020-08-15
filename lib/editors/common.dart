@@ -133,32 +133,34 @@ class EditorBottomBar extends StatelessWidget {
       },
     );
 
-    return BottomAppBar(
-      elevation: 0.0,
+    return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
-      child: Row(
-        children: <Widget>[
-          Visibility(
-            child: addIcon,
-            visible: allowEdits,
-            maintainSize: true,
-            maintainAnimation: true,
-            maintainState: true,
-            maintainInteractivity: false,
-          ),
-          Expanded(
-            child: FlatButton.icon(
-              icon: const Icon(Icons.folder),
-              label: Text(parentFolder.publicName),
-              onPressed: () {
-                var note = editorState.getNote();
-                editor.moveNoteToFolderSelected(note);
-              },
+      child: SafeArea(
+        top: false,
+        child: Row(
+          children: <Widget>[
+            Visibility(
+              child: addIcon,
+              visible: allowEdits,
+              maintainSize: true,
+              maintainAnimation: true,
+              maintainState: true,
+              maintainInteractivity: false,
             ),
-          ),
-          menuIcon,
-        ],
-        mainAxisAlignment: MainAxisAlignment.center,
+            Expanded(
+              child: FlatButton.icon(
+                icon: const Icon(Icons.folder),
+                label: Text(parentFolder.publicName),
+                onPressed: () {
+                  var note = editorState.getNote();
+                  editor.moveNoteToFolderSelected(note);
+                },
+              ),
+            ),
+            menuIcon,
+          ],
+          mainAxisAlignment: MainAxisAlignment.center,
+        ),
       ),
     );
   }
