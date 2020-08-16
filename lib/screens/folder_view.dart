@@ -169,7 +169,9 @@ class _FolderViewState extends State<FolderView> {
     var isVirtualFolder = folder.name != folder.fsFolder.name;
     if (isVirtualFolder) {
       var rootFolder = Provider.of<NotesFolderFS>(context);
-      fsFolder = getFolderForEditor(rootFolder, editorType);
+      var settings = Provider.of<Settings>(context);
+
+      fsFolder = getFolderForEditor(settings, rootFolder, editorType);
     }
 
     var routeType =

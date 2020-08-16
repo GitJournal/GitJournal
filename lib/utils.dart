@@ -47,14 +47,15 @@ void showSnackbar(BuildContext context, String message) {
 }
 
 NotesFolderFS getFolderForEditor(
+  Settings settings,
   NotesFolderFS rootFolder,
   EditorType editorType,
 ) {
-  var spec = Settings.instance.defaultNewNoteFolderSpec;
+  var spec = settings.defaultNewNoteFolderSpec;
 
   switch (editorType) {
     case EditorType.Journal:
-      spec = Settings.instance.journalEditordefaultNewNoteFolderSpec;
+      spec = settings.journalEditordefaultNewNoteFolderSpec;
       break;
     default:
       break;

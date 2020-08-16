@@ -313,12 +313,13 @@ class _JournalAppState extends State<JournalApp> {
       initialRoute: initialRoute,
       debugShowCheckedModeBanner: false,
       //debugShowMaterialGrid: true,
-      onGenerateRoute: (settings) {
-        var route = settings.name;
+      onGenerateRoute: (routeSettings) {
+        var route = routeSettings.name;
         if (route == '/folders' || route == '/tags' || route == '/filesystem') {
           return PageRouteBuilder(
-            settings: settings,
-            pageBuilder: (_, __, ___) => _screenForRoute(route, stateContainer),
+            settings: routeSettings,
+            pageBuilder: (_, __, ___) =>
+                _screenForRoute(route, stateContainer, settings),
             transitionsBuilder: (_, anim, __, child) {
               return FadeTransition(opacity: anim, child: child);
             },
@@ -326,17 +327,22 @@ class _JournalAppState extends State<JournalApp> {
         }
 
         return MaterialPageRoute(
-          settings: settings,
+          settings: routeSettings,
           builder: (context) => _screenForRoute(
             route,
             stateContainer,
+            settings,
           ),
         );
       },
     );
   }
 
-  Widget _screenForRoute(String route, StateContainer stateContainer) {
+  Widget _screenForRoute(
+    String route,
+    StateContainer stateContainer,
+    Settings settings,
+  ) {
     switch (route) {
       case '/':
         return HomeScreen();
@@ -379,7 +385,7 @@ class _JournalAppState extends State<JournalApp> {
       Log.d("sharedImages: $sharedImages");
 
       return NoteEditor.newNote(
-        getFolderForEditor(rootFolder, et),
+        getFolderForEditor(settings, rootFolder, et),
         et,
         existingText: sharedText,
         existingImages: sharedImages,
