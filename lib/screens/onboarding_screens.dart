@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:function_types/function_types.dart';
+import 'package:provider/provider.dart';
+
+import 'package:gitjournal/settings.dart';
 
 class OnBoardingScreen extends StatefulWidget {
-  final Func0<void> onCompletedFunction;
-
-  OnBoardingScreen(this.onCompletedFunction);
+  OnBoardingScreen();
 
   @override
   OnBoardingScreenState createState() {
@@ -109,7 +110,9 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   void _finish() {
-    widget.onCompletedFunction();
+    var settings = Provider.of<Settings>(context);
+    settings.onBoardingCompleted = true;
+    settings.save();
 
     Navigator.pop(context);
     Navigator.pushNamed(context, "/");

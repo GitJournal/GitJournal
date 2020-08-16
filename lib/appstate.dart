@@ -22,8 +22,6 @@ class AppState {
   String remoteGitRepoFolderName = "";
   bool remoteGitRepoConfigured = false;
 
-  bool onBoardingCompleted = false;
-
   SyncStatus syncStatus = SyncStatus.Unknown;
   int numChanges = 0;
 
@@ -44,7 +42,6 @@ class AppState {
     remoteGitRepoConfigured = pref.getBool("remoteGitRepoConfigured") ?? false;
     localGitRepoFolderName = pref.getString("localGitRepoPath") ?? "";
     remoteGitRepoFolderName = pref.getString("remoteGitRepoPath") ?? "";
-    onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
     gitBaseDirectory = pref.getString("gitBaseDirectory") ?? "";
   }
 
@@ -54,7 +51,6 @@ class AppState {
     Log.i("remoteGitRepoConfigured: $remoteGitRepoConfigured");
     Log.i("localGitRepoFolderName: $localGitRepoFolderName");
     Log.i("remoteGitRepoFolderName: $remoteGitRepoFolderName");
-    Log.i("onBoardingCompleted: $onBoardingCompleted");
     Log.i("gitBaseDirectory: $gitBaseDirectory");
     Log.i(" ------------------ ");
   }
@@ -64,7 +60,6 @@ class AppState {
     await pref.setBool("remoteGitRepoConfigured", remoteGitRepoConfigured);
     await pref.setString("localGitRepoPath", localGitRepoFolderName);
     await pref.setString("remoteGitRepoPath", remoteGitRepoFolderName);
-    await pref.setBool("onBoardingCompleted", onBoardingCompleted);
     await pref.setString("gitBaseDirectory", gitBaseDirectory);
   }
 }

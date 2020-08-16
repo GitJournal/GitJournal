@@ -16,6 +16,8 @@ class Settings extends ChangeNotifier {
   static Settings get instance => _singleton;
 
   // Properties
+  bool onBoardingCompleted = false;
+
   String gitAuthor = "GitJournal";
   String gitAuthorEmail = "app@gitjournal.io";
   NoteFileNameFormat noteFileNameFormat = NoteFileNameFormat.Default;
@@ -64,6 +66,8 @@ class Settings extends ChangeNotifier {
   bool saveTitleInH1 = true;
 
   void load(SharedPreferences pref) {
+    onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
+
     gitAuthor = pref.getString("gitAuthor") ?? gitAuthor;
     gitAuthorEmail = pref.getString("gitAuthorEmail") ?? gitAuthorEmail;
 
@@ -141,6 +145,8 @@ class Settings extends ChangeNotifier {
   Future save() async {
     var pref = await SharedPreferences.getInstance();
     var defaultSet = Settings._internal();
+
+    await pref.setBool("onBoardingCompleted", onBoardingCompleted);
 
     _setString(pref, "gitAuthor", gitAuthor, defaultSet.gitAuthor);
     _setString(
@@ -244,6 +250,7 @@ class Settings extends ChangeNotifier {
 
   Map<String, String> toMap() {
     return <String, String>{
+      "onBoardingCompleted": onBoardingCompleted.toString(),
       "gitAuthor": gitAuthor,
       "gitAuthorEmail": gitAuthorEmail,
       "noteFileNameFormat": noteFileNameFormat.toInternalString(),

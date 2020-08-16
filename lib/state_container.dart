@@ -375,12 +375,6 @@ class StateContainer with ChangeNotifier {
     }();
   }
 
-  void completeOnBoarding() {
-    appState.onBoardingCompleted = true;
-    _persistConfig();
-    notifyListeners();
-  }
-
   Future _persistConfig() async {
     var pref = await SharedPreferences.getInstance();
     await appState.save(pref);

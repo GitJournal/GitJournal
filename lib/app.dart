@@ -289,7 +289,7 @@ class _JournalAppState extends State<JournalApp> {
     var settings = Provider.of<Settings>(context);
 
     var initialRoute = '/';
-    if (!stateContainer.appState.onBoardingCompleted) {
+    if (!settings.onBoardingCompleted) {
       initialRoute = '/onBoarding';
     }
     if (settings.homeScreen == SettingsHomeScreen.AllFolders) {
@@ -354,7 +354,7 @@ class _JournalAppState extends State<JournalApp> {
           stateContainer.completeGitHostSetup,
         );
       case '/onBoarding':
-        return OnBoardingScreen(stateContainer.completeOnBoarding);
+        return OnBoardingScreen();
       case '/purchase':
         return PurchaseScreen();
       case '/purchase_thank_you':
