@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
+import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
 
@@ -19,6 +20,8 @@ void main() {
     await generateNote(tempDir.path, "Fire.md");
     await generateNote(tempDir.path, "Folder/Water.md");
     await generateNote(tempDir.path, "Folder/Sodium.md");
+    await generateNote(tempDir.path, "Folder/Boy.md");
+    await generateNote(tempDir.path, "Folder2/Boy.md");
     await generateNote(tempDir.path, "Air Bender.md");
     await generateNote(tempDir.path, "zeplin.txt");
     await generateNote(tempDir.path, "Goat  Sim.md");
@@ -46,13 +49,22 @@ void main() {
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Fire.md'));
   });
 
-  test('[[Folder/Water]] resolves to `Folder/Water.md`', () {
+  test('[[Water]] resolves to `Folder/Water.md`', () {
     var note = rootFolder.notes[0];
     var linkResolver = LinkResolver(note);
 
-    var resolvedNote = linkResolver.resolve('[[Folder/Water]]');
+    var resolvedNote = linkResolver.resolve('[[Water]]');
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Folder/Water.md'));
   });
+
+  test('[[Boy]] resolves to `Folder/Boy.md`', () {
+    var note = rootFolder.notes[0];
+    var linkResolver = LinkResolver(note);
+
+    // Make sure if there are 2 Notes with the same name, the first one is resolved
+    var resolvedNote = linkResolver.resolve('[[Boy]]');
+    expect(resolvedNote.filePath, p.join(tempDir.path, 'Folder/Boy.md'));
+  }, skip: true);
 
   test('WikiLinks with spaces resolves correctly', () {
     var note = rootFolder.notes[0];
@@ -140,6 +152,16 @@ void main() {
 
     var resolvedNote = linkResolver.resolve('./Air Bender/../Goat  Sim.md');
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Goat  Sim.md'));
+  });
+
+  test('Should resolve Link object', () {
+    var note = rootFolder.notes[0];
+    var linkResolver = LinkResolver(note);
+
+    var link = Link(filePath: note.filePath, term: 'foo');
+
+    var resolvedNote = linkResolver.resolveLink(link);
+    expect(resolvedNote.filePath, note.filePath);
   });
 }
 
