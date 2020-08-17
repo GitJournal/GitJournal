@@ -13,7 +13,9 @@ jobs:
           command: echo 'Host *\n    StrictHostKeyChecking no' > ~/.ssh/config
       - run:
           name: Test
-          command: flutter test -j 1 --coverage
+          command: flutter test -j 1 --coverage --machine | tojunit --output junit.xml
+      - store_test_results:
+          path: ./
       - run:
           name: Analyze
           command: flutter analyze
