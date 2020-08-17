@@ -13,7 +13,7 @@ jobs:
           command: echo 'Host *\n    StrictHostKeyChecking no' > ~/.ssh/config
       - run:
           name: Test
-          command: flutter test -j 1
+          command: flutter test -j 1 --coverage
       - run:
           name: Analyze
           command: flutter analyze
@@ -32,6 +32,11 @@ jobs:
       - store_artifacts:
           path: build/app/outputs/bundle/prodRelease/app.aab
           destination: gitjournal.aab
+      - run:
+          name: Generate Test Coverage
+          command: ./scripts/test_coverage.sh
+      - store_artifacts:
+          path: coverage
 #      - run:
 #          name: Upload Crashlytics Symbols
 #          command: ./scripts/android_crashlytics.sh
