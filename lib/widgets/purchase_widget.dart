@@ -178,10 +178,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
     settings.proExpirationDate = status.expiryDate.toIso8601String();
     settings.save();
 
-    getAnalytics().logEvent(
-      name: "purchase_screen_thank_you",
-    );
-
+    logEvent(Event.PurchaseScreenThankYou);
     Navigator.of(context).popAndPushNamed('/purchase_thank_you');
   }
 

@@ -486,12 +486,9 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
     if (error != null && error.isNotEmpty) {
       setState(() {
-        getAnalytics().logEvent(
-          name: "onboarding_gitClone_error",
-          parameters: <String, String>{
-            'error': error,
-          },
-        );
+        logEvent(Event.GitHostSetupGitCloneError, parameters: {
+          'error': error,
+        });
         gitCloneErrorMessage = error;
       });
       return;
@@ -523,8 +520,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       );
     }
 
-    getAnalytics().logEvent(
-      name: "onboarding_complete",
+    logEvent(
+      Event.GitHostSetupComplete,
       parameters: _buildOnboardingAnalytics(),
     );
     Navigator.pop(context);
@@ -563,9 +560,9 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     Log.d("GitHostSetupAutoConfigureComplete: " + e.toString());
     setState(() {
       _autoConfigureErrorMessage = e.toString();
-      getAnalytics().logEvent(
-        name: "githostsetup_error",
-        parameters: <String, String>{
+      logEvent(
+        Event.GitHostSetupError,
+        parameters: {
           'errorMessage': _autoConfigureErrorMessage,
         },
       );

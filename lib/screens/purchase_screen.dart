@@ -60,9 +60,7 @@ class PurchaseScreen extends StatelessWidget {
   }
 
   Future<bool> _onWillPop() async {
-    getAnalytics().logEvent(
-      name: "purchase_screen_close",
-    );
+    logEvent(Event.PurchaseScreenClose);
     return true;
   }
 }

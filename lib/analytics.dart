@@ -33,6 +33,15 @@ enum Event {
   DrawerSettings,
 
   PurchaseScreenOpen,
+  PurchaseScreenClose,
+  PurchaseScreenThankYou,
+
+  GitHostSetupError,
+  GitHostSetupComplete,
+  GitHostSetupGitCloneError,
+  GitHostSetupButtonClick,
+
+  Settings,
 }
 
 String _eventToString(Event e) {
@@ -80,6 +89,22 @@ String _eventToString(Event e) {
 
     case Event.PurchaseScreenOpen:
       return "purchase_screen_open";
+    case Event.PurchaseScreenClose:
+      return "purchase_screen_close";
+    case Event.PurchaseScreenThankYou:
+      return "purchase_screen_thank_you";
+
+    case Event.GitHostSetupError:
+      return "githostsetup_error";
+    case Event.GitHostSetupComplete:
+      return "onboarding_complete";
+    case Event.GitHostSetupGitCloneError:
+      return "onboarding_gitClone_error";
+    case Event.GitHostSetupButtonClick:
+      return "githostsetup_button_click";
+
+    case Event.Settings:
+      return "settings";
   }
 
   return "unknown_event";
@@ -88,14 +113,6 @@ String _eventToString(Event e) {
 class Analytics {
   var firebase = FirebaseAnalytics();
   bool enabled = false;
-
-  Future<void> logEvent({
-    @required String name,
-    Map<String, String> parameters,
-  }) async {
-    await firebase.logEvent(name: name, parameters: parameters);
-    captureErrorBreadcrumb(name: name, parameters: parameters);
-  }
 
   Future<void> log({
     @required Event e,

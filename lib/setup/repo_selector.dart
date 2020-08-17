@@ -97,12 +97,9 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
     Log.d("GitHostSetupAutoConfigure: " + e.toString());
     setState(() {
       errorMessage = e.toString();
-      getAnalytics().logEvent(
-        name: "githostsetup_error",
-        parameters: <String, String>{
-          'errorMessage': errorMessage,
-        },
-      );
+      logEvent(Event.GitHostSetupError, parameters: {
+        'errorMessage': errorMessage,
+      });
 
       logException(e, stacktrace);
     });

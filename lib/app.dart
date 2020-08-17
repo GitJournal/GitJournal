@@ -138,10 +138,7 @@ class JournalApp extends StatefulWidget {
     JournalApp.analytics.setAnalyticsCollectionEnabled(enabled);
 
     if (enabled) {
-      JournalApp.analytics.logEvent(
-        name: "settings",
-        parameters: settings.toLoggableMap(),
-      );
+      logEvent(Event.Settings, parameters: settings.toLoggableMap());
     }
   }
 
