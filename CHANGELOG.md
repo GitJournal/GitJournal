@@ -1,3 +1,7 @@
+## [1.66] - 2020-08-18
+* Follow Obsidian's algorithm for resolving WikiLinks
+* All custom metadata to be added to each note
+
 ## [1.65] - 2020-08-14
 * Allow the sorting order to be controller
 * Fix: Purchasing Pro would sometimes fail
