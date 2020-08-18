@@ -62,12 +62,17 @@ class MyPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // Draw all the edges
     for (var edge in graph.edges) {
+      var strokeWitdth = 2.5;
+      if (edge.a.pressed || edge.b.pressed) {
+        strokeWitdth *= 2;
+      }
+
       canvas.drawLine(
         Offset(edge.a.x, edge.a.y),
         Offset(edge.b.x, edge.b.y),
         Paint()
           ..color = Colors.grey
-          ..strokeWidth = 2.5,
+          ..strokeWidth = strokeWitdth,
         /*onPanUpdate: (detail) {
           print('Edge ${edge.a.label} -> ${edge.b.label} Swiped');
         },*/
