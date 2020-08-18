@@ -43,13 +43,15 @@ class _MyExampleWidgetState extends State<MyExampleWidget> {
   @override
   Widget build(BuildContext context) {
     FocusScope.of(context).nextFocus();
+    return GraphStackView(graph);
+    /*
     return CanvasTouchDetector(
       builder: (context) {
         return CustomPaint(
           painter: MyPainter(context, graph),
         );
       },
-    );
+    );*/
   }
 }
 
@@ -269,15 +271,15 @@ class MyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        //child: MyExampleWidget(),
-        child: GraphView(
+        child: MyExampleWidget(),
+        /*child: GraphView(
           children: <Widget>[
             Container(width: 50, height: 50, color: Colors.orange),
             Container(width: 50, height: 50, color: Colors.blue),
             Container(width: 50, height: 50, color: Colors.red),
             Container(width: 50, height: 50, color: Colors.yellow),
           ],
-        ),
+        ),*/
       ),
     );
   }
@@ -503,3 +505,74 @@ class GraphView extends MultiChildRenderObjectWidget {
 // 4. Update their positions based on
 
 // Maybe use CustomMultiChildLayout instead?
+
+class GraphStackView extends StatefulWidget {
+  final Graph graph;
+
+  GraphStackView(this.graph);
+
+  @override
+  _GraphStackViewState createState() => _GraphStackViewState();
+}
+
+class _GraphStackViewState extends State<GraphStackView> {
+  @override
+  void initState() {
+    super.initState();
+
+    widget.graph.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var children = <Widget>[];
+    for (var node in widget.graph.nodes) {
+      var w = Positioned(
+        child: GestureDetector(
+          child: NodeWidget(),
+          onPanStart: (details) {
+            node.x = details.globalPosition.dx;
+            node.y = details.globalPosition.dy;
+
+            widget.graph.notify();
+            print("Pan start ${node.label} $details");
+          },
+          onPanEnd: (DragEndDetails details) {
+            print("Pan end ${node.label} $details");
+          },
+          onPanUpdate: (details) {
+            node.x = details.globalPosition.dx;
+            node.y = details.globalPosition.dy;
+
+            widget.graph.notify();
+            print("Pan update ${node.label} ${details.globalPosition}");
+          },
+        ),
+        left: node.x - 25,
+        top: node.y - 25,
+      );
+      children.add(w);
+    }
+
+    return Stack(
+      children: children,
+      fit: StackFit.expand,
+    );
+  }
+}
+
+class NodeWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 50,
+      height: 50,
+      decoration: const BoxDecoration(
+        color: Colors.orange,
+        shape: BoxShape.circle,
+      ),
+    );
+  }
+}
