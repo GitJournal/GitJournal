@@ -42,6 +42,19 @@ enum Event {
   GitHostSetupButtonClick,
 
   Settings,
+
+  /*
+  Firebase Automatic Events:
+    app_update:
+      previous_app_version
+
+    first_open
+    in_app_purchase
+    screen_view
+    session_start
+    user_engagement
+
+  */
 }
 
 String _eventToString(Event e) {
