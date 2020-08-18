@@ -4,8 +4,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import 'package:touchable/touchable.dart';
-
 class MyExampleWidget extends StatefulWidget {
   @override
   _MyExampleWidgetState createState() => _MyExampleWidgetState();
@@ -56,65 +54,22 @@ class _MyExampleWidgetState extends State<MyExampleWidget> {
 }
 
 class MyPainter extends CustomPainter {
-  final BuildContext context;
   final Graph graph;
 
-  MyPainter(this.context, this.graph) : super(repaint: graph);
+  MyPainter(this.graph) : super(repaint: graph);
 
   @override
   void paint(Canvas canvas, Size size) {
-    var myCanvas = TouchyCanvas(context, canvas);
-
     // Draw all the edges
     for (var edge in graph.edges) {
-      myCanvas.drawLine(
+      canvas.drawLine(
         Offset(edge.a.x, edge.a.y),
         Offset(edge.b.x, edge.b.y),
         Paint()
           ..color = Colors.grey
           ..strokeWidth = 2.5,
-        onPanUpdate: (detail) {
+        /*onPanUpdate: (detail) {
           print('Edge ${edge.a.label} -> ${edge.b.label} Swiped');
-        },
-      );
-    }
-
-    // Draw all the nodes
-    for (var node in graph.nodes) {
-      myCanvas.drawCircle(
-        Offset(node.x, node.y),
-        20,
-        Paint()..color = Colors.orange,
-        onPanStart: (tapdetail) {
-          node.pressed = true;
-          print('$node Pan start - $tapdetail');
-
-          node.x = tapdetail.localPosition.dx;
-          node.y = tapdetail.localPosition.dy;
-
-          graph.notify();
-        },
-        onPanDown: (tapdetail) {
-          node.pressed = false;
-          print('$node PanEnd - $tapdetail');
-          node.x = tapdetail.localPosition.dx;
-          node.y = tapdetail.localPosition.dy;
-
-          graph.notify();
-        },
-        onPanUpdate: (tapdetail) {
-          print('$node PanUpdate - $tapdetail');
-
-          node.x = tapdetail.localPosition.dx;
-          node.y = tapdetail.localPosition.dy;
-          graph.notify();
-        },
-        /*
-        onTapDown: (details) {
-          print("$node onTapDown - $details");
-        },
-        onTapUp: (details) {
-          print("$node onTapUp - $details");
         },*/
       );
     }
@@ -528,6 +483,9 @@ class _GraphStackViewState extends State<GraphStackView> {
   @override
   Widget build(BuildContext context) {
     var children = <Widget>[];
+
+    children.add(CustomPaint(painter: MyPainter(widget.graph)));
+
     for (var node in widget.graph.nodes) {
       var w = Positioned(
         child: GestureDetector(
