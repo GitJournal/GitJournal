@@ -34,6 +34,7 @@ class Features {
     Feature.metaDataTitle,
     Feature.yamlCreatedKey,
     Feature.yamlTagsKey,
+    Feature.customMetaData,
   ];
 }
 
@@ -282,6 +283,14 @@ class Feature {
     "yamlTagsKey",
     DateTime(2020, 08, 06),
     tr("feature.yamlTagsKey"),
+    "",
+    true,
+  );
+
+  static final customMetaData = Feature(
+    "customMetaData",
+    DateTime(2020, 08, 18),
+    tr("feature.customMetaData"),
     "",
     true,
   );

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:git_bindings/git_bindings.dart';
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
@@ -176,11 +177,20 @@ class _FolderViewState extends State<FolderView> {
 
     var routeType =
         SettingsEditorType.fromEditorType(editorType).toInternalString();
+
+    var settings = Provider.of<Settings>(context);
+    var extraProps = Map<String, dynamic>.from(widget.newNoteExtraProps);
+    if (settings.customMetaData.isNotEmpty) {
+      var map = MarkdownYAMLCodec.parseYamlText(settings.customMetaData);
+      map.forEach((key, val) {
+        extraProps[key] = val;
+      });
+    }
     var route = MaterialPageRoute(
       builder: (context) => NoteEditor.newNote(
         fsFolder,
         editorType,
-        newNoteExtraProps: widget.newNoteExtraProps,
+        newNoteExtraProps: extraProps,
       ),
       settings: RouteSettings(name: '/newNote/$routeType'),
     );

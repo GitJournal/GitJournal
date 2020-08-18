@@ -46,6 +46,7 @@ class Note with NotesNotifier {
   String _body = "";
   NoteType _type = NoteType.Unknown;
   Set<String> _tags = {};
+  Map<String, dynamic> _extraProps = {};
 
   NoteFileFormat _fileFormat;
 
@@ -182,6 +183,17 @@ class Note with NotesNotifier {
     if (!canHaveMetadata) return;
 
     _tags = tags;
+    _notifyModified();
+  }
+
+  Map<String, dynamic> get extraProps {
+    return _extraProps;
+  }
+
+  set extraProps(Map<String, dynamic> props) {
+    if (!canHaveMetadata) return;
+
+    _extraProps = props;
     _notifyModified();
   }
 

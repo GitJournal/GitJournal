@@ -32,7 +32,7 @@ class MarkdownYAMLCodec {
         if (str.endsWith(endYamlStrWithoutLineEding)) {
           var yamlText =
               str.substring(4, str.length - endYamlStrWithoutLineEding.length);
-          var map = _parseYamlText(yamlText);
+          var map = parseYamlText(yamlText);
           return MdYamlDoc("", map);
         }
 
@@ -40,7 +40,7 @@ class MarkdownYAMLCodec {
       }
 
       var yamlText = str.substring(4, endYamlPos);
-      var map = _parseYamlText(yamlText);
+      var map = parseYamlText(yamlText);
 
       var body = "";
       var bodyBeginingPos = endYamlPos + endYamlStr.length;
@@ -59,7 +59,7 @@ class MarkdownYAMLCodec {
     return MdYamlDoc(str, LinkedHashMap<String, dynamic>());
   }
 
-  LinkedHashMap<String, dynamic> _parseYamlText(String yamlText) {
+  static LinkedHashMap<String, dynamic> parseYamlText(String yamlText) {
     LinkedHashMap<String, dynamic> map = LinkedHashMap<String, dynamic>();
     if (yamlText.isEmpty) {
       return map;
@@ -67,6 +67,9 @@ class MarkdownYAMLCodec {
 
     try {
       var yamlMap = loadYaml(yamlText);
+      if (yamlMap is! Map) {
+        return map;
+      }
       yamlMap.forEach((key, value) {
         map[key] = value;
       });

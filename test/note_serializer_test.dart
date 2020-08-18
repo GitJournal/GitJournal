@@ -98,5 +98,29 @@ void main() {
       expect(doc.body, "# Why not :coffee:?\n\nI :heart: you");
       expect(doc.props.length, 0);
     });
+
+    test('Test Note ExtraProps', () {
+      var props = LinkedHashMap<String, dynamic>.from(<String, dynamic>{
+        "title": "Why not?",
+        "draft": true,
+      });
+      var doc = MdYamlDoc("body", props);
+
+      var serializer = NoteSerializer.raw();
+      serializer.settings.saveTitleAsH1 = false;
+
+      var note = Note(parent, "file-path-not-important");
+      serializer.decode(doc, note);
+
+      expect(note.body, "body");
+      expect(note.title, "Why not?");
+      expect(note.extraProps, <String, dynamic>{"draft": true});
+
+      serializer.encode(note, doc);
+      expect(doc.body, "body");
+      expect(doc.props.length, 2);
+      expect(doc.props['title'], 'Why not?');
+      expect(doc.props['draft'], true);
+    });
   });
 }

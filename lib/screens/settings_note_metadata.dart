@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:function_types/function_types.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/md_yaml_doc.dart';
@@ -23,6 +24,17 @@ class NoteMetadataSettingsScreen extends StatefulWidget {
 
 class _NoteMetadataSettingsScreenState
     extends State<NoteMetadataSettingsScreen> {
+  DateTime created;
+  DateTime modified;
+
+  @override
+  void initState() {
+    super.initState();
+
+    created = DateTime.now().add(const Duration(days: -1));
+    modified = DateTime.now();
+  }
+
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
@@ -32,12 +44,20 @@ class _NoteMetadataSettingsScreenState
     var note = Note(parent, "fileName.md");
     note.title = tr("settings.noteMetaData.exampleTitle");
     note.body = tr("settings.noteMetaData.exampleBody");
-    note.created = DateTime.now().add(const Duration(days: -1));
-    note.modified = DateTime.now();
+    note.created = created;
+    note.modified = modified;
     note.tags = {
       tr("settings.noteMetaData.exampleTag1"),
       tr("settings.noteMetaData.exampleTag2"),
     };
+
+    if (settings.customMetaData != "") {
+      var customMetaDataMap =
+          MarkdownYAMLCodec.parseYamlText(settings.customMetaData);
+      if (customMetaDataMap.isNotEmpty) {
+        note.extraProps = customMetaDataMap;
+      }
+    }
 
     var body = Column(
       children: <Widget>[
@@ -139,6 +159,18 @@ class _NoteMetadataSettingsScreenState
               setState(() {
                 settings.saveTitleInH1 =
                     newVal == tr("settings.noteMetaData.titleMetaData.fromH1");
+                settings.save();
+              });
+            },
+          ),
+        ),
+        ProOverlay(
+          feature: Feature.customMetaData,
+          child: CustomMetDataTile(
+            value: settings.customMetaData,
+            onChange: (String newVal) {
+              setState(() {
+                settings.customMetaData = newVal;
                 settings.save();
               });
             },
@@ -297,6 +329,99 @@ class TagsWidget extends StatelessWidget {
       alignment: WrapAlignment.start,
       spacing: 8.0,
       runSpacing: 8.0,
+    );
+  }
+}
+
+class CustomMetDataTile extends StatefulWidget {
+  final String value;
+  final Func1<String, void> onChange;
+
+  CustomMetDataTile({@required this.value, @required this.onChange});
+
+  @override
+  _CustomMetDataTileState createState() => _CustomMetDataTileState();
+}
+
+class _CustomMetDataTileState extends State<CustomMetDataTile> {
+  TextEditingController _textController;
+
+  @override
+  void initState() {
+    _textController = TextEditingController(text: widget.value);
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    /*
+    var settings = Provider.of<Settings>(context);
+    settings.customMetaData = "draft: true";
+    settings.save();
+    */
+
+    return ListTile(
+      title: Text(tr("settings.noteMetaData.customMetaData.title")),
+      subtitle: Text(widget.value),
+      onTap: () async {
+        var val =
+            await showDialog<String>(context: context, builder: _buildDialog);
+
+        val ??= "";
+        if (val != widget.value) {
+          widget.onChange(val);
+        }
+      },
+    );
+  }
+
+  Widget _buildDialog(BuildContext context) {
+    var form = Form(
+      child: TextFormField(
+        validator: (value) {
+          value = value.trim();
+          if (value.isEmpty) {
+            return "";
+          }
+
+          var map = MarkdownYAMLCodec.parseYamlText(value);
+          if (map == null || map.isEmpty) {
+            return tr("settings.noteMetaData.customMetaData.invalid");
+          }
+          return "";
+        },
+        autofocus: true,
+        keyboardType: TextInputType.multiline,
+        textCapitalization: TextCapitalization.words,
+        controller: _textController,
+        autovalidate: true,
+        maxLines: null,
+        minLines: null,
+      ),
+    );
+
+    return AlertDialog(
+      title: Text(tr("settings.noteMetaData.customMetaData.title")),
+      actions: <Widget>[
+        FlatButton(
+          onPressed: () => Navigator.of(context).pop(widget.value),
+          child: Text(tr("settings.cancel")),
+        ),
+        FlatButton(
+          onPressed: () {
+            var text = _textController.text.trim();
+            var map = MarkdownYAMLCodec.parseYamlText(text);
+            if (map == null || map.isEmpty) {
+              return Navigator.of(context).pop();
+            }
+
+            return Navigator.of(context).pop(text);
+          },
+          child: Text(tr("settings.ok")),
+        ),
+      ],
+      content: form,
     );
   }
 }

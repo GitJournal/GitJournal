@@ -20,6 +20,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/appstate.dart';
+import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/iap.dart';
 import 'package:gitjournal/screens/filesystem_screen.dart';
 import 'package:gitjournal/screens/folder_listing.dart';
@@ -381,11 +382,20 @@ class _JournalAppState extends State<JournalApp> {
       Log.d("sharedText: $sharedText");
       Log.d("sharedImages: $sharedImages");
 
+      var extraProps = <String, dynamic>{};
+      if (settings.customMetaData.isNotEmpty) {
+        var map = MarkdownYAMLCodec.parseYamlText(settings.customMetaData);
+        map.forEach((key, val) {
+          extraProps[key] = val;
+        });
+      }
+
       return NoteEditor.newNote(
         getFolderForEditor(settings, rootFolder, et),
         et,
         existingText: sharedText,
         existingImages: sharedImages,
+        newNoteExtraProps: extraProps,
       );
     }
 

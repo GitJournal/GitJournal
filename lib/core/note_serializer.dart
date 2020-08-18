@@ -84,10 +84,16 @@ class NoteSerializer implements NoteSerializerInterface {
     } else {
       data.props[settings.tagsKey] = note.tags.toList();
     }
+
+    note.extraProps.forEach((key, value) {
+      data.props[key] = value;
+    });
   }
 
   @override
   void decode(MdYamlDoc data, Note note) {
+    var propsUsed = <String>{};
+
     var modifiedKeyOptions = [
       "modified",
       "mod",
@@ -101,6 +107,8 @@ class NoteSerializer implements NoteSerializerInterface {
       if (val != null) {
         note.modified = parseDateTime(val.toString());
         settings.modifiedKey = possibleKey;
+
+        propsUsed.add(possibleKey);
         break;
       }
     }
@@ -116,6 +124,8 @@ class NoteSerializer implements NoteSerializerInterface {
       if (val != null) {
         note.created = parseDateTime(val.toString());
         settings.createdKey = possibleKey;
+
+        propsUsed.add(possibleKey);
         break;
       }
     }
@@ -126,6 +136,8 @@ class NoteSerializer implements NoteSerializerInterface {
     if (data.props.containsKey(settings.titleKey)) {
       var title = data.props[settings.titleKey]?.toString() ?? "";
       note.title = emojiParser.emojify(title);
+
+      propsUsed.add(settings.titleKey);
     } else {
       var startsWithH1 = false;
       for (var line in LineSplitter.split(note.body)) {
@@ -162,6 +174,9 @@ class NoteSerializer implements NoteSerializerInterface {
         note.type = NoteType.Unknown;
         break;
     }
+    if (type != null) {
+      propsUsed.add(settings.typeKey);
+    }
 
     try {
       var tagKeyOptions = [
@@ -180,11 +195,22 @@ class NoteSerializer implements NoteSerializerInterface {
           }
 
           settings.tagsKey = possibleKey;
+          propsUsed.add(settings.tagsKey);
           break;
         }
       }
     } catch (e) {
       Log.e("Note Decoding Failed: $e");
     }
+
+    // Extra Props
+    note.extraProps = {};
+    data.props.forEach((key, val) {
+      if (propsUsed.contains(key)) {
+        return;
+      }
+
+      note.extraProps[key] = val;
+    });
   }
 }

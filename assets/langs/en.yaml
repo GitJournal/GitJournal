@@ -57,6 +57,9 @@ settings:
     exampleBody: I think they might be evil. Even more evil than penguins.
     exampleTag1: Birds
     exampleTag2: Evil
+    customMetaData:
+      title: Custom MetaData
+      invalid: Invalid YAML
   privacy: Privacy Policy
   terms: Terms and Conditions
   experimental:
@@ -218,6 +221,7 @@ feature:
   allNotesView: Add a screen to show "All Notes"
   basicSearch: Basic Search
   customSSHKeys: Provide your own SSH Keys
+  customMetaData: Add Custom Metadata to new Notes
 
 feature_timeline:
   title: Feature Timeline

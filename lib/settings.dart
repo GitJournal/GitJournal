@@ -28,6 +28,7 @@ class Settings extends ChangeNotifier {
   String yamlModifiedKey = "modified";
   String yamlCreatedKey = "created";
   String yamlTagsKey = "tags";
+  String customMetaData = "";
 
   bool yamlHeaderEnabled = true;
   String defaultNewNoteFolderSpec = "";
@@ -82,6 +83,7 @@ class Settings extends ChangeNotifier {
     yamlModifiedKey = pref.getString("yamlModifiedKey") ?? yamlModifiedKey;
     yamlCreatedKey = pref.getString("yamlCreatedKey") ?? yamlCreatedKey;
     yamlTagsKey = pref.getString("yamlTagsKey") ?? yamlTagsKey;
+    customMetaData = pref.getString("customMetaData") ?? customMetaData;
 
     yamlHeaderEnabled = pref.getBool("yamlHeaderEnabled") ?? yamlHeaderEnabled;
     defaultNewNoteFolderSpec =
@@ -165,6 +167,8 @@ class Settings extends ChangeNotifier {
     _setString(
         pref, "yamlCreatedKey", yamlCreatedKey, defaultSet.yamlCreatedKey);
     _setString(pref, "yamlTagsKey", yamlTagsKey, defaultSet.yamlTagsKey);
+    _setString(
+        pref, "customMetaData", customMetaData, defaultSet.customMetaData);
     _setBool(pref, "yamlHeaderEnabled", yamlHeaderEnabled,
         defaultSet.yamlHeaderEnabled);
     _setString(pref, "defaultNewNoteFolderSpec", defaultNewNoteFolderSpec,
@@ -259,6 +263,7 @@ class Settings extends ChangeNotifier {
       "yamlModifiedKey": yamlModifiedKey,
       "yamlCreatedKey": yamlCreatedKey,
       "yamlTagsKey": yamlTagsKey,
+      "customMetaData": customMetaData,
       "yamlHeaderEnabled": yamlHeaderEnabled.toString(),
       "defaultNewNoteFolderSpec": defaultNewNoteFolderSpec,
       "journalEditordefaultNewNoteFolderSpec":
