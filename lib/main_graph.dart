@@ -112,6 +112,7 @@ class Graph extends ChangeNotifier {
 
   void notify() {
     notifyListeners();
+    startLayout();
   }
 
   List<int> computeNeighbours(Node n) {
@@ -189,18 +190,20 @@ class Graph extends ChangeNotifier {
     const interval = Duration(milliseconds: 25);
     layoutTimer = Timer.periodic(interval, (Timer t) {
       bool shouldStop = updateGraphPositions(this);
+      print("shouldStop $shouldStop");
       if (shouldStop) {
         layoutTimer.cancel();
         layoutTimer = null;
       }
     });
 
+    /*
     Timer(const Duration(seconds: 5), () {
       if (layoutTimer != null) {
         layoutTimer.cancel();
         layoutTimer = null;
       }
-    });
+    });*/
   }
 }
 
@@ -322,6 +325,11 @@ bool updateGraphPositions(Graph g) {
   var allBelowThreshold = true;
   for (var i = 0; i < numNodes; i++) {
     var node = g.nodes[i];
+
+    // Skip Node which is current being controlled
+    if (node.pressed) {
+      continue;
+    }
 
     var dx = delta_t * node.forceX;
     var dy = delta_t * node.forceY;
@@ -493,12 +501,15 @@ class _GraphStackViewState extends State<GraphStackView> {
           onPanStart: (details) {
             node.x = details.globalPosition.dx;
             node.y = details.globalPosition.dy;
+            node.pressed = true;
 
             widget.graph.notify();
             print("Pan start ${node.label} $details");
           },
           onPanEnd: (DragEndDetails details) {
             print("Pan end ${node.label} $details");
+            node.pressed = false;
+            widget.graph.notify();
           },
           onPanUpdate: (details) {
             node.x = details.globalPosition.dx;
