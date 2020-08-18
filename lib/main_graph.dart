@@ -502,7 +502,7 @@ class _GraphStackViewState extends State<GraphStackView> {
     for (var node in widget.graph.nodes) {
       var w = Positioned(
         child: GestureDetector(
-          child: NodeWidget(),
+          child: NodeWidget(node),
           onPanStart: (details) {
             node.x = details.globalPosition.dx;
             node.y = details.globalPosition.dy;
@@ -538,15 +538,25 @@ class _GraphStackViewState extends State<GraphStackView> {
 }
 
 class NodeWidget extends StatelessWidget {
+  final Node node;
+
+  NodeWidget(this.node);
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 50,
-      height: 50,
-      decoration: const BoxDecoration(
-        color: Colors.orange,
-        shape: BoxShape.circle,
-      ),
+    return Column(
+      children: [
+        Container(
+          width: 50,
+          height: 50,
+          decoration: const BoxDecoration(
+            color: Colors.orange,
+            shape: BoxShape.circle,
+          ),
+        ),
+        Text(node.label),
+      ],
+      crossAxisAlignment: CrossAxisAlignment.center,
     );
   }
 }
