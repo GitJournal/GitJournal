@@ -1,3 +1,8 @@
+## [1.67] - 2020-08-19
+* Beautify the Purchase Screen
+* Note Backlinks: Fix occasional rendering glitches
+* Be more relaxed when parsing the YAML
+
 ## [1.66] - 2020-08-18
 * Follow Obsidian's algorithm for resolving WikiLinks
 * All custom metadata to be added to each note
