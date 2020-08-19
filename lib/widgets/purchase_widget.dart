@@ -15,15 +15,16 @@ import 'package:gitjournal/widgets/purchase_slider.dart';
 
 class PurchaseButton extends StatelessWidget {
   final ProductDetails product;
+  final String timePeriod;
 
-  PurchaseButton(this.product);
+  PurchaseButton(this.product, this.timePeriod);
 
   @override
   Widget build(BuildContext context) {
     var price = product != null ? product.price : "Dev Mode";
 
     return RaisedButton(
-      child: Text('Subscribe for $price / month'),
+      child: Text('Subscribe for $price / $timePeriod'),
       color: Theme.of(context).primaryColor,
       padding: const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 16.0),
       onPressed: product != null ? () => _initPurchase(context) : null,
@@ -46,15 +47,17 @@ class PurchaseButton extends StatelessWidget {
   }
 }
 
-Set<String> _generateSkus() {
-  var list = <String>{};
-  for (var i = 0; i <= 50; i++) {
-    list.add("sku_monthly_min$i");
-  }
-  return list;
-}
-
 class PurchaseWidget extends StatefulWidget {
+  final Set<String> skus;
+  final String defaultSku;
+  final String timePeriod;
+
+  PurchaseWidget({
+    @required this.skus,
+    @required this.defaultSku,
+    @required this.timePeriod,
+  });
+
   @override
   _PurchaseWidgetState createState() => _PurchaseWidgetState();
 }
@@ -64,7 +67,6 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
   ProductDetails _selectedProduct;
   StreamSubscription<List<PurchaseDetails>> _subscription;
 
-  final defaultSku = "sku_monthly_min3";
   String error = "";
   bool pendingPurchase = false;
 
@@ -86,7 +88,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
       return;
     }
 
-    final response = await iapCon.queryProductDetails(_generateSkus());
+    final response = await iapCon.queryProductDetails(widget.skus);
     if (response.error != null) {
       Log.e("IAP queryProductDetails: ${response.error}");
     }
@@ -112,7 +114,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
 
       if (_products.length > 1) {
         for (var p in _products) {
-          if (p.id == defaultSku) {
+          if (p.id == widget.defaultSku) {
             _selectedProduct = p;
             break;
           }
@@ -264,7 +266,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
           mainAxisSize: MainAxisSize.max,
         ),
         const SizedBox(height: 16.0),
-        PurchaseButton(_selectedProduct),
+        PurchaseButton(_selectedProduct, widget.timePeriod),
       ],
       mainAxisAlignment: MainAxisAlignment.spaceAround,
     );
