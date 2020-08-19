@@ -33,6 +33,41 @@ class FeatureTile extends StatelessWidget {
       subtitle += ' - ' + feature.subtitle;
     }
 
+    Color color;
+    var theme = Theme.of(context);
+
+    if (feature.pro) {
+      if (theme.brightness == Brightness.light) {
+        color = theme.primaryColor;
+      }
+    } else {
+      color = theme.accentColor;
+    }
+
+    return _Tile(
+      title: feature.title,
+      subTitle: subtitle,
+      iconText: feature.pro ? 'PRO' : "FREE",
+      iconColor: color,
+    );
+  }
+}
+
+class _Tile extends StatelessWidget {
+  final String title;
+  final String subTitle;
+  final String iconText;
+  final Color iconColor;
+
+  _Tile({
+    @required this.title,
+    @required this.subTitle,
+    @required this.iconText,
+    @required this.iconColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     var theme = Theme.of(context);
     var textTheme = theme.textTheme;
     var titleTextStyle = textTheme.subtitle1.copyWith();
@@ -49,16 +84,16 @@ class FeatureTile extends StatelessWidget {
         children: <Widget>[
           Container(
             width: 56.0,
-            child: feature.pro ? _Sign('PRO') : _Sign("FREE"),
+            child: _Sign(iconText, iconColor),
           ),
           Expanded(
             child: Column(
               children: [
-                Text(feature.title, style: titleTextStyle),
+                Text(title, style: titleTextStyle),
                 const SizedBox(height: 4.0),
                 Flexible(
                   child: Text(
-                    subtitle,
+                    subTitle,
                     style: subTitleTextStyle,
                     overflow: TextOverflow.clip,
                     softWrap: true,
@@ -80,18 +115,16 @@ class FeatureTile extends StatelessWidget {
 
 class _Sign extends StatelessWidget {
   final String text;
-  _Sign(this.text);
+  final Color color;
+
+  _Sign(this.text, this.color);
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     var textStyle = theme.textTheme.subtitle2;
-    if (text == 'PRO') {
-      if (theme.brightness == Brightness.light) {
-        textStyle = textStyle.copyWith(color: theme.primaryColor);
-      } else {
-        textStyle = textStyle.copyWith(color: theme.accentColor);
-      }
+    if (color != null) {
+      textStyle = textStyle.copyWith(color: color);
     }
 
     return Text(text, style: textStyle);
