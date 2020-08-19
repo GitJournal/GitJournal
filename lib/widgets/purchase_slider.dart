@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'package:equatable/equatable.dart';
@@ -13,7 +15,7 @@ class PaymentInfo extends Equatable {
   List<Object> get props => [value, text, id];
 }
 
-typedef PaymentSliderChanged = Function(PaymentInfo);
+typedef PaymentSliderChanged = void Function(PaymentInfo);
 
 class PurchaseSlider extends StatelessWidget {
   final List<PaymentInfo> values;
@@ -30,33 +32,72 @@ class PurchaseSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Slider(
-      min: values.first.value,
-      max: values.last.value + 0.50,
-      value: selectedValue.value,
-      onChanged: (double val) {
-        int i = -1;
-        for (i = 1; i < values.length; i++) {
-          var prev = values[i - 1].value;
-          var cur = values[i].value;
-
-          if (prev < val && val <= cur) {
-            i--;
-            break;
-          }
-        }
-        if (val == values.first.value) {
-          i = 0;
-        } else if (val >= values.last.value) {
-          i = values.length - 1;
-        }
-
-        if (i != -1) {
-          onChanged(values[i]);
-        }
-      },
-      label: selectedValue.text,
-      divisions: values.length,
+    return Container(
+      height: 50,
+      child: CustomPaint(
+        painter: ShapePainter(
+          values: values,
+          selectedValue: selectedValue,
+          color: Theme.of(context).primaryColor,
+        ),
+        child: Container(),
+      ),
     );
+  }
+}
+
+class ShapePainter extends CustomPainter {
+  final List<PaymentInfo> values;
+  final PaymentInfo selectedValue;
+  final Color color;
+
+  ShapePainter({
+    @required this.values,
+    @required this.selectedValue,
+    @required this.color,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint = Paint()
+      ..color = color
+      ..strokeWidth = 2
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke;
+
+    var filledPaint = Paint()
+      ..color = color
+      ..strokeWidth = 2
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.fill;
+
+    var diff = (values.last.value - values.first.value);
+    var w = (size.width / diff) * (selectedValue.value - values.first.value);
+
+    var angle = atan(size.height / size.width);
+    var h = w * tan(angle);
+
+    var filledPath = Path();
+    filledPath.moveTo(0, size.height);
+    filledPath.lineTo(w, size.height);
+    filledPath.lineTo(w, size.height - h);
+    filledPath.lineTo(0, size.height);
+    filledPath.close();
+
+    canvas.drawPath(filledPath, filledPaint);
+
+    var emptyPath = Path();
+    emptyPath.moveTo(0, size.height);
+    emptyPath.lineTo(size.width, size.height);
+    emptyPath.lineTo(size.width, 0);
+    emptyPath.lineTo(0, size.height);
+    emptyPath.close();
+
+    canvas.drawPath(emptyPath, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
   }
 }
