@@ -38,7 +38,7 @@ class PurchaseScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(15.0),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 32.0),
             child: Column(
               children: [
                 Text("Monthly Subscription", style: textTheme.headline5),
