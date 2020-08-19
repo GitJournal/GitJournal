@@ -30,20 +30,25 @@ class PurchaseScreen extends StatelessWidget {
           style: Theme.of(context).textTheme.bodyText2,
         ),
         const SizedBox(height: 16.0),
-        OutlineButton(
-          child: Text(tr("feature_timeline.title")),
-          onPressed: () {
-            var route = MaterialPageRoute(
-              builder: (context) => FeatureTimelineScreen(),
-              settings: const RouteSettings(name: '/featureTimeline'),
-            );
-            Navigator.of(context).push(route);
-          },
-        ),
         const SizedBox(height: 64.0),
         PurchaseWidget(),
         const SizedBox(height: 32.0),
-        RestorePurchaseButton(),
+        Row(
+          children: [
+            RestorePurchaseButton(),
+            OutlineButton(
+              child: Text(tr("feature_timeline.title")),
+              onPressed: () {
+                var route = MaterialPageRoute(
+                  builder: (context) => FeatureTimelineScreen(),
+                  settings: const RouteSettings(name: '/featureTimeline'),
+                );
+                Navigator.of(context).push(route);
+              },
+            ),
+          ],
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        ),
       ],
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
