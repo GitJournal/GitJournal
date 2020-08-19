@@ -23,15 +23,31 @@ class PurchaseScreen extends StatelessWidget {
   }
 
   Widget buildBody(BuildContext context) {
+    var theme = Theme.of(context);
+    var textTheme = theme.textTheme;
+
     Widget w = Column(
       children: <Widget>[
         Text(
           tr('purchase_screen.desc'),
           style: Theme.of(context).textTheme.bodyText2,
         ),
-        const SizedBox(height: 16.0),
-        const SizedBox(height: 64.0),
-        PurchaseWidget(),
+        const SizedBox(height: 32.0),
+        Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Text("Monthly Subscription", style: textTheme.headline5),
+                const SizedBox(height: 32.0),
+                PurchaseWidget(),
+              ],
+            ),
+          ),
+        ),
         const SizedBox(height: 32.0),
         Row(
           children: [
