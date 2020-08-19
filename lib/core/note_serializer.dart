@@ -190,6 +190,8 @@ class NoteSerializer implements NoteSerializerInterface {
             note.tags = tags.map((t) => t.toString()).toSet();
           } else if (tags is List) {
             note.tags = tags.map((t) => t.toString()).toSet();
+          } else if (tags is String) {
+            note.tags = {tags};
           } else {
             Log.e("Note Tags Decoding Failed: $tags");
           }

@@ -122,5 +122,32 @@ void main() {
       expect(doc.props['title'], 'Why not?');
       expect(doc.props['draft'], true);
     });
+
+    test('Test Non list Tag', () {
+      var props = LinkedHashMap<String, dynamic>.from(<String, dynamic>{
+        "title": "Why not?",
+        "draft": true,
+        "tags": "foo",
+      });
+      var doc = MdYamlDoc("body", props);
+
+      var serializer = NoteSerializer.raw();
+      serializer.settings.saveTitleAsH1 = false;
+
+      var note = Note(parent, "file-path-not-important");
+      serializer.decode(doc, note);
+
+      expect(note.body, "body");
+      expect(note.title, "Why not?");
+      expect(note.extraProps, <String, dynamic>{"draft": true});
+      expect(note.tags, <String>{"foo"});
+
+      serializer.encode(note, doc);
+      expect(doc.body, "body");
+      expect(doc.props['title'], 'Why not?');
+      expect(doc.props['draft'], true);
+      expect(doc.props['tags'], ['foo']);
+      expect(doc.props.length, 3);
+    });
   });
 }
