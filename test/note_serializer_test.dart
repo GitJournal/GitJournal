@@ -123,11 +123,11 @@ void main() {
       expect(doc.props['draft'], true);
     });
 
-    test('Test Non list Tag', () {
+    test('Test string tag with #', () {
       var props = LinkedHashMap<String, dynamic>.from(<String, dynamic>{
         "title": "Why not?",
         "draft": true,
-        "tags": "foo",
+        "tags": "#foo #bar-do",
       });
       var doc = MdYamlDoc("body", props);
 
@@ -140,13 +140,13 @@ void main() {
       expect(note.body, "body");
       expect(note.title, "Why not?");
       expect(note.extraProps, <String, dynamic>{"draft": true});
-      expect(note.tags, <String>{"foo"});
+      expect(note.tags, <String>{"foo", "bar-do"});
 
       serializer.encode(note, doc);
       expect(doc.body, "body");
       expect(doc.props['title'], 'Why not?');
       expect(doc.props['draft'], true);
-      expect(doc.props['tags'], ['foo']);
+      expect(doc.props['tags'], "#foo #bar-do");
       expect(doc.props.length, 3);
     });
   });

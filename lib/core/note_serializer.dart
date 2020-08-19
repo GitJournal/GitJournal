@@ -23,6 +23,9 @@ class NoteSerializationSettings {
   String typeKey = "type";
   String tagsKey = "tags";
 
+  bool tagsInString = false;
+  bool tagsHaveHash = false;
+
   bool saveTitleAsH1 = true;
 }
 
@@ -83,6 +86,13 @@ class NoteSerializer implements NoteSerializerInterface {
       data.props.remove(settings.tagsKey);
     } else {
       data.props[settings.tagsKey] = note.tags.toList();
+      if (settings.tagsInString) {
+        var tags = note.tags;
+        if (settings.tagsHaveHash) {
+          tags = tags.map((e) => '#$e').toSet();
+        }
+        data.props[settings.tagsKey] = tags.join(' ');
+      }
     }
 
     note.extraProps.forEach((key, value) {
@@ -191,7 +201,15 @@ class NoteSerializer implements NoteSerializerInterface {
           } else if (tags is List) {
             note.tags = tags.map((t) => t.toString()).toSet();
           } else if (tags is String) {
-            note.tags = {tags};
+            settings.tagsInString = true;
+            var allTags = tags.split(' ');
+            settings.tagsHaveHash = allTags.every((t) => t.startsWith('#'));
+            if (settings.tagsHaveHash) {
+              allTags.removeWhere((e) => e.length <= 1);
+              allTags = allTags.map((e) => e.substring(1)).toList();
+            }
+
+            note.tags = allTags.toSet();
           } else {
             Log.e("Note Tags Decoding Failed: $tags");
           }
