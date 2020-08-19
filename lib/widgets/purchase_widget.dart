@@ -47,7 +47,7 @@ class PurchaseButton extends StatelessWidget {
 }
 
 Set<String> _generateSkus() {
-  var list = <String>{'sku_monthly_min'};
+  var list = <String>{};
   for (var i = 0; i <= 50; i++) {
     list.add("sku_monthly_min$i");
   }
