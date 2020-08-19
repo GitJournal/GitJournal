@@ -222,9 +222,18 @@ feature:
   basicSearch: Basic Search
   customSSHKeys: Provide your own SSH Keys
   customMetaData: Add Custom Metadata to new Notes
+  graphVisualization: Graph Visualization
+  mutliRepos: Multiple Git Repos
+  customThemes: Custom Themes
+  gitLog: View and Search through Git History
+  latex: Latex Support
+  mermaid: Mermaid Diagram Support
+  encryptedHosting: Encrypted Git Hosting
 
 feature_timeline:
   title: Feature Timeline
+  progress: In Progress
+  plan: Planned
 
 purchase_screen:
   title: Pro Version

@@ -36,6 +36,19 @@ class Features {
     Feature.yamlTagsKey,
     Feature.customMetaData,
   ];
+
+  static final inProgress = <String>[
+    tr("feature.graphVisualization"),
+    tr("feature.mutliRepos"),
+    tr("feature.customThemes"),
+    tr("feature.gitLog"),
+  ];
+
+  static final planned = <String>[
+    tr("feature.latex"),
+    tr("feature.mermaid"),
+    tr("feature.encryptedHosting"),
+  ];
 }
 
 class Feature {

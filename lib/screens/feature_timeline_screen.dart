@@ -7,6 +7,8 @@ import 'package:gitjournal/features.dart';
 class FeatureTimelineScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(tr('feature_timeline.title')),
@@ -14,6 +16,20 @@ class FeatureTimelineScreen extends StatelessWidget {
       body: ListView(
         children: [
           for (var feature in Features.all) FeatureTile(feature),
+          for (var title in Features.inProgress)
+            _Tile(
+              title: title,
+              subTitle: tr('feature_timeline.progress'),
+              iconText: "DEV",
+              iconColor: theme.primaryColorDark,
+            ),
+          for (var title in Features.planned)
+            _Tile(
+              title: title,
+              subTitle: tr('feature_timeline.plan'),
+              iconText: "PLAN",
+              iconColor: theme.accentColor,
+            ),
         ],
       ),
     );
