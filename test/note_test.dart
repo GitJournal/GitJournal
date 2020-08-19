@@ -217,5 +217,39 @@ Gee
       expect(txtNote.title.isEmpty, true);
       expect(txtNote.body, content);
     });
+
+    test('Yaml is not touched with yaml disabled', () async {
+      var content = """---
+layout: post
+title: Blogging
+date: 2020-08-12T13:53:52+02:00
+categories: can-learn-foo
+permalink: /:categories
+---
+
+Blah blah""";
+
+      var notePath = p.join(tempDir.path, "note63345.md");
+      await File(notePath).writeAsString(content);
+
+      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var note = Note(parentFolder, notePath);
+      await note.load();
+
+      note.body = "Howdy";
+      await note.save();
+
+      var actualContent = await File(notePath).readAsString();
+      var expectedContent = """---
+layout: post
+title: Blogging
+date: 2020-08-12T13:53:52+02:00
+categories: can-learn-foo
+permalink: /:categories
+---
+
+Howdy""";
+      expect(actualContent, expectedContent);
+    });
   });
 }

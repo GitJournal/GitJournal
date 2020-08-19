@@ -148,6 +148,7 @@ class NoteSerializer implements NoteSerializerInterface {
       note.title = emojiParser.emojify(title);
 
       propsUsed.add(settings.titleKey);
+      settings.saveTitleAsH1 = false;
     } else {
       var startsWithH1 = false;
       for (var line in LineSplitter.split(note.body)) {
