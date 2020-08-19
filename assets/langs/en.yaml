@@ -229,6 +229,7 @@ feature:
   latex: Latex Support
   mermaid: Mermaid Diagram Support
   encryptedHosting: Encrypted Git Hosting
+  desktop: Desktop App
 
 feature_timeline:
   title: Feature Timeline

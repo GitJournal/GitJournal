@@ -48,6 +48,7 @@ class Features {
     tr("feature.latex"),
     tr("feature.mermaid"),
     tr("feature.encryptedHosting"),
+    tr("feature.desktop"),
   ];
 }
 
