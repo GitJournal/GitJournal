@@ -101,7 +101,7 @@ class MonthlyRentalWidget extends StatelessWidget {
 
   Set<String> _generateSkus() {
     var list = <String>{};
-    for (var i = 0; i <= 50; i++) {
+    for (var i = 0; i <= 25; i++) {
       list.add("sku_monthly_min$i");
     }
     return list;
