@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:path/path.dart' as p;
 
 import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/note.dart';
@@ -166,13 +165,9 @@ class NoteSnippet extends StatelessWidget {
     }
 
     var link = links.where((l) {
-      if (l.filePath != null) {
-        return l.filePath == parentNote.filePath;
-      }
-
-      var term = parentNote.pathSpec();
-      term = p.basenameWithoutExtension(term);
-      return term == l.term;
+      var linkResolver = LinkResolver(note);
+      var resolvedNote = linkResolver.resolveLink(l);
+      return resolvedNote.filePath == parentNote.filePath;
     }).first;
 
     var body = note.body.split('\n');
