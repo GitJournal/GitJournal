@@ -95,8 +95,9 @@ void main() {
       expect(note.title, "Why not ☕?");
 
       serializer.encode(note, doc);
-      expect(doc.body, "# Why not :coffee:?\n\nI :heart: you");
-      expect(doc.props.length, 0);
+      expect(note.body, "I ❤️ you");
+      expect(note.title, "Why not ☕?");
+      expect(doc.props.length, 1);
     });
 
     test('Test Note ExtraProps', () {
