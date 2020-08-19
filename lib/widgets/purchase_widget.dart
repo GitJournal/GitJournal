@@ -64,7 +64,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
   ProductDetails _selectedProduct;
   StreamSubscription<List<PurchaseDetails>> _subscription;
 
-  final defaultSku = "sku_monthly_min2";
+  final defaultSku = "sku_monthly_min3";
   String error = "";
   bool pendingPurchase = false;
 
