@@ -136,7 +136,6 @@ class Note with NotesNotifier {
 
   void updateModified() {
     modified = DateTime.now();
-    _notifyModified();
   }
 
   String get body {
