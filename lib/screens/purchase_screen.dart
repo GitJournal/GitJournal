@@ -30,7 +30,12 @@ class PurchaseScreen extends StatelessWidget {
           style: Theme.of(context).textTheme.bodyText2,
         ),
         const SizedBox(height: 32.0),
-        const MonthlyRentalWidget(),
+        PurchaseCards(
+          children: [
+            const MonthlyRentalWidget(),
+            const YearlyPurchaseWidget(),
+          ],
+        ),
         const SizedBox(height: 32.0),
         Row(
           children: [
@@ -78,23 +83,22 @@ class MonthlyRentalWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
 
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 32.0),
-        child: Column(
-          children: [
-            Text("Monthly Subscription", style: textTheme.headline5),
-            const SizedBox(height: 32.0),
-            PurchaseWidget(
-              skus: _generateSkus(),
-              defaultSku: "sku_monthly_min3",
-              timePeriod: "Month",
-            ),
-          ],
-        ),
+    return PurchaseCard(
+      child: Column(
+        children: [
+          // TODO: Translate this
+          Text("Monthly Rental", style: textTheme.headline5),
+          const SizedBox(height: 32.0),
+          PurchaseWidget(
+            skus: _generateSkus(),
+            defaultSku: "sku_monthly_min3",
+            timePeriod: "Month",
+          ),
+          const SizedBox(height: 32.0),
+          const Text(
+              "After 12 months of rental or after paying the min yearly amount, you will automatically get all the benefits of a Yearly Purchase."),
+        ],
+        mainAxisAlignment: MainAxisAlignment.start,
       ),
     );
   }
@@ -117,26 +121,21 @@ class YearlyPurchaseWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
 
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 32.0),
-        child: Column(
-          children: [
-            Text("Yearly Purchase", style: textTheme.headline5),
-            const SizedBox(height: 32.0),
-            PurchaseWidget(
-              skus: _generateSkus(),
-              defaultSku: "sku_sub_yearly_0",
-              timePeriod: "Year",
-            ),
-            const SizedBox(height: 8.0),
-            const Text(
-                "Enables all Pro features currently in GitJournal and new ones added the next year. These features will be yours forever.")
-          ],
-        ),
+    return PurchaseCard(
+      child: Column(
+        children: [
+          Text("Yearly Purchase", style: textTheme.headline5),
+          const SizedBox(height: 32.0),
+          PurchaseWidget(
+            skus: _generateSkus(),
+            defaultSku: "sku_sub_yearly_1",
+            timePeriod: "Year",
+          ),
+          const SizedBox(height: 32.0),
+          const Text(
+              "Enables all Pro features currently in GitJournal and new features added in the following 12 months. These features will be yours forever.")
+        ],
+        mainAxisAlignment: MainAxisAlignment.start,
       ),
     );
   }
@@ -147,5 +146,77 @@ class YearlyPurchaseWidget extends StatelessWidget {
       list.add("sku_sub_yearly_$i");
     }
     return list;
+  }
+}
+
+class PurchaseCard extends StatelessWidget {
+  final Widget child;
+
+  PurchaseCard({@required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    var mediaQuery = MediaQuery.of(context);
+
+    return Container(
+      width: mediaQuery.size.width * 0.80,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+          child: child,
+        ),
+      ),
+    );
+  }
+}
+
+class PurchaseCards extends StatefulWidget {
+  final List<Widget> children;
+
+  PurchaseCards({@required this.children});
+
+  @override
+  _PurchaseCardsState createState() => _PurchaseCardsState();
+}
+
+class _PurchaseCardsState extends State<PurchaseCards> {
+  @override
+  Widget build(BuildContext context) {
+    return _ScrollViewWithoutAnim(
+      scrollDirection: Axis.horizontal,
+      child: IntrinsicHeight(
+        child: Row(
+          children: widget.children,
+          mainAxisSize: MainAxisSize.min,
+        ),
+      ),
+    );
+  }
+}
+
+class _ScrollViewWithoutAnim extends StatelessWidget {
+  final Widget child;
+  final Axis scrollDirection;
+
+  _ScrollViewWithoutAnim({
+    @required this.child,
+    this.scrollDirection,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return NotificationListener<OverscrollIndicatorNotification>(
+      onNotification: (OverscrollIndicatorNotification overScroll) {
+        overScroll.disallowGlow();
+        return false;
+      },
+      child: SingleChildScrollView(
+        scrollDirection: scrollDirection,
+        child: child,
+      ),
+    );
   }
 }

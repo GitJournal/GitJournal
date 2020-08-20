@@ -265,7 +265,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
           ],
           mainAxisSize: MainAxisSize.max,
         ),
-        const SizedBox(height: 16.0),
+        const SizedBox(height: 32.0),
         PurchaseButton(_selectedProduct, widget.timePeriod),
       ],
       mainAxisAlignment: MainAxisAlignment.spaceAround,
