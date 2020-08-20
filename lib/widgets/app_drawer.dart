@@ -250,9 +250,12 @@ void _navTopLevel(BuildContext context, String toRoute) {
 class _AppDrawerHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var settings = Provider.of<Settings>(context);
+
     return Stack(
       children: <Widget>[
         DrawerHeader(
+          margin: const EdgeInsets.all(0.0),
           decoration: BoxDecoration(
             color: Theme.of(context).highlightColor,
           ),
@@ -289,8 +292,37 @@ class _AppDrawerHeader extends StatelessWidget {
           ),
         ),
         */
+        if (settings.proMode)
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: ProButton(),
+            ),
+          ),
       ],
       fit: StackFit.passthrough,
+    );
+  }
+}
+
+class ProButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: theme.scaffoldBackgroundColor,
+          boxShadow: [
+            BoxShadow(color: theme.accentColor, spreadRadius: 0),
+          ],
+        ),
+        padding: const EdgeInsets.all(8.0),
+        child: Text('PRO', style: theme.textTheme.button),
+      ),
     );
   }
 }
