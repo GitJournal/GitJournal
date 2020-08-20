@@ -33,6 +33,7 @@ class PurchaseScreen extends StatelessWidget {
         PurchaseCards(
           children: [
             const MonthlyRentalWidget(),
+            const SizedBox(width: 16.0),
             const YearlyPurchaseWidget(),
           ],
         ),
@@ -173,23 +174,18 @@ class PurchaseCard extends StatelessWidget {
   }
 }
 
-class PurchaseCards extends StatefulWidget {
+class PurchaseCards extends StatelessWidget {
   final List<Widget> children;
 
   PurchaseCards({@required this.children});
 
-  @override
-  _PurchaseCardsState createState() => _PurchaseCardsState();
-}
-
-class _PurchaseCardsState extends State<PurchaseCards> {
   @override
   Widget build(BuildContext context) {
     return _ScrollViewWithoutAnim(
       scrollDirection: Axis.horizontal,
       child: IntrinsicHeight(
         child: Row(
-          children: widget.children,
+          children: children,
           mainAxisSize: MainAxisSize.min,
         ),
       ),
