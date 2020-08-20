@@ -40,11 +40,12 @@ class Features {
   static final inProgress = <String>[
     tr("feature.graphVisualization"),
     tr("feature.mutliRepos"),
-    tr("feature.customThemes"),
     tr("feature.gitLog"),
+    tr("feature.markdownToolbar"),
   ];
 
   static final planned = <String>[
+    tr("feature.customThemes"),
     tr("feature.latex"),
     tr("feature.mermaid"),
     tr("feature.encryptedHosting"),

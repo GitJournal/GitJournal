@@ -230,6 +230,7 @@ feature:
   mermaid: Mermaid Diagram Support
   encryptedHosting: Encrypted Git Hosting
   desktop: Desktop App
+  markdownToolbar: Markdown Toolbar
 
 feature_timeline:
   title: Feature Timeline
