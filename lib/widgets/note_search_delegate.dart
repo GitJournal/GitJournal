@@ -83,7 +83,7 @@ class NoteSearchDelegate extends SearchDelegate<Note> {
       emptyText: emptyText,
       header: StandardViewHeader.TitleOrFileName,
       showSummary: true,
-      noteTapped: (Note note) => openNoteEditor(context, note),
+      noteTapped: (Note note) => openNoteEditor(context, note, folder),
       noteLongPressed: (Note note) {},
     );
   }

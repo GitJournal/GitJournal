@@ -68,9 +68,13 @@ Widget buildFolderView({
   return Container();
 }
 
-void openNoteEditor(BuildContext context, Note note) async {
+void openNoteEditor(
+  BuildContext context,
+  Note note,
+  NotesFolder parentFolder,
+) async {
   var route = MaterialPageRoute(
-    builder: (context) => NoteEditor.fromNote(note),
+    builder: (context) => NoteEditor.fromNote(note, parentFolder),
     settings: const RouteSettings(name: '/note/'),
   );
   var showUndoSnackBar = await Navigator.of(context).push(route);

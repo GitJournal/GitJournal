@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/folder_views/common.dart';
@@ -14,10 +15,12 @@ import 'package:gitjournal/widgets/pro_overlay.dart';
 class NoteBacklinkRenderer extends StatefulWidget {
   final Note note;
   final NotesFolderFS rootFolder;
+  final NotesFolder parentFolder;
 
   NoteBacklinkRenderer({
     @required this.note,
     @required this.rootFolder,
+    @required this.parentFolder,
   });
 
   @override
@@ -88,7 +91,7 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
             note: note,
             parentNote: widget.note,
             onTap: () {
-              openNoteEditor(context, note);
+              openNoteEditor(context, note, widget.parentFolder);
             },
           ),
       ],
@@ -137,9 +140,7 @@ class NoteSnippet extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
       child: GestureDetector(
-        onTap: () {
-          openNoteEditor(context, note);
-        },
+        onTap: onTap,
         child: Container(
           color: theme.scaffoldBackgroundColor,
           width: MediaQuery.of(context).size.width,

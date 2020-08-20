@@ -90,7 +90,7 @@ class _FolderViewState extends State<FolderView> {
           showSummary: _showSummary,
           noteTapped: (Note note) {
             if (!inSelectionMode) {
-              openNoteEditor(context, note);
+              openNoteEditor(context, note, widget.notesFolder);
             } else {
               setState(() {
                 inSelectionMode = false;
@@ -189,6 +189,7 @@ class _FolderViewState extends State<FolderView> {
     var route = MaterialPageRoute(
       builder: (context) => NoteEditor.newNote(
         fsFolder,
+        widget.notesFolder,
         editorType,
         newNoteExtraProps: extraProps,
       ),

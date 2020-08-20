@@ -12,6 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/settings.dart';
@@ -23,7 +24,12 @@ import 'package:gitjournal/widgets/notes_backlinks.dart';
 
 class NoteViewer extends StatelessWidget {
   final Note note;
-  const NoteViewer({Key key, @required this.note}) : super(key: key);
+  final NotesFolder parentFolder;
+  const NoteViewer({
+    Key key,
+    @required this.note,
+    @required this.parentFolder,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +78,7 @@ class NoteViewer extends StatelessWidget {
 
                 var linkedNote = linkResolver.resolve(link);
                 if (linkedNote != null) {
-                  openNoteEditor(context, linkedNote);
+                  openNoteEditor(context, linkedNote, parentFolder);
                   return;
                 }
 
@@ -91,7 +97,11 @@ class NoteViewer extends StatelessWidget {
           ),
           const SizedBox(height: 16.0),
           if (settings.experimentalBacklinks)
-            NoteBacklinkRenderer(note: note, rootFolder: rootFolder),
+            NoteBacklinkRenderer(
+              note: note,
+              rootFolder: rootFolder,
+              parentFolder: parentFolder,
+            ),
           // _buildFooter(context),
         ],
         crossAxisAlignment: CrossAxisAlignment.start,

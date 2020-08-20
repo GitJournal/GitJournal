@@ -390,8 +390,10 @@ class _JournalAppState extends State<JournalApp> {
         });
       }
 
+      var folder = getFolderForEditor(settings, rootFolder, et);
       return NoteEditor.newNote(
-        getFolderForEditor(settings, rootFolder, et),
+        folder,
+        folder,
         et,
         existingText: sharedText,
         existingImages: sharedImages,

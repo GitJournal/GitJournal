@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/disposable_change_notifier.dart';
 import 'package:gitjournal/editors/heuristics.dart';
@@ -19,6 +20,7 @@ import 'package:gitjournal/widgets/note_viewer.dart';
 
 class MarkdownEditor extends StatefulWidget implements Editor {
   final Note note;
+  final NotesFolder parentFolder;
   final bool noteModified;
 
   @override
@@ -41,6 +43,7 @@ class MarkdownEditor extends StatefulWidget implements Editor {
   MarkdownEditor({
     Key key,
     @required this.note,
+    @required this.parentFolder,
     @required this.noteModified,
     @required this.noteDeletionSelected,
     @required this.noteEditorChooserSelected,
@@ -130,7 +133,12 @@ class MarkdownEditorState extends State<MarkdownEditor>
       ),
     );
 
-    Widget body = editingMode ? editor : NoteViewer(note: note);
+    Widget body = editingMode
+        ? editor
+        : NoteViewer(
+            note: note,
+            parentFolder: widget.parentFolder,
+          );
 
     var settings = Provider.of<Settings>(context);
     if (settings.experimentalMarkdownToolbar && editingMode) {

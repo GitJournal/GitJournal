@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/editors/checklist_editor.dart';
 import 'package:gitjournal/editors/journal_editor.dart';
@@ -28,6 +29,7 @@ class ShowUndoSnackbar {}
 class NoteEditor extends StatefulWidget {
   final Note note;
   final NotesFolderFS notesFolder;
+  final NotesFolder parentFolderView;
   final EditorType defaultEditorType;
 
   final String existingText;
@@ -35,7 +37,7 @@ class NoteEditor extends StatefulWidget {
 
   final Map<String, dynamic> newNoteExtraProps;
 
-  NoteEditor.fromNote(this.note)
+  NoteEditor.fromNote(this.note, this.parentFolderView)
       : notesFolder = note.parent,
         defaultEditorType = null,
         existingText = null,
@@ -44,6 +46,7 @@ class NoteEditor extends StatefulWidget {
 
   NoteEditor.newNote(
     this.notesFolder,
+    this.parentFolderView,
     this.defaultEditorType, {
     this.existingText,
     this.existingImages,
@@ -151,6 +154,7 @@ class NoteEditorState extends State<NoteEditor> {
         return MarkdownEditor(
           key: _markdownEditorKey,
           note: note,
+          parentFolder: widget.parentFolderView,
           noteModified: _noteModified(note),
           noteDeletionSelected: _noteDeletionSelected,
           noteEditorChooserSelected: _noteEditorChooserSelected,
