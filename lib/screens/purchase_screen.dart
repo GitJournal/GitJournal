@@ -25,34 +25,42 @@ class PurchaseScreen extends StatelessWidget {
   Widget buildBody(BuildContext context) {
     Widget w = Column(
       children: <Widget>[
-        Text(
-          tr('purchase_screen.desc'),
-          style: Theme.of(context).textTheme.bodyText2,
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+          child: Text(
+            tr('purchase_screen.desc'),
+            style: Theme.of(context).textTheme.bodyText2,
+          ),
         ),
         const SizedBox(height: 32.0),
         PurchaseCards(
           children: [
+            const SizedBox(width: 16.0),
             const MonthlyRentalWidget(),
             const SizedBox(width: 16.0),
             const YearlyPurchaseWidget(),
+            const SizedBox(width: 16.0),
           ],
         ),
         const SizedBox(height: 32.0),
-        Row(
-          children: [
-            RestorePurchaseButton(),
-            OutlineButton(
-              child: Text(tr("feature_timeline.title")),
-              onPressed: () {
-                var route = MaterialPageRoute(
-                  builder: (context) => FeatureTimelineScreen(),
-                  settings: const RouteSettings(name: '/featureTimeline'),
-                );
-                Navigator.of(context).push(route);
-              },
-            ),
-          ],
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+          child: Row(
+            children: [
+              RestorePurchaseButton(),
+              OutlineButton(
+                child: Text(tr("feature_timeline.title")),
+                onPressed: () {
+                  var route = MaterialPageRoute(
+                    builder: (context) => FeatureTimelineScreen(),
+                    settings: const RouteSettings(name: '/featureTimeline'),
+                  );
+                  Navigator.of(context).push(route);
+                },
+              ),
+            ],
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          ),
         ),
       ],
       mainAxisAlignment: MainAxisAlignment.start,
@@ -63,7 +71,7 @@ class PurchaseScreen extends StatelessWidget {
       slivers: [
         SliverFillRemaining(
           hasScrollBody: false,
-          child: Padding(padding: const EdgeInsets.all(16.0), child: w),
+          child: w,
         ),
       ],
     );
