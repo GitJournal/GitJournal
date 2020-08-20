@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import 'package:provider/provider.dart';
-
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/editors/common.dart';
@@ -12,11 +10,8 @@ import 'package:gitjournal/editors/heuristics.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/editor_scroll_view.dart';
-import 'package:gitjournal/widgets/markdown_toolbar.dart';
-import 'package:gitjournal/widgets/note_viewer.dart';
 
 class MarkdownEditor extends StatefulWidget implements Editor {
   final Note note;
@@ -70,31 +65,18 @@ class MarkdownEditorState extends State<MarkdownEditor>
 
   String _oldText;
 
-  bool editingMode = true;
   bool _noteModified;
 
   MarkdownEditorState(this.note) {
     _textController = TextEditingController(text: note.body);
     _titleTextController = TextEditingController(text: note.title);
     _oldText = note.body;
-
-    var settings = Settings.instance;
-    if (settings.markdownDefaultView == SettingsMarkdownDefaultView.LastUsed) {
-      editingMode =
-          settings.markdownLastUsedView == SettingsMarkdownDefaultView.Edit;
-    } else {
-      editingMode =
-          settings.markdownDefaultView == SettingsMarkdownDefaultView.Edit;
-    }
   }
 
   @override
   void initState() {
     super.initState();
     _noteModified = widget.noteModified;
-    if (widget.isNewNote) {
-      editingMode = true;
-    }
   }
 
   @override
@@ -133,12 +115,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
       ),
     );
 
-    Widget body = editingMode
-        ? editor
-        : NoteViewer(
-            note: note,
-            parentFolder: widget.parentFolder,
-          );
+    /*
 
     var settings = Provider.of<Settings>(context);
     if (settings.experimentalMarkdownToolbar && editingMode) {
@@ -154,41 +131,16 @@ class MarkdownEditorState extends State<MarkdownEditor>
         ),
       );
     }
-
-    var extraButton = IconButton(
-      icon: editingMode
-          ? const Icon(Icons.remove_red_eye)
-          : const Icon(Icons.edit),
-      onPressed: _switchMode,
-    );
+    */
 
     return EditorScaffold(
       editor: widget,
       editorState: this,
-      extraButton: extraButton,
       noteModified: _noteModified,
+      isNewNote: widget.isNewNote,
       parentFolder: note.parent,
-      allowEdits: editingMode,
-      body: body,
+      body: editor,
     );
-  }
-
-  void _switchMode() {
-    var settings = Provider.of<Settings>(context);
-
-    setState(() {
-      editingMode = !editingMode;
-      switch (editingMode) {
-        case true:
-          settings.markdownLastUsedView = SettingsMarkdownDefaultView.Edit;
-          break;
-        case false:
-          settings.markdownLastUsedView = SettingsMarkdownDefaultView.View;
-          break;
-      }
-      settings.save();
-      _updateNote();
-    });
   }
 
   void _updateNote() {

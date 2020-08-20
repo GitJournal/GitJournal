@@ -174,6 +174,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
       editor: widget,
       editorState: this,
       noteModified: _noteModified,
+      isNewNote: widget.isNewNote,
       parentFolder: widget.note.parent,
       body: Column(
         children: <Widget>[

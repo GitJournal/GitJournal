@@ -101,6 +101,7 @@ class RawEditorState extends State<RawEditor>
       editor: widget,
       editorState: this,
       noteModified: _noteModified,
+      isNewNote: widget.isNewNote,
       parentFolder: note.parent,
       body: editor,
     );
