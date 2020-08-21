@@ -102,6 +102,7 @@ class MonthlyRentalWidget extends StatelessWidget {
             skus: _generateSkus(),
             defaultSku: "sku_monthly_min3",
             timePeriod: "Month",
+            isSubscription: true,
           ),
           const SizedBox(height: 32.0),
           const Text(
@@ -139,6 +140,7 @@ class YearlyPurchaseWidget extends StatelessWidget {
             skus: _generateSkus(),
             defaultSku: "sku_sub_yearly_1",
             timePeriod: "Year",
+            isSubscription: false,
           ),
           const SizedBox(height: 32.0),
           const Text(

@@ -16,15 +16,18 @@ import 'package:gitjournal/widgets/purchase_slider.dart';
 class PurchaseButton extends StatelessWidget {
   final ProductDetails product;
   final String timePeriod;
+  final bool subscription;
 
-  PurchaseButton(this.product, this.timePeriod);
+  PurchaseButton(this.product, this.timePeriod, {@required this.subscription});
 
   @override
   Widget build(BuildContext context) {
     var price = product != null ? product.price : "Dev Mode";
 
     return RaisedButton(
-      child: Text('Subscribe for $price / $timePeriod'),
+      child: subscription
+          ? Text('Subscribe for $price / $timePeriod')
+          : Text('Purchase for $price / $timePeriod'),
       color: Theme.of(context).primaryColor,
       padding: const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 16.0),
       onPressed: product != null ? () => _initPurchase(context) : null,
@@ -51,11 +54,13 @@ class PurchaseWidget extends StatefulWidget {
   final Set<String> skus;
   final String defaultSku;
   final String timePeriod;
+  final bool isSubscription;
 
   PurchaseWidget({
     @required this.skus,
     @required this.defaultSku,
     @required this.timePeriod,
+    @required this.isSubscription,
   });
 
   @override
@@ -266,7 +271,11 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
           mainAxisSize: MainAxisSize.max,
         ),
         const SizedBox(height: 32.0),
-        PurchaseButton(_selectedProduct, widget.timePeriod),
+        PurchaseButton(
+          _selectedProduct,
+          widget.timePeriod,
+          subscription: widget.isSubscription,
+        ),
       ],
       mainAxisAlignment: MainAxisAlignment.spaceAround,
     );
