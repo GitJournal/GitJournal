@@ -48,7 +48,7 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
           setState(() {});
         },
       ),
-      SettingsHeader(tr("settings.editors.markdownEditor")),
+      //SettingsHeader(tr("settings.editors.markdownEditor")),
       ListPreference(
         title: tr("settings.editors.defaultState"),
         currentOption: settings.markdownDefaultView.toPublicString(),
