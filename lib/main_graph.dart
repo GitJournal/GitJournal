@@ -40,7 +40,6 @@ class _MyExampleWidgetState extends State<MyExampleWidget> {
 
   @override
   Widget build(BuildContext context) {
-    FocusScope.of(context).nextFocus();
     return GraphStackView(graph);
     /*
     return CanvasTouchDetector(
