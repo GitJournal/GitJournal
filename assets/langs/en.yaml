@@ -187,7 +187,8 @@ setup:
     title: We need permission to perform the following steps
     step1: 1. List your existing repos or create a new repo
     step2: 2. Generate an SSH Key on this device
-    step3: 3. Add the key as a deploy key with write access to the created repo
+    step3: 3. Add the key as a deploy key with write access to the repository
+    warning: This will require granting GitJournal access to all private and public repos. If you're not comfortable with that please go back and chose the manual setup option.
     authorize: Authorize GitJournal
     waitPerm: Waiting for Permissions ...
     readUser: Reading User Info

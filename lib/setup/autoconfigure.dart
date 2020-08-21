@@ -134,6 +134,13 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
           style: Theme.of(context).textTheme.bodyText1,
         ),
         const SizedBox(height: 32.0),
+        Text(
+          tr('setup.autoconfigure.warning'),
+          style: Theme.of(context).textTheme.bodyText1.copyWith(
+                fontStyle: FontStyle.italic,
+              ),
+        ),
+        const SizedBox(height: 32.0),
 
         GitHostSetupButton(
           text: tr('setup.autoconfigure.authorize'),
