@@ -21,7 +21,15 @@ void main() {
     expect(tags, {'tag'});
   });
 
-  // #a#b should be counted as two tags
+  test('#a#b should be counted as two tags', () {
+    var body = "Hi there #a#b";
+
+    var p = InlineTagsProcessor();
+    var tags = p.extractTags(body);
+
+    expect(tags, {'a', 'b'});
+  });
+
   // + should work as a prefix
   // @ should work as a prefix
   // test for tags with non-ascii words

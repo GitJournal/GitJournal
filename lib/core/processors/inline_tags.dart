@@ -19,7 +19,10 @@ class InlineTagsProcessor {
           tag = tag.substring(0, tag.length - 1);
         }
 
-        tags.add(tag);
+        var all = tag.split('#');
+        for (var t in all) {
+          tags.add(t.trim());
+        }
       }
     }
 
