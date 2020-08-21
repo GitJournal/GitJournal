@@ -90,6 +90,11 @@ settings:
   remoteSync:
     auto: Automatic
     manual: Manual
+  tags:
+    title: Tags Settings
+    subtitle: Configure how inline tags are parsed
+    enable: Parse Inline Tags
+    prefixes: Inline Tags Prefixes
 
 editors:
   checklist:

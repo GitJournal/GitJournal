@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 class Features {
   static bool perFolderConfig = false;
+  static bool inlineTags = false;
 
   static final all = <Feature>[
     Feature.basicSearch,

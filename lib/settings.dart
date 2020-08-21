@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -65,6 +66,8 @@ class Settings extends ChangeNotifier {
 
   bool zenMode = false;
   bool saveTitleInH1 = true;
+
+  Set<String> inlineTagPrefixes = {'#'};
 
   void load(SharedPreferences pref) {
     onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
@@ -142,6 +145,8 @@ class Settings extends ChangeNotifier {
 
     zenMode = pref.getBool("zenMode") ?? zenMode;
     saveTitleInH1 = pref.getBool("saveTitleInH1") ?? saveTitleInH1;
+    inlineTagPrefixes =
+        pref.getStringList("inlineTagPrefixes")?.toSet() ?? inlineTagPrefixes;
   }
 
   Future save() async {
@@ -220,6 +225,8 @@ class Settings extends ChangeNotifier {
         defaultSet.experimentalMarkdownToolbar);
     _setBool(pref, "zenMode", zenMode, defaultSet.zenMode);
     _setBool(pref, "saveTitleInH1", saveTitleInH1, defaultSet.saveTitleInH1);
+    _setStringSet(pref, "inlineTagPrefixes", inlineTagPrefixes,
+        defaultSet.inlineTagPrefixes);
 
     pref.setInt("settingsVersion", version);
 
@@ -249,6 +256,21 @@ class Settings extends ChangeNotifier {
       await pref.remove(key);
     } else {
       await pref.setBool(key, value);
+    }
+  }
+
+  Future<void> _setStringSet(
+    SharedPreferences pref,
+    String key,
+    Set<String> value,
+    Set<String> defaultValue,
+  ) async {
+    final eq = const SetEquality().equals;
+
+    if (eq(value, defaultValue)) {
+      await pref.remove(key);
+    } else {
+      await pref.setStringList(key, value.toList());
     }
   }
 
@@ -289,6 +311,7 @@ class Settings extends ChangeNotifier {
       'experimentalMarkdownToolbar': experimentalMarkdownToolbar.toString(),
       'zenMode': zenMode.toString(),
       'saveTitleInH1': saveTitleInH1.toString(),
+      'inlineTagPrefixes': inlineTagPrefixes.join(' '),
     };
   }
 

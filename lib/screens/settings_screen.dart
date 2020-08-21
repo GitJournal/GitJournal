@@ -14,6 +14,7 @@ import 'package:gitjournal/screens/settings_experimental.dart';
 import 'package:gitjournal/screens/settings_git_remote.dart';
 import 'package:gitjournal/screens/settings_images.dart';
 import 'package:gitjournal/screens/settings_note_metadata.dart';
+import 'package:gitjournal/screens/settings_tags.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
@@ -241,6 +242,18 @@ class SettingsListState extends State<SettingsList> {
           Navigator.of(context).push(route);
         },
       ),
+      if (Features.inlineTags)
+        ListTile(
+          title: Text(tr("settings.tags.title")),
+          subtitle: Text(tr("settings.tags.subtitle")),
+          onTap: () {
+            var route = MaterialPageRoute(
+              builder: (context) => SettingsTagsScreen(),
+              settings: const RouteSettings(name: '/settings/tags'),
+            );
+            Navigator.of(context).push(route);
+          },
+        ),
       ListTile(
         title: Text(tr('settings.images.title')),
         subtitle: Text(tr('settings.images.subtitle')),

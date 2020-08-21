@@ -6,7 +6,7 @@ void main() {
   test('Should parse simple tags', () {
     var body = "#hello Hi\nthere how#are you #doing now? #dog";
 
-    var p = InlineTagsProcessor();
+    var p = InlineTagsProcessor(tagPrefixes: {'#'});
     var tags = p.extractTags(body);
 
     expect(tags, {'hello', 'doing', 'dog'});
@@ -15,7 +15,7 @@ void main() {
   test('Ignore . at the end of a tag', () {
     var body = "Hi there #tag.";
 
-    var p = InlineTagsProcessor();
+    var p = InlineTagsProcessor(tagPrefixes: {'#'});
     var tags = p.extractTags(body);
 
     expect(tags, {'tag'});
@@ -24,7 +24,7 @@ void main() {
   test('#a#b should be counted as two tags', () {
     var body = "Hi there #a#b";
 
-    var p = InlineTagsProcessor();
+    var p = InlineTagsProcessor(tagPrefixes: {'#'});
     var tags = p.extractTags(body);
 
     expect(tags, {'a', 'b'});
@@ -33,7 +33,7 @@ void main() {
   test('Non Ascii tags', () {
     var body = "Hi #fíre gone";
 
-    var p = InlineTagsProcessor();
+    var p = InlineTagsProcessor(tagPrefixes: {'#'});
     var tags = p.extractTags(body);
 
     expect(tags, {'fíre'});
@@ -42,12 +42,18 @@ void main() {
   test('Tags with a -', () {
     var body = "Hi #future-me. How are you?";
 
-    var p = InlineTagsProcessor();
+    var p = InlineTagsProcessor(tagPrefixes: {'#'});
     var tags = p.extractTags(body);
 
     expect(tags, {'future-me'});
   });
 
-  // + should work as a prefix
-  // @ should work as a prefix
+  test('Multiple Prefixes', () {
+    var body = "Hi +one+two @foo #doo";
+
+    var p = InlineTagsProcessor(tagPrefixes: {'#', '+', '@'});
+    var tags = p.extractTags(body);
+
+    expect(tags, {'one', 'two', 'foo', 'doo'});
+  });
 }

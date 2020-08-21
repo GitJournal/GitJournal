@@ -1,16 +1,21 @@
-import 'package:gitjournal/core/note.dart';
+import 'package:meta/meta.dart';
 
 class InlineTagsProcessor {
-  // FIXME: Make me configurable
-  final List<String> tagPrefixes = ['#'];
+  final Set<String> tagPrefixes;
 
-  void process(Note note) {}
+  InlineTagsProcessor({@required this.tagPrefixes});
 
   Set<String> extractTags(String text) {
     var tags = <String>{};
 
     for (var prefix in tagPrefixes) {
-      var regexp = RegExp(r'(^|\s)' + prefix + r'([^ ]+)(\s|$)');
+      // FIXME: Do not hardcode this
+      var p = prefix;
+      if (p == '+') {
+        p = '\\+';
+      }
+
+      var regexp = RegExp(r'(^|\s)' + p + r'([^ ]+)(\s|$)');
       var matches = regexp.allMatches(text);
       for (var match in matches) {
         var tag = match.group(2);
@@ -19,7 +24,7 @@ class InlineTagsProcessor {
           tag = tag.substring(0, tag.length - 1);
         }
 
-        var all = tag.split('#');
+        var all = tag.split(prefix);
         for (var t in all) {
           tags.add(t.trim());
         }
