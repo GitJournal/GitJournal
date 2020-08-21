@@ -30,7 +30,15 @@ void main() {
     expect(tags, {'a', 'b'});
   });
 
+  test('Non Ascii tags', () {
+    var body = "Hi #fíre gone";
+
+    var p = InlineTagsProcessor();
+    var tags = p.extractTags(body);
+
+    expect(tags, {'fíre'});
+  });
+
   // + should work as a prefix
   // @ should work as a prefix
-  // test for tags with non-ascii words
 }
