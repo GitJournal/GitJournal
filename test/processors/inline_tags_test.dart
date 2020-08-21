@@ -39,6 +39,15 @@ void main() {
     expect(tags, {'fíre'});
   });
 
+  test('Tags with a -', () {
+    var body = "Hi #future-me. How are you?";
+
+    var p = InlineTagsProcessor();
+    var tags = p.extractTags(body);
+
+    expect(tags, {'future-me'});
+  });
+
   // + should work as a prefix
   // @ should work as a prefix
 }
