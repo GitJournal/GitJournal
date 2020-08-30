@@ -6,6 +6,7 @@ import 'package:gitjournal/utils/logger.dart';
 
 final _simpleDateFormat = DateFormat("yyyy-MM-dd-HH-mm-ss");
 final _iso8601DateFormat = DateFormat("yyyy-MM-ddTHH:mm:ss");
+final _zettleDateFormat = DateFormat("yyyyMMddHHmss");
 
 String toSimpleDateTime(DateTime dt) {
   return _simpleDateFormat.format(dt);
@@ -13,6 +14,10 @@ String toSimpleDateTime(DateTime dt) {
 
 String toIso8601(DateTime dt) {
   return _iso8601DateFormat.format(dt);
+}
+
+String toZettleDateTime(DateTime dt) {
+  return _zettleDateFormat.format(dt);
 }
 
 String toIso8601WithTimezone(DateTime dt, [Duration offset]) {

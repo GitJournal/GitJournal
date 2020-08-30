@@ -464,6 +464,8 @@ class Note with NotesNotifier {
         return toIso8601WithTimezone(date).replaceAll(":", "_");
       case NoteFileNameFormat.UuidV4:
         return Uuid().v4();
+      case NoteFileNameFormat.Zettelkasten:
+        return toZettleDateTime(date);
     }
 
     return date.toString();
