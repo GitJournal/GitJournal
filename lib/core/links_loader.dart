@@ -92,8 +92,11 @@ List<Link> _parseLinks(String body, String parentFolderPath) {
   }
 
   doc.linkReferences.forEach((key, value) {
-    var filePath = value.destination;
-    links.add(Link(term: key, filePath: filePath));
+    var path = value.destination;
+    var isLocal = !path.contains('://');
+    if (isLocal) {
+      links.add(Link(term: key, filePath: path));
+    }
   });
 
   return links;

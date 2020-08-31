@@ -12,6 +12,9 @@ void main() {
 
 [Google](https://google.com)
 
+[Google's Homepage][Google]
+
+[Google]: https://www.google.com/
     """;
 
     test('Should load links', () async {
