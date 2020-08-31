@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/features.dart';
 
 class FeatureTimelineScreen extends StatelessWidget {
@@ -173,6 +174,7 @@ class _DevelopmentText extends StatelessWidget {
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
                   launch(githubUrl);
+                  logEvent(Event.FeatureTimelineGithubClicked);
                 },
             ),
             TextSpan(

@@ -42,6 +42,7 @@ enum Event {
   GitHostSetupButtonClick,
 
   Settings,
+  FeatureTimelineGithubClicked,
 
   /*
   Firebase Automatic Events:
@@ -118,6 +119,9 @@ String _eventToString(Event e) {
 
     case Event.Settings:
       return "settings";
+
+    case Event.FeatureTimelineGithubClicked:
+      return "feature_timeline_github_clicked";
   }
 
   return "unknown_event";
