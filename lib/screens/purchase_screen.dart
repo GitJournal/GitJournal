@@ -3,12 +3,20 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:function_types/function_types.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/screens/feature_timeline_screen.dart';
 import 'package:gitjournal/widgets/purchase_widget.dart';
 
-class PurchaseScreen extends StatelessWidget {
+class PurchaseScreen extends StatefulWidget {
+  @override
+  _PurchaseScreenState createState() => _PurchaseScreenState();
+}
+
+class _PurchaseScreenState extends State<PurchaseScreen> {
+  String minYearlyPurchase = "";
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -36,9 +44,13 @@ class PurchaseScreen extends StatelessWidget {
         PurchaseCards(
           children: [
             const SizedBox(width: 16.0),
-            const YearlyPurchaseWidget(),
+            YearlyPurchaseWidget(minPurchaseOptionCallback: (val) {
+              setState(() {
+                minYearlyPurchase = val;
+              });
+            }),
             const SizedBox(width: 16.0),
-            const MonthlyRentalWidget(),
+            MonthlyRentalWidget(minYearlyPurchase: minYearlyPurchase),
             const SizedBox(width: 16.0),
           ],
         ),
@@ -84,8 +96,11 @@ class PurchaseScreen extends StatelessWidget {
 }
 
 class MonthlyRentalWidget extends StatelessWidget {
+  final String minYearlyPurchase;
+
   const MonthlyRentalWidget({
     Key key,
+    @required this.minYearlyPurchase,
   }) : super(key: key);
 
   @override
@@ -107,8 +122,8 @@ class MonthlyRentalWidget extends StatelessWidget {
             isSubscription: true,
           ),
           const SizedBox(height: 32.0),
-          const Text(
-              "After 12 months or after paying the minimum 'One Time Purchase' amount, you will get all the benefits of a standard 'One Time Purchase'"),
+          Text(
+              "After 12 months or after paying $minYearlyPurchase, you will get all the benefits of a standard 'One Time Purchase'"),
         ],
         mainAxisAlignment: MainAxisAlignment.start,
       ),
@@ -125,8 +140,11 @@ class MonthlyRentalWidget extends StatelessWidget {
 }
 
 class YearlyPurchaseWidget extends StatelessWidget {
+  final Func1<String, void> minPurchaseOptionCallback;
+
   const YearlyPurchaseWidget({
     Key key,
+    @required this.minPurchaseOptionCallback,
   }) : super(key: key);
 
   @override
@@ -144,6 +162,7 @@ class YearlyPurchaseWidget extends StatelessWidget {
             defaultSku: "sku_yearly_1",
             timePeriod: "Year",
             isSubscription: false,
+            minPurchaseOptionCallback: minPurchaseOptionCallback,
           ),
           const SizedBox(height: 32.0),
           const Text(

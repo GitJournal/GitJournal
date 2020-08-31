@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:function_types/function_types.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
 
@@ -55,12 +56,14 @@ class PurchaseWidget extends StatefulWidget {
   final String defaultSku;
   final String timePeriod;
   final bool isSubscription;
+  final Func1<String, void> minPurchaseOptionCallback;
 
   PurchaseWidget({
     @required this.skus,
     @required this.defaultSku,
     @required this.timePeriod,
     @required this.isSubscription,
+    this.minPurchaseOptionCallback,
   });
 
   @override
@@ -106,6 +109,10 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
     Log.i("Products: ${products.length}");
     for (var p in products) {
       Log.i("Product ${p.id} -> ${p.price}");
+    }
+    if (widget.minPurchaseOptionCallback != null && products.isNotEmpty) {
+      Log.i("Calling minPurchaseOptionCallback with ${products.first.price}");
+      widget.minPurchaseOptionCallback(products.first.price);
     }
 
     // If the widget was removed from the tree while the asynchronous platform
