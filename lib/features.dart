@@ -36,6 +36,7 @@ class Features {
     Feature.yamlCreatedKey,
     Feature.yamlTagsKey,
     Feature.customMetaData,
+    Feature.localization,
   ];
 
   static final inProgress = <String>[
@@ -309,6 +310,14 @@ class Feature {
     tr("feature.customMetaData"),
     "",
     true,
+  );
+
+  static final localization = Feature(
+    "localization",
+    DateTime(2020, 08, 18),
+    tr("feature.localization.title"),
+    tr("feature.localization.subtitle"),
+    false,
   );
 }
 

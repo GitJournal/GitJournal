@@ -241,6 +241,9 @@ feature:
   encryptedHosting: Encrypted Git Hosting
   desktop: Desktop App
   markdownToolbar: Markdown Toolbar
+  localization:
+    title: Localization
+    subtitle: Allow GitJournal to be translated
 
 feature_timeline:
   title: Feature Timeline
