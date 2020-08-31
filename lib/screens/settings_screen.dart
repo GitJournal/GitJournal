@@ -13,6 +13,7 @@ import 'package:gitjournal/screens/settings_editors.dart';
 import 'package:gitjournal/screens/settings_experimental.dart';
 import 'package:gitjournal/screens/settings_git_remote.dart';
 import 'package:gitjournal/screens/settings_images.dart';
+import 'package:gitjournal/screens/settings_misc.dart';
 import 'package:gitjournal/screens/settings_note_metadata.dart';
 import 'package:gitjournal/screens/settings_tags.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
@@ -261,6 +262,16 @@ class SettingsListState extends State<SettingsList> {
           var route = MaterialPageRoute(
             builder: (context) => SettingsImagesScreen(),
             settings: const RouteSettings(name: '/settings/images'),
+          );
+          Navigator.of(context).push(route);
+        },
+      ),
+      ListTile(
+        title: Text(tr('settings.misc.title')),
+        onTap: () {
+          var route = MaterialPageRoute(
+            builder: (context) => SettingsMisc(),
+            settings: const RouteSettings(name: '/settings/misc'),
           );
           Navigator.of(context).push(route);
         },

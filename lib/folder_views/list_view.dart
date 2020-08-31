@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/icon_dismissable.dart';
@@ -129,33 +130,38 @@ class _FolderListViewState extends State<FolderListView> {
     Note note,
     Animation<double> animation,
   ) {
-    var viewItem = IconDismissable(
-      key: ValueKey("FolderListView_" + note.filePath),
-      child: Hero(
-        tag: note.filePath,
-        child: widget.noteTileBuilder(context, note),
-        flightShuttleBuilder: (BuildContext flightContext,
-                Animation<double> animation,
-                HeroFlightDirection flightDirection,
-                BuildContext fromHeroContext,
-                BuildContext toHeroContext) =>
-            Material(child: toHeroContext.widget),
-      ),
-      backgroundColor: Colors.red[800],
-      iconData: Icons.delete,
-      onDismissed: (direction) {
-        deletedViaDismissed.add(note.filePath);
-
-        var stateContainer =
-            Provider.of<StateContainer>(context, listen: false);
-        stateContainer.removeNote(note);
-
-        var snackBar = buildUndoDeleteSnackbar(stateContainer, note);
-        Scaffold.of(context)
-          ..removeCurrentSnackBar()
-          ..showSnackBar(snackBar);
-      },
+    var settings = Provider.of<Settings>(context);
+    Widget viewItem = Hero(
+      tag: note.filePath,
+      child: widget.noteTileBuilder(context, note),
+      flightShuttleBuilder: (BuildContext flightContext,
+              Animation<double> animation,
+              HeroFlightDirection flightDirection,
+              BuildContext fromHeroContext,
+              BuildContext toHeroContext) =>
+          Material(child: toHeroContext.widget),
     );
+
+    if (settings.swipeToDelete) {
+      viewItem = IconDismissable(
+        key: ValueKey("FolderListView_" + note.filePath),
+        child: viewItem,
+        backgroundColor: Colors.red[800],
+        iconData: Icons.delete,
+        onDismissed: (direction) {
+          deletedViaDismissed.add(note.filePath);
+
+          var stateContainer =
+              Provider.of<StateContainer>(context, listen: false);
+          stateContainer.removeNote(note);
+
+          var snackBar = buildUndoDeleteSnackbar(stateContainer, note);
+          Scaffold.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(snackBar);
+        },
+      );
+    }
 
     return SizeTransition(
       key: ValueKey("FolderListView_tr_" + note.filePath),

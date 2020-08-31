@@ -67,6 +67,8 @@ class Settings extends ChangeNotifier {
   bool zenMode = false;
   bool saveTitleInH1 = true;
 
+  bool swipeToDelete = true;
+
   Set<String> inlineTagPrefixes = {'#'};
 
   void load(SharedPreferences pref) {
@@ -145,6 +147,8 @@ class Settings extends ChangeNotifier {
 
     zenMode = pref.getBool("zenMode") ?? zenMode;
     saveTitleInH1 = pref.getBool("saveTitleInH1") ?? saveTitleInH1;
+    swipeToDelete = pref.getBool("swipeToDelete") ?? swipeToDelete;
+
     inlineTagPrefixes =
         pref.getStringList("inlineTagPrefixes")?.toSet() ?? inlineTagPrefixes;
   }
@@ -225,6 +229,7 @@ class Settings extends ChangeNotifier {
         defaultSet.experimentalMarkdownToolbar);
     _setBool(pref, "zenMode", zenMode, defaultSet.zenMode);
     _setBool(pref, "saveTitleInH1", saveTitleInH1, defaultSet.saveTitleInH1);
+    _setBool(pref, "swipeToDelete", swipeToDelete, defaultSet.swipeToDelete);
     _setStringSet(pref, "inlineTagPrefixes", inlineTagPrefixes,
         defaultSet.inlineTagPrefixes);
 
@@ -311,6 +316,7 @@ class Settings extends ChangeNotifier {
       'experimentalMarkdownToolbar': experimentalMarkdownToolbar.toString(),
       'zenMode': zenMode.toString(),
       'saveTitleInH1': saveTitleInH1.toString(),
+      'swipeToDelete': swipeToDelete.toString(),
       'inlineTagPrefixes': inlineTagPrefixes.join(' '),
     };
   }

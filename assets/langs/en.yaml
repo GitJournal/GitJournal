@@ -95,6 +95,10 @@ settings:
     subtitle: Configure how inline tags are parsed
     enable: Parse Inline Tags
     prefixes: Inline Tags Prefixes
+  misc:
+    title: Misc Settings
+    swipe: Swipe to Delete Note
+    listView: List View
 
 editors:
   checklist:
