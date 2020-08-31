@@ -314,7 +314,7 @@ class Feature {
 
   static final localization = Feature(
     "localization",
-    DateTime(2020, 08, 18),
+    DateTime(2020, 08, 30),
     tr("feature.localization.title"),
     tr("feature.localization.subtitle"),
     false,
