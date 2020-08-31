@@ -22,7 +22,7 @@ dependencies:
   share: ^0.6.3+5
   launch_review: ^2.0.0
   device_info: ">=0.4.2+4 <2.0.0"
-  flutter_markdown: ^0.4.2
+  flutter_markdown: ^0.4.3
   flutter_email_sender: ^3.0.1
   function_types: ^0.0.2
   auto_size_text: ^2.0.1
