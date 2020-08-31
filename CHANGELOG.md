@@ -1,3 +1,8 @@
+## [1.68] - 2020-08-31
+* Make Swipe to Delete Configurable
+* Allow Markdown to be previewed from all Editors
+* Add Yearly purchase option
+
 ## [1.67] - 2020-08-19
 * Beautify the Purchase Screen
 * Note Backlinks: Fix occasional rendering glitches
