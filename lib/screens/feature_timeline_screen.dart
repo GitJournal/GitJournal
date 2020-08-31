@@ -1,6 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/features.dart';
 
@@ -30,6 +32,7 @@ class FeatureTimelineScreen extends StatelessWidget {
               iconText: "PLAN",
               iconColor: theme.accentColor,
             ),
+          _DevelopmentText(),
         ],
       ),
     );
@@ -144,5 +147,42 @@ class _Sign extends StatelessWidget {
     }
 
     return Text(text, style: textStyle);
+  }
+}
+
+class _DevelopmentText extends StatelessWidget {
+  static const githubUrl =
+      "https://github.com/GitJournal/GitJournal/issues?q=is%3Aissue+is%3Aopen+sort%3Areactions-%2B1-desc";
+
+  @override
+  Widget build(BuildContext context) {
+    var style = Theme.of(context).textTheme.bodyText2;
+
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: "GitJournal's development is tracked on ",
+              style: style,
+            ),
+            TextSpan(
+              text: 'GitHub',
+              style: const TextStyle(color: Colors.blue),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  launch(githubUrl);
+                },
+            ),
+            TextSpan(
+              text:
+                  " Please consider voting on the issues you consider important.",
+              style: style,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
