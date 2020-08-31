@@ -123,7 +123,7 @@ class MonthlyRentalWidget extends StatelessWidget {
           ),
           const SizedBox(height: 32.0),
           Text(
-              "After 12 months or after paying $minYearlyPurchase, you will get all the benefits of a standard 'One Time Purchase'"),
+              "After 12 months or after paying $minYearlyPurchase, you will get all the benefits of the standard 'One Time Purchase'"),
         ],
         mainAxisAlignment: MainAxisAlignment.start,
       ),
