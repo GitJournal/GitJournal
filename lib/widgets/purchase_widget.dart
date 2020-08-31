@@ -26,8 +26,8 @@ class PurchaseButton extends StatelessWidget {
 
     return RaisedButton(
       child: subscription
-          ? Text('Subscribe for $price / $timePeriod')
-          : Text('Purchase for $price / $timePeriod'),
+          ? Text('Purchase for $price / $timePeriod')
+          : Text('Purchase for $price'),
       color: Theme.of(context).primaryColor,
       padding: const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 16.0),
       onPressed: product != null ? () => _initPurchase(context) : null,

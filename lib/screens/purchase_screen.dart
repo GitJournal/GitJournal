@@ -36,9 +36,9 @@ class PurchaseScreen extends StatelessWidget {
         PurchaseCards(
           children: [
             const SizedBox(width: 16.0),
-            const MonthlyRentalWidget(),
-            const SizedBox(width: 16.0),
             const YearlyPurchaseWidget(),
+            const SizedBox(width: 16.0),
+            const MonthlyRentalWidget(),
             const SizedBox(width: 16.0),
           ],
         ),
@@ -96,7 +96,9 @@ class MonthlyRentalWidget extends StatelessWidget {
       child: Column(
         children: [
           // TODO: Translate this
-          Text("Monthly Rental", style: textTheme.headline5),
+          Text("One Time Purchase", style: textTheme.headline5),
+          const SizedBox(height: 8.0),
+          Text("Paid Monthly", style: textTheme.subtitle1),
           const SizedBox(height: 32.0),
           PurchaseWidget(
             skus: _generateSkus(),
@@ -106,7 +108,7 @@ class MonthlyRentalWidget extends StatelessWidget {
           ),
           const SizedBox(height: 32.0),
           const Text(
-              "After 12 months of rental or after paying the min yearly amount, you will automatically get all the benefits of a Yearly Purchase."),
+              "After 12 months or after paying the minimum 'One Time Purchase' amount, you will get all the benefits of a standard 'One Time Purchase'"),
         ],
         mainAxisAlignment: MainAxisAlignment.start,
       ),
@@ -134,17 +136,18 @@ class YearlyPurchaseWidget extends StatelessWidget {
     return PurchaseCard(
       child: Column(
         children: [
-          Text("Yearly Purchase", style: textTheme.headline5),
+          Text("One Time Purchase", style: textTheme.headline5),
+          const Spacer(),
           const SizedBox(height: 32.0),
           PurchaseWidget(
             skus: _generateSkus(),
-            defaultSku: "sku_sub_yearly_1",
+            defaultSku: "sku_yearly_1",
             timePeriod: "Year",
             isSubscription: false,
           ),
           const SizedBox(height: 32.0),
           const Text(
-              "Enables all Pro features currently in GitJournal and new features added in the following 12 months. These features will be yours forever.")
+              "Permanently enable all Pro features currently in GitJournal and new features added in the following 12 months."),
         ],
         mainAxisAlignment: MainAxisAlignment.start,
       ),
@@ -154,7 +157,7 @@ class YearlyPurchaseWidget extends StatelessWidget {
   Set<String> _generateSkus() {
     var list = <String>{};
     for (var i = 0; i <= 20; i++) {
-      list.add("sku_sub_yearly_$i");
+      list.add("sku_yearly_$i");
     }
     return list;
   }
