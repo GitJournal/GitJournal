@@ -198,19 +198,22 @@ TextEditingValue modifyCurrentWord(
 }
 
 // FIXME: This will fail in non space delimited languages
+final _wordSepRegex = RegExp('((\\s|\\n)|[.!?])');
+
 int nextWordPos(TextEditingValue textEditingValue) {
   var cursorPos = textEditingValue.selection.baseOffset;
   var text = textEditingValue.text;
 
-  var nextSpacePos = text.indexOf(RegExp('(\\s|[.!?])'), cursorPos);
+  if (cursorPos >= text.length) {
+    return text.length;
+  }
+
+  var nextSpacePos = text.indexOf(_wordSepRegex, cursorPos);
   if (nextSpacePos == -1) {
     return text.length;
   }
   if (nextSpacePos == cursorPos) {
     nextSpacePos++;
-  }
-  if (nextSpacePos > text.length) {
-    nextSpacePos = text.length;
   }
 
   return nextSpacePos;
@@ -220,17 +223,17 @@ int prevWordPos(TextEditingValue textEditingValue) {
   var cursorPos = textEditingValue.selection.baseOffset;
   var text = textEditingValue.text;
 
-  var lastSpacePos = text.lastIndexOf(RegExp('(\\s|[.!?])'), cursorPos);
+  if (cursorPos <= 1) {
+    return 0;
+  }
+
+  var lastSpacePos = text.lastIndexOf(_wordSepRegex, cursorPos - 1);
   if (lastSpacePos == -1) {
     return 0;
   }
-  if (lastSpacePos == cursorPos) {
-    lastSpacePos = text.lastIndexOf(RegExp('(\\s|[.!?])'), cursorPos - 1);
-    if (lastSpacePos == -1) {
-      return 0;
-    }
-    lastSpacePos++;
+  if (lastSpacePos == cursorPos - 1) {
+    lastSpacePos--;
   }
 
-  return lastSpacePos;
+  return lastSpacePos + 1;
 }

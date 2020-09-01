@@ -225,5 +225,32 @@ void main() {
     _testPrevWord(text, 6, 5);
     _testPrevWord(text, 5, 0);
   });
-  // Test for navigating between newlines
+
+  test('Navigation with multiple lines', () {
+    const text = 'Hello.\nHow are you?';
+
+    _testNextWord(text, 0, 5);
+    _testNextWord(text, 5, 6);
+    _testNextWord(text, 6, 7);
+    _testNextWord(text, 7, 10);
+    _testNextWord(text, 10, 11);
+    _testNextWord(text, 11, 14);
+    _testNextWord(text, 14, 15);
+    _testNextWord(text, 15, 18);
+    _testNextWord(text, 18, 19);
+    _testNextWord(text, 19, 19);
+
+    _testPrevWord(text, 19, 18);
+    _testPrevWord(text, 18, 15);
+    _testPrevWord(text, 15, 14);
+    _testPrevWord(text, 14, 11);
+    _testPrevWord(text, 11, 10);
+    _testPrevWord(text, 10, 7);
+    _testPrevWord(text, 7, 6);
+    _testPrevWord(text, 6, 5);
+    _testPrevWord(text, 5, 0);
+    _testPrevWord(text, 0, 0);
+  });
+
+  // Test that clicking on h2 removes h1 and then adds h2
 }
