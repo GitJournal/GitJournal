@@ -72,27 +72,18 @@ class InAppPurchases {
     var iapConn = InAppPurchaseConnection.instance;
     var dtNow = DateTime.now().toUtc();
 
-    if (Platform.isIOS) {
-      var verificationData = await iapConn.refreshPurchaseVerificationData();
-      var dt = await getExpiryDate(verificationData.serverVerificationData, "");
-      var isPro = dt != null ? dt.isAfter(DateTime.now()) : false;
-
-      return SubscriptionStatus(isPro, dt);
-    } else if (Platform.isAndroid) {
-      var response = await iapConn.queryPastPurchases();
-      for (var purchase in response.pastPurchases) {
-        var dt = await getExpiryDate(
-            purchase.verificationData.serverVerificationData,
-            purchase.productID);
-        if (dt == null || !dt.isAfter(dtNow)) {
-          continue;
-        }
-        return SubscriptionStatus(true, dt);
+    var response = await iapConn.queryPastPurchases();
+    for (var purchase in response.pastPurchases) {
+      var dt = await getExpiryDate(
+          purchase.verificationData.serverVerificationData,
+          purchase.productID,
+          _isPurchase(purchase));
+      if (dt == null || !dt.isAfter(dtNow)) {
+        continue;
       }
-      return SubscriptionStatus(false, dtNow);
+      return SubscriptionStatus(true, dt);
     }
-
-    return null;
+    return SubscriptionStatus(false, dtNow);
   }
 }
 
@@ -100,13 +91,15 @@ const base_url = 'https://us-central1-gitjournal-io.cloudfunctions.net';
 const ios_url = '$base_url/IAPIosVerify';
 const android_url = '$base_url/IAPAndroidVerify';
 
-Future<DateTime> getExpiryDate(String receipt, String sku) async {
+Future<DateTime> getExpiryDate(
+    String receipt, String sku, bool isPurchase) async {
   assert(receipt.isNotEmpty);
 
   var body = {
     'receipt': receipt,
     "sku": sku,
     'pseudoId': Settings.instance.pseudoId,
+    'is_purchase': isPurchase,
   };
   Log.i("getExpiryDate ${json.encode(body)}");
 
@@ -150,9 +143,16 @@ Future<SubscriptionStatus> verifyPurchase(PurchaseDetails purchase) async {
   var dt = await getExpiryDate(
     purchase.verificationData.serverVerificationData,
     purchase.productID,
+    _isPurchase(purchase),
   );
   if (dt == null || !dt.isAfter(DateTime.now())) {
     return SubscriptionStatus(false, dt);
   }
   return SubscriptionStatus(true, dt);
+}
+
+// Checks if it is a subscription or a purchase
+bool _isPurchase(PurchaseDetails purchase) {
+  var sku = purchase.productID;
+  return !sku.contains('monthly') && !sku.contains('_sub_');
 }

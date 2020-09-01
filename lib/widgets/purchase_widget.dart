@@ -162,6 +162,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
         _handleIAPError(purchaseDetails.error);
         return;
       } else if (purchaseDetails.status == PurchaseStatus.purchased) {
+        Log.i("Verifying purchase sub");
         var subStatus = await verifyPurchase(purchaseDetails);
         if (subStatus.isPro) {
           _deliverProduct(subStatus);
