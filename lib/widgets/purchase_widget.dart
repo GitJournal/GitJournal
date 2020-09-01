@@ -143,6 +143,9 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
 
   void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+      Log.i(
+          "PurchaseDetailsUpdated: {productID: ${purchaseDetails.productID}, purchaseID: ${purchaseDetails.purchaseID}, status: ${purchaseDetails.status}");
+
       if (purchaseDetails.status == PurchaseStatus.pending) {
         //showPendingUI();
         Log.i("Pending - ${purchaseDetails.productID}");
@@ -182,6 +185,10 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
   }
 
   void _handleError(String err) {
+    if (Platform.isAndroid) {
+      Log.e(err);
+      return;
+    }
     var dialog = PurchaseFailedDialog(err);
     showDialog(context: context, builder: (context) => dialog);
   }
