@@ -167,10 +167,9 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
           return;
         }
       }
-      if (Platform.isAndroid) {
-        await InAppPurchaseConnection.instance.consumePurchase(purchaseDetails);
-      }
       if (purchaseDetails.pendingCompletePurchase) {
+        Log.i("Pending Complete Purchase - ${purchaseDetails.productID}");
+
         await InAppPurchaseConnection.instance
             .completePurchase(purchaseDetails);
       }
