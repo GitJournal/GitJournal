@@ -85,6 +85,22 @@ class MarkdownToolBar extends StatelessWidget {
   }
 }
 
+final _allowedBlockTags = [
+  '# ',
+  '## ',
+  '### ',
+  '#### ',
+  '##### ',
+  '###### ',
+  '- ',
+  '* ',
+];
+
+final _allowedBlockRegExps = [
+  RegExp('- \[[xX ]\] '),
+  RegExp('\d+\. '),
+];
+
 TextEditingValue modifyCurrentLine(
   TextEditingValue textEditingValue,
   String char,
@@ -112,32 +128,59 @@ TextEditingValue modifyCurrentLine(
     lineEndPos = text.length;
   }
 
+  // Check if line already has a block tag
+  for (var blockTag in _allowedBlockTags) {
+    if (text.startsWith(blockTag, lineStartPos)) {
+      var newVal = _removeFromLine(text, cursorPos, lineStartPos, blockTag);
+      if (blockTag == char) {
+        return newVal;
+      }
+      return modifyCurrentLine(newVal, char);
+    }
+  }
+
+  for (var blockTagRegExp in _allowedBlockRegExps) {
+    var match = blockTagRegExp.matchAsPrefix(text, lineStartPos);
+    if (match != null) {
+      var blockTag = match.group(0);
+      var newVal = _removeFromLine(text, cursorPos, lineStartPos, blockTag);
+      if (blockTag == char) {
+        return newVal;
+      }
+      return modifyCurrentLine(newVal, char);
+    }
+  }
+
   //print('Line Start: $lineStartPos');
   //print('Line End: $lineEndPos');
   //print('Line: ${text.substring(lineStartPos, lineEndPos)}');
 
-  // Check if already present
-  if (text.startsWith(char, lineStartPos)) {
-    //print('Removing `$char`');
-    var endOffset = cursorPos;
-    //print("End Offset: $endOffset");
-    if (endOffset > lineStartPos) {
-      endOffset -= char.length;
-      //print("End Offset min char: $endOffset");
-    }
-    if (endOffset < lineStartPos) {
-      endOffset = lineStartPos;
-      //print("End Offset equal LineStartPos: $endOffset");
-    }
-    return TextEditingValue(
-      text: text.replaceFirst(char, '', lineStartPos),
-      selection: TextSelection.collapsed(offset: endOffset),
-    );
-  }
-
   return TextEditingValue(
     text: text.replaceRange(lineStartPos, lineStartPos, char),
     selection: TextSelection.collapsed(offset: cursorPos + char.length),
+  );
+}
+
+TextEditingValue _removeFromLine(
+  String text,
+  int cursorPos,
+  int lineStartPos,
+  String char,
+) {
+//print('Removing `$char`');
+  var endOffset = cursorPos;
+  //print("End Offset: $endOffset");
+  if (endOffset > lineStartPos) {
+    endOffset -= char.length;
+    //print("End Offset min char: $endOffset");
+  }
+  if (endOffset < lineStartPos) {
+    endOffset = lineStartPos;
+    //print("End Offset equal LineStartPos: $endOffset");
+  }
+  return TextEditingValue(
+    text: text.replaceFirst(char, '', lineStartPos),
+    selection: TextSelection.collapsed(offset: endOffset),
   );
 }
 

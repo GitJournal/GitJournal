@@ -104,6 +104,26 @@ void main() {
     );
   });
 
+  test("Replaces h1 with h2", () {
+    _testLine(
+      before: 'Hi\n# Hello Darkness\nFire',
+      beforeOffset: 4,
+      after: 'Hi\n## Hello Darkness\nFire',
+      afterOffset: 6,
+      char: '## ',
+    );
+  });
+
+  test("Replaces h2 with list", () {
+    _testLine(
+      before: 'Hi\n## Hello Darkness\nFire',
+      beforeOffset: 5,
+      after: 'Hi\n- Hello Darkness\nFire',
+      afterOffset: 5,
+      char: '- ',
+    );
+  });
+
   //
   // Word based
   //
@@ -252,5 +272,5 @@ void main() {
     _testPrevWord(text, 0, 0);
   });
 
-  // Test that clicking on h2 removes h1 and then adds h2
+  // Test that if some text is selected then it should be modified
 }
