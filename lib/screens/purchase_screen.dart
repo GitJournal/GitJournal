@@ -110,8 +110,7 @@ class MonthlyRentalWidget extends StatelessWidget {
     return PurchaseCard(
       child: Column(
         children: [
-          // TODO: Translate this
-          Text("Monthly Subscription", style: textTheme.headline5),
+          Text(tr('purchase_screen.monthly.title'), style: textTheme.headline5),
           const SizedBox(height: 32.0),
           PurchaseWidget(
             skus: _generateSkus(),
@@ -120,8 +119,10 @@ class MonthlyRentalWidget extends StatelessWidget {
             isSubscription: true,
           ),
           const SizedBox(height: 32.0),
-          Text(
-              "Enables all Pro Features. After 12 months or after paying $minYearlyPurchase, you will get all the benefits of the 'One Time Purchase'"),
+          Text(tr(
+            "purchase_screen.monthly.desc",
+            namedArgs: {'minYearlyPurchase': minYearlyPurchase},
+          )),
         ],
         mainAxisAlignment: MainAxisAlignment.start,
       ),
@@ -152,18 +153,16 @@ class YearlyPurchaseWidget extends StatelessWidget {
     return PurchaseCard(
       child: Column(
         children: [
-          Text("One Time Purchase", style: textTheme.headline5),
+          Text(tr('purchase_screen.oneTime.title'), style: textTheme.headline5),
           const SizedBox(height: 32.0),
           PurchaseWidget(
             skus: _generateSkus(),
             defaultSku: "sku_yearly_1",
-            timePeriod: "Year",
             isSubscription: false,
             minPurchaseOptionCallback: minPurchaseOptionCallback,
           ),
           const SizedBox(height: 32.0),
-          const Text(
-              "Permanently enable all Pro features currently in GitJournal and new features added in the following 12 months."),
+          Text(tr('purchase_screen.oneTime.desc')),
         ],
         mainAxisAlignment: MainAxisAlignment.start,
       ),

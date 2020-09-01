@@ -60,7 +60,7 @@ class PurchaseWidget extends StatefulWidget {
   PurchaseWidget({
     @required this.skus,
     @required this.defaultSku,
-    @required this.timePeriod,
+    this.timePeriod = "",
     @required this.isSubscription,
     this.minPurchaseOptionCallback,
   });
