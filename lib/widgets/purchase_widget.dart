@@ -186,7 +186,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
   }
 
   void _handleError(String err) {
-    if (Platform.isAndroid) {
+    if (err.toLowerCase().contains("usercanceled")) {
       Log.e(err);
       return;
     }
