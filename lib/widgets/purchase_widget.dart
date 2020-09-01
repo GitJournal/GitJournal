@@ -157,6 +157,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
       });
       if (purchaseDetails.status == PurchaseStatus.error) {
         _handleIAPError(purchaseDetails.error);
+        return;
       } else if (purchaseDetails.status == PurchaseStatus.purchased) {
         var subStatus = await verifyPurchase(purchaseDetails);
         if (subStatus.isPro) {
