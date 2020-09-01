@@ -111,9 +111,7 @@ class MonthlyRentalWidget extends StatelessWidget {
       child: Column(
         children: [
           // TODO: Translate this
-          Text("One Time Purchase", style: textTheme.headline5),
-          const SizedBox(height: 8.0),
-          Text("Paid Monthly", style: textTheme.subtitle1),
+          Text("Monthly Subscription", style: textTheme.headline5),
           const SizedBox(height: 32.0),
           PurchaseWidget(
             skus: _generateSkus(),
@@ -123,7 +121,7 @@ class MonthlyRentalWidget extends StatelessWidget {
           ),
           const SizedBox(height: 32.0),
           Text(
-              "After 12 months or after paying $minYearlyPurchase, you will get all the benefits of the standard 'One Time Purchase'"),
+              "Enables all Pro Features. After 12 months or after paying $minYearlyPurchase, you will get all the benefits of the 'One Time Purchase'"),
         ],
         mainAxisAlignment: MainAxisAlignment.start,
       ),
@@ -155,7 +153,6 @@ class YearlyPurchaseWidget extends StatelessWidget {
       child: Column(
         children: [
           Text("One Time Purchase", style: textTheme.headline5),
-          const Spacer(),
           const SizedBox(height: 32.0),
           PurchaseWidget(
             skus: _generateSkus(),
