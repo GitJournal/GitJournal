@@ -50,3 +50,6 @@ Flutter/flutter_export_environment.sh
 fastlane/report.xml
 fastlane/README.md
 fastlane/screenshots/
+
+Runner.app.dSYM.zip
+*.ipa
