@@ -244,6 +244,7 @@ feature:
   localization:
     title: Localization
     subtitle: Allow GitJournal to be translated
+  inlineTags: Inline Tags
 
 feature_timeline:
   title: Feature Timeline

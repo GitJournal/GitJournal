@@ -525,6 +525,7 @@ typedef NoteMatcherAsync = Future<bool> Function(Note n);
 Set<String> _fetchTags(NotesFolder folder, Set<String> tags) {
   for (var note in folder.notes) {
     tags.addAll(note.tags);
+    tags.addAll(note.inlineTags);
   }
 
   for (var folder in folder.subFolders) {

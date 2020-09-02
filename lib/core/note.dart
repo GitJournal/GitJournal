@@ -7,6 +7,7 @@ import 'package:gitjournal/core/links_loader.dart';
 import 'package:gitjournal/core/md_yaml_doc_loader.dart';
 import 'package:gitjournal/core/note_notifier.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/core/processors/inline_tags.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
@@ -62,6 +63,7 @@ class Note with NotesNotifier {
   // Computed from body
   String _summary;
   List<Link> _links;
+  Set<String> _inlineTags;
 
   static final _mdYamlDocLoader = MdYamlDocLoader();
   static final _linksLoader = LinksLoader();
@@ -150,6 +152,8 @@ class Note with NotesNotifier {
     _body = newBody;
     _summary = null;
     _links = null;
+    _inlineTags = null;
+
     _notifyModified();
   }
 
@@ -183,6 +187,17 @@ class Note with NotesNotifier {
 
     _tags = tags;
     _notifyModified();
+  }
+
+  Set<String> get inlineTags {
+    if (_loadState != NoteLoadState.Loaded) return {};
+
+    if (_inlineTags == null) {
+      var tagPrefixes = Settings.instance.inlineTagPrefixes;
+      var p = InlineTagsProcessor(tagPrefixes: tagPrefixes);
+      _inlineTags = p.extractTags(body);
+    }
+    return _inlineTags;
   }
 
   Map<String, dynamic> get extraProps {

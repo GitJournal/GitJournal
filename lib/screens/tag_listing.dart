@@ -57,7 +57,8 @@ class TagListingScreen extends StatelessWidget {
             var rootFolder = Provider.of<NotesFolderFS>(context);
             var folder = FlattenedNotesFolder(
               rootFolder,
-              filter: (Note n) => n.tags.contains(tag),
+              filter: (Note n) =>
+                  n.tags.contains(tag) || n.inlineTags.contains(tag),
               title: tag,
             );
 

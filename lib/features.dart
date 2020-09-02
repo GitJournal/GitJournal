@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 
 class Features {
   static bool perFolderConfig = false;
-  static bool inlineTags = false;
 
   static final all = <Feature>[
     Feature.basicSearch,
@@ -37,6 +36,7 @@ class Features {
     Feature.yamlTagsKey,
     Feature.customMetaData,
     Feature.localization,
+    Feature.inlineTags,
   ];
 
   static final inProgress = <String>[
@@ -318,6 +318,14 @@ class Feature {
     tr("feature.localization.title"),
     tr("feature.localization.subtitle"),
     false,
+  );
+
+  static final inlineTags = Feature(
+    "inlineTags",
+    DateTime(2020, 09, 02),
+    tr("feature.inlineTags"),
+    "",
+    true,
   );
 }
 

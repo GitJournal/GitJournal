@@ -243,8 +243,9 @@ class SettingsListState extends State<SettingsList> {
           Navigator.of(context).push(route);
         },
       ),
-      if (Features.inlineTags)
-        ListTile(
+      ProOverlay(
+        feature: Feature.inlineTags,
+        child: ListTile(
           title: Text(tr("settings.tags.title")),
           subtitle: Text(tr("settings.tags.subtitle")),
           onTap: () {
@@ -255,6 +256,7 @@ class SettingsListState extends State<SettingsList> {
             Navigator.of(context).push(route);
           },
         ),
+      ),
       ListTile(
         title: Text(tr('settings.images.title')),
         subtitle: Text(tr('settings.images.subtitle')),
