@@ -26,7 +26,10 @@ class InlineTagsProcessor {
 
         var all = tag.split(prefix);
         for (var t in all) {
-          tags.add(t.trim());
+          t = t.trim();
+          if (t.isNotEmpty) {
+            tags.add(t);
+          }
         }
       }
     }
