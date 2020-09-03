@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
 import 'package:intl/intl.dart';
-//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
@@ -12,6 +12,8 @@ import 'package:gitjournal/setup/button.dart';
 import 'package:gitjournal/setup/error.dart';
 import 'package:gitjournal/setup/loading.dart';
 import 'package:gitjournal/utils/logger.dart';
+
+//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class GitHostSetupRepoSelector extends StatefulWidget {
   final GitHost gitHost;
@@ -229,15 +231,7 @@ class _RepoTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    final _dateFormat = DateFormat('dd MMM, yyyy');
     var textTheme = theme.textTheme;
-
-    Widget trailing = Container();
-    if (repo.updatedAt != null) {
-      var dateStr = _dateFormat.format(repo.updatedAt);
-
-      trailing = Text(dateStr, style: textTheme.caption);
-    }
 
     /*
     var iconsRow = Row(
@@ -277,7 +271,7 @@ class _RepoTile extends StatelessWidget {
 
     return ListTile(
       title: Text(repo.fullName),
-      trailing: trailing,
+      trailing: _SmartDateTime(repo.updatedAt, textTheme.caption),
       selected: selected,
       contentPadding: const EdgeInsets.all(0.0),
       onTap: onTap,
@@ -311,3 +305,35 @@ class _IconText extends StatelessWidget {
   }
 }
 */
+
+class _SmartDateTime extends StatelessWidget {
+  final DateTime dt;
+  final TextStyle style;
+
+  _SmartDateTime(this.dt, this.style);
+
+  static final _dateFormat = DateFormat('d MMM yyyy');
+  static final _dateFormatWithoutYear = DateFormat('d MMM');
+  static final thirtyDaysAgo =
+      DateTime.now().subtract(const Duration(days: 30));
+
+  @override
+  Widget build(BuildContext context) {
+    if (dt == null) {
+      return Container();
+    }
+
+    String text;
+
+    if (dt.isAfter(thirtyDaysAgo)) {
+      Locale locale = Localizations.localeOf(context);
+      text = timeago.format(dt, locale: locale.languageCode);
+    } else if (dt.year == DateTime.now().year) {
+      text = _dateFormatWithoutYear.format(dt);
+    } else {
+      text = _dateFormat.format(dt);
+    }
+
+    return Text(text, style: style);
+  }
+}
