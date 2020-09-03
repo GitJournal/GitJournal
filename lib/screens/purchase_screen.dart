@@ -8,6 +8,7 @@ import 'package:function_types/function_types.dart';
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/screens/feature_timeline_screen.dart';
 import 'package:gitjournal/widgets/purchase_widget.dart';
+import 'package:gitjournal/widgets/scroll_view_without_animation.dart';
 
 class PurchaseScreen extends StatefulWidget {
   @override
@@ -209,37 +210,13 @@ class PurchaseCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _ScrollViewWithoutAnim(
+    return ScrollViewWithoutAnimation(
       scrollDirection: Axis.horizontal,
       child: IntrinsicHeight(
         child: Row(
           children: children,
           mainAxisSize: MainAxisSize.min,
         ),
-      ),
-    );
-  }
-}
-
-class _ScrollViewWithoutAnim extends StatelessWidget {
-  final Widget child;
-  final Axis scrollDirection;
-
-  _ScrollViewWithoutAnim({
-    @required this.child,
-    this.scrollDirection,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return NotificationListener<OverscrollIndicatorNotification>(
-      onNotification: (OverscrollIndicatorNotification overScroll) {
-        overScroll.disallowGlow();
-        return false;
-      },
-      child: SingleChildScrollView(
-        scrollDirection: scrollDirection,
-        child: child,
       ),
     );
   }
