@@ -91,9 +91,7 @@ class MarkdownYAMLCodec {
       if (yamlMap is! Map) {
         return map;
       }
-      yamlMap.forEach((key, value) {
-        map[key] = value;
-      });
+      map = _convertMap(yamlMap);
     } catch (err) {
       Log.d('MarkdownYAMLSerializer::decode("$yamlText") -> ${err.toString()}');
     }
@@ -124,4 +122,17 @@ class MarkdownYAMLCodec {
     var yaml = toYAML(data);
     return "---\n" + yaml + "---\n";
   }
+}
+
+LinkedHashMap<String, dynamic> _convertMap(YamlMap yamlMap) {
+  LinkedHashMap<String, dynamic> map = LinkedHashMap<String, dynamic>();
+
+  yamlMap.forEach((key, value) {
+    if (value is YamlMap) {
+      value = _convertMap(value);
+    }
+    map[key] = value;
+  });
+
+  return map;
 }

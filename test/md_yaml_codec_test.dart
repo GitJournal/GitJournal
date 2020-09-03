@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:test/test.dart';
+import 'package:yaml/yaml.dart';
 
 import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
@@ -208,5 +209,24 @@ foo: bar
     // FIXME: Add another test for yaml header at the bottom without a newline
     // FIXME: Add another test for yaml header at the bottom with lots of new lines after
     // FIXME: Add another test for yaml header at the bottom with lots of new lines with spaces after
+
+    test('Should not have any YamlMaps', () {
+      // YamlMaps cannot be sent over an isolate
+
+      var str = """---
+thumbnail: {
+  name: "adrian_sommeling.jpg",
+  alt: "Padre e hijo se cubren con un paraguas de una tormenta que hace volar al niño",
+  style: top
+}
+tags: ["opinión", "autores"]
+---
+""";
+
+      var serializer = MarkdownYAMLCodec();
+      var doc = serializer.decode(str);
+
+      expect(doc.props['thumbnail'].runtimeType, isNot(YamlMap));
+    });
   });
 }
