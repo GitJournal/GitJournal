@@ -124,7 +124,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
       return repoName.toLowerCase().contains(q);
     });
 
-    var repoBuilder = ListView(
+    Widget repoBuilder = ListView(
       children: <Widget>[
         if (_textController.text.isNotEmpty) _buildCreateRepoTile(),
         for (var repo in filteredRepos)
@@ -140,6 +140,15 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
           ),
       ],
       padding: const EdgeInsets.all(0.0),
+    );
+
+    // Remove Overflow animation
+    repoBuilder = NotificationListener<OverscrollIndicatorNotification>(
+      onNotification: (OverscrollIndicatorNotification overScroll) {
+        overScroll.disallowGlow();
+        return false;
+      },
+      child: repoBuilder,
     );
 
     // Add a Filtering bar
