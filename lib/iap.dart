@@ -5,9 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:meta/meta.dart';
 
-import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/app.dart';
-import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
