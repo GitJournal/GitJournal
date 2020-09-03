@@ -22,12 +22,20 @@ class PurchaseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var price = product != null ? product.price : "Dev Mode";
+    String text;
+    if (product != null) {
+      text = tr("widgets.PurchaseButton.text", namedArgs: {
+        'price': product.price,
+      });
+      if (subscription) {
+        text += '/ $timePeriod';
+      }
+    } else {
+      text = tr("widgets.PurchaseButton.fail");
+    }
 
     return RaisedButton(
-      child: subscription
-          ? Text('Purchase for $price / $timePeriod')
-          : Text('Purchase for $price'),
+      child: Text(text),
       color: Theme.of(context).primaryColor,
       padding: const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 16.0),
       onPressed: product != null ? () => _initPurchase(context) : null,

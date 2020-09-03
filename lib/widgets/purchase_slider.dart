@@ -59,6 +59,10 @@ class ShapePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    if (values.isEmpty) {
+      return;
+    }
+
     var paint = Paint()
       ..color = color
       ..strokeWidth = 2
