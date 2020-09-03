@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
 import 'package:git_url_parse2/git_url_parse2.dart';
 
@@ -66,7 +67,7 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            "Enter the Git Clone URL",
+            tr("setup.cloneUrl.enter"),
             style: Theme.of(context).textTheme.headline5,
           ),
         ),
@@ -147,33 +148,33 @@ class GitCloneUrlKnownProviderPageState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Please create a new git repository -',
+          tr("setup.cloneUrl.manual.title"),
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 32.0),
 
         // Step 1
         Text(
-          '1. Go to the website, create a repo and copy its git clone URL',
+          tr("setup.cloneUrl.manual.step1"),
           style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 8.0),
         GitHostSetupButton(
-          text: "Open Create New Repo Webpage",
+          text: tr("setup.cloneUrl.manual.button"),
           onPressed: widget.launchCreateUrlPage,
         ),
         const SizedBox(height: 16.0),
 
         // Step 2
         Text(
-          '2. Enter the Git clone URL',
+          tr("setup.cloneUrl.manual.step1"),
           style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 8.0),
         inputForm,
         const SizedBox(height: 16.0),
         GitHostSetupButton(
-          text: "Next",
+          text: tr("setup.next"),
           onPressed: formSubmitted,
         ),
       ],
@@ -185,16 +186,16 @@ class GitCloneUrlKnownProviderPageState
 String _isCloneUrlValid(String url) {
   url = url.trim();
   if (url.isEmpty) {
-    return 'Please enter some text';
+    return tr("setup.cloneUrl.validator.empty");
   }
 
   var result = gitUrlParse(url);
   if (result == null) {
-    return 'Invalid Input';
+    return tr("setup.cloneUrl.validator.invalid");
   }
 
   if (result.protocol != 'ssh') {
-    return 'Only SSH urls are currently accepted';
+    return tr("setup.cloneUrl.validator.onlySsh");
   }
 
   return null;

@@ -183,7 +183,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
         Opacity(
           opacity: canContinue ? 1.0 : 0.0,
           child: GitHostSetupButton(
-            text: tr('setup.repoSelector.next'),
+            text: tr('setup.next'),
             onPressed: () async {
               if (selectedRepo != null) {
                 widget.onDone(selectedRepo);

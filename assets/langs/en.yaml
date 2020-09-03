@@ -206,8 +206,24 @@ setup:
   repoSelector:
     title: Select or Create a Repository
     hint: Type to Search or Create a Repo
-    next: Next
     create: Create Repo {}
+  cloneUrl:
+    enter: Enter the Git Clone URL
+    validator:
+      empty: Please enter some text
+      invalid: Invalid Input
+      onlySsh: Only SSH urls are currently accepted
+    manual:
+      title: Please create a new git repository -
+      step1: 1. Go to the website, create a repo and copy its git clone URL
+      step2: 2. Enter the Git clone URL
+      button: Open Create New Repo Webpage
+  next: Next
+  fail: Failed
+  keyEditors:
+    public: Invalid Public Key - Doesn't start with ssh-rsa
+    private: Invalid Private Key
+
 
 feature:
   darkMode: Dark Mode

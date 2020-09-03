@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class PublicKeyEditor extends StatelessWidget {
   final Key formKey;
   final TextEditingController _controller;
@@ -14,7 +16,7 @@ class PublicKeyEditor extends StatelessWidget {
   String _validator(String val) {
     val = val.trim();
     if (!val.startsWith("ssh-rsa ")) {
-      return "Invalid Public Key - Doesn't start with ssh-rsa";
+      return tr("setup.keyEditors.public");
     }
     return null;
   }
@@ -34,10 +36,10 @@ class PrivateKeyEditor extends StatelessWidget {
   String _validator(String val) {
     val = val.trim();
     if (!val.startsWith("-----BEGIN ")) {
-      return "Invalid Private Key";
+      return tr("setup.keyEditors.private");
     }
     if (!val.endsWith("PRIVATE KEY-----")) {
-      return "Invalid Private Key";
+      return tr("setup.keyEditors.private");
     }
 
     return null;

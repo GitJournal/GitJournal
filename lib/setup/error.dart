@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class GitHostSetupErrorPage extends StatelessWidget {
   final String errorMessage;
 
@@ -11,7 +13,7 @@ class GitHostSetupErrorPage extends StatelessWidget {
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(
-          'Failed',
+          tr("setup.fail"),
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headline4,
         ),
