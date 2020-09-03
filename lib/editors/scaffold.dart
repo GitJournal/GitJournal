@@ -57,9 +57,7 @@ class _EditorScaffoldState extends State<EditorScaffold> {
       editingMode = true;
     }
 
-    if (editingMode == false) {
-      note = widget.editorState.getNote();
-    }
+    note = widget.editorState.getNote();
   }
 
   @override
@@ -149,6 +147,7 @@ class _EditorScaffoldState extends State<EditorScaffold> {
                     }
                   });
                 },
+                metaDataEditable: note.canHaveMetadata,
               ),
             )
           ],

@@ -103,6 +103,7 @@ class EditorBottomBar extends StatelessWidget {
   final bool allowEdits;
   final bool zenMode;
   final Func0<void> onZenModeChanged;
+  final bool metaDataEditable;
 
   EditorBottomBar({
     @required this.editor,
@@ -111,6 +112,7 @@ class EditorBottomBar extends StatelessWidget {
     @required this.allowEdits,
     @required this.zenMode,
     @required this.onZenModeChanged,
+    @required this.metaDataEditable,
   });
 
   @override
@@ -137,6 +139,7 @@ class EditorBottomBar extends StatelessWidget {
             editorState,
             zenMode,
             onZenModeChanged,
+            metaDataEditable,
           ),
           elevation: 0,
         );
@@ -236,6 +239,7 @@ Widget _buildBottomMenuSheet(
   EditorState editorState,
   bool zenModeEnabled,
   Func0<void> zenModeChanged,
+  bool metaDataEditable,
 ) {
   return Container(
     child: Column(
@@ -262,19 +266,20 @@ Widget _buildBottomMenuSheet(
             Share.share(note.body);
           },
         ),
-        ProOverlay(
-          feature: Feature.tags,
-          child: ListTile(
-            leading: const FaIcon(FontAwesomeIcons.tag),
-            title: Text(tr('editors.common.tags')),
-            onTap: () {
-              var note = editorState.getNote();
-              Navigator.of(context).pop();
+        if (metaDataEditable)
+          ProOverlay(
+            feature: Feature.tags,
+            child: ListTile(
+              leading: const FaIcon(FontAwesomeIcons.tag),
+              title: Text(tr('editors.common.tags')),
+              onTap: () {
+                var note = editorState.getNote();
+                Navigator.of(context).pop();
 
-              editor.editTagsSelected(note);
-            },
+                editor.editTagsSelected(note);
+              },
+            ),
           ),
-        ),
         ListTile(
           leading: const Icon(Icons.edit),
           title: Text(tr('editors.common.editFileName')),
