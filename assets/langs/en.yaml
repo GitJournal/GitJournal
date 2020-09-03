@@ -144,6 +144,7 @@ screens:
       empty: Please enter a name
   tags:
     title: Tags
+    empty: No Tags Found
   filesystem:
     ignoredFile:
       title: File Ignored
@@ -152,6 +153,9 @@ screens:
     rename:
       decoration: File Name
       title: Rename
+  folder_view:
+    empty: Let's add some notes?
+
 widgets:
   rename:
     yes: Rename

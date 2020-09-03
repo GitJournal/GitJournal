@@ -23,11 +23,26 @@ class TagListingScreen extends StatelessWidget {
     var allTags = rootFolder.getNoteTagsRecursively();
     var allTagsSorted = SplayTreeSet<String>.from(allTags);
 
-    var listView = ListView(
-      children: <Widget>[
-        for (var tag in allTagsSorted) _buildTagTile(context, tag),
-      ],
-    );
+    Widget body;
+    if (allTagsSorted.isNotEmpty) {
+      body = ListView(
+        children: <Widget>[
+          for (var tag in allTagsSorted) _buildTagTile(context, tag),
+        ],
+      );
+    } else {
+      body = Center(
+        child: Text(
+          tr("screens.tags.empty"),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 28.0,
+            fontWeight: FontWeight.w300,
+            color: Colors.grey[350],
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -37,7 +52,7 @@ class TagListingScreen extends StatelessWidget {
       body: Scrollbar(
         child: ProOverlay(
           feature: Feature.tags,
-          child: listView,
+          child: body,
         ),
       ),
       drawer: AppDrawer(),

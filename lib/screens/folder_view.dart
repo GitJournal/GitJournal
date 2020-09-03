@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:git_bindings/git_bindings.dart';
 import 'package:provider/provider.dart';
 
@@ -81,11 +82,10 @@ class _FolderViewState extends State<FolderView> {
 
     Widget folderView = Builder(
       builder: (BuildContext context) {
-        const emptyText = "Let's add some notes?";
         return buildFolderView(
           viewType: _viewType,
           folder: sortedNotesFolder,
-          emptyText: emptyText,
+          emptyText: tr('screens.folder_view.empty'),
           header: _headerType,
           showSummary: _showSummary,
           noteTapped: (Note note) {
