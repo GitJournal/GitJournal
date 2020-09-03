@@ -3,8 +3,11 @@ import 'dart:io' show Platform;
 
 import 'package:http/http.dart' as http;
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:meta/meta.dart';
 
+import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/app.dart';
+import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
@@ -74,10 +77,16 @@ class InAppPurchases {
 
     var response = await iapConn.queryPastPurchases();
     for (var purchase in response.pastPurchases) {
-      var dt = await getExpiryDate(
-          purchase.verificationData.serverVerificationData,
-          purchase.productID,
-          _isPurchase(purchase));
+      DateTime dt;
+      try {
+        dt = await getExpiryDate(
+            purchase.verificationData.serverVerificationData,
+            purchase.productID,
+            _isPurchase(purchase));
+      } catch (e) {
+        // Ignore
+      }
+
       if (dt == null || !dt.isAfter(dtNow)) {
         continue;
       }
@@ -110,7 +119,13 @@ Future<DateTime> getExpiryDate(
       "code": response.statusCode,
       "body": response.body,
     });
-    return null;
+    throw IAPVerifyException(
+      code: response.statusCode,
+      body: response.body,
+      receipt: receipt,
+      sku: sku,
+      isPurchase: isPurchase,
+    );
   }
 
   Log.i("IAP Verify body: ${response.body}");
@@ -155,4 +170,25 @@ Future<SubscriptionStatus> verifyPurchase(PurchaseDetails purchase) async {
 bool _isPurchase(PurchaseDetails purchase) {
   var sku = purchase.productID;
   return !sku.contains('monthly') && !sku.contains('_sub_');
+}
+
+class IAPVerifyException implements Exception {
+  final int code;
+  final String body;
+  final String receipt;
+  final String sku;
+  final bool isPurchase;
+
+  IAPVerifyException({
+    @required this.code,
+    @required this.body,
+    @required this.receipt,
+    @required this.sku,
+    @required this.isPurchase,
+  });
+
+  @override
+  String toString() {
+    return "IAPVerifyException{code: $code, body: $body, receipt: $receipt, $sku: sku, isPurchase: $isPurchase}";
+  }
 }

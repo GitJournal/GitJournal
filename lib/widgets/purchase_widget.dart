@@ -162,12 +162,16 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
         return;
       } else if (purchaseDetails.status == PurchaseStatus.purchased) {
         Log.i("Verifying purchase sub");
-        var subStatus = await verifyPurchase(purchaseDetails);
-        if (subStatus.isPro) {
-          _deliverProduct(subStatus);
-        } else {
-          _handleError("Failed to purchase product");
-          return;
+        try {
+          var subStatus = await verifyPurchase(purchaseDetails);
+          if (subStatus.isPro) {
+            _deliverProduct(subStatus);
+          } else {
+            _handleError("Failed to purchase product");
+            return;
+          }
+        } catch (err) {
+          _handleError(err.toString());
         }
       }
       if (purchaseDetails.pendingCompletePurchase) {
