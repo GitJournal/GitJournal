@@ -163,6 +163,20 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     await Future.wait(futures);
     futures = <Future>[];
 
+    // Remove notes which have errors
+    var errFunc = (Note n) => n.loadState == NoteLoadState.Error;
+    var hasBadNotes = _notes.any(errFunc);
+    if (hasBadNotes) {
+      while (true) {
+        var i = _notes.indexWhere(errFunc);
+        if (i == -1) {
+          break;
+        }
+        var note = _notes.removeAt(i);
+        notifyNoteRemoved(i, note);
+      }
+    }
+
     for (var folder in _folders) {
       var f = folder.loadRecursively();
       futures.add(f);
