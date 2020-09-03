@@ -22,7 +22,11 @@ class MdYamlDocLoader {
         _isolate.kill(priority: Isolate.immediate);
         _isolate = null;
       }
-      _isolate = await Isolate.spawn(_isolateMain, _receivePort.sendPort);
+      _isolate = await Isolate.spawn(
+        _isolateMain,
+        _receivePort.sendPort,
+        errorsAreFatal: false,
+      );
 
       var data = await _receivePort.first;
       assert(data is SendPort);
@@ -42,9 +46,15 @@ class MdYamlDocLoader {
     _sendPort.send(_LoadingMessage(filePath, rec.sendPort));
 
     var data = await rec.first;
-    assert(data is MdYamlDoc);
+    assert(data is _LoaderResponse);
+    var resp = data as _LoaderResponse;
+    assert(resp.filePath == filePath);
 
-    return data;
+    if (resp.doc != null) {
+      return resp.doc;
+    }
+
+    throw MdYamlParsingException(filePath, resp.err.toString());
   }
 }
 
@@ -65,12 +75,24 @@ void _isolateMain(SendPort toMainSender) {
     assert(data is _LoadingMessage);
     var msg = data as _LoadingMessage;
 
-    final file = File(msg.filePath);
-    final fileData = await file.readAsString();
-    var doc = _serializer.decode(fileData);
+    try {
+      final file = File(msg.filePath);
+      final fileData = await file.readAsString();
+      var doc = _serializer.decode(fileData);
 
-    msg.sendPort.send(doc);
+      msg.sendPort.send(_LoaderResponse(msg.filePath, doc));
+    } catch (err) {
+      msg.sendPort.send(_LoaderResponse(msg.filePath, null, err.toString()));
+    }
   });
+}
+
+class _LoaderResponse {
+  final String filePath;
+  final MdYamlDoc doc;
+  final String err;
+
+  _LoaderResponse(this.filePath, this.doc, [this.err]);
 }
 
 class MdYamlDocNotFoundException implements Exception {
@@ -79,4 +101,14 @@ class MdYamlDocNotFoundException implements Exception {
 
   @override
   String toString() => "MdYamlDocNotFoundException: $filePath";
+}
+
+class MdYamlParsingException implements Exception {
+  final String filePath;
+  final String error;
+
+  MdYamlParsingException(this.filePath, this.error);
+
+  @override
+  String toString() => "MdYamlParsingException: $filePath - $error";
 }

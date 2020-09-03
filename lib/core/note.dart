@@ -301,6 +301,12 @@ class Note with NotesNotifier {
         _loadState = NoteLoadState.NotExists;
         _notifyModified();
         return _loadState;
+      } on MdYamlParsingException catch (err, stackTrace) {
+        logException(err, stackTrace);
+
+        _loadState = NoteLoadState.Error;
+        _notifyModified();
+        return _loadState;
       }
     } else if (isTxt) {
       try {
