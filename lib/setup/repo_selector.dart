@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
 import 'package:intl/intl.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/setup/button.dart';
+import 'package:gitjournal/setup/error.dart';
+import 'package:gitjournal/setup/loading.dart';
 import 'package:gitjournal/utils/logger.dart';
-import 'button.dart';
-import 'error.dart';
-import 'loading.dart';
 
 class GitHostSetupRepoSelector extends StatefulWidget {
   final GitHost gitHost;
@@ -134,7 +135,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
       controller: _textController,
       maxLines: 1,
       decoration: InputDecoration(
-        hintText: 'Type to Search or Create a Repo',
+        hintText: tr('setup.repoSelector.hint'),
         border: const OutlineInputBorder(),
         suffixIcon: IconButton(
           onPressed: () => _textController.clear(),
@@ -149,7 +150,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Choose or create a repository -',
+          tr('setup.repoSelector.title'),
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 16.0),
@@ -160,7 +161,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
         Opacity(
           opacity: canContinue ? 1.0 : 0.0,
           child: GitHostSetupButton(
-            text: "Next",
+            text: tr('setup.repoSelector.next'),
             onPressed: () async {
               if (selectedRepo != null) {
                 widget.onDone(selectedRepo);
@@ -215,7 +216,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
 
     return ListTile(
       leading: const Icon(Icons.add),
-      title: Text('Create repo "$repoName"'),
+      title: Text(tr('setup.repoSelector.create', args: [repoName])),
       contentPadding: const EdgeInsets.all(0.0),
       onTap: () {
         setState(() {

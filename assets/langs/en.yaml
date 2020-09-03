@@ -203,6 +203,12 @@ setup:
     authorize: Authorize GitJournal
     waitPerm: Waiting for Permissions ...
     readUser: Reading User Info
+  repoSelector:
+    title: Select or Create a Repository
+    hint: Type to Search or Create a Repo
+    next: Next
+    create: Create Repo {}
+
 feature:
   darkMode: Dark Mode
   rawEditor: Raw Editor
