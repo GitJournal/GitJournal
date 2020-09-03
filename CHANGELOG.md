@@ -1,3 +1,7 @@
+## [1.69] - 2020-09-03
+* Be more forgiving when parsing the YAML Frontmatter
+* Add support for Inline Tags
+
 ## [1.68] - 2020-08-31
 * Make Swipe to Delete Configurable
 * Allow Markdown to be previewed from all Editors
