@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
 import 'package:intl/intl.dart';
+//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
@@ -124,7 +125,17 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
     var repoBuilder = ListView(
       children: <Widget>[
         if (_textController.text.isNotEmpty) _buildCreateRepoTile(),
-        for (var repo in filteredRepos) _buildRepoTile(repo),
+        for (var repo in filteredRepos)
+          _RepoTile(
+            repo: repo,
+            onTap: () {
+              setState(() {
+                selectedRepo = repo;
+                createRepo = false;
+              });
+            },
+            selected: repo == selectedRepo,
+          ),
       ],
       padding: const EdgeInsets.all(0.0),
     );
@@ -186,31 +197,6 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
     return SafeArea(child: Center(child: columns));
   }
 
-  Widget _buildRepoTile(GitHostRepo repo) {
-    final _dateFormat = DateFormat('dd MMM, yyyy');
-
-    Widget trailing = Container();
-    if (repo.updatedAt != null) {
-      var dateStr = _dateFormat.format(repo.updatedAt);
-
-      var textTheme = Theme.of(context).textTheme;
-      trailing = Text(dateStr, style: textTheme.caption);
-    }
-
-    return ListTile(
-      title: Text(repo.fullName),
-      trailing: trailing,
-      selected: repo == selectedRepo,
-      onTap: () {
-        setState(() {
-          selectedRepo = repo;
-          createRepo = false;
-        });
-      },
-      contentPadding: const EdgeInsets.all(0.0),
-    );
-  }
-
   Widget _buildCreateRepoTile() {
     var repoName = _textController.text.trim();
 
@@ -228,3 +214,100 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
     );
   }
 }
+
+class _RepoTile extends StatelessWidget {
+  final GitHostRepo repo;
+  final Function onTap;
+  final bool selected;
+
+  _RepoTile({
+    @required this.repo,
+    @required this.onTap,
+    @required this.selected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    final _dateFormat = DateFormat('dd MMM, yyyy');
+    var textTheme = theme.textTheme;
+
+    Widget trailing = Container();
+    if (repo.updatedAt != null) {
+      var dateStr = _dateFormat.format(repo.updatedAt);
+
+      trailing = Text(dateStr, style: textTheme.caption);
+    }
+
+    /*
+    var iconsRow = Row(
+      children: [
+        if (repo.license != null)
+          _IconText(repo.license, FontAwesomeIcons.balanceScale),
+        if (repo.license != null) const SizedBox(width: 8.0),
+        _IconText(repo.forks.toString(), FontAwesomeIcons.codeBranch),
+        const SizedBox(width: 8.0),
+        _IconText(repo.stars.toString(), FontAwesomeIcons.star),
+      ],
+      crossAxisAlignment: CrossAxisAlignment.center,
+    );
+
+    return Card(
+      margin: const EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 4.0),
+      elevation: 0.0,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Text(
+              repo.fullName,
+              style:
+                  textTheme.headline6.copyWith(color: theme.primaryColorDark),
+            ),
+            if (repo.description != null) const SizedBox(height: 8.0),
+            if (repo.description != null) Text(repo.description),
+            const SizedBox(height: 16.0),
+            iconsRow,
+          ],
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+        ),
+      ),
+    ); */
+
+    return ListTile(
+      title: Text(repo.fullName),
+      trailing: trailing,
+      selected: selected,
+      contentPadding: const EdgeInsets.all(0.0),
+      onTap: onTap,
+    );
+  }
+}
+
+/*
+class _IconText extends StatelessWidget {
+  final String text;
+  final IconData iconData;
+
+  _IconText(this.text, this.iconData);
+
+  @override
+  Widget build(BuildContext context) {
+    var iconTheme = Theme.of(context).iconTheme;
+    var iconColor = iconTheme.color.withAlpha(150);
+    var textTheme = Theme.of(context).textTheme;
+
+    return Row(
+      children: [
+        FaIcon(iconData, size: 16, color: iconColor),
+        const SizedBox(width: 4.0),
+        Text(text, style: textTheme.caption),
+      ],
+      textBaseline: TextBaseline.alphabetic,
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      mainAxisSize: MainAxisSize.min,
+    );
+  }
+}
+*/
