@@ -7,6 +7,7 @@ import 'package:gitjournal/core/links_loader.dart';
 import 'package:gitjournal/core/md_yaml_doc_loader.dart';
 import 'package:gitjournal/core/note_notifier.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/core/processors/image_extractor.dart';
 import 'package:gitjournal/core/processors/inline_tags.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings.dart';
@@ -64,6 +65,7 @@ class Note with NotesNotifier {
   String _summary;
   List<Link> _links;
   Set<String> _inlineTags;
+  Set<NoteImage> _images;
 
   static final _mdYamlDocLoader = MdYamlDocLoader();
   static final _linksLoader = LinksLoader();
@@ -153,6 +155,7 @@ class Note with NotesNotifier {
     _summary = null;
     _links = null;
     _inlineTags = null;
+    _images = null;
 
     _notifyModified();
   }
@@ -198,6 +201,15 @@ class Note with NotesNotifier {
       _inlineTags = p.extractTags(body);
     }
     return _inlineTags;
+  }
+
+  Set<NoteImage> get images {
+    if (_loadState != NoteLoadState.Loaded) return {};
+
+    var p = ImageExtractor();
+    _images ??= p.extract(body);
+
+    return _images;
   }
 
   Map<String, dynamic> get extraProps {
