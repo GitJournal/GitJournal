@@ -214,7 +214,7 @@ class GitLab implements GitHost {
       language: parsedJson['language'],
       private: parsedJson['visibility'] == 'private',
       tags: parsedJson['tag_list'],
-      license: licenseMap ?? licenseMap['nickname'],
+      license: licenseMap != null ? licenseMap['nickname'] : null,
     );
   }
 
