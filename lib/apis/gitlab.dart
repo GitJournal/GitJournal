@@ -201,11 +201,20 @@ class GitLab implements GitHost {
     } catch (e) {
       Log.e(e);
     }
+    var licenseMap = parsedJson['license'];
 
     return GitHostRepo(
       fullName: parsedJson['path_with_namespace'],
       cloneUrl: parsedJson['ssh_url_to_repo'],
       updatedAt: updatedAt,
+      description: parsedJson['description'],
+      stars: parsedJson['star_count'],
+      forks: parsedJson['forks_count'],
+      issues: parsedJson['open_issues_count'],
+      language: parsedJson['language'],
+      private: parsedJson['visibility'] == 'private',
+      tags: parsedJson['tag_list'],
+      license: licenseMap ?? licenseMap['nickname'],
     );
   }
 

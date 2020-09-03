@@ -16,9 +16,9 @@ abstract class GitHost {
 }
 
 class UserInfo {
-  String name;
-  String email;
-  String username;
+  final String name;
+  final String email;
+  final String username;
 
   UserInfo({
     @required this.name,
@@ -29,19 +29,50 @@ class UserInfo {
 
 class GitHostRepo {
   final String fullName;
+  final String description;
+
   final String cloneUrl;
   final DateTime updatedAt;
 
+  final bool private;
+  final int stars;
+  final int forks;
+  final String language;
+  final int issues;
+  final String license;
+
+  final List<String> tags;
+
   GitHostRepo({
     @required this.fullName,
+    @required this.description,
     @required this.cloneUrl,
     @required this.updatedAt,
+    @required this.private,
+    @required this.stars,
+    @required this.forks,
+    @required this.language,
+    @required this.issues,
+    @required this.tags,
+    @required this.license,
   });
 
+  Map<String, dynamic> toJson() => {
+        'fullName': fullName,
+        'description': description,
+        'cloneUrl': cloneUrl,
+        'updatedAt': updatedAt,
+        'private': private,
+        'stars': stars,
+        'forks': forks,
+        'language': language,
+        'issues': issues,
+        'tags': tags,
+        'license': license,
+      };
+
   @override
-  String toString() {
-    return 'GitRepo{fulleName: $fullName, cloneUrl: $cloneUrl, updatedAt: $updatedAt}';
-  }
+  String toString() => toJson().toString();
 }
 
 class GitHostException implements Exception {

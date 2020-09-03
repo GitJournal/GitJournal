@@ -217,10 +217,26 @@ class GitHub implements GitHost {
     } catch (e) {
       Log.e(e);
     }
+    var licenseMap = parsedJson['license'];
+
+    /*
+    print("");
+    parsedJson.forEach((key, value) => print(" $key: $value"));
+    print("");
+    */
+
     return GitHostRepo(
       fullName: parsedJson['full_name'],
       cloneUrl: parsedJson['ssh_url'],
       updatedAt: updatedAt,
+      description: parsedJson['description'],
+      stars: parsedJson['stargazers_count'],
+      forks: parsedJson['forks_count'],
+      issues: parsedJson['open_issues_count'],
+      language: parsedJson['language'],
+      private: parsedJson['private'],
+      tags: parsedJson['topics'],
+      license: licenseMap != null ? licenseMap['spdx_id'] : null,
     );
   }
 
