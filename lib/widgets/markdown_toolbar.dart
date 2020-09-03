@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+// FIXME:
+// - Pin this on top of the keyboard
+// - It should only be visible when the keyboard is shown
+// - Add an overlay which shows the other header options when longtaping on H1
+// - Add a block quote button
+// - Add a code fence button
+//
 class MarkdownToolBar extends StatelessWidget {
   final TextEditingController textController;
 
