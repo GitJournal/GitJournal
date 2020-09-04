@@ -21,3 +21,5 @@ flutter build ios --release
 
 cd ios
 fastlane release
+
+git co .
