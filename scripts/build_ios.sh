@@ -26,6 +26,13 @@ if [ ! -d "ios/libs" ]; then
     unzip libs.zip
 fi
 
+# Place gj_common
+if [ ! -L "gj_common" ]; then
+    echo "=> gj_common doesn't exist. Cloning"
+    git clone https://github.com/GitJournal/git_bindings.git
+    ln -s git_bindings/gj_common gj_common
+fi
+
 flutter build ios --release
 
 cd ios
