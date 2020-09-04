@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
 import 'package:git_bindings/git_bindings.dart';
 import 'package:path/path.dart' as p;
@@ -14,15 +15,15 @@ import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/setup/autoconfigure.dart';
+import 'package:gitjournal/setup/button.dart';
+import 'package:gitjournal/setup/clone_url.dart';
+import 'package:gitjournal/setup/loading_error.dart';
 import 'package:gitjournal/setup/repo_selector.dart';
+import 'package:gitjournal/setup/sshkey.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
-import 'autoconfigure.dart';
-import 'button.dart';
-import 'clone_url.dart';
-import 'loading_error.dart';
-import 'sshkey.dart';
 
 class GitHostSetupScreen extends StatefulWidget {
   final String repoFolderName;
@@ -253,7 +254,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     if (pos == 4) {
       if (_pageChoice[0] == PageChoice0.CustomProvider) {
         return GitHostSetupLoadingErrorPage(
-          loadingMessage: "Cloning ...",
+          loadingMessage: tr('setup.cloning'),
           errorMessage: gitCloneErrorMessage,
         );
       }
@@ -303,7 +304,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
     if (pos == 5) {
       return GitHostSetupLoadingErrorPage(
-        loadingMessage: "Cloning ...",
+        loadingMessage: tr('setup.cloning'),
         errorMessage: gitCloneErrorMessage,
       );
     }
@@ -409,7 +410,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
   void _copyKeyToClipboard(BuildContext context) {
     Clipboard.setData(ClipboardData(text: publicKey));
-    showSnackbar(context, "Public Key copied to Clipboard");
+    showSnackbar(context, tr('setup.sshKey.copied'));
   }
 
   void _launchDeployKeyPage() async {
@@ -534,12 +535,12 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     try {
       Log.i("Generating SSH Key");
       setState(() {
-        _autoConfigureMessage = "Generating SSH Key";
+        _autoConfigureMessage = tr('setup.sshKey.generate');
       });
       var publicKey = await generateSSHKeys(comment: "GitJournal");
 
       Log.i("Adding as a deploy key");
-      _autoConfigureMessage = "Adding as a Deploy Key";
+      _autoConfigureMessage = tr('setup.sshKey.addDeploy');
 
       await _gitHost.addDeployKey(publicKey, _gitHostRepo.fullName);
     } on Exception catch (e, stacktrace) {
@@ -622,7 +623,7 @@ class GitHostChoicePage extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Text(
-            "Select a Git Hosting Provider -",
+            tr('setup.host.title'),
             style: Theme.of(context).textTheme.headline5,
           ),
           const SizedBox(height: 16.0),
@@ -643,7 +644,7 @@ class GitHostChoicePage extends StatelessWidget {
           ),
           const SizedBox(height: 8.0),
           GitHostSetupButton(
-            text: "Custom",
+            text: tr('setup.host.custom'),
             onPressed: () async {
               onCustomGitHost();
             },
@@ -672,19 +673,19 @@ class GitHostAutoConfigureChoicePage extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Text(
-            "How do you want to do this?",
+            tr('setup.autoConfigure.title'),
             style: Theme.of(context).textTheme.headline5,
           ),
           const SizedBox(height: 16.0),
           GitHostSetupButton(
-            text: "Setup Automatically",
+            text: tr('setup.autoConfigure.automatic'),
             onPressed: () {
               onDone(GitHostSetupType.Auto);
             },
           ),
           const SizedBox(height: 8.0),
           GitHostSetupButton(
-            text: "Let me do it manually",
+            text: tr('setup.autoConfigure.manual'),
             onPressed: () async {
               onDone(GitHostSetupType.Manual);
             },

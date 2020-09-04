@@ -242,7 +242,34 @@ setup:
   keyEditors:
     public: Invalid Public Key - Doesn't start with ssh-rsa
     private: Invalid Private Key
-
+  sshKey:
+    generate: Generating SSH Key
+    title: In order to access this repository, this public key must be copied as a deploy key
+    step1: 1. Copy the key
+    step2a: 2. Open webpage, and paste the deploy key. Make sure it is given Write Access.
+    step2b: 2. Give this SSH Key access to the git repo. (You need to figure it out yourself)
+    step3: 3. Try Cloning ..
+    copy: Copy Key
+    copied: Public Key copied to Clipboard
+    regenerate: Regenerate Key
+    openDeploy: Open Deploy Key Webpage
+    clone: Clone Repo
+    addDeploy: Adding as a Deploy Key
+  sshKeyChoice:
+    title: We need SSH keys to authenticate -
+    generate: Generate new keys
+    custom: Provide Custom SSH Keys
+  sshKeyUserProvided:
+    public: Public Key -
+    private: Private Key -
+  cloning: Cloning ...
+  host:
+    title: Select a Git Hosting Provider -
+    custom: Custom
+  autoConfigure:
+    title: How do you want to do this?
+    automatic: Setup Automatically
+    manual: Let me do it manually
 
 feature:
   darkMode: Dark Mode

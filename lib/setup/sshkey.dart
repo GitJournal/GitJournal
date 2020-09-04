@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
 
 import 'button.dart';
@@ -25,7 +26,7 @@ class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (publicKey == null || publicKey.isEmpty) {
-      return GitHostSetupLoadingPage("Generating SSH Key ...");
+      return GitHostSetupLoadingPage(tr("setup.sshKey.generate"));
     }
 
     var columns = Column(
@@ -33,14 +34,14 @@ class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'In order to access this repository, this public key must be copied as a deploy key',
+          tr("setup.sshKey.title"),
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 32.0),
 
         // Step 1
         Text(
-          '1. Copy the key',
+          tr("setup.sshKey.step1"),
           style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 8.0),
@@ -48,35 +49,35 @@ class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
         const SizedBox(height: 8.0),
 
         GitHostSetupButton(
-          text: "Copy Key",
+          text: tr("setup.sshKey.copy"),
           onPressed: () => copyKeyFunction(context),
         ),
         GitHostSetupButton(
-          text: "Regenerate Key",
+          text: tr("setup.sshKey.regenerate"),
           onPressed: regenerateFunction,
         ),
         const SizedBox(height: 16.0),
 
         // Step 2
         Text(
-          '2. Open webpage, and paste the deploy key. Make sure it is given Write Access. ',
+          tr("setup.sshKey.step2a"),
           style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 8.0),
         GitHostSetupButton(
-          text: "Open Deploy Key Webpage",
+          text: tr("setup.sshKey.openDeploy"),
           onPressed: openDeployKeyPage,
         ),
         const SizedBox(height: 16.0),
 
         // Step 3
         Text(
-          '3. Try Cloning ..',
+          tr("setup.sshKey.step3"),
           style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 8.0),
         GitHostSetupButton(
-          text: "Clone Repo",
+          text: tr("setup.sshKey.clone"),
           onPressed: doneFunction,
         ),
       ],
@@ -106,7 +107,7 @@ class GitHostSetupSshKeyUnknownProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (publicKey == null || publicKey.isEmpty) {
-      return GitHostSetupLoadingPage("Generating SSH Key ...");
+      return GitHostSetupLoadingPage(tr("setup.sshKey.generate"));
     }
 
     var columns = Column(
@@ -114,14 +115,14 @@ class GitHostSetupSshKeyUnknownProvider extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'In order to access this repository, this public key must be copied as a deploy key',
+          tr("setup.sshKey.title"),
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 32.0),
 
         // Step 1
         Text(
-          '1. Copy the key',
+          tr("setup.sshKey.step1"),
           style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 8.0),
@@ -129,30 +130,30 @@ class GitHostSetupSshKeyUnknownProvider extends StatelessWidget {
         const SizedBox(height: 8.0),
 
         GitHostSetupButton(
-          text: "Copy Key",
+          text: tr("setup.sshKey.copy"),
           onPressed: () => copyKeyFunction(context),
         ),
         GitHostSetupButton(
-          text: "Regenerate Key",
+          text: tr("setup.sshKey.regenerate"),
           onPressed: regenerateFunction,
         ),
         const SizedBox(height: 16.0),
 
         // Step 2
         Text(
-          '2. Give this SSH Key access to the git repo. (You need to figure it out yourself)',
+          tr("setup.sshKey.step2b"),
           style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 16.0),
 
         // Step 3
         Text(
-          '3. Try Cloning ..',
+          tr("setup.sshKey.step3"),
           style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 8.0),
         GitHostSetupButton(
-          text: "Clone Repo",
+          text: tr("setup.sshKey.clone"),
           onPressed: doneFunction,
         ),
       ],
@@ -181,17 +182,17 @@ class GitHostSetupKeyChoice extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Text(
-            "We need SSH keys to authenticate -",
+            tr("setup.sshKeyChoice.title"),
             style: Theme.of(context).textTheme.headline5,
           ),
           const SizedBox(height: 16.0),
           GitHostSetupButton(
-            text: "Generate new keys",
+            text: tr("setup.sshKeyChoice.generate"),
             onPressed: onGenerateKeys,
           ),
           const SizedBox(height: 8.0),
           GitHostSetupButton(
-            text: "Provide Custom SSH Keys",
+            text: tr("setup.sshKeyChoice.custom"),
             onPressed: onUserProvidedKeys,
           ),
         ],
@@ -244,21 +245,21 @@ class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
       child: Column(
         children: <Widget>[
           Text(
-            "Public Key -",
+            tr("setup.sshKeyUserProvided.public"),
             style: Theme.of(context).textTheme.headline5,
           ),
           const SizedBox(height: 8.0),
           PublicKeyEditor(_publicFormKey, _publicKeyController),
           const SizedBox(height: 8.0),
           Text(
-            "Private Key -",
+            tr("setup.sshKeyUserProvided.private"),
             style: Theme.of(context).textTheme.headline5,
           ),
           const SizedBox(height: 8.0),
           PrivateKeyEditor(_privateFormKey, _privateKeyController),
           const SizedBox(height: 16.0),
           GitHostSetupButton(
-            text: "Next",
+            text: tr("setup.next"),
             onPressed: () {
               var publicValid = _publicFormKey.currentState.validate();
               var privateValid = _privateFormKey.currentState.validate();
