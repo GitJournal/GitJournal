@@ -1,6 +1,7 @@
-## [1.69] - 2020-09-03
+## [1.69] - 2020-09-04
 * Be more forgiving when parsing the YAML Frontmatter
 * Add support for Inline Tags
+* Fast dark mode switcher
 
 ## [1.68] - 2020-08-31
 * Make Swipe to Delete Configurable
