@@ -203,14 +203,14 @@ class _DebugScreenState extends State<DebugScreen> {
     var filterLevel = settings.debugLogLevel;
 
     var dialog = AlertDialog(
-      title: Text(tr('settings.debug.levels')),
+      title: Text(tr('settings.debug.levels.title')),
       content: Column(
         children: <Widget>[
-          FilterListTile('Error', 'e', filterLevel),
-          FilterListTile('Warning', 'w', filterLevel),
-          FilterListTile('Info', 'i', filterLevel),
-          FilterListTile('Debug', 'd', filterLevel),
-          FilterListTile('Verbose', 'v', filterLevel),
+          FilterListTile(tr('settings.debug.levels.error'), 'e', filterLevel),
+          FilterListTile(tr('settings.debug.levels.warning'), 'w', filterLevel),
+          FilterListTile(tr('settings.debug.levels.info'), 'i', filterLevel),
+          FilterListTile(tr('settings.debug.levels.debug'), 'd', filterLevel),
+          FilterListTile(tr('settings.debug.levels.verbose'), 'v', filterLevel),
         ],
         mainAxisSize: MainAxisSize.min,
       ),

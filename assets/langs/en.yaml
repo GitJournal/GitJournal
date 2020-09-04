@@ -24,7 +24,13 @@ settings:
   debug:
     title: Debug App
     subtitle: Look under the hood
-    levels: Select Level
+    levels:
+      title: Select Level
+      error: Error
+      warning: warning
+      info: Info
+      debug: Debug
+      verbose: Verbose
   images:
     title: Image Settings
     subtitle: Configure how Images are stored
