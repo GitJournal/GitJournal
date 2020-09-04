@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -299,6 +300,16 @@ class _AppDrawerHeader extends StatelessWidget {
               child: ProButton(),
             ),
           ),
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.topRight,
+            child: SafeArea(
+                child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 16, 16, 0),
+              child: ThemeSwitcherButton(),
+            )),
+          ),
+        ),
       ],
       fit: StackFit.passthrough,
     );
@@ -323,6 +334,23 @@ class ProButton extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Text('PRO', style: theme.textTheme.button),
       ),
+    );
+  }
+}
+
+class ThemeSwitcherButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      child: const FaIcon(FontAwesomeIcons.solidMoon),
+      onTap: () {
+        var dynamicTheme = DynamicTheme.of(context);
+        var brightness = dynamicTheme.brightness;
+
+        dynamicTheme.setBrightness(brightness == Brightness.light
+            ? Brightness.dark
+            : Brightness.light);
+      },
     );
   }
 }
