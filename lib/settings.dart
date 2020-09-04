@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:gitjournal/core/sorting_mode.dart';
+import 'package:gitjournal/features.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 
@@ -44,7 +45,7 @@ class Settings extends ChangeNotifier {
   String folderViewHeaderType = "TitleGenerated";
   int version = 0;
 
-  bool proMode = false;
+  bool proMode = Features.alwaysPro;
   String proExpirationDate = "";
 
   String _pseudoId;

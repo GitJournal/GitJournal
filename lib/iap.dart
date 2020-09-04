@@ -6,11 +6,16 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:meta/meta.dart';
 
 import 'package:gitjournal/app.dart';
+import 'package:gitjournal/features.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 class InAppPurchases {
   static Future<void> confirmProPurchaseBoot() async {
+    if (Features.alwaysPro) {
+      return;
+    }
+
     if (Settings.instance.proMode == false) {
       Log.i("confirmProPurchaseBoot: Pro Mode is false");
       return;
