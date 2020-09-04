@@ -77,7 +77,7 @@ class _FolderViewState extends State<FolderView> {
 
     var title = widget.notesFolder.publicName;
     if (inSelectionMode) {
-      title = "Note Selected";
+      title = tr('widgets.FolderView.noteSelected');
     }
 
     Widget folderView = Builder(
@@ -158,7 +158,10 @@ class _FolderViewState extends State<FolderView> {
       var container = Provider.of<StateContainer>(context, listen: false);
       await container.syncNotes();
     } on GitException catch (e) {
-      showSnackbar(context, "Sync Error: ${e.cause}");
+      showSnackbar(
+        context,
+        tr('widgets.FolderView.syncError', args: [e.cause]),
+      );
     } catch (e) {
       showSnackbar(context, e.toString());
     }
@@ -251,9 +254,10 @@ class _FolderViewState extends State<FolderView> {
         return StatefulBuilder(
           builder: (BuildContext context, Function setState) {
             var children = <Widget>[
-              SettingsHeader("Header Options"),
+              SettingsHeader(tr('widgets.FolderView.headerOptions.heading')),
               RadioListTile<StandardViewHeader>(
-                title: const Text("Title or FileName"),
+                title:
+                    Text(tr('widgets.FolderView.headerOptions.titleFileName')),
                 value: StandardViewHeader.TitleOrFileName,
                 groupValue: _headerType,
                 onChanged: (newVal) {
@@ -262,7 +266,7 @@ class _FolderViewState extends State<FolderView> {
                 },
               ),
               RadioListTile<StandardViewHeader>(
-                title: const Text("Auto Generated Title"),
+                title: Text(tr('widgets.FolderView.headerOptions.auto')),
                 value: StandardViewHeader.TitleGenerated,
                 groupValue: _headerType,
                 onChanged: (newVal) {
@@ -271,7 +275,7 @@ class _FolderViewState extends State<FolderView> {
                 },
               ),
               RadioListTile<StandardViewHeader>(
-                title: const Text("FileName"),
+                title: Text(tr('widgets.FolderView.headerOptions.fileName')),
                 value: StandardViewHeader.FileName,
                 groupValue: _headerType,
                 onChanged: (newVal) {
@@ -280,7 +284,7 @@ class _FolderViewState extends State<FolderView> {
                 },
               ),
               SwitchListTile(
-                title: const Text("Show Summary"),
+                title: Text(tr('widgets.FolderView.headerOptions.summary')),
                 value: _showSummary,
                 onChanged: (bool newVal) {
                   setState(() {
@@ -292,7 +296,7 @@ class _FolderViewState extends State<FolderView> {
             ];
 
             return AlertDialog(
-              title: const Text("Customize View"),
+              title: Text(tr('widgets.FolderView.headerOptions.customize')),
               content: Column(
                 children: children,
                 mainAxisSize: MainAxisSize.min,
@@ -315,25 +319,25 @@ class _FolderViewState extends State<FolderView> {
       builder: (BuildContext context) {
         var children = <Widget>[
           RadioListTile<FolderViewType>(
-            title: const Text("Standard View"),
+            title: Text(tr('widgets.FolderView.views.standard')),
             value: FolderViewType.Standard,
             groupValue: _viewType,
             onChanged: onViewChange,
           ),
           RadioListTile<FolderViewType>(
-            title: const Text("Journal View"),
+            title: Text(tr('widgets.FolderView.views.journal')),
             value: FolderViewType.Journal,
             groupValue: _viewType,
             onChanged: onViewChange,
           ),
           RadioListTile<FolderViewType>(
-            title: const Text("Grid View"),
+            title: Text(tr('widgets.FolderView.views.grid')),
             value: FolderViewType.Grid,
             groupValue: _viewType,
             onChanged: onViewChange,
           ),
           RadioListTile<FolderViewType>(
-            title: const Text("Card View (Experimental)"),
+            title: Text(tr('widgets.FolderView.views.card')),
             value: FolderViewType.Card,
             groupValue: _viewType,
             onChanged: onViewChange,
@@ -341,7 +345,7 @@ class _FolderViewState extends State<FolderView> {
         ];
 
         return AlertDialog(
-          title: const Text("Select View"),
+          title: Text(tr('widgets.FolderView.views.select')),
           content: Column(
             children: children,
             mainAxisSize: MainAxisSize.min,
@@ -380,14 +384,14 @@ class _FolderViewState extends State<FolderView> {
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<DropDownChoices>>[
-        const PopupMenuItem<DropDownChoices>(
+        PopupMenuItem<DropDownChoices>(
           value: DropDownChoices.SortingOptions,
-          child: Text('Sorting Options'),
+          child: Text(tr('widgets.FolderView.sortingOptions')),
         ),
         if (_viewType == FolderViewType.Standard)
-          const PopupMenuItem<DropDownChoices>(
+          PopupMenuItem<DropDownChoices>(
             value: DropDownChoices.ViewOptions,
-            child: Text('View Options'),
+            child: Text(tr('widgets.FolderView.viewOptions')),
           ),
       ],
     );

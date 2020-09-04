@@ -177,6 +177,25 @@ widgets:
   PurchaseButton:
     text: Purchase for {price}
     fail: Failed to Load
+  FolderView:
+    noteSelected: Note Selected
+    syncError: Sync Error {}
+    headerOptions:
+      heading: Header Options
+      auto: Auto Generated Title
+      titleFileName: Title or FileName
+      fileName: FileName
+      summary: Show Summary
+      customize: Customize View
+    views:
+      standard: Standard View
+      journal: Journal View
+      grid: Grid View
+      card: Card View
+      select: Select View
+    sortingOptions: Sorting Options
+    viewOptions: View Options
+
 
 rootFolder: Root Folder
 ignoredFiles:
