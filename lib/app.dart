@@ -9,7 +9,6 @@ import 'package:device_info/device_info.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:flutter_sentry/flutter_sentry.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -144,9 +143,6 @@ class JournalApp extends StatefulWidget {
   }
 
   static final analytics = Analytics();
-  static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics.firebase);
-
   static bool isInDebugMode = false;
 
   JournalApp(this.appState);
@@ -305,8 +301,7 @@ class _JournalAppState extends State<JournalApp> {
 
       theme: themeData,
       navigatorObservers: <NavigatorObserver>[
-        JournalApp.observer,
-        CustomRouteObserver(),
+        AnalyticsRouteObserver(),
       ],
       initialRoute: initialRoute,
       debugShowCheckedModeBanner: false,

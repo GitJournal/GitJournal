@@ -151,10 +151,17 @@ void logEvent(Event event, {Map<String, String> parameters}) {
   Log.d("Event $event");
 }
 
-class CustomRouteObserver extends RouteObserver<PageRoute<dynamic>> {
-  void _sendScreenView(PageRoute<dynamic> route) {
+class AnalyticsRouteObserver extends RouteObserver<PageRoute<dynamic>> {
+  void _sendScreenView(PageRoute<dynamic> route) async {
     final String screenName = route.settings.name;
     assert(screenName != null, "Screen name is null $route");
+
+    Log.i("Screen: $screenName");
+    try {
+      await getAnalytics().firebase.setCurrentScreen(screenName: screenName);
+    } catch (e, stackTrace) {
+      Log.e("AnalyticsRouteObserver", ex: e, stacktrace: stackTrace);
+    }
   }
 
   @override
