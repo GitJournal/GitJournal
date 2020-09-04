@@ -17,6 +17,15 @@ if [[ $(git status -s | grep -v '??') ]]; then
     exit 1
 fi
 
+# Download the required libraries
+export LIBS_URL="https://github.com/GitJournal/ios-libraries/releases/download/v1.1/libs.zip"
+
+if [ ! -d "ios/libs" ]; then
+    echo "Downloading Libs"
+    wget "$LIBS_URL"
+    unzip libs.zip
+fi
+
 flutter build ios --release
 
 cd ios
