@@ -1,0 +1,372 @@
+settings:
+  # "Ok" can be translated as "Да", "Подтвердить", or leave "Ok"
+  ok: Да
+  cancel: Отмена
+  title: Настройки
+  author:
+    # Can be translated as "Полное имя" or "Ник" as it is meant nickname.
+    label: Имя
+    hint: Кто должен вносить изменения?
+    validator: Пожалуйста введите имя
+  email:
+    # Can leave "e-mail".
+    label: Электронная почта
+    hint: Адрес электронной почты
+    validator:
+      empty: Пожалуйста введите электронную почту
+      # Can be translated as "Пожалуйста введите правильную электронную почту"
+      invalid: Пожалуйста введите действующую электронную почту
+  display:
+    title: Настройки экрана
+    darkTheme: Темная тема
+    homeScreen: Начальный экран
+  gitAuthor: Настройки Git аккаунта
+  versionInfo: Версия
+  analytics: Аналитика
+  crashReports: Сбор анонимных отчетов о сбоях
+  usageStats: Сбор анонимной статистики использования
+  debug:
+    # Verbatim - "Отладка приложения"
+    title: Отладочная информация
+    # Verbatim - "Заглянуть под капот"
+    subtitle: Посмотреть подробности
+    levels:
+      title: Выбрать уровень
+      error: ""
+      warning: ""
+      info: ""
+      debug: ""
+      verbose: ""
+  images:
+    title: Настройки изображений
+    subtitle: Настроить способ хранения изображений
+    imageLocation: Расположение изображений
+    # Or "Та же папка, что и заметки"
+    currentFolder: Тот же каталог, что и заметки
+    # Or "Пользовательская папка"
+    customFolder: Пользовательский каталог
+  gitRemote:
+    changeHost:
+      title: Изменить владельца Git?
+      subtitle: Заметки, которые не были синхронизированы, будут потеряны.
+      # "Ok" can be translated as "Да", "Подтвердить", or leave "Ok"
+      ok: Да
+      cancel: Отмена
+    title: Настройки удаленного доступа Git
+    subtitle: Настроить синхронизацию ваших заметок
+  noteMetaData:
+    title: Настройки метаданных заметок
+    subtitle: Настроить способ сохранения метаданных заметки
+    text: Каждая заметка имеет некоторые метаданные, которые хранятся в заголовке YAML следующим образом:
+    enableHeader: Разрешить заголовок YAML
+    modified: Измененное поле
+    created: Созданное поле
+    tags: Теги поля
+    example:
+      title: Пример заголовка
+    titleMetaData:
+      title: Заголовок
+      fromH1: Текстовый заголовок 1
+      fromYaml: Из YAML 'title'
+    # There are such birds.
+    exampleTitle: Голуби
+    exampleBody: Я думаю, они могут быть злыми. Даже злее пингвинов.
+    exampleTag1: Птицы
+    exampleTag2: Зло
+    customMetaData:
+      title: Пользовательские метаданные
+      invalid: Неправильный формат YAML
+  privacy: Политика конфиденциальности
+  terms: Правила и условия использования
+  experimental:
+    title: Экспериментальные возможности
+    subtitle: Попробовать функции, находящиеся в разработке.
+    backlinks: Показывать обратные ссылки в предварительном просмотре Markdown
+    fs: Показывать файловую систему
+    markdownToolbar: Показывать панель инструментов Markdown в редакторе
+  editors:
+    title: Натройки редактора
+    subtitle: Настроить работу разных редакторов
+    defaultEditor: Редактор по умолчанию
+    defaultState: Состояние по умолчанию
+    markdownEditor: Редактор Markdown
+    journalEditor: Редактор журнала
+    # Or "Папка по умолчанию"
+    defaultFolder: Каталог по умолчанию
+  sortingField:
+    # If it means "sort by", than "по дате последнего изменения".
+    modified: Последнее изменение
+    # If it means "sort by", than "по дате создания".
+    created: Создание
+    # If it means "sort by", than "по имени файла".
+    filename: Имя файла
+    # If it means "sort by", than "по заголовку".
+    title: Заголовок
+  sortingOrder:
+    asc: По возрастанию
+    desc: По убыванию
+  sortingMode:
+    # Or, plural, "Поля"
+    field: Поле
+    order: Порядок
+  remoteSync:
+    auto: Автоматически
+    manual: Вручную
+  tags:
+    title: Настройки тегов
+    subtitle: Настроить способ анализа встроенных тегов
+    # Or "Парсить встроенные теги"
+    enable: Анализировать встроенные теги
+    prefixes: Префиксы встроенных тегов
+  misc:
+    # "Другие настройки", "Остальные настройки" (other)
+    title: Прочие настройки
+    swipe: Смахнуть, чтобы удалить заметку
+    listView: Посмотреть список
+editors:
+  checklist:
+    add: Добавить пункт
+  common:
+    defaultBodyHint: Написать здесь
+    defaultTitleHint: Заголовок
+    discard: Отменить изменения
+    share: Поделиться заметкой
+    takePhoto: Сделать фотографию
+    addImage: Выбрать изображение из галереи
+    editFileName: Редактировать имя файла
+    tags: Редактировать теги
+    zen:
+      # Or "Включить режим Zen"
+      enable: Включить режим Дзен
+      # Or "Выключить режим Zen"
+      disable: Выключить режим Дзен
+    saveNoteFailed:
+      title: Не удалось сохранить заметку
+      message: Сожалеем, но мы не можем сохранить заметку. Она был скопирована в буфер обмена, чтобы избежать потери данных.
+pro: Про
+actions:
+  newNote: Новая заметка
+  newJournal: Новая запись в журнале
+  newChecklist: Новый контрольный список
+screens:
+  folders:
+    # Or "Папки"
+    title: Каталоги
+    # Or "Выбранная папка"
+    selected: Выбранный каталог
+    dialog:
+      # Or "Создать новую папку"
+      title: Создать новый каталог
+      create: Создать
+      discard: Отменить
+    errorDialog:
+      title: Ошибка
+      # Or "Невозможно удалить папку, содержащую заметки"
+      deleteContent: Невозможно удалить каталог, содержащий заметки
+      # Or "Невозможно переименовать корневую папку"
+      renameContent: Невозможно переименовать корневой каталог
+      # "Ok" can be translated as "Да", "Подтвердить", or leave "Ok"
+      ok: Да
+    actions:
+      # Or "Переименовать папку"
+      rename: Переименовать каталог
+      # Or "Создать подпапку"
+      subFolder: Создать подкаталог
+      # Or "Удалить папку"
+      delete: Удалить каталог
+      # Or "Имя папки"
+      decoration: Имя каталога
+      empty: Пожалуйста введите имя
+  tags:
+    title: Теги
+    empty: ""
+  filesystem:
+    ignoredFile:
+      title: Игнорируемые файлы
+      # "Ok" can be translated as "Да", "Подтвердить", or leave "Ok"
+      ok: Да
+      rename: Переименовать
+    rename:
+      decoration: Имя файла
+      title: Переименовать
+  folder_view:
+    empty: ""
+widgets:
+  rename:
+    'yes': Переименовать
+    'no': Отмена
+    validator:
+      empty: "Пожалуйста введите имя "
+      exists: Уже существует
+      contains: Не может содержать /
+  backlinks:
+    title:
+      one: "Заметка ссылается на эту заметку"
+      few: "Заметки ссылаются на эту заметку"
+      many: "Заметки ссылаются на эту заметку"
+      other: "Заметки ссылаются на эту заметку"
+  SortingOrderSelector:
+    title: Критерии сортировки
+  PurchaseButton:
+    text: ""
+    fail: ""
+  FolderView:
+    noteSelected: ""
+    syncError: ""
+    headerOptions:
+      heading: ""
+      auto: ""
+      titleFileName: ""
+      fileName: ""
+      summary: ""
+      customize: ""
+    views:
+      standard: ""
+      journal: ""
+      grid: ""
+      card: ""
+      select: ""
+    sortingOptions: ""
+    viewOptions: ""
+# Or "Корневая папка"
+rootFolder: Корневой каталог
+ignoredFiles:
+  dot: Начинается с .
+  ext: Не заканчивается на .md или .txt
+drawer:
+  setup: Настройка владельца Git
+  pro: Разблокировать версию Pro
+  all: Все заметки
+  # Or "Папки"
+  folders: Каталоги
+  fs: Файловая система
+  tags: Теги
+  share: Поделиться приложением
+  rate: Оценить нас
+  feedback: Обратная связь
+  bug: Отчет об ошибках
+setup:
+  autoConfigure:
+    title: Нам нужно разрешение на выполнение следующих шагов
+    automatic: ""
+    manual: ""
+  autoconfigure:
+    step1: 1. Получить ваши существующие репозитории или создать новый репозиторий.
+    step2: 2. Сгенерировать SSH-ключ на этом устройстве
+    step3: 3. Добавить ключ в качестве deploy-ключа с правом записи в репозиторий.
+    warning: Для этого потребуется предоставить GitJournal доступ ко всем частным и общедоступным репозиториям. Если вас это не устраивает, вернитесь и выберите вариант ручной настройки.
+    authorize: Авторизовать GitJournal
+    waitPerm: Ожидание разрешений ...
+    readUser: Чтение информации о пользователе
+  repoSelector:
+    title: ""
+    hint: ""
+    create: ""
+  cloneUrl:
+    enter: ""
+    validator:
+      empty: ""
+      invalid: ""
+      onlySsh: ""
+    manual:
+      title: ""
+      step1: ""
+      step2: ""
+      button: ""
+  next: ""
+  fail: ""
+  keyEditors:
+    public: ""
+    private: ""
+  sshKey:
+    generate: ""
+    title: ""
+    step1: ""
+    step2a: ""
+    step2b: ""
+    step3: ""
+    copy: ""
+    copied: ""
+    regenerate: ""
+    openDeploy: ""
+    clone: ""
+    addDeploy: ""
+  sshKeyChoice:
+    title: ""
+    generate: ""
+    custom: ""
+  sshKeyUserProvided:
+    public: ""
+    private: ""
+  cloning: ""
+  host:
+    title: ""
+    custom: ""
+feature:
+  darkMode: Темный режим
+  rawEditor: Raw редактор
+  # Or "Поддержка папок"
+  folderSupport: Поддержка каталогов
+  fileNameCustomize: Изменение имени файла заметок
+  noteMetaDataCustomize:
+    title: Изменение метаданных заметок
+    subtitle: Позволяет использование GitJournal с генераторами статических веб-сайтов
+  autoMergeConflicts: "Автоматическое разрешение конфликтов слияния "
+  noteSorting: Настройка сортировки заметок
+  gitPushFreq: Настройка частоты синхронизации с Git
+  checklistEditor: Редактор контрольного списка
+  journalEditor: Редактор журнала
+  # Or "Различное отображение папок - журнал, сетка, стандартный"
+  diffViews: Различное отображение каталогов - журнал, сетка, стандартный
+  imageSupport: Поддержка изображений
+  tags: Теги заметки
+  appShortcuts: Ярлыки приложения
+  createRepo: Создание собственных репозитории из приложения
+  backlinks: Поддержка обратных ссылок заметок
+  txtFiles: Поддержка файлов Txt
+  wikiLinks: Поддержка ссылок в стиле Wiki
+  metaDataTitle: Изменение заголовка метаданных
+  # Or "Настройка папки по умолчанию для редактора журнала"
+  journalEditorDefaultFolder: Настройка каталога по умолчанию для редактора журнала
+  yamlModifiedKey: Настройка изменения ключа YAML
+  yamlCreatedKey: Настройка создания ключа YAML
+  yamlTagsKey: Настройка тегов ключа YAML
+  disableYamlHeader: Отключение заголовка метаданных YAML
+  customizeHomeScreen: Настройка домашнего экрана
+  # Or "Режим записи Zen"
+  zenMode: Режим записи Дзен
+  emojiSupport:
+    # Or "Поддержка смайлов"
+    title: Поддержка Emoji
+    subtitle: "Преобразовать: сердце: в ❤️"
+  allNotesView: Добавление экрана для отображения «Все заметки»
+  basicSearch: Базовый поиск
+  customSSHKeys: Предоставление собственных ключей SSH
+  customMetaData: Добавление собственных метаданных в новые заметки
+  graphVisualization: Графическая визуализация
+  mutliRepos: Множественные репозитории Git
+  customThemes: Пользовательские темы
+  gitLog: Просмотри и поиск в истории Git
+  latex: Поддержка Latex
+  mermaid: Поддержка диаграмм Mermaid
+  encryptedHosting: Зашифрованный хостинг Git
+  desktop: Настольное приложение
+  markdownToolbar: Панель инструментов Markdown
+  localization:
+    title: ""
+    subtitle: ""
+  inlineTags: ""
+feature_timeline:
+  title: Хронология выпуска
+  progress: В процессе
+  plan: Запланировано
+purchase_screen:
+  title: Версия Pro
+  desc: 'GitJournal является приложением с полностью открытым исходным кодом и является результатом значительной работы. У него нет венчурного капитала или поддержки корпораций. Ваша поддержка напрямую стимулирует развитие. GitJournal работает по модели "плати сколько хочешь (с минимумом)". Независимо от того, сколько вы платите, вы получите доступ ко всем функциям Pro.'
+  restore: Восстановить покупку
+  oneTime:
+    title: ""
+    desc: ""
+  monthly:
+    title: ""
+    desc: ""
