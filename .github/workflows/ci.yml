@@ -14,5 +14,7 @@ jobs:
         with:
           flutter-version: "1.20.2"
       - run: flutter pub get
+      - run: which dart
+      - run: dart ./scripts/setup_env.dart
       - run: flutter test
       - run: flutter build ios --release --no-codesign
