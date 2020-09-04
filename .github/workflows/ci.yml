@@ -16,5 +16,10 @@ jobs:
       - run: flutter pub get
       - run: which dart
       - run: dart ./scripts/setup_env.dart
-      - run: flutter test
+        env:
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      #- run: flutter test
       - run: ./scripts/build_ios.sh
+        env:
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
