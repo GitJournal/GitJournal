@@ -33,9 +33,9 @@ if [ ! -L "gj_common" ]; then
     ln -s git_bindings/gj_common gj_common
 fi
 
-flutter build ios --release
+flutter build ios --release --no-codesign
 
-cd ios
-fastlane release
+#cd ios
+#fastlane release
 
-git co .
+#git co .

@@ -17,4 +17,4 @@ jobs:
       - run: which dart
       - run: dart ./scripts/setup_env.dart
       - run: flutter test
-      - run: flutter build ios --release --no-codesign
+      - run: ./scripts/build_ios.sh
