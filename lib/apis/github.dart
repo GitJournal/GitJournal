@@ -2,11 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/services.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'githost.dart';
 
@@ -87,6 +89,10 @@ class GitHub implements GitHost {
     var headers = {
       HttpHeaders.authorizationHeader: _buildAuthHeader(),
     };
+
+    if (foundation.kDebugMode) {
+      print(toCurlCommand(url, headers));
+    }
 
     var response = await http.get(url, headers: headers);
     if (response.statusCode != 200) {

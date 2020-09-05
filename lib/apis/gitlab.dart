@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/services.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'githost.dart';
 
@@ -74,6 +76,10 @@ class GitLab implements GitHost {
     // FIXME: pagination!
     var url =
         "https://gitlab.com/api/v4/projects?simple=true&membership=true&order_by=last_activity_at&access_token=$_accessCode";
+
+    if (foundation.kDebugMode) {
+      print(toCurlCommand(url, {}));
+    }
 
     var response = await http.get(url);
     if (response.statusCode != 200) {
