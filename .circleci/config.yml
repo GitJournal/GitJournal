@@ -15,6 +15,9 @@ jobs:
           name: Current Directory
           command: pwd
       - run:
+          name: List Directory
+          command: ls -l
+      - run:
           name: Test
           command: flutter test -j 1 --coverage --machine | tojunit --output junit.xml
       - store_test_results:
