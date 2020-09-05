@@ -14,7 +14,6 @@ jobs:
         with:
           flutter-version: "1.20.3"
       - run: flutter pub get
-      - run: which dart
       - run: dart ./scripts/setup_env.dart
         env:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
