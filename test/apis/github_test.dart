@@ -8,6 +8,7 @@ import 'package:gitjournal/apis/github.dart';
 
 void main() {
   test('Parse json', () async {
+    print("Current Dir: ${Directory.current}");
     var jsonString = File('test/apis/data/github.json').readAsStringSync();
 
     var api = GitHub();

@@ -8,6 +8,7 @@ import 'package:gitjournal/apis/gitlab.dart';
 
 void main() {
   test('Parse json', () async {
+    print("Current Dir: ${Directory.current}");
     var jsonString = File('test/apis/data/gitlab.json').readAsStringSync();
 
     var api = GitLab();

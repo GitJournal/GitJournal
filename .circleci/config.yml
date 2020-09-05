@@ -12,6 +12,9 @@ jobs:
           name: SSH Problem
           command: echo 'Host *\n    StrictHostKeyChecking no' > ~/.ssh/config
       - run:
+          name: Current Directory
+          command: pwd
+      - run:
           name: Test
           command: flutter test -j 1 --coverage --machine | tojunit --output junit.xml
       - store_test_results:
