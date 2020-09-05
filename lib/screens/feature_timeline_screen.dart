@@ -159,32 +159,41 @@ class _DevelopmentText extends StatelessWidget {
   Widget build(BuildContext context) {
     var style = Theme.of(context).textTheme.bodyText2;
 
+    var str = tr('feature_timeline.issues');
+    var i = str.toLowerCase().indexOf('github');
+    if (i == -1) {
+      return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: RichText(text: TextSpan(children: [gitHubLink(str)])),
+      );
+    }
+
+    var before = str.substring(0, i);
+    var after = str.substring(i + 6);
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: RichText(
         text: TextSpan(
           children: [
-            TextSpan(
-              text: "GitJournal's development is tracked on ",
-              style: style,
-            ),
-            TextSpan(
-              text: 'GitHub',
-              style: const TextStyle(color: Colors.blue),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  launch(githubUrl);
-                  logEvent(Event.FeatureTimelineGithubClicked);
-                },
-            ),
-            TextSpan(
-              text:
-                  " Please consider voting on the issues you consider important.",
-              style: style,
-            ),
+            TextSpan(text: before, style: style),
+            gitHubLink('GitHub'),
+            TextSpan(text: after, style: style),
           ],
         ),
       ),
+    );
+  }
+
+  TextSpan gitHubLink(String text) {
+    return TextSpan(
+      text: text,
+      style: const TextStyle(color: Colors.blue),
+      recognizer: TapGestureRecognizer()
+        ..onTap = () {
+          launch(githubUrl);
+          logEvent(Event.FeatureTimelineGithubClicked);
+        },
     );
   }
 }

@@ -333,6 +333,7 @@ feature_timeline:
   title: Feature Timeline
   progress: In Progress
   plan: Planned
+  issues: GitJournal's development is tracked on Github. Please consider voting on the issues you consider important.
 
 purchase_screen:
   title: Pro Version
