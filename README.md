@@ -33,18 +33,18 @@ Features -
 # Screenshots
 
 <p float="left">
-<img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-1.png" width="240" height="auto">
-<img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-2.png" width="240" height="auto">
-<img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-4.png" width="240" height="auto">
-<img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-5.png" width="240" height="auto">
-<img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-6.png" width="240" height="auto">
-<img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-7.png" width="240" height="auto">
-<img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-16.png" width="240" height="auto">
-<img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-11.png" width="240" height="auto">
-<img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-13.png" width="240" height="auto">
-<img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-12.png" width="240" height="auto">
-<img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-18.png" width="240" height="auto">
-<img src="https://gitjournal.io/screenshots/android/en-GB/images/phoneScreenshots/Nexus 6P-20.png" width="240" height="auto">
+<img src="https://gitjournal.io/screenshots/android/2020-06-04/en-GB/images/phoneScreenshots/Nexus 6P-1.png" width="240" height="auto">
+<img src="https://gitjournal.io/screenshots/android/2020-06-04/en-GB/images/phoneScreenshots/Nexus 6P-2.png" width="240" height="auto">
+<img src="https://gitjournal.io/screenshots/android/2020-06-04/en-GB/images/phoneScreenshots/Nexus 6P-4.png" width="240" height="auto">
+<img src="https://gitjournal.io/screenshots/android/2020-06-04/en-GB/images/phoneScreenshots/Nexus 6P-5.png" width="240" height="auto">
+<img src="https://gitjournal.io/screenshots/android/2020-06-04/en-GB/images/phoneScreenshots/Nexus 6P-6.png" width="240" height="auto">
+<img src="https://gitjournal.io/screenshots/android/2020-06-04/en-GB/images/phoneScreenshots/Nexus 6P-7.png" width="240" height="auto">
+<img src="https://gitjournal.io/screenshots/android/2020-06-04/en-GB/images/phoneScreenshots/Nexus 6P-16.png" width="240" height="auto">
+<img src="https://gitjournal.io/screenshots/android/2020-06-04/en-GB/images/phoneScreenshots/Nexus 6P-11.png" width="240" height="auto">
+<img src="https://gitjournal.io/screenshots/android/2020-06-04/en-GB/images/phoneScreenshots/Nexus 6P-13.png" width="240" height="auto">
+<img src="https://gitjournal.io/screenshots/android/2020-06-04/en-GB/images/phoneScreenshots/Nexus 6P-12.png" width="240" height="auto">
+<img src="https://gitjournal.io/screenshots/android/2020-06-04/en-GB/images/phoneScreenshots/Nexus 6P-18.png" width="240" height="auto">
+<img src="https://gitjournal.io/screenshots/android/2020-06-04/en-GB/images/phoneScreenshots/Nexus 6P-20.png" width="240" height="auto">
 </p>
 
 # Migrating from Existing Apps
