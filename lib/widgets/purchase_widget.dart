@@ -107,6 +107,12 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
     if (response.error != null) {
       Log.e("IAP queryProductDetails: ${response.error}");
     }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
     var products = response.productDetails;
     products.sort((a, b) {
       var pa = _fromProductDetail(a);
@@ -121,11 +127,6 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
       Log.i("Calling minPurchaseOptionCallback with ${products.first.price}");
       widget.minPurchaseOptionCallback(products.first.price);
     }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
 
     setState(() {
       _products = products;
