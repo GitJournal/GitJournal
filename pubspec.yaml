@@ -7,8 +7,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  intl:
-    git: https://github.com/GitJournal/intl.git
+  intl: ^0.16.1
   path: ^1.6.2
   uuid: ^2.0.1
   yaml: ^2.2.0
@@ -70,8 +69,6 @@ dev_dependencies:
   benchmark_harness: any
 
 dependency_overrides:
-  intl:
-    git: https://github.com/GitJournal/intl.git
   markdown:
     git: https://github.com/GitJournal/markdown.git
 
