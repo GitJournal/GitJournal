@@ -22,11 +22,53 @@
   SOFTWARE.
 */
 
-import 'package:gitjournal/core/link.dart';
 import 'package:test/test.dart';
 
 import 'package:markdown/markdown.dart' as md;
-import 'package:flutter_markdown/flutter_markdown.dart';
+
+/// Parse [[term]]
+class _WikiLinkSyntax extends md.InlineSyntax {
+  static final String _pattern = r'\[\[([^\[\]]+)\]\]';
+
+  _WikiLinkSyntax() : super(_pattern);
+
+  @override
+  bool onMatch(md.InlineParser parser, Match match) {
+    var term = match[1].trim();
+    var displayText = term;
+    if (term.contains('|')) {
+      var s = term.split('|');
+      term = s[0].trimRight();
+      displayText = s[1].trimLeft();
+    }
+
+    var el = md.Element('a', [md.Text(displayText)]);
+    el.attributes['type'] = 'wiki';
+    el.attributes['href'] = '[[$term]]';
+    el.attributes['term'] = term;
+
+    parser.addNode(el);
+    return true;
+  }
+}
+
+/// Parse [task list items](https://github.github.com/gfm/#task-list-items-extension-).
+class _TaskListSyntax extends md.InlineSyntax {
+  // FIXME: Waiting for dart-lang/markdown#269 to land
+  static final String _pattern = r'^ *\[([ xX])\] +';
+
+  _TaskListSyntax() : super(_pattern);
+
+  @override
+  bool onMatch(md.InlineParser parser, Match match) {
+    md.Element el = md.Element.withTag('input');
+    el.attributes['type'] = 'checkbox';
+    el.attributes['disabled'] = 'true';
+    el.attributes['checked'] = '${match[1].trim().isNotEmpty}';
+    parser.addNode(el);
+    return true;
+  }
+}
 
 void main() {
   //
@@ -39,7 +81,7 @@ void main() {
     var doc = md.Document(
       encodeHtml: false,
       extensionSet: md.ExtensionSet.gitHubFlavored,
-      inlineSyntaxes: [WikiLinkSyntax(), TaskListSyntax()],
+      inlineSyntaxes: [_WikiLinkSyntax(), _TaskListSyntax()],
     );
     var nodes = doc.parseLines(lines);
     var html = md.renderToHtml(nodes);
