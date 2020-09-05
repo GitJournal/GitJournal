@@ -108,6 +108,7 @@ class _FolderViewState extends State<FolderView> {
             */
           },
           isNoteSelected: (n) => n == selectedNote,
+          searchTerm: "",
         );
       },
     );

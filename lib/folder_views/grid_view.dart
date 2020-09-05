@@ -13,12 +13,15 @@ class GridFolderView extends StatelessWidget {
   final NotesFolder folder;
   final String emptyText;
 
+  final String searchTerm;
+
   GridFolderView({
     @required this.folder,
     @required this.noteTapped,
     @required this.noteLongPressed,
     @required this.isNoteSelected,
     @required this.emptyText,
+    @required this.searchTerm,
   });
 
   @override
@@ -30,6 +33,7 @@ class GridFolderView extends StatelessWidget {
       emptyText: emptyText,
       fixedHeight: true,
       isNoteSelected: isNoteSelected,
+      searchTerm: searchTerm,
     );
   }
 }

@@ -16,12 +16,15 @@ class CardView extends StatelessWidget {
   final String emptyText;
   final bool fixedHeight;
 
+  final String searchTerm;
+
   CardView({
     @required this.folder,
     @required this.noteTapped,
     @required this.noteLongPressed,
     @required this.isNoteSelected,
     @required this.emptyText,
+    @required this.searchTerm,
     this.fixedHeight = false,
   });
 
@@ -57,6 +60,7 @@ class CardView extends StatelessWidget {
           noteTapped: noteTapped,
           noteLongPressed: noteLongPressed,
           selected: isNoteSelected(note),
+          searchTerm: searchTerm,
         );
       },
       maxCrossAxisExtent: 200.0,

@@ -15,6 +15,7 @@ class JournalView extends StatelessWidget {
 
   final NotesFolder folder;
   final String emptyText;
+  final String searchTerm;
 
   static final _dateFormat = DateFormat('dd MMM, yyyy  ');
   static final _timeFormat = DateFormat('Hm');
@@ -25,6 +26,7 @@ class JournalView extends StatelessWidget {
     @required this.noteLongPressed,
     @required this.isNoteSelected,
     @required this.emptyText,
+    @required this.searchTerm,
   });
 
   @override
@@ -34,6 +36,7 @@ class JournalView extends StatelessWidget {
       emptyText: emptyText,
       noteTileBuilder: _buildRow,
       isNoteSelected: isNoteSelected,
+      searchTerm: searchTerm,
     );
   }
 

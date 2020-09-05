@@ -25,6 +25,8 @@ class StandardView extends StatelessWidget {
   final StandardViewHeader headerType;
   final bool showSummary;
 
+  final String searchTerm;
+
   static final _dateFormat = DateFormat('dd MMM, yyyy');
 
   StandardView({
@@ -35,6 +37,7 @@ class StandardView extends StatelessWidget {
     @required this.headerType,
     @required this.showSummary,
     @required this.isNoteSelected,
+    @required this.searchTerm,
   });
 
   @override
@@ -45,6 +48,7 @@ class StandardView extends StatelessWidget {
       emptyText: emptyText,
       noteTileBuilder: _buildRow,
       isNoteSelected: isNoteSelected,
+      searchTerm: searchTerm,
     );
   }
 

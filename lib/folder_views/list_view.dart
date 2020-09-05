@@ -17,12 +17,14 @@ class FolderListView extends StatefulWidget {
   final NoteBoolPropertyFunction isNoteSelected;
   final NotesFolder folder;
   final String emptyText;
+  final String searchTerm;
 
   FolderListView({
     @required this.folder,
     @required this.noteTileBuilder,
     @required this.emptyText,
     @required this.isNoteSelected,
+    @required this.searchTerm,
   });
 
   @override

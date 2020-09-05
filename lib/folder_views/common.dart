@@ -29,6 +29,7 @@ Widget buildFolderView({
   @required NoteSelectedFunction noteTapped,
   @required NoteSelectedFunction noteLongPressed,
   @required NoteBoolPropertyFunction isNoteSelected,
+  @required String searchTerm,
 }) {
   switch (viewType) {
     case FolderViewType.Standard:
@@ -40,6 +41,7 @@ Widget buildFolderView({
         headerType: header,
         showSummary: showSummary,
         isNoteSelected: isNoteSelected,
+        searchTerm: searchTerm,
       );
     case FolderViewType.Journal:
       return JournalView(
@@ -48,6 +50,7 @@ Widget buildFolderView({
         noteLongPressed: noteLongPressed,
         emptyText: emptyText,
         isNoteSelected: isNoteSelected,
+        searchTerm: searchTerm,
       );
     case FolderViewType.Card:
       return CardView(
@@ -56,6 +59,7 @@ Widget buildFolderView({
         noteLongPressed: noteLongPressed,
         emptyText: emptyText,
         isNoteSelected: isNoteSelected,
+        searchTerm: searchTerm,
       );
     case FolderViewType.Grid:
       return GridFolderView(
@@ -64,6 +68,7 @@ Widget buildFolderView({
         noteLongPressed: noteLongPressed,
         emptyText: emptyText,
         isNoteSelected: isNoteSelected,
+        searchTerm: searchTerm,
       );
   }
 

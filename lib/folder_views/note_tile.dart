@@ -10,16 +10,19 @@ class NoteTile extends StatelessWidget {
   final NoteSelectedFunction noteTapped;
   final NoteSelectedFunction noteLongPressed;
   final bool selected;
+  final String searchTerm;
 
   NoteTile({
     @required this.note,
     @required this.noteTapped,
     @required this.noteLongPressed,
     @required this.selected,
+    @required this.searchTerm,
   });
 
   @override
   Widget build(BuildContext context) {
+    // FIXME: Make sure the text is in the body
     var buffer = StringBuffer();
     var i = 0;
     for (var line in LineSplitter.split(note.body)) {
@@ -64,6 +67,7 @@ class NoteTile extends StatelessWidget {
             const SizedBox(height: 8.0),
           Flexible(
             flex: 1,
+            // FIXME: Build a rich text with the text selected
             child: Text(
               body,
               maxLines: 11,
