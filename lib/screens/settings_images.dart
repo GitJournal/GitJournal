@@ -4,11 +4,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/features.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
-import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class SettingsImagesScreen extends StatefulWidget {
   @override
@@ -75,7 +73,7 @@ class SettingsImagesScreenState extends State<SettingsImagesScreen> {
           },
         ),
       ),
-      body: ProOverlay(feature: Feature.imageSupport, child: body),
+      body: body,
     );
   }
 }
