@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/services.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:meta/meta.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/utils.dart';
@@ -107,7 +108,7 @@ class GitHub implements GitHost {
     var repos = <GitHostRepo>[];
     list.forEach((dynamic d) {
       var map = Map<String, dynamic>.from(d);
-      var repo = _repoFromJson(map);
+      var repo = repoFromJson(map);
       repos.add(repo);
     });
 
@@ -151,7 +152,7 @@ class GitHub implements GitHost {
 
     Log.d("GitHub createRepo: " + response.body);
     Map<String, dynamic> map = json.decode(response.body);
-    return _repoFromJson(map);
+    return repoFromJson(map);
   }
 
   @override
@@ -180,7 +181,7 @@ class GitHub implements GitHost {
 
     Log.d("GitHub getRepo: " + response.body);
     Map<String, dynamic> map = json.decode(response.body);
-    return _repoFromJson(map);
+    return repoFromJson(map);
   }
 
   @override
@@ -216,7 +217,8 @@ class GitHub implements GitHost {
     return json.decode(response.body);
   }
 
-  GitHostRepo _repoFromJson(Map<String, dynamic> parsedJson) {
+  @visibleForTesting
+  GitHostRepo repoFromJson(Map<String, dynamic> parsedJson) {
     DateTime updatedAt;
     try {
       updatedAt = DateTime.parse(parsedJson['updated_at'].toString());

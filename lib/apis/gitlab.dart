@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/services.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:meta/meta.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/utils.dart';
@@ -94,7 +95,7 @@ class GitLab implements GitHost {
     var repos = <GitHostRepo>[];
     list.forEach((dynamic d) {
       var map = Map<String, dynamic>.from(d);
-      var repo = _repoFromJson(map);
+      var repo = repoFromJson(map);
       repos.add(repo);
     });
 
@@ -137,7 +138,7 @@ class GitLab implements GitHost {
 
     Log.d("GitLab createRepo: " + response.body);
     Map<String, dynamic> map = json.decode(response.body);
-    return _repoFromJson(map);
+    return repoFromJson(map);
   }
 
   @override
@@ -163,7 +164,7 @@ class GitLab implements GitHost {
 
     Log.d("GitLab getRepo: " + response.body);
     Map<String, dynamic> map = json.decode(response.body);
-    return _repoFromJson(map);
+    return repoFromJson(map);
   }
 
   @override
@@ -200,7 +201,8 @@ class GitLab implements GitHost {
     return json.decode(response.body);
   }
 
-  GitHostRepo _repoFromJson(Map<String, dynamic> parsedJson) {
+  @visibleForTesting
+  GitHostRepo repoFromJson(Map<String, dynamic> parsedJson) {
     DateTime updatedAt;
     try {
       updatedAt = DateTime.parse(parsedJson['last_activity_at'].toString());
@@ -208,6 +210,12 @@ class GitLab implements GitHost {
       Log.e(e);
     }
     var licenseMap = parsedJson['license'];
+
+    List<String> tags = [];
+    var tagList = parsedJson['tag_list'];
+    if (tagList is List) {
+      tags = tagList.map((e) => e.toString()).toList();
+    }
 
     return GitHostRepo(
       fullName: parsedJson['path_with_namespace'],
@@ -219,7 +227,7 @@ class GitLab implements GitHost {
       issues: parsedJson['open_issues_count'],
       language: parsedJson['language'],
       private: parsedJson['visibility'] == 'private',
-      tags: parsedJson['tag_list'],
+      tags: tags,
       license: licenseMap != null ? licenseMap['nickname'] : null,
     );
   }
