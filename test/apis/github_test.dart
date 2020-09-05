@@ -9,7 +9,6 @@ import 'package:gitjournal/apis/github.dart';
 
 void main() {
   test('Parse json', () async {
-    print("Current Dir: ${Directory.current}");
     var testDataPath = '';
 
     var currentDir = Directory.current;
