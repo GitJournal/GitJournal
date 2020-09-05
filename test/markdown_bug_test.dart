@@ -22,9 +22,8 @@
   SOFTWARE.
 */
 
-import 'package:test/test.dart';
-
 import 'package:markdown/markdown.dart' as md;
+import 'package:test/test.dart';
 
 /// Parse [[term]]
 class _WikiLinkSyntax extends md.InlineSyntax {

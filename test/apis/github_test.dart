@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:path/path.dart';
 import 'package:test/test.dart';
 
 import 'package:gitjournal/apis/githost_factory.dart';
@@ -9,7 +10,18 @@ import 'package:gitjournal/apis/github.dart';
 void main() {
   test('Parse json', () async {
     print("Current Dir: ${Directory.current}");
-    var jsonString = File('test/apis/data/github.json').readAsStringSync();
+    var testDataPath = '';
+
+    var currentDir = Directory.current;
+    var folderName = basename(currentDir.path);
+
+    if (folderName == 'test') {
+      testDataPath = join(currentDir.path, 'apis/data/github.json');
+    } else {
+      testDataPath = join(currentDir.path, 'test/apis/data/github.json');
+    }
+
+    var jsonString = File(testDataPath).readAsStringSync();
 
     var api = GitHub();
 
