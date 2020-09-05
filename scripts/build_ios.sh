@@ -23,7 +23,10 @@ export LIBS_URL="https://github.com/GitJournal/ios-libraries/releases/download/v
 if [ ! -d "ios/libs" ]; then
     echo "Downloading Libs"
     wget "$LIBS_URL"
-    unzip libs.zip
+    cd ios
+    unzip ../libs.zip
+    cd -
+    rm libs.zip
 fi
 
 # Place gj_common
