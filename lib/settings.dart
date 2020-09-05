@@ -332,17 +332,21 @@ class Settings extends ChangeNotifier {
 }
 
 class NoteFileNameFormat {
-  static const Iso8601WithTimeZone =
-      NoteFileNameFormat("Iso8601WithTimeZone", "ISO8601 With TimeZone");
-  static const Iso8601 = NoteFileNameFormat("Iso8601", "Iso8601");
+  static const Iso8601WithTimeZone = NoteFileNameFormat(
+      "Iso8601WithTimeZone", 'settings.NoteFileNameFormat.iso8601WithTimeZone');
+  static const Iso8601 =
+      NoteFileNameFormat("Iso8601", 'settings.NoteFileNameFormat.iso8601');
   static const Iso8601WithTimeZoneWithoutColon = NoteFileNameFormat(
-      "Iso8601WithTimeZoneWithoutColon", "ISO8601 without Colons");
-  static const FromTitle = NoteFileNameFormat("FromTitle", "Title");
+      "Iso8601WithTimeZoneWithoutColon",
+      'settings.NoteFileNameFormat.iso8601WithoutColon');
+  static const FromTitle =
+      NoteFileNameFormat("FromTitle", 'settings.NoteFileNameFormat.title');
   static const SimpleDate =
-      NoteFileNameFormat("SimpleDate", "yyyy-mm-dd-hh-mm-ss");
-  static const UuidV4 = NoteFileNameFormat("uuidv4", "Uuid V4");
-  static const Zettelkasten =
-      NoteFileNameFormat("Zettelkasten", "yyyymmddhhmmss");
+      NoteFileNameFormat("SimpleDate", 'settings.NoteFileNameFormat.simmple');
+  static const UuidV4 =
+      NoteFileNameFormat("uuidv4", 'settings.NoteFileNameFormat.uuid');
+  static const Zettelkasten = NoteFileNameFormat(
+      "Zettelkasten", 'settings.NoteFileNameFormat.zettelkasten');
 
   static const Default = FromTitle;
 
@@ -384,7 +388,7 @@ class NoteFileNameFormat {
   }
 
   String toPublicString() {
-    return _publicStr;
+    return tr(_publicStr);
   }
 
   @override
@@ -444,10 +448,13 @@ class RemoteSyncFrequency {
 }
 
 class SettingsEditorType {
-  static const Markdown = SettingsEditorType("Markdown", "Markdown");
-  static const Raw = SettingsEditorType("Raw", "Raw");
-  static const Journal = SettingsEditorType("Journal", "Journal");
-  static const Checklist = SettingsEditorType("Checklist", "Checklist");
+  static const Markdown =
+      SettingsEditorType('settings.editors.markdownEditor', "Markdown");
+  static const Raw = SettingsEditorType('settings.editors.rawEditor', "Raw");
+  static const Journal =
+      SettingsEditorType('settings.editors.journalEditor', "Journal");
+  static const Checklist =
+      SettingsEditorType('settings.editors.checklistEditor', "Checklist");
   static const Default = Markdown;
 
   final String _str;
@@ -459,7 +466,7 @@ class SettingsEditorType {
   }
 
   String toPublicString() {
-    return _publicString;
+    return tr(_publicString);
   }
 
   EditorType toEditorType() {
@@ -524,10 +531,14 @@ class SettingsEditorType {
 }
 
 class SettingsFolderViewType {
-  static const Standard = SettingsFolderViewType("Standard", "Standard");
-  static const Journal = SettingsFolderViewType("Journal", "Journal");
-  static const Card = SettingsFolderViewType("Card", "Card");
-  static const Grid = SettingsFolderViewType("Grid", "Grid");
+  static const Standard =
+      SettingsFolderViewType('widgets.FolderView.views.standard', "Standard");
+  static const Journal =
+      SettingsFolderViewType('widgets.FolderView.views.journal', "Journal");
+  static const Card =
+      SettingsFolderViewType('widgets.FolderView.views.card', "Card");
+  static const Grid =
+      SettingsFolderViewType('widgets.FolderView.views.grid', "Grid");
   static const Default = Standard;
 
   final String _str;
@@ -539,7 +550,7 @@ class SettingsFolderViewType {
   }
 
   String toPublicString() {
-    return _publicString;
+    return tr(_publicString);
   }
 
   static const options = <SettingsFolderViewType>[
@@ -604,20 +615,24 @@ class SettingsFolderViewType {
 }
 
 class SettingsMarkdownDefaultView {
-  static const Edit = SettingsMarkdownDefaultView("Edit");
-  static const View = SettingsMarkdownDefaultView("View");
-  static const LastUsed = SettingsMarkdownDefaultView("Last Used");
+  static const Edit =
+      SettingsMarkdownDefaultView('settings.EditorDefaultView.edit', "Edit");
+  static const View =
+      SettingsMarkdownDefaultView('settings.EditorDefaultView.view', "View");
+  static const LastUsed = SettingsMarkdownDefaultView(
+      'settings.EditorDefaultView.lastUsed', "Last Used");
   static const Default = LastUsed;
 
   final String _str;
-  const SettingsMarkdownDefaultView(this._str);
+  final String _publicStr;
+  const SettingsMarkdownDefaultView(this._publicStr, this._str);
 
   String toInternalString() {
     return _str;
   }
 
   String toPublicString() {
-    return _str;
+    return tr(_publicStr);
   }
 
   static const options = <SettingsMarkdownDefaultView>[
@@ -653,8 +668,10 @@ class SettingsMarkdownDefaultView {
 }
 
 class SettingsHomeScreen {
-  static const AllNotes = SettingsHomeScreen("All Notes", "all_notes");
-  static const AllFolders = SettingsHomeScreen("All Folders", "all_folders");
+  static const AllNotes =
+      SettingsHomeScreen("settings.HomeScreen.allNotes", "all_notes");
+  static const AllFolders =
+      SettingsHomeScreen("settings.HomeScreen.allFolders", "all_folders");
   static const Default = AllNotes;
 
   final String _str;
@@ -666,7 +683,7 @@ class SettingsHomeScreen {
   }
 
   String toPublicString() {
-    return _publicString;
+    return tr(_publicString);
   }
 
   static const options = <SettingsHomeScreen>[

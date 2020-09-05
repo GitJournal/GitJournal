@@ -82,6 +82,8 @@ settings:
     markdownEditor: Markdown Editor
     journalEditor: Journal Editor
     defaultFolder: Default Folder
+    checklistEditor: Checklist Editor
+    rawEditor: Raw Editor
   sortingField:
     modified: Last Modified
     created: Created
@@ -105,6 +107,22 @@ settings:
     title: Misc Settings
     swipe: Swipe to Delete Note
     listView: List View
+  NoteFileNameFormat:
+    iso8601WithTimeZone: ISO8601 With TimeZone
+    iso8601: ISO8601
+    iso8601WithoutColon: ISO8601 without Colons
+    title: Title
+    uuid: Uuid V4
+    simmple: yyyy-mm-dd-hh-mm-ss
+    zettelkasten: yyyymmddhhmmss
+  HomeScreen:
+    allNotes: All Notes
+    allFolders: All Folders
+  EditorDefaultView:
+    edit: Edit
+    view: View
+    lastUsed: Last Used
+
 
 editors:
   checklist:
