@@ -221,6 +221,7 @@ widgets:
       select: Select View
     sortingOptions: Sorting Options
     viewOptions: View Options
+    searchFailed: No Search Results Found
 
 
 rootFolder: Root Folder
