@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
+import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/folder_views/note_tile.dart';
 
 class CardView extends StatelessWidget {
   final NoteSelectedFunction noteTapped;
   final NoteSelectedFunction noteLongPressed;
+  final NoteBoolPropertyFunction isNoteSelected;
+
   final NotesFolder folder;
   final String emptyText;
   final bool fixedHeight;
@@ -17,6 +20,7 @@ class CardView extends StatelessWidget {
     @required this.folder,
     @required this.noteTapped,
     @required this.noteLongPressed,
+    @required this.isNoteSelected,
     @required this.emptyText,
     this.fixedHeight = false,
   });
@@ -52,6 +56,7 @@ class CardView extends StatelessWidget {
           note: note,
           noteTapped: noteTapped,
           noteLongPressed: noteLongPressed,
+          selected: isNoteSelected(note),
         );
       },
       maxCrossAxisExtent: 200.0,

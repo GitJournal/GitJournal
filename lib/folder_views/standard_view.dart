@@ -17,6 +17,8 @@ enum StandardViewHeader {
 class StandardView extends StatelessWidget {
   final NoteSelectedFunction noteTapped;
   final NoteSelectedFunction noteLongPressed;
+  final NoteBoolPropertyFunction isNoteSelected;
+
   final NotesFolder folder;
   final String emptyText;
 
@@ -32,6 +34,7 @@ class StandardView extends StatelessWidget {
     @required this.emptyText,
     @required this.headerType,
     @required this.showSummary,
+    @required this.isNoteSelected,
   });
 
   @override
@@ -41,6 +44,7 @@ class StandardView extends StatelessWidget {
       folder: folder,
       emptyText: emptyText,
       noteTileBuilder: _buildRow,
+      isNoteSelected: isNoteSelected,
     );
   }
 

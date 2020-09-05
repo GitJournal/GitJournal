@@ -5,17 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/utils/markdown.dart';
 
-typedef void NoteSelectedFunction(Note note);
-
 class NoteTile extends StatelessWidget {
   final Note note;
   final NoteSelectedFunction noteTapped;
   final NoteSelectedFunction noteLongPressed;
+  final bool selected;
 
   NoteTile({
     @required this.note,
     @required this.noteTapped,
     @required this.noteLongPressed,
+    @required this.selected,
   });
 
   @override
@@ -40,10 +40,14 @@ class NoteTile extends StatelessWidget {
       borderColor = theme.highlightColor.withAlpha(30);
     }
 
+    if (selected) {
+      borderColor = theme.accentColor;
+    }
+
     var tileContent = Container(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(8)),
-        border: Border.all(color: borderColor),
+        border: Border.all(color: borderColor, width: selected ? 2.0 : 1.0),
       ),
       padding: const EdgeInsets.all(16.0),
       child: Column(

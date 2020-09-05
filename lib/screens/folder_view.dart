@@ -99,8 +99,7 @@ class _FolderViewState extends State<FolderView> {
             }
           },
           noteLongPressed: (Note note) {
-            // Disabled for now, until I figure out how to render
-            // the selected note differently
+            // Disabled for now, until I expose actions for the note
             /*
             setState(() {
               inSelectionMode = true;
@@ -108,6 +107,7 @@ class _FolderViewState extends State<FolderView> {
             });
             */
           },
+          isNoteSelected: (n) => n == selectedNote,
         );
       },
     );

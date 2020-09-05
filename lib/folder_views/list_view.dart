@@ -10,11 +10,11 @@ import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/icon_dismissable.dart';
 
-typedef void NoteSelectedFunction(Note note);
 typedef Widget NoteTileBuilder(BuildContext context, Note note);
 
 class FolderListView extends StatefulWidget {
   final NoteTileBuilder noteTileBuilder;
+  final NoteBoolPropertyFunction isNoteSelected;
   final NotesFolder folder;
   final String emptyText;
 
@@ -22,6 +22,7 @@ class FolderListView extends StatefulWidget {
     @required this.folder,
     @required this.noteTileBuilder,
     @required this.emptyText,
+    @required this.isNoteSelected,
   });
 
   @override
@@ -80,7 +81,7 @@ class _FolderListViewState extends State<FolderListView> {
     _listKey.currentState.removeItem(index, (context, animation) {
       var i = deletedViaDismissed.indexWhere((path) => path == note.filePath);
       if (i == -1) {
-        return _buildNote(context, note, animation);
+        return _buildNote(note, widget.isNoteSelected(note), animation);
       } else {
         deletedViaDismissed.removeAt(i);
         return Container();
@@ -122,12 +123,12 @@ class _FolderListViewState extends State<FolderListView> {
     }
 
     var note = widget.folder.notes[i];
-    return _buildNote(context, note, animation);
+    return _buildNote(note, widget.isNoteSelected(note), animation);
   }
 
   Widget _buildNote(
-    BuildContext context,
     Note note,
+    bool selected,
     Animation<double> animation,
   ) {
     var settings = Provider.of<Settings>(context);
@@ -160,6 +161,16 @@ class _FolderListViewState extends State<FolderListView> {
             ..removeCurrentSnackBar()
             ..showSnackBar(snackBar);
         },
+      );
+    }
+
+    if (selected) {
+      var borderColor = Theme.of(context).accentColor;
+      viewItem = Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: borderColor, width: selected ? 2.0 : 1.0),
+        ),
+        child: viewItem,
       );
     }
 

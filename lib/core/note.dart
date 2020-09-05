@@ -19,6 +19,9 @@ import 'md_yaml_doc.dart';
 import 'md_yaml_doc_codec.dart';
 import 'note_serializer.dart';
 
+typedef void NoteSelectedFunction(Note note);
+typedef bool NoteBoolPropertyFunction(Note note);
+
 enum NoteLoadState {
   None,
   Loading,

@@ -11,6 +11,8 @@ import 'package:gitjournal/folder_views/list_view.dart';
 class JournalView extends StatelessWidget {
   final NoteSelectedFunction noteTapped;
   final NoteSelectedFunction noteLongPressed;
+  final NoteBoolPropertyFunction isNoteSelected;
+
   final NotesFolder folder;
   final String emptyText;
 
@@ -21,16 +23,17 @@ class JournalView extends StatelessWidget {
     @required this.folder,
     @required this.noteTapped,
     @required this.noteLongPressed,
+    @required this.isNoteSelected,
     @required this.emptyText,
   });
 
-  @override
   @override
   Widget build(BuildContext context) {
     return FolderListView(
       folder: folder,
       emptyText: emptyText,
       noteTileBuilder: _buildRow,
+      isNoteSelected: isNoteSelected,
     );
   }
 

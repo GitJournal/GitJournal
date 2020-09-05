@@ -20,8 +20,6 @@ enum FolderViewType {
   Grid,
 }
 
-typedef void NoteSelectedFunction(Note note);
-
 Widget buildFolderView({
   @required FolderViewType viewType,
   @required NotesFolder folder,
@@ -30,6 +28,7 @@ Widget buildFolderView({
   @required bool showSummary,
   @required NoteSelectedFunction noteTapped,
   @required NoteSelectedFunction noteLongPressed,
+  @required NoteBoolPropertyFunction isNoteSelected,
 }) {
   switch (viewType) {
     case FolderViewType.Standard:
@@ -40,6 +39,7 @@ Widget buildFolderView({
         emptyText: emptyText,
         headerType: header,
         showSummary: showSummary,
+        isNoteSelected: isNoteSelected,
       );
     case FolderViewType.Journal:
       return JournalView(
@@ -47,6 +47,7 @@ Widget buildFolderView({
         noteTapped: noteTapped,
         noteLongPressed: noteLongPressed,
         emptyText: emptyText,
+        isNoteSelected: isNoteSelected,
       );
     case FolderViewType.Card:
       return CardView(
@@ -54,6 +55,7 @@ Widget buildFolderView({
         noteTapped: noteTapped,
         noteLongPressed: noteLongPressed,
         emptyText: emptyText,
+        isNoteSelected: isNoteSelected,
       );
     case FolderViewType.Grid:
       return GridFolderView(
@@ -61,6 +63,7 @@ Widget buildFolderView({
         noteTapped: noteTapped,
         noteLongPressed: noteLongPressed,
         emptyText: emptyText,
+        isNoteSelected: isNoteSelected,
       );
   }
 

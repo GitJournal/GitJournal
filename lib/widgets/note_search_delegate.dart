@@ -85,6 +85,7 @@ class NoteSearchDelegate extends SearchDelegate<Note> {
       showSummary: true,
       noteTapped: (Note note) => openNoteEditor(context, note, folder),
       noteLongPressed: (Note note) {},
+      isNoteSelected: (n) => false,
     );
   }
 }
