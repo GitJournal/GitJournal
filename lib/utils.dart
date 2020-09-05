@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 
@@ -28,9 +29,9 @@ Future<String> getVersionString() async {
 SnackBar buildUndoDeleteSnackbar(
     StateContainer stateContainer, Note deletedNote) {
   return SnackBar(
-    content: const Text('Note Deleted'),
+    content: Text(tr('widgets.FolderView.noteDeleted')),
     action: SnackBarAction(
-      label: "Undo",
+      label: tr('widgets.FolderView.undo'),
       onPressed: () {
         Log.d("Undoing delete");
         stateContainer.undoRemoveNote(deletedNote);

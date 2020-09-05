@@ -185,6 +185,8 @@ widgets:
     fail: Failed to Load
   FolderView:
     noteSelected: Note Selected
+    noteDeleted: Note Deleted
+    undo: Undo
     syncError: Sync Error {}
     headerOptions:
       heading: Header Options
