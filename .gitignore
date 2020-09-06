@@ -1,5 +1,6 @@
 .DS_Store
 .dart_tool/
+**/ios/Flutter/.last_build_id
 
 .packages
 .pub/
@@ -24,3 +25,6 @@ android/fastlane/report.xml
 debugSymbols
 
 test/.test_coverage.dart
+lib/.env.dart
+
+gj_common
