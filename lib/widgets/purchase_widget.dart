@@ -8,6 +8,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/iap.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
@@ -38,11 +39,11 @@ class PurchaseButton extends StatelessWidget {
       child: Text(text, textAlign: TextAlign.center),
       color: Theme.of(context).primaryColor,
       padding: const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 16.0),
-      onPressed: product != null ? () => _initPurchase(context) : null,
+      onPressed: product != null ? () => _reportExceptions(context) : null,
     );
   }
 
-  void _initPurchase(BuildContext context) async {
+  Future<void> _initPurchase(BuildContext context) async {
     var purchaseParam = PurchaseParam(productDetails: product);
     var sentSuccess = await InAppPurchaseConnection.instance
         .buyNonConsumable(purchaseParam: purchaseParam);
@@ -51,10 +52,15 @@ class PurchaseButton extends StatelessWidget {
       var err = "Failed to send purchase request";
       var dialog = PurchaseFailedDialog(err);
       await showDialog(context: context, builder: (context) => dialog);
-      return;
     }
+  }
 
-    return null;
+  void _reportExceptions(BuildContext context) async {
+    try {
+      await _initPurchase(context);
+    } catch (err, stackTrace) {
+      logException(err, stackTrace);
+    }
   }
 }
 
