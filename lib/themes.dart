@@ -7,7 +7,7 @@ class Themes {
     primaryColorLight: const Color(0xFF98ee99),
     primaryColorDark: const Color(0xFF338a3e),
     accentColor: const Color(0xff6d4c41),
-    cursorColor: const Color(0xFF66bb6a),
+    cursorColor: const Color(0xFF338a3e),
     textSelectionHandleColor: const Color(0xFF66bb6a),
   );
 
