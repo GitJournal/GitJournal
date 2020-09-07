@@ -21,22 +21,12 @@ class HighlightedText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (highlightText.isEmpty) {
-      return Text(
-        text,
-        maxLines: maxLines - 1,
-        overflow: overflow,
-        style: style,
-      );
+      return Text(text, maxLines: maxLines, overflow: overflow, style: style);
     }
 
     var i = text.toLowerCase().indexOf(highlightTextLowerCase);
     if (i == -1) {
-      return Text(
-        text,
-        maxLines: maxLines - 1,
-        overflow: overflow,
-        style: style,
-      );
+      return Text(text, maxLines: maxLines, overflow: overflow, style: style);
     }
 
     var highlightStyle = style.copyWith(

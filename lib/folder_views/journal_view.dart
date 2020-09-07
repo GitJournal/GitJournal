@@ -7,6 +7,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/folder_views/list_view.dart';
+import 'package:gitjournal/widgets/highlighted_text.dart';
 
 class JournalView extends StatelessWidget {
   final NoteSelectedFunction noteTapped;
@@ -16,6 +17,7 @@ class JournalView extends StatelessWidget {
   final NotesFolder folder;
   final String emptyText;
   final String searchTerm;
+  final String searchTermLowerCase;
 
   static final _dateFormat = DateFormat('dd MMM, yyyy  ');
   static final _timeFormat = DateFormat('Hm');
@@ -27,7 +29,7 @@ class JournalView extends StatelessWidget {
     @required this.isNoteSelected,
     @required this.emptyText,
     @required this.searchTerm,
-  });
+  }) : searchTermLowerCase = searchTerm.toLowerCase();
 
   @override
   Widget build(BuildContext context) {
@@ -70,11 +72,13 @@ class JournalView extends StatelessWidget {
 
     var children = <Widget>[
       const SizedBox(height: 8.0),
-      Text(
-        note.summary + '\n', // no minLines option
+      HighlightedText(
+        text: note.summary + '\n', // no minLines option
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
         style: textTheme.bodyText2,
+        highlightText: searchTerm,
+        highlightTextLowerCase: searchTermLowerCase,
       ),
     ];
 
