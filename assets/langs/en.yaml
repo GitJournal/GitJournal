@@ -222,7 +222,10 @@ widgets:
     sortingOptions: Sorting Options
     viewOptions: View Options
     searchFailed: No Search Results Found
-
+  NoteDeleteDialog:
+    title: Do you want to delete this note?
+    yes: Delete
+    no: No
 
 rootFolder: Root Folder
 ignoredFiles:

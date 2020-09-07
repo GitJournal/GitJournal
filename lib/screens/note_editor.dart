@@ -20,6 +20,7 @@ import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
+import 'package:gitjournal/widgets/note_delete_dialog.dart';
 import 'package:gitjournal/widgets/note_editor_selector.dart';
 import 'package:gitjournal/widgets/note_tag_editor.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
@@ -256,13 +257,25 @@ class NoteEditorState extends State<NoteEditor> {
     }
   }
 
-  void _noteDeletionSelected(Note note) {
+  void _noteDeletionSelected(Note note) async {
     if (_isNewNote && !_noteModified(note)) {
       Navigator.pop(context);
       return;
     }
 
-    showDialog(context: context, builder: _buildAlertDialog);
+    var shouldDelete = await showDialog(
+      context: context,
+      builder: (context) => NoteDeleteDialog(),
+    );
+    if (shouldDelete == true) {
+      _deleteNote(note);
+
+      if (_isNewNote) {
+        Navigator.pop(context); // Note Editor
+      } else {
+        Navigator.pop(context, ShowUndoSnackbar()); // Note Editor
+      }
+    }
   }
 
   void _deleteNote(Note note) {
@@ -272,32 +285,6 @@ class NoteEditorState extends State<NoteEditor> {
 
     var stateContainer = Provider.of<StateContainer>(context, listen: false);
     stateContainer.removeNote(note);
-  }
-
-  Widget _buildAlertDialog(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Do you want to delete this note?'),
-      actions: <Widget>[
-        FlatButton(
-          onPressed: () => Navigator.of(context).pop(false),
-          child: const Text('Keep Writing'),
-        ),
-        FlatButton(
-          onPressed: () {
-            _deleteNote(note);
-
-            Navigator.pop(context); // Alert box
-
-            if (_isNewNote) {
-              Navigator.pop(context); // Note Editor
-            } else {
-              Navigator.pop(context, ShowUndoSnackbar()); // Note Editor
-            }
-          },
-          child: const Text('Delete'),
-        ),
-      ],
-    );
   }
 
   bool _noteModified(Note note) {
