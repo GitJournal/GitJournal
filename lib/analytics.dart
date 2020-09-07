@@ -153,10 +153,17 @@ void logEvent(Event event, {Map<String, String> parameters}) {
 
 class AnalyticsRouteObserver extends RouteObserver<PageRoute<dynamic>> {
   void _sendScreenView(PageRoute<dynamic> route) async {
-    final String screenName = route.settings.name;
-    assert(screenName != null, "Screen name is null $route");
+    var screenName = route.settings.name;
+    if (route.runtimeType.toString().startsWith("_SearchPageRoute")) {
+      screenName = "/search";
+    }
 
-    Log.i("Screen: $screenName");
+    assert(screenName != null, "Screen name is null $route");
+    if (screenName == null) {
+      logExceptionWarning(Exception('Route Name is Empty'), StackTrace.current);
+      return;
+    }
+
     try {
       await getAnalytics().firebase.setCurrentScreen(screenName: screenName);
     } catch (e, stackTrace) {
