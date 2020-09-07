@@ -58,7 +58,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
         const SizedBox(height: 32.0),
         Padding(
           padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-          child: Row(
+          child: Wrap(
             children: [
               RestorePurchaseButton(),
               OutlineButton(
@@ -72,7 +72,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                 },
               ),
             ],
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            alignment: WrapAlignment.spaceEvenly,
+            direction: Axis.horizontal,
           ),
         ),
       ],
