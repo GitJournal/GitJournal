@@ -198,8 +198,12 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
       if (purchaseDetails.pendingCompletePurchase) {
         Log.i("Pending Complete Purchase - ${purchaseDetails.productID}");
 
-        await InAppPurchaseConnection.instance
-            .completePurchase(purchaseDetails);
+        try {
+          await InAppPurchaseConnection.instance
+              .completePurchase(purchaseDetails);
+        } catch (e, stackTrace) {
+          logException(e, stackTrace);
+        }
       }
     });
   }
