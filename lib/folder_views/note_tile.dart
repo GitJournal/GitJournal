@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/utils/markdown.dart';
+import 'package:gitjournal/widgets/highlighted_text.dart';
 
 class NoteTile extends StatelessWidget {
   final Note note;
@@ -45,12 +46,14 @@ class NoteTile extends StatelessWidget {
       child: Column(
         children: <Widget>[
           if (note.title != null && note.title.isNotEmpty)
-            Text(
-              note.title,
+            HighlightedText(
+              text: note.title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: textTheme.headline6
                   .copyWith(fontSize: textTheme.headline6.fontSize * 0.80),
+              highlightText: searchTerm,
+              highlightTextLowerCase: searchTermLowerCase,
             ),
           if (note.title != null && note.title.isNotEmpty)
             const SizedBox(height: 8.0),
@@ -106,49 +109,16 @@ class NoteTile extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context, String text) {
-    var theme = Theme.of(context);
-    var textTheme = theme.textTheme;
-    var style = textTheme.subtitle1
-        .copyWith(fontSize: textTheme.subtitle1.fontSize * 0.90);
+    var textTheme = Theme.of(context).textTheme;
 
-    if (searchTerm.isEmpty) {
-      return Text(
-        text,
-        maxLines: _maxLines - 1,
-        overflow: TextOverflow.ellipsis,
-        style: style,
-      );
-    }
-
-    var i = text.toLowerCase().indexOf(searchTermLowerCase);
-    if (i == -1) {
-      return Text(
-        text,
-        maxLines: _maxLines - 1,
-        overflow: TextOverflow.ellipsis,
-        style: style,
-      );
-    }
-
-    var highlightStyle = textTheme.subtitle1.copyWith(
-      fontSize: textTheme.subtitle1.fontSize * 0.90,
-      backgroundColor: theme.highlightColor,
-    );
-
-    var before = text.substring(0, i);
-    var after = text.substring(i + searchTerm.length);
-
-    return RichText(
-      text: TextSpan(
-        children: [
-          TextSpan(text: before, style: style),
-          TextSpan(
-            text: searchTerm,
-            style: highlightStyle,
-          ),
-          TextSpan(text: after, style: style),
-        ],
-      ),
+    return HighlightedText(
+      text: text,
+      highlightText: searchTerm,
+      highlightTextLowerCase: searchTermLowerCase,
+      style: textTheme.subtitle1
+          .copyWith(fontSize: textTheme.subtitle1.fontSize * 0.90),
+      overflow: TextOverflow.ellipsis,
+      maxLines: _maxLines - 1,
     );
   }
 }
