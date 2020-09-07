@@ -201,6 +201,8 @@ widgets:
   PurchaseButton:
     text: Purchase for {price}
     fail: Failed to Load
+    failSend: Failed to send purchase request
+    failPurchase: Failed to Purchase - {}
   FolderView:
     noteDeleted: Note Deleted
     undo: Undo

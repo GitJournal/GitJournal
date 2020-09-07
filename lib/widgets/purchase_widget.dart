@@ -49,8 +49,7 @@ class PurchaseButton extends StatelessWidget {
         .buyNonConsumable(purchaseParam: purchaseParam);
 
     if (!sentSuccess) {
-      var err = "Failed to send purchase request";
-      var dialog = PurchaseFailedDialog(err);
+      var dialog = PurchaseFailedDialog(tr("widgets.PurchaseButton.failSend"));
       await showDialog(context: context, builder: (context) => dialog);
     }
   }
@@ -60,6 +59,13 @@ class PurchaseButton extends StatelessWidget {
       await _initPurchase(context);
     } catch (err, stackTrace) {
       logException(err, stackTrace);
+
+      var errStr = tr(
+        "widgets.PurchaseButton.failPurchase",
+        args: [err.toString()],
+      );
+      var dialog = PurchaseFailedDialog(errStr);
+      await showDialog(context: context, builder: (context) => dialog);
     }
   }
 }
