@@ -112,7 +112,11 @@ class MonthlyRentalWidget extends StatelessWidget {
     return PurchaseCard(
       child: Column(
         children: [
-          Text(tr('purchase_screen.monthly.title'), style: textTheme.headline5),
+          Text(
+            tr('purchase_screen.monthly.title'),
+            style: textTheme.headline5,
+            textAlign: TextAlign.center,
+          ),
           const SizedBox(height: 32.0),
           PurchaseWidget(
             skus: _generateSkus(),
@@ -155,7 +159,11 @@ class YearlyPurchaseWidget extends StatelessWidget {
     return PurchaseCard(
       child: Column(
         children: [
-          Text(tr('purchase_screen.oneTime.title'), style: textTheme.headline5),
+          Text(
+            tr('purchase_screen.oneTime.title'),
+            style: textTheme.headline5,
+            textAlign: TextAlign.center,
+          ),
           const SizedBox(height: 32.0),
           PurchaseWidget(
             skus: _generateSkus(),

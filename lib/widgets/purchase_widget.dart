@@ -35,7 +35,7 @@ class PurchaseButton extends StatelessWidget {
     }
 
     return RaisedButton(
-      child: Text(text),
+      child: Text(text, textAlign: TextAlign.center),
       color: Theme.of(context).primaryColor,
       padding: const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 16.0),
       onPressed: product != null ? () => _initPurchase(context) : null,
