@@ -7,12 +7,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:function_types/function_types.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:share/share.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/features.dart';
+import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
 export 'package:gitjournal/editors/scaffold.dart';
@@ -263,7 +263,7 @@ Widget _buildBottomMenuSheet(
             var note = editorState.getNote();
             Navigator.of(context).pop();
 
-            Share.share(note.body);
+            shareNote(note);
           },
         ),
         if (metaDataEditable)

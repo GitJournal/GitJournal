@@ -20,6 +20,7 @@ import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/new_note_nav_bar.dart';
+import 'package:gitjournal/widgets/note_delete_dialog.dart';
 import 'package:gitjournal/widgets/note_search_delegate.dart';
 import 'package:gitjournal/widgets/sorting_mode_selector.dart';
 import 'package:gitjournal/widgets/sync_button.dart';
@@ -77,7 +78,7 @@ class _FolderViewState extends State<FolderView> {
 
     var title = widget.notesFolder.publicName;
     if (inSelectionMode) {
-      title = tr('widgets.FolderView.noteSelected');
+      title = NumberFormat.compact().format(1);
     }
 
     Widget folderView = Builder(
@@ -92,20 +93,14 @@ class _FolderViewState extends State<FolderView> {
             if (!inSelectionMode) {
               openNoteEditor(context, note, widget.notesFolder);
             } else {
-              setState(() {
-                inSelectionMode = false;
-                selectedNote = null;
-              });
+              _resetSelection();
             }
           },
           noteLongPressed: (Note note) {
-            // Disabled for now, until I expose actions for the note
-            /*
             setState(() {
               inSelectionMode = true;
               selectedNote = note;
             });
-            */
           },
           isNoteSelected: (n) => n == selectedNote,
           searchTerm: "",
@@ -121,12 +116,7 @@ class _FolderViewState extends State<FolderView> {
 
     var backButton = IconButton(
       icon: const Icon(Icons.arrow_back),
-      onPressed: () {
-        setState(() {
-          inSelectionMode = false;
-          selectedNote = null;
-        });
-      },
+      onPressed: _resetSelection,
     );
 
     return Scaffold(
@@ -421,6 +411,40 @@ class _FolderViewState extends State<FolderView> {
   }
 
   List<Widget> _buildInSelectionNoteActions() {
-    return [];
+    return <Widget>[
+      IconButton(
+        icon: const Icon(Icons.share),
+        onPressed: () async {
+          await shareNote(selectedNote);
+          _resetSelection();
+        },
+      ),
+      IconButton(
+        icon: const Icon(Icons.delete),
+        onPressed: _deleteNote,
+      ),
+    ];
+  }
+
+  void _deleteNote() async {
+    var note = selectedNote;
+
+    var shouldDelete = await showDialog(
+      context: context,
+      builder: (context) => NoteDeleteDialog(),
+    );
+    if (shouldDelete == true) {
+      var stateContainer = Provider.of<StateContainer>(context, listen: false);
+      stateContainer.removeNote(note);
+    }
+
+    _resetSelection();
+  }
+
+  void _resetSelection() {
+    setState(() {
+      selectedNote = null;
+      inSelectionMode = false;
+    });
   }
 }
