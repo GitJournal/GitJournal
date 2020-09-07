@@ -44,16 +44,14 @@ class HighlightedText extends StatelessWidget {
     );
 
     var before = text.substring(0, i);
+    var term = text.substring(i, i + highlightText.length);
     var after = text.substring(i + highlightText.length);
 
     return RichText(
       text: TextSpan(
         children: [
           TextSpan(text: before, style: style),
-          TextSpan(
-            text: highlightText,
-            style: highlightStyle,
-          ),
+          TextSpan(text: term, style: highlightStyle),
           TextSpan(text: after, style: style),
         ],
       ),
