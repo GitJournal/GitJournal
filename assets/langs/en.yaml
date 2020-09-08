@@ -132,6 +132,8 @@ settings:
   storage:
     title: Storage
     fileName: Filename
+  drawer:
+    title: Sidebar Settings
 
 editors:
   checklist:
