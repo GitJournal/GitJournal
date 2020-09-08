@@ -57,13 +57,12 @@ void main() {
       expect(result.cursorPos, 12);
     });
 
-    test('Adds a bullet point without spaces', () {
+    test('Does not add a bullet point without spaces', () {
       var origText = "*One";
       var newText = origText + '\n';
 
       var result = autoAddBulletList(origText, newText, newText.length);
-      expect(result.text, "*One\n*");
-      expect(result.cursorPos, result.text.length);
+      expect(result, null);
     });
 
     test('Adds a bullet point with many spaces', () {
@@ -100,6 +99,14 @@ void main() {
       var result = autoAddBulletList(origText, newText, newText.length);
       expect(result.text, "* Hi There\n* ");
       expect(result.cursorPos, result.text.length);
+    });
+
+    test('Triple dashs', () {
+      var origText = "---";
+      var newText = origText + '\n';
+
+      var result = autoAddBulletList(origText, newText, newText.length);
+      expect(result, null);
     });
   });
 }
