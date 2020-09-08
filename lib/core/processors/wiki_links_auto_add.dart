@@ -6,7 +6,9 @@ class WikiLinksAutoAddProcessor {
 
   WikiLinksAutoAddProcessor(this.rootFolder);
 
-  void process(Note note) {}
+  void onSave(Note note) {
+    //note.body = processBody(note.body, tags);
+  }
 
   String processBody(String body, List<String> tags) {
     for (var tag in tags) {

@@ -69,6 +69,7 @@ class Settings extends ChangeNotifier {
   bool saveTitleInH1 = true;
 
   bool swipeToDelete = true;
+  bool emojiParser = true;
 
   Set<String> inlineTagPrefixes = {'#'};
 
@@ -124,6 +125,7 @@ class Settings extends ChangeNotifier {
 
     version = pref.getInt("settingsVersion") ?? version;
     proMode = pref.getBool("proMode") ?? proMode;
+    emojiParser = pref.getBool("emojiParser") ?? emojiParser;
     proExpirationDate =
         pref.getString("proExpirationDate") ?? proExpirationDate;
 
@@ -218,6 +220,7 @@ class Settings extends ChangeNotifier {
     _setString(pref, "proExpirationDate", proExpirationDate,
         defaultSet.proExpirationDate);
     _setBool(pref, "proMode", proMode, defaultSet.proMode);
+    _setBool(pref, "emojiParser", emojiParser, defaultSet.emojiParser);
     _setString(pref, "homeScreen", homeScreen.toInternalString(),
         defaultSet.homeScreen.toInternalString());
     _setString(pref, "imageLocationSpec", imageLocationSpec,
@@ -319,6 +322,7 @@ class Settings extends ChangeNotifier {
       'saveTitleInH1': saveTitleInH1.toString(),
       'swipeToDelete': swipeToDelete.toString(),
       'inlineTagPrefixes': inlineTagPrefixes.join(' '),
+      'emojiParser': emojiParser.toString(),
     };
   }
 
