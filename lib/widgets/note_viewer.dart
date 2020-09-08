@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:path/path.dart' as p;
@@ -87,7 +88,10 @@ class NoteViewer extends StatelessWidget {
                   await launch(link);
                 } catch (e, stackTrace) {
                   Log.e("Opening Link", ex: e, stacktrace: stackTrace);
-                  showSnackbar(context, "Link '$link' not found");
+                  showSnackbar(
+                    context,
+                    tr('wigets.NoteViewer.noteViewer', args: [link]),
+                  );
                 }
               },
               imageBuilder: (url, title, alt) => kDefaultImageBuilder(

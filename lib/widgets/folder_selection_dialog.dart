@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
@@ -22,7 +23,7 @@ class FolderSelectionDialog extends StatelessWidget {
     );
 
     return AlertDialog(
-      title: const Text('Select a Folder'),
+      title: Text(tr('widgets.FolderSelectionDialog.title')),
       content: body,
     );
   }

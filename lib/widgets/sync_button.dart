@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:badges/badges.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:git_bindings/git_bindings.dart';
 import 'package:provider/provider.dart';
 
@@ -89,7 +90,7 @@ class _SyncButtonState extends State<SyncButton> {
       final container = Provider.of<StateContainer>(context, listen: false);
       await container.syncNotes();
     } on GitException catch (e) {
-      showSnackbar(context, "Sync Error: ${e.cause}");
+      showSnackbar(context, tr('widgets.SyncButton.error', args: [e.cause]));
     } catch (e) {
       showSnackbar(context, e.toString());
     }

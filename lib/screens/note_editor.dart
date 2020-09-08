@@ -240,8 +240,8 @@ class NoteEditorState extends State<NoteEditor> {
       context: context,
       builder: (_) => RenameDialog(
         oldPath: note.filePath,
-        inputDecoration: 'File Name',
-        dialogTitle: "Rename File",
+        inputDecoration: tr('widgets.NoteEditor.fileName'),
+        dialogTitle: tr('widgets.NoteEditor.renameFile'),
       ),
     );
     if (fileName is String) {

@@ -118,6 +118,7 @@ class FolderTileState extends State<FolderTile> {
           )
         : null;
 
+    // FIXME: Translate
     var subtitle = folder.numberOfNotes.toString() + " Notes";
 
     final theme = Theme.of(context);

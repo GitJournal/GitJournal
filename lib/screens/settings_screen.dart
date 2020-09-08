@@ -176,9 +176,9 @@ class SettingsListState extends State<SettingsList> {
           },
         ),
       ),
-      SettingsHeader('Note Settings'),
+      SettingsHeader(tr('settings.note.title')),
       ListTile(
-        title: const Text("Default Folder for new notes"),
+        title: Text(tr('settings.note.defaultFolder')),
         subtitle: Text(defaultNewFolder),
         onTap: () async {
           var destFolder = await showDialog<NotesFolderFS>(
@@ -219,9 +219,9 @@ class SettingsListState extends State<SettingsList> {
           Navigator.of(context).push(route);
         },
       ),
-      SettingsHeader("Storage"),
+      SettingsHeader(tr('settings.storage.title')),
       ListPreference(
-        title: "File Name",
+        title: tr('settings.note.fileName'),
         currentOption: settings.noteFileNameFormat.toPublicString(),
         options:
             NoteFileNameFormat.options.map((f) => f.toPublicString()).toList(),

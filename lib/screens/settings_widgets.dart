@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class ListPreference extends StatelessWidget {
   final String title;
   final String currentOption;
@@ -44,7 +46,7 @@ class ListPreference extends StatelessWidget {
                 ),
                 actions: <Widget>[
                   FlatButton(
-                    child: const Text('CANCEL'),
+                    child: Text(tr('settings.cancel')),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },

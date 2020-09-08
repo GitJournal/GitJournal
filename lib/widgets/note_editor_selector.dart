@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/fa_icon.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -20,25 +21,25 @@ class NoteEditorSelector extends StatelessWidget {
           _buildTile(
             context,
             EditorType.Markdown,
-            "Markdown Editor",
+            tr('settings.editors.markdownEditor'),
             FontAwesomeIcons.markdown,
           ),
         _buildTile(
           context,
           EditorType.Raw,
-          "Raw Editor",
+          tr('settings.editors.rawEditor'),
           FontAwesomeIcons.dna,
         ),
         _buildTile(
           context,
           EditorType.Checklist,
-          "Checklist Editor",
+          tr('settings.editors.checklistEditor'),
           FontAwesomeIcons.tasks,
         ),
         _buildTile(
           context,
           EditorType.Journal,
-          "Journal Editor",
+          tr('settings.editors.journalEditor'),
           FontAwesomeIcons.book,
         ),
       ],
@@ -46,7 +47,7 @@ class NoteEditorSelector extends StatelessWidget {
     );
 
     return AlertDialog(
-      title: const Text("Choose Editor"),
+      title: Text(tr('settings.editors.choose')),
       content: list,
     );
   }

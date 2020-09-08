@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
 import 'package:provider/provider.dart';
 
@@ -45,7 +46,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         children: <Widget>[
           OnBoardingBottomButton(
             key: const ValueKey("Skip"),
-            text: "Skip",
+            text: tr("OnBoarding.Skip"),
             onPressed: _finish,
           ),
           Expanded(
@@ -64,7 +65,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
           ),
           OnBoardingBottomButton(
             key: const ValueKey("Next"),
-            text: "Next",
+            text: tr("OnBoarding.Next"),
             onPressed: _nextPage,
           ),
         ],
@@ -85,7 +86,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         child: RaisedButton(
           key: const ValueKey("GetStarted"),
           child: Text(
-            "Get Started",
+            tr("OnBoarding.getStarted"),
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.button,
           ),
@@ -179,7 +180,7 @@ class OnBoardingPage1 extends StatelessWidget {
           Center(child: header),
           const SizedBox(height: 64.0),
           AutoSizeText(
-            "A Open Source Note Taking App\nbuilt on top of Git",
+            tr("OnBoarding.subtitle"),
             style: textTheme.headline5,
             textAlign: TextAlign.center,
             maxLines: 2,
@@ -215,7 +216,7 @@ class OnBoardingPage2 extends StatelessWidget {
           Center(child: header),
           const SizedBox(height: 64.0),
           AutoSizeText(
-            "Your Notes are stored in a\nstandard Markdown + YAML\nHeader format",
+            tr("OnBoarding.page2"),
             style: textTheme.headline5,
             textAlign: TextAlign.center,
             maxLines: 3,
@@ -251,7 +252,7 @@ class OnBoardingPage3 extends StatelessWidget {
           Center(child: header),
           const SizedBox(height: 64.0),
           AutoSizeText(
-            "Sync your Local Git Repo\nwith any provider",
+            tr("OnBoarding.page3"),
             style: textTheme.headline5,
             textAlign: TextAlign.center,
             maxLines: 2,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class PurchaseThankYouScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -7,9 +9,9 @@ class PurchaseThankYouScreen extends StatelessWidget {
     var textTheme = theme.textTheme;
     Widget w = Column(
       children: <Widget>[
-        Text('Thank you', style: textTheme.headline3),
+        Text(tr('purchase_screen.thanks.title'), style: textTheme.headline3),
         Text(
-          "You're awesome for supporting GitJournal",
+          tr('purchase_screen.thanks.subtitle'),
           style: textTheme.headline4,
           textAlign: TextAlign.center,
         ),

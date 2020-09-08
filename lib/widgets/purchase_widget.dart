@@ -188,7 +188,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
           if (subStatus.isPro) {
             _deliverProduct(subStatus);
           } else {
-            _handleError("Failed to purchase product");
+            _handleError(tr('widgets.PurchaseWidget.failed'));
             return;
           }
         } catch (err) {
@@ -370,11 +370,11 @@ class PurchaseFailedDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Purchase Failed"),
+      title: Text(tr('widgets.PurchaseWidget.failed')),
       content: Text(text),
       actions: <Widget>[
         FlatButton(
-          child: const Text("OK"),
+          child: Text(tr('settings.ok')),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ],

@@ -44,7 +44,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     var body = Column(
       children: <Widget>[
         Text(
-          "SSH Public Key -",
+          tr('setup.sshKeyUserProvided.public'),
           style: textTheme.bodyText1,
           textAlign: TextAlign.left,
         ),
@@ -54,18 +54,18 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
         const Divider(),
         Builder(
           builder: (BuildContext context) => Button(
-            text: "Copy Key",
+            text: tr('setup.sshKey.copy'),
             onPressed: () => _copyKeyToClipboard(context),
           ),
         ),
         Builder(
           builder: (BuildContext context) => Button(
-            text: "Regenerate Key",
+            text: tr('setup.sshKey.regenerate'),
             onPressed: () => _generateSshKey(context),
           ),
         ),
         ListPreference(
-          title: "Sync Frequency",
+          title: tr('settings.ssh.syncFreq'),
           currentOption: settings.remoteSyncFrequency.toPublicString(),
           options: RemoteSyncFrequency.options
               .map((f) => f.toPublicString())
@@ -78,7 +78,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
           },
         ),
         RedButton(
-          text: "Reset Git Host",
+          text: tr('settings.ssh.reset'),
           onPressed: () => _resetGitHost(context),
         ),
       ],
@@ -104,7 +104,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
 
   void _copyKeyToClipboard(BuildContext context) {
     Clipboard.setData(ClipboardData(text: publicKey));
-    showSnackbar(context, "Public Key copied to Clipboard");
+    showSnackbar(context, tr('setup.sshKey.copied'));
   }
 
   void _generateSshKey(BuildContext context) {
