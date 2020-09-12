@@ -27,7 +27,7 @@ Features -
 
 - **[Discord Server](https://discord.gg/abBwyEK)**
 - **Reddit Community** - [Join Us](https://www.reddit.com/r/GitJournal/)
-- **Newsletter** - [Signup Here](https://gitjournal.io)
+- **Newsletter** - [Signup Here](https://gitjournal.io/newsletter)
 - **Twitter** - [Follow for Updates](https://twitter.com/GitJournal_io)
 
 # Screenshots
