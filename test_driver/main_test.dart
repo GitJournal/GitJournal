@@ -135,7 +135,7 @@ void main() {
       await _takeScreenshot();
 
       // Select Card View
-      var cardView = find.text("Card View (Experimental)");
+      var cardView = find.text("Card View");
       await driver.waitFor(cardView, timeout: const Duration(seconds: 2));
       await driver.tap(cardView);
       await Future.delayed(const Duration(milliseconds: 100));
