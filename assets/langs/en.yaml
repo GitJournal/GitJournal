@@ -139,7 +139,7 @@ editors:
   checklist:
     add: Add Item
   common:
-    defaultBodyHint: Write Here
+    defaultBodyHint: Write here
     defaultTitleHint: Title
     discard: Discard Changes
     share: Share Note
