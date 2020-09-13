@@ -195,9 +195,12 @@ OnBoarding:
   Skip: Skip
   Next: Next
   getStarted: Get Started
-  subtitle: An Open Source Note Taking App\nbuilt on top of Git
-  page2: Your Notes are stored in a\nstandard Markdown + YAML\nHeader format
-  page3: Sync your Local Git Repo\nwith any provider
+  subtitle: 'An Open Source Note Taking App
+built on top of Git'
+  page2: 'Your Notes are stored in a
+standard Markdown + YAML\nHeader format'
+  page3: 'Sync your Local Git Repo
+with any provider'
 
 widgets:
   rename:
