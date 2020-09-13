@@ -133,7 +133,7 @@ class Analytics {
 
   Future<void> log({
     @required Event e,
-    Map<String, String> parameters,
+    Map<String, String> parameters = const {},
   }) async {
     String name = _eventToString(e);
     await firebase.logEvent(name: name, parameters: parameters);
@@ -146,7 +146,7 @@ class Analytics {
   }
 }
 
-void logEvent(Event event, {Map<String, String> parameters}) {
+void logEvent(Event event, {Map<String, String> parameters = const {}}) {
   getAnalytics().log(e: event, parameters: parameters);
   Log.d("Event $event");
 }

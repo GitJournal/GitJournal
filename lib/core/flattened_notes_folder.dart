@@ -12,7 +12,7 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   var _notes = <Note>[];
   var _folders = <NotesFolder>[];
 
-  FlattenedNotesFolder(this._parentFolder, {this.filter, this.title}) {
+  FlattenedNotesFolder(this._parentFolder, {this.filter, this.title = ""}) {
     _addFolder(_parentFolder);
   }
 
@@ -130,10 +130,10 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   }
 
   @override
-  String get name => title ?? "All Notes";
+  String get name => title.isEmpty ? "All Notes" : title;
 
   @override
-  String get publicName => title ?? "All Notes";
+  String get publicName => title.isEmpty ? "All Notes" : title;
 
   @override
   NotesFolderConfig get config {

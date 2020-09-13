@@ -33,14 +33,14 @@ class GitHub implements GitHost {
 
       String url = call.arguments["URL"];
       var uri = Uri.parse(url);
-      var authCode = uri.queryParameters['code'];
-      if (authCode == null) {
+      var authCode = uri.queryParameters['code'] ?? "";
+      if (authCode.isEmpty) {
         Log.d("GitHub: Missing auth code. Now what?");
         callback(GitHostException.OAuthFailed);
       }
 
       _accessCode = await _getAccessCode(authCode);
-      if (_accessCode == null || _accessCode.isEmpty) {
+      if (_accessCode.isEmpty) {
         Log.d("GitHub: AccessCode is invalid: " + _accessCode);
         callback(GitHostException.OAuthFailed);
       }
@@ -67,7 +67,7 @@ class GitHub implements GitHost {
     Log.d("GithubResponse: " + response.body);
 
     var map = Uri.splitQueryString(response.body);
-    return map["access_token"];
+    return map["access_token"] ?? "";
   }
 
   @override
