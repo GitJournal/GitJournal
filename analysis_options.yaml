@@ -14,6 +14,8 @@ analyzer:
     todo: ignore
   exclude:
     - "bin/cache/**"
+  # enable-experiment:
+  # - non-nullable
 
 linter:
   rules:
