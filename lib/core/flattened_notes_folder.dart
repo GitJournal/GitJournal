@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_notifier.dart';
@@ -12,7 +14,8 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   var _notes = <Note>[];
   var _folders = <NotesFolder>[];
 
-  FlattenedNotesFolder(this._parentFolder, {this.filter, this.title = ""}) {
+  FlattenedNotesFolder(this._parentFolder,
+      {@required this.title, this.filter}) {
     _addFolder(_parentFolder);
   }
 
@@ -130,10 +133,10 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   }
 
   @override
-  String get name => title.isEmpty ? "All Notes" : title;
+  String get name => title;
 
   @override
-  String get publicName => title.isEmpty ? "All Notes" : title;
+  String get publicName => title;
 
   @override
   NotesFolderConfig get config {

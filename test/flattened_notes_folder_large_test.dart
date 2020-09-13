@@ -33,7 +33,7 @@ void main() {
     });
 
     test('Should load all the notes flattened', () async {
-      var f = FlattenedNotesFolder(rootFolder);
+      var f = FlattenedNotesFolder(rootFolder, title: "");
       expect(f.notes.length, 300);
 
       var tempDir = await Directory.systemTemp.createTemp('_test_');

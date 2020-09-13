@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +30,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final rootFolder = Provider.of<NotesFolderFS>(context);
     setState(() {
-      notesFolder = FlattenedNotesFolder(rootFolder);
+      notesFolder = FlattenedNotesFolder(
+        rootFolder,
+        title: tr('screens.home.allNotes'),
+      );
     });
   }
 

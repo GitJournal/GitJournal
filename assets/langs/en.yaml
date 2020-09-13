@@ -159,6 +159,8 @@ actions:
   newJournal: New Journal Entry
   newChecklist: New Checklist
 screens:
+  home:
+    allNotes: All Notes
   folders:
     title: Folders
     selected: Folder Selected

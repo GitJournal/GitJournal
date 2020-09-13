@@ -85,10 +85,10 @@ void main() {
     });
 
     test('Should load the notes flattened', () async {
-      var f = FlattenedNotesFolder(rootFolder);
+      var f = FlattenedNotesFolder(rootFolder, title: "foo");
       expect(f.hasNotes, true);
       expect(f.isEmpty, false);
-      expect(f.name, "All Notes");
+      expect(f.name, "foo");
       expect(f.subFolders.length, 0);
       expect(f.notes.length, 9);
 
@@ -107,7 +107,7 @@ void main() {
     });
 
     test('Should add a note properly', () async {
-      var f = FlattenedNotesFolder(rootFolder);
+      var f = FlattenedNotesFolder(rootFolder, title: "");
 
       var p1 = (f.fsFolder as NotesFolderFS).getFolderWithSpec("sub1/p1");
       var note = Note(p1, p.join(p1.folderPath, "new.md"));
