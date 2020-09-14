@@ -23,6 +23,7 @@ import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/iap.dart';
 import 'package:gitjournal/screens/filesystem_screen.dart';
 import 'package:gitjournal/screens/folder_listing.dart';
+import 'package:gitjournal/screens/graph_view.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/screens/purchase_screen.dart';
 import 'package:gitjournal/screens/purchase_thankyou_screen.dart';
@@ -345,6 +346,8 @@ class _JournalAppState extends State<JournalApp> {
         return FileSystemScreen();
       case '/tags':
         return TagListingScreen();
+      case '/graph':
+        return GraphViewScreen();
       case '/settings':
         return SettingsScreen();
       case '/setupRemoteGit':

@@ -64,6 +64,7 @@ class Settings extends ChangeNotifier {
   bool experimentalBacklinks = true;
   bool experimentalFs = false;
   bool experimentalMarkdownToolbar = false;
+  bool experimentalGraphView = false;
 
   bool zenMode = false;
   bool saveTitleInH1 = true;

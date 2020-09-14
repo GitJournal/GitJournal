@@ -91,6 +91,15 @@ class AppDrawer extends StatelessWidget {
               onTap: () => _navTopLevel(context, '/filesystem'),
               selected: currentRoute == "/filesystem",
             ),
+          if (settings.experimentalGraphView)
+            _buildDrawerTile(
+              context,
+              icon: FontAwesomeIcons.projectDiagram,
+              isFontAwesome: true,
+              title: tr('drawer.graph'),
+              onTap: () => _navTopLevel(context, '/graph'),
+              selected: currentRoute == "/graph",
+            ),
           _buildDrawerTile(
             context,
             icon: FontAwesomeIcons.tag,

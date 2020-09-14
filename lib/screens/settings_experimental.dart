@@ -49,6 +49,15 @@ class _ExperimentalSettingsScreenState
               },
             ),
             SwitchListTile(
+              title: Text(tr('settings.experimental.graphView')),
+              value: settings.experimentalGraphView,
+              onChanged: (bool newVal) {
+                settings.experimentalGraphView = newVal;
+                settings.save();
+                setState(() {});
+              },
+            ),
+            SwitchListTile(
               title: Text(tr('settings.experimental.markdownToolbar')),
               value: settings.experimentalFs,
               onChanged: (bool newVal) {

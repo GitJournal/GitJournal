@@ -74,6 +74,7 @@ settings:
     backlinks: Show Backlinks in Markdown Preview
     fs: Show File System
     markdownToolbar: Show Markdown Toolbar in Editor
+    graphView: Graph View
   editors:
     title: Editor Settings
     subtitle: Configure how different editors work
@@ -273,6 +274,7 @@ drawer:
   all: All Notes
   folders: Folders
   fs: File System
+  graph: Graph View
   tags: Tags
   share: Share App
   rate: Rate Us
