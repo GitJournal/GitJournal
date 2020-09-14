@@ -46,5 +46,11 @@ void main() {
 
       expect(str, "2011-06-06T05:05:03-11:30");
     });
+
+    test('Test ZettleDateTime', () {
+      var dateTime = DateTime.utc(2011, 6, 6, 5, 5, 3);
+      var str = toZettleDateTime(dateTime);
+      expect(str, "20110606050503");
+    });
   });
 }
