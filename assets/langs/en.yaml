@@ -130,6 +130,7 @@ settings:
   note:
     title: Note Settings
     defaultFolder: Default Folder for new notes
+    fileName: Filename
   storage:
     title: Storage
     fileName: Filename
