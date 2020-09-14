@@ -61,6 +61,10 @@ class NoteViewer extends StatelessWidget {
           top: BorderSide(width: 3.0, color: theme.highlightColor),
         ),
       ),
+      blockquoteDecoration: BoxDecoration(
+        color: theme.primaryColorLight,
+        borderRadius: BorderRadius.circular(2.0),
+      ),
     );
 
     final rootFolder = Provider.of<NotesFolderFS>(context);
