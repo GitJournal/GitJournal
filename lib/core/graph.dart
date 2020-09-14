@@ -39,10 +39,11 @@ class Graph extends ChangeNotifier {
   Map<String, Set<int>> _neighbours = {};
   Map<String, int> _nodeIndexes;
 
-  var x = 1050.0;
-  var y = 1050.0;
+  GraphNodeLayout initLayouter;
 
   Graph.fromFolder(NotesFolder folder) {
+    initLayouter = GraphNodeLayout(maxHeight: 2000, maxWidth: 2000);
+
     print("Building graph .... ");
     _addFolder(folder).then((_) {
       print("Done Building graph");
@@ -88,16 +89,8 @@ class Graph extends ChangeNotifier {
     var i = nodes.indexWhere((n) => n.note.filePath == note.filePath);
     if (i == -1) {
       var node = Node(note);
-      node.x = x;
-      node.y = y;
+      initLayouter.positionNode(node);
 
-      if (x >= 500) {
-        x = 50;
-        y += 50;
-      }
-      x += 50;
-
-      //print('${node.label} -> ${node.x} ${node.y}');
       nodes.add(node);
       return node;
     }
@@ -199,6 +192,38 @@ class Graph extends ChangeNotifier {
         layoutTimer = null;
       }
     });*/
+  }
+}
+
+class GraphNodeLayout {
+  final double maxWidth;
+  final double maxHeight;
+
+  double x = 0.0;
+  double y = 0.0;
+
+  double startX = 500.0;
+  double startY = 500.0;
+
+  double gap = 70;
+  double nodeSize = 50;
+
+  GraphNodeLayout({@required this.maxWidth, @required this.maxHeight}) {
+    x = startX;
+    y = startY;
+  }
+
+  void positionNode(Node node) {
+    node.x = x;
+    node.y = y;
+
+    print('INIT ${node.label} -> ${node.x} ${node.y}');
+
+    x += gap;
+    if (x + nodeSize >= maxWidth) {
+      x = startX;
+      y += gap;
+    }
   }
 }
 
