@@ -155,13 +155,26 @@ void main() {
   });
 
   test('Should resolve Link object', () {
-    var note = rootFolder.notes[0];
+    var note = rootFolder.getNoteWithSpec('Folder/Water.md');
     var linkResolver = LinkResolver(note);
 
-    var link = Link(filePath: note.filePath, publicTerm: 'foo');
+    var expectedNote = rootFolder.getNoteWithSpec('Fire.md');
+    var link = Link(
+      filePath: expectedNote.filePath,
+      publicTerm: 'foo',
+    );
 
     var resolvedNote = linkResolver.resolveLink(link);
-    expect(resolvedNote.filePath, note.filePath);
+    expect(resolvedNote.filePath, expectedNote.filePath);
+  });
+
+  test('Should resolve Wiki Link object', () {
+    var note = rootFolder.getNoteWithSpec('Folder/Water.md');
+    var linkResolver = LinkResolver(note);
+
+    var link = Link.wiki("Fire");
+    var resolvedNote = linkResolver.resolveLink(link);
+    expect(resolvedNote.fileName, "Fire.md");
   });
 }
 

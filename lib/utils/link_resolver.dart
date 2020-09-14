@@ -11,7 +11,7 @@ class LinkResolver {
 
   Note resolveLink(Link l) {
     if (l.isWikiLink) {
-      return resolveWikiLink(l.publicTerm);
+      return resolveWikiLink(l.wikiTerm);
     }
 
     var rootFolder = inputNote.parent.rootFolder;
