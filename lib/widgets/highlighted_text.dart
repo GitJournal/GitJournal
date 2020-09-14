@@ -38,6 +38,7 @@ class HighlightedText extends StatelessWidget {
     var after = text.substring(i + highlightText.length);
 
     return RichText(
+      maxLines: maxLines,
       text: TextSpan(
         children: [
           TextSpan(text: before, style: style),
