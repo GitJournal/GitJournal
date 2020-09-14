@@ -18,7 +18,7 @@ class LinkResolver {
     assert(l.filePath.startsWith(rootFolder.folderPath));
     var spec = l.filePath.substring(rootFolder.folderPath.length + 1);
 
-    return rootFolder.getNoteWithSpec(spec);
+    return _getNoteWithSpec(rootFolder, spec);
   }
 
   Note resolve(String link) {

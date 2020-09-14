@@ -168,6 +168,19 @@ void main() {
     expect(resolvedNote.filePath, expectedNote.filePath);
   });
 
+  test('Should resolve Link object without extension', () {
+    var note = rootFolder.getNoteWithSpec('Folder/Water.md');
+    var linkResolver = LinkResolver(note);
+
+    var expectedNote = rootFolder.getNoteWithSpec('Fire.md');
+    var filePath = expectedNote.filePath;
+    filePath = filePath.substring(0, filePath.length - 3);
+    var link = Link(filePath: filePath, publicTerm: 'foo');
+
+    var resolvedNote = linkResolver.resolveLink(link);
+    expect(resolvedNote.filePath, expectedNote.filePath);
+  });
+
   test('Should resolve Wiki Link object', () {
     var note = rootFolder.getNoteWithSpec('Folder/Water.md');
     var linkResolver = LinkResolver(note);
