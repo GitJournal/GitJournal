@@ -2,10 +2,22 @@ import 'package:markdown/markdown.dart' as md;
 import 'package:meta/meta.dart';
 
 class Link {
-  String term;
-  String filePath;
+  String publicTerm = "";
+  String filePath = "";
+  String headingID = "";
+  String alt = "";
 
-  Link({@required this.term, @required this.filePath});
+  String wikiTerm = "";
+
+  Link({
+    @required this.publicTerm,
+    @required this.filePath,
+    this.headingID = "",
+    this.alt = "",
+  });
+  Link.wiki(this.wikiTerm);
+
+  bool get isWikiLink => wikiTerm.isNotEmpty;
 
   @override
   int get hashCode => filePath.hashCode;
@@ -15,16 +27,25 @@ class Link {
       identical(this, other) ||
       other is Link &&
           runtimeType == other.runtimeType &&
-          filePath == other.filePath;
+          filePath == other.filePath &&
+          publicTerm == other.publicTerm &&
+          wikiTerm == other.wikiTerm &&
+          headingID == other.headingID &&
+          alt == other.alt;
 
   @override
   String toString() {
-    return 'Link{term: $term, filePath: $filePath}';
+    return wikiTerm.isNotEmpty
+        ? 'WikiLink($wikiTerm)'
+        : 'Link{publicTerm: $publicTerm, filePath: $filePath, headingID: $headingID}';
   }
 }
 
 class LinkExtractor implements md.NodeVisitor {
+  final String filePath;
   List<Link> links = [];
+
+  LinkExtractor(this.filePath);
 
   @override
   bool visitElementBefore(md.Element element) {
@@ -42,25 +63,44 @@ class LinkExtractor implements md.NodeVisitor {
       var type = el.attributes['type'] ?? "";
       if (type == "wiki") {
         var term = el.attributes['term'];
-        var link = Link(term: term, filePath: null);
+        var link = Link.wiki(term);
+
+        assert(link.filePath.isEmpty);
+        assert(link.publicTerm.isEmpty);
+        assert(link.alt.isEmpty);
+        assert(link.headingID.isEmpty);
+
         links.add(link);
         return;
       }
 
-      var title = el.attributes['title'] ?? "";
-      if (title.isEmpty) {
-        for (var child in el.children) {
-          if (child is md.Text) {
-            title += child.text;
-          }
-        }
-      }
+      var alt = el.attributes['title'] ?? "";
+      var title = _getText(el.children);
 
       var url = el.attributes['href'];
-      var link = Link(term: title, filePath: url);
+      if (isExternalLink(url)) {
+        return;
+      }
+
+      if (url.startsWith('#')) {
+        var link = Link(
+          publicTerm: title,
+          filePath: filePath,
+          alt: alt,
+          headingID: url,
+        );
+        links.add(link);
+        return;
+      }
+
+      var link = Link(publicTerm: title, filePath: url, alt: alt);
       links.add(link);
       return;
     }
+  }
+
+  static bool isExternalLink(String url) {
+    return url.startsWith(RegExp(r'[A-Za-z]{2,5}:\/\/'));
   }
 
   List<Link> visit(List<md.Node> nodes) {
@@ -68,6 +108,23 @@ class LinkExtractor implements md.NodeVisitor {
       node.accept(this);
     }
     return links;
+  }
+
+  String _getText(List<md.Node> nodes) {
+    if (nodes == null) {
+      return "";
+    }
+
+    var text = "";
+    for (final node in nodes) {
+      if (node is md.Text) {
+        text += node.text;
+      } else if (node is md.Element) {
+        text += _getText(node.children);
+      }
+    }
+
+    return text;
   }
 }
 

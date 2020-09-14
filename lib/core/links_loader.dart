@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:isolate';
 
+import 'package:flutter/material.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:path/path.dart' as p;
 import 'package:synchronized/synchronized.dart';
@@ -31,11 +32,11 @@ class LinksLoader {
     });
   }
 
-  Future<List<Link>> parseLinks(String body, String parentFolderPath) async {
+  Future<List<Link>> parseLinks({String body, String filePath}) async {
     await _initIsolate();
 
     var rec = ReceivePort();
-    _sendPort.send(_LoadingMessage(body, parentFolderPath, rec.sendPort));
+    _sendPort.send(_LoadingMessage(body, filePath, rec.sendPort));
 
     var data = await rec.first;
     assert(data is List<Link>);
@@ -46,10 +47,10 @@ class LinksLoader {
 
 class _LoadingMessage {
   String body;
-  String parentFolderPath;
+  String filePath;
   SendPort sendPort;
 
-  _LoadingMessage(this.body, this.parentFolderPath, this.sendPort);
+  _LoadingMessage(this.body, this.filePath, this.sendPort);
 }
 
 void _isolateMain(SendPort toMainSender) {
@@ -60,12 +61,15 @@ void _isolateMain(SendPort toMainSender) {
     assert(data is _LoadingMessage);
     var msg = data as _LoadingMessage;
 
-    var links = _parseLinks(msg.body, msg.parentFolderPath);
+    var links = parseLinks(msg.body, msg.filePath);
     msg.sendPort.send(links);
   });
 }
 
-List<Link> _parseLinks(String body, String parentFolderPath) {
+@visibleForTesting
+List<Link> parseLinks(String body, String filePath) {
+  var parentFolderPath = p.dirname(filePath);
+
   final doc = md.Document(
     encodeHtml: false,
     extensionSet: md.ExtensionSet.gitHubFlavored,
@@ -74,29 +78,34 @@ List<Link> _parseLinks(String body, String parentFolderPath) {
 
   var lines = body.replaceAll('\r\n', '\n').split('\n');
   var nodes = doc.parseLines(lines);
-  var possibleLinks = LinkExtractor().visit(nodes);
+  var possibleLinks = LinkExtractor(filePath).visit(nodes);
 
   var links = <Link>[];
   for (var l in possibleLinks) {
-    var path = l.filePath;
-    if (path == null) {
+    if (l.isWikiLink) {
       links.add(l);
       continue;
     }
 
-    var isLocal = !path.contains('://');
-    if (isLocal) {
-      l.filePath = p.join(parentFolderPath, p.normalize(l.filePath));
-      links.add(l);
-    }
+    l.filePath = p.join(parentFolderPath, p.normalize(l.filePath));
+    links.add(l);
   }
 
   doc.linkReferences.forEach((key, value) {
     var path = value.destination;
-    var isLocal = !path.contains('://');
-    if (isLocal) {
-      links.add(Link(term: key, filePath: path));
+    if (LinkExtractor.isExternalLink(path)) {
+      return;
     }
+
+    var l = Link(publicTerm: value.label, filePath: "", alt: value.title);
+
+    if (path.startsWith('#') || path.startsWith('//')) {
+      l.headingID = path;
+      l.filePath = filePath;
+    } else {
+      l.filePath = p.join(parentFolderPath, p.normalize(path));
+    }
+    links.add(l);
   });
 
   return links;

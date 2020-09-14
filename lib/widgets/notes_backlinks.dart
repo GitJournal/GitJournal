@@ -173,7 +173,11 @@ class NoteSnippet extends StatelessWidget {
 
     var body = note.body.split('\n');
     var paragraph = body.firstWhere(
-      (line) => line.contains('[${link.term}]'),
+      (String line) {
+        return link.isWikiLink
+            ? line.contains('[[${link.wikiTerm}}]]')
+            : line.contains('[${link.publicTerm}]');
+      },
       orElse: () => "",
     );
 

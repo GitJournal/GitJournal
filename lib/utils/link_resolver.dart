@@ -10,11 +10,12 @@ class LinkResolver {
   LinkResolver(this.inputNote);
 
   Note resolveLink(Link l) {
-    if (l.filePath == null) {
-      return resolveWikiLink(l.term);
+    if (l.isWikiLink) {
+      return resolveWikiLink(l.publicTerm);
     }
 
     var rootFolder = inputNote.parent.rootFolder;
+    assert(l.filePath.startsWith(rootFolder.folderPath));
     var spec = l.filePath.substring(rootFolder.folderPath.length + 1);
 
     return rootFolder.getNoteWithSpec(spec);

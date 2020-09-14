@@ -133,10 +133,10 @@ bar: Foo
 
       var links = await note.fetchLinks();
       expect(links[0].filePath, p.join(tempDir.path, "foo.md"));
-      expect(links[0].term, "Hi");
+      expect(links[0].publicTerm, "Hi");
 
       expect(links[1].filePath, p.join(tempDir.path, "food.md"));
-      expect(links[1].term, "Hi2");
+      expect(links[1].publicTerm, "Hi2");
 
       expect(links.length, 2);
     });
@@ -152,11 +152,11 @@ bar: Foo
       await note.load();
 
       var links = await note.fetchLinks();
-      expect(links[0].filePath, null);
-      expect(links[0].term, "GitJournal");
+      expect(links[0].isWikiLink, true);
+      expect(links[0].wikiTerm, "GitJournal");
 
-      expect(links[1].filePath, null);
-      expect(links[1].term, "Wild Fire");
+      expect(links[1].isWikiLink, true);
+      expect(links[1].wikiTerm, "Wild Fire");
 
       expect(links.length, 2);
     });

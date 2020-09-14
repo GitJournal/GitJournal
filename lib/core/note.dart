@@ -512,7 +512,7 @@ class Note with NotesNotifier {
       return _links;
     }
 
-    _links = await _linksLoader.parseLinks(_body, parent.folderPath);
+    _links = await _linksLoader.parseLinks(body: _body, filePath: _filePath);
     return _links;
   }
 

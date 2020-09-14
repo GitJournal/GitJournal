@@ -158,7 +158,7 @@ void main() {
     var note = rootFolder.notes[0];
     var linkResolver = LinkResolver(note);
 
-    var link = Link(filePath: note.filePath, term: 'foo');
+    var link = Link(filePath: note.filePath, publicTerm: 'foo');
 
     var resolvedNote = linkResolver.resolveLink(link);
     expect(resolvedNote.filePath, note.filePath);
