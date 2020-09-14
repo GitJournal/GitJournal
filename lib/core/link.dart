@@ -82,7 +82,7 @@ class LinkExtractor implements md.NodeVisitor {
         return;
       }
 
-      if (url.startsWith('#')) {
+      if (url.startsWith('#') || url.startsWith('//')) {
         var link = Link(
           publicTerm: title,
           filePath: filePath,

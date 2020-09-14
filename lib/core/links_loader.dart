@@ -104,7 +104,7 @@ List<Link> parseLinks(String body, String filePath) {
       l.headingID = path;
       l.filePath = filePath;
     } else {
-      l.filePath = p.join(parentFolderPath, p.normalize(path));
+      l.filePath = p.normalize(p.join(parentFolderPath, path));
     }
     links.add(l);
   });
