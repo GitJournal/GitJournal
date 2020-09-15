@@ -9,3 +9,11 @@
 - [ ] Duplicate content in dev.to
 - [ ] Announce on Twitter
 - [ ] Announce on Discord
+
+## Future Ideas
+
+- Instagram
+- Facebook
+- Mastodon
+- Youtube Video
+- PeerTube
