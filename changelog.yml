@@ -1,0 +1,28 @@
+- version: 1.69
+  date: 2020-09-04
+  features:
+    - text: Add a fast dark mode switcher. Inspired by Telegram.
+      image: dark_mode_switcher.gif
+    - title: Inline Tags
+      text: By default now typing with '#feature' will mark the note with the 'feature' tag. As GitJournal is used in so many different ways, the inline tags prefix is quite configurable
+      image: inline_tags.jpeg
+  bugs:
+    - title: Parse Maps in the YAML Frontmatter
+      text: "Earlier they were being ignored. Unfortunately, the exact formatting of the map might not be preserved, as the YAML serializer still needs some work. Please vote on issue #239 to increase its priority"
+    - title: Hide Notes which could not be parsed.
+      text: "Those notes were still shown but in a mangled state. We now clearly hide those note. You can check the debug log to see which files are being ignored. The idea is to have a future FS view where you can see all the files in a repo, along with the reason why some of them do not appear as Notes"
+
+- version: 1.68
+  date: 2020-08-31
+  features:
+    - title: One Time Purchase
+      text: "We are changing the buisness model from typical subscriptions to a model where you forever own the features you have paid for. The earlier monthly subscription is still available, but that will automatically convert into a One Time Purchase after 12 months."
+  improvements:
+    - title: Make Swipe to delette configurable
+      text: Apparently, many users hate it and accidentally trigger it quite often.
+    - title: Allow Markdown to be previewd from all Editors
+      text: All of GitJournal's editors are compatible and operate on the same markdown file. Earlier you could only preview the rendered markdown when with the Markdown Editor.
+
+- version: 1.67
+  date: 2020-08-19
+  draft: true
