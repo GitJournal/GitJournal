@@ -18,7 +18,7 @@
     - title: One Time Purchase
       text: "We are changing the buisness model from typical subscriptions to a model where you forever own the features you have paid for. The earlier monthly subscription is still available, but that will automatically convert into a One Time Purchase after 12 months."
   improvements:
-    - title: Make Swipe to delette configurable
+    - title: Make Swipe to delete configurable
       text: Apparently, many users hate it and accidentally trigger it quite often.
     - title: Allow Markdown to be previewd from all Editors
       text: All of GitJournal's editors are compatible and operate on the same markdown file. Earlier you could only preview the rendered markdown when with the Markdown Editor.
