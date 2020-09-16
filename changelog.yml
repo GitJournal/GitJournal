@@ -1,6 +1,7 @@
 - version: "1.70"
   date: 2020-09-16
   draft: false
+  reddit: 'https://www.reddit.com/r/GitJournal/comments/iu47ej/gitjournal_v170/'
   features:
     - text: "Implement Basic Search highlighting #14"
       image: search_highlight.gif
