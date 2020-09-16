@@ -93,3 +93,15 @@ String toCurlCommand(String url, Map<String, String> headers) {
 Future<void> shareNote(Note note) async {
   return Share.share(note.body);
 }
+
+Future<Note> getTodayJournalEntry(NotesFolderFS rootFolder) async {
+  var today = DateTime.now();
+  var matches = await rootFolder.matchNotes((n) async {
+    var dt = n.created;
+    return dt.year == today.year &&
+        dt.month == today.month &&
+        dt.day == today.day;
+  });
+
+  return matches.isNotEmpty ? matches[0] : null;
+}

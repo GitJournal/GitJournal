@@ -169,10 +169,22 @@ class _FolderViewState extends State<FolderView> {
       fsFolder = getFolderForEditor(settings, rootFolder, editorType);
     }
 
+    var settings = Provider.of<Settings>(context);
+
+    if (editorType == EditorType.Journal) {
+      if (settings.journalEditorSingleNote) {
+        var note = await getTodayJournalEntry(fsFolder.rootFolder);
+        return openNoteEditor(
+          context,
+          note,
+          widget.notesFolder,
+          editMode: true,
+        );
+      }
+    }
     var routeType =
         SettingsEditorType.fromEditorType(editorType).toInternalString();
 
-    var settings = Provider.of<Settings>(context);
     var extraProps = Map<String, dynamic>.from(widget.newNoteExtraProps);
     if (settings.customMetaData.isNotEmpty) {
       var map = MarkdownYAMLCodec.parseYamlText(settings.customMetaData);

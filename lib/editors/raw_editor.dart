@@ -29,7 +29,7 @@ class RawEditor extends StatefulWidget implements Editor {
   @override
   final NoteCallback discardChangesSelected;
 
-  final bool isNewNote;
+  final bool editMode;
 
   RawEditor({
     Key key,
@@ -42,7 +42,7 @@ class RawEditor extends StatefulWidget implements Editor {
     @required this.editTagsSelected,
     @required this.moveNoteToFolderSelected,
     @required this.discardChangesSelected,
-    @required this.isNewNote,
+    @required this.editMode,
   }) : super(key: key);
 
   @override
@@ -92,7 +92,7 @@ class RawEditorState extends State<RawEditor>
     var editor = EditorScrollView(
       child: _NoteEditor(
         textController: _textController,
-        autofocus: widget.isNewNote,
+        autofocus: widget.editMode,
         onChanged: _noteTextChanged,
       ),
     );
@@ -101,7 +101,7 @@ class RawEditorState extends State<RawEditor>
       editor: widget,
       editorState: this,
       noteModified: _noteModified,
-      isNewNote: widget.isNewNote,
+      editMode: widget.editMode,
       parentFolder: note.parent,
       body: editor,
     );

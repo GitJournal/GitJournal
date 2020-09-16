@@ -35,6 +35,7 @@ class Settings extends ChangeNotifier {
   bool yamlHeaderEnabled = true;
   String defaultNewNoteFolderSpec = "";
   String journalEditordefaultNewNoteFolderSpec = "";
+  bool journalEditorSingleNote = false;
 
   RemoteSyncFrequency remoteSyncFrequency = RemoteSyncFrequency.Default;
   SortingField sortingField = SortingField.Default;
@@ -99,6 +100,8 @@ class Settings extends ChangeNotifier {
     journalEditordefaultNewNoteFolderSpec =
         pref.getString("journalEditordefaultNewNoteFolderSpec") ??
             journalEditordefaultNewNoteFolderSpec;
+    journalEditorSingleNote =
+        pref.getBool("journalEditorSingleNote") ?? journalEditorSingleNote;
 
     remoteSyncFrequency = RemoteSyncFrequency.fromInternalString(
         pref.getString("remoteSyncFrequency"));
@@ -191,6 +194,8 @@ class Settings extends ChangeNotifier {
         "journalEditordefaultNewNoteFolderSpec",
         journalEditordefaultNewNoteFolderSpec,
         defaultSet.journalEditordefaultNewNoteFolderSpec);
+    _setBool(pref, "journalEditorSingleNote", journalEditorSingleNote,
+        defaultSet.journalEditorSingleNote);
     _setString(
         pref,
         "remoteSyncFrequency",
@@ -300,6 +305,7 @@ class Settings extends ChangeNotifier {
       "defaultNewNoteFolderSpec": defaultNewNoteFolderSpec,
       "journalEditordefaultNewNoteFolderSpec":
           journalEditordefaultNewNoteFolderSpec,
+      'journalEditorSingleNote': journalEditorSingleNote.toString(),
       "defaultEditor": defaultEditor.toInternalString(),
       "defaultView": defaultView.toInternalString(),
       "sortingField": sortingField.toInternalString(),

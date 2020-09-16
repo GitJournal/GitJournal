@@ -12,7 +12,7 @@ class EditorScaffold extends StatefulWidget {
   final Editor editor;
   final EditorState editorState;
   final bool noteModified;
-  final bool isNewNote;
+  final bool editMode;
   final IconButton extraButton;
   final Widget body;
   final NotesFolderFS parentFolder;
@@ -21,7 +21,7 @@ class EditorScaffold extends StatefulWidget {
     @required this.editor,
     @required this.editorState,
     @required this.noteModified,
-    @required this.isNewNote,
+    @required this.editMode,
     @required this.body,
     @required this.parentFolder,
     this.extraButton,
@@ -53,7 +53,7 @@ class _EditorScaffoldState extends State<EditorScaffold> {
           settings.markdownDefaultView == SettingsMarkdownDefaultView.Edit;
     }
 
-    if (widget.isNewNote) {
+    if (widget.editMode) {
       editingMode = true;
     }
 

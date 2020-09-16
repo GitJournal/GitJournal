@@ -31,7 +31,7 @@ class ChecklistEditor extends StatefulWidget implements Editor {
   @override
   final NoteCallback discardChangesSelected;
 
-  final bool isNewNote;
+  final bool editMode;
 
   ChecklistEditor({
     Key key,
@@ -44,7 +44,7 @@ class ChecklistEditor extends StatefulWidget implements Editor {
     @required this.editTagsSelected,
     @required this.moveNoteToFolderSelected,
     @required this.discardChangesSelected,
-    @required this.isNewNote,
+    @required this.editMode,
   }) : super(key: key);
 
   @override
@@ -127,7 +127,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
     var itemTiles = <Widget>[];
     for (var i = 0; i < checklist.items.length; i++) {
       var item = checklist.items[i];
-      var autofocus = widget.isNewNote && (i == checklist.items.length - 1);
+      var autofocus = widget.editMode && (i == checklist.items.length - 1);
       itemTiles.add(_buildTile(item, i, autofocus));
     }
     itemTiles.add(AddItemButton(
@@ -174,7 +174,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
       editor: widget,
       editorState: this,
       noteModified: _noteModified,
-      isNewNote: widget.isNewNote,
+      editMode: widget.editMode,
       parentFolder: widget.note.parent,
       body: Column(
         children: <Widget>[

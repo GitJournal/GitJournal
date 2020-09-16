@@ -33,7 +33,7 @@ class MarkdownEditor extends StatefulWidget implements Editor {
   @override
   final NoteCallback discardChangesSelected;
 
-  final bool isNewNote;
+  final bool editMode;
 
   MarkdownEditor({
     Key key,
@@ -47,7 +47,7 @@ class MarkdownEditor extends StatefulWidget implements Editor {
     @required this.editTagsSelected,
     @required this.moveNoteToFolderSelected,
     @required this.discardChangesSelected,
-    @required this.isNewNote,
+    @required this.editMode,
   }) : super(key: key);
 
   @override
@@ -108,7 +108,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
           ),
           NoteBodyEditor(
             textController: _textController,
-            autofocus: widget.isNewNote,
+            autofocus: widget.editMode,
             onChanged: _noteTextChanged,
           ),
         ],
@@ -137,7 +137,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
       editor: widget,
       editorState: this,
       noteModified: _noteModified,
-      isNewNote: widget.isNewNote,
+      editMode: widget.editMode,
       parentFolder: note.parent,
       body: editor,
     );
@@ -162,9 +162,9 @@ class MarkdownEditorState extends State<MarkdownEditor>
       Log.e("EditorHeuristics: $e");
       logExceptionWarning(e, stackTrace);
     }
-    if (_noteModified && !widget.isNewNote) return;
+    if (_noteModified && !widget.editMode) return;
 
-    var newState = !(widget.isNewNote && _textController.text.trim().isEmpty);
+    var newState = !(widget.editMode && _textController.text.trim().isEmpty);
     if (newState != _noteModified) {
       setState(() {
         _noteModified = newState;

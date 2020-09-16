@@ -81,6 +81,18 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
           },
         ),
       ),
+      ProOverlay(
+        feature: Feature.singleJournalEntry,
+        child: SwitchListTile(
+          title: Text(tr("feature.singleJournalEntry")),
+          value: settings.journalEditorSingleNote,
+          onChanged: (bool newVal) {
+            settings.journalEditorSingleNote = newVal;
+            settings.save();
+            setState(() {});
+          },
+        ),
+      ),
     ]);
 
     return Scaffold(

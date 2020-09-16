@@ -38,6 +38,7 @@ class Features {
     Feature.customMetaData,
     Feature.localization,
     Feature.inlineTags,
+    Feature.singleJournalEntry,
   ];
 
   static final inProgress = <String>[
@@ -325,6 +326,14 @@ class Feature {
     "inlineTags",
     DateTime(2020, 09, 02),
     tr("feature.inlineTags"),
+    "",
+    true,
+  );
+
+  static final singleJournalEntry = Feature(
+    "singleJournalEntry",
+    DateTime(2020, 09, 16),
+    tr("feature.singleJournalEntry"),
     "",
     true,
   );

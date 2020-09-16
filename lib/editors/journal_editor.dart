@@ -28,7 +28,7 @@ class JournalEditor extends StatefulWidget implements Editor {
   @override
   final NoteCallback discardChangesSelected;
 
-  final bool isNewNote;
+  final bool editMode;
 
   JournalEditor({
     Key key,
@@ -41,7 +41,7 @@ class JournalEditor extends StatefulWidget implements Editor {
     @required this.editTagsSelected,
     @required this.moveNoteToFolderSelected,
     @required this.discardChangesSelected,
-    this.isNewNote = false,
+    this.editMode = false,
   }) : super(key: key);
 
   @override
@@ -92,7 +92,7 @@ class JournalEditorState extends State<JournalEditor>
           JournalEditorHeader(note),
           NoteBodyEditor(
             textController: _textController,
-            autofocus: widget.isNewNote,
+            autofocus: widget.editMode,
             onChanged: _noteTextChanged,
           ),
         ],
@@ -103,7 +103,7 @@ class JournalEditorState extends State<JournalEditor>
       editor: widget,
       editorState: this,
       noteModified: _noteModified,
-      isNewNote: widget.isNewNote,
+      editMode: widget.editMode,
       parentFolder: note.parent,
       body: editor,
     );
@@ -117,12 +117,12 @@ class JournalEditorState extends State<JournalEditor>
   }
 
   void _noteTextChanged() {
-    if (_noteModified && !widget.isNewNote) {
+    if (_noteModified && !widget.editMode) {
       notifyListeners();
       return;
     }
 
-    var newState = !(widget.isNewNote && _textController.text.trim().isEmpty);
+    var newState = !(widget.editMode && _textController.text.trim().isEmpty);
     if (newState != _noteModified) {
       setState(() {
         _noteModified = newState;

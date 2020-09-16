@@ -37,9 +37,13 @@ class NoteEditor extends StatefulWidget {
   final List<String> existingImages;
 
   final Map<String, dynamic> newNoteExtraProps;
+  final bool editMode;
 
-  NoteEditor.fromNote(this.note, this.parentFolderView)
-      : notesFolder = note.parent,
+  NoteEditor.fromNote(
+    this.note,
+    this.parentFolderView, {
+    this.editMode = false,
+  })  : notesFolder = note.parent,
         defaultEditorType = null,
         existingText = null,
         existingImages = null,
@@ -52,7 +56,8 @@ class NoteEditor extends StatefulWidget {
     this.existingText,
     this.existingImages,
     this.newNoteExtraProps = const {},
-  }) : note = null;
+  })  : note = null,
+        editMode = true;
 
   @override
   NoteEditorState createState() {
@@ -164,7 +169,7 @@ class NoteEditorState extends State<NoteEditor> {
           editTagsSelected: _editTagsSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
-          isNewNote: _isNewNote,
+          editMode: widget.editMode
         );
       case EditorType.Raw:
         return RawEditor(
@@ -178,7 +183,7 @@ class NoteEditorState extends State<NoteEditor> {
           editTagsSelected: _editTagsSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
-          isNewNote: _isNewNote,
+          editMode: widget.editMode
         );
       case EditorType.Checklist:
         return ChecklistEditor(
@@ -192,7 +197,7 @@ class NoteEditorState extends State<NoteEditor> {
           editTagsSelected: _editTagsSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
-          isNewNote: _isNewNote,
+          editMode: widget.editMode
         );
       case EditorType.Journal:
         return JournalEditor(
@@ -206,7 +211,7 @@ class NoteEditorState extends State<NoteEditor> {
           editTagsSelected: _editTagsSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
-          isNewNote: _isNewNote,
+          editMode: widget.editMode
         );
     }
     return null;

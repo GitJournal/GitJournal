@@ -5,6 +5,9 @@
     - text: "Implement Basic Search highlighting #14"
     - text: Implement basic note selection
       image: note_select_delete.gif
+    - title: Single Journal entry Per Day
+      text: Some users prefer all the journal entries for a single day be in the same file. This matches with how Obsidian and Foam handle daily notes.
+      image: single_journal_entry.jpeg
   improvements:
     - title: Purchase Screen
       text: Make it prettier for smaller screen sizes

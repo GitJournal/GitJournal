@@ -389,6 +389,7 @@ feature:
     title: Localization
     subtitle: Allow GitJournal to be translated
   inlineTags: Inline Tags
+  singleJournalEntry: Single Journal Entry File per day
 
 feature_timeline:
   title: Feature Timeline
