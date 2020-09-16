@@ -40,7 +40,7 @@
   date: 2020-08-31
   features:
     - title: One Time Purchase
-      text: "We are changing the buisness model from typical subscriptions to a model where you forever own the features you have paid for. The earlier monthly subscription is still available, but that will automatically convert into a One Time Purchase after 12 months."
+      text: "I'm changing the buisness model from typical subscriptions to a model where you forever own the features you have paid for. The earlier monthly subscription is still available, but that will automatically convert into a One Time Purchase after 12 months."
       image: new_pro.gif
     - title: Zettelkasten filename format
       text: Allow notes to be saved with the 'yyyymmddmmhhss' format
