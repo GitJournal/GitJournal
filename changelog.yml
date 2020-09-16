@@ -3,20 +3,19 @@
   draft: false
   features:
     - text: "Implement Basic Search highlighting #14"
+      image: search_highlight.gif
     - text: Implement basic note selection
       image: note_select_delete.gif
     - title: Single Journal entry Per Day
       text: Some users prefer all the journal entries for a single day be in the same file. This matches with how Obsidian and Foam handle daily notes.
       image: single_journal_entry.jpeg
   improvements:
-    - title: Purchase Screen
-      text: Make it prettier for smaller screen sizes
+    - text: Purchase Screen - Make it prettier for smaller screen sizes
     - text: Make all strings in the app translatable
     - text: Configuring the default Image settings is now Free
   bugs:
     - text: Do not show Tag Editing screen if the Note cannot have metadata
-    - title: Zettelkasten FileName Mode
-      text: "Add leading zero to minutes < 10 - #247"
+    - text: "Zettelkasten FileName Mode - Add leading zero to minutes < 10 - #247"
     - text: "Dark Mode: Fix blockquote background color"
 
 - version: "1.69"
