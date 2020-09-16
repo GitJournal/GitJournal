@@ -1,4 +1,4 @@
-- version: 1.70
+- version: "1.70"
   date: 2020-09-16
   draft: false
   features:
@@ -19,7 +19,7 @@
       text: "Add leading zero to minutes < 10 - #247"
     - text: "Dark Mode: Fix blockquote background color"
 
-- version: 1.69
+- version: "1.69"
   date: 2020-09-04
   features:
     - text: Add a fast dark mode switcher. Inspired by Telegram.
@@ -36,7 +36,7 @@
     - title: Hide Notes which could not be parsed.
       text: "Those notes were still shown but in a mangled state. We now clearly hide those note. You can check the debug log to see which files are being ignored. The idea is to have a future File System View - #91 - where you can see all the files in a repo, along with the reason why some of them do not appear as Notes."
 
-- version: 1.68
+- version: "1.68"
   date: 2020-08-31
   features:
     - title: One Time Purchase
@@ -60,7 +60,7 @@
     - title: Preserve Note title format
       text: Regardless of the settings, the note title should be saved in the same way it was read. Eg - If it was in the YAML metadata, it should be saved there.
 
-- version: 1.66
+- version: "1.66"
   date: 2020-08-18
   features:
     - text: Allow custom metadata to be specified for new notes
