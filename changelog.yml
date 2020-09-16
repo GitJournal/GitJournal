@@ -1,3 +1,21 @@
+- version: 1.70
+  date: 2020-09-16
+  draft: true
+  features:
+    - text: "Implement Basic Search highlighting #14"
+    - text: Implement basic note selection
+      image: note_select_delete.gif
+  improvements:
+    - title: Purchase Screen
+      text: Make it prettier for smaller screen sizes
+    - text: Make all strings in the app translatable
+    - text: Configuring the default Image settings is now Free
+  bugs:
+    - text: Do not show Tag Editing screen if the Note cannot have metadata
+    - title: Zettelkasten FileName Mode
+      text: "Add leading zero to minutes < 10 - #247"
+    - text: "Dark Mode: Fix blockquote background color"
+
 - version: 1.69
   date: 2020-09-04
   features:
@@ -6,6 +24,9 @@
     - title: Inline Tags
       text: By default now typing with '#feature' will mark the note with the 'feature' tag. As GitJournal is used in so many different ways, the inline tags prefix is quite configurable
       image: inline_tags.jpeg
+  improvements:
+    - text: "RepoSelector: Show the datetime in relative terms"
+      image: setup_select_repo.jpeg
   bugs:
     - title: Parse Maps in the YAML Frontmatter
       text: "Earlier they were being ignored. Unfortunately, the exact formatting of the map might not be preserved, as the YAML serializer still needs some work. Please vote on issue #239 to increase its priority"
@@ -18,12 +39,28 @@
     - title: One Time Purchase
       text: "We are changing the buisness model from typical subscriptions to a model where you forever own the features you have paid for. The earlier monthly subscription is still available, but that will automatically convert into a One Time Purchase after 12 months."
       image: new_pro.gif
-      improvements:
+    - title: Zettelkasten filename format
+      text: Allow notes to be saved with the 'yyyymmddmmhhss' format
+  improvements:
     - title: Make Swipe to delete configurable
       text: Apparently, many users hate it and accidentally trigger it quite often.
     - title: Allow Markdown to be previewd from all Editors
       text: All of GitJournal's editors are compatible and operate on the same markdown file. Earlier you could only preview the rendered markdown when with the Markdown Editor.
+    - title: Git Host Automatic Setup
+      text: Make it clearer that GitJournal will require permissions to all your repos
+      image: oauth_perm_screen.jpeg
+    - text: Beautify the purchase slider
+    - text: Allow tag to be a space seperated string in the YAML header. Earlier it had to be list.
+    - text: Show `Pro mode` label in AppBar for pro members
+      image: pro_tag.jpeg
+  bugs:
+    - title: Preserve Note title format
+      text: Regardless of the settings, the note title should be saved in the same way it was read. Eg - If it was in the YAML metadata, it should be saved there.
 
-- version: 1.67
-  date: 2020-08-19
-  draft: true
+- version: 1.66
+  date: 2020-08-18
+  features:
+    - text: Allow custom metadata to be specified for new notes
+      image: custom_yaml.gif
+    - title: WikiLinks resolution
+      text: Notes can be linked together via the `[[term]]` syntax. Improve the term -> file name conversion to be compatible with Obsidian.
