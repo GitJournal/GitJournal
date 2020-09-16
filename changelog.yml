@@ -1,6 +1,6 @@
 - version: 1.70
   date: 2020-09-16
-  draft: true
+  draft: false
   features:
     - text: "Implement Basic Search highlighting #14"
     - text: Implement basic note selection
