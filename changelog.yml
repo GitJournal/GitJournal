@@ -53,7 +53,7 @@
       text: Make it clearer that GitJournal will require permissions to all your repos
       image: oauth_perm_screen.jpeg
     - text: Beautify the purchase slider
-    - text: Allow tag to be a space seperated string in the YAML header. Earlier it had to be list.
+    - text: Allow `tags` to be a space seperated string in the YAML header. Earlier it had to be list.
     - text: Show `Pro mode` label in AppBar for pro members
       image: pro_tag.jpeg
   bugs:
