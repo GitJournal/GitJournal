@@ -13,7 +13,7 @@
   improvements:
     - text: Purchase Screen - Make it prettier for smaller screen sizes
     - text: Make all strings in the app translatable
-    - text: Configuring the default Image settings is now Free
+    - text: Configuring the default Image settings is now part of `GitJournal Basic`
   bugs:
     - text: Do not show Tag Editing screen if the Note cannot have metadata
     - text: "Zettelkasten FileName Mode - Add leading zero to minutes < 10 - #247"
