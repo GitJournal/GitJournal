@@ -1,7 +1,7 @@
 - version: "1.70"
   date: 2020-09-16
   draft: false
-  reddit: 'https://www.reddit.com/r/GitJournal/comments/iu47ej/gitjournal_v170/'
+  reddit: "https://www.reddit.com/r/GitJournal/comments/iu47ej/gitjournal_v170/"
   features:
     - text: "Implement Basic Search highlighting #14"
       image: search_highlight.gif
@@ -67,3 +67,126 @@
       image: custom_yaml.gif
     - title: WikiLinks resolution
       text: Notes can be linked together via the `[[term]]` syntax. Improve the term -> file name conversion to be compatible with Obsidian.
+
+- version: "1.65"
+  date: 2020-08-14
+  features:
+    - text: Allow the sorting order to be controlled
+  bugs:
+    - text: Purchasing the Pro Mode would sometimes fail
+    - text: Backlinks section wouldn't always show all the links
+
+- version: "1.64"
+  date: 2020-08-12
+  features:
+    - text: Shocase the list of Features in the Purchase Screen
+      image: feature_list.gif
+  bugs:
+    - The Payment slider was a bit glitchy
+    - MetaData settings page would occasionally crash
+
+- version: "1.63"
+  date: 2020-08-11
+  features:
+    - text: Make Wiki Link resolution be similar to the way it is done in Obsidian
+    - text: Support Piped Wiki Links format `[[fileName | text-to-dispaly]]`
+    - text: Allow 'tags' metadata field to be configured
+    - text: Allow 'created' metdata field to be configured
+  bugs:
+    - text: Fix annoying cursor not moving for spaces bug
+
+- version: "1.62"
+  date: 2020-07-30
+  features:
+    - title: Allow title metadata to be configured
+      text: "Implemented the most voted feature! #112 - Controlling how the title is saved. Saving it in the YAML metadata as 'title' wasn't satisfying everyone."
+      image: setting_metadata.gif
+  bugs:
+    - text: Fix Gitjournal occasionally resetting the configuration
+
+- version: "1.61"
+  date: 2020-07-28
+  features:
+    - title: Add Zen Mode
+      image: zen_mode.gif
+
+- version: "1.60"
+  date: 2020-07-21
+  improvements:
+    - text: Ensure notes are never lost when saving
+      image: note_saving.gif
+    - text: Upgrade libssh to support more hardened SSH Servers
+  bugs:
+    - text: Make sure pro mode is correctly detected
+
+- version: "1.59"
+  date: 2020-07-09
+  features:
+    - text: Render Wiki Style links
+  improvements:
+    - text: Improve the Pro Purchase Screen
+  bugs:
+    - Avoid blocking the UI when loading Notes
+
+- version: "1.58"
+  date: 2020-07-04
+  improvements:
+    - text: Send crash reports to Sentry over Crashlytics. Sentry is an open sourc project and has a much better interface for managing the crashes.
+    - text: Allow users to play around with experimental features
+      image: experimental.jpeg
+    - text: Basic support for wiki style links - [[word]]
+      image: wikiLinks.gif
+  bugs:
+    - text: Fix Pro Mode occasionally not being detected
+
+- version: "1.57"
+  date: 2020-06-10
+  improvements:
+    - text: Better support for auto adding list items when typing
+    - text: In general, improve the error handling workflow of GitJournal, so errors are never silently ignored.
+  bugs:
+    - text: Fix a rare case where all the GitJournal would reset in iOS and the notes would no longer be shown.
+
+- version: "1.56"
+  date: 2020-06-04
+  improvements:
+    - text: Make it easier to add new tags
+    - text: Allow default filenames to be UUIDs
+  bugs:
+    - text: Fix a regression where SubFolder names had their parent folders name still present
+
+- version: "1.55"
+  date: 2020-06-03
+  features:
+    - text: Add support for txt files
+    - text: Automatically add list items when editing
+      image: editor_heuristics.gif
+  improvements:
+    - text: Collect better logs for when when the user reports a bug
+
+- version: "1.54"
+  date: 2020-05-27
+  features:
+    - title: Allow the Git Remote to be Reset
+      text: Earlier this required reinstalling the application.
+      image: reset_host.jpeg
+    - text: Allow the default Image location to be configured
+    - text: Experimental support for backlinks
+      image: backlinks.jpeg
+
+- version: "1.53"
+  date: 2020-05-18
+  features:
+    - text: Let a custom repo be chosen during the Automatic Git Host Setup
+      image: auto_setup.gif
+    - text: Make the Card View responsible to the screen size
+  improvements:
+    - text: Polish the Debug Screen
+
+- version: "1.52"
+  date: 2020-05-14
+  features:
+    - text: Add Tags Support
+    - text: Add App Shortcuts
+      image: shortcuts.jpeg
+    - text: Allow Sharing Files to GitJournal
