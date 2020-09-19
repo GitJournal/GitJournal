@@ -82,8 +82,8 @@
     - text: Shocase the list of Features in the Purchase Screen
       image: feature_list.gif
   bugs:
-    - The Payment slider was a bit glitchy
-    - MetaData settings page would occasionally crash
+    - text: The Payment slider was a bit glitchy
+    - text: MetaData settings page would occasionally crash
 
 - version: "1.63"
   date: 2020-08-11
@@ -126,7 +126,7 @@
   improvements:
     - text: Improve the Pro Purchase Screen
   bugs:
-    - Avoid blocking the UI when loading Notes
+    - text: Avoid blocking the UI when loading Notes
 
 - version: "1.58"
   date: 2020-07-04
