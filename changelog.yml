@@ -278,7 +278,7 @@
 - version: "1.41"
   date: 2020-02-17
   improvements:
-    - text: Support custom SSH Keys
+    - text: "Support custom SSH Keys - #26"
     - text: Polish the Checklist Editor
     - text: "Allow YAML Metadata to be disabled - #19"
 
