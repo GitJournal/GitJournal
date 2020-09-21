@@ -8,7 +8,7 @@
     - text: Implement basic note selection
       image: note_select_delete.gif
     - title: Single Journal entry Per Day
-      text: Some users prefer all the journal entries for a single day be in the same file. This matches with how Obsidian and Foam handle the daily journal.
+      text: "Some users prefer all the journal entries for a single day be in the same file. This matches with how Obsidian and Foam handle the daily journal - #243"
       image: single_journal_entry.jpeg
   improvements:
     - text: Purchase Screen - Make it prettier for smaller screen sizes
@@ -25,7 +25,7 @@
     - text: Add a fast dark mode switcher. Inspired by Telegram.
       image: dark_mode_switcher.gif
     - title: Inline Tags
-      text: By default now typing with '#feature' will mark the note with the 'feature' tag. As GitJournal is used in so many different ways, the inline tags prefix is quite configurable
+      text: "By default now typing with '#feature' will mark the note with the 'feature' tag. As GitJournal is used in so many different ways, the inline tags prefix is quite configurable - #44"
       image: inline_tags.jpeg
   improvements:
     - text: "RepoSelector: Show the datetime in relative terms"
@@ -63,7 +63,7 @@
 - version: "1.66"
   date: 2020-08-18
   features:
-    - text: Allow custom metadata to be specified for new notes
+    - text: "Allow custom metadata to be specified for new notes - #168"
       image: custom_yaml.gif
     - title: WikiLinks resolution
       text: Notes can be linked together via the `[[term]]` syntax. Improve the term -> file name conversion to be compatible with Obsidian.
@@ -89,11 +89,11 @@
   date: 2020-08-11
   features:
     - text: Make Wiki Link resolution be similar to the way it is done in Obsidian
-    - text: Support Piped Wiki Links format `[[fileName | text-to-dispaly]]`
+    - text: "Support Piped Wiki Links format `[[fileName | text-to-dispaly]]` - #203"
     - text: Allow 'tags' metadata field to be configured
     - text: Allow 'created' metdata field to be configured
   bugs:
-    - text: Fix annoying cursor not moving for spaces bug
+    - text: "Fix annoying cursor not moving for spaces bug - #131"
 
 - version: "1.62"
   date: 2020-07-30
@@ -107,7 +107,7 @@
 - version: "1.61"
   date: 2020-07-28
   features:
-    - title: Add Zen Mode
+    - title: "Add Zen Mode - #126"
       image: zen_mode.gif
 
 - version: "1.60"
@@ -138,6 +138,7 @@
       image: wikiLinks.gif
   bugs:
     - text: Fix Pro Mode occasionally not being detected
+    - text: "Support Thematic Breaks in Markdown #167"
 
 - version: "1.57"
   date: 2020-06-10
@@ -145,7 +146,7 @@
     - text: Better support for auto adding list items when typing
     - text: In general, improve the error handling workflow of GitJournal, so errors are never silently ignored.
   bugs:
-    - text: Fix a rare case where all the GitJournal would reset in iOS and the notes would no longer be shown.
+    - text: "Fix a rare case where all the GitJournal would reset in iOS and the notes would no longer be shown - #159"
 
 - version: "1.56"
   date: 2020-06-04
@@ -159,7 +160,7 @@
   date: 2020-06-03
   features:
     - text: Add support for txt files
-    - text: Automatically add list items when editing
+    - text: "Automatically add list items when editing - #140"
       image: editor_heuristics.gif
   improvements:
     - text: Collect better logs for when when the user reports a bug
@@ -168,16 +169,18 @@
   date: 2020-05-27
   features:
     - title: Allow the Git Remote to be Reset
-      text: Earlier this required reinstalling the application.
+      text: "Earlier this required reinstalling the application - #36"
       image: reset_host.jpeg
     - text: Allow the default Image location to be configured
-    - text: Experimental support for backlinks
+    - text: "Experimental support for backlinks - #141"
       image: backlinks.jpeg
+  bugs:
+    - text: "Checklist notes - last item deletion is being ignored #148"
 
 - version: "1.53"
   date: 2020-05-18
   features:
-    - text: Let a custom repo be chosen during the Automatic Git Host Setup
+    - text: "Let a custom repo be chosen during the Automatic Git Host Setup - #80"
       image: auto_setup.gif
     - text: Make the Card View responsible to the screen size
   improvements:
@@ -186,27 +189,27 @@
 - version: "1.52"
   date: 2020-05-14
   features:
-    - text: Add Tags Support
-    - text: Add App Shortcuts
+    - text: "Add Tags Support - #114"
+    - text: "Add App Shortcuts - #134"
       image: shortcuts.jpeg
-    - text: Allow Sharing Files to GitJournal
+    - text: "Allow Sharing Files to GitJournal - #38"
 
 - version: "1.51"
   date: 2020-05-08
   improvements:
     - text: Add a bottom bar in the NoteEditor to show the Folder
-    - text: Add very basic Image support
+    - text: "Add very basic Image support - #10"
     - text: Allow sorting by Title and Filename
     - text: Add a Debug screen for users to more easily debug issues
 
 - version: "1.50"
   date: 2020-05-01
   improvements:
-    - text: Show num of changes to be pushed
-    - text: Follow GitHub's checklist format
+    - text: "Show number of changes to be pushed - #123"
+    - text: "Follow GitHub's checklist format - #71"
     - text: Allow Sharing of Notes
     - text: Allow configuring of default Folder for Journal Editor
-    - text: "Editor: Show ✕ or ✓ in AppBar depending on if the note has been modified"
+    - text: "Editor: Show ✕ or ✓ in AppBar depending on if the note has been modified - #123"
 
 - version: "1.49"
   date: 2020-04-22
@@ -220,7 +223,7 @@
   date: 2020-04-17
   improvements:
     - text: Cache Network Images
-    - text: Allow Markdown View/Edit mode to configured
+    - text: "Allow Markdown View/Edit mode to configured - #98"
   bugs:
     - text: Do not allow / in file names
 
@@ -277,7 +280,7 @@
   improvements:
     - text: Support custom SSH Keys
     - text: Polish the Checklist Editor
-    - text: Allow YAML Metadata to be disabled
+    - text: "Allow YAML Metadata to be disabled - #19"
 
 - version: "1.40"
   date: 2020-02-16
@@ -296,7 +299,7 @@
   date: 2020-02-09
   features:
     - text: Allow Note sorting to be configured
-    - text: Allow Git Push frequency to be configured
+    - text: "Allow Git Push frequency to be configured - #8"
   improvements:
     - text: Show animations when adding / removing a note
 
@@ -312,13 +315,13 @@
   date: 2020-01-28
   improvements:
     - text: Automatically resolve merge conflicts
-    - text: New combined editor / viewer
-    - text: Allow Notes to be moved to another Folder
+    - text: "New combined editor / viewer - #33"
+    - text: "Allow Notes to be moved to another Folder - #37"
 
 - version: "1.35"
   date: 2020-01-27
   improvements:
-    - text: Allow Notes to be Renamed
+    - text: "Allow Notes to be Renamed - #23"
     - text: Dark Theme improvements
 
 - version: "1.34"
@@ -336,7 +339,7 @@
 - version: "1.31"
   date: 2020-01-06
   improvements:
-    - text: Allow the modified key in notes to be configured. This improves compatibility with Hugo blog posts, as GitJournal can now update the 'lastmod' field as used by Hugo front matter.
+    - text: "Allow the modified key in notes to be configured. This improves compatibility with Hugo blog posts, as GitJournal can now update the 'lastmod' field as used by Hugo front matter - #15"
 
 - version: "1.30"
   date: 2020-01-04
@@ -377,7 +380,7 @@
   date: 2019-12-14
   improvements:
     - text: Improve Folder Support - Folders can be deleted and SubFolders can also be created
-    - text: Improve markdown support - we now support all of GitHub Markdown minus HTML
+    - text: "Improve markdown support - we now support all of GitHub Markdown minus HTML - #32"
     - text: Mark when the note was last modified in the metadata.
   bugs:
     - text: Properly serialize the parse Dates
@@ -385,7 +388,7 @@
 - version: "1.23"
   date: 2019-12-08
   improvements:
-    - text: Massive performance boosts. The notes are now loaded asynchronously in the background, and are only re-parsed when necessary.
+    - text: "Massive performance boosts. The notes are now loaded asynchronously in the background, and are only re-parsed when necessary - #22"
 
 - version: "1.22"
   date: 2019-12-07
@@ -401,7 +404,7 @@
 - version: "1.20"
   date: 2019-12-04
   features:
-    - text: Basic Folder support
+    - text: "Basic Folder support - #18"
     - text: Improve Dark Mode appearance
   bugs:
     - text: Fix ssh key not being regenerated error
