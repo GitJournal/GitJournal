@@ -190,3 +190,161 @@
     - text: Add App Shortcuts
       image: shortcuts.jpeg
     - text: Allow Sharing Files to GitJournal
+
+- version: "1.51"
+  date: 2020-05-08
+  improvements:
+    - text: Add a bottom bar in the NoteEditor to show the Folder
+    - text: Add very basic Image support
+    - text: Allow sorting by Title and Filename
+    - text: Add a Debug screen for users to more easily debug issues
+
+- version: "1.50"
+  date: 2020-05-01
+  improvements:
+    - text: Show num of changes to be pushed
+    - text: Follow GitHub's checklist format
+    - text: Allow Sharing of Notes
+    - text: Allow configuring of default Folder for Journal Editor
+    - text: "Editor: Show ✕ or ✓ in AppBar depending on if the note has been modified"
+
+- version: "1.49"
+  date: 2020-04-22
+  improvements:
+    - text: Allow Pay what you want for Pro version
+    - text: Collect Better Crash Information
+    - text: Allow Folders to be renamed
+    - text: Search in Filenames as well as content
+
+- version: "1.48"
+  date: 2020-04-17
+  improvements:
+    - text: Cache Network Images
+    - text: Allow Markdown View/Edit mode to configured
+  bugs:
+    - text: Do not allow / in file names
+
+- version: "1.47"
+  date: 2020-04-14
+  improvements:
+    - text: Added Pro Mode
+    - text: Improved sync speed by avoiding unnecessary options
+    - text: Polished the UI
+
+- version: "1.46"
+  date: 2020-04-02
+  improvements:
+    - text: Add a Grid View
+    - text: Beautify the Cards Folder View
+    - text: Show images if path is relative
+    - text: Allow Linking to other Notes
+    - text: Make the EditorSelector prettier
+
+- version: "1.45"
+  date: 2020-03-20
+  improvements:
+    - text: Add an "All Notes" view
+    - text: Save the Note type (Checklist/Journal) in the metadata
+    - text: Allow quickly opening a note with a specific editor
+    - text: Performance improvements for faster loading of Notes
+    - text: Add Experimental Cards View
+  bugs:
+    - text: Fix Validation of custom SSH Keys
+
+- version: "1.44"
+  date: 2020-03-11
+  improvements:
+    - text: Allow the Folder View to be configured
+    - text: Faster loading of Notes
+  bugs:
+    - text: "Notes should update when modified in another repo - #65"
+
+- version: "1.43"
+  date: 2020-03-05
+  bugs:
+    - text: Fix crash because of previously introduced Cache to speed up load performance
+    - text: Optimize this cache to be even faster
+
+- version: "1.42"
+  date: 2020-03-01
+  improvements:
+    - text: Add an Experimental Journal Editor
+    - text: Improve loading time drastically by saving the list of visible notes and loading them first.
+    - text: Remove the FAB while editing a note
+
+- version: "1.41"
+  date: 2020-02-17
+  improvements:
+    - text: Support custom SSH Keys
+    - text: Polish the Checklist Editor
+    - text: Allow YAML Metadata to be disabled
+
+- version: "1.40"
+  date: 2020-02-16
+  improvements:
+    - text: Polish the Checklist Editor
+    - text: "Add Emoji Support - #62"
+
+- version: "1.39"
+  date: 2020-02-11
+  features:
+    - text: Add Experimental Checklist Editor
+  improvements:
+    - text: Increase Loading and Scrolling performance by 22%.
+
+- version: "1.38"
+  date: 2020-02-09
+  features:
+    - text: Allow Note sorting to be configured
+    - text: Allow Git Push frequency to be configured
+  improvements:
+    - text: Show animations when adding / removing a note
+
+- version: "1.37"
+  date: 2020-01-31
+  improvements:
+    - text: Allow Note changes to be discarded
+  bugs:
+    - text: Fix a bug where we would load too many Notes in paralellel and acounter file system limitations.
+    - text: Stop the Snackbar from overlapping over the FAB
+
+- version: "1.36"
+  date: 2020-01-28
+  improvements:
+    - text: Automatically resolve merge conflicts
+    - text: New combined editor / viewer
+    - text: Allow Notes to be moved to another Folder
+
+- version: "1.35"
+  date: 2020-01-27
+  improvements:
+    - text: Allow Notes to be Renamed
+    - text: Dark Theme improvements
+
+- version: "1.34"
+  date: 2020-03-27
+  improvements:
+    - text: Fix Git Host Setup
+
+- version: "1.33"
+  date: 2020-01-25
+  improvements:
+    - text: Save notes by default with the title as the filename
+  bugs:
+    - text: Fix a bug where notes contents would disappear if app was switched while editing
+
+- version: "1.31"
+  date: 2020-01-06
+  improvements:
+    - text: Allow the modified key in notes to be configured. This improves compatibility with Hugo blog posts, as GitJournal can now update the 'lastmod' field as used by Hugo front matter.
+
+- version: "1.30"
+  date: 2020-01-04
+  improvements:
+    - text: Expose the Git Remote in the Settings
+    - text: Add Support for AWS Code Commit
+
+- version: "1.29"
+  date: 2020-01-02
+  bugs:
+    - text: New Repo in GitLab Fix
