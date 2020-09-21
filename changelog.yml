@@ -348,3 +348,71 @@
   date: 2020-01-02
   bugs:
     - text: New Repo in GitLab Fix
+
+- version: "1.28"
+  date: 2019-12-28
+  bugs:
+    - text: "Allow # to be used in the title"
+
+- version: "1.27"
+  date: 2019-12-27
+  improvements:
+    - text: Links can now be opened from Notes
+
+- version: "1.26"
+  date: 2019-12-26
+  improvements:
+    - text: Support Git repos which do not have master branches
+    - text: Add Scrollbars
+    - text: Add a button to show the network state
+  bugs:
+    - text: Fix Folder Navigation
+
+- version: "1.25"
+  date: 2019-12-14
+  bugs:
+    - text: Fix sorting of Notes and Folders
+
+- version: "1.24"
+  date: 2019-12-14
+  improvements:
+    - text: Improve Folder Support - Folders can be deleted and SubFolders can also be created
+    - text: Improve markdown support - we now support all of GitHub Markdown minus HTML
+    - text: Mark when the note was last modified in the metadata.
+  bugs:
+    - text: Properly serialize the parse Dates
+
+- version: "1.23"
+  date: 2019-12-08
+  improvements:
+    - text: Massive performance boosts. The notes are now loaded asynchronously in the background, and are only re-parsed when necessary.
+
+- version: "1.22"
+  date: 2019-12-07
+  improvements:
+    - text: Allow Folders to be renamed
+    - text: Improve animations while navigating
+
+- version: "1.21"
+  date: 2019-12-06
+  improvements:
+    - text: Polish Folder Support - New Folders can now be created
+
+- version: "1.20"
+  date: 2019-12-04
+  features:
+    - text: Basic Folder support
+    - text: Improve Dark Mode appearance
+  bugs:
+    - text: Fix ssh key not being regenerated error
+
+- version: "1.19"
+  date: 2019-11-02
+  improvements:
+    - text: Better handling of Markdown files without YAML headers
+    - text: Raw Note editing now uses a Monospace Font
+    - text: The Settings Screen has been made prettier
+    - text: Back button automatically saves the note
+    - text: Improved performance by build time caching of constant values
+  bugs:
+    - text: Avoid Saving notes if not modified
