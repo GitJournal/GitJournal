@@ -98,6 +98,9 @@ Future<Note> getTodayJournalEntry(NotesFolderFS rootFolder) async {
   var today = DateTime.now();
   var matches = await rootFolder.matchNotes((n) async {
     var dt = n.created;
+    if (dt == null) {
+      return false;
+    }
     return dt.year == today.year &&
         dt.month == today.month &&
         dt.day == today.day;
