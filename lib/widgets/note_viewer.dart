@@ -94,7 +94,7 @@ class NoteViewer extends StatelessWidget {
                   Log.e("Opening Link", ex: e, stacktrace: stackTrace);
                   showSnackbar(
                     context,
-                    tr('wigets.NoteViewer.noteViewer', args: [link]),
+                    tr('wigets.NoteViewer.linkNotFound', args: [link]),
                   );
                 }
               },
