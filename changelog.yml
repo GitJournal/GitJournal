@@ -1,6 +1,10 @@
+- version: "1.71"
+  draft: true
+  bugs:
+    - text: "Dark Theme: Render checkboxes in a lighter color"
+
 - version: "1.70"
   date: 2020-09-16
-  draft: false
   reddit: "https://www.reddit.com/r/GitJournal/comments/iu47ej/gitjournal_v170/"
   features:
     - text: "Implement Basic Search highlighting #14"

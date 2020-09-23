@@ -42,6 +42,7 @@ class NoteViewer extends StatelessWidget {
     );
 
     var settings = Provider.of<Settings>(context);
+    var isDark = theme.brightness == Brightness.dark;
 
     // Copied from MarkdownStyleSheet except Grey is replaced with Highlight color
     var markdownStyleSheet = MarkdownStyleSheet.fromTheme(theme).copyWith(
@@ -64,6 +65,9 @@ class NoteViewer extends StatelessWidget {
       blockquoteDecoration: BoxDecoration(
         color: theme.primaryColorLight,
         borderRadius: BorderRadius.circular(2.0),
+      ),
+      checkbox: theme.textTheme.bodyText2.copyWith(
+        color: isDark ? theme.primaryColorLight : theme.primaryColor,
       ),
     );
 
