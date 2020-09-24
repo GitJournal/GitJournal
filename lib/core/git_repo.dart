@@ -25,9 +25,11 @@ class NoteRepoResult {
 class GitNoteRepository {
   final String gitDirPath;
   final GitRepo _gitRepo;
+  final Settings settings;
 
   GitNoteRepository({
     @required this.gitDirPath,
+    @required this.settings,
   }) : _gitRepo = GitRepo(folderPath: gitDirPath);
 
   Future<NoteRepoResult> addNote(Note note) async {
@@ -38,8 +40,8 @@ class GitNoteRepository {
     await _gitRepo.add(".");
     await _gitRepo.commit(
       message: commitMessage,
-      authorEmail: Settings.instance.gitAuthorEmail,
-      authorName: Settings.instance.gitAuthor,
+      authorEmail: settings.gitAuthorEmail,
+      authorName: settings.gitAuthor,
     );
 
     return NoteRepoResult(noteFilePath: note.filePath, error: false);
@@ -49,8 +51,8 @@ class GitNoteRepository {
     await _gitRepo.add(".");
     await _gitRepo.commit(
       message: "Created New Folder",
-      authorEmail: Settings.instance.gitAuthorEmail,
-      authorName: Settings.instance.gitAuthor,
+      authorEmail: settings.gitAuthorEmail,
+      authorName: settings.gitAuthor,
     );
 
     return NoteRepoResult(noteFilePath: folder.folderPath, error: false);
@@ -63,8 +65,8 @@ class GitNoteRepository {
     await _gitRepo.add(".");
     await _gitRepo.commit(
       message: "Update folder config for $pathSpec",
-      authorEmail: Settings.instance.gitAuthorEmail,
-      authorName: Settings.instance.gitAuthor,
+      authorEmail: settings.gitAuthorEmail,
+      authorName: settings.gitAuthor,
     );
 
     return NoteRepoResult(noteFilePath: config.folder.folderPath, error: false);
@@ -78,8 +80,8 @@ class GitNoteRepository {
     await _gitRepo.add(".");
     await _gitRepo.commit(
       message: "Renamed Folder",
-      authorEmail: Settings.instance.gitAuthorEmail,
-      authorName: Settings.instance.gitAuthor,
+      authorEmail: settings.gitAuthorEmail,
+      authorName: settings.gitAuthor,
     );
 
     return NoteRepoResult(noteFilePath: newFullPath, error: false);
@@ -93,8 +95,8 @@ class GitNoteRepository {
     await _gitRepo.add(".");
     await _gitRepo.commit(
       message: "Renamed Note",
-      authorEmail: Settings.instance.gitAuthorEmail,
-      authorName: Settings.instance.gitAuthor,
+      authorEmail: settings.gitAuthorEmail,
+      authorName: settings.gitAuthor,
     );
 
     return NoteRepoResult(noteFilePath: newFullPath, error: false);
@@ -108,8 +110,8 @@ class GitNoteRepository {
     await _gitRepo.add(".");
     await _gitRepo.commit(
       message: "Renamed File",
-      authorEmail: Settings.instance.gitAuthorEmail,
-      authorName: Settings.instance.gitAuthor,
+      authorEmail: settings.gitAuthorEmail,
+      authorName: settings.gitAuthor,
     );
 
     return NoteRepoResult(noteFilePath: newFullPath, error: false);
@@ -123,8 +125,8 @@ class GitNoteRepository {
     await _gitRepo.add(".");
     await _gitRepo.commit(
       message: "Note Moved",
-      authorEmail: Settings.instance.gitAuthorEmail,
-      authorName: Settings.instance.gitAuthor,
+      authorEmail: settings.gitAuthorEmail,
+      authorName: settings.gitAuthor,
     );
 
     return NoteRepoResult(noteFilePath: newFullPath, error: false);
@@ -136,8 +138,8 @@ class GitNoteRepository {
     await _gitRepo.rm(spec);
     await _gitRepo.commit(
       message: "Removed Note " + spec,
-      authorEmail: Settings.instance.gitAuthorEmail,
-      authorName: Settings.instance.gitAuthor,
+      authorEmail: settings.gitAuthorEmail,
+      authorName: settings.gitAuthor,
     );
 
     return NoteRepoResult(noteFilePath: note.filePath, error: false);
@@ -148,8 +150,8 @@ class GitNoteRepository {
     await _gitRepo.rm(spec);
     await _gitRepo.commit(
       message: "Removed Folder " + spec,
-      authorEmail: Settings.instance.gitAuthorEmail,
-      authorName: Settings.instance.gitAuthor,
+      authorEmail: settings.gitAuthorEmail,
+      authorName: settings.gitAuthor,
     );
 
     await Directory(folder.folderPath).delete(recursive: true);
@@ -169,8 +171,8 @@ class GitNoteRepository {
   Future<void> pull() async {
     try {
       await _gitRepo.pull(
-        authorEmail: Settings.instance.gitAuthorEmail,
-        authorName: Settings.instance.gitAuthor,
+        authorEmail: settings.gitAuthorEmail,
+        authorName: settings.gitAuthor,
       );
     } on GitException catch (ex, stackTrace) {
       Log.e("GitPull Failed", ex: ex, stacktrace: stackTrace);

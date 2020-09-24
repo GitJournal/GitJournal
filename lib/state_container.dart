@@ -48,7 +48,7 @@ class StateContainer with ChangeNotifier {
       repoPath = p.join(gitBaseDirectory, settings.localGitRepoFolderName);
     }
 
-    _gitRepo = GitNoteRepository(gitDirPath: repoPath);
+    _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);
     appState.notesFolder = NotesFolderFS(null, _gitRepo.gitDirPath);
 
     // Just a fail safe
@@ -361,11 +361,13 @@ class StateContainer with ChangeNotifier {
           fromGitBasePath: settings.localGitRepoFolderName,
           toGitBaseFolder: settings.remoteGitRepoFolderName,
           gitBasePath: gitBaseDirectory,
+          gitAuthor: settings.gitAuthor,
+          gitAuthorEmail: settings.gitAuthorEmail,
         );
       }
 
       var repoPath = p.join(gitBaseDirectory, settings.remoteGitRepoFolderName);
-      _gitRepo = GitNoteRepository(gitDirPath: repoPath);
+      _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);
       appState.notesFolder.reset(_gitRepo.gitDirPath);
 
       await _persistConfig();

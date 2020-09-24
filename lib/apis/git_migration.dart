@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:git_bindings/git_bindings.dart';
 import 'package:path/path.dart' as p;
 
-import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 //
@@ -16,6 +15,8 @@ Future migrateGitRepo({
   @required String gitBasePath,
   @required String fromGitBasePath,
   @required String toGitBaseFolder,
+  @required String gitAuthor,
+  @required String gitAuthorEmail,
 }) async {
   Log.d("migrateGitRepo $fromGitBasePath $toGitBaseFolder");
   var fromBasePath = p.join(gitBasePath, fromGitBasePath);
@@ -40,8 +41,8 @@ Future migrateGitRepo({
     await gitRepo.add(fileName);
     await gitRepo.commit(
       message: "Added Note",
-      authorEmail: Settings.instance.gitAuthorEmail,
-      authorName: Settings.instance.gitAuthor,
+      authorEmail: gitAuthorEmail,
+      authorName: gitAuthor,
     );
   }
   Log.d("migrateGitRepo: Done");
