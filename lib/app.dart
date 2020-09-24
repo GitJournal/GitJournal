@@ -15,7 +15,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/appstate.dart';
@@ -41,12 +40,10 @@ import 'setup/screens.dart';
 class JournalApp extends StatefulWidget {
   final AppState appState;
 
-  static Future main(SharedPreferences pref) async {
+  static Future main() async {
     await Log.init();
 
-    var appState = AppState(pref);
-    appState.dumpToLog();
-
+    var appState = AppState();
     var settings = Settings.instance;
     Log.i("Setting ${settings.toLoggableMap()}");
 
@@ -54,38 +51,38 @@ class JournalApp extends StatefulWidget {
       _enableAnalyticsIfPossible(settings);
     }
 
-    if (appState.gitBaseDirectory.isEmpty) {
+    if (settings.gitBaseDirectory.isEmpty) {
       var dir = await getApplicationDocumentsDirectory();
-      appState.gitBaseDirectory = dir.path;
-      appState.save(pref);
+      settings.gitBaseDirectory = dir.path;
+      settings.save();
     }
 
-    if (!Directory(appState.gitBaseDirectory).existsSync()) {
+    if (!Directory(settings.gitBaseDirectory).existsSync()) {
       Log.w("Applications Documents Directory no longer exists");
       var dir = await getApplicationDocumentsDirectory();
-      appState.gitBaseDirectory = dir.path;
-      appState.save(pref);
+      settings.gitBaseDirectory = dir.path;
+      settings.save();
       Log.i("New Documents Directory Path ${dir.path}");
     }
 
-    if (appState.localGitRepoConfigured == false) {
+    if (settings.localGitRepoConfigured == false) {
       // FIXME: What about exceptions!
-      appState.localGitRepoFolderName = "journal_local";
+      settings.localGitRepoFolderName = "journal_local";
       var repoPath = p.join(
-        appState.gitBaseDirectory,
-        appState.localGitRepoFolderName,
+        settings.gitBaseDirectory,
+        settings.localGitRepoFolderName,
       );
       await GitRepository.init(repoPath);
 
-      appState.localGitRepoConfigured = true;
-      appState.save(pref);
+      settings.localGitRepoConfigured = true;
+      settings.save();
     }
 
     var app = ChangeNotifierProvider.value(
       value: settings,
       child: ChangeNotifierProvider(
         create: (_) {
-          return StateContainer(appState);
+          return StateContainer(appState, settings);
         },
         child: ChangeNotifierProvider(
           child: JournalApp(appState),

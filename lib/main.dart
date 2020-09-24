@@ -29,6 +29,6 @@ void main() async {
   }).sendPort);
 
   runZonedGuarded(() async {
-    await JournalApp.main(pref);
+    await JournalApp.main();
   }, reportError);
 }

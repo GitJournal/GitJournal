@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:path/path.dart' as p;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
 
 import 'package:gitjournal/analytics.dart';
@@ -23,6 +22,7 @@ import 'package:gitjournal/utils/logger.dart';
 
 class StateContainer with ChangeNotifier {
   final AppState appState;
+  final Settings settings;
 
   final _opLock = Lock();
   final _loadLock = Lock();
@@ -33,33 +33,33 @@ class StateContainer with ChangeNotifier {
   GitNoteRepository _gitRepo;
   NotesCache _notesCache;
 
-  StateContainer(this.appState) {
-    assert(appState.localGitRepoConfigured);
+  StateContainer(this.appState, this.settings) {
+    assert(settings.localGitRepoConfigured);
 
     String repoPath;
-    if (appState.remoteGitRepoConfigured) {
+    if (settings.remoteGitRepoConfigured) {
       repoPath =
-          p.join(appState.gitBaseDirectory, appState.remoteGitRepoFolderName);
-    } else if (appState.localGitRepoConfigured) {
+          p.join(settings.gitBaseDirectory, settings.remoteGitRepoFolderName);
+    } else if (settings.localGitRepoConfigured) {
       repoPath =
-          p.join(appState.gitBaseDirectory, appState.localGitRepoFolderName);
+          p.join(settings.gitBaseDirectory, settings.localGitRepoFolderName);
     }
 
     _gitRepo = GitNoteRepository(gitDirPath: repoPath);
     appState.notesFolder = NotesFolderFS(null, _gitRepo.gitDirPath);
 
     // Just a fail safe
-    if (!appState.remoteGitRepoConfigured) {
+    if (!settings.remoteGitRepoConfigured) {
       removeExistingRemoteClone();
     }
 
     // Makes it easier to filter the analytics
     getAnalytics().firebase.setUserProperty(
           name: 'onboarded',
-          value: appState.remoteGitRepoConfigured.toString(),
+          value: settings.remoteGitRepoConfigured.toString(),
         );
 
-    var cachePath = p.join(appState.gitBaseDirectory, "cache.json");
+    var cachePath = p.join(settings.gitBaseDirectory, "cache.json");
     _notesCache = NotesCache(
       filePath: cachePath,
       notesBasePath: _gitRepo.gitDirPath,
@@ -79,7 +79,7 @@ class StateContainer with ChangeNotifier {
 
   void removeExistingRemoteClone() async {
     var remoteGitDir = Directory(
-        p.join(appState.gitBaseDirectory, appState.remoteGitRepoFolderName));
+        p.join(settings.gitBaseDirectory, settings.remoteGitRepoFolderName));
     var dotGitDir = Directory(p.join(remoteGitDir.path, ".git"));
 
     bool exists = dotGitDir.existsSync();
@@ -100,7 +100,7 @@ class StateContainer with ChangeNotifier {
   }
 
   Future<void> syncNotes({bool doNotThrow = false}) async {
-    if (!appState.remoteGitRepoConfigured) {
+    if (!settings.remoteGitRepoConfigured) {
       Log.d("Not syncing because RemoteRepo not configured");
       return true;
     }
@@ -348,21 +348,21 @@ class StateContainer with ChangeNotifier {
 
   void completeGitHostSetup(String repoFolderName) {
     () async {
-      var reconfiguringRemote = appState.remoteGitRepoConfigured;
+      var reconfiguringRemote = settings.remoteGitRepoConfigured;
 
-      appState.remoteGitRepoConfigured = true;
-      appState.remoteGitRepoFolderName = repoFolderName;
+      settings.remoteGitRepoConfigured = true;
+      settings.remoteGitRepoFolderName = repoFolderName;
 
       if (!reconfiguringRemote) {
         await migrateGitRepo(
-          fromGitBasePath: appState.localGitRepoFolderName,
-          toGitBaseFolder: appState.remoteGitRepoFolderName,
-          gitBasePath: appState.gitBaseDirectory,
+          fromGitBasePath: settings.localGitRepoFolderName,
+          toGitBaseFolder: settings.remoteGitRepoFolderName,
+          gitBasePath: settings.gitBaseDirectory,
         );
       }
 
       var repoPath =
-          p.join(appState.gitBaseDirectory, appState.remoteGitRepoFolderName);
+          p.join(settings.gitBaseDirectory, settings.remoteGitRepoFolderName);
       _gitRepo = GitNoteRepository(gitDirPath: repoPath);
       appState.notesFolder.reset(_gitRepo.gitDirPath);
 
@@ -376,7 +376,6 @@ class StateContainer with ChangeNotifier {
   }
 
   Future _persistConfig() async {
-    var pref = await SharedPreferences.getInstance();
-    await appState.save(pref);
+    await settings.save();
   }
 }

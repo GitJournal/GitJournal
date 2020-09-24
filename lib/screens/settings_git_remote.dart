@@ -132,7 +132,8 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     }
 
     var stateContainer = Provider.of<StateContainer>(context);
-    var gitDir = stateContainer.appState.gitBaseDirectory;
+    final settings = Provider.of<Settings>(context);
+    var gitDir = settings.gitBaseDirectory;
 
     // Figure out the next available folder
     String repoFolderName = "journal_";

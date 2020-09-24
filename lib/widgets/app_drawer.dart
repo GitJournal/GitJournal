@@ -13,7 +13,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 
@@ -21,11 +20,11 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget setupGitButton;
-    var appState = Provider.of<StateContainer>(context).appState;
+    var settings = Provider.of<Settings>(context);
     var textStyle = Theme.of(context).textTheme.bodyText1;
     var currentRoute = ModalRoute.of(context).settings.name;
 
-    if (!appState.remoteGitRepoConfigured) {
+    if (!settings.remoteGitRepoConfigured) {
       setupGitButton = ListTile(
         leading: Icon(Icons.sync, color: textStyle.color),
         title: Text(tr('drawer.setup'), style: textStyle),
@@ -43,7 +42,6 @@ class AppDrawer extends StatelessWidget {
     }
 
     var divider = Row(children: <Widget>[const Expanded(child: Divider())]);
-    var settings = Provider.of<Settings>(context);
 
     return Drawer(
       child: ListView(

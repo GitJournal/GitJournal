@@ -75,6 +75,15 @@ class Settings extends ChangeNotifier {
 
   Set<String> inlineTagPrefixes = {'#'};
 
+  // From AppState
+  String localGitRepoFolderName = "";
+  bool localGitRepoConfigured = false;
+
+  String remoteGitRepoFolderName = "";
+  bool remoteGitRepoConfigured = false;
+
+  String gitBaseDirectory = "";
+
   void load(SharedPreferences pref) {
     onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
 
@@ -158,6 +167,13 @@ class Settings extends ChangeNotifier {
 
     inlineTagPrefixes =
         pref.getStringList("inlineTagPrefixes")?.toSet() ?? inlineTagPrefixes;
+
+    // From AppState
+    localGitRepoConfigured = pref.getBool("localGitRepoConfigured") ?? false;
+    remoteGitRepoConfigured = pref.getBool("remoteGitRepoConfigured") ?? false;
+    localGitRepoFolderName = pref.getString("localGitRepoPath") ?? "";
+    remoteGitRepoFolderName = pref.getString("remoteGitRepoPath") ?? "";
+    gitBaseDirectory = pref.getString("gitBaseDirectory") ?? "";
   }
 
   Future save() async {
@@ -245,6 +261,12 @@ class Settings extends ChangeNotifier {
 
     pref.setInt("settingsVersion", version);
 
+    pref.setBool("localGitRepoConfigured", localGitRepoConfigured);
+    pref.setBool("remoteGitRepoConfigured", remoteGitRepoConfigured);
+    pref.setString("localGitRepoPath", localGitRepoFolderName);
+    pref.setString("remoteGitRepoPath", remoteGitRepoFolderName);
+    pref.setString("gitBaseDirectory", gitBaseDirectory);
+
     notifyListeners();
   }
 
@@ -330,6 +352,11 @@ class Settings extends ChangeNotifier {
       'swipeToDelete': swipeToDelete.toString(),
       'inlineTagPrefixes': inlineTagPrefixes.join(' '),
       'emojiParser': emojiParser.toString(),
+      'localGitRepoConfigured': localGitRepoConfigured.toString(),
+      'remoteGitRepoConfigured': remoteGitRepoConfigured.toString(),
+      'localGitRepoFolderName': localGitRepoFolderName.toString(),
+      'remoteGitRepoFolderName': remoteGitRepoFolderName.toString(),
+      'gitBaseDirectory': gitBaseDirectory.toString(),
     };
   }
 

@@ -4,7 +4,6 @@ import 'package:flutter_driver/driver_extension.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:gitjournal/app.dart';
-import 'package:gitjournal/appstate.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
 
@@ -19,20 +18,20 @@ void main() async {
   Settings.instance.load(pref);
 
   await populateWithData(pref);
-  await JournalApp.main(pref);
+  await JournalApp.main();
 }
 
 // Generate lots of notes and folders better screenshots
 Future<void> populateWithData(SharedPreferences pref) async {
   var dir = await getApplicationDocumentsDirectory();
 
-  var appState = AppState(pref);
-  appState.gitBaseDirectory = dir.path;
-  appState.localGitRepoConfigured = true;
-  appState.localGitRepoFolderName = "journal_local";
-  appState.save(pref);
+  var settings = Settings.instance;
+  settings.gitBaseDirectory = dir.path;
+  settings.localGitRepoConfigured = true;
+  settings.localGitRepoFolderName = "journal_local";
+  settings.save();
 
-  var repoPath = p.join(dir.path, appState.localGitRepoFolderName);
+  var repoPath = p.join(dir.path, settings.localGitRepoFolderName);
   await GitRepository.init(repoPath);
 
   print("Filling fake data in $repoPath");
