@@ -9,7 +9,7 @@ import 'package:sentry/sentry.dart';
 
 import 'package:gitjournal/.env.dart';
 import 'package:gitjournal/app.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 SentryClient _sentryClient;
@@ -64,7 +64,7 @@ Future<Event> get _environmentEvent async {
       ),
     ),
     userContext: User(
-      id: Settings.instance.pseudoId,
+      id: AppSettings.instance.pseudoId,
     ),
   );
   return environment;
@@ -83,7 +83,7 @@ void flutterOnErrorHandler(FlutterErrorDetails details) {
 bool get reportCrashes => _reportCrashes ??= _initReportCrashes();
 bool _reportCrashes;
 bool _initReportCrashes() {
-  return !JournalApp.isInDebugMode && Settings.instance.collectCrashReports;
+  return !JournalApp.isInDebugMode && AppSettings.instance.collectCrashReports;
 }
 
 Future<void> reportError(Object error, StackTrace stackTrace) async {

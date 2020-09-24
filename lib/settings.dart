@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart';
 
 import 'package:gitjournal/core/sorting_mode.dart';
-import 'package:gitjournal/features.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 
@@ -18,14 +16,9 @@ class Settings extends ChangeNotifier {
   static Settings get instance => _singleton;
 
   // Properties
-  bool onBoardingCompleted = false;
-
   String gitAuthor = "GitJournal";
   String gitAuthorEmail = "app@gitjournal.io";
   NoteFileNameFormat noteFileNameFormat = NoteFileNameFormat.Default;
-
-  bool collectUsageStatistics = true;
-  bool collectCrashReports = true;
 
   String yamlModifiedKey = "modified";
   String yamlCreatedKey = "created";
@@ -46,12 +39,6 @@ class Settings extends ChangeNotifier {
   String folderViewHeaderType = "TitleGenerated";
   int version = 0;
 
-  bool proMode = Features.alwaysPro;
-  String proExpirationDate = "";
-
-  String _pseudoId;
-  String get pseudoId => _pseudoId;
-
   SettingsHomeScreen homeScreen = SettingsHomeScreen.Default;
 
   SettingsMarkdownDefaultView markdownDefaultView =
@@ -60,12 +47,6 @@ class Settings extends ChangeNotifier {
       SettingsMarkdownDefaultView.Edit;
 
   String imageLocationSpec = "."; // . means the same folder
-  String debugLogLevel = 'v';
-
-  bool experimentalBacklinks = true;
-  bool experimentalFs = false;
-  bool experimentalMarkdownToolbar = false;
-  bool experimentalGraphView = false;
 
   bool zenMode = false;
   bool saveTitleInH1 = true;
@@ -82,21 +63,12 @@ class Settings extends ChangeNotifier {
   String remoteGitRepoFolderName = "";
   bool remoteGitRepoConfigured = false;
 
-  String gitBaseDirectory = "";
-
   void load(SharedPreferences pref) {
-    onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
-
     gitAuthor = pref.getString("gitAuthor") ?? gitAuthor;
     gitAuthorEmail = pref.getString("gitAuthorEmail") ?? gitAuthorEmail;
 
     noteFileNameFormat = NoteFileNameFormat.fromInternalString(
         pref.getString("noteFileNameFormat"));
-
-    collectUsageStatistics =
-        pref.getBool("collectUsageStatistics") ?? collectUsageStatistics;
-    collectCrashReports =
-        pref.getBool("collectCrashReports") ?? collectCrashReports;
 
     yamlModifiedKey = pref.getString("yamlModifiedKey") ?? yamlModifiedKey;
     yamlCreatedKey = pref.getString("yamlCreatedKey") ?? yamlCreatedKey;
@@ -137,29 +109,13 @@ class Settings extends ChangeNotifier {
         pref.getString("folderViewHeaderType") ?? folderViewHeaderType;
 
     version = pref.getInt("settingsVersion") ?? version;
-    proMode = pref.getBool("proMode") ?? proMode;
     emojiParser = pref.getBool("emojiParser") ?? emojiParser;
-    proExpirationDate =
-        pref.getString("proExpirationDate") ?? proExpirationDate;
-
-    _pseudoId = pref.getString("pseudoId");
-    if (_pseudoId == null) {
-      _pseudoId = Uuid().v4();
-      pref.setString("pseudoId", _pseudoId);
-    }
 
     homeScreen =
         SettingsHomeScreen.fromInternalString(pref.getString("homeScreen"));
 
     imageLocationSpec =
         pref.getString("imageLocationSpec") ?? imageLocationSpec;
-
-    debugLogLevel = pref.getString("debugLogLevel") ?? debugLogLevel;
-    experimentalBacklinks =
-        pref.getBool("experimentalBacklinks") ?? experimentalBacklinks;
-    experimentalFs = pref.getBool("experimentalFs") ?? experimentalFs;
-    experimentalMarkdownToolbar = pref.getBool("experimentalMarkdownToolbar") ??
-        experimentalMarkdownToolbar;
 
     zenMode = pref.getBool("zenMode") ?? zenMode;
     saveTitleInH1 = pref.getBool("saveTitleInH1") ?? saveTitleInH1;
@@ -173,14 +129,11 @@ class Settings extends ChangeNotifier {
     remoteGitRepoConfigured = pref.getBool("remoteGitRepoConfigured") ?? false;
     localGitRepoFolderName = pref.getString("localGitRepoPath") ?? "";
     remoteGitRepoFolderName = pref.getString("remoteGitRepoPath") ?? "";
-    gitBaseDirectory = pref.getString("gitBaseDirectory") ?? "";
   }
 
-  Future save() async {
+  Future<void> save() async {
     var pref = await SharedPreferences.getInstance();
     var defaultSet = Settings._internal();
-
-    await pref.setBool("onBoardingCompleted", onBoardingCompleted);
 
     _setString(pref, "gitAuthor", gitAuthor, defaultSet.gitAuthor);
     _setString(
@@ -190,10 +143,6 @@ class Settings extends ChangeNotifier {
         "noteFileNameFormat",
         noteFileNameFormat.toInternalString(),
         defaultSet.noteFileNameFormat.toInternalString());
-    _setBool(pref, "collectUsageStatistics", collectUsageStatistics,
-        defaultSet.collectUsageStatistics);
-    _setBool(pref, "collectCrashReports", collectCrashReports,
-        defaultSet.collectCrashReports);
     _setString(
         pref, "yamlModifiedKey", yamlModifiedKey, defaultSet.yamlModifiedKey);
     _setString(
@@ -239,20 +188,11 @@ class Settings extends ChangeNotifier {
         pref, "showNoteSummary", showNoteSummary, defaultSet.showNoteSummary);
     _setString(pref, "folderViewHeaderType", folderViewHeaderType,
         defaultSet.folderViewHeaderType);
-    _setString(pref, "proExpirationDate", proExpirationDate,
-        defaultSet.proExpirationDate);
-    _setBool(pref, "proMode", proMode, defaultSet.proMode);
     _setBool(pref, "emojiParser", emojiParser, defaultSet.emojiParser);
     _setString(pref, "homeScreen", homeScreen.toInternalString(),
         defaultSet.homeScreen.toInternalString());
     _setString(pref, "imageLocationSpec", imageLocationSpec,
         defaultSet.imageLocationSpec);
-    _setString(pref, "debugLogLevel", debugLogLevel, defaultSet.debugLogLevel);
-    _setBool(pref, "experimentalBacklinks", experimentalBacklinks,
-        defaultSet.experimentalBacklinks);
-    _setBool(pref, "experimentalFs", experimentalFs, defaultSet.experimentalFs);
-    _setBool(pref, "experimentalMarkdownToolbar", experimentalMarkdownToolbar,
-        defaultSet.experimentalMarkdownToolbar);
     _setBool(pref, "zenMode", zenMode, defaultSet.zenMode);
     _setBool(pref, "saveTitleInH1", saveTitleInH1, defaultSet.saveTitleInH1);
     _setBool(pref, "swipeToDelete", swipeToDelete, defaultSet.swipeToDelete);
@@ -265,7 +205,6 @@ class Settings extends ChangeNotifier {
     pref.setBool("remoteGitRepoConfigured", remoteGitRepoConfigured);
     pref.setString("localGitRepoPath", localGitRepoFolderName);
     pref.setString("remoteGitRepoPath", remoteGitRepoFolderName);
-    pref.setString("gitBaseDirectory", gitBaseDirectory);
 
     notifyListeners();
   }
@@ -313,12 +252,9 @@ class Settings extends ChangeNotifier {
 
   Map<String, String> toMap() {
     return <String, String>{
-      "onBoardingCompleted": onBoardingCompleted.toString(),
       "gitAuthor": gitAuthor,
       "gitAuthorEmail": gitAuthorEmail,
       "noteFileNameFormat": noteFileNameFormat.toInternalString(),
-      "collectUsageStatistics": collectUsageStatistics.toString(),
-      "collectCrashReports": collectCrashReports.toString(),
       "yamlModifiedKey": yamlModifiedKey,
       "yamlCreatedKey": yamlCreatedKey,
       "yamlTagsKey": yamlTagsKey,
@@ -336,17 +272,10 @@ class Settings extends ChangeNotifier {
       "showNoteSummary": showNoteSummary.toString(),
       "folderViewHeaderType": folderViewHeaderType,
       "version": version.toString(),
-      "proMode": proMode.toString(),
-      'proExpirationDate': proExpirationDate,
-      'pseudoId': pseudoId,
       'markdownDefaultView': markdownDefaultView.toInternalString(),
       'markdownLastUsedView': markdownLastUsedView.toInternalString(),
       'homeScreen': homeScreen.toInternalString(),
       'imageLocationSpec': imageLocationSpec,
-      'debugLogLevel': debugLogLevel,
-      'experimentalBacklinks': experimentalBacklinks.toString(),
-      'experimentalFs': experimentalFs.toString(),
-      'experimentalMarkdownToolbar': experimentalMarkdownToolbar.toString(),
       'zenMode': zenMode.toString(),
       'saveTitleInH1': saveTitleInH1.toString(),
       'swipeToDelete': swipeToDelete.toString(),
@@ -356,7 +285,6 @@ class Settings extends ChangeNotifier {
       'remoteGitRepoConfigured': remoteGitRepoConfigured.toString(),
       'localGitRepoFolderName': localGitRepoFolderName.toString(),
       'remoteGitRepoFolderName': remoteGitRepoFolderName.toString(),
-      'gitBaseDirectory': gitBaseDirectory.toString(),
     };
   }
 

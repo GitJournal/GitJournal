@@ -17,6 +17,7 @@ import 'package:quick_actions/quick_actions.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/appstate.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/iap.dart';
@@ -45,23 +46,25 @@ class JournalApp extends StatefulWidget {
 
     var appState = AppState();
     var settings = Settings.instance;
+    var appSettings = AppSettings.instance;
+    Log.i("AppSetting ${appSettings.toMap()}");
     Log.i("Setting ${settings.toLoggableMap()}");
 
-    if (settings.collectUsageStatistics) {
+    if (appSettings.collectUsageStatistics) {
       _enableAnalyticsIfPossible(settings);
     }
 
-    if (settings.gitBaseDirectory.isEmpty) {
+    if (appSettings.gitBaseDirectory.isEmpty) {
       var dir = await getApplicationDocumentsDirectory();
-      settings.gitBaseDirectory = dir.path;
-      settings.save();
+      appSettings.gitBaseDirectory = dir.path;
+      appSettings.save();
     }
 
-    if (!Directory(settings.gitBaseDirectory).existsSync()) {
+    if (!Directory(appSettings.gitBaseDirectory).existsSync()) {
       Log.w("Applications Documents Directory no longer exists");
       var dir = await getApplicationDocumentsDirectory();
-      settings.gitBaseDirectory = dir.path;
-      settings.save();
+      appSettings.gitBaseDirectory = dir.path;
+      appSettings.save();
       Log.i("New Documents Directory Path ${dir.path}");
     }
 
@@ -69,7 +72,7 @@ class JournalApp extends StatefulWidget {
       // FIXME: What about exceptions!
       settings.localGitRepoFolderName = "journal_local";
       var repoPath = p.join(
-        settings.gitBaseDirectory,
+        appSettings.gitBaseDirectory,
         settings.localGitRepoFolderName,
       );
       await GitRepository.init(repoPath);
@@ -78,11 +81,15 @@ class JournalApp extends StatefulWidget {
       settings.save();
     }
 
-    var app = ChangeNotifierProvider.value(
+    Widget app = ChangeNotifierProvider.value(
       value: settings,
       child: ChangeNotifierProvider(
         create: (_) {
-          return StateContainer(appState, settings);
+          return StateContainer(
+            appState: appState,
+            settings: settings,
+            gitBaseDirectory: appSettings.gitBaseDirectory,
+          );
         },
         child: ChangeNotifierProvider(
           child: JournalApp(appState),
@@ -92,6 +99,11 @@ class JournalApp extends StatefulWidget {
           },
         ),
       ),
+    );
+
+    app = ChangeNotifierProvider.value(
+      value: appSettings,
+      child: app,
     );
 
     InAppPurchases.confirmProPurchaseBoot();
@@ -279,9 +291,10 @@ class _JournalAppState extends State<JournalApp> {
   MaterialApp buildApp(BuildContext context, ThemeData themeData) {
     var stateContainer = Provider.of<StateContainer>(context);
     var settings = Provider.of<Settings>(context);
+    var appSettings = Provider.of<AppSettings>(context);
 
     var initialRoute = '/';
-    if (!settings.onBoardingCompleted) {
+    if (!appSettings.onBoardingCompleted) {
       initialRoute = '/onBoarding';
     }
     if (settings.homeScreen == SettingsHomeScreen.AllFolders) {

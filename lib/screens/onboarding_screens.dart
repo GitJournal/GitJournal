@@ -6,7 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/app_settings.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   OnBoardingScreen();
@@ -111,9 +111,9 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   void _finish() {
-    var settings = Provider.of<Settings>(context);
-    settings.onBoardingCompleted = true;
-    settings.save();
+    var appSettings = Provider.of<AppSettings>(context);
+    appSettings.onBoardingCompleted = true;
+    appSettings.save();
 
     Navigator.pop(context);
     Navigator.pushNamed(context, "/");

@@ -4,8 +4,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/features.dart';
-import 'package:gitjournal/settings.dart';
 
 class ProOverlay extends StatelessWidget {
   final Widget child;
@@ -17,8 +17,9 @@ class ProOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var settings = Provider.of<Settings>(context);
-    if (settings.proMode) {
+    var appSettings = Provider.of<AppSettings>(context);
+
+    if (appSettings.proMode) {
       return child;
     }
 

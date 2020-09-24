@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_driver/driver_extension.dart';
+import 'package:gitjournal/app_settings.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:gitjournal/app.dart';
@@ -15,6 +16,7 @@ void main() async {
   enableFlutterDriverExtension();
 
   var pref = await SharedPreferences.getInstance();
+  AppSettings.instance.load(pref);
   Settings.instance.load(pref);
 
   await populateWithData(pref);
@@ -25,8 +27,10 @@ void main() async {
 Future<void> populateWithData(SharedPreferences pref) async {
   var dir = await getApplicationDocumentsDirectory();
 
+  var appSettings = AppSettings.instance;
+  appSettings.gitBaseDirectory = dir.path;
+
   var settings = Settings.instance;
-  settings.gitBaseDirectory = dir.path;
   settings.localGitRepoConfigured = true;
   settings.localGitRepoFolderName = "journal_local";
   settings.save();

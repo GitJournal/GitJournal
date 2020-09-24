@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 class DebugScreen extends StatefulWidget {
@@ -79,8 +79,8 @@ class _DebugScreenState extends State<DebugScreen> {
   }
 
   bool _shouldDisplay(LogMessage msg) {
-    var settings = Provider.of<Settings>(context);
-    var filterLevel = settings.debugLogLevel;
+    var appSettings = Provider.of<AppSettings>(context);
+    var filterLevel = appSettings.debugLogLevel;
 
     if (filterLevel == null || filterLevel.isEmpty) {
       return true;
@@ -199,8 +199,8 @@ class _DebugScreenState extends State<DebugScreen> {
   }
 
   void _showFilterSelection() async {
-    var settings = Provider.of<Settings>(context);
-    var filterLevel = settings.debugLogLevel;
+    var appSettings = Provider.of<AppSettings>(context);
+    var filterLevel = appSettings.debugLogLevel;
 
     var dialog = AlertDialog(
       title: Text(tr('settings.debug.levels.title')),
@@ -217,8 +217,8 @@ class _DebugScreenState extends State<DebugScreen> {
     );
     var l = await showDialog(context: context, builder: (context) => dialog);
     if (l != null) {
-      settings.debugLogLevel = l;
-      settings.save();
+      appSettings.debugLogLevel = l;
+      appSettings.save();
     }
   }
 }

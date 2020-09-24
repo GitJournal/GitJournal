@@ -23,6 +23,7 @@ import 'package:gitjournal/utils/logger.dart';
 class StateContainer with ChangeNotifier {
   final AppState appState;
   final Settings settings;
+  final String gitBaseDirectory;
 
   final _opLock = Lock();
   final _loadLock = Lock();
@@ -33,16 +34,18 @@ class StateContainer with ChangeNotifier {
   GitNoteRepository _gitRepo;
   NotesCache _notesCache;
 
-  StateContainer(this.appState, this.settings) {
+  StateContainer({
+    @required this.appState,
+    @required this.settings,
+    @required this.gitBaseDirectory,
+  }) {
     assert(settings.localGitRepoConfigured);
 
     String repoPath;
     if (settings.remoteGitRepoConfigured) {
-      repoPath =
-          p.join(settings.gitBaseDirectory, settings.remoteGitRepoFolderName);
+      repoPath = p.join(gitBaseDirectory, settings.remoteGitRepoFolderName);
     } else if (settings.localGitRepoConfigured) {
-      repoPath =
-          p.join(settings.gitBaseDirectory, settings.localGitRepoFolderName);
+      repoPath = p.join(gitBaseDirectory, settings.localGitRepoFolderName);
     }
 
     _gitRepo = GitNoteRepository(gitDirPath: repoPath);
@@ -59,7 +62,7 @@ class StateContainer with ChangeNotifier {
           value: settings.remoteGitRepoConfigured.toString(),
         );
 
-    var cachePath = p.join(settings.gitBaseDirectory, "cache.json");
+    var cachePath = p.join(gitBaseDirectory, "cache.json");
     _notesCache = NotesCache(
       filePath: cachePath,
       notesBasePath: _gitRepo.gitDirPath,
@@ -78,8 +81,8 @@ class StateContainer with ChangeNotifier {
   }
 
   void removeExistingRemoteClone() async {
-    var remoteGitDir = Directory(
-        p.join(settings.gitBaseDirectory, settings.remoteGitRepoFolderName));
+    var remoteGitDir =
+        Directory(p.join(gitBaseDirectory, settings.remoteGitRepoFolderName));
     var dotGitDir = Directory(p.join(remoteGitDir.path, ".git"));
 
     bool exists = dotGitDir.existsSync();
@@ -357,12 +360,11 @@ class StateContainer with ChangeNotifier {
         await migrateGitRepo(
           fromGitBasePath: settings.localGitRepoFolderName,
           toGitBaseFolder: settings.remoteGitRepoFolderName,
-          gitBasePath: settings.gitBaseDirectory,
+          gitBasePath: gitBaseDirectory,
         );
       }
 
-      var repoPath =
-          p.join(settings.gitBaseDirectory, settings.remoteGitRepoFolderName);
+      var repoPath = p.join(gitBaseDirectory, settings.remoteGitRepoFolderName);
       _gitRepo = GitNoteRepository(gitDirPath: repoPath);
       appState.notesFolder.reset(_gitRepo.gitDirPath);
 

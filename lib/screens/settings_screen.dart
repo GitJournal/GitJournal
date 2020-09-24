@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/screens/debug_screen.dart';
@@ -55,6 +56,7 @@ class SettingsListState extends State<SettingsList> {
   @override
   Widget build(BuildContext context) {
     var settings = Provider.of<Settings>(context);
+    var appSettings = Provider.of<AppSettings>(context);
     var remoteGitConfigured = settings.remoteGitRepoConfigured;
 
     var saveGitAuthor = (String gitAuthor) {
@@ -289,19 +291,19 @@ class SettingsListState extends State<SettingsList> {
       const SizedBox(height: 16.0),
       SwitchListTile(
         title: Text(tr('settings.usageStats')),
-        value: settings.collectUsageStatistics,
+        value: appSettings.collectUsageStatistics,
         onChanged: (bool val) {
-          settings.collectUsageStatistics = val;
-          settings.save();
+          appSettings.collectUsageStatistics = val;
+          appSettings.save();
           setState(() {});
         },
       ),
       SwitchListTile(
         title: Text(tr('settings.crashReports')),
-        value: settings.collectCrashReports,
+        value: appSettings.collectCrashReports,
         onChanged: (bool val) {
-          settings.collectCrashReports = val;
-          settings.save();
+          appSettings.collectCrashReports = val;
+          appSettings.save();
           setState(() {});
         },
       ),

@@ -8,9 +8,9 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/iap.dart';
-import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/purchase_slider.dart';
 
@@ -223,10 +223,10 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
   }
 
   void _deliverProduct(SubscriptionStatus status) {
-    var settings = Provider.of<Settings>(context);
-    settings.proMode = status.isPro;
-    settings.proExpirationDate = status.expiryDate.toIso8601String();
-    settings.save();
+    var appSettings = Provider.of<AppSettings>(context);
+    appSettings.proMode = status.isPro;
+    appSettings.proExpirationDate = status.expiryDate.toIso8601String();
+    appSettings.save();
 
     logEvent(Event.PurchaseScreenThankYou);
     Navigator.of(context).popAndPushNamed('/purchase_thank_you');
@@ -401,7 +401,7 @@ class _RestorePurchaseButtonState extends State<RestorePurchaseButton> {
           computing = true;
         });
         await InAppPurchases.confirmProPurchase();
-        if (Settings.instance.proMode) {
+        if (AppSettings.instance.proMode) {
           Navigator.of(context).pop();
         }
       },

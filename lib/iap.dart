@@ -7,9 +7,9 @@ import 'package:in_app_purchase/store_kit_wrappers.dart';
 import 'package:meta/meta.dart';
 
 import 'package:gitjournal/app.dart';
+import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/features.dart';
-import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 class InAppPurchases {
@@ -20,13 +20,13 @@ class InAppPurchases {
       return;
     }
 
-    if (Settings.instance.proMode == false) {
+    if (AppSettings.instance.proMode == false) {
       Log.i("confirmProPurchaseBoot: Pro Mode is false");
       return;
     }
 
     var currentDt = DateTime.now().toUtc().toIso8601String();
-    var exp = Settings.instance.proExpirationDate;
+    var exp = AppSettings.instance.proExpirationDate;
 
     Log.i("Checking if ProMode should be enabled. Exp: $exp");
     if (exp != null && exp.isNotEmpty && exp.compareTo(currentDt) > 0) {
@@ -55,9 +55,9 @@ class InAppPurchases {
       Log.e("Failed to get subscription status", ex: e, stacktrace: stackTrace);
       Log.i("Disabling Pro mode as it has probably expired");
 
-      Settings.instance.proMode = false;
-      Settings.instance.proExpirationDate = "";
-      Settings.instance.save();
+      AppSettings.instance.proMode = false;
+      AppSettings.instance.proExpirationDate = "";
+      AppSettings.instance.save();
 
       return;
     }
@@ -66,14 +66,14 @@ class InAppPurchases {
     var expiryDate = sub.expiryDate.toIso8601String();
     Log.i(sub.toString());
 
-    if (Settings.instance.proMode != isPro) {
+    if (AppSettings.instance.proMode != isPro) {
       Log.i("Pro mode changed to $isPro");
-      Settings.instance.proMode = isPro;
-      Settings.instance.proExpirationDate = expiryDate;
-      Settings.instance.save();
+      AppSettings.instance.proMode = isPro;
+      AppSettings.instance.proExpirationDate = expiryDate;
+      AppSettings.instance.save();
     } else {
-      Settings.instance.proExpirationDate = expiryDate;
-      Settings.instance.save();
+      AppSettings.instance.proExpirationDate = expiryDate;
+      AppSettings.instance.save();
     }
   }
 
@@ -139,7 +139,7 @@ Future<DateTime> getExpiryDate(
   var body = {
     'receipt': receipt,
     "sku": sku,
-    'pseudoId': Settings.instance.pseudoId,
+    'pseudoId': AppSettings.instance.pseudoId,
     'is_purchase': isPurchase,
   };
   Log.i("getExpiryDate ${json.encode(body)}");

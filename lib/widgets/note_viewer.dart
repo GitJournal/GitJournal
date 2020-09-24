@@ -11,12 +11,12 @@ import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/folder_views/common.dart';
-import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
 import 'package:gitjournal/utils/logger.dart';
@@ -41,7 +41,7 @@ class NoteViewer extends StatelessWidget {
       ),
     );
 
-    var settings = Provider.of<Settings>(context);
+    var appSettings = Provider.of<AppSettings>(context);
     var isDark = theme.brightness == Brightness.dark;
 
     // Copied from MarkdownStyleSheet except Grey is replaced with Highlight color
@@ -108,7 +108,7 @@ class NoteViewer extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16.0),
-          if (settings.experimentalBacklinks)
+          if (appSettings.experimentalBacklinks)
             NoteBacklinkRenderer(
               note: note,
               rootFolder: rootFolder,

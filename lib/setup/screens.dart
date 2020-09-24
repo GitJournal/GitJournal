@@ -13,6 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
+import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/setup/autoconfigure.dart';
@@ -467,8 +468,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       gitCloneErrorMessage = "";
     });
 
-    final settings = Provider.of<Settings>(context);
-    var basePath = settings.gitBaseDirectory;
+    final appSettings = Provider.of<AppSettings>(context);
+    var basePath = appSettings.gitBaseDirectory;
 
     // Just in case it was half cloned because of an error
     String repoPath = p.join(basePath, widget.repoFolderName);

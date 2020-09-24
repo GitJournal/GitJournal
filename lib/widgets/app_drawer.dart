@@ -12,6 +12,7 @@ import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
@@ -21,6 +22,7 @@ class AppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget setupGitButton;
     var settings = Provider.of<Settings>(context);
+    var appSettings = Provider.of<AppSettings>(context);
     var textStyle = Theme.of(context).textTheme.bodyText1;
     var currentRoute = ModalRoute.of(context).settings.name;
 
@@ -50,7 +52,7 @@ class AppDrawer extends StatelessWidget {
         children: <Widget>[
           _AppDrawerHeader(),
           if (setupGitButton != null) ...[setupGitButton, divider],
-          if (!settings.proMode)
+          if (!appSettings.proMode)
             _buildDrawerTile(
               context,
               icon: Icons.power,
@@ -65,7 +67,7 @@ class AppDrawer extends StatelessWidget {
                 );
               },
             ),
-          if (!settings.proMode) divider,
+          if (!appSettings.proMode) divider,
           _buildDrawerTile(
             context,
             icon: Icons.note,
@@ -80,7 +82,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () => _navTopLevel(context, '/folders'),
             selected: currentRoute == "/folders",
           ),
-          if (settings.experimentalFs)
+          if (appSettings.experimentalFs)
             _buildDrawerTile(
               context,
               icon: FontAwesomeIcons.solidFolderOpen,
@@ -89,7 +91,7 @@ class AppDrawer extends StatelessWidget {
               onTap: () => _navTopLevel(context, '/filesystem'),
               selected: currentRoute == "/filesystem",
             ),
-          if (settings.experimentalGraphView)
+          if (appSettings.experimentalGraphView)
             _buildDrawerTile(
               context,
               icon: FontAwesomeIcons.projectDiagram,
@@ -258,7 +260,7 @@ void _navTopLevel(BuildContext context, String toRoute) {
 class _AppDrawerHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var settings = Provider.of<Settings>(context);
+    var appSettings = Provider.of<AppSettings>(context);
 
     return Stack(
       children: <Widget>[
@@ -300,7 +302,7 @@ class _AppDrawerHeader extends StatelessWidget {
           ),
         ),
         */
-        if (settings.proMode)
+        if (appSettings.proMode)
           Positioned.fill(
             child: Align(
               alignment: Alignment.bottomRight,

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/app_settings.dart';
 
 class ExperimentalSettingsScreen extends StatefulWidget {
   @override
@@ -15,7 +15,7 @@ class _ExperimentalSettingsScreenState
     extends State<ExperimentalSettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    var settings = Provider.of<Settings>(context);
+    var appSettings = Provider.of<AppSettings>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -32,37 +32,37 @@ class _ExperimentalSettingsScreenState
           children: <Widget>[
             SwitchListTile(
               title: Text(tr('settings.experimental.backlinks')),
-              value: settings.experimentalBacklinks,
+              value: appSettings.experimentalBacklinks,
               onChanged: (bool newVal) {
-                settings.experimentalBacklinks = newVal;
-                settings.save();
+                appSettings.experimentalBacklinks = newVal;
+                appSettings.save();
                 setState(() {});
               },
             ),
             SwitchListTile(
               title: Text(tr('settings.experimental.fs')),
-              value: settings.experimentalFs,
+              value: appSettings.experimentalFs,
               onChanged: (bool newVal) {
-                settings.experimentalFs = newVal;
-                settings.save();
+                appSettings.experimentalFs = newVal;
+                appSettings.save();
                 setState(() {});
               },
             ),
             SwitchListTile(
               title: Text(tr('settings.experimental.graphView')),
-              value: settings.experimentalGraphView,
+              value: appSettings.experimentalGraphView,
               onChanged: (bool newVal) {
-                settings.experimentalGraphView = newVal;
-                settings.save();
+                appSettings.experimentalGraphView = newVal;
+                appSettings.save();
                 setState(() {});
               },
             ),
             SwitchListTile(
               title: Text(tr('settings.experimental.markdownToolbar')),
-              value: settings.experimentalFs,
+              value: appSettings.experimentalFs,
               onChanged: (bool newVal) {
-                settings.experimentalFs = newVal;
-                settings.save();
+                appSettings.experimentalFs = newVal;
+                appSettings.save();
                 setState(() {});
               },
             ),
