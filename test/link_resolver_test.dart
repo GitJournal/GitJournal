@@ -154,6 +154,14 @@ void main() {
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Goat  Sim.md'));
   });
 
+  test('Resolve Parent file', () {
+    var note = rootFolder.getNoteWithSpec('Folder/Water.md');
+    var linkResolver = LinkResolver(note);
+
+    var resolvedNote = linkResolver.resolve('../Hello.md');
+    expect(resolvedNote.filePath, p.join(tempDir.path, 'Hello.md'));
+  });
+
   test('Should resolve Link object', () {
     var note = rootFolder.getNoteWithSpec('Folder/Water.md');
     var linkResolver = LinkResolver(note);

@@ -28,18 +28,7 @@ class LinkResolver {
       return resolveWikiLink(wikiLinkTerm);
     }
 
-    var folder = inputNote.parent;
-    var spec = link;
-
-    if (link.startsWith('./')) {
-      spec = link.substring(2);
-    }
-
-    if (spec.contains(p.separator)) {
-      spec = p.normalize(spec);
-    }
-
-    return _getNoteWithSpec(folder, spec);
+    return _getNoteWithSpec(inputNote.parent, link);
   }
 
   Note resolveWikiLink(String term) {
@@ -88,6 +77,13 @@ class LinkResolver {
   }
 
   Note _getNoteWithSpec(NotesFolderFS folder, String spec) {
+    var fullPath = p.normalize(p.join(folder.folderPath, spec));
+    if (!fullPath.startsWith(folder.folderPath)) {
+      folder = folder.rootFolder;
+    }
+
+    spec = fullPath.substring(folder.folderPath.length + 1);
+
     var linkedNote = folder.getNoteWithSpec(spec);
     if (linkedNote != null) {
       return linkedNote;
