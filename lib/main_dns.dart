@@ -35,3 +35,9 @@ Future<void> main() async {
 
   print('Done.');
 }
+
+// Use connectivity plugin to get ssid info when connected to the wifi network
+// https://stackoverflow.com/questions/55716751/flutter-ios-reading-wifi-name-using-the-connectivity-or-wifi-plugin/55732656#55732656
+
+// For Registering on Mobiles -
+// https://pub.dev/packages/bonsoir
