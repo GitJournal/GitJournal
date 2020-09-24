@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:yaml/yaml.dart';
 
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/utils/datetime.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'md_yaml_doc.dart';
@@ -32,11 +32,11 @@ class NoteSerializationSettings {
 class NoteSerializer implements NoteSerializerInterface {
   var settings = NoteSerializationSettings();
 
-  NoteSerializer.fromSettings(Settings globalSettings) {
-    settings.modifiedKey = globalSettings.yamlModifiedKey;
-    settings.createdKey = globalSettings.yamlCreatedKey;
-    settings.tagsKey = globalSettings.yamlTagsKey;
-    settings.saveTitleAsH1 = globalSettings.saveTitleInH1;
+  NoteSerializer.fromConfig(NotesFolderConfig config) {
+    settings.modifiedKey = config.yamlModifiedKey;
+    settings.createdKey = config.yamlCreatedKey;
+    settings.tagsKey = config.yamlTagsKey;
+    settings.saveTitleAsH1 = config.saveTitleInH1;
   }
 
   NoteSerializer.raw();

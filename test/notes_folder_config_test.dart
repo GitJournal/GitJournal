@@ -35,6 +35,10 @@ void main() {
         fileNameFormat: NoteFileNameFormat.Default,
         folder: folder,
         yamlHeaderEnabled: true,
+        yamlCreatedKey: 'created',
+        yamlModifiedKey: 'modified',
+        yamlTagsKey: 'tags',
+        saveTitleInH1: true,
       );
 
       await config.saveToFS();

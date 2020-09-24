@@ -56,8 +56,7 @@ class Note with NotesNotifier {
   NoteFileFormat _fileFormat;
 
   MdYamlDoc _data = MdYamlDoc();
-  NoteSerializer noteSerializer =
-      NoteSerializer.fromSettings(Settings.instance);
+  NoteSerializer noteSerializer;
 
   DateTime fileLastModified;
 
@@ -73,12 +72,15 @@ class Note with NotesNotifier {
   static final _mdYamlDocLoader = MdYamlDocLoader();
   static final _linksLoader = LinksLoader();
 
-  Note(this.parent, this._filePath);
+  Note(this.parent, this._filePath) {
+    noteSerializer = NoteSerializer.fromConfig(parent.config);
+  }
 
   Note.newNote(this.parent, {Map<String, dynamic> extraProps = const {}}) {
     created = DateTime.now();
     _loadState = NoteLoadState.Loaded;
     _fileFormat = NoteFileFormat.Markdown;
+    noteSerializer = NoteSerializer.fromConfig(parent.config);
 
     if (extraProps.isNotEmpty) {
       extraProps.forEach((key, value) {

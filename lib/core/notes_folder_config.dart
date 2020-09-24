@@ -29,6 +29,11 @@ class NotesFolderConfig extends Equatable {
   final bool yamlHeaderEnabled;
   //int _version = 1;
 
+  final String yamlModifiedKey;
+  final String yamlCreatedKey;
+  final String yamlTagsKey;
+  final bool saveTitleInH1;
+
   NotesFolderConfig({
     @required this.sortingMode,
     @required this.defaultEditor,
@@ -38,6 +43,10 @@ class NotesFolderConfig extends Equatable {
     @required this.fileNameFormat,
     @required this.folder,
     @required this.yamlHeaderEnabled,
+    @required this.yamlModifiedKey,
+    @required this.yamlCreatedKey,
+    @required this.yamlTagsKey,
+    @required this.saveTitleInH1,
   });
 
   @override
@@ -49,6 +58,10 @@ class NotesFolderConfig extends Equatable {
         fileNameFormat,
         folder,
         yamlHeaderEnabled,
+        yamlModifiedKey,
+        yamlCreatedKey,
+        yamlTagsKey,
+        saveTitleInH1,
       ];
 
   static NotesFolderConfig fromSettings(NotesFolderFS folder) {
@@ -76,6 +89,10 @@ class NotesFolderConfig extends Equatable {
       fileNameFormat: settings.noteFileNameFormat,
       folder: folder,
       yamlHeaderEnabled: settings.yamlHeaderEnabled,
+      yamlCreatedKey: settings.yamlCreatedKey,
+      yamlModifiedKey: settings.yamlModifiedKey,
+      yamlTagsKey: settings.yamlTagsKey,
+      saveTitleInH1: settings.saveTitleInH1,
     );
   }
 
@@ -104,6 +121,10 @@ class NotesFolderConfig extends Equatable {
     settings.folderViewHeaderType = ht;
     settings.noteFileNameFormat = fileNameFormat;
     settings.yamlHeaderEnabled = yamlHeaderEnabled;
+    settings.yamlCreatedKey = yamlCreatedKey;
+    settings.yamlModifiedKey = yamlModifiedKey;
+    settings.yamlTagsKey = yamlTagsKey;
+    settings.saveTitleInH1 = saveTitleInH1;
     settings.save();
   }
 
@@ -116,6 +137,10 @@ class NotesFolderConfig extends Equatable {
     NoteFileNameFormat fileNameFormat,
     NotesFolderFS folder,
     bool yamlHeaderEnabled,
+    String yamlCreatedKey,
+    String yamlModifiedKey,
+    String yamlTagsKey,
+    bool saveTitleInH1,
   }) {
     return NotesFolderConfig(
       sortingMode: sortingMode ?? this.sortingMode,
@@ -126,6 +151,10 @@ class NotesFolderConfig extends Equatable {
       fileNameFormat: fileNameFormat ?? this.fileNameFormat,
       folder: folder ?? this.folder,
       yamlHeaderEnabled: yamlHeaderEnabled ?? this.yamlHeaderEnabled,
+      yamlCreatedKey: yamlCreatedKey ?? this.yamlCreatedKey,
+      yamlModifiedKey: yamlModifiedKey ?? this.yamlModifiedKey,
+      yamlTagsKey: yamlTagsKey ?? this.yamlTagsKey,
+      saveTitleInH1: saveTitleInH1 ?? this.saveTitleInH1,
     );
   }
 
@@ -174,7 +203,12 @@ class NotesFolderConfig extends Equatable {
     }
 
     var fileNameFormat = map['noteFileNameFormat']?.toString();
-    var yamlHeaderEnabled = map["yamlHeaderEnabled"].toString() != "false";
+    var yamlHeaderEnabled = map["yamlHeaderEnabled"]?.toString() != "false";
+
+    var yamlCreatedKey = map['yamlCreatedKey']?.toString();
+    var yamlModifiedKey = map['yamlModifiedKey']?.toString();
+    var yamlTagsKey = map['yamlTagsKey']?.toString();
+    var saveTitleInH1 = map['saveTitleInH1']?.toString() != "false";
 
     return NotesFolderConfig(
       defaultEditor: defaultEditor.toEditorType(),
@@ -185,6 +219,10 @@ class NotesFolderConfig extends Equatable {
       fileNameFormat: NoteFileNameFormat.fromInternalString(fileNameFormat),
       folder: folder,
       yamlHeaderEnabled: yamlHeaderEnabled,
+      yamlCreatedKey: yamlCreatedKey,
+      yamlModifiedKey: yamlModifiedKey,
+      yamlTagsKey: yamlTagsKey,
+      saveTitleInH1: saveTitleInH1,
     );
   }
 
@@ -213,6 +251,10 @@ class NotesFolderConfig extends Equatable {
       "folderViewHeaderType": ht,
       "noteFileNameFormat": fileNameFormat.toInternalString(),
       'yamlHeaderEnabled': yamlHeaderEnabled,
+      'yamlModifiedKey': yamlModifiedKey,
+      'yamlCreatedKey': yamlCreatedKey,
+      'yamlTagsKey': yamlTagsKey,
+      'saveTitleInH1': saveTitleInH1,
     };
 
     var yaml = toYAML(map);

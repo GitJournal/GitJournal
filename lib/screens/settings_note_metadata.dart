@@ -8,6 +8,7 @@ import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_serializer.dart';
+import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
@@ -206,8 +207,7 @@ class NoteOutputExample extends StatelessWidget {
     style = style.copyWith(fontFamily: "Roboto Mono");
 
     var doc = MdYamlDoc();
-    var settings = Provider.of<Settings>(context);
-    NoteSerializer.fromSettings(settings).encode(note, doc);
+    NoteSerializer.fromConfig(NotesFolderConfig.fromSettings(null)).encode(note, doc);
 
     var codec = MarkdownYAMLCodec();
     var noteStr = codec.encode(doc);
