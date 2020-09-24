@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import 'package:provider/provider.dart';
 
@@ -40,24 +41,34 @@ class _EditorScaffoldState extends State<EditorScaffold> {
   void initState() {
     super.initState();
 
-    var settings = Settings.instance;
+    SchedulerBinding.instance
+        .addPostFrameCallback((_) => _initStateWithContext());
+  }
 
-    hideUIElements = settings.zenMode;
-    widget.editorState.addListener(_editorChanged);
+  void _initStateWithContext() {
+    if (!mounted) return;
 
-    if (settings.markdownDefaultView == SettingsMarkdownDefaultView.LastUsed) {
-      editingMode =
-          settings.markdownLastUsedView == SettingsMarkdownDefaultView.Edit;
-    } else {
-      editingMode =
-          settings.markdownDefaultView == SettingsMarkdownDefaultView.Edit;
-    }
+    var settings = Provider.of<Settings>(context);
 
-    if (widget.editMode) {
-      editingMode = true;
-    }
+    setState(() {
+      hideUIElements = settings.zenMode;
+      widget.editorState.addListener(_editorChanged);
 
-    note = widget.editorState.getNote();
+      if (settings.markdownDefaultView ==
+          SettingsMarkdownDefaultView.LastUsed) {
+        editingMode =
+            settings.markdownLastUsedView == SettingsMarkdownDefaultView.Edit;
+      } else {
+        editingMode =
+            settings.markdownDefaultView == SettingsMarkdownDefaultView.Edit;
+      }
+
+      if (widget.editMode) {
+        editingMode = true;
+      }
+
+      note = widget.editorState.getNote();
+    });
   }
 
   @override
@@ -147,7 +158,7 @@ class _EditorScaffoldState extends State<EditorScaffold> {
                     }
                   });
                 },
-                metaDataEditable: note.canHaveMetadata,
+                metaDataEditable: note != null ? note.canHaveMetadata : false,
               ),
             )
           ],
