@@ -141,7 +141,7 @@ class StateContainer with ChangeNotifier {
   }
 
   Future<void> _syncNotes() async {
-    var freq = Settings.instance.remoteSyncFrequency;
+    var freq = settings.remoteSyncFrequency;
     if (freq != RemoteSyncFrequency.Automatic) {
       return;
     }
