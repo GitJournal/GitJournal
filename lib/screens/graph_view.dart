@@ -40,6 +40,8 @@ class GraphView extends StatefulWidget {
 }
 
 class _GraphViewState extends State<GraphView> {
+  final nodeSize = 50.0;
+
   @override
   void initState() {
     super.initState();
@@ -58,7 +60,7 @@ class _GraphViewState extends State<GraphView> {
     for (var node in widget.graph.nodes) {
       var w = Positioned(
         child: GestureDetector(
-          child: NodeWidget(node),
+          child: NodeWidget(node, nodeSize),
           onPanStart: (details) {
             node.x = details.globalPosition.dx;
             node.y = details.globalPosition.dy;
@@ -80,8 +82,9 @@ class _GraphViewState extends State<GraphView> {
             print("Pan update ${node.label} ${details.globalPosition}");
           },
         ),
-        left: node.x - 25,
-        top: node.y - 25,
+        left: node.x - (nodeSize / 2),
+        top: node.y - (nodeSize / 2),
+        width: nodeSize,
       );
       children.add(w);
     }
@@ -139,8 +142,9 @@ class GraphEdgePainter extends CustomPainter {
 
 class NodeWidget extends StatelessWidget {
   final Node node;
+  final double size;
 
-  NodeWidget(this.node);
+  NodeWidget(this.node, this.size);
 
   @override
   Widget build(BuildContext context) {
@@ -154,8 +158,8 @@ class NodeWidget extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 50,
-          height: 50,
+          width: size,
+          height: size,
           decoration: const BoxDecoration(
             color: Colors.orange,
             shape: BoxShape.circle,
