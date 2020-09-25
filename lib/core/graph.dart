@@ -227,11 +227,22 @@ class GraphNodeLayout {
 // Basic Force Directed Layout
 //
 const l = 150.0; // sping rest length
-const k_r = 10000.0; // repulsive force constant
+const k_r = 1000.0; // repulsive force constant
 const k_s = 20; // spring constant
-const delta_t = 1.0; // time step
+const delta_t = 0.5; // time step
 const MAX_DISPLACEMENT_SQUARED = 16;
 const min_movement = 1.0;
+
+/*
+Original Values from main_graph.dart
+
+const l = 150.0; // sping rest length
+const k_r = 10000.0; // repulsive force constant
+const k_s = 20; // spring constant
+const delta_t = 0.005; // time step
+const MAX_DISPLACEMENT_SQUARED = 16;
+const min_movement = 1.0;
+*/
 
 bool _updateGraphPositions(Graph g) {
   var numNodes = g.nodes.length;
