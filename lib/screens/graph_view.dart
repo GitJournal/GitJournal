@@ -160,9 +160,14 @@ class NodeWidget extends StatelessWidget {
         Container(
           width: size,
           height: size,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: Colors.orange,
             shape: BoxShape.circle,
+            border: Border.all(
+              width: 1,
+              color: Colors.black,
+              style: BorderStyle.solid,
+            ),
           ),
         ),
         Text(label, style: textStyle),
