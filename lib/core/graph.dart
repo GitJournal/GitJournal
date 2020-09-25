@@ -46,6 +46,8 @@ class Graph extends ChangeNotifier {
 
   GraphNodeLayout initLayouter;
 
+  final double nodeSize = 50.0;
+
   Graph.fromFolder(NotesFolder folder) {
     initLayouter = GraphNodeLayout(maxHeight: 2000, maxWidth: 2000);
 
@@ -318,6 +320,13 @@ bool _updateGraphPositions(Graph g) {
     }
 
     print('${node.label} $dx $dy');
+    if (node.x - dx <= g.nodeSize / 2) {
+      continue;
+    }
+    if (node.y - dy <= g.nodeSize / 2) {
+      continue;
+    }
+
     node.x += dx;
     node.y += dy;
 
