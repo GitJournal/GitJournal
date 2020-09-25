@@ -408,7 +408,7 @@ GitJournal operates on a "pay what you want model (with a minimum)".'
     title: One Time Purchase
     desc: Permanently enables all Pro features currently in GitJournal and new features added in the following 12 months.
   monthly:
-    title: Monthly Subscription
+    title: Monthly Installments
     desc: Enables all Pro Features. After 12 months or after paying {minYearlyPurchase}, you will get all the benefits of the 'One Time Purchase'
   thanks:
     title: Thank You
