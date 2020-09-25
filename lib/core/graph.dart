@@ -162,17 +162,6 @@ class Graph extends ChangeNotifier {
     return _nodes;
   }
 
-  void assignRandomPositions(int maxX, int maxY) {
-    var random = Random(DateTime.now().millisecondsSinceEpoch);
-
-    for (var node in nodes) {
-      node.x = random.nextInt(maxX).toDouble();
-      node.y = random.nextInt(maxY).toDouble();
-    }
-
-    notifyListeners();
-  }
-
   Timer layoutTimer;
 
   void startLayout() {
