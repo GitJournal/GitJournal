@@ -135,7 +135,7 @@ class Graph extends ChangeNotifier {
       }
     }
 
-    _neighbours[n.label] = _nodes;
+    _neighbours[n.label] = nodes;
     return nodes.union(computeOverlappingNodes(n)).toList();
   }
 
