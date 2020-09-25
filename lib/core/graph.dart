@@ -17,9 +17,14 @@ class Node {
   double forceX = 0.0;
   double forceY = 0.0;
 
+  String _label;
+
   Node(this.note);
 
-  String get label => note.pathSpec();
+  String get label {
+    _label ??= note.pathSpec();
+    return _label;
+  }
 
   @override
   String toString() => "Node{$label, $x, $y}";
