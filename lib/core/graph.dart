@@ -328,9 +328,11 @@ bool _updateGraphPositions(Graph g) {
 
     // print('${node.label} $dx $dy');
     if (node.x - dx <= g.nodeSize / 2) {
+      node.x = (g.nodeSize / 2) + 1;
       continue;
     }
     if (node.y - dy <= g.nodeSize / 2) {
+      node.y = (g.nodeSize / 2) + 1;
       continue;
     }
 
