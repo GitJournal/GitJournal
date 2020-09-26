@@ -112,24 +112,32 @@ class _GraphViewState extends State<GraphView> {
       children.add(w);
     }
 
+    var view = Container(
+      width: 2500,
+      height: 2500,
+      child: Stack(
+        children: children,
+        fit: StackFit.expand,
+      ),
+    );
+
+    return InteractiveViewer(
+      child: view,
+    );
+
+    /*
     return Scrollbar(
       child: SingleChildScrollView(
         child: Scrollbar(
           child: SingleChildScrollView(
-            child: Container(
-              width: 2500,
-              height: 2500,
-              child: Stack(
-                children: children,
-                fit: StackFit.expand,
-              ),
-            ),
+            child: view,
             scrollDirection: Axis.horizontal,
           ),
         ),
         scrollDirection: Axis.vertical,
       ),
     );
+    */
   }
 }
 
