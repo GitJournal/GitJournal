@@ -18,7 +18,9 @@ void main() {
 
     await generateNote(tempDir.path, "Hello.md");
     await generateNote(tempDir.path, "Fire.md");
+    await generateNote(tempDir.path, "Kat.md");
     await generateNote(tempDir.path, "Folder/Water.md");
+    await generateNote(tempDir.path, "Folder/Kat.md");
     await generateNote(tempDir.path, "Folder/Sodium.md");
     await generateNote(tempDir.path, "Folder/Boy.md");
     await generateNote(tempDir.path, "Folder2/Boy.md");
@@ -64,6 +66,16 @@ void main() {
     // Make sure if there are 2 Notes with the same name, the first one is resolved
     var resolvedNote = linkResolver.resolve('[[Boy]]');
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Folder/Boy.md'));
+  }, skip: true);
+
+  test('[[Kat]] resolves to `Kat.md`', () {
+    var note = rootFolder.notes[0];
+    var linkResolver = LinkResolver(note);
+
+    // Make sure if there are multiple Notes with the same name, the one is the
+    // base directory is preffered
+    var resolvedNote = linkResolver.resolve('[[Kat]]');
+    expect(resolvedNote.filePath, p.join(tempDir.path, 'Kat.md'));
   }, skip: true);
 
   test('WikiLinks with spaces resolves correctly', () {
