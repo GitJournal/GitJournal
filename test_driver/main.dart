@@ -27,9 +27,6 @@ void main() async {
 Future<void> populateWithData(SharedPreferences pref) async {
   var dir = await getApplicationDocumentsDirectory();
 
-  var appSettings = AppSettings.instance;
-  appSettings.gitBaseDirectory = dir.path;
-
   var settings = Settings.instance;
   settings.localGitRepoConfigured = true;
   settings.localGitRepoFolderName = "journal_local";

@@ -34,8 +34,6 @@ class AppSettings extends ChangeNotifier {
   var experimentalMarkdownToolbar = false;
   var experimentalGraphView = false;
 
-  var gitBaseDirectory = "";
-
   void load(SharedPreferences pref) {
     onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
 
@@ -63,8 +61,6 @@ class AppSettings extends ChangeNotifier {
         experimentalMarkdownToolbar;
     experimentalGraphView =
         pref.getBool("experimentalGraphView") ?? experimentalGraphView;
-
-    gitBaseDirectory = pref.getString("gitBaseDirectory") ?? "";
   }
 
   Future<void> save() async {
@@ -91,7 +87,6 @@ class AppSettings extends ChangeNotifier {
         defaultSet.experimentalGraphView);
 
     pref.setInt("appSettingsVersion", version);
-    pref.setString("gitBaseDirectory", gitBaseDirectory);
 
     notifyListeners();
   }
@@ -110,7 +105,6 @@ class AppSettings extends ChangeNotifier {
       'experimentalFs': experimentalFs.toString(),
       'experimentalMarkdownToolbar': experimentalMarkdownToolbar.toString(),
       'experimentalGraphView': experimentalGraphView.toString(),
-      'gitBaseDirectory': gitBaseDirectory.toString(),
     };
   }
 

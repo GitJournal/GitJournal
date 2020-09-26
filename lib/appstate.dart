@@ -17,4 +17,5 @@ class AppState {
   }
 
   NotesFolderFS notesFolder;
+  var gitBaseDirectory = "";
 }

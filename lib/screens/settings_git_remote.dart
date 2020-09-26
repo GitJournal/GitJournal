@@ -8,7 +8,6 @@ import 'package:git_bindings/git_bindings.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/setup/screens.dart';
@@ -133,8 +132,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     }
 
     var stateContainer = Provider.of<StateContainer>(context);
-    var appSettings = Provider.of<AppSettings>(context);
-    var gitDir = appSettings.gitBaseDirectory;
+    var gitDir = stateContainer.appState.gitBaseDirectory;
 
     // Figure out the next available folder
     String repoFolderName = "journal_";

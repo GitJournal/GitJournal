@@ -54,25 +54,14 @@ class JournalApp extends StatefulWidget {
       _enableAnalyticsIfPossible(settings);
     }
 
-    if (appSettings.gitBaseDirectory.isEmpty) {
-      var dir = await getApplicationDocumentsDirectory();
-      appSettings.gitBaseDirectory = dir.path;
-      appSettings.save();
-    }
-
-    if (!Directory(appSettings.gitBaseDirectory).existsSync()) {
-      Log.w("Applications Documents Directory no longer exists");
-      var dir = await getApplicationDocumentsDirectory();
-      appSettings.gitBaseDirectory = dir.path;
-      appSettings.save();
-      Log.i("New Documents Directory Path ${dir.path}");
-    }
+    var dir = await getApplicationDocumentsDirectory();
+    appState.gitBaseDirectory = dir.path;
 
     if (settings.localGitRepoConfigured == false) {
       // FIXME: What about exceptions!
       settings.localGitRepoFolderName = "journal_local";
       var repoPath = p.join(
-        appSettings.gitBaseDirectory,
+        appState.gitBaseDirectory,
         settings.localGitRepoFolderName,
       );
       await GitRepository.init(repoPath);
@@ -88,7 +77,7 @@ class JournalApp extends StatefulWidget {
           return StateContainer(
             appState: appState,
             settings: settings,
-            gitBaseDirectory: appSettings.gitBaseDirectory,
+            gitBaseDirectory: appState.gitBaseDirectory,
           );
         },
         child: ChangeNotifierProvider(
