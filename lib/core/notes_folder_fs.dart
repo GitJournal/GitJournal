@@ -250,13 +250,12 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         });
         continue;
       }
-      var noteFilePath = note.filePath.toLowerCase();
-      var isMarkdownFile = noteFilePath.endsWith('.md');
-      var isTxtFile = noteFilePath.endsWith('.txt');
-      if (!isMarkdownFile && !isTxtFile) {
+      if (!NoteFileFormatInfo.isAllowedFileName(note.filePath)) {
         var ignoredFile = IgnoredFile(
           filePath: fsEntity.path,
-          reason: tr("ignoredFiles.ext"),
+          reason: tr("ignoredFiles.ext") +
+              " " +
+              NoteFileFormatInfo.allowedExtensions().join(' '),
         );
         _ignoredFiles.add(ignoredFile);
 

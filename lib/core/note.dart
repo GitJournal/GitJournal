@@ -36,6 +36,34 @@ enum NoteType {
   Journal,
 }
 
+class NoteFileFormatInfo {
+  static List<String> allowedExtensions() {
+    return [
+      '.md',
+      '.txt',
+    ];
+  }
+
+  static String defaultExtension(NoteFileFormat format) {
+    switch (format) {
+      case NoteFileFormat.Markdown:
+        return ".md";
+      case NoteFileFormat.Txt:
+        return ".txt";
+      default:
+        return ".md";
+    }
+  }
+
+  static bool isAllowedFileName(String filePath) {
+    var noteFilePath = filePath.toLowerCase();
+    var isMarkdownFile = noteFilePath.endsWith('.md');
+    var isTxtFile = noteFilePath.endsWith('.txt');
+
+    return isMarkdownFile || isTxtFile;
+  }
+}
+
 enum NoteFileFormat {
   Markdown,
   Txt,

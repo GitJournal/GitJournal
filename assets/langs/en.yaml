@@ -268,7 +268,7 @@ widgets:
 rootFolder: Root Folder
 ignoredFiles:
   dot: Starts with a .
-  ext: Doesn't end with .md or .txt
+  ext: Doesn't end with one of the following -
 drawer:
   setup: Setup Git Host
   pro: Unlock Pro Version
