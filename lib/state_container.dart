@@ -114,7 +114,8 @@ class StateContainer with ChangeNotifier {
 
     Future noteLoadingFuture;
     try {
-      await _gitRepo.pull();
+      await _gitRepo.fetch();
+      await _gitRepo.merge();
 
       appState.syncStatus = SyncStatus.Pushing;
       notifyListeners();

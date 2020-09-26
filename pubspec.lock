@@ -77,7 +77,7 @@ packages:
       name: buffer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.6"
+    version: "1.0.7"
   cached_network_image:
     dependency: "direct main"
     description:
@@ -174,7 +174,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "27fe7ee9b5713c72dd7a3db3018ff16e6b06945b"
+      resolved-ref: "8e7e782f32f6cb1f39e39036d795f06ddecc56aa"
       url: "https://github.com/GitJournal/dart_git.git"
     source: git
     version: "0.0.1"
@@ -410,7 +410,7 @@ packages:
       name: git_bindings
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.14"
+    version: "0.0.15"
   git_url_parse2:
     dependency: "direct main"
     description:
