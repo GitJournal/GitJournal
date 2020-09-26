@@ -196,8 +196,8 @@ class GraphNodeLayout {
   double x = 0.0;
   double y = 0.0;
 
-  double startX = 500.0;
-  double startY = 500.0;
+  double startX = 60.0;
+  double startY = 60.0;
 
   double gap = 70;
   double nodeSize = 50;
