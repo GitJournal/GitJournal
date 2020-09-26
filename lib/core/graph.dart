@@ -51,10 +51,10 @@ class Graph extends ChangeNotifier {
   Graph.fromFolder(NotesFolder folder) {
     initLayouter = GraphNodeLayout(maxHeight: 2000, maxWidth: 2000);
 
-    print("Building graph .... ");
+    // print("Building graph .... ");
     _addFolder(folder).then((_) {
-      print("Done Building graph");
-      print("Starting layouting ...");
+      // print("Done Building graph");
+      // print("Starting layouting ...");
 
       //startLayout();
     });
@@ -80,11 +80,9 @@ class Graph extends ChangeNotifier {
     for (var l in links) {
       var noteB = linkResolver.resolveLink(l);
       if (noteB == null) {
-        print("not found $l");
+        // print("not found $l");
         continue;
       }
-
-      print("Adding edge ..");
 
       var edge = Edge(node, _getNode(noteB));
       edges.add(edge);
@@ -174,7 +172,7 @@ class Graph extends ChangeNotifier {
     const interval = Duration(milliseconds: 25);
     layoutTimer = Timer.periodic(interval, (Timer t) {
       bool shouldStop = _updateGraphPositions(this);
-      print("shouldStop $shouldStop");
+      // print("shouldStop $shouldStop");
       if (shouldStop) {
         layoutTimer.cancel();
         layoutTimer = null;
@@ -212,8 +210,6 @@ class GraphNodeLayout {
   void positionNode(Node node) {
     node.x = x;
     node.y = y;
-
-    print('INIT ${node.label} -> ${node.x} ${node.y}');
 
     x += gap;
     if (x + nodeSize >= maxWidth) {
@@ -330,7 +326,7 @@ bool _updateGraphPositions(Graph g) {
       dy *= s;
     }
 
-    print('${node.label} $dx $dy');
+    // print('${node.label} $dx $dy');
     if (node.x - dx <= g.nodeSize / 2) {
       continue;
     }
@@ -345,7 +341,7 @@ bool _updateGraphPositions(Graph g) {
       allBelowThreshold = false;
     }
   }
-  print('------------------');
+  // print('------------------');
 
   g.notify();
   return allBelowThreshold;

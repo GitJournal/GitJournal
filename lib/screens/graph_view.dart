@@ -82,10 +82,10 @@ class _GraphViewState extends State<GraphView> {
             }
 
             widget.graph.notify();
-            print("Pan start ${node.label} $pos");
+            // print("Pan start ${node.label} $pos");
           },
           onPanEnd: (DragEndDetails details) {
-            print("Pan end ${node.label} $details");
+            // print("Pan end ${node.label} $details");
             node.pressed = false;
             widget.graph.notify();
           },
@@ -102,7 +102,7 @@ class _GraphViewState extends State<GraphView> {
             }
 
             widget.graph.notify();
-            print("Pan update ${node.label} $pos");
+            // print("Pan update ${node.label} $pos");
           },
         ),
         left: node.x - (nodeSize / 2),
