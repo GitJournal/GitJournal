@@ -126,6 +126,7 @@ class _GraphViewState extends State<GraphView> {
       child: view,
       panEnabled: true,
       constrained: false,
+      minScale: 0.1,
     );
   }
 }
