@@ -26,7 +26,7 @@ class _GraphViewScreenState extends State<GraphViewScreen> {
       return Container(width: 2500, height: 2500);
     }
 
-    return GraphView(graph);
+    return SafeArea(child: GraphView(graph));
   }
 }
 
@@ -51,6 +51,13 @@ class _GraphViewState extends State<GraphView> {
     });
   }
 
+  Offset _getLocationPosition(Offset globalPos) {
+    RenderBox graphViewRenderBox = context.findRenderObject();
+    assert(graphViewRenderBox != null);
+
+    return graphViewRenderBox.globalToLocal(globalPos);
+  }
+
   @override
   Widget build(BuildContext context) {
     var children = <Widget>[];
@@ -62,12 +69,20 @@ class _GraphViewState extends State<GraphView> {
         child: GestureDetector(
           child: NodeWidget(node, nodeSize),
           onPanStart: (details) {
-            node.x = details.globalPosition.dx;
-            node.y = details.globalPosition.dy;
+            var pos = _getLocationPosition(details.globalPosition);
+            node.x = pos.dx;
+            node.y = pos.dy;
             node.pressed = true;
 
+            if (node.y <= nodeSize / 2) {
+              node.y = nodeSize / 2;
+            }
+            if (node.x <= nodeSize / 2) {
+              node.x = nodeSize / 2;
+            }
+
             widget.graph.notify();
-            print("Pan start ${node.label} $details");
+            print("Pan start ${node.label} $pos");
           },
           onPanEnd: (DragEndDetails details) {
             print("Pan end ${node.label} $details");
@@ -75,11 +90,19 @@ class _GraphViewState extends State<GraphView> {
             widget.graph.notify();
           },
           onPanUpdate: (details) {
-            node.x = details.globalPosition.dx;
-            node.y = details.globalPosition.dy;
+            var pos = _getLocationPosition(details.globalPosition);
+            node.x = pos.dx;
+            node.y = pos.dy;
+
+            if (node.y <= nodeSize / 2) {
+              node.y = nodeSize / 2;
+            }
+            if (node.x <= nodeSize / 2) {
+              node.x = nodeSize / 2;
+            }
 
             widget.graph.notify();
-            print("Pan update ${node.label} ${details.globalPosition}");
+            print("Pan update ${node.label} $pos");
           },
         ),
         left: node.x - (nodeSize / 2),
