@@ -174,8 +174,7 @@ class Graph extends ChangeNotifier {
       bool shouldStop = _updateGraphPositions(this);
       // print("shouldStop $shouldStop");
       if (shouldStop) {
-        layoutTimer.cancel();
-        layoutTimer = null;
+        stopLayout();
       }
     });
 
@@ -186,6 +185,11 @@ class Graph extends ChangeNotifier {
         layoutTimer = null;
       }
     });*/
+  }
+
+  void stopLayout() {
+    layoutTimer.cancel();
+    layoutTimer = null;
   }
 }
 

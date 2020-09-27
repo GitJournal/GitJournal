@@ -20,14 +20,28 @@ class _GraphViewScreenState extends State<GraphViewScreen> {
       var rootFolder = Provider.of<NotesFolderFS>(context);
       setState(() {
         graph = Graph.fromFolder(rootFolder);
-        graph.addListener(() {
-          setState(() {});
-        });
+        graph.addListener(_setState);
       });
       return Container(width: 2500, height: 2500);
     }
 
     return SafeArea(child: GraphView(graph));
+  }
+
+  @override
+  void dispose() {
+    if (graph != null) {
+      graph.stopLayout();
+      graph.removeListener(_setState);
+    }
+
+    super.dispose();
+  }
+
+  void _setState() {
+    if (!mounted) return;
+
+    setState(() {});
   }
 }
 
