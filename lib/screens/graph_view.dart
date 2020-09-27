@@ -42,6 +42,7 @@ class GraphView extends StatefulWidget {
 
 class _GraphViewState extends State<GraphView> {
   final nodeSize = 50.0;
+  fork.TransformationController transformationController;
 
   @override
   void initState() {
@@ -50,13 +51,18 @@ class _GraphViewState extends State<GraphView> {
     widget.graph.addListener(() {
       setState(() {});
     });
+
+    transformationController = fork.TransformationController();
   }
 
   Offset _getLocationPosition(Offset globalPos) {
     RenderBox graphViewRenderBox = context.findRenderObject();
     assert(graphViewRenderBox != null);
 
-    return graphViewRenderBox.globalToLocal(globalPos);
+    var pos = graphViewRenderBox.globalToLocal(globalPos);
+    var matrix = transformationController.value;
+
+    return MatrixUtils.transformPoint(Matrix4.inverted(matrix), pos);
   }
 
   @override
@@ -127,6 +133,7 @@ class _GraphViewState extends State<GraphView> {
       panEnabled: true,
       constrained: false,
       minScale: 0.1,
+      transformationController: transformationController,
     );
   }
 }
