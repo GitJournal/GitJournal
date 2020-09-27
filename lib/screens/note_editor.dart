@@ -169,7 +169,7 @@ class NoteEditorState extends State<NoteEditor> {
           editTagsSelected: _editTagsSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
-          editMode: widget.editMode
+          editMode: widget.editMode,
         );
       case EditorType.Raw:
         return RawEditor(
@@ -183,7 +183,7 @@ class NoteEditorState extends State<NoteEditor> {
           editTagsSelected: _editTagsSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
-          editMode: widget.editMode
+          editMode: widget.editMode,
         );
       case EditorType.Checklist:
         return ChecklistEditor(
@@ -197,7 +197,7 @@ class NoteEditorState extends State<NoteEditor> {
           editTagsSelected: _editTagsSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
-          editMode: widget.editMode
+          editMode: widget.editMode,
         );
       case EditorType.Journal:
         return JournalEditor(
@@ -211,7 +211,7 @@ class NoteEditorState extends State<NoteEditor> {
           editTagsSelected: _editTagsSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
-          editMode: widget.editMode
+          editMode: widget.editMode,
         );
     }
     return null;
