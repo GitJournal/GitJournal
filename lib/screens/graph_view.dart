@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/graph.dart';
-import 'package:gitjournal/core/interactive_viewer.dart';
+import 'package:gitjournal/core/interactive_viewer.dart' as fork;
 import 'package:gitjournal/core/notes_folder_fs.dart';
 
 class GraphViewScreen extends StatefulWidget {
@@ -122,7 +122,7 @@ class _GraphViewState extends State<GraphView> {
       ),
     );
 
-    return InteractiveViewerCopy(
+    return fork.InteractiveViewer(
       child: view,
       panEnabled: true,
       constrained: false,

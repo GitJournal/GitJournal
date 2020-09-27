@@ -16,22 +16,22 @@ import 'package:vector_math/vector_math_64.dart' show Quad, Vector3, Matrix4;
 ///
 /// The user can transform the child by dragging to pan or pinching to zoom.
 ///
-/// By default, InteractiveViewerCopy may draw outside of its original area of the
+/// By default, InteractiveViewer may draw outside of its original area of the
 /// screen, such as when a child is zoomed in and increases in size. However, it
 /// will not receive gestures outside of its original area. To prevent
-/// InteractiveViewerCopy from drawing outside of its original size, wrap it in a
-/// [ClipRect]. Or, to prevent dead areas where InteractiveViewerCopy does not
-/// receive gestures, be sure that the InteractiveViewerCopy widget is the size of
+/// InteractiveViewer from drawing outside of its original size, wrap it in a
+/// [ClipRect]. Or, to prevent dead areas where InteractiveViewer does not
+/// receive gestures, be sure that the InteractiveViewer widget is the size of
 /// the area that should be interactive. See
 /// [flutter-go](https://github.com/justinmc/flutter-go) for an example of
-/// robust positioning of an InteractiveViewerCopy child that works for all screen
+/// robust positioning of an InteractiveViewer child that works for all screen
 /// sizes and child sizes.
 ///
 /// The [child] must not be null.
 ///
 /// See also:
 ///   * The [Flutter Gallery's transformations demo](https://github.com/flutter/gallery/blob/master/lib/demos/reference/transformations_demo.dart),
-///     which includes the use of InteractiveViewerCopy.
+///     which includes the use of InteractiveViewer.
 ///
 /// {@tool dartpad --template=stateless_widget_scaffold}
 /// This example shows a simple Container that can be panned and zoomed.
@@ -39,7 +39,7 @@ import 'package:vector_math/vector_math_64.dart' show Quad, Vector3, Matrix4;
 /// ```dart
 /// Widget build(BuildContext context) {
 ///   return Center(
-///     child: InteractiveViewerCopy(
+///     child: InteractiveViewer(
 ///       boundaryMargin: EdgeInsets.all(20.0),
 ///       minScale: 0.1,
 ///       maxScale: 1.6,
@@ -59,11 +59,11 @@ import 'package:vector_math/vector_math_64.dart' show Quad, Vector3, Matrix4;
 /// ```
 /// {@end-tool}
 @immutable
-class InteractiveViewerCopy extends StatefulWidget {
-  /// Create an InteractiveViewerCopy.
+class InteractiveViewer extends StatefulWidget {
+  /// Create an InteractiveViewer.
   ///
   /// The [child] parameter must not be null.
-  InteractiveViewerCopy({
+  InteractiveViewer({
     Key key,
     this.alignPanAxis = false,
     this.boundaryMargin = EdgeInsets.zero,
@@ -135,7 +135,7 @@ class InteractiveViewerCopy extends StatefulWidget {
   /// applied to the child.
   ///
   /// If set to false, then the child will be given infinite constraints. This
-  /// is often useful when a child should be bigger than the InteractiveViewerCopy.
+  /// is often useful when a child should be bigger than the InteractiveViewer.
   ///
   /// Defaults to true.
   ///
@@ -154,7 +154,7 @@ class InteractiveViewerCopy extends StatefulWidget {
   ///       appBar: AppBar(
   ///         title: const Text('Pannable Table'),
   ///       ),
-  ///       body: InteractiveViewerCopy(
+  ///       body: InteractiveViewer(
   ///         constrained: false,
   ///         scaleEnabled: false,
   ///         child: Table(
@@ -221,11 +221,11 @@ class InteractiveViewerCopy extends StatefulWidget {
 
   /// Called when the user ends a pan or scale gesture on the widget.
   ///
-  /// {@template flutter.widgets.interactiveViewerCopy.onInteraction}
+  /// {@template flutter.widgets.interactiveViewer.onInteraction}
   /// Will be called even if the interaction is disabled with
   /// [panEnabled] or [scaleEnabled].
   ///
-  /// A [GestureDetector] wrapping the InteractiveViewerCopy will not respond to
+  /// A [GestureDetector] wrapping the InteractiveViewer will not respond to
   /// [GestureDetector.onScaleStart], [GestureDetector.onScaleUpdate], and
   /// [GestureDetector.onScaleEnd]. Use [onInteractionStart],
   /// [onInteractionUpdate], and [onInteractionEnd] to respond to those
@@ -244,7 +244,7 @@ class InteractiveViewerCopy extends StatefulWidget {
 
   /// Called when the user begins a pan or scale gesture on the widget.
   ///
-  /// {@macro flutter.widgets.interactiveViewerCopy.onInteraction}
+  /// {@macro flutter.widgets.interactiveViewer.onInteraction}
   ///
   /// See also:
   ///
@@ -254,7 +254,7 @@ class InteractiveViewerCopy extends StatefulWidget {
 
   /// Called when the user updates a pan or scale gesture on the widget.
   ///
-  /// {@macro flutter.widgets.interactiveViewerCopy.onInteraction}
+  /// {@macro flutter.widgets.interactiveViewer.onInteraction}
   ///
   /// See also:
   ///
@@ -266,7 +266,7 @@ class InteractiveViewerCopy extends StatefulWidget {
   /// child.
   ///
   /// Whenever the child is transformed, the [Matrix4] value is updated and all
-  /// listeners are notified. If the value is set, InteractiveViewerCopy will update
+  /// listeners are notified. If the value is set, InteractiveViewer will update
   /// to respect the new value.
   ///
   /// {@tool dartpad --template=stateful_widget_material_ticker}
@@ -337,7 +337,7 @@ class InteractiveViewerCopy extends StatefulWidget {
   ///       title: const Text('Controller demo'),
   ///     ),
   ///     body: Center(
-  ///       child: InteractiveViewerCopy(
+  ///       child: InteractiveViewer(
   ///         boundaryMargin: EdgeInsets.all(double.infinity),
   ///         transformationController: _transformationController,
   ///         minScale: 0.1,
@@ -474,14 +474,10 @@ class InteractiveViewerCopy extends StatefulWidget {
 
     // Otherwise, return the nearest point on the quad.
     final List<Vector3> closestPoints = <Vector3>[
-      InteractiveViewerCopy.getNearestPointOnLine(
-          point, quad.point0, quad.point1),
-      InteractiveViewerCopy.getNearestPointOnLine(
-          point, quad.point1, quad.point2),
-      InteractiveViewerCopy.getNearestPointOnLine(
-          point, quad.point2, quad.point3),
-      InteractiveViewerCopy.getNearestPointOnLine(
-          point, quad.point3, quad.point0),
+      InteractiveViewer.getNearestPointOnLine(point, quad.point0, quad.point1),
+      InteractiveViewer.getNearestPointOnLine(point, quad.point1, quad.point2),
+      InteractiveViewer.getNearestPointOnLine(point, quad.point2, quad.point3),
+      InteractiveViewer.getNearestPointOnLine(point, quad.point3, quad.point0),
     ];
     double minDistance = double.infinity;
     Vector3 closestOverall;
@@ -499,10 +495,10 @@ class InteractiveViewerCopy extends StatefulWidget {
   }
 
   @override
-  _InteractiveViewerCopyState createState() => _InteractiveViewerCopyState();
+  _InteractiveViewerState createState() => _InteractiveViewerState();
 }
 
-class _InteractiveViewerCopyState extends State<InteractiveViewerCopy>
+class _InteractiveViewerState extends State<InteractiveViewer>
     with TickerProviderStateMixin {
   TransformationController _transformationController;
 
@@ -993,7 +989,7 @@ class _InteractiveViewerCopyState extends State<InteractiveViewerCopy>
   }
 
   @override
-  void didUpdateWidget(InteractiveViewerCopy oldWidget) {
+  void didUpdateWidget(InteractiveViewer oldWidget) {
     super.didUpdateWidget(oldWidget);
     // Handle all cases of needing to dispose and initialize
     // transformationControllers.
@@ -1081,8 +1077,8 @@ class _InteractiveViewerCopyState extends State<InteractiveViewerCopy>
 ///
 /// See also:
 ///
-///  * [InteractiveViewerCopy.transformationController] for detailed documentation
-///    on how to use TransformationController with [InteractiveViewerCopy].
+///  * [InteractiveViewer.transformationController] for detailed documentation
+///    on how to use TransformationController with [InteractiveViewer].
 class TransformationController extends ValueNotifier<Matrix4> {
   /// Create an instance of [TransformationController].
   ///
@@ -1114,7 +1110,7 @@ class TransformationController extends ValueNotifier<Matrix4> {
   ///         details.localPosition,
   ///       );
   ///     },
-  ///     child: InteractiveViewerCopy(
+  ///     child: InteractiveViewer(
   ///       transformationController: _transformationController,
   ///       child: child,
   ///     ),
@@ -1198,7 +1194,7 @@ Quad _getAxisAlignedBoundingBoxWithRotation(Rect rect, double rotation) {
     rotationMatrix.transform3(Vector3(rect.right, rect.bottom, 0.0)),
     rotationMatrix.transform3(Vector3(rect.left, rect.bottom, 0.0)),
   );
-  return InteractiveViewerCopy.getAxisAlignedBoundingBox(boundariesRotated);
+  return InteractiveViewer.getAxisAlignedBoundingBox(boundariesRotated);
 }
 
 // Return the amount that viewport lies outside of boundary. If the viewport
@@ -1214,7 +1210,7 @@ Offset _exceedsBy(Quad boundary, Quad viewport) {
   Offset largestExcess = Offset.zero;
   for (final Vector3 point in viewportPoints) {
     final Vector3 pointInside =
-        InteractiveViewerCopy.getNearestPointInside(point, boundary);
+        InteractiveViewer.getNearestPointInside(point, boundary);
     final Offset excess = Offset(
       pointInside.x - point.x,
       pointInside.y - point.y,
