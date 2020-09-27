@@ -28,7 +28,7 @@ dependencies:
   fimber: ^0.3.0
   dynamic_theme: ^1.0.0
   flutter_staggered_grid_view: ^0.3.0
-  provider: ^3.2.0
+  provider: ^4.3.2+2
   git_bindings: ^0.0.15
   dart_git:
     git: https://github.com/GitJournal/dart_git.git
@@ -57,6 +57,7 @@ dependencies:
   flutter_plugin_android_lifecycle: ^1.0.8 # for fixing the build
   timeago: ^2.0.27
   multicast_dns: ^0.2.2
+  bonsoir: ^0.1.2+2
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.2"

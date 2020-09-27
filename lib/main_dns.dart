@@ -5,6 +5,7 @@ Future<void> main() async {
 
   var name = '_dartobservatory._tcp.local';
   name = '_gitjournal._tcp';
+  name = '_bonsoirdemo._tcp';
   final MDnsClient client = MDnsClient();
   // Start the client with default options.
   await client.start();
@@ -39,5 +40,9 @@ Future<void> main() async {
 // Use connectivity plugin to get ssid info when connected to the wifi network
 // https://stackoverflow.com/questions/55716751/flutter-ios-reading-wifi-name-using-the-connectivity-or-wifi-plugin/55732656#55732656
 
-// For Registering on Mobiles -
-// https://pub.dev/packages/bonsoir
+// Use the WorkManager in Android to do the syncing in the background
+// -> This should be configurable if we want to be able to sync in the background
+
+// TODO:
+// * I don't know if/how I can run an HTTP Server in the Background
+//   Is that still possible with current Android Versions?
