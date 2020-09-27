@@ -157,7 +157,8 @@ class CreateFolderButton extends StatelessWidget {
         );
         if (folderName is String) {
           var container = Provider.of<StateContainer>(context, listen: false);
-          final notesFolder = Provider.of<NotesFolderFS>(context);
+          final notesFolder =
+              Provider.of<NotesFolderFS>(context, listen: false);
 
           container.createFolder(notesFolder, folderName);
         }

@@ -69,7 +69,7 @@ class TagListingScreen extends StatelessWidget {
       onTap: () {
         var route = MaterialPageRoute(
           builder: (context) {
-            var rootFolder = Provider.of<NotesFolderFS>(context);
+            var rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
             var folder = FlattenedNotesFolder(
               rootFolder,
               filter: (Note n) =>

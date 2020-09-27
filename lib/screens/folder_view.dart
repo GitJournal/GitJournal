@@ -163,13 +163,13 @@ class _FolderViewState extends State<FolderView> {
     NotesFolderFS fsFolder = folder.fsFolder;
     var isVirtualFolder = folder.name != folder.fsFolder.name;
     if (isVirtualFolder) {
-      var rootFolder = Provider.of<NotesFolderFS>(context);
-      var settings = Provider.of<Settings>(context);
+      var rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
+      var settings = Provider.of<Settings>(context, listen: false);
 
       fsFolder = getFolderForEditor(settings, rootFolder, editorType);
     }
 
-    var settings = Provider.of<Settings>(context);
+    var settings = Provider.of<Settings>(context, listen: false);
 
     if (editorType == EditorType.Journal && settings.journalEditorSingleNote) {
       var note = await getTodayJournalEntry(fsFolder.rootFolder);

@@ -79,7 +79,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
         ),
         RedButton(
           text: tr('settings.ssh.reset'),
-          onPressed: () => _resetGitHost(context),
+          onPressed: () => _resetGitHost(),
         ),
       ],
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,7 +122,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     });
   }
 
-  void _resetGitHost(BuildContext context) async {
+  void _resetGitHost() async {
     var ok = await showDialog(
       context: context,
       builder: (_) => HostChangeConfirmationDialog(),
@@ -131,7 +131,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
       return;
     }
 
-    var stateContainer = Provider.of<StateContainer>(context);
+    var stateContainer = Provider.of<StateContainer>(context, listen: false);
     var gitDir = stateContainer.appState.gitBaseDirectory;
 
     // Figure out the next available folder

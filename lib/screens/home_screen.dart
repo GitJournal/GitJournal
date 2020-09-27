@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _initFolder() async {
     if (!mounted) return;
 
-    final rootFolder = Provider.of<NotesFolderFS>(context);
+    final rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
     setState(() {
       notesFolder = FlattenedNotesFolder(
         rootFolder,

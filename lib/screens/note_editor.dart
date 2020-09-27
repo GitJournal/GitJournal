@@ -384,7 +384,7 @@ class NoteEditorState extends State<NoteEditor> {
   void _editTagsSelected(Note _note) async {
     Log.i("Note Tags: ${_note.tags}");
 
-    final rootFolder = Provider.of<NotesFolderFS>(context);
+    final rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
     var allTags = rootFolder.getNoteTagsRecursively();
     Log.i("All Tags: $allTags");
 

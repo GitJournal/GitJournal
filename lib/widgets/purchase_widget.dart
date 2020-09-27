@@ -223,7 +223,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
   }
 
   void _deliverProduct(SubscriptionStatus status) {
-    var appSettings = Provider.of<AppSettings>(context);
+    var appSettings = Provider.of<AppSettings>(context, listen: false);
     appSettings.proMode = status.isPro;
     appSettings.proExpirationDate = status.expiryDate.toIso8601String();
     appSettings.save();

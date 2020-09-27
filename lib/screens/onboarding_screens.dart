@@ -111,7 +111,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   void _finish() {
-    var appSettings = Provider.of<AppSettings>(context);
+    var appSettings = Provider.of<AppSettings>(context, listen: false);
     appSettings.onBoardingCompleted = true;
     appSettings.save();
 
