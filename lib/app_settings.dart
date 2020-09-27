@@ -33,6 +33,7 @@ class AppSettings extends ChangeNotifier {
   var experimentalFs = false;
   var experimentalMarkdownToolbar = false;
   var experimentalGraphView = false;
+  var experimentalZeroConf = false;
 
   void load(SharedPreferences pref) {
     onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
@@ -61,6 +62,8 @@ class AppSettings extends ChangeNotifier {
         experimentalMarkdownToolbar;
     experimentalGraphView =
         pref.getBool("experimentalGraphView") ?? experimentalGraphView;
+    experimentalZeroConf =
+        pref.getBool("experimentalZeroConf") ?? experimentalZeroConf;
   }
 
   Future<void> save() async {
@@ -85,6 +88,8 @@ class AppSettings extends ChangeNotifier {
         defaultSet.experimentalMarkdownToolbar);
     _setBool(pref, "experimentalGraphView", experimentalGraphView,
         defaultSet.experimentalGraphView);
+    _setBool(pref, "experimentalZeroConf", experimentalZeroConf,
+        defaultSet.experimentalZeroConf);
 
     pref.setInt("appSettingsVersion", version);
 
@@ -105,6 +110,7 @@ class AppSettings extends ChangeNotifier {
       'experimentalFs': experimentalFs.toString(),
       'experimentalMarkdownToolbar': experimentalMarkdownToolbar.toString(),
       'experimentalGraphView': experimentalGraphView.toString(),
+      'experimentalZeroConf': experimentalZeroConf.toString(),
     };
   }
 
