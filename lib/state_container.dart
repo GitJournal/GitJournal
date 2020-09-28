@@ -129,7 +129,7 @@ class StateContainer with ChangeNotifier {
       appState.numChanges = 0;
       notifyListeners();
     } catch (e, stacktrace) {
-      Log.d("Failed to Sync");
+      Log.e("Failed to Sync", ex: e, stacktrace: stacktrace);
       appState.syncStatus = SyncStatus.Error;
       notifyListeners();
       if (shouldLogGitException(e)) {
