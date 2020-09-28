@@ -1,4 +1,6 @@
 PODS:
+  - bonsoir (0.1.2):
+    - Flutter
   - connectivity (0.0.1):
     - Flutter
     - Reachability
@@ -55,8 +57,6 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - git_bindings (0.0.1):
-    - Flutter
   - GoogleAppMeasurement (6.6.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
@@ -119,6 +119,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - bonsoir (from `.symlinks/plugins/bonsoir/ios`)
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
@@ -127,7 +128,6 @@ DEPENDENCIES:
   - flutter_email_sender (from `.symlinks/plugins/flutter_email_sender/ios`)
   - flutter_sentry (from `.symlinks/plugins/flutter_sentry/ios`)
   - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
-  - git_bindings (from `.symlinks/plugins/git_bindings/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - in_app_purchase (from `.symlinks/plugins/in_app_purchase/ios`)
   - launch_review (from `.symlinks/plugins/launch_review/ios`)
@@ -158,6 +158,8 @@ SPEC REPOS:
     - Sentry
 
 EXTERNAL SOURCES:
+  bonsoir:
+    :path: ".symlinks/plugins/bonsoir/ios"
   connectivity:
     :path: ".symlinks/plugins/connectivity/ios"
   device_info:
@@ -174,8 +176,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_sentry/ios"
   flutter_webview_plugin:
     :path: ".symlinks/plugins/flutter_webview_plugin/ios"
-  git_bindings:
-    :path: ".symlinks/plugins/git_bindings/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
   in_app_purchase:
@@ -200,6 +200,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher/ios"
 
 SPEC CHECKSUMS:
+  bonsoir: 8ef4e0ac3c66a4aba0f99ec70bc9f6fad7d2eadf
   connectivity: 6e94255659cc86dcbef1d452ad3e0491bb1b3e75
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   Firebase: 7cf5f9c67f03cb3b606d1d6535286e1080e57eb6
@@ -215,7 +216,6 @@ SPEC CHECKSUMS:
   flutter_sentry: e7e66f0717b5fba24f96891e879562bdd8985d36
   flutter_webview_plugin: ed9e8a6a96baf0c867e90e1bce2673913eeac694
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  git_bindings: 2136dc93ecfd22b3fdcafd03b582e7b64debf2b6
   GoogleAppMeasurement: 67458367830514fb20fd9e233496f1eef9d90185
   GoogleDataTransport: 672fb0ce96fe7f7f31d43672fca62ad2c9c86f7b
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3

@@ -53,7 +53,12 @@ static FlutterMethodChannel* gitChannel = 0;
                 [self handleMethodCallAsync:call result:result];
             });
         }
-        else if ([@"gitPull" isEqualToString:method]) {
+        else if ([@"gitFetch" isEqualToString:method]) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [self handleMethodCallAsync:call result:result];
+            });
+        }
+        else if ([@"gitMerge" isEqualToString:method]) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [self handleMethodCallAsync:call result:result];
             });
@@ -333,10 +338,35 @@ bool handleError(FlutterResult result, int err) {
             return;
         }
     }
-    else if ([@"gitPull" isEqualToString:method]) {
+    else if ([@"gitFetch" isEqualToString:method]) {
+        NSString *folderPath = arguments[@"folderPath"];
+        NSString *remote = arguments[@"remote"];
+
+
+        if (folderPath == nil || [folderPath length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid folderPath" details:nil]);
+            return;
+        }
+        if (remote == nil || [remote length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid remote" details:nil]);
+            return;
+        }
+
+        gj_set_ssh_keys_paths((char*) sshPublicKeyPath, (char*) sshPrivateKeyPath, "");
+
+        int err = gj_git_fetch([folderPath UTF8String], [remote UTF8String]);
+        if (!handleError(result, err)) {
+            result(@YES);
+            return;
+        }
+    }
+    else if ([@"gitMerge" isEqualToString:method]) {
         NSString *folderPath = arguments[@"folderPath"];
         NSString *authorName = arguments[@"authorName"];
         NSString *authorEmail = arguments[@"authorEmail"];
+        NSString *branch = arguments[@"branch"];
 
         if (folderPath == nil || [folderPath length] == 0) {
             result([FlutterError errorWithCode:@"InvalidParams"
@@ -353,10 +383,15 @@ bool handleError(FlutterResult result, int err) {
                                        message:@"Invalid authorEmail" details:nil]);
             return;
         }
+        if (branch == nil || [branch length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid branch" details:nil]);
+            return;
+        }
 
         gj_set_ssh_keys_paths((char*) sshPublicKeyPath, (char*) sshPrivateKeyPath, "");
 
-        int err = gj_git_pull([folderPath UTF8String], [authorName UTF8String], [authorEmail UTF8String]);
+        int err = gj_git_merge([folderPath UTF8String], [branch UTF8String], [authorName UTF8String], [authorEmail UTF8String]);
         if (!handleError(result, err)) {
             result(@YES);
             return;
@@ -364,16 +399,22 @@ bool handleError(FlutterResult result, int err) {
     }
     else if ([@"gitPush" isEqualToString:method]) {
         NSString *folderPath = arguments[@"folderPath"];
+        NSString *remote = arguments[@"remote"];
 
         if (folderPath == nil || [folderPath length] == 0) {
             result([FlutterError errorWithCode:@"InvalidParams"
                                        message:@"Invalid folderPath" details:nil]);
             return;
         }
+        if (remote == nil || [remote length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid remote" details:nil]);
+            return;
+        }
 
         gj_set_ssh_keys_paths((char*) sshPublicKeyPath, (char*) sshPrivateKeyPath, "");
 
-        int err = gj_git_push([folderPath UTF8String]);
+        int err = gj_git_push([folderPath UTF8String], [remote UTF8String]);
         if (!handleError(result, err)) {
             result(@YES);
             return;
