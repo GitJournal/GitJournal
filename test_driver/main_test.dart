@@ -31,16 +31,6 @@ void main() {
 
     Future _takeScreenshot() async {
       screenshotNum += 1;
-      /*
-      var filePath = screenshotNum.toString() + ".png";
-
-      print("Taking screenshot $filePath");
-      final file = await File(filePath).create(recursive: true);
-      final pixels = await driver.screenshot();
-      await file.writeAsBytes(pixels);
-      */
-
-      // Fancy Screenshot package
       await screenshot(driver, config, screenshotNum.toString());
     }
 
@@ -137,9 +127,54 @@ void main() {
       await Future.delayed(const Duration(milliseconds: 100));
       await _takeScreenshot();
 
+      // Capture Standard View's Sorting Options
+      var popUpMenu = find.byValueKey("PopupMenu");
+      await waitFor(popUpMenu);
+      await driver.tap(popUpMenu);
+
+      var sortingOptions = find.byValueKey("SortingOptions");
+      await waitFor(sortingOptions);
+      await _takeScreenshot();
+      await driver.tap(sortingOptions);
+
+      var sortingOptionsCancel = find.byValueKey("Cancel");
+      await waitFor(sortingOptionsCancel);
+
+      await _takeScreenshot();
+      await driver.tap(sortingOptionsCancel);
+
+      // StandardView's View Settings
+      await waitFor(popUpMenu);
+      await driver.tap(popUpMenu);
+
+      var viewOptions = find.byValueKey("ViewOptions");
+      await waitFor(viewOptions);
+      await driver.tap(viewOptions);
+
+      var viewOptionsDialog = find.byValueKey("ViewOptionsDialog");
+      await waitFor(viewOptionsDialog);
+      await _takeScreenshot();
+
+      var showSummary = find.byValueKey("SummaryToggle");
+      await waitFor(showSummary);
+      await driver.tap(showSummary);
+
+      var fileNameSel = find.byValueKey("ShowFileNameOnly");
+      await waitFor(fileNameSel);
+      await _takeScreenshot();
+      await driver.tap(fileNameSel);
+
+      // Remove the Dialog
+      var barrier = find.byValueKey('Hack_Back');
+      await waitFor(barrier);
+      await driver.tap(barrier);
+
       // Folder View Selector
       print("Taking Screenshots of FolderViewSelector");
       var folderViewSelector = find.byValueKey("FolderViewSelector");
+      await waitFor(folderViewSelector);
+      await _takeScreenshot();
+
       await driver.tap(folderViewSelector);
       await Future.delayed(const Duration(milliseconds: 100));
       await _takeScreenshot();

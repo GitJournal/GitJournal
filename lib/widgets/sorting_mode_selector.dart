@@ -44,12 +44,14 @@ class _SortingModeSelectorState extends State<SortingModeSelector> {
       ),
       actions: [
         OutlineButton(
+          key: const ValueKey("Cancel"),
           child: Text(tr('settings.cancel')),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
         OutlineButton(
+          key: const ValueKey("Ok"),
           child: Text(tr('settings.ok')),
           onPressed: () {
             Navigator.of(context).pop(SortingMode(field, order));

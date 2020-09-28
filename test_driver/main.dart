@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_driver/driver_extension.dart';
 import 'package:gitjournal/app_settings.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:meta/meta.dart';
 
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/settings.dart';
@@ -43,46 +44,86 @@ Future<void> populateWithData(SharedPreferences pref) async {
   Directory(p.join(repoPath, "Journal/Personal")).createSync(recursive: true);
   Directory(p.join(repoPath, "Food")).createSync();
 
+  final now = DateTime.now();
+
   // Write notes
   createChecklist(p.join(repoPath, "checklist.md"), DateTime.now());
-  createNoteWithTitle(
+  createNote(
     p.join(repoPath, "note1.md"),
-    DateTime.now(),
-    "Desire",
-    "Haven't you always wanted such an app?",
+    now,
+    body: "Desire",
+    title: "Haven't you always wanted such an app?",
   );
   createNote(
     p.join(repoPath, "note2.md"),
-    DateTime.now(),
-    "There is not a pipe",
+    now,
+    body: "There is not a pipe",
   );
 
   createNote(
-    p.join(repoPath, "note2.md"),
-    DateTime.now(),
-    "There is not a pipe",
+    p.join(repoPath, "note3.md"),
+    now,
+    body:
+        "What are the different models for building sustainable Open Source Software?",
+  );
+
+  createNote(
+    p.join(repoPath, "note-taking-apps.md"),
+    now.add(const Duration(days: -2)),
+    body:
+        """There seems to be an explosion of Note Taking apps. Here are some of the Open Sources ones that I have found -
+
+- Zettlr
+- Foam
+- Dendron
+- Joplin
+- SimpleNote
+- Standard Notes
+- TiddlyWiki
+""",
+  );
+
+  createNote(
+    p.join(repoPath, "note3.md"),
+    now.add(const Duration(hours: -2)),
+    body:
+        "What are the different models for building sustainable Open Source Software?",
+  );
+
+  createNote(
+    p.join(repoPath, "git-analogy.md"),
+    now.add(const Duration(hours: -5)),
+    body: "Perhaps Git could be explained as a virtual usb-drive",
+    title: "Git Analogy",
+  );
+
+  createNote(
+    p.join(repoPath, "open-source-analytics.md"),
+    now.add(const Duration(hours: -5)),
+    body: "Research what Open Source Alternative Exist for App Analytics",
+  );
+
+  createNote(
+    p.join(repoPath, "lighting.md"),
+    now.add(const Duration(hours: -5)),
+    body: "But some lamps to make the office more cozy at night",
   );
 }
 
-void createNote(String filePath, DateTime dt, String body) {
-  var content = """---
+void createNote(String filePath, DateTime dt,
+    {@required String body, String title}) {
+  var content = "";
+
+  if (title == null) {
+    content = """---
 modified: ${toIso8601WithTimezone(dt)}
 created: ${toIso8601WithTimezone(dt)}
 ---
 
 $body
 """;
-
-  File(filePath).writeAsStringSync(content);
-}
-
-void createNoteWithTitle(
-  String filePath,
-  DateTime dt,
-  String title,
-  String body,
-) {
-  var content = """---
+  } else {
+    content = """---
 modified: ${toIso8601WithTimezone(dt)}
 created: ${toIso8601WithTimezone(dt)}
 title: $title
@@ -90,6 +131,7 @@ title: $title
 
 $body
 """;
+  }
 
   File(filePath).writeAsStringSync(content);
 }

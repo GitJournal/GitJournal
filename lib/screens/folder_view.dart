@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:git_bindings/git_bindings.dart';
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/app.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
@@ -278,6 +279,7 @@ class _FolderViewState extends State<FolderView> {
                 },
               ),
               RadioListTile<StandardViewHeader>(
+                key: const ValueKey("ShowFileNameOnly"),
                 title: Text(tr('widgets.FolderView.headerOptions.fileName')),
                 value: StandardViewHeader.FileName,
                 groupValue: _headerType,
@@ -287,6 +289,7 @@ class _FolderViewState extends State<FolderView> {
                 },
               ),
               SwitchListTile(
+                key: const ValueKey("SummaryToggle"),
                 title: Text(tr('widgets.FolderView.headerOptions.summary')),
                 value: _showSummary,
                 onChanged: (bool newVal) {
@@ -299,7 +302,18 @@ class _FolderViewState extends State<FolderView> {
             ];
 
             return AlertDialog(
-              title: Text(tr('widgets.FolderView.headerOptions.customize')),
+              title: GestureDetector(
+                key: const ValueKey("Hack_Back"),
+                child: Text(tr('widgets.FolderView.headerOptions.customize')),
+                onTap: () {
+                  // Hack to get out of the dialog in the tests
+                  // driver.findByType('ModalBarrier') doesn't seem to be working
+                  if (JournalApp.isInDebugMode) {
+                    Navigator.of(context).pop();
+                  }
+                },
+              ),
+              key: const ValueKey("ViewOptionsDialog"),
               content: Column(
                 children: children,
                 mainAxisSize: MainAxisSize.min,
@@ -375,6 +389,7 @@ class _FolderViewState extends State<FolderView> {
     final settings = Provider.of<Settings>(context);
 
     var extraActions = PopupMenuButton<DropDownChoices>(
+      key: const ValueKey("PopupMenu"),
       onSelected: (DropDownChoices choice) {
         switch (choice) {
           case DropDownChoices.SortingOptions:
@@ -388,11 +403,13 @@ class _FolderViewState extends State<FolderView> {
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<DropDownChoices>>[
         PopupMenuItem<DropDownChoices>(
+          key: const ValueKey("SortingOptions"),
           value: DropDownChoices.SortingOptions,
           child: Text(tr('widgets.FolderView.sortingOptions')),
         ),
         if (_viewType == FolderViewType.Standard)
           PopupMenuItem<DropDownChoices>(
+            key: const ValueKey("ViewOptions"),
             value: DropDownChoices.ViewOptions,
             child: Text(tr('widgets.FolderView.viewOptions')),
           ),
