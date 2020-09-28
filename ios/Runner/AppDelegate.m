@@ -247,10 +247,6 @@ static FlutterMethodChannel* gitChannel = 0;
 
             result(@YES);
         }
-        else if ([@"dumpAppLogs" isEqualToString:method]) {
-            // FIXME: Todo implement this!
-            result(@"");
-        }
         else {
             NSLog(@"Not Implemented");
             result(FlutterMethodNotImplemented);
