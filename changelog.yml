@@ -195,6 +195,7 @@
   date: 2020-05-14
   features:
     - text: "Add Tags Support - #114"
+      image: tags.jpeg
     - text: "Add App Shortcuts - #134"
       image: shortcuts.jpeg
     - text: "Allow Sharing Files to GitJournal - #38"
