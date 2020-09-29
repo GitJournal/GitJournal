@@ -128,6 +128,7 @@
   date: 2020-07-09
   features:
     - text: Render Wiki Style links
+      image: wiki.gif
   improvements:
     - text: Improve the Pro Purchase Screen
   bugs:
@@ -205,6 +206,7 @@
   improvements:
     - text: Add a bottom bar in the NoteEditor to show the Folder
     - text: "Add very basic Image support - #10"
+      image: capture_image.gif
     - text: Allow sorting by Title and Filename
     - text: Add a Debug screen for users to more easily debug issues
 
