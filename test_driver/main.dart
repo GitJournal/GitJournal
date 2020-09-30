@@ -1,17 +1,16 @@
 import 'dart:io';
 
+import 'package:dart_git/git.dart';
 import 'package:flutter_driver/driver_extension.dart';
-import 'package:gitjournal/app_settings.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:meta/meta.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/app.dart';
+import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:path/path.dart' as p;
-import 'package:dart_git/git.dart';
 
 void main() async {
   enableFlutterDriverExtension();

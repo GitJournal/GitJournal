@@ -1,6 +1,6 @@
 import 'package:flutter_driver/flutter_driver.dart';
-import 'package:test/test.dart';
 import 'package:screenshots/screenshots.dart';
+import 'package:test/test.dart';
 
 import 'isolates_workaround.dart';
 
