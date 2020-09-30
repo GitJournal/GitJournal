@@ -44,6 +44,11 @@ enum Event {
   Settings,
   FeatureTimelineGithubClicked,
 
+  AppFirstOpen,
+  AppUpdate,
+
+  // FIXME: Add os_update
+
   /*
   Firebase Automatic Events:
     app_update:
@@ -122,6 +127,11 @@ String _eventToString(Event e) {
 
     case Event.FeatureTimelineGithubClicked:
       return "feature_timeline_github_clicked";
+
+    case Event.AppFirstOpen:
+      return "gj_first_open";
+    case Event.AppUpdate:
+      return "gj_app_update";
   }
 
   return "unknown_event";

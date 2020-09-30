@@ -35,6 +35,8 @@ class AppSettings extends ChangeNotifier {
   var experimentalGraphView = false;
   var experimentalZeroConf = false;
 
+  var appVersion = "";
+
   void load(SharedPreferences pref) {
     onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
 
@@ -64,6 +66,8 @@ class AppSettings extends ChangeNotifier {
         pref.getBool("experimentalGraphView") ?? experimentalGraphView;
     experimentalZeroConf =
         pref.getBool("experimentalZeroConf") ?? experimentalZeroConf;
+
+    appVersion = pref.getString("appVersion") ?? "";
   }
 
   Future<void> save() async {
@@ -92,6 +96,7 @@ class AppSettings extends ChangeNotifier {
         defaultSet.experimentalZeroConf);
 
     pref.setInt("appSettingsVersion", version);
+    pref.setString("appVersion", appVersion);
 
     notifyListeners();
   }
