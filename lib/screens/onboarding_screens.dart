@@ -4,8 +4,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
+import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/app_settings.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -22,6 +24,22 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   int _currentPageIndex = 0;
 
   final _bottomBarHeight = 50.0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    () async {
+      var info = await PackageInfo.fromPlatform();
+
+      logEvent(Event.AppFirstOpen, parameters: {
+        "version": info.version,
+        "app_name": info.appName,
+        "package_name": info.packageName,
+        "build_number": info.buildNumber,
+      });
+    }();
+  }
 
   @override
   Widget build(BuildContext context) {
