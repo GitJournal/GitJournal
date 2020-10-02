@@ -2,7 +2,6 @@ package io.gitjournal.gitjournal;
 
 import androidx.annotation.NonNull;
 
-import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.WindowManager;
@@ -18,25 +17,22 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 
-import io.flutter.app.FlutterActivity;
-import io.flutter.plugins.GeneratedPluginRegistrant;
+import io.flutter.embedding.android.FlutterActivity;
+import io.flutter.embedding.engine.FlutterEngine;
 
-public class MainActivity extends FlutterActivity implements MethodCallHandler {
+public class MainActivity extends FlutterActivity {
     private static final String CHANNEL_NAME = "gitjournal.io/git";
     static MethodChannel channel;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        GeneratedPluginRegistrant.registerWith(this);
-
-        channel = new MethodChannel(getFlutterView(), CHANNEL_NAME);
-        channel.setMethodCallHandler(this);
-    }
-
-    @Override
-    public void onMethodCall(MethodCall call, Result result) {
-        result.notImplemented();
+    public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
+        GeneratedPluginRegistrant.registerWith(flutterEngine);
+        channel = new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL_NAME);
+        channel.setMethodCallHandler(
+                    (call, result) -> {
+                        result.notImplemented();
+                }
+        );
     }
 
     @Override

@@ -73,6 +73,10 @@ dev_dependencies:
 dependency_overrides:
   markdown:
     git: https://github.com/GitJournal/markdown.git
+  # Required for screenshots package
+  process: ^4.0.0-nullsafety.1
+  platform: ^3.0.0-nullsafety.1
+  file: ^6.0.0-nullsafety.1
 
 flutter:
   uses-material-design: true
