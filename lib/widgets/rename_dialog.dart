@@ -62,7 +62,7 @@ class _RenameDialogState extends State<RenameDialog> {
           ),
         ],
       ),
-      autovalidate: true,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
     );
 
     return AlertDialog(

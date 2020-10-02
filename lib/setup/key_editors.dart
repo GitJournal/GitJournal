@@ -66,12 +66,12 @@ class KeyEditor extends StatelessWidget {
           textAlign: TextAlign.left,
           maxLines: null,
           style: Theme.of(context).textTheme.bodyText2,
-          autovalidate: true,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: validator,
           controller: textEditingController,
         );
       }),
-      autovalidate: true,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
     );
 
     return SizedBox(

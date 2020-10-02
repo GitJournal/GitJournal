@@ -207,7 +207,8 @@ class NoteOutputExample extends StatelessWidget {
     style = style.copyWith(fontFamily: "Roboto Mono");
 
     var doc = MdYamlDoc();
-    NoteSerializer.fromConfig(NotesFolderConfig.fromSettings(null)).encode(note, doc);
+    NoteSerializer.fromConfig(NotesFolderConfig.fromSettings(null))
+        .encode(note, doc);
 
     var codec = MarkdownYAMLCodec();
     var noteStr = codec.encode(doc);
@@ -395,7 +396,7 @@ class _CustomMetDataTileState extends State<CustomMetDataTile> {
         keyboardType: TextInputType.multiline,
         textCapitalization: TextCapitalization.words,
         controller: _textController,
-        autovalidate: true,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         maxLines: null,
         minLines: null,
       ),
