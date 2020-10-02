@@ -311,6 +311,7 @@ setup:
   keyEditors:
     public: Invalid Public Key - Doesn't start with ssh-rsa
     private: Invalid Private Key
+    load: Load from File
   sshKey:
     generate: Generating SSH Key
     title: In order to access this repository, this public key must be copied as a deploy key

@@ -1,5 +1,8 @@
 - version: "1.71"
   draft: true
+  improvements:
+    - text: "Allow SSH Keys to be loaded from the FS - #74"
+      image: ssh_key_file.jpeg
   bugs:
     - text: "Dark Theme: Render checkboxes in a lighter color"
     - text: "Fix Relative Parent links not working - #256"
