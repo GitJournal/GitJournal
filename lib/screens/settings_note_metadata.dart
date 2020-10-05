@@ -88,82 +88,70 @@ class _NoteMetadataSettingsScreenState
             });
           },
         ),
-        ProOverlay(
-          feature: Feature.yamlModifiedKey,
-          child: ListPreference(
-            title: tr("settings.noteMetaData.modified"),
-            options: [
-              "modified",
-              "mod",
-              "lastmodified",
-              "lastmod",
-            ],
-            currentOption: settings.yamlModifiedKey,
-            onChange: (String newVal) {
-              setState(() {
-                settings.yamlModifiedKey = newVal;
-                settings.save();
-              });
-            },
-            enabled: settings.yamlHeaderEnabled,
-          ),
+        ListPreference(
+          title: tr("settings.noteMetaData.modified"),
+          options: [
+            "modified",
+            "mod",
+            "lastmodified",
+            "lastmod",
+          ],
+          currentOption: settings.yamlModifiedKey,
+          onChange: (String newVal) {
+            setState(() {
+              settings.yamlModifiedKey = newVal;
+              settings.save();
+            });
+          },
+          enabled: settings.yamlHeaderEnabled,
         ),
-        ProOverlay(
-          feature: Feature.yamlCreatedKey,
-          child: ListPreference(
-            title: tr("settings.noteMetaData.created"),
-            options: [
-              "created",
-              "date",
-            ],
-            currentOption: settings.yamlCreatedKey,
-            onChange: (String newVal) {
-              setState(() {
-                settings.yamlCreatedKey = newVal;
-                settings.save();
-              });
-            },
-            enabled: settings.yamlHeaderEnabled,
-          ),
+        ListPreference(
+          title: tr("settings.noteMetaData.created"),
+          options: [
+            "created",
+            "date",
+          ],
+          currentOption: settings.yamlCreatedKey,
+          onChange: (String newVal) {
+            setState(() {
+              settings.yamlCreatedKey = newVal;
+              settings.save();
+            });
+          },
+          enabled: settings.yamlHeaderEnabled,
         ),
-        ProOverlay(
-          feature: Feature.yamlTagsKey,
-          child: ListPreference(
-            title: tr("settings.noteMetaData.tags"),
-            options: [
-              "tags",
-              "categories",
-            ],
-            currentOption: settings.yamlTagsKey,
-            onChange: (String newVal) {
-              setState(() {
-                settings.yamlTagsKey = newVal;
-                settings.save();
-              });
-            },
-            enabled: settings.yamlHeaderEnabled,
-          ),
+        ListPreference(
+          title: tr("settings.noteMetaData.tags"),
+          options: [
+            "tags",
+            "categories",
+          ],
+          currentOption: settings.yamlTagsKey,
+          onChange: (String newVal) {
+            setState(() {
+              settings.yamlTagsKey = newVal;
+              settings.save();
+            });
+          },
+          enabled: settings.yamlHeaderEnabled,
         ),
-        ProOverlay(
-          feature: Feature.metaDataTitle,
-          child: ListPreference(
-            title: tr("settings.noteMetaData.titleMetaData.title"),
-            options: [
-              tr("settings.noteMetaData.titleMetaData.fromH1"),
-              if (settings.yamlHeaderEnabled)
-                tr("settings.noteMetaData.titleMetaData.fromYaml"),
-            ],
-            currentOption: settings.saveTitleInH1
-                ? tr("settings.noteMetaData.titleMetaData.fromH1")
-                : tr("settings.noteMetaData.titleMetaData.fromYaml"),
-            onChange: (String newVal) {
-              setState(() {
-                settings.saveTitleInH1 =
-                    newVal == tr("settings.noteMetaData.titleMetaData.fromH1");
-                settings.save();
-              });
-            },
-          ),
+        ListPreference(
+          title: tr("settings.noteMetaData.titleMetaData.title"),
+          options: [
+            tr("settings.noteMetaData.titleMetaData.fromH1"),
+            if (settings.yamlHeaderEnabled)
+              tr("settings.noteMetaData.titleMetaData.fromYaml"),
+          ],
+          currentOption: settings.saveTitleInH1
+              ? tr("settings.noteMetaData.titleMetaData.fromH1")
+              : tr("settings.noteMetaData.titleMetaData.fromYaml"),
+          onChange: (String newVal) {
+            setState(() {
+              settings.saveTitleInH1 =
+                  newVal == tr("settings.noteMetaData.titleMetaData.fromH1");
+              settings.save();
+            });
+          },
         ),
         ProOverlay(
           feature: Feature.customMetaData,

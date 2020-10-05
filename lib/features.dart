@@ -127,7 +127,7 @@ class Feature {
     DateTime(2020, 01, 05),
     tr("feature.yamlModifiedKey"),
     "",
-    true,
+    false,
   );
 
   static final noteSorting = Feature(
@@ -287,7 +287,7 @@ class Feature {
     DateTime(2020, 07, 30),
     tr("feature.metaDataTitle"),
     "",
-    true,
+    false,
   );
 
   static final yamlCreatedKey = Feature(
@@ -295,7 +295,7 @@ class Feature {
     DateTime(2020, 08, 02),
     tr("feature.yamlCreatedKey"),
     "",
-    true,
+    false,
   );
 
   static final yamlTagsKey = Feature(
@@ -303,7 +303,7 @@ class Feature {
     DateTime(2020, 08, 06),
     tr("feature.yamlTagsKey"),
     "",
-    true,
+    false,
   );
 
   static final customMetaData = Feature(
