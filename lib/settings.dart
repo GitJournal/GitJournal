@@ -56,6 +56,8 @@ class Settings extends ChangeNotifier {
 
   Set<String> inlineTagPrefixes = {'#'};
 
+  bool bottomMenuBar = false;
+
   // From AppState
   String localGitRepoFolderName = "";
   bool localGitRepoConfigured = false;
@@ -129,6 +131,8 @@ class Settings extends ChangeNotifier {
     remoteGitRepoConfigured = pref.getBool("remoteGitRepoConfigured") ?? false;
     localGitRepoFolderName = pref.getString("localGitRepoPath") ?? "";
     remoteGitRepoFolderName = pref.getString("remoteGitRepoPath") ?? "";
+
+    bottomMenuBar = pref.getBool("bottomMenuBar") ?? bottomMenuBar;
   }
 
   Future<void> save() async {
@@ -198,6 +202,7 @@ class Settings extends ChangeNotifier {
     _setBool(pref, "swipeToDelete", swipeToDelete, defaultSet.swipeToDelete);
     _setStringSet(pref, "inlineTagPrefixes", inlineTagPrefixes,
         defaultSet.inlineTagPrefixes);
+    _setBool(pref, "bottomMenuBar", bottomMenuBar, defaultSet.bottomMenuBar);
 
     pref.setInt("settingsVersion", version);
 
@@ -285,6 +290,7 @@ class Settings extends ChangeNotifier {
       'remoteGitRepoConfigured': remoteGitRepoConfigured.toString(),
       'localGitRepoFolderName': localGitRepoFolderName.toString(),
       'remoteGitRepoFolderName': remoteGitRepoFolderName.toString(),
+      'bottomMenuBar': bottomMenuBar.toString(),
     };
   }
 

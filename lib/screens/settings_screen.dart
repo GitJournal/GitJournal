@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:gitjournal/screens/settings_bottom_menu_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -172,6 +173,20 @@ class SettingsListState extends State<SettingsList> {
             settings.homeScreen = s;
             settings.save();
             setState(() {});
+          },
+        ),
+      ),
+      ProOverlay(
+        feature: Feature.configureBottomMenuBar,
+        child: ListTile(
+          title: Text(tr("settings.bottomMenuBar.title")),
+          subtitle: Text(tr("settings.bottomMenuBar.subtitle")),
+          onTap: () {
+            var route = MaterialPageRoute(
+              builder: (context) => BottomMenuBarSettings(),
+              settings: const RouteSettings(name: '/settings/bottom_menu_bar'),
+            );
+            Navigator.of(context).push(route);
           },
         ),
       ),

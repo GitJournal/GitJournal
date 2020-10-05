@@ -39,6 +39,7 @@ class Features {
     Feature.localization,
     Feature.inlineTags,
     Feature.singleJournalEntry,
+    Feature.configureBottomMenuBar,
   ];
 
   static final inProgress = <String>[
@@ -334,6 +335,14 @@ class Feature {
     "singleJournalEntry",
     DateTime(2020, 09, 16),
     tr("feature.singleJournalEntry"),
+    "",
+    true,
+  );
+
+  static final configureBottomMenuBar = Feature(
+    "configureBottomMenuBar",
+    DateTime(2020, 10, 05),
+    tr("feature.configureBottomMenuBar"),
     "",
     true,
   );

@@ -109,11 +109,16 @@ class _FolderViewState extends State<FolderView> {
       },
     );
 
+    var settings = Provider.of<Settings>(context);
+    final showButtomMenuBar = settings.bottomMenuBar;
+
     // So the FAB doesn't hide parts of the last entry
-    folderView = Padding(
-      child: folderView,
-      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 48.0),
-    );
+    if (!showButtomMenuBar) {
+      folderView = Padding(
+        child: folderView,
+        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 48.0),
+      );
+    }
 
     var backButton = IconButton(
       icon: const Icon(Icons.arrow_back),
@@ -140,8 +145,10 @@ class _FolderViewState extends State<FolderView> {
       extendBody: true,
       drawer: AppDrawer(),
       floatingActionButton: createButton,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      bottomNavigationBar: NewNoteNavBar(onPressed: _newPost),
+      floatingActionButtonLocation:
+          showButtomMenuBar ? FloatingActionButtonLocation.endDocked : null,
+      bottomNavigationBar:
+          showButtomMenuBar ? NewNoteNavBar(onPressed: _newPost) : null,
     );
   }
 
