@@ -4,6 +4,8 @@
     - text: "Allow SSH Keys to be loaded from the FS - #74"
       image: ssh_key_file.jpeg
     - text: "Move metadata configuration features from Pro to Basic"
+    - text: "Allow the Bottom Menu bar to be hidden - #261"
+      image: bottom_menu_bar.gif
   bugs:
     - text: "Dark Theme: Render checkboxes in a lighter color"
     - text: "Fix Relative Parent links not working - #256"
