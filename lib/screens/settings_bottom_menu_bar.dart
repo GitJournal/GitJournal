@@ -1,8 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/widgets/new_note_nav_bar.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
+
+import 'package:gitjournal/screens/home_screen.dart';
+import 'package:gitjournal/settings.dart';
 
 class BottomMenuBarSettings extends StatefulWidget {
   @override
@@ -16,11 +18,8 @@ class _BottomMenuBarSettingsState extends State<BottomMenuBarSettings> {
 
     var body = Column(
       children: [
-        Center(
-          child: NewNoteNavBar(
-            onPressed: (_) {},
-          ),
-        ),
+        const SizedBox(height: 16),
+        bottomMenuBar(),
         const SizedBox(height: 16),
         SwitchListTile(
           title: Text(tr("settings.bottomMenuBar.enable")),
@@ -54,6 +53,33 @@ class _BottomMenuBarSettingsState extends State<BottomMenuBarSettings> {
         ),
       ),
       body: body,
+    );
+  }
+
+  Widget bottomMenuBar() {
+    var theme = Theme.of(context);
+    var mq = MediaQuery.of(context);
+
+    var homeScreen = Transform.scale(
+      scale: 0.75,
+      child: Container(
+        padding: const EdgeInsets.all(2.0),
+        color: theme.accentColor.withAlpha(256 ~/ 10),
+        child: Container(
+          width: mq.size.width,
+          height: mq.size.height,
+          child: IgnorePointer(child: HomeScreen()),
+        ),
+      ),
+      alignment: Alignment.bottomCenter,
+    );
+
+    return ClipRect(
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        heightFactor: 0.10,
+        child: homeScreen,
+      ),
     );
   }
 }
