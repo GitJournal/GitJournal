@@ -136,4 +136,17 @@ Enjoy!
 
     expect(tags, {'hello'});
   });
+
+  test("Handles Spaces", () {
+    var body = """# DateTimeOffset
+#csharp
+
+Provides a combined #structure\tof `DateTime` with an `Offset` property defining a deviation from UTC. It doesn't associate a time zone with the offset.
+""";
+
+    var p = InlineTagsProcessor(tagPrefixes: {'#', '+', '@'});
+    var tags = p.extractTags(body);
+
+    expect(tags, {'csharp', 'structure'});
+  });
 }

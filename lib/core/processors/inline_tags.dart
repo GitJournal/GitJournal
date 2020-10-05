@@ -15,7 +15,7 @@ class InlineTagsProcessor {
         p = '\\+';
       }
 
-      var regexp = RegExp(r'(^|\s)' + p + r'([^ ]+)(\s|$)');
+      var regexp = RegExp(r'(^|\s)' + p + r'([^\s]+)(\s|$)');
       var matches = regexp.allMatches(text);
       for (var match in matches) {
         var tag = match.group(2);

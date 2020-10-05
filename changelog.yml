@@ -6,6 +6,7 @@
   bugs:
     - text: "Dark Theme: Render checkboxes in a lighter color"
     - text: "Fix Relative Parent links not working - #256"
+    - test: "Improve inline tags regex - #265"
 
 - version: "1.70"
   date: 2020-09-16
