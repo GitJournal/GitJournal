@@ -94,7 +94,7 @@ Future<void> reportError(Object error, StackTrace stackTrace) async {
   }
 }
 
-// Dart makes a distiction between Errors and Exceptions
+// Dart makes a distinction between Errors and Exceptions
 // so we need to use dynamic
 Future<void> logException(Object e, StackTrace stackTrace) async {
   assert(e is Exception || e is Error);

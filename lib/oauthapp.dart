@@ -22,7 +22,7 @@ class OAuthAppState extends State<OAuthApp> {
     githost = createGitHost(GitHostType.GitHub);
     githost.init((GitHostException e) {
       if (e != null) {
-        print("Got exeception: $e");
+        print("Got exception: $e");
       } else {
         print("GitHost initialized and has access code");
       }

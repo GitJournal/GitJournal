@@ -50,7 +50,7 @@ class BonsoirBroadcastModel extends ChangeNotifier {
   /// Whether Bonsoir is currently broadcasting the app's service.
   bool _isBroadcasting = false;
 
-  /// Returns wether Bonsoir is currently broadcasting the app's service.
+  /// Returns whether Bonsoir is currently broadcasting the app's service.
   bool get isBroadcasting => _isBroadcasting;
 
   /// Starts the Bonsoir broadcast.

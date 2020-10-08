@@ -93,7 +93,7 @@ class FolderMiniTileState extends State<FolderMiniTile> {
   Widget _buildFolderTile() {
     var folder = widget.folder;
     var ic = _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down;
-    var trailling = folder.hasSubFolders
+    var trailing = folder.hasSubFolders
         ? IconButton(
             icon: Icon(ic),
             onPressed: expand,
@@ -113,7 +113,7 @@ class FolderMiniTileState extends State<FolderMiniTile> {
           ),
         ),
         title: Text(folder.publicName),
-        trailing: trailling,
+        trailing: trailing,
       ),
     );
   }

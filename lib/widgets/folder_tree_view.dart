@@ -111,7 +111,7 @@ class FolderTileState extends State<FolderTile> {
   Widget _buildFolderTile() {
     var folder = widget.folder;
     var ic = _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down;
-    var trailling = folder.hasSubFolders
+    var trailing = folder.hasSubFolders
         ? IconButton(
             icon: Icon(ic),
             onPressed: expand,
@@ -146,7 +146,7 @@ class FolderTileState extends State<FolderTile> {
         ),
         title: Text(publicName),
         subtitle: Text(subtitle),
-        trailing: trailling,
+        trailing: trailing,
         selected: selected,
       ),
       color: selected ? theme.selectedRowColor : theme.cardColor,

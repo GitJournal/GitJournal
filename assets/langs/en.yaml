@@ -139,7 +139,7 @@ settings:
   bottomMenuBar:
     title: Bottom Menu Bar
     subtitle: Configure its appearance and behaviour
-    enable: Enable Buttom Menu Bar
+    enable: Enable Bottom Menu Bar
 
 editors:
   checklist:

@@ -15,7 +15,7 @@ Future<void> main() async {
   //var query = ResourceRecordQuery.serverPointer(name);
   var query = ResourceRecordQuery.serverPointer(name);
 
-  // Get the PTR recod for the service.
+  // Get the PTR record for the service.
   await for (var ptr in client.lookup<PtrResourceRecord>(query)) {
     print("Got ptr $ptr");
     // Use the domainName from the PTR record to get the SRV record,

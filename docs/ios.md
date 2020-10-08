@@ -12,7 +12,7 @@ xcrun instruments -s devices
 
 cd ~/Library/Developer/CoreSimulator/Devices/
 
-Get deivce ID from List Devices. This doesn't seem to work for actual devices.
+Get device ID from List Devices. This doesn't seem to work for actual devices.
 
 # Logs
 

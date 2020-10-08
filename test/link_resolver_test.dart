@@ -73,7 +73,7 @@ void main() {
     var linkResolver = LinkResolver(note);
 
     // Make sure if there are multiple Notes with the same name, the one is the
-    // base directory is preffered
+    // base directory is preferred
     var resolvedNote = linkResolver.resolve('[[Kat]]');
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Kat.md'));
   }, skip: true);
