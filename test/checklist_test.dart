@@ -6,6 +6,7 @@ import 'package:test/test.dart';
 import 'package:gitjournal/core/checklist.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/settings.dart';
 
 void main() {
   group('Note', () {
@@ -40,7 +41,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note.md");
       File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -104,7 +105,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note2.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -119,7 +120,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note3.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -140,7 +141,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note13.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -160,7 +161,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note4.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -180,7 +181,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note4.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -196,7 +197,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note449.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -214,7 +215,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note448.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -230,7 +231,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note448.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -246,7 +247,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note449.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -263,7 +264,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note429.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path);
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
       var note = Note(parentFolder, notePath);
       await note.load();
 

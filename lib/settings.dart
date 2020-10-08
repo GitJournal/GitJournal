@@ -9,11 +9,7 @@ import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 
 class Settings extends ChangeNotifier {
-  // singleton
-  static final Settings _singleton = Settings._internal();
-  factory Settings() => _singleton;
-  Settings._internal();
-  static Settings get instance => _singleton;
+  Settings();
 
   // Properties
   String gitAuthor = "GitJournal";
@@ -137,7 +133,7 @@ class Settings extends ChangeNotifier {
 
   Future<void> save() async {
     var pref = await SharedPreferences.getInstance();
-    var defaultSet = Settings._internal();
+    var defaultSet = Settings();
 
     _setString(pref, "gitAuthor", gitAuthor, defaultSet.gitAuthor);
     _setString(

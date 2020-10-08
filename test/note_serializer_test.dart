@@ -6,10 +6,11 @@ import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_serializer.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/settings.dart';
 
 void main() {
   group('Note Serializer Test', () {
-    var parent = NotesFolderFS(null, '/tmp');
+    var parent = NotesFolderFS(null, '/tmp', Settings());
 
     test('Test emojis', () {
       var props = LinkedHashMap<String, dynamic>.from(

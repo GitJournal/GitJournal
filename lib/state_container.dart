@@ -49,7 +49,7 @@ class StateContainer with ChangeNotifier {
     }
 
     _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);
-    appState.notesFolder = NotesFolderFS(null, _gitRepo.gitDirPath);
+    appState.notesFolder = NotesFolderFS(null, _gitRepo.gitDirPath, settings);
 
     // Just a fail safe
     if (!settings.remoteGitRepoConfigured) {
@@ -66,6 +66,7 @@ class StateContainer with ChangeNotifier {
     _notesCache = NotesCache(
       filePath: cachePath,
       notesBasePath: _gitRepo.gitDirPath,
+      settings: settings,
     );
 
     _loadFromCache();
@@ -155,7 +156,7 @@ class StateContainer with ChangeNotifier {
     return _opLock.synchronized(() async {
       Log.d("Got createFolder lock");
       var newFolderPath = p.join(parent.folderPath, folderName);
-      var newFolder = NotesFolderFS(parent, newFolderPath);
+      var newFolder = NotesFolderFS(parent, newFolderPath, settings);
       newFolder.create();
 
       Log.d("Created New Folder: " + newFolderPath);

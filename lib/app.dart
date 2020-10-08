@@ -16,6 +16,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/app_settings.dart';
@@ -42,11 +43,13 @@ import 'setup/screens.dart';
 class JournalApp extends StatefulWidget {
   final AppState appState;
 
-  static Future main() async {
+  static Future main(SharedPreferences pref) async {
     await Log.init();
 
     var appState = AppState();
-    var settings = Settings.instance;
+    var settings = Settings();
+    settings.load(pref);
+
     var appSettings = AppSettings.instance;
     Log.i("AppSetting ${appSettings.toMap()}");
     Log.i("Setting ${settings.toLoggableMap()}");

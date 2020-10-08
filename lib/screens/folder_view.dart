@@ -221,9 +221,12 @@ class _FolderViewState extends State<FolderView> {
     );
 
     if (newSortingMode != null) {
-      sortedNotesFolder.config = sortedNotesFolder.config.copyWith(
+      var config = sortedNotesFolder.config.copyWith(
         sortingMode: newSortingMode,
       );
+
+      var settings = Provider.of<Settings>(context);
+      config.saveToSettings(settings);
 
       var container = Provider.of<StateContainer>(context, listen: false);
       container.saveFolderConfig(sortedNotesFolder.config);
@@ -243,9 +246,13 @@ class _FolderViewState extends State<FolderView> {
             _headerType = newHeader;
           });
 
-          sortedNotesFolder.config = sortedNotesFolder.config.copyWith(
+          var config = sortedNotesFolder.config.copyWith(
             viewHeader: _headerType,
           );
+
+          var settings = Provider.of<Settings>(context);
+          config.saveToSettings(settings);
+
           var container = Provider.of<StateContainer>(context, listen: false);
           container.saveFolderConfig(sortedNotesFolder.config);
         };
@@ -255,9 +262,13 @@ class _FolderViewState extends State<FolderView> {
             _showSummary = newVal;
           });
 
-          sortedNotesFolder.config = sortedNotesFolder.config.copyWith(
+          var config = sortedNotesFolder.config.copyWith(
             showNoteSummary: newVal,
           );
+
+          var settings = Provider.of<Settings>(context);
+          config.saveToSettings(settings);
+
           var container = Provider.of<StateContainer>(context, listen: false);
           container.saveFolderConfig(sortedNotesFolder.config);
         };
@@ -383,9 +394,12 @@ class _FolderViewState extends State<FolderView> {
         _viewType = newViewType;
       });
 
-      widget.notesFolder.config = widget.notesFolder.config.copyWith(
+      var config = widget.notesFolder.config.copyWith(
         defaultView: newViewType,
       );
+
+      var settings = Provider.of<Settings>(context);
+      config.saveToSettings(settings);
 
       var container = Provider.of<StateContainer>(context, listen: false);
       container.saveFolderConfig(widget.notesFolder.config);

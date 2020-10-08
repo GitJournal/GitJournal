@@ -16,7 +16,6 @@ abstract class NotesFolder implements NotesFolderNotifier {
   NotesFolder get fsFolder;
 
   NotesFolderConfig get config;
-  set config(NotesFolderConfig config);
 
   String pathSpec();
 }

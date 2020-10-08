@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/virtual_notes_folder.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/themes.dart';
 
 class NoteSearchDelegate extends SearchDelegate<Note> {
@@ -76,7 +78,8 @@ class NoteSearchDelegate extends SearchDelegate<Note> {
       return note.body.toLowerCase().contains(q);
     }).toList();
 
-    var folder = VirtualNotesFolder(filteredNotes);
+    var settings = Provider.of<Settings>(context);
+    var folder = VirtualNotesFolder(filteredNotes, settings);
     var emptyText = tr('widgets.FolderView.searchFailed');
 
     return buildFolderView(

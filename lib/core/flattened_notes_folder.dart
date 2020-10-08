@@ -142,9 +142,4 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   NotesFolderConfig get config {
     return _parentFolder.config;
   }
-
-  @override
-  set config(NotesFolderConfig conf) {
-    _parentFolder.config = conf;
-  }
 }

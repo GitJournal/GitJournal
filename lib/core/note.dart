@@ -229,7 +229,7 @@ class Note with NotesNotifier {
     if (_loadState != NoteLoadState.Loaded) return {};
 
     if (_inlineTags == null) {
-      var tagPrefixes = Settings.instance.inlineTagPrefixes;
+      var tagPrefixes = parent.config.inlineTagPrefixes;
       var p = InlineTagsProcessor(tagPrefixes: tagPrefixes);
       _inlineTags = p.extractTags(body);
     }
@@ -470,7 +470,7 @@ class Note with NotesNotifier {
   String _buildImagePath(File file) {
     String baseFolder;
 
-    var imageSpec = Settings.instance.imageLocationSpec;
+    var imageSpec = parent.config.imageLocationSpec;
     if (imageSpec == '.') {
       baseFolder = parent.folderPath;
     } else {

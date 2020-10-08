@@ -173,9 +173,4 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
   NotesFolderConfig get config {
     return folder.config;
   }
-
-  @override
-  set config(NotesFolderConfig config) {
-    folder.config = config;
-  }
 }

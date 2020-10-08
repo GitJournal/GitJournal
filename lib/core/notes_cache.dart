@@ -10,16 +10,22 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 class NotesCache {
   final String filePath;
   final String notesBasePath;
   final bool enabled = true;
+  final Settings settings;
 
   static const CACHE_SIZE = 20;
 
-  NotesCache({@required this.filePath, @required this.notesBasePath});
+  NotesCache({
+    @required this.filePath,
+    @required this.notesBasePath,
+    @required this.settings,
+  });
 
   Future load(NotesFolderFS rootFolder) async {
     if (!enabled) return;
@@ -49,7 +55,7 @@ class NotesCache {
           continue;
         }
 
-        var subFolder = NotesFolderFS(parent, folderPath);
+        var subFolder = NotesFolderFS(parent, folderPath, settings);
         parent.addFolder(subFolder);
         parent = subFolder;
       }

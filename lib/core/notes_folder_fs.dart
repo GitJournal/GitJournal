@@ -6,7 +6,7 @@ import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 import 'package:synchronized/synchronized.dart';
 
-import 'package:gitjournal/features.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'note.dart';
 import 'notes_folder.dart';
@@ -33,9 +33,9 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   List<IgnoredFile> _ignoredFiles = [];
 
   Map<String, dynamic> _entityMap = {};
-  NotesFolderConfig _config;
+  Settings settings;
 
-  NotesFolderFS(this._parent, this._folderPath);
+  NotesFolderFS(this._parent, this._folderPath, this.settings);
 
   @override
   void dispose() {
@@ -196,9 +196,10 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     Set<String> pathsFound = {};
 
     // Load the Folder config if exists
+    /*
     if (Features.perFolderConfig) {
       _config = await NotesFolderConfig.fromFS(this);
-    }
+    } */
 
     _ignoredFiles = <IgnoredFile>[];
 
@@ -217,7 +218,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       }
 
       if (fsEntity is Directory) {
-        var subFolder = NotesFolderFS(this, fsEntity.path);
+        var subFolder = NotesFolderFS(this, fsEntity.path, settings);
         if (subFolder.name.startsWith('.')) {
           Log.v("Ignoring Folder", props: {
             "path": fsEntity.path,
@@ -490,19 +491,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
   @override
   NotesFolderConfig get config {
-    if (Features.perFolderConfig && _config != null) {
-      return _config;
-    }
-    return NotesFolderConfig.fromSettings(this);
-  }
-
-  @override
-  set config(NotesFolderConfig config) {
-    if (Features.perFolderConfig) {
-      _config = config;
-    } else {
-      config.saveToSettings();
-    }
+    return NotesFolderConfig.fromSettings(this, settings);
   }
 
   Set<String> getNoteTagsRecursively() {

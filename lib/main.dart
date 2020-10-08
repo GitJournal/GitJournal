@@ -9,14 +9,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/settings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   var pref = await SharedPreferences.getInstance();
   AppSettings.instance.load(pref);
-  Settings.instance.load(pref);
 
   JournalApp.isInDebugMode = foundation.kDebugMode;
   FlutterError.onError = flutterOnErrorHandler;
@@ -31,6 +29,6 @@ void main() async {
   }).sendPort);
 
   runZonedGuarded(() async {
-    await JournalApp.main();
+    await JournalApp.main(pref);
   }, reportError);
 }

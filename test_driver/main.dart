@@ -9,7 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/app_settings.dart';
-import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
 
 void main() async {
@@ -17,22 +16,16 @@ void main() async {
 
   var pref = await SharedPreferences.getInstance();
   AppSettings.instance.load(pref);
-  Settings.instance.load(pref);
 
   await populateWithData(pref);
-  await JournalApp.main();
+  await JournalApp.main(pref);
 }
 
 // Generate lots of notes and folders better screenshots
 Future<void> populateWithData(SharedPreferences pref) async {
   var dir = await getApplicationDocumentsDirectory();
 
-  var settings = Settings.instance;
-  settings.localGitRepoConfigured = true;
-  settings.localGitRepoFolderName = "journal_local";
-  settings.save();
-
-  var repoPath = p.join(dir.path, settings.localGitRepoFolderName);
+  var repoPath = p.join(dir.path, "journal_local");
   await GitRepository.init(repoPath);
 
   print("Filling fake data in $repoPath");

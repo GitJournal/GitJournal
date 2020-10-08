@@ -41,7 +41,7 @@ class _NoteMetadataSettingsScreenState
     var textTheme = Theme.of(context).textTheme;
     var settings = Provider.of<Settings>(context);
 
-    var parent = NotesFolderFS(null, '');
+    var parent = NotesFolderFS(null, '', settings);
     var note = Note(parent, "fileName.md");
     note.title = tr("settings.noteMetaData.exampleTitle");
     note.body = tr("settings.noteMetaData.exampleBody");
@@ -194,8 +194,10 @@ class NoteOutputExample extends StatelessWidget {
     var style = theme.textTheme.subtitle1;
     style = style.copyWith(fontFamily: "Roboto Mono");
 
+    var settings = Provider.of<Settings>(context);
+
     var doc = MdYamlDoc();
-    NoteSerializer.fromConfig(NotesFolderConfig.fromSettings(null))
+    NoteSerializer.fromConfig(NotesFolderConfig.fromSettings(null, settings))
         .encode(note, doc);
 
     var codec = MarkdownYAMLCodec();

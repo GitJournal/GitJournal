@@ -34,6 +34,9 @@ class NotesFolderConfig extends Equatable {
   final String yamlTagsKey;
   final bool saveTitleInH1;
 
+  final Set<String> inlineTagPrefixes;
+  final String imageLocationSpec;
+
   NotesFolderConfig({
     @required this.sortingMode,
     @required this.defaultEditor,
@@ -47,6 +50,8 @@ class NotesFolderConfig extends Equatable {
     @required this.yamlCreatedKey,
     @required this.yamlTagsKey,
     @required this.saveTitleInH1,
+    @required this.inlineTagPrefixes,
+    @required this.imageLocationSpec,
   });
 
   @override
@@ -62,11 +67,12 @@ class NotesFolderConfig extends Equatable {
         yamlCreatedKey,
         yamlTagsKey,
         saveTitleInH1,
+        inlineTagPrefixes,
+        imageLocationSpec,
       ];
 
-  static NotesFolderConfig fromSettings(NotesFolderFS folder) {
-    var settings = Settings.instance;
-
+  static NotesFolderConfig fromSettings(
+      NotesFolderFS folder, Settings settings) {
     StandardViewHeader viewHeader;
     switch (settings.folderViewHeaderType) {
       case "TitleGenerated":
@@ -93,12 +99,12 @@ class NotesFolderConfig extends Equatable {
       yamlModifiedKey: settings.yamlModifiedKey,
       yamlTagsKey: settings.yamlTagsKey,
       saveTitleInH1: settings.saveTitleInH1,
+      inlineTagPrefixes: settings.inlineTagPrefixes,
+      imageLocationSpec: settings.imageLocationSpec,
     );
   }
 
-  Future<void> saveToSettings() async {
-    var settings = Settings.instance;
-
+  Future<void> saveToSettings(Settings settings) async {
     settings.sortingField = sortingMode.field;
     settings.sortingOrder = sortingMode.order;
     settings.showNoteSummary = showNoteSummary;
@@ -125,6 +131,8 @@ class NotesFolderConfig extends Equatable {
     settings.yamlModifiedKey = yamlModifiedKey;
     settings.yamlTagsKey = yamlTagsKey;
     settings.saveTitleInH1 = saveTitleInH1;
+    settings.inlineTagPrefixes = inlineTagPrefixes;
+    settings.imageLocationSpec = imageLocationSpec;
     settings.save();
   }
 
@@ -141,6 +149,8 @@ class NotesFolderConfig extends Equatable {
     String yamlModifiedKey,
     String yamlTagsKey,
     bool saveTitleInH1,
+    Set<String> inlineTagPrefixes,
+    String imageLocationSpec,
   }) {
     return NotesFolderConfig(
       sortingMode: sortingMode ?? this.sortingMode,
@@ -155,6 +165,8 @@ class NotesFolderConfig extends Equatable {
       yamlModifiedKey: yamlModifiedKey ?? this.yamlModifiedKey,
       yamlTagsKey: yamlTagsKey ?? this.yamlTagsKey,
       saveTitleInH1: saveTitleInH1 ?? this.saveTitleInH1,
+      inlineTagPrefixes: inlineTagPrefixes ?? this.inlineTagPrefixes,
+      imageLocationSpec: imageLocationSpec ?? this.imageLocationSpec,
     );
   }
 
@@ -210,6 +222,8 @@ class NotesFolderConfig extends Equatable {
     var yamlTagsKey = map['yamlTagsKey']?.toString();
     var saveTitleInH1 = map['saveTitleInH1']?.toString() != "false";
 
+    // FIXME: What about inlineTagPrefixes?
+
     return NotesFolderConfig(
       defaultEditor: defaultEditor.toEditorType(),
       defaultView: defaultView.toFolderViewType(),
@@ -223,6 +237,8 @@ class NotesFolderConfig extends Equatable {
       yamlModifiedKey: yamlModifiedKey,
       yamlTagsKey: yamlTagsKey,
       saveTitleInH1: saveTitleInH1,
+      inlineTagPrefixes: {},
+      imageLocationSpec: "",
     );
   }
 

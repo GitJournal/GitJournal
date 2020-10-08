@@ -24,7 +24,7 @@ void main() {
     });
 
     test('Should load from FS correctly', () async {
-      var folder = NotesFolderFS(null, tempDir.path);
+      var folder = NotesFolderFS(null, tempDir.path, Settings());
       var config = NotesFolderConfig(
         defaultEditor: EditorType.Checklist,
         defaultView: FolderViewType.Standard,
@@ -39,6 +39,8 @@ void main() {
         yamlModifiedKey: 'modified',
         yamlTagsKey: 'tags',
         saveTitleInH1: true,
+        inlineTagPrefixes: {},
+        imageLocationSpec: "",
       );
 
       await config.saveToFS();

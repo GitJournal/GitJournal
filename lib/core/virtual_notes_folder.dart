@@ -1,11 +1,13 @@
+import 'package:gitjournal/settings.dart';
 import 'note.dart';
 import 'notes_folder.dart';
 import 'notes_folder_notifier.dart';
 
 class VirtualNotesFolder with NotesFolderNotifier implements NotesFolder {
   final List<Note> _notes;
+  final Settings settings;
 
-  VirtualNotesFolder(this._notes);
+  VirtualNotesFolder(this._notes, this.settings);
 
   @override
   List<Note> get notes => _notes;
@@ -38,12 +40,6 @@ class VirtualNotesFolder with NotesFolderNotifier implements NotesFolder {
 
   @override
   NotesFolderConfig get config {
-    return NotesFolderConfig.fromSettings(fsFolder);
-  }
-
-  @override
-  set config(NotesFolderConfig conf) {
-    assert(false, "A Virtual Notes Folder Config cannot change");
-    conf.saveToSettings();
+    return NotesFolderConfig.fromSettings(null, settings);
   }
 }
