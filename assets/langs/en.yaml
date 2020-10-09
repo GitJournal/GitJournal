@@ -134,6 +134,8 @@ settings:
   storage:
     title: Storage
     fileName: Filename
+    useLocal: Store Repo Internally
+    repoLocation: Repo Location
   drawer:
     title: Sidebar Settings
   bottomMenuBar:

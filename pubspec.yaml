@@ -59,6 +59,8 @@ dependencies:
   multicast_dns: ^0.2.2
   bonsoir: ^0.1.2+2
   file_picker: ^2.0.7
+  filesystem_picker: ^1.0.3 # for directories
+  permission_handler: ^5.0.1+1
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.2"

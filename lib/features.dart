@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 class Features {
   static bool alwaysPro = false;
   static bool perFolderConfig = false;
+  static bool externalStorage = false;
 
   static final all = <Feature>[
     Feature.basicSearch,

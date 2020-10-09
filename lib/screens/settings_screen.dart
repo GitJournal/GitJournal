@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:filesystem_picker/filesystem_picker.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -282,6 +288,61 @@ class SettingsListState extends State<SettingsList> {
           Navigator.of(context).push(route);
         },
       ),
+      if (Platform.isAndroid && Features.externalStorage)
+        SwitchListTile(
+          title: Text(tr('settings.storage.useLocal')),
+          value: settings.storeInternally,
+          onChanged: (bool newVal) async {
+            if (newVal == true) {
+              settings.storeInternally = true;
+              settings.storageLocation = "";
+            } else {
+              var req = await Permission.storage.request();
+              if (req.isDenied) {
+                settings.storeInternally = false;
+                settings.storageLocation = "";
+
+                settings.save();
+                setState(() {});
+                return;
+              }
+              settings.storeInternally = true;
+
+              var root = await getExternalStorageDirectory();
+              String path = await FilesystemPicker.open(
+                title: tr('settings.storage.repoLocation'),
+                context: context,
+                rootDirectory: root,
+                fsType: FilesystemType.folder,
+                folderIconColor: Colors.green[500],
+              );
+
+              if (path == null) {
+                settings.storeInternally = false;
+                settings.storageLocation = "";
+                settings.save();
+                setState(() {});
+                return;
+              }
+
+              settings.storageLocation = p.join(path, "GitJournal");
+              settings.storeInternally = false;
+              settings.save();
+              setState(() {});
+              return;
+            }
+            settings.save();
+            setState(() {});
+
+            // FIXME: Move the folder to be stored locally!
+          },
+        ),
+      if (Platform.isAndroid && Features.externalStorage)
+        ListTile(
+          title: Text(tr('settings.storage.repoLocation')),
+          subtitle: Text(settings.storageLocation),
+          enabled: !settings.storeInternally,
+        ),
       ListTile(
         title: Text(tr('settings.misc.title')),
         onTap: () {

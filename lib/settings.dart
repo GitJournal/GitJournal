@@ -61,6 +61,9 @@ class Settings extends ChangeNotifier {
   String remoteGitRepoFolderName = "";
   bool remoteGitRepoConfigured = false;
 
+  bool storeInternally = true;
+  String storageLocation = "";
+
   void load(SharedPreferences pref) {
     gitAuthor = pref.getString("gitAuthor") ?? gitAuthor;
     gitAuthorEmail = pref.getString("gitAuthorEmail") ?? gitAuthorEmail;
@@ -129,6 +132,8 @@ class Settings extends ChangeNotifier {
     remoteGitRepoFolderName = pref.getString("remoteGitRepoPath") ?? "";
 
     bottomMenuBar = pref.getBool("bottomMenuBar") ?? bottomMenuBar;
+    storeInternally = pref.getBool("storeInternally") ?? storeInternally;
+    storageLocation = pref.getString("storageLocation") ?? "";
   }
 
   Future<void> save() async {
@@ -199,6 +204,10 @@ class Settings extends ChangeNotifier {
     _setStringSet(pref, "inlineTagPrefixes", inlineTagPrefixes,
         defaultSet.inlineTagPrefixes);
     _setBool(pref, "bottomMenuBar", bottomMenuBar, defaultSet.bottomMenuBar);
+    _setBool(
+        pref, "storeInternally", storeInternally, defaultSet.storeInternally);
+    _setString(
+        pref, "storageLocation", storageLocation, defaultSet.storageLocation);
 
     pref.setInt("settingsVersion", version);
 
@@ -287,6 +296,8 @@ class Settings extends ChangeNotifier {
       'localGitRepoFolderName': localGitRepoFolderName.toString(),
       'remoteGitRepoFolderName': remoteGitRepoFolderName.toString(),
       'bottomMenuBar': bottomMenuBar.toString(),
+      'storeInternally': storeInternally.toString(),
+      'storageLocation': storageLocation,
     };
   }
 
