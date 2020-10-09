@@ -168,9 +168,8 @@ class AnalyticsRouteObserver extends RouteObserver<PageRoute<dynamic>> {
       screenName = "/search";
     }
 
-    assert(screenName != null, "Screen name is null $route");
     if (screenName == null) {
-      logExceptionWarning(Exception('Route Name is Empty'), StackTrace.current);
+      screenName = 'Unknown';
       return;
     }
 
