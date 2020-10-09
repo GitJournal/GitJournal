@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ext_storage/ext_storage.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -308,11 +308,11 @@ class SettingsListState extends State<SettingsList> {
               }
               settings.storeInternally = true;
 
-              var root = await getExternalStorageDirectory();
+              var root = await ExtStorage.getExternalStorageDirectory();
               String path = await FilesystemPicker.open(
                 title: tr('settings.storage.repoLocation'),
                 context: context,
-                rootDirectory: root,
+                rootDirectory: Directory(root),
                 fsType: FilesystemType.folder,
                 folderIconColor: Colors.green[500],
               );
