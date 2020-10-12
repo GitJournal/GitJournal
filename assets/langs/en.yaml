@@ -398,6 +398,7 @@ feature:
   inlineTags: Inline Tags
   singleJournalEntry: Single Journal Entry File per day
   configureBottomMenuBar: Configure the Bottom Menu Bar
+  customFileNamePerEditor: Custom FileName per Editor
 
 feature_timeline:
   title: Feature Timeline

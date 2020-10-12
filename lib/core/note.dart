@@ -512,7 +512,10 @@ class Note with NotesNotifier {
 
   String _buildFileName() {
     var date = created ?? modified ?? fileLastModified ?? DateTime.now();
-    switch (parent.config.fileNameFormat) {
+    var isJournal = type == NoteType.Journal;
+    switch (!isJournal
+        ? parent.config.fileNameFormat
+        : parent.config.journalFileNameFormat) {
       case NoteFileNameFormat.SimpleDate:
         return toSimpleDateTime(date);
       case NoteFileNameFormat.FromTitle:

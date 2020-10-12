@@ -6,6 +6,7 @@
     - text: "Move metadata configuration features from Pro to Basic"
     - text: "Allow the Bottom Menu bar to be hidden - #261"
       image: bottom_menu_bar.gif
+    - text: "Allow Journal Entries to have their own file naming scheme"
   bugs:
     - text: "Dark Theme: Render checkboxes in a lighter color"
     - text: "Fix Relative Parent links not working - #256"

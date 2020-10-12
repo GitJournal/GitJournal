@@ -41,6 +41,7 @@ class Features {
     Feature.inlineTags,
     Feature.singleJournalEntry,
     Feature.configureBottomMenuBar,
+    Feature.customFileNamePerEditor,
   ];
 
   static final inProgress = <String>[
@@ -344,6 +345,14 @@ class Feature {
     "configureBottomMenuBar",
     DateTime(2020, 10, 05),
     tr("feature.configureBottomMenuBar"),
+    "",
+    true,
+  );
+
+  static final customFileNamePerEditor = Feature(
+    "customFileNamePerEditor",
+    DateTime(2020, 10, 05),
+    tr("feature.customFileNamePerEditor"),
     "",
     true,
   );

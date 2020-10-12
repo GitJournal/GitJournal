@@ -15,6 +15,7 @@ class Settings extends ChangeNotifier {
   String gitAuthor = "GitJournal";
   String gitAuthorEmail = "app@gitjournal.io";
   NoteFileNameFormat noteFileNameFormat = NoteFileNameFormat.Default;
+  NoteFileNameFormat journalNoteFileNameFormat = NoteFileNameFormat.Default;
 
   String yamlModifiedKey = "modified";
   String yamlCreatedKey = "created";
@@ -70,6 +71,8 @@ class Settings extends ChangeNotifier {
 
     noteFileNameFormat = NoteFileNameFormat.fromInternalString(
         pref.getString("noteFileNameFormat"));
+    journalNoteFileNameFormat = NoteFileNameFormat.fromInternalString(
+        pref.getString("journalNoteFileNameFormat"));
 
     yamlModifiedKey = pref.getString("yamlModifiedKey") ?? yamlModifiedKey;
     yamlCreatedKey = pref.getString("yamlCreatedKey") ?? yamlCreatedKey;
@@ -148,6 +151,11 @@ class Settings extends ChangeNotifier {
         "noteFileNameFormat",
         noteFileNameFormat.toInternalString(),
         defaultSet.noteFileNameFormat.toInternalString());
+    _setString(
+        pref,
+        "journalNoteFileNameFormat",
+        journalNoteFileNameFormat.toInternalString(),
+        defaultSet.journalNoteFileNameFormat.toInternalString());
     _setString(
         pref, "yamlModifiedKey", yamlModifiedKey, defaultSet.yamlModifiedKey);
     _setString(
@@ -265,6 +273,7 @@ class Settings extends ChangeNotifier {
       "gitAuthor": gitAuthor,
       "gitAuthorEmail": gitAuthorEmail,
       "noteFileNameFormat": noteFileNameFormat.toInternalString(),
+      "journalNoteFileNameFormat": journalNoteFileNameFormat.toInternalString(),
       "yamlModifiedKey": yamlModifiedKey,
       "yamlCreatedKey": yamlCreatedKey,
       "yamlTagsKey": yamlTagsKey,

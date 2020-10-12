@@ -25,6 +25,7 @@ class NotesFolderConfig extends Equatable {
   final StandardViewHeader viewHeader;
   final bool showNoteSummary;
   final NoteFileNameFormat fileNameFormat;
+  final NoteFileNameFormat journalFileNameFormat;
   final NotesFolderFS folder;
   final bool yamlHeaderEnabled;
   //int _version = 1;
@@ -44,6 +45,7 @@ class NotesFolderConfig extends Equatable {
     @required this.viewHeader,
     @required this.showNoteSummary,
     @required this.fileNameFormat,
+    @required this.journalFileNameFormat,
     @required this.folder,
     @required this.yamlHeaderEnabled,
     @required this.yamlModifiedKey,
@@ -61,6 +63,7 @@ class NotesFolderConfig extends Equatable {
         defaultView,
         viewHeader,
         fileNameFormat,
+        journalFileNameFormat,
         folder,
         yamlHeaderEnabled,
         yamlModifiedKey,
@@ -93,6 +96,7 @@ class NotesFolderConfig extends Equatable {
       showNoteSummary: settings.showNoteSummary,
       viewHeader: viewHeader,
       fileNameFormat: settings.noteFileNameFormat,
+      journalFileNameFormat: settings.journalNoteFileNameFormat,
       folder: folder,
       yamlHeaderEnabled: settings.yamlHeaderEnabled,
       yamlCreatedKey: settings.yamlCreatedKey,
@@ -126,6 +130,7 @@ class NotesFolderConfig extends Equatable {
     }
     settings.folderViewHeaderType = ht;
     settings.noteFileNameFormat = fileNameFormat;
+    settings.journalNoteFileNameFormat = journalFileNameFormat;
     settings.yamlHeaderEnabled = yamlHeaderEnabled;
     settings.yamlCreatedKey = yamlCreatedKey;
     settings.yamlModifiedKey = yamlModifiedKey;
@@ -143,6 +148,7 @@ class NotesFolderConfig extends Equatable {
     StandardViewHeader viewHeader,
     bool showNoteSummary,
     NoteFileNameFormat fileNameFormat,
+    NoteFileNameFormat journalFileNameFormat,
     NotesFolderFS folder,
     bool yamlHeaderEnabled,
     String yamlCreatedKey,
@@ -159,6 +165,8 @@ class NotesFolderConfig extends Equatable {
       viewHeader: viewHeader ?? this.viewHeader,
       showNoteSummary: showNoteSummary ?? this.showNoteSummary,
       fileNameFormat: fileNameFormat ?? this.fileNameFormat,
+      journalFileNameFormat:
+          journalFileNameFormat ?? this.journalFileNameFormat,
       folder: folder ?? this.folder,
       yamlHeaderEnabled: yamlHeaderEnabled ?? this.yamlHeaderEnabled,
       yamlCreatedKey: yamlCreatedKey ?? this.yamlCreatedKey,
@@ -215,6 +223,7 @@ class NotesFolderConfig extends Equatable {
     }
 
     var fileNameFormat = map['noteFileNameFormat']?.toString();
+    var journalFileNameFormat = map['journalFileNameFormat'].toString();
     var yamlHeaderEnabled = map["yamlHeaderEnabled"]?.toString() != "false";
 
     var yamlCreatedKey = map['yamlCreatedKey']?.toString();
@@ -231,6 +240,8 @@ class NotesFolderConfig extends Equatable {
       showNoteSummary: showNoteSummary,
       viewHeader: viewHeader,
       fileNameFormat: NoteFileNameFormat.fromInternalString(fileNameFormat),
+      journalFileNameFormat:
+          NoteFileNameFormat.fromInternalString(journalFileNameFormat),
       folder: folder,
       yamlHeaderEnabled: yamlHeaderEnabled,
       yamlCreatedKey: yamlCreatedKey,
@@ -266,6 +277,7 @@ class NotesFolderConfig extends Equatable {
       "showNoteSummary": showNoteSummary,
       "folderViewHeaderType": ht,
       "noteFileNameFormat": fileNameFormat.toInternalString(),
+      'journalFileNameFormat': journalFileNameFormat.toInternalString(),
       'yamlHeaderEnabled': yamlHeaderEnabled,
       'yamlModifiedKey': yamlModifiedKey,
       'yamlCreatedKey': yamlCreatedKey,

@@ -93,6 +93,22 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
           },
         ),
       ),
+      ProOverlay(
+        feature: Feature.singleJournalEntry,
+        child: ListPreference(
+          title: tr('settings.note.fileName'),
+          currentOption: settings.journalNoteFileNameFormat.toPublicString(),
+          options: NoteFileNameFormat.options
+              .map((f) => f.toPublicString())
+              .toList(),
+          onChange: (String publicStr) {
+            var format = NoteFileNameFormat.fromPublicString(publicStr);
+            settings.journalNoteFileNameFormat = format;
+            settings.save();
+            setState(() {});
+          },
+        ),
+      ),
     ]);
 
     return Scaffold(

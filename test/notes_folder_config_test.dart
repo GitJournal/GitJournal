@@ -33,6 +33,7 @@ void main() {
             SortingMode(SortingField.Modified, SortingOrder.Descending),
         viewHeader: StandardViewHeader.TitleOrFileName,
         fileNameFormat: NoteFileNameFormat.Default,
+        journalFileNameFormat: NoteFileNameFormat.Default,
         folder: folder,
         yamlHeaderEnabled: true,
         yamlCreatedKey: 'created',
