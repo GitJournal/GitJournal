@@ -1,5 +1,6 @@
 - version: "1.71"
   date: 2020-10-12
+  reddit: https://www.reddit.com/r/GitJournal/comments/j9uk8k/gitjournal_v171/
   improvements:
     - text: "Allow SSH Keys to be loaded from the FS - #74"
       image: ssh_key_file.jpeg
@@ -10,7 +11,7 @@
   bugs:
     - text: "Dark Theme: Render checkboxes in a lighter color"
     - text: "Fix Relative Parent links not working - #256"
-    - test: "Improve inline tags regex - #265"
+    - text: "Improve inline tags regex - #265"
 
 - version: "1.70"
   date: 2020-09-16
