@@ -1,5 +1,5 @@
 - version: "1.71"
-  draft: true
+  date: 2020-10-12
   improvements:
     - text: "Allow SSH Keys to be loaded from the FS - #74"
       image: ssh_key_file.jpeg
