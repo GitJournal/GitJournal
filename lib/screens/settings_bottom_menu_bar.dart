@@ -77,7 +77,7 @@ class _BottomMenuBarSettingsState extends State<BottomMenuBarSettings> {
     return ClipRect(
       child: Align(
         alignment: Alignment.bottomCenter,
-        heightFactor: 0.10,
+        heightFactor: 0.12,
         child: homeScreen,
       ),
     );
