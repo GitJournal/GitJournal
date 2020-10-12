@@ -225,7 +225,7 @@ class _FolderViewState extends State<FolderView> {
         sortingMode: newSortingMode,
       );
 
-      var settings = Provider.of<Settings>(context);
+      var settings = Provider.of<Settings>(context, listen: false);
       config.saveToSettings(settings);
 
       var container = Provider.of<StateContainer>(context, listen: false);
@@ -250,7 +250,7 @@ class _FolderViewState extends State<FolderView> {
             viewHeader: _headerType,
           );
 
-          var settings = Provider.of<Settings>(context);
+          var settings = Provider.of<Settings>(context, listen: false);
           config.saveToSettings(settings);
 
           var container = Provider.of<StateContainer>(context, listen: false);
@@ -266,7 +266,7 @@ class _FolderViewState extends State<FolderView> {
             showNoteSummary: newVal,
           );
 
-          var settings = Provider.of<Settings>(context);
+          var settings = Provider.of<Settings>(context, listen: false);
           config.saveToSettings(settings);
 
           var container = Provider.of<StateContainer>(context, listen: false);
@@ -398,7 +398,7 @@ class _FolderViewState extends State<FolderView> {
         defaultView: newViewType,
       );
 
-      var settings = Provider.of<Settings>(context);
+      var settings = Provider.of<Settings>(context, listen: false);
       config.saveToSettings(settings);
 
       var container = Provider.of<StateContainer>(context, listen: false);
