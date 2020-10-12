@@ -218,3 +218,9 @@ class NodeWidget extends StatelessWidget {
     );
   }
 }
+
+// TODO:
+// - Place it somewhere in the middle and scroll to that position
+// - Render the graph in a circular layout
+// - Make start positions of Nodes not block
+// - Figure out the ideal bounding box of the Graph (just make it double?)
