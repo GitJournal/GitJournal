@@ -48,6 +48,15 @@ void main() {
     expect(tags, {'future-me'});
   });
 
+  test('Multiple tags with same prefix', () {
+    var body = "I #love #chocolate";
+
+    var p = InlineTagsProcessor(tagPrefixes: {'#'});
+    var tags = p.extractTags(body);
+
+    expect(tags, {'love', 'chocolate'});
+  });
+
   test('Multiple Prefixes', () {
     var body = "Hi +one+two @foo #doo";
 
