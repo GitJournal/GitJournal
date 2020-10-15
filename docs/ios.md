@@ -1,8 +1,7 @@
-# Uninstalling a device
+# Uninstalling an app
 
-ideviceinstaller -U io.gitjournal.gitjournal
-
-Only for actual devices, not emulators.
+Real Devices: ideviceinstaller -U io.gitjournal.gitjournal
+For Simulators: xcrun simctl uninstall booted io.gitjournal.gitjournal
 
 # List Devices
 
@@ -15,5 +14,4 @@ cd ~/Library/Developer/CoreSimulator/Devices/
 Get deivce ID from List Devices. This doesn't seem to work for actual devices.
 
 # Logs
-
 
