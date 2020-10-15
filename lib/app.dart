@@ -61,6 +61,11 @@ class JournalApp extends StatefulWidget {
 
     var dir = await getApplicationDocumentsDirectory();
     appState.gitBaseDirectory = dir.path;
+    Log.i("GitBaseDirectory: ${dir.path}");
+    await for (var fsEntity in dir.list()) {
+      Log.i("    ${fsEntity.path}");
+    }
+    Log.i('-----');
 
     if (settings.localGitRepoConfigured == false) {
       // FIXME: What about exceptions!
