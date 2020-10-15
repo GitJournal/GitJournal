@@ -22,6 +22,7 @@ import 'package:gitjournal/setup/clone_url.dart';
 import 'package:gitjournal/setup/loading_error.dart';
 import 'package:gitjournal/setup/repo_selector.dart';
 import 'package:gitjournal/setup/sshkey.dart';
+import 'package:gitjournal/ssh/keygen.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
@@ -409,7 +410,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         "-" +
         DateTime.now().toIso8601String().substring(0, 10); // only the date
 
-    git_bindings.generateSSHKeys(comment: comment).then((String publicKey) {
+    generateSSHKeys(comment: comment).then((String publicKey) {
       setState(() {
         this.publicKey = publicKey;
         Log.d("PublicKey: " + publicKey);
@@ -548,7 +549,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       setState(() {
         _autoConfigureMessage = tr('setup.sshKey.generate');
       });
-      var publicKey = await git_bindings.generateSSHKeys(comment: "GitJournal");
+      var publicKey = await generateSSHKeys(comment: "GitJournal");
 
       Log.i("Adding as a deploy key");
       _autoConfigureMessage = tr('setup.sshKey.addDeploy');
