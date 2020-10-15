@@ -83,6 +83,7 @@ class JournalApp extends StatefulWidget {
       settings.localGitRepoConfigured = true;
       settings.save();
     }
+    final cacheDir = await getApplicationSupportDirectory();
 
     Widget app = ChangeNotifierProvider.value(
       value: settings,
@@ -92,6 +93,7 @@ class JournalApp extends StatefulWidget {
             appState: appState,
             settings: settings,
             gitBaseDirectory: appState.gitBaseDirectory,
+            cacheDirectory: cacheDir.path,
           );
         },
         child: ChangeNotifierProvider(

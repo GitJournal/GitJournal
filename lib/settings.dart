@@ -320,6 +320,9 @@ class Settings extends ChangeNotifier {
 
   Future<void> migrate(SharedPreferences pref, String gitBaseDir) async {
     if (version == 0) {
+      var cache = p.join(gitBaseDir, "cache.json");
+      await File(cache).delete(recursive: true);
+
       if (localGitRepoConfigured && !remoteGitRepoConfigured) {
         Log.i("Migrating from local and remote repos to a single one");
         var oldName = p.join(gitBaseDir, "journal_local");
