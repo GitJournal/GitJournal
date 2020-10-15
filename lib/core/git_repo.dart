@@ -180,14 +180,18 @@ class GitNoteRepository {
   Future<void> merge() async {
     var repo = await git.GitRepository.load(gitDirPath);
     var branch = await repo.currentBranch();
-    if (branch == null) {
+    var branchConfig = repo.config.branch(branch);
+    if (branchConfig == null) {
       logExceptionWarning(Exception("Current Branch null"), StackTrace.current);
       return;
     }
 
+    assert(branchConfig.name != null);
+    assert(branchConfig.merge != null);
+
     try {
       await _gitRepo.merge(
-        branch: branch.remoteTrackingBranch(),
+        branch: branchConfig.remoteTrackingBranch(),
         authorEmail: settings.gitAuthorEmail,
         authorName: settings.gitAuthor,
       );

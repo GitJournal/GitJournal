@@ -67,12 +67,16 @@ class JournalApp extends StatefulWidget {
     }
     Log.i('-----');
 
+    await settings.migrate(pref, appState.gitBaseDirectory);
+
+    // FIXME: This can be replaced with a fs stat
     if (settings.localGitRepoConfigured == false) {
+      settings.internalRepoFolderName = "journal";
+
       // FIXME: What about exceptions!
-      settings.localGitRepoFolderName = "journal_local";
       var repoPath = p.join(
         appState.gitBaseDirectory,
-        settings.localGitRepoFolderName,
+        settings.internalRepoFolderName,
       );
       await GitRepository.init(repoPath);
 
@@ -381,8 +385,9 @@ class _JournalAppState extends State<JournalApp> {
         return SettingsScreen();
       case '/setupRemoteGit':
         return GitHostSetupScreen(
-          "journal",
-          stateContainer.completeGitHostSetup,
+          repoFolderName: settings.internalRepoFolderName,
+          remoteName: "origin",
+          onCompletedFunction: stateContainer.completeGitHostSetup,
         );
       case '/onBoarding':
         return OnBoardingScreen();

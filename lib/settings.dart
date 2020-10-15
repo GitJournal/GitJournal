@@ -1,12 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/screens/note_editor.dart';
+import 'package:gitjournal/utils/logger.dart';
 
 class Settings extends ChangeNotifier {
   Settings();
@@ -34,7 +38,7 @@ class Settings extends ChangeNotifier {
   SettingsFolderViewType defaultView = SettingsFolderViewType.Default;
   bool showNoteSummary = true;
   String folderViewHeaderType = "TitleGenerated";
-  int version = 0;
+  int version = 1;
 
   SettingsHomeScreen homeScreen = SettingsHomeScreen.Default;
 
@@ -56,10 +60,9 @@ class Settings extends ChangeNotifier {
   bool bottomMenuBar = false;
 
   // From AppState
-  String localGitRepoFolderName = "";
+  String internalRepoFolderName = "";
   bool localGitRepoConfigured = false;
 
-  String remoteGitRepoFolderName = "";
   bool remoteGitRepoConfigured = false;
 
   bool storeInternally = true;
@@ -131,8 +134,7 @@ class Settings extends ChangeNotifier {
     // From AppState
     localGitRepoConfigured = pref.getBool("localGitRepoConfigured") ?? false;
     remoteGitRepoConfigured = pref.getBool("remoteGitRepoConfigured") ?? false;
-    localGitRepoFolderName = pref.getString("localGitRepoPath") ?? "";
-    remoteGitRepoFolderName = pref.getString("remoteGitRepoPath") ?? "";
+    internalRepoFolderName = pref.getString("remoteGitRepoPath") ?? "";
 
     bottomMenuBar = pref.getBool("bottomMenuBar") ?? bottomMenuBar;
     storeInternally = pref.getBool("storeInternally") ?? storeInternally;
@@ -221,8 +223,7 @@ class Settings extends ChangeNotifier {
 
     pref.setBool("localGitRepoConfigured", localGitRepoConfigured);
     pref.setBool("remoteGitRepoConfigured", remoteGitRepoConfigured);
-    pref.setString("localGitRepoPath", localGitRepoFolderName);
-    pref.setString("remoteGitRepoPath", remoteGitRepoFolderName);
+    pref.setString("remoteGitRepoPath", internalRepoFolderName);
 
     notifyListeners();
   }
@@ -302,8 +303,7 @@ class Settings extends ChangeNotifier {
       'emojiParser': emojiParser.toString(),
       'localGitRepoConfigured': localGitRepoConfigured.toString(),
       'remoteGitRepoConfigured': remoteGitRepoConfigured.toString(),
-      'localGitRepoFolderName': localGitRepoFolderName.toString(),
-      'remoteGitRepoFolderName': remoteGitRepoFolderName.toString(),
+      'remoteGitRepoPath': internalRepoFolderName.toString(),
       'bottomMenuBar': bottomMenuBar.toString(),
       'storeInternally': storeInternally.toString(),
       'storageLocation': storageLocation,
@@ -316,6 +316,24 @@ class Settings extends ChangeNotifier {
     m.remove("gitAuthorEmail");
     m.remove("defaultNewNoteFolderSpec");
     return m;
+  }
+
+  Future<void> migrate(SharedPreferences pref, String gitBaseDir) async {
+    if (version == 0) {
+      if (localGitRepoConfigured && !remoteGitRepoConfigured) {
+        Log.i("Migrating from local and remote repos to a single one");
+        var oldName = p.join(gitBaseDir, "journal_local");
+        var newName = p.join(gitBaseDir, "journal");
+
+        await Directory(oldName).rename(newName);
+        internalRepoFolderName = "journal";
+
+        version = 1;
+        pref.setInt("settingsVersion", version);
+        pref.setString('remoteGitRepoPath', internalRepoFolderName);
+        return;
+      }
+    }
   }
 }
 

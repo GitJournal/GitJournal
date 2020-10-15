@@ -4,11 +4,11 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'package:dart_git/dart_git.dart';
 import 'package:path/path.dart' as p;
 import 'package:synchronized/synchronized.dart';
 
 import 'package:gitjournal/analytics.dart';
-import 'package:gitjournal/apis/git_migration.dart';
 import 'package:gitjournal/appstate.dart';
 import 'package:gitjournal/core/git_repo.dart';
 import 'package:gitjournal/core/note.dart';
@@ -40,21 +40,10 @@ class StateContainer with ChangeNotifier {
     @required this.gitBaseDirectory,
   }) {
     assert(settings.localGitRepoConfigured);
-
-    String repoPath;
-    if (settings.remoteGitRepoConfigured) {
-      repoPath = p.join(gitBaseDirectory, settings.remoteGitRepoFolderName);
-    } else if (settings.localGitRepoConfigured) {
-      repoPath = p.join(gitBaseDirectory, settings.localGitRepoFolderName);
-    }
+    var repoPath = p.join(gitBaseDirectory, settings.internalRepoFolderName);
 
     _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);
     appState.notesFolder = NotesFolderFS(null, _gitRepo.gitDirPath, settings);
-
-    // Just a fail safe
-    if (!settings.remoteGitRepoConfigured) {
-      removeExistingRemoteClone();
-    }
 
     // Makes it easier to filter the analytics
     getAnalytics().firebase.setUserProperty(
@@ -79,17 +68,6 @@ class StateContainer with ChangeNotifier {
 
     await _loadNotes();
     Log.i("Finished loading all the notes");
-  }
-
-  void removeExistingRemoteClone() async {
-    var remoteGitDir =
-        Directory(p.join(gitBaseDirectory, settings.remoteGitRepoFolderName));
-    var dotGitDir = Directory(p.join(remoteGitDir.path, ".git"));
-
-    bool exists = dotGitDir.existsSync();
-    if (exists) {
-      await remoteGitDir.delete(recursive: true);
-    }
   }
 
   Future<void> _loadNotes() async {
@@ -351,29 +329,25 @@ class StateContainer with ChangeNotifier {
     });
   }
 
-  void completeGitHostSetup(String repoFolderName) {
+  // FIXME: Pass the remote name that was added
+  void completeGitHostSetup(String repoFolderName, String remoteName) {
     () async {
-      var reconfiguringRemote = settings.remoteGitRepoConfigured;
+      var repo = await GitRepository.load(_gitRepo.gitDirPath);
+      var remote = repo.config.remote(remoteName);
+      var remoteBranchName = 'master';
 
+      // FIXME: How to get this?
+      //
+      // There is no way to get it, just need to iterate over the refs
+      // and look for one!
+      await repo.setUpstreamTo(remote, remoteBranchName);
+
+      // At this point the remote should have been added and fetched
+
+      await _gitRepo.merge();
       settings.remoteGitRepoConfigured = true;
-      settings.remoteGitRepoFolderName = repoFolderName;
-
-      if (!reconfiguringRemote) {
-        await migrateGitRepo(
-          fromGitBasePath: settings.localGitRepoFolderName,
-          toGitBaseFolder: settings.remoteGitRepoFolderName,
-          gitBasePath: gitBaseDirectory,
-          gitAuthor: settings.gitAuthor,
-          gitAuthorEmail: settings.gitAuthorEmail,
-        );
-      }
-
-      var repoPath = p.join(gitBaseDirectory, settings.remoteGitRepoFolderName);
-      _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);
-      appState.notesFolder.reset(_gitRepo.gitDirPath);
 
       await _persistConfig();
-      await _notesCache.clear();
       _loadNotes();
       _syncNotes();
 

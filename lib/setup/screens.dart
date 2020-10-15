@@ -3,10 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:dart_git/git.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
-import 'package:git_bindings/git_bindings.dart';
+import 'package:git_bindings/git_bindings.dart' as git_bindings;
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -27,9 +28,14 @@ import 'package:gitjournal/utils/logger.dart';
 
 class GitHostSetupScreen extends StatefulWidget {
   final String repoFolderName;
-  final Func1<String, void> onCompletedFunction;
+  final String remoteName;
+  final Func2<String, String, void> onCompletedFunction;
 
-  GitHostSetupScreen(this.repoFolderName, this.onCompletedFunction);
+  GitHostSetupScreen({
+    @required this.repoFolderName,
+    @required this.remoteName,
+    @required this.onCompletedFunction,
+  });
 
   @override
   GitHostSetupScreenState createState() {
@@ -203,7 +209,10 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         } else if (_keyGenerationChoice == KeyGenerationChoice.UserProvided) {
           return GitHostUserProvidedKeys(
             doneFunction: (String publicKey, String privateKey) async {
-              await setSshKeys(publicKey: publicKey, privateKey: privateKey);
+              await git_bindings.setSshKeys(
+                publicKey: publicKey,
+                privateKey: privateKey,
+              );
               setState(() {
                 this.publicKey = publicKey;
                 _pageCount = pos + 2;
@@ -284,7 +293,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         } else if (_keyGenerationChoice == KeyGenerationChoice.UserProvided) {
           return GitHostUserProvidedKeys(
             doneFunction: (String publicKey, String privateKey) async {
-              await setSshKeys(publicKey: publicKey, privateKey: privateKey);
+              await git_bindings.setSshKeys(
+                  publicKey: publicKey, privateKey: privateKey);
               setState(() {
                 this.publicKey = publicKey;
                 _pageCount = pos + 2;
@@ -399,7 +409,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         "-" +
         DateTime.now().toIso8601String().substring(0, 10); // only the date
 
-    generateSSHKeys(comment: comment).then((String publicKey) {
+    git_bindings.generateSSHKeys(comment: comment).then((String publicKey) {
       setState(() {
         this.publicKey = publicKey;
         Log.d("PublicKey: " + publicKey);
@@ -471,17 +481,21 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     var stateContainer = Provider.of<StateContainer>(context, listen: false);
     var basePath = stateContainer.appState.gitBaseDirectory;
 
-    // Just in case it was half cloned because of an error
-    String repoPath = p.join(basePath, widget.repoFolderName);
-    await _removeExistingClone(repoPath);
+    var settings = Provider.of<Settings>(context, listen: false);
+    var repoName = settings.internalRepoFolderName;
+    var repoPath = p.join(basePath, repoName);
+    Log.i("RepoPath: $repoPath");
 
     String error;
     try {
-      Log.d("Cloning " + _gitCloneUrl);
-      await GitRepo.clone(repoPath, _gitCloneUrl);
-    } on GitException catch (e) {
+      var repo = await GitRepository.load(repoPath);
+      await repo.addRemote(widget.remoteName, _gitCloneUrl);
+
+      var repoN = git_bindings.GitRepo(folderPath: repoPath);
+      await repoN.fetch(widget.remoteName);
+    } on Exception catch (e) {
       Log.e(e.toString());
-      error = e.cause;
+      error = e.toString();
     }
 
     if (error != null && error.isNotEmpty) {
@@ -507,9 +521,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       var ignoreFile = File(p.join(repoPath, ".gitignore"));
       ignoreFile.createSync();
 
-      var repo = GitRepo(
-        folderPath: repoPath,
-      );
+      var repo = git_bindings.GitRepo(folderPath: repoPath);
       await repo.add('.gitignore');
 
       var settings = Provider.of<Settings>(context, listen: false);
@@ -525,7 +537,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       parameters: _buildOnboardingAnalytics(),
     );
     Navigator.pop(context);
-    widget.onCompletedFunction(widget.repoFolderName);
+    widget.onCompletedFunction(widget.repoFolderName, widget.remoteName);
   }
 
   Future<void> _completeAutoConfigure() async {
@@ -536,7 +548,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       setState(() {
         _autoConfigureMessage = tr('setup.sshKey.generate');
       });
-      var publicKey = await generateSSHKeys(comment: "GitJournal");
+      var publicKey = await git_bindings.generateSSHKeys(comment: "GitJournal");
 
       Log.i("Adding as a deploy key");
       _autoConfigureMessage = tr('setup.sshKey.addDeploy');
@@ -593,17 +605,6 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         .replaceFirst("KeyGenerationChoice.", "");
 
     return map;
-  }
-
-  Future _removeExistingClone(String baseDirPath) async {
-    var baseDir = Directory(baseDirPath);
-    var dotGitDir = Directory(p.join(baseDir.path, ".git"));
-    bool exists = dotGitDir.existsSync();
-    if (exists) {
-      Log.d("Removing " + baseDir.path);
-      await baseDir.delete(recursive: true);
-      await baseDir.create();
-    }
   }
 }
 

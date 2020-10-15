@@ -148,8 +148,9 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
 
     var route = MaterialPageRoute(
       builder: (context) => GitHostSetupScreen(
-        repoFolderName,
-        stateContainer.completeGitHostSetup,
+        repoFolderName: repoFolderName,
+        remoteName: 'origin',
+        onCompletedFunction: stateContainer.completeGitHostSetup,
       ),
       settings: const RouteSettings(name: '/setupRemoteGit'),
     );

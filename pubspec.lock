@@ -181,7 +181,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "8e7e782f32f6cb1f39e39036d795f06ddecc56aa"
+      resolved-ref: aed5883fd17219c778cdf2d0d613a873d0b20f6c
       url: "https://github.com/GitJournal/dart_git.git"
     source: git
     version: "0.0.1"
@@ -226,7 +226,7 @@ packages:
       name: equatable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.1"
+    version: "1.2.5"
   ext_storage:
     dependency: "direct main"
     description:
