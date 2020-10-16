@@ -69,11 +69,13 @@ class JournalApp extends StatefulWidget {
 
     await settings.migrate(pref, appState.gitBaseDirectory);
 
-    // FIXME: This can be replaced with a fs stat
-    if (settings.localGitRepoConfigured == false) {
+    var gitRepoDir =
+        p.join(appState.gitBaseDirectory, settings.internalRepoFolderName);
+
+    var repoDirStat = File(gitRepoDir).statSync();
+    if (repoDirStat.type != FileSystemEntityType.directory) {
       settings.internalRepoFolderName = "journal";
 
-      // FIXME: What about exceptions!
       var repoPath = p.join(
         appState.gitBaseDirectory,
         settings.internalRepoFolderName,
@@ -82,9 +84,13 @@ class JournalApp extends StatefulWidget {
       Log.i("Calling GitInit at: $repoPath");
       await GitRepository.init(repoPath);
 
-      settings.localGitRepoConfigured = true;
       settings.save();
+    } else {
+      var gitRepo = await GitRepository.load(gitRepoDir);
+      var remotes = gitRepo.config.remotes;
+      appState.remoteGitRepoConfigured = remotes.isNotEmpty;
     }
+
     final cacheDir = await getApplicationSupportDirectory();
 
     Widget app = ChangeNotifierProvider.value(

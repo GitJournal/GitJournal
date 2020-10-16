@@ -26,6 +26,7 @@ import 'package:gitjournal/screens/settings_note_metadata.dart';
 import 'package:gitjournal/screens/settings_tags.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
 import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
@@ -64,7 +65,7 @@ class SettingsListState extends State<SettingsList> {
   Widget build(BuildContext context) {
     var settings = Provider.of<Settings>(context);
     var appSettings = Provider.of<AppSettings>(context);
-    var remoteGitConfigured = settings.remoteGitRepoConfigured;
+    final appState = Provider.of<StateContainer>(context).appState;
 
     var saveGitAuthor = (String gitAuthor) {
       settings.gitAuthor = gitAuthor;
@@ -225,7 +226,7 @@ class SettingsListState extends State<SettingsList> {
           );
           Navigator.of(context).push(route);
         },
-        enabled: remoteGitConfigured,
+        enabled: appState.remoteGitRepoConfigured,
       ),
       const SizedBox(height: 16.0),
       ListTile(

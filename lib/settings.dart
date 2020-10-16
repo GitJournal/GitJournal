@@ -59,11 +59,7 @@ class Settings extends ChangeNotifier {
 
   bool bottomMenuBar = true;
 
-  // From AppState
-  String internalRepoFolderName = "";
-  bool localGitRepoConfigured = false;
-
-  bool remoteGitRepoConfigured = false;
+  String internalRepoFolderName = "journal";
 
   bool storeInternally = true;
   String storageLocation = "";
@@ -132,9 +128,8 @@ class Settings extends ChangeNotifier {
         pref.getStringList("inlineTagPrefixes")?.toSet() ?? inlineTagPrefixes;
 
     // From AppState
-    localGitRepoConfigured = pref.getBool("localGitRepoConfigured") ?? false;
-    remoteGitRepoConfigured = pref.getBool("remoteGitRepoConfigured") ?? false;
-    internalRepoFolderName = pref.getString("remoteGitRepoPath") ?? "";
+    internalRepoFolderName =
+        pref.getString("remoteGitRepoPath") ?? internalRepoFolderName;
 
     bottomMenuBar = pref.getBool("bottomMenuBar") ?? bottomMenuBar;
     storeInternally = pref.getBool("storeInternally") ?? storeInternally;
@@ -221,8 +216,6 @@ class Settings extends ChangeNotifier {
 
     pref.setInt("settingsVersion", version);
 
-    pref.setBool("localGitRepoConfigured", localGitRepoConfigured);
-    pref.setBool("remoteGitRepoConfigured", remoteGitRepoConfigured);
     pref.setString("remoteGitRepoPath", internalRepoFolderName);
 
     notifyListeners();
@@ -301,8 +294,6 @@ class Settings extends ChangeNotifier {
       'swipeToDelete': swipeToDelete.toString(),
       'inlineTagPrefixes': inlineTagPrefixes.join(' '),
       'emojiParser': emojiParser.toString(),
-      'localGitRepoConfigured': localGitRepoConfigured.toString(),
-      'remoteGitRepoConfigured': remoteGitRepoConfigured.toString(),
       'remoteGitRepoPath': internalRepoFolderName.toString(),
       'bottomMenuBar': bottomMenuBar.toString(),
       'storeInternally': storeInternally.toString(),
@@ -322,6 +313,11 @@ class Settings extends ChangeNotifier {
     if (version == 0) {
       var cache = p.join(gitBaseDir, "cache.json");
       await File(cache).delete(recursive: true);
+
+      var localGitRepoConfigured =
+          pref.getBool("localGitRepoConfigured") ?? false;
+      var remoteGitRepoConfigured =
+          pref.getBool("remoteGitRepoConfigured") ?? false;
 
       if (localGitRepoConfigured && !remoteGitRepoConfigured) {
         Log.i("Migrating from local and remote repos to a single one");
