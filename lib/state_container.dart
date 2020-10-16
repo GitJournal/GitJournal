@@ -331,20 +331,13 @@ class StateContainer with ChangeNotifier {
     });
   }
 
-  // FIXME: Pass the remote name that was added
   void completeGitHostSetup(String repoFolderName, String remoteName) {
     () async {
       var repo = await GitRepository.load(_gitRepo.gitDirPath);
       var remote = repo.config.remote(remoteName);
-      var remoteBranchName = 'master';
+      var remoteBranchName = await repo.guessRemoteHead(remoteName);
 
-      // FIXME: How to get this?
-      //
-      // There is no way to get it, just need to iterate over the refs
-      // and look for one!
       await repo.setUpstreamTo(remote, remoteBranchName);
-
-      // At this point the remote should have been added and fetched
 
       await _gitRepo.merge();
       settings.remoteGitRepoConfigured = true;
