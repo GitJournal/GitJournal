@@ -55,7 +55,7 @@ class JournalApp extends StatefulWidget {
     Log.i("Setting ${settings.toLoggableMap()}");
 
     if (appSettings.collectUsageStatistics) {
-      _enableAnalyticsIfPossible(settings);
+      _enableAnalyticsIfPossible(appSettings, settings);
     }
     _sendAppUpdateEvent(appSettings);
 
@@ -126,7 +126,8 @@ class JournalApp extends StatefulWidget {
     ));
   }
 
-  static void _enableAnalyticsIfPossible(Settings settings) async {
+  static void _enableAnalyticsIfPossible(
+      AppSettings appSettings, Settings settings) async {
     JournalApp.isInDebugMode = foundation.kDebugMode;
 
     var isPhysicalDevice = true;
@@ -155,6 +156,16 @@ class JournalApp extends StatefulWidget {
     JournalApp.analytics.setAnalyticsCollectionEnabled(enabled);
 
     if (enabled) {
+      getAnalytics().firebase.setUserProperty(
+            name: 'proMode',
+            value: appSettings.proMode.toString(),
+          );
+
+      getAnalytics().firebase.setUserProperty(
+            name: 'proExpirationDate',
+            value: appSettings.proExpirationDate.toString(),
+          );
+
       logEvent(Event.Settings, parameters: settings.toLoggableMap());
     }
   }
