@@ -78,6 +78,8 @@ class JournalApp extends StatefulWidget {
         appState.gitBaseDirectory,
         settings.internalRepoFolderName,
       );
+
+      Log.i("Calling GitInit at: $repoPath");
       await GitRepository.init(repoPath);
 
       settings.localGitRepoConfigured = true;
