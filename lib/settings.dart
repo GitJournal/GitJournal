@@ -57,7 +57,7 @@ class Settings extends ChangeNotifier {
 
   Set<String> inlineTagPrefixes = {'#'};
 
-  bool bottomMenuBar = false;
+  bool bottomMenuBar = true;
 
   // From AppState
   String internalRepoFolderName = "";
