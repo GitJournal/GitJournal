@@ -59,7 +59,7 @@ class Settings extends ChangeNotifier {
 
   bool bottomMenuBar = true;
 
-  String internalRepoFolderName = "journal";
+  String folderName = "journal";
 
   bool storeInternally = true;
   String storageLocation = "";
@@ -128,8 +128,7 @@ class Settings extends ChangeNotifier {
         pref.getStringList("inlineTagPrefixes")?.toSet() ?? inlineTagPrefixes;
 
     // From AppState
-    internalRepoFolderName =
-        pref.getString("remoteGitRepoPath") ?? internalRepoFolderName;
+    folderName = pref.getString("remoteGitRepoPath") ?? folderName;
 
     bottomMenuBar = pref.getBool("bottomMenuBar") ?? bottomMenuBar;
     storeInternally = pref.getBool("storeInternally") ?? storeInternally;
@@ -216,7 +215,7 @@ class Settings extends ChangeNotifier {
 
     pref.setInt("settingsVersion", version);
 
-    pref.setString("remoteGitRepoPath", internalRepoFolderName);
+    pref.setString("remoteGitRepoPath", folderName);
 
     notifyListeners();
   }
@@ -294,7 +293,7 @@ class Settings extends ChangeNotifier {
       'swipeToDelete': swipeToDelete.toString(),
       'inlineTagPrefixes': inlineTagPrefixes.join(' '),
       'emojiParser': emojiParser.toString(),
-      'remoteGitRepoPath': internalRepoFolderName.toString(),
+      'folderName': folderName.toString(),
       'bottomMenuBar': bottomMenuBar.toString(),
       'storeInternally': storeInternally.toString(),
       'storageLocation': storageLocation,
@@ -325,11 +324,11 @@ class Settings extends ChangeNotifier {
         var newName = p.join(gitBaseDir, "journal");
 
         await Directory(oldName).rename(newName);
-        internalRepoFolderName = "journal";
+        folderName = "journal";
 
         version = 1;
         pref.setInt("settingsVersion", version);
-        pref.setString('remoteGitRepoPath', internalRepoFolderName);
+        pref.setString('remoteGitRepoPath', folderName);
         return;
       }
     }

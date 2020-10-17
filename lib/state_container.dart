@@ -43,7 +43,7 @@ class StateContainer with ChangeNotifier {
     @required this.gitBaseDirectory,
     @required this.cacheDirectory,
   }) {
-    var folderName = settings.internalRepoFolderName;
+    var folderName = settings.folderName;
     repoPath = settings.storeInternally
         ? p.join(gitBaseDirectory, folderName)
         : p.join(settings.storageLocation, folderName);
@@ -358,7 +358,7 @@ class StateContainer with ChangeNotifier {
   }
 
   Future<void> moveRepoToPath() async {
-    var folderName = settings.internalRepoFolderName;
+    var folderName = settings.folderName;
     var newRepoPath = settings.storeInternally
         ? p.join(gitBaseDirectory, folderName)
         : p.join(settings.storageLocation, folderName);

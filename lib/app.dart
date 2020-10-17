@@ -69,20 +69,14 @@ class JournalApp extends StatefulWidget {
 
     await settings.migrate(pref, appState.gitBaseDirectory);
 
-    var gitRepoDir =
-        p.join(appState.gitBaseDirectory, settings.internalRepoFolderName);
+    var gitRepoDir = p.join(appState.gitBaseDirectory, settings.folderName);
 
     var repoDirStat = File(gitRepoDir).statSync();
     if (repoDirStat.type != FileSystemEntityType.directory) {
-      settings.internalRepoFolderName = "journal";
+      settings.folderName = "journal";
 
-      var repoPath = p.join(
-        appState.gitBaseDirectory,
-        settings.internalRepoFolderName,
-      );
-
-      Log.i("Calling GitInit at: $repoPath");
-      await GitRepository.init(repoPath);
+      Log.i("Calling GitInit at: $gitRepoDir");
+      await GitRepository.init(gitRepoDir);
 
       settings.save();
     } else {
@@ -405,7 +399,7 @@ class _JournalAppState extends State<JournalApp> {
         return SettingsScreen();
       case '/setupRemoteGit':
         return GitHostSetupScreen(
-          repoFolderName: settings.internalRepoFolderName,
+          repoFolderName: settings.folderName,
           remoteName: "origin",
           onCompletedFunction: stateContainer.completeGitHostSetup,
         );
