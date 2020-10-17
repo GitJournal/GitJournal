@@ -65,7 +65,8 @@ class SettingsListState extends State<SettingsList> {
   Widget build(BuildContext context) {
     var settings = Provider.of<Settings>(context);
     var appSettings = Provider.of<AppSettings>(context);
-    final appState = Provider.of<StateContainer>(context).appState;
+    final stateContainer = Provider.of<StateContainer>(context);
+    final appState = stateContainer.appState;
 
     var saveGitAuthor = (String gitAuthor) {
       settings.gitAuthor = gitAuthor;
@@ -289,7 +290,7 @@ class SettingsListState extends State<SettingsList> {
           Navigator.of(context).push(route);
         },
       ),
-      if (Platform.isAndroid && Features.externalStorage)
+      if (Platform.isAndroid)
         SwitchListTile(
           title: Text(tr('settings.storage.useLocal')),
           value: settings.storeInternally,
@@ -297,6 +298,10 @@ class SettingsListState extends State<SettingsList> {
             if (newVal == true) {
               settings.storeInternally = true;
               settings.storageLocation = "";
+
+              settings.save();
+              setState(() {});
+              stateContainer.moveRepoToPath();
             } else {
               var req = await Permission.storage.request();
               if (req.isDenied) {
@@ -305,6 +310,7 @@ class SettingsListState extends State<SettingsList> {
 
                 settings.save();
                 setState(() {});
+                stateContainer.moveRepoToPath();
                 return;
               }
               settings.storeInternally = true;
@@ -321,24 +327,24 @@ class SettingsListState extends State<SettingsList> {
               if (path == null) {
                 settings.storeInternally = false;
                 settings.storageLocation = "";
+
                 settings.save();
                 setState(() {});
+                stateContainer.moveRepoToPath();
                 return;
               }
 
               settings.storageLocation = p.join(path, "GitJournal");
               settings.storeInternally = false;
+
               settings.save();
               setState(() {});
+              stateContainer.moveRepoToPath();
               return;
             }
-            settings.save();
-            setState(() {});
-
-            // FIXME: Move the folder to be stored locally!
           },
         ),
-      if (Platform.isAndroid && Features.externalStorage)
+      if (Platform.isAndroid)
         ListTile(
           title: Text(tr('settings.storage.repoLocation')),
           subtitle: Text(settings.storageLocation),

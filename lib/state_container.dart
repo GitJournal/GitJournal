@@ -35,13 +35,18 @@ class StateContainer with ChangeNotifier {
   GitNoteRepository _gitRepo;
   NotesCache _notesCache;
 
+  String repoPath;
+
   StateContainer({
     @required this.appState,
     @required this.settings,
     @required this.gitBaseDirectory,
     @required this.cacheDirectory,
   }) {
-    var repoPath = p.join(gitBaseDirectory, settings.internalRepoFolderName);
+    var folderName = settings.internalRepoFolderName;
+    repoPath = settings.storeInternally
+        ? p.join(gitBaseDirectory, folderName)
+        : p.join(settings.storageLocation, folderName);
 
     _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);
     appState.notesFolder = NotesFolderFS(null, _gitRepo.gitDirPath, settings);
@@ -350,5 +355,38 @@ class StateContainer with ChangeNotifier {
 
   Future _persistConfig() async {
     await settings.save();
+  }
+
+  Future<void> moveRepoToPath() async {
+    var folderName = settings.internalRepoFolderName;
+    var newRepoPath = settings.storeInternally
+        ? p.join(gitBaseDirectory, folderName)
+        : p.join(settings.storageLocation, folderName);
+
+    if (newRepoPath != repoPath) {
+      Log.i("Old Path: $repoPath");
+      Log.i("New Path: $newRepoPath");
+
+      await Directory(newRepoPath).create(recursive: true);
+      await _copyDirectory(repoPath, newRepoPath);
+      await Directory(repoPath).delete(recursive: true);
+
+      repoPath = newRepoPath;
+      appState.notesFolder.reset(repoPath);
+      notifyListeners();
+    }
+  }
+}
+
+Future<void> _copyDirectory(String source, String destination) async {
+  await for (var entity in Directory(source).list(recursive: false)) {
+    if (entity is Directory) {
+      var newDirectory = Directory(p.join(
+          Directory(destination).absolute.path, p.basename(entity.path)));
+      await newDirectory.create();
+      await _copyDirectory(entity.absolute.path, newDirectory.path);
+    } else if (entity is File) {
+      await entity.copy(p.join(destination, p.basename(entity.path)));
+    }
   }
 }
