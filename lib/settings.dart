@@ -333,6 +333,12 @@ class Settings extends ChangeNotifier {
       }
     }
   }
+
+  String buildRepoPath(String internalDir) {
+    return storeInternally
+        ? p.join(internalDir, folderName)
+        : p.join(storageLocation, folderName);
+  }
 }
 
 class NoteFileNameFormat {

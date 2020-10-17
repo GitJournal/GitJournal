@@ -43,10 +43,7 @@ class StateContainer with ChangeNotifier {
     @required this.gitBaseDirectory,
     @required this.cacheDirectory,
   }) {
-    var folderName = settings.folderName;
-    repoPath = settings.storeInternally
-        ? p.join(gitBaseDirectory, folderName)
-        : p.join(settings.storageLocation, folderName);
+    repoPath = settings.buildRepoPath(appState.gitBaseDirectory);
 
     _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);
     appState.notesFolder = NotesFolderFS(null, _gitRepo.gitDirPath, settings);
@@ -358,10 +355,7 @@ class StateContainer with ChangeNotifier {
   }
 
   Future<void> moveRepoToPath() async {
-    var folderName = settings.folderName;
-    var newRepoPath = settings.storeInternally
-        ? p.join(gitBaseDirectory, folderName)
-        : p.join(settings.storageLocation, folderName);
+    var newRepoPath = settings.buildRepoPath(appState.gitBaseDirectory);
 
     if (newRepoPath != repoPath) {
       Log.i("Old Path: $repoPath");

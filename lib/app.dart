@@ -69,7 +69,7 @@ class JournalApp extends StatefulWidget {
 
     await settings.migrate(pref, appState.gitBaseDirectory);
 
-    var gitRepoDir = p.join(appState.gitBaseDirectory, settings.folderName);
+    var gitRepoDir = settings.buildRepoPath(appState.gitBaseDirectory);
 
     var repoDirStat = File(gitRepoDir).statSync();
     if (repoDirStat.type != FileSystemEntityType.directory) {
