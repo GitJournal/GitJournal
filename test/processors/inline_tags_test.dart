@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 
-import 'package:gitjournal/core/processors/inline_tags.dart';
+import 'package:notium/core/processors/inline_tags.dart';
 
 void main() {
   test('Should parse simple tags', () {
@@ -48,6 +48,15 @@ void main() {
     expect(tags, {'future-me'});
   });
 
+  test('Tags with a _', () {
+    var body = "It's a #snnnn_snnnn_snaaaake!";
+
+    var p = InlineTagsProcessor(tagPrefixes: {'#'});
+    var tags = p.extractTags(body);
+
+    expect(tags, {'snnnn_snnnn_snaaaake'});
+  });
+
   test('Multiple tags with same prefix', () {
     var body = "I #love #chocolate";
 
@@ -70,6 +79,15 @@ void main() {
     var body = "# Hi\nHow are you?";
 
     var p = InlineTagsProcessor(tagPrefixes: {'#', '+', '@'});
+    var tags = p.extractTags(body);
+
+    expect(tags.isEmpty, true);
+  });
+
+  test('Should ignore anchors in urls', () {
+    var body = "https://notium.org/some-url#something";
+
+    var p = InlineTagsProcessor(tagPrefixes: {'#'});
     var tags = p.extractTags(body);
 
     expect(tags.isEmpty, true);

@@ -15,10 +15,10 @@ class InlineTagsProcessor {
         p = '\\+';
       }
 
-      var regexp = RegExp(r'(|^|\s)' + p + r'([^\s]+)(\s|$)');
+      var regexp = RegExp(r"\B((" + p + r"(?:(?![×Þß÷þø]))([-'_0-9a-zÀ-ÿ]){1,})+)");
       var matches = regexp.allMatches(text);
       for (var match in matches) {
-        var tag = match.group(2);
+        var tag = match.group(1);
 
         if (tag.endsWith('.') || tag.endsWith('!') || tag.endsWith('?')) {
           tag = tag.substring(0, tag.length - 1);
