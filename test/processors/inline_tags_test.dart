@@ -74,6 +74,15 @@ void main() {
     expect(tags, {'one', 'two', 'foo', 'doo'});
   });
 
+  test('Capital Letters', () {
+    var body = "#Hello #WORLD";
+
+    var p = InlineTagsProcessor(tagPrefixes: {'#', '+', '@'});
+    var tags = p.extractTags(body);
+
+    expect(tags, {'Hello', 'WORLD'});
+  });
+
   test('Should Ignore headers', () {
     var body = "# Hi\nHow are you?";
 
@@ -96,6 +105,15 @@ void main() {
     var body = "https://gitjournal.io/folder/#something";
 
     var p = InlineTagsProcessor(tagPrefixes: {'#'});
+    var tags = p.extractTags(body);
+
+    expect(tags.isEmpty, true);
+  });
+
+  test('Should ignore emails', () {
+    var body = "email.name@domain.com";
+
+    var p = InlineTagsProcessor(tagPrefixes: {'#', '+', '@'});
     var tags = p.extractTags(body);
 
     expect(tags.isEmpty, true);
