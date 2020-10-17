@@ -84,7 +84,7 @@ void main() {
   });
 
   test('Should ignore anchors in urls', () {
-    var body = "https://notium.org/some-url#something";
+    var body = "https://gitjournal.io/some-url#something";
 
     var p = InlineTagsProcessor(tagPrefixes: {'#'});
     var tags = p.extractTags(body);
@@ -93,7 +93,7 @@ void main() {
   });
 
   test('Should ignore anchors in urls at the root of a folder', () {
-    var body = "https://notium.org/folder/#something";
+    var body = "https://gitjournal.io/folder/#something";
 
     var p = InlineTagsProcessor(tagPrefixes: {'#'});
     var tags = p.extractTags(body);
