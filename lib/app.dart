@@ -11,7 +11,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter_sentry/flutter_sentry.dart';
 import 'package:package_info/package_info.dart';
-import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_actions/quick_actions.dart';
@@ -85,18 +84,13 @@ class JournalApp extends StatefulWidget {
       appState.remoteGitRepoConfigured = remotes.isNotEmpty;
     }
 
-    final cacheDir = await getApplicationSupportDirectory();
+    appState.cacheDir = (await getApplicationSupportDirectory()).path;
 
     Widget app = ChangeNotifierProvider.value(
       value: settings,
       child: ChangeNotifierProvider(
         create: (_) {
-          return StateContainer(
-            appState: appState,
-            settings: settings,
-            gitBaseDirectory: appState.gitBaseDirectory,
-            cacheDirectory: cacheDir.path,
-          );
+          return StateContainer(appState: appState, settings: settings);
         },
         child: ChangeNotifierProvider(
           child: JournalApp(appState),

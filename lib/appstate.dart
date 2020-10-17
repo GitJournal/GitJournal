@@ -17,7 +17,9 @@ class AppState {
   }
 
   NotesFolderFS notesFolder;
+
   var gitBaseDirectory = "";
+  var cacheDir = "";
 
   bool remoteGitRepoConfigured = false;
 }

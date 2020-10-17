@@ -23,8 +23,6 @@ import 'package:gitjournal/utils/logger.dart';
 class StateContainer with ChangeNotifier {
   final AppState appState;
   final Settings settings;
-  final String gitBaseDirectory;
-  final String cacheDirectory;
 
   final _opLock = Lock();
   final _loadLock = Lock();
@@ -37,12 +35,7 @@ class StateContainer with ChangeNotifier {
 
   String repoPath;
 
-  StateContainer({
-    @required this.appState,
-    @required this.settings,
-    @required this.gitBaseDirectory,
-    @required this.cacheDirectory,
-  }) {
+  StateContainer({@required this.appState, @required this.settings}) {
     repoPath = settings.buildRepoPath(appState.gitBaseDirectory);
 
     _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);
@@ -54,7 +47,7 @@ class StateContainer with ChangeNotifier {
           value: appState.remoteGitRepoConfigured.toString(),
         );
 
-    var cachePath = p.join(cacheDirectory, "cache.json");
+    var cachePath = p.join(appState.cacheDir, "cache.json");
     _notesCache = NotesCache(
       filePath: cachePath,
       notesBasePath: _gitRepo.gitDirPath,
