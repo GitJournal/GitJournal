@@ -1,6 +1,5 @@
+import 'package:gitjournal/core/processors/inline_tags.dart';
 import 'package:test/test.dart';
-
-import 'package:notium/core/processors/inline_tags.dart';
 
 void main() {
   test('Should parse simple tags', () {
@@ -86,6 +85,15 @@ void main() {
 
   test('Should ignore anchors in urls', () {
     var body = "https://notium.org/some-url#something";
+
+    var p = InlineTagsProcessor(tagPrefixes: {'#'});
+    var tags = p.extractTags(body);
+
+    expect(tags.isEmpty, true);
+  });
+
+  test('Should ignore anchors in urls at the root of a folder', () {
+    var body = "https://notium.org/folder/#something";
 
     var p = InlineTagsProcessor(tagPrefixes: {'#'});
     var tags = p.extractTags(body);
