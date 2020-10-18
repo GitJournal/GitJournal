@@ -311,7 +311,9 @@ class Settings extends ChangeNotifier {
   Future<void> migrate(SharedPreferences pref, String gitBaseDir) async {
     if (version == 0) {
       var cache = p.join(gitBaseDir, "cache.json");
-      await File(cache).delete(recursive: true);
+      if (File(cache).existsSync()) {
+        await File(cache).delete();
+      }
 
       var localGitRepoConfigured =
           pref.getBool("localGitRepoConfigured") ?? false;
