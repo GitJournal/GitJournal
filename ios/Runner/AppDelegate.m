@@ -145,21 +145,6 @@ static FlutterMethodChannel* gitChannel = 0;
                 return;
             }
         }
-        else if ([@"gitInit" isEqualToString:method]) {
-            NSString *folderPath = arguments[@"folderPath"];
-
-            if (folderPath == nil || [folderPath length] == 0) {
-                result([FlutterError errorWithCode:@"InvalidParams"
-                        message:@"Invalid folderPath" details:nil]);
-                return;
-            }
-
-            int err = gj_git_init([folderPath UTF8String]);
-            if (!handleError(result, err)) {
-                result(@YES);
-                return;
-            }
-        }
         else if ([@"gitResetLast" isEqualToString:method]) {
             NSString *folderPath = arguments[@"folderPath"];
 
