@@ -334,21 +334,22 @@ class Settings extends ChangeNotifier {
       var oldDir = Directory(p.join(gitBaseDir, '../files'));
       if (oldDir.existsSync()) {
         // Move everything from the old dir
-        await for (var fsEntity in oldDir.list()) {
+        var stream = await (oldDir.list().toList());
+        for (var fsEntity in stream) {
           var stat = await fsEntity.stat();
           if (stat.type != FileSystemEntityType.directory) {
             var fileName = p.basename(fsEntity.path);
             if (fileName == 'cache.json') {
               await File(fsEntity.path).delete();
             }
-            return;
+            continue;
           }
 
           var folderName = p.basename(fsEntity.path);
           if (folderName.startsWith('journal') ||
               folderName.startsWith('ssh')) {
             var newPath = p.join(gitBaseDir, folderName);
-            if (Directory(newPath).existsSync()) {
+            if (!Directory(newPath).existsSync()) {
               await Directory(fsEntity.path).rename(newPath);
             }
           }
