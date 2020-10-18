@@ -188,8 +188,10 @@ class Graph extends ChangeNotifier {
   }
 
   void stopLayout() {
-    layoutTimer.cancel();
-    layoutTimer = null;
+    if (layoutTimer != null) {
+      layoutTimer.cancel();
+      layoutTimer = null;
+    }
   }
 }
 
