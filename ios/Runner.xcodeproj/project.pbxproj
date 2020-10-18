@@ -17,7 +17,6 @@
 		7A2A0C21229FEFD700FE4F1B /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2A0C20229FEFD700FE4F1B /* libiconv.tbd */; };
 		7A2A0C25229FF84C00FE4F1B /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A0C22229FF84C00FE4F1B /* common.c */; };
 		7A2A0C26229FF84C00FE4F1B /* gitjournal.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A0C23229FF84C00FE4F1B /* gitjournal.c */; };
-		7A2A0C27229FF84C00FE4F1B /* keygen.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A0C24229FF84C00FE4F1B /* keygen.c */; };
 		7A742348249CE14500B2C46B /* empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A742347249CE14500B2C46B /* empty.swift */; };
 		7AD6EE48228EC97800E098B2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7AD6EE47228EC97800E098B2 /* GoogleService-Info.plist */; };
 		978B8F6F1D3862AE00F588F7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AFFD8EE1D35381100E5BB4D /* AppDelegate.m */; };
@@ -53,7 +52,6 @@
 		7A2A0C20229FEFD700FE4F1B /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		7A2A0C22229FF84C00FE4F1B /* common.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = common.c; path = ../gj_common/common.c; sourceTree = "<group>"; };
 		7A2A0C23229FF84C00FE4F1B /* gitjournal.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = gitjournal.c; path = ../gj_common/gitjournal.c; sourceTree = "<group>"; };
-		7A2A0C24229FF84C00FE4F1B /* keygen.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = keygen.c; path = ../gj_common/keygen.c; sourceTree = "<group>"; };
 		7A742346249CE14400B2C46B /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		7A742347249CE14500B2C46B /* empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = empty.swift; sourceTree = "<group>"; };
 		7AD6EE47228EC97800E098B2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -130,7 +128,6 @@
 			children = (
 				7A2A0C22229FF84C00FE4F1B /* common.c */,
 				7A2A0C23229FF84C00FE4F1B /* gitjournal.c */,
-				7A2A0C24229FF84C00FE4F1B /* keygen.c */,
 				7AD6EE47228EC97800E098B2 /* GoogleService-Info.plist */,
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
@@ -403,7 +400,6 @@
 				7A2A0C25229FF84C00FE4F1B /* common.c in Sources */,
 				7A742348249CE14500B2C46B /* empty.swift in Sources */,
 				7A2A0C26229FF84C00FE4F1B /* gitjournal.c in Sources */,
-				7A2A0C27229FF84C00FE4F1B /* keygen.c in Sources */,
 				978B8F6F1D3862AE00F588F7 /* AppDelegate.m in Sources */,
 				97C146F31CF9000F007C117D /* main.m in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
