@@ -328,11 +328,37 @@ class Settings extends ChangeNotifier {
         await Directory(oldName).rename(newName);
         folderName = "journal";
 
-        version = 1;
-        pref.setInt("settingsVersion", version);
         pref.setString('remoteGitRepoPath', folderName);
-        return;
       }
+
+      var oldDir = Directory(p.join(gitBaseDir, '../files'));
+      if (oldDir.existsSync()) {
+        // Move everything from the old dir
+        await for (var fsEntity in oldDir.list()) {
+          var stat = await fsEntity.stat();
+          if (stat.type != FileSystemEntityType.directory) {
+            var fileName = p.basename(fsEntity.path);
+            if (fileName == 'cache.json') {
+              await File(fsEntity.path).delete();
+            }
+            return;
+          }
+
+          var folderName = p.basename(fsEntity.path);
+          if (folderName.startsWith('journal') ||
+              folderName.startsWith('ssh')) {
+            var newPath = p.join(gitBaseDir, folderName);
+            if (Directory(newPath).existsSync()) {
+              await Directory(fsEntity.path).rename(newPath);
+            }
+          }
+        }
+      }
+
+      // TODO: Save the ssh keys path
+
+      version = 1;
+      pref.setInt("settingsVersion", version);
     }
   }
 
