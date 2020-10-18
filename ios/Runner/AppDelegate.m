@@ -175,11 +175,6 @@ static FlutterMethodChannel* gitChannel = 0;
                 return;
             }
         }
-        else if ([@"generateSSHKeys" isEqualToString:method]) {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [self handleMethodCallAsync:call result:result];
-            });
-        }
         else if ([@"getSSHPublicKey" isEqualToString:method]) {
             NSError *error = nil;
             NSString *content = [NSString stringWithContentsOfFile:sshPublicKeyString
@@ -415,51 +410,6 @@ bool handleError(FlutterResult result, int err) {
             result(@YES);
             return;
         }
-    }
-    else if ([@"generateSSHKeys" isEqualToString:method]) {
-        NSString *comment = arguments[@"comment"];
-
-        if (comment == nil || [comment length] == 0) {
-            NSLog(@"generateSSHKeys: Using default comment");
-            comment = @"Generated on iOS";
-        }
-
-        NSArray *sshComponents = [NSArray arrayWithObjects:filesDir, @"ssh", nil];
-        NSString* sshDirPath = [NSString pathWithComponents:sshComponents];
-
-        NSError *error = nil;
-        [[NSFileManager defaultManager] createDirectoryAtPath:sshDirPath
-                                  withIntermediateDirectories:YES
-                                                   attributes:nil
-                                                        error:&error];
-
-        if (error != nil) {
-            NSLog(@"Create directory error: %@", error);
-            result([FlutterError errorWithCode:@"FAILED"
-                                       message:[error localizedDescription] details:nil]);
-            return;
-        }
-
-        int err = gj_generate_ssh_keys(sshPrivateKeyPath, sshPublicKeyPath, [comment UTF8String]);
-        if (handleError(result, err)) {
-            return;
-        }
-
-        NSString *content = [NSString stringWithContentsOfFile:sshPublicKeyString
-                                                      encoding:NSUTF8StringEncoding error:&error];
-
-        if (error != nil) {
-            result([FlutterError errorWithCode:@"FAILED"
-                                       message:[error localizedDescription] details:nil]);
-            return;
-        }
-        if (content == nil || [content length] == 0) {
-            result([FlutterError errorWithCode:@"FAILED"
-                                       message:@"PublicKey File not found" details:nil]);
-            return;
-        }
-
-        result(content);
     }
 }
 
