@@ -1,3 +1,12 @@
+- version: "1.72"
+  draft: true
+  features:
+    - text: "Allow the Git Repo to be accessible by other apps. You can now edit the notes with any other editor in Android, and additionally sync with any other mechanism as the folder is in a public location - #99"
+  improvements:
+    - text: "Allow GitJournal to be visible in the iOS Files app"
+  bugs:
+    - text: "Fix notes not always showing up - #270"
+
 - version: "1.71"
   date: 2020-10-12
   reddit: https://www.reddit.com/r/GitJournal/comments/j9uk8k/gitjournal_v171/
