@@ -64,6 +64,10 @@ class Settings extends ChangeNotifier {
   bool storeInternally = true;
   String storageLocation = "";
 
+  String sshPublicKey = "";
+  String sshPrivateKey = "";
+  String sshPassword = "";
+
   void load(SharedPreferences pref) {
     gitAuthor = pref.getString("gitAuthor") ?? gitAuthor;
     gitAuthorEmail = pref.getString("gitAuthorEmail") ?? gitAuthorEmail;
@@ -129,6 +133,10 @@ class Settings extends ChangeNotifier {
 
     // From AppState
     folderName = pref.getString("remoteGitRepoPath") ?? folderName;
+
+    sshPublicKey = pref.getString("sshPublicKey") ?? sshPublicKey;
+    sshPrivateKey = pref.getString("sshPrivateKey") ?? sshPrivateKey;
+    sshPassword = pref.getString("sshPassword") ?? sshPassword;
 
     bottomMenuBar = pref.getBool("bottomMenuBar") ?? bottomMenuBar;
     storeInternally = pref.getBool("storeInternally") ?? storeInternally;
@@ -212,6 +220,10 @@ class Settings extends ChangeNotifier {
         pref, "storeInternally", storeInternally, defaultSet.storeInternally);
     _setString(
         pref, "storageLocation", storageLocation, defaultSet.storageLocation);
+
+    _setString(pref, "sshPublicKey", sshPublicKey, defaultSet.sshPublicKey);
+    _setString(pref, "sshPrivateKey", sshPrivateKey, defaultSet.sshPrivateKey);
+    _setString(pref, "sshPassword", sshPassword, defaultSet.sshPassword);
 
     pref.setInt("settingsVersion", version);
 
@@ -297,6 +309,7 @@ class Settings extends ChangeNotifier {
       'bottomMenuBar': bottomMenuBar.toString(),
       'storeInternally': storeInternally.toString(),
       'storageLocation': storageLocation,
+      'sshPublicKey': sshPublicKey,
     };
   }
 
@@ -356,7 +369,30 @@ class Settings extends ChangeNotifier {
         }
       }
 
-      // TODO: Save the ssh keys path
+      // Save the ssh keys
+      var oldSshDir = Directory(p.join(gitBaseDir, '../files/ssh'));
+      if (oldSshDir.existsSync()) {
+        var sshPublicKeyPath = p.join(oldSshDir.path, "id_rsa.pub");
+        var sshPrivateKeyPath = p.join(oldSshDir.path, "id_rsa");
+
+        sshPublicKey = await File(sshPublicKeyPath).readAsString();
+        sshPrivateKey = await File(sshPrivateKeyPath).readAsString();
+        sshPassword = "";
+
+        await oldSshDir.delete(recursive: true);
+      }
+
+      var newSshDir = Directory(p.join(gitBaseDir, 'ssh'));
+      if (newSshDir.existsSync()) {
+        var sshPublicKeyPath = p.join(newSshDir.path, "id_rsa.pub");
+        var sshPrivateKeyPath = p.join(newSshDir.path, "id_rsa");
+
+        sshPublicKey = await File(sshPublicKeyPath).readAsString();
+        sshPrivateKey = await File(sshPrivateKeyPath).readAsString();
+        sshPassword = "";
+
+        await newSshDir.delete(recursive: true);
+      }
 
       version = 1;
       pref.setInt("settingsVersion", version);

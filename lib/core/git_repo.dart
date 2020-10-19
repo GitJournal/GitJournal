@@ -171,7 +171,12 @@ class GitNoteRepository {
 
   Future<void> fetch() async {
     try {
-      await _gitRepo.fetch("origin");
+      await _gitRepo.fetch(
+        remote: "origin",
+        publicKey: settings.sshPublicKey,
+        privateKey: settings.sshPrivateKey,
+        password: settings.sshPassword,
+      );
     } on GitException catch (ex, stackTrace) {
       Log.e("GitPull Failed", ex: ex, stacktrace: stackTrace);
     }
@@ -210,7 +215,12 @@ class GitNoteRepository {
     } catch (_) {}
 
     try {
-      await _gitRepo.push("origin");
+      await _gitRepo.push(
+        remote: "origin",
+        publicKey: settings.sshPublicKey,
+        privateKey: settings.sshPrivateKey,
+        password: settings.sshPassword,
+      );
     } on GitException catch (ex, stackTrace) {
       if (ex.cause == 'cannot push non-fastforwardable reference') {
         await fetch();

@@ -222,7 +222,8 @@ class SettingsListState extends State<SettingsList> {
         subtitle: Text(tr("settings.gitRemote.subtitle")),
         onTap: () {
           var route = MaterialPageRoute(
-            builder: (context) => GitRemoteSettingsScreen(),
+            builder: (context) =>
+                GitRemoteSettingsScreen(settings.sshPublicKey),
             settings: const RouteSettings(name: '/settings/gitRemote'),
           );
           Navigator.of(context).push(route);

@@ -210,10 +210,12 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         } else if (_keyGenerationChoice == KeyGenerationChoice.UserProvided) {
           return GitHostUserProvidedKeys(
             doneFunction: (String publicKey, String privateKey) async {
-              await git_bindings.setSshKeys(
-                publicKey: publicKey,
-                privateKey: privateKey,
-              );
+              var settings = Provider.of<Settings>(context, listen: false);
+              settings.sshPublicKey = publicKey;
+              settings.sshPrivateKey = privateKey;
+              settings.sshPassword = "";
+              settings.save();
+
               setState(() {
                 this.publicKey = publicKey;
                 _pageCount = pos + 2;
@@ -294,8 +296,12 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         } else if (_keyGenerationChoice == KeyGenerationChoice.UserProvided) {
           return GitHostUserProvidedKeys(
             doneFunction: (String publicKey, String privateKey) async {
-              await git_bindings.setSshKeys(
-                  publicKey: publicKey, privateKey: privateKey);
+              var settings = Provider.of<Settings>(context, listen: false);
+              settings.sshPublicKey = publicKey;
+              settings.sshPrivateKey = privateKey;
+              settings.sshPassword = "";
+              settings.save();
+
               setState(() {
                 this.publicKey = publicKey;
                 _pageCount = pos + 2;
@@ -410,9 +416,15 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         "-" +
         DateTime.now().toIso8601String().substring(0, 10); // only the date
 
-    generateSSHKeys(comment: comment).then((String publicKey) {
+    generateSSHKeys(comment: comment).then((SshKey sshKey) {
+      var settings = Provider.of<Settings>(context, listen: false);
+      settings.sshPublicKey = sshKey.publicKey;
+      settings.sshPrivateKey = sshKey.privateKey;
+      settings.sshPassword = sshKey.password;
+      settings.save();
+
       setState(() {
-        this.publicKey = publicKey;
+        publicKey = sshKey.publicKey;
         Log.d("PublicKey: " + publicKey);
         _copyKeyToClipboard(context);
       });
@@ -493,7 +505,12 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       await repo.addRemote(widget.remoteName, _gitCloneUrl);
 
       var repoN = git_bindings.GitRepo(folderPath: repoPath);
-      await repoN.fetch(widget.remoteName);
+      await repoN.fetch(
+        remote: widget.remoteName,
+        publicKey: settings.sshPublicKey,
+        privateKey: settings.sshPrivateKey,
+        password: settings.sshPassword,
+      );
     } on Exception catch (e) {
       Log.e(e.toString());
       error = e.toString();
@@ -549,7 +566,16 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       setState(() {
         _autoConfigureMessage = tr('setup.sshKey.generate');
       });
-      var publicKey = await generateSSHKeys(comment: "GitJournal");
+      var sshKey = await generateSSHKeys(comment: "GitJournal");
+      var settings = Provider.of<Settings>(context, listen: false);
+      settings.sshPublicKey = sshKey.publicKey;
+      settings.sshPrivateKey = sshKey.privateKey;
+      settings.sshPassword = sshKey.password;
+      settings.save();
+
+      setState(() {
+        publicKey = sshKey.publicKey;
+      });
 
       Log.i("Adding as a deploy key");
       _autoConfigureMessage = tr('setup.sshKey.addDeploy');

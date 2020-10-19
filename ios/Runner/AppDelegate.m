@@ -40,20 +40,7 @@ static FlutterMethodChannel* gitChannel = 0;
             }
         }
 
-        NSString* filesDir = [self getApplicationDocumentsDirectory];
-
-        NSArray *sshPublicComponents = [NSArray arrayWithObjects:filesDir, @"ssh", @"id_rsa.pub", nil];
-        NSString *sshPublicKeyString = [NSString pathWithComponents:sshPublicComponents];
-
-        NSArray *sshPrivateComponents = [NSArray arrayWithObjects:filesDir, @"ssh", @"id_rsa", nil];
-        NSString *sshPrivateKeyString = [NSString pathWithComponents:sshPrivateComponents];
-
-        if ([@"gitClone" isEqualToString:method]) {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [self handleMethodCallAsync:call result:result];
-            });
-        }
-        else if ([@"gitFetch" isEqualToString:method]) {
+        if ([@"gitFetch" isEqualToString:method]) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [self handleMethodCallAsync:call result:result];
             });
@@ -160,73 +147,6 @@ static FlutterMethodChannel* gitChannel = 0;
                 return;
             }
         }
-        else if ([@"getSSHPublicKey" isEqualToString:method]) {
-            NSError *error = nil;
-            NSString *content = [NSString stringWithContentsOfFile:sshPublicKeyString
-                                                          encoding:NSUTF8StringEncoding error:&error];
-
-            if (error != nil) {
-                result([FlutterError errorWithCode:@"FAILED"
-                                           message:[error localizedDescription] details:nil]);
-                return;
-            }
-            if (content == nil || [content length] == 0) {
-                result([FlutterError errorWithCode:@"FAILED"
-                                           message:@"PublicKey File not found" details:nil]);
-                return;
-            }
-
-            result(content);
-        }
-        else if ([@"setSshKeys" isEqualToString:method]) {
-            NSString *publicKey = arguments[@"publicKey"];
-            NSString *privateKey = arguments[@"privateKey"];
-
-            if (publicKey == nil || [publicKey length] == 0) {
-                result([FlutterError errorWithCode:@"InvalidParams"
-                                           message:@"Invalid publicKey" details:nil]);
-                return;
-            }
-            if (privateKey == nil || [privateKey length] == 0) {
-                result([FlutterError errorWithCode:@"InvalidParams"
-                                           message:@"Invalid privateKey" details:nil]);
-                return;
-            }
-
-            NSArray *sshComponents = [NSArray arrayWithObjects:filesDir, @"ssh", nil];
-            NSString* sshDirPath = [NSString pathWithComponents:sshComponents];
-
-            NSError *error = nil;
-            [[NSFileManager defaultManager] createDirectoryAtPath:sshDirPath
-                                      withIntermediateDirectories:YES
-                                                       attributes:nil
-                                                            error:&error];
-
-            if (error != nil) {
-                NSLog(@"Create directory error: %@", error);
-                result([FlutterError errorWithCode:@"FAILED"
-                                           message:[error localizedDescription] details:nil]);
-                return;
-            }
-
-            [publicKey writeToFile:sshPublicKeyString atomically:YES encoding:NSUTF8StringEncoding error:&error];
-
-            if (error != nil) {
-                result([FlutterError errorWithCode:@"FAILED"
-                                           message:[error localizedDescription] details:nil]);
-                return;
-            }
-
-            [privateKey writeToFile:sshPrivateKeyString atomically:YES encoding:NSUTF8StringEncoding error:&error];
-
-            if (error != nil) {
-                result([FlutterError errorWithCode:@"FAILED"
-                                           message:[error localizedDescription] details:nil]);
-                return;
-            }
-
-            result(@YES);
-        }
         else {
             NSLog(@"Not Implemented");
             result(FlutterMethodNotImplemented);
@@ -262,10 +182,6 @@ bool handleError(FlutterResult result, int err) {
     return false;
 }
 
-- (NSString*)getApplicationDocumentsDirectory {
-    return GetDirectoryOfType(NSDocumentDirectory);
-}
-
 - (void)handleMethodCallAsync:(FlutterMethodCall *)call result:(FlutterResult)result {
     NSString *method = [call method];
     NSDictionary *arguments = [call arguments];
@@ -277,47 +193,36 @@ bool handleError(FlutterResult result, int err) {
                 NSLog(@".  privateKey: <hidden>");
                 continue;
             }
+            if ([key isEqualToString:@"password"]) {
+                NSLog(@".  password: <hidden>");
+                continue;
+            }
             NSLog(@".  %@: %@", key, [arguments objectForKey:key]);
         }
     }
 
-    NSString* filesDir = [self getApplicationDocumentsDirectory];
-
-    NSArray *sshPublicComponents = [NSArray arrayWithObjects:filesDir, @"ssh", @"id_rsa.pub", nil];
-    NSString *sshPublicKeyString = [NSString pathWithComponents:sshPublicComponents];
-    const char *sshPublicKeyPath = [sshPublicKeyString UTF8String];
-
-    NSArray *sshPrivateComponents = [NSArray arrayWithObjects:filesDir, @"ssh", @"id_rsa", nil];
-    NSString *sshPrivateKeyString = [NSString pathWithComponents:sshPrivateComponents];
-    const char *sshPrivateKeyPath = [sshPrivateKeyString UTF8String];
-
-    if ([@"gitClone" isEqualToString:method]) {
-        NSString *cloneUrl = arguments[@"cloneUrl"];
-        NSString *folderPath = arguments[@"folderPath"];
-
-        if (cloneUrl == nil || [cloneUrl length] == 0) {
-            result([FlutterError errorWithCode:@"InvalidParams"
-                                       message:@"Invalid cloneUrl" details:nil]);
-            return;
-        }
-        if (folderPath == nil || [folderPath length] == 0) {
-            result([FlutterError errorWithCode:@"InvalidParams"
-                                       message:@"Invalid folderPath" details:nil]);
-            return;
-        }
-
-        gj_set_ssh_keys_paths((char*) sshPublicKeyPath, (char*) sshPrivateKeyPath, "");
-
-        int err = gj_git_clone([cloneUrl UTF8String], [folderPath UTF8String]);
-        if (!handleError(result, err)) {
-            result(@YES);
-            return;
-        }
-    }
-    else if ([@"gitFetch" isEqualToString:method]) {
+    if ([@"gitFetch" isEqualToString:method]) {
         NSString *folderPath = arguments[@"folderPath"];
         NSString *remote = arguments[@"remote"];
+        NSString *publicKey = arguments[@"publicKey"];
+        NSString *privateKey = arguments[@"privateKey"];
+        NSString *password = arguments[@"password"];
 
+        if (publicKey == nil || [publicKey length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid publicKey" details:nil]);
+            return;
+        }
+        if (privateKey == nil || [privateKey length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid privateKey" details:nil]);
+            return;
+        }
+        if (password == nil || [privateKey length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid password" details:nil]);
+            return;
+        }
 
         if (folderPath == nil || [folderPath length] == 0) {
             result([FlutterError errorWithCode:@"InvalidParams"
@@ -330,9 +235,7 @@ bool handleError(FlutterResult result, int err) {
             return;
         }
 
-        gj_set_ssh_keys_paths((char*) sshPublicKeyPath, (char*) sshPrivateKeyPath, "");
-
-        int err = gj_git_fetch([folderPath UTF8String], [remote UTF8String]);
+        int err = gj_git_fetch([folderPath UTF8String], [remote UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String]);
         if (!handleError(result, err)) {
             result(@YES);
             return;
@@ -365,8 +268,6 @@ bool handleError(FlutterResult result, int err) {
             return;
         }
 
-        gj_set_ssh_keys_paths((char*) sshPublicKeyPath, (char*) sshPrivateKeyPath, "");
-
         int err = gj_git_merge([folderPath UTF8String], [branch UTF8String], [authorName UTF8String], [authorEmail UTF8String]);
         if (!handleError(result, err)) {
             result(@YES);
@@ -376,6 +277,25 @@ bool handleError(FlutterResult result, int err) {
     else if ([@"gitPush" isEqualToString:method]) {
         NSString *folderPath = arguments[@"folderPath"];
         NSString *remote = arguments[@"remote"];
+        NSString *publicKey = arguments[@"publicKey"];
+        NSString *privateKey = arguments[@"privateKey"];
+        NSString *password = arguments[@"password"];
+
+        if (publicKey == nil || [publicKey length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid publicKey" details:nil]);
+            return;
+        }
+        if (privateKey == nil || [privateKey length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid privateKey" details:nil]);
+            return;
+        }
+        if (password == nil || [privateKey length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid password" details:nil]);
+            return;
+        }
 
         if (folderPath == nil || [folderPath length] == 0) {
             result([FlutterError errorWithCode:@"InvalidParams"
@@ -388,9 +308,7 @@ bool handleError(FlutterResult result, int err) {
             return;
         }
 
-        gj_set_ssh_keys_paths((char*) sshPublicKeyPath, (char*) sshPrivateKeyPath, "");
-
-        int err = gj_git_push([folderPath UTF8String], [remote UTF8String]);
+        int err = gj_git_push([folderPath UTF8String], [remote UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String]);
         if (!handleError(result, err)) {
             result(@YES);
             return;
