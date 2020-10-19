@@ -14,6 +14,7 @@ cd ../
 if [[ $(git status -s | grep -v '??') ]]; then
     echo "Uncommitted Changes."
     echo "Exiting"
+    git status
     exit 1
 fi
 

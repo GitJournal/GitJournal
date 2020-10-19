@@ -6,6 +6,7 @@ import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ext_storage/ext_storage.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
+import 'package:icloud_documents_path/icloud_documents_path.dart';
 import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -350,6 +351,27 @@ class SettingsListState extends State<SettingsList> {
           title: Text(tr('settings.storage.repoLocation')),
           subtitle: Text(settings.storageLocation),
           enabled: !settings.storeInternally,
+        ),
+      if (Platform.isIOS)
+        SwitchListTile(
+          title: Text(tr('settings.storage.icloud')),
+          value: !settings.storeInternally,
+          onChanged: (bool newVal) async {
+            if (newVal == false) {
+              settings.storeInternally = true;
+              settings.storageLocation = "";
+            } else {
+              settings.storageLocation =
+                  await ICloudDocumentsPath.documentsPath;
+              if (settings.storageLocation.isNotEmpty) {
+                settings.storeInternally = false;
+              }
+            }
+            settings.save();
+            stateContainer.moveRepoToPath();
+
+            setState(() {});
+          },
         ),
       ListTile(
         title: Text(tr('settings.misc.title')),

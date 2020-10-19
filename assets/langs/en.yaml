@@ -135,6 +135,7 @@ settings:
     title: Storage
     fileName: Filename
     useLocal: Store Repo Internally
+    icloud: Store in iCloud
     repoLocation: Repo Location
   drawer:
     title: Sidebar Settings

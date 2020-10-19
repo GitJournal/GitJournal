@@ -62,6 +62,8 @@ dependencies:
   filesystem_picker: ^1.0.3 # for directories
   permission_handler: ^5.0.1+1
   ext_storage: ^1.0.3
+  icloud_documents_path:
+    git: https://github.com/GitJournal/icloud_documents_path.git
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.2"

@@ -120,6 +120,8 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (6.7.2):
     - GoogleUtilities/Logger
+  - icloud_documents_path (0.0.1):
+    - Flutter
   - image_picker (0.0.1):
     - Flutter
   - in_app_purchase (0.0.1):
@@ -172,6 +174,7 @@ DEPENDENCIES:
   - flutter_email_sender (from `.symlinks/plugins/flutter_email_sender/ios`)
   - flutter_sentry (from `.symlinks/plugins/flutter_sentry/ios`)
   - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
+  - icloud_documents_path (from `.symlinks/plugins/icloud_documents_path/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - in_app_purchase (from `.symlinks/plugins/in_app_purchase/ios`)
   - launch_review (from `.symlinks/plugins/launch_review/ios`)
@@ -229,6 +232,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_sentry/ios"
   flutter_webview_plugin:
     :path: ".symlinks/plugins/flutter_webview_plugin/ios"
+  icloud_documents_path:
+    :path: ".symlinks/plugins/icloud_documents_path/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
   in_app_purchase:
@@ -278,6 +283,7 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: 67458367830514fb20fd9e233496f1eef9d90185
   GoogleDataTransport: 672fb0ce96fe7f7f31d43672fca62ad2c9c86f7b
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
+  icloud_documents_path: 11c858abe03d6900cacce4ef86267f527c89ab7d
   image_picker: 66aa71bc96850a90590a35d4c4a2907b0d823109
   in_app_purchase: 3e2155afa9d03d4fa32d9e62d567885080ce97d6
   launch_review: 75d5a956ba8eaa493e9c9d4bf4c05e505e8d5ed0

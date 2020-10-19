@@ -361,6 +361,8 @@ class StateContainer with ChangeNotifier {
       repoPath = newRepoPath;
       appState.notesFolder.reset(repoPath);
       notifyListeners();
+
+      _loadNotes();
     }
   }
 }
