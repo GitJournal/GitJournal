@@ -329,11 +329,35 @@ class StateContainer with ChangeNotifier {
     () async {
       var repo = await GitRepository.load(_gitRepo.gitDirPath);
       var remote = repo.config.remote(remoteName);
-      var remoteBranchName = await repo.guessRemoteHead(remoteName);
+      var remoteBranch = await repo.guessRemoteHead(remoteName);
+      var remoteBranchName = remoteBranch.name.branchName();
 
-      await repo.setUpstreamTo(remote, remoteBranchName);
+      var branches = await repo.branches();
+      if (branches.isEmpty) {
+        assert(remoteBranch.isHash);
+        await repo.checkoutBranch(remoteBranchName, remoteBranch.hash);
+        await repo.setUpstreamTo(remote, remoteBranchName);
+      } else {
+        var branch = branches[0];
 
-      await _gitRepo.merge();
+        if (branch == remoteBranchName) {
+          await repo.setUpstreamTo(remote, remoteBranchName);
+          await _gitRepo.merge();
+        } else {
+          var headRef = await repo.resolveReference(await repo.head());
+          await repo.checkoutBranch(remoteBranchName, headRef.hash);
+          await repo.deleteBranch(branch);
+          await repo.setUpstreamTo(remote, remoteBranchName);
+          await _gitRepo.merge();
+        }
+
+        // if more than one branch
+        // TODO: Check if one of the branches matches the remote branch name
+        //       and use that
+        //       if not, then just create a new branch with the remoteBranchName
+        //       and merge ..
+
+      }
 
       await _persistConfig();
       _loadNotes();
