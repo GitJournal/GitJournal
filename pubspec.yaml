@@ -51,7 +51,7 @@ dependencies:
   image_picker: ^0.6.7
   easy_localization: ^2.3.2
   easy_localization_loader: ^0.0.2
-  quick_actions: ^0.4.0+5
+  quick_actions: ^0.4.0+10
   receive_sharing_intent: ^1.4.0+2
   in_app_purchase: ^0.3.4+5
   flutter_plugin_android_lifecycle: ^1.0.8 # for fixing the build
