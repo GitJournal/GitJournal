@@ -516,6 +516,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     }
 
     if (error != null && error.isNotEmpty) {
+      Log.i("Not completing gitClone because of error");
       setState(() {
         logEvent(Event.GitHostSetupGitCloneError, parameters: {
           'error': error,
@@ -529,10 +530,11 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     // Add a GitIgnore file. This way we always at least have one commit
     // It makes doing a git pull and push easier
     //
-    var anyFileInRepo = Directory(repoPath).list().firstWhere(
-          (fs) => fs.statSync().type == FileSystemEntityType.file,
-          orElse: () => null,
-        );
+    var dirList = await Directory(repoPath).list().toList();
+    var anyFileInRepo = dirList.firstWhere(
+      (fs) => fs.statSync().type == FileSystemEntityType.file,
+      orElse: () => null,
+    );
     if (anyFileInRepo == null) {
       Log.i("Adding .ignore file");
       var ignoreFile = File(p.join(repoPath, ".gitignore"));

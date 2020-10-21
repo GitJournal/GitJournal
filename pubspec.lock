@@ -181,7 +181,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "156ac4e589cf8a67c126e5c7c18f6ca76c6c232e"
+      resolved-ref: "071cb643a4924a45986920f44c0e2433ee9159ed"
       url: "https://github.com/GitJournal/dart_git.git"
     source: git
     version: "0.0.1"
@@ -435,9 +435,11 @@ packages:
   git_bindings:
     dependency: "direct main"
     description:
-      name: git_bindings
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: e7e957acdaff208744b5b1fff9a611cbfbd1de34
+      url: "https://github.com/GitJournal/git_bindings.git"
+    source: git
     version: "0.0.18"
   git_url_parse2:
     dependency: "direct main"

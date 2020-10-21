@@ -194,6 +194,15 @@ class GitNoteRepository {
     assert(branchConfig.name != null);
     assert(branchConfig.merge != null);
 
+    var remoteRef = await repo.remoteBranch(
+      branchConfig.remote,
+      branchConfig.trackingBranch(),
+    );
+    if (remoteRef == null) {
+      Log.i('Remote has no refs');
+      return;
+    }
+
     try {
       await _gitRepo.merge(
         branch: branchConfig.remoteTrackingBranch(),

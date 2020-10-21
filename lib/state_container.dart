@@ -335,13 +335,15 @@ class StateContainer with ChangeNotifier {
       var repo = await GitRepository.load(repoPath);
       var remote = repo.config.remote(remoteName);
       var remoteBranch = await repo.guessRemoteHead(remoteName);
-      var remoteBranchName = remoteBranch.name.branchName();
+      var remoteBranchName =
+          remoteBranch != null ? remoteBranch.name.branchName() : "master";
 
       var branches = await repo.branches();
       if (branches.isEmpty) {
         Log.i("Completing - no local branch");
-        assert(remoteBranch.isHash);
-        await repo.checkoutBranch(remoteBranchName, remoteBranch.hash);
+        if (remoteBranch != null) {
+          await repo.checkoutBranch(remoteBranchName, remoteBranch.hash);
+        }
         await repo.setUpstreamTo(remote, remoteBranchName);
       } else {
         var branch = branches[0];
