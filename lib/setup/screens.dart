@@ -495,8 +495,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     var basePath = stateContainer.appState.gitBaseDirectory;
 
     var settings = Provider.of<Settings>(context, listen: false);
-    var repoName = settings.folderName;
-    var repoPath = p.join(basePath, repoName);
+    var repoPath = p.join(basePath, widget.repoFolderName);
     Log.i("RepoPath: $repoPath");
 
     String error;
