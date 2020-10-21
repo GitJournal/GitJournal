@@ -375,9 +375,13 @@ class Settings extends ChangeNotifier {
         var sshPublicKeyPath = p.join(oldSshDir.path, "id_rsa.pub");
         var sshPrivateKeyPath = p.join(oldSshDir.path, "id_rsa");
 
-        sshPublicKey = await File(sshPublicKeyPath).readAsString();
-        sshPrivateKey = await File(sshPrivateKeyPath).readAsString();
-        sshPassword = "";
+        var publicKeyExists = File(sshPublicKeyPath).existsSync();
+        var privateKeyExists = File(sshPrivateKeyPath).existsSync();
+        if (publicKeyExists && privateKeyExists) {
+          sshPublicKey = await File(sshPublicKeyPath).readAsString();
+          sshPrivateKey = await File(sshPrivateKeyPath).readAsString();
+          sshPassword = "";
+        }
 
         await oldSshDir.delete(recursive: true);
       }
@@ -387,9 +391,13 @@ class Settings extends ChangeNotifier {
         var sshPublicKeyPath = p.join(newSshDir.path, "id_rsa.pub");
         var sshPrivateKeyPath = p.join(newSshDir.path, "id_rsa");
 
-        sshPublicKey = await File(sshPublicKeyPath).readAsString();
-        sshPrivateKey = await File(sshPrivateKeyPath).readAsString();
-        sshPassword = "";
+        var publicKeyExists = File(sshPublicKeyPath).existsSync();
+        var privateKeyExists = File(sshPrivateKeyPath).existsSync();
+        if (publicKeyExists && privateKeyExists) {
+          sshPublicKey = await File(sshPublicKeyPath).readAsString();
+          sshPrivateKey = await File(sshPrivateKeyPath).readAsString();
+          sshPassword = "";
+        }
 
         await newSshDir.delete(recursive: true);
       }
