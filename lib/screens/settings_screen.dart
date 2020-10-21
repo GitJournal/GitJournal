@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ext_storage/ext_storage.dart';
-import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:icloud_documents_path/icloud_documents_path.dart';
 import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
@@ -317,15 +316,7 @@ class SettingsListState extends State<SettingsList> {
               }
               settings.storeInternally = true;
 
-              var root = await ExtStorage.getExternalStorageDirectory();
-              String path = await FilesystemPicker.open(
-                title: tr('settings.storage.repoLocation'),
-                context: context,
-                rootDirectory: Directory(root),
-                fsType: FilesystemType.folder,
-                folderIconColor: Colors.green[500],
-              );
-
+              var path = await ExtStorage.getExternalStorageDirectory();
               if (path == null) {
                 settings.storeInternally = false;
                 settings.storageLocation = "";
@@ -349,7 +340,7 @@ class SettingsListState extends State<SettingsList> {
       if (Platform.isAndroid)
         ListTile(
           title: Text(tr('settings.storage.repoLocation')),
-          subtitle: Text(settings.storageLocation),
+          subtitle: Text(p.join(settings.storageLocation, settings.folderName)),
           enabled: !settings.storeInternally,
         ),
       if (Platform.isIOS)
