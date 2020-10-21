@@ -17,7 +17,9 @@ class SshKey {
 
 Future<SshKey> generateSSHKeys({@required String comment}) async {
   try {
+    var stopwatch = Stopwatch()..start();
     var keyPair = await RsaKeyPair.generateAsync();
+    Log.i("Generating KeyPair took: ${stopwatch.elapsed}");
 
     return SshKey(
       publicKey: keyPair.publicKeyString(comment: comment),
