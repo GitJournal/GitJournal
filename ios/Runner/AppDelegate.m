@@ -235,7 +235,7 @@ bool handleError(FlutterResult result, int err) {
             return;
         }
 
-        int err = gj_git_fetch([folderPath UTF8String], [remote UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String]);
+        int err = gj_git_fetch([folderPath UTF8String], [remote UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String], true);
         if (!handleError(result, err)) {
             result(@YES);
             return;
@@ -308,7 +308,7 @@ bool handleError(FlutterResult result, int err) {
             return;
         }
 
-        int err = gj_git_push([folderPath UTF8String], [remote UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String]);
+        int err = gj_git_push([folderPath UTF8String], [remote UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String], true);
         if (!handleError(result, err)) {
             result(@YES);
             return;
