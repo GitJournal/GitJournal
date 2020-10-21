@@ -260,13 +260,13 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         );
         _ignoredFiles.add(ignoredFile);
 
-        Log.v("Ignoring file", props: {
-          "path": ignoredFile.filePath,
-          "reason": ignoredFile.reason,
-        });
+        // Log.v("Ignoring file", props: {
+        //   "path": ignoredFile.filePath,
+        //   "reason": ignoredFile.reason,
+        // });
         continue;
       }
-      Log.v("Found file", props: {"path": fsEntity.path});
+      // Log.v("Found file", props: {"path": fsEntity.path});
       _addNoteListeners(note);
 
       _notes.add(note);
