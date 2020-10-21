@@ -37,8 +37,13 @@ if [ ! -L "gj_common" ]; then
     ln -s git_bindings/gj_common gj_common
 fi
 
+BUILD_NUM=$(git rev-list --count HEAD)
+echo "Build Number: $BUILD_NUM"
 
-#cd ios
+BUILD_NAME=$(cat pubspec.yaml | grep version | awk '{ print $2 }' | awk -F "+" '{ print $1 }')
+echo "Build Name: $BUILD_NAME"
+
+flutter build ios --release --no-codesign --build-number=$BUILD_NUM --build-name=$BUILD_NAME
+
+cd ios
 #fastlane release
-
-#git co .
