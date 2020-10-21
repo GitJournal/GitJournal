@@ -309,7 +309,7 @@ class Settings extends ChangeNotifier {
       'bottomMenuBar': bottomMenuBar.toString(),
       'storeInternally': storeInternally.toString(),
       'storageLocation': storageLocation,
-      'sshPublicKey': sshPublicKey,
+      'sshPublicKey': sshPublicKey.isNotEmpty.toString(),
     };
   }
 
