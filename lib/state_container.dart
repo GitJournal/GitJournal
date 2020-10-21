@@ -404,6 +404,9 @@ class StateContainer with ChangeNotifier {
       await Directory(repoPath).delete(recursive: true);
 
       repoPath = newRepoPath;
+      _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);
+
+      _notesCache.clear();
       appState.notesFolder.reset(repoPath);
       notifyListeners();
 
