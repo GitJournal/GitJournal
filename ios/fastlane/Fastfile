@@ -3,8 +3,11 @@ default_platform(:ios)
 platform :ios do
   desc "Push a new release build to the App Store"
   lane :release do
-    increment_build_number(build_number: number_of_commits)
-    build_app(workspace: "Runner.xcworkspace", scheme: "Runner")
+    build_app(
+      scheme: "Runner",
+      workspace: "Runner.xcworkspace",
+      export_method: "app-store"
+    )
     #upload_to_app_store(skip_metadata: true, skip_screenshots: true)
     upload_to_testflight(apple_id:"1466519634", skip_waiting_for_build_processing:true)
   end
