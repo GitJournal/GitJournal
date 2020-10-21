@@ -29,7 +29,6 @@ class AppSettings extends ChangeNotifier {
 
   var debugLogLevel = 'v';
 
-  var experimentalBacklinks = true;
   var experimentalFs = false;
   var experimentalMarkdownToolbar = false;
   var experimentalGraphView = false;
@@ -57,8 +56,6 @@ class AppSettings extends ChangeNotifier {
     }
 
     debugLogLevel = pref.getString("debugLogLevel") ?? debugLogLevel;
-    experimentalBacklinks =
-        pref.getBool("experimentalBacklinks") ?? experimentalBacklinks;
     experimentalFs = pref.getBool("experimentalFs") ?? experimentalFs;
     experimentalMarkdownToolbar = pref.getBool("experimentalMarkdownToolbar") ??
         experimentalMarkdownToolbar;
@@ -85,8 +82,6 @@ class AppSettings extends ChangeNotifier {
         defaultSet.proExpirationDate);
     _setBool(pref, "proMode", proMode, defaultSet.proMode);
     _setString(pref, "debugLogLevel", debugLogLevel, defaultSet.debugLogLevel);
-    _setBool(pref, "experimentalBacklinks", experimentalBacklinks,
-        defaultSet.experimentalBacklinks);
     _setBool(pref, "experimentalFs", experimentalFs, defaultSet.experimentalFs);
     _setBool(pref, "experimentalMarkdownToolbar", experimentalMarkdownToolbar,
         defaultSet.experimentalMarkdownToolbar);
@@ -111,7 +106,6 @@ class AppSettings extends ChangeNotifier {
       'proExpirationDate': proExpirationDate,
       'pseudoId': pseudoId,
       'debugLogLevel': debugLogLevel,
-      'experimentalBacklinks': experimentalBacklinks.toString(),
       'experimentalFs': experimentalFs.toString(),
       'experimentalMarkdownToolbar': experimentalMarkdownToolbar.toString(),
       'experimentalGraphView': experimentalGraphView.toString(),

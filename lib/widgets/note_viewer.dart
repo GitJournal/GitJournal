@@ -11,7 +11,6 @@ import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
@@ -41,7 +40,6 @@ class NoteViewer extends StatelessWidget {
       ),
     );
 
-    var appSettings = Provider.of<AppSettings>(context);
     var isDark = theme.brightness == Brightness.dark;
 
     // Copied from MarkdownStyleSheet except Grey is replaced with Highlight color
@@ -108,12 +106,11 @@ class NoteViewer extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16.0),
-          if (appSettings.experimentalBacklinks)
-            NoteBacklinkRenderer(
-              note: note,
-              rootFolder: rootFolder,
-              parentFolder: parentFolder,
-            ),
+          NoteBacklinkRenderer(
+            note: note,
+            rootFolder: rootFolder,
+            parentFolder: parentFolder,
+          ),
           // _buildFooter(context),
         ],
         crossAxisAlignment: CrossAxisAlignment.start,

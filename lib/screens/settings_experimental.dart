@@ -31,15 +31,6 @@ class _ExperimentalSettingsScreenState
         child: ListView(
           children: <Widget>[
             SwitchListTile(
-              title: Text(tr('settings.experimental.backlinks')),
-              value: appSettings.experimentalBacklinks,
-              onChanged: (bool newVal) {
-                appSettings.experimentalBacklinks = newVal;
-                appSettings.save();
-                setState(() {});
-              },
-            ),
-            SwitchListTile(
               title: Text(tr('settings.experimental.fs')),
               value: appSettings.experimentalFs,
               onChanged: (bool newVal) {
