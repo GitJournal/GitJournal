@@ -373,10 +373,9 @@ class NoteEditorState extends State<NoteEditor> {
     }
   }
 
-  void _discardChangesSelected(Note note) {
-    if (_noteModified(note)) {
-      note.data = originalNoteData;
-    }
+  void _discardChangesSelected(Note note) async {
+    var stateContainer = Provider.of<StateContainer>(context, listen: false);
+    stateContainer.discardChanges(note);
 
     Navigator.pop(context);
   }

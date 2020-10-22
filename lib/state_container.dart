@@ -413,6 +413,12 @@ class StateContainer with ChangeNotifier {
       _loadNotes();
     }
   }
+
+  Future<void> discardChanges(Note note) async {
+    var repo = await GitRepository.load(repoPath);
+    await repo.checkout(note.filePath);
+    return note.load();
+  }
 }
 
 Future<void> _copyDirectory(String source, String destination) async {
