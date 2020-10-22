@@ -1,9 +1,13 @@
-- version: "1.72"
+- version: "1.73"
   draft: true
   features:
     - text: "Allow the Git Repo to be accessible by other apps. You can now edit the notes with any other editor in Android, and additionally sync with any other mechanism as the folder is in a public location - #99"
   improvements:
     - text: "Allow GitJournal to be visible in the iOS Files app"
+    - text: "Allow syncing via iCloud"
+    - text: "Add Shortcuts support in iOS - #262"
+      image: ios_shortcuts.png
+    - text: "Custom SSH keys with passwords can now be used - #227"
   bugs:
     - text: "Fix notes not always showing up - #270"
 
