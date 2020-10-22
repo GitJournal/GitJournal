@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/state_container.dart';
+import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
 
@@ -74,7 +74,7 @@ class _FileSystemScreenState extends State<FileSystemScreen> {
       ),
     );
     if (newFileName is String) {
-      var container = Provider.of<StateContainer>(context, listen: false);
+      var container = Provider.of<Repository>(context, listen: false);
       container.renameFile(oldPath, newFileName);
     }
   }

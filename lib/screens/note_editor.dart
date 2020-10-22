@@ -16,7 +16,7 @@ import 'package:gitjournal/editors/journal_editor.dart';
 import 'package:gitjournal/editors/markdown_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/state_container.dart';
+import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
@@ -282,7 +282,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
         });
         return;
       }
-      var container = Provider.of<StateContainer>(context, listen: false);
+      var container = Provider.of<Repository>(context, listen: false);
       container.renameNote(note, fileName);
     }
   }
@@ -313,7 +313,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
       return;
     }
 
-    var stateContainer = Provider.of<StateContainer>(context, listen: false);
+    var stateContainer = Provider.of<Repository>(context, listen: false);
     stateContainer.removeNote(note);
   }
 
@@ -348,7 +348,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
 
     Log.d("Note modified - saving");
     try {
-      var stateContainer = Provider.of<StateContainer>(context, listen: false);
+      var stateContainer = Provider.of<Repository>(context, listen: false);
       _isNewNote
           ? await stateContainer.addNote(note)
           : await stateContainer.updateNote(note);
@@ -391,15 +391,14 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
         note.parent = destFolder;
         setState(() {});
       } else {
-        var stateContainer =
-            Provider.of<StateContainer>(context, listen: false);
+        var stateContainer = Provider.of<Repository>(context, listen: false);
         stateContainer.moveNote(note, destFolder);
       }
     }
   }
 
   void _discardChangesSelected(Note note) async {
-    var stateContainer = Provider.of<StateContainer>(context, listen: false);
+    var stateContainer = Provider.of<Repository>(context, listen: false);
     stateContainer.discardChanges(note);
 
     Navigator.pop(context);

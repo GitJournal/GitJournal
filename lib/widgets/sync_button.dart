@@ -9,7 +9,7 @@ import 'package:git_bindings/git_bindings.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/appstate.dart';
-import 'package:gitjournal/state_container.dart';
+import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/utils.dart';
 
 class SyncButton extends StatefulWidget {
@@ -41,7 +41,7 @@ class _SyncButtonState extends State<SyncButton> {
 
   @override
   Widget build(BuildContext context) {
-    final appState = Provider.of<StateContainer>(context).appState;
+    final appState = Provider.of<Repository>(context).appState;
 
     if (_connectivity == ConnectivityResult.none) {
       return GitPendingChangesBadge(
@@ -87,7 +87,7 @@ class _SyncButtonState extends State<SyncButton> {
 
   void _syncRepo() async {
     try {
-      final container = Provider.of<StateContainer>(context, listen: false);
+      final container = Provider.of<Repository>(context, listen: false);
       await container.syncNotes();
     } on GitException catch (e) {
       showSnackbar(context, tr('widgets.SyncButton.error', args: [e.cause]));
@@ -97,7 +97,7 @@ class _SyncButtonState extends State<SyncButton> {
   }
 
   IconData _syncStatusIcon() {
-    final container = Provider.of<StateContainer>(context);
+    final container = Provider.of<Repository>(context);
     final appState = container.appState;
     switch (appState.syncStatus) {
       case SyncStatus.Error:
@@ -172,7 +172,7 @@ class GitPendingChangesBadge extends StatelessWidget {
       color: darkMode ? Colors.black : Colors.white,
     );
 
-    final appState = Provider.of<StateContainer>(context).appState;
+    final appState = Provider.of<Repository>(context).appState;
 
     return Badge(
       badgeContent: Text(appState.numChanges.toString(), style: style),

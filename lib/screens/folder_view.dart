@@ -13,10 +13,10 @@ import 'package:gitjournal/core/sorted_notes_folder.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
+import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/screens/settings_screen.dart';
 import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
@@ -154,7 +154,7 @@ class _FolderViewState extends State<FolderView> {
 
   void _syncRepo(BuildContext context) async {
     try {
-      var container = Provider.of<StateContainer>(context, listen: false);
+      var container = Provider.of<Repository>(context, listen: false);
       await container.syncNotes();
     } on GitException catch (e) {
       showSnackbar(
@@ -228,7 +228,7 @@ class _FolderViewState extends State<FolderView> {
       var settings = Provider.of<Settings>(context, listen: false);
       config.saveToSettings(settings);
 
-      var container = Provider.of<StateContainer>(context, listen: false);
+      var container = Provider.of<Repository>(context, listen: false);
       container.saveFolderConfig(sortedNotesFolder.config);
 
       setState(() {
@@ -253,7 +253,7 @@ class _FolderViewState extends State<FolderView> {
           var settings = Provider.of<Settings>(context, listen: false);
           config.saveToSettings(settings);
 
-          var container = Provider.of<StateContainer>(context, listen: false);
+          var container = Provider.of<Repository>(context, listen: false);
           container.saveFolderConfig(sortedNotesFolder.config);
         };
 
@@ -269,7 +269,7 @@ class _FolderViewState extends State<FolderView> {
           var settings = Provider.of<Settings>(context, listen: false);
           config.saveToSettings(settings);
 
-          var container = Provider.of<StateContainer>(context, listen: false);
+          var container = Provider.of<Repository>(context, listen: false);
           container.saveFolderConfig(sortedNotesFolder.config);
         };
 
@@ -401,13 +401,13 @@ class _FolderViewState extends State<FolderView> {
       var settings = Provider.of<Settings>(context, listen: false);
       config.saveToSettings(settings);
 
-      var container = Provider.of<StateContainer>(context, listen: false);
+      var container = Provider.of<Repository>(context, listen: false);
       container.saveFolderConfig(widget.notesFolder.config);
     }
   }
 
   List<Widget> _buildNoteActions() {
-    final appState = Provider.of<StateContainer>(context).appState;
+    final appState = Provider.of<Repository>(context).appState;
 
     var extraActions = PopupMenuButton<DropDownChoices>(
       key: const ValueKey("PopupMenu"),
@@ -484,7 +484,7 @@ class _FolderViewState extends State<FolderView> {
       builder: (context) => NoteDeleteDialog(),
     );
     if (shouldDelete == true) {
-      var stateContainer = Provider.of<StateContainer>(context, listen: false);
+      var stateContainer = Provider.of<Repository>(context, listen: false);
       stateContainer.removeNote(note);
     }
 

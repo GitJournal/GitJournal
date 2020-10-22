@@ -10,7 +10,7 @@ import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/settings.dart';
 import 'app.dart';
 import 'core/note.dart';
-import 'state_container.dart';
+import 'repository.dart';
 import 'utils/logger.dart';
 
 Future<String> getVersionString() async {
@@ -27,8 +27,7 @@ Future<String> getVersionString() async {
   return versionText;
 }
 
-SnackBar buildUndoDeleteSnackbar(
-    StateContainer stateContainer, Note deletedNote) {
+SnackBar buildUndoDeleteSnackbar(Repository stateContainer, Note deletedNote) {
   return SnackBar(
     content: Text(tr('widgets.FolderView.noteDeleted')),
     action: SnackBarAction(

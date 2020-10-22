@@ -20,7 +20,7 @@ import 'package:gitjournal/features.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
-class StateContainer with ChangeNotifier {
+class Repository with ChangeNotifier {
   final AppState appState;
   final Settings settings;
 
@@ -35,7 +35,7 @@ class StateContainer with ChangeNotifier {
 
   String repoPath;
 
-  StateContainer({@required this.appState, @required this.settings}) {
+  Repository({@required this.appState, @required this.settings}) {
     repoPath = settings.buildRepoPath(appState.gitBaseDirectory);
 
     _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);

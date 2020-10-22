@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/icon_dismissable.dart';
 
@@ -154,8 +154,7 @@ class _FolderListViewState extends State<FolderListView> {
         onDismissed: (direction) {
           deletedViaDismissed.add(note.filePath);
 
-          var stateContainer =
-              Provider.of<StateContainer>(context, listen: false);
+          var stateContainer = Provider.of<Repository>(context, listen: false);
           stateContainer.removeNote(note);
 
           var snackBar = buildUndoDeleteSnackbar(stateContainer, note);

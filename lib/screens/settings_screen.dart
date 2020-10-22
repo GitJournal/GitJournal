@@ -14,6 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/features.dart';
+import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/screens/debug_screen.dart';
 import 'package:gitjournal/screens/feature_timeline_screen.dart';
 import 'package:gitjournal/screens/settings_bottom_menu_bar.dart';
@@ -26,7 +27,6 @@ import 'package:gitjournal/screens/settings_note_metadata.dart';
 import 'package:gitjournal/screens/settings_tags.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
 import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
@@ -65,7 +65,7 @@ class SettingsListState extends State<SettingsList> {
   Widget build(BuildContext context) {
     var settings = Provider.of<Settings>(context);
     var appSettings = Provider.of<AppSettings>(context);
-    final stateContainer = Provider.of<StateContainer>(context);
+    final stateContainer = Provider.of<Repository>(context);
     final appState = stateContainer.appState;
 
     var saveGitAuthor = (String gitAuthor) {

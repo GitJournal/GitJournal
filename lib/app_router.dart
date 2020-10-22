@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 
 import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
+import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/screens/filesystem_screen.dart';
 import 'package:gitjournal/screens/folder_listing.dart';
 import 'package:gitjournal/screens/graph_view.dart';
@@ -16,7 +17,6 @@ import 'package:gitjournal/screens/settings_screen.dart';
 import 'package:gitjournal/screens/tag_listing.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/setup/screens.dart';
-import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 
@@ -39,7 +39,7 @@ class AppRouter {
 
   Route<dynamic> generateRoute(
     RouteSettings routeSettings,
-    StateContainer stateContainer,
+    Repository stateContainer,
     String sharedText,
     List<String> sharedImages,
   ) {
@@ -74,7 +74,7 @@ class AppRouter {
 
   Widget _screenForRoute(
     String route,
-    StateContainer stateContainer,
+    Repository stateContainer,
     Settings settings,
     String sharedText,
     List<String> sharedImages,
