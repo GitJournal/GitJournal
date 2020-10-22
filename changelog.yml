@@ -3,6 +3,7 @@
   features:
     - text: "Allow the Git Repo to be accessible by other apps. You can now edit the notes with any other editor in Android, and additionally sync with any other mechanism as the folder is in a public location - #99"
   improvements:
+    - text: "Auto save the Note when the App loses focus. The changes are not committed, but this way you never lose your notes"
     - text: "Allow GitJournal to be visible in the iOS Files app"
     - text: "Allow syncing via iCloud"
     - text: "Add Shortcuts support in iOS - #262"

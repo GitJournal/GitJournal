@@ -76,7 +76,7 @@ class NoteEditor extends StatefulWidget {
 
 enum EditorType { Markdown, Raw, Checklist, Journal }
 
-class NoteEditorState extends State<NoteEditor> {
+class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
   Note note;
   EditorType editorType = EditorType.Markdown;
   MdYamlDoc originalNoteData = MdYamlDoc();
@@ -120,6 +120,8 @@ class NoteEditorState extends State<NoteEditor> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
     if (widget.defaultEditorType != null) {
       editorType = widget.defaultEditorType;
     } else {
@@ -140,6 +142,24 @@ class NoteEditorState extends State<NoteEditor> {
     if (note.fileFormat == NoteFileFormat.Txt &&
         editorType == EditorType.Markdown) {
       editorType = EditorType.Raw;
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    Log.i("Note Edit State: $state");
+    if (state != AppLifecycleState.resumed) {
+      var note = _getNoteFromEditor();
+      if (!_noteModified(note)) return;
+
+      Log.d("App Lost Focus - saving note");
+      note.save();
     }
   }
 
