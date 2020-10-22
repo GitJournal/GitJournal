@@ -95,7 +95,7 @@ class NoteViewer extends StatelessWidget {
                   if (!opened) {
                     showSnackbar(
                       context,
-                      tr('wigets.NoteViewer.linkInvalid', args: [link]),
+                      tr('widgets.NoteViewer.linkInvalid', args: [link]),
                     );
                   }
                   return;
@@ -108,7 +108,7 @@ class NoteViewer extends StatelessWidget {
                   Log.e("Opening Link", ex: e, stacktrace: stackTrace);
                   showSnackbar(
                     context,
-                    tr('wigets.NoteViewer.linkNotFound', args: [link]),
+                    tr('widgets.NoteViewer.linkNotFound', args: [link]),
                   );
                 }
               },
