@@ -340,6 +340,7 @@ setup:
   sshKeyUserProvided:
     public: Public Key -
     private: Private Key -
+    password: Password
   cloning: Cloning ...
   host:
     title: Select a Git Hosting Provider -

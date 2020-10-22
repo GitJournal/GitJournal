@@ -209,11 +209,12 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           );
         } else if (_keyGenerationChoice == KeyGenerationChoice.UserProvided) {
           return GitHostUserProvidedKeys(
-            doneFunction: (String publicKey, String privateKey) async {
+            doneFunction:
+                (String publicKey, String privateKey, String password) async {
               var settings = Provider.of<Settings>(context, listen: false);
               settings.sshPublicKey = publicKey;
               settings.sshPrivateKey = privateKey;
-              settings.sshPassword = "";
+              settings.sshPassword = password;
               settings.save();
 
               setState(() {
@@ -295,11 +296,11 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           );
         } else if (_keyGenerationChoice == KeyGenerationChoice.UserProvided) {
           return GitHostUserProvidedKeys(
-            doneFunction: (String publicKey, String privateKey) async {
+            doneFunction: (publicKey, privateKey, password) async {
               var settings = Provider.of<Settings>(context, listen: false);
               settings.sshPublicKey = publicKey;
               settings.sshPrivateKey = privateKey;
-              settings.sshPassword = "";
+              settings.sshPassword = password;
               settings.save();
 
               setState(() {

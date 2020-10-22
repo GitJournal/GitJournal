@@ -204,7 +204,8 @@ class GitHostSetupKeyChoice extends StatelessWidget {
 }
 
 class GitHostUserProvidedKeys extends StatefulWidget {
-  final Func2<String, String, void> doneFunction; // public, private
+  final Func3<String, String, String, void>
+      doneFunction; // public, private, password
   final String saveText;
 
   GitHostUserProvidedKeys({
@@ -222,6 +223,7 @@ class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
   GlobalKey<FormState> _privateFormKey;
   TextEditingController _publicKeyController;
   TextEditingController _privateKeyController;
+  TextEditingController _passwordController;
 
   String saveText;
 
@@ -233,6 +235,7 @@ class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
     _privateFormKey = GlobalKey<FormState>();
     _publicKeyController = TextEditingController();
     _privateKeyController = TextEditingController();
+    _passwordController = TextEditingController();
 
     saveText = widget.saveText.isEmpty ? tr("setup.next") : widget.saveText;
   }
@@ -263,6 +266,16 @@ class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
           ),
           const SizedBox(height: 8.0),
           PrivateKeyEditor(_privateFormKey, _privateKeyController),
+          const SizedBox(height: 8.0),
+          TextField(
+            controller: _passwordController,
+            maxLines: 1,
+            decoration: InputDecoration(
+              helperText: tr('setup.sshKeyUserProvided.password'),
+              border: const OutlineInputBorder(),
+              isDense: true,
+            ),
+          ),
           const SizedBox(height: 16.0),
           GitHostSetupButton(
             text: saveText,
@@ -284,7 +297,11 @@ class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
                 privateKey += '\n';
               }
 
-              widget.doneFunction(publicKey, privateKey);
+              widget.doneFunction(
+                publicKey,
+                privateKey,
+                _passwordController.text,
+              );
             },
           ),
         ],

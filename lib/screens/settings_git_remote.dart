@@ -118,7 +118,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     Navigator.of(context).push(route);
   }
 
-  void _updateKeys(String publicKey, String privateKey) {
+  void _updateKeys(String publicKey, String privateKey, String password) {
     var settings = Provider.of<Settings>(context, listen: false);
 
     if (publicKey.isEmpty || privateKey.isEmpty) {
@@ -126,6 +126,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     }
     settings.sshPublicKey = publicKey;
     settings.sshPrivateKey = privateKey;
+    settings.sshPassword = password;
     settings.save();
 
     Navigator.of(context).pop();
