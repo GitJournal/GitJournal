@@ -204,10 +204,12 @@ class GitHostSetupKeyChoice extends StatelessWidget {
 }
 
 class GitHostUserProvidedKeys extends StatefulWidget {
-  final Func2<String, String, void> doneFunction;
+  final Func2<String, String, void> doneFunction; // public, private
+  final String saveText;
 
   GitHostUserProvidedKeys({
     @required this.doneFunction,
+    this.saveText = "",
   });
 
   @override
@@ -221,6 +223,8 @@ class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
   TextEditingController _publicKeyController;
   TextEditingController _privateKeyController;
 
+  String saveText;
+
   @override
   void initState() {
     super.initState();
@@ -229,6 +233,8 @@ class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
     _privateFormKey = GlobalKey<FormState>();
     _publicKeyController = TextEditingController();
     _privateKeyController = TextEditingController();
+
+    saveText = widget.saveText.isEmpty ? tr("setup.next") : widget.saveText;
   }
 
   @override
@@ -241,7 +247,7 @@ class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    var body = Container(
       child: Column(
         children: <Widget>[
           Text(
@@ -259,7 +265,7 @@ class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
           PrivateKeyEditor(_privateFormKey, _privateKeyController),
           const SizedBox(height: 16.0),
           GitHostSetupButton(
-            text: tr("setup.next"),
+            text: saveText,
             onPressed: () {
               var publicValid = _publicFormKey.currentState.validate();
               var privateValid = _privateFormKey.currentState.validate();
@@ -284,6 +290,13 @@ class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
         ],
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+    );
+
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: body,
       ),
     );
   }

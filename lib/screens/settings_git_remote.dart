@@ -56,6 +56,12 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
             onPressed: () => _generateSshKey(context),
           ),
         ),
+        Builder(
+          builder: (BuildContext context) => Button(
+            text: tr('setup.sshKeyChoice.custom'),
+            onPressed: _customSshKeys,
+          ),
+        ),
         ListPreference(
           title: tr('settings.ssh.syncFreq'),
           currentOption: settings.remoteSyncFrequency.toPublicString(),
@@ -87,11 +93,42 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: body,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: body,
+        ),
       ),
     );
+  }
+
+  void _customSshKeys() {
+    var route = MaterialPageRoute(
+      builder: (context) => Scaffold(
+        body: GitHostUserProvidedKeys(
+          doneFunction: _updateKeys,
+          saveText: tr("setup.sshKey.save"),
+        ),
+        appBar: AppBar(
+          title: Text(tr('setup.sshKeyChoice.custom')),
+        ),
+      ),
+      settings: const RouteSettings(name: '/settings/gitRemote/customKeys'),
+    );
+    Navigator.of(context).push(route);
+  }
+
+  void _updateKeys(String publicKey, String privateKey) {
+    var settings = Provider.of<Settings>(context, listen: false);
+
+    if (publicKey.isEmpty || privateKey.isEmpty) {
+      return;
+    }
+    settings.sshPublicKey = publicKey;
+    settings.sshPrivateKey = privateKey;
+    settings.save();
+
+    Navigator.of(context).pop();
   }
 
   void _copyKeyToClipboard(BuildContext context) {

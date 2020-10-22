@@ -332,6 +332,7 @@ setup:
     openDeploy: Open Deploy Key Webpage
     clone: Clone Repo
     addDeploy: Adding as a Deploy Key
+    save: Save
   sshKeyChoice:
     title: We need SSH keys to authenticate -
     generate: Generate new keys
