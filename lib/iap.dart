@@ -15,6 +15,7 @@ import 'package:gitjournal/utils/logger.dart';
 class InAppPurchases {
   static Future<void> confirmProPurchaseBoot() async {
     clearTransactionsIos();
+    confirmPendingPurchases();
 
     if (Features.alwaysPro) {
       return;
@@ -103,23 +104,48 @@ class InAppPurchases {
   }
 
   static Future<void> clearTransactionsIos() async {
-    if (Platform.isIOS) {
-      final transactions = await SKPaymentQueueWrapper().transactions();
-      for (final transaction in transactions) {
-        try {
-          if (transaction.transactionState ==
-              SKPaymentTransactionStateWrapper.purchased) {
-            continue;
-          }
-          if (transaction.transactionState ==
-              SKPaymentTransactionStateWrapper.restored) {
-            continue;
-          }
+    if (!Platform.isIOS) {
+      return;
+    }
 
-          if (transaction.transactionState !=
-              SKPaymentTransactionStateWrapper.purchasing) {
-            await SKPaymentQueueWrapper().finishTransaction(transaction);
-          }
+    final transactions = await SKPaymentQueueWrapper().transactions();
+    for (final transaction in transactions) {
+      try {
+        if (transaction.transactionState ==
+            SKPaymentTransactionStateWrapper.purchased) {
+          continue;
+        }
+        if (transaction.transactionState ==
+            SKPaymentTransactionStateWrapper.restored) {
+          continue;
+        }
+
+        if (transaction.transactionState !=
+            SKPaymentTransactionStateWrapper.purchasing) {
+          await SKPaymentQueueWrapper().finishTransaction(transaction);
+        }
+      } catch (e, stackTrace) {
+        logException(e, stackTrace);
+      }
+    }
+  }
+
+  static void confirmPendingPurchases() async {
+    // On iOS this results in a "Sign in with Apple ID" dialog
+    if (!Platform.isAndroid) {
+      return;
+    }
+
+    InAppPurchaseConnection.enablePendingPurchases();
+    final iapCon = InAppPurchaseConnection.instance;
+
+    var pastPurchases = await iapCon.queryPastPurchases();
+    for (var pd in pastPurchases.pastPurchases) {
+      if (pd.pendingCompletePurchase) {
+        Log.i("Pending Complete Purchase - ${pd.productID}");
+
+        try {
+          await iapCon.completePurchase(pd);
         } catch (e, stackTrace) {
           logException(e, stackTrace);
         }
