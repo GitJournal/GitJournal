@@ -37,6 +37,7 @@ class NoteEditor extends StatefulWidget {
   final List<String> existingImages;
 
   final Map<String, dynamic> newNoteExtraProps;
+  final String newNoteFileName;
   final bool editMode;
 
   NoteEditor.fromNote(
@@ -47,6 +48,7 @@ class NoteEditor extends StatefulWidget {
         defaultEditorType = null,
         existingText = null,
         existingImages = null,
+        newNoteFileName = "",
         newNoteExtraProps = null;
 
   NoteEditor.newNote(
@@ -56,6 +58,7 @@ class NoteEditor extends StatefulWidget {
     this.existingText,
     this.existingImages,
     this.newNoteExtraProps = const {},
+    this.newNoteFileName = "",
   })  : note = null,
         editMode = true;
 
@@ -67,6 +70,7 @@ class NoteEditor extends StatefulWidget {
         existingText,
         existingImages,
         newNoteExtraProps,
+        newNoteFileName,
       );
     } else {
       return NoteEditorState.fromNote(note);
@@ -95,8 +99,9 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
     String existingText,
     List<String> existingImages,
     Map<String, dynamic> extraProps,
+    String fileName,
   ) {
-    note = Note.newNote(folder, extraProps: extraProps);
+    note = Note.newNote(folder, extraProps: extraProps, fileName: fileName);
     if (existingText != null) {
       note.body = existingText;
     }

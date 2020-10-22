@@ -269,6 +269,7 @@ widgets:
     failed: Purchase Failed
   NoteViewer:
     linkNotFound: Link '{}' not found
+    linkInvalid: Link '{}' is invalid.
   FolderSelectionDialog:
     title: Select a Folder
 

@@ -22,13 +22,20 @@ class LinkResolver {
   }
 
   Note resolve(String link) {
-    if (link.startsWith('[[') && link.endsWith(']]') && link.length > 4) {
+    if (isWikiLink(link)) {
       // FIXME: What if the case is different?
-      var wikiLinkTerm = link.substring(2, link.length - 2).trim();
-      return resolveWikiLink(wikiLinkTerm);
+      return resolveWikiLink(stripWikiSyntax(link));
     }
 
     return _getNoteWithSpec(inputNote.parent, link);
+  }
+
+  static bool isWikiLink(String link) {
+    return link.startsWith('[[') && link.endsWith(']]') && link.length > 4;
+  }
+
+  static String stripWikiSyntax(String link) {
+    return link.substring(2, link.length - 2).trim();
   }
 
   Note resolveWikiLink(String term) {

@@ -9,6 +9,7 @@
     - text: "Add Shortcuts support in iOS - #262"
       image: ios_shortcuts.png
     - text: "Custom SSH keys with passwords can now be used - #227"
+    - text: "Create new note when clicking on non existing Wiki Link - #240"
   bugs:
     - text: "Fix notes not always showing up - #270"
 

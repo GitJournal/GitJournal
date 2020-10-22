@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 
+import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/folder_views/card_view.dart';
 import 'package:gitjournal/folder_views/grid_view.dart';
 import 'package:gitjournal/folder_views/journal_view.dart';
 import 'package:gitjournal/screens/note_editor.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
@@ -83,7 +86,8 @@ void openNoteEditor(
   bool editMode = false,
 }) async {
   var route = MaterialPageRoute(
-    builder: (context) => NoteEditor.fromNote(note, parentFolder, editMode: editMode),
+    builder: (context) =>
+        NoteEditor.fromNote(note, parentFolder, editMode: editMode),
     settings: const RouteSettings(name: '/note/'),
   );
   var showUndoSnackBar = await Navigator.of(context).push(route);
@@ -96,4 +100,34 @@ void openNoteEditor(
       ..removeCurrentSnackBar()
       ..showSnackBar(snackBar);
   }
+}
+
+bool openNewNoteEditor(BuildContext context, String term) {
+  var rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
+  var parentFolder = rootFolder;
+  var settings = Provider.of<Settings>(context, listen: false);
+  var defaultEditor = settings.defaultEditor.toEditorType();
+
+  var fileName = term;
+  if (fileName.contains(p.separator)) {
+    parentFolder = rootFolder.getFolderWithSpec(p.dirname(fileName));
+    if (parentFolder == null) {
+      return false;
+    }
+    Log.i("New Note Parent Folder: ${parentFolder.folderPath}");
+
+    fileName = p.basename(term);
+  }
+
+  var route = MaterialPageRoute(
+    builder: (context) => NoteEditor.newNote(
+      parentFolder,
+      parentFolder,
+      defaultEditor,
+      newNoteFileName: fileName,
+    ),
+    settings: const RouteSettings(name: '/newNote/'),
+  );
+  Navigator.of(context).push(route);
+  return true;
 }

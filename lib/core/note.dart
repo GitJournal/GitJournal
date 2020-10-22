@@ -104,7 +104,11 @@ class Note with NotesNotifier {
     noteSerializer = NoteSerializer.fromConfig(parent.config);
   }
 
-  Note.newNote(this.parent, {Map<String, dynamic> extraProps = const {}}) {
+  Note.newNote(
+    this.parent, {
+    Map<String, dynamic> extraProps = const {},
+    String fileName = "",
+  }) {
     created = DateTime.now();
     _loadState = NoteLoadState.Loaded;
     _fileFormat = NoteFileFormat.Markdown;
@@ -115,6 +119,17 @@ class Note with NotesNotifier {
         _data.props[key] = value;
       });
       noteSerializer.decode(_data, this);
+    }
+
+    if (fileName.isNotEmpty) {
+      // FIXME: We should ensure a note with this fileName does not already
+      //        exist
+      if (!NoteFileFormatInfo.isAllowedFileName(fileName)) {
+        fileName +=
+            NoteFileFormatInfo.defaultExtension(NoteFileFormat.Markdown);
+      }
+      _filePath = p.join(parent.folderPath, fileName);
+      Log.i("Constructing new note with path $_filePath");
     }
   }
 

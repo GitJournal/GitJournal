@@ -89,6 +89,18 @@ class NoteViewer extends StatelessWidget {
                   return;
                 }
 
+                if (LinkResolver.isWikiLink(link)) {
+                  var opened = openNewNoteEditor(
+                      context, LinkResolver.stripWikiSyntax(link));
+                  if (!opened) {
+                    showSnackbar(
+                      context,
+                      tr('wigets.NoteViewer.linkInvalid', args: [link]),
+                    );
+                  }
+                  return;
+                }
+
                 // External Link
                 try {
                   await launch(link);
