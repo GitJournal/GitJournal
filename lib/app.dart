@@ -18,25 +18,13 @@ import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/appstate.dart';
-import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/iap.dart';
-import 'package:gitjournal/screens/filesystem_screen.dart';
-import 'package:gitjournal/screens/folder_listing.dart';
-import 'package:gitjournal/screens/graph_view.dart';
-import 'package:gitjournal/screens/home_screen.dart';
-import 'package:gitjournal/screens/note_editor.dart';
-import 'package:gitjournal/screens/onboarding_screens.dart';
-import 'package:gitjournal/screens/purchase_screen.dart';
-import 'package:gitjournal/screens/purchase_thankyou_screen.dart';
-import 'package:gitjournal/screens/settings_screen.dart';
-import 'package:gitjournal/screens/tag_listing.dart';
 import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/setup/screens.dart';
 import 'package:gitjournal/state_container.dart';
 import 'package:gitjournal/themes.dart';
-import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 class JournalApp extends StatefulWidget {
@@ -318,14 +306,7 @@ class _JournalAppState extends State<JournalApp> {
     var stateContainer = Provider.of<StateContainer>(context);
     var settings = Provider.of<Settings>(context);
     var appSettings = Provider.of<AppSettings>(context);
-
-    var initialRoute = '/';
-    if (!appSettings.onBoardingCompleted) {
-      initialRoute = '/onBoarding';
-    }
-    if (settings.homeScreen == SettingsHomeScreen.AllFolders) {
-      initialRoute = '/folders';
-    }
+    var router = AppRouter(settings: settings, appSettings: appSettings);
 
     return MaterialApp(
       key: const ValueKey("App"),
@@ -340,103 +321,11 @@ class _JournalAppState extends State<JournalApp> {
       navigatorObservers: <NavigatorObserver>[
         AnalyticsRouteObserver(),
       ],
-      initialRoute: initialRoute,
+      initialRoute: router.initialRoute(),
       debugShowCheckedModeBanner: false,
       //debugShowMaterialGrid: true,
-      onGenerateRoute: (routeSettings) {
-        var route = routeSettings.name;
-        if (route == '/folders' || route == '/tags' || route == '/filesystem') {
-          return PageRouteBuilder(
-            settings: routeSettings,
-            pageBuilder: (_, __, ___) =>
-                _screenForRoute(route, stateContainer, settings),
-            transitionsBuilder: (_, anim, __, child) {
-              return FadeTransition(opacity: anim, child: child);
-            },
-          );
-        }
-
-        return MaterialPageRoute(
-          settings: routeSettings,
-          builder: (context) => _screenForRoute(
-            route,
-            stateContainer,
-            settings,
-          ),
-        );
-      },
+      onGenerateRoute: (rs) =>
+          router.generateRoute(rs, stateContainer, _sharedText, _sharedImages),
     );
-  }
-
-  Widget _screenForRoute(
-    String route,
-    StateContainer stateContainer,
-    Settings settings,
-  ) {
-    switch (route) {
-      case '/':
-        return HomeScreen();
-      case '/folders':
-        return FolderListingScreen();
-      case '/filesystem':
-        return FileSystemScreen();
-      case '/tags':
-        return TagListingScreen();
-      case '/graph':
-        return GraphViewScreen();
-      case '/settings':
-        return SettingsScreen();
-      case '/setupRemoteGit':
-        return GitHostSetupScreen(
-          repoFolderName: settings.folderName,
-          remoteName: "origin",
-          onCompletedFunction: stateContainer.completeGitHostSetup,
-        );
-      case '/onBoarding':
-        return OnBoardingScreen();
-      case '/purchase':
-        return PurchaseScreen();
-      case '/purchase_thank_you':
-        return PurchaseThankYouScreen();
-    }
-
-    if (route.startsWith('/newNote/')) {
-      var type = route.substring('/newNote/'.length);
-      var et = SettingsEditorType.fromInternalString(type).toEditorType();
-
-      Log.i("New Note - $route");
-      Log.i("EditorType: $et");
-
-      var rootFolder = widget.appState.notesFolder;
-      var sharedImages = _sharedImages;
-      var sharedText = _sharedText;
-
-      _sharedText = null;
-      _sharedImages = null;
-
-      Log.d("sharedText: $sharedText");
-      Log.d("sharedImages: $sharedImages");
-
-      var extraProps = <String, dynamic>{};
-      if (settings.customMetaData.isNotEmpty) {
-        var map = MarkdownYAMLCodec.parseYamlText(settings.customMetaData);
-        map.forEach((key, val) {
-          extraProps[key] = val;
-        });
-      }
-
-      var folder = getFolderForEditor(settings, rootFolder, et);
-      return NoteEditor.newNote(
-        folder,
-        folder,
-        et,
-        existingText: sharedText,
-        existingImages: sharedImages,
-        newNoteExtraProps: extraProps,
-      );
-    }
-
-    assert(false, "Not found named route in _screenForRoute");
-    return null;
   }
 }
