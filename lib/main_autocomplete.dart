@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -56,17 +58,24 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     painter.layout(maxWidth: renderBox.size.width);
 
+    List<LineMetrics> lines = painter.computeLineMetrics();
+    double height = 0;
+    for (var lm in lines) {
+      height += lm.height;
+    }
+    double width = lines.last.width;
+
     print("Focus Node Offset dx: ${_focusNode.offset.dx}");
     print("Focus Node Offset dy: ${_focusNode.offset.dy}");
 
-    print("Painter ${painter.width} ${painter.height}");
+    print("Painter ${painter.width} $height");
 
     OverlayState overlayState = Overlay.of(context);
     OverlayEntry suggestionTagoverlayEntry = OverlayEntry(builder: (context) {
       return Positioned(
         // Decides where to place the tag on the screen.
-        top: _focusNode.offset.dy + painter.height + 3,
-        left: _focusNode.offset.dx + painter.width,
+        top: _focusNode.offset.dy + height + 3,
+        left: _focusNode.offset.dx + width,
 
         // Tag code.
         child: const Material(
