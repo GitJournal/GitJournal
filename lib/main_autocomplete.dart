@@ -30,7 +30,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   FocusNode _focusNode = FocusNode();
   GlobalKey _textFieldKey = GlobalKey();
-  TextStyle _textFieldStyle = TextStyle(fontSize: 20);
+  TextStyle _textFieldStyle = const TextStyle(fontSize: 20);
 
   @override
   void initState() {
@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
     overlayState.insert(suggestionTagoverlayEntry);
 
     // Removes the over lay entry from the Overly after 500 milliseconds
-    await Future.delayed(Duration(milliseconds: 5000));
+    await Future.delayed(const Duration(milliseconds: 5000));
     suggestionTagoverlayEntry.remove();
   }
 
