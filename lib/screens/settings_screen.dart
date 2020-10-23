@@ -292,10 +292,10 @@ class SettingsListState extends State<SettingsList> {
       ),
       if (Platform.isAndroid)
         SwitchListTile(
-          title: Text(tr('settings.storage.useLocal')),
-          value: settings.storeInternally,
+          title: Text(tr('settings.storage.external')),
+          value: !settings.storeInternally,
           onChanged: (bool newVal) async {
-            if (newVal == true) {
+            if (newVal == false) {
               settings.storeInternally = true;
               settings.storageLocation = "";
 

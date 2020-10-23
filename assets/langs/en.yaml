@@ -134,7 +134,7 @@ settings:
   storage:
     title: Storage
     fileName: Filename
-    useLocal: Store Repo Internally
+    external: Store Repo Externally
     icloud: Store in iCloud
     repoLocation: Repo Location
   drawer:
