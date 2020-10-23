@@ -8,11 +8,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/screens/note_editor.dart';
+import 'package:uuid/uuid.dart';
 
 class Settings extends ChangeNotifier {
-  Settings(this.folderName);
+  Settings(this.id);
 
-  String folderName;
+  final String id;
+
+  String folderName = "journal";
 
   // Properties
   String gitAuthor = "GitJournal";
@@ -142,7 +145,7 @@ class Settings extends ChangeNotifier {
 
   Future<void> save() async {
     var pref = await SharedPreferences.getInstance();
-    var defaultSet = Settings(folderName);
+    var defaultSet = Settings(id);
 
     _setString(pref, "gitAuthor", gitAuthor, defaultSet.gitAuthor);
     _setString(
@@ -708,4 +711,8 @@ class SettingsHomeScreen {
     assert(false, "SettingsHomeScreen toString should never be called");
     return "";
   }
+}
+
+String generateRandomId() {
+  return Uuid().v4().substring(0, 8);
 }

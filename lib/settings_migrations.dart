@@ -3,15 +3,18 @@ import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 Future<void> migrateSettings(
-  Settings settings,
   SharedPreferences pref,
   String gitBaseDir,
 ) async {
-  if (settings.version == 0) {
+  var version = pref.getInt('settingsVersion') ?? '-1';
+  if (version == -1) {
+    return;
+  }
+
+  if (version == 0) {
     Log.i("Migrating settings from v0 -> v1");
     var cache = p.join(gitBaseDir, "cache.json");
     if (File(cache).existsSync()) {
@@ -29,9 +32,9 @@ Future<void> migrateSettings(
       var newName = p.join(gitBaseDir, "journal");
 
       await Directory(oldName).rename(newName);
-      settings.folderName = "journal";
+      var folderName = "journal";
 
-      pref.setString('remoteGitRepoPath', settings.folderName);
+      await pref.setString('remoteGitRepoPath', folderName);
     }
 
     var oldDir = Directory(p.join(gitBaseDir, '../files'));
@@ -67,9 +70,12 @@ Future<void> migrateSettings(
       var publicKeyExists = File(sshPublicKeyPath).existsSync();
       var privateKeyExists = File(sshPrivateKeyPath).existsSync();
       if (publicKeyExists && privateKeyExists) {
-        settings.sshPublicKey = await File(sshPublicKeyPath).readAsString();
-        settings.sshPrivateKey = await File(sshPrivateKeyPath).readAsString();
-        settings.sshPassword = "";
+        var sshPublicKey = await File(sshPublicKeyPath).readAsString();
+        var sshPrivateKey = await File(sshPrivateKeyPath).readAsString();
+
+        await pref.setString("sshPublicKey", sshPublicKey);
+        await pref.setString("sshPrivateKey", sshPrivateKey);
+        await pref.setString("sshPassword", "");
       }
 
       await oldSshDir.delete(recursive: true);
@@ -83,15 +89,18 @@ Future<void> migrateSettings(
       var publicKeyExists = File(sshPublicKeyPath).existsSync();
       var privateKeyExists = File(sshPrivateKeyPath).existsSync();
       if (publicKeyExists && privateKeyExists) {
-        settings.sshPublicKey = await File(sshPublicKeyPath).readAsString();
-        settings.sshPrivateKey = await File(sshPrivateKeyPath).readAsString();
-        settings.sshPassword = "";
+        var sshPublicKey = await File(sshPublicKeyPath).readAsString();
+        var sshPrivateKey = await File(sshPrivateKeyPath).readAsString();
+
+        await pref.setString("sshPublicKey", sshPublicKey);
+        await pref.setString("sshPrivateKey", sshPrivateKey);
+        await pref.setString("sshPassword", "");
       }
 
       await newSshDir.delete(recursive: true);
     }
 
-    settings.version = 1;
-    pref.setInt("settingsVersion", settings.version);
+    version = 1;
+    await pref.setInt("settingsVersion", version);
   }
 }

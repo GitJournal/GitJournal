@@ -37,7 +37,7 @@ class Repository with ChangeNotifier {
 
   final String gitBaseDirectory;
   final String cacheDir;
-  final String name;
+  final String id;
 
   GitNoteRepository _gitRepo;
   NotesCache _notesCache;
@@ -59,12 +59,12 @@ class Repository with ChangeNotifier {
     @required String gitBaseDir,
     @required String cacheDir,
     @required SharedPreferences pref,
-    @required String name,
+    @required String id,
   }) async {
-    var settings = Settings(name);
-    settings.load(pref);
+    await migrateSettings(pref, gitBaseDir);
 
-    await migrateSettings(settings, pref, gitBaseDir);
+    var settings = Settings(id);
+    settings.load(pref);
 
     logEvent(Event.Settings, parameters: settings.toLoggableMap());
 
@@ -88,9 +88,7 @@ class Repository with ChangeNotifier {
     var remoteConfigured = false;
 
     if (repoDirStat.type != FileSystemEntityType.directory) {
-      settings.folderName = name;
-
-      Log.i("Calling GitInit for $name at: $repoPath");
+      Log.i("Calling GitInit for ${settings.folderName} at: $repoPath");
       await GitRepository.init(repoPath);
 
       settings.save();
@@ -106,12 +104,12 @@ class Repository with ChangeNotifier {
       cacheDir: cacheDir,
       remoteGitRepoConfigured: remoteConfigured,
       settings: settings,
-      name: name,
+      id: id,
     );
   }
 
   Repository._internal({
-    @required this.name,
+    @required this.id,
     @required this.repoPath,
     @required this.gitBaseDirectory,
     @required this.cacheDir,

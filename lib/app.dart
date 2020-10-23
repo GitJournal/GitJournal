@@ -44,7 +44,7 @@ class JournalApp extends StatefulWidget {
       gitBaseDir: gitBaseDirectory,
       cacheDir: cacheDir,
       pref: pref,
-      name: "journal",
+      id: "0",
     );
 
     Widget app = ChangeNotifierProvider.value(
