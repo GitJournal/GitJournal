@@ -25,7 +25,7 @@ void main() {
       cache = NotesCache(
         filePath: cacheFilePath,
         notesBasePath: '/base',
-        settings: Settings(),
+        settings: Settings(''),
       );
     });
 
@@ -45,7 +45,7 @@ void main() {
 
     test('Should create directory structure accurately', () async {
       await cache.saveToDisk(fileList);
-      var rootFolder = NotesFolderFS(null, '/base', Settings());
+      var rootFolder = NotesFolderFS(null, '/base', Settings(''));
       await cache.load(rootFolder);
 
       expect(rootFolder.subFolders.length, 2);

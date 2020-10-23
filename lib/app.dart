@@ -29,34 +29,28 @@ class JournalApp extends StatefulWidget {
   static Future main(SharedPreferences pref) async {
     await Log.init();
 
-    var settings = Settings();
-    settings.load(pref);
-
     var appSettings = AppSettings.instance;
     Log.i("AppSetting ${appSettings.toMap()}");
-    Log.i("Setting ${settings.toLoggableMap()}");
 
     if (appSettings.collectUsageStatistics) {
-      _enableAnalyticsIfPossible(appSettings, settings);
+      _enableAnalyticsIfPossible(appSettings);
     }
     _sendAppUpdateEvent(appSettings);
 
     final gitBaseDirectory = (await getApplicationDocumentsDirectory()).path;
     final cacheDir = (await getApplicationSupportDirectory()).path;
 
-    await settings.migrate(pref, gitBaseDirectory);
-
     var repo = await Repository.load(
       gitBaseDir: gitBaseDirectory,
       cacheDir: cacheDir,
-      settings: settings,
+      pref: pref,
       name: "journal",
     );
 
     Widget app = ChangeNotifierProvider.value(
-      value: settings,
+      value: repo,
       child: ChangeNotifierProvider.value(
-        value: repo,
+        value: repo.settings,
         child: ChangeNotifierProvider.value(
           child: JournalApp(),
           value: repo.notesFolder,
@@ -82,8 +76,7 @@ class JournalApp extends StatefulWidget {
     ));
   }
 
-  static void _enableAnalyticsIfPossible(
-      AppSettings appSettings, Settings settings) async {
+  static void _enableAnalyticsIfPossible(AppSettings appSettings) async {
     JournalApp.isInDebugMode = foundation.kDebugMode;
 
     var isPhysicalDevice = true;
@@ -120,8 +113,6 @@ class JournalApp extends StatefulWidget {
             name: 'proExpirationDate',
             value: appSettings.proExpirationDate.toString(),
           );
-
-      logEvent(Event.Settings, parameters: settings.toLoggableMap());
     }
   }
 

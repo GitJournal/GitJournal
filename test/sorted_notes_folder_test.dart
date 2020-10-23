@@ -18,7 +18,7 @@ void main() {
     setUp(() async {
       tempDir = await Directory.systemTemp.createTemp('__sorted_folder_test__');
 
-      folder = NotesFolderFS(null, tempDir.path, Settings());
+      folder = NotesFolderFS(null, tempDir.path, Settings(''));
 
       var random = Random();
       for (var i = 0; i < 5; i++) {
@@ -122,7 +122,7 @@ void main() {
     });
 
     test('If still sorted while loading the notes', () async {
-      var folder = NotesFolderFS(null, tempDir.path, Settings());
+      var folder = NotesFolderFS(null, tempDir.path, Settings(''));
       var sf = SortedNotesFolder(
         folder: folder,
         sortingMode:

@@ -8,7 +8,7 @@ import 'package:gitjournal/settings.dart';
 void main() {
   group('Sorting Mode', () {
     test('Created', () async {
-      var folder = NotesFolderFS(null, '/tmp/', Settings());
+      var folder = NotesFolderFS(null, '/tmp/', Settings(''));
       var n1 = Note(folder, '/tmp/1.md');
       n1.created = DateTime(2020, 10, 01);
 
@@ -33,7 +33,7 @@ void main() {
     });
 
     test('Modified', () async {
-      var folder = NotesFolderFS(null, '/tmp/', Settings());
+      var folder = NotesFolderFS(null, '/tmp/', Settings(''));
       var n1 = Note(folder, '/tmp/1.md');
       n1.modified = DateTime(2020, 10, 01);
 

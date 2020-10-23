@@ -24,7 +24,7 @@ void main() {
         await _writeRandomNote(random, tempDir.path);
       }
 
-      rootFolder = NotesFolderFS(null, tempDir.path, Settings());
+      rootFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       await rootFolder.loadRecursively();
     });
 
@@ -56,7 +56,7 @@ Future<void> _writeRandomNote(Random random, String dirPath) async {
     }
   }
 
-  var note = Note(NotesFolderFS(null, dirPath, Settings()), path);
+  var note = Note(NotesFolderFS(null, dirPath, Settings('')), path);
   note.modified = DateTime(2014, 1, 1 + (random.nextInt(2000)));
   note.body = "p1";
   await note.save();

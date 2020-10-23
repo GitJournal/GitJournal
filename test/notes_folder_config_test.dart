@@ -24,7 +24,7 @@ void main() {
     });
 
     test('Should load from FS correctly', () async {
-      var folder = NotesFolderFS(null, tempDir.path, Settings());
+      var folder = NotesFolderFS(null, tempDir.path, Settings(''));
       var config = NotesFolderConfig(
         defaultEditor: EditorType.Checklist,
         defaultView: FolderViewType.Standard,

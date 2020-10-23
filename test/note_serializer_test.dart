@@ -10,7 +10,7 @@ import 'package:gitjournal/settings.dart';
 
 void main() {
   group('Note Serializer Test', () {
-    var parent = NotesFolderFS(null, '/tmp', Settings());
+    var parent = NotesFolderFS(null, '/tmp', Settings(''));
 
     test('Test emojis', () {
       var props = LinkedHashMap<String, dynamic>.from(

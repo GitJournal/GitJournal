@@ -13,7 +13,9 @@ import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 class Settings extends ChangeNotifier {
-  Settings();
+  Settings(this.folderName);
+
+  String folderName;
 
   // Properties
   String gitAuthor = "GitJournal";
@@ -58,8 +60,6 @@ class Settings extends ChangeNotifier {
   Set<String> inlineTagPrefixes = {'#'};
 
   bool bottomMenuBar = true;
-
-  String folderName = "journal";
 
   bool storeInternally = true;
   String storageLocation = "";
@@ -145,7 +145,7 @@ class Settings extends ChangeNotifier {
 
   Future<void> save() async {
     var pref = await SharedPreferences.getInstance();
-    var defaultSet = Settings();
+    var defaultSet = Settings(folderName);
 
     _setString(pref, "gitAuthor", gitAuthor, defaultSet.gitAuthor);
     _setString(

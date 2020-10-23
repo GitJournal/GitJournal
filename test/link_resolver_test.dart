@@ -15,7 +15,7 @@ void main() {
   setUpAll(() async {
     tempDir = await Directory.systemTemp.createTemp('__link_resolver__');
 
-    rootFolder = NotesFolderFS(null, tempDir.path, Settings());
+    rootFolder = NotesFolderFS(null, tempDir.path, Settings(''));
 
     await generateNote(tempDir.path, "Hello.md");
     await generateNote(tempDir.path, "Fire.md");

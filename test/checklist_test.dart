@@ -41,7 +41,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note.md");
       File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -105,7 +105,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note2.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -120,7 +120,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note3.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -141,7 +141,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note13.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -161,7 +161,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note4.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -181,7 +181,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note4.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -197,7 +197,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note449.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -215,7 +215,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note448.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -231,7 +231,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note448.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -247,7 +247,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note449.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -264,7 +264,7 @@ Booga Wooga
       var notePath = p.join(tempDir.path, "note429.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       var note = Note(parentFolder, notePath);
       await note.load();
 

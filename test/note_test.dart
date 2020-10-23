@@ -30,7 +30,7 @@ Hello""";
       var notePath = p.join(tempDir.path, "note.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -60,7 +60,7 @@ Hello""";
       var notePath = p.join(tempDir.path, "note.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -90,7 +90,7 @@ Hello""";
       var notePath = p.join(tempDir.path, "note5.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -128,7 +128,7 @@ bar: Foo
       var notePath = p.join(tempDir.path, "note6.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -148,7 +148,7 @@ bar: Foo
       var notePath = p.join(tempDir.path, "note63.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -173,7 +173,7 @@ Gee
       var notePath = p.join(tempDir.path, "note16.md");
       await File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       var note = Note(parentFolder, notePath);
       await note.load();
 
@@ -195,7 +195,7 @@ Gee
     });
 
     test('New Notes have a file extension', () async {
-      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       var note = Note.newNote(parentFolder);
       var path = note.filePath;
       expect(path.endsWith('.md'), true);
@@ -209,7 +209,7 @@ Gee
       var txtNotePath = p.join(tempDir.path, "note163.txt");
       await File(txtNotePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path, Settings());
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       var txtNote = Note(parentFolder, txtNotePath);
       await txtNote.load();
 

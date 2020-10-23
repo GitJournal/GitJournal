@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:dart_git/dart_git.dart';
 import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
 
 import 'package:gitjournal/analytics.dart';
@@ -59,9 +60,18 @@ class Repository with ChangeNotifier {
   static Future<Repository> load({
     @required String gitBaseDir,
     @required String cacheDir,
-    @required Settings settings,
+    @required SharedPreferences pref,
     @required String name,
   }) async {
+    var settings = Settings(name);
+    settings.load(pref);
+
+    await settings.migrate(pref, gitBaseDir);
+
+    logEvent(Event.Settings, parameters: settings.toLoggableMap());
+
+    Log.i("Setting ${settings.toLoggableMap()}");
+
     var repoPath = settings.buildRepoPath(gitBaseDir);
 
     var repoDirStat = File(repoPath).statSync();
