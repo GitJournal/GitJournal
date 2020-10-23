@@ -39,7 +39,7 @@ class AppRouter {
 
   Route<dynamic> generateRoute(
     RouteSettings routeSettings,
-    Repository stateContainer,
+    Repository repository,
     String sharedText,
     List<String> sharedImages,
   ) {
@@ -49,7 +49,7 @@ class AppRouter {
         settings: routeSettings,
         pageBuilder: (_, __, ___) => _screenForRoute(
           route,
-          stateContainer,
+          repository,
           settings,
           sharedText,
           sharedImages,
@@ -64,7 +64,7 @@ class AppRouter {
       settings: routeSettings,
       builder: (context) => _screenForRoute(
         route,
-        stateContainer,
+        repository,
         settings,
         sharedText,
         sharedImages,
@@ -74,7 +74,7 @@ class AppRouter {
 
   Widget _screenForRoute(
     String route,
-    Repository stateContainer,
+    Repository repository,
     Settings settings,
     String sharedText,
     List<String> sharedImages,
@@ -96,7 +96,7 @@ class AppRouter {
         return GitHostSetupScreen(
           repoFolderName: settings.folderName,
           remoteName: "origin",
-          onCompletedFunction: stateContainer.completeGitHostSetup,
+          onCompletedFunction: repository.completeGitHostSetup,
         );
       case '/onBoarding':
         return OnBoardingScreen();
@@ -113,7 +113,7 @@ class AppRouter {
       Log.i("New Note - $route");
       Log.i("EditorType: $et");
 
-      var rootFolder = stateContainer.appState.notesFolder;
+      var rootFolder = repository.notesFolder;
 
       sharedText = null;
       sharedImages = null;

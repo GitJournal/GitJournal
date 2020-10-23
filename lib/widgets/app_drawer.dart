@@ -21,12 +21,12 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget setupGitButton;
-    var appState = Provider.of<Repository>(context).appState;
+    var repo = Provider.of<Repository>(context);
     var appSettings = Provider.of<AppSettings>(context);
     var textStyle = Theme.of(context).textTheme.bodyText1;
     var currentRoute = ModalRoute.of(context).settings.name;
 
-    if (!appState.remoteGitRepoConfigured) {
+    if (!repo.remoteGitRepoConfigured) {
       setupGitButton = ListTile(
         leading: Icon(Icons.sync, color: textStyle.color),
         title: Text(tr('drawer.setup'), style: textStyle),

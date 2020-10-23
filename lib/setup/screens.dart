@@ -492,8 +492,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       gitCloneErrorMessage = "";
     });
 
-    var stateContainer = Provider.of<Repository>(context, listen: false);
-    var basePath = stateContainer.appState.gitBaseDirectory;
+    var repo = Provider.of<Repository>(context, listen: false);
+    var basePath = repo.gitBaseDirectory;
 
     var settings = Provider.of<Settings>(context, listen: false);
     var repoPath = p.join(basePath, widget.repoFolderName);

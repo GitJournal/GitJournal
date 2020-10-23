@@ -407,7 +407,7 @@ class _FolderViewState extends State<FolderView> {
   }
 
   List<Widget> _buildNoteActions() {
-    final appState = Provider.of<Repository>(context).appState;
+    final repo = Provider.of<Repository>(context);
 
     var extraActions = PopupMenuButton<DropDownChoices>(
       key: const ValueKey("PopupMenu"),
@@ -443,7 +443,7 @@ class _FolderViewState extends State<FolderView> {
         onPressed: _folderViewChooserSelected,
         key: const ValueKey("FolderViewSelector"),
       ),
-      if (appState.remoteGitRepoConfigured) SyncButton(),
+      if (repo.remoteGitRepoConfigured) SyncButton(),
       IconButton(
         icon: const Icon(Icons.search),
         onPressed: () {

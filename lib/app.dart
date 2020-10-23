@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 
-import 'package:dart_git/git.dart';
 import 'package:device_info/device_info.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -20,7 +19,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/app_settings.dart';
-import 'package:gitjournal/appstate.dart';
 import 'package:gitjournal/iap.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings.dart';
@@ -28,12 +26,9 @@ import 'package:gitjournal/themes.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 class JournalApp extends StatefulWidget {
-  final AppState appState;
-
   static Future main(SharedPreferences pref) async {
     await Log.init();
 
-    var appState = AppState();
     var settings = Settings();
     settings.load(pref);
 
@@ -46,41 +41,20 @@ class JournalApp extends StatefulWidget {
     }
     _sendAppUpdateEvent(appSettings);
 
-    var dir = await getApplicationDocumentsDirectory();
-    appState.gitBaseDirectory = dir.path;
+    final gitBaseDirectory = (await getApplicationDocumentsDirectory()).path;
+    final cacheDir = (await getApplicationSupportDirectory()).path;
 
-    await settings.migrate(pref, appState.gitBaseDirectory);
+    await settings.migrate(pref, gitBaseDirectory);
 
-    var gitRepoDir = settings.buildRepoPath(appState.gitBaseDirectory);
-
-    var repoDirStat = File(gitRepoDir).statSync();
-    if (repoDirStat.type != FileSystemEntityType.directory) {
-      settings.folderName = "journal";
-
-      Log.i("Calling GitInit at: $gitRepoDir");
-      await GitRepository.init(gitRepoDir);
-
-      settings.save();
-    } else {
-      var gitRepo = await GitRepository.load(gitRepoDir);
-      var remotes = gitRepo.config.remotes;
-      appState.remoteGitRepoConfigured = remotes.isNotEmpty;
-    }
-
-    appState.cacheDir = (await getApplicationSupportDirectory()).path;
+    var repo = await Repository.load(gitBaseDirectory, cacheDir, settings);
 
     Widget app = ChangeNotifierProvider.value(
       value: settings,
-      child: ChangeNotifierProvider(
-        create: (_) {
-          return Repository(appState: appState, settings: settings);
-        },
-        child: ChangeNotifierProvider(
-          child: JournalApp(appState),
-          create: (_) {
-            assert(appState.notesFolder != null);
-            return appState.notesFolder;
-          },
+      child: ChangeNotifierProvider.value(
+        value: repo,
+        child: ChangeNotifierProvider.value(
+          child: JournalApp(),
+          value: repo.notesFolder,
         ),
       ),
     );
@@ -169,7 +143,7 @@ class JournalApp extends StatefulWidget {
   static final analytics = Analytics();
   static bool isInDebugMode = false;
 
-  JournalApp(this.appState);
+  JournalApp();
 
   @override
   _JournalAppState createState() => _JournalAppState();

@@ -8,7 +8,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:git_bindings/git_bindings.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/appstate.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/utils.dart';
 
@@ -41,7 +40,7 @@ class _SyncButtonState extends State<SyncButton> {
 
   @override
   Widget build(BuildContext context) {
-    final appState = Provider.of<Repository>(context).appState;
+    final repo = Provider.of<Repository>(context);
 
     if (_connectivity == ConnectivityResult.none) {
       return GitPendingChangesBadge(
@@ -53,7 +52,7 @@ class _SyncButtonState extends State<SyncButton> {
         ),
       );
     }
-    if (appState.syncStatus == SyncStatus.Pulling) {
+    if (repo.syncStatus == SyncStatus.Pulling) {
       return BlinkingIcon(
         child: GitPendingChangesBadge(
           child: IconButton(
@@ -64,7 +63,7 @@ class _SyncButtonState extends State<SyncButton> {
       );
     }
 
-    if (appState.syncStatus == SyncStatus.Pushing) {
+    if (repo.syncStatus == SyncStatus.Pushing) {
       return BlinkingIcon(
         child: GitPendingChangesBadge(
           child: IconButton(
@@ -87,8 +86,8 @@ class _SyncButtonState extends State<SyncButton> {
 
   void _syncRepo() async {
     try {
-      final container = Provider.of<Repository>(context, listen: false);
-      await container.syncNotes();
+      final repo = Provider.of<Repository>(context, listen: false);
+      await repo.syncNotes();
     } on GitException catch (e) {
       showSnackbar(context, tr('widgets.SyncButton.error', args: [e.cause]));
     } catch (e) {
@@ -97,9 +96,8 @@ class _SyncButtonState extends State<SyncButton> {
   }
 
   IconData _syncStatusIcon() {
-    final container = Provider.of<Repository>(context);
-    final appState = container.appState;
-    switch (appState.syncStatus) {
+    final repo = Provider.of<Repository>(context);
+    switch (repo.syncStatus) {
       case SyncStatus.Error:
         return Icons.cloud_off;
 
@@ -172,11 +170,11 @@ class GitPendingChangesBadge extends StatelessWidget {
       color: darkMode ? Colors.black : Colors.white,
     );
 
-    final appState = Provider.of<Repository>(context).appState;
+    final repo = Provider.of<Repository>(context);
 
     return Badge(
-      badgeContent: Text(appState.numChanges.toString(), style: style),
-      showBadge: appState.numChanges != 0,
+      badgeContent: Text(repo.numChanges.toString(), style: style),
+      showBadge: repo.numChanges != 0,
       badgeColor: theme.iconTheme.color,
       position: BadgePosition.topRight(top: 10.0, right: 4.0),
       child: child,

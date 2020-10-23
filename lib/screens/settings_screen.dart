@@ -65,8 +65,7 @@ class SettingsListState extends State<SettingsList> {
   Widget build(BuildContext context) {
     var settings = Provider.of<Settings>(context);
     var appSettings = Provider.of<AppSettings>(context);
-    final stateContainer = Provider.of<Repository>(context);
-    final appState = stateContainer.appState;
+    final repo = Provider.of<Repository>(context);
 
     var saveGitAuthor = (String gitAuthor) {
       settings.gitAuthor = gitAuthor;
@@ -228,7 +227,7 @@ class SettingsListState extends State<SettingsList> {
           );
           Navigator.of(context).push(route);
         },
-        enabled: appState.remoteGitRepoConfigured,
+        enabled: repo.remoteGitRepoConfigured,
       ),
       const SizedBox(height: 16.0),
       ListTile(
@@ -302,7 +301,7 @@ class SettingsListState extends State<SettingsList> {
 
               settings.save();
               setState(() {});
-              stateContainer.moveRepoToPath();
+              repo.moveRepoToPath();
             } else {
               var req = await Permission.storage.request();
               if (req.isDenied) {
@@ -311,7 +310,7 @@ class SettingsListState extends State<SettingsList> {
 
                 settings.save();
                 setState(() {});
-                stateContainer.moveRepoToPath();
+                repo.moveRepoToPath();
                 return;
               }
               settings.storeInternally = true;
@@ -323,7 +322,7 @@ class SettingsListState extends State<SettingsList> {
 
                 settings.save();
                 setState(() {});
-                stateContainer.moveRepoToPath();
+                repo.moveRepoToPath();
                 return;
               }
 
@@ -332,7 +331,7 @@ class SettingsListState extends State<SettingsList> {
 
               settings.save();
               setState(() {});
-              stateContainer.moveRepoToPath();
+              repo.moveRepoToPath();
               return;
             }
           },
@@ -359,7 +358,7 @@ class SettingsListState extends State<SettingsList> {
               }
             }
             settings.save();
-            stateContainer.moveRepoToPath();
+            repo.moveRepoToPath();
 
             setState(() {});
           },

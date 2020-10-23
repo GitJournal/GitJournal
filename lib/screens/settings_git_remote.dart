@@ -164,8 +164,8 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
       return;
     }
 
-    var stateContainer = Provider.of<Repository>(context, listen: false);
-    var gitDir = stateContainer.appState.gitBaseDirectory;
+    var repo = Provider.of<Repository>(context, listen: false);
+    var gitDir = repo.gitBaseDirectory;
 
     // Figure out the next available folder
     String repoFolderName = "journal_";
@@ -184,7 +184,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
       builder: (context) => GitHostSetupScreen(
         repoFolderName: repoFolderName,
         remoteName: 'origin',
-        onCompletedFunction: stateContainer.completeGitHostSetup,
+        onCompletedFunction: repo.completeGitHostSetup,
       ),
       settings: const RouteSettings(name: '/setupRemoteGit'),
     );
