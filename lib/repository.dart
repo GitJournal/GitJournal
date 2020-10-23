@@ -18,6 +18,7 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings_migrations.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 enum SyncStatus {
@@ -34,9 +35,10 @@ class Repository with ChangeNotifier {
   final _opLock = Lock();
   final _loadLock = Lock();
 
-  // FIXME: The gitRepo should never be changed once it has been setup
-  //        We should always just be modifying the 'git remotes'
-  //        With that, the StateContainer can be a StatelessWidget
+  final String gitBaseDirectory;
+  final String cacheDir;
+  final String name;
+
   GitNoteRepository _gitRepo;
   NotesCache _notesCache;
 
@@ -51,10 +53,6 @@ class Repository with ChangeNotifier {
 
   NotesFolderFS notesFolder;
 
-  final String gitBaseDirectory;
-  final String cacheDir;
-  final String name;
-
   bool remoteGitRepoConfigured = false;
 
   static Future<Repository> load({
@@ -66,7 +64,7 @@ class Repository with ChangeNotifier {
     var settings = Settings(name);
     settings.load(pref);
 
-    await settings.migrate(pref, gitBaseDir);
+    await migrateSettings(settings, pref, gitBaseDir);
 
     logEvent(Event.Settings, parameters: settings.toLoggableMap());
 

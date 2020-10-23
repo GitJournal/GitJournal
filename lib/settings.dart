@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import 'package:collection/collection.dart';
@@ -10,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/screens/note_editor.dart';
-import 'package:gitjournal/utils/logger.dart';
 
 class Settings extends ChangeNotifier {
   Settings(this.folderName);
@@ -319,92 +316,6 @@ class Settings extends ChangeNotifier {
     m.remove("gitAuthorEmail");
     m.remove("defaultNewNoteFolderSpec");
     return m;
-  }
-
-  Future<void> migrate(SharedPreferences pref, String gitBaseDir) async {
-    if (version == 0) {
-      var cache = p.join(gitBaseDir, "cache.json");
-      if (File(cache).existsSync()) {
-        await File(cache).delete();
-      }
-
-      var localGitRepoConfigured =
-          pref.getBool("localGitRepoConfigured") ?? false;
-      var remoteGitRepoConfigured =
-          pref.getBool("remoteGitRepoConfigured") ?? false;
-
-      if (localGitRepoConfigured && !remoteGitRepoConfigured) {
-        Log.i("Migrating from local and remote repos to a single one");
-        var oldName = p.join(gitBaseDir, "journal_local");
-        var newName = p.join(gitBaseDir, "journal");
-
-        await Directory(oldName).rename(newName);
-        folderName = "journal";
-
-        pref.setString('remoteGitRepoPath', folderName);
-      }
-
-      var oldDir = Directory(p.join(gitBaseDir, '../files'));
-      if (oldDir.existsSync()) {
-        // Move everything from the old dir
-        var stream = await (oldDir.list().toList());
-        for (var fsEntity in stream) {
-          var stat = await fsEntity.stat();
-          if (stat.type != FileSystemEntityType.directory) {
-            var fileName = p.basename(fsEntity.path);
-            if (fileName == 'cache.json') {
-              await File(fsEntity.path).delete();
-            }
-            continue;
-          }
-
-          var folderName = p.basename(fsEntity.path);
-          if (folderName.startsWith('journal') ||
-              folderName.startsWith('ssh')) {
-            var newPath = p.join(gitBaseDir, folderName);
-            if (!Directory(newPath).existsSync()) {
-              await Directory(fsEntity.path).rename(newPath);
-            }
-          }
-        }
-      }
-
-      // Save the ssh keys
-      var oldSshDir = Directory(p.join(gitBaseDir, '../files/ssh'));
-      if (oldSshDir.existsSync()) {
-        var sshPublicKeyPath = p.join(oldSshDir.path, "id_rsa.pub");
-        var sshPrivateKeyPath = p.join(oldSshDir.path, "id_rsa");
-
-        var publicKeyExists = File(sshPublicKeyPath).existsSync();
-        var privateKeyExists = File(sshPrivateKeyPath).existsSync();
-        if (publicKeyExists && privateKeyExists) {
-          sshPublicKey = await File(sshPublicKeyPath).readAsString();
-          sshPrivateKey = await File(sshPrivateKeyPath).readAsString();
-          sshPassword = "";
-        }
-
-        await oldSshDir.delete(recursive: true);
-      }
-
-      var newSshDir = Directory(p.join(gitBaseDir, 'ssh'));
-      if (newSshDir.existsSync()) {
-        var sshPublicKeyPath = p.join(newSshDir.path, "id_rsa.pub");
-        var sshPrivateKeyPath = p.join(newSshDir.path, "id_rsa");
-
-        var publicKeyExists = File(sshPublicKeyPath).existsSync();
-        var privateKeyExists = File(sshPrivateKeyPath).existsSync();
-        if (publicKeyExists && privateKeyExists) {
-          sshPublicKey = await File(sshPublicKeyPath).readAsString();
-          sshPrivateKey = await File(sshPrivateKeyPath).readAsString();
-          sshPassword = "";
-        }
-
-        await newSshDir.delete(recursive: true);
-      }
-
-      version = 1;
-      pref.setInt("settingsVersion", version);
-    }
   }
 
   String buildRepoPath(String internalDir) {
