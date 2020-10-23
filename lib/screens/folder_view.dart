@@ -136,10 +136,16 @@ class _FolderViewState extends State<FolderView> {
       ),
       body: Center(
         child: Builder(
-          builder: (context) => RefreshIndicator(
-            child: Scrollbar(child: folderView),
-            onRefresh: () async => _syncRepo(context),
-          ),
+          builder: (context) {
+            var child = Scrollbar(child: folderView);
+            if (settings.remoteSyncFrequency == RemoteSyncFrequency.Manual) {
+              return child;
+            }
+            return RefreshIndicator(
+              child: child,
+              onRefresh: () async => _syncRepo(context),
+            );
+          },
         ),
       ),
       extendBody: true,
