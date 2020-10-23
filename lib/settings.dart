@@ -10,6 +10,8 @@ import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:uuid/uuid.dart';
 
+const DEFAULT_ID = "0";
+
 class Settings extends ChangeNotifier {
   Settings(this.id);
 
@@ -40,7 +42,7 @@ class Settings extends ChangeNotifier {
   SettingsFolderViewType defaultView = SettingsFolderViewType.Default;
   bool showNoteSummary = true;
   String folderViewHeaderType = "TitleGenerated";
-  int version = 1;
+  int version = 2;
 
   SettingsHomeScreen homeScreen = SettingsHomeScreen.Default;
 
@@ -69,78 +71,95 @@ class Settings extends ChangeNotifier {
   String sshPassword = "";
 
   void load(SharedPreferences pref) {
-    gitAuthor = pref.getString("gitAuthor") ?? gitAuthor;
-    gitAuthorEmail = pref.getString("gitAuthorEmail") ?? gitAuthorEmail;
+    gitAuthor = _getString(pref, "gitAuthor") ?? gitAuthor;
+    gitAuthorEmail = _getString(pref, "gitAuthorEmail") ?? gitAuthorEmail;
 
     noteFileNameFormat = NoteFileNameFormat.fromInternalString(
-        pref.getString("noteFileNameFormat"));
+        _getString(pref, "noteFileNameFormat"));
     journalNoteFileNameFormat = NoteFileNameFormat.fromInternalString(
-        pref.getString("journalNoteFileNameFormat"));
+        _getString(pref, "journalNoteFileNameFormat"));
 
-    yamlModifiedKey = pref.getString("yamlModifiedKey") ?? yamlModifiedKey;
-    yamlCreatedKey = pref.getString("yamlCreatedKey") ?? yamlCreatedKey;
-    yamlTagsKey = pref.getString("yamlTagsKey") ?? yamlTagsKey;
-    customMetaData = pref.getString("customMetaData") ?? customMetaData;
+    yamlModifiedKey = _getString(pref, "yamlModifiedKey") ?? yamlModifiedKey;
+    yamlCreatedKey = _getString(pref, "yamlCreatedKey") ?? yamlCreatedKey;
+    yamlTagsKey = _getString(pref, "yamlTagsKey") ?? yamlTagsKey;
+    customMetaData = _getString(pref, "customMetaData") ?? customMetaData;
 
-    yamlHeaderEnabled = pref.getBool("yamlHeaderEnabled") ?? yamlHeaderEnabled;
-    defaultNewNoteFolderSpec =
-        pref.getString("defaultNewNoteFolderSpec") ?? defaultNewNoteFolderSpec;
+    yamlHeaderEnabled =
+        _getBool(pref, "yamlHeaderEnabled") ?? yamlHeaderEnabled;
+    defaultNewNoteFolderSpec = _getString(pref, "defaultNewNoteFolderSpec") ??
+        defaultNewNoteFolderSpec;
     journalEditordefaultNewNoteFolderSpec =
-        pref.getString("journalEditordefaultNewNoteFolderSpec") ??
+        _getString(pref, "journalEditordefaultNewNoteFolderSpec") ??
             journalEditordefaultNewNoteFolderSpec;
     journalEditorSingleNote =
-        pref.getBool("journalEditorSingleNote") ?? journalEditorSingleNote;
+        _getBool(pref, "journalEditorSingleNote") ?? journalEditorSingleNote;
 
     remoteSyncFrequency = RemoteSyncFrequency.fromInternalString(
-        pref.getString("remoteSyncFrequency"));
+        _getString(pref, "remoteSyncFrequency"));
 
     sortingField =
-        SortingField.fromInternalString(pref.getString("sortingField"));
+        SortingField.fromInternalString(_getString(pref, "sortingField"));
     sortingOrder =
-        SortingOrder.fromInternalString(pref.getString("sortingOrder"));
-    defaultEditor =
-        SettingsEditorType.fromInternalString(pref.getString("defaultEditor"));
+        SortingOrder.fromInternalString(_getString(pref, "sortingOrder"));
+    defaultEditor = SettingsEditorType.fromInternalString(
+        _getString(pref, "defaultEditor"));
     defaultView = SettingsFolderViewType.fromInternalString(
-        pref.getString("defaultView"));
+        _getString(pref, "defaultView"));
 
     markdownDefaultView = SettingsMarkdownDefaultView.fromInternalString(
-        pref.getString("markdownDefaultView"));
+        _getString(pref, "markdownDefaultView"));
     markdownLastUsedView = SettingsMarkdownDefaultView.fromInternalString(
-        pref.getString("markdownLastUsedView"));
+        _getString(pref, "markdownLastUsedView"));
     if (markdownLastUsedView == SettingsMarkdownDefaultView.LastUsed) {
       markdownLastUsedView = SettingsMarkdownDefaultView.Edit;
     }
 
-    showNoteSummary = pref.getBool("showNoteSummary") ?? showNoteSummary;
+    showNoteSummary = _getBool(pref, "showNoteSummary") ?? showNoteSummary;
     folderViewHeaderType =
-        pref.getString("folderViewHeaderType") ?? folderViewHeaderType;
+        _getString(pref, "folderViewHeaderType") ?? folderViewHeaderType;
 
-    version = pref.getInt("settingsVersion") ?? version;
-    emojiParser = pref.getBool("emojiParser") ?? emojiParser;
+    version = _getInt(pref, "settingsVersion") ?? version;
+    emojiParser = _getBool(pref, "emojiParser") ?? emojiParser;
 
     homeScreen =
-        SettingsHomeScreen.fromInternalString(pref.getString("homeScreen"));
+        SettingsHomeScreen.fromInternalString(_getString(pref, "homeScreen"));
 
     imageLocationSpec =
-        pref.getString("imageLocationSpec") ?? imageLocationSpec;
+        _getString(pref, "imageLocationSpec") ?? imageLocationSpec;
 
-    zenMode = pref.getBool("zenMode") ?? zenMode;
-    saveTitleInH1 = pref.getBool("saveTitleInH1") ?? saveTitleInH1;
-    swipeToDelete = pref.getBool("swipeToDelete") ?? swipeToDelete;
+    zenMode = _getBool(pref, "zenMode") ?? zenMode;
+    saveTitleInH1 = _getBool(pref, "saveTitleInH1") ?? saveTitleInH1;
+    swipeToDelete = _getBool(pref, "swipeToDelete") ?? swipeToDelete;
 
     inlineTagPrefixes =
-        pref.getStringList("inlineTagPrefixes")?.toSet() ?? inlineTagPrefixes;
+        _getStringList(pref, "inlineTagPrefixes")?.toSet() ?? inlineTagPrefixes;
 
     // From AppState
-    folderName = pref.getString("remoteGitRepoPath") ?? folderName;
+    folderName = _getString(pref, "remoteGitRepoPath") ?? folderName;
 
-    sshPublicKey = pref.getString("sshPublicKey") ?? sshPublicKey;
-    sshPrivateKey = pref.getString("sshPrivateKey") ?? sshPrivateKey;
-    sshPassword = pref.getString("sshPassword") ?? sshPassword;
+    sshPublicKey = _getString(pref, "sshPublicKey") ?? sshPublicKey;
+    sshPrivateKey = _getString(pref, "sshPrivateKey") ?? sshPrivateKey;
+    sshPassword = _getString(pref, "sshPassword") ?? sshPassword;
 
-    bottomMenuBar = pref.getBool("bottomMenuBar") ?? bottomMenuBar;
-    storeInternally = pref.getBool("storeInternally") ?? storeInternally;
-    storageLocation = pref.getString("storageLocation") ?? "";
+    bottomMenuBar = _getBool(pref, "bottomMenuBar") ?? bottomMenuBar;
+    storeInternally = _getBool(pref, "storeInternally") ?? storeInternally;
+    storageLocation = _getString(pref, "storageLocation") ?? "";
+  }
+
+  String _getString(SharedPreferences pref, String key) {
+    return pref.getString(id + '_' + key);
+  }
+
+  bool _getBool(SharedPreferences pref, String key) {
+    return pref.getBool(id + '_' + key);
+  }
+
+  List<String> _getStringList(SharedPreferences pref, String key) {
+    return pref.getStringList(id + '_' + key);
+  }
+
+  int _getInt(SharedPreferences pref, String key) {
+    return pref.getInt(id + '_' + key);
   }
 
   Future<void> save() async {
@@ -238,6 +257,7 @@ class Settings extends ChangeNotifier {
     String value,
     String defaultValue,
   ) async {
+    key = id + '_' + key;
     if (value == defaultValue) {
       await pref.remove(key);
     } else {
@@ -251,6 +271,7 @@ class Settings extends ChangeNotifier {
     bool value,
     bool defaultValue,
   ) async {
+    key = id + '_' + key;
     if (value == defaultValue) {
       await pref.remove(key);
     } else {
@@ -264,6 +285,8 @@ class Settings extends ChangeNotifier {
     Set<String> value,
     Set<String> defaultValue,
   ) async {
+    key = id + '_' + key;
+
     final eq = const SetEquality().equals;
 
     if (eq(value, defaultValue)) {

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:gitjournal/settings.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,10 +10,7 @@ Future<void> migrateSettings(
   SharedPreferences pref,
   String gitBaseDir,
 ) async {
-  var version = pref.getInt('settingsVersion') ?? '-1';
-  if (version == -1) {
-    return;
-  }
+  var version = pref.getInt('settingsVersion') ?? -1;
 
   if (version == 0) {
     Log.i("Migrating settings from v0 -> v1");
@@ -102,5 +100,79 @@ Future<void> migrateSettings(
 
     version = 1;
     await pref.setInt("settingsVersion", version);
+  }
+
+  if (version == 1) {
+    Log.i("Migrating settings from v1 -> v2");
+    var prefix = "${DEFAULT_ID}_";
+
+    var stringKeys = [
+      'gitAuthor',
+      'gitAuthorEmail',
+      'noteFileNameFormat',
+      'journalNoteFileNameFormat',
+      'yamlModifiedKey',
+      'yamlCreatedKey',
+      'yamlTagsKey',
+      'customMetaData',
+      'defaultNewNoteFolderSpec',
+      'journalEditordefaultNewNoteFolderSpec',
+      'remoteSyncFrequency',
+      'sortingField',
+      'sortingOrder',
+      'defaultEditor',
+      'defaultView',
+      'markdownDefaultView',
+      'markdownLastUsedView',
+      'folderViewHeaderType',
+      'homeScreen',
+      'imageLocationSpec',
+      'remoteGitRepoPath',
+      'sshPublicKey',
+      'sshPrivateKey',
+      'sshPassword',
+      'storageLocation',
+    ];
+    for (var key in stringKeys) {
+      var value = pref.getString(key);
+      if (value != null) {
+        await pref.remove(key);
+        await pref.setString(prefix + key, value);
+      }
+    }
+
+    var boolKeys = [
+      'yamlHeaderEnabled',
+      'journalEditorSingleNote',
+      'showNoteSummary',
+      'emojiParser',
+      'zenMode',
+      'saveTitleInH1',
+      'swipeToDelete',
+      'bottomMenuBar',
+      'storeInternally',
+    ];
+    for (var key in boolKeys) {
+      var value = pref.getBool(key);
+      if (value != null) {
+        await pref.remove(key);
+        await pref.setBool(prefix + key, value);
+      }
+    }
+
+    var stringListKeys = [
+      'inlineTagPrefixes',
+    ];
+    for (var key in stringListKeys) {
+      var value = pref.getStringList(key);
+      if (value != null) {
+        await pref.remove(key);
+        await pref.setStringList(prefix + key, value);
+      }
+    }
+
+    version = 2;
+    await pref.remove("settingsVersion");
+    await pref.setInt(prefix + "settingsVersion", version);
   }
 }
