@@ -52,11 +52,16 @@ class Repository with ChangeNotifier {
 
   final String gitBaseDirectory;
   final String cacheDir;
+  final String name;
 
   bool remoteGitRepoConfigured = false;
 
-  static Future<Repository> load(
-      String gitBaseDir, String cacheDir, Settings settings) async {
+  static Future<Repository> load({
+    @required String gitBaseDir,
+    @required String cacheDir,
+    @required Settings settings,
+    @required String name,
+  }) async {
     var repoPath = settings.buildRepoPath(gitBaseDir);
 
     var repoDirStat = File(repoPath).statSync();
@@ -75,9 +80,9 @@ class Repository with ChangeNotifier {
     var remoteConfigured = false;
 
     if (repoDirStat.type != FileSystemEntityType.directory) {
-      settings.folderName = "journal";
+      settings.folderName = name;
 
-      Log.i("Calling GitInit at: $repoPath");
+      Log.i("Calling GitInit for $name at: $repoPath");
       await GitRepository.init(repoPath);
 
       settings.save();
@@ -93,10 +98,12 @@ class Repository with ChangeNotifier {
       cacheDir: cacheDir,
       remoteGitRepoConfigured: remoteConfigured,
       settings: settings,
+      name: name,
     );
   }
 
   Repository._internal({
+    @required this.name,
     @required this.repoPath,
     @required this.gitBaseDirectory,
     @required this.cacheDir,

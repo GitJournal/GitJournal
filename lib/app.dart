@@ -46,7 +46,12 @@ class JournalApp extends StatefulWidget {
 
     await settings.migrate(pref, gitBaseDirectory);
 
-    var repo = await Repository.load(gitBaseDirectory, cacheDir, settings);
+    var repo = await Repository.load(
+      gitBaseDir: gitBaseDirectory,
+      cacheDir: cacheDir,
+      settings: settings,
+      name: "journal",
+    );
 
     Widget app = ChangeNotifierProvider.value(
       value: settings,
