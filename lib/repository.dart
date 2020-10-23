@@ -45,6 +45,7 @@ class Repository with ChangeNotifier {
   String repoPath;
 
   SyncStatus syncStatus = SyncStatus.Unknown;
+  String syncStatusError = "";
   int numChanges = 0;
 
   bool get hasJournalEntries {
@@ -184,6 +185,7 @@ class Repository with ChangeNotifier {
     } catch (e, stacktrace) {
       Log.e("Failed to Sync", ex: e, stacktrace: stacktrace);
       syncStatus = SyncStatus.Error;
+      syncStatusError = e.toString();
       notifyListeners();
       if (shouldLogGitException(e)) {
         await logException(e, stacktrace);

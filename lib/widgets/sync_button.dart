@@ -74,6 +74,17 @@ class _SyncButtonState extends State<SyncButton> {
       );
     }
 
+    if (repo.syncStatus == SyncStatus.Error) {
+      return GitPendingChangesBadge(
+        child: IconButton(
+          icon: const Icon(Icons.cloud_off),
+          onPressed: () async {
+            _syncRepo();
+          },
+        ),
+      );
+    }
+
     return GitPendingChangesBadge(
       child: IconButton(
         icon: Icon(_syncStatusIcon()),
