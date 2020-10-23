@@ -49,11 +49,13 @@ class JournalApp extends StatefulWidget {
 
     Widget app = ChangeNotifierProvider.value(
       value: repo,
-      child: ChangeNotifierProvider.value(
-        value: repo.settings,
-        child: ChangeNotifierProvider.value(
-          child: JournalApp(),
-          value: repo.notesFolder,
+      child: Consumer<Repository>(
+        builder: (_, repo, __) => ChangeNotifierProvider.value(
+          value: repo.settings,
+          child: ChangeNotifierProvider.value(
+            child: JournalApp(),
+            value: repo.notesFolder,
+          ),
         ),
       ),
     );
