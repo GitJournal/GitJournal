@@ -239,9 +239,10 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
       var note = Note(this, fsEntity.path);
       if (note.fileName.startsWith('.')) {
+        // FIXME: Why does 'tr' not work over here
         var ignoredFile = IgnoredFile(
           filePath: fsEntity.path,
-          reason: tr("ignoredFiles.dot"),
+          reason: "Starts with a .",
         );
         _ignoredFiles.add(ignoredFile);
 
@@ -254,8 +255,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       if (!NoteFileFormatInfo.isAllowedFileName(note.filePath)) {
         var ignoredFile = IgnoredFile(
           filePath: fsEntity.path,
-          reason: tr("ignoredFiles.ext") +
-              " " +
+          reason: "Doesn't end with one of the following - " +
               NoteFileFormatInfo.allowedExtensions().join(' '),
         );
         _ignoredFiles.add(ignoredFile);
