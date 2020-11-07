@@ -46,6 +46,7 @@ class InAppPurchases {
   static Future<void> confirmProPurchase() async {
     SubscriptionStatus sub;
 
+    Log.i("Trying to confirmProPurchase");
     try {
       sub = await _subscriptionStatus();
       if (sub == null) {
@@ -63,9 +64,11 @@ class InAppPurchases {
       return;
     }
 
+    Log.i("SubscriptionState: $sub");
+
     var isPro = sub.isPro;
     var expiryDate = sub.expiryDate.toIso8601String();
-    Log.i(sub.toString());
+    Log.i("Pro ExpiryDate: $expiryDate");
 
     if (AppSettings.instance.proMode != isPro) {
       Log.i("Pro mode changed to $isPro");
@@ -84,6 +87,7 @@ class InAppPurchases {
     var dtNow = DateTime.now().toUtc();
 
     var response = await iapConn.queryPastPurchases();
+    Log.i("Number of Past Purchases: ${response.pastPurchases.length}");
     for (var purchase in response.pastPurchases) {
       DateTime dt;
       try {
