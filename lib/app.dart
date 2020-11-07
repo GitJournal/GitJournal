@@ -29,6 +29,14 @@ class JournalApp extends StatefulWidget {
   static Future main(SharedPreferences pref) async {
     await Log.init();
 
+    Log.i("--------------------------------");
+    Log.i("--------------------------------");
+    Log.i("--------------------------------");
+    Log.i("--------- App Launched ---------");
+    Log.i("--------------------------------");
+    Log.i("--------------------------------");
+    Log.i("--------------------------------");
+
     var appSettings = AppSettings.instance;
     Log.i("AppSetting ${appSettings.toMap()}");
 
