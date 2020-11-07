@@ -139,16 +139,27 @@ class AppDrawer extends StatelessWidget {
             icon: Icons.rate_review,
             title: tr('drawer.feedback'),
             onTap: () async {
-              var versionText = await getVersionString();
-
               var platform = Platform.operatingSystem;
-              var emailAddress = 'feedback@gitjournal.io';
-              var subject = 'GitJournal Feedback';
-              var body =
-                  "Hey!\n\nHere are some ways to improve GitJournal - \n \n\nVersion: $versionText\nPlatform: $platform";
+              var versionText = await getVersionString();
+              var isPro = AppSettings.instance.proMode;
 
-              subject = Uri.encodeComponent(subject);
+              var body =
+                  "Hey!\n\nHere are some ways to improve GitJournal - \n \n\n";
+              body += "Version: $versionText\n";
+              body += "Platform: $platform\n";
+              body += "isPro: $isPro\n";
+
+              var exp = AppSettings.instance.proExpirationDate;
+              if (exp != null && exp.isNotEmpty) {
+                body += "expiryDate: $exp";
+              }
+
               body = Uri.encodeComponent(body);
+
+              var subject = 'GitJournal Feedback';
+              subject = Uri.encodeComponent(subject);
+
+              var emailAddress = 'feedback@gitjournal.io';
 
               var url = 'mailto:$emailAddress?subject=$subject&body=$body';
               launch(url);
@@ -164,10 +175,20 @@ class AppDrawer extends StatelessWidget {
             onTap: () async {
               var platform = Platform.operatingSystem;
               var versionText = await getVersionString();
+              var isPro = AppSettings.instance.proMode;
+
+              var body = "Hey!\n\nI found a bug in GitJournal - \n \n\n";
+              body += "Version: $versionText\n";
+              body += "Platform: $platform\n";
+              body += "isPro: $isPro\n";
+
+              var exp = AppSettings.instance.proExpirationDate;
+              if (exp != null && exp.isNotEmpty) {
+                body += "expiryDate: $exp";
+              }
 
               final Email email = Email(
-                body:
-                    "Hey!\n\nI found a bug in GitJournal - \n \n\nVersion: $versionText\nPlatform: $platform",
+                body: body,
                 subject: 'GitJournal Bug',
                 recipients: ['bugs@gitjournal.io'],
                 attachmentPaths: Log.filePathsForDates(2),
