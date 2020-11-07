@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:device_info/device_info.dart';
+
 // - https://support.google.com/firebase/answer/7029846?hl=en
 // - https://support.google.com/firebase/answer/6317485?hl=en
 
@@ -29,6 +33,37 @@ class Device {
   String language;
   bool isLimitedAdTracking;
   int timeZoneOffsetSeconds;
+
+  static Future<Device> build() async {
+    var device = Device();
+    var deviceInfo = DeviceInfoPlugin();
+    if (Platform.isAndroid) {
+      var d = await deviceInfo.androidInfo;
+      device.category = "mobile";
+      device.mobileBrandName = d.brand;
+      device.mobileModelName = d.model;
+      device.mobileOsHardwareModel = "";
+      device.operatingSystem = "android";
+      device.operatingSystemVersion = "";
+      device.vendorId = "";
+      device.language = "";
+      device.isLimitedAdTracking = true;
+    } else if (Platform.isIOS) {
+      var d = await deviceInfo.iosInfo;
+      device.category = "mobile";
+      device.mobileBrandName = "";
+      device.mobileModelName = d.model;
+      device.mobileOsHardwareModel = "";
+      device.operatingSystem = d.systemName;
+      device.operatingSystemVersion = d.systemVersion;
+      device.vendorId = d.identifierForVendor;
+      device.language = "";
+      device.isLimitedAdTracking = true;
+    }
+
+    device.timeZoneOffsetSeconds = DateTime.now().timeZoneOffset.inSeconds;
+    return device;
+  }
 }
 
 class Geo {

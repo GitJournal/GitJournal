@@ -91,7 +91,7 @@ class JournalApp extends StatefulWidget {
 
     var isPhysicalDevice = true;
     try {
-      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      var deviceInfo = DeviceInfoPlugin();
       if (Platform.isAndroid) {
         var info = await deviceInfo.androidInfo;
         isPhysicalDevice = info.isPhysicalDevice;
