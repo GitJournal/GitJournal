@@ -164,14 +164,13 @@ class AppDrawer extends StatelessWidget {
             onTap: () async {
               var platform = Platform.operatingSystem;
               var versionText = await getVersionString();
-              var appLogsFilePath = Log.filePathForDate(DateTime.now());
 
               final Email email = Email(
                 body:
                     "Hey!\n\nI found a bug in GitJournal - \n \n\nVersion: $versionText\nPlatform: $platform",
                 subject: 'GitJournal Bug',
                 recipients: ['bugs@gitjournal.io'],
-                attachmentPaths: [appLogsFilePath],
+                attachmentPaths: Log.filePathsForDates(2),
               );
 
               await FlutterEmailSender.send(email);

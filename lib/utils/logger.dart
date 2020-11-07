@@ -115,22 +115,20 @@ class Log {
   }
 
   static Iterable<LogMessage> fetchLogs() sync* {
-    var now = DateTime.now();
+    var today = DateTime.now();
 
-    var yesterday = now.add(-1.days).toString().substring(0, 10);
+    var yesterday = today.add(-1.days);
     for (var msg in fetchLogsForDate(yesterday)) {
       yield msg;
     }
 
-    var today = now.toString().substring(0, 10);
     for (var msg in fetchLogsForDate(today)) {
       yield msg;
     }
   }
 
-  static Iterable<LogMessage> fetchLogsForDate(String date) sync* {
-    var filePath = p.join(logFolderPath, '$date.jsonl');
-    var file = File(filePath);
+  static Iterable<LogMessage> fetchLogsForDate(DateTime date) sync* {
+    var file = File(filePathForDate(date));
     if (!file.existsSync()) {
       return;
     }
@@ -148,6 +146,19 @@ class Log {
   static String filePathForDate(DateTime dt) {
     var date = dt.toString().substring(0, 10);
     return p.join(logFolderPath, '$date.jsonl');
+  }
+
+  static List<String> filePathsForDates(int n) {
+    var today = DateTime.now();
+    var l = <String>[];
+    for (var i = 0; i < n; i++) {
+      var fp = filePathForDate(today - Duration(days: i * -1));
+      if (File(fp).existsSync()) {
+        l.add(fp);
+      }
+    }
+
+    return l;
   }
 }
 
