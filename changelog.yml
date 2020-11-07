@@ -10,6 +10,7 @@
       image: ios_shortcuts.png
     - text: "Custom SSH keys with passwords can now be used - #227"
     - text: "Create new note when clicking on non existing Wiki Link - #240"
+    - text: "Debug Screen: Add a button to easily copy all the logs"
   bugs:
     - text: "Fix notes not always showing up - #270"
 

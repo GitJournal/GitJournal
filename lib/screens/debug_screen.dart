@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
@@ -52,6 +55,10 @@ class _DebugScreenState extends State<DebugScreen> {
           },
         ),
         actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.copy),
+            onPressed: _copyToClipboard,
+          ),
           IconButton(
             icon: const Icon(Icons.filter_list),
             onPressed: _showFilterSelection,
@@ -121,6 +128,16 @@ class _DebugScreenState extends State<DebugScreen> {
 
       yield _buildLogWidget(msg);
     }
+  }
+
+  void _copyToClipboard() async {
+    var messages = <String>[];
+    for (var logMsg in _logs) {
+      var msg = json.encode(logMsg.toMap());
+      messages.add(msg);
+    }
+
+    Clipboard.setData(ClipboardData(text: messages.join('\n')));
   }
 
   Widget _buildLogWidget(LogMessage msg) {
