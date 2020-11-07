@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'package:dart_git/config.dart';
 import 'package:dart_git/dart_git.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -88,6 +89,7 @@ class Repository with ChangeNotifier {
 
     var remoteConfigured = false;
 
+    List<GitRemoteConfig> remotes;
     if (repoDirStat.type != FileSystemEntityType.directory) {
       Log.i("Calling GitInit for ${settings.folderName} at: $repoPath");
       await GitRepository.init(repoPath);
@@ -95,8 +97,21 @@ class Repository with ChangeNotifier {
       settings.save();
     } else {
       var gitRepo = await GitRepository.load(repoPath);
-      var remotes = gitRepo.config.remotes;
+      remotes = gitRepo.config.remotes;
       remoteConfigured = remotes.isNotEmpty;
+    }
+
+    if (remoteConfigured) {
+      if (settings.sshPublicKey == null || settings.sshPublicKey.isEmpty) {
+        var remoteNames = remotes.map((e) => e.name + ' ' + e.url).toList();
+        Log.e("Public Key Empty for $remoteNames");
+        logExceptionWarning(Exception("Public Key Empty"), StackTrace.current);
+      }
+      if (settings.sshPrivateKey == null || settings.sshPrivateKey.isEmpty) {
+        var remoteNames = remotes.map((e) => e.name + ' ' + e.url).toList();
+        Log.e("Private Key Empty for $remoteNames");
+        logExceptionWarning(Exception("Private Key Empty"), StackTrace.current);
+      }
     }
 
     return Repository._internal(
