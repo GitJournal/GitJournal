@@ -51,7 +51,7 @@ class Device {
     } else if (Platform.isIOS) {
       var d = await deviceInfo.iosInfo;
       device.category = "mobile";
-      device.mobileBrandName = "";
+      device.mobileBrandName = d.name;
       device.mobileModelName = d.model;
       device.mobileOsHardwareModel = "";
       device.operatingSystem = d.systemName;
@@ -66,6 +66,8 @@ class Device {
   }
 }
 
+// https://github.com/oschwald/geoip2-golang
+// -> Host it on the server, client side makes no sense
 class Geo {
   String continent;
   String country;
@@ -100,3 +102,12 @@ class AppInfo {
 // - Populate the other data
 // - Post them to an endpoint which collects them
 // -
+
+// Convert the IP into the geolocation server side (along with an id)
+// Convert the device into an ID (deterministically) -> some hash
+// call an /registerDevice
+// call an /ip2location
+//
+
+// Optimization: Figure out a better way to serialize the info
+//               start with json, and later move to protobufs
