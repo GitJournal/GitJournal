@@ -7,6 +7,7 @@ import 'package:fimber/fimber.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:time/time.dart';
 
 class Log {
   static String logFolderPath;
@@ -114,14 +115,26 @@ class Log {
   }
 
   static Iterable<LogMessage> fetchLogs() sync* {
-    var today = DateTime.now().toString().substring(0, 10);
+    var now = DateTime.now();
+
+    var yesterday = now.add(-1.days).toString().substring(0, 10);
+    for (var msg in fetchLogsForDate(yesterday)) {
+      yield msg;
+    }
+
+    var today = now.toString().substring(0, 10);
     for (var msg in fetchLogsForDate(today)) {
       yield msg;
     }
   }
 
   static Iterable<LogMessage> fetchLogsForDate(String date) sync* {
-    var file = File(p.join(logFolderPath, '$date.jsonl'));
+    var filePath = p.join(logFolderPath, '$date.jsonl');
+    var file = File(filePath);
+    if (!file.existsSync()) {
+      return;
+    }
+
     var str = file.readAsStringSync();
     for (var line in LineSplitter.split(str)) {
       try {
