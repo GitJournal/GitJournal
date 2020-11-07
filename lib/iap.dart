@@ -88,6 +88,8 @@ class InAppPurchases {
 
     var response = await iapConn.queryPastPurchases();
     Log.i("Number of Past Purchases: ${response.pastPurchases.length}");
+
+    var subs = <SubscriptionStatus>[];
     for (var purchase in response.pastPurchases) {
       DateTime dt;
       try {
@@ -102,9 +104,21 @@ class InAppPurchases {
       if (dt == null || !dt.isAfter(dtNow)) {
         continue;
       }
-      return SubscriptionStatus(true, dt);
+
+      var sub = SubscriptionStatus(true, dt);
+      Log.i("--> $sub");
+      subs.add(sub);
     }
-    return SubscriptionStatus(false, dtNow);
+    Log.i("Number of SubscriptionStatus: ${subs.length}");
+
+    var sub = SubscriptionStatus(false, dtNow);
+    for (var s in subs) {
+      if (s.expiryDate.isAfter(sub.expiryDate)) {
+        sub = s;
+      }
+    }
+
+    return sub;
   }
 
   static Future<void> clearTransactionsIos() async {
