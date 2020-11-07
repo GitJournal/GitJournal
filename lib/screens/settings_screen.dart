@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:ext_storage/ext_storage.dart';
 import 'package:icloud_documents_path/icloud_documents_path.dart';
 import 'package:path/path.dart' as p;
@@ -120,11 +121,7 @@ class SettingsListState extends State<SettingsList> {
             return tr('settings.email.validator.empty');
           }
 
-          bool emailValid = RegExp(
-                  r"^[a-zA-Z0-9.\-!#$%&'*+/=?^_``{|}~]+@[a-zA-Z0-9\-]+\.[a-zA-Z\-]+")
-              .hasMatch(value);
-
-          if (!emailValid) {
+          if (!EmailValidator.validate(value)) {
             return tr('settings.email.validator.invalid');
           }
           return null;
