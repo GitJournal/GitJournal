@@ -33,8 +33,8 @@ dependencies:
     #path: /Users/vishesh/src/gitjournal/git_bindings
     git: https://github.com/GitJournal/git_bindings.git
   dart_git:
-    git: https://github.com/GitJournal/dart_git.git
-    #path: /Users/vishesh/src/gitjournal/dart_git
+    git: https://github.com/GitJournal/dart-git.git
+    #path: /Users/vishesh/src/gitjournal/dart-git
   yaml_serializer: ^0.0.9
   connectivity: ^0.4.6+1
   flutter_emoji: ">= 2.0.0"

@@ -502,6 +502,11 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     String error;
     try {
       var repo = await GitRepository.load(repoPath);
+      var remotes = repo.config.remotes;
+      var i = remotes.indexWhere((r) => r.name == widget.remoteName);
+      if (i != -1) {
+        await repo.removeRemote(widget.remoteName);
+      }
       await repo.addRemote(widget.remoteName, _gitCloneUrl);
 
       var repoN = git_bindings.GitRepo(folderPath: repoPath);

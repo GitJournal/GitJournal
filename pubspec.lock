@@ -181,10 +181,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "071cb643a4924a45986920f44c0e2433ee9159ed"
-      url: "https://github.com/GitJournal/dart_git.git"
+      resolved-ref: b489bbb315e066b332e438747c1359004ff2b244
+      url: "https://github.com/GitJournal/dart-git.git"
     source: git
-    version: "0.0.1"
+    version: "0.0.2"
   device_info:
     dependency: "direct main"
     description:
@@ -1165,5 +1165,5 @@ packages:
     source: hosted
     version: "0.0.9"
 sdks:
-  dart: ">=2.10.0-110 <2.11.0"
+  dart: ">=2.10.1 <2.11.0"
   flutter: ">=1.20.0 <2.0.0"
