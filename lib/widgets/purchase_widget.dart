@@ -407,7 +407,7 @@ class _RestorePurchaseButtonState extends State<RestorePurchaseButton> {
         setState(() {
           computing = true;
         });
-        Log.i("Confirming Pro Purchase");
+        Log.i("Restoring Purchases");
         await InAppPurchases.confirmProPurchase();
         if (AppSettings.instance.proMode) {
           Navigator.of(context).pop();
