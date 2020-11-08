@@ -220,10 +220,10 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       if (fsEntity is Directory) {
         var subFolder = NotesFolderFS(this, fsEntity.path, settings);
         if (subFolder.name.startsWith('.')) {
-          Log.v("Ignoring Folder", props: {
-            "path": fsEntity.path,
-            "reason": "Hidden folder",
-          });
+          // Log.v("Ignoring Folder", props: {
+          //   "path": fsEntity.path,
+          //   "reason": "Hidden folder",
+          // });
           continue;
         }
         Log.v("Found Folder", props: {"path": fsEntity.path});
