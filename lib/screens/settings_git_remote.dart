@@ -180,6 +180,11 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     }
     repoFolderName = repoFolderName + num.toString();
 
+    var settings = Provider.of<Settings>(context);
+    settings.folderName = repoFolderName;
+    settings.storeInternally = true;
+    settings.save();
+
     var route = MaterialPageRoute(
       builder: (context) => GitHostSetupScreen(
         repoFolderName: repoFolderName,
