@@ -68,6 +68,12 @@ class Device {
 
 // https://github.com/oschwald/geoip2-golang
 // -> Host it on the server, client side makes no sense
+// TODO:
+// 1. Create a postgres table for the geo
+// 2. Write a migrator from the old event to the new format (what lang? dart?)
+// 3. Create a simple endpoint which converts the IP
+//    into a location and gives that location an ID and returns it
+//    (Saves it in the DB)
 class Geo {
   String continent;
   String country;
@@ -103,11 +109,8 @@ class AppInfo {
 // - Post them to an endpoint which collects them
 // -
 
-// Convert the IP into the geolocation server side (along with an id)
 // Convert the device into an ID (deterministically) -> some hash
 // call an /registerDevice
-// call an /ip2location
-//
 
 // Optimization: Figure out a better way to serialize the info
 //               start with json, and later move to protobufs
