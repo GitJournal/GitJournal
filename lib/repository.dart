@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:dart_git/config.dart';
 import 'package:dart_git/dart_git.dart';
+import 'package:git_bindings/git_bindings.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
@@ -467,6 +468,8 @@ class Repository with ChangeNotifier {
 
       }
 
+      await _addFileInRepo(repo: this, settings: settings);
+
       this.repoPath = repoPath;
       _notesCache.clear();
       remoteGitRepoConfigured = true;
@@ -526,5 +529,33 @@ Future<void> _copyDirectory(String source, String destination) async {
     } else if (entity is File) {
       await entity.copy(p.join(destination, p.basename(entity.path)));
     }
+  }
+}
+
+/// Add a GitIgnore file if no file is present. This way we always at least have
+/// one commit. It makes doing a git pull and push easier
+Future<void> _addFileInRepo({
+  @required Repository repo,
+  @required Settings settings,
+}) async {
+  var repoPath = repo.repoPath;
+  var dirList = await Directory(repoPath).list().toList();
+  var anyFileInRepo = dirList.firstWhere(
+    (fs) => fs.statSync().type == FileSystemEntityType.file,
+    orElse: () => null,
+  );
+  if (anyFileInRepo == null) {
+    Log.i("Adding .ignore file");
+    var ignoreFile = File(p.join(repoPath, ".gitignore"));
+    ignoreFile.createSync();
+
+    var repo = GitRepo(folderPath: repoPath);
+    await repo.add('.gitignore');
+
+    await repo.commit(
+      message: "Add gitignore file",
+      authorEmail: settings.gitAuthorEmail,
+      authorName: settings.gitAuthor,
+    );
   }
 }

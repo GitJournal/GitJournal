@@ -532,31 +532,6 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       return;
     }
 
-    //
-    // Add a GitIgnore file. This way we always at least have one commit
-    // It makes doing a git pull and push easier
-    //
-    var dirList = await Directory(repoPath).list().toList();
-    var anyFileInRepo = dirList.firstWhere(
-      (fs) => fs.statSync().type == FileSystemEntityType.file,
-      orElse: () => null,
-    );
-    if (anyFileInRepo == null) {
-      Log.i("Adding .ignore file");
-      var ignoreFile = File(p.join(repoPath, ".gitignore"));
-      ignoreFile.createSync();
-
-      var repo = git_bindings.GitRepo(folderPath: repoPath);
-      await repo.add('.gitignore');
-
-      var settings = Provider.of<Settings>(context, listen: false);
-      await repo.commit(
-        message: "Add gitignore file",
-        authorEmail: settings.gitAuthorEmail,
-        authorName: settings.gitAuthor,
-      );
-    }
-
     logEvent(
       Event.GitHostSetupComplete,
       parameters: _buildOnboardingAnalytics(),
