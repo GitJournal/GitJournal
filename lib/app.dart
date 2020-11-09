@@ -226,9 +226,7 @@ class _JournalAppState extends State<JournalApp> {
       if (value == null) return;
       Log.d("Received Share $value");
 
-      setState(() {
-        _sharedImages = value.map((f) => f.path)?.toList();
-      });
+      _sharedImages = value.map((f) => f.path)?.toList();
       WidgetsBinding.instance.addPostFrameCallback((_) => handleShare());
     }, onError: (err) {
       Log.e("getIntentDataStream error: $err");
@@ -237,11 +235,9 @@ class _JournalAppState extends State<JournalApp> {
     // For sharing images coming from outside the app while the app is closed
     ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
       if (value == null) return;
-      Log.d("Received Share with App running $value");
+      Log.d("Received Share with App (media): $value");
 
-      setState(() {
-        _sharedImages = value.map((f) => f.path)?.toList();
-      });
+      _sharedImages = value.map((f) => f.path)?.toList();
       WidgetsBinding.instance.addPostFrameCallback((_) => handleShare());
     });
 
@@ -249,9 +245,7 @@ class _JournalAppState extends State<JournalApp> {
     _intentDataStreamSubscription =
         ReceiveSharingIntent.getTextStream().listen((String value) {
       Log.d("Received Share $value");
-      setState(() {
-        _sharedText = value;
-      });
+      _sharedText = value;
       WidgetsBinding.instance.addPostFrameCallback((_) => handleShare());
     }, onError: (err) {
       Log.e("getLinkStream error: $err");
@@ -259,10 +253,8 @@ class _JournalAppState extends State<JournalApp> {
 
     // For sharing or opening text coming from outside the app while the app is closed
     ReceiveSharingIntent.getInitialText().then((String value) {
-      Log.d("Received Share with App running $value");
-      setState(() {
-        _sharedText = value;
-      });
+      Log.d("Received Share with App (text): $value");
+      _sharedText = value;
       WidgetsBinding.instance.addPostFrameCallback((_) => handleShare());
     });
   }

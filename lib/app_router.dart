@@ -115,9 +115,6 @@ class AppRouter {
 
       var rootFolder = repository.notesFolder;
 
-      sharedText = null;
-      sharedImages = null;
-
       Log.d("sharedText: $sharedText");
       Log.d("sharedImages: $sharedImages");
 
