@@ -12,9 +12,14 @@ import 'note.dart';
 import 'notes_folder.dart';
 import 'notes_folder_notifier.dart';
 
+enum IgnoreReason {
+  HiddenFile,
+  InvalidExtension,
+}
+
 class IgnoredFile {
   String filePath;
-  String reason;
+  IgnoreReason reason;
 
   IgnoredFile({@required this.filePath, @required this.reason});
 
@@ -242,27 +247,26 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         // FIXME: Why does 'tr' not work over here
         var ignoredFile = IgnoredFile(
           filePath: fsEntity.path,
-          reason: "Starts with a .",
+          reason: IgnoreReason.HiddenFile,
         );
         _ignoredFiles.add(ignoredFile);
 
         Log.v("Ignoring file", props: {
           "path": ignoredFile.filePath,
-          "reason": ignoredFile.reason,
+          "reason": ignoredFile.reason.toString(),
         });
         continue;
       }
       if (!NoteFileFormatInfo.isAllowedFileName(note.filePath)) {
         var ignoredFile = IgnoredFile(
           filePath: fsEntity.path,
-          reason: "Doesn't end with one of the following - " +
-              NoteFileFormatInfo.allowedExtensions().join(' '),
+          reason: IgnoreReason.InvalidExtension,
         );
         _ignoredFiles.add(ignoredFile);
 
         // Log.v("Ignoring file", props: {
         //   "path": ignoredFile.filePath,
-        //   "reason": ignoredFile.reason,
+        //   "reason": ignoredFile.reason.toString(),
         // });
         continue;
       }

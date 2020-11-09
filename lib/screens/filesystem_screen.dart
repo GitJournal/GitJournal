@@ -45,7 +45,7 @@ class _FileSystemScreenState extends State<FileSystemScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(tr("screens.filesystem.ignoredFile.title")),
-          content: Text(ignoredFile.reason),
+          content: Text(ignoredFile.reason.toString()),
           actions: <Widget>[
             FlatButton(
               onPressed: () async {
