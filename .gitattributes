@@ -1,0 +1,4 @@
+android/app/keystore.jks filter=git-crypt diff=git-crypt
+android/google-play-api-key.json filter=git-crypt diff=git-crypt
+android/key.properties filter=git-crypt diff=git-crypt
+.gitattributes !filter !diff
