@@ -130,6 +130,7 @@ class Log {
   static Iterable<LogMessage> fetchLogsForDate(DateTime date) sync* {
     var file = File(filePathForDate(date));
     if (!file.existsSync()) {
+      Log.i("No log file for $date");
       return;
     }
 
@@ -138,7 +139,7 @@ class Log {
       try {
         yield LogMessage.fromMap(json.decode(line));
       } catch (e) {
-        Log.e(e);
+        Log.e("fetchLogsForDate: $e");
       }
     }
   }
@@ -155,6 +156,8 @@ class Log {
       var fp = filePathForDate(today.add(i.days));
       if (File(fp).existsSync()) {
         l.add(fp);
+      } else {
+        Log.i("Log file $fp not found");
       }
     }
 
