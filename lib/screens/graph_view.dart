@@ -63,6 +63,7 @@ class _GraphViewState extends State<GraphView> {
     super.initState();
 
     widget.graph.addListener(() {
+      if (!mounted) return;
       setState(() {});
     });
 
