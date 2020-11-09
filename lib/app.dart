@@ -296,8 +296,13 @@ class _JournalAppState extends State<JournalApp> {
       initialRoute: router.initialRoute(),
       debugShowCheckedModeBanner: false,
       //debugShowMaterialGrid: true,
-      onGenerateRoute: (rs) =>
-          router.generateRoute(rs, stateContainer, _sharedText, _sharedImages),
+      onGenerateRoute: (rs) {
+        var r = router.generateRoute(
+            rs, stateContainer, _sharedText, _sharedImages);
+        _sharedText = null;
+        _sharedImages = null;
+        return r;
+      },
     );
   }
 }
