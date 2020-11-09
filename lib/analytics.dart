@@ -167,7 +167,7 @@ class Analytics {
 
 void logEvent(Event event, {Map<String, String> parameters = const {}}) {
   getAnalytics().log(e: event, parameters: parameters);
-  Log.d("Event $event");
+  Log.d("$event");
 }
 
 class AnalyticsRouteObserver extends RouteObserver<PageRoute<dynamic>> {

@@ -226,7 +226,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
           // });
           continue;
         }
-        Log.v("Found Folder", props: {"path": fsEntity.path});
+        // Log.v("Found Folder", props: {"path": fsEntity.path});
         _addFolderListeners(subFolder);
 
         _folders.add(subFolder);
