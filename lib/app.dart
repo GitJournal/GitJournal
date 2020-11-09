@@ -114,15 +114,15 @@ class JournalApp extends StatefulWidget {
     JournalApp.analytics.setAnalyticsCollectionEnabled(enabled);
 
     if (enabled) {
-      getAnalytics().firebase.setUserProperty(
-            name: 'proMode',
-            value: appSettings.proMode.toString(),
-          );
+      getAnalytics().setUserProperty(
+        name: 'proMode',
+        value: appSettings.proMode.toString(),
+      );
 
-      getAnalytics().firebase.setUserProperty(
-            name: 'proExpirationDate',
-            value: appSettings.proExpirationDate.toString(),
-          );
+      getAnalytics().setUserProperty(
+        name: 'proExpirationDate',
+        value: appSettings.proExpirationDate.toString(),
+      );
     }
   }
 

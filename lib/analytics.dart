@@ -154,6 +154,15 @@ class Analytics {
     this.enabled = enabled;
     return firebase.setAnalyticsCollectionEnabled(enabled);
   }
+
+  Future<void> setCurrentScreen({@required String screenName}) async {
+    await firebase.setCurrentScreen(screenName: screenName);
+  }
+
+  Future<void> setUserProperty(
+      {@required String name, @required String value}) async {
+    await firebase.setUserProperty(name: name, value: value);
+  }
 }
 
 void logEvent(Event event, {Map<String, String> parameters = const {}}) {
@@ -174,7 +183,7 @@ class AnalyticsRouteObserver extends RouteObserver<PageRoute<dynamic>> {
     }
 
     try {
-      await getAnalytics().firebase.setCurrentScreen(screenName: screenName);
+      await getAnalytics().setCurrentScreen(screenName: screenName);
     } catch (e, stackTrace) {
       Log.e("AnalyticsRouteObserver", ex: e, stacktrace: stackTrace);
     }

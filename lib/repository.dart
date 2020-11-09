@@ -137,10 +137,10 @@ class Repository with ChangeNotifier {
     notesFolder = NotesFolderFS(null, _gitRepo.gitDirPath, settings);
 
     // Makes it easier to filter the analytics
-    getAnalytics().firebase.setUserProperty(
-          name: 'onboarded',
-          value: remoteGitRepoConfigured.toString(),
-        );
+    getAnalytics().setUserProperty(
+      name: 'onboarded',
+      value: remoteGitRepoConfigured.toString(),
+    );
 
     var cachePath = p.join(cacheDir, "cache.json");
     _notesCache = NotesCache(
