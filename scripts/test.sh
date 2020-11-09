@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu pipefail
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 cd "$SCRIPT_DIR/.."
 
 touch ~/.android/repositories.cfg
@@ -15,7 +15,6 @@ for i in $(seq $MIN_API_VERSION $MAX_API_VERSION); do
     echo "Downling SDK $i"
     sdkmanager "system-images;android-$i;google_apis;x86"
 done
-
 
 for i in $(seq $MIN_API_VERSION $MAX_API_VERSION); do
     echo "Creating device for API $i"

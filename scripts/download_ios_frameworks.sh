@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eux
+set -eux pipefail
 
 cd "$(dirname "$0")"/../ios
 

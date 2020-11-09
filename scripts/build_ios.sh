@@ -5,7 +5,7 @@ if [ -z ${FASTLANE_PASSWORD+x} ]; then
     exit 1
 fi
 
-set -eu
+set -eo pipefail
 
 cd "$(dirname "$0")"
 cd ../
