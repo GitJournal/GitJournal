@@ -202,7 +202,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     }
     repoFolderName = repoFolderName + num.toString();
 
-    var settings = Provider.of<Settings>(context);
+    var settings = Provider.of<Settings>(context, listen: false);
     settings.folderName = repoFolderName;
     settings.storeInternally = true;
     settings.save();
