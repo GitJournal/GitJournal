@@ -10,6 +10,8 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
+      - name: Install gpg
+        run: brew install gnupg git-crypt
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: "1.22.1"
