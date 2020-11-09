@@ -28,13 +28,35 @@ class GitRemoteSettingsScreen extends StatefulWidget {
 }
 
 class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
+  String remoteHost;
+
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     var settings = Provider.of<Settings>(context);
+    var repo = Provider.of<Repository>(context);
+
+    if (remoteHost == null) {
+      remoteHost = "";
+      repo.remoteConfigs().then((list) {
+        setState(() {
+          if (!mounted) return;
+          remoteHost = list.first.url;
+        });
+      });
+    }
 
     var body = Column(
       children: <Widget>[
+        if (remoteHost != null && remoteHost.isNotEmpty)
+          Text(
+            tr('settings.gitRemote.host'),
+            style: textTheme.bodyText1,
+            textAlign: TextAlign.left,
+          ),
+        if (remoteHost != null && remoteHost.isNotEmpty)
+          ListTile(title: Text(remoteHost)),
+        const SizedBox(height: 16.0),
         Text(
           tr('setup.sshKeyUserProvided.public'),
           style: textTheme.bodyText1,

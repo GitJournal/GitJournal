@@ -517,6 +517,11 @@ class Repository with ChangeNotifier {
     await repo.checkout(note.filePath);
     return note.load();
   }
+
+  Future<List<GitRemoteConfig>> remoteConfigs() async {
+    var repo = await GitRepository.load(repoPath);
+    return repo.config.remotes;
+  }
 }
 
 Future<void> _copyDirectory(String source, String destination) async {

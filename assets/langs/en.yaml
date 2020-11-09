@@ -45,6 +45,7 @@ settings:
       cancel: Cancel
     title: Git Remote Settings
     subtitle: Configure where your notes are synced
+    host: Git Host
   noteMetaData:
     title: Note Metadata Settings
     subtitle: Configure how the Note Metadata is saved
