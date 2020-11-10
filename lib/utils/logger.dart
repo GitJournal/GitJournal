@@ -153,7 +153,7 @@ class Log {
     var today = DateTime.now();
     var l = <String>[];
     for (var i = 0; i < n; i++) {
-      var fp = filePathForDate(today.add(i.days));
+      var fp = filePathForDate(today.subtract(i.days));
       if (File(fp).existsSync()) {
         l.add(fp);
       } else {
