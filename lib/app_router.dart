@@ -42,6 +42,7 @@ class AppRouter {
     Repository repository,
     String sharedText,
     List<String> sharedImages,
+    Function callbackIfUsedShared,
   ) {
     var route = routeSettings.name;
     if (route == '/folders' || route == '/tags' || route == '/filesystem') {
@@ -53,6 +54,7 @@ class AppRouter {
           settings,
           sharedText,
           sharedImages,
+          callbackIfUsedShared,
         ),
         transitionsBuilder: (_, anim, __, child) {
           return FadeTransition(opacity: anim, child: child);
@@ -68,6 +70,7 @@ class AppRouter {
         settings,
         sharedText,
         sharedImages,
+        callbackIfUsedShared,
       ),
     );
   }
@@ -78,6 +81,7 @@ class AppRouter {
     Settings settings,
     String sharedText,
     List<String> sharedImages,
+    Function callbackIfUsedShared,
   ) {
     switch (route) {
       case '/':
@@ -125,6 +129,8 @@ class AppRouter {
           extraProps[key] = val;
         });
       }
+
+      callbackIfUsedShared();
 
       var folder = getFolderForEditor(settings, rootFolder, et);
       return NoteEditor.newNote(

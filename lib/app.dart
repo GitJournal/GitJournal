@@ -297,10 +297,12 @@ class _JournalAppState extends State<JournalApp> {
       debugShowCheckedModeBanner: false,
       //debugShowMaterialGrid: true,
       onGenerateRoute: (rs) {
-        var r = router.generateRoute(
-            rs, stateContainer, _sharedText, _sharedImages);
-        _sharedText = null;
-        _sharedImages = null;
+        var r = router
+            .generateRoute(rs, stateContainer, _sharedText, _sharedImages, () {
+          _sharedText = null;
+          _sharedImages = null;
+        });
+
         return r;
       },
     );
