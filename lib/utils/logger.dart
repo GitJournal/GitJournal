@@ -139,7 +139,7 @@ class Log {
       try {
         yield LogMessage.fromMap(json.decode(line));
       } catch (e) {
-        Log.e("fetchLogsForDate: $e");
+        //Log.e("fetchLogsForDate: $e");
       }
     }
   }
