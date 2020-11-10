@@ -46,7 +46,14 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
     try {
       gitHost.init((Exception error) async {
         if (error != null) {
-          throw error;
+          if (mounted) {
+            setState(() {
+              errorMessage = error.toString();
+            });
+          }
+
+          logException(error, StackTrace.current);
+          return;
         }
         Log.d("GitHost Initalized: " + widget.gitHostType.toString());
 
