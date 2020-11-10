@@ -11,7 +11,13 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Install gpg
-        run: brew install gnupg git-crypt
+        run: brew install gnupg git-crypt md5sha1sum
+      - name: Unlock Secrets
+        env:
+          GITCRYPT_KEY: ${{ secrets.GITCRYPT_KEY }}
+        run: ./scripts/decrypt_secrets.sh
+      - name: Setup provisioning profile
+        run: ./scripts/add_ios_keys.sh
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: "1.22.1"

@@ -46,4 +46,4 @@ echo "Build Name: $BUILD_NAME"
 flutter build ios --release --no-codesign --build-number=$BUILD_NUM --build-name=$BUILD_NAME
 
 cd ios
-#fastlane release
+fastlane release
