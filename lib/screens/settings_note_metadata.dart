@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
 import 'package:provider/provider.dart';
+import 'package:time/time.dart';
 
 import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
@@ -32,7 +33,7 @@ class _NoteMetadataSettingsScreenState
   void initState() {
     super.initState();
 
-    created = DateTime.now().add(const Duration(days: -1));
+    created = DateTime.now().subtract(1.days);
     modified = DateTime.now();
   }
 

@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:time/time.dart';
 
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/app_settings.dart';
@@ -61,7 +62,7 @@ Future<void> populateWithData(SharedPreferences pref) async {
 
   createNote(
     p.join(repoPath, "note-taking-apps.md"),
-    now.add(const Duration(days: -2)),
+    now.add(-2.days),
     body:
         """There seems to be an explosion of Note Taking apps. Here are some of the Open Sources ones that I have found -
 
@@ -77,27 +78,27 @@ Future<void> populateWithData(SharedPreferences pref) async {
 
   createNote(
     p.join(repoPath, "note3.md"),
-    now.add(const Duration(hours: -2)),
+    now.add(-2.hours),
     body:
         "What are the different models for building sustainable Open Source Software?",
   );
 
   createNote(
     p.join(repoPath, "git-analogy.md"),
-    now.add(const Duration(hours: -5)),
+    now.add(-5.hours),
     body: "Perhaps Git could be explained as a virtual usb-drive",
     title: "Git Analogy",
   );
 
   createNote(
     p.join(repoPath, "open-source-analytics.md"),
-    now.add(const Duration(hours: -5)),
+    now.add(-5.hours),
     body: "Research what Open Source Alternative Exist for App Analytics",
   );
 
   createNote(
     p.join(repoPath, "lighting.md"),
-    now.add(const Duration(hours: -5)),
+    now.add(-5.hours),
     body: "But some lamps to make the office more cozy at night",
   );
 }

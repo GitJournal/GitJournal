@@ -1,6 +1,7 @@
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:screenshots/screenshots.dart';
 import 'package:test/test.dart';
+import 'package:time/time.dart';
 
 import 'isolates_workaround.dart';
 
@@ -18,7 +19,7 @@ void main() {
       workaround = IsolatesWorkaround(driver);
       await workaround.resumeIsolates();
 
-      await Future.delayed(const Duration(seconds: 15));
+      await Future.delayed(15.seconds);
     });
 
     // Close the connection to the driver after the tests have completed
@@ -36,7 +37,7 @@ void main() {
 
     Future<void> waitFor(SerializableFinder finder) async {
       try {
-        await driver.waitFor(finder, timeout: const Duration(seconds: 15));
+        await driver.waitFor(finder, timeout: 15.seconds);
       } catch (e, st) {
         print(e);
         print(st);
@@ -48,6 +49,8 @@ void main() {
     // FIXME: make waiting for common and comptuer a screenshot on exception
 
     test('Normal Flow', () async {
+      var delay = 100.milliseconds;
+
       // OnBoarding
       var nextButton = find.text("Next");
       await waitFor(nextButton);
@@ -81,14 +84,14 @@ void main() {
       // Editor Selector
       var editorSelector = find.byValueKey("EditorSelector");
       await driver.tap(editorSelector);
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(delay);
       await _takeScreenshot();
 
       // Raw Edtitor
       var rawEditor = find.text("Raw Editor");
       await waitFor(rawEditor);
       await driver.tap(rawEditor);
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(delay);
       await _takeScreenshot();
 
       // Journal Editor
@@ -96,7 +99,7 @@ void main() {
       var journalEditor = find.text("Journal Editor");
       await waitFor(journalEditor);
       await driver.tap(journalEditor);
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(delay);
       await _takeScreenshot();
 
       // Go Back to home screen
@@ -112,7 +115,7 @@ void main() {
       await _takeScreenshot();
       await driver.tap(find.byValueKey("NewEntry"));
 
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(delay);
       await _takeScreenshot();
 
       // Create yet another note
@@ -124,7 +127,7 @@ void main() {
       await _takeScreenshot();
       await driver.tap(find.byValueKey("NewEntry"));
 
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(delay);
       await _takeScreenshot();
 
       // Capture Standard View's Sorting Options
@@ -176,14 +179,14 @@ void main() {
       await _takeScreenshot();
 
       await driver.tap(folderViewSelector);
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(delay);
       await _takeScreenshot();
 
       // Select Card View
       var cardView = find.text("Card View");
       await waitFor(cardView);
       await driver.tap(cardView);
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(delay);
       await _takeScreenshot();
 
       // Select Journal View
@@ -191,7 +194,7 @@ void main() {
       var journalView = find.text("Journal View");
       await waitFor(journalView);
       await driver.tap(journalView);
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(delay);
       await _takeScreenshot();
 
       // Select Grid View
@@ -199,21 +202,21 @@ void main() {
       var gridView = find.text("Grid View");
       await waitFor(gridView);
       await driver.tap(gridView);
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(delay);
       await _takeScreenshot();
 
       // Select the Checklist
       var checklist = find.text("Shopping List");
       await waitFor(checklist);
       await driver.tap(checklist);
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(delay);
       await _takeScreenshot();
       await driver.tap(find.byValueKey("NewEntry"));
 
       // Open the Drawer
       final drawerButtonFinder = find.byValueKey("DrawerButton");
       await driver.tap(drawerButtonFinder);
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(delay);
       await _takeScreenshot();
 
       // Folders View
@@ -227,7 +230,7 @@ void main() {
 
       // Open the Drawer
       await driver.tap(drawerButtonFinder);
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(delay);
       await _takeScreenshot();
 
       // The Git Host setup screen
@@ -240,6 +243,6 @@ void main() {
       // Close the drawer
       // var app = find.byValueKey("App");
       // await driver.scroll(app, -300.0, 0.0, const Duration(milliseconds: 300));
-    }, timeout: const Timeout(Duration(minutes: 20)));
+    }, timeout: Timeout(20.minutes));
   });
 }

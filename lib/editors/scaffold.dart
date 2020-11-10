@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 import 'package:provider/provider.dart';
+import 'package:time/time.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
@@ -180,7 +181,7 @@ class _AnimatedOpacityIgnorePointer extends StatelessWidget {
     return IgnorePointer(
       ignoring: !visible,
       child: AnimatedOpacity(
-        duration: const Duration(milliseconds: 500),
+        duration: 500.milliseconds,
         opacity: opacity,
         child: child,
       ),

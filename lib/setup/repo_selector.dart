@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
 import 'package:intl/intl.dart';
+import 'package:time/time.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:gitjournal/analytics.dart';
@@ -323,8 +324,7 @@ class _SmartDateTime extends StatelessWidget {
 
   static final _dateFormat = DateFormat('d MMM yyyy');
   static final _dateFormatWithoutYear = DateFormat('d MMM');
-  static final thirtyDaysAgo =
-      DateTime.now().subtract(const Duration(days: 30));
+  static final thirtyDaysAgo = DateTime.now().subtract(30.days);
 
   @override
   Widget build(BuildContext context) {

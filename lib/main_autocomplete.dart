@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+import 'package:time/time.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -92,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
     overlayState.insert(suggestionTagoverlayEntry);
 
     // Removes the over lay entry from the Overly after 500 milliseconds
-    await Future.delayed(const Duration(milliseconds: 5000));
+    await Future.delayed(5000.milliseconds);
     suggestionTagoverlayEntry.remove();
   }
 

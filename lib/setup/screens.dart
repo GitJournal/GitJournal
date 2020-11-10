@@ -10,6 +10,7 @@ import 'package:function_types/function_types.dart';
 import 'package:git_bindings/git_bindings.dart' as git_bindings;
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
+import 'package:time/time.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/analytics.dart';
@@ -388,7 +389,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       onWillPop: () async {
         if (_currentPageIndex != 0) {
           pageController.previousPage(
-            duration: const Duration(milliseconds: 200),
+            duration: 200.milliseconds,
             curve: Curves.easeIn,
           );
           return false;
@@ -402,7 +403,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
   void _nextPage() {
     pageController.nextPage(
-      duration: const Duration(milliseconds: 200),
+      duration: 200.milliseconds,
       curve: Curves.easeIn,
     );
   }

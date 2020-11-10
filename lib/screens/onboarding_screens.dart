@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
+import 'package:time/time.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/app_settings.dart';
@@ -122,7 +123,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         padding: const EdgeInsets.all(16.0),
       ),
       bottomNavigationBar: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
+        duration: 300.milliseconds,
         child: bottomBar,
       ),
     );
@@ -139,7 +140,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
 
   void _nextPage() {
     pageController.nextPage(
-      duration: const Duration(milliseconds: 200),
+      duration: 200.milliseconds,
       curve: Curves.easeIn,
     );
   }

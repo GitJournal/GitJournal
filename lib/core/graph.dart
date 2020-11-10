@@ -179,7 +179,7 @@ class Graph extends ChangeNotifier {
     });
 
     /*
-    Timer(const Duration(seconds: 5), () {
+    Timer(5.seconds, () {
       if (layoutTimer != null) {
         layoutTimer.cancel();
         layoutTimer = null;

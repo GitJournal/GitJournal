@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
+import 'package:time/time.dart';
 
 import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/utils/logger.dart';
@@ -30,7 +31,7 @@ class _DebugScreenState extends State<DebugScreen> {
   void _scrollToTop() {
     _controller.animateTo(
       _controller.position.minScrollExtent,
-      duration: const Duration(milliseconds: 10),
+      duration: 10.milliseconds,
       curve: Curves.easeOut,
     );
   }
@@ -38,7 +39,7 @@ class _DebugScreenState extends State<DebugScreen> {
   void _scrollToBottom() {
     _controller.animateTo(
       _controller.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 10),
+      duration: 10.milliseconds,
       curve: Curves.easeOut,
     );
   }

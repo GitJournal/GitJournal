@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:time/time.dart';
 
 import 'package:gitjournal/core/checklist.dart';
 import 'package:gitjournal/core/note.dart';
@@ -141,7 +142,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
           checklist.addItem(item);
 
           // FIXME: Make this happen on the next build
-          Timer(const Duration(milliseconds: 50), () {
+          Timer(50.milliseconds, () {
             FocusScope.of(context).requestFocus();
             FocusScope.of(context).requestFocus(fn);
           });
@@ -251,7 +252,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
           checklist.removeItem(item);
 
           // FIXME: Make this happen on the next build
-          Timer(const Duration(milliseconds: 200), () {
+          Timer(200.milliseconds, () {
             if (fn != null) {
               FocusScope.of(context).requestFocus();
               FocusScope.of(context).requestFocus(fn);
@@ -267,7 +268,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
           checklist.insertItem(index + 1, item);
 
           // FIXME: Make this happen on the next build
-          Timer(const Duration(milliseconds: 50), () {
+          Timer(50.milliseconds, () {
             print("Asking focus to ${index + 1}");
             FocusScope.of(context).requestFocus();
             FocusScope.of(context).requestFocus(fn);

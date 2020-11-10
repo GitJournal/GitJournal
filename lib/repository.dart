@@ -10,6 +10,7 @@ import 'package:git_bindings/git_bindings.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
+import 'package:time/time.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/core/git_repo.dart';
@@ -365,7 +366,7 @@ class Repository with ChangeNotifier {
         // The '4 seconds' is taken from snack_bar.dart -> _kSnackBarDisplayDuration
         // We wait an aritfical amount of time, so that the user has a change to undo
         // their delete operation, and that commit is not synced with the server, till then.
-        await Future.delayed(const Duration(seconds: 4));
+        await Future.delayed(4.seconds);
         _syncNotes();
       });
     });
