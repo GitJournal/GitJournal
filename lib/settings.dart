@@ -166,87 +166,93 @@ class Settings extends ChangeNotifier {
     var pref = await SharedPreferences.getInstance();
     var defaultSet = Settings(id);
 
-    _setString(pref, "gitAuthor", gitAuthor, defaultSet.gitAuthor);
-    _setString(
+    await _setString(pref, "gitAuthor", gitAuthor, defaultSet.gitAuthor);
+    await _setString(
         pref, "gitAuthorEmail", gitAuthorEmail, defaultSet.gitAuthorEmail);
-    _setString(
+    await _setString(
         pref,
         "noteFileNameFormat",
         noteFileNameFormat.toInternalString(),
         defaultSet.noteFileNameFormat.toInternalString());
-    _setString(
+    await _setString(
         pref,
         "journalNoteFileNameFormat",
         journalNoteFileNameFormat.toInternalString(),
         defaultSet.journalNoteFileNameFormat.toInternalString());
-    _setString(
+    await _setString(
         pref, "yamlModifiedKey", yamlModifiedKey, defaultSet.yamlModifiedKey);
-    _setString(
+    await _setString(
         pref, "yamlCreatedKey", yamlCreatedKey, defaultSet.yamlCreatedKey);
-    _setString(pref, "yamlTagsKey", yamlTagsKey, defaultSet.yamlTagsKey);
-    _setString(
+    await _setString(pref, "yamlTagsKey", yamlTagsKey, defaultSet.yamlTagsKey);
+    await _setString(
         pref, "customMetaData", customMetaData, defaultSet.customMetaData);
-    _setBool(pref, "yamlHeaderEnabled", yamlHeaderEnabled,
+    await _setBool(pref, "yamlHeaderEnabled", yamlHeaderEnabled,
         defaultSet.yamlHeaderEnabled);
-    _setString(pref, "defaultNewNoteFolderSpec", defaultNewNoteFolderSpec,
+    await _setString(pref, "defaultNewNoteFolderSpec", defaultNewNoteFolderSpec,
         defaultSet.defaultNewNoteFolderSpec);
-    _setString(
+    await _setString(
         pref,
         "journalEditordefaultNewNoteFolderSpec",
         journalEditordefaultNewNoteFolderSpec,
         defaultSet.journalEditordefaultNewNoteFolderSpec);
-    _setBool(pref, "journalEditorSingleNote", journalEditorSingleNote,
+    await _setBool(pref, "journalEditorSingleNote", journalEditorSingleNote,
         defaultSet.journalEditorSingleNote);
-    _setString(
+    await _setString(
         pref,
         "remoteSyncFrequency",
         remoteSyncFrequency.toInternalString(),
         defaultSet.remoteSyncFrequency.toInternalString());
-    _setString(pref, "sortingField", sortingField.toInternalString(),
+    await _setString(pref, "sortingField", sortingField.toInternalString(),
         defaultSet.sortingField.toInternalString());
-    _setString(pref, "sortingOrder", sortingOrder.toInternalString(),
+    await _setString(pref, "sortingOrder", sortingOrder.toInternalString(),
         defaultSet.sortingOrder.toInternalString());
-    _setString(pref, "defaultEditor", defaultEditor.toInternalString(),
+    await _setString(pref, "defaultEditor", defaultEditor.toInternalString(),
         defaultSet.defaultEditor.toInternalString());
-    _setString(pref, "defaultView", defaultView.toInternalString(),
+    await _setString(pref, "defaultView", defaultView.toInternalString(),
         defaultSet.defaultView.toInternalString());
-    _setString(
+    await _setString(
         pref,
         "markdownDefaultView",
         markdownDefaultView.toInternalString(),
         defaultSet.markdownDefaultView.toInternalString());
-    _setString(
+    await _setString(
         pref,
         "markdownLastUsedView",
         markdownLastUsedView.toInternalString(),
         defaultSet.markdownLastUsedView.toInternalString());
-    _setBool(
+    await _setBool(
         pref, "showNoteSummary", showNoteSummary, defaultSet.showNoteSummary);
-    _setString(pref, "folderViewHeaderType", folderViewHeaderType,
+    await _setString(pref, "folderViewHeaderType", folderViewHeaderType,
         defaultSet.folderViewHeaderType);
-    _setBool(pref, "emojiParser", emojiParser, defaultSet.emojiParser);
-    _setString(pref, "homeScreen", homeScreen.toInternalString(),
+    await _setBool(pref, "emojiParser", emojiParser, defaultSet.emojiParser);
+    await _setString(pref, "homeScreen", homeScreen.toInternalString(),
         defaultSet.homeScreen.toInternalString());
-    _setString(pref, "imageLocationSpec", imageLocationSpec,
+    await _setString(pref, "imageLocationSpec", imageLocationSpec,
         defaultSet.imageLocationSpec);
-    _setBool(pref, "zenMode", zenMode, defaultSet.zenMode);
-    _setBool(pref, "saveTitleInH1", saveTitleInH1, defaultSet.saveTitleInH1);
-    _setBool(pref, "swipeToDelete", swipeToDelete, defaultSet.swipeToDelete);
-    _setStringSet(pref, "inlineTagPrefixes", inlineTagPrefixes,
+    await _setBool(pref, "zenMode", zenMode, defaultSet.zenMode);
+    await _setBool(
+        pref, "saveTitleInH1", saveTitleInH1, defaultSet.saveTitleInH1);
+    await _setBool(
+        pref, "swipeToDelete", swipeToDelete, defaultSet.swipeToDelete);
+    await _setStringSet(pref, "inlineTagPrefixes", inlineTagPrefixes,
         defaultSet.inlineTagPrefixes);
-    _setBool(pref, "bottomMenuBar", bottomMenuBar, defaultSet.bottomMenuBar);
-    _setBool(
+    await _setBool(
+        pref, "bottomMenuBar", bottomMenuBar, defaultSet.bottomMenuBar);
+    await _setBool(
         pref, "storeInternally", storeInternally, defaultSet.storeInternally);
-    _setString(
+    await _setString(
         pref, "storageLocation", storageLocation, defaultSet.storageLocation);
 
-    _setString(pref, "sshPublicKey", sshPublicKey, defaultSet.sshPublicKey);
-    _setString(pref, "sshPrivateKey", sshPrivateKey, defaultSet.sshPrivateKey);
-    _setString(pref, "sshPassword", sshPassword, defaultSet.sshPassword);
+    await _setString(
+        pref, "sshPublicKey", sshPublicKey, defaultSet.sshPublicKey);
+    await _setString(
+        pref, "sshPrivateKey", sshPrivateKey, defaultSet.sshPrivateKey);
+    await _setString(pref, "sshPassword", sshPassword, defaultSet.sshPassword);
 
-    pref.setInt("settingsVersion", version);
+    await _setInt(pref, "settingsVersion", version, defaultSet.version);
 
-    pref.setString("remoteGitRepoPath", folderName);
+    await _setString(
+        pref, "remoteGitRepoPath", folderName, defaultSet.folderName);
 
     notifyListeners();
   }
@@ -276,6 +282,20 @@ class Settings extends ChangeNotifier {
       await pref.remove(key);
     } else {
       await pref.setBool(key, value);
+    }
+  }
+
+  Future<void> _setInt(
+    SharedPreferences pref,
+    String key,
+    int value,
+    int defaultValue,
+  ) async {
+    key = id + '_' + key;
+    if (value == defaultValue) {
+      await pref.remove(key);
+    } else {
+      await pref.setInt(key, value);
     }
   }
 
