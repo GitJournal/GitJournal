@@ -353,6 +353,7 @@ class Settings extends ChangeNotifier {
       'storeInternally': storeInternally.toString(),
       'storageLocation': storageLocation,
       'sshPublicKey': sshPublicKey.isNotEmpty.toString(),
+      'sshPrivateKey': sshPrivateKey.isNotEmpty.toString(),
     };
   }
 
