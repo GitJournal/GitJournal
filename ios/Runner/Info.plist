@@ -2,32 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSUbiquitousContainers</key>
-	<dict>
-		<key>iCloud.io.gitjournal.gitjournal</key>
-		<dict>
-			<key>NSUbiquitousContainerSupportedFolderLevels</key>
-			<string>Any</string>
-			<key>NSUbiquitousContainerName</key>
-			<string>GitJournal</string>
-			<key>NSUbiquitousContainerIsDocumentScopePublic</key>
-			<true/>
-		</dict>
-	</dict>
-	<key>LSSupportsOpeningDocumentsInPlace</key>
-	<true/>
-	<key>UIFileSharingEnabled</key>
-	<true/>
-	<key>CFBundleLocalizations</key>
-	<array>
-		<string>en</string>
-	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>Take a photo and add it to your Notes</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Add photos from your Library to your Notes</string>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -38,6 +12,10 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+	</array>
 	<key>CFBundleName</key>
 	<string>GitJournal</string>
 	<key>CFBundlePackageType</key>
@@ -67,7 +45,42 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>itms</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<true/>
+	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Take a photo and add it to your Notes</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Add photos from your Library to your Notes</string>
+	<key>NSUbiquitousContainers</key>
+	<dict>
+		<key>iCloud.io.gitjournal.gitjournal</key>
+		<dict>
+			<key>NSUbiquitousContainerIsDocumentScopePublic</key>
+			<true/>
+			<key>NSUbiquitousContainerName</key>
+			<string>GitJournal</string>
+			<key>NSUbiquitousContainerSupportedFolderLevels</key>
+			<string>Any</string>
+		</dict>
+	</dict>
+	<key>SentryDSN</key>
+	<string>https://35f34dbec289435fbe16483faacf49a5@sentry.io/5168082</string>
+	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -89,18 +102,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>itms</string>
-	</array>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-		<key>NSAllowsArbitraryLoadsInWebContent</key>
-		<true/>
-	</dict>
-	<key>SentryDSN</key>
-	<string>https://35f34dbec289435fbe16483faacf49a5@sentry.io/5168082</string>
 </dict>
 </plist>
