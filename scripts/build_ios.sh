@@ -23,9 +23,9 @@ export LIBS_URL="https://github.com/GitJournal/ios-libraries/releases/download/v
 
 if [ ! -d "ios/libs" ]; then
     echo "Downloading Libs"
-    wget "$LIBS_URL"
+    wget -q "$LIBS_URL"
     cd ios
-    unzip ../libs.zip
+    unzip -q ../libs.zip
     cd -
     rm libs.zip
 fi
@@ -46,4 +46,4 @@ echo "Build Name: $BUILD_NAME"
 flutter build ios --release --no-codesign --build-number=$BUILD_NUM --build-name=$BUILD_NAME
 
 cd ios
-fastlane release
+bundle exec fastlane release
