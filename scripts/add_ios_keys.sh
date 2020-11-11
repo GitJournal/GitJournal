@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eox pipefail
+set -eo pipefail
 
 #
 # Provisioning Profiles
@@ -15,12 +15,15 @@ cp ./CI__iogitjournalgitjournal.mobileprovision "$HOME/Library/MobileDevice/Prov
 uuid=$(security cms -D -i CI__iogitjournalgitjournalShareExtension.mobileprovision | grep -aA1 UUID | grep -o "[-a-zA-Z0-9]\{36\}")
 cp ./CI__iogitjournalgitjournalShareExtension.mobileprovision "$HOME/Library/MobileDevice/Provisioning Profiles/${uuid}.mobileprovision"
 
-ls -l "$HOME/Library/MobileDevice/Provisioning Profiles/"
+echo "Provisioning Profiles"
+ls "$HOME/Library/MobileDevice/Provisioning Profiles/"
 
 #
 # Keychain
 #
 cd ..
+echo ""
+echo "Configuring Keychain"
 ls
 
 KEYCHAIN_NAME="build.keychain"
@@ -38,5 +41,4 @@ security unlock-keychain -p "" "$KEYCHAIN_PATH"
 security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" "$KEYCHAIN_PATH"
 
 # Print out installed code signing identities
-security list-keychains
 security find-identity -v -p codesigning
