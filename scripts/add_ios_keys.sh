@@ -18,18 +18,25 @@ cp ./CI__iogitjournalgitjournalShareExtension.mobileprovision "$HOME/Library/Mob
 ls -l "$HOME/Library/MobileDevice/Provisioning Profiles/"
 
 #
-# Key Chain
+# Keychain
 #
 cd ..
+ls
 
-security create-keychain -p "" build.keychain
-security import ios_distribution.cer -t agg -k ~/Library/Keychains/build.keychain -P "" -A
+KEYCHAIN_NAME="build.keychain"
+KEYCHAIN_PATH="$HOME/Library/Keychains/$KEYCHAIN_NAME"
 
-security list-keychains -s ~/Library/Keychains/build.keychain
-security default-keychain -s ~/Library/Keychains/build.keychain
-security unlock-keychain -p "" ~/Library/Keychains/build.keychain
+security create-keychain -p "" "$KEYCHAIN_NAME"
+security import dist.p12 -k "$KEYCHAIN_PATH" -P "" -A
+security import dev.p12 -k "$KEYCHAIN_PATH" -P "" -A
 
-#security set-key-partition-list -S apple-tool:,apple: -s -k "" ~/Library/Keychains/build.keychain
+security list-keychains -s "$KEYCHAIN_PATH"
+security default-keychain -s "$KEYCHAIN_PATH"
+security unlock-keychain -p "" "$KEYCHAIN_PATH"
+
+# Apple Magic https://stackoverflow.com/a/40870033/147435
+security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" "$KEYCHAIN_PATH"
 
 # Print out installed code signing identities
+security list-keychains
 security find-identity -v -p codesigning
