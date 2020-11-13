@@ -50,10 +50,27 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
     super.initState();
 
     _textController.addListener(() {
-      setState(() {
-        selectedRepo = null;
-        createRepo = false;
-      });
+      var q = _textController.text.toLowerCase();
+      if (q.isEmpty) {
+        setState(() {
+          selectedRepo = null;
+          createRepo = false;
+        });
+        return;
+      }
+      var repoIndex = repos.indexWhere((r) =>
+          r.name.toLowerCase() == q && r.username == widget.userInfo.username);
+      if (repoIndex == -1) {
+        setState(() {
+          selectedRepo = null;
+          createRepo = false;
+        });
+      } else {
+        setState(() {
+          selectedRepo = repos[repoIndex];
+          createRepo = false;
+        });
+      }
     });
     _initStateAysnc();
   }
@@ -336,12 +353,17 @@ class _RepoTile extends StatelessWidget {
       );
     }
 
-    return ListTile(
+    var tile = ListTile(
       title: title,
       trailing: _SmartDateTime(repo.updatedAt, textTheme.caption),
       selected: selected,
       contentPadding: const EdgeInsets.all(0.0),
       onTap: onTap,
+    );
+
+    return Ink(
+      color: selected ? Theme.of(context).highlightColor : Colors.transparent,
+      child: tile,
     );
   }
 }

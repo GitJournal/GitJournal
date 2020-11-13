@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
+import 'package:collection/collection.dart';
+
 typedef OAuthCallback = void Function(GitHostException);
 
 abstract class GitHost {
@@ -79,7 +81,18 @@ class GitHostRepo {
 
   @override
   String toString() => toJson().toString();
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is GitHostRepo &&
+          runtimeType == other.runtimeType &&
+          _mapEquals(toJson(), other.toJson());
+  @override
+  int get hashCode => toJson().hashCode;
 }
+
+var _mapEquals = (const MapEquality()).equals;
 
 class GitHostException implements Exception {
   static const OAuthFailed = GitHostException("OAuthFailed");
