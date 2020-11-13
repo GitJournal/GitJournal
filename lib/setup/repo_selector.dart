@@ -124,8 +124,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
     }
 
     var q = _textController.text.toLowerCase();
-    var filteredRepos =
-        repos.where((r) => r.name.toLowerCase().contains(q)).toList();
+    var filteredRepos = filterList(repos, q);
 
     var repoExists = filteredRepos.indexWhere((r) =>
             r.name.toLowerCase() == q &&
@@ -239,6 +238,28 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
       selected: createRepo,
     );
   }
+}
+
+/// If we have "blahFlutter" and "Flutter" searching for "flu" should put
+/// "Flutter" higher up in the list.
+List<GitHostRepo> filterList(List<GitHostRepo> repos, String q) {
+  if (q.isEmpty) return repos;
+
+  var l = repos.where((r) => r.name.toLowerCase().contains(q)).toList();
+  l.sort((r1, r2) {
+    var r1StartsWith = r1.name.startsWith(q);
+    var r2StartsWith = r2.name.startsWith(q);
+
+    if (r1StartsWith == r2StartsWith) {
+      return r1.name.compareTo(r2.name);
+    } else if (r1StartsWith) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });
+
+  return l;
 }
 
 class _RepoTile extends StatelessWidget {
