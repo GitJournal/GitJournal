@@ -6,6 +6,7 @@ class HighlightedText extends StatelessWidget {
   final String highlightTextLowerCase;
 
   final TextStyle style;
+  final TextStyle highlightStyle;
   final TextOverflow overflow;
   final int maxLines;
 
@@ -14,6 +15,7 @@ class HighlightedText extends StatelessWidget {
     @required this.highlightText,
     @required this.highlightTextLowerCase,
     @required this.style,
+    this.highlightStyle,
     this.overflow,
     this.maxLines,
   });
@@ -29,9 +31,10 @@ class HighlightedText extends StatelessWidget {
       return Text(text, maxLines: maxLines, overflow: overflow, style: style);
     }
 
-    var highlightStyle = style.copyWith(
-      backgroundColor: Theme.of(context).highlightColor,
-    );
+    var highlightStyle = this.highlightStyle ??
+        style.copyWith(
+          backgroundColor: Theme.of(context).highlightColor,
+        );
 
     var before = text.substring(0, i);
     var term = text.substring(i, i + highlightText.length);
@@ -47,5 +50,44 @@ class HighlightedText extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class HighlightTextSpan {
+  final String text;
+  final String highlightText;
+  final String highlightTextLowerCase;
+
+  final TextStyle style;
+  final TextStyle highlightStyle;
+
+  HighlightTextSpan({
+    @required this.text,
+    @required this.highlightText,
+    @required this.highlightTextLowerCase,
+    @required this.style,
+    this.highlightStyle,
+  });
+
+  List<InlineSpan> build(BuildContext context) {
+    var i = text.toLowerCase().indexOf(highlightTextLowerCase);
+    if (i == -1) {
+      return [];
+    }
+
+    var highlightStyle = this.highlightStyle ??
+        style.copyWith(
+          backgroundColor: Theme.of(context).highlightColor,
+        );
+
+    var before = text.substring(0, i);
+    var term = text.substring(i, i + highlightText.length);
+    var after = text.substring(i + highlightText.length);
+
+    return [
+      TextSpan(text: before, style: style),
+      TextSpan(text: term, style: highlightStyle),
+      TextSpan(text: after, style: style),
+    ];
   }
 }

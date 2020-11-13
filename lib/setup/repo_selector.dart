@@ -14,6 +14,7 @@ import 'package:gitjournal/setup/button.dart';
 import 'package:gitjournal/setup/error.dart';
 import 'package:gitjournal/setup/loading.dart';
 import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/widgets/highlighted_text.dart';
 
 //import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -139,6 +140,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
         for (var repo in filteredRepos)
           _RepoTile(
             repo: repo,
+            searchText: q,
             onTap: () {
               setState(() {
                 selectedRepo = repo;
@@ -241,11 +243,13 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
 
 class _RepoTile extends StatelessWidget {
   final GitHostRepo repo;
+  final String searchText;
   final Function onTap;
   final bool selected;
 
   _RepoTile({
     @required this.repo,
+    @required this.searchText,
     @required this.onTap,
     @required this.selected,
   });
@@ -291,8 +295,28 @@ class _RepoTile extends StatelessWidget {
       ),
     ); */
 
+    var style = Theme.of(context).textTheme.subtitle1;
+
+    Widget title = Text(repo.fullName, style: style);
+    if (searchText.isNotEmpty) {
+      title = title = RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(text: repo.username + '/', style: style),
+            ...HighlightTextSpan(
+              text: repo.name,
+              highlightText: searchText,
+              highlightTextLowerCase: searchText,
+              style: style,
+              highlightStyle: style.copyWith(fontWeight: FontWeight.bold),
+            ).build(context),
+          ],
+        ),
+      );
+    }
+
     return ListTile(
-      title: Text(repo.fullName),
+      title: title,
       trailing: _SmartDateTime(repo.updatedAt, textTheme.caption),
       selected: selected,
       contentPadding: const EdgeInsets.all(0.0),
