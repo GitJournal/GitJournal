@@ -303,7 +303,7 @@ setup:
   repoSelector:
     title: Select or Create a Repository
     hint: Type to Search or Create a Repo
-    create: Create Repo {}
+    create: Create Private Repo {}
   cloneUrl:
     enter: Enter the Git Clone URL
     validator:
