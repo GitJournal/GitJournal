@@ -516,8 +516,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         privateKey: settings.sshPrivateKey,
         password: settings.sshPassword,
       );
-    } on Exception catch (e) {
-      Log.e(e.toString());
+    } on Exception catch (e, stacktrace) {
+      Log.e("Failed to add remote", ex: e, stacktrace: stacktrace);
       error = e.toString();
     }
 
