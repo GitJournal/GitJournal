@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart' as p;
 import 'package:time/time.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -18,10 +19,12 @@ import 'package:gitjournal/utils/logger.dart';
 
 class GitHostSetupRepoSelector extends StatefulWidget {
   final GitHost gitHost;
+  final UserInfo userInfo;
   final Func1<GitHostRepo, void> onDone;
 
   GitHostSetupRepoSelector({
     @required this.gitHost,
+    @required this.userInfo,
     @required this.onDone,
   });
 
@@ -123,11 +126,21 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
     var filteredRepos = repos.where((r) {
       var repoName = r.fullName.split('/').last;
       return repoName.toLowerCase().contains(q);
-    });
+    }).toList();
+
+    var repoExists = filteredRepos.indexWhere((r) {
+          var l = r.fullName.split('/');
+          var username = l.first;
+          var repoName = l.last;
+          return repoName.toLowerCase() == _textController.text &&
+              username == widget.userInfo.username;
+        }) !=
+        -1;
+    var createRepoTile = _textController.text.isNotEmpty && !repoExists;
 
     Widget repoBuilder = ListView(
       children: <Widget>[
-        if (_textController.text.isNotEmpty) _buildCreateRepoTile(),
+        if (createRepoTile) _buildCreateRepoTile(),
         for (var repo in filteredRepos)
           _RepoTile(
             repo: repo,
@@ -211,10 +224,11 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
 
   Widget _buildCreateRepoTile() {
     var repoName = _textController.text.trim();
+    var fullRepoName = p.join(widget.userInfo.username, repoName);
 
     return ListTile(
       leading: const Icon(Icons.add),
-      title: Text(tr('setup.repoSelector.create', args: [repoName])),
+      title: Text(tr('setup.repoSelector.create', args: [fullRepoName])),
       contentPadding: const EdgeInsets.all(0.0),
       onTap: () {
         setState(() {

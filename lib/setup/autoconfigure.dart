@@ -16,7 +16,7 @@ import 'loading.dart';
 
 class GitHostSetupAutoConfigure extends StatefulWidget {
   final GitHostType gitHostType;
-  final Func1<GitHost, void> onDone;
+  final Func2<GitHost, UserInfo, void> onDone;
 
   GitHostSetupAutoConfigure({
     @required this.gitHostType,
@@ -57,12 +57,13 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
         }
         Log.d("GitHost Initalized: " + widget.gitHostType.toString());
 
+        UserInfo userInfo;
         try {
           setState(() {
             _message = tr('setup.autoconfigure.readUser');
           });
 
-          var userInfo = await gitHost.getUserInfo();
+          userInfo = await gitHost.getUserInfo();
           var settings = Provider.of<Settings>(context, listen: false);
           if (userInfo.name != null && userInfo.name.isNotEmpty) {
             settings.gitAuthor = userInfo.name;
@@ -75,7 +76,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
           _handleGitHostException(e, stacktrace);
           return;
         }
-        widget.onDone(gitHost);
+        widget.onDone(gitHost, userInfo);
       });
 
       try {

@@ -71,6 +71,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   var pageController = PageController();
   int _currentPageIndex = 0;
 
+  UserInfo _userInfo;
+
   Widget _buildPage(BuildContext context, int pos) {
     assert(_pageCount >= 1);
 
@@ -175,9 +177,10 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       } else if (_pageChoice[1] == PageChoice1.Auto) {
         return GitHostSetupAutoConfigure(
           gitHostType: _gitHostType,
-          onDone: (GitHost gitHost) {
+          onDone: (GitHost gitHost, UserInfo userInfo) {
             setState(() {
               _gitHost = gitHost;
+              _userInfo = userInfo;
               _pageCount = pos + 2;
 
               _nextPage();
@@ -251,6 +254,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       } else if (_pageChoice[1] == PageChoice1.Auto) {
         return GitHostSetupRepoSelector(
           gitHost: _gitHost,
+          userInfo: _userInfo,
           onDone: (GitHostRepo repo) {
             setState(() {
               _gitHostRepo = repo;
