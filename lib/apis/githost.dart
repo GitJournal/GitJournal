@@ -28,6 +28,8 @@ class UserInfo {
 }
 
 class GitHostRepo {
+  final String name;
+  final String username;
   final String fullName;
   final String description;
 
@@ -44,6 +46,8 @@ class GitHostRepo {
   final List<String> tags;
 
   GitHostRepo({
+    @required this.name,
+    @required this.username,
     @required this.fullName,
     @required this.description,
     @required this.cloneUrl,
@@ -58,6 +62,8 @@ class GitHostRepo {
   });
 
   Map<String, dynamic> toJson() => {
+        'name': name,
+        'username': username,
         'fullName': fullName,
         'description': description,
         'cloneUrl': cloneUrl,

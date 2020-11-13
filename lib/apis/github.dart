@@ -226,6 +226,15 @@ class GitHub implements GitHost {
       Log.e(e);
     }
     var licenseMap = parsedJson['license'];
+    var fullName = parsedJson['full_name'].toString();
+
+    var owner = parsedJson['owner'];
+    var username = "";
+    if (owner != null) {
+      username = (owner as Map)["login"];
+    } else {
+      username = fullName.split('/').first;
+    }
 
     /*
     print("");
@@ -234,7 +243,9 @@ class GitHub implements GitHost {
     */
 
     return GitHostRepo(
-      fullName: parsedJson['full_name'],
+      name: parsedJson['name'],
+      username: username,
+      fullName: fullName,
       cloneUrl: parsedJson['ssh_url'],
       updatedAt: updatedAt,
       description: parsedJson['description'],

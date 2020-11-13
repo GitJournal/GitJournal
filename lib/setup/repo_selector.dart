@@ -123,19 +123,14 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
     }
 
     var q = _textController.text.toLowerCase();
-    var filteredRepos = repos.where((r) {
-      var repoName = r.fullName.split('/').last;
-      return repoName.toLowerCase().contains(q);
-    }).toList();
+    var filteredRepos =
+        repos.where((r) => r.name.toLowerCase().contains(q)).toList();
 
-    var repoExists = filteredRepos.indexWhere((r) {
-          var l = r.fullName.split('/');
-          var username = l.first;
-          var repoName = l.last;
-          return repoName.toLowerCase() == _textController.text &&
-              username == widget.userInfo.username;
-        }) !=
+    var repoExists = filteredRepos.indexWhere((r) =>
+            r.name.toLowerCase() == q &&
+            r.username == widget.userInfo.username) !=
         -1;
+
     var createRepoTile = _textController.text.isNotEmpty && !repoExists;
 
     Widget repoBuilder = ListView(

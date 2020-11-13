@@ -217,8 +217,19 @@ class GitLab implements GitHost {
       tags = tagList.map((e) => e.toString()).toList();
     }
 
+    var fullName = parsedJson['path_with_namespace'].toString();
+    var namespace = parsedJson['namespace'];
+    var username = "";
+    if (namespace != null) {
+      username = (namespace as Map)["path"];
+    } else {
+      username = fullName.split('/').first;
+    }
+
     return GitHostRepo(
-      fullName: parsedJson['path_with_namespace'],
+      name: parsedJson["name"],
+      username: username,
+      fullName: fullName,
       cloneUrl: parsedJson['ssh_url_to_repo'],
       updatedAt: updatedAt,
       description: parsedJson['description'],
