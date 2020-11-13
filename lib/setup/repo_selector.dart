@@ -228,7 +228,10 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
 
     return ListTile(
       leading: const Icon(Icons.add),
-      title: Text(tr('setup.repoSelector.create', args: [fullRepoName])),
+      title: Align(
+        child: Text(tr('setup.repoSelector.create', args: [fullRepoName])),
+        alignment: const Alignment(-1.3, 0),
+      ),
       contentPadding: const EdgeInsets.all(0.0),
       onTap: () {
         setState(() {
