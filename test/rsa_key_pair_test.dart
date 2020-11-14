@@ -49,7 +49,6 @@ AEQwc1bG+Z/Gc1Fd8DncgxyhKSQzLsfWroTnIn8wsnmhPJtaZWNuT5BJa8GhnzX0
     expect(pair.publicKeyString(), publicKeySingleLine);
   });
 
-  /*
   var privateOpenSshKey = '''-----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn
 NhAAAAAwEAAQAAAYEAnSgRJuxDPuTAyUQoGTF+tmA/7kT3FPg5DtM4RbcinIteCbkUWOoA
@@ -128,5 +127,22 @@ gsiY5pDTPJqEiGrO4wwz0Hj5Pn9cFl2l3zN1/HUSzNszuyIvZflI7HHWcguYXH9E
 FaG9LapMZjfIj7QTmJCqRpeOaSjoQx0a2Rtcgv7uo4haC502mYMcbhxllJWY4g0/
 0Shlq/1WGhnWLu8x+570q3eE9kF11Rpq95lSTdfP3RRPa43403Ld
 -----END RSA PRIVATE KEY-----''';
-  */
+
+  test('Should read privateOpenSshKey', () async {
+    var pair = RsaKeyPair.fromStrings(
+      publicKey: '',
+      privateKey: privateOpenSshKey,
+    );
+
+    expect(pair.privateKeyString().isNotEmpty, true);
+  });
+
+  test('Should read privateRsaKey', () async {
+    var pair = RsaKeyPair.fromStrings(
+      publicKey: '',
+      privateKey: privateRsaKey,
+    );
+
+    expect(pair.privateKeyString().isNotEmpty, true);
+  }, skip: true);
 }

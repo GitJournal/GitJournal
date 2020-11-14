@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:crypton/crypton.dart';
 import 'package:isolate/isolate_runner.dart';
 import 'package:meta/meta.dart';
 import 'package:ssh_key/ssh_key.dart' as ssh_key;
 
-import 'package:crypton/crypton.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/ssh/binary_length_value.dart';
 import 'package:gitjournal/utils/logger.dart';
@@ -25,22 +25,32 @@ class RsaKeyPair {
         this.publicKey = RSAPublicKey(key.modulus, key.exponent);
       }
     } catch (e) {
-      // Ignore
+      print(e);
     }
 
     if (publicKey == null) {
       try {
         this.publicKey = RSAPublicKey.fromString(publicKey);
       } catch (e) {
-        // Ignore
+        print(e);
       }
+    }
+
+    try {
+      var key = ssh_key.privateKeyDecode(privateKey);
+      if (key is ssh_key.RSAPrivateKeyWithInfo) {
+        this.privateKey =
+            RSAPrivateKey(key.modulus, key.exponent, key.p, key.q);
+      }
+    } catch (e) {
+      print(e);
     }
 
     if (privateKey == null) {
       try {
         this.privateKey = RSAPrivateKey.fromPEM(privateKey);
       } catch (e) {
-        // Ignore
+        print(e);
       }
     }
 
@@ -48,7 +58,7 @@ class RsaKeyPair {
       try {
         this.privateKey = RSAPrivateKey.fromString(privateKey);
       } catch (e) {
-        // Ignore
+        print(e);
       }
     }
   }
