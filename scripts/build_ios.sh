@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-if [ -z ${FASTLANE_PASSWORD+x} ]; then
-    echo "Must set FASTLANE_PASSWORD"
-    exit 1
-fi
-
 set -eo pipefail
 
 cd "$(dirname "$0")"
@@ -17,6 +12,8 @@ if [[ $(git status -s | grep -v '??') ]]; then
     git status
     exit 1
 fi
+
+flutter pub get
 
 # Download the required libraries
 export LIBS_URL="https://github.com/GitJournal/ios-libraries/releases/download/v1.1/libs.zip"
@@ -43,7 +40,9 @@ echo "Build Number: $BUILD_NUM"
 BUILD_NAME=$(cat pubspec.yaml | grep version | awk '{ print $2 }' | awk -F "+" '{ print $1 }')
 echo "Build Name: $BUILD_NAME"
 
-flutter build ios --release --no-codesign --build-number=$BUILD_NUM --build-name=$BUILD_NAME
+flutter build ios --release --no-codesign --build-number="$BUILD_NUM" --build-name="$BUILD_NAME"
 
 cd ios
+
+export FASTLANE_PASSWORD=$(cat keys/fastlane_password)
 bundle exec fastlane release
