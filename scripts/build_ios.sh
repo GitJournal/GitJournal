@@ -32,6 +32,8 @@ echo "Build Number: $BUILD_NUM"
 BUILD_NAME=$(cat pubspec.yaml | grep version | awk '{ print $2 }' | awk -F "+" '{ print $1 }')
 echo "Build Name: $BUILD_NAME"
 
+xcodebuild -version
+
 flutter build ios --release --no-codesign --build-number="$BUILD_NUM" --build-name="$BUILD_NAME"
 
 cd ios
