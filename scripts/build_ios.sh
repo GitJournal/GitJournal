@@ -5,14 +5,6 @@ set -eo pipefail
 cd "$(dirname "$0")"
 cd ../
 
-# Check for uncommitted changes
-if [[ $(git status -s | grep -v '??') ]]; then
-    echo "Uncommitted Changes."
-    echo "Exiting"
-    git status
-    exit 1
-fi
-
 flutter pub get
 
 # Download the required libraries
