@@ -24,7 +24,6 @@ ls "$HOME/Library/MobileDevice/Provisioning Profiles/"
 cd ..
 echo ""
 echo "Configuring Keychain"
-ls
 
 KEYCHAIN_NAME="build.keychain"
 KEYCHAIN_PATH="$HOME/Library/Keychains/$KEYCHAIN_NAME"
@@ -41,4 +40,4 @@ security unlock-keychain -p "" "$KEYCHAIN_PATH"
 security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" "$KEYCHAIN_PATH"
 
 # Print out installed code signing identities
-security find-identity -v -p codesigning
+# security find-identity -v -p codesigning
