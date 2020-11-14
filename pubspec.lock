@@ -35,7 +35,7 @@ packages:
       name: asn1lib
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.4"
+    version: "0.8.1"
   async:
     dependency: transitive
     description:
@@ -162,6 +162,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.5"
+  crypton:
+    dependency: "direct main"
+    description:
+      name: crypton
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.3"
   csslib:
     dependency: transitive
     description:
@@ -759,7 +766,7 @@ packages:
       name: pointycastle
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "2.0.0"
   pool:
     dependency: transitive
     description:
@@ -953,7 +960,7 @@ packages:
       name: ssh_key
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.1"
+    version: "0.6.0"
   stack_trace:
     dependency: transitive
     description:
@@ -961,13 +968,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.10.0-nullsafety.1"
-  steel_crypt:
-    dependency: "direct main"
-    description:
-      name: steel_crypt
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.7.1+1"
   stream_channel:
     dependency: transitive
     description:

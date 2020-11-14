@@ -41,13 +41,13 @@ dependencies:
   git_url_parse2: ^0.0.1
   synchronized: ^2.2.0
   mutex: ^1.0.3
-  steel_crypt: ^1.7.1+1
+  crypton: ^1.1.3
   font_awesome_flutter: ^8.7.0
   sentry: ">=3.0.0 <4.0.0"
   flutter_sentry: ^0.4.4
   equatable: ^1.1.0
   cached_network_image: ^2.2.0+1
-  ssh_key: ^0.5.1
+  ssh_key: ^0.6.0
   isolate: ^2.0.3
   image_picker: ^0.6.7
   easy_localization: ^2.3.2
