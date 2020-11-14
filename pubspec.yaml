@@ -49,7 +49,6 @@ dependencies:
   cached_network_image: ^2.2.0+1
   ssh_key: ^0.5.1
   isolate: ^2.0.3
-  flutter_webview_plugin: ^0.3.11
   image_picker: ^0.6.7
   easy_localization: ^2.3.2
   easy_localization_loader: ^0.0.2
@@ -58,8 +57,6 @@ dependencies:
   in_app_purchase: ^0.3.4+5
   flutter_plugin_android_lifecycle: ^1.0.8 # for fixing the build
   timeago: ^2.0.27
-  multicast_dns: ^0.2.2
-  bonsoir: ^0.1.2+2
   file_picker: ^2.0.7
   filesystem_picker: ^1.0.3 # for directories
   permission_handler: ^5.0.1+1
@@ -79,6 +76,9 @@ dev_dependencies:
   flutter_driver:
     sdk: flutter
   benchmark_harness: any
+  bonsoir: ^0.1.2+2
+  multicast_dns: ^0.2.2
+  flutter_webview_plugin: ^0.3.11
 
 dependency_overrides:
   markdown:

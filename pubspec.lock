@@ -65,7 +65,7 @@ packages:
     source: hosted
     version: "1.0.5"
   bonsoir:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: bonsoir
       url: "https://pub.dartlang.org"
@@ -407,7 +407,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_webview_plugin:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: flutter_webview_plugin
       url: "https://pub.dartlang.org"
@@ -621,7 +621,7 @@ packages:
     source: hosted
     version: "0.9.6+3"
   multicast_dns:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: multicast_dns
       url: "https://pub.dartlang.org"
