@@ -36,10 +36,20 @@ class RsaKeyPair {
       }
     }
 
-    try {
-      this.privateKey = RSAPrivateKey.fromPEM(privateKey);
-    } catch (e) {
-      // Ignore
+    if (privateKey == null) {
+      try {
+        this.privateKey = RSAPrivateKey.fromPEM(privateKey);
+      } catch (e) {
+        // Ignore
+      }
+    }
+
+    if (privateKey == null) {
+      try {
+        this.privateKey = RSAPrivateKey.fromString(privateKey);
+      } catch (e) {
+        // Ignore
+      }
     }
   }
 
