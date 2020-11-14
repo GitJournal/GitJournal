@@ -7,12 +7,12 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-10.14
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v1
       - name: Install gpg
-        run: brew install gnupg git-crypt md5sha1sum
+        run: brew install git-crypt md5sha1sum
       - name: Unlock Secrets
         env:
           GITCRYPT_KEY: ${{ secrets.GITCRYPT_KEY }}
