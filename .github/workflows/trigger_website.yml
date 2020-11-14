@@ -1,4 +1,4 @@
-name: Trigger Website
+name: Trigger GitJournal.io Rebuild
 
 on:
   push:
