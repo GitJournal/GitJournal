@@ -72,6 +72,9 @@ class RsaKeyPair {
 
   // Tries to encrypt and decrypt
   bool isValid() {
+    if (publicKey == null || privateKey == null) {
+      return false;
+    }
     var orig = 'word';
     var enc = publicKey.encrypt(orig);
     var dec = privateKey.decrypt(enc);
