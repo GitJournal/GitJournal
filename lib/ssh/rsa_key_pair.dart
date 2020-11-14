@@ -44,7 +44,7 @@ class RsaKeyPair {
   }
 
   RsaKeyPair.generate() {
-    var keyPair = RSAKeypair.fromRandom();
+    var keyPair = RSAKeypair.fromRandom(keySize: 4096);
 
     publicKey = keyPair.publicKey;
     privateKey = keyPair.privateKey;
