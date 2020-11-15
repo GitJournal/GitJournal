@@ -76,7 +76,8 @@ class Repository with ChangeNotifier {
 
     var repoPath = settings.buildRepoPath(gitBaseDir);
 
-    var repoDirStat = File(repoPath).statSync();
+    var repoDir = Directory(repoPath);
+    var repoDirStat = repoDir.statSync();
     /*
     if (Platform.isIOS &&
         repoDirStat.type == FileSystemEntityType.notFound &&
@@ -98,6 +99,27 @@ class Repository with ChangeNotifier {
 
       settings.save();
     } else {
+      //
+      // Debugging Info for https://github.com/GitJournal/GitJournal/issues/347
+      //
+      var foundDotGit = false;
+      await for (var file in repoDir.list()) {
+        if (p.basename(file.path) == '.git') {
+          foundDotGit = true;
+          Log.i(".git directory contents");
+          await for (var file in Directory(file.path).list()) {
+            Log.i("${file.path}");
+          }
+          break;
+        }
+      }
+      if (foundDotGit == false) {
+        Log.e("Directory exists but .git folder is missing?");
+        await for (var file in repoDir.list()) {
+          Log.i("What is this: ${file.path}");
+        }
+      }
+
       var gitRepo = await GitRepository.load(repoPath);
       remotes = gitRepo.config.remotes;
       remoteConfigured = remotes.isNotEmpty;
