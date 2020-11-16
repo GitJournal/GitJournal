@@ -60,43 +60,7 @@ Future<void> migrateSettings(
     }
 
     // Save the ssh keys
-    var oldSshDir = Directory(p.join(gitBaseDir, '../files/ssh'));
-    if (oldSshDir.existsSync()) {
-      var sshPublicKeyPath = p.join(oldSshDir.path, "id_rsa.pub");
-      var sshPrivateKeyPath = p.join(oldSshDir.path, "id_rsa");
-
-      var publicKeyExists = File(sshPublicKeyPath).existsSync();
-      var privateKeyExists = File(sshPrivateKeyPath).existsSync();
-      if (publicKeyExists && privateKeyExists) {
-        var sshPublicKey = await File(sshPublicKeyPath).readAsString();
-        var sshPrivateKey = await File(sshPrivateKeyPath).readAsString();
-
-        await pref.setString("sshPublicKey", sshPublicKey);
-        await pref.setString("sshPrivateKey", sshPrivateKey);
-        await pref.setString("sshPassword", "");
-      }
-
-      await oldSshDir.delete(recursive: true);
-    }
-
-    var newSshDir = Directory(p.join(gitBaseDir, 'ssh'));
-    if (newSshDir.existsSync()) {
-      var sshPublicKeyPath = p.join(newSshDir.path, "id_rsa.pub");
-      var sshPrivateKeyPath = p.join(newSshDir.path, "id_rsa");
-
-      var publicKeyExists = File(sshPublicKeyPath).existsSync();
-      var privateKeyExists = File(sshPrivateKeyPath).existsSync();
-      if (publicKeyExists && privateKeyExists) {
-        var sshPublicKey = await File(sshPublicKeyPath).readAsString();
-        var sshPrivateKey = await File(sshPrivateKeyPath).readAsString();
-
-        await pref.setString("sshPublicKey", sshPublicKey);
-        await pref.setString("sshPrivateKey", sshPrivateKey);
-        await pref.setString("sshPassword", "");
-      }
-
-      await newSshDir.delete(recursive: true);
-    }
+    await migrateSshKeys(pref, gitBaseDir);
 
     version = 1;
     await pref.setInt("settingsVersion", version);
@@ -174,5 +138,42 @@ Future<void> migrateSettings(
     version = 2;
     await pref.remove("settingsVersion");
     await pref.setInt(prefix + "settingsVersion", version);
+  }
+}
+
+Future<void> migrateSshKeys(
+  SharedPreferences pref,
+  String gitBaseDir, {
+  String prefix = "",
+}) async {
+  // Save the ssh keys
+  var oldSshDir = Directory(p.join(gitBaseDir, '../files/ssh'));
+  if (oldSshDir.existsSync()) {
+    await migrateSshKeysFromDir(pref, oldSshDir, prefix: prefix);
+  }
+
+  var newSshDir = Directory(p.join(gitBaseDir, 'ssh'));
+  if (newSshDir.existsSync()) {
+    await migrateSshKeysFromDir(pref, newSshDir, prefix: prefix);
+  }
+}
+
+Future<void> migrateSshKeysFromDir(
+  SharedPreferences pref,
+  Directory dir, {
+  String prefix = "",
+}) async {
+  var sshPublicKeyPath = p.join(dir.path, "id_rsa.pub");
+  var sshPrivateKeyPath = p.join(dir.path, "id_rsa");
+
+  var publicKeyExists = File(sshPublicKeyPath).existsSync();
+  var privateKeyExists = File(sshPrivateKeyPath).existsSync();
+  if (publicKeyExists && privateKeyExists) {
+    var sshPublicKey = await File(sshPublicKeyPath).readAsString();
+    var sshPrivateKey = await File(sshPrivateKeyPath).readAsString();
+
+    await pref.setString(prefix + "sshPublicKey", sshPublicKey);
+    await pref.setString(prefix + "sshPrivateKey", sshPrivateKey);
+    await pref.setString(prefix + "sshPassword", "");
   }
 }
