@@ -382,7 +382,10 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
                   child: const Icon(Icons.arrow_back, size: 32.0),
                   padding: const EdgeInsets.all(8.0),
                 ),
-                onTap: () => Navigator.of(context).pop(),
+                onTap: () {
+                  _removeRemote();
+                  Navigator.of(context).pop();
+                },
               ),
             ),
         ],
@@ -399,10 +402,26 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           return false;
         }
 
+        _removeRemote();
         return true;
       },
       child: scaffold,
     );
+  }
+
+  Future<void> _removeRemote() async {
+    var repo = Provider.of<Repository>(context, listen: false);
+    var basePath = repo.gitBaseDirectory;
+
+    var repoPath = p.join(basePath, widget.repoFolderName);
+
+    try {
+      var repo = await GitRepository.load(repoPath);
+      await repo.removeRemote(widget.remoteName);
+    } on Exception catch (e, stacktrace) {
+      Log.e("Failed to remove remote", ex: e, stacktrace: stacktrace);
+      logExceptionWarning(e, stacktrace);
+    }
   }
 
   void _nextPage() {
