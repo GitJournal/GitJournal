@@ -112,6 +112,12 @@ class Repository with ChangeNotifier {
       var gitRepo = await GitRepository.load(repoPath);
       remotes = gitRepo.config.remotes;
       remoteConfigured = remotes.isNotEmpty;
+
+      Log.i("Listing Remotes - ");
+      for (var r in remotes) {
+        Log.i("Remote Name: ${r.name}");
+        Log.i("Remote URL: ${r.url}");
+      }
     }
 
     if (remoteConfigured) {
