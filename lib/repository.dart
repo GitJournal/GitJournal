@@ -74,7 +74,7 @@ class Repository with ChangeNotifier {
 
     Log.i("Setting ${settings.toLoggableMap()}");
 
-    var repoPath = settings.buildRepoPath(gitBaseDir);
+    var repoPath = await settings.buildRepoPath(gitBaseDir);
 
     var repoDir = Directory(repoPath);
     var repoDirStat = repoDir.statSync();
@@ -514,7 +514,7 @@ class Repository with ChangeNotifier {
   }
 
   Future<void> moveRepoToPath() async {
-    var newRepoPath = settings.buildRepoPath(gitBaseDirectory);
+    var newRepoPath = await settings.buildRepoPath(gitBaseDirectory);
 
     if (newRepoPath != repoPath) {
       Log.i("Old Path: $repoPath");

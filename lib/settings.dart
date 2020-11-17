@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:icloud_documents_path/icloud_documents_path.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -365,10 +368,23 @@ class Settings extends ChangeNotifier {
     return m;
   }
 
-  String buildRepoPath(String internalDir) {
-    return storeInternally
-        ? p.join(internalDir, folderName)
-        : p.join(storageLocation, folderName);
+  Future<String> buildRepoPath(String internalDir) async {
+    if (storeInternally) {
+      return p.join(internalDir, folderName);
+    }
+    if (Platform.isIOS) {
+      //
+      // iOS is strange as fuck and it seems if you don't call this function
+      // asking for the path, you won't be able to access the path
+      // So even though we have it stored in the settings, this method
+      // must be called
+      //
+      var basePath = await ICloudDocumentsPath.documentsPath;
+      assert(basePath == storageLocation);
+      return p.join(basePath, folderName);
+    }
+
+    return p.join(storageLocation, folderName);
   }
 }
 
