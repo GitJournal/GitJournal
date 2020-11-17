@@ -78,17 +78,6 @@ class Repository with ChangeNotifier {
 
     var repoDir = Directory(repoPath);
     var repoDirStat = repoDir.statSync();
-    /*
-    if (Platform.isIOS &&
-        repoDirStat.type == FileSystemEntityType.notFound &&
-        gitRepoDir.contains("iCloud~io~gitjournal~gitjournal")) {
-      Log.e("Cannot access iCloud Dir any more");
-      Log.e("Reverting back to internal dir");
-      settings.storeInternally = true;
-      settings.save();
-      gitRepoDir = settings.buildRepoPath(appState.gitBaseDirectory);
-      repoDirStat = File(gitRepoDir).statSync();
-    }*/
 
     var remoteConfigured = false;
 
