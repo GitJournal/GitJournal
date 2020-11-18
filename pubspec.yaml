@@ -16,6 +16,7 @@ dependencies:
   url_launcher: ^5.4.1
   dots_indicator: ^0.0.3
   package_info: ">=0.4.1 <2.0.0"
+  stack_trace: ^1.9.6
   http: ^0.12.0+1
   badges: ^1.1.1
   share: ^0.6.3+5

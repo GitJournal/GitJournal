@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:device_info/device_info.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sentry/sentry.dart';
+import 'package:stack_trace/stack_trace.dart';
 
 import 'package:gitjournal/.env.dart';
 import 'package:gitjournal/app.dart';
@@ -137,7 +138,7 @@ Future<void> captureSentryException(
     final sentry = await getSentryClient();
     final Event event = Event(
       exception: exception,
-      stackTrace: stackTrace,
+      stackTrace: Trace.from(stackTrace).terse,
       breadcrumbs: breadcrumbs,
       level: level,
     );

@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stack_trace/stack_trace.dart';
 
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/app_settings.dart';
@@ -29,6 +30,8 @@ void main() async {
   }).sendPort);
 
   runZonedGuarded(() async {
-    await JournalApp.main(pref);
+    await Chain.capture(() async {
+      await JournalApp.main(pref);
+    });
   }, reportError);
 }

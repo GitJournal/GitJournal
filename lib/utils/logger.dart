@@ -7,6 +7,7 @@ import 'package:fimber/fimber.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:stack_trace/stack_trace.dart';
 import 'package:time/time.dart';
 
 class Log {
@@ -31,6 +32,8 @@ class Log {
 
   static void v(String msg,
       {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
+    stacktrace = Trace.from(stacktrace).terse;
+
     if (foundation.kDebugMode) {
       Fimber.log("V", msg,
           ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
@@ -40,6 +43,8 @@ class Log {
 
   static void d(String msg,
       {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
+    stacktrace = Trace.from(stacktrace).terse;
+
     if (foundation.kDebugMode) {
       Fimber.log("D", msg,
           ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
@@ -49,6 +54,8 @@ class Log {
 
   static void i(String msg,
       {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
+    stacktrace = Trace.from(stacktrace).terse;
+
     if (foundation.kDebugMode) {
       Fimber.log("I", msg,
           ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
@@ -58,6 +65,8 @@ class Log {
 
   static void e(String msg,
       {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
+    stacktrace = Trace.from(stacktrace).terse;
+
     if (foundation.kDebugMode) {
       Fimber.log("E", msg,
           ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
@@ -67,6 +76,8 @@ class Log {
 
   static void w(String msg,
       {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
+    stacktrace = Trace.from(stacktrace).terse;
+
     if (foundation.kDebugMode) {
       Fimber.log("W", msg,
           ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
