@@ -7,7 +7,6 @@ import 'package:path/path.dart';
 import 'package:synchronized/synchronized.dart';
 
 import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/utils/logger.dart';
 import 'note.dart';
 import 'notes_folder.dart';
 import 'notes_folder_notifier.dart';
@@ -251,10 +250,10 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         );
         _ignoredFiles.add(ignoredFile);
 
-        Log.v("Ignoring file", props: {
-          "path": ignoredFile.filePath,
-          "reason": ignoredFile.reason.toString(),
-        });
+        // Log.v("Ignoring file", props: {
+        //   "path": ignoredFile.filePath,
+        //   "reason": ignoredFile.reason.toString(),
+        // });
         continue;
       }
       if (!NoteFileFormatInfo.isAllowedFileName(note.filePath)) {
@@ -289,7 +288,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       _entityMap.remove(path);
 
       if (e is Note) {
-        Log.v("File $path was no longer found");
+        // Log.v("File $path was no longer found");
         _removeNoteListeners(e);
 
         var i = _notes.indexWhere((n) => n.filePath == path);
@@ -298,7 +297,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         _notes.removeAt(i);
         notifyNoteRemoved(i, note);
       } else {
-        Log.v("Folder $path was no longer found");
+        // Log.v("Folder $path was no longer found");
         _removeFolderListeners(e);
 
         var i = _folders.indexWhere((f) => f.folderPath == path);
