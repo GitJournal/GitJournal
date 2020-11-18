@@ -33,7 +33,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:google_fonts/google_fonts.dart';
+import 'package:gitjournal/widgets/scroll_view_without_animation.dart';
 
 //import 'Widget/bezierContainer.dart';
 
@@ -57,11 +57,12 @@ class _LoginPageState extends State<LoginPage> {
         child: Row(
           children: <Widget>[
             Container(
-              padding: const EdgeInsets.only(left: 0, top: 10, bottom: 10),
               child: const Icon(Icons.keyboard_arrow_left, color: Colors.black),
             ),
-            const Text('Back',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))
+            const Text(
+              'Back',
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+            )
           ],
         ),
       ),
@@ -82,12 +83,13 @@ class _LoginPageState extends State<LoginPage> {
             height: 10,
           ),
           TextField(
-              obscureText: isPassword,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                fillColor: Color(0xfff3f3f4),
-                filled: true,
-              ))
+            obscureText: isPassword,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              fillColor: Color(0xfff3f3f4),
+              filled: true,
+            ),
+          )
         ],
       ),
     );
@@ -99,18 +101,20 @@ class _LoginPageState extends State<LoginPage> {
       padding: const EdgeInsets.symmetric(vertical: 15),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-                color: Colors.grey.shade200,
-                offset: const Offset(2, 4),
-                blurRadius: 5,
-                spreadRadius: 2)
-          ],
-          gradient: const LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [Color(0xfffbb448), Color(0xfff7892b)])),
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: Colors.grey.shade200,
+            offset: const Offset(2, 4),
+            blurRadius: 5,
+            spreadRadius: 2,
+          )
+        ],
+        gradient: const LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [Color(0xfffbb448), Color(0xfff7892b)]),
+      ),
       child: const Text(
         'Login',
         style: TextStyle(fontSize: 20, color: Colors.white),
@@ -229,27 +233,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _title() {
-    return RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-          text: 'd',
-          style: GoogleFonts.portLligatSans(
-            textStyle: Theme.of(context).textTheme.headline4,
-            fontSize: 30,
-            fontWeight: FontWeight.w700,
-            color: const Color(0xffe46b10),
-          ),
-          children: [
-            const TextSpan(
-              text: 'ev',
-              style: TextStyle(color: Colors.black, fontSize: 30),
-            ),
-            const TextSpan(
-              text: 'rnz',
-              style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
-            ),
-          ]),
-    );
+    var textTheme = Theme.of(context).textTheme;
+    var style = textTheme.headline2.copyWith(fontFamily: "Lato");
+    return Text('GitJournal', style: style);
   }
 
   Widget _emailPasswordWidget() {
@@ -275,12 +261,12 @@ class _LoginPageState extends State<LoginPage> {
               child: BezierContainer()),*/
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: SingleChildScrollView(
+            child: ScrollViewWithoutAnimation(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(height: height * .2),
+                  SizedBox(height: height * .12),
                   _title(),
                   const SizedBox(height: 50),
                   _emailPasswordWidget(),
@@ -301,7 +287,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-          Positioned(top: 40, left: 0, child: _backButton()),
+          Positioned(top: 15, left: 0, child: SafeArea(child: _backButton())),
         ],
       ),
     ));

@@ -6,7 +6,7 @@ class ScrollViewWithoutAnimation extends StatelessWidget {
 
   ScrollViewWithoutAnimation({
     @required this.child,
-    this.scrollDirection,
+    this.scrollDirection = Axis.vertical,
   });
 
   @override
