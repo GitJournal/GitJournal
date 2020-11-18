@@ -50,9 +50,18 @@ class _ExperimentalSettingsScreenState
             ),
             SwitchListTile(
               title: Text(tr('settings.experimental.markdownToolbar')),
-              value: appSettings.experimentalFs,
+              value: appSettings.experimentalMarkdownToolbar,
               onChanged: (bool newVal) {
-                appSettings.experimentalFs = newVal;
+                appSettings.experimentalMarkdownToolbar = newVal;
+                appSettings.save();
+                setState(() {});
+              },
+            ),
+            SwitchListTile(
+              title: Text(tr('settings.experimental.accounts')),
+              value: appSettings.experimentalAccounts,
+              onChanged: (bool newVal) {
+                appSettings.experimentalAccounts = newVal;
                 appSettings.save();
                 setState(() {});
               },

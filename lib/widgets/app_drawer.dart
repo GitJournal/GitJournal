@@ -67,6 +67,14 @@ class AppDrawer extends StatelessWidget {
                 );
               },
             ),
+          if (appSettings.experimentalAccounts)
+            _buildDrawerTile(
+              context,
+              icon: Icons.account_circle,
+              title: 'Login',
+              onTap: () => _navTopLevel(context, '/login'),
+              selected: currentRoute == '/login',
+            ),
           if (!appSettings.proMode) divider,
           _buildDrawerTile(
             context,

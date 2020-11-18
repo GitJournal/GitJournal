@@ -33,6 +33,7 @@ class AppSettings extends ChangeNotifier {
   var experimentalMarkdownToolbar = false;
   var experimentalGraphView = false;
   var experimentalZeroConf = false;
+  var experimentalAccounts = false;
 
   var appVersion = "";
 
@@ -63,6 +64,8 @@ class AppSettings extends ChangeNotifier {
         pref.getBool("experimentalGraphView") ?? experimentalGraphView;
     experimentalZeroConf =
         pref.getBool("experimentalZeroConf") ?? experimentalZeroConf;
+    experimentalAccounts =
+        pref.getBool("experimentalAccounts") ?? experimentalAccounts;
 
     appVersion = pref.getString("appVersion") ?? "";
   }
@@ -89,6 +92,8 @@ class AppSettings extends ChangeNotifier {
         defaultSet.experimentalGraphView);
     _setBool(pref, "experimentalZeroConf", experimentalZeroConf,
         defaultSet.experimentalZeroConf);
+    _setBool(pref, "experimentalAccounts", experimentalAccounts,
+        defaultSet.experimentalAccounts);
 
     pref.setInt("appSettingsVersion", version);
     pref.setString("appVersion", appVersion);
@@ -110,6 +115,7 @@ class AppSettings extends ChangeNotifier {
       'experimentalMarkdownToolbar': experimentalMarkdownToolbar.toString(),
       'experimentalGraphView': experimentalGraphView.toString(),
       'experimentalZeroConf': experimentalZeroConf.toString(),
+      'experimentalAccounts': experimentalAccounts.toString(),
     };
   }
 

@@ -9,6 +9,7 @@ import 'package:gitjournal/screens/filesystem_screen.dart';
 import 'package:gitjournal/screens/folder_listing.dart';
 import 'package:gitjournal/screens/graph_view.dart';
 import 'package:gitjournal/screens/home_screen.dart';
+import 'package:gitjournal/screens/login_screen.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/screens/onboarding_screens.dart';
 import 'package:gitjournal/screens/purchase_screen.dart';
@@ -96,6 +97,8 @@ class AppRouter {
         return GraphViewScreen();
       case '/settings':
         return SettingsScreen();
+      case '/login':
+        return LoginPage();
       case '/setupRemoteGit':
         return GitHostSetupScreen(
           repoFolderName: settings.folderName,
