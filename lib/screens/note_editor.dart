@@ -17,6 +17,7 @@ import 'package:gitjournal/editors/markdown_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/repository.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
@@ -293,10 +294,14 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
       return;
     }
 
-    var shouldDelete = await showDialog(
-      context: context,
-      builder: (context) => NoteDeleteDialog(),
-    );
+    var settings = Provider.of<Settings>(context, listen: false);
+    var shouldDelete = true;
+    if (settings.confirmDelete) {
+      shouldDelete = await showDialog(
+        context: context,
+        builder: (context) => NoteDeleteDialog(),
+      );
+    }
     if (shouldDelete == true) {
       _deleteNote(note);
 

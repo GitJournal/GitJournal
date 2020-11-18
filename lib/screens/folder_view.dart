@@ -485,10 +485,14 @@ class _FolderViewState extends State<FolderView> {
   void _deleteNote() async {
     var note = selectedNote;
 
-    var shouldDelete = await showDialog(
-      context: context,
-      builder: (context) => NoteDeleteDialog(),
-    );
+    var settings = Provider.of<Settings>(context, listen: false);
+    var shouldDelete = true;
+    if (settings.confirmDelete) {
+      shouldDelete = await showDialog(
+        context: context,
+        builder: (context) => NoteDeleteDialog(),
+      );
+    }
     if (shouldDelete == true) {
       var stateContainer = Provider.of<Repository>(context, listen: false);
       stateContainer.removeNote(note);

@@ -65,6 +65,7 @@ class Settings extends ChangeNotifier {
   Set<String> inlineTagPrefixes = {'#'};
 
   bool bottomMenuBar = true;
+  bool confirmDelete = true;
 
   bool storeInternally = true;
   String storageLocation = "";
@@ -145,6 +146,7 @@ class Settings extends ChangeNotifier {
     sshPassword = _getString(pref, "sshPassword") ?? sshPassword;
 
     bottomMenuBar = _getBool(pref, "bottomMenuBar") ?? bottomMenuBar;
+    confirmDelete = _getBool(pref, "confirmDelete") ?? confirmDelete;
     storeInternally = _getBool(pref, "storeInternally") ?? storeInternally;
     storageLocation = _getString(pref, "storageLocation") ?? "";
   }
@@ -241,6 +243,8 @@ class Settings extends ChangeNotifier {
         defaultSet.inlineTagPrefixes);
     await _setBool(
         pref, "bottomMenuBar", bottomMenuBar, defaultSet.bottomMenuBar);
+    await _setBool(
+        pref, "confirmDelete", confirmDelete, defaultSet.confirmDelete);
     await _setBool(
         pref, "storeInternally", storeInternally, defaultSet.storeInternally);
     await _setString(
@@ -353,6 +357,7 @@ class Settings extends ChangeNotifier {
       'emojiParser': emojiParser.toString(),
       'folderName': folderName.toString(),
       'bottomMenuBar': bottomMenuBar.toString(),
+      'confirmDelete': confirmDelete.toString(),
       'storeInternally': storeInternally.toString(),
       'storageLocation': storageLocation,
       'sshPublicKey': sshPublicKey.isNotEmpty.toString(),

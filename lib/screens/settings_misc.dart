@@ -27,6 +27,14 @@ class _SettingsMiscState extends State<SettingsMisc> {
             settings.save();
           },
         ),
+        SwitchListTile(
+          title: Text(tr('settings.misc.confirmDelete')),
+          value: settings.confirmDelete,
+          onChanged: (bool newVal) {
+            settings.confirmDelete = newVal;
+            settings.save();
+          },
+        ),
       ],
       crossAxisAlignment: CrossAxisAlignment.start,
     );
