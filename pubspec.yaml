@@ -67,6 +67,9 @@ dependencies:
   email_validator: ^1.0.6
   icloud_documents_path:
     git: https://github.com/GitJournal/icloud_documents_path.git
+  gotrue:
+    #path: /Users/vishesh/src/gitjournal/gotrue-dart/
+    git: https://github.com/GitJournal/gotrue-dart.git
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.2"

@@ -33,9 +33,12 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:gotrue/gotrue.dart';
+
 import 'package:gitjournal/widgets/scroll_view_without_animation.dart';
 
-//import 'Widget/bezierContainer.dart';
+const _localDevServer = 'http://192.168.1.130:9999/';
+// const _prodServer = 'https://api.gitjournal.io/auth/';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -47,56 +50,18 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  Widget _backButton() {
-    return InkWell(
-      onTap: () {
-        Navigator.pop(context);
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Row(
-          children: <Widget>[
-            Container(
-              child: const Icon(Icons.keyboard_arrow_left, color: Colors.black),
-            ),
-            const Text(
-              'Back',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-            )
-          ],
-        ),
-      ),
-    );
-  }
+  var goTrue = GoTrue(_localDevServer);
 
-  Widget _entryField(String title, {bool isPassword = false}) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            title,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          TextField(
-            obscureText: isPassword,
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              fillColor: Color(0xfff3f3f4),
-              filled: true,
-            ),
-          )
-        ],
-      ),
-    );
+  Future<void> _loginAction() async {
+    var t = await goTrue.login('handa.vish@gmail.com', 'blah');
+    print("Got Token: $t");
+
+    var user = await goTrue.user(t.accessToken);
+    print("Got usre: $user");
   }
 
   Widget _submitButton() {
-    return Container(
+    var c = Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(vertical: 15),
       alignment: Alignment.center,
@@ -119,6 +84,13 @@ class _LoginPageState extends State<LoginPage> {
         'Login',
         style: TextStyle(fontSize: 20, color: Colors.white),
       ),
+    );
+
+    return InkWell(
+      onTap: () {
+        _loginAction();
+      },
+      child: c,
     );
   }
 

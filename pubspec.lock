@@ -199,6 +199,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.2+4"
+  dio:
+    dependency: transitive
+    description:
+      name: dio
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.10"
   dots_indicator:
     dependency: "direct main"
     description:
@@ -476,6 +483,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.1"
+  gotrue:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "5fea2573f075cd307e8cf0c323487b4685f28a87"
+      url: "https://github.com/GitJournal/gotrue-dart.git"
+    source: git
+    version: "1.0.0"
   html:
     dependency: transitive
     description:
