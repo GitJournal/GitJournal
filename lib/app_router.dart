@@ -15,6 +15,7 @@ import 'package:gitjournal/screens/onboarding_screens.dart';
 import 'package:gitjournal/screens/purchase_screen.dart';
 import 'package:gitjournal/screens/purchase_thankyou_screen.dart';
 import 'package:gitjournal/screens/settings_screen.dart';
+import 'package:gitjournal/screens/signup_screen.dart';
 import 'package:gitjournal/screens/tag_listing.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/setup/screens.dart';
@@ -99,6 +100,8 @@ class AppRouter {
         return SettingsScreen();
       case '/login':
         return LoginPage();
+      case '/register':
+        return SignUpScreen();
       case '/setupRemoteGit':
         return GitHostSetupScreen(
           repoFolderName: settings.folderName,

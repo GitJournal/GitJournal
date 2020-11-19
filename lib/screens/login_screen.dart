@@ -173,10 +173,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _createAccountLabel() {
     return InkWell(
-      onTap: () {
-        //Navigator.push(
-        //    context, MaterialPageRoute(builder: (context) => SignUpPage()));
-      },
+      onTap: () => Navigator.pushNamed(context, "/register"),
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 20),
         padding: const EdgeInsets.all(15),
@@ -204,17 +201,11 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _title() {
-    var textTheme = Theme.of(context).textTheme;
-    var style = textTheme.headline2.copyWith(fontFamily: "Lato");
-    return Text('GitJournal', style: style);
-  }
-
   Widget _emailPasswordWidget() {
     return Column(
       children: <Widget>[
-        _entryField("Email id"),
-        _entryField("Password", isPassword: true),
+        EntryField("Email id"),
+        EntryField("Password", isPassword: true),
       ],
     );
   }
@@ -227,10 +218,6 @@ class _LoginPageState extends State<LoginPage> {
       height: height,
       child: Stack(
         children: <Widget>[
-          /*Positioned(
-              top: -height * .15,
-              right: -MediaQuery.of(context).size.width * .4,
-              child: BezierContainer()),*/
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: ScrollViewWithoutAnimation(
@@ -239,7 +226,7 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(height: height * .12),
-                  _title(),
+                  FormTitle(),
                   const SizedBox(height: 50),
                   _emailPasswordWidget(),
                   const SizedBox(height: 20),
@@ -259,9 +246,76 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-          Positioned(top: 15, left: 0, child: SafeArea(child: _backButton())),
+          Positioned(
+              top: 15, left: 0, child: SafeArea(child: FormBackButton())),
         ],
       ),
     ));
+  }
+}
+
+class FormBackButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.pop(context);
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Row(
+          children: <Widget>[
+            Container(
+              child: const Icon(Icons.keyboard_arrow_left, color: Colors.black),
+            ),
+            const Text(
+              'Back',
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class EntryField extends StatelessWidget {
+  final String title;
+  final bool isPassword;
+
+  EntryField(this.title, {this.isPassword = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            obscureText: isPassword,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              fillColor: Color(0xfff3f3f4),
+              filled: true,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class FormTitle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme;
+    var style = textTheme.headline2.copyWith(fontFamily: "Lato");
+    return Text('GitJournal', style: style);
   }
 }
