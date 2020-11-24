@@ -298,7 +298,7 @@ setup:
     step1: 1. Listar tus repos existentes o crear un repo nuevo
     step2: 2. Generar una Clave SSH en este dispositivo
     step3: 3. Añadir la clave como una clave de deploy con permisos de escritura en este repositorio
-    warning: Esto requerizar otorgar a GitJournal acceso a todos los repos públicos y privados. Si no estás de acuerdo con esto, por favor vuelve atrás y elige la opción de configuración manual.
+    warning: Esto requiere otorgar a GitJournal acceso a todos los repos públicos y privados. Si no estás de acuerdo con esto, por favor vuelve atrás y elige la opción de configuración manual.
     authorize: Autorizar a GitJournal
     waitPerm: Esperando Permisos ...
     readUser: Leyendo Info de Usuario
