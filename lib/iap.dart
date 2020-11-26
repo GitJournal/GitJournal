@@ -127,19 +127,25 @@ class InAppPurchases {
     }
 
     final transactions = await SKPaymentQueueWrapper().transactions();
+    Log.i("Old Transactions: ${transactions.length}");
     for (final transaction in transactions) {
+      Log.i("Processing old transaction: $transaction");
       try {
         if (transaction.transactionState ==
             SKPaymentTransactionStateWrapper.purchased) {
+          Log.i("Already purchased. Ignoring");
           continue;
         }
         if (transaction.transactionState ==
             SKPaymentTransactionStateWrapper.restored) {
+          Log.i("Already Restored. Ignoring");
           continue;
         }
 
         if (transaction.transactionState !=
             SKPaymentTransactionStateWrapper.purchasing) {
+          Log.i("Purchasing. Finishing Transaction.");
+
           await SKPaymentQueueWrapper().finishTransaction(transaction);
         }
       } catch (e, stackTrace) {
