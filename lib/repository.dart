@@ -91,21 +91,23 @@ class Repository with ChangeNotifier {
       //
       // Debugging Info for https://github.com/GitJournal/GitJournal/issues/347
       //
-      var foundDotGit = false;
-      await for (var file in repoDir.list()) {
-        if (p.basename(file.path) == '.git') {
-          foundDotGit = true;
-          Log.i(".git directory contents");
-          await for (var file in Directory(file.path).list()) {
-            Log.i("${file.path}");
-          }
-          break;
-        }
-      }
-      if (foundDotGit == false) {
-        Log.e("Directory exists but .git folder is missing?");
+      if (Platform.isAndroid) {
+        var foundDotGit = false;
         await for (var file in repoDir.list()) {
-          Log.i("What is this: ${file.path}");
+          if (p.basename(file.path) == '.git') {
+            foundDotGit = true;
+            Log.i(".git directory contents");
+            await for (var file in Directory(file.path).list()) {
+              Log.i("${file.path}");
+            }
+            break;
+          }
+        }
+        if (foundDotGit == false) {
+          Log.e("Directory exists but .git folder is missing?");
+          await for (var file in repoDir.list()) {
+            Log.i("What is this: ${file.path}");
+          }
         }
       }
 
