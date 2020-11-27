@@ -3,13 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:function_types/function_types.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:provider/provider.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/iap.dart';
+import 'package:gitjournal/purchase_manager.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/purchase_slider.dart';
 
@@ -17,8 +18,16 @@ class PurchaseButton extends StatelessWidget {
   final ProductDetails product;
   final String timePeriod;
   final bool subscription;
+  final Func1<bool, void> purchaseStarted;
+  final PurchaseCallback purchaseCompleted;
 
-  PurchaseButton(this.product, this.timePeriod, {@required this.subscription});
+  PurchaseButton(
+    this.product,
+    this.timePeriod, {
+    @required this.subscription,
+    @required this.purchaseStarted,
+    @required this.purchaseCompleted,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +52,22 @@ class PurchaseButton extends StatelessWidget {
   }
 
   Future<void> _initPurchase(BuildContext context) async {
-    var purchaseParam = PurchaseParam(productDetails: product);
-    var sentSuccess = await InAppPurchaseConnection.instance
-        .buyNonConsumable(purchaseParam: purchaseParam);
+    var pm = await PurchaseManager.init();
+    if (pm == null) {
+      purchaseCompleted(PurchaseManager.error, null);
+      return;
+    }
 
+    var sentSuccess = await pm.buyNonConsumable(product, purchaseCompleted);
+    purchaseStarted(sentSuccess);
+
+    /*
     if (!sentSuccess) {
       var dialog = PurchaseFailedDialog(tr("widgets.PurchaseButton.failSend"));
       await showDialog(context: context, builder: (context) => dialog);
+      return;
     }
+    */
   }
 
   void _reportExceptions(BuildContext context) async {
@@ -89,10 +106,9 @@ class PurchaseWidget extends StatefulWidget {
 class _PurchaseWidgetState extends State<PurchaseWidget> {
   List<ProductDetails> _products;
   ProductDetails _selectedProduct;
-  StreamSubscription<List<PurchaseDetails>> _subscription;
 
   String error = "";
-  bool pendingPurchase = false;
+  bool _pendingPurchase = false;
 
   @override
   void initState() {
@@ -101,33 +117,21 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
   }
 
   Future<void> initPlatformState() async {
-    InAppPurchaseConnection.enablePendingPurchases();
-    final iapCon = InAppPurchaseConnection.instance;
-
-    final bool available = await iapCon.isAvailable();
-    if (!available) {
+    var pm = await PurchaseManager.init();
+    if (pm == null) {
       setState(() {
-        error = "Store cannot be reached";
+        error = PurchaseManager.error;
       });
-      return;
     }
 
-    final response = await iapCon.queryProductDetails(widget.skus);
+    final response = await pm.queryProductDetails(widget.skus);
     if (response.error != null) {
       Log.e("IAP queryProductDetails: ${response.error}");
     }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
     if (!mounted) return;
 
     var products = response.productDetails;
-    products.sort((a, b) {
-      var pa = PaymentInfo.fromProductDetail(a);
-      var pb = PaymentInfo.fromProductDetail(b);
-      return pa.value.compareTo(pb.value);
-    });
     Log.i("Products: ${products.length}");
     for (var p in products) {
       Log.i("Product ${p.id} -> ${p.price}");
@@ -148,94 +152,6 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
         // FIXME: Add a fake product for development
       }
     });
-
-    // Start listening for changes
-    final purchaseUpdates = iapCon.purchaseUpdatedStream;
-    _subscription = purchaseUpdates.listen(_listenToPurchaseUpdated);
-  }
-
-  void _listenToPurchaseUpdated(
-      List<PurchaseDetails> purchaseDetailsList) async {
-    for (var pd in purchaseDetailsList) {
-      await _handlePurchaseUpdate(pd);
-    }
-  }
-
-  Future<void> _handlePurchaseUpdate(PurchaseDetails purchaseDetails) async {
-    Log.i(
-        "PurchaseDetailsUpdated: {productID: ${purchaseDetails.productID}, purchaseID: ${purchaseDetails.purchaseID}, status: ${purchaseDetails.status}");
-
-    if (purchaseDetails.status == PurchaseStatus.pending) {
-      //showPendingUI();
-      Log.i("Pending - ${purchaseDetails.productID}");
-      if (mounted) {
-        setState(() {
-          pendingPurchase = true;
-        });
-      }
-      return;
-    }
-
-    setState(() {
-      pendingPurchase = false;
-    });
-    if (purchaseDetails.status == PurchaseStatus.error) {
-      _handleIAPError(purchaseDetails.error);
-      return;
-    } else if (purchaseDetails.status == PurchaseStatus.purchased) {
-      Log.i("Verifying purchase sub");
-      try {
-        var subStatus = await verifyPurchase(purchaseDetails);
-        if (subStatus.isPro) {
-          _deliverProduct(subStatus);
-        } else {
-          _handleError(tr('widgets.PurchaseWidget.failed'));
-          return;
-        }
-      } catch (err) {
-        _handleError(err.toString());
-      }
-    }
-    if (purchaseDetails.pendingCompletePurchase) {
-      Log.i("Pending Complete Purchase - ${purchaseDetails.productID}");
-
-      try {
-        await InAppPurchaseConnection.instance
-            .completePurchase(purchaseDetails);
-      } catch (e, stackTrace) {
-        logException(e, stackTrace);
-      }
-    }
-  }
-
-  void _handleIAPError(IAPError err) {
-    var msg = "${err.code} - ${err.message} - ${err.details}";
-    _handleError(msg);
-  }
-
-  void _handleError(String err) {
-    if (err.toLowerCase().contains("usercanceled")) {
-      Log.e(err);
-      return;
-    }
-    var dialog = PurchaseFailedDialog(err);
-    showDialog(context: context, builder: (context) => dialog);
-  }
-
-  void _deliverProduct(SubscriptionStatus status) {
-    var appSettings = Provider.of<AppSettings>(context, listen: false);
-    appSettings.proMode = status.isPro;
-    appSettings.proExpirationDate = status.expiryDate.toIso8601String();
-    appSettings.save();
-
-    logEvent(Event.PurchaseScreenThankYou);
-    Navigator.of(context).popAndPushNamed('/purchase_thank_you');
-  }
-
-  @override
-  void dispose() {
-    _subscription?.cancel();
-    super.dispose();
   }
 
   @override
@@ -243,7 +159,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
     if (error.isNotEmpty) {
       return Text("Failed to load: $error");
     }
-    if (pendingPurchase) {
+    if (_pendingPurchase) {
       return const CircularProgressIndicator();
     }
     return _products == null
@@ -301,6 +217,12 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
           _selectedProduct,
           widget.timePeriod,
           subscription: widget.isSubscription,
+          purchaseStarted: (bool started) {
+            setState(() {
+              _pendingPurchase = started;
+            });
+          },
+          purchaseCompleted: _purchaseCompleted,
         ),
       ],
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -325,6 +247,27 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
     }
 
     return null;
+  }
+
+  void _purchaseCompleted(String err, SubscriptionStatus subStatus) {
+    if (!mounted) return;
+
+    if (err.isEmpty) {
+      Log.i("Purchase Completed: $subStatus");
+      logEvent(Event.PurchaseScreenThankYou);
+      Navigator.of(context).popAndPushNamed('/purchase_thank_you');
+      return;
+    }
+
+    if (err.toLowerCase().contains("usercanceled")) {
+      setState(() {
+        _pendingPurchase = false;
+      });
+      Log.e(err);
+      return;
+    }
+    var dialog = PurchaseFailedDialog(err);
+    showDialog(context: context, builder: (context) => dialog);
   }
 }
 

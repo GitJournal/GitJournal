@@ -7,21 +7,18 @@ import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/iap.dart';
 import 'package:gitjournal/utils/logger.dart';
-
-enum PurchaseError {
-  StoreCannotBeReached,
-}
+import 'package:gitjournal/widgets/purchase_slider.dart';
 
 // ignore_for_file: cancel_subscriptions
 
-typedef PurchaseCallback = void Function(PurchaseError, SubscriptionStatus);
+typedef PurchaseCallback = void Function(String, SubscriptionStatus);
 
 class PurchaseManager {
   InAppPurchaseConnection con;
   StreamSubscription<List<PurchaseDetails>> _subscription;
   List<PurchaseCallback> _callbacks = [];
 
-  static PurchaseError error;
+  static String error;
   static PurchaseManager _instance;
 
   static Future<PurchaseManager> init() async {
@@ -36,7 +33,7 @@ class PurchaseManager {
 
     final bool available = await _instance.con.isAvailable();
     if (!available) {
-      error = PurchaseError.StoreCannotBeReached;
+      error = "Store cannot be reached";
       _instance = null;
       return null;
     }
@@ -100,10 +97,17 @@ class PurchaseManager {
   void _handleIAPError(IAPError err) {
     var msg = "${err.code} - ${err.message} - ${err.details}";
     Log.e(msg);
+
+    _handleError(msg);
   }
 
   void _handleError(String err) {
     Log.e(err);
+
+    Log.i("Calling Purchase Error Callbacks: ${_callbacks.length}");
+    for (var callback in _callbacks) {
+      callback(err, null);
+    }
   }
 
   void _deliverProduct(SubscriptionStatus status) {
@@ -112,14 +116,22 @@ class PurchaseManager {
     appSettings.proExpirationDate = status.expiryDate.toIso8601String();
     appSettings.save();
 
+    Log.i("Calling Purchase Completed Callbacks: ${_callbacks.length}");
     for (var callback in _callbacks) {
-      callback(null, status);
+      callback("", status);
     }
   }
 
+  /// Returns the ProductDetails sorted by price
   Future<ProductDetailsResponse> queryProductDetails(Set<String> skus) async {
     // Cache this response?
-    final response = await _instance.con.queryProductDetails(skus);
+    var response = await _instance.con.queryProductDetails(skus);
+    response.productDetails.sort((a, b) {
+      var pa = PaymentInfo.fromProductDetail(a);
+      var pb = PaymentInfo.fromProductDetail(b);
+      return pa.value.compareTo(pb.value);
+    });
+
     return response;
   }
 

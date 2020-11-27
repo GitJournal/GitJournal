@@ -8,7 +8,6 @@ import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/purchase_manager.dart';
 import 'package:gitjournal/screens/feature_timeline_screen.dart';
 import 'package:gitjournal/utils/logger.dart';
-import 'package:gitjournal/widgets/purchase_slider.dart';
 import 'package:gitjournal/widgets/purchase_widget.dart';
 import 'package:gitjournal/widgets/scroll_view_without_animation.dart';
 
@@ -54,18 +53,10 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     }
 
     if (!mounted) return;
-
-    var products = response.productDetails;
-    products.sort((a, b) {
-      var pa = PaymentInfo.fromProductDetail(a);
-      var pb = PaymentInfo.fromProductDetail(b);
-      return pa.value.compareTo(pb.value);
-    });
-
-    if (products.isEmpty) return;
+    if (response.productDetails.isEmpty) return;
 
     setState(() {
-      minYearlyPurchase = products.first.price;
+      minYearlyPurchase = response.productDetails.first.price;
     });
   }
 
