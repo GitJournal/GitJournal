@@ -3,12 +3,30 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:function_types/function_types.dart';
 
 import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/purchase_manager.dart';
 import 'package:gitjournal/screens/feature_timeline_screen.dart';
+import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/widgets/purchase_slider.dart';
 import 'package:gitjournal/widgets/purchase_widget.dart';
 import 'package:gitjournal/widgets/scroll_view_without_animation.dart';
+
+Set<String> _generateMonthlySkus() {
+  var list = <String>{};
+  for (var i = 0; i <= 25; i++) {
+    list.add("sku_monthly_min$i");
+  }
+  return list;
+}
+
+Set<String> _generateYearlySkus() {
+  var list = <String>{};
+  for (var i = 0; i <= 20; i++) {
+    list.add("sku_yearly_$i");
+  }
+  return list;
+}
 
 class PurchaseScreen extends StatefulWidget {
   @override
@@ -17,6 +35,39 @@ class PurchaseScreen extends StatefulWidget {
 
 class _PurchaseScreenState extends State<PurchaseScreen> {
   String minYearlyPurchase = "";
+
+  @override
+  void initState() {
+    _fillMinYearPurchase();
+    super.initState();
+  }
+
+  void _fillMinYearPurchase() async {
+    var pm = await PurchaseManager.init();
+    if (pm == null) return;
+
+    if (!mounted) return;
+
+    var response = await pm.queryProductDetails(_generateYearlySkus());
+    if (response.error != null) {
+      Log.e("IAP queryProductDetails: ${response.error}");
+    }
+
+    if (!mounted) return;
+
+    var products = response.productDetails;
+    products.sort((a, b) {
+      var pa = PaymentInfo.fromProductDetail(a);
+      var pb = PaymentInfo.fromProductDetail(b);
+      return pa.value.compareTo(pb.value);
+    });
+
+    if (products.isEmpty) return;
+
+    setState(() {
+      minYearlyPurchase = products.first.price;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +96,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
         PurchaseCards(
           children: [
             const SizedBox(width: 16.0),
-            YearlyPurchaseWidget(minPurchaseOptionCallback: (val) {
-              setState(() {
-                minYearlyPurchase = val;
-              });
-            }),
+            const YearlyPurchaseWidget(),
             const SizedBox(width: 16.0),
             MonthlyRentalWidget(minYearlyPurchase: minYearlyPurchase),
             const SizedBox(width: 16.0),
@@ -119,7 +166,7 @@ class MonthlyRentalWidget extends StatelessWidget {
           ),
           const SizedBox(height: 32.0),
           PurchaseWidget(
-            skus: _generateSkus(),
+            skus: _generateMonthlySkus(),
             defaultSku: "sku_monthly_min3",
             timePeriod: "Month",
             isSubscription: true,
@@ -134,22 +181,11 @@ class MonthlyRentalWidget extends StatelessWidget {
       ),
     );
   }
-
-  Set<String> _generateSkus() {
-    var list = <String>{};
-    for (var i = 0; i <= 25; i++) {
-      list.add("sku_monthly_min$i");
-    }
-    return list;
-  }
 }
 
 class YearlyPurchaseWidget extends StatelessWidget {
-  final Func1<String, void> minPurchaseOptionCallback;
-
   const YearlyPurchaseWidget({
     Key key,
-    @required this.minPurchaseOptionCallback,
   }) : super(key: key);
 
   @override
@@ -166,10 +202,9 @@ class YearlyPurchaseWidget extends StatelessWidget {
           ),
           const SizedBox(height: 32.0),
           PurchaseWidget(
-            skus: _generateSkus(),
+            skus: _generateYearlySkus(),
             defaultSku: "sku_yearly_1",
             isSubscription: false,
-            minPurchaseOptionCallback: minPurchaseOptionCallback,
           ),
           const SizedBox(height: 32.0),
           Text(tr('purchase_screen.oneTime.desc')),
@@ -177,14 +212,6 @@ class YearlyPurchaseWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
       ),
     );
-  }
-
-  Set<String> _generateSkus() {
-    var list = <String>{};
-    for (var i = 0; i <= 20; i++) {
-      list.add("sku_yearly_$i");
-    }
-    return list;
   }
 }
 

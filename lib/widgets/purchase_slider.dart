@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import 'package:equatable/equatable.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 
 class PaymentInfo extends Equatable {
   final double value;
@@ -13,6 +14,23 @@ class PaymentInfo extends Equatable {
 
   @override
   List<Object> get props => [value, text, id];
+
+  static PaymentInfo fromProductDetail(ProductDetails pd) {
+    if (pd == null) return null;
+
+    double value = -1;
+    if (pd.skProduct != null) {
+      value = double.parse(pd.skProduct.price);
+    } else if (pd.skuDetail != null) {
+      value = pd.skuDetail.originalPriceAmountMicros.toDouble() / 100000;
+    }
+
+    return PaymentInfo(
+      id: pd.id,
+      text: pd.price,
+      value: value,
+    );
+  }
 }
 
 typedef PaymentSliderChanged = void Function(PaymentInfo);

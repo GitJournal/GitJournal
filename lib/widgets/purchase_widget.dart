@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:function_types/function_types.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
 
@@ -75,14 +74,12 @@ class PurchaseWidget extends StatefulWidget {
   final String defaultSku;
   final String timePeriod;
   final bool isSubscription;
-  final Func1<String, void> minPurchaseOptionCallback;
 
   PurchaseWidget({
     @required this.skus,
     @required this.defaultSku,
     this.timePeriod = "",
     @required this.isSubscription,
-    this.minPurchaseOptionCallback,
   });
 
   @override
@@ -127,17 +124,13 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
 
     var products = response.productDetails;
     products.sort((a, b) {
-      var pa = _fromProductDetail(a);
-      var pb = _fromProductDetail(b);
+      var pa = PaymentInfo.fromProductDetail(a);
+      var pb = PaymentInfo.fromProductDetail(b);
       return pa.value.compareTo(pb.value);
     });
     Log.i("Products: ${products.length}");
     for (var p in products) {
       Log.i("Product ${p.id} -> ${p.price}");
-    }
-    if (widget.minPurchaseOptionCallback != null && products.isNotEmpty) {
-      Log.i("Calling minPurchaseOptionCallback with ${products.first.price}");
-      widget.minPurchaseOptionCallback(products.first.price);
     }
 
     setState(() {
@@ -258,23 +251,6 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
         : buildBody(context);
   }
 
-  PaymentInfo _fromProductDetail(ProductDetails pd) {
-    if (pd == null) return null;
-
-    double value = -1;
-    if (pd.skProduct != null) {
-      value = double.parse(pd.skProduct.price);
-    } else if (pd.skuDetail != null) {
-      value = pd.skuDetail.originalPriceAmountMicros.toDouble() / 100000;
-    }
-
-    return PaymentInfo(
-      id: pd.id,
-      text: pd.price,
-      value: value,
-    );
-  }
-
   ProductDetails _fromPaymentInfo(PaymentInfo info) {
     for (var p in _products) {
       if (p.id == info.id) {
@@ -287,8 +263,8 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
 
   Widget buildBody(BuildContext context) {
     var slider = PurchaseSlider(
-      values: _products.map(_fromProductDetail).toList(),
-      selectedValue: _fromProductDetail(_selectedProduct),
+      values: _products.map(PaymentInfo.fromProductDetail).toList(),
+      selectedValue: PaymentInfo.fromProductDetail(_selectedProduct),
       onChanged: (PaymentInfo info) {
         setState(() {
           _selectedProduct = _fromPaymentInfo(info);
