@@ -7,7 +7,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/app_settings.dart';
-import 'package:gitjournal/features.dart';
 
 class ExperimentalSettingsScreen extends StatefulWidget {
   @override
