@@ -32,6 +32,18 @@ echo "Build Number: $BUILD_NUM"
 BUILD_NAME=$(cat pubspec.yaml | grep version | awk '{ print $2 }' | awk -F "+" '{ print $1 }')
 echo "Build Name: $BUILD_NAME"
 
+# I cannot figure out why the flutter replace isn't working for the ShareExtension
+if ! command -v which gsed &>/dev/null; then
+    echo "gsed could not be found"
+
+    sed -i "s|\$(FLUTTER_BUILD_NAME)|$BUILD_NAME|" ios/ShareExtension/Info.plist
+    sed -i "s|\$(FLUTTER_BUILD_NUMBER)|$BUILD_NUM|" ios/ShareExtension/Info.plist
+
+else
+    gsed -i "s|\$(FLUTTER_BUILD_NAME)|$BUILD_NAME|" ios/ShareExtension/Info.plist
+    gsed -i "s|\$(FLUTTER_BUILD_NUMBER)|$BUILD_NUM|" ios/ShareExtension/Info.plist
+fi
+
 xcodebuild -version
 
 flutter build ios --release --no-codesign --build-number="$BUILD_NUM" --build-name="$BUILD_NAME"
