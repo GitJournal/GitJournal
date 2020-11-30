@@ -23,6 +23,7 @@ class AppSettings extends ChangeNotifier {
 
   var proMode = Features.alwaysPro;
   var proExpirationDate = "";
+  var validateProMode = true;
 
   String _pseudoId;
   String get pseudoId => _pseudoId;
@@ -49,6 +50,7 @@ class AppSettings extends ChangeNotifier {
     proMode = pref.getBool("proMode") ?? proMode;
     proExpirationDate =
         pref.getString("proExpirationDate") ?? proExpirationDate;
+    validateProMode = pref.getBool("validateProMode") ?? validateProMode;
 
     _pseudoId = pref.getString("pseudoId");
     if (_pseudoId == null) {
@@ -84,6 +86,8 @@ class AppSettings extends ChangeNotifier {
     _setString(pref, "proExpirationDate", proExpirationDate,
         defaultSet.proExpirationDate);
     _setBool(pref, "proMode", proMode, defaultSet.proMode);
+    _setBool(
+        pref, "validateProMode", validateProMode, defaultSet.validateProMode);
     _setString(pref, "debugLogLevel", debugLogLevel, defaultSet.debugLogLevel);
     _setBool(pref, "experimentalFs", experimentalFs, defaultSet.experimentalFs);
     _setBool(pref, "experimentalMarkdownToolbar", experimentalMarkdownToolbar,
@@ -108,6 +112,7 @@ class AppSettings extends ChangeNotifier {
       "collectCrashReports": collectCrashReports.toString(),
       "version": version.toString(),
       "proMode": proMode.toString(),
+      'validateProMode': validateProMode.toString(),
       'proExpirationDate': proExpirationDate,
       'pseudoId': pseudoId,
       'debugLogLevel': debugLogLevel,

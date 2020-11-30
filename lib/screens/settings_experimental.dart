@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
+import 'package:crypto/crypto.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/app_settings.dart';
+import 'package:gitjournal/features.dart';
 
 class ExperimentalSettingsScreen extends StatefulWidget {
   @override
@@ -66,10 +70,70 @@ class _ExperimentalSettingsScreenState
                 setState(() {});
               },
             ),
+            ListTile(
+              title: const Text('Enter Pro Password'),
+              subtitle: Text('Pro: ' + AppSettings.instance.proMode.toString()),
+              onTap: () async {
+                await showDialog(
+                  context: context,
+                  builder: (context) => _PasswordForm(),
+                );
+                setState(() {});
+                print('Changing State');
+              },
+            ),
           ],
           padding: const EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 0.0),
         ),
       ),
+    );
+  }
+}
+
+class _PasswordForm extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Enter Pro Password'),
+      content: TextField(
+        style: Theme.of(context).textTheme.headline6,
+        decoration: const InputDecoration(
+          icon: Icon(Icons.security_rounded),
+          hintText: 'Enter Password',
+          labelText: 'Password',
+        ),
+        onChanged: (String value) {
+          value = value.trim();
+          if (value.isEmpty) {
+            return null;
+          }
+
+          final salt = 'randomSaltGitJournal';
+          var sha1Digest = sha1.convert(utf8.encode(value + salt));
+          print(sha1Digest);
+
+          if (sha1Digest.toString() !=
+              '27538d8231e49655fd1c26c7b8495c2c870c741b') {
+            return null;
+          }
+
+          print('Unlocking Pro Mode');
+
+          var appSettings = AppSettings.instance;
+          appSettings.proMode = true;
+          appSettings.validateProMode = false;
+          appSettings.proExpirationDate = '2050-01-01';
+          appSettings.save();
+        },
+      ),
+      actions: <Widget>[
+        FlatButton(
+          child: const Text('Ok'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        )
+      ],
     );
   }
 }

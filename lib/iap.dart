@@ -17,7 +17,7 @@ class InAppPurchases {
     clearTransactionsIos();
     confirmPendingPurchases();
 
-    if (Features.alwaysPro) {
+    if (Features.alwaysPro || !AppSettings.instance.validateProMode) {
       return;
     }
 
