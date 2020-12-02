@@ -1,33 +1,33 @@
-name: CI (ios)
+# name: CI (ios)
 
-on:
-  push:
-    branches:
-      - master
+# on:
+#   push:
+#     branches:
+#       - master
 
-jobs:
-  build:
-    runs-on: macos-10.14
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v1
-      - name: Install gpg
-        run: brew install git-crypt md5sha1sum
-      - name: Unlock Secrets
-        env:
-          GITCRYPT_KEY: ${{ secrets.GITCRYPT_KEY }}
-        run: ./scripts/decrypt_secrets.sh
-      - name: Setup provisioning profile
-        run: ./scripts/add_ios_keys.sh
-      - uses: subosito/flutter-action@v1
-        with:
-          flutter-version: "1.22.1"
-      - run: flutter pub get
-      - run: dart ./scripts/setup_env.dart
-        env:
-          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-      #- run: flutter test
-      - run: ./scripts/build_ios.sh
-        env:
-          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
-          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+# jobs:
+#   build:
+#     runs-on: macos-10.14
+#     timeout-minutes: 30
+#     steps:
+#       - uses: actions/checkout@v1
+#       - name: Install gpg
+#         run: brew install git-crypt md5sha1sum
+#       - name: Unlock Secrets
+#         env:
+#           GITCRYPT_KEY: ${{ secrets.GITCRYPT_KEY }}
+#         run: ./scripts/decrypt_secrets.sh
+#       - name: Setup provisioning profile
+#         run: ./scripts/add_ios_keys.sh
+#       - uses: subosito/flutter-action@v1
+#         with:
+#           flutter-version: "1.22.1"
+#       - run: flutter pub get
+#       - run: dart ./scripts/setup_env.dart
+#         env:
+#           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+#       #- run: flutter test
+#       - run: ./scripts/build_ios.sh
+#         env:
+#           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+#           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
