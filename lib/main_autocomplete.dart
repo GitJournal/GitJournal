@@ -34,9 +34,24 @@ class _MyHomePageState extends State<MyHomePage> {
   GlobalKey _textFieldKey = GlobalKey();
   TextStyle _textFieldStyle = const TextStyle(fontSize: 20);
 
+  TextEditingController _textController;
+
   @override
   void initState() {
     super.initState();
+
+    _textController = TextEditingController();
+    _textController.addListener(() {
+      var selection = _textController.selection;
+      var cursorPos = selection.baseOffset;
+      var text = _textController.text;
+
+      var nextText = text.substring(0, cursorPos);
+      print('newText: $nextText');
+      if (nextText.endsWith('[[')) {
+        showOverlaidTag(context, nextText);
+      }
+    });
   }
 
   // Code reference for overlay logic from MTECHVIRAL's video
@@ -105,19 +120,17 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Container(
-          child: TextField(
-            focusNode: _focusNode,
-            key: _textFieldKey,
-            style: _textFieldStyle,
-            maxLines: null,
-            onChanged: (String nextText) {
-              if (nextText.endsWith('[[')) {
-                showOverlaidTag(context, nextText);
-              }
-            },
+        child: SingleChildScrollView(
+          child: Container(
+            child: TextField(
+              controller: _textController,
+              focusNode: _focusNode,
+              key: _textFieldKey,
+              style: _textFieldStyle,
+              maxLines: null,
+            ),
+            width: 400.0,
           ),
-          width: 400.0,
         ),
       ),
     );
@@ -142,3 +155,9 @@ class _EditorState extends State<Editor> {
 // https://pub.dev/packages/flutter_typeahead
 
 // https://stackoverflow.com/questions/59243627/flutter-how-to-get-the-coordinates-of-the-cursor-in-a-textfield
+
+// Bug 2: Autocompletion box overlays the bottom nav bar
+// Bug 3: On Pressing Enter the Overlay should disappear
+// Bug 4: On Deleting the prefix buttons it should also disappear
+// Bug 5: Overlay disappears too fast
+// Bug 6: When writing a text which has '[[Hell' it doesn't show the autocompletion
