@@ -238,3 +238,54 @@ Widget _handleDataSchemeUri(Uri uri, final double width, final double height) {
   }
   return const SizedBox();
 }
+
+/*
+
+/// Parse ==Words==
+class HighlightTermSyntax extends md.InlineSyntax {
+  static final String _pattern = r'==(^=^=*)==';
+
+  HighlightTermSyntax() : super(_pattern);
+
+  @override
+  bool onMatch(md.InlineParser parser, Match match) {
+    var displayText = match[1];
+
+    var el = md.Element('span', [md.Text(displayText)]);
+    el.attributes['type'] = 'highlight';
+
+    parser.addNode(el);
+    return true;
+  }
+}
+
+Notes:
+You can't just use this builder as it's mandatory to override visitText
+which results in links and other rich text elements not being rendered
+correctly when inside the highlight.
+You'll need to modify flutter_makrdown to allow such modifications.
+
+
+class HighlightTermBuilder extends MarkdownElementBuilder {
+  @override
+  void visitElementBefore(md.Element element) {}
+
+  @override
+  Widget visitText(md.Text text, TextStyle style) {
+    /*
+    style = style.copyWith(backgroundColor: Colors.red);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(text.text, style: style),
+      ],
+    );*/
+  }
+
+  @override
+  Widget visitElementAfter(md.Element element, TextStyle preferredStyle) =>
+      null;
+}
+
+*/
