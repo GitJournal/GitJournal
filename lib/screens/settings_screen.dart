@@ -29,6 +29,7 @@ import 'package:gitjournal/screens/settings_tags.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
@@ -298,7 +299,7 @@ class SettingsListState extends State<SettingsList> {
 
               settings.save();
               setState(() {});
-              repo.moveRepoToPath();
+              await repo.moveRepoToPath();
             } else {
               var req = await Permission.storage.request();
               if (req.isDenied) {
@@ -307,19 +308,22 @@ class SettingsListState extends State<SettingsList> {
 
                 settings.save();
                 setState(() {});
-                repo.moveRepoToPath();
+                await repo.moveRepoToPath();
                 return;
               }
               settings.storeInternally = true;
 
               var path = await ExtStorage.getExternalStorageDirectory();
-              if (path == null) {
-                settings.storeInternally = false;
+              if (path == null || path.isEmpty) {
+                settings.storeInternally = true;
                 settings.storageLocation = "";
 
                 settings.save();
                 setState(() {});
-                repo.moveRepoToPath();
+                await repo.moveRepoToPath();
+
+                showSnackbar(
+                    context, "Unable to get External Storage Directory");
                 return;
               }
 
@@ -328,7 +332,23 @@ class SettingsListState extends State<SettingsList> {
 
               settings.save();
               setState(() {});
-              repo.moveRepoToPath();
+              try {
+                await repo.moveRepoToPath();
+              } catch (ex, st) {
+                Log.e("Moving Repo to External Storage",
+                    ex: ex, stacktrace: st);
+
+                settings.storeInternally = true;
+                settings.storageLocation = "";
+
+                settings.save();
+                setState(() {});
+                await repo.moveRepoToPath();
+
+                showSnackbar(
+                    context, "Unable to save in External Storage Directory");
+                return;
+              }
               return;
             }
           },
