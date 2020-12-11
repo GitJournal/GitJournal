@@ -80,7 +80,7 @@ class NoteViewer extends StatelessWidget {
               data: note.body,
               // selectable: false, -> making this true breaks link navigation
               styleSheet: markdownStyleSheet,
-              onTapLink: (String link) async {
+              onTapLink: (String _, String link, String __) async {
                 final linkResolver = LinkResolver(note);
 
                 var linkedNote = linkResolver.resolve(link);
