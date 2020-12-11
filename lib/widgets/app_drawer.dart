@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:gitjournal/widgets/app_drawer_header.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -16,6 +15,7 @@ import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/widgets/app_drawer_header.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
