@@ -90,7 +90,7 @@ String toCurlCommand(String url, Map<String, String> headers) {
 }
 
 Future<void> shareNote(Note note) async {
-  return Share.share(note.body);
+  return Share.share(note.serialize());
 }
 
 Future<Note> getTodayJournalEntry(NotesFolderFS rootFolder) async {
