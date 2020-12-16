@@ -241,6 +241,20 @@ class GitNoteRepository {
     }
   }
 
+  Future<String> defaultBranch(String remoteName) async {
+    try {
+      return await _gitRepo.defaultBranch(
+        remote: remoteName,
+        publicKey: settings.sshPublicKey,
+        privateKey: settings.sshPrivateKey,
+        password: settings.sshPassword,
+      );
+    } on GitException catch (ex, stackTrace) {
+      Log.e("GitDefaultBranch Failed", ex: ex, stacktrace: stackTrace);
+      rethrow;
+    }
+  }
+
   Future<int> numChanges() async {
     try {
       var repo = await git.GitRepository.load(gitDirPath);

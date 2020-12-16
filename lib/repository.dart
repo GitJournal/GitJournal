@@ -450,14 +450,14 @@ class Repository with ChangeNotifier {
 
       var repo = await GitRepository.load(repoPath);
       var remote = repo.config.remote(remoteName);
-      var remoteBranch = await repo.guessRemoteHead(remoteName);
-      var remoteBranchName =
-          remoteBranch != null ? remoteBranch.name.branchName() : "master";
+      var remoteBranchName = await _gitRepo.defaultBranch(remoteName);
+      var remoteBranch = await repo.remoteBranch(remoteName, remoteBranchName);
+      Log.i("Using remote branch: $remoteBranchName");
 
       var branches = await repo.branches();
       if (branches.isEmpty) {
         Log.i("Completing - no local branch");
-        if (remoteBranch != null) {
+        if (remoteBranchName != null && remoteBranchName.isNotEmpty) {
           await repo.checkoutBranch(remoteBranchName, remoteBranch.hash);
         }
         await repo.setUpstreamTo(remote, remoteBranchName);
