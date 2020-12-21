@@ -22,6 +22,8 @@ dependencies:
   badges: ^1.1.1
   connectivity: ^0.4.6+1
   cached_network_image: ^2.2.0+1
+  cryptography: ^1.4.1
+  cryptography_flutter: ^1.0.0
   crypton: ^1.1.3
   device_info: ">=0.4.2+4 <2.0.0"
   dots_indicator: ^0.0.3

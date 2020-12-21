@@ -1,12 +1,21 @@
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:gitjournal/ssh/rsa_key_pair.dart';
+import 'package:cryptography/cryptography.dart';
 
-void main() {
+import './binary_length_value.dart';
+
+void main() async {
   print("Generating new random key");
-  var keyPair = RsaKeyPair.generate();
-  var publicKeyStr = keyPair.publicKeyString(comment: "No Comment");
-  var privateKeyStr = keyPair.privateKeyString();
+  final keyPair = await ed25519.newKeyPair();
+
+  var publicKey = keyPair.publicKey;
+  var privateKey = keyPair.privateKey;
+
+  var publicKeyStr = publicKeyString(publicKey.bytes);
+  var privateKeyStr = ""; //keyPair.privateKeyString();
+
+  print(privateKey);
 
   var keyName = "key_";
   var num = 0;
@@ -19,4 +28,24 @@ void main() {
 
   File("key_$num.pub").writeAsStringSync(publicKeyStr + '\n');
   File("key_$num").writeAsStringSync(privateKeyStr + '\n');
+}
+
+String publicKeyString(List<int> publicKeyBytes, {String comment = ""}) {
+  var data = BinaryLengthValue.encode([
+    BinaryLengthValue.fromString("ssh-ed25519"),
+    BinaryLengthValue(publicKeyBytes),
+  ]);
+
+  if (comment.isNotEmpty) {
+    comment = comment.replaceAll('\r', ' ');
+    comment = comment.replaceAll('\n', ' ');
+    comment = ' $comment';
+  }
+
+  return 'ssh-ed25519 ${base64.encode(data)}$comment';
+}
+
+String privateKeyString() {
+  var str = '-----BEGIN OPENSSH PRIVATE KEY-----\n';
+  return str;
 }
