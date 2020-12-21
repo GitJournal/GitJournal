@@ -11,6 +11,7 @@ import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
@@ -314,6 +315,11 @@ class SettingsListState extends State<SettingsList> {
               settings.storeInternally = true;
 
               var path = await ExtStorage.getExternalStorageDirectory();
+              Log.i("Got ExternalStorageDirectory: $path");
+
+              var extDir = await getExternalStorageDirectory();
+              Log.i("Ext Dir: $extDir");
+
               if (path == null || path.isEmpty) {
                 settings.storeInternally = true;
                 settings.storageLocation = "";
