@@ -408,69 +408,68 @@ class Repository with ChangeNotifier {
     });
   }
 
-  void completeGitHostSetup(String repoFolderName, String remoteName) {
-    () async {
-      var repoPath = p.join(gitBaseDirectory, repoFolderName);
-      Log.i("completeGitHostSetup repoPath: $repoPath");
+  Future<void> completeGitHostSetup(
+      String repoFolderName, String remoteName) async {
+    var repoPath = p.join(gitBaseDirectory, repoFolderName);
+    Log.i("completeGitHostSetup repoPath: $repoPath");
 
-      _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);
+    _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);
 
-      var repo = await GitRepository.load(repoPath);
-      var remote = repo.config.remote(remoteName);
-      var remoteBranchName = await _gitRepo.defaultBranch(remoteName);
-      var remoteBranch = await repo.remoteBranch(remoteName, remoteBranchName);
-      Log.i("Using remote branch: $remoteBranchName");
+    var repo = await GitRepository.load(repoPath);
+    var remote = repo.config.remote(remoteName);
+    var remoteBranchName = await _gitRepo.defaultBranch(remoteName);
+    var remoteBranch = await repo.remoteBranch(remoteName, remoteBranchName);
+    Log.i("Using remote branch: $remoteBranchName");
 
-      var branches = await repo.branches();
-      if (branches.isEmpty) {
-        Log.i("Completing - no local branch");
-        if (remoteBranchName != null && remoteBranchName.isNotEmpty) {
-          await repo.checkoutBranch(remoteBranchName, remoteBranch.hash);
-        }
+    var branches = await repo.branches();
+    if (branches.isEmpty) {
+      Log.i("Completing - no local branch");
+      if (remoteBranchName != null && remoteBranchName.isNotEmpty) {
+        await repo.checkoutBranch(remoteBranchName, remoteBranch.hash);
+      }
+      await repo.setUpstreamTo(remote, remoteBranchName);
+    } else {
+      var branch = branches[0];
+
+      if (branch == remoteBranchName) {
+        Log.i("Completing - localBranch: $branch");
+
         await repo.setUpstreamTo(remote, remoteBranchName);
+        await _gitRepo.merge();
       } else {
-        var branch = branches[0];
+        Log.i(
+            "Completing - localBranch diff remote: $branch $remoteBranchName");
 
-        if (branch == remoteBranchName) {
-          Log.i("Completing - localBranch: $branch");
-
-          await repo.setUpstreamTo(remote, remoteBranchName);
-          await _gitRepo.merge();
-        } else {
-          Log.i(
-              "Completing - localBranch diff remote: $branch $remoteBranchName");
-
-          var headRef = await repo.resolveReference(await repo.head());
-          await repo.checkoutBranch(remoteBranchName, headRef.hash);
-          await repo.deleteBranch(branch);
-          await repo.setUpstreamTo(remote, remoteBranchName);
-          await _gitRepo.merge();
-        }
-
-        // if more than one branch
-        // TODO: Check if one of the branches matches the remote branch name
-        //       and use that
-        //       if not, then just create a new branch with the remoteBranchName
-        //       and merge ..
-
+        var headRef = await repo.resolveReference(await repo.head());
+        await repo.checkoutBranch(remoteBranchName, headRef.hash);
+        await repo.deleteBranch(branch);
+        await repo.setUpstreamTo(remote, remoteBranchName);
+        await _gitRepo.merge();
       }
 
-      await _addFileInRepo(repo: this, settings: settings);
+      // if more than one branch
+      // TODO: Check if one of the branches matches the remote branch name
+      //       and use that
+      //       if not, then just create a new branch with the remoteBranchName
+      //       and merge ..
 
-      this.repoPath = repoPath;
-      _notesCache.clear();
-      remoteGitRepoConfigured = true;
-      notesFolder.reset(repoPath);
+    }
 
-      settings.folderName = repoFolderName;
-      settings.save();
+    await _addFileInRepo(repo: this, settings: settings);
 
-      await _persistConfig();
-      _loadNotes();
-      _syncNotes();
+    this.repoPath = repoPath;
+    _notesCache.clear();
+    remoteGitRepoConfigured = true;
+    notesFolder.reset(repoPath);
 
-      notifyListeners();
-    }();
+    settings.folderName = repoFolderName;
+    settings.save();
+
+    await _persistConfig();
+    _loadNotes();
+    _syncNotes();
+
+    notifyListeners();
   }
 
   Future _persistConfig() async {

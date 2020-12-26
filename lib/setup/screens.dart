@@ -31,7 +31,7 @@ import 'package:gitjournal/utils/logger.dart';
 class GitHostSetupScreen extends StatefulWidget {
   final String repoFolderName;
   final String remoteName;
-  final Func2<String, String, void> onCompletedFunction;
+  final Func2<String, String, Future<void>> onCompletedFunction;
 
   GitHostSetupScreen({
     @required this.repoFolderName,
@@ -555,8 +555,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       Event.GitHostSetupComplete,
       parameters: _buildOnboardingAnalytics(),
     );
+    await widget.onCompletedFunction(widget.repoFolderName, widget.remoteName);
     Navigator.pop(context);
-    widget.onCompletedFunction(widget.repoFolderName, widget.remoteName);
   }
 
   Future<void> _completeAutoConfigure() async {
