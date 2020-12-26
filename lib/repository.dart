@@ -87,39 +87,6 @@ class Repository with ChangeNotifier {
       await GitRepository.init(repoPath);
 
       settings.save();
-    } else {
-      //
-      // Debugging Info for https://github.com/GitJournal/GitJournal/issues/347
-      //
-      if (Platform.isAndroid) {
-        var foundDotGit = false;
-        await for (var file in repoDir.list()) {
-          if (p.basename(file.path) == '.git') {
-            foundDotGit = true;
-            Log.i(".git directory contents");
-            await for (var file in Directory(file.path).list()) {
-              Log.i("${file.path}");
-            }
-            break;
-          }
-        }
-        if (foundDotGit == false) {
-          Log.e("Directory exists but .git folder is missing?");
-          await for (var file in repoDir.list()) {
-            Log.i("What is this: ${file.path}");
-          }
-        }
-      }
-
-      var gitRepo = await GitRepository.load(repoPath);
-      remotes = gitRepo.config.remotes;
-      remoteConfigured = remotes.isNotEmpty;
-
-      Log.i("Listing Remotes - ");
-      for (var r in remotes) {
-        Log.i("Remote Name: ${r.name}");
-        Log.i("Remote URL: ${r.url}");
-      }
     }
 
     if (remoteConfigured) {
