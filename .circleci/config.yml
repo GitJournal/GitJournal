@@ -39,43 +39,43 @@ jobs:
           command: ./scripts/test_coverage.sh
       - store_artifacts:
           path: coverage
-#      - run:
-#          name: Upload Crashlytics Symbols
-#          command: ./scripts/android_crashlytics.sh
+      #      - run:
+      #          name: Upload Crashlytics Symbols
+      #          command: ./scripts/android_crashlytics.sh
       - run:
           name: Publish Alpha
           command: cd android && fastlane alphaBuild
-  build_ios:
-    macos:
-      xcode: 11.3.1
-    steps:
-      - checkout
-      - run:
-          name: Install gpg
-          command: brew install gnupg git-crypt md5sha1sum wget gnu-sed
-      - run:
-          name: Install Flutter
-          command: ./scripts/ios_install_flutter.sh
-      - run:
-          name: Setup Environment Variables
-          command: |
-            echo "export PATH=flutter/bin:$PATH" >> $BASH_ENV
-      - run:
-          name: Unlock Secrets
-          command: ./scripts/decrypt_secrets.sh
-      - run:
-          name: Setup GitJournal Build Env
-          command: ./flutter/bin/cache/dart-sdk/bin/dart ./scripts/setup_env.dart
-      - run:
-          name: Setup provisioning profile
-          command: ./scripts/add_ios_keys.sh
-      - run:
-          name: Build App
-          command: ./scripts/build_ios.sh
+#   build_ios:
+#     macos:
+#       xcode: 11.3.1
+#     steps:
+#       - checkout
+#       - run:
+#           name: Install gpg
+#           command: brew install gnupg git-crypt md5sha1sum wget gnu-sed
+#       - run:
+#           name: Install Flutter
+#           command: ./scripts/ios_install_flutter.sh
+#       - run:
+#           name: Setup Environment Variables
+#           command: |
+#             echo "export PATH=flutter/bin:$PATH" >> $BASH_ENV
+#       - run:
+#           name: Unlock Secrets
+#           command: ./scripts/decrypt_secrets.sh
+#       - run:
+#           name: Setup GitJournal Build Env
+#           command: ./flutter/bin/cache/dart-sdk/bin/dart ./scripts/setup_env.dart
+#       - run:
+#           name: Setup provisioning profile
+#           command: ./scripts/add_ios_keys.sh
+#       - run:
+#           name: Build App
+#           command: ./scripts/build_ios.sh
 
 workflows:
   version: 2
   build_all:
     jobs:
       - build_android
-      - build_ios
+    #   - build_ios
