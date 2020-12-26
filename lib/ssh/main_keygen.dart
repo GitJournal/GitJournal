@@ -49,3 +49,9 @@ String privateKeyString() {
   var str = '-----BEGIN OPENSSH PRIVATE KEY-----\n';
   return str;
 }
+
+// Either the openssl code or the openssh-portable code
+// or some go code
+// -> https://golang.org/src/crypto/x509/pkcs8.go
+
+// Key format is PKCS8 or OpenSSH.
