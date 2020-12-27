@@ -303,7 +303,12 @@ class SettingsListState extends State<SettingsList> {
               setState(() {});
               await repo.moveRepoToPath();
 
-              showSnackbar(context, "Unable to get External Storage Directory");
+              if (showError) {
+                showSnackbar(
+                  context,
+                  "Unable to get External Storage Directory",
+                );
+              }
             }
 
             if (newVal == false) {
