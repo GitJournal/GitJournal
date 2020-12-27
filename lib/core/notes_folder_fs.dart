@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -497,8 +498,8 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     return NotesFolderConfig.fromSettings(this, settings);
   }
 
-  Set<String> getNoteTagsRecursively() {
-    return _fetchTags(this, {});
+  SplayTreeSet<String> getNoteTagsRecursively() {
+    return _fetchTags(this, SplayTreeSet<String>());
   }
 
   Future<List<Note>> matchNotes(NoteMatcherAsync pred) async {
@@ -527,7 +528,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
 typedef NoteMatcherAsync = Future<bool> Function(Note n);
 
-Set<String> _fetchTags(NotesFolder folder, Set<String> tags) {
+SplayTreeSet<String> _fetchTags(NotesFolder folder, SplayTreeSet<String> tags) {
   for (var note in folder.notes) {
     tags.addAll(note.tags);
     tags.addAll(note.inlineTags);

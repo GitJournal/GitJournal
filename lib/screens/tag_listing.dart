@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -21,13 +19,12 @@ class TagListingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var rootFolder = Provider.of<NotesFolderFS>(context);
     var allTags = rootFolder.getNoteTagsRecursively();
-    var allTagsSorted = SplayTreeSet<String>.from(allTags);
 
     Widget body;
-    if (allTagsSorted.isNotEmpty) {
+    if (allTags.isNotEmpty) {
       body = ListView(
         children: <Widget>[
-          for (var tag in allTagsSorted) _buildTagTile(context, tag),
+          for (var tag in allTags) _buildTagTile(context, tag),
         ],
       );
     } else {
