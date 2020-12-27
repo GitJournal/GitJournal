@@ -80,7 +80,6 @@ class Repository with ChangeNotifier {
     var repoDir = Directory(repoPath);
     var repoDirStat = repoDir.statSync();
 
-    List<GitRemoteConfig> remotes;
     if (repoDirStat.type != FileSystemEntityType.directory) {
       Log.i("Calling GitInit for ${settings.folderName} at: $repoPath");
       await GitRepository.init(repoPath);
@@ -90,19 +89,6 @@ class Repository with ChangeNotifier {
 
     var repo = await GitRepository.load(repoPath);
     var remoteConfigured = repo.config.remotes.isNotEmpty;
-
-    if (remoteConfigured) {
-      if (settings.sshPublicKey == null || settings.sshPublicKey.isEmpty) {
-        var remoteNames = remotes.map((e) => e.name + ' ' + e.url).toList();
-        Log.e("Public Key Empty for $remoteNames");
-        logExceptionWarning(Exception("Public Key Empty"), StackTrace.current);
-      }
-      if (settings.sshPrivateKey == null || settings.sshPrivateKey.isEmpty) {
-        var remoteNames = remotes.map((e) => e.name + ' ' + e.url).toList();
-        Log.e("Private Key Empty for $remoteNames");
-        logExceptionWarning(Exception("Private Key Empty"), StackTrace.current);
-      }
-    }
 
     return Repository._internal(
       repoPath: repoPath,
