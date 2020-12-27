@@ -75,6 +75,7 @@ class Repository with ChangeNotifier {
     Log.i("Setting ${settings.toLoggableMap()}");
 
     var repoPath = await settings.buildRepoPath(gitBaseDir);
+    Log.i("Loading Repo at path $repoPath");
 
     var repoDir = Directory(repoPath);
     var repoDirStat = repoDir.statSync();
