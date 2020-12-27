@@ -115,6 +115,7 @@ class _FolderListViewState extends State<FolderListView> {
       key: _listKey,
       itemBuilder: _buildItem,
       initialItemCount: widget.folder.notes.length,
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 48),
     );
   }
 
