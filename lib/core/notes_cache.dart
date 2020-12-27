@@ -30,6 +30,7 @@ class NotesCache {
   Future load(NotesFolderFS rootFolder) async {
     if (!enabled) return;
     var fileList = await loadFromDisk();
+    Log.i("Notes Cache Loaded: ${fileList.length} items");
 
     var sep = Platform.pathSeparator;
     var notesBasePath = this.notesBasePath;
@@ -74,12 +75,12 @@ class NotesCache {
   Future<void> buildCache(NotesFolderFS rootFolder) async {
     if (!enabled) return;
 
-    Log.d("Saving the NotesCache");
-
     var notes = rootFolder.getAllNotes();
     var sortingMode = rootFolder.config.sortingMode;
     var fileList =
         _fetchFirst10(notes, sortingMode).map((f) => f.filePath).toList();
+
+    Log.i("Notes Cache saving: ${fileList.length} items");
     return saveToDisk(fileList);
   }
 
