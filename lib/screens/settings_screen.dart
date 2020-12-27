@@ -320,6 +320,10 @@ class SettingsListState extends State<SettingsList> {
               var extDir = await getExternalStorageDirectory();
               Log.i("Ext Dir: $extDir");
 
+              if (await _isDirWritable(path) == false) {
+                path = extDir.path;
+              }
+
               if (path == null || path.isEmpty) {
                 settings.storeInternally = true;
                 settings.storageLocation = "";
@@ -518,4 +522,18 @@ class VersionNumberTileState extends State<VersionNumberTile> {
       enabled: false,
     );
   }
+}
+
+Future<bool> _isDirWritable(String path) async {
+  var fileName = DateTime.now().millisecondsSinceEpoch.toString();
+  var file = File(p.join(path, fileName));
+
+  try {
+    await file.writeAsString("test");
+    await file.delete();
+  } catch (_) {
+    return false;
+  }
+
+  return true;
 }
