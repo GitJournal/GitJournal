@@ -79,8 +79,6 @@ class Repository with ChangeNotifier {
     var repoDir = Directory(repoPath);
     var repoDirStat = repoDir.statSync();
 
-    var remoteConfigured = false;
-
     List<GitRemoteConfig> remotes;
     if (repoDirStat.type != FileSystemEntityType.directory) {
       Log.i("Calling GitInit for ${settings.folderName} at: $repoPath");
@@ -88,6 +86,9 @@ class Repository with ChangeNotifier {
 
       settings.save();
     }
+
+    var repo = await GitRepository.load(repoPath);
+    var remoteConfigured = repo.config.remotes.isNotEmpty;
 
     if (remoteConfigured) {
       if (settings.sshPublicKey == null || settings.sshPublicKey.isEmpty) {
