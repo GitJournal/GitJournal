@@ -1,11 +1,11 @@
 import 'dart:io';
 
+import 'package:git_bindings/git_bindings.dart' as gb;
 import 'package:meta/meta.dart';
+import 'package:path/path.dart' as p;
 
 import 'package:gitjournal/ssh/rsa_key_pair.dart';
 import 'package:gitjournal/utils/logger.dart';
-import 'package:git_bindings/git_bindings.dart' as gb;
-import 'package:path/path.dart' as p;
 
 class SshKey {
   final String publicKey;

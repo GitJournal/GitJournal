@@ -6,12 +6,13 @@ import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:ext_storage/ext_storage.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:icloud_documents_path/icloud_documents_path.dart';
 import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
@@ -294,69 +295,40 @@ class SettingsListState extends State<SettingsList> {
           title: Text(tr('settings.storage.external')),
           value: !settings.storeInternally,
           onChanged: (bool newVal) async {
-            if (newVal == false) {
+            Future<void> moveBackToInternal(bool showError) async {
               settings.storeInternally = true;
               settings.storageLocation = "";
 
               settings.save();
               setState(() {});
               await repo.moveRepoToPath();
+
+              showSnackbar(context, "Unable to get External Storage Directory");
+            }
+
+            if (newVal == false) {
+              await moveBackToInternal(false);
             } else {
-              var req = await Permission.storage.request();
-              if (req.isDenied) {
-                settings.storeInternally = false;
-                settings.storageLocation = "";
-
-                settings.save();
-                setState(() {});
-                await repo.moveRepoToPath();
-                return;
-              }
-              settings.storeInternally = true;
-
-              var path = await ExtStorage.getExternalStorageDirectory();
-              Log.i("Got ExternalStorageDirectory: $path");
-
-              var extDir = await getExternalStorageDirectory();
-              Log.i("Ext Dir: $extDir");
-
-              if (await _isDirWritable(path) == false) {
-                path = extDir.path;
-              }
-
-              if (path == null || path.isEmpty) {
-                settings.storeInternally = true;
-                settings.storageLocation = "";
-
-                settings.save();
-                setState(() {});
-                await repo.moveRepoToPath();
-
-                showSnackbar(
-                    context, "Unable to get External Storage Directory");
+              var path = await _getExternalDir();
+              if (path.isEmpty) {
+                await moveBackToInternal(true);
                 return;
               }
 
-              settings.storageLocation = p.join(path, "GitJournal");
+              Log.i("Moving repo to $path");
+
               settings.storeInternally = false;
+              settings.storageLocation = p.join(path, "GitJournal");
 
               settings.save();
               setState(() {});
+
               try {
                 await repo.moveRepoToPath();
               } catch (ex, st) {
                 Log.e("Moving Repo to External Storage",
                     ex: ex, stacktrace: st);
-
-                settings.storeInternally = true;
-                settings.storageLocation = "";
-
-                settings.save();
-                setState(() {});
-                await repo.moveRepoToPath();
-
-                showSnackbar(
-                    context, "Unable to save in External Storage Directory");
+                await moveBackToInternal(true);
                 return;
               }
               return;
@@ -536,4 +508,32 @@ Future<bool> _isDirWritable(String path) async {
   }
 
   return true;
+}
+
+Future<String> _getExternalDir() async {
+  var dir = await FilePicker.platform.getDirectoryPath();
+  if (dir != null && dir.isNotEmpty) {
+    if (await _isDirWritable(dir)) {
+      return dir;
+    }
+  }
+
+  var req = await Permission.storage.request();
+  if (req.isDenied) {
+    return "";
+  }
+
+  var path = await ExtStorage.getExternalStorageDirectory();
+  if (await _isDirWritable(path)) {
+    return path;
+  }
+
+  var extDir = await getExternalStorageDirectory();
+  path = extDir.path;
+
+  if (await _isDirWritable(path)) {
+    return path;
+  }
+
+  return "";
 }

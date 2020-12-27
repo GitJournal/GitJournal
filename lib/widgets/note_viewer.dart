@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:gitjournal/widgets/markdown_renderer.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:provider/provider.dart';
 
@@ -12,6 +11,7 @@ import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/widgets/editor_scroll_view.dart';
+import 'package:gitjournal/widgets/markdown_renderer.dart';
 import 'package:gitjournal/widgets/notes_backlinks.dart';
 
 class NoteViewer extends StatelessWidget {
