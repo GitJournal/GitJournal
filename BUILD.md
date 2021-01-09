@@ -2,7 +2,7 @@
 
 * It's best to just work on this on Android - the ios setup is far more complicated and I haven't managed to automate it.
 
-## Environment setup
+## Environment Setup
 
 1. Install [Flutter](https://flutter.dev/docs/get-started/install) through official guidilines
 2. As a part of flutter installation, you will need to install [Android Studio](https://developer.android.com/studio)
@@ -15,6 +15,31 @@
 
 7. You will see application on emulator, you are all setup. You can start with [app.dart](lib/app.dart) file to exploring code.
 
+## Trouble Shooting
+
+### Build fails on project `git_bindings` with a `NullPointerException`:
+```
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+A problem occurred configuring project ':git_bindings'.
+> java.lang.NullPointerException (no error message)
+
+* Try:
+Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.
+
+* Get more help at https://help.gradle.org
+```
+
+Try if changing the version of `com.android.tools.build:gradle` in the buildscript dependencies of [android/build.gradle:13](android/build.gradle) from
+```gradle
+classpath 'com.android.tools.build:gradle:3.3.2'
+```
+to
+```gradle
+classpath 'com.android.tools.build:gradle:3.5.0'
+```
+fixes your issue.
 ## IDE Setup
 
 VS Code has great plugin for flutter, but you need to add args to launch.json.
