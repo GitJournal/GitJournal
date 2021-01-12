@@ -187,13 +187,17 @@ int _sortTitleAsc(Note a, Note b) {
     return -1;
   }
   if (!aTitleExists && !bTitleExists) {
-    return a.fileName.compareTo(b.fileName);
+    return _sortFileNameAsc(a, b);
   }
-  return a.title.compareTo(b.title);
+  var aTitle = a.title.toLowerCase();
+  var bTitle = b.title.toLowerCase();
+  return aTitle.compareTo(bTitle);
 }
 
 int _sortFileNameAsc(Note a, Note b) {
-  return a.fileName.compareTo(b.fileName);
+  var aFileName = a.fileName.toLowerCase();
+  var bFileName = b.fileName.toLowerCase();
+  return aFileName.compareTo(bFileName);
 }
 
 NoteSortingFunction _reverse(NoteSortingFunction func) {
