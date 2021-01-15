@@ -16,7 +16,8 @@
   <a href="https://github.com/sponsors/vHanda"><img alt="Sponsor via GitHub" src="https://img.shields.io/badge/Sponsor-Github-%235a353"></a>
 </p>
 
-<p>This project receives generous infrastructure support from
+<p align="center">
+  This project receives generous infrastructure support from
   <a href="https://www.digitalocean.com/">
     <img src="https://opensource.nyc3.cdn.digitaloceanspaces.com/attribution/assets/SVG/DO_Logo_horizontal_blue.svg" width="91px">
   </a>
