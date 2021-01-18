@@ -284,8 +284,11 @@ const ignoredMessages = [
   "failed getting response",
 ];
 
-bool shouldLogGitException(GitException ex) {
-  var msg = ex.cause.toLowerCase();
+bool shouldLogGitException(Exception ex) {
+  if (ex is! GitException) {
+    return false;
+  }
+  var msg = (ex as GitException).cause.toLowerCase();
   for (var i = 0; i < ignoredMessages.length; i++) {
     if (msg.contains(ignoredMessages[i])) {
       return false;
