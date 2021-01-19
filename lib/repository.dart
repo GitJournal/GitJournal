@@ -403,54 +403,6 @@ class Repository with ChangeNotifier {
 
     _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);
 
-    var repo = await GitRepository.load(repoPath);
-    var remote = repo.config.remote(remoteName);
-    var remoteBranchName = "master";
-    try {
-      remoteBranchName = await _gitRepo.defaultBranch(remoteName);
-    } catch (ex) {
-      Log.w("Could not get git main branch - assuming master", ex: ex);
-    }
-
-    var remoteBranch = await repo.remoteBranch(remoteName, remoteBranchName);
-    Log.i("Using remote branch: $remoteBranchName");
-
-    var branches = await repo.branches();
-    if (branches.isEmpty) {
-      Log.i("Completing - no local branch");
-      if (remoteBranchName != null &&
-          remoteBranchName.isNotEmpty &&
-          remoteBranch != null) {
-        await repo.checkoutBranch(remoteBranchName, remoteBranch.hash);
-      }
-      await repo.setUpstreamTo(remote, remoteBranchName);
-    } else {
-      var branch = branches[0];
-
-      if (branch == remoteBranchName) {
-        Log.i("Completing - localBranch: $branch");
-
-        await repo.setUpstreamTo(remote, remoteBranchName);
-        await _gitRepo.merge();
-      } else {
-        Log.i(
-            "Completing - localBranch diff remote: $branch $remoteBranchName");
-
-        var headRef = await repo.resolveReference(await repo.head());
-        await repo.checkoutBranch(remoteBranchName, headRef.hash);
-        await repo.deleteBranch(branch);
-        await repo.setUpstreamTo(remote, remoteBranchName);
-        await _gitRepo.merge();
-      }
-
-      // if more than one branch
-      // TODO: Check if one of the branches matches the remote branch name
-      //       and use that
-      //       if not, then just create a new branch with the remoteBranchName
-      //       and merge ..
-
-    }
-
     await _addFileInRepo(repo: this, settings: settings);
 
     this.repoPath = repoPath;

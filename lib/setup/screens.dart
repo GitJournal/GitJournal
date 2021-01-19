@@ -20,6 +20,7 @@ import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/setup/autoconfigure.dart';
 import 'package:gitjournal/setup/button.dart';
+import 'package:gitjournal/setup/clone.dart';
 import 'package:gitjournal/setup/clone_url.dart';
 import 'package:gitjournal/setup/loading_error.dart';
 import 'package:gitjournal/setup/repo_selector.dart';
@@ -525,18 +526,16 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
     String error;
     try {
-      var repo = await GitRepository.load(repoPath);
-      await repo.addOrUpdateRemote(widget.remoteName, _gitCloneUrl);
-
-      var repoN = git_bindings.GitRepo(folderPath: repoPath);
-      await repoN.fetch(
-        remote: widget.remoteName,
-        publicKey: settings.sshPublicKey,
-        privateKey: settings.sshPrivateKey,
-        password: settings.sshPassword,
+      await cloneRemote(
+        cloneUrl: _gitCloneUrl,
+        remoteName: widget.remoteName,
+        repoPath: repoPath,
+        sshPassword: settings.sshPassword,
+        sshPrivateKey: settings.sshPrivateKey,
+        sshPublicKey: settings.sshPublicKey,
       );
     } on Exception catch (e, stacktrace) {
-      Log.e("Failed to add remote", ex: e, stacktrace: stacktrace);
+      Log.e("Failed to clone", ex: e, stacktrace: stacktrace);
       error = e.toString();
     }
 
