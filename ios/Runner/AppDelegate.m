@@ -55,6 +55,11 @@ static FlutterMethodChannel* gitChannel = 0;
                 [self handleMethodCallAsync:call result:result];
             });
         }
+        else if ([@"gitDefaultBranch" isEqualToString:method]) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [self handleMethodCallAsync:call result:result];
+            });
+        }
         else if ([@"gitAdd" isEqualToString:method]) {
             NSString *folderPath = arguments[@"folderPath"];
             NSString *filePattern = arguments[@"filePattern"];
