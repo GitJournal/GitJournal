@@ -17,6 +17,7 @@
 		7A2A0C21229FEFD700FE4F1B /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2A0C20229FEFD700FE4F1B /* libiconv.tbd */; };
 		7A2A0C25229FF84C00FE4F1B /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A0C22229FF84C00FE4F1B /* common.c */; };
 		7A2A0C26229FF84C00FE4F1B /* gitjournal.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A2A0C23229FF84C00FE4F1B /* gitjournal.c */; };
+		7A56555B25B72014002C28F3 /* keygen.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A56555A25B72014002C28F3 /* keygen.c */; };
 		7A742348249CE14500B2C46B /* empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A742347249CE14500B2C46B /* empty.swift */; };
 		7AAD086A253F8A9F0048BC67 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAD0869253F8A9F0048BC67 /* ShareViewController.swift */; };
 		7AAD086D253F8A9F0048BC67 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7AAD086B253F8A9F0048BC67 /* MainInterface.storyboard */; };
@@ -78,6 +79,7 @@
 		7A2A0C20229FEFD700FE4F1B /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		7A2A0C22229FF84C00FE4F1B /* common.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = common.c; path = ../gj_common/common.c; sourceTree = "<group>"; };
 		7A2A0C23229FF84C00FE4F1B /* gitjournal.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = gitjournal.c; path = ../gj_common/gitjournal.c; sourceTree = "<group>"; };
+		7A56555A25B72014002C28F3 /* keygen.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = keygen.c; path = ../gj_common/keygen.c; sourceTree = "<group>"; };
 		7A742346249CE14400B2C46B /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		7A742347249CE14500B2C46B /* empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = empty.swift; sourceTree = "<group>"; };
 		7AAD0867253F8A9F0048BC67 /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -174,6 +176,7 @@
 		97C146E51CF9000F007C117D = {
 			isa = PBXGroup;
 			children = (
+				7A56555A25B72014002C28F3 /* keygen.c */,
 				7A2A0C22229FF84C00FE4F1B /* common.c */,
 				7A2A0C23229FF84C00FE4F1B /* gitjournal.c */,
 				7AD6EE47228EC97800E098B2 /* GoogleService-Info.plist */,
@@ -495,6 +498,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A56555B25B72014002C28F3 /* keygen.c in Sources */,
 				7A2A0C25229FF84C00FE4F1B /* common.c in Sources */,
 				7A742348249CE14500B2C46B /* empty.swift in Sources */,
 				7A2A0C26229FF84C00FE4F1B /* gitjournal.c in Sources */,
