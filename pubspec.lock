@@ -162,20 +162,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.5"
-  cryptography:
-    dependency: "direct main"
-    description:
-      name: cryptography
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.4.1"
-  cryptography_flutter:
-    dependency: "direct main"
-    description:
-      name: cryptography_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   crypton:
     dependency: "direct main"
     description:
@@ -353,13 +339,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.1"
-  fixnum:
-    dependency: transitive
-    description:
-      name: fixnum
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.10.11"
   flutter:
     dependency: "direct main"
     description: flutter
