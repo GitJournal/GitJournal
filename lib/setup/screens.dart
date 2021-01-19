@@ -7,7 +7,6 @@ import 'package:dart_git/git.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
-import 'package:git_bindings/git_bindings.dart' as git_bindings;
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
