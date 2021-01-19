@@ -34,8 +34,8 @@ Future<void> cloneRemote({
       privateKey: sshPrivateKey,
       password: sshPassword,
     );
+    Log.i("Got default branch: $branch");
     if (branch != null && branch.isNotEmpty) {
-      Log.i("Got default branch: $branch");
       remoteBranchName = branch;
     }
   } catch (ex) {
