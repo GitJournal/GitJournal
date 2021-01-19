@@ -362,12 +362,7 @@ bool handleError(FlutterResult result, int err) {
         int err = gj_git_default_branch([folderPath UTF8String], [remote UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String], true, branch_name);
         if (err == 0)
         {
-            char return_val[1024 + 3];
-            memset(return_val, 0, 1024 + 3);
-
-            strcat(return_val, "gj:");
-            strcat(return_val, branch_name);
-            result(@(return_val));
+            result(@(branch_name));
             return;
         }
         if (!handleError(result, err)) {
