@@ -319,6 +319,57 @@ bool handleError(FlutterResult result, int err) {
             return;
         }
     }
+    else if ([@"gitDefaultBranch" isEqualToString:method]) {
+        NSString *folderPath = arguments[@"folderPath"];
+        NSString *remote = arguments[@"remote"];
+        NSString *publicKey = arguments[@"publicKey"];
+        NSString *privateKey = arguments[@"privateKey"];
+        NSString *password = arguments[@"password"];
+
+        if (publicKey == nil || [publicKey length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid publicKey" details:nil]);
+            return;
+        }
+        if (privateKey == nil || [privateKey length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid privateKey" details:nil]);
+            return;
+        }
+        if (password == nil || [privateKey length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid password" details:nil]);
+            return;
+        }
+
+        if (folderPath == nil || [folderPath length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid folderPath" details:nil]);
+            return;
+        }
+        if (remote == nil || [remote length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid remote" details:nil]);
+            return;
+        }
+
+        char branch_name[1024];
+        int err = gj_git_default_branch([folderPath UTF8String], [remote UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String], true, branch_name);
+        if (err == 0)
+        {
+            char return_val[1024 + 3];
+            memset(return_val, 0, 1024 + 3);
+
+            strcat(return_val, "gj:");
+            strcat(return_val, branch_name);
+            result(@(return_val));
+            return;
+        }
+        if (!handleError(result, err)) {
+            result(@YES);
+            return;
+        }
+    }
     else if ([@"generateSSHKeys" isEqualToString:method]) {
         NSString *comment = arguments[@"comment"];
         NSString *privateKeyPath = arguments[@"privateKeyPath"];
