@@ -39,12 +39,14 @@ dependencies:
   filesystem_picker: ^1.0.3 # for directories
   fimber: ^0.3.0
   firebase_analytics: ^6.2.0
+  flutter_cache_manager: ^1.4.2
   flutter_email_sender: ^3.0.1
   flutter_emoji: ">= 2.0.0"
   flutter_markdown: ^0.5.1
   flutter_plugin_android_lifecycle: ^1.0.8 # for fixing the build
   flutter_sentry: ^0.4.4
   flutter_staggered_grid_view: ^0.3.0
+  flutter_svg: ^0.19.0
   font_awesome_flutter: ^8.7.0
   function_types: ^0.0.2
   git_url_parse2: ^0.0.1
@@ -96,6 +98,7 @@ dependency_overrides:
   process: ^4.0.0-nullsafety.1
   platform: ^3.0.0-nullsafety.1
   file: ^6.0.0-nullsafety.1
+  xml: ^4.2.0
 
 flutter:
   uses-material-design: true
