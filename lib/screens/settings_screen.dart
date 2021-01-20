@@ -20,6 +20,7 @@ import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/screens/debug_screen.dart';
 import 'package:gitjournal/screens/feature_timeline_screen.dart';
 import 'package:gitjournal/screens/settings_bottom_menu_bar.dart';
+import 'package:gitjournal/screens/settings_display_images.dart';
 import 'package:gitjournal/screens/settings_editors.dart';
 import 'package:gitjournal/screens/settings_experimental.dart';
 import 'package:gitjournal/screens/settings_git_remote.dart';
@@ -165,6 +166,17 @@ class SettingsListState extends State<SettingsList> {
           settings.theme = s;
           settings.save();
           setState(() {});
+        },
+      ),
+      ListTile(
+        title: Text(tr("settings.display.images.title")),
+        subtitle: Text(tr("settings.display.images.subtitle")),
+        onTap: () {
+          var route = MaterialPageRoute(
+            builder: (context) => SettingsDisplayImagesScreen(),
+            settings: const RouteSettings(name: '/settings/display_images'),
+          );
+          Navigator.of(context).push(route);
         },
       ),
       ProOverlay(

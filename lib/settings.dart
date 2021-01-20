@@ -52,6 +52,18 @@ class Settings extends ChangeNotifier {
   SettingsHomeScreen homeScreen = SettingsHomeScreen.Default;
   SettingsTheme theme = SettingsTheme.Default;
 
+  bool themeRasterGraphics = false;
+  SettingsThemeOverrideTagLocation themeOverrideTagLocation =
+      SettingsThemeOverrideTagLocation.Default;
+  String doNotThemeTag = "notheme";
+  String doThemeTag = "dotheme";
+  SettingsThemeVectorGraphics themeVectorGraphics =
+      SettingsThemeVectorGraphics.Default;
+  bool themeSvgWithOpaqueBackground = false;
+  bool matchCanvasColor = true;
+  SettingsVectorGraphicsAdjustColors vectorGraphicsAdjustColors =
+      SettingsVectorGraphicsAdjustColors.Default;
+
   SettingsMarkdownDefaultView markdownDefaultView =
       SettingsMarkdownDefaultView.Default;
   SettingsMarkdownDefaultView markdownLastUsedView =
@@ -130,6 +142,23 @@ class Settings extends ChangeNotifier {
     homeScreen =
         SettingsHomeScreen.fromInternalString(_getString(pref, "homeScreen"));
     theme = SettingsTheme.fromInternalString(_getString(pref, "theme"));
+
+    themeRasterGraphics =
+        _getBool(pref, "themeRasterGraphics") ?? themeRasterGraphics;
+    themeOverrideTagLocation =
+        SettingsThemeOverrideTagLocation.fromInternalString(
+            _getString(pref, "themeOverrideTagLocation"));
+    doNotThemeTag = _getString(pref, "doNotThemeTag") ?? doNotThemeTag;
+    doThemeTag = _getString(pref, "doThemeTag") ?? doThemeTag;
+    themeVectorGraphics = SettingsThemeVectorGraphics.fromInternalString(
+        _getString(pref, "themeVectorGraphics"));
+    themeSvgWithOpaqueBackground =
+        _getBool(pref, "themeSvgWithOpaqueBackground") ??
+            themeSvgWithOpaqueBackground;
+    matchCanvasColor = _getBool(pref, "matchCanvasColor") ?? matchCanvasColor;
+    vectorGraphicsAdjustColors =
+        SettingsVectorGraphicsAdjustColors.fromInternalString(
+            _getString(pref, "vectorGraphicsAdjustColors"));
 
     imageLocationSpec =
         _getString(pref, "imageLocationSpec") ?? imageLocationSpec;
@@ -238,6 +267,32 @@ class Settings extends ChangeNotifier {
         defaultSet.homeScreen.toInternalString());
     await _setString(pref, "theme", theme.toInternalString(),
         defaultSet.theme.toInternalString());
+
+    await _setBool(pref, "themeRasterGraphics", themeRasterGraphics,
+        defaultSet.themeRasterGraphics);
+    await _setString(
+        pref,
+        "themeOverrideTagLocation",
+        themeOverrideTagLocation.toInternalString(),
+        defaultSet.themeOverrideTagLocation.toInternalString());
+    await _setString(
+        pref, "doNotThemeTag", doNotThemeTag, defaultSet.doNotThemeTag);
+    await _setString(pref, "doThemeTag", doThemeTag, defaultSet.doThemeTag);
+    await _setString(
+        pref,
+        "themeVectorGraphics",
+        themeVectorGraphics.toInternalString(),
+        defaultSet.themeVectorGraphics.toInternalString());
+    await _setBool(pref, "themeSvgWithOpaqueBackground",
+        themeSvgWithOpaqueBackground, defaultSet.themeSvgWithOpaqueBackground);
+    await _setBool(pref, "matchCanvasColor", matchCanvasColor,
+        defaultSet.matchCanvasColor);
+    await _setString(
+        pref,
+        "vectorGraphicsAdjustColors",
+        vectorGraphicsAdjustColors.toInternalString(),
+        defaultSet.vectorGraphicsAdjustColors.toInternalString());
+
     await _setString(pref, "imageLocationSpec", imageLocationSpec,
         defaultSet.imageLocationSpec);
     await _setBool(pref, "zenMode", zenMode, defaultSet.zenMode);
@@ -355,6 +410,15 @@ class Settings extends ChangeNotifier {
       'markdownLastUsedView': markdownLastUsedView.toInternalString(),
       'homeScreen': homeScreen.toInternalString(),
       'theme': theme.toInternalString(),
+      'themeRasterGraphics': themeRasterGraphics.toString(),
+      'themeOverrideTagLocation': themeOverrideTagLocation.toInternalString(),
+      'doNotThemeTag': doNotThemeTag,
+      'doThemeTag': doThemeTag,
+      'themeVectorGraphics': themeVectorGraphics.toInternalString(),
+      'themeSvgWithOpaqueBackground': themeSvgWithOpaqueBackground.toString(),
+      'matchCanvasColor': matchCanvasColor.toString(),
+      'vectorGraphicsAdjustColors':
+          vectorGraphicsAdjustColors.toInternalString(),
       'imageLocationSpec': imageLocationSpec,
       'zenMode': zenMode.toString(),
       'titleSettings': titleSettings.toInternalString(),
@@ -783,6 +847,166 @@ class SettingsHomeScreen {
   @override
   String toString() {
     assert(false, "SettingsHomeScreen toString should never be called");
+    return "";
+  }
+}
+
+class SettingsThemeOverrideTagLocation {
+  static const AltTool = SettingsThemeOverrideTagLocation(
+      "settings.display.images.themeOverrideTagLocation.altAndTooltip",
+      "alt_and_tooltip");
+  static const Tooltip = SettingsThemeOverrideTagLocation(
+      "settings.display.images.themeOverrideTagLocation.tooltip", "tooltip");
+  static const Alt = SettingsThemeOverrideTagLocation(
+      "settings.display.images.themeOverrideTagLocation.alt", "alt");
+  static const Default = AltTool;
+
+  final String _str;
+  final String _publicString;
+  const SettingsThemeOverrideTagLocation(this._publicString, this._str);
+
+  String toInternalString() {
+    return _str;
+  }
+
+  String toPublicString() {
+    return tr(_publicString);
+  }
+
+  static const options = <SettingsThemeOverrideTagLocation>[
+    AltTool,
+    Tooltip,
+    Alt,
+  ];
+
+  static SettingsThemeOverrideTagLocation fromInternalString(String str) {
+    for (var opt in options) {
+      if (opt.toInternalString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  static SettingsThemeOverrideTagLocation fromPublicString(String str) {
+    for (var opt in options) {
+      if (opt.toPublicString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  @override
+  String toString() {
+    assert(false,
+        "SettingsThemeOverrideTagLocation toString should never be called");
+    return "";
+  }
+}
+
+class SettingsThemeVectorGraphics {
+  static const On = SettingsThemeVectorGraphics(
+      "settings.display.images.themeVectorGraphics.on", "on");
+  static const Off = SettingsThemeVectorGraphics(
+      "settings.display.images.themeVectorGraphics.off", "off");
+  static const Filter = SettingsThemeVectorGraphics(
+      "settings.display.images.themeVectorGraphics.filter", "filter");
+  static const Default = On;
+
+  final String _str;
+  final String _publicString;
+  const SettingsThemeVectorGraphics(this._publicString, this._str);
+
+  String toInternalString() {
+    return _str;
+  }
+
+  String toPublicString() {
+    return tr(_publicString);
+  }
+
+  static const options = <SettingsThemeVectorGraphics>[
+    On,
+    Off,
+    Filter,
+  ];
+
+  static SettingsThemeVectorGraphics fromInternalString(String str) {
+    for (var opt in options) {
+      if (opt.toInternalString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  static SettingsThemeVectorGraphics fromPublicString(String str) {
+    for (var opt in options) {
+      if (opt.toPublicString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  @override
+  String toString() {
+    assert(
+        false, "SettingsThemeVectorGraphics toString should never be called");
+    return "";
+  }
+}
+
+class SettingsVectorGraphicsAdjustColors {
+  static const All = SettingsVectorGraphicsAdjustColors(
+      "settings.display.images.adjustColors.all", "all");
+  static const BnW = SettingsVectorGraphicsAdjustColors(
+      "settings.display.images.adjustColors.blackAndWhite", "black_and_white");
+  static const Grays = SettingsVectorGraphicsAdjustColors(
+      "settings.display.images.adjustColors.grays", "grays");
+  static const Default = All;
+
+  final String _str;
+  final String _publicString;
+  const SettingsVectorGraphicsAdjustColors(this._publicString, this._str);
+
+  String toInternalString() {
+    return _str;
+  }
+
+  String toPublicString() {
+    return tr(_publicString);
+  }
+
+  static const options = <SettingsVectorGraphicsAdjustColors>[
+    BnW,
+    Grays,
+    All,
+  ];
+
+  static SettingsVectorGraphicsAdjustColors fromInternalString(String str) {
+    for (var opt in options) {
+      if (opt.toInternalString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  static SettingsVectorGraphicsAdjustColors fromPublicString(String str) {
+    for (var opt in options) {
+      if (opt.toPublicString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  @override
+  String toString() {
+    assert(false,
+        "SettingsVectorGraphicsAdjustColors toString should never be called");
     return "";
   }
 }

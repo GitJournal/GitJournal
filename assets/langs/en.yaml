@@ -16,6 +16,43 @@ settings:
     title: Display Settings
     homeScreen: Home Screen
     theme: Theme
+    images:
+      adjustColors:
+        all: All
+        blackAndWhite: Only black and white
+        grays: Only grays
+      doNotThemeTag:
+        hint: DoNotTheme-Tag
+        label: Never Theme Images With Tag
+        validator:
+          empty: Tag cannot be empty.
+          same: Tag cannot be identical to "Always Theme Tag"
+      doThemeTag:
+        hint: DoTheme-Tag
+        label: Always Theme Images With Tag
+        validator:
+          empty: Tag cannot be empty.
+          same: Tag cannot be identical to "Always Theme Tag"
+      matchCanvasColor:
+        subtitle: Replaces white/black parts of vector graphics with the canvas color
+        title: Match Background Color
+      subtitle: Configure how Images are displayed
+      themeOverrides: Theme Overrides
+      themeOverrideTagLocation: 
+        title: Theme Override Tag Location
+        alt: Alt Text
+        altAndTooltip: Alt Text and Tooltip
+        tooltip: Tooltip
+      themeRasterGraphics: Theme Raster Graphics (.png/.jpg)
+      themeSvgWithBackground: Theme SVGs With Background
+      themeVectorGraphics: 
+        title: Theme Vector Graphics
+        filter: Using Color Filter
+        off: No
+        on: Yes
+      title: Image Settings
+      vectorGraphics: Vector Graphics (.svg)
+      vectorGraphicsAdjustColors: Colors to Adjust
   theme:
     light: Light
     dark: Dark
