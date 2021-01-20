@@ -199,6 +199,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
               setState(() {
                 _pageCount = pos + 2;
                 _nextPage();
+
+                gitCloneErrorMessage = "";
                 _startGitClone(context);
               });
             },
@@ -225,6 +227,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
                 this.publicKey = publicKey;
                 _pageCount = pos + 2;
                 _nextPage();
+
+                gitCloneErrorMessage = "";
                 _startGitClone(context);
               });
             },
@@ -286,6 +290,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
                 _pageCount = 6;
 
                 _nextPage();
+
+                gitCloneErrorMessage = "";
                 _startGitClone(context);
               });
             },
@@ -312,6 +318,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
                 this.publicKey = publicKey;
                 _pageCount = pos + 2;
                 _nextPage();
+
+                gitCloneErrorMessage = "";
                 _startGitClone(context);
               });
             },
@@ -512,9 +520,9 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   }
 
   void _startGitClone(BuildContext context) async {
-    setState(() {
-      gitCloneErrorMessage = "";
-    });
+    if (gitCloneErrorMessage.isNotEmpty) {
+      return;
+    }
 
     var repo = Provider.of<Repository>(context, listen: false);
     var basePath = repo.gitBaseDirectory;
@@ -590,6 +598,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       _pageCount += 1;
 
       _nextPage();
+
+      gitCloneErrorMessage = "";
       _startGitClone(context);
     });
   }
