@@ -117,3 +117,6 @@ flutter_icons:
   image_path: "assets/icon/icon.png"
   image_path_ios: "assets/icon/icon_ios.png"
   ios: true
+
+import_sorter:
+  comments: false
