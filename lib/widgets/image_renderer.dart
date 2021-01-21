@@ -119,6 +119,7 @@ Widget _handleSvg(final String string, double width, final double height,
     StringPicture((data, colorFilter, key) async {
       DrawableRoot svgRoot = await svg.fromSvgString(data, key);
       if (settings.themeSvgWithBackground ||
+          override == ThemeOverride.doTheme ||
           !hasBackground(svgRoot, svgRoot.viewport.viewBox.width,
               svgRoot.viewport.viewBox.height)) {
         svgRoot = themeDrawable(svgRoot, transformColor);
@@ -135,6 +136,7 @@ Widget _handleSvg(final String string, double width, final double height,
     },
         string +
             '<?theme darkMode="$dark" ' +
+            'override="$override" ' +
             'opaqueBackground="${settings.themeSvgWithBackground}" ' +
             'whiteToCanvas="${settings.matchCanvasColor}" ' +
             'adjustColors="${settings.vectorGraphicsAdjustColors.toInternalString()}"?>'),
