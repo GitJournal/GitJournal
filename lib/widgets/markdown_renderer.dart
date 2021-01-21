@@ -1,9 +1,8 @@
-import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:function_types/function_types.dart';
@@ -17,6 +16,7 @@ import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
 import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/widgets/image_renderer.dart';
 
 class MarkdownRenderer extends StatelessWidget {
   final Note note;
@@ -43,7 +43,7 @@ class MarkdownRenderer extends StatelessWidget {
     var markdownStyleSheet = MarkdownStyleSheet.fromTheme(theme).copyWith(
       code: theme.textTheme.bodyText2.copyWith(
         backgroundColor: theme.dialogBackgroundColor,
-        fontFamily: "monospace",
+        fontFamily: 'monospace',
         fontSize: theme.textTheme.bodyText2.fontSize * 0.85,
       ),
       tableBorder: TableBorder.all(color: theme.highlightColor, width: 0),
@@ -95,15 +95,16 @@ class MarkdownRenderer extends StatelessWidget {
         try {
           await launch(link);
         } catch (e, stackTrace) {
-          Log.e("Opening Link", ex: e, stacktrace: stackTrace);
+          Log.e('Opening Link', ex: e, stacktrace: stackTrace);
           showSnackbar(
             context,
             tr('widgets.NoteViewer.linkNotFound', args: [link]),
           );
         }
       },
-      imageBuilder: (url, title, alt) => kDefaultImageBuilder(
-          url, note.parent.folderPath + p.separator, null, null),
+      imageBuilder: (url, title, alt) => ThemableImage(
+          url, note.parent.folderPath + p.separator,
+          titel: title, altText: alt),
       extensionSet: markdownExtensions(),
     );
 
@@ -118,91 +119,7 @@ class MarkdownRenderer extends StatelessWidget {
     markdownExtensions.inlineSyntaxes.insert(1, TaskListSyntax());
     return markdownExtensions;
   }
-
-  /*
-  Widget _buildFooter(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-      child: Row(
-        children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.arrow_left),
-            tooltip: 'Previous Entry',
-            onPressed: showPrevNoteFunc,
-          ),
-          Expanded(
-            flex: 10,
-            child: Text(''),
-          ),
-          IconButton(
-            icon: Icon(Icons.arrow_right),
-            tooltip: 'Next Entry',
-            onPressed: showNextNoteFunc,
-          ),
-        ],
-      ),
-    );
-  }
-  */
 }
-
-//
-// Copied from flutter_markdown
-// But it uses CachedNetworkImage
-//
-typedef Widget ImageBuilder(
-    Uri uri, String imageDirectory, double width, double height);
-
-final ImageBuilder kDefaultImageBuilder = (
-  Uri uri,
-  String imageDirectory,
-  double width,
-  double height,
-) {
-  if (uri.scheme == 'http' || uri.scheme == 'https') {
-    return CachedNetworkImage(
-      imageUrl: uri.toString(),
-      width: width,
-      height: height,
-      placeholder: (context, url) => const CircularProgressIndicator(),
-      errorWidget: (context, url, error) => const Icon(Icons.error),
-    );
-  } else if (uri.scheme == 'data') {
-    return _handleDataSchemeUri(uri, width, height);
-  } else if (uri.scheme == "resource") {
-    return Image.asset(uri.path, width: width, height: height);
-  } else {
-    Uri fileUri = imageDirectory != null
-        ? Uri.parse(imageDirectory + uri.toString())
-        : uri;
-    if (fileUri.scheme == 'http' || fileUri.scheme == 'https') {
-      return CachedNetworkImage(
-        imageUrl: fileUri.toString(),
-        width: width,
-        height: height,
-        placeholder: (context, url) => const CircularProgressIndicator(),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
-      );
-    } else {
-      return Image.file(File.fromUri(fileUri), width: width, height: height);
-    }
-  }
-};
-
-Widget _handleDataSchemeUri(Uri uri, final double width, final double height) {
-  final String mimeType = uri.data.mimeType;
-  if (mimeType.startsWith('image/')) {
-    return Image.memory(
-      uri.data.contentAsBytes(),
-      width: width,
-      height: height,
-    );
-  } else if (mimeType.startsWith('text/')) {
-    return Text(uri.data.contentAsString());
-  }
-  return const SizedBox();
-}
-
 /*
 
 /// Parse ==Words==
