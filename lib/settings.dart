@@ -59,7 +59,7 @@ class Settings extends ChangeNotifier {
   String doThemeTag = "dotheme";
   SettingsThemeVectorGraphics themeVectorGraphics =
       SettingsThemeVectorGraphics.Default;
-  bool themeSvgWithOpaqueBackground = false;
+  bool themeSvgWithBackground = false;
   bool matchCanvasColor = true;
   SettingsVectorGraphicsAdjustColors vectorGraphicsAdjustColors =
       SettingsVectorGraphicsAdjustColors.Default;
@@ -152,9 +152,8 @@ class Settings extends ChangeNotifier {
     doThemeTag = _getString(pref, "doThemeTag") ?? doThemeTag;
     themeVectorGraphics = SettingsThemeVectorGraphics.fromInternalString(
         _getString(pref, "themeVectorGraphics"));
-    themeSvgWithOpaqueBackground =
-        _getBool(pref, "themeSvgWithOpaqueBackground") ??
-            themeSvgWithOpaqueBackground;
+    themeSvgWithBackground =
+        _getBool(pref, "themeSvgWithBackground") ?? themeSvgWithBackground;
     matchCanvasColor = _getBool(pref, "matchCanvasColor") ?? matchCanvasColor;
     vectorGraphicsAdjustColors =
         SettingsVectorGraphicsAdjustColors.fromInternalString(
@@ -283,8 +282,8 @@ class Settings extends ChangeNotifier {
         "themeVectorGraphics",
         themeVectorGraphics.toInternalString(),
         defaultSet.themeVectorGraphics.toInternalString());
-    await _setBool(pref, "themeSvgWithOpaqueBackground",
-        themeSvgWithOpaqueBackground, defaultSet.themeSvgWithOpaqueBackground);
+    await _setBool(pref, "themeSvgWithBackground", themeSvgWithBackground,
+        defaultSet.themeSvgWithBackground);
     await _setBool(pref, "matchCanvasColor", matchCanvasColor,
         defaultSet.matchCanvasColor);
     await _setString(
@@ -415,7 +414,7 @@ class Settings extends ChangeNotifier {
       'doNotThemeTag': doNotThemeTag,
       'doThemeTag': doThemeTag,
       'themeVectorGraphics': themeVectorGraphics.toInternalString(),
-      'themeSvgWithOpaqueBackground': themeSvgWithOpaqueBackground.toString(),
+      'themeSvgWithBackground': themeSvgWithBackground.toString(),
       'matchCanvasColor': matchCanvasColor.toString(),
       'vectorGraphicsAdjustColors':
           vectorGraphicsAdjustColors.toInternalString(),

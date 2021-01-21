@@ -118,7 +118,7 @@ Widget _handleSvg(final String string, double width, final double height,
   return SvgPicture(
     StringPicture((data, colorFilter, key) async {
       DrawableRoot svgRoot = await svg.fromSvgString(data, key);
-      if (settings.themeSvgWithOpaqueBackground ||
+      if (settings.themeSvgWithBackground ||
           !hasBackground(svgRoot, svgRoot.viewport.viewBox.width,
               svgRoot.viewport.viewBox.height)) {
         svgRoot = themeDrawable(svgRoot, transformColor);
@@ -135,7 +135,7 @@ Widget _handleSvg(final String string, double width, final double height,
     },
         string +
             '<?theme darkMode="$dark" ' +
-            'opaqueBackground="${settings.themeSvgWithOpaqueBackground}" ' +
+            'opaqueBackground="${settings.themeSvgWithBackground}" ' +
             'whiteToCanvas="${settings.matchCanvasColor}" ' +
             'adjustColors="${settings.vectorGraphicsAdjustColors.toInternalString()}"?>'),
     width: width,

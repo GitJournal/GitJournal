@@ -135,9 +135,9 @@ class SettingsDisplayImagesScreenState
       if (settings.themeVectorGraphics == SettingsThemeVectorGraphics.On)
         SwitchListTile(
           title: Text(tr('settings.display.images.themeSvgWithBackground')),
-          value: settings.themeSvgWithOpaqueBackground,
+          value: settings.themeSvgWithBackground,
           onChanged: (bool newVal) {
-            settings.themeSvgWithOpaqueBackground = newVal;
+            settings.themeSvgWithBackground = newVal;
             settings.save();
           },
         ),
