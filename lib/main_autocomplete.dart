@@ -10,12 +10,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter  Show Text Tag Demo',
-      debugShowCheckedModeBanner: false,
+      title: 'AutCompleter',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Show Text Tag demo'),
+      home: MyHomePage(title: 'AutoCompleter'),
     );
   }
 }
@@ -35,41 +34,118 @@ class _MyHomePageState extends State<MyHomePage> {
   TextStyle _textFieldStyle = const TextStyle(fontSize: 20);
 
   TextEditingController _textController;
-  OverlayEntry overlayEntry;
 
   @override
   void initState() {
     super.initState();
 
     _textController = TextEditingController();
-    _textController.addListener(() {
-      var selection = _textController.selection;
-      var cursorPos = selection.baseOffset;
-      var text = _textController.text;
-
-      var nextText = text.substring(0, cursorPos);
-      print('newText: $nextText');
-      if (nextText.endsWith('[[')) {
-        showOverlaidTag(context, nextText);
-      }
-    });
   }
 
-  // Code reference for overlay logic from MTECHVIRAL's video
-  // https://www.youtube.com/watch?v=KuXKwjv2gTY
+  @override
+  Widget build(BuildContext context) {
+    Widget textField = TextField(
+      controller: _textController,
+      focusNode: _focusNode,
+      key: _textFieldKey,
+      style: _textFieldStyle,
+      maxLines: null,
+    );
 
-  // I need to paint it exactly where the cursor is
+    textField = AutoCompleter(
+      textFieldStyle: _textFieldStyle,
+      textFieldKey: _textFieldKey,
+      textFieldFocusNode: _focusNode,
+      textController: _textController,
+      startToken: '[[',
+      endToken: ']]',
+      child: textField,
+    );
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Container(
+            child: textField,
+            width: 400.0,
+          ),
+        ),
+      ),
+    );
+  }
+}
 
-  void showOverlaidTag(BuildContext context, String newText) async {
-    print('showOverlaidTag: $newText');
+class AutoCompleter extends StatefulWidget {
+  final FocusNode textFieldFocusNode;
+  final GlobalKey textFieldKey;
+  final TextStyle textFieldStyle;
+  final TextEditingController textController;
+  final Widget child;
 
-    RenderBox renderBox = _textFieldKey.currentContext.findRenderObject();
-    print("render Box: ${renderBox.size}");
+  final String startToken;
+  final String endToken;
+
+  AutoCompleter({
+    @required this.textFieldFocusNode,
+    @required this.textFieldKey,
+    @required this.textFieldStyle,
+    @required this.textController,
+    @required this.child,
+    @required this.startToken,
+    @required this.endToken,
+  });
+
+  @override
+  _AutoCompleterState createState() => _AutoCompleterState();
+}
+
+class _AutoCompleterState extends State<AutoCompleter> {
+  OverlayEntry overlayEntry;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.textController.addListener(_textChanged);
+  }
+
+  @override
+  void dispose() {
+    widget.textController.removeListener(_textChanged);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
+  }
+
+  void _textChanged() {
+    var selection = widget.textController.selection;
+    var cursorPos = selection.baseOffset;
+    var text = widget.textController.text;
+
+    var nextText = text.substring(0, cursorPos);
+    print('newText: $nextText');
+    if (nextText.endsWith('[[')) {
+      _showOverlayTag(context, nextText);
+    }
+  }
+
+  void _showOverlayTag(BuildContext context, String newText) async {
+    // Code reference for overlay logic from MTECHVIRAL's video
+    // https://www.youtube.com/watch?v=KuXKwjv2gTY
+
+    //print('showOverlaidTag: $newText');
+
+    RenderBox renderBox = widget.textFieldKey.currentContext.findRenderObject();
+    // print("render Box: ${renderBox.size}");
 
     TextPainter painter = TextPainter(
       textDirection: TextDirection.ltr,
       text: TextSpan(
-        style: _textFieldStyle,
+        style: widget.textFieldStyle,
         text: newText,
       ),
       maxLines: null,
@@ -88,12 +164,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
     //print("Painter ${painter.width} $height");
 
-    OverlayState overlayState = Overlay.of(context);
+    if (overlayEntry != null) {
+      overlayEntry.remove();
+      overlayEntry = null;
+    }
     overlayEntry = OverlayEntry(builder: (context) {
       return Positioned(
         // Decides where to place the tag on the screen.
-        top: _focusNode.offset.dy + height + 3,
-        left: _focusNode.offset.dx + width,
+        top: widget.textFieldFocusNode.offset.dy + height + 3,
+        left: widget.textFieldFocusNode.offset.dx + width,
 
         // Tag code.
         child: const Material(
@@ -107,7 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
             )),
       );
     });
-    overlayState.insert(overlayEntry);
+    Overlay.of(context).insert(overlayEntry);
 
     // Removes the over lay entry from the Overly after 500 milliseconds
     await Future.delayed(5000.milliseconds);
@@ -116,48 +195,9 @@ class _MyHomePageState extends State<MyHomePage> {
       overlayEntry = null;
     }
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            child: TextField(
-              controller: _textController,
-              focusNode: _focusNode,
-              key: _textFieldKey,
-              style: _textFieldStyle,
-              maxLines: null,
-            ),
-            width: 400.0,
-          ),
-        ),
-      ),
-    );
-  }
 }
 
-class Editor extends StatefulWidget {
-  @override
-  _EditorState createState() => _EditorState();
-}
-
-class _EditorState extends State<Editor> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
-// https://pub.dev/packages/rich_input
 // https://levelup.gitconnected.com/flutter-medium-like-text-editor-b41157f50f0e
-
-// https://pub.dev/packages/autocomplete_textfield
-// https://pub.dev/packages/flutter_typeahead
-
 // https://stackoverflow.com/questions/59243627/flutter-how-to-get-the-coordinates-of-the-cursor-in-a-textfield
 
 // Bug 2: Autocompletion box overlays the bottom nav bar
