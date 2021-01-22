@@ -260,6 +260,9 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           gitHost: _gitHost,
           userInfo: _userInfo,
           onDone: (GitHostRepo repo) {
+            // close keyboard
+            FocusManager.instance.primaryFocus?.unfocus();
+
             setState(() {
               _gitHostRepo = repo;
               _pageCount = pos + 2;
