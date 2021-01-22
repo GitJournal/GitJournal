@@ -105,6 +105,9 @@ class EditorBottomBar extends StatelessWidget {
   final Func0<void> onZenModeChanged;
   final bool metaDataEditable;
 
+  final Func0<void> onUndoSelected;
+  final Func0<void> onRedoSelected;
+
   EditorBottomBar({
     @required this.editor,
     @required this.editorState,
@@ -113,6 +116,8 @@ class EditorBottomBar extends StatelessWidget {
     @required this.zenMode,
     @required this.onZenModeChanged,
     @required this.metaDataEditable,
+    @required this.onUndoSelected,
+    @required this.onRedoSelected,
   });
 
   @override
@@ -160,6 +165,7 @@ class EditorBottomBar extends StatelessWidget {
               maintainState: true,
               maintainInteractivity: false,
             ),
+            // TODO: Add the undo and redo icons
             Expanded(
               child: FlatButton.icon(
                 icon: const Icon(Icons.folder),

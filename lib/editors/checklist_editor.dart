@@ -183,6 +183,8 @@ class ChecklistEditorState extends State<ChecklistEditor>
           Expanded(child: FocusScope(child: checklistWidget)),
         ],
       ),
+      onUndoSelected: _undo,
+      onRedoSelected: _redo,
     );
   }
 
@@ -291,6 +293,10 @@ class ChecklistEditorState extends State<ChecklistEditor>
 
   @override
   bool get noteModified => _noteModified;
+
+  Future<void> _undo() async {}
+
+  Future<void> _redo() async {}
 }
 
 typedef TextChangedFunction = void Function(String);

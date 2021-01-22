@@ -106,6 +106,8 @@ class JournalEditorState extends State<JournalEditor>
       editMode: widget.editMode,
       parentFolder: note.parent,
       body: editor,
+      onUndoSelected: _undo,
+      onRedoSelected: _redo,
     );
   }
 
@@ -143,4 +145,8 @@ class JournalEditorState extends State<JournalEditor>
 
   @override
   bool get noteModified => _noteModified;
+
+  Future<void> _undo() async {}
+
+  Future<void> _redo() async {}
 }

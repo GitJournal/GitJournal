@@ -104,6 +104,8 @@ class RawEditorState extends State<RawEditor>
       editMode: widget.editMode,
       parentFolder: note.parent,
       body: editor,
+      onUndoSelected: _undo,
+      onRedoSelected: _redo,
     );
   }
 
@@ -133,6 +135,10 @@ class RawEditorState extends State<RawEditor>
 
   @override
   bool get noteModified => _noteModified;
+
+  Future<void> _undo() async {}
+
+  Future<void> _redo() async {}
 }
 
 class _NoteEditor extends StatelessWidget {

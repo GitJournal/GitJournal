@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
+import 'package:function_types/function_types.dart';
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
@@ -19,6 +20,9 @@ class EditorScaffold extends StatefulWidget {
   final Widget body;
   final NotesFolderFS parentFolder;
 
+  final Func0<void> onUndoSelected;
+  final Func0<void> onRedoSelected;
+
   EditorScaffold({
     @required this.editor,
     @required this.editorState,
@@ -26,6 +30,8 @@ class EditorScaffold extends StatefulWidget {
     @required this.editMode,
     @required this.body,
     @required this.parentFolder,
+    @required this.onUndoSelected,
+    @required this.onRedoSelected,
     this.extraButton,
   });
 
@@ -160,6 +166,8 @@ class _EditorScaffoldState extends State<EditorScaffold> {
                   });
                 },
                 metaDataEditable: note != null ? note.canHaveMetadata : false,
+                onUndoSelected: widget.onUndoSelected,
+                onRedoSelected: widget.onRedoSelected,
               ),
             )
           ],
