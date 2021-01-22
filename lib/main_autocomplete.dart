@@ -103,6 +103,7 @@ class AutoCompleter extends StatefulWidget {
 
 class _AutoCompleterState extends State<AutoCompleter> {
   OverlayEntry overlayEntry;
+  String prevText;
 
   @override
   void initState() {
@@ -112,6 +113,7 @@ class _AutoCompleterState extends State<AutoCompleter> {
 
   @override
   void dispose() {
+    _hideOverlay();
     widget.textController.removeListener(_textChanged);
     super.dispose();
   }
@@ -126,13 +128,19 @@ class _AutoCompleterState extends State<AutoCompleter> {
     var cursorPos = selection.baseOffset;
     var text = widget.textController.text;
 
-    var nextText = text.substring(0, cursorPos);
-    print('newText: $nextText');
-    if (nextText.endsWith('[[')) {
-      _showOverlayTag(context, nextText);
+    var start = text.lastIndexOf(RegExp(r' |^'), cursorPos - 1) + 1;
+    var word = text.substring(start, cursorPos);
+    print('text: $word');
+    if (word.startsWith(widget.startToken)) {
+      _showOverlayTag(context, text.substring(0, cursorPos));
+    } else if (word.endsWith(widget.endToken)) {
+      _hideOverlay();
     }
+
+    prevText = text;
   }
 
+  /// newText is used to calculate where to put the completion box
   void _showOverlayTag(BuildContext context, String newText) async {
     // Code reference for overlay logic from MTECHVIRAL's video
     // https://www.youtube.com/watch?v=KuXKwjv2gTY
@@ -164,10 +172,7 @@ class _AutoCompleterState extends State<AutoCompleter> {
 
     //print("Painter ${painter.width} $height");
 
-    if (overlayEntry != null) {
-      overlayEntry.remove();
-      overlayEntry = null;
-    }
+    _hideOverlay();
     overlayEntry = OverlayEntry(builder: (context) {
       return Positioned(
         // Decides where to place the tag on the screen.
@@ -190,20 +195,22 @@ class _AutoCompleterState extends State<AutoCompleter> {
 
     // Removes the over lay entry from the Overly after 500 milliseconds
     await Future.delayed(5000.milliseconds);
+    _hideOverlay();
+  }
+
+  void _hideOverlay() {
     if (overlayEntry != null) {
       overlayEntry.remove();
       overlayEntry = null;
     }
   }
 }
-
 // https://levelup.gitconnected.com/flutter-medium-like-text-editor-b41157f50f0e
 // https://stackoverflow.com/questions/59243627/flutter-how-to-get-the-coordinates-of-the-cursor-in-a-textfield
 
 // Bug 2: Autocompletion box overlays the bottom nav bar
 // Bug 3: On Pressing Enter the Overlay should disappear
-// Bug 4: On Deleting the prefix buttons it should also disappear
 // Bug 5: Overlay disappears too fast
-// Bug 6: When writing a text which has '[[Hell' it doesn't show the autocompletion
 // Bug 7: Clicking on the text should result in auto-completion
 // Bug 8: On clicking somewhere else the suggestion box should disappear
+// Bug 9: RTL support
