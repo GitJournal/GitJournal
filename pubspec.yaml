@@ -10,7 +10,7 @@ dependencies:
   dart_git:
     git: https://github.com/GitJournal/dart-git.git
     #path: /Users/vishesh/src/gitjournal/dart-git
-  git_bindings: #^0.0.18
+  git_bindings:
     #path: /Users/vishesh/src/gitjournal/git_bindings
     git: https://github.com/GitJournal/git_bindings.git
   gotrue:

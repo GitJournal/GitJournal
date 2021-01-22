@@ -540,6 +540,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         sshPassword: settings.sshPassword,
         sshPrivateKey: settings.sshPrivateKey,
         sshPublicKey: settings.sshPublicKey,
+        authorEmail: settings.gitAuthorEmail,
+        authorName: settings.gitAuthor,
       );
     } on Exception catch (e, stacktrace) {
       Log.e("Failed to clone", ex: e, stacktrace: stacktrace);
