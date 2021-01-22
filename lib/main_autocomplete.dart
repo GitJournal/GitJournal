@@ -35,6 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
   TextStyle _textFieldStyle = const TextStyle(fontSize: 20);
 
   TextEditingController _textController;
+  OverlayEntry overlayEntry;
 
   @override
   void initState() {
@@ -82,13 +83,13 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     double width = lines.last.width;
 
-    print("Focus Node Offset dx: ${_focusNode.offset.dx}");
-    print("Focus Node Offset dy: ${_focusNode.offset.dy}");
+    //print("Focus Node Offset dx: ${_focusNode.offset.dx}");
+    //print("Focus Node Offset dy: ${_focusNode.offset.dy}");
 
-    print("Painter ${painter.width} $height");
+    //print("Painter ${painter.width} $height");
 
     OverlayState overlayState = Overlay.of(context);
-    OverlayEntry suggestionTagoverlayEntry = OverlayEntry(builder: (context) {
+    overlayEntry = OverlayEntry(builder: (context) {
       return Positioned(
         // Decides where to place the tag on the screen.
         top: _focusNode.offset.dy + height + 3,
@@ -106,11 +107,14 @@ class _MyHomePageState extends State<MyHomePage> {
             )),
       );
     });
-    overlayState.insert(suggestionTagoverlayEntry);
+    overlayState.insert(overlayEntry);
 
     // Removes the over lay entry from the Overly after 500 milliseconds
     await Future.delayed(5000.milliseconds);
-    suggestionTagoverlayEntry.remove();
+    if (overlayEntry != null) {
+      overlayEntry.remove();
+      overlayEntry = null;
+    }
   }
 
   @override
@@ -161,3 +165,5 @@ class _EditorState extends State<Editor> {
 // Bug 4: On Deleting the prefix buttons it should also disappear
 // Bug 5: Overlay disappears too fast
 // Bug 6: When writing a text which has '[[Hell' it doesn't show the autocompletion
+// Bug 7: Clicking on the text should result in auto-completion
+// Bug 8: On clicking somewhere else the suggestion box should disappear
