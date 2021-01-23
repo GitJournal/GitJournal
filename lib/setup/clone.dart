@@ -48,6 +48,7 @@ Future<void> cloneRemote({
     }
     await repo.setUpstreamTo(remote, remoteBranchName);
   } else {
+    Log.i("Local branches $branches");
     var branch = branches[0];
 
     if (branch == remoteBranchName) {
@@ -56,6 +57,7 @@ Future<void> cloneRemote({
       await repo.setUpstreamTo(remote, remoteBranchName);
       var remoteBranch = await repo.remoteBranch(remoteName, remoteBranchName);
       if (remoteBranch != null) {
+        Log.i("Merging '$remoteName/$remoteBranchName'");
         await _gitRepo.merge(
           branch: '$remoteName/$remoteBranchName',
           authorName: authorName,
@@ -69,6 +71,8 @@ Future<void> cloneRemote({
       await repo.checkoutBranch(remoteBranchName, headRef.hash);
       await repo.deleteBranch(branch);
       await repo.setUpstreamTo(remote, remoteBranchName);
+
+      Log.i("Merging '$remoteName/$remoteBranchName'");
       await _gitRepo.merge(
         branch: '$remoteName/$remoteBranchName',
         authorName: authorName,
