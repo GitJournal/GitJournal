@@ -165,11 +165,18 @@ class NoteSnippet extends StatelessWidget {
       return Container();
     }
 
-    var link = links.where((l) {
+    links = links.where((l) {
       var linkResolver = LinkResolver(note);
       var resolvedNote = linkResolver.resolveLink(l);
+      if (resolvedNote == null) {
+        return false;
+      }
       return resolvedNote.filePath == parentNote.filePath;
-    }).first;
+    });
+    if (links.isEmpty) {
+      return Container();
+    }
+    var link = links.first;
 
     var body = note.body.split('\n');
     var paragraph = body.firstWhere(
