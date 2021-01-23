@@ -15,10 +15,15 @@ class LinkResolver {
     }
 
     var rootFolder = inputNote.parent.rootFolder;
-    assert(l.filePath.startsWith(rootFolder.folderPath));
-    var spec = l.filePath.substring(rootFolder.folderPath.length + 1);
+    if (l.filePath.startsWith(rootFolder.folderPath)) {
+      var spec = l.filePath.substring(rootFolder.folderPath.length);
+      if (spec.startsWith('/')) {
+        spec = spec.substring(1);
+      }
+      return _getNoteWithSpec(rootFolder, spec);
+    }
 
-    return _getNoteWithSpec(rootFolder, spec);
+    return null;
   }
 
   Note resolve(String link) {
