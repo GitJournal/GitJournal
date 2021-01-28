@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-import 'package:gitjournal/widgets/autocompleter.dart';
+import 'package:gitjournal/autocompletion/widget.dart';
 
 void main() => runApp(MyApp());
 
@@ -52,13 +52,11 @@ class _MyHomePageState extends State<MyHomePage> {
       maxLines: 300,
     );
 
-    textField = AutoCompleter(
+    textField = AutoCompletionWidget(
       textFieldStyle: _textFieldStyle,
       textFieldKey: _textFieldKey,
       textFieldFocusNode: _focusNode,
       textController: _textController,
-      startToken: '[[',
-      endToken: ']]',
       child: textField,
     );
     return Scaffold(

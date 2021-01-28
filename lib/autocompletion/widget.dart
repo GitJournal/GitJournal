@@ -4,33 +4,29 @@ import 'package:flutter/material.dart';
 
 import 'package:time/time.dart';
 
-class AutoCompleter extends StatefulWidget {
+class AutoCompletionWidget extends StatefulWidget {
   final FocusNode textFieldFocusNode;
   final GlobalKey textFieldKey;
   final TextStyle textFieldStyle;
   final TextEditingController textController;
   final Widget child;
 
-  final String startToken;
-  final String endToken;
-
-  AutoCompleter({
+  AutoCompletionWidget({
     @required this.textFieldFocusNode,
     @required this.textFieldKey,
     @required this.textFieldStyle,
     @required this.textController,
     @required this.child,
-    @required this.startToken,
-    @required this.endToken,
   });
 
   @override
-  _AutoCompleterState createState() => _AutoCompleterState();
+  _AutoCompletionWidgetState createState() => _AutoCompletionWidgetState();
 }
 
-class _AutoCompleterState extends State<AutoCompleter> {
+class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
   OverlayEntry overlayEntry;
-  String prevText;
+
+  var autoCompleter = TagsAutoCompleter();
 
   @override
   void initState() {
@@ -52,20 +48,25 @@ class _AutoCompleterState extends State<AutoCompleter> {
 
   void _textChanged() {
     var selection = widget.textController.selection;
-    var cursorPos = selection.baseOffset;
     var text = widget.textController.text;
 
-    var start = text.lastIndexOf(RegExp(r' |^'), cursorPos - 1) + 1;
-    var word = text.substring(start, cursorPos);
-    print('text: $word');
-    if (word.startsWith(widget.startToken)) {
-      _showOverlayTag(context, text.substring(0, cursorPos));
-    } else if (word.endsWith(widget.endToken)) {
-      // Hide when ]] is added
-      _hideOverlay();
+    var prefix = "";
+    try {
+      prefix =
+          autoCompleter.textChanged(EditorState(text, selection.baseOffset));
+    } catch (e) {
+      print(e);
     }
 
-    prevText = text;
+    if (prefix.isEmpty) {
+      _hideOverlay();
+      return;
+    }
+
+    if (prefix == "\n") {
+    } else {
+      _showOverlayTag(context, prefix);
+    }
   }
 
   /// newText is used to calculate where to put the completion box
@@ -134,19 +135,28 @@ class _AutoCompleterState extends State<AutoCompleter> {
   }
 }
 
+/*
 /// if endToken is empty, then the token can only be alpha numeric
 String extractToken(
     String text, int cursorPos, String startToken, String endToken) {
-  var start = text.lastIndexOf(RegExp(r' |^'), cursorPos - 1);
+  var start = text.lastIndexOf(RegExp(r' '), cursorPos - 1);
   if (start == -1) {
-    var word = text.substring(0, cursorPos);
-    if (word.startsWith('[[')) {
-      return word.substring(2, cursorPos);
-    }
-    return "";
+    start = 0;
+  }
+  print("start: $start");
+
+  var end = text.indexOf(RegExp(r' |$'), cursorPos);
+  if (end == -1) {
+    end = cursorPos;
+  }
+  print("end: $end");
+
+  var word = text.substring(start, end);
+  if (word.startsWith('[[')) {
+    return word.substring(2, cursorPos);
   }
 
-  return text;
+  return "";
 }
 
 bool enterPressed(String oldText, String newText, int cursorPos) {
@@ -160,20 +170,13 @@ bool enterPressed(String oldText, String newText, int cursorPos) {
   }
   return false;
 }
+*/
 
-class CompletionResult {
+class EditorState {
   String text;
   int cursorPos;
 
-  CompletionResult(this.text, this.cursorPos);
-}
-
-CompletionResult completeText(String oldText, String newText, int cursorPos) {
-  return null;
-}
-
-bool hideAutoCompleter(String oldText, String newText, int cursorPos) {
-  return false;
+  EditorState(this.text, this.cursorPos);
 }
 
 // https://levelup.gitconnected.com/flutter-medium-like-text-editor-b41157f50f0e
@@ -189,3 +192,92 @@ bool hideAutoCompleter(String oldText, String newText, int cursorPos) {
 //        or an existing wiki link which has the closing brackets
 // Bug  : Show auto-completion on top if no space at the bottom
 // Bug  : Handle physical tab or Enter key
+
+abstract class AutoCompletionLogic {
+  /// Return an empty string if the overlay should be hidden
+  /// Return \n if enter has been pressed
+  /// Return the prefix if an overlay should be shown
+  String textChanged(EditorState es);
+
+  EditorState completeText(String text);
+}
+
+/*
+class WikiLinksAutoCompleter implements AutoCompletionLogic {
+  var _oldState = EditorState("", 0);
+
+  bool inBracket1 = false;
+  bool inBracket2 = false;
+  bool outBracket2 = false;
+
+  var newText = "";
+
+  @override
+  void textChanged(EditorState es) {
+    var oldState = _oldState;
+    _oldState = es;
+
+    // This could result in an Add / Remove / Replace
+
+    if (es.text.length > oldState.text.length) {
+      // Probably an add
+      if (oldState.cursorPos < es.cursorPos) {
+        newText = es.text.substring(oldState.cursorPos, es.cursorPos);
+        return;
+      }
+      return;
+    }
+  }
+
+  @override
+  EditorState completeText(String text) {
+    return null;
+  }
+
+  @override
+  bool get enterPressed => false;
+
+  @override
+  bool get showOverlay => false;
+}
+*/
+
+class TagsAutoCompleter implements AutoCompletionLogic {
+  var _oldState = EditorState("", 0);
+
+  @override
+  String textChanged(EditorState es) {
+    _oldState = es;
+
+    //print("${es.text} ${es.cursorPos}");
+    var start = es.text.lastIndexOf(RegExp(r'^|[ #.?!]'), es.cursorPos);
+    if (start < 0) {
+      start = 0;
+    }
+
+    var end = es.text.indexOf(RegExp(r' |$'), es.cursorPos);
+    if (end == -1) {
+      end = es.cursorPos;
+    }
+
+    // print("start end: $start $end");
+    var text = es.text.substring(start, end).trim();
+    // print("text $text");
+    if (!text.startsWith('#')) {
+      return "";
+    }
+
+    return text.substring(1);
+  }
+
+  @override
+  EditorState completeText(String text) {
+    var start = _oldState.text.lastIndexOf(r'#', _oldState.cursorPos);
+    if (start == -1) {
+      throw Exception("completeText should not have been called");
+    }
+
+    var es = _oldState;
+    return es;
+  }
+}
