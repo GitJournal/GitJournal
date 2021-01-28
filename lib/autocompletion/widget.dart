@@ -50,22 +50,25 @@ class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
     var selection = widget.textController.selection;
     var text = widget.textController.text;
 
-    var prefix = "";
+    var range = TextRange(0, 0);
     try {
-      prefix =
-          autoCompleter.textChanged(EditorState(text, selection.baseOffset));
+      var es = EditorState(text, selection.baseOffset);
+      range = autoCompleter.textChanged(es);
     } catch (e) {
       print(e);
+      print("bah");
     }
 
-    if (prefix.isEmpty) {
+    if (range.isEmpty) {
       _hideOverlay();
       return;
     }
 
+    var prefix = text.substring(range.start, range.end);
     if (prefix == "\n") {
+      // Pressed Enter
     } else {
-      _showOverlayTag(context, prefix);
+      _showOverlayTag(context, text.substring(0, range.start));
     }
   }
 
@@ -110,14 +113,15 @@ class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
 
         // Tag code.
         child: const Material(
-            elevation: 4.0,
-            color: Colors.lightBlueAccent,
-            child: Text(
-              'Show tag here',
-              style: TextStyle(
-                fontSize: 20.0,
-              ),
-            )),
+          elevation: 4.0,
+          color: Colors.lightBlueAccent,
+          child: Text(
+            'Show tag here',
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
+          ),
+        ),
       );
     });
     Overlay.of(context).insert(overlayEntry);
@@ -193,6 +197,7 @@ class EditorState {
 // Bug  : Show auto-completion on top if no space at the bottom
 // Bug  : Handle physical tab or Enter key
 
+/*
 abstract class AutoCompletionLogic {
   /// Return an empty string if the overlay should be hidden
   /// Return \n if enter has been pressed
@@ -201,6 +206,7 @@ abstract class AutoCompletionLogic {
 
   EditorState completeText(String text);
 }
+*/
 
 /*
 class WikiLinksAutoCompleter implements AutoCompletionLogic {
@@ -242,42 +248,40 @@ class WikiLinksAutoCompleter implements AutoCompletionLogic {
 }
 */
 
-class TagsAutoCompleter implements AutoCompletionLogic {
-  var _oldState = EditorState("", 0);
+class TextRange {
+  final int start;
+  final int end;
 
-  @override
-  String textChanged(EditorState es) {
-    _oldState = es;
+  TextRange(this.start, this.end);
 
-    //print("${es.text} ${es.cursorPos}");
-    var start = es.text.lastIndexOf(RegExp(r'^|[ #.?!]'), es.cursorPos);
-    if (start < 0) {
+  bool get isEmpty => start == end;
+}
+
+class TagsAutoCompleter {
+  TextRange textChanged(EditorState es) {
+    // print("${es.text} ${es.cursorPos}");
+    var start = es.text.lastIndexOf(RegExp(r'^|[ .?!:;\n]'), es.cursorPos);
+    if (start <= 0) {
       start = 0;
+    } else {
+      start += 1;
+    }
+    if (start == es.text.length) {
+      return TextRange(0, 0);
     }
 
-    var end = es.text.indexOf(RegExp(r' |$'), es.cursorPos);
+    var end = es.text.indexOf(RegExp(r'[ .?!:;\n]|$'), es.cursorPos);
     if (end == -1) {
       end = es.cursorPos;
     }
 
-    // print("start end: $start $end");
-    var text = es.text.substring(start, end).trim();
+    // print("start end: $start $end ${es.text.length}");
+    // var text = es.text.substring(start, end);
     // print("text $text");
-    if (!text.startsWith('#')) {
-      return "";
+    if (es.text[start] != '#') {
+      return TextRange(0, 0);
     }
 
-    return text.substring(1);
-  }
-
-  @override
-  EditorState completeText(String text) {
-    var start = _oldState.text.lastIndexOf(r'#', _oldState.cursorPos);
-    if (start == -1) {
-      throw Exception("completeText should not have been called");
-    }
-
-    var es = _oldState;
-    return es;
+    return TextRange(start + 1, end);
   }
 }
