@@ -187,7 +187,7 @@ class GitPendingChangesBadge extends StatelessWidget {
       badgeContent: Text(repo.numChanges.toString(), style: style),
       showBadge: repo.numChanges != 0,
       badgeColor: theme.iconTheme.color,
-      position: BadgePosition.topRight(top: 10.0, right: 4.0),
+      position: BadgePosition.topEnd(top: 10.0, end: 4.0),
       child: child,
     );
   }
