@@ -29,8 +29,10 @@ class ThemableImage extends StatelessWidget {
         ? DefaultCacheManager().getSingleFile(uri.toString())
         : Future.sync(
             () => File.fromUri(Uri.parse(imageDirectory + uri.toString()))));
+
     final data = file.then(
-        (value) => value.path.endsWith(".svg") ? value.readAsString() : file);
+        (value) => value.path.endsWith('.svg') ? value.readAsString() : file);
+
     return ThemableImage._(data, width, height, altText, titel);
   }
 
@@ -38,6 +40,7 @@ class ThemableImage extends StatelessWidget {
   Widget build(BuildContext context) {
     final settings = Provider.of<Settings>(context);
     final theme = Theme.of(context);
+
     ThemeOverride override;
     if (altText != null &&
         (settings.themeOverrideTagLocation ==
@@ -65,31 +68,32 @@ class ThemableImage extends StatelessWidget {
         override = ThemeOverride.noTheme;
       }
     }
+
     return FutureBuilder(
         future: data,
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError) {
-              return Icon(Icons.error, color: Theme.of(context).errorColor);
-            } else if (snapshot.hasData) {
-              if (snapshot.data is String) {
-                return _handleSvg(
-                    snapshot.data, width, height, context, override);
+          if (snapshot.hasError) {
+            return Icon(Icons.error, color: Theme.of(context).errorColor);
+          }
+
+          if (snapshot.hasData) {
+            if (snapshot.data is String) {
+              return _handleSvg(
+                  snapshot.data, width, height, context, override);
+            } else {
+              if ((override != ThemeOverride.noTheme &&
+                          settings.themeRasterGraphics ||
+                      override == ThemeOverride.doTheme) &&
+                  theme.brightness == Brightness.dark) {
+                return themeFilter(
+                    Image.file(snapshot.data, width: width, height: height),
+                    theme.canvasColor);
               } else {
-                if ((override != ThemeOverride.noTheme &&
-                            settings.themeRasterGraphics ||
-                        override == ThemeOverride.doTheme) &&
-                    theme.brightness == Brightness.dark) {
-                  return themeFilter(
-                      Image.file(snapshot.data, width: width, height: height),
-                      theme.canvasColor);
-                } else {
-                  return Image.file(snapshot.data,
-                      width: width, height: height);
-                }
+                return Image.file(snapshot.data, width: width, height: height);
               }
             }
           }
+
           return const CircularProgressIndicator();
         });
   }
