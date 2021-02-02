@@ -68,7 +68,7 @@ class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
     if (prefix == "\n") {
       // Pressed Enter
     } else {
-      _showOverlayTag(context, text.substring(0, range.start));
+      _showOverlayTag(context, text.substring(0, range.start - 1));
     }
   }
 
@@ -104,6 +104,18 @@ class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
 
     //print("Painter ${painter.width} $height");
 
+    var tags = ['Hello', 'Howdy', 'Pooper'];
+    var list = Column(
+      children: [
+        for (var tag in tags)
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Text('#$tag', style: const TextStyle(fontSize: 20.0)),
+          ),
+      ],
+      crossAxisAlignment: CrossAxisAlignment.start,
+    );
+
     _hideOverlay();
     overlayEntry = OverlayEntry(builder: (context) {
       return Positioned(
@@ -112,15 +124,10 @@ class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
         left: widget.textFieldFocusNode.offset.dx + width,
 
         // Tag code.
-        child: const Material(
+        child: Material(
           elevation: 4.0,
-          color: Colors.lightBlueAccent,
-          child: Text(
-            'Show tag here',
-            style: TextStyle(
-              fontSize: 20.0,
-            ),
-          ),
+          color: Colors.grey[200],
+          child: list,
         ),
       );
     });
