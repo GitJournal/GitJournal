@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 
-import 'package:gitjournal/autocompletion/widget.dart';
+import 'package:gitjournal/editors/autocompletion_widget.dart';
 
 void main() {
   var c = TagsAutoCompleter();

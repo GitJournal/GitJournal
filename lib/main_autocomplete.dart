@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-import 'package:gitjournal/autocompletion/widget.dart';
+import 'package:gitjournal/editors/autocompletion_widget.dart';
 
 void main() => runApp(MyApp());
 
