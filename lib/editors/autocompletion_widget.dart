@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:time/time.dart';
 
+import 'package:gitjournal/editors/common.dart';
+
 class AutoCompletionWidget extends StatefulWidget {
   final FocusNode textFieldFocusNode;
   final GlobalKey textFieldKey;
@@ -52,7 +54,7 @@ class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
 
     var range = TextRange(0, 0);
     try {
-      var es = EditorState(text, selection.baseOffset);
+      var es = TextEditorState(text, selection.baseOffset);
       range = autoCompleter.textChanged(es);
     } catch (e) {
       print(e);
@@ -183,13 +185,6 @@ bool enterPressed(String oldText, String newText, int cursorPos) {
 }
 */
 
-class EditorState {
-  String text;
-  int cursorPos;
-
-  EditorState(this.text, this.cursorPos);
-}
-
 // https://levelup.gitconnected.com/flutter-medium-like-text-editor-b41157f50f0e
 // https://stackoverflow.com/questions/59243627/flutter-how-to-get-the-coordinates-of-the-cursor-in-a-textfield
 
@@ -265,7 +260,7 @@ class TextRange {
 }
 
 class TagsAutoCompleter {
-  TextRange textChanged(EditorState es) {
+  TextRange textChanged(TextEditorState es) {
     // print("${es.text} ${es.cursorPos}");
     var start = es.text.lastIndexOf(RegExp(r'^|[ .?!:;\n]'), es.cursorPos);
     if (start <= 0) {

@@ -27,6 +27,13 @@ abstract class EditorState with ChangeNotifier {
   bool get noteModified;
 }
 
+class TextEditorState {
+  String text;
+  int cursorPos;
+
+  TextEditorState(this.text, this.cursorPos);
+}
+
 class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Editor editor;
   final EditorState editorState;

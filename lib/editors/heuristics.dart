@@ -1,11 +1,6 @@
-class EditorHeuristicResult {
-  String text;
-  int cursorPos;
+import 'package:gitjournal/editors/common.dart';
 
-  EditorHeuristicResult(this.text, this.cursorPos);
-}
-
-EditorHeuristicResult autoAddBulletList(
+TextEditorState autoAddBulletList(
     String oldText, String curText, final int cursorPos) {
   // We only want to do this on inserts
   if (curText.length <= oldText.length) {
@@ -64,7 +59,7 @@ EditorHeuristicResult autoAddBulletList(
     var newCursorPos = text.length;
 
     text += remainingText;
-    return EditorHeuristicResult(text, newCursorPos);
+    return TextEditorState(text, newCursorPos);
   }
 
   var extraText = indent + bulletType + spacesBeforeContent;
@@ -72,5 +67,5 @@ EditorHeuristicResult autoAddBulletList(
   var newCursorPos = text.length;
   text += remainingText;
 
-  return EditorHeuristicResult(text, newCursorPos);
+  return TextEditorState(text, newCursorPos);
 }
