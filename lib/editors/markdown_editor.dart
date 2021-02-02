@@ -104,7 +104,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
         children: <Widget>[
           NoteTitleEditor(
             _titleTextController,
-            _noteTextChanged,
+            _noteTitleTextChanged,
           ),
           NoteBodyEditor(
             textController: _textController,
@@ -167,6 +167,20 @@ class MarkdownEditorState extends State<MarkdownEditor>
     if (_noteModified && !widget.editMode) return;
 
     var newState = !(widget.editMode && _textController.text.trim().isEmpty);
+    if (newState != _noteModified) {
+      setState(() {
+        _noteModified = newState;
+      });
+    }
+
+    notifyListeners();
+  }
+
+  void _noteTitleTextChanged() {
+    if (_noteModified && !widget.editMode) return;
+
+    var newState =
+        !(widget.editMode && _titleTextController.text.trim().isEmpty);
     if (newState != _noteModified) {
       setState(() {
         _noteModified = newState;
