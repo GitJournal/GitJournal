@@ -67,8 +67,6 @@ class MarkdownEditorState extends State<MarkdownEditor>
 
   bool _noteModified;
 
-  var prevVersion = <String>[];
-
   MarkdownEditorState(this.note) {
     _textController = TextEditingController(text: note.body);
     _titleTextController = TextEditingController(text: note.title);
@@ -79,18 +77,6 @@ class MarkdownEditorState extends State<MarkdownEditor>
   void initState() {
     super.initState();
     _noteModified = widget.noteModified;
-
-    _textController.addListener(() {
-      var text = _textController.text;
-      prevVersion.add(text);
-      print("Text");
-
-      // The patch computation which is done for memory saving is expensive
-      // and will need to be done in another thread
-      // For now just keep it here
-
-      // So how do we implement this?
-    });
   }
 
   @override
