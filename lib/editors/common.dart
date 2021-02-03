@@ -32,6 +32,18 @@ class TextEditorState {
   int cursorPos;
 
   TextEditorState(this.text, this.cursorPos);
+
+  TextEditorState.fromValue(TextEditingValue val) {
+    text = val.text;
+    cursorPos = val.selection.baseOffset;
+  }
+
+  TextEditingValue toValue() {
+    return TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: cursorPos),
+    );
+  }
 }
 
 class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {

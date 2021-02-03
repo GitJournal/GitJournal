@@ -69,3 +69,18 @@ TextEditorState autoAddBulletList(
 
   return TextEditorState(text, newCursorPos);
 }
+
+class EditorHeuristics {
+  EditorHeuristics({String text = ''}) {
+    _lastState = TextEditorState(text, 0);
+  }
+
+  TextEditorState _lastState;
+
+  TextEditorState textChanged(TextEditorState es) {
+    var lastState = _lastState;
+    _lastState = es;
+
+    return autoAddBulletList(lastState.text, es.text, es.cursorPos);
+  }
+}

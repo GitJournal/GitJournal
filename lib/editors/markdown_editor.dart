@@ -63,20 +63,20 @@ class MarkdownEditorState extends State<MarkdownEditor>
   TextEditingController _textController = TextEditingController();
   TextEditingController _titleTextController = TextEditingController();
 
-  String _oldText;
+  EditorHeuristics _heuristics;
 
   bool _noteModified;
 
   MarkdownEditorState(this.note) {
     _textController = TextEditingController(text: note.body);
     _titleTextController = TextEditingController(text: note.title);
-    _oldText = note.body;
   }
 
   @override
   void initState() {
     super.initState();
     _noteModified = widget.noteModified;
+    _heuristics = EditorHeuristics(text: note.body);
   }
 
   @override
@@ -192,21 +192,18 @@ class MarkdownEditorState extends State<MarkdownEditor>
 
   void _applyHeuristics() {
     var selection = _textController.selection;
+    var editState = TextEditorState.fromValue(_textController.value);
+
+    // vHanda: Why does this happen?
     if (selection.baseOffset != selection.extentOffset) {
-      _oldText = _textController.text;
+      _heuristics.textChanged(editState);
       return;
     }
 
-    var r =
-        autoAddBulletList(_oldText, _textController.text, selection.baseOffset);
-    _oldText = _textController.text;
-
-    if (r == null) {
-      return;
+    var r = _heuristics.textChanged(editState);
+    if (r != null) {
+      _textController.value = r.toValue();
     }
-
-    _textController.text = r.text;
-    _textController.selection = TextSelection.collapsed(offset: r.cursorPos);
   }
 
   @override

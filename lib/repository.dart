@@ -22,6 +22,7 @@ import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/settings_migrations.dart';
+import 'package:gitjournal/setup/clone.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 enum SyncStatus {
@@ -89,6 +90,23 @@ class Repository with ChangeNotifier {
 
     var repo = await GitRepository.load(repoPath);
     var remoteConfigured = repo.config.remotes.isNotEmpty;
+    if (remoteConfigured) {
+      // Code path for 'branch is null' exception
+      var branches = await repo.branches();
+      if (branches.isEmpty) {
+        var remoteConfig = repo.config.remotes[0];
+        await cloneRemote(
+          repoPath: repoPath,
+          remoteName: remoteConfig.name,
+          cloneUrl: remoteConfig.url,
+          authorName: settings.gitAuthor,
+          authorEmail: settings.gitAuthorEmail,
+          sshPublicKey: settings.sshPublicKey,
+          sshPrivateKey: settings.sshPrivateKey,
+          sshPassword: settings.sshPassword,
+        );
+      }
+    }
 
     return Repository._internal(
       repoPath: repoPath,
