@@ -90,10 +90,11 @@ class EditorBottomBar extends StatelessWidget {
               maintainInteractivity: false,
             ),
             const Spacer(),
-            IconButton(
-              icon: const Icon(Icons.undo),
-              onPressed: undoAllowed ? onUndoSelected : null,
-            ),
+            if (undoAllowed != null)
+              IconButton(
+                icon: const Icon(Icons.undo),
+                onPressed: undoAllowed ? onUndoSelected : null,
+              ),
             FlatButton.icon(
               icon: const Icon(Icons.folder),
               label: Text(parentFolder.publicName),
@@ -102,10 +103,11 @@ class EditorBottomBar extends StatelessWidget {
                 editor.moveNoteToFolderSelected(note);
               },
             ),
-            IconButton(
-              icon: const Icon(Icons.redo),
-              onPressed: redoAllowed ? onRedoSelected : null,
-            ),
+            if (redoAllowed != null)
+              IconButton(
+                icon: const Icon(Icons.redo),
+                onPressed: redoAllowed ? onRedoSelected : null,
+              ),
             const Spacer(),
             menuIcon,
           ],
