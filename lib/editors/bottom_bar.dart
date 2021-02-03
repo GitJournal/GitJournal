@@ -24,6 +24,9 @@ class EditorBottomBar extends StatelessWidget {
   final Func0<void> onZenModeChanged;
   final bool metaDataEditable;
 
+  final bool undoAllowed;
+  final bool redoAllowed;
+
   final Func0<void> onUndoSelected;
   final Func0<void> onRedoSelected;
 
@@ -37,6 +40,8 @@ class EditorBottomBar extends StatelessWidget {
     @required this.metaDataEditable,
     @required this.onUndoSelected,
     @required this.onRedoSelected,
+    @required this.undoAllowed,
+    @required this.redoAllowed,
   });
 
   @override
@@ -84,17 +89,24 @@ class EditorBottomBar extends StatelessWidget {
               maintainState: true,
               maintainInteractivity: false,
             ),
-            // TODO: Add the undo and redo icons
-            Expanded(
-              child: FlatButton.icon(
-                icon: const Icon(Icons.folder),
-                label: Text(parentFolder.publicName),
-                onPressed: () {
-                  var note = editorState.getNote();
-                  editor.moveNoteToFolderSelected(note);
-                },
-              ),
+            const Spacer(),
+            IconButton(
+              icon: const Icon(Icons.undo),
+              onPressed: undoAllowed ? onUndoSelected : null,
             ),
+            FlatButton.icon(
+              icon: const Icon(Icons.folder),
+              label: Text(parentFolder.publicName),
+              onPressed: () {
+                var note = editorState.getNote();
+                editor.moveNoteToFolderSelected(note);
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.redo),
+              onPressed: redoAllowed ? onRedoSelected : null,
+            ),
+            const Spacer(),
             menuIcon,
           ],
           mainAxisAlignment: MainAxisAlignment.center,

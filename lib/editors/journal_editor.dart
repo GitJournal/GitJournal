@@ -108,6 +108,8 @@ class JournalEditorState extends State<JournalEditor>
       body: editor,
       onUndoSelected: _undo,
       onRedoSelected: _redo,
+      undoAllowed: false,
+      redoAllowed: false,
     );
   }
 

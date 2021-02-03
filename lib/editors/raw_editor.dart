@@ -8,6 +8,7 @@ import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/disposable_change_notifier.dart';
+import 'package:gitjournal/editors/undo_redo.dart';
 import 'package:gitjournal/widgets/editor_scroll_view.dart';
 
 class RawEditor extends StatefulWidget implements Editor {
@@ -56,12 +57,14 @@ class RawEditorState extends State<RawEditor>
     implements EditorState {
   Note note;
   bool _noteModified;
-  TextEditingController _textController = TextEditingController();
+  TextEditingController _textController;
+  UndoRedoStack _undoRedoStack;
 
   final serializer = MarkdownYAMLCodec();
 
   RawEditorState(this.note) {
     _textController = TextEditingController(text: serializer.encode(note.data));
+    _undoRedoStack = UndoRedoStack();
   }
 
   @override
@@ -106,6 +109,8 @@ class RawEditorState extends State<RawEditor>
       body: editor,
       onUndoSelected: _undo,
       onRedoSelected: _redo,
+      undoAllowed: _undoRedoStack.undoPossible,
+      redoAllowed: _undoRedoStack.redoPossible,
     );
   }
 
@@ -117,6 +122,12 @@ class RawEditorState extends State<RawEditor>
 
   void _noteTextChanged() {
     notifyListeners();
+
+    var editState = TextEditorState.fromValue(_textController.value);
+    var redraw = _undoRedoStack.textChanged(editState);
+    if (redraw) {
+      setState(() {});
+    }
 
     if (_noteModified) return;
     setState(() {
@@ -136,9 +147,21 @@ class RawEditorState extends State<RawEditor>
   @override
   bool get noteModified => _noteModified;
 
-  Future<void> _undo() async {}
+  Future<void> _undo() async {
+    var es = _undoRedoStack.undo();
+    _textController.value = es.toValue();
+    setState(() {
+      // To Redraw the undo/redo button state
+    });
+  }
 
-  Future<void> _redo() async {}
+  Future<void> _redo() async {
+    var es = _undoRedoStack.redo();
+    _textController.value = es.toValue();
+    setState(() {
+      // To Redraw the undo/redo button state
+    });
+  }
 }
 
 class _NoteEditor extends StatelessWidget {

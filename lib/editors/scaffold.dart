@@ -24,6 +24,9 @@ class EditorScaffold extends StatefulWidget {
   final Func0<void> onUndoSelected;
   final Func0<void> onRedoSelected;
 
+  final bool undoAllowed;
+  final bool redoAllowed;
+
   EditorScaffold({
     @required this.editor,
     @required this.editorState,
@@ -33,6 +36,8 @@ class EditorScaffold extends StatefulWidget {
     @required this.parentFolder,
     @required this.onUndoSelected,
     @required this.onRedoSelected,
+    @required this.undoAllowed,
+    @required this.redoAllowed,
     this.extraButton,
   });
 
@@ -169,6 +174,8 @@ class _EditorScaffoldState extends State<EditorScaffold> {
                 metaDataEditable: note != null ? note.canHaveMetadata : false,
                 onUndoSelected: widget.onUndoSelected,
                 onRedoSelected: widget.onRedoSelected,
+                undoAllowed: widget.undoAllowed,
+                redoAllowed: widget.redoAllowed,
               ),
             )
           ],
