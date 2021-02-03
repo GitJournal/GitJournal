@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/disposable_change_notifier.dart';
+import 'package:gitjournal/editors/heuristics.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
+import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/editor_scroll_view.dart';
 import 'package:gitjournal/widgets/journal_editor_header.dart';
 
@@ -57,6 +60,8 @@ class JournalEditorState extends State<JournalEditor>
   TextEditingController _textController = TextEditingController();
   bool _noteModified;
 
+  EditorHeuristics _heuristics;
+
   JournalEditorState(this.note) {
     _textController = TextEditingController(text: note.body);
   }
@@ -65,6 +70,7 @@ class JournalEditorState extends State<JournalEditor>
   void initState() {
     super.initState();
     _noteModified = widget.noteModified;
+    _heuristics = EditorHeuristics(text: note.body);
   }
 
   @override
@@ -121,6 +127,13 @@ class JournalEditorState extends State<JournalEditor>
   }
 
   void _noteTextChanged() {
+    try {
+      _applyHeuristics();
+    } catch (e, stackTrace) {
+      Log.e("EditorHeuristics: $e");
+      logExceptionWarning(e, stackTrace);
+    }
+
     if (_noteModified && !widget.editMode) {
       notifyListeners();
       return;
@@ -134,6 +147,14 @@ class JournalEditorState extends State<JournalEditor>
     }
 
     notifyListeners();
+  }
+
+  void _applyHeuristics() {
+    var editState = TextEditorState.fromValue(_textController.value);
+    var es = _heuristics.textChanged(editState);
+    if (es != null) {
+      _textController.value = es.toValue();
+    }
   }
 
   @override

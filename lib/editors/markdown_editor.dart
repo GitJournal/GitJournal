@@ -188,18 +188,10 @@ class MarkdownEditorState extends State<MarkdownEditor>
   }
 
   void _applyHeuristics() {
-    var selection = _textController.selection;
     var editState = TextEditorState.fromValue(_textController.value);
-
-    // vHanda: Why does this happen?
-    if (selection.baseOffset != selection.extentOffset) {
-      _heuristics.textChanged(editState);
-      return;
-    }
-
-    var r = _heuristics.textChanged(editState);
-    if (r != null) {
-      _textController.value = r.toValue();
+    var es = _heuristics.textChanged(editState);
+    if (es != null) {
+      _textController.value = es.toValue();
     }
   }
 
