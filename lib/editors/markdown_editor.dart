@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
+import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/editors/common.dart';
@@ -12,6 +15,7 @@ import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/editor_scroll_view.dart';
+import 'package:gitjournal/widgets/markdown_toolbar.dart';
 
 class MarkdownEditor extends StatefulWidget implements Editor {
   final Note note;
@@ -115,23 +119,13 @@ class MarkdownEditorState extends State<MarkdownEditor>
       ),
     );
 
-    /*
-
-    var settings = Provider.of<Settings>(context);
-    if (settings.experimentalMarkdownToolbar && editingMode) {
-      body = Container(
-        child: Column(
-          children: <Widget>[
-            Expanded(child: editor),
-            MarkdownToolBar(
-              textController: _textController,
-            ),
-          ],
-          mainAxisSize: MainAxisSize.min,
-        ),
+    var settings = Provider.of<AppSettings>(context);
+    Widget markdownToolbar;
+    if (settings.experimentalMarkdownToolbar) {
+      markdownToolbar = MarkdownToolBar(
+        textController: _textController,
       );
     }
-    */
 
     return EditorScaffold(
       editor: widget,
@@ -144,6 +138,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
       onRedoSelected: _redo,
       undoAllowed: null,
       redoAllowed: null,
+      extraBottomWidget: markdownToolbar,
     );
   }
 

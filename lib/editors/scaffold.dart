@@ -27,6 +27,8 @@ class EditorScaffold extends StatefulWidget {
   final bool undoAllowed;
   final bool redoAllowed;
 
+  final Widget extraBottomWidget;
+
   EditorScaffold({
     @required this.editor,
     @required this.editorState,
@@ -38,6 +40,7 @@ class EditorScaffold extends StatefulWidget {
     @required this.onRedoSelected,
     @required this.undoAllowed,
     @required this.redoAllowed,
+    this.extraBottomWidget,
     this.extraButton,
   });
 
@@ -177,7 +180,8 @@ class _EditorScaffoldState extends State<EditorScaffold> {
                 undoAllowed: widget.undoAllowed,
                 redoAllowed: widget.redoAllowed,
               ),
-            )
+            ),
+            if (widget.extraBottomWidget != null) widget.extraBottomWidget,
           ],
         ),
       ),
