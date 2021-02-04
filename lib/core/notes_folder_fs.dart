@@ -8,6 +8,7 @@ import 'package:path/path.dart';
 import 'package:synchronized/synchronized.dart';
 
 import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/utils/logger.dart';
 import 'note.dart';
 import 'notes_folder.dart';
 import 'notes_folder_notifier.dart';
@@ -200,6 +201,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   Future<void> _load() async {
     var ignoreFilePath = p.join(folderPath, ".gjignore");
     if (File(ignoreFilePath).existsSync()) {
+      Log.i("Ignoring $folderPath as it has .gjignore");
       return;
     }
     Set<String> pathsFound = {};
