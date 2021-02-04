@@ -40,8 +40,55 @@ class AppDrawerHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
     );
 
+    var currentRepo = _CurrentRepo(
+      showRepoList: showRepoList,
+      repoListToggled: repoListToggled,
+    );
+
+    var header = DrawerHeader(
+      margin: const EdgeInsets.all(0.0),
+      decoration: BoxDecoration(
+        color: Theme.of(context).highlightColor,
+      ),
+      padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
+      child: Column(
+        children: <Widget>[
+          top,
+          currentRepo,
+        ],
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+      ),
+    );
+
+    if (!appSettings.proMode) {
+      return header;
+    }
+
+    return Banner(
+      message: tr('pro'),
+      location: BannerLocation.topStart,
+      color: Theme.of(context).accentColor,
+      child: header,
+    );
+  }
+}
+
+class _CurrentRepo extends StatelessWidget {
+  const _CurrentRepo({
+    Key key,
+    @required this.showRepoList,
+    @required this.repoListToggled,
+  }) : super(key: key);
+
+  final bool showRepoList;
+  final Func0<void> repoListToggled;
+
+  @override
+  Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
-    var repoSelector = Row(
+
+    return Row(
       children: <Widget>[
         Column(
           children: <Widget>[
@@ -61,33 +108,6 @@ class AppDrawerHeader extends StatelessWidget {
       ],
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
-    );
-
-    var header = DrawerHeader(
-      margin: const EdgeInsets.all(0.0),
-      decoration: BoxDecoration(
-        color: Theme.of(context).highlightColor,
-      ),
-      padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
-      child: Column(
-        children: <Widget>[
-          top,
-          repoSelector,
-        ],
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-      ),
-    );
-
-    if (!appSettings.proMode) {
-      return header;
-    }
-
-    return Banner(
-      message: tr('pro'),
-      location: BannerLocation.topStart,
-      color: Theme.of(context).accentColor,
-      child: header,
     );
   }
 }
