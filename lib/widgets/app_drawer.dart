@@ -23,25 +23,30 @@ class AppDrawer extends StatefulWidget {
   _AppDrawerState createState() => _AppDrawerState();
 }
 
-class _AppDrawerState extends State<AppDrawer> with TickerProviderStateMixin {
-  AnimationController sizeController;
-  AnimationController slideController;
+class _AppDrawerState extends State<AppDrawer>
+    with SingleTickerProviderStateMixin {
+  AnimationController animController;
+
+  Animation<double> sizeAnimation;
+  Animation<Offset> slideAnimation;
+
   bool repoChooserVisible = false;
 
   @override
   void initState() {
     super.initState();
 
-    slideController =
+    animController =
         AnimationController(duration: 250.milliseconds, vsync: this);
-    sizeController =
-        AnimationController(duration: 250.milliseconds, vsync: this);
+
+    slideAnimation = Tween(begin: const Offset(0.0, -1.0), end: Offset.zero)
+        .animate(animController);
+    sizeAnimation = Tween(begin: 0.0, end: 1.0).animate(animController);
   }
 
   @override
   void dispose() {
-    slideController.dispose();
-    sizeController.dispose();
+    animController.dispose();
     super.dispose();
   }
 
@@ -71,14 +76,13 @@ class _AppDrawerState extends State<AppDrawer> with TickerProviderStateMixin {
     );
 
     w = SlideTransition(
-      position: Tween(begin: const Offset(0.0, -1.0), end: Offset.zero)
-          .animate(slideController),
+      position: slideAnimation,
       transformHitTests: false,
       child: w,
     );
 
     return SizeTransition(
-      sizeFactor: Tween(begin: 0.0, end: 1.0).animate(sizeController),
+      sizeFactor: sizeAnimation,
       child: w,
     );
   }
@@ -121,12 +125,10 @@ class _AppDrawerState extends State<AppDrawer> with TickerProviderStateMixin {
               setState(() {
                 repoChooserVisible = !repoChooserVisible;
               });
-              if (slideController.isCompleted) {
-                slideController.reverse(from: 1.0);
-                sizeController.reverse(from: 1.0);
+              if (animController.isCompleted) {
+                animController.reverse(from: 1.0);
               } else {
-                slideController.forward(from: 0.0);
-                sizeController.forward(from: 0.0);
+                animController.forward(from: 0.0);
               }
             },
           ),
