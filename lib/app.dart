@@ -96,9 +96,13 @@ class JournalApp extends StatefulWidget {
       if (Platform.isAndroid) {
         var info = await deviceInfo.androidInfo;
         isPhysicalDevice = info.isPhysicalDevice;
+
+        Log.i("Running on Android", props: readAndroidBuildData(info));
       } else if (Platform.isIOS) {
         var info = await deviceInfo.iosInfo;
         isPhysicalDevice = info.isPhysicalDevice;
+
+        Log.i("Running on ios", props: readIosDeviceInfo(info));
       }
     } catch (e) {
       Log.d(e);

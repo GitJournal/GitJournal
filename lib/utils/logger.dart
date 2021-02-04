@@ -57,6 +57,9 @@ class Log {
     stacktrace = Trace.from(stacktrace).terse;
 
     if (foundation.kDebugMode) {
+      if (props != null && props.isNotEmpty) {
+        msg += " $props";
+      }
       Fimber.log("I", msg,
           ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
     }
