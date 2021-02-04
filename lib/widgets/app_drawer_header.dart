@@ -91,7 +91,6 @@ class _CurrentRepo extends StatefulWidget {
 
 class __CurrentRepoState extends State<_CurrentRepo>
     with SingleTickerProviderStateMixin {
-  Animation animation;
   AnimationController controller;
 
   @override
@@ -99,6 +98,12 @@ class __CurrentRepoState extends State<_CurrentRepo>
     super.initState();
 
     controller = AnimationController(duration: 250.milliseconds, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -137,7 +142,7 @@ class __CurrentRepoState extends State<_CurrentRepo>
 
   void _pressed() {
     if (controller.isCompleted) {
-      controller.reverse();
+      controller.reverse(from: 0.0);
     } else {
       controller.forward(from: 0.0);
     }
