@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:function_types/function_types.dart';
 import 'package:provider/provider.dart';
+import 'package:time/time.dart';
 
 import 'package:gitjournal/app_settings.dart';
 
@@ -97,8 +98,7 @@ class __CurrentRepoState extends State<_CurrentRepo>
   void initState() {
     super.initState();
 
-    controller = AnimationController(
-        duration: const Duration(milliseconds: 500), vsync: this);
+    controller = AnimationController(duration: 250.milliseconds, vsync: this);
   }
 
   @override
