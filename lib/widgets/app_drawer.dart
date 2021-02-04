@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
+import 'package:time/time.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/analytics.dart';
@@ -22,30 +23,64 @@ class AppDrawer extends StatefulWidget {
   _AppDrawerState createState() => _AppDrawerState();
 }
 
-class _AppDrawerState extends State<AppDrawer> {
+class _AppDrawerState extends State<AppDrawer> with TickerProviderStateMixin {
+  AnimationController sizeController;
+  AnimationController slideController;
   bool repoChooserVisible = false;
 
-  List<Widget> _buildRepoList() {
+  @override
+  void initState() {
+    super.initState();
+
+    slideController =
+        AnimationController(duration: 250.milliseconds, vsync: this);
+    sizeController =
+        AnimationController(duration: 250.milliseconds, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    slideController.dispose();
+    sizeController.dispose();
+    super.dispose();
+  }
+
+  Widget _buildRepoList() {
     var divider = Row(children: <Widget>[const Expanded(child: Divider())]);
 
-    return [
-      _buildDrawerTile(
-        context,
-        icon: FontAwesomeIcons.book,
-        isFontAwesome: true,
-        title: 'journal',
-        onTap: () => _navTopLevel(context, '/login'),
-        selected: false,
-      ),
-      _buildDrawerTile(
-        context,
-        icon: Icons.add,
-        title: 'Add Repository',
-        onTap: () => _navTopLevel(context, '/login'),
-        selected: false,
-      ),
-      divider,
-    ];
+    Widget w = Column(
+      children: <Widget>[
+        const SizedBox(height: 8),
+        _buildDrawerTile(
+          context,
+          icon: FontAwesomeIcons.book,
+          isFontAwesome: true,
+          title: 'journal',
+          onTap: () => _navTopLevel(context, '/login'),
+          selected: false,
+        ),
+        _buildDrawerTile(
+          context,
+          icon: Icons.add,
+          title: 'Add Repository',
+          onTap: () => _navTopLevel(context, '/login'),
+          selected: false,
+        ),
+        divider,
+      ],
+    );
+
+    w = SlideTransition(
+      position: Tween(begin: const Offset(0.0, -1.0), end: Offset.zero)
+          .animate(slideController),
+      transformHitTests: false,
+      child: w,
+    );
+
+    return SizeTransition(
+      sizeFactor: Tween(begin: 0.0, end: 1.0).animate(sizeController),
+      child: w,
+    );
   }
 
   @override
@@ -86,10 +121,17 @@ class _AppDrawerState extends State<AppDrawer> {
               setState(() {
                 repoChooserVisible = !repoChooserVisible;
               });
+              if (slideController.isCompleted) {
+                slideController.reverse(from: 1.0);
+                sizeController.reverse(from: 1.0);
+              } else {
+                slideController.forward(from: 0.0);
+                sizeController.forward(from: 0.0);
+              }
             },
           ),
           // If they are multiple show the current one which a tick mark
-          if (repoChooserVisible) ..._buildRepoList(),
+          _buildRepoList(),
           if (setupGitButton != null) ...[setupGitButton, divider],
           if (!appSettings.proMode)
             _buildDrawerTile(
