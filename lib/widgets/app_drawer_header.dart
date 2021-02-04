@@ -91,6 +91,7 @@ class _CurrentRepo extends StatefulWidget {
 
 class __CurrentRepoState extends State<_CurrentRepo>
     with SingleTickerProviderStateMixin {
+  Animation _animation;
   AnimationController controller;
 
   @override
@@ -98,6 +99,10 @@ class __CurrentRepoState extends State<_CurrentRepo>
     super.initState();
 
     controller = AnimationController(duration: 250.milliseconds, vsync: this);
+    _animation = Tween(begin: 0.0, end: 0.5).animate(CurvedAnimation(
+      parent: controller,
+      curve: Curves.linear,
+    ));
   }
 
   @override
@@ -122,7 +127,7 @@ class __CurrentRepoState extends State<_CurrentRepo>
           crossAxisAlignment: CrossAxisAlignment.start,
         ),
         RotationTransition(
-          turns: Tween(begin: 0.0, end: 0.5).animate(controller),
+          turns: _animation,
           child: IconButton(
             icon: const FaIcon(FontAwesomeIcons.angleDown),
             onPressed: _pressed,
@@ -142,7 +147,7 @@ class __CurrentRepoState extends State<_CurrentRepo>
 
   void _pressed() {
     if (controller.isCompleted) {
-      controller.reverse(from: 0.0);
+      controller.reverse(from: 1.0);
     } else {
       controller.forward(from: 0.0);
     }

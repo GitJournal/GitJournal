@@ -40,8 +40,14 @@ class _AppDrawerState extends State<AppDrawer>
         AnimationController(duration: 250.milliseconds, vsync: this);
 
     slideAnimation = Tween(begin: const Offset(0.0, -0.5), end: Offset.zero)
-        .animate(animController);
-    sizeAnimation = Tween(begin: 0.0, end: 1.0).animate(animController);
+        .animate(CurvedAnimation(
+      parent: animController,
+      curve: standardEasing,
+    ));
+    sizeAnimation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+      parent: animController,
+      curve: standardEasing,
+    ));
   }
 
   @override
