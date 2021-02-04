@@ -74,7 +74,7 @@ class AppDrawerHeader extends StatelessWidget {
   }
 }
 
-class _CurrentRepo extends StatelessWidget {
+class _CurrentRepo extends StatefulWidget {
   const _CurrentRepo({
     Key key,
     @required this.showRepoList,
@@ -85,10 +85,27 @@ class _CurrentRepo extends StatelessWidget {
   final Func0<void> repoListToggled;
 
   @override
+  __CurrentRepoState createState() => __CurrentRepoState();
+}
+
+class __CurrentRepoState extends State<_CurrentRepo>
+    with SingleTickerProviderStateMixin {
+  Animation animation;
+  AnimationController controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = AnimationController(
+        duration: const Duration(milliseconds: 500), vsync: this);
+  }
+
+  @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
 
-    return Row(
+    var w = Row(
       children: <Widget>[
         Column(
           children: <Widget>[
@@ -99,16 +116,32 @@ class _CurrentRepo extends StatelessWidget {
           ],
           crossAxisAlignment: CrossAxisAlignment.start,
         ),
-        IconButton(
-          icon: FaIcon(showRepoList
-              ? FontAwesomeIcons.angleUp
-              : FontAwesomeIcons.angleDown),
-          onPressed: repoListToggled,
+        RotationTransition(
+          turns: Tween(begin: 0.0, end: 0.5).animate(controller),
+          child: IconButton(
+            icon: const FaIcon(FontAwesomeIcons.angleDown),
+            onPressed: _pressed,
+          ),
         ),
       ],
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
     );
+
+    return GestureDetector(
+      child: w,
+      behavior: HitTestBehavior.opaque,
+      onTap: _pressed,
+    );
+  }
+
+  void _pressed() {
+    if (controller.isCompleted) {
+      controller.reverse();
+    } else {
+      controller.forward(from: 0.0);
+    }
+    widget.repoListToggled();
   }
 }
 
