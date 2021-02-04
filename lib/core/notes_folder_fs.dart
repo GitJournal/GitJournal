@@ -198,6 +198,10 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
   // FIXME: This should not reconstruct the Notes or NotesFolders once constructed.
   Future<void> _load() async {
+    var ignoreFilePath = p.join(folderPath, ".gjignore");
+    if (File(ignoreFilePath).existsSync()) {
+      return;
+    }
     Set<String> pathsFound = {};
 
     // Load the Folder config if exists
