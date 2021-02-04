@@ -131,6 +131,9 @@ class JournalApp extends StatefulWidget {
     var info = await PackageInfo.fromPlatform();
     var version = info.version;
 
+    Log.i("App Version: $version");
+    Log.i("App Build Number: ${info.buildNumber}");
+
     if (appSettings.appVersion == version) {
       return;
     }
