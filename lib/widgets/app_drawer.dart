@@ -17,7 +17,37 @@ import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/app_drawer_header.dart';
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends StatefulWidget {
+  @override
+  _AppDrawerState createState() => _AppDrawerState();
+}
+
+class _AppDrawerState extends State<AppDrawer> {
+  bool repoChooserVisible = false;
+
+  List<Widget> _buildRepoList() {
+    var divider = Row(children: <Widget>[const Expanded(child: Divider())]);
+
+    return [
+      _buildDrawerTile(
+        context,
+        icon: FontAwesomeIcons.book,
+        isFontAwesome: true,
+        title: 'journal',
+        onTap: () => _navTopLevel(context, '/login'),
+        selected: false,
+      ),
+      _buildDrawerTile(
+        context,
+        icon: Icons.add,
+        title: 'Add Repository',
+        onTap: () => _navTopLevel(context, '/login'),
+        selected: false,
+      ),
+      divider,
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget setupGitButton;
@@ -50,7 +80,16 @@ class AppDrawer extends StatelessWidget {
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: <Widget>[
-          AppDrawerHeader(),
+          AppDrawerHeader(
+            showRepoList: repoChooserVisible,
+            repoListToggled: () {
+              setState(() {
+                repoChooserVisible = !repoChooserVisible;
+              });
+            },
+          ),
+          // If they are multiple show the current one which a tick mark
+          if (repoChooserVisible) ..._buildRepoList(),
           if (setupGitButton != null) ...[setupGitButton, divider],
           if (!appSettings.proMode)
             _buildDrawerTile(

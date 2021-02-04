@@ -1,85 +1,93 @@
 import 'package:flutter/material.dart';
 
 import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:function_types/function_types.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/app_settings.dart';
 
 class AppDrawerHeader extends StatelessWidget {
+  final Func0<void> repoListToggled;
+  final bool showRepoList;
+
+  AppDrawerHeader({
+    @required this.repoListToggled,
+    @required this.showRepoList,
+  });
+
   @override
   Widget build(BuildContext context) {
     var appSettings = Provider.of<AppSettings>(context);
 
-    var stack = Stack(
+    var top = Row(
       children: <Widget>[
-        const Padding(
-          padding: EdgeInsets.all(16.0),
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/icon/icon.png'),
-              ),
+        const DecoratedBox(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/icon/icon.png'),
             ),
           ),
+          child: SizedBox(width: 64, height: 64),
         ),
-        if (appSettings.proMode)
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ProButton(),
-              ),
-            ),
-          ),
-        Positioned.fill(
-          child: Align(
-            alignment: Alignment.topRight,
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 8, 0),
-                child: ThemeSwitcherButton(),
-              ),
-            ),
-          ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
+          child: ThemeSwitcherButton(),
         ),
       ],
-      fit: StackFit.passthrough,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
     );
 
-    /*
-    var dropdownValue = 'One';
-    var repoSelector = DropdownButton<String>(
-      value: dropdownValue,
-      icon: const Icon(Icons.arrow_downward),
-      iconSize: 24,
-      elevation: 16,
-      style: const TextStyle(color: Colors.deepPurple),
-      underline: Container(
-        height: 2,
-        color: Colors.deepPurpleAccent,
-      ),
-      onChanged: (String newValue) {
-        dropdownValue = newValue;
-      },
-      items: <String>['One', 'Two', 'Free', 'Four']
-          .map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
+    var textTheme = Theme.of(context).textTheme;
+    var repoSelector = Row(
+      children: <Widget>[
+        Column(
+          children: <Widget>[
+            Text("journal", style: textTheme.headline6),
+            const SizedBox(height: 8.0),
+            Text("github.com/vhanda/journal", style: textTheme.subtitle2),
+            const SizedBox(height: 8.0),
+          ],
+          crossAxisAlignment: CrossAxisAlignment.start,
+        ),
+        IconButton(
+          icon: FaIcon(showRepoList
+              ? FontAwesomeIcons.angleUp
+              : FontAwesomeIcons.angleDown),
+          onPressed: repoListToggled,
+        ),
+      ],
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
     );
-    */
 
-    return DrawerHeader(
+    var header = DrawerHeader(
       margin: const EdgeInsets.all(0.0),
       decoration: BoxDecoration(
         color: Theme.of(context).highlightColor,
       ),
-      padding: const EdgeInsets.all(8.0),
-      child: stack,
+      padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
+      child: Column(
+        children: <Widget>[
+          top,
+          repoSelector,
+        ],
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+      ),
+    );
+
+    if (!appSettings.proMode) {
+      return header;
+    }
+
+    return Banner(
+      message: tr('pro'),
+      location: BannerLocation.topStart,
+      color: Theme.of(context).accentColor,
+      child: header,
     );
   }
 }
