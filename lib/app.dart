@@ -21,6 +21,7 @@ import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/iap.dart';
 import 'package:gitjournal/repository.dart';
+import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/themes.dart';
 import 'package:gitjournal/utils/logger.dart';
@@ -48,12 +49,12 @@ class JournalApp extends StatefulWidget {
     final gitBaseDirectory = (await getApplicationDocumentsDirectory()).path;
     final cacheDir = (await getApplicationSupportDirectory()).path;
 
-    var repo = await Repository.load(
+    var repoManager = RepositoryManager(
       gitBaseDir: gitBaseDirectory,
       cacheDir: cacheDir,
       pref: pref,
-      id: DEFAULT_ID,
     );
+    var repo = await repoManager.buildActiveRepository();
 
     Widget app = ChangeNotifierProvider.value(
       value: repo,
