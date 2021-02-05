@@ -36,6 +36,8 @@ class RepositoryManager with ChangeNotifier {
     // From the pref load all the RepositoryInfos
   }
 
+  Repository get currentRepo => _repo;
+
   Future<Repository> buildActiveRepository() async {
     if (_repo != null) {
       return _repo;
@@ -51,6 +53,8 @@ class RepositoryManager with ChangeNotifier {
       pref: pref,
       id: currentId,
     );
+
+    notifyListeners();
     return _repo;
   }
 

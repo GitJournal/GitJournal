@@ -19,6 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/app_settings.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/iap.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
@@ -54,16 +55,21 @@ class JournalApp extends StatefulWidget {
       cacheDir: cacheDir,
       pref: pref,
     );
-    var repo = await repoManager.buildActiveRepository();
+    await repoManager.buildActiveRepository();
 
     Widget app = ChangeNotifierProvider.value(
-      value: repo,
-      child: Consumer<Repository>(
-        builder: (_, repo, __) => ChangeNotifierProvider.value(
-          value: repo.settings,
-          child: ChangeNotifierProvider.value(
-            child: JournalApp(),
-            value: repo.notesFolder,
+      value: repoManager,
+      child: Consumer<RepositoryManager>(
+        builder: (_, repoManager, __) => ChangeNotifierProvider.value(
+          value: repoManager.currentRepo,
+          child: Consumer<Repository>(
+            builder: (_, repo, __) => ChangeNotifierProvider<Settings>.value(
+              value: repo.settings,
+              child: ChangeNotifierProvider<NotesFolderFS>.value(
+                child: JournalApp(),
+                value: repo.notesFolder,
+              ),
+            ),
           ),
         ),
       ),
