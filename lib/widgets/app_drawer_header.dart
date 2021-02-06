@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:function_types/function_types.dart';
@@ -8,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
 import 'package:gitjournal/app_settings.dart';
+import 'package:gitjournal/settings.dart';
 
 class AppDrawerHeader extends StatelessWidget {
   final Func0<void> repoListToggled;
@@ -180,12 +180,15 @@ class ThemeSwitcherButton extends StatelessWidget {
     return GestureDetector(
       child: const FaIcon(FontAwesomeIcons.solidMoon),
       onTap: () {
-        var dynamicTheme = DynamicTheme.of(context);
-        var brightness = dynamicTheme.brightness;
+        var theme = Theme.of(context);
+        var settings = context.read<Settings>();
 
-        dynamicTheme.setBrightness(brightness == Brightness.light
-            ? Brightness.dark
-            : Brightness.light);
+        if (theme.brightness == Brightness.light) {
+          settings.theme = SettingsTheme.Dark;
+        } else {
+          settings.theme = SettingsTheme.Light;
+        }
+        settings.save();
       },
     );
   }

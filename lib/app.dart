@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 
 import 'package:device_info/device_info.dart';
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter_sentry/flutter_sentry.dart';
@@ -281,14 +280,6 @@ class _JournalAppState extends State<JournalApp> {
 
   @override
   Widget build(BuildContext context) {
-    return DynamicTheme(
-      defaultBrightness: Brightness.light,
-      data: (b) => b == Brightness.light ? Themes.light : Themes.dark,
-      themedWidgetBuilder: buildApp,
-    );
-  }
-
-  MaterialApp buildApp(BuildContext context, ThemeData themeData) {
     var stateContainer = Provider.of<Repository>(context);
     var settings = Provider.of<Settings>(context);
     var appSettings = Provider.of<AppSettings>(context);
@@ -303,7 +294,10 @@ class _JournalAppState extends State<JournalApp> {
       supportedLocales: EasyLocalization.of(context).supportedLocales,
       locale: EasyLocalization.of(context).locale,
 
-      theme: themeData,
+      theme: Themes.light,
+      darkTheme: Themes.dark,
+      themeMode: settings.theme.toThemeMode(),
+
       navigatorObservers: <NavigatorObserver>[
         AnalyticsRouteObserver(),
       ],

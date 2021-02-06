@@ -14,8 +14,12 @@ settings:
       invalid: Please enter a valid email
   display:
     title: Display Settings
-    darkTheme: Dark Theme
     homeScreen: Home Screen
+    theme: Theme
+  theme:
+    light: Light
+    dark: Dark
+    default: System Default
   gitAuthor: Git Author Settings
   versionInfo: Version Info
   analytics: Analytics

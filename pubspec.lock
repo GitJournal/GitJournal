@@ -213,13 +213,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.5+1"
-  dynamic_theme:
-    dependency: "direct main"
-    description:
-      name: dynamic_theme
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1"
   easy_localization:
     dependency: "direct main"
     description:

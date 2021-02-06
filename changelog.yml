@@ -5,6 +5,7 @@
     - text: "Ignore folders with a .gjignore file. It's a temporary hack untill we start reading the .gjignore files like the .gitignore files"
     - text: "Add a working Experimental Markdown Toolbar"
     - text: "Basic Undo/Redo support for Raw Editor"
+    - text: "Automatically use dark mode based on system settings - #193"
 
 - version: "1.73"
   date: 2020-11-15

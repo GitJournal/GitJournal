@@ -48,6 +48,7 @@ class Settings extends ChangeNotifier {
   int version = 2;
 
   SettingsHomeScreen homeScreen = SettingsHomeScreen.Default;
+  SettingsTheme theme = SettingsTheme.Default;
 
   SettingsMarkdownDefaultView markdownDefaultView =
       SettingsMarkdownDefaultView.Default;
@@ -127,6 +128,7 @@ class Settings extends ChangeNotifier {
 
     homeScreen =
         SettingsHomeScreen.fromInternalString(_getString(pref, "homeScreen"));
+    theme = SettingsTheme.fromInternalString(_getString(pref, "theme"));
 
     imageLocationSpec =
         _getString(pref, "imageLocationSpec") ?? imageLocationSpec;
@@ -232,6 +234,8 @@ class Settings extends ChangeNotifier {
     await _setBool(pref, "emojiParser", emojiParser, defaultSet.emojiParser);
     await _setString(pref, "homeScreen", homeScreen.toInternalString(),
         defaultSet.homeScreen.toInternalString());
+    await _setString(pref, "theme", theme.toInternalString(),
+        defaultSet.theme.toInternalString());
     await _setString(pref, "imageLocationSpec", imageLocationSpec,
         defaultSet.imageLocationSpec);
     await _setBool(pref, "zenMode", zenMode, defaultSet.zenMode);
@@ -349,6 +353,7 @@ class Settings extends ChangeNotifier {
       'markdownDefaultView': markdownDefaultView.toInternalString(),
       'markdownLastUsedView': markdownLastUsedView.toInternalString(),
       'homeScreen': homeScreen.toInternalString(),
+      'theme': theme.toInternalString(),
       'imageLocationSpec': imageLocationSpec,
       'zenMode': zenMode.toString(),
       'saveTitleInH1': saveTitleInH1.toString(),
@@ -783,4 +788,64 @@ class SettingsHomeScreen {
 
 String generateRandomId() {
   return Uuid().v4().substring(0, 8);
+}
+
+class SettingsTheme {
+  static const Dark = SettingsTheme("settings.theme.dark", "dark");
+  static const Light = SettingsTheme("settings.theme.light", "light");
+  static const SystemDefault =
+      SettingsTheme("settings.theme.default", "default");
+  static const Default = SystemDefault;
+
+  final String _str;
+  final String _publicString;
+  const SettingsTheme(this._publicString, this._str);
+
+  String toInternalString() {
+    return _str;
+  }
+
+  String toPublicString() {
+    return tr(_publicString);
+  }
+
+  static const options = <SettingsTheme>[
+    Light,
+    Dark,
+    SystemDefault,
+  ];
+
+  static SettingsTheme fromInternalString(String str) {
+    for (var opt in options) {
+      if (opt.toInternalString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  static SettingsTheme fromPublicString(String str) {
+    for (var opt in options) {
+      if (opt.toPublicString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  @override
+  String toString() {
+    assert(false, "SettingsTheme toString should never be called");
+    return "";
+  }
+
+  ThemeMode toThemeMode() {
+    if (this == SystemDefault) {
+      return ThemeMode.system;
+    }
+    if (this == Light) {
+      return ThemeMode.light;
+    }
+    return ThemeMode.dark;
+  }
 }

@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:ext_storage/ext_storage.dart';
@@ -141,7 +140,6 @@ class SettingsListState extends State<SettingsList> {
       },
     );
 
-    var brightness = DynamicTheme.of(context).brightness;
     var defaultNewFolder = settings.defaultNewNoteFolderSpec;
     if (defaultNewFolder.isEmpty) {
       defaultNewFolder = tr("rootFolder");
@@ -158,13 +156,15 @@ class SettingsListState extends State<SettingsList> {
 
     return ListView(children: [
       SettingsHeader(tr('settings.display.title')),
-      SwitchListTile(
-        title: Text(tr('settings.display.darkTheme')),
-        value: brightness == Brightness.dark,
-        onChanged: (bool newVal) {
-          var b = newVal ? Brightness.dark : Brightness.light;
-          var dynamicTheme = DynamicTheme.of(context);
-          dynamicTheme.setBrightness(b);
+      ListPreference(
+        title: tr('settings.display.theme'),
+        currentOption: settings.theme.toPublicString(),
+        options: SettingsTheme.options.map((f) => f.toPublicString()).toList(),
+        onChange: (String publicStr) {
+          var s = SettingsTheme.fromPublicString(publicStr);
+          settings.theme = s;
+          settings.save();
+          setState(() {});
         },
       ),
       ProOverlay(
