@@ -4,9 +4,14 @@ import 'package:intl/intl.dart';
 
 import 'package:gitjournal/utils/logger.dart';
 
+final _dateOnlyFormat = DateFormat("yyyy-MM-dd");
 final _simpleDateFormat = DateFormat("yyyy-MM-dd-HH-mm-ss");
 final _iso8601DateFormat = DateFormat("yyyy-MM-ddTHH:mm:ss");
 final _zettleDateFormat = DateFormat("yyyyMMddHHmmss");
+
+String toDateString(DateTime dt) {
+  return _dateOnlyFormat.format(dt);
+}
 
 String toSimpleDateTime(DateTime dt) {
   return _simpleDateFormat.format(dt);

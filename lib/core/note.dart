@@ -533,6 +533,9 @@ class Note with NotesNotifier {
         : parent.config.journalFileNameFormat) {
       case NoteFileNameFormat.SimpleDate:
         return toSimpleDateTime(date);
+      case NoteFileNameFormat.DateOnly:
+        var dateStr = toDateString(date);
+        return ensureFileNameUnique(parent.folderPath, dateStr, ".md");
       case NoteFileNameFormat.FromTitle:
         if (title.isNotEmpty) {
           return buildTitleFileName(parent.folderPath, title);
@@ -573,11 +576,8 @@ class Note with NotesNotifier {
   }
 }
 
-String buildTitleFileName(String parentDir, String title) {
-  // Sanitize the title - these characters are not allowed in Windows
-  title = title.replaceAll(RegExp(r'[/<\>":|?*]'), '_');
-
-  var fileName = title + ".md";
+String ensureFileNameUnique(String parentDir, String name, String ext) {
+  var fileName = name + ext;
   var fullPath = p.join(parentDir, fileName);
   var file = File(fullPath);
   if (!file.existsSync()) {
@@ -585,11 +585,18 @@ String buildTitleFileName(String parentDir, String title) {
   }
 
   for (var i = 1;; i++) {
-    var fileName = title + "_$i.md";
+    var fileName = name + "_$i$ext";
     var fullPath = p.join(parentDir, fileName);
     var file = File(fullPath);
     if (!file.existsSync()) {
       return fileName;
     }
   }
+}
+
+String buildTitleFileName(String parentDir, String title) {
+  // Sanitize the title - these characters are not allowed in Windows
+  title = title.replaceAll(RegExp(r'[/<\>":|?*]'), '_');
+
+  return ensureFileNameUnique(parentDir, title, ".md");
 }

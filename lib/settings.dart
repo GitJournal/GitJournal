@@ -409,6 +409,8 @@ class NoteFileNameFormat {
       NoteFileNameFormat("uuidv4", 'settings.NoteFileNameFormat.uuid');
   static const Zettelkasten = NoteFileNameFormat(
       "Zettelkasten", 'settings.NoteFileNameFormat.zettelkasten');
+  static const DateOnly =
+      NoteFileNameFormat("DateOnly", 'settings.NoteFileNameFormat.dateOnly');
 
   static const Default = FromTitle;
 
@@ -420,6 +422,7 @@ class NoteFileNameFormat {
     Iso8601WithTimeZoneWithoutColon,
     UuidV4,
     Zettelkasten,
+    DateOnly,
   ];
 
   static NoteFileNameFormat fromInternalString(String str) {

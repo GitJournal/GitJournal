@@ -120,6 +120,7 @@ settings:
     uuid: Uuid V4
     simmple: yyyy-mm-dd-hh-mm-ss
     zettelkasten: yyyymmddhhmmss
+    dateOnly: yyyy-mm-dd
   HomeScreen:
     allNotes: All Notes
     allFolders: All Folders
