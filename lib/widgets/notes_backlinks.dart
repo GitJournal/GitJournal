@@ -172,7 +172,7 @@ class NoteSnippet extends StatelessWidget {
         return false;
       }
       return resolvedNote.filePath == parentNote.filePath;
-    });
+    }).toList();
     if (links.isEmpty) {
       return Container();
     }
