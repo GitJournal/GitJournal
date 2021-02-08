@@ -141,7 +141,7 @@ settings:
     fileName: Filename
   storage:
     title: Storage
-    fileName: Filename
+    newNoteFileName: New Note Filename
     external: Store Repo Externally
     icloud: Store in iCloud
     repoLocation: Repo Location

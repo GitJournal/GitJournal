@@ -243,7 +243,7 @@ class SettingsListState extends State<SettingsList> {
       ),
       SettingsHeader(tr('settings.storage.title')),
       ListPreference(
-        title: tr('settings.note.fileName'),
+        title: tr('settings.note.newNoteFileName'),
         currentOption: settings.noteFileNameFormat.toPublicString(),
         options:
             NoteFileNameFormat.options.map((f) => f.toPublicString()).toList(),
