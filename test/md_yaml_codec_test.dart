@@ -17,7 +17,9 @@ void main() {
     test('Markdown Serializer', () {
       var created = toIso8601WithTimezone(nowWithoutMicro());
       var note = MdYamlDoc(
-          "This is the body", LinkedHashMap.from({"created": created}));
+        body: "This is the body",
+        props: LinkedHashMap.from({"created": created}),
+      );
 
       var serializer = MarkdownYAMLCodec();
       var str = serializer.encode(note);

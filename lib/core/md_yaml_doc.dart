@@ -5,17 +5,19 @@ import 'package:collection/collection.dart';
 Function _deepEq = const DeepCollectionEquality().equals;
 
 class MdYamlDoc {
-  String body = "";
-  LinkedHashMap<String, dynamic> props = LinkedHashMap<String, dynamic>();
+  String body;
+  LinkedHashMap<String, dynamic> props;
 
-  MdYamlDoc([this.body, this.props]) {
-    body = body ?? "";
+  MdYamlDoc({
+    this.body = "",
+    this.props,
+  }) {
     // ignore: prefer_collection_literals
     props = props ?? LinkedHashMap<String, dynamic>();
   }
 
   MdYamlDoc.from(MdYamlDoc other) {
-    body = String.fromCharCodes(other.body.codeUnits);
+    body = other.body;
     props = LinkedHashMap<String, dynamic>.from(other.props);
   }
 

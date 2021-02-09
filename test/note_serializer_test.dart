@@ -15,7 +15,7 @@ void main() {
     test('Test emojis', () {
       var props = LinkedHashMap<String, dynamic>.from(
           <String, dynamic>{"title": "Why not :coffee:?"});
-      var doc = MdYamlDoc("I :heart: you", props);
+      var doc = MdYamlDoc(body: "I :heart: you", props: props);
 
       var serializer = NoteSerializer.raw();
       serializer.settings.saveTitleAsH1 = false;
@@ -36,7 +36,8 @@ void main() {
 
     test('Test Title Serialization', () {
       var props = <String, dynamic>{};
-      var doc = MdYamlDoc("# Why not :coffee:?\n\nI :heart: you", props);
+      var doc =
+          MdYamlDoc(body: "# Why not :coffee:?\n\nI :heart: you", props: props);
 
       var serializer = NoteSerializer.raw();
       serializer.settings.saveTitleAsH1 = true;
@@ -57,7 +58,8 @@ void main() {
 
     test('Test Title Reading with blank lines', () {
       var props = <String, dynamic>{};
-      var doc = MdYamlDoc("\n# Why not :coffee:?\n\nI :heart: you", props);
+      var doc = MdYamlDoc(
+          body: "\n# Why not :coffee:?\n\nI :heart: you", props: props);
 
       var serializer = NoteSerializer.raw();
 
@@ -70,7 +72,7 @@ void main() {
 
     test('Test Title Reading with blank lines and no body', () {
       var props = <String, dynamic>{};
-      var doc = MdYamlDoc("\n# Why not :coffee:?", props);
+      var doc = MdYamlDoc(body: "\n# Why not :coffee:?", props: props);
 
       var serializer = NoteSerializer.raw();
 
@@ -84,7 +86,7 @@ void main() {
     test('Test Old Title Serialization', () {
       var props = LinkedHashMap<String, dynamic>.from(
           <String, dynamic>{"title": "Why not :coffee:?"});
-      var doc = MdYamlDoc("I :heart: you", props);
+      var doc = MdYamlDoc(body: "I :heart: you", props: props);
 
       var serializer = NoteSerializer.raw();
       serializer.settings.saveTitleAsH1 = true;
@@ -106,7 +108,7 @@ void main() {
         "title": "Why not?",
         "draft": true,
       });
-      var doc = MdYamlDoc("body", props);
+      var doc = MdYamlDoc(body: "body", props: props);
 
       var serializer = NoteSerializer.raw();
       serializer.settings.saveTitleAsH1 = false;
@@ -131,7 +133,7 @@ void main() {
         "draft": true,
         "tags": "#foo #bar-do",
       });
-      var doc = MdYamlDoc("body", props);
+      var doc = MdYamlDoc(body: "body", props: props);
 
       var serializer = NoteSerializer.raw();
       serializer.settings.saveTitleAsH1 = false;

@@ -18,8 +18,8 @@ void main() {
     bProps['title'] = "Foo";
     bProps['list'] = ["Foo", "Bar", 1];
 
-    var a = MdYamlDoc("a", aProps);
-    var b = MdYamlDoc("a", bProps);
+    var a = MdYamlDoc(body: "a", props: aProps);
+    var b = MdYamlDoc(body: "a", props: bProps);
     expect(a, b);
   });
 }

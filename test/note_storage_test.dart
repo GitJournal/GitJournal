@@ -34,7 +34,7 @@ void main() {
       n1.created = dt;
 
       var n2 = Note(parent, n2Path);
-      n2.data = MdYamlDoc("test2", props);
+      n2.data = MdYamlDoc(body: "test2", props: props);
 
       notes = [n1, n2];
     });

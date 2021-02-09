@@ -25,7 +25,7 @@ class MarkdownYAMLCodec {
         bodyBeginingPos += 1;
       }
       var body = str.substring(bodyBeginingPos);
-      return MdYamlDoc(body);
+      return MdYamlDoc(body: body);
     }
 
     if (str.startsWith(startYamlStr)) {
@@ -37,10 +37,10 @@ class MarkdownYAMLCodec {
           var yamlText =
               str.substring(4, str.length - endYamlStrWithoutLineEding.length);
           var map = parseYamlText(yamlText);
-          return MdYamlDoc("", map);
+          return MdYamlDoc(props: map);
         }
 
-        return MdYamlDoc(str);
+        return MdYamlDoc(body: str);
       }
 
       var yamlText = str.substring(4, endYamlPos);
@@ -57,14 +57,14 @@ class MarkdownYAMLCodec {
         }
       }
 
-      return MdYamlDoc(body, map);
+      return MdYamlDoc(body: body, props: map);
     }
 
     if (str.endsWith(endYamlStr)) {
       var endYamlPos = str.length - endYamlStr.length;
       var startYamlPos = str.lastIndexOf(startYamlStr, endYamlPos);
       if (startYamlPos == -1) {
-        return MdYamlDoc(str);
+        return MdYamlDoc(body: str);
       }
 
       // FIXME: What if there is nothing afterwards?
@@ -74,10 +74,10 @@ class MarkdownYAMLCodec {
       var body = str.substring(0, startYamlPos);
 
       reverse = true;
-      return MdYamlDoc(body, map);
+      return MdYamlDoc(body: body, props: map);
     }
 
-    return MdYamlDoc(str, LinkedHashMap<String, dynamic>());
+    return MdYamlDoc(body: str);
   }
 
   static LinkedHashMap<String, dynamic> parseYamlText(String yamlText) {
