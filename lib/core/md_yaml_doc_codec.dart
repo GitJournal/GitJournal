@@ -7,10 +7,6 @@ import 'package:gitjournal/utils/logger.dart';
 import 'md_yaml_doc.dart';
 
 class MarkdownYAMLCodec {
-  bool reverse;
-
-  MarkdownYAMLCodec({this.reverse = false});
-
   MdYamlDoc decode(String str) {
     const startYamlStr = "---\n";
     const endYamlStr = "\n---\n";
@@ -60,23 +56,6 @@ class MarkdownYAMLCodec {
       return MdYamlDoc(body: body, props: map);
     }
 
-    if (str.endsWith(endYamlStr)) {
-      var endYamlPos = str.length - endYamlStr.length;
-      var startYamlPos = str.lastIndexOf(startYamlStr, endYamlPos);
-      if (startYamlPos == -1) {
-        return MdYamlDoc(body: str);
-      }
-
-      // FIXME: What if there is nothing afterwards?
-      var yamlText =
-          str.substring(startYamlPos + startYamlStr.length, endYamlPos);
-      var map = parseYamlText(yamlText);
-      var body = str.substring(0, startYamlPos);
-
-      reverse = true;
-      return MdYamlDoc(body: body, props: map);
-    }
-
     return MdYamlDoc(body: str);
   }
 
@@ -104,16 +83,9 @@ class MarkdownYAMLCodec {
       return note.body;
     }
 
-    var str = "";
-    if (reverse) {
-      str += note.body.trimRight();
-      str += '\n\n';
-      str += toYamlHeader(note.props);
-    } else {
-      str += toYamlHeader(note.props);
-      str += '\n';
-      str += note.body;
-    }
+    var str = toYamlHeader(note.props);
+    str += '\n';
+    str += note.body;
 
     return str;
   }
