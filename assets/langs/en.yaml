@@ -139,10 +139,10 @@ settings:
   note:
     title: Note Settings
     defaultFolder: Default Folder for new notes
-    fileName: Filename
+    newNoteFileName: New Note Filename
   storage:
     title: Storage
-    newNoteFileName: New Note Filename
+    fileName: ilename
     external: Store Repo Externally
     icloud: Store in iCloud
     repoLocation: Repo Location
