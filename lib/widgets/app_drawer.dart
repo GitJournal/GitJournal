@@ -30,8 +30,6 @@ class _AppDrawerState extends State<AppDrawer>
   Animation<double> sizeAnimation;
   Animation<Offset> slideAnimation;
 
-  bool repoChooserVisible = false;
-
   @override
   void initState() {
     super.initState();
@@ -126,11 +124,7 @@ class _AppDrawerState extends State<AppDrawer>
         padding: EdgeInsets.zero,
         children: <Widget>[
           AppDrawerHeader(
-            showRepoList: repoChooserVisible,
             repoListToggled: () {
-              setState(() {
-                repoChooserVisible = !repoChooserVisible;
-              });
               if (animController.isCompleted) {
                 animController.reverse(from: 1.0);
               } else {

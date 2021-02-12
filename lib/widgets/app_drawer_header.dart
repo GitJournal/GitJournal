@@ -11,11 +11,9 @@ import 'package:gitjournal/settings.dart';
 
 class AppDrawerHeader extends StatelessWidget {
   final Func0<void> repoListToggled;
-  final bool showRepoList;
 
   AppDrawerHeader({
     @required this.repoListToggled,
-    @required this.showRepoList,
   });
 
   @override
@@ -42,7 +40,6 @@ class AppDrawerHeader extends StatelessWidget {
     );
 
     var currentRepo = _CurrentRepo(
-      showRepoList: showRepoList,
       repoListToggled: repoListToggled,
     );
 
@@ -78,11 +75,9 @@ class AppDrawerHeader extends StatelessWidget {
 class _CurrentRepo extends StatefulWidget {
   const _CurrentRepo({
     Key key,
-    @required this.showRepoList,
     @required this.repoListToggled,
   }) : super(key: key);
 
-  final bool showRepoList;
   final Func0<void> repoListToggled;
 
   @override
