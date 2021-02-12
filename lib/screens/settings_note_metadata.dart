@@ -82,8 +82,9 @@ class _NoteMetadataSettingsScreenState
           onChanged: (bool newVal) {
             setState(() {
               settings.yamlHeaderEnabled = newVal;
-              if (newVal == false) {
-                settings.saveTitleInH1 = true;
+              var titleInYaml = settings.titleSettings == SettingsTitle.InYaml;
+              if (newVal == false && titleInYaml) {
+                settings.titleSettings = SettingsTitle.Default;
               }
               settings.save();
             });
@@ -138,20 +139,14 @@ class _NoteMetadataSettingsScreenState
         ),
         ListPreference(
           title: tr("settings.noteMetaData.titleMetaData.title"),
-          options: [
-            tr("settings.noteMetaData.titleMetaData.fromH1"),
-            if (settings.yamlHeaderEnabled)
-              tr("settings.noteMetaData.titleMetaData.fromYaml"),
-          ],
-          currentOption: settings.saveTitleInH1
-              ? tr("settings.noteMetaData.titleMetaData.fromH1")
-              : tr("settings.noteMetaData.titleMetaData.fromYaml"),
-          onChange: (String newVal) {
-            setState(() {
-              settings.saveTitleInH1 =
-                  newVal == tr("settings.noteMetaData.titleMetaData.fromH1");
-              settings.save();
-            });
+          options:
+              SettingsTitle.options.map((f) => f.toPublicString()).toList(),
+          currentOption: settings.titleSettings.toPublicString(),
+          onChange: (String publicStr) {
+            var format = SettingsTitle.fromPublicString(publicStr);
+            settings.titleSettings = format;
+            settings.save();
+            setState(() {});
           },
         ),
         ProOverlay(

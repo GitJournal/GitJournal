@@ -66,7 +66,7 @@ class Repository with ChangeNotifier {
     @required SharedPreferences pref,
     @required String id,
   }) async {
-    await migrateSettings(pref, gitBaseDir);
+    await migrateSettings(id, pref, gitBaseDir);
 
     var settings = Settings(id);
     settings.load(pref);

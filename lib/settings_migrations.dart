@@ -7,6 +7,7 @@ import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 Future<void> migrateSettings(
+  String id,
   SharedPreferences pref,
   String gitBaseDir,
 ) async {
@@ -138,6 +139,16 @@ Future<void> migrateSettings(
     version = 2;
     await pref.remove("settingsVersion");
     await pref.setInt(prefix + "settingsVersion", version);
+  }
+
+  if (version == 2) {
+    var saveTitleInH1 = pref.getBool(id + '_' + "saveTitleInH1");
+    if (saveTitleInH1 == false) {
+      var key = id + "_" + "titleSettings";
+      await pref.setString(key, "yaml");
+    }
+
+    version = 3;
   }
 }
 

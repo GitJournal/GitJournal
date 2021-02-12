@@ -32,6 +32,7 @@ class Settings extends ChangeNotifier {
   String yamlCreatedKey = "created";
   String yamlTagsKey = "tags";
   String customMetaData = "";
+  SettingsTitle titleSettings = SettingsTitle.Default;
 
   bool yamlHeaderEnabled = true;
   String defaultNewNoteFolderSpec = "";
@@ -45,7 +46,7 @@ class Settings extends ChangeNotifier {
   SettingsFolderViewType defaultView = SettingsFolderViewType.Default;
   bool showNoteSummary = true;
   String folderViewHeaderType = "TitleGenerated";
-  int version = 2;
+  int version = 3;
 
   SettingsHomeScreen homeScreen = SettingsHomeScreen.Default;
   SettingsTheme theme = SettingsTheme.Default;
@@ -58,7 +59,6 @@ class Settings extends ChangeNotifier {
   String imageLocationSpec = "."; // . means the same folder
 
   bool zenMode = false;
-  bool saveTitleInH1 = true;
 
   bool swipeToDelete = true;
   bool emojiParser = true;
@@ -134,7 +134,8 @@ class Settings extends ChangeNotifier {
         _getString(pref, "imageLocationSpec") ?? imageLocationSpec;
 
     zenMode = _getBool(pref, "zenMode") ?? zenMode;
-    saveTitleInH1 = _getBool(pref, "saveTitleInH1") ?? saveTitleInH1;
+    titleSettings =
+        SettingsTitle.fromInternalString(_getString(pref, "titleSettings"));
     swipeToDelete = _getBool(pref, "swipeToDelete") ?? swipeToDelete;
 
     inlineTagPrefixes =
@@ -239,8 +240,8 @@ class Settings extends ChangeNotifier {
     await _setString(pref, "imageLocationSpec", imageLocationSpec,
         defaultSet.imageLocationSpec);
     await _setBool(pref, "zenMode", zenMode, defaultSet.zenMode);
-    await _setBool(
-        pref, "saveTitleInH1", saveTitleInH1, defaultSet.saveTitleInH1);
+    await _setString(pref, "titleSettings", titleSettings.toInternalString(),
+        defaultSet.titleSettings.toInternalString());
     await _setBool(
         pref, "swipeToDelete", swipeToDelete, defaultSet.swipeToDelete);
     await _setStringSet(pref, "inlineTagPrefixes", inlineTagPrefixes,
@@ -356,7 +357,7 @@ class Settings extends ChangeNotifier {
       'theme': theme.toInternalString(),
       'imageLocationSpec': imageLocationSpec,
       'zenMode': zenMode.toString(),
-      'saveTitleInH1': saveTitleInH1.toString(),
+      'titleSettings': titleSettings.toInternalString(),
       'swipeToDelete': swipeToDelete.toString(),
       'inlineTagPrefixes': inlineTagPrefixes.join(' '),
       'emojiParser': emojiParser.toString(),
@@ -847,5 +848,58 @@ class SettingsTheme {
       return ThemeMode.light;
     }
     return ThemeMode.dark;
+  }
+}
+
+class SettingsTitle {
+  static const InYaml =
+      SettingsTitle("settings.noteMetaData.titleMetaData.fromYaml", "yaml");
+  static const InH1 =
+      SettingsTitle("settings.noteMetaData.titleMetaData.fromH1", "h1");
+  static const InFileName =
+      SettingsTitle("settings.noteMetaData.titleMetaData.filename", "filename");
+
+  static const Default = InH1;
+
+  final String _str;
+  final String _publicString;
+  const SettingsTitle(this._publicString, this._str);
+
+  String toInternalString() {
+    return _str;
+  }
+
+  String toPublicString() {
+    return tr(_publicString);
+  }
+
+  static const options = <SettingsTitle>[
+    InH1,
+    InYaml,
+    InFileName,
+  ];
+
+  static SettingsTitle fromInternalString(String str) {
+    for (var opt in options) {
+      if (opt.toInternalString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  static SettingsTitle fromPublicString(String str) {
+    for (var opt in options) {
+      if (opt.toPublicString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  @override
+  String toString() {
+    assert(false, "SettingsTitle toString should never be called");
+    return "";
   }
 }

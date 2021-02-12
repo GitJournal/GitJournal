@@ -33,7 +33,7 @@ class NotesFolderConfig extends Equatable {
   final String yamlModifiedKey;
   final String yamlCreatedKey;
   final String yamlTagsKey;
-  final bool saveTitleInH1;
+  final SettingsTitle titleSettings;
 
   final Set<String> inlineTagPrefixes;
   final String imageLocationSpec;
@@ -51,7 +51,7 @@ class NotesFolderConfig extends Equatable {
     @required this.yamlModifiedKey,
     @required this.yamlCreatedKey,
     @required this.yamlTagsKey,
-    @required this.saveTitleInH1,
+    @required this.titleSettings,
     @required this.inlineTagPrefixes,
     @required this.imageLocationSpec,
   });
@@ -69,7 +69,7 @@ class NotesFolderConfig extends Equatable {
         yamlModifiedKey,
         yamlCreatedKey,
         yamlTagsKey,
-        saveTitleInH1,
+        titleSettings,
         inlineTagPrefixes,
         imageLocationSpec,
       ];
@@ -102,7 +102,7 @@ class NotesFolderConfig extends Equatable {
       yamlCreatedKey: settings.yamlCreatedKey,
       yamlModifiedKey: settings.yamlModifiedKey,
       yamlTagsKey: settings.yamlTagsKey,
-      saveTitleInH1: settings.saveTitleInH1,
+      titleSettings: settings.titleSettings,
       inlineTagPrefixes: settings.inlineTagPrefixes,
       imageLocationSpec: settings.imageLocationSpec,
     );
@@ -135,7 +135,7 @@ class NotesFolderConfig extends Equatable {
     settings.yamlCreatedKey = yamlCreatedKey;
     settings.yamlModifiedKey = yamlModifiedKey;
     settings.yamlTagsKey = yamlTagsKey;
-    settings.saveTitleInH1 = saveTitleInH1;
+    settings.titleSettings = titleSettings;
     settings.inlineTagPrefixes = inlineTagPrefixes;
     settings.imageLocationSpec = imageLocationSpec;
     settings.save();
@@ -154,7 +154,7 @@ class NotesFolderConfig extends Equatable {
     String yamlCreatedKey,
     String yamlModifiedKey,
     String yamlTagsKey,
-    bool saveTitleInH1,
+    SettingsTitle titleSettings,
     Set<String> inlineTagPrefixes,
     String imageLocationSpec,
   }) {
@@ -172,7 +172,7 @@ class NotesFolderConfig extends Equatable {
       yamlCreatedKey: yamlCreatedKey ?? this.yamlCreatedKey,
       yamlModifiedKey: yamlModifiedKey ?? this.yamlModifiedKey,
       yamlTagsKey: yamlTagsKey ?? this.yamlTagsKey,
-      saveTitleInH1: saveTitleInH1 ?? this.saveTitleInH1,
+      titleSettings: titleSettings ?? this.titleSettings,
       inlineTagPrefixes: inlineTagPrefixes ?? this.inlineTagPrefixes,
       imageLocationSpec: imageLocationSpec ?? this.imageLocationSpec,
     );
@@ -229,7 +229,7 @@ class NotesFolderConfig extends Equatable {
     var yamlCreatedKey = map['yamlCreatedKey']?.toString();
     var yamlModifiedKey = map['yamlModifiedKey']?.toString();
     var yamlTagsKey = map['yamlTagsKey']?.toString();
-    var saveTitleInH1 = map['saveTitleInH1']?.toString() != "false";
+    var titleSettings = map['titleSettings']?.toString();
 
     // FIXME: What about inlineTagPrefixes?
 
@@ -247,7 +247,7 @@ class NotesFolderConfig extends Equatable {
       yamlCreatedKey: yamlCreatedKey,
       yamlModifiedKey: yamlModifiedKey,
       yamlTagsKey: yamlTagsKey,
-      saveTitleInH1: saveTitleInH1,
+      titleSettings: SettingsTitle.fromInternalString(titleSettings),
       inlineTagPrefixes: {},
       imageLocationSpec: "",
     );
@@ -282,7 +282,7 @@ class NotesFolderConfig extends Equatable {
       'yamlModifiedKey': yamlModifiedKey,
       'yamlCreatedKey': yamlCreatedKey,
       'yamlTagsKey': yamlTagsKey,
-      'saveTitleInH1': saveTitleInH1,
+      'titleSettings': titleSettings.toInternalString(),
     };
 
     var yaml = toYAML(map);

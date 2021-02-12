@@ -64,6 +64,7 @@ settings:
       title: Title
       fromH1: Text Header 1
       fromYaml: From YAML 'title'
+      filename: FileName
     exampleTitle: Pigeons
     exampleBody: I think they might be evil. Even more evil than penguins.
     exampleTag1: Birds

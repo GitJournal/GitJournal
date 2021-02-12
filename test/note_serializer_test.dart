@@ -18,7 +18,7 @@ void main() {
       var doc = MdYamlDoc(body: "I :heart: you", props: props);
 
       var serializer = NoteSerializer.raw();
-      serializer.settings.saveTitleAsH1 = false;
+      serializer.settings.titleSettings = SettingsTitle.InYaml;
 
       var note = Note(parent, "file-path-not-important");
       serializer.decode(doc, note);
@@ -40,7 +40,7 @@ void main() {
           MdYamlDoc(body: "# Why not :coffee:?\n\nI :heart: you", props: props);
 
       var serializer = NoteSerializer.raw();
-      serializer.settings.saveTitleAsH1 = true;
+      serializer.settings.titleSettings = SettingsTitle.InH1;
 
       var note = Note(parent, "file-path-not-important");
       serializer.decode(doc, note);
@@ -89,7 +89,7 @@ void main() {
       var doc = MdYamlDoc(body: "I :heart: you", props: props);
 
       var serializer = NoteSerializer.raw();
-      serializer.settings.saveTitleAsH1 = true;
+      serializer.settings.titleSettings = SettingsTitle.InH1;
 
       var note = Note(parent, "file-path-not-important");
       serializer.decode(doc, note);
@@ -111,7 +111,7 @@ void main() {
       var doc = MdYamlDoc(body: "body", props: props);
 
       var serializer = NoteSerializer.raw();
-      serializer.settings.saveTitleAsH1 = false;
+      serializer.settings.titleSettings = SettingsTitle.InYaml;
 
       var note = Note(parent, "file-path-not-important");
       serializer.decode(doc, note);
@@ -136,7 +136,7 @@ void main() {
       var doc = MdYamlDoc(body: "body", props: props);
 
       var serializer = NoteSerializer.raw();
-      serializer.settings.saveTitleAsH1 = false;
+      serializer.settings.titleSettings = SettingsTitle.InYaml;
 
       var note = Note(parent, "file-path-not-important");
       serializer.decode(doc, note);

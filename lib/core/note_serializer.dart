@@ -4,6 +4,7 @@ import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:yaml/yaml.dart';
 
 import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'md_yaml_doc.dart';
@@ -26,7 +27,7 @@ class NoteSerializationSettings {
   bool tagsInString = false;
   bool tagsHaveHash = false;
 
-  bool saveTitleAsH1 = true;
+  SettingsTitle titleSettings = SettingsTitle.Default;
 }
 
 class NoteSerializer implements NoteSerializerInterface {
@@ -36,7 +37,7 @@ class NoteSerializer implements NoteSerializerInterface {
     settings.modifiedKey = config.yamlModifiedKey;
     settings.createdKey = config.yamlCreatedKey;
     settings.tagsKey = config.yamlTagsKey;
-    settings.saveTitleAsH1 = config.saveTitleInH1;
+    settings.titleSettings = config.titleSettings;
   }
 
   NoteSerializer.raw();
@@ -59,7 +60,7 @@ class NoteSerializer implements NoteSerializerInterface {
 
     if (note.title != null) {
       var title = emojiParser.unemojify(note.title.trim());
-      if (settings.saveTitleAsH1) {
+      if (settings.titleSettings == SettingsTitle.InH1) {
         if (title.isNotEmpty) {
           data.body = '# $title\n\n${data.body}';
           data.props.remove(settings.titleKey);
@@ -148,7 +149,7 @@ class NoteSerializer implements NoteSerializerInterface {
       note.title = emojiParser.emojify(title);
 
       propsUsed.add(settings.titleKey);
-      settings.saveTitleAsH1 = false;
+      settings.titleSettings = SettingsTitle.InYaml;
     } else {
       var startsWithH1 = false;
       for (var line in LineSplitter.split(note.body)) {
