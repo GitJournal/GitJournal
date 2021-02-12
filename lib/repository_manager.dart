@@ -13,7 +13,17 @@ class RepositoryInfo {
   String folderName;
   IconData iconData;
 
-  // Add serialization to json / and from
+  RepositoryInfo.fromMap(Map<String, dynamic> map) {
+    id = map['id'];
+    folderName = map['folderName'];
+    iconData = IconData(map['iconData'] as int);
+  }
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'folderName': folderName,
+        'iconData': iconData.codePoint,
+      };
 }
 
 // Make this info a change notifier where the current value is ?
