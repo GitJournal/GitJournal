@@ -92,8 +92,8 @@ class Repository with ChangeNotifier {
     var remoteConfigured = repo.config.remotes.isNotEmpty;
     if (remoteConfigured) {
       // Code path for 'branch is null' exception
-      var branches = await repo.branches();
-      if (branches.isEmpty) {
+      var branch = await repo.currentBranch();
+      if (branch == null) {
         var remoteConfig = repo.config.remotes[0];
         await cloneRemote(
           repoPath: repoPath,
