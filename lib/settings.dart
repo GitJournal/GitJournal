@@ -876,7 +876,7 @@ class SettingsTitle {
   static const options = <SettingsTitle>[
     InH1,
     InYaml,
-    InFileName,
+    // InFileName,
   ];
 
   static SettingsTitle fromInternalString(String str) {
