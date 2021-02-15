@@ -40,7 +40,7 @@ class _SyncButtonState extends State<SyncButton> {
 
   @override
   Widget build(BuildContext context) {
-    final repo = Provider.of<Repository>(context);
+    final repo = Provider.of<GitJournalRepo>(context);
 
     if (_connectivity == ConnectivityResult.none) {
       return GitPendingChangesBadge(
@@ -97,7 +97,7 @@ class _SyncButtonState extends State<SyncButton> {
 
   void _syncRepo() async {
     try {
-      final repo = Provider.of<Repository>(context, listen: false);
+      final repo = Provider.of<GitJournalRepo>(context, listen: false);
       await repo.syncNotes();
     } on GitException catch (e) {
       showSnackbar(context, tr('widgets.SyncButton.error', args: [e.cause]));
@@ -107,7 +107,7 @@ class _SyncButtonState extends State<SyncButton> {
   }
 
   IconData _syncStatusIcon() {
-    final repo = Provider.of<Repository>(context);
+    final repo = Provider.of<GitJournalRepo>(context);
     switch (repo.syncStatus) {
       case SyncStatus.Error:
         return Icons.cloud_off;
@@ -181,7 +181,7 @@ class GitPendingChangesBadge extends StatelessWidget {
       color: darkMode ? Colors.black : Colors.white,
     );
 
-    final repo = Provider.of<Repository>(context);
+    final repo = Provider.of<GitJournalRepo>(context);
 
     return Badge(
       badgeContent: Text(repo.numChanges.toString(), style: style),
