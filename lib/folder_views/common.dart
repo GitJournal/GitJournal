@@ -94,7 +94,7 @@ void openNoteEditor(
   if (showUndoSnackBar != null) {
     Log.d("Showing an undo snackbar");
 
-    var stateContainer = Provider.of<Repository>(context, listen: false);
+    var stateContainer = Provider.of<GitJournalRepo>(context, listen: false);
     var snackBar = buildUndoDeleteSnackbar(stateContainer, note);
     Scaffold.of(context)
       ..removeCurrentSnackBar()

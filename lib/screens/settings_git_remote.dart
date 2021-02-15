@@ -34,7 +34,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     var settings = Provider.of<Settings>(context);
-    var repo = Provider.of<Repository>(context);
+    var repo = Provider.of<GitJournalRepo>(context);
 
     if (remoteHost == null) {
       remoteHost = "";
@@ -186,7 +186,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
       return;
     }
 
-    var repo = Provider.of<Repository>(context, listen: false);
+    var repo = Provider.of<GitJournalRepo>(context, listen: false);
     var gitDir = repo.gitBaseDirectory;
 
     // Figure out the next available folder

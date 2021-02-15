@@ -33,7 +33,7 @@ enum SyncStatus {
   Error,
 }
 
-class Repository with ChangeNotifier {
+class GitJournalRepo with ChangeNotifier {
   final Settings settings;
 
   final _opLock = Lock();
@@ -60,7 +60,7 @@ class Repository with ChangeNotifier {
 
   bool remoteGitRepoConfigured = false;
 
-  static Future<Repository> load({
+  static Future<GitJournalRepo> load({
     @required String gitBaseDir,
     @required String cacheDir,
     @required SharedPreferences pref,
@@ -108,7 +108,7 @@ class Repository with ChangeNotifier {
       }
     }
 
-    return Repository._internal(
+    return GitJournalRepo._internal(
       repoPath: repoPath,
       gitBaseDirectory: gitBaseDir,
       cacheDir: cacheDir,
@@ -118,7 +118,7 @@ class Repository with ChangeNotifier {
     );
   }
 
-  Repository._internal({
+  GitJournalRepo._internal({
     @required this.id,
     @required this.repoPath,
     @required this.gitBaseDirectory,
@@ -492,7 +492,7 @@ Future<void> _copyDirectory(String source, String destination) async {
 /// Add a GitIgnore file if no file is present. This way we always at least have
 /// one commit. It makes doing a git pull and push easier
 Future<void> _addFileInRepo({
-  @required Repository repo,
+  @required GitJournalRepo repo,
   @required Settings settings,
 }) async {
   var repoPath = repo.repoPath;

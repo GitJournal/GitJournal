@@ -168,7 +168,7 @@ class __CurrentRepoState extends State<_CurrentRepo>
       return;
     }
 
-    var repo = context.watch<Repository>();
+    var repo = context.watch<GitJournalRepo>();
     var repoPath = await repo.settings.buildRepoPath(repo.gitBaseDirectory);
     _repoFolderName = p.basename(repoPath);
 

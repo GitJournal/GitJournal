@@ -74,7 +74,7 @@ class _FileSystemScreenState extends State<FileSystemScreen> {
       ),
     );
     if (newFileName is String) {
-      var container = Provider.of<Repository>(context, listen: false);
+      var container = Provider.of<GitJournalRepo>(context, listen: false);
       container.renameFile(oldPath, newFileName);
     }
   }

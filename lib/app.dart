@@ -61,7 +61,7 @@ class JournalApp extends StatefulWidget {
       child: Consumer<RepositoryManager>(
         builder: (_, repoManager, __) => ChangeNotifierProvider.value(
           value: repoManager.currentRepo,
-          child: Consumer<Repository>(
+          child: Consumer<GitJournalRepo>(
             builder: (_, repo, __) => ChangeNotifierProvider<Settings>.value(
               value: repo.settings,
               child: ChangeNotifierProvider<NotesFolderFS>.value(
@@ -280,7 +280,7 @@ class _JournalAppState extends State<JournalApp> {
 
   @override
   Widget build(BuildContext context) {
-    var stateContainer = Provider.of<Repository>(context);
+    var stateContainer = Provider.of<GitJournalRepo>(context);
     var settings = Provider.of<Settings>(context);
     var appSettings = Provider.of<AppSettings>(context);
     var router = AppRouter(settings: settings, appSettings: appSettings);

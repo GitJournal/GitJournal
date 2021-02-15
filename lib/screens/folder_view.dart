@@ -160,7 +160,7 @@ class _FolderViewState extends State<FolderView> {
 
   void _syncRepo(BuildContext context) async {
     try {
-      var container = Provider.of<Repository>(context, listen: false);
+      var container = Provider.of<GitJournalRepo>(context, listen: false);
       await container.syncNotes();
     } on GitException catch (e) {
       showSnackbar(
@@ -234,7 +234,7 @@ class _FolderViewState extends State<FolderView> {
       var settings = Provider.of<Settings>(context, listen: false);
       config.saveToSettings(settings);
 
-      var container = Provider.of<Repository>(context, listen: false);
+      var container = Provider.of<GitJournalRepo>(context, listen: false);
       container.saveFolderConfig(sortedNotesFolder.config);
 
       setState(() {
@@ -259,7 +259,7 @@ class _FolderViewState extends State<FolderView> {
           var settings = Provider.of<Settings>(context, listen: false);
           config.saveToSettings(settings);
 
-          var container = Provider.of<Repository>(context, listen: false);
+          var container = Provider.of<GitJournalRepo>(context, listen: false);
           container.saveFolderConfig(sortedNotesFolder.config);
         };
 
@@ -275,7 +275,7 @@ class _FolderViewState extends State<FolderView> {
           var settings = Provider.of<Settings>(context, listen: false);
           config.saveToSettings(settings);
 
-          var container = Provider.of<Repository>(context, listen: false);
+          var container = Provider.of<GitJournalRepo>(context, listen: false);
           container.saveFolderConfig(sortedNotesFolder.config);
         };
 
@@ -407,13 +407,13 @@ class _FolderViewState extends State<FolderView> {
       var settings = Provider.of<Settings>(context, listen: false);
       config.saveToSettings(settings);
 
-      var container = Provider.of<Repository>(context, listen: false);
+      var container = Provider.of<GitJournalRepo>(context, listen: false);
       container.saveFolderConfig(widget.notesFolder.config);
     }
   }
 
   List<Widget> _buildNoteActions() {
-    final repo = Provider.of<Repository>(context);
+    final repo = Provider.of<GitJournalRepo>(context);
 
     var extraActions = PopupMenuButton<DropDownChoices>(
       key: const ValueKey("PopupMenu"),
@@ -494,7 +494,7 @@ class _FolderViewState extends State<FolderView> {
       );
     }
     if (shouldDelete == true) {
-      var stateContainer = Provider.of<Repository>(context, listen: false);
+      var stateContainer = Provider.of<GitJournalRepo>(context, listen: false);
       stateContainer.removeNote(note);
     }
 

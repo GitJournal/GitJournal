@@ -155,7 +155,8 @@ class _FolderListViewState extends State<FolderListView> {
         onDismissed: (direction) {
           deletedViaDismissed.add(note.filePath);
 
-          var stateContainer = Provider.of<Repository>(context, listen: false);
+          var stateContainer =
+              Provider.of<GitJournalRepo>(context, listen: false);
           stateContainer.removeNote(note);
 
           var snackBar = buildUndoDeleteSnackbar(stateContainer, note);

@@ -41,7 +41,7 @@ class AppRouter {
 
   Route<dynamic> generateRoute(
     RouteSettings routeSettings,
-    Repository repository,
+    GitJournalRepo repository,
     String sharedText,
     List<String> sharedImages,
     Function callbackIfUsedShared,
@@ -79,7 +79,7 @@ class AppRouter {
 
   Widget _screenForRoute(
     String route,
-    Repository repository,
+    GitJournalRepo repository,
     Settings settings,
     String sharedText,
     List<String> sharedImages,

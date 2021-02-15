@@ -421,7 +421,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   }
 
   Future<void> _removeRemote() async {
-    var repo = Provider.of<Repository>(context, listen: false);
+    var repo = Provider.of<GitJournalRepo>(context, listen: false);
     var basePath = repo.gitBaseDirectory;
 
     var repoPath = p.join(basePath, widget.repoFolderName);
@@ -527,7 +527,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       return;
     }
 
-    var repo = Provider.of<Repository>(context, listen: false);
+    var repo = Provider.of<GitJournalRepo>(context, listen: false);
     var basePath = repo.gitBaseDirectory;
 
     var settings = Provider.of<Settings>(context, listen: false);

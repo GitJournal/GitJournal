@@ -27,7 +27,8 @@ Future<String> getVersionString() async {
   return versionText;
 }
 
-SnackBar buildUndoDeleteSnackbar(Repository stateContainer, Note deletedNote) {
+SnackBar buildUndoDeleteSnackbar(
+    GitJournalRepo stateContainer, Note deletedNote) {
   return SnackBar(
     content: Text(tr('widgets.FolderView.noteDeleted')),
     action: SnackBarAction(

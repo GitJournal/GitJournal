@@ -32,7 +32,8 @@ class RepositoryManager with ChangeNotifier {
   List<String> repoIds;
   String currentId;
 
-  Repository _repo;
+  GitJournalRepo _repo;
+  RepositoryInfo _repoInfo;
 
   final String gitBaseDir;
   final String cacheDir;
@@ -46,9 +47,10 @@ class RepositoryManager with ChangeNotifier {
     // From the pref load all the RepositoryInfos
   }
 
-  Repository get currentRepo => _repo;
+  GitJournalRepo get currentRepo => _repo;
+  RepositoryInfo get currentRepoInfo => _repoInfo;
 
-  Future<Repository> buildActiveRepository() async {
+  Future<GitJournalRepo> buildActiveRepository() async {
     if (_repo != null) {
       return _repo;
     }
@@ -57,7 +59,7 @@ class RepositoryManager with ChangeNotifier {
     var repoCacheDir = p.join(cacheDir, currentId);
     await Directory(repoCacheDir).create(recursive: true);
 
-    _repo = await Repository.load(
+    _repo = await GitJournalRepo.load(
       gitBaseDir: gitBaseDir,
       cacheDir: repoCacheDir,
       pref: pref,
@@ -66,6 +68,11 @@ class RepositoryManager with ChangeNotifier {
 
     notifyListeners();
     return _repo;
+  }
+
+  Future<void> buildRepoInfoList() async {
+    // Add the latest folder, sort
+    // No need to do anything else
   }
 
   // call notifyObservers();
