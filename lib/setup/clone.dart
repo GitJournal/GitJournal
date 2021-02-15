@@ -44,7 +44,8 @@ Future<void> cloneRemote({
     if (remoteBranchName != null &&
         remoteBranchName.isNotEmpty &&
         remoteBranch != null) {
-      await repo.checkoutBranch(remoteBranchName, remoteBranch.hash);
+      await repo.createBranch(remoteBranchName, remoteBranch.hash);
+      await repo.checkoutBranch(remoteBranchName);
     }
     await repo.setUpstreamTo(remote, remoteBranchName);
   } else {
@@ -68,7 +69,9 @@ Future<void> cloneRemote({
       Log.i("Completing - localBranch diff remote: $branch $remoteBranchName");
 
       var headRef = await repo.resolveReference(await repo.head());
-      await repo.checkoutBranch(remoteBranchName, headRef.hash);
+      await repo.createBranch(remoteBranchName, headRef.hash);
+      await repo.checkoutBranch(remoteBranchName);
+
       await repo.deleteBranch(branch);
       await repo.setUpstreamTo(remote, remoteBranchName);
 
