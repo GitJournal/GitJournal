@@ -39,7 +39,7 @@ void main() {
         yamlCreatedKey: 'created',
         yamlModifiedKey: 'modified',
         yamlTagsKey: 'tags',
-        titleSettings: SettingsTitle.InFileName,
+        titleSettings: SettingsTitle.InYaml,
         inlineTagPrefixes: {},
         imageLocationSpec: "",
       );
