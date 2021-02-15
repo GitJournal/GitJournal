@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:function_types/function_types.dart';
+import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
 import 'package:gitjournal/app_settings.dart';
+import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings.dart';
 
 class AppDrawerHeader extends StatelessWidget {
@@ -89,6 +91,9 @@ class __CurrentRepoState extends State<_CurrentRepo>
   Animation _animation;
   AnimationController controller;
 
+  var _gitRemoteUrl = "";
+  var _repoFolderName = "";
+
   @override
   void initState() {
     super.initState();
@@ -108,18 +113,27 @@ class __CurrentRepoState extends State<_CurrentRepo>
 
   @override
   Widget build(BuildContext context) {
+    _fetchRepoInfo();
+
     var textTheme = Theme.of(context).textTheme;
 
     var w = Row(
       children: <Widget>[
-        Column(
-          children: <Widget>[
-            Text("journal", style: textTheme.headline6),
-            const SizedBox(height: 8.0),
-            Text("github.com/vhanda/journal", style: textTheme.subtitle2),
-            const SizedBox(height: 8.0),
-          ],
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Expanded(
+          child: Column(
+            children: <Widget>[
+              Text(_repoFolderName, style: textTheme.headline6),
+              const SizedBox(height: 8.0),
+              Text(
+                _gitRemoteUrl,
+                style: textTheme.subtitle2,
+                overflow: TextOverflow.clip,
+                maxLines: 1,
+              ),
+              const SizedBox(height: 8.0),
+            ],
+            crossAxisAlignment: CrossAxisAlignment.start,
+          ),
         ),
         RotationTransition(
           turns: _animation,
@@ -147,6 +161,34 @@ class __CurrentRepoState extends State<_CurrentRepo>
       controller.forward(from: 0.0);
     }
     widget.repoListToggled();
+  }
+
+  void _fetchRepoInfo() async {
+    if (_repoFolderName.isNotEmpty) {
+      return;
+    }
+
+    var repo = context.watch<Repository>();
+    var repoPath = await repo.settings.buildRepoPath(repo.gitBaseDirectory);
+    _repoFolderName = p.basename(repoPath);
+
+    var remoteConfigs = await repo.remoteConfigs();
+    if (!mounted) return;
+
+    if (remoteConfigs == null || remoteConfigs.isEmpty) {
+      setState(() {
+        _gitRemoteUrl = tr("drawer.remove");
+      });
+      return;
+    }
+
+    setState(() {
+      _gitRemoteUrl = remoteConfigs.first.url;
+      var i = _gitRemoteUrl.indexOf('@');
+      if (i != -1 && i + 1 < _gitRemoteUrl.length) {
+        _gitRemoteUrl = _gitRemoteUrl.substring(i + 1);
+      }
+    });
   }
 }
 
