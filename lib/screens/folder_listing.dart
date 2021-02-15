@@ -86,8 +86,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
               ),
             );
             if (folderName is String) {
-              var container =
-                  Provider.of<GitJournalRepo>(context, listen: false);
+              var container = context.read<GitJournalRepo>();
               container.renameFolder(selectedFolder, folderName);
             }
           } else if (value == "Create") {
@@ -96,8 +95,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
               builder: (_) => CreateFolderAlertDialog(),
             );
             if (folderName is String) {
-              var container =
-                  Provider.of<GitJournalRepo>(context, listen: false);
+              var container = context.read<GitJournalRepo>();
               container.createFolder(selectedFolder, folderName);
             }
           } else if (value == "Delete") {
@@ -107,8 +105,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
                 builder: (_) => DeleteFolderErrorDialog(),
               );
             } else {
-              var container =
-                  Provider.of<GitJournalRepo>(context, listen: false);
+              var container = context.read<GitJournalRepo>();
               container.removeFolder(selectedFolder);
             }
           }
@@ -156,7 +153,7 @@ class CreateFolderButton extends StatelessWidget {
           builder: (_) => CreateFolderAlertDialog(),
         );
         if (folderName is String) {
-          var container = Provider.of<GitJournalRepo>(context, listen: false);
+          var container = context.read<GitJournalRepo>();
           final notesFolder =
               Provider.of<NotesFolderFS>(context, listen: false);
 

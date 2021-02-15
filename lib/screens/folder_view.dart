@@ -160,7 +160,7 @@ class _FolderViewState extends State<FolderView> {
 
   void _syncRepo(BuildContext context) async {
     try {
-      var container = Provider.of<GitJournalRepo>(context, listen: false);
+      var container = context.read<GitJournalRepo>();
       await container.syncNotes();
     } on GitException catch (e) {
       showSnackbar(
@@ -234,7 +234,7 @@ class _FolderViewState extends State<FolderView> {
       var settings = Provider.of<Settings>(context, listen: false);
       config.saveToSettings(settings);
 
-      var container = Provider.of<GitJournalRepo>(context, listen: false);
+      var container = context.read<GitJournalRepo>();
       container.saveFolderConfig(sortedNotesFolder.config);
 
       setState(() {
@@ -259,7 +259,7 @@ class _FolderViewState extends State<FolderView> {
           var settings = Provider.of<Settings>(context, listen: false);
           config.saveToSettings(settings);
 
-          var container = Provider.of<GitJournalRepo>(context, listen: false);
+          var container = context.read<GitJournalRepo>();
           container.saveFolderConfig(sortedNotesFolder.config);
         };
 
@@ -275,7 +275,7 @@ class _FolderViewState extends State<FolderView> {
           var settings = Provider.of<Settings>(context, listen: false);
           config.saveToSettings(settings);
 
-          var container = Provider.of<GitJournalRepo>(context, listen: false);
+          var container = context.read<GitJournalRepo>();
           container.saveFolderConfig(sortedNotesFolder.config);
         };
 
@@ -407,7 +407,7 @@ class _FolderViewState extends State<FolderView> {
       var settings = Provider.of<Settings>(context, listen: false);
       config.saveToSettings(settings);
 
-      var container = Provider.of<GitJournalRepo>(context, listen: false);
+      var container = context.read<GitJournalRepo>();
       container.saveFolderConfig(widget.notesFolder.config);
     }
   }
@@ -494,7 +494,7 @@ class _FolderViewState extends State<FolderView> {
       );
     }
     if (shouldDelete == true) {
-      var stateContainer = Provider.of<GitJournalRepo>(context, listen: false);
+      var stateContainer = context.read<GitJournalRepo>();
       stateContainer.removeNote(note);
     }
 

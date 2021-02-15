@@ -186,7 +186,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
       return;
     }
 
-    var repo = Provider.of<GitJournalRepo>(context, listen: false);
+    var repo = context.read<GitJournalRepo>();
     var gitDir = repo.gitBaseDirectory;
 
     // Figure out the next available folder

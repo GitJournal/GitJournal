@@ -283,7 +283,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
         });
         return;
       }
-      var container = Provider.of<GitJournalRepo>(context, listen: false);
+      var container = context.read<GitJournalRepo>();
       container.renameNote(note, fileName);
     }
   }
@@ -318,7 +318,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
       return;
     }
 
-    var stateContainer = Provider.of<GitJournalRepo>(context, listen: false);
+    var stateContainer = context.read<GitJournalRepo>();
     stateContainer.removeNote(note);
   }
 
@@ -353,7 +353,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
 
     Log.d("Note modified - saving");
     try {
-      var stateContainer = Provider.of<GitJournalRepo>(context, listen: false);
+      var stateContainer = context.read<GitJournalRepo>();
       _isNewNote
           ? await stateContainer.addNote(note)
           : await stateContainer.updateNote(note);
@@ -396,15 +396,14 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
         note.parent = destFolder;
         setState(() {});
       } else {
-        var stateContainer =
-            Provider.of<GitJournalRepo>(context, listen: false);
+        var stateContainer = context.read<GitJournalRepo>();
         stateContainer.moveNote(note, destFolder);
       }
     }
   }
 
   void _discardChangesSelected(Note note) async {
-    var stateContainer = Provider.of<GitJournalRepo>(context, listen: false);
+    var stateContainer = context.read<GitJournalRepo>();
     stateContainer.discardChanges(note);
 
     Navigator.pop(context);
