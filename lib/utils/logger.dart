@@ -211,8 +211,16 @@ class LogMessage {
     t = map['t'];
     l = map['l'];
     msg = map['msg'];
-    ex = map['ex'];
-    stack = map['stack'];
-    props = map['p'];
+    ex = _checkForNull(map['ex']);
+    stack = _checkForNull(map['stack']);
+    props = _checkForNull(map['p']);
   }
+}
+
+dynamic _checkForNull(dynamic e) {
+  if (e == null) return e;
+  if (e.runtimeType == String && e.toString().trim() == 'null') {
+    return null;
+  }
+  return e;
 }
