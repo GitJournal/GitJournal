@@ -64,7 +64,7 @@ class GitHub implements GitHost {
           response.body);
       throw GitHostException.OAuthFailed;
     }
-    Log.d("GithubResponse: " + response.body);
+    // Log.d("GithubResponse: " + response.body);
 
     var map = Uri.splitQueryString(response.body);
     return map["access_token"] ?? "";
