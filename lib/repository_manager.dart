@@ -11,18 +11,18 @@ import 'package:gitjournal/settings.dart';
 class RepositoryInfo {
   String id;
   String folderName;
-  IconData iconData;
+  // IconData iconData;
 
   RepositoryInfo.fromMap(Map<String, dynamic> map) {
     id = map['id'];
     folderName = map['folderName'];
-    iconData = IconData(map['iconData'] as int);
+    // iconData = IconData(map['iconData'] as int);
   }
 
   Map<String, dynamic> toMap() => {
         'id': id,
         'folderName': folderName,
-        'iconData': iconData.codePoint,
+        // 'iconData': iconData.codePoint,
       };
 }
 
