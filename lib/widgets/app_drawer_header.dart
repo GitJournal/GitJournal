@@ -177,7 +177,7 @@ class __CurrentRepoState extends State<_CurrentRepo>
 
     if (remoteConfigs == null || remoteConfigs.isEmpty) {
       setState(() {
-        _gitRemoteUrl = tr("drawer.remove");
+        _gitRemoteUrl = tr("drawer.remote");
       });
       return;
     }

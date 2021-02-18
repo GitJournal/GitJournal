@@ -298,7 +298,7 @@ drawer:
   rate: Rate Us
   feedback: Feedback
   bug: Bug Report
-  remote: Git Host Not Setup
+  remote: No Git Host
 setup:
   autoconfigure:
     title: We need permission to perform the following steps
