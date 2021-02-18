@@ -276,7 +276,7 @@ class FilterListTile extends StatelessWidget {
 
     switch (internalLevel) {
       case 'e':
-        return Icon(Icons.error, color: color);
+        return Icon(Icons.report, color: color);
       case 'w':
         return Icon(Icons.warning, color: color);
       case 'i':
