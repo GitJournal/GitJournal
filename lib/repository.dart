@@ -93,7 +93,10 @@ class GitJournalRepo with ChangeNotifier {
     if (remoteConfigured) {
       // Code path for 'branch is null' exception
       var branch = await repo.currentBranch();
-      if (branch == null) {
+      var head = await repo.head();
+      var branchConfig = repo.config.branch(branch);
+
+      if (branch == null || head == null || branchConfig == null) {
         var remoteConfig = repo.config.remotes[0];
         await cloneRemote(
           repoPath: repoPath,

@@ -1,6 +1,7 @@
 import 'package:dart_git/dart_git.dart';
 import 'package:git_bindings/git_bindings.dart' as git_bindings;
 import 'package:meta/meta.dart';
+import 'package:path/path.dart' as p;
 
 import 'package:gitjournal/utils/logger.dart';
 
@@ -44,7 +45,7 @@ Future<void> cloneRemote({
     if (remoteBranchName != null &&
         remoteBranchName.isNotEmpty &&
         remoteBranch != null) {
-      await repo.createBranch(remoteBranchName, remoteBranch.hash);
+      await repo.createBranch(remoteBranchName, hash: remoteBranch.hash);
       await repo.checkoutBranch(remoteBranchName);
     }
     await repo.setUpstreamTo(remote, remoteBranchName);
@@ -54,6 +55,14 @@ Future<void> cloneRemote({
 
     if (branch == remoteBranchName) {
       Log.i("Completing - localBranch: $branch");
+
+      var currentBranch = await repo.currentBranch();
+      if (currentBranch != branch) {
+        // Shit happens sometimes
+        // There is only one local branch, and that branch is not the current
+        // branch, wtf?
+        await repo.checkoutBranch(branch);
+      }
 
       await repo.setUpstreamTo(remote, remoteBranchName);
       var remoteBranch = await repo.remoteBranch(remoteName, remoteBranchName);
@@ -69,7 +78,7 @@ Future<void> cloneRemote({
       Log.i("Completing - localBranch diff remote: $branch $remoteBranchName");
 
       var headRef = await repo.resolveReference(await repo.head());
-      await repo.createBranch(remoteBranchName, headRef.hash);
+      await repo.createBranch(remoteBranchName, hash: headRef.hash);
       await repo.checkoutBranch(remoteBranchName);
 
       await repo.deleteBranch(branch);
