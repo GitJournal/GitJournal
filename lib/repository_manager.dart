@@ -7,33 +7,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/utils/logger.dart';
 
-class RepositoryInfo {
-  String id;
-  String folderName;
-  // IconData iconData;
-
-  RepositoryInfo.fromMap(Map<String, dynamic> map) {
-    id = map['id'];
-    folderName = map['folderName'];
-    // iconData = IconData(map['iconData'] as int);
-  }
-
-  Map<String, dynamic> toMap() => {
-        'id': id,
-        'folderName': folderName,
-        // 'iconData': iconData.codePoint,
-      };
-}
-
-// Make this info a change notifier where the current value is ?
-// -> things required to create the Repo?
 class RepositoryManager with ChangeNotifier {
-  List<String> repoIds;
-  String currentId;
+  var repoIds = <String>[];
+  var currentId = DEFAULT_ID;
 
   GitJournalRepo _repo;
-  RepositoryInfo _repoInfo;
 
   final String gitBaseDir;
   final String cacheDir;
@@ -44,18 +24,14 @@ class RepositoryManager with ChangeNotifier {
     @required this.cacheDir,
     @required this.pref,
   }) {
-    // From the pref load all the RepositoryInfos
+    _load();
+    Log.i("Repo Ids $repoIds");
+    Log.i("Current Id $currentId");
   }
 
   GitJournalRepo get currentRepo => _repo;
-  RepositoryInfo get currentRepoInfo => _repoInfo;
 
   Future<GitJournalRepo> buildActiveRepository() async {
-    if (_repo != null) {
-      return _repo;
-    }
-
-    currentId ??= DEFAULT_ID;
     var repoCacheDir = p.join(cacheDir, currentId);
     await Directory(repoCacheDir).create(recursive: true);
 
@@ -70,16 +46,46 @@ class RepositoryManager with ChangeNotifier {
     return _repo;
   }
 
-  Future<void> buildRepoInfoList() async {
-    // Add the latest folder, sort
-    // No need to do anything else
+  String repoFolderName(String id) {
+    return pref.getString(id + "_" + FOLDER_NAME_KEY) ?? "journal";
   }
 
-  // call notifyObservers();
-  // --> After that what?
+  Future<String> addRepo() async {
+    int i = repoIds.length;
+    while (repoIds.contains(i.toString())) {
+      i++;
+    }
 
-  // addRepo(info) -> id
-  // removeRepo(id)
-  // selectRepo(id)
-  // updateRepo(id, info)
+    var id = i.toString();
+    repoIds.add(id);
+    currentId = id;
+    await _save();
+
+    // Generate a default folder name!
+    await pref.setString(id + "_" + FOLDER_NAME_KEY, "repo_$id");
+    Log.i("Creating new repo with id: $id and folder: repo_$id");
+
+    await buildActiveRepository();
+
+    return id;
+  }
+
+  Future<void> _save() async {
+    await pref.setString("activeRepo", currentId);
+    await pref.setStringList("gitRepos", repoIds);
+  }
+
+  void _load() {
+    currentId = pref.getString("activeRepo") ?? DEFAULT_ID;
+    repoIds = pref.getStringList("gitRepos") ?? [DEFAULT_ID];
+  }
+
+  Future<void> setCurrentRepo(String id) async {
+    assert(repoIds.contains(id));
+    currentId = id;
+    await _save();
+
+    Log.i("Switching to repo with id: $id");
+    await buildActiveRepository();
+  }
 }

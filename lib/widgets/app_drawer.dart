@@ -14,6 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/repository.dart';
+import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/app_drawer_header.dart';
@@ -56,23 +57,21 @@ class _AppDrawerState extends State<AppDrawer>
 
   Widget _buildRepoList() {
     var divider = Row(children: <Widget>[const Expanded(child: Divider())]);
+    var repoManager = context.watch<RepositoryManager>();
+    var repoIds = repoManager.repoIds;
 
     Widget w = Column(
       children: <Widget>[
         const SizedBox(height: 8),
-        _buildDrawerTile(
-          context,
-          icon: FontAwesomeIcons.book,
-          isFontAwesome: true,
-          title: 'journal',
-          onTap: () => _navTopLevel(context, '/login'),
-          selected: false,
-        ),
+        for (var id in repoIds) RepoTile(id),
         _buildDrawerTile(
           context,
           icon: Icons.add,
           title: 'Add Repository',
-          onTap: () => _navTopLevel(context, '/login'),
+          onTap: () {
+            repoManager.addRepo();
+            Navigator.pop(context);
+          },
           selected: false,
         ),
         divider,
@@ -334,6 +333,39 @@ class _AppDrawerState extends State<AppDrawer>
     return Container(
       child: tile,
       color: selected ? theme.selectedRowColor : theme.scaffoldBackgroundColor,
+    );
+  }
+}
+
+class RepoTile extends StatelessWidget {
+  const RepoTile(
+    this.id, {
+    Key key,
+  }) : super(key: key);
+
+  final String id;
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    var listTileTheme = ListTileTheme.of(context);
+    var repoManager = context.watch<RepositoryManager>();
+
+    // FIXME: Improve marking the selected repo
+    var selected = repoManager.currentId == id;
+    var textStyle = theme.textTheme.bodyText1.copyWith(
+      color: selected ? theme.accentColor : listTileTheme.textColor,
+    );
+
+    var icon = FaIcon(FontAwesomeIcons.book, color: textStyle.color);
+
+    return ListTile(
+      leading: icon,
+      title: Text(repoManager.repoFolderName(id)),
+      onTap: () {
+        repoManager.setCurrentRepo(id);
+        Navigator.pop(context);
+      },
     );
   }
 }

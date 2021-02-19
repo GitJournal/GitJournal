@@ -14,6 +14,7 @@ import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 
 const DEFAULT_ID = "0";
+const FOLDER_NAME_KEY = "remoteGitRepoPath";
 
 class Settings extends ChangeNotifier {
   Settings(this.id);
@@ -142,7 +143,7 @@ class Settings extends ChangeNotifier {
         _getStringList(pref, "inlineTagPrefixes")?.toSet() ?? inlineTagPrefixes;
 
     // From AppState
-    folderName = _getString(pref, "remoteGitRepoPath") ?? folderName;
+    folderName = _getString(pref, FOLDER_NAME_KEY) ?? folderName;
 
     sshPublicKey = _getString(pref, "sshPublicKey") ?? sshPublicKey;
     sshPrivateKey = _getString(pref, "sshPrivateKey") ?? sshPrivateKey;
@@ -263,8 +264,7 @@ class Settings extends ChangeNotifier {
 
     await _setInt(pref, "settingsVersion", version, defaultSet.version);
 
-    await _setString(
-        pref, "remoteGitRepoPath", folderName, defaultSet.folderName);
+    await _setString(pref, FOLDER_NAME_KEY, folderName, defaultSet.folderName);
 
     notifyListeners();
   }

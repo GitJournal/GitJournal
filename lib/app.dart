@@ -64,9 +64,12 @@ class JournalApp extends StatefulWidget {
           child: Consumer<GitJournalRepo>(
             builder: (_, repo, __) => ChangeNotifierProvider<Settings>.value(
               value: repo.settings,
-              child: ChangeNotifierProvider<NotesFolderFS>.value(
-                child: JournalApp(),
-                value: repo.notesFolder,
+              child: Consumer<GitJournalRepo>(
+                builder: (_, repo, __) =>
+                    ChangeNotifierProvider<NotesFolderFS>.value(
+                  value: repo.notesFolder,
+                  child: JournalApp(),
+                ),
               ),
             ),
           ),
