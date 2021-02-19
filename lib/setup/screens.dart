@@ -566,7 +566,25 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       Event.GitHostSetupComplete,
       parameters: _buildOnboardingAnalytics(),
     );
-    await widget.onCompletedFunction(widget.repoFolderName, widget.remoteName);
+
+    var folderName = folderNameFromCloneUrl(_gitCloneUrl);
+    if (folderName != widget.repoFolderName) {
+      var newRepoPath = p.join(basePath, folderName);
+      var i = 0;
+      while (Directory(newRepoPath).existsSync()) {
+        i++;
+        newRepoPath = p.join(basePath, folderName + "_$i");
+      }
+      folderName = p.basename(newRepoPath);
+
+      var repoPath = p.join(basePath, widget.repoFolderName);
+      Log.i("Renaming $repoPath --> $newRepoPath");
+      await Directory(repoPath).rename(newRepoPath);
+      settings.folderName = p.basename(newRepoPath);
+    }
+
+    Log.i("calling onComplete $folderName ${widget.remoteName}");
+    await widget.onCompletedFunction(folderName, widget.remoteName);
     Navigator.pop(context);
   }
 

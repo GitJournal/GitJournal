@@ -92,6 +92,9 @@ Future<void> cloneRemote({
       );
     }
   }
+
+  // Just to be on the safer side, incase dart-git fucks up something
+  await repo.checkout(".");
 }
 
 Future<String> _remoteDefaultBranch({
@@ -122,6 +125,14 @@ Future<String> _remoteDefaultBranch({
     return 'master';
   }
   return remoteBranch.target.branchName();
+}
+
+String folderNameFromCloneUrl(String cloneUrl) {
+  var name = p.basename(cloneUrl);
+  if (name.endsWith('.git')) {
+    name = name.substring(0, name.length - 4);
+  }
+  return name;
 }
 
 // Test Cases -

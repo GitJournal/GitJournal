@@ -419,14 +419,13 @@ class GitJournalRepo with ChangeNotifier {
 
   Future<void> completeGitHostSetup(
       String repoFolderName, String remoteName) async {
-    var repoPath = p.join(gitBaseDirectory, repoFolderName);
-    Log.i("completeGitHostSetup repoPath: $repoPath");
+    repoPath = p.join(gitBaseDirectory, repoFolderName);
+    Log.i("repoPath: $repoPath");
 
     _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);
 
     await _addFileInRepo(repo: this, settings: settings);
 
-    this.repoPath = repoPath;
     _notesCache.clear();
     remoteGitRepoConfigured = true;
     notesFolder.reset(repoPath);
