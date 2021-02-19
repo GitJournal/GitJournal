@@ -516,10 +516,16 @@ Future<bool> _isDirWritable(String path) async {
 }
 
 Future<String> _getExternalDir() async {
+  if (!await Permission.storage.request().isGranted) {
+    return "";
+  }
+
   var dir = await FilePicker.platform.getDirectoryPath();
   if (dir != null && dir.isNotEmpty) {
     if (await _isDirWritable(dir)) {
       return dir;
+    } else {
+      Log.e("FilePicker: Got $dir but it is not writable");
     }
   }
 
@@ -531,6 +537,8 @@ Future<String> _getExternalDir() async {
   var path = await ExtStorage.getExternalStorageDirectory();
   if (await _isDirWritable(path)) {
     return path;
+  } else {
+    Log.e("ExtStorage: Got $path but it is not writable");
   }
 
   var extDir = await getExternalStorageDirectory();
@@ -538,6 +546,8 @@ Future<String> _getExternalDir() async {
 
   if (await _isDirWritable(path)) {
     return path;
+  } else {
+    Log.e("ExternalStorageDirectory: Got $path but it is not writable");
   }
 
   return "";
