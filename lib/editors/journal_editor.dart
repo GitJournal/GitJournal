@@ -57,7 +57,7 @@ class JournalEditorState extends State<JournalEditor>
     with DisposableChangeNotifier
     implements EditorState {
   Note note;
-  TextEditingController _textController = TextEditingController();
+  var _textController = TextEditingController();
   bool _noteModified;
 
   EditorHeuristics _heuristics;

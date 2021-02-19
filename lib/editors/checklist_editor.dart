@@ -50,7 +50,7 @@ class ChecklistEditor extends StatefulWidget implements Editor {
 
   @override
   ChecklistEditorState createState() {
-    return ChecklistEditorState(note);
+    return ChecklistEditorState();
   }
 }
 
@@ -61,26 +61,42 @@ class ChecklistEditorState extends State<ChecklistEditor>
   var focusNodes = <UniqueKey, FocusScopeNode>{};
   var keys = <UniqueKey, ChecklistItem>{};
 
-  TextEditingController _titleTextController = TextEditingController();
+  var _titleTextController = TextEditingController();
   bool _noteModified;
-
-  ChecklistEditorState(Note note) {
-    _titleTextController = TextEditingController(text: note.title);
-    checklist = Checklist(note);
-  }
 
   @override
   void initState() {
     super.initState();
+    _init();
+  }
+
+  void _init() {
+    var note = widget.note;
+    _titleTextController = TextEditingController(text: note.title);
+    checklist = Checklist(note);
+
     _noteModified = widget.noteModified;
 
     if (checklist.items.isEmpty) {
       var item = checklist.buildItem(false, "");
       checklist.addItem(item);
     }
+    focusNodes = {};
+    keys = {};
     for (var item in checklist.items) {
       keys[UniqueKey()] = item;
     }
+  }
+
+  @override
+  void didUpdateWidget(ChecklistEditor oldWidget) {
+    if (oldWidget.noteModified != widget.noteModified) {
+      _noteModified = widget.noteModified;
+    }
+    if (oldWidget.note != widget.note) {
+      _init();
+    }
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -89,15 +105,6 @@ class ChecklistEditorState extends State<ChecklistEditor>
 
     super.disposeListenables();
     super.dispose();
-  }
-
-  @override
-  void didUpdateWidget(ChecklistEditor oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.noteModified != widget.noteModified) {
-      _noteModified = widget.noteModified;
-    }
   }
 
   UniqueKey _getKey(ChecklistItem item) {
