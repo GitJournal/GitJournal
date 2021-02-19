@@ -126,6 +126,8 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
       setState(() {
         errorMessage = e.toString();
       });
+    } else {
+      Log.e("Ignore error as not mounted", ex: e, stacktrace: stacktrace);
     }
 
     logEvent(Event.GitHostSetupError, parameters: {
