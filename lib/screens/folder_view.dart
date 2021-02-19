@@ -59,6 +59,10 @@ class _FolderViewState extends State<FolderView> {
   @override
   void initState() {
     super.initState();
+    _init();
+  }
+
+  void _init() {
     sortedNotesFolder = SortedNotesFolder(
       folder: widget.notesFolder,
       sortingMode: widget.notesFolder.config.sortingMode,
@@ -67,6 +71,15 @@ class _FolderViewState extends State<FolderView> {
     _viewType = widget.notesFolder.config.defaultView;
     _showSummary = widget.notesFolder.config.showNoteSummary;
     _headerType = widget.notesFolder.config.viewHeader;
+  }
+
+  @override
+  void didUpdateWidget(FolderView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.notesFolder != widget.notesFolder) {
+      _init();
+    }
   }
 
   @override
