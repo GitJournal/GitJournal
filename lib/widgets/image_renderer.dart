@@ -110,7 +110,8 @@ Widget _handleSvg(final String string, double width, final double height,
       override == ThemeOverride.noTheme) {
     return SvgPicture.string(string, width: width, height: height);
   }
-  if (settings.themeVectorGraphics == SettingsThemeVectorGraphics.Filter) {
+  if (settings.themeVectorGraphics == SettingsThemeVectorGraphics.Filter &&
+      dark) {
     return themeFilter(SvgPicture.string(string, width: width, height: height),
         theme.canvasColor);
   }
