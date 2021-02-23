@@ -1,5 +1,8 @@
 - version: "1.74"
   draft: true
+  features:
+    - text: "Support Multiple Repos #229"
+      image: repos.gif
   improvements:
     - text: "Add Date Only FileName option #346"
     - text: "Ignore folders with a .gjignore file. It's a temporary hack untill we start reading the .gjignore files like the .gitignore files"
