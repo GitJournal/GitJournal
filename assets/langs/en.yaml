@@ -300,6 +300,7 @@ drawer:
   feedback: Feedback
   bug: Bug Report
   remote: No Git Host
+  addRepo: Add Repository
 setup:
   autoconfigure:
     title: We need permission to perform the following steps

@@ -41,11 +41,11 @@ class Features {
     Feature.singleJournalEntry,
     Feature.configureBottomMenuBar,
     Feature.customFileNamePerEditor,
+    Feature.multiRepos,
   ];
 
   static final inProgress = <String>[
     tr("feature.graphVisualization"),
-    tr("feature.mutliRepos"),
     tr("feature.gitLog"),
     tr("feature.markdownToolbar"),
   ];
@@ -352,6 +352,14 @@ class Feature {
     "customFileNamePerEditor",
     DateTime(2020, 10, 05),
     tr("feature.customFileNamePerEditor"),
+    "",
+    true,
+  );
+
+  static final multiRepos = Feature(
+    "multiRepos",
+    DateTime(2021, 02, 20),
+    tr("feature.mutliRepos"),
     "",
     true,
   );

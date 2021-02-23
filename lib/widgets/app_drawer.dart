@@ -13,11 +13,13 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/analytics.dart';
 import 'package:gitjournal/app_settings.dart';
+import 'package:gitjournal/features.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/app_drawer_header.dart';
+import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class AppDrawer extends StatefulWidget {
   @override
@@ -64,15 +66,18 @@ class _AppDrawerState extends State<AppDrawer>
       children: <Widget>[
         const SizedBox(height: 8),
         for (var id in repoIds) RepoTile(id),
-        _buildDrawerTile(
-          context,
-          icon: Icons.add,
-          title: 'Add Repository',
-          onTap: () {
-            repoManager.addRepo();
-            Navigator.pop(context);
-          },
-          selected: false,
+        ProOverlay(
+          feature: Feature.multiRepos,
+          child: _buildDrawerTile(
+            context,
+            icon: Icons.add,
+            title: tr('drawer.addRepo'),
+            onTap: () {
+              repoManager.addRepo();
+              Navigator.pop(context);
+            },
+            selected: false,
+          ),
         ),
         divider,
       ],
