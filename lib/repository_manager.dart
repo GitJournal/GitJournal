@@ -88,4 +88,28 @@ class RepositoryManager with ChangeNotifier {
     Log.i("Switching to repo with id: $id");
     await buildActiveRepository();
   }
+
+  Future<void> deleteCurrent() async {
+    if (repoIds.length == 1) {
+      throw Exception("Last Repo cannot be deleted");
+    }
+
+    Log.i("Deleting repo: $currentId");
+
+    var i = repoIds.indexOf(currentId);
+
+    var repoPath = _repo.repoPath;
+    var cachePath = _repo.cacheDir;
+
+    await Directory(repoPath).delete(recursive: true);
+    await Directory(cachePath).delete(recursive: true);
+
+    repoIds.removeAt(i);
+
+    i = i.clamp(0, repoIds.length - 1);
+    currentId = repoIds[i];
+
+    await _save();
+    await buildActiveRepository();
+  }
 }

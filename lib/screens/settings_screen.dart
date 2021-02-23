@@ -17,6 +17,7 @@ import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/repository.dart';
+import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/screens/debug_screen.dart';
 import 'package:gitjournal/screens/feature_timeline_screen.dart';
 import 'package:gitjournal/screens/settings_bottom_menu_bar.dart';
@@ -69,6 +70,7 @@ class SettingsListState extends State<SettingsList> {
     var settings = Provider.of<Settings>(context);
     var appSettings = Provider.of<AppSettings>(context);
     final repo = Provider.of<GitJournalRepo>(context);
+    var repoManager = Provider.of<RepositoryManager>(context);
 
     var saveGitAuthor = (String gitAuthor) {
       settings.gitAuthor = gitAuthor;
@@ -377,6 +379,26 @@ class SettingsListState extends State<SettingsList> {
           Navigator.of(context).push(route);
         },
       ),
+      if (repoManager.repoIds.length > 1)
+        RedButton(
+          text: tr('settings.deleteRepo'),
+          onPressed: () async {
+            var ok = await showDialog(
+              context: context,
+              builder: (_) => IrreversibleActionConfirmationDialog(
+                tr('settings.deleteRepo'),
+              ),
+            );
+            if (ok == null) {
+              return;
+            }
+
+            var repoManager = context.read<RepositoryManager>();
+            await repoManager.deleteCurrent();
+
+            Navigator.popUntil(context, (route) => route.isFirst);
+          },
+        ),
       const SizedBox(height: 16.0),
       ListTile(
         title: Text(tr("feature_timeline.title")),

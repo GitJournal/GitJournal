@@ -152,6 +152,7 @@ settings:
     title: Bottom Menu Bar
     subtitle: Configure its appearance and behaviour
     enable: Enable Buttom Menu Bar
+  deleteRepo: Delete Repository
 
 editors:
   checklist:

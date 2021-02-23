@@ -180,7 +180,9 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
   void _resetGitHost() async {
     var ok = await showDialog(
       context: context,
-      builder: (_) => HostChangeConfirmationDialog(),
+      builder: (_) => IrreversibleActionConfirmationDialog(
+        tr("settings.gitRemote.changeHost.title"),
+      ),
     );
     if (ok == null) {
       return;
@@ -266,11 +268,15 @@ class RedButton extends StatelessWidget {
   }
 }
 
-class HostChangeConfirmationDialog extends StatelessWidget {
+class IrreversibleActionConfirmationDialog extends StatelessWidget {
+  final String title;
+
+  IrreversibleActionConfirmationDialog(this.title);
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(tr("settings.gitRemote.changeHost.title")),
+      title: Text(title),
       content: Text(tr("settings.gitRemote.changeHost.subtitle")),
       actions: <Widget>[
         FlatButton(
