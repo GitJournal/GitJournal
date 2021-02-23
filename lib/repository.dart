@@ -79,13 +79,18 @@ class GitJournalRepo with ChangeNotifier {
     Log.i("Loading Repo at path $repoPath");
 
     var repoDir = Directory(repoPath);
-    var repoDirStat = repoDir.statSync();
 
-    if (repoDirStat.type != FileSystemEntityType.directory) {
+    if (!repoDir.existsSync()) {
       Log.i("Calling GitInit for ${settings.folderName} at: $repoPath");
       await GitRepository.init(repoPath);
 
       settings.save();
+    }
+
+    var valid = await GitRepository.isValidRepo(repoPath);
+    if (!valid) {
+      // What happened that the directory still exists but the .git folder
+      // has disappeared?
     }
 
     var repo = await GitRepository.load(repoPath);
