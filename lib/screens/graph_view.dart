@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/graph.dart';
-import 'package:gitjournal/core/interactive_viewer.dart' as fork;
 import 'package:gitjournal/core/notes_folder_fs.dart';
 
 class GraphViewScreen extends StatefulWidget {
@@ -56,7 +55,7 @@ class GraphView extends StatefulWidget {
 
 class _GraphViewState extends State<GraphView> {
   final nodeSize = 50.0;
-  fork.TransformationController transformationController;
+  TransformationController transformationController;
 
   @override
   void initState() {
@@ -67,7 +66,7 @@ class _GraphViewState extends State<GraphView> {
       setState(() {});
     });
 
-    transformationController = fork.TransformationController();
+    transformationController = TransformationController();
   }
 
   Offset _getLocationPosition(Offset globalPos) {
@@ -143,7 +142,7 @@ class _GraphViewState extends State<GraphView> {
       ),
     );
 
-    return fork.InteractiveViewer(
+    return InteractiveViewer(
       child: view,
       panEnabled: true,
       constrained: false,
