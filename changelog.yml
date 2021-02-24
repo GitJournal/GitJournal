@@ -1,5 +1,6 @@
 - version: "1.74"
   date: 2021-02-23
+  reddit: https://www.reddit.com/r/GitJournal/comments/lr9n0r/gitjournal_v174/
   features:
     - text: "Support Multiple Repos #229"
       image: repos.gif
