@@ -7,7 +7,7 @@
   improvements:
     - text: "Add Date Only FileName option #346"
     - text: "Ignore folders with a .gjignore file. It's a temporary hack until we start reading the .gjignore files like the .gitignore files"
-    - text: "Add a working Experimental Markdown Toolbar"
+    - text: "Add a working Experimental Markdown Toolbar. This can be enabled from the Settings."
       image: markdown_toolbar.jpeg
     - text: "Basic Undo/Redo support for Raw Editor"
     - text: "Automatically use dark mode based on system settings - #193"
