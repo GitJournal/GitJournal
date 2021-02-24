@@ -76,9 +76,7 @@ Future<void> cloneRemote({
       }
     } else {
       Log.i("Completing - localBranch diff remote: $branch $remoteBranchName");
-
-      var headRef = await repo.resolveReference(await repo.head());
-      await repo.createBranch(remoteBranchName, hash: headRef.hash);
+      await repo.createBranch(remoteBranchName);
       await repo.checkoutBranch(remoteBranchName);
 
       await repo.deleteBranch(branch);
