@@ -5,7 +5,7 @@
       image: repos.gif
   improvements:
     - text: "Add Date Only FileName option #346"
-    - text: "Ignore folders with a .gjignore file. It's a temporary hack untill we start reading the .gjignore files like the .gitignore files"
+    - text: "Ignore folders with a .gjignore file. It's a temporary hack until we start reading the .gjignore files like the .gitignore files"
     - text: "Add a working Experimental Markdown Toolbar"
     - text: "Basic Undo/Redo support for Raw Editor"
     - text: "Automatically use dark mode based on system settings - #193"
@@ -85,7 +85,7 @@
   date: 2020-08-31
   features:
     - title: One Time Purchase
-      text: "I'm changing the buisness model from typical subscriptions to a model where you forever own the features you have paid for. The earlier monthly subscription is still available, but that will automatically convert into a One Time Purchase after 12 months."
+      text: "I'm changing the business model from typical subscriptions to a model where you forever own the features you have paid for. The earlier monthly subscription is still available, but that will automatically convert into a One Time Purchase after 12 months."
       image: new_pro.gif
     - title: Zettelkasten filename format
       text: Allow notes to be saved with the 'yyyymmddmmhhss' format
@@ -98,7 +98,7 @@
       text: Make it clearer that GitJournal will require permissions to all your repos
       image: oauth_perm_screen.jpeg
     - text: Beautify the purchase slider
-    - text: Allow `tags` to be a space seperated string in the YAML header. Earlier it had to be list.
+    - text: Allow `tags` to be a space separated string in the YAML header. Earlier it had to be list.
     - text: Show `Pro mode` label in AppBar for pro members
       image: pro_tag.jpeg
   bugs:
@@ -134,9 +134,9 @@
   date: 2020-08-11
   features:
     - text: Make Wiki Link resolution be similar to the way it is done in Obsidian
-    - text: "Support Piped Wiki Links format `[[fileName | text-to-dispaly]]` - #203"
+    - text: "Support Piped Wiki Links format `[[fileName | text-to-display]]` - #203"
     - text: Allow 'tags' metadata field to be configured
-    - text: Allow 'created' metdata field to be configured
+    - text: Allow 'created' metadata field to be configured
   bugs:
     - text: "Fix annoying cursor not moving for spaces bug - #131"
 
