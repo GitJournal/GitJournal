@@ -31,6 +31,7 @@ import 'package:gitjournal/screens/note_editor.dart';
 
 const DEFAULT_ID = "0";
 const FOLDER_NAME_KEY = "remoteGitRepoPath";
+const SETTINGS_VERSION = 3;
 
 class Settings extends ChangeNotifier {
   Settings(this.id);
@@ -63,7 +64,7 @@ class Settings extends ChangeNotifier {
   SettingsFolderViewType defaultView = SettingsFolderViewType.Default;
   bool showNoteSummary = true;
   String folderViewHeaderType = "TitleGenerated";
-  int version = 3;
+  int version = SETTINGS_VERSION;
 
   SettingsHomeScreen homeScreen = SettingsHomeScreen.Default;
   SettingsTheme theme = SettingsTheme.Default;
