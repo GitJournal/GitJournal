@@ -427,6 +427,9 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     var repoPath = p.join(basePath, widget.repoFolderName);
 
     try {
+      if (!await GitRepository.isValidRepo(repoPath)) {
+        await GitRepository.init(repoPath);
+      }
       var repo = await GitRepository.load(repoPath);
       await repo.removeRemote(widget.remoteName);
     } on Exception catch (e, stacktrace) {
