@@ -30,10 +30,12 @@ Future<void> migrateSettings(
       var oldName = p.join(gitBaseDir, "journal_local");
       var newName = p.join(gitBaseDir, "journal");
 
-      await Directory(oldName).rename(newName);
-      var folderName = "journal";
+      if (Directory(oldName).existsSync()) {
+        await Directory(oldName).rename(newName);
+        var folderName = "journal";
 
-      await pref.setString('remoteGitRepoPath', folderName);
+        await pref.setString('remoteGitRepoPath', folderName);
+      }
     }
 
     var oldDir = Directory(p.join(gitBaseDir, '../files'));
