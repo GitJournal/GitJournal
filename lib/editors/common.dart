@@ -36,6 +36,10 @@ class TextEditorState {
   TextEditorState.fromValue(TextEditingValue val) {
     text = val.text;
     cursorPos = val.selection.baseOffset;
+
+    if (cursorPos == -1) {
+      cursorPos = 0;
+    }
   }
 
   TextEditingValue toValue() {
