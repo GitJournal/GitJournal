@@ -121,6 +121,10 @@ class NotesCache {
       rethrow;
     }
 
+    if (contents.isEmpty) {
+      return [];
+    }
+
     try {
       return json.decode(contents).cast<String>();
     } catch (ex, st) {
@@ -131,8 +135,12 @@ class NotesCache {
   }
 
   @visibleForTesting
-  Future<void> saveToDisk(List<String> files) {
+  Future<void> saveToDisk(List<String> files) async {
     var contents = json.encode(files);
-    return File(filePath).writeAsString(contents);
+    var newFilePath = filePath + ".new";
+
+    var file = File(newFilePath);
+    await file.writeAsString(contents);
+    await file.rename(filePath);
   }
 }
