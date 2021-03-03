@@ -125,9 +125,6 @@ class AppRouter {
 
       var rootFolder = repository.notesFolder;
 
-      Log.d("sharedText: $sharedText");
-      Log.d("sharedImages: $sharedImages");
-
       var extraProps = <String, dynamic>{};
       if (settings.customMetaData.isNotEmpty) {
         var map = MarkdownYAMLCodec.parseYamlText(settings.customMetaData);
