@@ -1,5 +1,6 @@
 /*
 Copyright 2020-2021 Vishesh Handa <me@vhanda.in>
+                    Roland Fredenhagen <important@van-fredenhagen.de>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -68,6 +69,28 @@ class Settings extends ChangeNotifier {
 
   SettingsHomeScreen homeScreen = SettingsHomeScreen.Default;
   SettingsTheme theme = SettingsTheme.Default;
+
+  // Display - Image - Theming
+  bool themeRasterGraphics = false;
+  SettingsImageTextType themeOverrideTagLocation =
+      SettingsImageTextType.Default;
+  Set<String> doNotThemeTags = {"notheme", "!nt"};
+  Set<String> doThemeTags = {"dotheme", "!dt"};
+  SettingsThemeVectorGraphics themeVectorGraphics =
+      SettingsThemeVectorGraphics.Default;
+  bool themeSvgWithBackground = false;
+  bool matchCanvasColor = true;
+  SettingsVectorGraphicsAdjustColors vectorGraphicsAdjustColors =
+      SettingsVectorGraphicsAdjustColors.Default;
+
+  // Display - Image - Caption
+  bool overlayCaption = true;
+  bool transparentCaption = true;
+  bool blurBehindCaption = true;
+  bool tooltipFirst = false;
+  SettingsImageTextType useAsCaption = SettingsImageTextType.Default;
+  Set<String> doNotCaptionTags = {"nocaption", "!nc"};
+  Set<String> doCaptionTags = {"docaption", "!dc"};
 
   SettingsMarkdownDefaultView markdownDefaultView =
       SettingsMarkdownDefaultView.Default;
@@ -148,6 +171,35 @@ class Settings extends ChangeNotifier {
         SettingsHomeScreen.fromInternalString(_getString(pref, "homeScreen"));
     theme = SettingsTheme.fromInternalString(_getString(pref, "theme"));
 
+    // Display - Image - Theming
+    themeRasterGraphics =
+        _getBool(pref, "themeRasterGraphics") ?? themeRasterGraphics;
+    themeOverrideTagLocation = SettingsImageTextType.fromInternalString(
+        _getString(pref, "themeOverrideTagLocation"));
+    doNotThemeTags = _getStringSet(pref, "doNotThemeTags") ?? doNotThemeTags;
+    doThemeTags = _getStringSet(pref, "doThemeTags") ?? doThemeTags;
+    themeVectorGraphics = SettingsThemeVectorGraphics.fromInternalString(
+        _getString(pref, "themeVectorGraphics"));
+    themeSvgWithBackground =
+        _getBool(pref, "themeSvgWithBackground") ?? themeSvgWithBackground;
+    matchCanvasColor = _getBool(pref, "matchCanvasColor") ?? matchCanvasColor;
+    vectorGraphicsAdjustColors =
+        SettingsVectorGraphicsAdjustColors.fromInternalString(
+            _getString(pref, "vectorGraphicsAdjustColors"));
+
+    // Display - Image - Caption
+    overlayCaption = _getBool(pref, "overlayCaption") ?? overlayCaption;
+    transparentCaption =
+        _getBool(pref, "transparentCaption") ?? transparentCaption;
+    blurBehindCaption =
+        _getBool(pref, "blurBehindCaption") ?? blurBehindCaption;
+    tooltipFirst = _getBool(pref, "tooltipFirst") ?? tooltipFirst;
+    useAsCaption = SettingsImageTextType.fromInternalString(
+        _getString(pref, "useAsCaption"));
+    doNotCaptionTags =
+        _getStringSet(pref, "doNotCaptionTag") ?? doNotCaptionTags;
+    doCaptionTags = _getStringSet(pref, "doCaptionTag") ?? doCaptionTags;
+
     imageLocationSpec =
         _getString(pref, "imageLocationSpec") ?? imageLocationSpec;
 
@@ -182,6 +234,10 @@ class Settings extends ChangeNotifier {
 
   List<String> _getStringList(SharedPreferences pref, String key) {
     return pref.getStringList(id + '_' + key);
+  }
+
+  Set<String> _getStringSet(SharedPreferences pref, String key) {
+    return _getStringList(pref, key)?.toSet();
   }
 
   int _getInt(SharedPreferences pref, String key) {
@@ -255,6 +311,49 @@ class Settings extends ChangeNotifier {
         defaultSet.homeScreen.toInternalString());
     await _setString(pref, "theme", theme.toInternalString(),
         defaultSet.theme.toInternalString());
+
+    // Display - Image - Theme
+    await _setBool(pref, "themeRasterGraphics", themeRasterGraphics,
+        defaultSet.themeRasterGraphics);
+    await _setString(
+        pref,
+        "themeOverrideTagLocation",
+        themeOverrideTagLocation.toInternalString(),
+        defaultSet.themeOverrideTagLocation.toInternalString());
+    await _setStringSet(
+        pref, "doNotThemeTags", doNotThemeTags, defaultSet.doNotThemeTags);
+    await _setStringSet(
+        pref, "doThemeTags", doThemeTags, defaultSet.doThemeTags);
+    await _setString(
+        pref,
+        "themeVectorGraphics",
+        themeVectorGraphics.toInternalString(),
+        defaultSet.themeVectorGraphics.toInternalString());
+    await _setBool(pref, "themeSvgWithBackground", themeSvgWithBackground,
+        defaultSet.themeSvgWithBackground);
+    await _setBool(pref, "matchCanvasColor", matchCanvasColor,
+        defaultSet.matchCanvasColor);
+    await _setString(
+        pref,
+        "vectorGraphicsAdjustColors",
+        vectorGraphicsAdjustColors.toInternalString(),
+        defaultSet.vectorGraphicsAdjustColors.toInternalString());
+
+    // Display - Image - Caption
+    await _setBool(
+        pref, "overlayCaption", overlayCaption, defaultSet.overlayCaption);
+    await _setBool(pref, "transparentCaption", transparentCaption,
+        defaultSet.transparentCaption);
+    await _setBool(pref, "blurBehindCaption", blurBehindCaption,
+        defaultSet.blurBehindCaption);
+    await _setBool(pref, "tooltipFirst", tooltipFirst, defaultSet.tooltipFirst);
+    await _setString(pref, "useAsCaption", useAsCaption.toInternalString(),
+        defaultSet.useAsCaption.toInternalString());
+    await _setStringSet(
+        pref, "doNotCaptionTag", doNotCaptionTags, defaultSet.doNotCaptionTags);
+    await _setStringSet(
+        pref, "doCaptionTag", doCaptionTags, defaultSet.doCaptionTags);
+
     await _setString(pref, "imageLocationSpec", imageLocationSpec,
         defaultSet.imageLocationSpec);
     await _setBool(pref, "zenMode", zenMode, defaultSet.zenMode);
@@ -372,6 +471,25 @@ class Settings extends ChangeNotifier {
       'markdownLastUsedView': markdownLastUsedView.toInternalString(),
       'homeScreen': homeScreen.toInternalString(),
       'theme': theme.toInternalString(),
+      // Display - Image - Theming
+      'themeRasterGraphics': themeRasterGraphics.toString(),
+      'themeOverrideTagLocation': themeOverrideTagLocation.toInternalString(),
+      'doNotThemeTags': csvTags(doNotThemeTags),
+      'doThemeTags': csvTags(doThemeTags),
+      'themeVectorGraphics': themeVectorGraphics.toInternalString(),
+      'themeSvgWithBackground': themeSvgWithBackground.toString(),
+      'matchCanvasColor': matchCanvasColor.toString(),
+      'vectorGraphicsAdjustColors':
+          vectorGraphicsAdjustColors.toInternalString(),
+      // Display - Image - Caption
+      'overlayCaption': overlayCaption.toString(),
+      'transparentCaption': transparentCaption.toString(),
+      'blurBehindCaption': blurBehindCaption.toString(),
+      'tooltipFirst': tooltipFirst.toString(),
+      'useAsCaption': useAsCaption.toInternalString(),
+      'doNotCaptionTag': csvTags(doNotCaptionTags),
+      'doCaptionTag': csvTags(doCaptionTags),
+      //
       'imageLocationSpec': imageLocationSpec,
       'zenMode': zenMode.toString(),
       'titleSettings': titleSettings.toInternalString(),
@@ -427,7 +545,7 @@ class NoteFileNameFormat {
   static const FromTitle =
       NoteFileNameFormat("FromTitle", 'settings.NoteFileNameFormat.title');
   static const SimpleDate =
-      NoteFileNameFormat("SimpleDate", 'settings.NoteFileNameFormat.simmple');
+      NoteFileNameFormat("SimpleDate", 'settings.NoteFileNameFormat.simple');
   static const UuidV4 =
       NoteFileNameFormat("uuidv4", 'settings.NoteFileNameFormat.uuid');
   static const Zettelkasten = NoteFileNameFormat(
@@ -804,6 +922,169 @@ class SettingsHomeScreen {
   }
 }
 
+class SettingsImageTextType {
+  static const AltTool = SettingsImageTextType(
+      "settings.display.images.imageTextType.altAndTooltip", "alt_and_tooltip");
+  static const Tooltip = SettingsImageTextType(
+      "settings.display.images.imageTextType.tooltip", "tooltip");
+  static const Alt =
+      SettingsImageTextType("settings.display.images.imageTextType.alt", "alt");
+  static const None = SettingsImageTextType(
+      "settings.display.images.imageTextType.none", "none");
+  static const Default = AltTool;
+
+  final String _str;
+  final String _publicString;
+  const SettingsImageTextType(this._publicString, this._str);
+
+  String toInternalString() {
+    return _str;
+  }
+
+  String toPublicString() {
+    return tr(_publicString);
+  }
+
+  static const options = <SettingsImageTextType>[
+    AltTool,
+    Tooltip,
+    Alt,
+    None,
+  ];
+
+  static SettingsImageTextType fromInternalString(String str) {
+    for (var opt in options) {
+      if (opt.toInternalString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  static SettingsImageTextType fromPublicString(String str) {
+    for (var opt in options) {
+      if (opt.toPublicString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  @override
+  String toString() {
+    assert(false,
+        "SettingsThemeOverrideTagLocation toString should never be called");
+    return "";
+  }
+}
+
+class SettingsThemeVectorGraphics {
+  static const On = SettingsThemeVectorGraphics(
+      "settings.display.images.theming.themeVectorGraphics.on", "on");
+  static const Off = SettingsThemeVectorGraphics(
+      "settings.display.images.theming.themeVectorGraphics.off", "off");
+  static const Filter = SettingsThemeVectorGraphics(
+      "settings.display.images.theming.themeVectorGraphics.filter", "filter");
+  static const Default = On;
+
+  final String _str;
+  final String _publicString;
+  const SettingsThemeVectorGraphics(this._publicString, this._str);
+
+  String toInternalString() {
+    return _str;
+  }
+
+  String toPublicString() {
+    return tr(_publicString);
+  }
+
+  static const options = <SettingsThemeVectorGraphics>[
+    On,
+    Off,
+    Filter,
+  ];
+
+  static SettingsThemeVectorGraphics fromInternalString(String str) {
+    for (var opt in options) {
+      if (opt.toInternalString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  static SettingsThemeVectorGraphics fromPublicString(String str) {
+    for (var opt in options) {
+      if (opt.toPublicString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  @override
+  String toString() {
+    assert(
+        false, "SettingsThemeVectorGraphics toString should never be called");
+    return "";
+  }
+}
+
+class SettingsVectorGraphicsAdjustColors {
+  static const All = SettingsVectorGraphicsAdjustColors(
+      "settings.display.images.theming.adjustColors.all", "all");
+  static const BnW = SettingsVectorGraphicsAdjustColors(
+      "settings.display.images.theming.adjustColors.blackAndWhite",
+      "black_and_white");
+  static const Grays = SettingsVectorGraphicsAdjustColors(
+      "settings.display.images.theming.adjustColors.grays", "grays");
+  static const Default = All;
+
+  final String _str;
+  final String _publicString;
+  const SettingsVectorGraphicsAdjustColors(this._publicString, this._str);
+
+  String toInternalString() {
+    return _str;
+  }
+
+  String toPublicString() {
+    return tr(_publicString);
+  }
+
+  static const options = <SettingsVectorGraphicsAdjustColors>[
+    BnW,
+    Grays,
+    All,
+  ];
+
+  static SettingsVectorGraphicsAdjustColors fromInternalString(String str) {
+    for (var opt in options) {
+      if (opt.toInternalString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  static SettingsVectorGraphicsAdjustColors fromPublicString(String str) {
+    for (var opt in options) {
+      if (opt.toPublicString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  @override
+  String toString() {
+    assert(false,
+        "SettingsVectorGraphicsAdjustColors toString should never be called");
+    return "";
+  }
+}
+
 String generateRandomId() {
   return Uuid().v4().substring(0, 8);
 }
@@ -919,4 +1200,17 @@ class SettingsTitle {
     assert(false, "SettingsTitle toString should never be called");
     return "";
   }
+}
+
+Set<String> parseTags(String tags) {
+  return tags
+      .toLowerCase()
+      .split(",")
+      .map((e) => e.trim())
+      .where((e) => e.isNotEmpty)
+      .toSet();
+}
+
+String csvTags(Set<String> tags) {
+  return tags.join(", ");
 }

@@ -1,5 +1,6 @@
 /*
 Copyright 2020-2021 Vishesh Handa <me@vhanda.in>
+                    Roland Fredenhagen <important@van-fredenhagen.de>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -37,6 +38,7 @@ import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/screens/debug_screen.dart';
 import 'package:gitjournal/screens/feature_timeline_screen.dart';
 import 'package:gitjournal/screens/settings_bottom_menu_bar.dart';
+import 'package:gitjournal/screens/settings_display_images.dart';
 import 'package:gitjournal/screens/settings_editors.dart';
 import 'package:gitjournal/screens/settings_experimental.dart';
 import 'package:gitjournal/screens/settings_git_remote.dart';
@@ -183,6 +185,17 @@ class SettingsListState extends State<SettingsList> {
           settings.theme = s;
           settings.save();
           setState(() {});
+        },
+      ),
+      ListTile(
+        title: Text(tr("settings.display.images.title")),
+        subtitle: Text(tr("settings.display.images.subtitle")),
+        onTap: () {
+          var route = MaterialPageRoute(
+            builder: (context) => SettingsDisplayImagesScreen(),
+            settings: const RouteSettings(name: '/settings/display_images'),
+          );
+          Navigator.of(context).push(route);
         },
       ),
       ProOverlay(
