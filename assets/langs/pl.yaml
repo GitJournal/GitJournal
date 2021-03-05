@@ -124,7 +124,7 @@ settings:
     iso8601WithoutColon: ISO8601 bez dwukropków
     title: Tytuł
     uuid: Uuid V4
-    simmple: yyyy-mm-dd-hh-mm-ss
+    simple: yyyy-mm-dd-hh-mm-ss
     zettelkasten: yyyymmddhhmmss
     dateOnly: yyyy-mm-dd
   HomeScreen:
