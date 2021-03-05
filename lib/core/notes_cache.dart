@@ -39,6 +39,9 @@ class NotesCache {
     }
 
     for (var fullFilePath in fileList) {
+      if (!fullFilePath.startsWith(notesBasePath)) {
+        continue;
+      }
       var filePath = fullFilePath.substring(notesBasePath.length);
       var components = filePath.split(sep);
 
