@@ -47,6 +47,7 @@ class AppSettings extends ChangeNotifier {
   var debugLogLevel = 'v';
 
   var experimentalFs = false;
+  var experimentalSubfolders = false;
   var experimentalMarkdownToolbar = false;
   var experimentalGraphView = false;
   var experimentalZeroConf = false;
