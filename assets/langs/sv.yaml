@@ -1,0 +1,348 @@
+settings:
+  ok: Ok
+  cancel: Avbryt
+  title: inställningar
+  author:
+    label: Fullständigt namn
+    hint: Vem ska författa ändringarna?
+    validator: Ange ett namn
+  email:
+    label: E-post
+    hint: E-postadress
+    validator:
+      empty: Ange ett e-postmeddelande
+      invalid: Ange ett giltigt e-postmeddelande
+  display:
+    title: Skärminställningar
+    darkTheme: Mörkt tema
+    homeScreen: Hemskärm
+  gitAuthor: Git Author Settings
+  versionInfo: Information om versionen
+  analytics: Analytics
+  crashReports: Samla in anonyma kraschrapporter
+  usageStats: Samla in anonym användningsstatistik
+  debug:
+    title: Felsökningsapp
+    subtitle: Titta under huven
+    levels:
+      title: Välj nivå
+      error: Fel
+      warning: varning
+      info: Info
+      debug: Felsöka
+      verbose: Mångordig
+  images:
+    title: Bildinställningar
+    subtitle: Konfigurera hur bilder lagras
+    imageLocation: Bildplats
+    currentFolder: Samma mapp som anteckningar
+    customFolder: Anpassad mapp
+  gitRemote:
+    changeHost:
+      title: Konfigurera om Git Host?
+      subtitle: Anteckningarsom inte har synkroniserats går förlorade
+      ok: Ok
+      cancel: Avbryt
+    title: Git Remote Settings
+    subtitle: Konfigurera var dina anteckningar synkroniseras
+  noteMetaData:
+    title: Observera metadatainställningar
+    subtitle: Konfigurera hur metadata sparas för anteckningar
+    text: Varje anteckning har metadata som lagras i en YAML-rubrik enligt följande -
+    enableHeader: Aktivera YAML-rubrik
+    modified: Modifierat fält
+    created: Skapat fält
+    tags: Taggfält
+    example:
+      title: Exempel på titel
+    titleMetaData:
+      title: Titel
+      fromH1: Textrubrik 1
+      fromYaml: Från YAML 'titel'
+    exampleTitle: Duvor
+    exampleBody: Jag tror att de kan vara onda. Ännu mer ond än pingviner.
+    exampleTag1: Fåglar
+    exampleTag2: Ondska
+    customMetaData:
+      title: Anpassad metadata
+      invalid: Ogiltig YAML
+  privacy: Integritetspolicy
+  terms: Villkor
+  experimental:
+    title: Experimentella funktioner
+    subtitle: Testa utvecklingsfunktioner
+    backlinks: Visa bakåtlänkar i förhandsvisning för Markdown
+    fs: Visa filsystem
+    markdownToolbar: Visa Markdown Toolbar i Editor
+  editors:
+    title: Editorinställningar
+    subtitle: Konfigurera hur olika redaktörer fungerar
+    defaultEditor: Standardredigerare
+    defaultState: Standardstatus
+    markdownEditor: Markdown Editor
+    journalEditor: Journalredaktör
+    defaultFolder: Standardmapp
+    checklistEditor: Checklista Editor
+    rawEditor: Raw Editor
+    choose: Välj Editor
+  sortingField:
+    modified: Senast ändrad
+    created: Skapad
+    filename: Filnamn
+    title: Titel
+  sortingOrder:
+    asc: Stigande
+    desc: Nedåtgående
+  sortingMode:
+    field: Fält
+    order: Ordning
+  remoteSync:
+    auto: Automatisk
+    manual: Manuell
+  tags:
+    title: Taggar Inställningar
+    subtitle: Konfigurera hur integrerade taggar analyseras
+    enable: Analysera inline-taggar
+    prefixes: Införda taggarprefix
+  misc:
+    title: Övriga inställningar
+    swipe: Svep för att ta bort anteckning
+    listView: Listvy
+  NoteFileNameFormat:
+    iso8601WithTimeZone: ISO8601 Med TimeZone
+    iso8601: ISO8601
+    iso8601WithoutColon: ISO8601 utan kolon
+    title: Titel
+    uuid: Uuid V4
+    simmple: åååå-mm-dd-hh-mm-ss
+    zettelkasten: yyyymmddhhmmss
+  HomeScreen:
+    allNotes: Alla anteckningar
+    allFolders: Alla mappar
+  EditorDefaultView:
+    edit: Redigera
+editors:
+  checklist:
+    add: Lägg till vara
+  common:
+    defaultBodyHint: Skriv här
+    defaultTitleHint: Titel
+    discard: Ignorera ändringar
+    share: Dela anteckning
+    takePhoto: Ta ett foto
+    addImage: Lägg till bild från galleriet
+    editFileName: Redigera filnamn
+    tags: Redigera taggar
+    zen:
+      enable: Aktivera Zen-läge
+      disable: Inaktivera Zen-läge
+    saveNoteFailed:
+      title: Det gick inte att spara anteckningen
+      message: Vi är ledsna, men vi kan inte tycks spara anteckningen. Det har kopierats till Urklipp för att undvika dataförlust.
+pro: Proffs
+actions:
+  newNote: Ny anteckning
+  newJournal: Ny journalpost
+  newChecklist: Ny checklista
+screens:
+  folders:
+    title: Mappar
+    selected: Mapp vald
+    dialog:
+      title: Skapa ny mapp
+      create: Skapa
+      discard: Kassera
+    errorDialog:
+      title: Fel
+      deleteContent: Det går inte att ta bort en mapp som innehåller anteckningar
+      renameContent: Det går inte att byta namn på rotmappen
+      ok: Ok
+    actions:
+      rename: Byt namn på mapp
+      subFolder: Skapa undermapp
+      delete: Ta bort mapp
+      decoration: Mapp namn
+      empty: Ange ett namn
+  tags:
+    title: Taggar
+    empty: Inga taggar hittades
+  filesystem:
+    ignoredFile:
+      title: Fil ignoreras
+      ok: Ok
+      rename: Döp om
+    rename:
+      decoration: Filnamn
+      title: Döp om
+  folder_view:
+    empty: Låt oss lägga till några anteckningar?
+widgets:
+  rename:
+    'yes': Döp om
+    'no': Annullera
+    validator:
+      empty: Ange ett namn
+      exists: Existerar redan
+      contains: Kan inte innehålla /
+  backlinks:
+    title:
+      one: "{} Noteringslänkar till denna anteckning"
+      other: ""
+  SortingOrderSelector:
+    title: Sorteringskriterier
+  PurchaseButton:
+    text: Köp till {price}
+    fail: Misslyckades att ladda
+  FolderView:
+    noteSelected: Not vald
+    syncError: Synkroniseringsfel {}
+    headerOptions:
+      heading: Rubrikalternativ
+      auto: Auto genererad titel
+      titleFileName: Titel eller filnamn
+      fileName: Filnamn
+      summary: Visa sammanfattning
+      customize: Anpassa vyn
+    views:
+      standard: Standardvy
+      journal: Journalvisning
+      grid: Grid View
+      card: Kortvy
+      select: Välj Visa
+    sortingOptions: Sorteringsalternativ
+    viewOptions: Visa alternativ
+rootFolder: Rotmapp
+ignoredFiles:
+  dot: Börjar med en.
+  ext: Slutar inte med .md eller .txt
+drawer:
+  setup: Ställ in Git Host
+  pro: Lås upp Pro-versionen
+  all: Alla anteckningar
+  folders: Mappar
+  fs: Filsystem
+  tags: Taggar
+  share: Dela app
+  rate: Gradera oss
+  feedback: Respons
+  bug: Buggrapport
+setup:
+  autoConfigure:
+    title: Hur vill du göra det här?
+    automatic: Installera automatiskt
+    manual: Låt mig göra det manuellt
+  autoconfigure:
+    step1: 1. Lista dina befintliga repor eller skapa en ny repo
+    step2: 2. Skapa en SSH-nyckel på den här enheten
+    step3: 3. Lägg till nyckeln som en distributionsnyckel med skrivåtkomst till förvaret
+    warning: Detta kommer att kräva att GitJournal får tillgång till alla privata och offentliga repor. Om du inte är bekväm med det, vänligen gå tillbaka och välj alternativet manuell inställning.
+    authorize: Auktorisera GitJournal
+    waitPerm: Väntar på tillstånd ...
+    readUser: Läser användarinfo
+  repoSelector:
+    title: Välj eller Skapa ett arkiv
+    hint: Skriv för att söka eller skapa en repo
+    create: Skapa repo {}
+  cloneUrl:
+    enter: Ange URL för Git Clone
+    validator:
+      empty: Ange lite text
+      invalid: felaktig input
+      onlySsh: Endast SSH-webbadresser accepteras för närvarande
+    manual:
+      title: Vänligen skapa ett nytt git-arkiv -
+      step1: 1. Gå till webbplatsen, skapa en repo och kopiera dess git-klon-URL
+      step2: 2. Ange Git-klon-URL
+      button: Öppna Skapa ny reposida
+  next: Nästa
+  fail: Misslyckades
+  keyEditors:
+    public: Ogiltig allmän nyckel - Börjar inte med ssh-rsa
+    private: Ogiltig privat nyckel
+  sshKey:
+    generate: Genererar SSH-nyckel
+    title: För att komma åt detta arkiv måste denna offentliga nyckel kopieras som en distributionsnyckel
+    step1: 1. Kopiera nyckeln
+    step2a: 2. Öppna webbsidan och klistra in distributionsnyckeln. Se till att den har skrivåtkomst.
+    step2b: 2. Ge denna SSH-nyckel åtkomst till git repo. (Du måste räkna ut det själv)
+    step3: 3. Prova kloning ..
+    copy: Kopiera nyckel
+    copied: Offentlig nyckel kopieras till Urklipp
+    regenerate: Regenerera nyckel
+    openDeploy: Öppna Implementera nyckelsidan
+    clone: Clone Repo
+    addDeploy: Lägger till som en distributionsnyckel
+  sshKeyChoice:
+    title: Vi behöver SSH-nycklar för att autentisera -
+    generate: Skapa nya nycklar
+    custom: Ange anpassade SSH-nycklar
+  sshKeyUserProvided:
+    public: Allmän nyckel -
+    private: Privat nyckel -
+  cloning: Kloning ...
+  host:
+    title: Välj en Git Hosting Provider -
+    custom: Beställnings
+feature:
+  darkMode: Mörkt läge
+  rawEditor: Raw Editor
+  folderSupport: Mappsupport
+  fileNameCustomize: Anpassa anteckningsfilnamn
+  noteMetaDataCustomize:
+    title: Anpassa antecknings metadata
+    subtitle: GitJournal kan användas med statiska webbplatsgeneratorer
+  autoMergeConflicts: Automation Slå samman konfliktlösning
+  noteSorting: Konfigurerbar noteringssortering
+  gitPushFreq: Konfigurerbar Git Sync-frekvens
+  checklistEditor: Checklista Editor
+  journalEditor: Journalredaktör
+  diffViews: Olika mappvyer - Journal, Grid, Standard
+  imageSupport: Bildstöd
+  tags: Observera taggar
+  appShortcuts: Appgenvägar
+  createRepo: Skapa anpassade repor från appen
+  backlinks: Obs! Stöd för bakåtlänkar
+  txtFiles: Txt-filstöd
+  wikiLinks: Support för Wiki Style-länkar
+  metaDataTitle: Anpassa metadata för titel
+  journalEditorDefaultFolder: Anpassa standardmappen för Journal Editor
+  yamlModifiedKey: Anpassa den YAML-modifierade nyckeln
+  yamlCreatedKey: Anpassa den YAML-skapade nyckeln
+  yamlTagsKey: Anpassa YAML-taggarna
+  disableYamlHeader: Inaktivera YAML-metadatahuvudet
+  customizeHomeScreen: Anpassa startskärmen
+  zenMode: Zen Writing Mode
+  emojiSupport:
+    title: Emoji-support
+    subtitle: "Konvertera: hjärta: till ❤️"
+  allNotesView: Lägg till en skärm för att visa "Alla anteckningar"
+  basicSearch: Grundläggande sökning
+  customSSHKeys: Ge dina egna SSH-nycklar
+  customMetaData: Lägg till anpassade metadata till nya anteckningar
+  graphVisualization: Grafvisualisering
+  mutliRepos: Flera Git Repos
+  customThemes: Anpassade teman
+  gitLog: Visa och sök igenom Git History
+  latex: Latexstöd
+  mermaid: Stöd för sjöjungfrudiagram
+  encryptedHosting: Krypterad Git Hosting
+  desktop: Skrivbordsapp
+  markdownToolbar: Markdown Toolbar
+  localization:
+    title: Lokalisering
+    subtitle: Låt GitJournal översättas
+  inlineTags: Inbyggda taggar
+feature_timeline:
+  title: Funktionstidslinje
+  progress: Pågående
+  plan: Planerad
+purchase_screen:
+  title: Pro-version
+  desc: 'GitJournal är helt öppen källkod och är resultatet av betydande utvecklingsarbete. Det har inget riskkapital eller stöd från företag och kommer aldrig att göra det. Ditt stöd upprätthåller utvecklingen direkt. GitJournal arbetar med en "betala vad du vill modell (med ett minimum)".'
+  restore: Återställa köp
+  oneTime:
+    title: Engångsköp
+    desc: Aktiverar permanent alla Pro-funktioner som för närvarande finns i GitJournal och nya funktioner har lagts till under de följande 12 månaderna.
+  monthly:
+    title: Månadsprenumeration
+    desc: Aktiverar alla Pro-funktioner. Efter 12 månader eller efter att du har betalat {minYearlyPurchase} får du alla fördelarna med "Engångsköp"

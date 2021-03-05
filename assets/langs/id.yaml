@@ -1,0 +1,347 @@
+settings:
+  ok: Ok
+  cancel: Batal
+  title: Setelan
+  author:
+    label: Nama Lengkap
+    hint: Siapa yang menulis perubahan?
+    validator: Masukan nama
+  email:
+    label: Email
+    hint: Alamat Email
+    validator:
+      empty: Masukan email
+      invalid: Masukan email yang valid
+  display:
+    title: Setelan Tampilan
+    darkTheme: Tema Gelap
+    homeScreen: Layar Utama
+  gitAuthor: Setelan Penulis Git
+  versionInfo: Info Versi
+  analytics: Analitik
+  crashReports: Kumpulkan Laporan Crash Anonim
+  usageStats: Kumpulkan Statistik Penggunaan Anonim
+  debug:
+    title: Debug Apl
+    subtitle: Lihat dibalik tudung
+    levels:
+      title: Pilih Tingkat
+      error: Kesalahan
+      warning: peringatan
+      info: Info
+      debug: Debug
+      verbose: Berlebih
+  images:
+    title: Setelan Gambar
+    subtitle: Atur bagaimana gambar disimpan
+    imageLocation: Lokasi Gambar
+    currentFolder: Sefolder dengan Catatan
+    customFolder: Folder Kustom
+  gitRemote:
+    changeHost:
+      title: Setel-ulang Host Git?
+      subtitle: Catatan yang tidak tersinkron akan hilang
+      ok: Ok
+      cancel: Batal
+    title: Setelan Remote Git
+    subtitle: Setel di mana catatan Anda disinkronkan
+  noteMetaData:
+    title: Setelan Metadata Catatan
+    subtitle: Setel bagaimana Metadata Catatan disimpan
+    text: Setiap catatan punya metadata yang tersimpan di judul YAML sebagaimana berikut -
+    enableHeader: Aktifkan Judul YAML
+    modified: Bidang Diubah
+    created: Bidang Dibuat
+    tags: Bidang Tag
+    example:
+      title: Contoh Judul
+    titleMetaData:
+      title: Judul
+      fromH1: Judul Teks 1
+      fromYaml: Dari 'judul' YAML
+    exampleTitle: Merpati
+    exampleBody: Saya pikir mereka dapat menjadi jahat. Bahkan lebih Jahat daripada pinguin.
+    exampleTag1: Burung
+    exampleTag2: Jahat
+    customMetaData:
+      title: MetaData Kustom
+      invalid: YAML Tidak Valid
+  privacy: Kebijakan Privasi
+  terms: Syarat dan Kententuan
+  experimental:
+    title: Fitur Eksperimental
+    subtitle: Coba fitur dalam Pengembangan
+    backlinks: Tampilkan Backlink di Pratinjau Markdown
+    fs: Tampilkan Sistem File
+    markdownToolbar: Tampilkan Toolbar  Markdown di Editor
+  editors:
+    title: Setelan Editor
+    subtitle: Setel bagaimana editor bekerja
+    defaultEditor: Editor Default
+    defaultState: Kondisi Default
+    markdownEditor: Editor Markdown
+    journalEditor: Editor Jurnal
+    defaultFolder: Folder Default
+    checklistEditor: Editor Daftar Periksa
+    rawEditor: Editor Raw
+    choose: Pilih Editor
+  sortingField:
+    modified: Terakhir Diubah
+    created: Dibuat
+    filename: Nama File
+    title: Judul
+  sortingOrder:
+    asc: Urut Naik
+    desc: Urut Turun
+  sortingMode:
+    field: Bidang
+    order: Urutan
+  remoteSync:
+    auto: Otomatis
+    manual: Manual
+  tags:
+    title: Setelan Tag
+    subtitle: Setel bagaimana tag yang sebaris diuraikan
+    enable: Uraikan Tag Sebaris
+    prefixes: Prefiks Tag Sebaris
+  misc:
+    title: Setelan Lain-lain
+    swipe: Geser untuk Hapus Catatan
+    listView: Tampilan Daftar
+  NoteFileNameFormat:
+    iso8601WithTimeZone: ISO8601 Dengan ZonaWaktu
+    iso8601: ISO8601
+    iso8601WithoutColon: ISO8601 tanpa Titik Dua
+    title: Judul
+    uuid: Uuid V4
+    simmple: yyyy-mm-dd-hh-mm-ss
+    zettelkasten: yyyymmddhhmmss
+  HomeScreen:
+    allNotes: Semua Catatan
+    allFolders: Semua Folder
+  EditorDefaultView:
+    edit: Edit
+editors:
+  checklist:
+    add: Tambahkan Item
+  common:
+    defaultBodyHint: Tulis di Sini
+    defaultTitleHint: Judul
+    discard: Buang Perubahan
+    share: Bagikan Catatan
+    takePhoto: Ambil Foto
+    addImage: Tambahkan Gambar dari Galeri
+    editFileName: Edit Nama File
+    tags: Edit Tag
+    zen:
+      enable: Aktifkan Mode Zen
+      disable: Nonaktifkan Zen Mode
+    saveNoteFailed:
+      title: Gagal Menyimpan Catatan
+      message: Kami minta maaf, sepertinya kami tidak bisa menyimpan Catatan. Catatan telah disalin ke clipboard untuk menghindari kehilangan data.
+pro: Pro
+actions:
+  newNote: Catatan Baru
+  newJournal: Entri Jurnal Baru
+  newChecklist: Daftar Periksa Baru
+screens:
+  folders:
+    title: Folder
+    selected: Folder Dipilih
+    dialog:
+      title: Buat Folder Baru
+      create: Buat
+      discard: Buang
+    errorDialog:
+      title: Kesalahan
+      deleteContent: Tidak dapat hapus Folder yang berisi catatan
+      renameContent: Tidak dapat namai ulang Foldr Akar
+      ok: Ok
+    actions:
+      rename: Namai Ulang Folder
+      subFolder: Buat Sub-Folder
+      delete: Hapus Folder
+      decoration: Nama Folder
+      empty: Masukan nama
+  tags:
+    title: Tag
+    empty: Tag Tidak Ditemukan
+  filesystem:
+    ignoredFile:
+      title: File Diabaikan
+      ok: Ok
+      rename: Namai Ulang
+    rename:
+      decoration: Nama File
+      title: Namai Ulang
+  folder_view:
+    empty: Mari tambahkan catatan?
+widgets:
+  rename:
+    'yes': Namai Ulang
+    'no': Batal
+    validator:
+      empty: Masukan Nama
+      exists: Sudah Ada
+      contains: Tidak dapat berisi /
+  backlinks:
+    title:
+      other: "{} Catatan menghubung ke cacatan ini"
+  SortingOrderSelector:
+    title: Kriteria Urutan
+  PurchaseButton:
+    text: Bayar seharga {price}
+    fail: Gagal Memuat
+  FolderView:
+    noteSelected: Catatan Dipilih
+    syncError: Sinkronisasi Error {}
+    headerOptions:
+      heading: Opsi Judul
+      auto: Buat Judul Otomatis
+      titleFileName: Judul atau NamaFile
+      fileName: NamaFile
+      summary: Tampilkan Ringkasan
+      customize: Kustomisasi Tampilan
+    views:
+      standard: Tampilan Standar
+      journal: Tampilan Jurnal
+      grid: Tampilan Kisi
+      card: Tampilan Kartu
+      select: Pilih Tampilan
+    sortingOptions: Opsi Pengurutan
+    viewOptions: Opsi Tampilan
+rootFolder: Folder Akar
+ignoredFiles:
+  dot: Mulai dengan a
+  ext: Tidak berakhiran .md atau .txt
+drawer:
+  setup: Penyetelan Host Git
+  pro: Buka Versi Pro
+  all: Semua Catatan
+  folders: Folder
+  fs: Sistem File
+  tags: Tag
+  share: Bagikan Apl
+  rate: Nilai Kami
+  feedback: Tanggapan
+  bug: Laporan Serangga
+setup:
+  autoConfigure:
+    title: Bagaimana Anda ingin melakukan ini?
+    automatic: Setel Otomatis
+    manual: Izinkan saya melakukan secara manual
+  autoconfigure:
+    step1: 1. Daftarkan repo Anda yang ada atau buat baru
+    step2: 2. Buat Kunci SSH pada perangkat ini
+    step3: 3. Tambahkan kunci sebagai sebar kunci dengan izin tulis ke repositori
+    warning: Ini akan membutuhkan GitJournal untuk mengakses semua repo privat dan publik. Jika Anda tidak nyaman dengan itu, kembali dan pilih setelan manual.
+    authorize: Beri Izin GitJournal
+    waitPerm: Menunggu izin ...
+    readUser: Info Membaca Pengguna
+  repoSelector:
+    title: Pilih atau Buat Repositori
+    hint: "Ketik untuk Cari atau Buat Repo "
+    create: Buat Repo {}
+  cloneUrl:
+    enter: Masukan URL Klon Git
+    validator:
+      empty: Ketik beberapa teks
+      invalid: Input Tidak Valid
+      onlySsh: Hanya url SSH yang saat ini diterima
+    manual:
+      title: Buat repositori git baru -
+      step1: 1. Pergi ke situs web, buat repo dan salin URL klon git
+      step2: 2. Masukan URL klon Git
+      button: Buka Laman Web Buat Repo Baru
+  next: Selanjutnya
+  fail: Gagal
+  keyEditors:
+    public: Kunci Publik Tidak Valid - Tidak berawalan dengan ssh-rsa
+    private: Kunci Privat Tidak Valid
+  sshKey:
+    generate: Membuat Kunci SSH
+    title: Untuk mengakses repositori ini, kunci publik ini harus disalin sebagai sebar kunci
+    step1: 1. Salin kunci
+    step2a: 2. Buka sistus web, dan tempelkan sebar kunci. Pastikan itu memberikan Akses Tulis.
+    step2b: 2. Beri Kunci SSH ini ke repo git. (Anda perlu memikirkannya sendiri)
+    step3: 3. Coba kloning ..
+    copy: Salin Kunci
+    copied: Kunci Publik tersalin ke Clipboard
+    regenerate: Buat Ulang Kunci
+    openDeploy: Buka Situs Web Sebar Kunci
+    clone: Klon Repo
+    addDeploy: Tambahkan sebagai Sebar Kunci
+  sshKeyChoice:
+    title: Kami butuh kunci SSH untuk mengautentikasi -
+    generate: Buat kunci baru
+    custom: Sediakan Kunci SSH Kustom
+  sshKeyUserProvided:
+    public: Kunci Publik -
+    private: Kunci Privat -
+  cloning: Mengkloning ...
+  host:
+    title: Pilih Provider Hosting Git -
+    custom: Kustom
+feature:
+  darkMode: Mode Gelap
+  rawEditor: Editor Raw
+  folderSupport: Dukung Folder
+  fileNameCustomize: Kustomisasi NamaFile Catatan
+  noteMetaDataCustomize:
+    title: Kustomisasi Metadata Catatan
+    subtitle: Izinkan GitJournal menggunakan generator situs web statis
+  autoMergeConflicts: Automatisasi Resolusi Konflik Penggabungan
+  noteSorting: Penyotiran Catatan yang Dapat Disetel
+  gitPushFreq: Frekuensi Sinkronisasi Git yang Dapat Disetel
+  checklistEditor: Editor Daftar Periksa
+  journalEditor: Editor Jurnal
+  diffViews: Tampilan Folder berbeda - Jurnal, Kisi, Standar
+  imageSupport: Dukung Gambar
+  tags: Tag Catatan
+  appShortcuts: Pintasan Apl
+  createRepo: Buat Repo Kustom dari dalam Apl
+  backlinks: Dukung Backlink Catatan
+  txtFiles: Dukung File Txt
+  wikiLinks: Dukung Link Bergaya Wiki
+  metaDataTitle: Kustomisasi Judul MetaData
+  journalEditorDefaultFolder: Kustomisasi Folder Default untuk Editor Jurnal
+  yamlModifiedKey: Kustomisasi kunci yang diubah YAM
+  yamlCreatedKey: Kustomisasi kunci dibuat YAML
+  yamlTagsKey: Kustomisasi kunci tag YAML
+  disableYamlHeader: "Nonaktifkan Judul Metadata YAML "
+  customizeHomeScreen: Kustomisasi Layar Utama
+  zenMode: Mode Menulis Zen
+  emojiSupport:
+    title: Dukung Emoji
+    subtitle: "Ubah :heart: ke ❤️"
+  allNotesView: Tambahkan layar untuk tampilkan "Semua Catatan"
+  basicSearch: Pecarian Dasar
+  customSSHKeys: Sediakan Kunci SSH Anda Sendiri
+  customMetaData: Tambahkan Metadata Kustom ke Catatan baru
+  graphVisualization: Visualisasi Grafik
+  mutliRepos: Multi Repo Git
+  customThemes: Tema Kustom
+  gitLog: Tampilkan dan Cari melalui Riwayat Git
+  latex: Dukung Latex
+  mermaid: Dukung Diagram Mermaid
+  encryptedHosting: Hosting Git Terenkripsi
+  desktop: Apl Desktop
+  markdownToolbar: Toolbar Markdown
+  localization:
+    title: Lokalisasi
+    subtitle: Izinkan GitJournal diterjemahkan
+  inlineTags: Tag Sebaris
+feature_timeline:
+  title: Garis Waktu Fitur
+  progress: Dalam Proses
+  plan: Direncanakan
+purchase_screen:
+  title: Versi Pro
+  desc: 'GitJournal sepenuhnya open source dan hasil dari pengembangan kerja yang dignifikan. GitJournal tidak memiliki modal usaha atau korporasi yang menyokong dan itu tidak akan pernah. Dukungan Anda secara langsung menopang pengembangan. GitJournal beroperasi dari "model pembayaran apa yang Anda inginkan (dengan batas minimal)"'
+  restore: Pulihkan Pembayaran
+  oneTime:
+    title: Sekali Bayar
+    desc: Secara permanan mengaktifkan semua fitur Pro saat ini di GitJournal dan fitur baru yang ditambahkan sedari 12 bulan ini
+  monthly:
+    title: Langganan Bulanan
+    desc: Aktifkan semua fitur Pro. Setelah 12 bulan atau membayar {minYearlyPurchase}, Anda akan mendapat semua keuntungan dari 'Sekali Bayar'
