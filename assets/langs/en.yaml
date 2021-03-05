@@ -16,6 +16,73 @@ settings:
     title: Display Settings
     homeScreen: Home Screen
     theme: Theme
+    images:
+      title: Image Settings
+      subtitle: Configure how images are displayed
+      imageTextType:
+        alt: Alt Text
+        altAndTooltip: Alt Text and Tooltip
+        tooltip: Tooltip
+        none: None
+      captions:
+        title: Image Captions
+        subtitle: Configure the image captions
+        useAsCaption: Use as caption
+        overlayCaption: Draw caption on top of large enough images
+        transparentCaption: Overlay captions have a semitransparent background
+        blurBehindCaption: Blur Image behind caption
+        tooltipFirst:
+          title: Show tooltip before alt text
+          tooltip: Current order is “<tooltip> - <altText>”
+          altText: Current order is “<altText> - <tooltip>”
+        captionOverrides: Caption Overrides
+        tagDescription: Put these tags in “![altText](... "tooltip")” to override the behavior for it.
+        doNotCaptionTags:
+          hint: DoNotCaption-Tags
+          label: Never use as caption with tags
+          validator:
+            empty: Tags cannot be empty.
+            same: Tag cannot be identical to a “DoCaption-Tag”.
+        doCaptionTags:
+          hint: DoCaption-Tags
+          label: Always use as caption with tags
+          validator:
+            empty: Tags cannot be empty.
+            same: Tag cannot be identical to a “DoNotCaption-Tag”.
+      theming:
+        title: Image Theming
+        subtitle: Configure how images are themed
+        adjustColors:
+          all: All
+          blackAndWhite: Only black and white
+          grays: Only grays
+        doNotThemeTags:
+          hint: DoNotTheme-Tags
+          label: Never theme images with tags
+          validator:
+            empty: Tags cannot be empty.
+            same: Tag cannot be identical to a “DoTheme-Tag”.
+        doThemeTags:
+          hint: DoTheme-Tag
+          label: Always theme images with tags
+          validator:
+            empty: Tags cannot be empty.
+            same: Tag cannot be identical to a “DoNotTheme-Tag”.
+        matchCanvasColor:
+          title: Match Background Color
+          subtitle: Replaces white/black parts of vector graphics with the canvas color
+        tagDescription: Put these tags in “![altText](... "tooltip")” to override the behavior for the image.
+        themeOverrides: Theme Overrides
+        themeOverrideTagLocation: Theme Override Tag Location
+        themeRasterGraphics: Theme Raster Graphics (.png/.jpg)
+        themeSvgWithBackground: Theme SVGs With Background
+        themeVectorGraphics: 
+          title: Theme Vector Graphics
+          filter: Using Color Filter
+          off: No
+          on: Yes
+        vectorGraphics: Vector Graphics (.svg)
+        vectorGraphicsAdjustColors: Colors to Adjust
   theme:
     light: Light
     dark: Dark
@@ -239,6 +306,9 @@ widgets:
       two: "{} Notes link to this Note"
       few: "{} Notes link to this Note"
       other: "{} Notes link to this Note"
+  imageRenderer:
+    caption: "{first} - {second}"
+    httpError: "Code: {status} for {url}"
   SortingOrderSelector:
     title: Sorting Criteria
   PurchaseButton:
