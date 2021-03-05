@@ -58,7 +58,7 @@ dependencies:
   mutex: ^1.0.3
   package_info: ">=0.4.1 <2.0.0"
   path: ^1.6.2
-  permission_handler: ^5.0.1+1
+  permission_handler: ^5.1.0
   provider: ^4.3.2+2
   quick_actions: ^0.4.0+10
   receive_sharing_intent: ^1.4.0+2
