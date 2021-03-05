@@ -104,9 +104,7 @@ class Log {
       l: level,
       msg: msg.replaceAll('\n', ' '),
       ex: ex != null ? ex.toString().replaceAll('\n', ' ') : null,
-      stack: stackTrace != null
-          ? stackTrace.toString().replaceAll('\n', ' ')
-          : null,
+      stack: stackTrace.toListOfMap(),
       props: props,
     );
 
@@ -184,7 +182,7 @@ class LogMessage {
   String l;
   String msg;
   String ex;
-  String stack;
+  List<Map<String, dynamic>> stack;
   Map<String, dynamic> props;
 
   LogMessage({
@@ -202,7 +200,7 @@ class LogMessage {
       'l': l,
       'msg': msg,
       if (ex != null && ex.isNotEmpty) 'ex': ex,
-      if (stack != null && stack.isNotEmpty) 'stack': stack,
+      if (stack != null) 'stack': stack,
       if (props != null && props.isNotEmpty) 'p': props,
     };
   }
@@ -211,16 +209,46 @@ class LogMessage {
     t = map['t'];
     l = map['l'];
     msg = map['msg'];
-    ex = _checkForNull(map['ex']);
-    stack = _checkForNull(map['stack']);
-    props = _checkForNull(map['p']);
+    ex = _checkForStringNull(map['ex']);
+    stack = _checkForStringNull(map['stack']);
+    props = _checkForStringNull(map['p']);
   }
 }
 
-dynamic _checkForNull(dynamic e) {
+dynamic _checkForStringNull(dynamic e) {
   if (e == null) return e;
   if (e.runtimeType == String && e.toString().trim() == 'null') {
     return null;
   }
   return e;
+}
+
+extension TraceJsonEncoding on StackTrace {
+  List<Map<String, dynamic>> toListOfMap() {
+    var list = <Map<String, dynamic>>[];
+    for (var f in Trace.from(this).frames) {
+      list.add(f.toMap());
+    }
+    return list;
+  }
+}
+
+extension FrameJsonEncoding on Frame {
+  Map<String, dynamic> toMap() {
+    return _removeNull({
+      'column': column,
+      'uri': uri.toString(),
+      'line': line,
+      'member': member,
+      'isCore': isCore,
+      'library': library,
+      'location': location,
+      'package': package,
+    });
+  }
+}
+
+Map<String, dynamic> _removeNull(Map<String, dynamic> map) {
+  map.removeWhere((key, value) => value == null);
+  return map;
 }

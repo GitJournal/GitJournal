@@ -157,7 +157,7 @@ class _DebugScreenState extends State<DebugScreen> {
       str += ' ' + msg.ex;
     }
     if (msg.stack != null) {
-      str += ' ' + msg.stack;
+      str += ' ' + msg.stack.toString();
     }
 
     var props = <TextSpan>[];
