@@ -19,7 +19,6 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/core/flattened_notes_folder.dart';
-import 'package:gitjournal/screens/settings_experimental.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
@@ -38,14 +37,13 @@ class FolderListingScreen extends StatefulWidget {
 class _FolderListingScreenState extends State<FolderListingScreen> {
   final _folderTreeViewKey = GlobalKey<FolderTreeViewState>();
   NotesFolderFS selectedFolder;
-  AppSettings settings;
 
   @override
   Widget build(BuildContext context) {
     final notesFolder = Provider.of<NotesFolderFS>(context);
 
     // Load experimental setting
-    settings = Provider.of<AppSettings>(context);
+    var settings = Provider.of<AppSettings>(context);
 
     var treeView = FolderTreeView(
       key: _folderTreeViewKey,
