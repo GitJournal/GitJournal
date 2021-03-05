@@ -3,7 +3,7 @@ description: A Note Taking App Built on top of Git
 version: 1.74.2+10
 
 environment:
-  sdk: '>=2.10.0 <3.0.0'
+  sdk: ">=2.10.0 <3.0.0"
 
 dependencies:
   flutter:
