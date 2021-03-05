@@ -37,9 +37,10 @@ classpath 'com.android.tools.build:gradle:3.3.2'
 ```
 to
 ```gradle
-classpath 'com.android.tools.build:gradle:3.5.0'
+classpath 'com.android.tools.build:gradle:3.5.4'
 ```
 fixes your issue.
+
 ## IDE Setup
 
 VS Code has great plugin for flutter, but you need to add args to launch.json.
