@@ -82,6 +82,7 @@ settings:
     markdownToolbar: Show Markdown Toolbar in Editor
     graphView: Graph View
     accounts: Platform Independent Accounts
+    includeSubfolders: Include Subfolders
   editors:
     title: Editor Settings
     subtitle: Configure how different editors work

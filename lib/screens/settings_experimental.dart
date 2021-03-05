@@ -59,6 +59,15 @@ class _ExperimentalSettingsScreenState
               },
             ),
             SwitchListTile(
+              title: Text(tr('settings.experimental.includeSubfolders')),
+              value: appSettings.experimentalSubfolders,
+              onChanged: (bool newVal) {
+                appSettings.experimentalSubfolders = newVal;
+                appSettings.save();
+                setState(() {});
+              },
+            ),
+            SwitchListTile(
               title: Text(tr('settings.experimental.graphView')),
               value: appSettings.experimentalGraphView,
               onChanged: (bool newVal) {
