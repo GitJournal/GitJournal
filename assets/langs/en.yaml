@@ -190,7 +190,7 @@ settings:
     iso8601WithoutColon: ISO8601 without Colons
     title: Title
     uuid: Uuid V4
-    simmple: yyyy-mm-dd-hh-mm-ss
+    simple: yyyy-mm-dd-hh-mm-ss
     zettelkasten: yyyymmddhhmmss
     dateOnly: yyyy-mm-dd
   HomeScreen:
@@ -209,7 +209,7 @@ settings:
     newNoteFileName: New Note Filename
   storage:
     title: Storage
-    fileName: ilename
+    fileName: filename
     external: Store Repo Externally
     icloud: Store in iCloud
     repoLocation: Repo Location
@@ -217,7 +217,7 @@ settings:
     title: Sidebar Settings
   bottomMenuBar:
     title: Bottom Menu Bar
-    subtitle: Configure its appearance and behaviour
+    subtitle: Configure its appearance and behavior
     enable: Enable Bottom Menu Bar
   deleteRepo: Delete Repository
 

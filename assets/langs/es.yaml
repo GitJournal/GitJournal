@@ -118,7 +118,7 @@ settings:
     iso8601WithoutColon: ISO8601 Sin Comas
     title: Título
     uuid: Uuid V4
-    simmple: yyyy-mm-dd-hh-mm-ss
+    simple: yyyy-mm-dd-hh-mm-ss
     zettelkasten: yyyymmddhhmmss
   HomeScreen:
     allNotes: Todas las Notas
