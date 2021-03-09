@@ -287,7 +287,7 @@ OnBoarding:
   subtitle: 'An Open Source Note Taking App
 built on top of Git'
   page2: 'Your Notes are stored in a
-standard Markdown + YAML\nHeader format'
+standard Markdown + YAML Header format'
   page3: 'Sync your Local Git Repo
 with any provider'
 
