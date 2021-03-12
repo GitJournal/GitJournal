@@ -4,7 +4,7 @@
 
 ## Environment Setup
 
-1. Install [Flutter](https://flutter.dev/docs/get-started/install) through official guidilines
+1. Install [Flutter](https://flutter.dev/docs/get-started/install) v1 through official guidelines. The last v1.22.6 will do.
 2. As a part of flutter installation, you will need to install [Android Studio](https://developer.android.com/studio)
 3. Use [AVD manager](https://developer.android.com/studio/run/managing-avds) from Android Studio, to create device for local development.
 4. Project contains `:git_binding` dependency, so it needs Android NDK. You need to install through [SDK Manager](https://developer.android.com/studio/projects/install-ndk). GitJournal has only been tested with NDK release 19. It would be best to install that.
