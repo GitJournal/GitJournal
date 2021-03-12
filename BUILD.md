@@ -40,6 +40,15 @@ to
 classpath 'com.android.tools.build:gradle:3.5.0'
 ```
 fixes your issue.
+
+### Build fails with a lots of errors from linking:
+
+```
+ld: error: relocation R_AARCH64_PREL64 cannot be used against symbol OPENSSL_armcap_P; recompile with -fPIC
+```
+
+Make sure you install NDK release 19, to do this you need to enable `Show Package Details` to show the available Versions.
+
 ## IDE Setup
 
 VS Code has great plugin for flutter, but you need to add args to launch.json.
