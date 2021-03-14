@@ -54,16 +54,15 @@ enum NoteType {
 
 class NoteFileFormatInfo {
   static List<String> allowedExtensions() {
-    return [
-      '.md',
-      '.txt',
-    ];
+    return ['.md', '.org', '.txt'];
   }
 
   static String defaultExtension(NoteFileFormat format) {
     switch (format) {
       case NoteFileFormat.Markdown:
         return ".md";
+      case NoteFileFormat.OrgMode:
+        return '.org';
       case NoteFileFormat.Txt:
         return ".txt";
       default:
@@ -75,13 +74,15 @@ class NoteFileFormatInfo {
     var noteFilePath = filePath.toLowerCase();
     var isMarkdownFile = noteFilePath.endsWith('.md');
     var isTxtFile = noteFilePath.endsWith('.txt');
+    var isOrgFile = noteFilePath.endsWith('.org');
 
-    return isMarkdownFile || isTxtFile;
+    return isMarkdownFile || isTxtFile || isOrgFile;
   }
 }
 
 enum NoteFileFormat {
   Markdown,
+  OrgMode,
   Txt,
 }
 
@@ -159,11 +160,18 @@ class Note with NotesNotifier {
         _filePath = p.join(parent.folderPath, Uuid().v4());
       }
       switch (_fileFormat) {
+        case NoteFileFormat.OrgMode:
+          if (!_filePath.toLowerCase().endsWith('.org')) {
+            _filePath += '.org';
+          }
+          break;
+
         case NoteFileFormat.Txt:
           if (!_filePath.toLowerCase().endsWith('.txt')) {
             _filePath += '.txt';
           }
           break;
+
         case NoteFileFormat.Markdown:
         default:
           if (!_filePath.toLowerCase().endsWith('.md')) {
@@ -288,7 +296,8 @@ class Note with NotesNotifier {
   }
 
   bool get canHaveMetadata {
-    if (_fileFormat == NoteFileFormat.Txt) {
+    if (_fileFormat == NoteFileFormat.Txt ||
+        _fileFormat == NoteFileFormat.OrgMode) {
       return false;
     }
     return parent.config.yamlHeaderEnabled;
@@ -356,6 +365,7 @@ class Note with NotesNotifier {
     var fpLowerCase = _filePath.toLowerCase();
     var isMarkdown = fpLowerCase.endsWith('.md');
     var isTxt = fpLowerCase.endsWith('.txt');
+    var isOrg = fpLowerCase.endsWith('.org');
 
     if (isMarkdown) {
       try {
@@ -376,6 +386,17 @@ class Note with NotesNotifier {
       try {
         body = await File(_filePath).readAsString();
         _fileFormat = NoteFileFormat.Txt;
+      } catch (e, stackTrace) {
+        logExceptionWarning(e, stackTrace);
+
+        _loadState = NoteLoadState.Error;
+        _notifyModified();
+        return _loadState;
+      }
+    } else if (isOrg) {
+      try {
+        body = await File(_filePath).readAsString();
+        _fileFormat = NoteFileFormat.OrgMode;
       } catch (e, stackTrace) {
         logExceptionWarning(e, stackTrace);
 
@@ -419,9 +440,17 @@ class Note with NotesNotifier {
     await file.delete();
   }
 
+  ///
+  /// Do not let the user rename it to a different file-type.
+  ///
   void rename(String newName) {
-    // Do not let the user rename it to a non-markdown file
     switch (_fileFormat) {
+      case NoteFileFormat.OrgMode:
+        if (!newName.toLowerCase().endsWith('.org')) {
+          newName += '.org';
+        }
+        break;
+
       case NoteFileFormat.Txt:
         if (!newName.toLowerCase().endsWith('.txt')) {
           newName += '.txt';
