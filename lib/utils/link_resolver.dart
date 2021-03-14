@@ -68,6 +68,7 @@ class LinkResolver {
     var lowerCaseTerm = term.toLowerCase();
     var termEndsWithMd = lowerCaseTerm.endsWith('.md');
     var termEndsWithTxt = lowerCaseTerm.endsWith('.txt');
+    var termEndsWithOrg = lowerCaseTerm.endsWith('.org');
 
     var rootFolder = inputNote.parent.rootFolder;
     for (var note in rootFolder.getAllNotes()) {
@@ -82,6 +83,19 @@ class LinkResolver {
         }
 
         var f = fileName.substring(0, fileName.length - 3);
+        if (f == term) {
+          return note;
+        }
+      } else if (fileName.toLowerCase().endsWith('.org')) {
+        if (termEndsWithOrg) {
+          if (fileName == term) {
+            return note;
+          } else {
+            continue;
+          }
+        }
+
+        var f = fileName.substring(0, fileName.length - 4);
         if (f == term) {
           return note;
         }
@@ -119,6 +133,13 @@ class LinkResolver {
 
     if (!spec.endsWith('.md')) {
       linkedNote = folder.getNoteWithSpec(spec + '.md');
+      if (linkedNote != null) {
+        return linkedNote;
+      }
+    }
+
+    if (!spec.endsWith('.org')) {
+      linkedNote = folder.getNoteWithSpec(spec + '.org');
       if (linkedNote != null) {
         return linkedNote;
       }

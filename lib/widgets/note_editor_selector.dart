@@ -32,7 +32,7 @@ class NoteEditorSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     var list = Column(
       children: <Widget>[
-        if (fileFormat != NoteFileFormat.Txt)
+        if (fileFormat == NoteFileFormat.Markdown)
           _buildTile(
             context,
             EditorType.Markdown,

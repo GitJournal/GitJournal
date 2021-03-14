@@ -144,6 +144,12 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
       }
     }
 
+    // Org files
+    if (note.fileFormat == NoteFileFormat.OrgMode &&
+        editorType == EditorType.Markdown) {
+      editorType = EditorType.Raw;
+    }
+
     // Txt files
     if (note.fileFormat == NoteFileFormat.Txt &&
         editorType == EditorType.Markdown) {
