@@ -17,19 +17,20 @@ limitations under the License.
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gitjournal/utils/logger.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/hero_dialog.dart';
+import 'package:gitjournal/utils/logger.dart';
 
 class ThemableImage extends StatelessWidget {
   final double width;
