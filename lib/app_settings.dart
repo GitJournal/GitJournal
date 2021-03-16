@@ -77,6 +77,8 @@ class AppSettings extends ChangeNotifier {
 
     debugLogLevel = pref.getString("debugLogLevel") ?? debugLogLevel;
     experimentalFs = pref.getBool("experimentalFs") ?? experimentalFs;
+    experimentalSubfolders =
+        pref.getBool("experimentalSubfolders") ?? experimentalSubfolders;
     experimentalMarkdownToolbar = pref.getBool("experimentalMarkdownToolbar") ??
         experimentalMarkdownToolbar;
     experimentalGraphView =
