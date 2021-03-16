@@ -109,6 +109,8 @@ class AppSettings extends ChangeNotifier {
         pref, "validateProMode", validateProMode, defaultSet.validateProMode);
     _setString(pref, "debugLogLevel", debugLogLevel, defaultSet.debugLogLevel);
     _setBool(pref, "experimentalFs", experimentalFs, defaultSet.experimentalFs);
+    _setBool(pref, "experimentalSubfolders", experimentalSubfolders,
+        defaultSet.experimentalSubfolders);
     _setBool(pref, "experimentalMarkdownToolbar", experimentalMarkdownToolbar,
         defaultSet.experimentalMarkdownToolbar);
     _setBool(pref, "experimentalGraphView", experimentalGraphView,
