@@ -53,9 +53,7 @@ enum NoteType {
 }
 
 class NoteFileFormatInfo {
-  static List<String> allowedExtensions() {
-    return ['.md', '.org', '.txt'];
-  }
+  static List<String> allowedExtensions = ['.md', '.org', '.txt'];
 
   static String defaultExtension(NoteFileFormat format) {
     switch (format) {
@@ -72,11 +70,13 @@ class NoteFileFormatInfo {
 
   static bool isAllowedFileName(String filePath) {
     var noteFilePath = filePath.toLowerCase();
-    var isMarkdownFile = noteFilePath.endsWith('.md');
-    var isTxtFile = noteFilePath.endsWith('.txt');
-    var isOrgFile = noteFilePath.endsWith('.org');
+    for (var ext in allowedExtensions) {
+      if (noteFilePath.endsWith(ext)) {
+        return true;
+      }
+    }
 
-    return isMarkdownFile || isTxtFile || isOrgFile;
+    return false;
   }
 }
 
