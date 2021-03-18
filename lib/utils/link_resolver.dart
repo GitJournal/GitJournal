@@ -66,51 +66,27 @@ class LinkResolver {
     }
 
     var lowerCaseTerm = term.toLowerCase();
-    var termEndsWithMd = lowerCaseTerm.endsWith('.md');
-    var termEndsWithTxt = lowerCaseTerm.endsWith('.txt');
-    var termEndsWithOrg = lowerCaseTerm.endsWith('.org');
 
     var rootFolder = inputNote.parent.rootFolder;
     for (var note in rootFolder.getAllNotes()) {
       var fileName = note.fileName;
-      if (fileName.toLowerCase().endsWith('.md')) {
-        if (termEndsWithMd) {
-          if (fileName == term) {
-            return note;
-          } else {
-            continue;
-          }
-        }
+      var fileNameLower = fileName.toLowerCase();
 
-        var f = fileName.substring(0, fileName.length - 3);
-        if (f == term) {
-          return note;
-        }
-      } else if (fileName.toLowerCase().endsWith('.org')) {
-        if (termEndsWithOrg) {
-          if (fileName == term) {
-            return note;
-          } else {
-            continue;
+      for (var ext in NoteFileFormatInfo.allowedExtensions) {
+        if (fileNameLower.endsWith(ext)) {
+          var termEndsWithSameExt = lowerCaseTerm.endsWith(ext);
+          if (termEndsWithSameExt) {
+            if (fileName == term) {
+              return note;
+            } else {
+              break; // go to next note
+            }
           }
-        }
 
-        var f = fileName.substring(0, fileName.length - 4);
-        if (f == term) {
-          return note;
-        }
-      } else if (fileName.toLowerCase().endsWith('.txt')) {
-        if (termEndsWithTxt) {
-          if (fileName == term) {
+          var f = fileName.substring(0, fileName.length - ext.length);
+          if (f == term) {
             return note;
-          } else {
-            continue;
           }
-        }
-
-        var f = fileName.substring(0, fileName.length - 4);
-        if (f == term) {
-          return note;
         }
       }
     }
@@ -131,24 +107,12 @@ class LinkResolver {
       return linkedNote;
     }
 
-    if (!spec.endsWith('.md')) {
-      linkedNote = folder.getNoteWithSpec(spec + '.md');
-      if (linkedNote != null) {
-        return linkedNote;
-      }
-    }
-
-    if (!spec.endsWith('.org')) {
-      linkedNote = folder.getNoteWithSpec(spec + '.org');
-      if (linkedNote != null) {
-        return linkedNote;
-      }
-    }
-
-    if (!spec.endsWith('.txt')) {
-      linkedNote = folder.getNoteWithSpec(spec + '.txt');
-      if (linkedNote != null) {
-        return linkedNote;
+    for (var ext in NoteFileFormatInfo.allowedExtensions) {
+      if (!spec.endsWith(ext)) {
+        linkedNote = folder.getNoteWithSpec(spec + ext);
+        if (linkedNote != null) {
+          return linkedNote;
+        }
       }
     }
 
