@@ -1,11 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:markdown/markdown.dart' as md;
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
@@ -51,15 +48,6 @@ class NoteViewer extends StatelessWidget {
     );
 
     return view;
-  }
-
-  static md.ExtensionSet markdownExtensions() {
-    // It's important to add both these inline syntaxes before the other
-    // syntaxes as the LinkSyntax intefers with both of these
-    var markdownExtensions = md.ExtensionSet.gitHubFlavored;
-    markdownExtensions.inlineSyntaxes.insert(0, WikiLinkSyntax());
-    markdownExtensions.inlineSyntaxes.insert(1, TaskListSyntax());
-    return markdownExtensions;
   }
 
   /*
