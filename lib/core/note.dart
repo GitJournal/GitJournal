@@ -440,31 +440,7 @@ class Note with NotesNotifier {
     await file.delete();
   }
 
-  ///
-  /// Do not let the user rename it to a different file-type.
-  ///
   void rename(String newName) {
-    switch (_fileFormat) {
-      case NoteFileFormat.OrgMode:
-        if (!newName.toLowerCase().endsWith('.org')) {
-          newName += '.org';
-        }
-        break;
-
-      case NoteFileFormat.Txt:
-        if (!newName.toLowerCase().endsWith('.txt')) {
-          newName += '.txt';
-        }
-        break;
-
-      case NoteFileFormat.Markdown:
-      default:
-        if (!newName.toLowerCase().endsWith('.md')) {
-          newName += '.md';
-        }
-        break;
-    }
-
     var oldFilePath = filePath;
     var parentDirName = p.dirname(filePath);
     var newFilePath = p.join(parentDirName, newName);
