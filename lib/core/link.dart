@@ -132,16 +132,25 @@ class LinkExtractor implements md.NodeVisitor {
 class WikiLinkSyntax extends md.InlineSyntax {
   static final String _pattern = r'\[\[([^\[\]]+)\]\]';
 
-  WikiLinkSyntax() : super(_pattern);
+  // In Obsidian style, the link is like [[fileToLinkTo|display text]]
+  final bool obsidianStyle;
+
+  WikiLinkSyntax({this.obsidianStyle = true}) : super(_pattern);
 
   @override
   bool onMatch(md.InlineParser parser, Match match) {
     var term = match[1].trim();
     var displayText = term;
+
     if (term.contains('|')) {
       var s = term.split('|');
-      term = s[0].trimRight();
-      displayText = s[1].trimLeft();
+      if (obsidianStyle) {
+        term = s[0].trimRight();
+        displayText = s[1].trimLeft();
+      } else {
+        displayText = s[0].trimRight();
+        term = s[1].trimLeft();
+      }
     }
 
     var el = md.Element('a', [md.Text(displayText)]);
