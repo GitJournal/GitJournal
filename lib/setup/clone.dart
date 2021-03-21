@@ -92,13 +92,12 @@ Future<void> cloneRemote({
   }
 
   // Just to be on the safer side, incase dart-git fucks up something
+  // dart-git does fuck something up. This is required!
   // Causes problems -
   // - Pack files are read into memory, this causes OOM issues
   //   https://sentry.io/organizations/gitjournal/issues/2254310735/?project=5168082&query=is%3Aunresolved
-  // - Pack files don't have REF_DELTA implemented
-  //   https://sentry.io/organizations/gitjournal/issues/2235794657/?project=5168082&query=is%3Aunresolved
   //
-  // await repo.checkout(".");
+  await repo.checkout(".");
 }
 
 Future<String> _remoteDefaultBranch({
