@@ -56,7 +56,7 @@ dependencies:
   http: ^0.12.0+1
   image_picker: ^0.6.7
   in_app_purchase: ^0.3.4+5
-  intl: ^0.16.1
+  intl: ^0.17.0
   isolate: ^2.0.3
   launch_review: ^2.0.0
   mutex: ^1.0.3
