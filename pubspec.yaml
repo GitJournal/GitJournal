@@ -5,6 +5,8 @@ version: 1.75.1+10
 environment:
   sdk: ">=2.10.0 <3.0.0"
 
+publish_to: none
+
 dependencies:
   flutter:
     sdk: flutter
