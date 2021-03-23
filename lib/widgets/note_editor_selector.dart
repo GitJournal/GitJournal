@@ -57,6 +57,8 @@ class NoteEditorSelector extends StatelessWidget {
           tr('settings.editors.journalEditor'),
           FontAwesomeIcons.book,
         ),
+        _buildTile(context, EditorType.Org, tr('settings.editors.orgEditor'),
+            FontAwesomeIcons.horseHead)
       ],
       mainAxisSize: MainAxisSize.min,
     );
