@@ -159,6 +159,7 @@ settings:
     journalEditor: Journal Editor
     defaultFolder: Default Folder
     checklistEditor: Checklist Editor
+    orgEditor: Org Editor
     rawEditor: Raw Editor
     choose: Choose Editor
   sortingField:

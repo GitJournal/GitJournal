@@ -661,6 +661,7 @@ class SettingsEditorType {
       SettingsEditorType('settings.editors.journalEditor', "Journal");
   static const Checklist =
       SettingsEditorType('settings.editors.checklistEditor', "Checklist");
+  static const Org = SettingsEditorType('settings.editors.orgEditor', "Org");
   static const Default = Markdown;
 
   final String _str;
@@ -700,6 +701,8 @@ class SettingsEditorType {
         return SettingsEditorType.Markdown;
       case EditorType.Journal:
         return SettingsEditorType.Journal;
+      case EditorType.Org:
+        return SettingsEditorType.Org;
     }
     return SettingsEditorType.Default;
   }

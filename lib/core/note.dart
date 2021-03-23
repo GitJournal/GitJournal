@@ -46,11 +46,7 @@ enum NoteLoadState {
   Error,
 }
 
-enum NoteType {
-  Unknown,
-  Checklist,
-  Journal,
-}
+enum NoteType { Unknown, Checklist, Journal, Org }
 
 class NoteFileFormatInfo {
   static List<String> allowedExtensions = ['.md', '.org', '.txt'];

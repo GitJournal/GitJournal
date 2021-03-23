@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:gitjournal/editors/org_editor.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/md_yaml_doc.dart';
@@ -79,7 +80,7 @@ class NoteEditor extends StatefulWidget {
   }
 }
 
-enum EditorType { Markdown, Raw, Checklist, Journal }
+enum EditorType { Markdown, Raw, Checklist, Journal, Org }
 
 class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
   Note note;
@@ -90,6 +91,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
   final _markdownEditorKey = GlobalKey<MarkdownEditorState>();
   final _checklistEditorKey = GlobalKey<ChecklistEditorState>();
   final _journalEditorKey = GlobalKey<JournalEditorState>();
+  final _orgEditorKey = GlobalKey<OrgEditorState>();
 
   bool get _isNewNote {
     return widget.note == null;
@@ -138,6 +140,9 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
         case NoteType.Checklist:
           editorType = EditorType.Checklist;
           break;
+        case NoteType.Org:
+          editorType = EditorType.Org;
+          break;
         case NoteType.Unknown:
           editorType = widget.notesFolder.config.defaultEditor;
           break;
@@ -147,7 +152,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
     // Org files
     if (note.fileFormat == NoteFileFormat.OrgMode &&
         editorType == EditorType.Markdown) {
-      editorType = EditorType.Raw;
+      editorType = EditorType.Org;
     }
 
     // Txt files
@@ -166,6 +171,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     Log.i("Note Edit State: $state");
+
     if (state != AppLifecycleState.resumed) {
       var note = _getNoteFromEditor();
       if (!_noteModified(note)) return;
@@ -234,6 +240,20 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
       case EditorType.Journal:
         return JournalEditor(
           key: _journalEditorKey,
+          note: note,
+          noteModified: _noteModified(note),
+          noteDeletionSelected: _noteDeletionSelected,
+          noteEditorChooserSelected: _noteEditorChooserSelected,
+          exitEditorSelected: _exitEditorSelected,
+          renameNoteSelected: _renameNoteSelected,
+          editTagsSelected: _editTagsSelected,
+          moveNoteToFolderSelected: _moveNoteToFolderSelected,
+          discardChangesSelected: _discardChangesSelected,
+          editMode: widget.editMode,
+        );
+      case EditorType.Org:
+        return OrgEditor(
+          key: _orgEditorKey,
           note: note,
           noteModified: _noteModified(note),
           noteDeletionSelected: _noteDeletionSelected,
@@ -388,6 +408,8 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
         return _checklistEditorKey.currentState.getNote();
       case EditorType.Journal:
         return _journalEditorKey.currentState.getNote();
+      case EditorType.Org:
+        return _orgEditorKey.currentState.getNote();
     }
     return null;
   }
