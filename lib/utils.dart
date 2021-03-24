@@ -43,7 +43,7 @@ SnackBar buildUndoDeleteSnackbar(
 
 void showSnackbar(BuildContext context, String message) {
   var snackBar = SnackBar(content: Text(message));
-  Scaffold.of(context)
+  ScaffoldMessenger.of(context)
     ..removeCurrentSnackBar()
     ..showSnackBar(snackBar);
 }

@@ -54,8 +54,6 @@ class _FolderViewState extends State<FolderView> {
   bool inSelectionMode = false;
   Note selectedNote;
 
-  var _scaffoldKey = GlobalKey<ScaffoldState>();
-
   @override
   void initState() {
     super.initState();
@@ -139,7 +137,6 @@ class _FolderViewState extends State<FolderView> {
     );
 
     return Scaffold(
-      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(title),
         leading: inSelectionMode ? backButton : GJAppBarMenuButton(),
@@ -229,7 +226,7 @@ class _FolderViewState extends State<FolderView> {
       settings: RouteSettings(name: '/newNote/$routeType'),
     );
     await Navigator.of(context).push(route);
-    _scaffoldKey.currentState.removeCurrentSnackBar();
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
   }
 
   void _sortButtonPressed() async {

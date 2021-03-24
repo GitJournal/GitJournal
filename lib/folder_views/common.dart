@@ -96,7 +96,7 @@ void openNoteEditor(
 
     var stateContainer = context.read<GitJournalRepo>();
     var snackBar = buildUndoDeleteSnackbar(stateContainer, note);
-    Scaffold.of(context)
+    ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()
       ..showSnackBar(snackBar);
   }
