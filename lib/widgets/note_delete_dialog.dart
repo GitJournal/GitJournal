@@ -8,11 +8,11 @@ class NoteDeleteDialog extends StatelessWidget {
     return AlertDialog(
       title: Text(tr('widgets.NoteDeleteDialog.title')),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           onPressed: () => Navigator.of(context).pop(false),
           child: Text(tr('widgets.NoteDeleteDialog.no')),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () => Navigator.of(context).pop(true),
           child: Text(tr('widgets.NoteDeleteDialog.yes')),
         ),

@@ -95,7 +95,7 @@ class EditorBottomBar extends StatelessWidget {
                 icon: const Icon(Icons.undo),
                 onPressed: undoAllowed ? onUndoSelected : null,
               ),
-            FlatButton.icon(
+            TextButton.icon(
               icon: const Icon(Icons.folder),
               label: Text(parentFolder.publicName),
               onPressed: () {

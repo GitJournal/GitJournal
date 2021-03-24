@@ -95,7 +95,7 @@ class KeyEditor extends StatelessWidget {
             ),
           ),
         ),
-        OutlineButton(
+        OutlinedButton(
           child: Text(tr("setup.keyEditors.load")),
           onPressed: _pickAndLoadFile,
         ),

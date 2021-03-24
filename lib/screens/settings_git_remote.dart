@@ -279,11 +279,11 @@ class IrreversibleActionConfirmationDialog extends StatelessWidget {
       title: Text(title),
       content: Text(tr("settings.gitRemote.changeHost.subtitle")),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           child: Text(tr("settings.gitRemote.changeHost.ok")),
           onPressed: () => Navigator.of(context).pop(true),
         ),
-        FlatButton(
+        TextButton(
           child: Text(tr("settings.gitRemote.changeHost.cancel")),
           onPressed: () => Navigator.of(context).pop(),
         ),

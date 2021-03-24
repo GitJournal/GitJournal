@@ -68,11 +68,11 @@ class _RenameDialogState extends State<RenameDialog> {
     return AlertDialog(
       title: Text(widget.dialogTitle),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           onPressed: () => Navigator.of(context).pop(false),
           child: Text(tr('widgets.rename.no')),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () {
             if (_formKey.currentState.validate()) {
               var newName = _textController.text;

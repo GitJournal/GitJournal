@@ -299,7 +299,7 @@ class PurchaseFailedDialog extends StatelessWidget {
       title: Text(tr('widgets.PurchaseWidget.failed')),
       content: Text(text),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           child: Text(tr('settings.ok')),
           onPressed: () => Navigator.of(context).pop(),
         ),
@@ -320,7 +320,7 @@ class _RestorePurchaseButtonState extends State<RestorePurchaseButton> {
   Widget build(BuildContext context) {
     var text = computing ? '...' : tr('purchase_screen.restore');
 
-    return OutlineButton(
+    return OutlinedButton(
       child: Text(text),
       onPressed: () async {
         setState(() {

@@ -38,13 +38,13 @@ class OAuthAppState extends State<OAuthApp> {
           title: const Text('OAuth Test'),
         ),
         body: Column(children: <Widget>[
-          RaisedButton(
+          ElevatedButton(
             child: const Text("Open OAuth URL"),
             onPressed: () {
               githost.launchOAuthScreen();
             },
           ),
-          RaisedButton(
+          ElevatedButton(
             child: const Text("List Repos"),
             onPressed: () async {
               try {
@@ -57,7 +57,7 @@ class OAuthAppState extends State<OAuthApp> {
               }
             },
           ),
-          RaisedButton(
+          ElevatedButton(
             child: const Text("Create Repo"),
             onPressed: () async {
               try {
@@ -68,7 +68,7 @@ class OAuthAppState extends State<OAuthApp> {
               }
             },
           ),
-          RaisedButton(
+          ElevatedButton(
             child: const Text("Add Deploy Key"),
             onPressed: () async {
               try {

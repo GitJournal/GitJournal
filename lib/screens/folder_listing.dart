@@ -228,11 +228,11 @@ class _CreateFolderAlertDialogState extends State<CreateFolderAlertDialog> {
     return AlertDialog(
       title: Text(tr("screens.folders.dialog.title")),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           onPressed: () => Navigator.of(context).pop(false),
           child: Text(tr("screens.folders.dialog.discard")),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () {
             var newFolderName = _textController.text;
             return Navigator.of(context).pop(newFolderName);
@@ -262,7 +262,7 @@ class FolderErrorDialog extends StatelessWidget {
       title: Text(tr("screens.folders.errorDialog.title")),
       content: Text(content),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           child: Text(tr("screens.folders.errorDialog.ok")),
           onPressed: () => Navigator.of(context).pop(),
         ),

@@ -391,11 +391,11 @@ class _CustomMetDataTileState extends State<CustomMetDataTile> {
     return AlertDialog(
       title: Text(tr("settings.noteMetaData.customMetaData.title")),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           onPressed: () => Navigator.of(context).pop(widget.value),
           child: Text(tr("settings.cancel")),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () {
             var text = _textController.text.trim();
             var map = MarkdownYAMLCodec.parseYamlText(text);

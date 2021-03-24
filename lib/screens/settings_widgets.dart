@@ -45,7 +45,7 @@ class ListPreference extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                 ),
                 actions: <Widget>[
-                  FlatButton(
+                  TextButton(
                     child: Text(tr('settings.cancel')),
                     onPressed: () {
                       Navigator.of(context).pop();

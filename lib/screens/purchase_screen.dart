@@ -99,7 +99,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           child: Wrap(
             children: [
               RestorePurchaseButton(),
-              OutlineButton(
+              OutlinedButton(
                 child: Text(tr("feature_timeline.title")),
                 onPressed: () {
                   var route = MaterialPageRoute(

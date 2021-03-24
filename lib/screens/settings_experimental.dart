@@ -151,7 +151,7 @@ class _PasswordForm extends StatelessWidget {
         },
       ),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           child: const Text('Ok'),
           onPressed: () {
             Navigator.of(context).pop();
