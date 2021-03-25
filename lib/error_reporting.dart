@@ -15,56 +15,55 @@ import 'package:gitjournal/utils/logger.dart';
 
 SentryClient _sentryClient;
 Future<SentryClient> _initSentry() async {
-  return SentryClient(
+  return SentryClient(SentryOptions(
     dsn: environment['sentry'],
-    environmentAttributes: await _environmentEvent,
-  );
+  ));
 }
 
 Future<SentryClient> getSentryClient() async {
   return _sentryClient ??= await _initSentry();
 }
 
-Future<Event> get _environmentEvent async {
+Future<SentryEvent> get _environmentEvent async {
   final packageInfo = await PackageInfo.fromPlatform();
   final deviceInfoPlugin = DeviceInfoPlugin();
-  OperatingSystem os;
-  Device device;
+  SentryOperatingSystem os;
+  SentryDevice device;
   if (Platform.isAndroid) {
     final androidInfo = await deviceInfoPlugin.androidInfo;
-    os = OperatingSystem(
+    os = SentryOperatingSystem(
       name: 'android',
       version: androidInfo.version.release,
     );
-    device = Device(
+    device = SentryDevice(
       model: androidInfo.model,
       manufacturer: androidInfo.manufacturer,
       modelId: androidInfo.product,
     );
   } else if (Platform.isIOS) {
     final iosInfo = await deviceInfoPlugin.iosInfo;
-    os = OperatingSystem(
+    os = SentryOperatingSystem(
       name: iosInfo.systemName,
       version: iosInfo.systemVersion,
     );
-    device = Device(
+    device = SentryDevice(
       model: iosInfo.utsname.machine,
       family: iosInfo.model,
       manufacturer: 'Apple',
     );
   }
-  final environment = Event(
+  final environment = SentryEvent(
     release: '${packageInfo.version} (${packageInfo.buildNumber})',
     contexts: Contexts(
       operatingSystem: os,
       device: device,
-      app: App(
+      app: SentryApp(
         name: packageInfo.appName,
         version: packageInfo.version,
         build: packageInfo.buildNumber,
       ),
     ),
-    userContext: User(
+    user: SentryUser(
       id: AppSettings.instance.pseudoId,
     ),
   );
@@ -116,7 +115,7 @@ Future<void> logExceptionWarning(Object e, StackTrace stackTrace) async {
     return;
   }
 
-  await captureSentryException(e, stackTrace, level: SeverityLevel.warning);
+  await captureSentryException(e, stackTrace, level: SentryLevel.warning);
 }
 
 List<Breadcrumb> breadcrumbs = [];
@@ -125,25 +124,28 @@ void captureErrorBreadcrumb({
   @required String name,
   Map<String, String> parameters,
 }) {
-  var b = Breadcrumb(name, DateTime.now(), data: parameters);
+  var b = Breadcrumb(
+    message: name,
+    timestamp: DateTime.now(),
+    data: parameters,
+  );
   breadcrumbs.add(b);
 }
 
 Future<void> captureSentryException(
   Object exception,
   StackTrace stackTrace, {
-  SeverityLevel level = SeverityLevel.error,
+  SentryLevel level = SentryLevel.error,
 }) async {
   try {
     final sentry = await getSentryClient();
-    final Event event = Event(
+    final event = (await _environmentEvent).copyWith(
       exception: exception,
-      stackTrace: Trace.from(stackTrace).terse,
       breadcrumbs: breadcrumbs,
       level: level,
     );
 
-    return sentry.capture(event: event);
+    return sentry.captureEvent(event, stackTrace: Trace.from(stackTrace).terse);
   } catch (e) {
     print("Failed to report with Sentry: $e");
   }

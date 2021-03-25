@@ -393,13 +393,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.4"
-  flutter_sentry:
-    dependency: "direct main"
-    description:
-      name: flutter_sentry
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.4"
   flutter_staggered_grid_view:
     dependency: "direct main"
     description:
@@ -861,7 +854,14 @@ packages:
       name: sentry
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.1"
+    version: "4.1.0-nullsafety.1"
+  sentry_flutter:
+    dependency: "direct main"
+    description:
+      name: sentry_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.6"
   share:
     dependency: "direct main"
     description:
@@ -1112,13 +1112,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
-  usage:
-    dependency: transitive
-    description:
-      name: usage
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.4.2"
   uuid:
     dependency: "direct main"
     description:
