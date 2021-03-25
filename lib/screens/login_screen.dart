@@ -37,8 +37,7 @@ import 'package:gitjournal/widgets/scroll_view_without_animation.dart';
 
 //import 'package:gotrue/gotrue.dart';
 
-
-const _localDevServer = 'http://192.168.1.130:9999/';
+// const _localDevServer = 'http://192.168.1.130:9999/';
 // const _prodServer = 'https://api.gitjournal.io/auth/';
 
 class LoginPage extends StatefulWidget {

@@ -153,7 +153,7 @@ class Note with NotesNotifier {
       } catch (e, stackTrace) {
         Log.e("_buildFileName: $e");
         logExceptionWarning(e, stackTrace);
-        _filePath = p.join(parent.folderPath, Uuid().v4());
+        _filePath = p.join(parent.folderPath, const Uuid().v4());
       }
       switch (_fileFormat) {
         case NoteFileFormat.OrgMode:
@@ -591,7 +591,7 @@ class Note with NotesNotifier {
       case NoteFileNameFormat.Iso8601WithTimeZoneWithoutColon:
         return toIso8601WithTimezone(date).replaceAll(":", "_");
       case NoteFileNameFormat.UuidV4:
-        return Uuid().v4();
+        return const Uuid().v4();
       case NoteFileNameFormat.Zettelkasten:
         return toZettleDateTime(date);
     }

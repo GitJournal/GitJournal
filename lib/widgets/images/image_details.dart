@@ -15,11 +15,13 @@ limitations under the License.
 */
 
 import 'package:flutter/material.dart';
+
+import 'package:photo_view/photo_view.dart';
+import 'package:provider/provider.dart';
+
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/widgets/images/markdown_image.dart';
 import 'package:gitjournal/widgets/images/themable_image.dart';
-import 'package:photo_view/photo_view.dart';
-import 'package:provider/provider.dart';
 
 class ImageDetails extends StatefulWidget {
   final ThemableImage image;

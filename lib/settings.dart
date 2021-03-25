@@ -1125,7 +1125,7 @@ class SettingsVectorGraphicsAdjustColors {
 }
 
 String generateRandomId() {
-  return Uuid().v4().substring(0, 8);
+  return const Uuid().v4().substring(0, 8);
 }
 
 class SettingsTheme {

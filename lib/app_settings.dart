@@ -71,7 +71,7 @@ class AppSettings extends ChangeNotifier {
 
     _pseudoId = pref.getString("pseudoId");
     if (_pseudoId == null) {
-      _pseudoId = Uuid().v4();
+      _pseudoId = const Uuid().v4();
       pref.setString("pseudoId", _pseudoId);
     }
 
