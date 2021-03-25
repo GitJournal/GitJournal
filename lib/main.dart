@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stack_trace/stack_trace.dart';
 
@@ -13,6 +14,7 @@ import 'package:gitjournal/error_reporting.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
 
   var pref = await SharedPreferences.getInstance();
   AppSettings.instance.load(pref);
