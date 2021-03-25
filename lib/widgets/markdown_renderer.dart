@@ -129,9 +129,14 @@ class MarkdownRenderer extends StatelessWidget {
   static md.ExtensionSet markdownExtensions() {
     // It's important to add both these inline syntaxes before the other
     // syntaxes as the LinkSyntax intefers with both of these
-    var markdownExtensions = md.ExtensionSet.gitHubFlavored;
-    markdownExtensions.inlineSyntaxes.insert(0, WikiLinkSyntax());
-    markdownExtensions.inlineSyntaxes.insert(1, TaskListSyntax());
+    var markdownExtensions = md.ExtensionSet(
+      md.ExtensionSet.gitHubFlavored.blockSyntaxes,
+      [
+        WikiLinkSyntax(),
+        TaskListSyntax(),
+        ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes,
+      ],
+    );
     return markdownExtensions;
   }
 }
