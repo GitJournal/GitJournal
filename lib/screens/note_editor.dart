@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -20,7 +21,6 @@ import 'package:flutter/services.dart';
 
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:gitjournal/editors/org_editor.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/md_yaml_doc.dart';
@@ -30,6 +30,7 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/editors/checklist_editor.dart';
 import 'package:gitjournal/editors/journal_editor.dart';
 import 'package:gitjournal/editors/markdown_editor.dart';
+import 'package:gitjournal/editors/org_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/repository.dart';
