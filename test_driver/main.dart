@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dart_git/git.dart';
-import 'package:flutter_driver/driver_extension.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -13,7 +12,7 @@ import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
 
 void main() async {
-  enableFlutterDriverExtension();
+  // enableFlutterDriverExtension();
 
   var pref = await SharedPreferences.getInstance();
   AppSettings.instance.load(pref);

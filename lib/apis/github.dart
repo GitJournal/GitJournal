@@ -53,8 +53,8 @@ class GitHub implements GitHost {
   }
 
   Future<String> _getAccessCode(String authCode) async {
-    var url =
-        "https://github.com/login/oauth/access_token?client_id=$_clientID&client_secret=$_clientSecret&code=$authCode";
+    var url = Uri.parse(
+        "https://github.com/login/oauth/access_token?client_id=$_clientID&client_secret=$_clientSecret&code=$authCode");
 
     var response = await http.post(url);
     if (response.statusCode != 200) {
@@ -86,7 +86,8 @@ class GitHub implements GitHost {
       throw GitHostException.MissingAccessCode;
     }
 
-    var url = "https://api.github.com/user/repos?page=1&per_page=100";
+    var url =
+        Uri.parse("https://api.github.com/user/repos?page=1&per_page=100");
     var headers = {
       HttpHeaders.authorizationHeader: _buildAuthHeader(),
     };
@@ -122,7 +123,7 @@ class GitHub implements GitHost {
       throw GitHostException.MissingAccessCode;
     }
 
-    var url = "https://api.github.com/user/repos";
+    var url = Uri.parse("https://api.github.com/user/repos");
     var data = <String, dynamic>{
       'name': name,
       'private': true,
@@ -163,7 +164,7 @@ class GitHub implements GitHost {
 
     var userInfo = await getUserInfo();
     var owner = userInfo.username;
-    var url = "https://api.github.com/repos/$owner/$name";
+    var url = Uri.parse("https://api.github.com/repos/$owner/$name");
 
     var headers = {
       HttpHeaders.authorizationHeader: _buildAuthHeader(),
@@ -190,7 +191,7 @@ class GitHub implements GitHost {
       throw GitHostException.MissingAccessCode;
     }
 
-    var url = "https://api.github.com/repos/$repo/keys";
+    var url = Uri.parse("https://api.github.com/repos/$repo/keys");
 
     var data = <String, dynamic>{
       'title': "GitJournal",
@@ -265,7 +266,7 @@ class GitHub implements GitHost {
       throw GitHostException.MissingAccessCode;
     }
 
-    var url = "https://api.github.com/user";
+    var url = Uri.parse("https://api.github.com/user");
 
     var headers = {
       HttpHeaders.authorizationHeader: _buildAuthHeader(),

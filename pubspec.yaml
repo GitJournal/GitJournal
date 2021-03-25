@@ -18,9 +18,6 @@ dependencies:
   git_bindings:
     #path: /Users/vishesh/src/gitjournal/git_bindings
     git: https://github.com/GitJournal/git_bindings.git
-  gotrue:
-    #path: /Users/vishesh/src/gitjournal/gotrue-dart/
-    git: https://github.com/GitJournal/gotrue-dart.git
   icloud_documents_path:
     git: https://github.com/GitJournal/icloud_documents_path.git
   auto_size_text: ^2.0.1
@@ -32,29 +29,28 @@ dependencies:
   crypton: ^1.1.3
   device_info: ">=0.4.2+4 <2.0.0"
   dots_indicator: ^0.0.3
-  easy_localization: ^2.3.2
+  easy_localization: ^3.0.0
   easy_localization_loader: ^0.0.2
   email_validator: ^1.0.6
-  equatable: ^1.1.0
+  equatable: ^2.0.0
   ext_storage: ^1.0.3
-  file_picker: ^2.0.7
+  file_picker: ^3.0.0
   filesystem_picker: ^1.0.3 # for directories
   fimber: ^0.3.0
-  firebase_analytics: ^6.2.0
-  flutter_cache_manager: ^1.4.2
+  firebase_analytics: ^7.1.1
+  flutter_cache_manager: ^2.1.2
   flutter_email_sender: ^3.0.1
   flutter_emoji: ">= 2.0.0"
-  flutter_markdown: ^0.5.1
-  flutter_plugin_android_lifecycle: ^1.0.8 # for fixing the build
+  flutter_markdown: ^0.6.1
   flutter_sentry: ^0.4.4
   flutter_staggered_grid_view: ^0.3.0
-  flutter_svg: ^0.19.0
+  flutter_svg: ^0.21.0-nullsafety.0
   font_awesome_flutter: ^8.7.0
   function_types: ^0.0.2
   git_url_parse2: ^0.0.1
-  google_fonts: ^1.1.1
-  http: ^0.12.0+1
-  image_picker: ^0.6.7
+  google_fonts: ^2.0.0
+  http: ^0.13.1
+  image_picker: ^0.7.3
   in_app_purchase: ^0.3.4+5
   intl: ^0.17.0
   isolate: ^2.0.3
@@ -62,45 +58,40 @@ dependencies:
   mutex: ^1.0.3
   package_info: ">=0.4.1 <2.0.0"
   path: ^1.6.2
-  permission_handler: ^5.1.0+2
+  permission_handler: ^6.1.1
   provider: ^4.3.2+2
   quick_actions: ^0.4.0+10
   receive_sharing_intent: ^1.4.0+2
   sentry: ">=3.0.0 <4.0.0"
   share: ^0.6.3+5
-  shared_preferences: ^0.5.6
-  ssh_key: ^0.6.0
+  shared_preferences: ^2.0.5
+  #ssh_key: ^0.6.0
   stack_trace: ^1.9.6
   synchronized: ^2.2.0
   time: ^1.3.0
   timeago: ^2.0.27
-  url_launcher: ^5.4.1
-  uuid: ^2.0.1
-  yaml: ^2.2.0
+  url_launcher: ^6.0.2
+  uuid: ^3.0.2
+  yaml: ^3.1.0
   yaml_serializer: ^0.0.9
 
 dev_dependencies:
-  flutter_driver:
-    sdk: flutter
+  #flutter_driver:
+  #  sdk: flutter
   flutter_test:
     sdk: flutter
   benchmark_harness: any
   bonsoir: ^0.1.2+2
-  flutter_launcher_icons: "^0.7.2"
+  flutter_launcher_icons: ^0.9.0
   flutter_webview_plugin: ^0.3.11
   import_sorter: ^4.2.2
   multicast_dns: ^0.2.2
-  screenshots: ^2.1.1
+  #screenshots: ^2.1.1
   test: ^1.5.1
 
 dependency_overrides:
-  markdown:
-    git: https://github.com/GitJournal/markdown.git
-  # Required for screenshots package
-  process: ^4.0.0-nullsafety.1
-  platform: ^3.0.0-nullsafety.1
-  file: ^6.0.0-nullsafety.1
-  xml: ^4.2.0
+  easy_localization_loader:
+    git: https://github.com/aissat/easy_localization_loader
 
 flutter:
   uses-material-design: true

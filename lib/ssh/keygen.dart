@@ -23,12 +23,12 @@ final bool useDartKeyGen = false;
 
 Future<SshKey> generateSSHKeys({@required String comment}) async {
   if (useDartKeyGen) {
-    return generateSSHKeysDart(comment: comment);
-  } else {
-    return generateSSHKeysNative(comment: comment);
-  }
+    //return generateSSHKeysDart(comment: comment);
+  } else {}
+  return generateSSHKeysNative(comment: comment);
 }
 
+/*
 Future<SshKey> generateSSHKeysDart({@required String comment}) async {
   try {
     var stopwatch = Stopwatch()..start();
@@ -46,6 +46,7 @@ Future<SshKey> generateSSHKeysDart({@required String comment}) async {
 
   return null;
 }
+*/
 
 Future<SshKey> generateSSHKeysNative({@required String comment}) async {
   try {

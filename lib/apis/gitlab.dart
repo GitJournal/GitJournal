@@ -75,8 +75,8 @@ class GitLab implements GitHost {
     }
 
     // FIXME: pagination!
-    var url =
-        "https://gitlab.com/api/v4/projects?simple=true&membership=true&order_by=last_activity_at&access_token=$_accessCode";
+    var url = Uri.parse(
+        "https://gitlab.com/api/v4/projects?simple=true&membership=true&order_by=last_activity_at&access_token=$_accessCode");
 
     if (foundation.kDebugMode) {
       print(toCurlCommand(url, {}));
@@ -109,7 +109,8 @@ class GitLab implements GitHost {
       throw GitHostException.MissingAccessCode;
     }
 
-    var url = "https://gitlab.com/api/v4/projects?access_token=$_accessCode";
+    var url = Uri.parse(
+        "https://gitlab.com/api/v4/projects?access_token=$_accessCode");
     var data = <String, dynamic>{
       'name': name,
       'visibility': 'private',
@@ -149,8 +150,8 @@ class GitLab implements GitHost {
 
     var userInfo = await getUserInfo();
     var repo = userInfo.username + '%2F' + name;
-    var url =
-        "https://gitlab.com/api/v4/projects/$repo?access_token=$_accessCode";
+    var url = Uri.parse(
+        "https://gitlab.com/api/v4/projects/$repo?access_token=$_accessCode");
 
     var response = await http.get(url);
     if (response.statusCode != 200) {
@@ -174,8 +175,8 @@ class GitLab implements GitHost {
     }
 
     repo = repo.replaceAll('/', '%2F');
-    var url =
-        "https://gitlab.com/api/v4/projects/$repo/deploy_keys?access_token=$_accessCode";
+    var url = Uri.parse(
+        "https://gitlab.com/api/v4/projects/$repo/deploy_keys?access_token=$_accessCode");
 
     var data = {
       'title': "GitJournal",
@@ -249,7 +250,8 @@ class GitLab implements GitHost {
       throw GitHostException.MissingAccessCode;
     }
 
-    var url = "https://gitlab.com/api/v4/user?access_token=$_accessCode";
+    var url =
+        Uri.parse("https://gitlab.com/api/v4/user?access_token=$_accessCode");
 
     var response = await http.get(url);
     if (response.statusCode != 200) {

@@ -81,7 +81,7 @@ bool folderWithSpecExists(BuildContext context, String spec) {
   return rootFolder.getFolderWithSpec(spec) != null;
 }
 
-String toCurlCommand(String url, Map<String, String> headers) {
+String toCurlCommand(Uri url, Map<String, String> headers) {
   var headersStr = "";
   headers.forEach((key, value) {
     headersStr += ' -H "$key: $value" ';

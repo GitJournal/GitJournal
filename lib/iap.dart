@@ -194,7 +194,7 @@ Future<DateTime> getExpiryDate(
   };
   Log.i("getExpiryDate ${json.encode(body)}");
 
-  var url = Platform.isIOS ? ios_url : android_url;
+  var url = Uri.parse(Platform.isIOS ? ios_url : android_url);
   var response = await http.post(url, body: json.encode(body));
   if (response.statusCode != 200) {
     Log.e("Received Invalid Status Code from GCP IAP Verify", props: {
