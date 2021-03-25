@@ -16,9 +16,9 @@ jobs:
           command: flutter test -j 1 --coverage --machine | tojunit --output junit.xml
       - store_test_results:
           path: ./
-      - run:
-          name: Analyze
-          command: flutter analyze
+      #   - run:
+      #       name: Analyze
+      #       command: flutter analyze
       - run:
           name: Decode Android key store
           command: echo "$KEYSTORE" | base64 -di > android/app/keystore.jks
