@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:device_info/device_info.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
-import 'package:flutter_sentry/flutter_sentry.dart';
+import 'package:flutter_runtime_env/flutter_runtime_env.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -120,7 +120,7 @@ class JournalApp extends StatefulWidget {
       JournalApp.isInDebugMode = true;
     }
 
-    bool inFireBaseTestLab = await FlutterSentry.isFirebaseTestLab();
+    bool inFireBaseTestLab = await inFirebaseTestLab();
     bool enabled = !JournalApp.isInDebugMode && !inFireBaseTestLab;
 
     Log.d("Analytics Collection: $enabled");

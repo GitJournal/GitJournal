@@ -386,6 +386,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  flutter_runtime_env:
+    dependency: "direct main"
+    description:
+      name: flutter_runtime_env
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   flutter_sentry:
     dependency: "direct main"
     description:
