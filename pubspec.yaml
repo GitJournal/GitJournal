@@ -59,6 +59,7 @@ dependencies:
   package_info: ">=0.4.1 <2.0.0"
   path: ^1.6.2
   permission_handler: ^6.1.1
+  photo_view: ^0.10.3
   provider: ^4.3.2+2
   quick_actions: ^0.4.0+10
   receive_sharing_intent: ^1.4.0+2

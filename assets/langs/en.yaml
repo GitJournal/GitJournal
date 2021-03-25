@@ -49,6 +49,12 @@ settings:
           validator:
             empty: Tags cannot be empty.
             same: Tag cannot be identical to a “DoNotCaption-Tag”.
+      detailsView:
+        header: Detail View
+        maxZoom: Maximal zoom level
+        rotateGestures:
+          title: Rotate Image with gestures
+          subtitle: Rotate by moving two fingers in a circle
       theming:
         title: Image Theming
         subtitle: Configure how images are themed

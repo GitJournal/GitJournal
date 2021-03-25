@@ -14,12 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:gitjournal/screens/settings_display_images_caption.dart';
 import 'package:gitjournal/screens/settings_display_images_theming.dart';
+import 'package:gitjournal/screens/settings_screen.dart';
+import 'package:gitjournal/settings.dart';
+import 'package:provider/provider.dart';
 
 class SettingsDisplayImagesScreen extends StatefulWidget {
   @override
@@ -29,11 +34,11 @@ class SettingsDisplayImagesScreen extends StatefulWidget {
 
 class SettingsDisplayImagesScreenState
     extends State<SettingsDisplayImagesScreen> {
-  final doNotThemeTagsKey = GlobalKey<FormFieldState<String>>();
-  final doThemeTagsKey = GlobalKey<FormFieldState<String>>();
-
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<Settings>(context);
+    final theme = Theme.of(context);
+
     final body = ListView(children: <Widget>[
       ListTile(
         title: Text(tr("settings.display.images.theming.title")),
@@ -57,6 +62,49 @@ class SettingsDisplayImagesScreenState
                 const RouteSettings(name: '/settings/display_images/caption'),
           );
           Navigator.of(context).push(route);
+        },
+      ),
+      SettingsHeader(tr('settings.display.images.detailsView.header')),
+      ListTile(
+          title: Text(tr("settings.display.images.detailsView.maxZoom")),
+          subtitle: Row(children: [
+            Expanded(
+                child: Slider.adaptive(
+              value: min(settings.maxImageZoom, 30),
+              onChanged: (v) {
+                setState(() {
+                  settings.maxImageZoom = v == 30 ? double.infinity : v;
+                  settings.save();
+                });
+              },
+              max: 30,
+              min: 1,
+              activeColor: theme.accentColor,
+              inactiveColor: theme.disabledColor,
+            )),
+            Container(
+                width: 40,
+                child: settings.maxImageZoom == double.infinity
+                    ? Icon(
+                        Icons.all_inclusive,
+                        color: theme.accentColor,
+                      )
+                    : Text(
+                        NumberFormat("##.0").format(settings.maxImageZoom),
+                        style: theme.textTheme.subtitle2
+                            .copyWith(color: theme.accentColor),
+                        textAlign: TextAlign.center,
+                      ))
+          ])),
+      SwitchListTile(
+        title: Text(
+            tr('settings.display.images.detailsView.rotateGestures.title')),
+        subtitle: Text(
+            tr('settings.display.images.detailsView.rotateGestures.subtitle')),
+        value: settings.rotateImageGestures,
+        onChanged: (bool newVal) {
+          settings.rotateImageGestures = newVal;
+          settings.save();
         },
       ),
     ]);
