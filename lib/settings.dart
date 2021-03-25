@@ -70,6 +70,10 @@ class Settings extends ChangeNotifier {
   SettingsHomeScreen homeScreen = SettingsHomeScreen.Default;
   SettingsTheme theme = SettingsTheme.Default;
 
+  // Display - Image
+  bool rotateImageGestures = false;
+  double maxImageZoom = 10;
+
   // Display - Image - Theming
   bool themeRasterGraphics = false;
   SettingsImageTextType themeOverrideTagLocation =
@@ -171,6 +175,11 @@ class Settings extends ChangeNotifier {
         SettingsHomeScreen.fromInternalString(_getString(pref, "homeScreen"));
     theme = SettingsTheme.fromInternalString(_getString(pref, "theme"));
 
+    // Display - Image
+    rotateImageGestures =
+        _getBool(pref, "rotateImageGestures") ?? rotateImageGestures;
+    maxImageZoom = _getDouble(pref, "maxImageZoom") ?? maxImageZoom;
+
     // Display - Image - Theming
     themeRasterGraphics =
         _getBool(pref, "themeRasterGraphics") ?? themeRasterGraphics;
@@ -244,6 +253,10 @@ class Settings extends ChangeNotifier {
     return pref.getInt(id + '_' + key);
   }
 
+  double _getDouble(SharedPreferences pref, String key) {
+    return pref.getDouble(id + '_' + key);
+  }
+
   Future<void> save() async {
     var pref = await SharedPreferences.getInstance();
     var defaultSet = Settings(id);
@@ -311,6 +324,12 @@ class Settings extends ChangeNotifier {
         defaultSet.homeScreen.toInternalString());
     await _setString(pref, "theme", theme.toInternalString(),
         defaultSet.theme.toInternalString());
+
+    // Display - Image
+    await _setBool(pref, "rotateImageGestures", rotateImageGestures,
+        defaultSet.rotateImageGestures);
+    await _setDouble(
+        pref, "maxImageZoom", maxImageZoom, defaultSet.maxImageZoom);
 
     // Display - Image - Theme
     await _setBool(pref, "themeRasterGraphics", themeRasterGraphics,
@@ -427,6 +446,20 @@ class Settings extends ChangeNotifier {
     }
   }
 
+  Future<void> _setDouble(
+    SharedPreferences pref,
+    String key,
+    double value,
+    double defaultValue,
+  ) async {
+    key = id + '_' + key;
+    if (value == defaultValue) {
+      await pref.remove(key);
+    } else {
+      await pref.setDouble(key, value);
+    }
+  }
+
   Future<void> _setStringSet(
     SharedPreferences pref,
     String key,
@@ -471,6 +504,9 @@ class Settings extends ChangeNotifier {
       'markdownLastUsedView': markdownLastUsedView.toInternalString(),
       'homeScreen': homeScreen.toInternalString(),
       'theme': theme.toInternalString(),
+      // Display - Image
+      'rotateImageGestures': rotateImageGestures.toString(),
+      'maxImageZoom': maxImageZoom.toString(),
       // Display - Image - Theming
       'themeRasterGraphics': themeRasterGraphics.toString(),
       'themeOverrideTagLocation': themeOverrideTagLocation.toInternalString(),

@@ -31,7 +31,7 @@ import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
 import 'package:gitjournal/utils/logger.dart';
-import 'package:gitjournal/widgets/image_renderer.dart';
+import 'package:gitjournal/widgets/images/markdown_image.dart';
 
 class MarkdownRenderer extends StatelessWidget {
   final Note note;
@@ -117,7 +117,7 @@ class MarkdownRenderer extends StatelessWidget {
           );
         }
       },
-      imageBuilder: (url, title, alt) => ThemableImage(
+      imageBuilder: (url, title, alt) => MarkdownImage(
           url, note.parent.folderPath + p.separator,
           titel: title, altText: alt),
       extensionSet: markdownExtensions(),
