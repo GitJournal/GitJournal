@@ -29,6 +29,7 @@ class GitRemoteSettingsScreen extends StatefulWidget {
 
 class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
   String remoteHost;
+  var branches = <String>[];
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +47,15 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
       });
     }
 
+    if (branches.isEmpty) {
+      repo.branches().then((list) {
+        setState(() {
+          if (!mounted) return;
+          branches = list;
+        });
+      });
+    }
+
     var body = Column(
       children: <Widget>[
         if (remoteHost != null && remoteHost.isNotEmpty)
@@ -56,7 +66,14 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
           ),
         if (remoteHost != null && remoteHost.isNotEmpty)
           ListTile(title: Text(remoteHost)),
-        const SizedBox(height: 16.0),
+        if (branches.isNotEmpty)
+          Text(
+            tr('settings.gitRemote.branch'),
+            style: textTheme.bodyText1,
+            textAlign: TextAlign.left,
+          ),
+        if (branches.isNotEmpty) ListTile(title: Text(branches.first)),
+        const SizedBox(height: 8.0),
         Text(
           tr('setup.sshKeyUserProvided.public'),
           style: textTheme.bodyText1,

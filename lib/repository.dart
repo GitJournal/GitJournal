@@ -481,6 +481,11 @@ class GitJournalRepo with ChangeNotifier {
     var repo = await GitRepository.load(repoPath);
     return repo.config.remotes;
   }
+
+  Future<List<String>> branches() async {
+    var repo = await GitRepository.load(repoPath);
+    return repo.branches();
+  }
 }
 
 Future<void> _copyDirectory(String source, String destination) async {
