@@ -30,11 +30,11 @@ void main() {
 
       var parent = NotesFolderFS(null, tempDir.path, Settings(''));
       var n1 = Note(parent, n1Path);
-      n1.body = "test";
+      n1.body = "test\n";
       n1.created = dt;
 
       var n2 = Note(parent, n2Path);
-      n2.data = MdYamlDoc(body: "test2", props: props);
+      n2.data = MdYamlDoc(body: "test2\n", props: props);
 
       notes = [n1, n2];
     });

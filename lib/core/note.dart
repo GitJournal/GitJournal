@@ -421,6 +421,11 @@ class Note with NotesNotifier {
 
     var file = File(filePath);
     var contents = _serializer.encode(data);
+    // Make sure all docs end with a \n
+    if (!contents.endsWith('\n')) {
+      contents += '\n';
+    }
+
     await file.writeAsString(contents, flush: true);
   }
 

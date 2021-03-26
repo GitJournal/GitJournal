@@ -25,7 +25,8 @@ bar: Foo
 modified: 2017-02-15T22:41:19+01:00
 ---
 
-Hello""";
+Hello
+""";
 
       var notePath = p.join(tempDir.path, "note.md");
       await File(notePath).writeAsString(content);
@@ -43,7 +44,8 @@ bar: Foo
 modified: 2019-12-02T04:00:00+00:00
 ---
 
-Hello""";
+Hello
+""";
 
       var actualContent = File(notePath).readAsStringSync();
       expect(actualContent, equals(expectedContent));
@@ -55,7 +57,8 @@ bar: Foo
 mod: 2017-02-15T22:41:19+01:00
 ---
 
-Hello""";
+Hello
+""";
 
       var notePath = p.join(tempDir.path, "note.md");
       await File(notePath).writeAsString(content);
@@ -73,7 +76,8 @@ bar: Foo
 mod: 2019-12-02T04:00:00+00:00
 ---
 
-Hello""";
+Hello
+""";
 
       var actualContent = File(notePath).readAsStringSync();
       expect(actualContent, equals(expectedContent));
@@ -85,7 +89,8 @@ bar: Foo
 tags: [A, B]
 ---
 
-Hello""";
+Hello
+""";
 
       var notePath = p.join(tempDir.path, "note5.md");
       await File(notePath).writeAsString(content);
@@ -109,7 +114,8 @@ bar: Foo
 tags: [A, C, D]
 ---
 
-Hello""";
+Hello
+""";
 
       var actualContent = File(notePath).readAsStringSync();
       expect(actualContent, equals(expectedContent));
@@ -143,7 +149,7 @@ bar: Foo
     });
 
     test('Should parse wiki style links', () async {
-      var content = "[[GitJournal]] needs some [[Wild Fire]]";
+      var content = "[[GitJournal]] needs some [[Wild Fire]]\n";
 
       var notePath = p.join(tempDir.path, "note63.md");
       await File(notePath).writeAsString(content);
