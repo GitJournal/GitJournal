@@ -31,7 +31,7 @@ dependencies:
   device_info: ">=0.4.2+4 <2.0.0"
   dots_indicator: ^0.0.3
   easy_localization: ^3.0.0
-  easy_localization_loader: ^0.0.2
+  easy_localization_loader: ^1.0.0
   email_validator: ^1.0.6
   equatable: ^2.0.0
   ext_storage: ^1.0.3
@@ -91,10 +91,6 @@ dev_dependencies:
   multicast_dns: ^0.2.2
   #screenshots: ^2.1.1
   test: ^1.5.1
-
-dependency_overrides:
-  easy_localization_loader:
-    git: https://github.com/aissat/easy_localization_loader
 
 flutter:
   uses-material-design: true

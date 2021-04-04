@@ -202,11 +202,9 @@ packages:
   easy_localization_loader:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: ee40519e77e2662592da6cb4a4a6fa1318245615
-      url: "https://github.com/aissat/easy_localization_loader"
-    source: git
+      name: easy_localization_loader
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "1.0.0"
   easy_logger:
     dependency: transitive
