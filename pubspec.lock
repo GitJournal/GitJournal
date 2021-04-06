@@ -432,9 +432,11 @@ packages:
   function_types:
     dependency: "direct main"
     description:
-      name: function_types
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: d78adbc6c616c358b358c9a0a7431d22f0794a90
+      url: "https://github.com/GitJournal/function_types.git"
+    source: git
     version: "0.0.2"
   git_bindings:
     dependency: "direct main"
