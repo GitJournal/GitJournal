@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:dart_git/git_url_parse.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
-import 'package:git_url_parse2/git_url_parse2.dart';
 
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'button.dart';

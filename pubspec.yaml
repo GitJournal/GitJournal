@@ -48,11 +48,10 @@ dependencies:
   flutter_svg: ^0.21.0-nullsafety.0
   font_awesome_flutter: ^8.7.0
   function_types: ^0.0.2
-  git_url_parse2: ^0.0.1
   google_fonts: ^2.0.0
   http: ^0.13.1
   image_picker: ^0.7.3
-  in_app_purchase: ^0.3.4+5
+  in_app_purchase: ^0.5.1+2
   intl: ^0.17.0
   isolate: ^2.0.3
   launch_review: ^2.0.0
