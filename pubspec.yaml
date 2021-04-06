@@ -53,7 +53,6 @@ dependencies:
   image_picker: ^0.7.3
   in_app_purchase: ^0.5.1+2
   intl: ^0.17.0
-  isolate: ^2.0.3
   launch_review: ^2.0.0
   mutex: ^1.0.3
   package_info: ">=0.4.1 <2.0.0"

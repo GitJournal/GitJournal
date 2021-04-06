@@ -4,7 +4,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:crypton/crypton.dart';
-import 'package:isolate/isolate_runner.dart';
 import 'package:meta/meta.dart';
 
 import 'package:gitjournal/error_reporting.dart';
