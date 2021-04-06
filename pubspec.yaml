@@ -75,7 +75,7 @@ dependencies:
   url_launcher: ^6.0.2
   uuid: ^3.0.2
   yaml: ^3.1.0
-  yaml_serializer: ^0.0.9
+  yaml_serializer: ^0.0.11
 
 dev_dependencies:
   #flutter_driver:
