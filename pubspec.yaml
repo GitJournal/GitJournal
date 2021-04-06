@@ -84,7 +84,7 @@ dev_dependencies:
   benchmark_harness: any
   bonsoir: ^0.1.2+2
   flutter_launcher_icons: ^0.9.0
-  flutter_webview_plugin: ^0.3.11
+  # flutter_webview_plugin: ^0.3.11
   import_sorter: ^4.2.2
   multicast_dns: ^0.2.2
   #screenshots: ^2.1.1

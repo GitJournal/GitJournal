@@ -1,3 +1,5 @@
+/*
+
 import 'package:flutter/material.dart';
 
 import 'package:gitjournal/widgets/katex_widget.dart';
@@ -37,3 +39,4 @@ class MyWidget extends StatelessWidget {
     );
   }
 }
+*/

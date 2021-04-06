@@ -1,3 +1,5 @@
+/*
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -124,3 +126,4 @@ html2canvas(document.body, {backgroundColor: 'rgba(0, 0, 0, 0)', removeContainer
     return Image.file(File(imagePath));
   }
 }
+*/
