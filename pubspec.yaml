@@ -21,60 +21,60 @@ dependencies:
     git: https://github.com/GitJournal/git_bindings.git
   icloud_documents_path:
     git: https://github.com/GitJournal/icloud_documents_path.git
-  auto_size_text: ^2.0.1
-  badges: ^1.1.1
-  cached_network_image: ^2.2.0+1
-  connectivity: ^0.4.6+1
+  auto_size_text: ^3.0.0-nullsafety.0
+  badges: ^2.0.0-nullsafety.1
+  cached_network_image: ^3.0.0
+  connectivity: ^3.0.3
   # cryptography: ^1.4.1
   # cryptography_flutter: ^1.0.0
-  crypton: ^1.1.3
-  device_info: ">=0.4.2+4 <2.0.0"
-  dots_indicator: ^0.0.3
+  crypton: ^2.0.1
+  device_info: ^2.0.0
+  dots_indicator: ^2.0.0
   easy_localization: ^3.0.0
   easy_localization_loader: ^1.0.0
-  email_validator: ^1.0.6
+  email_validator: ^2.0.1
   equatable: ^2.0.0
   ext_storage:
     git: https://github.com/GitJournal/ext_storage.git
-  file_picker: ^3.0.0
-  filesystem_picker: ^1.0.3 # for directories
-  fimber: ^0.3.0
+  file_picker: ^3.0.1
+  filesystem_picker: ^2.0.0-nullsafety.0 # for directories
+  fimber: ^0.6.1
   firebase_analytics: ^7.1.1
-  flutter_cache_manager: ^2.1.2
-  flutter_email_sender: ^3.0.1
+  flutter_cache_manager: ^3.0.1
+  flutter_email_sender: ^5.0.0
   flutter_emoji:
     git: https://github.com/cek-cek/flutter-emoji
   flutter_markdown: ^0.6.1
   flutter_runtime_env: ^0.0.4
-  flutter_staggered_grid_view: ^0.3.0
-  flutter_svg: ^0.21.0-nullsafety.0
-  font_awesome_flutter: ^8.7.0
+  flutter_staggered_grid_view: ^0.4.0-nullsafety.3
+  flutter_svg: ^0.21.0+1
+  font_awesome_flutter: ^9.0.0
   function_types: ^0.1.0
   google_fonts: ^2.0.0
   http: ^0.13.1
-  image_picker: ^0.7.3
-  in_app_purchase: ^0.5.1+2
+  image_picker: ^0.7.4
+  in_app_purchase: ^0.5.2
   intl: ^0.17.0
-  launch_review: ^2.0.0
-  mutex: ^1.0.3
-  package_info: ">=0.4.1 <2.0.0"
-  path: ^1.6.2
+  launch_review: ^3.0.1
+  mutex: ^3.0.0
+  package_info: ^2.0.0
+  path: ^1.8.0
   permission_handler: ^6.1.1
-  photo_view: ^0.10.3
-  provider: ^4.3.2+2
-  quick_actions: ^0.4.0+10
-  receive_sharing_intent: ^1.4.0+2
-  sentry: ^4.0.6
-  sentry_flutter: ^4.0.6
-  share: ^0.6.3+5
+  photo_view: ^0.11.1
+  provider: ^5.0.0
+  quick_actions: ^0.6.0
+  receive_sharing_intent: ^1.4.5
+  sentry: ^5.0.0
+  sentry_flutter: ^5.0.0
+  share: ^2.0.1
   shared_preferences: ^2.0.5
   #ssh_key: ^0.6.0
-  stack_trace: ^1.9.6
-  synchronized: ^2.2.0
-  time: ^1.3.0
+  stack_trace: ^1.10.0
+  synchronized: ^3.0.0
+  time: ^2.0.0
   timeago: ^3.0.2
-  url_launcher: ^6.0.2
-  uuid: ^3.0.2
+  url_launcher: ^6.0.3
+  uuid: ^3.0.4
   yaml: ^3.1.0
   yaml_serializer: ^0.0.11
 
@@ -83,14 +83,14 @@ dev_dependencies:
   #  sdk: flutter
   flutter_test:
     sdk: flutter
-  benchmark_harness: any
-  bonsoir: ^0.1.2+2
+  benchmark_harness: ^2.0.0
+  bonsoir: ^1.0.0
   flutter_launcher_icons: ^0.9.0
   # flutter_webview_plugin: ^0.3.11
-  import_sorter: ^4.2.2
-  multicast_dns: ^0.2.2
+  import_sorter: ^4.4.3
+  multicast_dns: ^0.3.0
   #screenshots: ^2.1.1
-  test: ^1.5.1
+  test: ^1.16.5
 
 flutter:
   uses-material-design: true

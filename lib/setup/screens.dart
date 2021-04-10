@@ -372,7 +372,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           pageView,
           DotsIndicator(
             dotsCount: _pageCount,
-            position: _currentPageIndex,
+            position: _currentPageIndex.toDouble(),
             decorator: DotsDecorator(
               activeColor: Theme.of(context).primaryColorDark,
             ),

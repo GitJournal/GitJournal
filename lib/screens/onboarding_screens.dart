@@ -73,7 +73,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
               children: [
                 DotsIndicator(
                   dotsCount: pages.length,
-                  position: _currentPageIndex,
+                  position: _currentPageIndex.toDouble(),
                   decorator: DotsDecorator(
                     activeColor: Theme.of(context).primaryColorDark,
                   ),
