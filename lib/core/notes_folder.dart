@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'note.dart';
 import 'notes_folder_config.dart';
 import 'notes_folder_notifier.dart';

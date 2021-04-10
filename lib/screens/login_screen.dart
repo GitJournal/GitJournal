@@ -1,3 +1,5 @@
+// @dart=2.9
+
 /*
   Code adapted from https://github.com/TheAlphamerc/flutter_login_signup/
 

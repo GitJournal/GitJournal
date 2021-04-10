@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'githost.dart';
 import 'github.dart';
 import 'gitlab.dart';

@@ -103,7 +103,7 @@ Future<void> populateWithData(SharedPreferences pref) async {
 }
 
 void createNote(String filePath, DateTime dt,
-    {@required String body, String title}) {
+    {required String body, String? title}) {
   var content = "";
 
   if (title == null) {

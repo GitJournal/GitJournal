@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:test/test.dart';
 
 import 'package:gitjournal/core/links_loader.dart';

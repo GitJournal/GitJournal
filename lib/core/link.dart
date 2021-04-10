@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:markdown/markdown.dart' as md;
 import 'package:meta/meta.dart';
 

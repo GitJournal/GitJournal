@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:dart_git/dart_git.dart';
 import 'package:git_bindings/git_bindings.dart' as git_bindings;
 import 'package:meta/meta.dart';
