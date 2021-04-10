@@ -34,7 +34,8 @@ dependencies:
   easy_localization_loader: ^1.0.0
   email_validator: ^1.0.6
   equatable: ^2.0.0
-  ext_storage: ^1.0.3
+  ext_storage:
+    git: https://github.com/GitJournal/ext_storage.git
   file_picker: ^3.0.0
   filesystem_picker: ^1.0.3 # for directories
   fimber: ^0.3.0

@@ -230,9 +230,11 @@ packages:
   ext_storage:
     dependency: "direct main"
     description:
-      name: ext_storage
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: "98faf095ed6786a0bb0db26cb2f3966513f3f7aa"
+      url: "https://github.com/GitJournal/ext_storage.git"
+    source: git
     version: "1.0.3"
   fake_async:
     dependency: transitive
