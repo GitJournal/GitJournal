@@ -489,7 +489,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "3fcefd4ba6c1897da1d3a67608dd30eeaa71a9b8"
+      resolved-ref: d7bfaa69eb8758dcde273e8ea69e0197d2badbb4
       url: "https://github.com/GitJournal/icloud_documents_path.git"
     source: git
     version: "0.0.1"
