@@ -43,6 +43,8 @@ class GitJournalRepo with ChangeNotifier {
   final String cacheDir;
   final String id;
 
+  String _currentBranch;
+
   GitNoteRepository _gitRepo;
   NotesCache _notesCache;
 
@@ -123,6 +125,7 @@ class GitJournalRepo with ChangeNotifier {
       remoteGitRepoConfigured: remoteConfigured,
       settings: settings,
       id: id,
+      currentBranch: await repo.currentBranch(),
     );
   }
 
@@ -133,9 +136,13 @@ class GitJournalRepo with ChangeNotifier {
     @required this.cacheDir,
     @required this.settings,
     @required this.remoteGitRepoConfigured,
+    @required String currentBranch,
   }) {
     _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);
     notesFolder = NotesFolderFS(null, _gitRepo.gitDirPath, settings);
+    _currentBranch = currentBranch;
+
+    Log.i("Branch $_currentBranch");
 
     // Makes it easier to filter the analytics
     getAnalytics().setUserProperty(
@@ -484,7 +491,68 @@ class GitJournalRepo with ChangeNotifier {
 
   Future<List<String>> branches() async {
     var repo = await GitRepository.load(repoPath);
-    return repo.branches();
+    var branches = Set<String>.from(await repo.branches());
+    if (repo.config.remotes.isNotEmpty) {
+      var remoteName = repo.config.remotes.first.name;
+      var remoteBranches = await repo.remoteBranches(remoteName);
+      branches.addAll(remoteBranches.map((e) {
+        return e.name.branchName();
+      }));
+    }
+    return branches.toList()..sort();
+  }
+
+  String get currentBranch => _currentBranch;
+
+  Future<String> checkoutBranch(String branchName) async {
+    Log.i("Changing branch to $branchName");
+    var repo = await GitRepository.load(repoPath);
+
+    var created = await createBranchIfRequired(repo, branchName);
+    if (created.isEmpty) {
+      return "";
+    }
+
+    try {
+      await repo.checkoutBranch(branchName);
+      _currentBranch = branchName;
+      print("Done checking out $branchName");
+
+      await _notesCache.clear();
+      notesFolder.reset(repoPath);
+      notifyListeners();
+
+      _loadNotes();
+    } catch (e, st) {
+      print('maya hooo');
+      print(e);
+      print(st);
+    }
+    return branchName;
+  }
+
+  Future<String> createBranchIfRequired(GitRepository repo, String name) async {
+    var localBranches = await repo.branches();
+    if (localBranches.contains(name)) {
+      return name;
+    }
+
+    if (repo.config.remotes.isEmpty) {
+      return "";
+    }
+    var remoteConfig = repo.config.remotes.first;
+    var remoteBranches = await repo.remoteBranches(remoteConfig.name);
+    var remoteBranchRef = remoteBranches
+        .firstWhere((ref) => ref.name.branchName() == name, orElse: null);
+    if (remoteBranchRef == null) {
+      return "";
+    }
+
+    await repo.createBranch(name, hash: remoteBranchRef.hash);
+    await repo.setBranchUpstreamTo(name, remoteConfig, name);
+
+    Log.i("Created branch $name");
+    return name;
   }
 }
 

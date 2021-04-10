@@ -30,6 +30,7 @@ class GitRemoteSettingsScreen extends StatefulWidget {
 class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
   String remoteHost;
   var branches = <String>[];
+  var currentBranch = "";
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +49,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     }
 
     if (branches.isEmpty) {
+      currentBranch = repo.currentBranch;
       repo.branches().then((list) {
         setState(() {
           if (!mounted) return;
@@ -67,12 +69,17 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
         if (remoteHost != null && remoteHost.isNotEmpty)
           ListTile(title: Text(remoteHost)),
         if (branches.isNotEmpty)
-          Text(
-            tr('settings.gitRemote.branch'),
-            style: textTheme.bodyText1,
-            textAlign: TextAlign.left,
+          ListPreference(
+            title: tr('settings.gitRemote.branch'),
+            currentOption: currentBranch, // FIXME
+            options: branches,
+            onChange: (String branch) {
+              repo.checkoutBranch(branch);
+              setState(() {
+                currentBranch = branch;
+              });
+            },
           ),
-        if (branches.isNotEmpty) ListTile(title: Text(branches.first)),
         const SizedBox(height: 8.0),
         Text(
           tr('setup.sshKeyUserProvided.public'),
