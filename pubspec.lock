@@ -354,10 +354,12 @@ packages:
   flutter_emoji:
     dependency: "direct main"
     description:
-      name: flutter_emoji
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.1+1"
+      path: "."
+      ref: HEAD
+      resolved-ref: "2e2da41abf6a928206f44707fdf4d6149f049463"
+      url: "https://github.com/cek-cek/flutter-emoji"
+    source: git
+    version: "2.4.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:

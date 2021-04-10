@@ -41,7 +41,8 @@ dependencies:
   firebase_analytics: ^7.1.1
   flutter_cache_manager: ^2.1.2
   flutter_email_sender: ^3.0.1
-  flutter_emoji: ">= 2.0.0"
+  flutter_emoji:
+    git: https://github.com/cek-cek/flutter-emoji
   flutter_markdown: ^0.6.1
   flutter_runtime_env: ^0.0.4
   flutter_staggered_grid_view: ^0.3.0
