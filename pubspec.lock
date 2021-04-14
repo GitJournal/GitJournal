@@ -202,7 +202,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "0f2bbbe85f14b4747ebc713362356a3a58da7059"
+      resolved-ref: "4e47b63f5c48899fbf4c3db5b556cc16c0cbeca3"
       url: "https://github.com/GitJournal/dart-git.git"
     source: git
     version: "0.0.2"
