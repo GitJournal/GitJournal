@@ -1,5 +1,7 @@
 - version: "1.76"
   draft: true
+  features:
+    - text: "Add Git Branch selection - #127"
   bugs:
     - text: "MD files should end with a single newline character #383"
 
