@@ -15,6 +15,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/analytics.dart';
@@ -307,6 +308,7 @@ class _JournalAppState extends State<JournalApp> {
 
       navigatorObservers: <NavigatorObserver>[
         AnalyticsRouteObserver(),
+        SentryNavigatorObserver(),
       ],
       initialRoute: router.initialRoute(),
       debugShowCheckedModeBanner: false,

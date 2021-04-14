@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:device_info/device_info.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sentry/sentry.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 import 'package:gitjournal/.env.dart';
@@ -15,15 +16,15 @@ import 'package:gitjournal/app.dart';
 import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
-SentryClient _sentryClient;
-Future<SentryClient> _initSentry() async {
-  return SentryClient(SentryOptions(
-    dsn: environment['sentry'],
-  ));
-}
-
-Future<SentryClient> getSentryClient() async {
-  return _sentryClient ??= await _initSentry();
+Future<void> initSentry() async {
+  if (Sentry.isEnabled) {
+    return;
+  }
+  await SentryFlutter.init(
+    (options) {
+      options.dsn = environment['sentry'];
+    },
+  );
 }
 
 Future<SentryEvent> get _environmentEvent async {
@@ -140,14 +141,14 @@ Future<void> captureSentryException(
   SentryLevel level = SentryLevel.error,
 }) async {
   try {
-    final sentry = await getSentryClient();
+    await initSentry();
     final event = (await _environmentEvent).copyWith(
       exception: exception,
       breadcrumbs: breadcrumbs,
       level: level,
     );
 
-    return sentry.captureEvent(event, stackTrace: Trace.from(stackTrace).terse);
+    return Sentry.captureEvent(event, stackTrace: Trace.from(stackTrace).terse);
   } catch (e) {
     print("Failed to report with Sentry: $e");
   }
