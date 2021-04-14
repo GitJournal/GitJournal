@@ -229,7 +229,9 @@ class _JournalAppState extends State<JournalApp> {
 
   void _initShareSubscriptions() {
     var handleShare = () {
-      if (_sharedText == null && _sharedImages == null) {
+      var noText = _sharedText == null || _sharedText.isEmpty;
+      var noImages = _sharedImages == null || _sharedImages.isEmpty;
+      if (noText && noImages) {
         return;
       }
 
