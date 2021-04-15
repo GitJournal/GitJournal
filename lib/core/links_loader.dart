@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 import 'dart:isolate';
 
@@ -12,9 +10,9 @@ import 'package:synchronized/synchronized.dart';
 import 'package:gitjournal/core/link.dart';
 
 class LinksLoader {
-  Isolate _isolate;
+  Isolate? _isolate;
   ReceivePort _receivePort = ReceivePort();
-  SendPort _sendPort;
+  SendPort? _sendPort;
 
   var _loadingLock = Lock();
 
@@ -24,7 +22,7 @@ class LinksLoader {
     return await _loadingLock.synchronized(() async {
       if (_isolate != null && _sendPort != null) return;
       if (_isolate != null) {
-        _isolate.kill(priority: Isolate.immediate);
+        _isolate!.kill(priority: Isolate.immediate);
         _isolate = null;
       }
       _isolate = await Isolate.spawn(_isolateMain, _receivePort.sendPort);
@@ -35,11 +33,12 @@ class LinksLoader {
     });
   }
 
-  Future<List<Link>> parseLinks({String body, String filePath}) async {
+  Future<List<Link>> parseLinks(
+      {required String body, required String filePath}) async {
     await _initIsolate();
 
     var rec = ReceivePort();
-    _sendPort.send(_LoadingMessage(body, filePath, rec.sendPort));
+    _sendPort!.send(_LoadingMessage(body, filePath, rec.sendPort));
 
     var data = await rec.first;
     assert(data is List<Link>);
@@ -90,7 +89,7 @@ List<Link> parseLinks(String body, String filePath) {
       continue;
     }
 
-    l.filePath = p.join(parentFolderPath, p.normalize(l.filePath));
+    l.filePath = p.join(parentFolderPath, p.normalize(l.filePath!));
     links.add(l);
   }
 

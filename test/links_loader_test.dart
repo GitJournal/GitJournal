@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:test/test.dart';
 
 import 'package:gitjournal/core/links_loader.dart';
@@ -26,27 +24,27 @@ void main() {
         filePath: "/tmp/foo/file.md",
       );
 
-      expect(links[0].filePath.isEmpty, true);
-      expect(links[0].headingID.isEmpty, true);
-      expect(links[0].alt.isEmpty, true);
-      expect(links[0].publicTerm.isEmpty, true);
+      expect(links[0].filePath, isNull);
+      expect(links[0].headingID, isNull);
+      expect(links[0].alt, isNull);
+      expect(links[0].publicTerm, isNull);
       expect(links[0].wikiTerm, "GitJournal");
       expect(links[0].isWikiLink, true);
 
       expect(links[1].filePath, "/tmp/foo/gitjournal.md");
       expect(links[1].publicTerm, "GitJournal");
-      expect(links[1].alt.isEmpty, true);
-      expect(links[1].wikiTerm.isEmpty, true);
+      expect(links[1].alt, isNull);
+      expect(links[1].wikiTerm, isNull);
 
       expect(links[2].filePath, "/tmp/foo/gitjournal.md");
       expect(links[2].publicTerm, "GitJournal");
-      expect(links[2].alt.isEmpty, true);
-      expect(links[2].wikiTerm.isEmpty, true);
+      expect(links[2].alt, isNull);
+      expect(links[2].wikiTerm, isNull);
 
       expect(links[3].filePath, "/tmp/foo/gitjournal");
       expect(links[3].publicTerm, "GitJournal");
       expect(links[3].alt, "alt-text");
-      expect(links[3].wikiTerm.isEmpty, true);
+      expect(links[3].wikiTerm, isNull);
 
       /*
       expect(links[4].filePath, "/tmp/foam.md");
@@ -78,13 +76,13 @@ Foam is licensed under the [MIT license](license).
       expect(links.length, 5);
 
       expect(links[0].filePath, "/tmp/foo.md");
-      expect(links[0].alt.isEmpty, true);
+      expect(links[0].alt, isNull);
       expect(links[0].headingID, "#contributors-");
-      expect(links[0].publicTerm.isEmpty, true);
+      expect(links[0].publicTerm, isNull);
 
       expect(links[1].filePath, "/tmp/license");
-      expect(links[1].alt.isEmpty, true);
-      expect(links[1].headingID.isEmpty, true);
+      expect(links[1].alt, isNull);
+      expect(links[1].headingID, isNull);
       expect(links[1].publicTerm, "MIT license");
 
       expect(links[2].filePath, "/tmp/foo.md");
@@ -96,7 +94,7 @@ Foam is licensed under the [MIT license](license).
       // FIXME: link-references for wiki Links
       // expect(links[3].filePath.isEmpty, true);
       // expect(links[3].isWikiLink, true);
-      expect(links[3].headingID.isEmpty, true);
+      expect(links[3].headingID, isNull);
       expect(links[3].alt, "Wiki Links");
 
       expect(links[4].filePath, "/tmp/foo.md");

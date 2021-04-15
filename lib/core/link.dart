@@ -1,5 +1,7 @@
 import 'package:markdown/markdown.dart' as md;
 
+// FIXME: This should be split into 2 classes, that way it would be easier
+//        to access to members with null safety
 class Link {
   String? publicTerm;
   String? filePath;
@@ -13,7 +15,17 @@ class Link {
     required this.filePath,
     this.headingID,
     this.alt,
-  });
+  }) {
+    if (publicTerm?.isEmpty == true) {
+      publicTerm = null;
+    }
+    if (headingID?.isEmpty == true) {
+      headingID = null;
+    }
+    if (alt?.isEmpty == true) {
+      alt = null;
+    }
+  }
   Link.wiki(this.wikiTerm);
 
   bool get isWikiLink => wikiTerm != null;
@@ -68,7 +80,7 @@ class LinkExtractor implements md.NodeVisitor {
         return;
       }
 
-      var alt = el.attributes['title'] ?? "";
+      var alt = el.attributes['title'];
       var title = _getText(el.children);
 
       var url = el.attributes['href'];
