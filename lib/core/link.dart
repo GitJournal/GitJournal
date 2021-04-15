@@ -1,25 +1,22 @@
-// @dart=2.9
-
 import 'package:markdown/markdown.dart' as md;
-import 'package:meta/meta.dart';
 
 class Link {
-  String publicTerm = "";
-  String filePath = "";
-  String headingID = "";
-  String alt = "";
+  String? publicTerm;
+  String? filePath;
+  String? headingID;
+  String? alt;
 
-  String wikiTerm = "";
+  String? wikiTerm;
 
   Link({
-    @required this.publicTerm,
-    @required this.filePath,
-    this.headingID = "",
-    this.alt = "",
+    required this.publicTerm,
+    required this.filePath,
+    this.headingID,
+    this.alt,
   });
   Link.wiki(this.wikiTerm);
 
-  bool get isWikiLink => wikiTerm.isNotEmpty;
+  bool get isWikiLink => wikiTerm != null;
 
   @override
   int get hashCode => filePath.hashCode;
@@ -37,9 +34,9 @@ class Link {
 
   @override
   String toString() {
-    return wikiTerm.isNotEmpty
+    return wikiTerm != null
         ? 'WikiLink($wikiTerm)'
-        : 'Link{publicTerm: $publicTerm, filePath: $filePath, headingID: $headingID}';
+        : 'Link{publicTerm: $publicTerm, filePath: $filePath, headingID: $headingID, alt: $alt}';
   }
 }
 
@@ -67,11 +64,6 @@ class LinkExtractor implements md.NodeVisitor {
         var term = el.attributes['term'];
         var link = Link.wiki(term);
 
-        assert(link.filePath.isEmpty);
-        assert(link.publicTerm.isEmpty);
-        assert(link.alt.isEmpty);
-        assert(link.headingID.isEmpty);
-
         links.add(link);
         return;
       }
@@ -80,11 +72,12 @@ class LinkExtractor implements md.NodeVisitor {
       var title = _getText(el.children);
 
       var url = el.attributes['href'];
-      if (isExternalLink(url)) {
+      if (url == null || isExternalLink(url)) {
         return;
       }
 
       if (url.startsWith('#') || url.startsWith('//')) {
+        // FIXME: The heading ID seems incorrect
         var link = Link(
           publicTerm: title,
           filePath: filePath,
@@ -112,7 +105,7 @@ class LinkExtractor implements md.NodeVisitor {
     return links;
   }
 
-  String _getText(List<md.Node> nodes) {
+  String _getText(List<md.Node>? nodes) {
     if (nodes == null) {
       return "";
     }
@@ -141,7 +134,7 @@ class WikiLinkSyntax extends md.InlineSyntax {
 
   @override
   bool onMatch(md.InlineParser parser, Match match) {
-    var term = match[1].trim();
+    var term = match[1]!.trim();
     var displayText = term;
 
     if (term.contains('|')) {
