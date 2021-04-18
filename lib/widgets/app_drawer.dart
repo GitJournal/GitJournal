@@ -13,7 +13,7 @@ import 'package:share/share.dart';
 import 'package:time/time.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/repository.dart';

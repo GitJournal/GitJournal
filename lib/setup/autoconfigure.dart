@@ -7,7 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings.dart';

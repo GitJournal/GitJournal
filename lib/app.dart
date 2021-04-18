@@ -18,7 +18,7 @@ import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';

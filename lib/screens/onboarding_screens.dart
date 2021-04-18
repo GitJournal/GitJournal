@@ -10,7 +10,7 @@ import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
-import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/app_settings.dart';
 
 class OnBoardingScreen extends StatefulWidget {

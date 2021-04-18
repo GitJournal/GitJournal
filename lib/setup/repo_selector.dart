@@ -9,7 +9,7 @@ import 'package:path/path.dart' as p;
 import 'package:time/time.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/setup/button.dart';

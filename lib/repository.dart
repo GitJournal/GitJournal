@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:time/time.dart';
 
-import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/core/git_repo.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_cache.dart';

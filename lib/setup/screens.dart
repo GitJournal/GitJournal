@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/repository.dart';
