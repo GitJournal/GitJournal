@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+// import 'package:http/http.dart' as http;
+
 class PlausibleEvent {
   String eventName = "";
   String href = "";
@@ -37,8 +39,28 @@ class PlausibleEvent {
 }
 
 /*
-const req = new XMLHttpRequest();
-  req.open('POST', `${data.apiHost}/api/event`, true);
-  req.setRequestHeader('Content-Type', 'text/plain');
-  req.send(JSON.stringify(payload));
-  */
+
+void main() async {
+  const apiHost = 'plausible.gitjournal.io';
+  var event = PlausibleEvent();
+  event.eventName = 'gitjournal_test';
+  event.hostname = 'gitjournal.io';
+  event.href = 'https://gitjournal.io/mobile_analytics';
+
+  var post = http.post(
+    Uri.https(apiHost, '/api/event'),
+    // FIXME: Why is this not application/json ?
+    // Taken from - https://github.com/plausible/tracker/blob/master/src/index.js
+    headers: <String, String>{
+      'Content-Type': 'text/plain',
+    },
+    body: event.toJson(),
+  );
+  var response = await post;
+  print('Posted');
+  print('Status Code: ${response.statusCode}');
+  print('Headers: ${response.headers}');
+  print('Body: ${response.bodyBytes.toString()}');
+}
+
+*/
