@@ -68,23 +68,6 @@ class Device {
   }
 }
 
-// https://github.com/oschwald/geoip2-golang
-// -> Host it on the server, client side makes no sense
-// TODO:
-// 1. Create a postgres table for the geo
-// 2. Write a migrator from the old event to the new format (what lang? dart?)
-// 3. Create a simple endpoint which converts the IP
-//    into a location and gives that location an ID and returns it
-//    (Saves it in the DB)
-class Geo {
-  String continent;
-  String country;
-  String region;
-  String city;
-  String subContinent;
-  String metro;
-}
-
 class AppInfo {
   String id;
   String version;
@@ -93,26 +76,10 @@ class AppInfo {
 }
 
 //
-// * Create a postgres table with all this data
-//   -> Maybe use clickhouse instead?
-// * Convert all of this to the json representation we want
 // * Write a converter for the firebase data to this data format
-// * Insert all of this data into our clickhouse
-
-// * Create the dashboard - huge task
-// For the dashboard - maybe you could hire someone?
-// - Or I could just use Grafana
-// - Either way - it doesn't make sense to invest time in it
-
-// TODO -
+//
+// Local tasks -
 // - Create gj versions of the other events
 // - Store the events in a local db - use hive
 // - Populate the other data
-// - Post them to an endpoint which collects them
-// -
-
-// Convert the device into an ID (deterministically) -> some hash
-// call an /registerDevice
-
-// Optimization: Figure out a better way to serialize the info
-//               start with json, and later move to protobufs
+//
