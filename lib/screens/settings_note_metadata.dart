@@ -145,6 +145,7 @@ class _NoteMetadataSettingsScreenState
           options: [
             "tags",
             "categories",
+            "keywords",
           ],
           currentOption: settings.yamlTagsKey,
           onChange: (String newVal) {

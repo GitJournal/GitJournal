@@ -212,6 +212,7 @@ class NoteSerializer implements NoteSerializerInterface {
       var tagKeyOptions = [
         "tags",
         "categories",
+        "keywords",
       ];
       for (var possibleKey in tagKeyOptions) {
         var tags = data.props[possibleKey];
