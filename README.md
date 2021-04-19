@@ -63,6 +63,7 @@ Features -
 - [Google Keep](https://github.com/vHanda/google-keep-exporter)
 - [Day One Classic](https://gist.github.com/sanzoghenzo/fb5011aa566292a4eb1b62fc7a4a50cc)
 - [Narrate](https://gist.github.com/sanzoghenzo/fb5011aa566292a4eb1b62fc7a4a50cc)
+- [Simplenote](https://github.com/isae/gitjournal-simplenote-exporter)
 
 # Contributing
 
