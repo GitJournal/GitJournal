@@ -57,6 +57,7 @@ dependencies:
   intl: ^0.17.0
   launch_review: ^3.0.1
   mutex: ^3.0.0
+  org_flutter: ^1.3.0
   package_info: ^2.0.0
   path: ^1.8.0
   permission_handler: ^6.1.1

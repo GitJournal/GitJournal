@@ -481,6 +481,13 @@ packages:
       url: "https://github.com/cek-cek/flutter-emoji"
     source: git
     version: "2.4.0"
+  flutter_highlight:
+    dependency: transitive
+    description:
+      name: flutter_highlight
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -533,6 +540,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_tex_js:
+    dependency: transitive
+    description:
+      name: flutter_tex_js
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.1"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -589,6 +603,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  highlight:
+    dependency: transitive
+    description:
+      name: highlight
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.0"
   http:
     dependency: "direct main"
     description:
@@ -787,6 +808,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0+1"
+  org_flutter:
+    dependency: "direct main"
+    description:
+      name: org_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.3.0"
+  org_parser:
+    dependency: transitive
+    description:
+      name: org_parser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.1"
   package_config:
     dependency: transitive
     description:

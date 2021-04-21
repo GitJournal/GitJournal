@@ -13,6 +13,7 @@ import 'package:gitjournal/editors/bottom_bar.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/widgets/note_viewer.dart';
+import 'package:org_flutter/org_flutter.dart';
 
 class EditorScaffold extends StatefulWidget {
   final Editor editor;
@@ -127,12 +128,22 @@ class _EditorScaffoldState extends State<EditorScaffold> {
   @override
   Widget build(BuildContext context) {
     var settings = Provider.of<Settings>(context);
-    Widget body = editingMode
-        ? widget.body
-        : NoteViewer(
+    Widget body;
+    if (editingMode) {
+      body = widget.body;
+    } else {
+      switch (note.fileFormat) {
+        case NoteFileFormat.OrgMode:
+          body = Org(note.body);
+          break;
+        default:
+          body = NoteViewer(
             note: note,
             parentFolder: widget.parentFolder,
           );
+          break;
+      }
+    }
 
     return Scaffold(
       body: GestureDetector(
