@@ -1,5 +1,7 @@
 // @dart=2.9
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -125,6 +127,10 @@ class _EditorScaffoldState extends State<EditorScaffold> {
     });
   }
 
+  void _launchUrl(String link) async {
+    log('tapped ' + link);
+  }
+
   @override
   Widget build(BuildContext context) {
     var settings = Provider.of<Settings>(context);
@@ -134,7 +140,10 @@ class _EditorScaffoldState extends State<EditorScaffold> {
     } else {
       switch (note.fileFormat) {
         case NoteFileFormat.OrgMode:
-          body = Org(note.body);
+          body = Org(
+            note.body,
+            onLinkTap: _launchUrl,
+          );
           break;
         default:
           body = NoteViewer(
