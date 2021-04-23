@@ -1,7 +1,5 @@
 // @dart=2.9
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -16,6 +14,7 @@ import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/widgets/note_viewer.dart';
 import 'package:org_flutter/org_flutter.dart';
+import 'package:gitjournal/core/org_links_handler.dart';
 
 class EditorScaffold extends StatefulWidget {
   final Editor editor;
@@ -127,10 +126,6 @@ class _EditorScaffoldState extends State<EditorScaffold> {
     });
   }
 
-  void _launchUrl(String link) async {
-    log('tapped ' + link);
-  }
-
   @override
   Widget build(BuildContext context) {
     var settings = Provider.of<Settings>(context);
@@ -140,9 +135,11 @@ class _EditorScaffoldState extends State<EditorScaffold> {
     } else {
       switch (note.fileFormat) {
         case NoteFileFormat.OrgMode:
+          OrgLinkHandler handler = OrgLinkHandler(note.filePath);
+
           body = Org(
             note.body,
-            onLinkTap: _launchUrl,
+            onLinkTap: handler.launchUrl,
           );
           break;
         default:
