@@ -15,16 +15,25 @@ limitations under the License.
 */
 
 import 'dart:developer';
+//import 'dart:html';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:gitjournal/widgets/images/image_details.dart';
+import 'package:gitjournal/widgets/images/themable_image.dart';
+
 import 'package:org_flutter/org_flutter.dart';
+import 'package:path/path.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Handles links from .org documents.
 class OrgLinkHandler {
+  BuildContext context;
   String notePath;
 
-  OrgLinkHandler(this.notePath) : super();
+  OrgLinkHandler(this.context, this.notePath) : super();
 
   void launchUrl(String link) async {
     // handle =file:= prefix
@@ -32,8 +41,8 @@ class OrgLinkHandler {
       link = link.replaceFirst('file:', '');
     }
 
+    // Images
     if (looksLikeImagePath(link)) {
-      // Images
       if (looksLikeUrl(link)) {
         // Remote images
         if (await canLaunch(link)) {
@@ -43,7 +52,7 @@ class OrgLinkHandler {
           log('could not launch $link');
         }
       } else {
-        // (presumably-)Local images
+        // Local images
         File file = File(link);
 
         if (file.isAbsolute) {
@@ -54,8 +63,16 @@ class OrgLinkHandler {
 
           // 1. name-only
           // 2. relative path
-          log('image ' + file.path);
+          //log('image ' + file.path);
+
+          Context ctx = Context();
+          String noteDir = ctx.dirname(notePath);
+          String fullPath = ctx.join(noteDir, file.path);
+          file = File(fullPath);
+          // caption is the link caption
         }
+
+        _showImage(file);
       }
     } else {
       // Other links.
@@ -82,5 +99,13 @@ class OrgLinkHandler {
         log('local: ' + file.path);
       }
     }
+  }
+
+  void _showImage(File file) {
+    ThemableImage im = ThemableImage.image(file);
+
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ImageDetails(im, "")));
+    // captionText(context, altText, tooltip)
   }
 }
