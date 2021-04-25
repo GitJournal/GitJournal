@@ -1,5 +1,7 @@
 // @dart=2.9
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -135,11 +137,14 @@ class _EditorScaffoldState extends State<EditorScaffold> {
     } else {
       switch (note.fileFormat) {
         case NoteFileFormat.OrgMode:
-          OrgLinkHandler handler = OrgLinkHandler(note.filePath);
+          OrgLinkHandler handler = OrgLinkHandler(context, note.filePath);
 
           body = Org(
             note.body,
             onLinkTap: handler.launchUrl,
+            onLocalSectionLinkTap: (OrgSection section) {
+              log("local section link: " + section.toString());
+            },
           );
           break;
         default:
