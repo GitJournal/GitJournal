@@ -145,6 +145,9 @@ class _EditorScaffoldState extends State<EditorScaffold> {
             onLocalSectionLinkTap: (OrgSection section) {
               log("local section link: " + section.toString());
             },
+            onSectionLongPress: (OrgSection section) {
+              log('local section long-press: ' + section.headline.rawTitle);
+            },
           );
           break;
         default:
