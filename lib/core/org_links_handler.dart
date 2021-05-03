@@ -124,9 +124,6 @@ class OrgLinkHandler {
     //    Check if supported extension.
     // 3. Absolute path: Open if within the repo path?
 
-    //log('note path: ' + note.filePath);
-    //log('local: ' + file.path);
-
     final linkResolver = LinkResolver(note);
 
     var linkedNote = linkResolver.resolve(link);
@@ -134,15 +131,6 @@ class OrgLinkHandler {
       openNoteEditor(context, linkedNote, linkedNote.parent);
       return;
     }
-
-    // if (LinkResolver.isWikiLink(link)) {
-    //   var opened =
-    //       openNewNoteEditor(context, LinkResolver.stripWikiSyntax(link));
-    //   if (!opened) {}
-    //   return;
-    // }
-
-    //linkedNote = linkResolver.resolveLink(link);
 
     linkedNote = linkResolver.resolveWikiLink(link);
     if (linkedNote != null) {
