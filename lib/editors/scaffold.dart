@@ -137,7 +137,7 @@ class _EditorScaffoldState extends State<EditorScaffold> {
     } else {
       switch (note.fileFormat) {
         case NoteFileFormat.OrgMode:
-          OrgLinkHandler handler = OrgLinkHandler(context, note.filePath);
+          OrgLinkHandler handler = OrgLinkHandler(context, note);
 
           body = Org(
             note.body,

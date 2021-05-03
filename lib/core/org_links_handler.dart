@@ -18,9 +18,15 @@ import 'dart:developer';
 //import 'dart:html';
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/folder_views/common.dart';
+import 'package:gitjournal/utils/link_resolver.dart';
+import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/images/image_details.dart';
 import 'package:gitjournal/widgets/images/themable_image.dart';
 
@@ -28,12 +34,15 @@ import 'package:org_flutter/org_flutter.dart';
 import 'package:path/path.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../utils.dart';
+
 /// Handles links from .org documents.
 class OrgLinkHandler {
   BuildContext context;
-  String notePath;
+  Note note;
+  //String notePath;
 
-  OrgLinkHandler(this.context, this.notePath) : super();
+  OrgLinkHandler(this.context, this.note) : super();
 
   void launchUrl(String link) async {
     // handle =file:= prefix
@@ -66,7 +75,7 @@ class OrgLinkHandler {
           //log('image ' + file.path);
 
           Context ctx = Context();
-          String noteDir = ctx.dirname(notePath);
+          String noteDir = ctx.dirname(note.filePath);
           String fullPath = ctx.join(noteDir, file.path);
           file = File(fullPath);
           // caption is the link caption
@@ -95,8 +104,40 @@ class OrgLinkHandler {
         // 2. Relative path: Open the path, if exists.
         //    Check if supported extension.
         // 3. Absolute path: Open if within the repo path?
-        log('note path: ' + notePath);
+        log('note path: ' + note.filePath);
         log('local: ' + file.path);
+
+        final linkResolver = LinkResolver(note);
+
+        var linkedNote = linkResolver.resolve(link);
+        if (linkedNote != null) {
+          //onNoteTapped(linkedNote);
+          log(linkedNote.toString());
+          return;
+        }
+
+        if (LinkResolver.isWikiLink(link)) {
+          var opened =
+              openNewNoteEditor(context, LinkResolver.stripWikiSyntax(link));
+          if (!opened) {
+            showSnackbar(
+              context,
+              tr('widgets.NoteViewer.linkInvalid', args: [link]),
+            );
+          }
+          return;
+        }
+
+        // External Link
+        try {
+          await launch(link);
+        } catch (e, stackTrace) {
+          Log.e('Opening Link', ex: e, stacktrace: stackTrace);
+          showSnackbar(
+            context,
+            tr('widgets.NoteViewer.linkNotFound', args: [link]),
+          );
+        }
       }
     }
   }
