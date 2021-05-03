@@ -93,51 +93,15 @@ class OrgLinkHandler {
         if (await canLaunch(link)) {
           await launch(link);
         } else {
-          //throw 'Could not launch $link';
-          log('could not launch $link');
-        }
-      } else {
-        // Local file link.
-        File file = File(link);
-        // 1. Only name: Try to find the note with the same name, with or
-        //    without the extension.
-        // 2. Relative path: Open the path, if exists.
-        //    Check if supported extension.
-        // 3. Absolute path: Open if within the repo path?
-        log('note path: ' + note.filePath);
-        log('local: ' + file.path);
-
-        final linkResolver = LinkResolver(note);
-
-        var linkedNote = linkResolver.resolve(link);
-        if (linkedNote != null) {
-          //onNoteTapped(linkedNote);
-          log(linkedNote.toString());
-          return;
-        }
-
-        if (LinkResolver.isWikiLink(link)) {
-          var opened =
-              openNewNoteEditor(context, LinkResolver.stripWikiSyntax(link));
-          if (!opened) {
-            showSnackbar(
-              context,
-              tr('widgets.NoteViewer.linkInvalid', args: [link]),
-            );
-          }
-          return;
-        }
-
-        // External Link
-        try {
-          await launch(link);
-        } catch (e, stackTrace) {
-          Log.e('Opening Link', ex: e, stacktrace: stackTrace);
+          Log.w('could not launch $link');
+          //Log.e('Opening Link', ex: e, stacktrace: stackTrace);
           showSnackbar(
             context,
-            tr('widgets.NoteViewer.linkNotFound', args: [link]),
+            tr('widgets.NoteViewer.linkInvalid', args: [link]),
           );
         }
+      } else {
+        _openLocalLink(link);
       }
     }
   }
@@ -148,5 +112,42 @@ class OrgLinkHandler {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => ImageDetails(im, "")));
     // captionText(context, altText, tooltip)
+  }
+
+  void _openLocalLink(String link) {
+    // Local file link.
+    //File file = File(link);
+
+    // 1. Only name: Try to find the note with the same name, with or
+    //    without the extension.
+    // 2. Relative path: Open the path, if exists.
+    //    Check if supported extension.
+    // 3. Absolute path: Open if within the repo path?
+
+    //log('note path: ' + note.filePath);
+    //log('local: ' + file.path);
+
+    final linkResolver = LinkResolver(note);
+
+    var linkedNote = linkResolver.resolve(link);
+    if (linkedNote != null) {
+      openNoteEditor(context, linkedNote, linkedNote.parent);
+      return;
+    }
+
+    // if (LinkResolver.isWikiLink(link)) {
+    //   var opened =
+    //       openNewNoteEditor(context, LinkResolver.stripWikiSyntax(link));
+    //   if (!opened) {}
+    //   return;
+    // }
+
+    //linkedNote = linkResolver.resolveLink(link);
+
+    linkedNote = linkResolver.resolveWikiLink(link);
+    if (linkedNote != null) {
+      openNoteEditor(context, linkedNote, linkedNote.parent);
+      return;
+    }
   }
 }
