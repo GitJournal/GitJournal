@@ -21,6 +21,7 @@ class NoteTitleEditor extends StatelessWidget {
         border: InputBorder.none,
         isDense: true,
         fillColor: theme.scaffoldBackgroundColor,
+        hoverColor: theme.scaffoldBackgroundColor,
       ),
       controller: textController,
       textCapitalization: TextCapitalization.sentences,
