@@ -13,7 +13,8 @@ class NoteBodyEditor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var style = Theme.of(context).textTheme.subtitle1;
+    var theme = Theme.of(context);
+    var style = theme.textTheme.subtitle1;
 
     return TextField(
       autofocus: autofocus,
@@ -24,6 +25,7 @@ class NoteBodyEditor extends StatelessWidget {
         hintText: tr('editors.common.defaultBodyHint'),
         border: InputBorder.none,
         isDense: true,
+        fillColor: theme.scaffoldBackgroundColor,
       ),
       controller: textController,
       textCapitalization: TextCapitalization.sentences,

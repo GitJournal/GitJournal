@@ -191,10 +191,8 @@ class _NoteEditor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var style = Theme.of(context)
-        .textTheme
-        .subtitle1
-        .copyWith(fontFamily: "Roboto Mono");
+    var theme = Theme.of(context);
+    var style = theme.textTheme.subtitle1.copyWith(fontFamily: "Roboto Mono");
 
     return TextField(
       autofocus: autofocus,
@@ -205,6 +203,7 @@ class _NoteEditor extends StatelessWidget {
         hintText: tr('editors.common.defaultBodyHint'),
         border: InputBorder.none,
         isDense: true,
+        fillColor: theme.scaffoldBackgroundColor,
       ),
       controller: textController,
       textCapitalization: TextCapitalization.sentences,
