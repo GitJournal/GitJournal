@@ -24,9 +24,9 @@ class NoteBodyEditor extends StatelessWidget {
       decoration: InputDecoration(
         hintText: tr('editors.common.defaultBodyHint'),
         border: InputBorder.none,
-        isDense: true,
         fillColor: theme.scaffoldBackgroundColor,
         hoverColor: theme.scaffoldBackgroundColor,
+        contentPadding: const EdgeInsets.all(0.0),
       ),
       controller: textController,
       textCapitalization: TextCapitalization.sentences,

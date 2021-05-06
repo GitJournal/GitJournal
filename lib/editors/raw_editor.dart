@@ -189,6 +189,7 @@ class _NoteEditor extends StatelessWidget {
         isDense: true,
         fillColor: theme.scaffoldBackgroundColor,
         hoverColor: theme.scaffoldBackgroundColor,
+        isCollapsed: true,
       ),
       controller: textController,
       textCapitalization: TextCapitalization.sentences,
