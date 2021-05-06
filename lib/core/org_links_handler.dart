@@ -15,13 +15,17 @@ limitations under the License.
 */
 
 import 'dart:developer';
-//import 'dart:html';
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
+import 'package:easy_localization/easy_localization.dart';
+import 'package:org_flutter/org_flutter.dart';
+import 'package:path/path.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/folder_views/common.dart';
@@ -29,12 +33,9 @@ import 'package:gitjournal/utils/link_resolver.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/images/image_details.dart';
 import 'package:gitjournal/widgets/images/themable_image.dart';
-
-import 'package:org_flutter/org_flutter.dart';
-import 'package:path/path.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import '../utils.dart';
+
+//import 'dart:html';
 
 /// Handles links from .org documents.
 class OrgLinkHandler {

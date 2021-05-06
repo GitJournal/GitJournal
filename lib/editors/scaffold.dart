@@ -6,17 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 import 'package:function_types/function_types.dart';
+import 'package:org_flutter/org_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/core/org_links_handler.dart';
 import 'package:gitjournal/editors/bottom_bar.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/widgets/note_viewer.dart';
-import 'package:org_flutter/org_flutter.dart';
-import 'package:gitjournal/core/org_links_handler.dart';
 
 class EditorScaffold extends StatefulWidget {
   final Editor editor;
