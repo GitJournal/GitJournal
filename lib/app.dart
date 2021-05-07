@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:device_info/device_info.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter_runtime_env/flutter_runtime_env.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
@@ -302,7 +303,7 @@ class _JournalAppState extends State<JournalApp> {
       supportedLocales: EasyLocalization.of(context).supportedLocales,
       locale: EasyLocalization.of(context).locale,
 
-      theme: Themes.light,
+      theme: FlexColorScheme.light(scheme: FlexScheme.green).toTheme,
       darkTheme: Themes.dark,
       themeMode: settings.theme.toThemeMode(),
 
