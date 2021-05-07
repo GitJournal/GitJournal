@@ -37,7 +37,7 @@ class AppRoute {
   static const Purchase = '/purchase';
   static const PurchaseThank = '/purchase_thank_you';
 
-  var all = [
+  static const all = [
     OnBoarding,
     AllFolders,
     AllTags,
@@ -82,7 +82,7 @@ class AppRouter {
         route == AppRoute.FileSystem) {
       return PageRouteBuilder(
         settings: routeSettings,
-        pageBuilder: (_, __, ___) => _screenForRoute(
+        pageBuilder: (_, __, ___) => screenForRoute(
           route,
           repository,
           settings,
@@ -98,7 +98,7 @@ class AppRouter {
 
     return MaterialPageRoute(
       settings: routeSettings,
-      builder: (context) => _screenForRoute(
+      builder: (context) => screenForRoute(
         route,
         repository,
         settings,
@@ -109,7 +109,7 @@ class AppRouter {
     );
   }
 
-  Widget _screenForRoute(
+  Widget screenForRoute(
     String route,
     GitJournalRepo repository,
     Settings settings,
@@ -178,7 +178,7 @@ class AppRouter {
       );
     }
 
-    assert(false, "Not found named route in _screenForRoute");
+    assert(false, "Not found named route in screenForRoute");
     return null;
   }
 }
