@@ -24,6 +24,34 @@ import 'package:gitjournal/setup/screens.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 
+class AppRoute {
+  static const OnBoarding = '/onBoarding';
+  static const AllFolders = '/folders';
+  static const AllTags = '/tags';
+  static const FileSystem = '/filesystem';
+  static const Graph = '/graph';
+  static const Settings = '/settings';
+  static const Login = '/login';
+  static const Register = '/register';
+  static const SetupRemoteGit = '/setupRemoteGit';
+  static const Purchase = '/purchase';
+  static const PurchaseThank = '/purchase_thank_you';
+
+  var all = [
+    OnBoarding,
+    AllFolders,
+    AllTags,
+    FileSystem,
+    Graph,
+    Settings,
+    Login,
+    Register,
+    SetupRemoteGit,
+    Purchase,
+    PurchaseThank,
+  ];
+}
+
 class AppRouter {
   final AppSettings appSettings;
   final Settings settings;
@@ -33,10 +61,10 @@ class AppRouter {
   String initialRoute() {
     var route = '/';
     if (!appSettings.onBoardingCompleted) {
-      route = '/onBoarding';
+      route = AppRoute.OnBoarding;
     }
     if (settings.homeScreen == SettingsHomeScreen.AllFolders) {
-      route = '/folders';
+      route = AppRoute.AllFolders;
     }
     return route;
   }
@@ -49,7 +77,9 @@ class AppRouter {
     Function callbackIfUsedShared,
   ) {
     var route = routeSettings.name;
-    if (route == '/folders' || route == '/tags' || route == '/filesystem') {
+    if (route == AppRoute.AllFolders ||
+        route == AppRoute.AllTags ||
+        route == AppRoute.FileSystem) {
       return PageRouteBuilder(
         settings: routeSettings,
         pageBuilder: (_, __, ___) => _screenForRoute(
@@ -90,31 +120,31 @@ class AppRouter {
     switch (route) {
       case '/':
         return HomeScreen();
-      case '/folders':
+      case AppRoute.AllFolders:
         return FolderListingScreen();
-      case '/filesystem':
+      case AppRoute.FileSystem:
         return FileSystemScreen();
-      case '/tags':
+      case AppRoute.AllTags:
         return TagListingScreen();
-      case '/graph':
+      case AppRoute.Graph:
         return GraphViewScreen();
-      case '/settings':
+      case AppRoute.Settings:
         return SettingsScreen();
-      case '/login':
+      case AppRoute.Login:
         return LoginPage();
-      case '/register':
+      case AppRoute.Register:
         return SignUpScreen();
-      case '/setupRemoteGit':
+      case AppRoute.SetupRemoteGit:
         return GitHostSetupScreen(
           repoFolderName: settings.folderName,
           remoteName: "origin",
           onCompletedFunction: repository.completeGitHostSetup,
         );
-      case '/onBoarding':
+      case AppRoute.OnBoarding:
         return OnBoardingScreen();
-      case '/purchase':
+      case AppRoute.Purchase:
         return PurchaseScreen();
-      case '/purchase_thank_you':
+      case AppRoute.PurchaseThank:
         return PurchaseThankYouScreen();
     }
 
