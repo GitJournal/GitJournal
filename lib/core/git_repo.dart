@@ -1,11 +1,10 @@
 // @dart=2.9
 
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:dart_git/git.dart' as git;
+import 'package:dart_git/dart_git.dart' as git;
 import 'package:git_bindings/git_bindings.dart';
 
 import 'package:gitjournal/core/note.dart';
@@ -14,6 +13,8 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
+
+final bool useDartGit = false;
 
 class NoteRepoResult {
   bool error;
@@ -35,13 +36,46 @@ class GitNoteRepository {
     @required this.settings,
   }) : _gitRepo = GitRepo(folderPath: gitDirPath);
 
+  Future<void> _add(String pathSpec) async {
+    if (useDartGit) {
+      var repo = await git.GitRepository.load(gitDirPath);
+      await repo.add(pathSpec);
+    } else {
+      await _gitRepo.add(pathSpec);
+    }
+  }
+
+  Future<void> _rm(String pathSpec) async {
+    if (useDartGit) {
+      var repo = await git.GitRepository.load(gitDirPath);
+      await repo.rm(pathSpec);
+    } else {
+      await _gitRepo.rm(pathSpec);
+    }
+  }
+
+  Future<void> _commit(
+      {String message, String authorEmail, String authorName}) async {
+    if (useDartGit) {
+      var repo = await git.GitRepository.load(gitDirPath);
+      var author = git.GitAuthor(name: authorName, email: authorEmail);
+      await repo.commit(message: message, author: author);
+    } else {
+      await _gitRepo.commit(
+        message: message,
+        authorEmail: settings.gitAuthorEmail,
+        authorName: settings.gitAuthor,
+      );
+    }
+  }
+
   Future<NoteRepoResult> addNote(Note note) async {
     return _addNote(note, "Added Note");
   }
 
   Future<NoteRepoResult> _addNote(Note note, String commitMessage) async {
-    await _gitRepo.add(".");
-    await _gitRepo.commit(
+    await _add(".");
+    await _commit(
       message: commitMessage,
       authorEmail: settings.gitAuthorEmail,
       authorName: settings.gitAuthor,
@@ -51,8 +85,8 @@ class GitNoteRepository {
   }
 
   Future<NoteRepoResult> addFolder(NotesFolderFS folder) async {
-    await _gitRepo.add(".");
-    await _gitRepo.commit(
+    await _add(".");
+    await _commit(
       message: "Created New Folder",
       authorEmail: settings.gitAuthorEmail,
       authorName: settings.gitAuthor,
@@ -65,8 +99,8 @@ class GitNoteRepository {
     var pathSpec = config.folder.pathSpec();
     pathSpec = pathSpec.isNotEmpty ? pathSpec : '/';
 
-    await _gitRepo.add(".");
-    await _gitRepo.commit(
+    await _add(".");
+    await _commit(
       message: "Update folder config for $pathSpec",
       authorEmail: settings.gitAuthorEmail,
       authorName: settings.gitAuthor,
@@ -80,8 +114,8 @@ class GitNoteRepository {
     String newFullPath,
   ) async {
     // FIXME: This is a hacky way of adding the changes, ideally we should be calling rm + add or something
-    await _gitRepo.add(".");
-    await _gitRepo.commit(
+    await _add(".");
+    await _commit(
       message: "Renamed Folder",
       authorEmail: settings.gitAuthorEmail,
       authorName: settings.gitAuthor,
@@ -95,8 +129,8 @@ class GitNoteRepository {
     String newFullPath,
   ) async {
     // FIXME: This is a hacky way of adding the changes, ideally we should be calling rm + add or something
-    await _gitRepo.add(".");
-    await _gitRepo.commit(
+    await _add(".");
+    await _commit(
       message: "Renamed Note",
       authorEmail: settings.gitAuthorEmail,
       authorName: settings.gitAuthor,
@@ -110,8 +144,8 @@ class GitNoteRepository {
     String newFullPath,
   ) async {
     // FIXME: This is a hacky way of adding the changes, ideally we should be calling rm + add or something
-    await _gitRepo.add(".");
-    await _gitRepo.commit(
+    await _add(".");
+    await _commit(
       message: "Renamed File",
       authorEmail: settings.gitAuthorEmail,
       authorName: settings.gitAuthor,
@@ -125,8 +159,8 @@ class GitNoteRepository {
     String newFullPath,
   ) async {
     // FIXME: This is a hacky way of adding the changes, ideally we should be calling rm + add or something
-    await _gitRepo.add(".");
-    await _gitRepo.commit(
+    await _add(".");
+    await _commit(
       message: "Note Moved",
       authorEmail: settings.gitAuthorEmail,
       authorName: settings.gitAuthor,
@@ -138,8 +172,8 @@ class GitNoteRepository {
   Future<NoteRepoResult> removeNote(Note note) async {
     // We are not calling note.remove() as gitRm will also remove the file
     var spec = note.pathSpec();
-    await _gitRepo.rm(spec);
-    await _gitRepo.commit(
+    await _rm(spec);
+    await _commit(
       message: "Removed Note " + spec,
       authorEmail: settings.gitAuthorEmail,
       authorName: settings.gitAuthor,
@@ -150,14 +184,12 @@ class GitNoteRepository {
 
   Future<NoteRepoResult> removeFolder(NotesFolderFS folder) async {
     var spec = folder.pathSpec();
-    await _gitRepo.rm(spec);
-    await _gitRepo.commit(
+    await _rm(spec);
+    await _commit(
       message: "Removed Folder " + spec,
       authorEmail: settings.gitAuthorEmail,
       authorName: settings.gitAuthor,
     );
-
-    await Directory(folder.folderPath).delete(recursive: true);
 
     return NoteRepoResult(noteFilePath: folder.folderPath, error: false);
   }
@@ -189,7 +221,8 @@ class GitNoteRepository {
     var branch = await repo.currentBranch();
     var branchConfig = repo.config.branch(branch);
     if (branchConfig == null) {
-      logExceptionWarning(Exception("Branch '$branch' not in config"), StackTrace.current);
+      logExceptionWarning(
+          Exception("Branch '$branch' not in config"), StackTrace.current);
       return;
     }
 
