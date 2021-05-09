@@ -294,6 +294,25 @@ class _JournalAppState extends State<JournalApp> {
     var appSettings = Provider.of<AppSettings>(context);
     var router = AppRouter(settings: settings, appSettings: appSettings);
 
+    /*
+    const FlexSchemeData customFlexScheme = FlexSchemeData(
+      name: 'Toledo purple',
+      description: 'Purple theme created from custom defined colors.',
+      light: FlexSchemeColor(
+        primary: Color(0xFF66bb6a),
+        primaryVariant: Color(0xFF338a3e),
+        secondary: Color(0xff6d4c41),
+        secondaryVariant: Color(0xFF338a3e),
+      ),
+      dark: FlexSchemeColor(
+        primary: Color(0xff212121),
+        primaryVariant: Color(0xffc8635f),
+        secondary: Color(0xff689f38),
+        secondaryVariant: Color(0xff00be00),
+      ),
+    );
+    */
+
     return MaterialApp(
       key: const ValueKey("App"),
       navigatorKey: _navigatorKey,
@@ -303,7 +322,7 @@ class _JournalAppState extends State<JournalApp> {
       supportedLocales: EasyLocalization.of(context).supportedLocales,
       locale: EasyLocalization.of(context).locale,
 
-      theme: FlexColorScheme.light(scheme: FlexScheme.green).toTheme,
+      theme: Themes.light,
       darkTheme: Themes.dark,
       themeMode: settings.theme.toThemeMode(),
 
