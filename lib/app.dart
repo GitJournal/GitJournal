@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:device_info/device_info.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter_runtime_env/flutter_runtime_env.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
@@ -186,6 +185,11 @@ class _JournalAppState extends State<JournalApp> {
   @override
   void initState() {
     super.initState();
+
+    if (!Platform.isAndroid || !Platform.isIOS) {
+      return;
+    }
+
     final QuickActions quickActions = QuickActions();
     quickActions.initialize((String shortcutType) {
       Log.i("Quick Action Open: $shortcutType");
@@ -230,6 +234,10 @@ class _JournalAppState extends State<JournalApp> {
   }
 
   void _initShareSubscriptions() {
+    if (!Platform.isAndroid || !Platform.isIOS) {
+      return;
+    }
+
     var handleShare = () {
       var noText = _sharedText == null || _sharedText.isEmpty;
       var noImages = _sharedImages == null || _sharedImages.isEmpty;
