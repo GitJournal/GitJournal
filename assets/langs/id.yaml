@@ -27,7 +27,7 @@ settings:
     levels:
       title: Pilih Tingkat
       error: Kesalahan
-      warning: peringatan
+      warning: Peringatan
       info: Info
       debug: Debug
       verbose: Berlebih
@@ -35,7 +35,7 @@ settings:
     title: Setelan Gambar
     subtitle: Atur bagaimana gambar disimpan
     imageLocation: Lokasi Gambar
-    currentFolder: Sefolder dengan Catatan
+    currentFolder: Satu Folder dengan Catatan
     customFolder: Folder Kustom
   gitRemote:
     changeHost:
@@ -64,7 +64,7 @@ settings:
     exampleTag1: Burung
     exampleTag2: Jahat
     customMetaData:
-      title: MetaData Kustom
+      title: Metadata Kustom
       invalid: YAML Tidak Valid
   privacy: Kebijakan Privasi
   terms: Syarat dan Kententuan
@@ -109,7 +109,7 @@ settings:
     swipe: Geser untuk Hapus Catatan
     listView: Tampilan Daftar
   NoteFileNameFormat:
-    iso8601WithTimeZone: ISO8601 Dengan ZonaWaktu
+    iso8601WithTimeZone: ISO8601 Dengan Zona Waktu
     iso8601: ISO8601
     iso8601WithoutColon: ISO8601 tanpa Titik Dua
     title: Judul
@@ -224,7 +224,7 @@ drawer:
   share: Bagikan Apl
   rate: Nilai Kami
   feedback: Tanggapan
-  bug: Laporan Serangga
+  bug: Laporan Kesalahan
 setup:
   autoConfigure:
     title: Bagaimana Anda ingin melakukan ini?
@@ -308,7 +308,7 @@ feature:
   yamlModifiedKey: Kustomisasi kunci yang diubah YAM
   yamlCreatedKey: Kustomisasi kunci dibuat YAML
   yamlTagsKey: Kustomisasi kunci tag YAML
-  disableYamlHeader: "Nonaktifkan Judul Metadata YAML "
+  disableYamlHeader: Nonaktifkan Judul Metadata YAML
   customizeHomeScreen: Kustomisasi Layar Utama
   zenMode: Mode Menulis Zen
   emojiSupport:
@@ -322,7 +322,7 @@ feature:
   mutliRepos: Multi Repo Git
   customThemes: Tema Kustom
   gitLog: Tampilkan dan Cari melalui Riwayat Git
-  latex: Dukung Latex
+  latex: Dukung LaTeX
   mermaid: Dukung Diagram Mermaid
   encryptedHosting: Hosting Git Terenkripsi
   desktop: Apl Desktop
