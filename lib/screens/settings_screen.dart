@@ -20,6 +20,7 @@ limitations under the License.
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:email_validator/email_validator.dart';
@@ -549,6 +550,10 @@ class VersionNumberTileState extends State<VersionNumberTile> {
         style: textTheme.bodyText2,
         textAlign: TextAlign.left,
       ),
+      onLongPress: () {
+        Clipboard.setData(ClipboardData(text: versionText));
+        showSnackbar(context, tr('settings.versionCopied'));
+      },
       enabled: false,
     );
   }

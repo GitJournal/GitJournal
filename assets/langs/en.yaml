@@ -95,6 +95,7 @@ settings:
     default: System Default
   gitAuthor: Git Author Settings
   versionInfo: Version Info
+  versionCopied: Version Number Copied
   analytics: Analytics
   crashReports: Collect Anonymous Crash Reports
   usageStats: Collect Anonymous Usage Statistics
