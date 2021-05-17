@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -17,8 +15,8 @@ class SortingModeSelector extends StatefulWidget {
 }
 
 class _SortingModeSelectorState extends State<SortingModeSelector> {
-  SortingField field;
-  SortingOrder order;
+  late SortingField field;
+  late SortingOrder order;
 
   @override
   void initState() {
@@ -68,9 +66,9 @@ class _SortingModeSelectorState extends State<SortingModeSelector> {
       title: Text(sf.toPublicString()),
       value: sf,
       groupValue: field,
-      onChanged: (SortingField sf) {
+      onChanged: (SortingField? sf) {
         setState(() {
-          field = sf;
+          field = sf!;
         });
       },
     );
@@ -81,9 +79,9 @@ class _SortingModeSelectorState extends State<SortingModeSelector> {
       title: Text(so.toPublicString()),
       value: so,
       groupValue: order,
-      onChanged: (SortingOrder so) {
+      onChanged: (SortingOrder? so) {
         setState(() {
-          order = so;
+          order = so!;
         });
       },
     );

@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'dart:async';
 
@@ -19,8 +19,8 @@ class SyncButton extends StatefulWidget {
 }
 
 class _SyncButtonState extends State<SyncButton> {
-  StreamSubscription<ConnectivityResult> subscription;
-  ConnectivityResult _connectivity;
+  late StreamSubscription<ConnectivityResult> subscription;
+  ConnectivityResult? _connectivity;
 
   @override
   void initState() {
@@ -126,7 +126,7 @@ class BlinkingIcon extends StatefulWidget {
   final Widget child;
   final int interval;
 
-  BlinkingIcon({@required this.child, this.interval = 500, Key key})
+  BlinkingIcon({required this.child, this.interval = 500, Key? key})
       : super(key: key);
 
   @override
@@ -135,8 +135,8 @@ class BlinkingIcon extends StatefulWidget {
 
 class _BlinkingIconState extends State<BlinkingIcon>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _animation;
+  late AnimationController _controller;
+  late Animation<double> _animation;
 
   @override
   void initState() {
@@ -172,13 +172,13 @@ class _BlinkingIconState extends State<BlinkingIcon>
 class GitPendingChangesBadge extends StatelessWidget {
   final Widget child;
 
-  GitPendingChangesBadge({@required this.child});
+  GitPendingChangesBadge({required this.child});
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     var darkMode = theme.brightness == Brightness.dark;
-    var style = theme.textTheme.caption.copyWith(
+    var style = theme.textTheme.caption!.copyWith(
       fontSize: 6.0,
       color: darkMode ? Colors.black : Colors.white,
     );
@@ -188,7 +188,7 @@ class GitPendingChangesBadge extends StatelessWidget {
     return Badge(
       badgeContent: Text(repo.numChanges.toString(), style: style),
       showBadge: repo.numChanges != 0,
-      badgeColor: theme.iconTheme.color,
+      badgeColor: theme.iconTheme.color!,
       position: BadgePosition.topEnd(top: 10.0, end: 4.0),
       child: child,
     );

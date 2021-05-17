@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -14,9 +12,9 @@ class RenameDialog extends StatefulWidget {
   final String dialogTitle;
 
   RenameDialog({
-    @required this.oldPath,
-    @required this.inputDecoration,
-    @required this.dialogTitle,
+    required this.oldPath,
+    required this.inputDecoration,
+    required this.dialogTitle,
   });
 
   @override
@@ -24,7 +22,7 @@ class RenameDialog extends StatefulWidget {
 }
 
 class _RenameDialogState extends State<RenameDialog> {
-  TextEditingController _textController;
+  late TextEditingController _textController;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -43,7 +41,7 @@ class _RenameDialogState extends State<RenameDialog> {
           TextFormField(
             decoration: InputDecoration(labelText: widget.inputDecoration),
             validator: (value) {
-              if (value.isEmpty) {
+              if (value!.isEmpty) {
                 return tr('widgets.rename.validator.empty');
               }
 
@@ -76,7 +74,7 @@ class _RenameDialogState extends State<RenameDialog> {
         ),
         TextButton(
           onPressed: () {
-            if (_formKey.currentState.validate()) {
+            if (_formKey.currentState!.validate()) {
               var newName = _textController.text;
               Navigator.of(context).pop(newName);
             }
