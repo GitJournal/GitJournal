@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -8,11 +6,11 @@ class IconDismissable extends Dismissible {
   final IconData iconData;
 
   IconDismissable({
-    @required Key key,
-    @required this.backgroundColor,
-    @required this.iconData,
-    @required Function onDismissed,
-    @required Widget child,
+    required Key key,
+    required this.backgroundColor,
+    required this.iconData,
+    required Function(DismissDirection) onDismissed,
+    required Widget child,
   }) : super(
           key: key,
           child: child,
