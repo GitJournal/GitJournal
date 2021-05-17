@@ -9,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:stack_trace/stack_trace.dart';
 import 'package:time/time.dart';
 
+// FIXME: Only catch Exception? type. Something else needs to be done with Errors
 class Log {
   static late String logFolderPath;
   static RandomAccessFile? logFile;
@@ -35,10 +36,6 @@ class Log {
     StackTrace? stacktrace,
     Map<String, dynamic>? props,
   }) {
-    assert(
-      ex == null || ex.runtimeType == Error || ex.runtimeType == Exception,
-    );
-
     if (stacktrace != null) {
       stacktrace = Trace.from(stacktrace).terse;
     }
@@ -56,10 +53,6 @@ class Log {
     StackTrace? stacktrace,
     Map<String, dynamic>? props,
   }) {
-    assert(
-      ex == null || ex.runtimeType == Error || ex.runtimeType == Exception,
-    );
-
     if (stacktrace != null) {
       stacktrace = Trace.from(stacktrace).terse;
     }
@@ -77,10 +70,6 @@ class Log {
     StackTrace? stacktrace,
     Map<String, dynamic>? props,
   }) {
-    assert(
-      ex == null || ex.runtimeType == Error || ex.runtimeType == Exception,
-    );
-
     if (stacktrace != null) {
       stacktrace = Trace.from(stacktrace).terse;
     }
@@ -101,10 +90,6 @@ class Log {
     StackTrace? stacktrace,
     Map<String, dynamic>? props,
   }) {
-    assert(
-      ex == null || ex.runtimeType == Error || ex.runtimeType == Exception,
-    );
-
     if (stacktrace != null) {
       stacktrace = Trace.from(stacktrace).terse;
     }
@@ -122,10 +107,6 @@ class Log {
     StackTrace? stacktrace,
     Map<String, dynamic>? props,
   }) {
-    assert(
-      ex == null || ex.runtimeType == Error || ex.runtimeType == Exception,
-    );
-
     if (stacktrace != null) {
       stacktrace = Trace.from(stacktrace).terse;
     }
@@ -144,10 +125,6 @@ class Log {
     StackTrace? stackTrace,
     Map<String, dynamic>? props,
   ) {
-    assert(
-      ex == null || ex.runtimeType == Error || ex.runtimeType == Exception,
-    );
-
     if (logFile == null) {
       return;
     }
@@ -197,7 +174,8 @@ class Log {
   static Iterable<LogMessage> fetchLogsForDate(DateTime date) sync* {
     var file = File(filePathForDate(date));
     if (!file.existsSync()) {
-      Log.i("No log file for $date");
+      var dateOnly = date.toIso8601String().substring(0, 10);
+      Log.i("No log file for $dateOnly");
       return;
     }
 
@@ -260,14 +238,27 @@ class LogMessage {
     };
   }
 
+  // todo: Make sure type conversion doesn't fuck up anything
   LogMessage.fromMap(Map<String, dynamic> map) {
     t = map['t'];
     l = map['l'];
     msg = map['msg'];
     ex = _checkForStringNull(map['ex']);
-    stack = _checkForStringNull(map['stack']);
+    stack = _parseJson(map['stack']);
     props = _checkForStringNull(map['p']);
   }
+}
+
+List<Map<String, dynamic>>? _parseJson(List<dynamic>? l) {
+  if (l == null) {
+    return null;
+  }
+
+  var list = <Map<String, dynamic>>[];
+  for (var i in l) {
+    list.add(i);
+  }
+  return list;
 }
 
 dynamic _checkForStringNull(dynamic e) {
