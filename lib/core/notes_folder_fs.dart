@@ -1,10 +1,7 @@
-// @dart=2.9
-
 import 'dart:collection';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 import 'package:synchronized/synchronized.dart';
@@ -24,7 +21,7 @@ class IgnoredFile {
   String filePath;
   IgnoreReason reason;
 
-  IgnoredFile({@required this.filePath, @required this.reason});
+  IgnoredFile({required this.filePath, required this.reason});
 
   String get fileName {
     return p.basename(filePath);
@@ -32,7 +29,7 @@ class IgnoredFile {
 }
 
 class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
-  final NotesFolderFS _parent;
+  final NotesFolderFS? _parent;
   String _folderPath;
   var _lock = Lock();
 
@@ -54,9 +51,9 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   }
 
   @override
-  NotesFolder get parent => _parent;
+  NotesFolder? get parent => _parent;
 
-  NotesFolderFS get parentFS => _parent;
+  NotesFolderFS? get parentFS => _parent;
 
   void _entityChanged() {
     notifyListeners();
@@ -190,7 +187,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       futures.add(f);
     }
 
-    return Future.wait(futures);
+    await Future.wait(futures);
   }
 
   Future<void> load() async {
@@ -418,7 +415,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     if (parent == null) {
       return "";
     }
-    return p.join(parent.pathSpec(), name);
+    return p.join(parent!.pathSpec(), name);
   }
 
   @override
@@ -448,7 +445,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     return this;
   }
 
-  NotesFolderFS getFolderWithSpec(String spec) {
+  NotesFolderFS? getFolderWithSpec(String spec) {
     if (pathSpec() == spec) {
       return this;
     }
@@ -465,12 +462,12 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   NotesFolderFS get rootFolder {
     var folder = this;
     while (folder.parent != null) {
-      folder = folder.parent;
+      folder = folder.parent as NotesFolderFS;
     }
     return folder;
   }
 
-  Note getNoteWithSpec(String spec) {
+  Note? getNoteWithSpec(String spec) {
     var parts = spec.split(p.separator);
     var folder = this;
     while (parts.length != 1) {

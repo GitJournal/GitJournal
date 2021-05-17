@@ -1,5 +1,3 @@
-// @dart=2.9
-
 /*
 Copyright 2020-2021 Vishesh Handa <me@vhanda.in>
 
@@ -65,18 +63,18 @@ class NoteSerializer implements NoteSerializerInterface {
     data.body = emojiParser.unemojify(note.body);
 
     if (note.created != null) {
-      data.props[settings.createdKey] = toIso8601WithTimezone(note.created);
+      data.props[settings.createdKey] = toIso8601WithTimezone(note.created!);
     } else {
       data.props.remove(settings.createdKey);
     }
 
     if (note.modified != null) {
-      data.props[settings.modifiedKey] = toIso8601WithTimezone(note.modified);
+      data.props[settings.modifiedKey] = toIso8601WithTimezone(note.modified!);
     } else {
       data.props.remove(settings.modifiedKey);
     }
 
-    if (note.title != null) {
+    if (note.title.isNotEmpty) {
       var title = emojiParser.unemojify(note.title.trim());
       if (settings.titleSettings == SettingsTitle.InH1) {
         if (title.isNotEmpty) {

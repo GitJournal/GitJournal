@@ -16,14 +16,10 @@ import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
+import 'common_types.dart';
 import 'standard_view.dart';
 
-enum FolderViewType {
-  Standard,
-  Journal,
-  Card,
-  Grid,
-}
+export 'common_types.dart';
 
 Widget buildFolderView({
   @required FolderViewType viewType,

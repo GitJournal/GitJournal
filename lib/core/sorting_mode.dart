@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:gitjournal/core/note.dart';
@@ -160,7 +158,7 @@ int _sortCreatedDesc(Note a, Note b) {
   if (bDt == null && aDt == null) {
     return a.fileName.compareTo(b.fileName);
   }
-  return bDt.compareTo(aDt);
+  return bDt!.compareTo(aDt!);
 }
 
 int _sortModifiedDesc(Note a, Note b) {
@@ -175,12 +173,12 @@ int _sortModifiedDesc(Note a, Note b) {
   if (bDt == null && aDt == null) {
     return a.fileName.compareTo(b.fileName);
   }
-  return bDt.compareTo(aDt);
+  return bDt!.compareTo(aDt!);
 }
 
 int _sortTitleAsc(Note a, Note b) {
-  var aTitleExists = a.title != null && a.title.isNotEmpty;
-  var bTitleExists = b.title != null && b.title.isNotEmpty;
+  var aTitleExists = a.title.isNotEmpty;
+  var bTitleExists = b.title.isNotEmpty;
 
   if (!aTitleExists && bTitleExists) {
     return 1;

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:io';
 
@@ -30,8 +28,8 @@ Future<void> initSentry() async {
 Future<SentryEvent> get _environmentEvent async {
   final packageInfo = await PackageInfo.fromPlatform();
   final deviceInfoPlugin = DeviceInfoPlugin();
-  SentryOperatingSystem os;
-  SentryDevice device;
+  SentryOperatingSystem? os;
+  SentryDevice? device;
   if (Platform.isAndroid) {
     final androidInfo = await deviceInfoPlugin.androidInfo;
     os = SentryOperatingSystem(
@@ -77,19 +75,19 @@ void flutterOnErrorHandler(FlutterErrorDetails details) {
   if (reportCrashes == true) {
     // vHanda: This doesn't always call our zone error handler, why?
     // Zone.current.handleUncaughtError(details.exception, details.stack);
-    reportError(details.exception, details.stack);
+    reportError(details.exception, details.stack ?? StackTrace.current);
   } else {
     FlutterError.dumpErrorToConsole(details);
   }
 }
 
 bool get reportCrashes => _reportCrashes ??= _initReportCrashes();
-bool _reportCrashes;
+bool? _reportCrashes;
 bool _initReportCrashes() {
   return !JournalApp.isInDebugMode && AppSettings.instance.collectCrashReports;
 }
 
-Future<void> reportError(Object error, StackTrace stackTrace) async {
+Future<void> reportError(dynamic error, StackTrace stackTrace) async {
   Log.e("Uncaught Exception", ex: error, stacktrace: stackTrace);
 
   if (reportCrashes) {
@@ -124,8 +122,8 @@ Future<void> logExceptionWarning(Object e, StackTrace stackTrace) async {
 List<Breadcrumb> breadcrumbs = [];
 
 void captureErrorBreadcrumb({
-  @required String name,
-  Map<String, String> parameters,
+  required String name,
+  required Map<String, String> parameters,
 }) {
   var b = Breadcrumb(
     message: name,
@@ -136,19 +134,20 @@ void captureErrorBreadcrumb({
 }
 
 Future<void> captureSentryException(
-  Object exception,
+  dynamic exception,
   StackTrace stackTrace, {
   SentryLevel level = SentryLevel.error,
 }) async {
   try {
     await initSentry();
     final event = (await _environmentEvent).copyWith(
-      exception: exception,
+      throwable: exception,
       breadcrumbs: breadcrumbs,
       level: level,
     );
 
-    return Sentry.captureEvent(event, stackTrace: Trace.from(stackTrace).terse);
+    await Sentry.captureEvent(event, stackTrace: Trace.from(stackTrace).terse);
+    return;
   } catch (e) {
     print("Failed to report with Sentry: $e");
   }
