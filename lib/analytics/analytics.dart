@@ -1,8 +1,5 @@
-// @dart=2.9
-
 import 'dart:io' show Platform;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:device_info/device_info.dart';
@@ -138,8 +135,6 @@ String _eventToString(Event e) {
     case Event.AppUpdate:
       return "gj_app_update";
   }
-
-  return "unknown_event";
 }
 
 class Analytics {
@@ -147,7 +142,7 @@ class Analytics {
   bool enabled = false;
 
   Future<void> log({
-    @required Event e,
+    required Event e,
     Map<String, String> parameters = const {},
   }) async {
     String name = _eventToString(e);
@@ -164,14 +159,14 @@ class Analytics {
     }
   }
 
-  Future<void> setCurrentScreen({@required String screenName}) async {
+  Future<void> setCurrentScreen({required String screenName}) async {
     if (Platform.isAndroid || Platform.isIOS) {
       await firebase.setCurrentScreen(screenName: screenName);
     }
   }
 
   Future<void> setUserProperty(
-      {@required String name, @required String value}) async {
+      {required String name, required String value}) async {
     if (Platform.isAndroid || Platform.isIOS) {
       await firebase.setUserProperty(name: name, value: value);
     }
@@ -203,7 +198,7 @@ class AnalyticsRouteObserver extends RouteObserver<PageRoute<dynamic>> {
   }
 
   @override
-  void didPush(Route<dynamic> route, Route<dynamic> previousRoute) {
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPush(route, previousRoute);
     if (route is PageRoute) {
       _sendScreenView(route);
@@ -213,7 +208,7 @@ class AnalyticsRouteObserver extends RouteObserver<PageRoute<dynamic>> {
   }
 
   @override
-  void didReplace({Route<dynamic> newRoute, Route<dynamic> oldRoute}) {
+  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
     if (newRoute is PageRoute) {
       _sendScreenView(newRoute);
@@ -223,7 +218,7 @@ class AnalyticsRouteObserver extends RouteObserver<PageRoute<dynamic>> {
   }
 
   @override
-  void didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPop(route, previousRoute);
     if (previousRoute is PageRoute && route is PageRoute) {
       _sendScreenView(previousRoute);

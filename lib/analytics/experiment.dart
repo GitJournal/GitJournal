@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'dart:io';
 
@@ -8,33 +8,33 @@ import 'package:device_info/device_info.dart';
 // - https://support.google.com/firebase/answer/6317485?hl=en
 
 class Event {
-  DateTime date;
-  String name;
-  Map<String, dynamic> params;
+  DateTime? date;
+  String? name;
+  Map<String, dynamic>? params;
 
-  String userId;
-  String psuedoId;
-  Map<String, dynamic> userProperties;
+  String? userId;
+  String? psuedoId;
+  Map<String, dynamic>? userProperties;
 
   // Unique session identifier (based on the timestamp of the session_start
   // event) associated with each event that occurs within a session
-  String sessionID;
+  String? sessionID;
 
-  String platform;
-  DateTime userFirstTouchTimestamp;
+  String? platform;
+  DateTime? userFirstTouchTimestamp;
 }
 
 class Device {
-  String category; // mobile
-  String mobileBrandName;
-  String mobileModelName;
-  String mobileOsHardwareModel;
-  String operatingSystem;
-  String operatingSystemVersion;
-  String vendorId;
-  String language;
-  bool isLimitedAdTracking;
-  int timeZoneOffsetSeconds;
+  String? category; // mobile
+  String? mobileBrandName;
+  String? mobileModelName;
+  String? mobileOsHardwareModel;
+  String? operatingSystem;
+  String? operatingSystemVersion;
+  String? vendorId;
+  String? language;
+  bool? isLimitedAdTracking;
+  int? timeZoneOffsetSeconds;
 
   static Future<Device> build() async {
     var device = Device();
@@ -69,10 +69,10 @@ class Device {
 }
 
 class AppInfo {
-  String id;
-  String version;
-  String firebaseAppId;
-  String installSource;
+  String? id;
+  String? version;
+  String? firebaseAppId;
+  String? installSource;
 }
 
 //
