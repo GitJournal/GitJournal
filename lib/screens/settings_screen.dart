@@ -554,7 +554,6 @@ class VersionNumberTileState extends State<VersionNumberTile> {
         Clipboard.setData(ClipboardData(text: versionText));
         showSnackbar(context, tr('settings.versionCopied'));
       },
-      enabled: false,
     );
   }
 }
