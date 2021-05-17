@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 class ScrollViewWithoutAnimation extends StatelessWidget {
@@ -7,7 +5,7 @@ class ScrollViewWithoutAnimation extends StatelessWidget {
   final Axis scrollDirection;
 
   ScrollViewWithoutAnimation({
-    @required this.child,
+    required this.child,
     this.scrollDirection = Axis.vertical,
   });
 

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 /*
   (c) Copyright 2020 Vishesh Handa
 
@@ -26,12 +24,10 @@
   THE SOFTWARE.
 */
 
-import 'package:meta/meta.dart';
-
 class InlineTagsProcessor {
   final Set<String> tagPrefixes;
 
-  InlineTagsProcessor({@required this.tagPrefixes});
+  InlineTagsProcessor({required this.tagPrefixes});
 
   Set<String> extractTags(String text) {
     var tags = <String>{};
@@ -46,7 +42,7 @@ class InlineTagsProcessor {
       var regexp = RegExp(r'(^|\s)' + p + r'([^\s]+)(\s|$)');
       var matches = regexp.allMatches(text);
       for (var match in matches) {
-        var tag = match.group(2);
+        var tag = match.group(2)!;
 
         if (tag.endsWith('.') || tag.endsWith('!') || tag.endsWith('?')) {
           tag = tag.substring(0, tag.length - 1);

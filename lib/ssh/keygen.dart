@@ -1,9 +1,6 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:git_bindings/git_bindings.dart' as gb;
-import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 
 import 'package:gitjournal/utils/logger.dart';
@@ -16,15 +13,15 @@ class SshKey {
   final String password;
 
   const SshKey({
-    @required this.publicKey,
-    @required this.privateKey,
-    @required this.password,
+    required this.publicKey,
+    required this.privateKey,
+    required this.password,
   });
 }
 
 final bool useDartKeyGen = false;
 
-Future<SshKey> generateSSHKeys({@required String comment}) async {
+Future<SshKey?> generateSSHKeys({required String comment}) async {
   if (useDartKeyGen) {
     //return generateSSHKeysDart(comment: comment);
   } else {}
@@ -51,7 +48,7 @@ Future<SshKey> generateSSHKeysDart({@required String comment}) async {
 }
 */
 
-Future<SshKey> generateSSHKeysNative({@required String comment}) async {
+Future<SshKey?> generateSSHKeysNative({required String comment}) async {
   try {
     var stopwatch = Stopwatch()..start();
     var dir = await Directory.systemTemp.createTemp('keys');

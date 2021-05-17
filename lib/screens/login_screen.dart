@@ -1,5 +1,3 @@
-// @dart=2.9
-
 /*
   Code adapted from https://github.com/TheAlphamerc/flutter_login_signup/
 
@@ -43,9 +41,9 @@ import 'package:gitjournal/widgets/scroll_view_without_animation.dart';
 // const _prodServer = 'https://api.gitjournal.io/auth/';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key, this.title}) : super(key: key);
+  LoginPage({Key? key, this.title}) : super(key: key);
 
-  final String title;
+  final String? title;
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -90,9 +88,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     return InkWell(
-      onTap: () {
-        _loginAction();
-      },
+      onTap: _loginAction,
       child: c,
     );
   }
@@ -318,7 +314,7 @@ class FormTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
-    var style = textTheme.headline2.copyWith(fontFamily: "Lato");
+    var style = textTheme.headline2!.copyWith(fontFamily: "Lato");
     return Text('GitJournal', style: style);
   }
 }
