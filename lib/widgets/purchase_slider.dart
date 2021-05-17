@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -12,19 +10,17 @@ class PaymentInfo extends Equatable {
   final String text;
   final String id;
 
-  PaymentInfo({@required this.id, @required this.value, @required this.text});
+  PaymentInfo({required this.id, required this.value, required this.text});
 
   @override
   List<Object> get props => [value, text, id];
 
-  static PaymentInfo fromProductDetail(ProductDetails pd) {
-    if (pd == null) return null;
-
+  static PaymentInfo? fromProductDetail(ProductDetails pd) {
     double value = -1;
     if (pd.skProduct != null) {
-      value = double.parse(pd.skProduct.price);
+      value = double.parse(pd.skProduct!.price);
     } else if (pd.skuDetail != null) {
-      value = pd.skuDetail.originalPriceAmountMicros.toDouble() / 100000;
+      value = pd.skuDetail!.originalPriceAmountMicros.toDouble() / 100000;
     }
 
     return PaymentInfo(
@@ -38,16 +34,16 @@ class PaymentInfo extends Equatable {
 typedef PaymentSliderChanged = void Function(PaymentInfo);
 
 class PurchaseSlider extends StatelessWidget {
-  final List<PaymentInfo> values;
-  final PaymentInfo selectedValue;
+  final List<PaymentInfo?> values;
+  final PaymentInfo? selectedValue;
   final PaymentSliderChanged onChanged;
 
   PurchaseSlider({
-    @required this.values,
-    @required this.selectedValue,
-    @required this.onChanged,
+    required this.values,
+    required this.selectedValue,
+    required this.onChanged,
   }) {
-    values.sort((a, b) => a.value.compareTo(b.value));
+    values.sort((a, b) => a!.value.compareTo(b!.value));
   }
 
   @override
@@ -67,14 +63,14 @@ class PurchaseSlider extends StatelessWidget {
 }
 
 class ShapePainter extends CustomPainter {
-  final List<PaymentInfo> values;
-  final PaymentInfo selectedValue;
+  final List<PaymentInfo?> values;
+  final PaymentInfo? selectedValue;
   final Color color;
 
   ShapePainter({
-    @required this.values,
-    @required this.selectedValue,
-    @required this.color,
+    required this.values,
+    required this.selectedValue,
+    required this.color,
   });
 
   @override
@@ -95,8 +91,8 @@ class ShapePainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.fill;
 
-    var diff = (values.last.value - values.first.value);
-    var w = (size.width / diff) * (selectedValue.value - values.first.value);
+    var diff = (values.last!.value - values.first!.value);
+    var w = (size.width / diff) * (selectedValue!.value - values.first!.value);
 
     var angle = atan(size.height / size.width);
     var h = w * tan(angle);
