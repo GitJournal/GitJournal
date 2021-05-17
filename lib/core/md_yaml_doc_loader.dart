@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 import 'dart:isolate';
 
@@ -9,9 +7,9 @@ import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 
 class MdYamlDocLoader {
-  Isolate _isolate;
+  Isolate? _isolate;
   ReceivePort _receivePort = ReceivePort();
-  SendPort _sendPort;
+  SendPort? _sendPort;
 
   var _loadingLock = Lock();
 
@@ -21,7 +19,7 @@ class MdYamlDocLoader {
     return await _loadingLock.synchronized(() async {
       if (_isolate != null && _sendPort != null) return;
       if (_isolate != null) {
-        _isolate.kill(priority: Isolate.immediate);
+        _isolate!.kill(priority: Isolate.immediate);
         _isolate = null;
       }
       _isolate = await Isolate.spawn(
@@ -36,7 +34,8 @@ class MdYamlDocLoader {
     });
   }
 
-  Future<MdYamlDoc> loadDoc(String filePath) async {
+  // FIXME: Don't throw exceptions!
+  Future<MdYamlDoc?> loadDoc(String filePath) async {
     await _initIsolate();
 
     final file = File(filePath);
@@ -45,7 +44,7 @@ class MdYamlDocLoader {
     }
 
     var rec = ReceivePort();
-    _sendPort.send(_LoadingMessage(filePath, rec.sendPort));
+    _sendPort!.send(_LoadingMessage(filePath, rec.sendPort));
 
     var data = await rec.first;
     assert(data is _LoaderResponse);
@@ -91,8 +90,8 @@ void _isolateMain(SendPort toMainSender) {
 
 class _LoaderResponse {
   final String filePath;
-  final MdYamlDoc doc;
-  final String err;
+  final MdYamlDoc? doc;
+  final String? err;
 
   _LoaderResponse(this.filePath, this.doc, [this.err]);
 }

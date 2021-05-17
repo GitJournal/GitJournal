@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:collection';
 
 import 'package:yaml/yaml.dart';
@@ -72,7 +70,7 @@ class MarkdownYAMLCodec {
       if (yamlMap is! Map) {
         return map;
       }
-      map = _convertMap(yamlMap);
+      map = _convertMap(yamlMap as YamlMap);
     } catch (err) {
       Log.d('MarkdownYAMLSerializer::decode("$yamlText") -> ${err.toString()}');
     }
