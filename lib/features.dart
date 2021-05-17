@@ -42,6 +42,7 @@ class Features {
     Feature.configureBottomMenuBar,
     Feature.customFileNamePerEditor,
     Feature.multiRepos,
+    Feature.branchSelection,
   ];
 
   static final inProgress = <String>[
@@ -360,6 +361,14 @@ class Feature {
     "multiRepos",
     DateTime(2021, 02, 20),
     tr("feature.mutliRepos"),
+    "",
+    true,
+  );
+
+  static final branchSelection = Feature(
+    "multiRepos",
+    DateTime(2021, 04, 20),
+    tr("feature.branchSelection"),
     "",
     true,
   );

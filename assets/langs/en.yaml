@@ -82,7 +82,7 @@ settings:
         themeOverrideTagLocation: Theme Override Tag Location
         themeRasterGraphics: Theme Raster Graphics (.png/.jpg)
         themeSvgWithBackground: Theme SVGs With Background
-        themeVectorGraphics: 
+        themeVectorGraphics:
           title: Theme Vector Graphics
           filter: Using Color Filter
           off: No
@@ -495,6 +495,7 @@ feature:
   singleJournalEntry: Single Journal Entry File per day
   configureBottomMenuBar: Configure the Bottom Menu Bar
   customFileNamePerEditor: Custom FileName per Editor
+  branchSelection: Git Branch Selection
 
 feature_timeline:
   title: Feature Timeline
