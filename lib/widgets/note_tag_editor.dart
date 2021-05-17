@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -9,18 +7,18 @@ class NoteTagEditor extends StatefulWidget {
   final Set<String> selectedTags;
   final Set<String> allTags;
 
-  NoteTagEditor({@required this.selectedTags, @required this.allTags});
+  NoteTagEditor({required this.selectedTags, required this.allTags});
 
   @override
   _NoteTagEditorState createState() => _NoteTagEditorState();
 }
 
 class _NoteTagEditorState extends State<NoteTagEditor> {
-  TextEditingController _textController;
-  FocusNode _focusNode;
+  late TextEditingController _textController;
+  late FocusNode _focusNode;
 
-  Set<String> _selectedTags;
-  Set<String> _allTags;
+  late Set<String> _selectedTags;
+  late Set<String> _allTags;
 
   @override
   void initState() {
