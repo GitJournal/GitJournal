@@ -1,20 +1,17 @@
-// @dart=2.9
-
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart' as foundation;
 
 import 'package:fimber/fimber.dart';
-import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:stack_trace/stack_trace.dart';
 import 'package:time/time.dart';
 
 class Log {
-  static String logFolderPath;
-  static RandomAccessFile logFile;
+  static late String logFolderPath;
+  static RandomAccessFile? logFile;
 
   static Future<void> init() async {
     if (foundation.kDebugMode) {
@@ -32,9 +29,19 @@ class Log {
     await setLogCapture(true);
   }
 
-  static void v(String msg,
-      {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
-    stacktrace = Trace.from(stacktrace).terse;
+  static void v(
+    String msg, {
+    dynamic ex,
+    StackTrace? stacktrace,
+    Map<String, dynamic>? props,
+  }) {
+    assert(
+      ex == null || ex.runtimeType == Error || ex.runtimeType == Exception,
+    );
+
+    if (stacktrace != null) {
+      stacktrace = Trace.from(stacktrace).terse;
+    }
 
     if (foundation.kDebugMode) {
       Fimber.log("V", msg,
@@ -43,9 +50,19 @@ class Log {
     _write('v', msg, ex, stacktrace, props);
   }
 
-  static void d(String msg,
-      {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
-    stacktrace = Trace.from(stacktrace).terse;
+  static void d(
+    String msg, {
+    dynamic ex,
+    StackTrace? stacktrace,
+    Map<String, dynamic>? props,
+  }) {
+    assert(
+      ex == null || ex.runtimeType == Error || ex.runtimeType == Exception,
+    );
+
+    if (stacktrace != null) {
+      stacktrace = Trace.from(stacktrace).terse;
+    }
 
     if (foundation.kDebugMode) {
       Fimber.log("D", msg,
@@ -54,9 +71,19 @@ class Log {
     _write('d', msg, ex, stacktrace, props);
   }
 
-  static void i(String msg,
-      {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
-    stacktrace = Trace.from(stacktrace).terse;
+  static void i(
+    String msg, {
+    dynamic ex,
+    StackTrace? stacktrace,
+    Map<String, dynamic>? props,
+  }) {
+    assert(
+      ex == null || ex.runtimeType == Error || ex.runtimeType == Exception,
+    );
+
+    if (stacktrace != null) {
+      stacktrace = Trace.from(stacktrace).terse;
+    }
 
     if (foundation.kDebugMode) {
       if (props != null && props.isNotEmpty) {
@@ -68,9 +95,19 @@ class Log {
     _write('i', msg, ex, stacktrace, props);
   }
 
-  static void e(String msg,
-      {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
-    stacktrace = Trace.from(stacktrace).terse;
+  static void e(
+    String msg, {
+    dynamic ex,
+    StackTrace? stacktrace,
+    Map<String, dynamic>? props,
+  }) {
+    assert(
+      ex == null || ex.runtimeType == Error || ex.runtimeType == Exception,
+    );
+
+    if (stacktrace != null) {
+      stacktrace = Trace.from(stacktrace).terse;
+    }
 
     if (foundation.kDebugMode) {
       Fimber.log("E", msg,
@@ -79,9 +116,19 @@ class Log {
     _write('e', msg, ex, stacktrace, props);
   }
 
-  static void w(String msg,
-      {dynamic ex, StackTrace stacktrace, Map<String, dynamic> props}) {
-    stacktrace = Trace.from(stacktrace).terse;
+  static void w(
+    String msg, {
+    dynamic ex,
+    StackTrace? stacktrace,
+    Map<String, dynamic>? props,
+  }) {
+    assert(
+      ex == null || ex.runtimeType == Error || ex.runtimeType == Exception,
+    );
+
+    if (stacktrace != null) {
+      stacktrace = Trace.from(stacktrace).terse;
+    }
 
     if (foundation.kDebugMode) {
       Fimber.log("W", msg,
@@ -94,9 +141,13 @@ class Log {
     String level,
     String msg,
     dynamic ex,
-    StackTrace stackTrace,
-    Map<String, dynamic> props,
+    StackTrace? stackTrace,
+    Map<String, dynamic>? props,
   ) {
+    assert(
+      ex == null || ex.runtimeType == Error || ex.runtimeType == Exception,
+    );
+
     if (logFile == null) {
       return;
     }
@@ -106,12 +157,14 @@ class Log {
       l: level,
       msg: msg.replaceAll('\n', ' '),
       ex: ex != null ? ex.toString().replaceAll('\n', ' ') : null,
-      stack: stackTrace.toListOfMap(),
       props: props,
     );
+    if (stackTrace != null) {
+      logMsg.stack = stackTrace.toListOfMap();
+    }
 
     var str = json.encode(logMsg.toMap());
-    logFile.writeStringSync(str + '\n');
+    logFile!.writeStringSync(str + '\n');
   }
 
   static Future<void> setLogCapture(bool state) async {
@@ -122,7 +175,7 @@ class Log {
       print("Writing logs to file $logFilePath");
     } else {
       if (logFile != null) {
-        await logFile.close();
+        await logFile!.close();
       }
       logFile = null;
     }
@@ -180,17 +233,17 @@ class Log {
 }
 
 class LogMessage {
-  int t;
-  String l;
-  String msg;
-  String ex;
-  List<Map<String, dynamic>> stack;
-  Map<String, dynamic> props;
+  int? t;
+  String? l;
+  String? msg;
+  String? ex;
+  List<Map<String, dynamic>>? stack;
+  Map<String, dynamic>? props;
 
   LogMessage({
-    @required this.t,
-    @required this.l,
-    @required this.msg,
+    required this.t,
+    required this.l,
+    required this.msg,
     this.ex,
     this.stack,
     this.props,
@@ -201,9 +254,9 @@ class LogMessage {
       't': t,
       'l': l,
       'msg': msg,
-      if (ex != null && ex.isNotEmpty) 'ex': ex,
+      if (ex != null && ex!.isNotEmpty) 'ex': ex,
       if (stack != null) 'stack': stack,
-      if (props != null && props.isNotEmpty) 'p': props,
+      if (props != null && props!.isNotEmpty) 'p': props,
     };
   }
 

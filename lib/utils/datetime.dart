@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:core';
 
 import 'package:intl/intl.dart';
@@ -27,7 +25,7 @@ String toZettleDateTime(DateTime dt) {
   return _zettleDateFormat.format(dt);
 }
 
-String toIso8601WithTimezone(DateTime dt, [Duration offset]) {
+String toIso8601WithTimezone(DateTime dt, [Duration? offset]) {
   var result = _iso8601DateFormat.format(dt);
 
   offset = offset ?? dt.timeZoneOffset;
@@ -58,10 +56,8 @@ String toIso8601WithTimezone(DateTime dt, [Duration offset]) {
   return result + sign + hourStr + ':' + minutesStr;
 }
 
-DateTime parseDateTime(String str) {
-  if (str == null) return null;
-
-  DateTime dt;
+DateTime? parseDateTime(String str) {
+  DateTime? dt;
   try {
     dt = DateTime.parse(str).toLocal();
   } catch (ex) {
