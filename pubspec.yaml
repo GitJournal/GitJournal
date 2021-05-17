@@ -89,7 +89,8 @@ dev_dependencies:
     sdk: flutter
   benchmark_harness: ^2.0.0
   bonsoir: ^1.0.0
-  flutter_launcher_icons: ^0.9.0
+  flutter_launcher_icons:
+    git: https://github.com/dirkbo/flutter_launcher_icons
   # flutter_webview_plugin: ^0.3.11
   import_sorter: ^4.4.3
   multicast_dns: ^0.3.0
@@ -120,6 +121,9 @@ flutter_icons:
   image_path: "assets/icon/icon.png"
   image_path_ios: "assets/icon/icon_ios.png"
   ios: true
+  macos: true
+  windows: false
+  linux: false
 
 import_sorter:
   comments: false
