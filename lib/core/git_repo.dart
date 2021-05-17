@@ -1,6 +1,7 @@
 // @dart=2.9
 
 import 'dart:async';
+import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
 
@@ -14,7 +15,7 @@ import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
-final bool useDartGit = false;
+bool useDartGit = false;
 
 class NoteRepoResult {
   bool error;
@@ -34,7 +35,12 @@ class GitNoteRepository {
   GitNoteRepository({
     @required this.gitDirPath,
     @required this.settings,
-  }) : _gitRepo = GitRepo(folderPath: gitDirPath);
+  }) : _gitRepo = GitRepo(folderPath: gitDirPath) {
+    // git-bindings aren't properly implemented in these platformsk
+    if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
+      useDartGit = true;
+    }
+  }
 
   Future<void> _add(String pathSpec) async {
     if (useDartGit) {
