@@ -1,5 +1,3 @@
-// @dart=2.9
-
 /*
 Copyright 2020-2021 Vishesh Handa <me@vhanda.in>
 
@@ -43,7 +41,7 @@ class AppSettings extends ChangeNotifier {
   var proExpirationDate = "";
   var validateProMode = true;
 
-  String _pseudoId;
+  late String _pseudoId;
   String get pseudoId => _pseudoId;
 
   var debugLogLevel = 'v';
@@ -71,10 +69,12 @@ class AppSettings extends ChangeNotifier {
         pref.getString("proExpirationDate") ?? proExpirationDate;
     validateProMode = pref.getBool("validateProMode") ?? validateProMode;
 
-    _pseudoId = pref.getString("pseudoId");
-    if (_pseudoId == null) {
+    var p = pref.getString("pseudoId");
+    if (p == null) {
       _pseudoId = const Uuid().v4();
       pref.setString("pseudoId", _pseudoId);
+    } else {
+      _pseudoId = p;
     }
 
     debugLogLevel = pref.getString("debugLogLevel") ?? debugLogLevel;

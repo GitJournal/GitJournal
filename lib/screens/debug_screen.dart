@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -20,14 +18,14 @@ class DebugScreen extends StatefulWidget {
 class _DebugScreenState extends State<DebugScreen> {
   ScrollController _controller = ScrollController();
 
-  List<LogMessage> _logs;
+  late List<LogMessage> _logs;
 
   @override
   void initState() {
     super.initState();
 
     _logs = Log.fetchLogs().toList();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
+    WidgetsBinding.instance!.addPostFrameCallback((_) => _scrollToBottom());
   }
 
   void _scrollToTop() {
@@ -146,7 +144,7 @@ class _DebugScreenState extends State<DebugScreen> {
   Widget _buildLogWidget(LogMessage msg) {
     var textStyle = Theme.of(context)
         .textTheme
-        .bodyText2
+        .bodyText2!
         .copyWith(fontFamily: "Roboto Mono");
 
     textStyle = textStyle.copyWith(color: _colorForLevel(msg.l));
@@ -156,7 +154,7 @@ class _DebugScreenState extends State<DebugScreen> {
     var str = ' ' + msg.msg;
 
     if (msg.ex != null) {
-      str += ' ' + msg.ex;
+      str += ' ' + msg.ex!;
     }
     if (msg.stack != null) {
       str += ' ' + msg.stack.toString();
@@ -204,7 +202,7 @@ class _DebugScreenState extends State<DebugScreen> {
   Widget _buildDateWidget(DateTime dt) {
     var textStyle = Theme.of(context)
         .textTheme
-        .headline6
+        .headline6!
         .copyWith(fontFamily: "Roboto Mono");
 
     var text = dt.toIso8601String().substring(0, 10);
@@ -264,7 +262,7 @@ class FilterListTile extends StatelessWidget {
 
   Icon _getIcon(BuildContext context) {
     var theme = Theme.of(context);
-    var color = theme.textTheme.headline6.color;
+    var color = theme.textTheme.headline6!.color;
     if (_isSelected()) {
       switch (theme.brightness) {
         case Brightness.light:

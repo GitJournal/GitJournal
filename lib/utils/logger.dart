@@ -211,9 +211,9 @@ class Log {
 }
 
 class LogMessage {
-  int? t;
-  String? l;
-  String? msg;
+  late int t;
+  late String l;
+  late String msg;
   String? ex;
   List<Map<String, dynamic>>? stack;
   Map<String, dynamic>? props;
