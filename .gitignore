@@ -1,33 +1,58 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
 .DS_Store
-.dart_tool/
+.atom/
+.buildlog/
+.history
+.svn/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
 **/ios/Flutter/.last_build_id
-
-.packages
-.pub/
-
-build/
-
+.dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
-.vscode
+.packages
+.pub-cache/
+.pub/
+/build/
 
-.idea/
-.project
-.classpath
-.settings/
+# Web related
+lib/generated_plugin_registrant.dart
 
-android/fastlane/README.md
-android/fastlane/report.xml
+# Symbolication related
+app.*.symbols
 
-.externalNativeBuild
+# Obfuscation related
+app.*.map.json
 
-# Android NDK Debug symbols
-debugSymbols
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+/android/fastlane/README.md
+/android/fastlane/report.xml
 
 # GitJournal specific
 test/.test_coverage.dart
 lib/.env.dart
 gj_common
+
+# Android NDK Debug symbols
+debugSymbols
+.externalNativeBuild
 
 # Monarch related
 .monarch/
