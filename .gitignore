@@ -56,3 +56,9 @@ debugSymbols
 
 # Monarch related
 .monarch/
+
+# Legacy Eclipse project files
+.settings/
+.classpath
+.project
+.cproject
