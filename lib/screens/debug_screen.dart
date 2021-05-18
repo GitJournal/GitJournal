@@ -90,7 +90,7 @@ class _DebugScreenState extends State<DebugScreen> {
     var appSettings = Provider.of<AppSettings>(context);
     var filterLevel = appSettings.debugLogLevel;
 
-    if (filterLevel == null || filterLevel.isEmpty) {
+    if (filterLevel.isEmpty) {
       return true;
     }
 
