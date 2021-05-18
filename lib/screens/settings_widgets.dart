@@ -1,21 +1,19 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 
 class ListPreference extends StatelessWidget {
   final String title;
-  final String currentOption;
+  final String? currentOption;
   final List<String> options;
   final Function onChange;
   final bool enabled;
 
   ListPreference({
-    @required this.title,
-    @required this.currentOption,
-    @required this.options,
-    @required this.onChange,
+    required this.title,
+    required this.currentOption,
+    required this.options,
+    required this.onChange,
     this.enabled = true,
   });
 
@@ -23,14 +21,14 @@ class ListPreference extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(title),
-      subtitle: Text(currentOption),
+      subtitle: Text(currentOption!),
       onTap: () async {
         var option = await showDialog<String>(
             context: context,
             builder: (BuildContext context) {
               var children = <Widget>[];
               for (var o in options) {
-                var tile = LabeledRadio(
+                var tile = _LabeledRadio(
                   label: o,
                   value: o,
                   groupValue: currentOption,
@@ -66,17 +64,17 @@ class ListPreference extends StatelessWidget {
   }
 }
 
-class LabeledRadio extends StatelessWidget {
-  const LabeledRadio({
-    this.label,
-    this.groupValue,
-    this.value,
-    this.onChanged,
+class _LabeledRadio extends StatelessWidget {
+  const _LabeledRadio({
+    required this.label,
+    required this.groupValue,
+    required this.value,
+    required this.onChanged,
   });
 
   final String label;
-  final String groupValue;
-  final String value;
+  final String? groupValue;
+  final String? value;
   final Function onChanged;
 
   @override
@@ -87,10 +85,10 @@ class LabeledRadio extends StatelessWidget {
       },
       child: Row(
         children: <Widget>[
-          Radio<String>(
+          Radio<String?>(
             groupValue: groupValue,
             value: value,
-            onChanged: onChanged,
+            onChanged: onChanged as void Function(String?)?,
           ),
           Text(label),
         ],

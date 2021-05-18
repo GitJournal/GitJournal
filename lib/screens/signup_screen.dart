@@ -1,11 +1,9 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:gitjournal/screens/login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
-  SignUpScreen({Key key}) : super(key: key);
+  SignUpScreen({Key? key}) : super(key: key);
 
   @override
   _SignUpScreenState createState() => _SignUpScreenState();

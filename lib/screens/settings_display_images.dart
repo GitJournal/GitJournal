@@ -1,5 +1,3 @@
-// @dart=2.9
-
 /*
 Copyright 2020-2021 Roland Fredenhagen <important@van-fredenhagen.de>
 
@@ -93,7 +91,7 @@ class SettingsDisplayImagesScreenState
                       )
                     : Text(
                         NumberFormat("##.0").format(settings.maxImageZoom),
-                        style: theme.textTheme.subtitle2
+                        style: theme.textTheme.subtitle2!
                             .copyWith(color: theme.accentColor),
                         textAlign: TextAlign.center,
                       ))

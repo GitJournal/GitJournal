@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'package:flutter/material.dart';
 
@@ -17,8 +17,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  NotesFolder notesFolder;
-  NotesFolderFS rootFolder;
+  NotesFolder? notesFolder;
+  NotesFolderFS? rootFolder;
 
   @override
   void initState() {
