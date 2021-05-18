@@ -26,7 +26,7 @@ class SortingOrder {
     Descending,
   ];
 
-  static SortingOrder fromInternalString(String str) {
+  static SortingOrder fromInternalString(String? str) {
     for (var opt in options) {
       if (opt.toInternalString() == str) {
         return opt;
@@ -90,7 +90,7 @@ class SortingField {
     Title,
   ];
 
-  static SortingField fromInternalString(String str) {
+  static SortingField fromInternalString(String? str) {
     for (var opt in options) {
       if (opt.toInternalString() == str) {
         return opt;

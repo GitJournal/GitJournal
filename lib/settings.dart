@@ -1,5 +1,3 @@
-// @dart=2.9
-
 /*
 Copyright 2020-2021 Vishesh Handa <me@vhanda.in>
                     Roland Fredenhagen <important@van-fredenhagen.de>
@@ -235,27 +233,27 @@ class Settings extends ChangeNotifier {
     storageLocation = _getString(pref, "storageLocation") ?? "";
   }
 
-  String _getString(SharedPreferences pref, String key) {
+  String? _getString(SharedPreferences pref, String key) {
     return pref.getString(id + '_' + key);
   }
 
-  bool _getBool(SharedPreferences pref, String key) {
+  bool? _getBool(SharedPreferences pref, String key) {
     return pref.getBool(id + '_' + key);
   }
 
-  List<String> _getStringList(SharedPreferences pref, String key) {
+  List<String>? _getStringList(SharedPreferences pref, String key) {
     return pref.getStringList(id + '_' + key);
   }
 
-  Set<String> _getStringSet(SharedPreferences pref, String key) {
+  Set<String>? _getStringSet(SharedPreferences pref, String key) {
     return _getStringList(pref, key)?.toSet();
   }
 
-  int _getInt(SharedPreferences pref, String key) {
+  int? _getInt(SharedPreferences pref, String key) {
     return pref.getInt(id + '_' + key);
   }
 
-  double _getDouble(SharedPreferences pref, String key) {
+  double? _getDouble(SharedPreferences pref, String key) {
     return pref.getDouble(id + '_' + key);
   }
 
@@ -410,7 +408,7 @@ class Settings extends ChangeNotifier {
     SharedPreferences pref,
     String key,
     String value,
-    String defaultValue,
+    String? defaultValue,
   ) async {
     key = id + '_' + key;
     if (value == defaultValue) {
@@ -470,7 +468,8 @@ class Settings extends ChangeNotifier {
   ) async {
     key = id + '_' + key;
 
-    final eq = const SetEquality().equals;
+    final bool Function(Set<dynamic>, Set<dynamic>) eq =
+        const SetEquality().equals;
 
     if (eq(value, defaultValue)) {
       await pref.remove(key);
@@ -479,8 +478,8 @@ class Settings extends ChangeNotifier {
     }
   }
 
-  Map<String, String> toMap() {
-    return <String, String>{
+  Map<String, String?> toMap() {
+    return <String, String?>{
       "gitAuthor": gitAuthor,
       "gitAuthorEmail": gitAuthorEmail,
       "noteFileNameFormat": noteFileNameFormat.toInternalString(),
@@ -544,7 +543,7 @@ class Settings extends ChangeNotifier {
     };
   }
 
-  Map<String, String> toLoggableMap() {
+  Map<String, String?> toLoggableMap() {
     var m = toMap();
     m.remove("gitAuthor");
     m.remove("gitAuthorEmail");
@@ -552,7 +551,7 @@ class Settings extends ChangeNotifier {
     return m;
   }
 
-  Future<String> buildRepoPath(String internalDir) async {
+  Future<String?> buildRepoPath(String internalDir) async {
     if (storeInternally) {
       return p.join(internalDir, folderName);
     }
@@ -564,6 +563,9 @@ class Settings extends ChangeNotifier {
       // must be called
       //
       var basePath = await ICloudDocumentsPath.documentsPath;
+      if (basePath == null) {
+        return null;
+      }
       assert(basePath == storageLocation);
       return p.join(basePath, folderName);
     }
@@ -604,7 +606,7 @@ class NoteFileNameFormat {
     DateOnly,
   ];
 
-  static NoteFileNameFormat fromInternalString(String str) {
+  static NoteFileNameFormat fromInternalString(String? str) {
     for (var opt in options) {
       if (opt.toInternalString() == str) {
         return opt;
@@ -666,7 +668,7 @@ class RemoteSyncFrequency {
     Manual,
   ];
 
-  static RemoteSyncFrequency fromInternalString(String str) {
+  static RemoteSyncFrequency fromInternalString(String? str) {
     for (var opt in options) {
       if (opt.toInternalString() == str) {
         return opt;
@@ -742,7 +744,6 @@ class SettingsEditorType {
       case EditorType.Org:
         return SettingsEditorType.Org;
     }
-    return SettingsEditorType.Default;
   }
 
   static const options = <SettingsEditorType>[
@@ -752,7 +753,7 @@ class SettingsEditorType {
     Checklist,
   ];
 
-  static SettingsEditorType fromInternalString(String str) {
+  static SettingsEditorType fromInternalString(String? str) {
     for (var opt in options) {
       if (opt.toInternalString() == str) {
         return opt;
@@ -807,7 +808,7 @@ class SettingsFolderViewType {
     Grid,
   ];
 
-  static SettingsFolderViewType fromInternalString(String str) {
+  static SettingsFolderViewType fromInternalString(String? str) {
     for (var opt in options) {
       if (opt.toInternalString() == str) {
         return opt;
@@ -857,7 +858,6 @@ class SettingsFolderViewType {
       case FolderViewType.Grid:
         return SettingsFolderViewType.Grid;
     }
-    return SettingsFolderViewType.Default;
   }
 }
 
@@ -888,7 +888,7 @@ class SettingsMarkdownDefaultView {
     LastUsed,
   ];
 
-  static SettingsMarkdownDefaultView fromInternalString(String str) {
+  static SettingsMarkdownDefaultView fromInternalString(String? str) {
     for (var opt in options) {
       if (opt.toInternalString() == str) {
         return opt;
@@ -938,7 +938,7 @@ class SettingsHomeScreen {
     AllFolders,
   ];
 
-  static SettingsHomeScreen fromInternalString(String str) {
+  static SettingsHomeScreen fromInternalString(String? str) {
     for (var opt in options) {
       if (opt.toInternalString() == str) {
         return opt;
@@ -993,7 +993,7 @@ class SettingsImageTextType {
     None,
   ];
 
-  static SettingsImageTextType fromInternalString(String str) {
+  static SettingsImageTextType fromInternalString(String? str) {
     for (var opt in options) {
       if (opt.toInternalString() == str) {
         return opt;
@@ -1046,7 +1046,7 @@ class SettingsThemeVectorGraphics {
     Filter,
   ];
 
-  static SettingsThemeVectorGraphics fromInternalString(String str) {
+  static SettingsThemeVectorGraphics fromInternalString(String? str) {
     for (var opt in options) {
       if (opt.toInternalString() == str) {
         return opt;
@@ -1100,7 +1100,7 @@ class SettingsVectorGraphicsAdjustColors {
     All,
   ];
 
-  static SettingsVectorGraphicsAdjustColors fromInternalString(String str) {
+  static SettingsVectorGraphicsAdjustColors fromInternalString(String? str) {
     for (var opt in options) {
       if (opt.toInternalString() == str) {
         return opt;
@@ -1155,7 +1155,7 @@ class SettingsTheme {
     SystemDefault,
   ];
 
-  static SettingsTheme fromInternalString(String str) {
+  static SettingsTheme fromInternalString(String? str) {
     for (var opt in options) {
       if (opt.toInternalString() == str) {
         return opt;
@@ -1218,7 +1218,7 @@ class SettingsTitle {
     // InFileName,
   ];
 
-  static SettingsTitle fromInternalString(String str) {
+  static SettingsTitle fromInternalString(String? str) {
     for (var opt in options) {
       if (opt.toInternalString() == str) {
         return opt;
