@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'note.dart';
 import 'notes_folder_config.dart';
 import 'notes_folder_notifier.dart';
@@ -14,8 +12,8 @@ abstract class NotesFolder implements NotesFolderNotifier {
 
   List<Note> get notes;
   List<NotesFolder> get subFolders;
-  NotesFolder get parent;
-  NotesFolder get fsFolder;
+  NotesFolder? get parent;
+  NotesFolder? get fsFolder;
 
   NotesFolderConfig get config;
 

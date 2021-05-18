@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -24,9 +22,9 @@ class NotesCache {
   static const CACHE_SIZE = 20;
 
   NotesCache({
-    @required this.filePath,
-    @required this.notesBasePath,
-    @required this.settings,
+    required this.filePath,
+    required this.notesBasePath,
+    required this.settings,
   });
 
   Future load(NotesFolderFS rootFolder) async {
@@ -74,7 +72,7 @@ class NotesCache {
 
   Future<void> clear() async {
     if (!enabled) return;
-    return File(filePath).delete();
+    await File(filePath).delete();
   }
 
   Future<void> buildCache(NotesFolderFS rootFolder) async {
@@ -120,7 +118,7 @@ class NotesCache {
     try {
       contents = await File(filePath).readAsString();
     } on FileSystemException catch (ex) {
-      if (ex.osError.errorCode == 2 /* file not found */) {
+      if (ex.osError?.errorCode == 2 /* file not found */) {
         return [];
       }
       rethrow;

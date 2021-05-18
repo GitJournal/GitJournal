@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
@@ -41,21 +39,21 @@ class NotesFolderConfig extends Equatable {
   final String imageLocationSpec;
 
   NotesFolderConfig({
-    @required this.sortingMode,
-    @required this.defaultEditor,
-    @required this.defaultView,
-    @required this.viewHeader,
-    @required this.showNoteSummary,
-    @required this.fileNameFormat,
-    @required this.journalFileNameFormat,
-    @required this.folder,
-    @required this.yamlHeaderEnabled,
-    @required this.yamlModifiedKey,
-    @required this.yamlCreatedKey,
-    @required this.yamlTagsKey,
-    @required this.titleSettings,
-    @required this.inlineTagPrefixes,
-    @required this.imageLocationSpec,
+    required this.sortingMode,
+    required this.defaultEditor,
+    required this.defaultView,
+    required this.viewHeader,
+    required this.showNoteSummary,
+    required this.fileNameFormat,
+    required this.journalFileNameFormat,
+    required this.folder,
+    required this.yamlHeaderEnabled,
+    required this.yamlModifiedKey,
+    required this.yamlCreatedKey,
+    required this.yamlTagsKey,
+    required this.titleSettings,
+    required this.inlineTagPrefixes,
+    required this.imageLocationSpec,
   });
 
   @override
@@ -77,8 +75,8 @@ class NotesFolderConfig extends Equatable {
       ];
 
   static NotesFolderConfig fromSettings(
-      NotesFolderFS folder, Settings settings) {
-    StandardViewHeader viewHeader;
+      NotesFolderFS? folder, Settings settings) {
+    late StandardViewHeader viewHeader;
     switch (settings.folderViewHeaderType) {
       case "TitleGenerated":
         viewHeader = StandardViewHeader.TitleGenerated;
@@ -87,6 +85,7 @@ class NotesFolderConfig extends Equatable {
         viewHeader = StandardViewHeader.FileName;
         break;
       case "TitleOrFileName":
+      default:
         viewHeader = StandardViewHeader.TitleOrFileName;
         break;
     }
@@ -99,7 +98,7 @@ class NotesFolderConfig extends Equatable {
       viewHeader: viewHeader,
       fileNameFormat: settings.noteFileNameFormat,
       journalFileNameFormat: settings.journalNoteFileNameFormat,
-      folder: folder,
+      folder: folder!,
       yamlHeaderEnabled: settings.yamlHeaderEnabled,
       yamlCreatedKey: settings.yamlCreatedKey,
       yamlModifiedKey: settings.yamlModifiedKey,
@@ -118,7 +117,7 @@ class NotesFolderConfig extends Equatable {
     settings.defaultView =
         SettingsFolderViewType.fromFolderViewType(defaultView);
 
-    String ht;
+    String? ht;
     switch (viewHeader) {
       case StandardViewHeader.FileName:
         ht = "FileName";
@@ -144,21 +143,21 @@ class NotesFolderConfig extends Equatable {
   }
 
   NotesFolderConfig copyWith({
-    SortingMode sortingMode,
-    EditorType defaultEditor,
-    FolderViewType defaultView,
-    StandardViewHeader viewHeader,
-    bool showNoteSummary,
-    NoteFileNameFormat fileNameFormat,
-    NoteFileNameFormat journalFileNameFormat,
-    NotesFolderFS folder,
-    bool yamlHeaderEnabled,
-    String yamlCreatedKey,
-    String yamlModifiedKey,
-    String yamlTagsKey,
-    SettingsTitle titleSettings,
-    Set<String> inlineTagPrefixes,
-    String imageLocationSpec,
+    SortingMode? sortingMode,
+    EditorType? defaultEditor,
+    FolderViewType? defaultView,
+    StandardViewHeader? viewHeader,
+    bool? showNoteSummary,
+    NoteFileNameFormat? fileNameFormat,
+    NoteFileNameFormat? journalFileNameFormat,
+    NotesFolderFS? folder,
+    bool? yamlHeaderEnabled,
+    String? yamlCreatedKey,
+    String? yamlModifiedKey,
+    String? yamlTagsKey,
+    SettingsTitle? titleSettings,
+    Set<String>? inlineTagPrefixes,
+    String? imageLocationSpec,
   }) {
     return NotesFolderConfig(
       sortingMode: sortingMode ?? this.sortingMode,
@@ -180,7 +179,7 @@ class NotesFolderConfig extends Equatable {
     );
   }
 
-  static Future<NotesFolderConfig> fromFS(NotesFolderFS folder) async {
+  static Future<NotesFolderConfig?> fromFS(NotesFolderFS folder) async {
     var file = File(p.join(folder.folderPath, FILENAME));
     if (!file.existsSync()) {
       return null;
@@ -198,9 +197,9 @@ class NotesFolderConfig extends Equatable {
     }
 
     var sortingField =
-        SortingField.fromInternalString(map["sortingField"]?.toString());
+        SortingField.fromInternalString(map["sortingField"]!.toString());
     var sortingOrder =
-        SortingOrder.fromInternalString(map["sortingOrder"]?.toString());
+        SortingOrder.fromInternalString(map["sortingOrder"]!.toString());
     var sortingMode = SortingMode(sortingField, sortingOrder);
 
     var defaultEditor =
@@ -211,7 +210,7 @@ class NotesFolderConfig extends Equatable {
     var showNoteSummary = map["showNoteSummary"].toString() != "false";
 
     var folderViewHeaderType = map["folderViewHeaderType"]?.toString();
-    StandardViewHeader viewHeader;
+    late StandardViewHeader viewHeader;
     switch (folderViewHeaderType) {
       case "TitleGenerated":
         viewHeader = StandardViewHeader.TitleGenerated;
@@ -220,6 +219,7 @@ class NotesFolderConfig extends Equatable {
         viewHeader = StandardViewHeader.FileName;
         break;
       case "TitleOrFileName":
+      default:
         viewHeader = StandardViewHeader.TitleOrFileName;
         break;
     }
@@ -228,9 +228,9 @@ class NotesFolderConfig extends Equatable {
     var journalFileNameFormat = map['journalFileNameFormat'].toString();
     var yamlHeaderEnabled = map["yamlHeaderEnabled"]?.toString() != "false";
 
-    var yamlCreatedKey = map['yamlCreatedKey']?.toString();
-    var yamlModifiedKey = map['yamlModifiedKey']?.toString();
-    var yamlTagsKey = map['yamlTagsKey']?.toString();
+    var yamlCreatedKey = map['yamlCreatedKey']!.toString();
+    var yamlModifiedKey = map['yamlModifiedKey']!.toString();
+    var yamlTagsKey = map['yamlTagsKey']!.toString();
     var titleSettings = map['titleSettings']?.toString();
 
     // FIXME: What about inlineTagPrefixes?
@@ -256,7 +256,7 @@ class NotesFolderConfig extends Equatable {
   }
 
   Future<void> saveToFS() async {
-    String ht;
+    String? ht;
     switch (viewHeader) {
       case StandardViewHeader.FileName:
         ht = "FileName";
