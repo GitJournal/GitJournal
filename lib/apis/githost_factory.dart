@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'githost.dart';
 import 'github.dart';
 import 'gitlab.dart';
@@ -13,7 +11,7 @@ enum GitHostType {
   Custom,
 }
 
-GitHost createGitHost(GitHostType type) {
+GitHost? createGitHost(GitHostType type) {
   switch (type) {
     case GitHostType.GitHub:
       return GitHub();

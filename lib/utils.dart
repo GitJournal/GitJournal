@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -18,12 +16,10 @@ import 'utils/logger.dart';
 Future<String> getVersionString() async {
   var info = await PackageInfo.fromPlatform();
   var versionText = "";
-  if (info != null) {
-    versionText = info.appName + " " + info.version + "+" + info.buildNumber;
+  versionText = info.appName + " " + info.version + "+" + info.buildNumber;
 
-    if (JournalApp.isInDebugMode) {
-      versionText += " (Debug)";
-    }
+  if (JournalApp.isInDebugMode) {
+    versionText += " (Debug)";
   }
 
   return versionText;
@@ -96,7 +92,7 @@ Future<void> shareNote(Note note) async {
   return Share.share(note.serialize());
 }
 
-Future<Note> getTodayJournalEntry(NotesFolderFS rootFolder) async {
+Future<Note?> getTodayJournalEntry(NotesFolderFS rootFolder) async {
   var today = DateTime.now();
   var matches = await rootFolder.matchNotes((n) async {
     var dt = n.created;

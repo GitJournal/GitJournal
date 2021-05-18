@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -21,7 +19,7 @@ class GitLab implements GitHost {
       "faf33c3716faf05bfb701b1b31e36c83a23c3ec2d7161f4ff00fba2275524d09";
 
   var _platform = const MethodChannel('gitjournal.io/git');
-  var _accessCode = "";
+  String? _accessCode = "";
   var _stateOAuth = "";
 
   @override
@@ -43,7 +41,7 @@ class GitLab implements GitHost {
       if (state != _stateOAuth) {
         Log.d("GitLab: OAuth State incorrect");
         Log.d("Required State: " + _stateOAuth);
-        Log.d("Actual State: " + state);
+        Log.d("Actual State: " + state!);
         callback(GitHostException.OAuthFailed);
         return;
       }
@@ -72,7 +70,7 @@ class GitLab implements GitHost {
 
   @override
   Future<List<GitHostRepo>> listRepos() async {
-    if (_accessCode.isEmpty) {
+    if (_accessCode!.isEmpty) {
       throw GitHostException.MissingAccessCode;
     }
 
@@ -90,7 +88,7 @@ class GitLab implements GitHost {
           response.statusCode.toString() +
           ": " +
           response.body);
-      return null;
+      return [];
     }
 
     List<dynamic> list = jsonDecode(response.body);
@@ -107,7 +105,7 @@ class GitLab implements GitHost {
 
   @override
   Future<GitHostRepo> createRepo(String name) async {
-    if (_accessCode.isEmpty) {
+    if (_accessCode!.isEmpty) {
       throw GitHostException.MissingAccessCode;
     }
 
@@ -146,11 +144,11 @@ class GitLab implements GitHost {
 
   @override
   Future<GitHostRepo> getRepo(String name) async {
-    if (_accessCode.isEmpty) {
+    if (_accessCode!.isEmpty) {
       throw GitHostException.MissingAccessCode;
     }
 
-    var userInfo = await getUserInfo();
+    var userInfo = await (getUserInfo() as FutureOr<UserInfo>);
     var repo = userInfo.username + '%2F' + name;
     var url = Uri.parse(
         "https://gitlab.com/api/v4/projects/$repo?access_token=$_accessCode");
@@ -172,7 +170,7 @@ class GitLab implements GitHost {
 
   @override
   Future addDeployKey(String sshPublicKey, String repo) async {
-    if (_accessCode.isEmpty) {
+    if (_accessCode!.isEmpty) {
       throw GitHostException.MissingAccessCode;
     }
 
@@ -206,11 +204,11 @@ class GitLab implements GitHost {
 
   @visibleForTesting
   GitHostRepo repoFromJson(Map<String, dynamic> parsedJson) {
-    DateTime updatedAt;
+    DateTime? updatedAt;
     try {
       updatedAt = DateTime.parse(parsedJson['last_activity_at'].toString());
-    } catch (e) {
-      Log.e(e);
+    } catch (e, st) {
+      Log.e("gitlab repoFromJson", ex: e, stacktrace: st);
     }
     var licenseMap = parsedJson['license'];
 
@@ -247,8 +245,8 @@ class GitLab implements GitHost {
   }
 
   @override
-  Future<UserInfo> getUserInfo() async {
-    if (_accessCode.isEmpty) {
+  Future<UserInfo?> getUserInfo() async {
+    if (_accessCode!.isEmpty) {
       throw GitHostException.MissingAccessCode;
     }
 
@@ -264,7 +262,7 @@ class GitLab implements GitHost {
       return null;
     }
 
-    Map<String, dynamic> map = jsonDecode(response.body);
+    Map<String, dynamic>? map = jsonDecode(response.body);
     if (map == null || map.isEmpty) {
       Log.d("GitLab getUserInfo: jsonDecode Failed " +
           response.statusCode.toString() +

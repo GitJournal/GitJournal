@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -104,7 +102,7 @@ class GitHub implements GitHost {
           response.statusCode.toString() +
           ": " +
           response.body);
-      return null;
+      return [];
     }
 
     List<dynamic> list = jsonDecode(response.body);
@@ -164,7 +162,7 @@ class GitHub implements GitHost {
       throw GitHostException.MissingAccessCode;
     }
 
-    var userInfo = await getUserInfo();
+    var userInfo = await (getUserInfo() as FutureOr<UserInfo>);
     var owner = userInfo.username;
     var url = Uri.parse("https://api.github.com/repos/$owner/$name");
 
@@ -222,11 +220,11 @@ class GitHub implements GitHost {
 
   @visibleForTesting
   GitHostRepo repoFromJson(Map<String, dynamic> parsedJson) {
-    DateTime updatedAt;
+    DateTime? updatedAt;
     try {
       updatedAt = DateTime.parse(parsedJson['updated_at'].toString());
-    } catch (e) {
-      Log.e(e);
+    } catch (e, st) {
+      Log.e("github repoFromJson", ex: e, stacktrace: st);
     }
     var licenseMap = parsedJson['license'];
     var fullName = parsedJson['full_name'].toString();
@@ -263,7 +261,7 @@ class GitHub implements GitHost {
   }
 
   @override
-  Future<UserInfo> getUserInfo() async {
+  Future<UserInfo?> getUserInfo() async {
     if (_accessCode.isEmpty) {
       throw GitHostException.MissingAccessCode;
     }
@@ -283,7 +281,7 @@ class GitHub implements GitHost {
       return null;
     }
 
-    Map<String, dynamic> map = jsonDecode(response.body);
+    Map<String, dynamic>? map = jsonDecode(response.body);
     if (map == null || map.isEmpty) {
       Log.d("Github getUserInfo: jsonDecode Failed " +
           response.statusCode.toString() +

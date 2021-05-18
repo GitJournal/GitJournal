@@ -1,18 +1,14 @@
-// @dart=2.9
-
 import 'dart:async';
-
-import 'package:flutter/foundation.dart';
 
 import 'package:collection/collection.dart';
 
-typedef OAuthCallback = void Function(GitHostException);
+typedef OAuthCallback = void Function(GitHostException?);
 
 abstract class GitHost {
   void init(OAuthCallback oAuthCallback);
   Future launchOAuthScreen();
 
-  Future<UserInfo> getUserInfo();
+  Future<UserInfo?> getUserInfo();
   Future<List<GitHostRepo>> listRepos();
   Future<GitHostRepo> createRepo(String name);
   Future<GitHostRepo> getRepo(String name);
@@ -25,9 +21,9 @@ class UserInfo {
   final String username;
 
   UserInfo({
-    @required this.name,
-    @required this.email,
-    @required this.username,
+    required this.name,
+    required this.email,
+    required this.username,
   });
 }
 
@@ -38,31 +34,31 @@ class GitHostRepo {
   final String description;
 
   final String cloneUrl;
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
 
-  final bool private;
-  final int stars;
-  final int forks;
-  final String language;
-  final int issues;
-  final String license;
+  final bool? private;
+  final int? stars;
+  final int? forks;
+  final String? language;
+  final int? issues;
+  final String? license;
 
   final List<String> tags;
 
   GitHostRepo({
-    @required this.name,
-    @required this.username,
-    @required this.fullName,
-    @required this.description,
-    @required this.cloneUrl,
-    @required this.updatedAt,
-    @required this.private,
-    @required this.stars,
-    @required this.forks,
-    @required this.language,
-    @required this.issues,
-    @required this.tags,
-    @required this.license,
+    required this.name,
+    required this.username,
+    required this.fullName,
+    required this.description,
+    required this.cloneUrl,
+    required this.updatedAt,
+    required this.private,
+    required this.stars,
+    required this.forks,
+    required this.language,
+    required this.issues,
+    required this.tags,
+    required this.license,
   });
 
   Map<String, dynamic> toJson() => {
@@ -94,7 +90,7 @@ class GitHostRepo {
   int get hashCode => toJson().hashCode;
 }
 
-var _mapEquals = (const MapEquality()).equals;
+final _mapEquals = (const MapEquality()).equals;
 
 class GitHostException implements Exception {
   static const OAuthFailed = GitHostException("OAuthFailed");
