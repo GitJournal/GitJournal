@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -16,11 +14,11 @@ class AutoCompletionWidget extends StatefulWidget {
   final Widget child;
 
   AutoCompletionWidget({
-    @required this.textFieldFocusNode,
-    @required this.textFieldKey,
-    @required this.textFieldStyle,
-    @required this.textController,
-    @required this.child,
+    required this.textFieldFocusNode,
+    required this.textFieldKey,
+    required this.textFieldStyle,
+    required this.textController,
+    required this.child,
   });
 
   @override
@@ -28,7 +26,7 @@ class AutoCompletionWidget extends StatefulWidget {
 }
 
 class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
-  OverlayEntry overlayEntry;
+  OverlayEntry? overlayEntry;
 
   var autoCompleter = TagsAutoCompleter();
 
@@ -83,7 +81,8 @@ class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
 
     //print('showOverlaidTag: $newText');
 
-    RenderBox renderBox = widget.textFieldKey.currentContext.findRenderObject();
+    RenderBox renderBox =
+        widget.textFieldKey.currentContext!.findRenderObject() as RenderBox;
     // print("render Box: ${renderBox.size}");
 
     TextPainter painter = TextPainter(
@@ -135,7 +134,7 @@ class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
         ),
       );
     });
-    Overlay.of(context).insert(overlayEntry);
+    Overlay.of(context)!.insert(overlayEntry!);
 
     // Removes the over lay entry from the Overly after 500 milliseconds
     await Future.delayed(5000.milliseconds);
@@ -144,7 +143,7 @@ class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
 
   void _hideOverlay() {
     if (overlayEntry != null) {
-      overlayEntry.remove();
+      overlayEntry!.remove();
       overlayEntry = null;
     }
   }

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -30,8 +28,8 @@ abstract class EditorState with ChangeNotifier {
 }
 
 class TextEditorState {
-  String text;
-  int cursorPos;
+  late String text;
+  late int cursorPos;
 
   TextEditorState(this.text, this.cursorPos);
 
@@ -56,17 +54,17 @@ class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Editor editor;
   final EditorState editorState;
   final bool noteModified;
-  final IconButton extraButton;
+  final IconButton? extraButton;
   final bool allowEdits;
   final Func0<void> onEditingModeChange;
 
   EditorAppBar({
-    Key key,
-    @required this.editor,
-    @required this.editorState,
-    @required this.noteModified,
-    @required this.allowEdits,
-    @required this.onEditingModeChange,
+    Key? key,
+    required this.editor,
+    required this.editorState,
+    required this.noteModified,
+    required this.allowEdits,
+    required this.onEditingModeChange,
     this.extraButton,
   })  : preferredSize = const Size.fromHeight(kToolbarHeight),
         super(key: key);
@@ -85,7 +83,7 @@ class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
         },
       ),
       actions: <Widget>[
-        if (extraButton != null) extraButton,
+        if (extraButton != null) extraButton!,
         IconButton(
           icon: allowEdits
               ? const Icon(Icons.remove_red_eye)

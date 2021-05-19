@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -23,7 +21,7 @@ class EditorScaffold extends StatefulWidget {
   final EditorState editorState;
   final bool noteModified;
   final bool editMode;
-  final IconButton extraButton;
+  final IconButton? extraButton;
   final Widget body;
   final NotesFolderFS parentFolder;
 
@@ -33,19 +31,19 @@ class EditorScaffold extends StatefulWidget {
   final bool undoAllowed;
   final bool redoAllowed;
 
-  final Widget extraBottomWidget;
+  final Widget? extraBottomWidget;
 
   EditorScaffold({
-    @required this.editor,
-    @required this.editorState,
-    @required this.noteModified,
-    @required this.editMode,
-    @required this.body,
-    @required this.parentFolder,
-    @required this.onUndoSelected,
-    @required this.onRedoSelected,
-    @required this.undoAllowed,
-    @required this.redoAllowed,
+    required this.editor,
+    required this.editorState,
+    required this.noteModified,
+    required this.editMode,
+    required this.body,
+    required this.parentFolder,
+    required this.onUndoSelected,
+    required this.onRedoSelected,
+    required this.undoAllowed,
+    required this.redoAllowed,
     this.extraBottomWidget,
     this.extraButton,
   });
@@ -57,13 +55,13 @@ class EditorScaffold extends StatefulWidget {
 class _EditorScaffoldState extends State<EditorScaffold> {
   var hideUIElements = false;
   var editingMode = true;
-  Note note;
+  late Note note;
 
   @override
   void initState() {
     super.initState();
 
-    SchedulerBinding.instance
+    SchedulerBinding.instance!
         .addPostFrameCallback((_) => _initStateWithContext());
   }
 
@@ -146,7 +144,7 @@ class _EditorScaffoldState extends State<EditorScaffold> {
               log("local section link: " + section.toString());
             },
             onSectionLongPress: (OrgSection section) {
-              log('local section long-press: ' + section.headline.rawTitle);
+              log('local section long-press: ' + section.headline.rawTitle!);
             },
           );
           break;
@@ -201,14 +199,14 @@ class _EditorScaffoldState extends State<EditorScaffold> {
                     }
                   });
                 },
-                metaDataEditable: note != null ? note.canHaveMetadata : false,
+                metaDataEditable: note.canHaveMetadata,
                 onUndoSelected: widget.onUndoSelected,
                 onRedoSelected: widget.onRedoSelected,
                 undoAllowed: widget.undoAllowed,
                 redoAllowed: widget.redoAllowed,
               ),
             ),
-            if (widget.extraBottomWidget != null) widget.extraBottomWidget,
+            if (widget.extraBottomWidget != null) widget.extraBottomWidget!,
           ],
         ),
       ),
@@ -220,7 +218,7 @@ class _AnimatedOpacityIgnorePointer extends StatelessWidget {
   final bool visible;
   final Widget child;
 
-  _AnimatedOpacityIgnorePointer({@required this.visible, @required this.child});
+  _AnimatedOpacityIgnorePointer({required this.visible, required this.child});
 
   @override
   Widget build(BuildContext context) {
