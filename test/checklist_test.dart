@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:path/path.dart' as p;
@@ -12,7 +10,7 @@ import 'package:gitjournal/settings.dart';
 
 void main() {
   group('Note', () {
-    Directory tempDir;
+    late Directory tempDir;
 
     setUpAll(() async {
       tempDir = await Directory.systemTemp.createTemp('__notes_test__');
