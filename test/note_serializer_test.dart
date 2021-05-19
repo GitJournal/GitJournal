@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:collection';
 
 import 'package:test/test.dart';
@@ -37,7 +35,7 @@ void main() {
     });
 
     test('Test Title Serialization', () {
-      var props = <String, dynamic>{};
+      var props = LinkedHashMap<String, dynamic>.from({});
       var doc =
           MdYamlDoc(body: "# Why not :coffee:?\n\nI :heart: you", props: props);
 
@@ -59,7 +57,7 @@ void main() {
     });
 
     test('Test Title Reading with blank lines', () {
-      var props = <String, dynamic>{};
+      var props = LinkedHashMap<String, dynamic>.from({});
       var doc = MdYamlDoc(
           body: "\n# Why not :coffee:?\n\nI :heart: you", props: props);
 
@@ -73,7 +71,7 @@ void main() {
     });
 
     test('Test Title Reading with blank lines and no body', () {
-      var props = <String, dynamic>{};
+      var props = LinkedHashMap<String, dynamic>.from({});
       var doc = MdYamlDoc(body: "\n# Why not :coffee:?", props: props);
 
       var serializer = NoteSerializer.raw();

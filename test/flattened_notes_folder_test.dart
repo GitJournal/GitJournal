@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 import 'dart:math';
 
@@ -18,7 +16,6 @@ void main() {
     while (true) {
       var filePath = p.join(basePath, "${random.nextInt(1000)}.md");
       if (File(filePath).existsSync()) {
-        filePath = null;
         continue;
       }
 
@@ -27,8 +24,8 @@ void main() {
   }
 
   group('Flattened Notes Folder Test', () {
-    Directory tempDir;
-    NotesFolderFS rootFolder;
+    late Directory tempDir;
+    late NotesFolderFS rootFolder;
 
     setUp(() async {
       tempDir = await Directory.systemTemp.createTemp('__sorted_folder_test__');
@@ -114,7 +111,7 @@ void main() {
     test('Should add a note properly', () async {
       var f = FlattenedNotesFolder(rootFolder, title: "");
 
-      var p1 = (f.fsFolder as NotesFolderFS).getFolderWithSpec("sub1/p1");
+      var p1 = (f.fsFolder as NotesFolderFS).getFolderWithSpec("sub1/p1")!;
       var note = Note(p1, p.join(p1.folderPath, "new.md"));
       note.modified = DateTime(2020, 2, 1);
       note.body = "new\n";

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:path/path.dart' as p;
@@ -11,7 +9,7 @@ import 'package:gitjournal/settings.dart';
 
 void main() {
   group('Note', () {
-    Directory tempDir;
+    late Directory tempDir;
 
     setUpAll(() async {
       tempDir = await Directory.systemTemp.createTemp('__notes_test__');
@@ -140,7 +138,8 @@ bar: Foo
       var note = Note(parentFolder, notePath);
       await note.load();
 
-      var links = await note.fetchLinks();
+      var linksOrNull = await note.fetchLinks();
+      var links = linksOrNull!;
       expect(links[0].filePath, p.join(tempDir.path, "foo.md"));
       expect(links[0].publicTerm, "Hi");
 
@@ -160,7 +159,8 @@ bar: Foo
       var note = Note(parentFolder, notePath);
       await note.load();
 
-      var links = await note.fetchLinks();
+      var linksOrNull = await note.fetchLinks();
+      var links = linksOrNull!;
       expect(links[0].isWikiLink, true);
       expect(links[0].wikiTerm, "GitJournal");
 

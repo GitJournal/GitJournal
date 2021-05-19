@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:collection';
 import 'dart:io';
 
@@ -15,9 +13,9 @@ import 'package:gitjournal/utils/datetime.dart';
 void main() {
   group('NoteStorage', () {
     var notes = <Note>[];
-    String n1Path;
-    String n2Path;
-    Directory tempDir;
+    late String n1Path;
+    late String n2Path;
+    late Directory tempDir;
 
     setUpAll(() async {
       tempDir = await Directory.systemTemp.createTemp('__storage_test__');
@@ -56,7 +54,7 @@ void main() {
       var loadedNotes = <Note>[];
       var parent = NotesFolderFS(null, tempDir.path, Settings(''));
 
-      await Future.forEach(notes, (origNote) async {
+      await Future.forEach(notes, (Note origNote) async {
         var note = Note(parent, origNote.filePath);
         var r = await note.load();
         expect(r, NoteLoadState.Loaded);

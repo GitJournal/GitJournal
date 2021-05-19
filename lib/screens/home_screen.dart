@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (root != rootFolder) {
       rootFolder = root;
       notesFolder = FlattenedNotesFolder(
-        rootFolder,
+        root,
         title: tr('screens.home.allNotes'),
       );
     }

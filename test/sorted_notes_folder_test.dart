@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 import 'dart:math';
 
@@ -14,8 +12,8 @@ import 'package:gitjournal/settings.dart';
 
 void main() {
   group('Sorted Notes Folder Test', () {
-    Directory tempDir;
-    NotesFolderFS folder;
+    late Directory tempDir;
+    late NotesFolderFS folder;
 
     setUp(() async {
       tempDir = await Directory.systemTemp.createTemp('__sorted_folder_test__');
