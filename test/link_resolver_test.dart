@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:path/path.dart' as p;
@@ -11,8 +9,8 @@ import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
 
 void main() {
-  Directory tempDir;
-  NotesFolderFS rootFolder;
+  late Directory tempDir;
+  late NotesFolderFS rootFolder;
 
   setUpAll(() async {
     tempDir = await Directory.systemTemp.createTemp('__link_resolver__');
@@ -42,7 +40,7 @@ void main() {
     var note = rootFolder.notes[0];
     var linkResolver = LinkResolver(note);
 
-    var resolvedNote = linkResolver.resolve('[[Fire]]');
+    var resolvedNote = linkResolver.resolve('[[Fire]]')!;
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Fire.md'));
   });
 
@@ -50,7 +48,7 @@ void main() {
     var note = rootFolder.notes[0];
     var linkResolver = LinkResolver(note);
 
-    var resolvedNote = linkResolver.resolve('[[Fire.md]]');
+    var resolvedNote = linkResolver.resolve('[[Fire.md]]')!;
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Fire.md'));
   });
 
@@ -58,7 +56,7 @@ void main() {
     var note = rootFolder.notes[0];
     var linkResolver = LinkResolver(note);
 
-    var resolvedNote = linkResolver.resolve('[[Water]]');
+    var resolvedNote = linkResolver.resolve('[[Water]]')!;
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Folder/Water.md'));
   });
 
@@ -67,7 +65,7 @@ void main() {
     var linkResolver = LinkResolver(note);
 
     // Make sure if there are 2 Notes with the same name, the first one is resolved
-    var resolvedNote = linkResolver.resolve('[[Boy]]');
+    var resolvedNote = linkResolver.resolve('[[Boy]]')!;
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Folder/Boy.md'));
   }, skip: true);
 
@@ -77,7 +75,7 @@ void main() {
 
     // Make sure if there are multiple Notes with the same name, the one is the
     // base directory is preffered
-    var resolvedNote = linkResolver.resolve('[[Kat]]');
+    var resolvedNote = linkResolver.resolve('[[Kat]]')!;
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Kat.md'));
   }, skip: true);
 
@@ -85,7 +83,7 @@ void main() {
     var note = rootFolder.notes[0];
     var linkResolver = LinkResolver(note);
 
-    var resolvedNote = linkResolver.resolve('[[Air Bender]]');
+    var resolvedNote = linkResolver.resolve('[[Air Bender]]')!;
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Air Bender.md'));
   });
 
@@ -93,7 +91,7 @@ void main() {
     var note = rootFolder.notes[0];
     var linkResolver = LinkResolver(note);
 
-    var resolvedNote = linkResolver.resolve('[[Hello ]]');
+    var resolvedNote = linkResolver.resolve('[[Hello ]]')!;
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Hello.md'));
   });
 
@@ -101,15 +99,15 @@ void main() {
     var note = rootFolder.notes[0];
     var linkResolver = LinkResolver(note);
 
-    var resolvedNote = linkResolver.resolve('[[zeplin]]');
+    var resolvedNote = linkResolver.resolve('[[zeplin]]')!;
     expect(resolvedNote.filePath, p.join(tempDir.path, 'zeplin.txt'));
   });
 
   test('Non base path [[Fire]] should resolve to [[Fire.md]]', () {
-    var note = rootFolder.getNoteWithSpec('Folder/Water.md');
+    var note = rootFolder.getNoteWithSpec('Folder/Water.md')!;
     var linkResolver = LinkResolver(note);
 
-    var resolvedNote = linkResolver.resolve('[[Fire]]');
+    var resolvedNote = linkResolver.resolve('[[Fire]]')!;
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Fire.md'));
   });
 
@@ -125,7 +123,7 @@ void main() {
     var note = rootFolder.notes[0];
     var linkResolver = LinkResolver(note);
 
-    var resolvedNote = linkResolver.resolve('[[Goat  Sim]]');
+    var resolvedNote = linkResolver.resolve('[[Goat  Sim]]')!;
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Goat  Sim.md'));
   });
 
@@ -133,15 +131,15 @@ void main() {
     var note = rootFolder.notes[0];
     var linkResolver = LinkResolver(note);
 
-    var resolvedNote = linkResolver.resolve('./Hello.md');
+    var resolvedNote = linkResolver.resolve('./Hello.md')!;
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Hello.md'));
   });
 
   test('Normal relative link inside a subFolder', () {
-    var note = rootFolder.getNoteWithSpec('Folder/Water.md');
+    var note = rootFolder.getNoteWithSpec('Folder/Water.md')!;
     var linkResolver = LinkResolver(note);
 
-    var resolvedNote = linkResolver.resolve('./Sodium.md');
+    var resolvedNote = linkResolver.resolve('./Sodium.md')!;
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Folder/Sodium.md'));
   });
 
@@ -149,7 +147,7 @@ void main() {
     var note = rootFolder.notes[0];
     var linkResolver = LinkResolver(note);
 
-    var resolvedNote = linkResolver.resolve('Hello.md');
+    var resolvedNote = linkResolver.resolve('Hello.md')!;
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Hello.md'));
   });
 
@@ -165,51 +163,51 @@ void main() {
     var note = rootFolder.notes[0];
     var linkResolver = LinkResolver(note);
 
-    var resolvedNote = linkResolver.resolve('./Air Bender/../Goat  Sim.md');
+    var resolvedNote = linkResolver.resolve('./Air Bender/../Goat  Sim.md')!;
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Goat  Sim.md'));
   });
 
   test('Resolve Parent file', () {
-    var note = rootFolder.getNoteWithSpec('Folder/Water.md');
+    var note = rootFolder.getNoteWithSpec('Folder/Water.md')!;
     var linkResolver = LinkResolver(note);
 
-    var resolvedNote = linkResolver.resolve('../Hello.md');
+    var resolvedNote = linkResolver.resolve('../Hello.md')!;
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Hello.md'));
   });
 
   test('Should resolve Link object', () {
-    var note = rootFolder.getNoteWithSpec('Folder/Water.md');
+    var note = rootFolder.getNoteWithSpec('Folder/Water.md')!;
     var linkResolver = LinkResolver(note);
 
-    var expectedNote = rootFolder.getNoteWithSpec('Fire.md');
+    var expectedNote = rootFolder.getNoteWithSpec('Fire.md')!;
     var link = Link(
       filePath: expectedNote.filePath,
       publicTerm: 'foo',
     );
 
-    var resolvedNote = linkResolver.resolveLink(link);
+    var resolvedNote = linkResolver.resolveLink(link)!;
     expect(resolvedNote.filePath, expectedNote.filePath);
   });
 
   test('Should resolve Link object without extension', () {
-    var note = rootFolder.getNoteWithSpec('Folder/Water.md');
+    var note = rootFolder.getNoteWithSpec('Folder/Water.md')!;
     var linkResolver = LinkResolver(note);
 
-    var expectedNote = rootFolder.getNoteWithSpec('Fire.md');
+    var expectedNote = rootFolder.getNoteWithSpec('Fire.md')!;
     var filePath = expectedNote.filePath;
     filePath = filePath.substring(0, filePath.length - 3);
     var link = Link(filePath: filePath, publicTerm: 'foo');
 
-    var resolvedNote = linkResolver.resolveLink(link);
+    var resolvedNote = linkResolver.resolveLink(link)!;
     expect(resolvedNote.filePath, expectedNote.filePath);
   });
 
   test('Should resolve Wiki Link object', () {
-    var note = rootFolder.getNoteWithSpec('Folder/Water.md');
+    var note = rootFolder.getNoteWithSpec('Folder/Water.md')!;
     var linkResolver = LinkResolver(note);
 
     var link = Link.wiki("Fire");
-    var resolvedNote = linkResolver.resolveLink(link);
+    var resolvedNote = linkResolver.resolveLink(link)!;
     expect(resolvedNote.fileName, "Fire.md");
   });
 }
@@ -228,5 +226,5 @@ modified: 2017-02-15T22:41:19+01:00
 
 Hello""";
 
-  return File(filePath).writeAsString(content, flush: true);
+  await File(filePath).writeAsString(content, flush: true);
 }

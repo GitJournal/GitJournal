@@ -1,5 +1,3 @@
-// @dart=2.9
-
 /*
 Copyright 2020-2021 Vishesh Handa <me@vhanda.in>
 
@@ -27,14 +25,14 @@ class LinkResolver {
 
   LinkResolver(this.inputNote);
 
-  Note resolveLink(Link l) {
+  Note? resolveLink(Link l) {
     if (l.isWikiLink) {
-      return resolveWikiLink(l.wikiTerm);
+      return resolveWikiLink(l.wikiTerm!);
     }
 
     var rootFolder = inputNote.parent.rootFolder;
-    if (l.filePath.startsWith(rootFolder.folderPath)) {
-      var spec = l.filePath.substring(rootFolder.folderPath.length);
+    if (l.filePath!.startsWith(rootFolder.folderPath)) {
+      var spec = l.filePath!.substring(rootFolder.folderPath.length);
       if (spec.startsWith('/')) {
         spec = spec.substring(1);
       }
@@ -44,7 +42,7 @@ class LinkResolver {
     return null;
   }
 
-  Note resolve(String link) {
+  Note? resolve(String link) {
     if (isWikiLink(link)) {
       // FIXME: What if the case is different?
       return resolveWikiLink(stripWikiSyntax(link));
@@ -61,7 +59,7 @@ class LinkResolver {
     return link.substring(2, link.length - 2).trim();
   }
 
-  Note resolveWikiLink(String term) {
+  Note? resolveWikiLink(String term) {
     if (term.contains(p.separator)) {
       var spec = p.normalize(term);
       return _getNoteWithSpec(inputNote.parent.rootFolder, spec);
@@ -96,7 +94,7 @@ class LinkResolver {
     return null;
   }
 
-  Note _getNoteWithSpec(NotesFolderFS folder, String spec) {
+  Note? _getNoteWithSpec(NotesFolderFS folder, String spec) {
     var fullPath = p.normalize(p.join(folder.folderPath, spec));
     if (!fullPath.startsWith(folder.folderPath)) {
       folder = folder.rootFolder;
