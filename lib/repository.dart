@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:io';
 
@@ -46,10 +44,10 @@ class GitJournalRepo with ChangeNotifier {
   final String cacheDir;
   final String id;
 
-  String _currentBranch;
+  String? _currentBranch;
 
-  GitNoteRepository _gitRepo;
-  NotesCache _notesCache;
+  late GitNoteRepository _gitRepo;
+  late NotesCache _notesCache;
 
   String repoPath;
 
@@ -58,29 +56,31 @@ class GitJournalRepo with ChangeNotifier {
   int numChanges = 0;
 
   bool get hasJournalEntries {
-    return notesFolder.hasNotes;
+    return notesFolder!.hasNotes;
   }
 
-  NotesFolderFS notesFolder;
+  NotesFolderFS? notesFolder;
 
   bool remoteGitRepoConfigured = false;
 
   static Future<GitJournalRepo> load({
-    @required String gitBaseDir,
-    @required String cacheDir,
-    @required SharedPreferences pref,
-    @required String id,
+    required String gitBaseDir,
+    required String cacheDir,
+    required SharedPreferences pref,
+    required String id,
   }) async {
     await migrateSettings(id, pref, gitBaseDir);
 
     var settings = Settings(id);
     settings.load(pref);
 
-    logEvent(Event.Settings, parameters: settings.toLoggableMap());
+    logEvent(Event.Settings,
+        parameters: settings.toLoggableMap() as Map<String, String>);
 
     Log.i("Setting ${settings.toLoggableMap()}");
 
-    var repoPath = await settings.buildRepoPath(gitBaseDir);
+    var repoPath =
+        await (settings.buildRepoPath(gitBaseDir) as FutureOr<String>);
     Log.i("Loading Repo at path $repoPath");
 
     var repoDir = Directory(repoPath);
@@ -104,7 +104,11 @@ class GitJournalRepo with ChangeNotifier {
       // Code path for 'branch is null' exception
       var branch = await repo.currentBranch();
       var head = await repo.head();
-      var branchConfig = repo.config.branch(branch);
+
+      BranchConfig? branchConfig;
+      if (branch != null) {
+        branchConfig = repo.config.branch(branch);
+      }
 
       if (branch == null || head == null || branchConfig == null) {
         var remoteConfig = repo.config.remotes[0];
@@ -133,13 +137,13 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   GitJournalRepo._internal({
-    @required this.id,
-    @required this.repoPath,
-    @required this.gitBaseDirectory,
-    @required this.cacheDir,
-    @required this.settings,
-    @required this.remoteGitRepoConfigured,
-    @required String currentBranch,
+    required this.id,
+    required this.repoPath,
+    required this.gitBaseDirectory,
+    required this.cacheDir,
+    required this.settings,
+    required this.remoteGitRepoConfigured,
+    required String? currentBranch,
   }) {
     _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);
     notesFolder = NotesFolderFS(null, _gitRepo.gitDirPath, settings);
@@ -165,7 +169,7 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   void _loadFromCache() async {
-    await _notesCache.load(notesFolder);
+    await _notesCache.load(notesFolder!);
     Log.i("Finished loading the notes cache");
 
     await _loadNotes();
@@ -175,10 +179,11 @@ class GitJournalRepo with ChangeNotifier {
   Future<void> _loadNotes() async {
     // FIXME: We should report the notes that failed to load
     return _loadLock.synchronized(() async {
-      await notesFolder.loadRecursively();
-      await _notesCache.buildCache(notesFolder);
+      await notesFolder!.loadRecursively();
+      await _notesCache.buildCache(notesFolder!);
 
-      numChanges = await _gitRepo.numChanges();
+      var changes = await _gitRepo.numChanges();
+      numChanges = changes != null ? changes : 0;
       notifyListeners();
     });
   }
@@ -186,14 +191,14 @@ class GitJournalRepo with ChangeNotifier {
   Future<void> syncNotes({bool doNotThrow = false}) async {
     if (!remoteGitRepoConfigured) {
       Log.d("Not syncing because RemoteRepo not configured");
-      return true;
+      return;
     }
 
     logEvent(Event.RepoSynced);
     syncStatus = SyncStatus.Pulling;
     notifyListeners();
 
-    Future noteLoadingFuture;
+    Future? noteLoadingFuture;
     try {
       await _gitRepo.fetch();
       await _gitRepo.merge();
@@ -214,7 +219,7 @@ class GitJournalRepo with ChangeNotifier {
       syncStatus = SyncStatus.Error;
       syncStatusError = e.toString();
       notifyListeners();
-      if (shouldLogGitException(e)) {
+      if (e is Exception && shouldLogGitException(e)) {
         await logException(e, stacktrace);
       }
       if (!doNotThrow) rethrow;
@@ -258,7 +263,7 @@ class GitJournalRepo with ChangeNotifier {
       Log.d("Got removeFolder lock");
       Log.d("Removing Folder: " + folder.folderPath);
 
-      folder.parentFS.removeFolder(folder);
+      folder.parentFS!.removeFolder(folder);
       _gitRepo.removeFolder(folder).then((NoteRepoResult _) {
         _syncNotes();
         numChanges += 1;
@@ -443,7 +448,7 @@ class GitJournalRepo with ChangeNotifier {
 
     _notesCache.clear();
     remoteGitRepoConfigured = true;
-    notesFolder.reset(repoPath);
+    notesFolder!.reset(repoPath);
 
     settings.folderName = repoFolderName;
     settings.save();
@@ -461,6 +466,10 @@ class GitJournalRepo with ChangeNotifier {
 
   Future<void> moveRepoToPath() async {
     var newRepoPath = await settings.buildRepoPath(gitBaseDirectory);
+    if (newRepoPath == null) {
+      Log.e("failed to get newRepoPath");
+      return;
+    }
 
     if (newRepoPath != repoPath) {
       Log.i("Old Path: $repoPath");
@@ -474,7 +483,7 @@ class GitJournalRepo with ChangeNotifier {
       _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);
 
       _notesCache.clear();
-      notesFolder.reset(repoPath);
+      notesFolder!.reset(repoPath);
       notifyListeners();
 
       _loadNotes();
@@ -484,7 +493,7 @@ class GitJournalRepo with ChangeNotifier {
   Future<void> discardChanges(Note note) async {
     var repo = await GitRepository.load(repoPath);
     await repo.checkout(note.filePath);
-    return note.load();
+    await note.load();
   }
 
   Future<List<GitRemoteConfig>> remoteConfigs() async {
@@ -499,13 +508,13 @@ class GitJournalRepo with ChangeNotifier {
       var remoteName = repo.config.remotes.first.name;
       var remoteBranches = await repo.remoteBranches(remoteName);
       branches.addAll(remoteBranches.map((e) {
-        return e.name.branchName();
+        return e.name.branchName()!;
       }));
     }
     return branches.toList()..sort();
   }
 
-  String get currentBranch => _currentBranch;
+  String? get currentBranch => _currentBranch;
 
   Future<String> checkoutBranch(String branchName) async {
     Log.i("Changing branch to $branchName");
@@ -522,7 +531,7 @@ class GitJournalRepo with ChangeNotifier {
       print("Done checking out $branchName");
 
       await _notesCache.clear();
-      notesFolder.reset(repoPath);
+      notesFolder!.reset(repoPath);
       notifyListeners();
 
       _loadNotes();
@@ -575,8 +584,8 @@ Future<void> _copyDirectory(String source, String destination) async {
 /// Add a GitIgnore file if no file is present. This way we always at least have
 /// one commit. It makes doing a git pull and push easier
 Future<void> _addFileInRepo({
-  @required GitJournalRepo repo,
-  @required Settings settings,
+  required GitJournalRepo repo,
+  required Settings settings,
 }) async {
   var repoPath = repo.repoPath;
   var dirList = await Directory(repoPath).list().toList();
