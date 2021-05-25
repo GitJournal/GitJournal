@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -153,9 +151,9 @@ class OnBoardingBottomButton extends StatelessWidget {
   final String text;
 
   OnBoardingBottomButton({
-    Key key,
-    @required this.text,
-    @required this.onPressed,
+    Key? key,
+    required this.text,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
@@ -177,7 +175,7 @@ class OnBoardingPage1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
-    var headerTextStyle = textTheme.headline2.copyWith(fontFamily: "Lato");
+    var headerTextStyle = textTheme.headline2!.copyWith(fontFamily: "Lato");
     var header = Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,

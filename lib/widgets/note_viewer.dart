@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -17,9 +15,9 @@ class NoteViewer extends StatelessWidget {
   final Note note;
   final NotesFolder parentFolder;
   const NoteViewer({
-    Key key,
-    @required this.note,
-    @required this.parentFolder,
+    Key? key,
+    required this.note,
+    required this.parentFolder,
   }) : super(key: key);
 
   @override

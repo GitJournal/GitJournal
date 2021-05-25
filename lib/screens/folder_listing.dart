@@ -1,5 +1,3 @@
-// @dart=2.9
-
 /*
 Copyright 2020-2021 Vishesh Handa <me@vhanda.in>
 
@@ -38,7 +36,7 @@ class FolderListingScreen extends StatefulWidget {
 
 class _FolderListingScreenState extends State<FolderListingScreen> {
   final _folderTreeViewKey = GlobalKey<FolderTreeViewState>();
-  NotesFolderFS selectedFolder;
+  NotesFolderFS? selectedFolder;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +76,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
       },
     );
 
-    Widget action;
+    Widget? action;
     if (selectedFolder != null) {
       action = PopupMenuButton(
         itemBuilder: (context) {
@@ -99,25 +97,25 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
         },
         onSelected: (String value) async {
           if (value == "Rename") {
-            if (selectedFolder.pathSpec().isEmpty) {
+            if (selectedFolder!.pathSpec().isEmpty) {
               await showDialog(
                 context: context,
                 builder: (_) => RenameFolderErrorDialog(),
               );
-              _folderTreeViewKey.currentState.resetSelection();
+              _folderTreeViewKey.currentState!.resetSelection();
               return;
             }
             var folderName = await showDialog(
               context: context,
               builder: (_) => RenameDialog(
-                oldPath: selectedFolder.folderPath,
+                oldPath: selectedFolder!.folderPath,
                 inputDecoration: tr("screens.folders.actions.decoration"),
                 dialogTitle: tr("screens.folders.actions.rename"),
               ),
             );
             if (folderName is String) {
               var container = context.read<GitJournalRepo>();
-              container.renameFolder(selectedFolder, folderName);
+              container.renameFolder(selectedFolder!, folderName);
             }
           } else if (value == "Create") {
             var folderName = await showDialog(
@@ -126,21 +124,21 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
             );
             if (folderName is String) {
               var container = context.read<GitJournalRepo>();
-              container.createFolder(selectedFolder, folderName);
+              container.createFolder(selectedFolder!, folderName);
             }
           } else if (value == "Delete") {
-            if (selectedFolder.hasNotesRecursive) {
+            if (selectedFolder!.hasNotesRecursive) {
               await showDialog(
                 context: context,
                 builder: (_) => DeleteFolderErrorDialog(),
               );
             } else {
               var container = context.read<GitJournalRepo>();
-              container.removeFolder(selectedFolder);
+              container.removeFolder(selectedFolder!);
             }
           }
 
-          _folderTreeViewKey.currentState.resetSelection();
+          _folderTreeViewKey.currentState!.resetSelection();
         },
       );
     }
@@ -148,7 +146,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
     var backButton = IconButton(
       icon: const Icon(Icons.arrow_back),
       onPressed: () {
-        _folderTreeViewKey.currentState.resetSelection();
+        _folderTreeViewKey.currentState!.resetSelection();
       },
     );
 
@@ -162,7 +160,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
         title: title,
         leading: selectedFolder == null ? GJAppBarMenuButton() : backButton,
         actions: <Widget>[
-          if (selectedFolder != null) action,
+          if (selectedFolder != null) action!,
         ],
       ),
       body: Scrollbar(child: treeView),
@@ -215,7 +213,7 @@ class _CreateFolderAlertDialogState extends State<CreateFolderAlertDialog> {
               labelText: tr("screens.folders.actions.decoration"),
             ),
             validator: (value) {
-              if (value.isEmpty) return tr("screens.folders.actions.empty");
+              if (value!.isEmpty) return tr("screens.folders.actions.empty");
               return "";
             },
             autofocus: true,
