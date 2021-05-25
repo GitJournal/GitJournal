@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
 import 'package:intl/intl.dart';
@@ -101,10 +102,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
         fetchedRepos = true;
       });
 
-      var repo = repos.firstWhere(
-        (r) => r.fullName.endsWith('/journal'),
-        orElse: () => null,
-      );
+      var repo = repos.firstWhereOrNull((r) => r.fullName.endsWith('/journal'));
       if (repo != null) {
         setState(() {
           selectedRepo = repo;

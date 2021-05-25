@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'package:collection/collection.dart';
 import 'package:dart_git/config.dart';
 import 'package:dart_git/dart_git.dart';
 import 'package:git_bindings/git_bindings.dart';
@@ -544,8 +545,8 @@ class GitJournalRepo with ChangeNotifier {
     }
     var remoteConfig = repo.config.remotes.first;
     var remoteBranches = await repo.remoteBranches(remoteConfig.name);
-    var remoteBranchRef = remoteBranches
-        .firstWhere((ref) => ref.name.branchName() == name, orElse: null);
+    var remoteBranchRef =
+        remoteBranches.firstWhereOrNull((ref) => ref.name.branchName() == name);
     if (remoteBranchRef == null) {
       return "";
     }
@@ -579,9 +580,8 @@ Future<void> _addFileInRepo({
 }) async {
   var repoPath = repo.repoPath;
   var dirList = await Directory(repoPath).list().toList();
-  var anyFileInRepo = dirList.firstWhere(
+  var anyFileInRepo = dirList.firstWhereOrNull(
     (fs) => fs.statSync().type == FileSystemEntityType.file,
-    orElse: () => null,
   );
   if (anyFileInRepo == null) {
     Log.i("Adding .ignore file");

@@ -3,6 +3,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:gitjournal/core/link.dart';
@@ -45,7 +46,7 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
 
       var links = await n.fetchLinks();
       var linkResolver = LinkResolver(n);
-      var matchedLink = links.firstWhere(
+      var matchedLink = links.firstWhereOrNull(
         (l) {
           var matchedNote = linkResolver.resolveLink(l);
           if (matchedNote == null) {
@@ -54,7 +55,6 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
 
           return matchedNote.filePath == widget.note.filePath;
         },
-        orElse: () => null,
       );
 
       // Log.d("NoteBacklinkRenderer Predicate ${matchedLink != null}");
