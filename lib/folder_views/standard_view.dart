@@ -1,6 +1,3 @@
-// @dart=2.9
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
@@ -34,14 +31,14 @@ class StandardView extends StatelessWidget {
   static final _dateFormat = DateFormat('dd MMM, yyyy');
 
   StandardView({
-    @required this.folder,
-    @required this.noteTapped,
-    @required this.noteLongPressed,
-    @required this.emptyText,
-    @required this.headerType,
-    @required this.showSummary,
-    @required this.isNoteSelected,
-    @required this.searchTerm,
+    required this.folder,
+    required this.noteTapped,
+    required this.noteLongPressed,
+    required this.emptyText,
+    required this.headerType,
+    required this.showSummary,
+    required this.isNoteSelected,
+    required this.searchTerm,
   }) : searchTermLowerCase = searchTerm.toLowerCase();
 
   @override
@@ -62,7 +59,7 @@ class StandardView extends StatelessWidget {
     switch (headerType) {
       case StandardViewHeader.TitleOrFileName:
         title = note.title;
-        if (title == null || title.isEmpty) {
+        if (title.isEmpty) {
           title = note.fileName;
         }
         break;
@@ -73,25 +70,22 @@ class StandardView extends StatelessWidget {
 
       case StandardViewHeader.TitleGenerated:
         title = note.title;
-        if (title == null || title.isEmpty) {
+        if (title.isEmpty) {
           title = note.summary;
         }
         break;
-
-      default:
-        assert(false, "StandardViewHeader must not be null");
     }
 
     Widget titleWidget = HighlightedText(
       text: title,
-      style: textTheme.headline6,
+      style: textTheme.headline6!,
       overflow: TextOverflow.ellipsis,
       highlightText: searchTerm,
       highlightTextLowerCase: searchTermLowerCase,
     );
     Widget trailing = Container();
 
-    DateTime date;
+    DateTime? date;
     var sortingField = folder.config.sortingMode.field;
     if (sortingField == SortingField.Modified) {
       date = note.modified;
@@ -119,7 +113,7 @@ class StandardView extends StatelessWidget {
           text: note.summary + '\n', // no minLines option
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
-          style: textTheme.bodyText2,
+          style: textTheme.bodyText2!,
           highlightText: searchTerm,
           highlightTextLowerCase: searchTermLowerCase,
         ),

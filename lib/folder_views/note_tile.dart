@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -17,11 +15,11 @@ class NoteTile extends StatelessWidget {
   final String searchTermLowerCase;
 
   NoteTile({
-    @required this.note,
-    @required this.noteTapped,
-    @required this.noteLongPressed,
-    @required this.selected,
-    @required this.searchTerm,
+    required this.note,
+    required this.noteTapped,
+    required this.noteLongPressed,
+    required this.selected,
+    required this.searchTerm,
   }) : searchTermLowerCase = searchTerm.toLowerCase();
 
   @override
@@ -47,18 +45,17 @@ class NoteTile extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: <Widget>[
-          if (note.title != null && note.title.isNotEmpty)
+          if (note.title.isNotEmpty)
             HighlightedText(
               text: note.title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: textTheme.headline6
-                  .copyWith(fontSize: textTheme.headline6.fontSize * 0.80),
+              style: textTheme.headline6!
+                  .copyWith(fontSize: textTheme.headline6!.fontSize! * 0.80),
               highlightText: searchTerm,
               highlightTextLowerCase: searchTermLowerCase,
             ),
-          if (note.title != null && note.title.isNotEmpty)
-            const SizedBox(height: 8.0),
+          if (note.title.isNotEmpty) const SizedBox(height: 8.0),
           Flexible(
             flex: 1,
             child: _buildBody(context, body),
@@ -117,8 +114,8 @@ class NoteTile extends StatelessWidget {
       text: text,
       highlightText: searchTerm,
       highlightTextLowerCase: searchTermLowerCase,
-      style: textTheme.subtitle1
-          .copyWith(fontSize: textTheme.subtitle1.fontSize * 0.90),
+      style: textTheme.subtitle1!
+          .copyWith(fontSize: textTheme.subtitle1!.fontSize! * 0.90),
       overflow: TextOverflow.ellipsis,
       maxLines: _maxLines - 1,
     );

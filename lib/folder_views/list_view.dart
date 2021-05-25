@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -22,11 +20,11 @@ class FolderListView extends StatefulWidget {
   final String searchTerm;
 
   FolderListView({
-    @required this.folder,
-    @required this.noteTileBuilder,
-    @required this.emptyText,
-    @required this.isNoteSelected,
-    @required this.searchTerm,
+    required this.folder,
+    required this.noteTileBuilder,
+    required this.emptyText,
+    required this.isNoteSelected,
+    required this.searchTerm,
   });
 
   @override
@@ -75,14 +73,14 @@ class _FolderListViewState extends State<FolderListView> {
     if (_listKey.currentState == null) {
       return;
     }
-    _listKey.currentState.insertItem(index);
+    _listKey.currentState!.insertItem(index);
   }
 
   void _noteRemoved(int index, Note note) {
     if (_listKey.currentState == null) {
       return;
     }
-    _listKey.currentState.removeItem(index, (context, animation) {
+    _listKey.currentState!.removeItem(index, (context, animation) {
       var i = deletedViaDismissed.indexWhere((path) => path == note.filePath);
       if (i == -1) {
         return _buildNote(note, widget.isNoteSelected(note), animation);
@@ -152,7 +150,7 @@ class _FolderListViewState extends State<FolderListView> {
       viewItem = IconDismissable(
         key: ValueKey("FolderListView_" + note.filePath),
         child: viewItem,
-        backgroundColor: Colors.red[800],
+        backgroundColor: Colors.red[800]!,
         iconData: Icons.delete,
         onDismissed: (direction) {
           deletedViaDismissed.add(note.filePath);

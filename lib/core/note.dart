@@ -317,11 +317,11 @@ class Note with NotesNotifier {
     return body.isEmpty;
   }
 
-  String? get summary {
+  String get summary {
     if (_loadState != NoteLoadState.Loaded) return "";
 
     _summary ??= stripMarkdownFormatting(body);
-    return _summary;
+    return _summary!;
   }
 
   NoteLoadState get loadState {

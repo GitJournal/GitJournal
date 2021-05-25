@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:path/path.dart' as p;
@@ -22,15 +20,15 @@ import 'standard_view.dart';
 export 'common_types.dart';
 
 Widget buildFolderView({
-  @required FolderViewType viewType,
-  @required NotesFolder folder,
-  @required String emptyText,
-  @required StandardViewHeader header,
-  @required bool showSummary,
-  @required NoteSelectedFunction noteTapped,
-  @required NoteSelectedFunction noteLongPressed,
-  @required NoteBoolPropertyFunction isNoteSelected,
-  @required String searchTerm,
+  required FolderViewType viewType,
+  required NotesFolder folder,
+  required String emptyText,
+  required StandardViewHeader header,
+  required bool showSummary,
+  required NoteSelectedFunction noteTapped,
+  required NoteSelectedFunction noteLongPressed,
+  required NoteBoolPropertyFunction isNoteSelected,
+  required String searchTerm,
 }) {
   switch (viewType) {
     case FolderViewType.Standard:
@@ -72,9 +70,6 @@ Widget buildFolderView({
         searchTerm: searchTerm,
       );
   }
-
-  assert(false, "Code path should never be executed");
-  return Container();
 }
 
 void openNoteEditor(
@@ -108,10 +103,11 @@ bool openNewNoteEditor(BuildContext context, String term) {
 
   var fileName = term;
   if (fileName.contains(p.separator)) {
-    parentFolder = rootFolder.getFolderWithSpec(p.dirname(fileName));
-    if (parentFolder == null) {
+    var pFolder = rootFolder.getFolderWithSpec(p.dirname(fileName));
+    if (pFolder == null) {
       return false;
     }
+    parentFolder = pFolder;
     Log.i("New Note Parent Folder: ${parentFolder.folderPath}");
 
     fileName = p.basename(term);
