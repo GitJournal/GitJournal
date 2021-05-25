@@ -1,8 +1,4 @@
-// @dart=2.9
-
 import 'dart:math';
-
-import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/utils/logger.dart';
@@ -13,14 +9,14 @@ import 'notes_folder_notifier.dart';
 class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
   final NotesFolder folder;
 
-  SortingMode _sortingMode;
-  NoteSortingFunction _sortFunc;
+  late SortingMode _sortingMode;
+  late NoteSortingFunction _sortFunc;
 
   List<Note> _notes = [];
 
   SortedNotesFolder({
-    @required this.folder,
-    @required SortingMode sortingMode,
+    required this.folder,
+    required SortingMode sortingMode,
   }) {
     _sortingMode = sortingMode;
     _sortFunc = _sortingMode.sortingFunction();
@@ -155,7 +151,7 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
   SortingMode get sortingMode => _sortingMode;
 
   @override
-  NotesFolder get parent => folder.parent;
+  NotesFolder? get parent => folder.parent;
 
   @override
   String pathSpec() => folder.pathSpec();

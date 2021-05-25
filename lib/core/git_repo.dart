@@ -1,9 +1,5 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:io' show Platform;
-
-import 'package:flutter/foundation.dart';
 
 import 'package:dart_git/dart_git.dart' as git;
 import 'package:git_bindings/git_bindings.dart';
@@ -19,10 +15,10 @@ bool useDartGit = false;
 
 class NoteRepoResult {
   bool error;
-  String noteFilePath;
+  String? noteFilePath;
 
   NoteRepoResult({
-    @required this.error,
+    required this.error,
     this.noteFilePath,
   });
 }
@@ -33,10 +29,10 @@ class GitNoteRepository {
   final Settings settings;
 
   GitNoteRepository({
-    @required this.gitDirPath,
-    @required this.settings,
+    required this.gitDirPath,
+    required this.settings,
   }) : _gitRepo = GitRepo(folderPath: gitDirPath) {
-    // git-bindings aren't properly implemented in these platformsk
+    // git-bindings aren't properly implemented in these platforms
     if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
       useDartGit = true;
     }
@@ -61,7 +57,9 @@ class GitNoteRepository {
   }
 
   Future<void> _commit(
-      {String message, String authorEmail, String authorName}) async {
+      {required String /*!*/ message,
+      required String authorEmail,
+      required String authorName}) async {
     if (useDartGit) {
       var repo = await git.GitRepository.load(gitDirPath);
       var author = git.GitAuthor(name: authorName, email: authorEmail);
@@ -225,6 +223,9 @@ class GitNoteRepository {
   Future<void> merge() async {
     var repo = await git.GitRepository.load(gitDirPath);
     var branch = await repo.currentBranch();
+    if (branch == null) {
+      throw Exception('No current branch found');
+    }
     var branchConfig = repo.config.branch(branch);
     if (branchConfig == null) {
       logExceptionWarning(
@@ -232,12 +233,9 @@ class GitNoteRepository {
       return;
     }
 
-    assert(branchConfig.name != null);
-    assert(branchConfig.merge != null);
-
     var remoteRef = await repo.remoteBranch(
-      branchConfig.remote,
-      branchConfig.trackingBranch(),
+      branchConfig.remote!,
+      branchConfig.trackingBranch()!,
     );
     if (remoteRef == null) {
       Log.i('Remote has no refs');
@@ -282,13 +280,15 @@ class GitNoteRepository {
     }
   }
 
-  Future<int> numChanges() async {
+  Future<int?> numChanges() async {
     try {
       var repo = await git.GitRepository.load(gitDirPath);
       var n = await repo.numChangesToPush();
       return n;
-    } catch (_) {}
-    return 0;
+    } catch (ex, st) {
+      Log.e("numChanges", ex: ex, stacktrace: st);
+    }
+    return null;
   }
 }
 
@@ -315,7 +315,7 @@ bool shouldLogGitException(Exception ex) {
   if (ex is! GitException) {
     return false;
   }
-  var msg = (ex as GitException).cause.toLowerCase();
+  var msg = ex.cause.toLowerCase();
   for (var i = 0; i < ignoredMessages.length; i++) {
     if (msg.contains(ignoredMessages[i])) {
       return false;

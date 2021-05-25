@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 

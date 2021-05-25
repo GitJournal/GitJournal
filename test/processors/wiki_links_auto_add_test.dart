@@ -1,13 +1,16 @@
 import 'package:test/test.dart';
 
+import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/processors/wiki_links_auto_add.dart';
+import 'package:gitjournal/settings.dart';
 
 void main() {
   test('Should process body', () {
     var body =
         "GitJournal is the best? And it works quite well with Foam, Foam and Obsidian.";
 
-    var p = WikiLinksAutoAddProcessor(null);
+    var folder = NotesFolderFS(null, '/', Settings(''));
+    var p = WikiLinksAutoAddProcessor(folder);
     var newBody = p.processBody(body, ['GitJournal', 'Foam', 'Obsidian']);
     var expectedBody =
         "[[GitJournal]] is the best? And it works quite well with [[Foam]], [[Foam]] and [[Obsidian]].";

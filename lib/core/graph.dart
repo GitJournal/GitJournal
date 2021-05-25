@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:math';
 
@@ -19,11 +17,11 @@ class Node {
   double forceX = 0.0;
   double forceY = 0.0;
 
-  String _label;
+  String? _label;
 
   Node(this.note);
 
-  String get label {
+  String? get label {
     _label ??= note.pathSpec();
     return _label;
   }
@@ -43,10 +41,10 @@ class Graph extends ChangeNotifier {
   List<Node> nodes = [];
   List<Edge> edges = [];
 
-  Map<String, Set<int>> _neighbours = {};
-  Map<String, int> _nodeIndexes;
+  Map<String?, Set<int?>> _neighbours = {};
+  Map<String?, int>? _nodeIndexes;
 
-  GraphNodeLayout initLayouter;
+  late GraphNodeLayout initLayouter;
 
   final double nodeSize = 50.0;
 
@@ -78,6 +76,9 @@ class Graph extends ChangeNotifier {
     var node = _getNode(note);
 
     var links = await node.note.fetchLinks();
+    if (links == null) {
+      return;
+    }
     var linkResolver = LinkResolver(note);
     for (var l in links) {
       var noteB = linkResolver.resolveLink(l);
@@ -110,12 +111,12 @@ class Graph extends ChangeNotifier {
     startLayout();
   }
 
-  List<int> computeNeighbours(Node n) {
+  List<int?> computeNeighbours(Node n) {
     if (_nodeIndexes == null) {
-      _nodeIndexes = <String, int>{};
+      _nodeIndexes = <String?, int>{};
       for (var i = 0; i < this.nodes.length; i++) {
         var node = this.nodes[i];
-        _nodeIndexes[node.label] = i;
+        _nodeIndexes![node.label] = i;
       }
     }
 
@@ -124,15 +125,15 @@ class Graph extends ChangeNotifier {
       return _nodes.union(computeOverlappingNodes(n)).toList();
     }
 
-    var nodes = <int>{};
+    var nodes = <int?>{};
     for (var edge in edges) {
       if (edge.a.label == n.label) {
-        nodes.add(_nodeIndexes[edge.b.label]);
+        nodes.add(_nodeIndexes![edge.b.label]);
         continue;
       }
 
       if (edge.b.label == n.label) {
-        nodes.add(_nodeIndexes[edge.a.label]);
+        nodes.add(_nodeIndexes![edge.a.label]);
         continue;
       }
     }
@@ -164,7 +165,7 @@ class Graph extends ChangeNotifier {
     return _nodes;
   }
 
-  Timer layoutTimer;
+  Timer? layoutTimer;
 
   void startLayout() {
     if (layoutTimer != null) {
@@ -191,7 +192,7 @@ class Graph extends ChangeNotifier {
 
   void stopLayout() {
     if (layoutTimer != null) {
-      layoutTimer.cancel();
+      layoutTimer!.cancel();
       layoutTimer = null;
     }
   }
@@ -210,7 +211,7 @@ class GraphNodeLayout {
   double gap = 70;
   double nodeSize = 50;
 
-  GraphNodeLayout({@required this.maxWidth, @required this.maxHeight}) {
+  GraphNodeLayout({required this.maxWidth, required this.maxHeight}) {
     x = startX;
     y = startY;
   }
@@ -288,7 +289,7 @@ bool _updateGraphPositions(Graph g) {
     var node1Neighbours = g.computeNeighbours(node1);
 
     for (var j = 0; j < node1Neighbours.length; j++) {
-      var i2 = node1Neighbours[j];
+      var i2 = node1Neighbours[j]!;
       var node2 = g.nodes[i2];
 
       if (i1 < i2) {
