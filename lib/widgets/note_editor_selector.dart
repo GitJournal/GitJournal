@@ -1,5 +1,3 @@
-// @dart=2.9
-
 /*
 Copyright 2020-2021 Vishesh Handa <me@vhanda.in>
 
@@ -85,7 +83,7 @@ class NoteEditorSelector extends StatelessWidget {
     var selected = et == currentEditor;
     var theme = Theme.of(context);
     var listTileTheme = ListTileTheme.of(context);
-    var textStyle = theme.textTheme.bodyText2.copyWith(
+    var textStyle = theme.textTheme.bodyText2!.copyWith(
       color: selected ? theme.primaryColor : listTileTheme.textColor,
     );
 

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
@@ -14,9 +12,9 @@ class FolderTreeView extends StatefulWidget {
   final FolderSelectedCallback onFolderEntered;
 
   FolderTreeView({
-    Key key,
-    @required this.rootFolder,
-    @required this.onFolderEntered,
+    Key? key,
+    required this.rootFolder,
+    required this.onFolderEntered,
     this.onFolderSelected = _doNothing,
     this.onFolderUnselected = _doNothing,
   }) : super(key: key);
@@ -29,7 +27,7 @@ class FolderTreeView extends StatefulWidget {
 
 class FolderTreeViewState extends State<FolderTreeView> {
   bool inSelectionMode = false;
-  NotesFolderFS selectedFolder;
+  NotesFolderFS? selectedFolder;
 
   @override
   Widget build(BuildContext context) {
@@ -73,13 +71,13 @@ class FolderTile extends StatefulWidget {
   final NotesFolderFS folder;
   final FolderSelectedCallback onTap;
   final FolderSelectedCallback onLongPress;
-  final NotesFolderFS selectedFolder;
+  final NotesFolderFS? selectedFolder;
 
   FolderTile({
-    @required this.folder,
-    @required this.onTap,
-    @required this.onLongPress,
-    @required this.selectedFolder,
+    required this.folder,
+    required this.onTap,
+    required this.onLongPress,
+    required this.selectedFolder,
   });
 
   @override
@@ -127,7 +125,7 @@ class FolderTileState extends State<FolderTile> {
 
     var publicName = folder.publicName;
     if (folder.parent != null) {
-      publicName = publicName.substring(folder.parent.pathSpec().length);
+      publicName = publicName.substring(folder.parent!.pathSpec().length);
       if (publicName.startsWith('/')) {
         publicName = publicName.substring(1);
       }
@@ -167,7 +165,7 @@ class FolderTileState extends State<FolderTile> {
     var children = <FolderTile>[];
     widget.folder.subFolders.forEach((folder) {
       children.add(FolderTile(
-        folder: folder,
+        folder: folder as NotesFolderFS,
         onTap: widget.onTap,
         onLongPress: widget.onLongPress,
         selectedFolder: widget.selectedFolder,
