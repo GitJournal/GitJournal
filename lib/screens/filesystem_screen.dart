@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -91,9 +89,9 @@ class FileSystemView extends StatelessWidget {
 
   FileSystemView(
     this.folder, {
-    @required this.onFolderSelected,
-    @required this.onNoteSelected,
-    @required this.onIgnoredFileSelected,
+    required this.onFolderSelected,
+    required this.onNoteSelected,
+    required this.onIgnoredFileSelected,
   });
 
   @override

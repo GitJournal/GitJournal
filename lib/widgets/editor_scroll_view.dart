@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 /// A Scroll view which occupies the full height of the parent, and doesn't
@@ -9,7 +7,7 @@ class EditorScrollView extends StatelessWidget {
   final EdgeInsetsGeometry padding;
 
   EditorScrollView({
-    @required this.child,
+    required this.child,
     this.padding = const EdgeInsets.all(16.0),
   });
 

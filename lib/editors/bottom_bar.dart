@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -33,17 +31,17 @@ class EditorBottomBar extends StatelessWidget {
   final Func0<void> onRedoSelected;
 
   EditorBottomBar({
-    @required this.editor,
-    @required this.editorState,
-    @required this.parentFolder,
-    @required this.allowEdits,
-    @required this.zenMode,
-    @required this.onZenModeChanged,
-    @required this.metaDataEditable,
-    @required this.onUndoSelected,
-    @required this.onRedoSelected,
-    @required this.undoAllowed,
-    @required this.redoAllowed,
+    required this.editor,
+    required this.editorState,
+    required this.parentFolder,
+    required this.allowEdits,
+    required this.zenMode,
+    required this.onZenModeChanged,
+    required this.metaDataEditable,
+    required this.onUndoSelected,
+    required this.onRedoSelected,
+    required this.undoAllowed,
+    required this.redoAllowed,
   });
 
   @override
@@ -92,7 +90,7 @@ class EditorBottomBar extends StatelessWidget {
               maintainInteractivity: false,
             ),
             const Spacer(),
-            if (undoAllowed != null)
+            if (undoAllowed)
               IconButton(
                 icon: const Icon(Icons.undo),
                 onPressed: undoAllowed ? onUndoSelected : null,
@@ -105,7 +103,7 @@ class EditorBottomBar extends StatelessWidget {
                 editor.moveNoteToFolderSelected(note);
               },
             ),
-            if (redoAllowed != null)
+            if (redoAllowed)
               IconButton(
                 icon: const Icon(Icons.redo),
                 onPressed: redoAllowed ? onRedoSelected : null,

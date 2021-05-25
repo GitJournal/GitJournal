@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -12,12 +10,13 @@ import 'package:time/time.dart';
 import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/utils/logger.dart';
 
 class AppDrawerHeader extends StatelessWidget {
   final Func0<void> repoListToggled;
 
   AppDrawerHeader({
-    @required this.repoListToggled,
+    required this.repoListToggled,
   });
 
   @override
@@ -78,8 +77,8 @@ class AppDrawerHeader extends StatelessWidget {
 
 class _CurrentRepo extends StatefulWidget {
   const _CurrentRepo({
-    Key key,
-    @required this.repoListToggled,
+    Key? key,
+    required this.repoListToggled,
   }) : super(key: key);
 
   final Func0<void> repoListToggled;
@@ -90,8 +89,8 @@ class _CurrentRepo extends StatefulWidget {
 
 class __CurrentRepoState extends State<_CurrentRepo>
     with SingleTickerProviderStateMixin {
-  Animation _animation;
-  AnimationController controller;
+  late Animation _animation;
+  late AnimationController controller;
 
   var _gitRemoteUrl = "";
   var _repoFolderName = "";
@@ -138,7 +137,7 @@ class __CurrentRepoState extends State<_CurrentRepo>
           ),
         ),
         RotationTransition(
-          turns: _animation,
+          turns: _animation as Animation<double>,
           child: IconButton(
             icon: const FaIcon(FontAwesomeIcons.angleDown),
             onPressed: _pressed,
@@ -172,12 +171,16 @@ class __CurrentRepoState extends State<_CurrentRepo>
 
     var repo = context.watch<GitJournalRepo>();
     var repoPath = await repo.settings.buildRepoPath(repo.gitBaseDirectory);
+    if (repoPath == null) {
+      Log.e("Failed to build repo path");
+      return;
+    }
     _repoFolderName = p.basename(repoPath);
 
     var remoteConfigs = await repo.remoteConfigs();
     if (!mounted) return;
 
-    if (remoteConfigs == null || remoteConfigs.isEmpty) {
+    if (remoteConfigs.isEmpty) {
       setState(() {
         _gitRemoteUrl = tr("drawer.remote");
       });

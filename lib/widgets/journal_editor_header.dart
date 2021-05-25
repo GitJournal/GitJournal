@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
@@ -13,14 +11,15 @@ class JournalEditorHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (note.created == null) {
+    var created = note.created;
+    if (created == null) {
       return Container();
     }
-    var dateStr = DateFormat('MMMM, yyyy').format(note.created);
-    var timeStr = DateFormat('EEEE HH:mm').format(note.created);
+    var dateStr = DateFormat('MMMM, yyyy').format(created);
+    var timeStr = DateFormat('EEEE HH:mm').format(created);
 
     var bigNum = Text(
-      note.created.day.toString(),
+      created.day.toString(),
       style: const TextStyle(fontSize: 40.0),
     );
 
