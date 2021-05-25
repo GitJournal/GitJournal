@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:test/test.dart';
 
 import 'package:gitjournal/editors/heuristics.dart';
@@ -18,7 +16,7 @@ void main() {
       var origText = "Hello\n* One";
       var newText = origText + '\n';
 
-      var result = autoAddBulletList(origText, newText, newText.length);
+      var result = autoAddBulletList(origText, newText, newText.length)!;
       expect(result.text, "Hello\n* One\n* ");
       expect(result.cursorPos, result.text.length);
     });
@@ -27,7 +25,7 @@ void main() {
       var origText = "Hello\n* One\n* Three";
       var newText = "Hello\n* One\n\n* Three";
 
-      var result = autoAddBulletList(origText, newText, 12);
+      var result = autoAddBulletList(origText, newText, 12)!;
       expect(result.text, "Hello\n* One\n* \n* Three");
       expect(result.cursorPos, 14);
     });
@@ -36,7 +34,7 @@ void main() {
       var origText = "Hello\n1. One";
       var newText = origText + '\n';
 
-      var result = autoAddBulletList(origText, newText, newText.length);
+      var result = autoAddBulletList(origText, newText, newText.length)!;
       expect(result.text, "Hello\n1. One\n1. ");
       expect(result.cursorPos, result.text.length);
     });
@@ -45,7 +43,7 @@ void main() {
       var origText = "Hello\n* One\n* ";
       var newText = origText + '\n';
 
-      var result = autoAddBulletList(origText, newText, newText.length);
+      var result = autoAddBulletList(origText, newText, newText.length)!;
       expect(result.text, "Hello\n* One\n");
       expect(result.cursorPos, result.text.length);
     });
@@ -54,7 +52,7 @@ void main() {
       var origText = "Hello\n* One\n* Fire";
       var newText = "Hello\n* One\n* \nFire";
 
-      var result = autoAddBulletList(origText, newText, 15);
+      var result = autoAddBulletList(origText, newText, 15)!;
       expect(result.text, "Hello\n* One\nFire");
       expect(result.cursorPos, 12);
     });
@@ -71,7 +69,7 @@ void main() {
       var origText = "*   One";
       var newText = origText + '\n';
 
-      var result = autoAddBulletList(origText, newText, newText.length);
+      var result = autoAddBulletList(origText, newText, newText.length)!;
       expect(result.text, "*   One\n*   ");
       expect(result.cursorPos, result.text.length);
     });
@@ -80,7 +78,7 @@ void main() {
       var origText = "1. Hello";
       var newText = origText + '\n';
 
-      var result = autoAddBulletList(origText, newText, newText.length);
+      var result = autoAddBulletList(origText, newText, newText.length)!;
       expect(result.text, "1. Hello\n1. ");
       expect(result.cursorPos, result.text.length);
     });
@@ -89,7 +87,7 @@ void main() {
       var origText = "*   One\nFire";
       var newText = "*   One\n\nFire";
 
-      var result = autoAddBulletList(origText, newText, 8);
+      var result = autoAddBulletList(origText, newText, 8)!;
       expect(result.text, "*   One\n*   \nFire");
       expect(result.cursorPos, 12);
     });
@@ -98,7 +96,7 @@ void main() {
       var origText = "* Hi There";
       var newText = origText + '\n';
 
-      var result = autoAddBulletList(origText, newText, newText.length);
+      var result = autoAddBulletList(origText, newText, newText.length)!;
       expect(result.text, "* Hi There\n* ");
       expect(result.cursorPos, result.text.length);
     });
