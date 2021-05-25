@@ -13,6 +13,7 @@ import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/sorted_notes_folder.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
+import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/repository.dart';

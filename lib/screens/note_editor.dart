@@ -30,6 +30,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/editors/checklist_editor.dart';
+import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/editors/journal_editor.dart';
 import 'package:gitjournal/editors/markdown_editor.dart';
 import 'package:gitjournal/editors/org_editor.dart';
@@ -97,8 +98,6 @@ class NoteEditor extends StatefulWidget {
     }
   }
 }
-
-enum EditorType { Markdown, Raw, Checklist, Journal, Org }
 
 class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
   Note note;

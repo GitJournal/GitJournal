@@ -27,7 +27,6 @@ import 'package:path/path.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
 import 'package:gitjournal/utils/logger.dart';

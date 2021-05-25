@@ -22,7 +22,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/screens/note_editor.dart';
+import 'package:gitjournal/editors/common_types.dart';
 
 class NoteEditorSelector extends StatelessWidget {
   final EditorType currentEditor;

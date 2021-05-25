@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/settings.dart';
 import 'app.dart';
 import 'core/note.dart';
+import 'editors/common_types.dart';
 import 'repository.dart';
 import 'utils/logger.dart';
 
