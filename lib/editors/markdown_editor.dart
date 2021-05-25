@@ -138,8 +138,8 @@ class MarkdownEditorState extends State<MarkdownEditor>
       body: editor,
       onUndoSelected: _undo,
       onRedoSelected: _redo,
-      undoAllowed: null,
-      redoAllowed: null,
+      undoAllowed: false,
+      redoAllowed: false,
       extraBottomWidget: markdownToolbar,
     );
   }

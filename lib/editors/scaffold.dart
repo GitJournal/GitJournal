@@ -61,6 +61,8 @@ class _EditorScaffoldState extends State<EditorScaffold> {
   void initState() {
     super.initState();
 
+    note = widget.editorState.getNote();
+
     SchedulerBinding.instance!
         .addPostFrameCallback((_) => _initStateWithContext());
   }
@@ -86,8 +88,6 @@ class _EditorScaffoldState extends State<EditorScaffold> {
       if (widget.editMode) {
         editingMode = true;
       }
-
-      note = widget.editorState.getNote();
     });
   }
 
