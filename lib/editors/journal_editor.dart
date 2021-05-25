@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -36,16 +34,16 @@ class JournalEditor extends StatefulWidget implements Editor {
   final bool editMode;
 
   JournalEditor({
-    Key key,
-    @required this.note,
-    @required this.noteModified,
-    @required this.noteDeletionSelected,
-    @required this.noteEditorChooserSelected,
-    @required this.exitEditorSelected,
-    @required this.renameNoteSelected,
-    @required this.editTagsSelected,
-    @required this.moveNoteToFolderSelected,
-    @required this.discardChangesSelected,
+    Key? key,
+    required this.note,
+    required this.noteModified,
+    required this.noteDeletionSelected,
+    required this.noteEditorChooserSelected,
+    required this.exitEditorSelected,
+    required this.renameNoteSelected,
+    required this.editTagsSelected,
+    required this.moveNoteToFolderSelected,
+    required this.discardChangesSelected,
     this.editMode = false,
   }) : super(key: key);
 
@@ -59,19 +57,18 @@ class JournalEditorState extends State<JournalEditor>
     with DisposableChangeNotifier
     implements EditorState {
   Note note;
-  var _textController = TextEditingController();
-  bool _noteModified;
+  late TextEditingController _textController;
+  late bool _noteModified;
 
-  EditorHeuristics _heuristics;
+  late EditorHeuristics _heuristics;
 
-  JournalEditorState(this.note) {
-    _textController = TextEditingController(text: note.body);
-  }
-
+  JournalEditorState(this.note);
   @override
   void initState() {
     super.initState();
     _noteModified = widget.noteModified;
+    _textController = TextEditingController(text: note.body);
+
     _heuristics = EditorHeuristics(text: note.body);
   }
 

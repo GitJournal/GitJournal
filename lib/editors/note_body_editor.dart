@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -9,7 +7,11 @@ class NoteBodyEditor extends StatelessWidget {
   final bool autofocus;
   final Function onChanged;
 
-  NoteBodyEditor({this.textController, this.autofocus, this.onChanged});
+  NoteBodyEditor({
+    required this.textController,
+    required this.autofocus,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {

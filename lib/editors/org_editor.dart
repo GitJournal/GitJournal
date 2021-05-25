@@ -1,5 +1,3 @@
-// @dart=2.9
-
 /*
 Copyright 2020-2021 Alen Šiljak <gitjournal@alensiljak.eu.org>
 
@@ -51,17 +49,17 @@ class OrgEditor extends StatefulWidget implements Editor {
   final bool editMode;
 
   OrgEditor({
-    Key key,
-    @required this.note,
-    @required this.noteModified,
-    @required this.noteDeletionSelected,
-    @required this.noteEditorChooserSelected,
-    @required this.exitEditorSelected,
-    @required this.renameNoteSelected,
-    @required this.editTagsSelected,
-    @required this.moveNoteToFolderSelected,
-    @required this.discardChangesSelected,
-    @required this.editMode,
+    Key? key,
+    required this.note,
+    required this.noteModified,
+    required this.noteDeletionSelected,
+    required this.noteEditorChooserSelected,
+    required this.exitEditorSelected,
+    required this.renameNoteSelected,
+    required this.editTagsSelected,
+    required this.moveNoteToFolderSelected,
+    required this.discardChangesSelected,
+    required this.editMode,
   }) : super(key: key);
 
   @override
@@ -74,21 +72,20 @@ class OrgEditorState extends State<OrgEditor>
     with DisposableChangeNotifier
     implements EditorState {
   Note note;
-  bool _noteModified;
-  TextEditingController _textController;
-  UndoRedoStack _undoRedoStack;
+  late bool _noteModified;
+  late TextEditingController _textController;
+  late UndoRedoStack _undoRedoStack;
 
   final serializer = MarkdownYAMLCodec();
 
-  OrgEditorState(this.note) {
-    _textController = TextEditingController(text: serializer.encode(note.data));
-    _undoRedoStack = UndoRedoStack();
-  }
+  OrgEditorState(this.note);
 
   @override
   void initState() {
     super.initState();
     _noteModified = widget.noteModified;
+    _textController = TextEditingController(text: serializer.encode(note.data));
+    _undoRedoStack = UndoRedoStack();
   }
 
   @override
@@ -187,12 +184,16 @@ class _NoteEditor extends StatelessWidget {
   final bool autofocus;
   final Function onChanged;
 
-  _NoteEditor({this.textController, this.autofocus, this.onChanged});
+  _NoteEditor({
+    required this.textController,
+    required this.autofocus,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    var style = theme.textTheme.subtitle1.copyWith(fontFamily: "Roboto Mono");
+    var style = theme.textTheme.subtitle1!.copyWith(fontFamily: "Roboto Mono");
 
     return TextField(
       autofocus: autofocus,

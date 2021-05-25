@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -42,18 +40,18 @@ class MarkdownEditor extends StatefulWidget implements Editor {
   final bool editMode;
 
   MarkdownEditor({
-    Key key,
-    @required this.note,
-    @required this.parentFolder,
-    @required this.noteModified,
-    @required this.noteDeletionSelected,
-    @required this.noteEditorChooserSelected,
-    @required this.exitEditorSelected,
-    @required this.renameNoteSelected,
-    @required this.editTagsSelected,
-    @required this.moveNoteToFolderSelected,
-    @required this.discardChangesSelected,
-    @required this.editMode,
+    Key? key,
+    required this.note,
+    required this.parentFolder,
+    required this.noteModified,
+    required this.noteDeletionSelected,
+    required this.noteEditorChooserSelected,
+    required this.exitEditorSelected,
+    required this.renameNoteSelected,
+    required this.editTagsSelected,
+    required this.moveNoteToFolderSelected,
+    required this.discardChangesSelected,
+    required this.editMode,
   }) : super(key: key);
 
   @override
@@ -66,22 +64,23 @@ class MarkdownEditorState extends State<MarkdownEditor>
     with DisposableChangeNotifier
     implements EditorState {
   Note note;
-  TextEditingController _textController = TextEditingController();
-  TextEditingController _titleTextController = TextEditingController();
+  late TextEditingController _textController;
+  late TextEditingController _titleTextController;
 
-  EditorHeuristics _heuristics;
+  late EditorHeuristics _heuristics;
 
-  bool _noteModified;
+  late bool _noteModified;
 
-  MarkdownEditorState(this.note) {
-    _textController = TextEditingController(text: note.body);
-    _titleTextController = TextEditingController(text: note.title);
-  }
+  MarkdownEditorState(this.note);
 
   @override
   void initState() {
     super.initState();
     _noteModified = widget.noteModified;
+
+    _textController = TextEditingController(text: note.body);
+    _titleTextController = TextEditingController(text: note.title);
+
     _heuristics = EditorHeuristics(text: note.body);
   }
 
@@ -122,7 +121,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
     );
 
     var settings = Provider.of<AppSettings>(context);
-    Widget markdownToolbar;
+    Widget? markdownToolbar;
     if (settings.experimentalMarkdownToolbar) {
       markdownToolbar = MarkdownToolBar(
         textController: _textController,
