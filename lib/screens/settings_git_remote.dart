@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -30,8 +28,8 @@ class GitRemoteSettingsScreen extends StatefulWidget {
 }
 
 class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
-  String remoteHost;
   var branches = <String>[];
+  var remoteHost = "";
   var currentBranch = "";
 
   @override
@@ -40,8 +38,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     var settings = Provider.of<Settings>(context);
     var repo = Provider.of<GitJournalRepo>(context);
 
-    if (remoteHost == null) {
-      remoteHost = "";
+    if (remoteHost.isEmpty) {
       repo.remoteConfigs().then((list) {
         setState(() {
           if (!mounted) return;
@@ -51,7 +48,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     }
 
     if (branches.isEmpty) {
-      currentBranch = repo.currentBranch;
+      currentBranch = repo.currentBranch ?? "";
       repo.branches().then((list) {
         setState(() {
           if (!mounted) return;
@@ -62,14 +59,13 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
 
     var body = Column(
       children: <Widget>[
-        if (remoteHost != null && remoteHost.isNotEmpty)
+        if (remoteHost.isNotEmpty)
           Text(
             tr('settings.gitRemote.host'),
             style: textTheme.bodyText1,
             textAlign: TextAlign.left,
           ),
-        if (remoteHost != null && remoteHost.isNotEmpty)
-          ListTile(title: Text(remoteHost)),
+        if (remoteHost.isNotEmpty) ListTile(title: Text(remoteHost)),
         if (branches.isNotEmpty)
           ListPreference(
             title: tr('settings.gitRemote.branch'),
@@ -191,9 +187,9 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
         "-" +
         DateTime.now().toIso8601String().substring(0, 10); // only the date
 
-    generateSSHKeys(comment: comment).then((SshKey sshKey) {
+    generateSSHKeys(comment: comment).then((SshKey? sshKey) {
       var settings = Provider.of<Settings>(context, listen: false);
-      settings.sshPublicKey = sshKey.publicKey;
+      settings.sshPublicKey = sshKey!.publicKey;
       settings.sshPrivateKey = sshKey.publicKey;
       settings.sshPassword = sshKey.password;
       settings.save();
@@ -250,9 +246,9 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
 
 class Button extends StatelessWidget {
   final String text;
-  final Function onPressed;
+  final void Function() onPressed;
 
-  Button({@required this.text, @required this.onPressed});
+  Button({required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -273,9 +269,9 @@ class Button extends StatelessWidget {
 
 class RedButton extends StatelessWidget {
   final String text;
-  final Function onPressed;
+  final void Function() onPressed;
 
-  RedButton({@required this.text, @required this.onPressed});
+  RedButton({required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

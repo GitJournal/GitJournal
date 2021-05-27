@@ -26,7 +26,7 @@ class NotesFolderConfig extends Equatable {
   final bool showNoteSummary;
   final NoteFileNameFormat fileNameFormat;
   final NoteFileNameFormat journalFileNameFormat;
-  final NotesFolderFS folder;
+  final NotesFolderFS? folder;
   final bool yamlHeaderEnabled;
   //int _version = 1;
 
@@ -64,7 +64,7 @@ class NotesFolderConfig extends Equatable {
         viewHeader,
         fileNameFormat,
         journalFileNameFormat,
-        folder,
+        if (folder != null) folder!,
         yamlHeaderEnabled,
         yamlModifiedKey,
         yamlCreatedKey,
@@ -98,7 +98,7 @@ class NotesFolderConfig extends Equatable {
       viewHeader: viewHeader,
       fileNameFormat: settings.noteFileNameFormat,
       journalFileNameFormat: settings.journalNoteFileNameFormat,
-      folder: folder!,
+      folder: folder,
       yamlHeaderEnabled: settings.yamlHeaderEnabled,
       yamlCreatedKey: settings.yamlCreatedKey,
       yamlModifiedKey: settings.yamlModifiedKey,
@@ -289,7 +289,7 @@ class NotesFolderConfig extends Equatable {
 
     var yaml = toYAML(map);
 
-    var file = File(p.join(folder.folderPath, FILENAME));
+    var file = File(p.join(folder!.folderPath, FILENAME));
     await file.writeAsString(yaml);
   }
 }

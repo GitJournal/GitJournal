@@ -100,7 +100,7 @@ class GitNoteRepository {
   }
 
   Future<NoteRepoResult> addFolderConfig(NotesFolderConfig config) async {
-    var pathSpec = config.folder.pathSpec();
+    var pathSpec = config.folder!.pathSpec();
     pathSpec = pathSpec.isNotEmpty ? pathSpec : '/';
 
     await _add(".");
@@ -110,7 +110,8 @@ class GitNoteRepository {
       authorName: settings.gitAuthor,
     );
 
-    return NoteRepoResult(noteFilePath: config.folder.folderPath, error: false);
+    return NoteRepoResult(
+        noteFilePath: config.folder!.folderPath, error: false);
   }
 
   Future<NoteRepoResult> renameFolder(

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 /*
 Copyright 2020-2021 Vishesh Handa <me@vhanda.in>
                     Roland Fredenhagen <important@van-fredenhagen.de>
@@ -93,7 +91,8 @@ class SettingsListState extends State<SettingsList> {
     final repo = Provider.of<GitJournalRepo>(context);
     var repoManager = Provider.of<RepositoryManager>(context);
 
-    var saveGitAuthor = (String gitAuthor) {
+    var saveGitAuthor = (String? gitAuthor) {
+      if (gitAuthor == null) return;
       settings.gitAuthor = gitAuthor;
       settings.save();
     };
@@ -107,8 +106,8 @@ class SettingsListState extends State<SettingsList> {
           hintText: tr('settings.author.hint'),
           labelText: tr('settings.author.label'),
         ),
-        validator: (String value) {
-          value = value.trim();
+        validator: (String? value) {
+          value = value!.trim();
           if (value.isEmpty) {
             return tr('settings.author.validator');
           }
@@ -120,13 +119,15 @@ class SettingsListState extends State<SettingsList> {
         initialValue: settings.gitAuthor,
       ),
       onChanged: () {
-        if (!gitAuthorKey.currentState.validate()) return;
-        var gitAuthor = gitAuthorKey.currentState.value;
+        if (!gitAuthorKey.currentState!.validate()) return;
+        var gitAuthor = gitAuthorKey.currentState!.value;
         saveGitAuthor(gitAuthor);
       },
     );
 
-    var saveGitAuthorEmail = (String gitAuthorEmail) {
+    var saveGitAuthorEmail = (String? gitAuthorEmail) {
+      if (gitAuthorEmail == null) return;
+
       settings.gitAuthorEmail = gitAuthorEmail;
       settings.save();
     };
@@ -140,8 +141,8 @@ class SettingsListState extends State<SettingsList> {
           hintText: tr('settings.email.hint'),
           labelText: tr('settings.email.label'),
         ),
-        validator: (String value) {
-          value = value.trim();
+        validator: (String? value) {
+          value = value!.trim();
           if (value.isEmpty) {
             return tr('settings.email.validator.empty');
           }
@@ -157,8 +158,8 @@ class SettingsListState extends State<SettingsList> {
         initialValue: settings.gitAuthorEmail,
       ),
       onChanged: () {
-        if (!gitAuthorEmailKey.currentState.validate()) return;
-        var gitAuthorEmail = gitAuthorEmailKey.currentState.value;
+        if (!gitAuthorEmailKey.currentState!.validate()) return;
+        var gitAuthorEmail = gitAuthorEmailKey.currentState!.value;
         saveGitAuthorEmail(gitAuthorEmail);
       },
     );
@@ -390,7 +391,7 @@ class SettingsListState extends State<SettingsList> {
               settings.storageLocation = "";
             } else {
               settings.storageLocation =
-                  await ICloudDocumentsPath.documentsPath;
+                  (await ICloudDocumentsPath.documentsPath)!;
               if (settings.storageLocation.isNotEmpty) {
                 settings.storeInternally = false;
               }
@@ -592,19 +593,23 @@ Future<String> _getExternalDir() async {
   }
 
   var path = await ExtStorage.getExternalStorageDirectory();
-  if (await _isDirWritable(path)) {
-    return path;
-  } else {
-    Log.e("ExtStorage: Got $path but it is not writable");
+  if (path != null) {
+    if (await _isDirWritable(path)) {
+      return path;
+    } else {
+      Log.e("ExtStorage: Got $path but it is not writable");
+    }
   }
 
   var extDir = await getExternalStorageDirectory();
-  path = extDir.path;
+  if (extDir != null) {
+    path = extDir.path;
 
-  if (await _isDirWritable(path)) {
-    return path;
-  } else {
-    Log.e("ExternalStorageDirectory: Got $path but it is not writable");
+    if (await _isDirWritable(path)) {
+      return path;
+    } else {
+      Log.e("ExternalStorageDirectory: Got $path but it is not writable");
+    }
   }
 
   return "";

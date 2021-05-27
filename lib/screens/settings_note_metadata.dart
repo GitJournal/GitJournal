@@ -1,5 +1,3 @@
-// @dart=2.9
-
 /*
 Copyright 2020-2021 Vishesh Handa <me@vhanda.in>
 
@@ -44,8 +42,8 @@ class NoteMetadataSettingsScreen extends StatefulWidget {
 
 class _NoteMetadataSettingsScreenState
     extends State<NoteMetadataSettingsScreen> {
-  DateTime created;
-  DateTime modified;
+  late DateTime created;
+  late DateTime modified;
 
   @override
   void initState() {
@@ -206,7 +204,7 @@ class NoteOutputExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    var style = theme.textTheme.subtitle1;
+    var style = theme.textTheme.subtitle1!;
     style = style.copyWith(fontFamily: "Roboto Mono");
 
     var settings = Provider.of<Settings>(context);
@@ -343,14 +341,14 @@ class CustomMetDataTile extends StatefulWidget {
   final String value;
   final Func1<String, void> onChange;
 
-  CustomMetDataTile({@required this.value, @required this.onChange});
+  CustomMetDataTile({required this.value, required this.onChange});
 
   @override
   _CustomMetDataTileState createState() => _CustomMetDataTileState();
 }
 
 class _CustomMetDataTileState extends State<CustomMetDataTile> {
-  TextEditingController _textController;
+  TextEditingController? _textController;
 
   @override
   void initState() {
@@ -386,13 +384,13 @@ class _CustomMetDataTileState extends State<CustomMetDataTile> {
     var form = Form(
       child: TextFormField(
         validator: (value) {
-          value = value.trim();
+          value = value!.trim();
           if (value.isEmpty) {
             return "";
           }
 
           var map = MarkdownYAMLCodec.parseYamlText(value);
-          if (map == null || map.isEmpty) {
+          if (map.isEmpty) {
             return tr("settings.noteMetaData.customMetaData.invalid");
           }
           return "";
@@ -416,9 +414,9 @@ class _CustomMetDataTileState extends State<CustomMetDataTile> {
         ),
         TextButton(
           onPressed: () {
-            var text = _textController.text.trim();
+            var text = _textController!.text.trim();
             var map = MarkdownYAMLCodec.parseYamlText(text);
-            if (map == null || map.isEmpty) {
+            if (map.isEmpty) {
               return Navigator.of(context).pop();
             }
 
