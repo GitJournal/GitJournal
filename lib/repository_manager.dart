@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -15,16 +13,16 @@ class RepositoryManager with ChangeNotifier {
   var repoIds = <String>[];
   var currentId = DEFAULT_ID;
 
-  GitJournalRepo _repo;
+  late GitJournalRepo _repo;
 
   final String gitBaseDir;
   final String cacheDir;
   final SharedPreferences pref;
 
   RepositoryManager({
-    @required this.gitBaseDir,
-    @required this.cacheDir,
-    @required this.pref,
+    required this.gitBaseDir,
+    required this.cacheDir,
+    required this.pref,
   }) {
     _load();
     Log.i("Repo Ids $repoIds");

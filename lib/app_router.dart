@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:meta/meta.dart';
@@ -56,7 +54,7 @@ class AppRouter {
   final AppSettings appSettings;
   final Settings settings;
 
-  AppRouter({@required this.appSettings, @required this.settings});
+  AppRouter({required this.appSettings, required this.settings});
 
   String initialRoute() {
     var route = '/';
@@ -76,7 +74,7 @@ class AppRouter {
     List<String> sharedImages,
     Function callbackIfUsedShared,
   ) {
-    var route = routeSettings.name;
+    var route = routeSettings.name ?? "";
     if (route == AppRoute.AllFolders ||
         route == AppRoute.AllTags ||
         route == AppRoute.FileSystem) {
@@ -89,7 +87,7 @@ class AppRouter {
           sharedText,
           sharedImages,
           callbackIfUsedShared,
-        ),
+        )!,
         transitionsBuilder: (_, anim, __, child) {
           return FadeTransition(opacity: anim, child: child);
         },
@@ -105,11 +103,11 @@ class AppRouter {
         sharedText,
         sharedImages,
         callbackIfUsedShared,
-      ),
+      )!,
     );
   }
 
-  Widget screenForRoute(
+  Widget? screenForRoute(
     String route,
     GitJournalRepo repository,
     Settings settings,

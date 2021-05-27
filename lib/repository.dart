@@ -56,10 +56,10 @@ class GitJournalRepo with ChangeNotifier {
   int numChanges = 0;
 
   bool get hasJournalEntries {
-    return notesFolder!.hasNotes;
+    return notesFolder.hasNotes;
   }
 
-  NotesFolderFS? notesFolder;
+  late NotesFolderFS notesFolder;
 
   bool remoteGitRepoConfigured = false;
 
@@ -169,7 +169,7 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   void _loadFromCache() async {
-    await _notesCache.load(notesFolder!);
+    await _notesCache.load(notesFolder);
     Log.i("Finished loading the notes cache");
 
     await _loadNotes();
@@ -179,8 +179,8 @@ class GitJournalRepo with ChangeNotifier {
   Future<void> _loadNotes() async {
     // FIXME: We should report the notes that failed to load
     return _loadLock.synchronized(() async {
-      await notesFolder!.loadRecursively();
-      await _notesCache.buildCache(notesFolder!);
+      await notesFolder.loadRecursively();
+      await _notesCache.buildCache(notesFolder);
 
       var changes = await _gitRepo.numChanges();
       numChanges = changes != null ? changes : 0;
@@ -448,7 +448,7 @@ class GitJournalRepo with ChangeNotifier {
 
     _notesCache.clear();
     remoteGitRepoConfigured = true;
-    notesFolder!.reset(repoPath);
+    notesFolder.reset(repoPath);
 
     settings.folderName = repoFolderName;
     settings.save();
@@ -483,7 +483,7 @@ class GitJournalRepo with ChangeNotifier {
       _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);
 
       _notesCache.clear();
-      notesFolder!.reset(repoPath);
+      notesFolder.reset(repoPath);
       notifyListeners();
 
       _loadNotes();
@@ -531,7 +531,7 @@ class GitJournalRepo with ChangeNotifier {
       print("Done checking out $branchName");
 
       await _notesCache.clear();
-      notesFolder!.reset(repoPath);
+      notesFolder.reset(repoPath);
       notifyListeners();
 
       _loadNotes();

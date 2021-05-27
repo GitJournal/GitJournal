@@ -49,8 +49,8 @@ import 'package:gitjournal/widgets/rename_dialog.dart';
 class ShowUndoSnackbar {}
 
 class NoteEditor extends StatefulWidget {
-  final Note note;
-  final NotesFolderFS notesFolder;
+  final Note/*!*/ note;
+  final NotesFolderFS/*!*/ notesFolder;
   final NotesFolder parentFolderView;
   final EditorType defaultEditorType;
 

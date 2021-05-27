@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:io';
 
@@ -116,7 +114,7 @@ class JournalApp extends StatefulWidget {
         Log.i("Running on ios", props: readIosDeviceInfo(info));
       }
     } catch (e) {
-      Log.d(e);
+      Log.d(e.toString());
     }
 
     if (isPhysicalDevice == false) {
@@ -176,11 +174,11 @@ class JournalApp extends StatefulWidget {
 
 class _JournalAppState extends State<JournalApp> {
   final _navigatorKey = GlobalKey<NavigatorState>();
-  String _pendingShortcut;
+  String? _pendingShortcut;
 
-  StreamSubscription _intentDataStreamSubscription;
-  String _sharedText;
-  List<String> _sharedImages;
+  StreamSubscription? _intentDataStreamSubscription;
+  var _sharedText = "";
+  var _sharedImages = <String>[];
 
   @override
   void initState() {
@@ -195,14 +193,14 @@ class _JournalAppState extends State<JournalApp> {
       Log.i("Quick Action Open: $shortcutType");
       if (_navigatorKey.currentState == null) {
         Log.i("Quick Action delegating for after build");
-        WidgetsBinding.instance
+        WidgetsBinding.instance!
             .addPostFrameCallback((_) => _afterBuild(context));
         setState(() {
           _pendingShortcut = shortcutType;
         });
         return;
       }
-      _navigatorKey.currentState.pushNamed("/newNote/$shortcutType");
+      _navigatorKey.currentState!.pushNamed("/newNote/$shortcutType");
     });
 
     quickActions.setShortcutItems(<ShortcutItem>[
@@ -228,7 +226,7 @@ class _JournalAppState extends State<JournalApp> {
 
   void _afterBuild(BuildContext context) {
     if (_pendingShortcut != null) {
-      _navigatorKey.currentState.pushNamed("/newNote/$_pendingShortcut");
+      _navigatorKey.currentState!.pushNamed("/newNote/$_pendingShortcut");
       _pendingShortcut = null;
     }
   }
@@ -239,36 +237,34 @@ class _JournalAppState extends State<JournalApp> {
     }
 
     var handleShare = () {
-      var noText = _sharedText == null || _sharedText.isEmpty;
-      var noImages = _sharedImages == null || _sharedImages.isEmpty;
+      var noText = _sharedText.isEmpty;
+      var noImages = _sharedImages.isEmpty;
       if (noText && noImages) {
         return;
       }
 
       var settings = Provider.of<Settings>(context, listen: false);
       var editor = settings.defaultEditor.toInternalString();
-      _navigatorKey.currentState.pushNamed("/newNote/$editor");
+      _navigatorKey.currentState!.pushNamed("/newNote/$editor");
     };
 
     // For sharing images coming from outside the app while the app is in the memory
     _intentDataStreamSubscription = ReceiveSharingIntent.getMediaStream()
         .listen((List<SharedMediaFile> value) {
-      if (value == null) return;
       Log.d("Received Share $value");
 
-      _sharedImages = value.map((f) => f.path)?.toList();
-      WidgetsBinding.instance.addPostFrameCallback((_) => handleShare());
+      _sharedImages = value.map((f) => f.path).toList();
+      WidgetsBinding.instance!.addPostFrameCallback((_) => handleShare());
     }, onError: (err) {
       Log.e("getIntentDataStream error: $err");
     });
 
     // For sharing images coming from outside the app while the app is closed
     ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
-      if (value == null) return;
       Log.d("Received Share with App (media): $value");
 
-      _sharedImages = value.map((f) => f.path)?.toList();
-      WidgetsBinding.instance.addPostFrameCallback((_) => handleShare());
+      _sharedImages = value.map((f) => f.path).toList();
+      WidgetsBinding.instance!.addPostFrameCallback((_) => handleShare());
     });
 
     // For sharing or opening text coming from outside the app while the app is in the memory
@@ -276,22 +272,23 @@ class _JournalAppState extends State<JournalApp> {
         ReceiveSharingIntent.getTextStream().listen((String value) {
       Log.d("Received Share $value");
       _sharedText = value;
-      WidgetsBinding.instance.addPostFrameCallback((_) => handleShare());
+      WidgetsBinding.instance!.addPostFrameCallback((_) => handleShare());
     }, onError: (err) {
       Log.e("getLinkStream error: $err");
     });
 
     // For sharing or opening text coming from outside the app while the app is closed
-    ReceiveSharingIntent.getInitialText().then((String value) {
+    ReceiveSharingIntent.getInitialText().then((String? value) {
+      if (value == null) return;
       Log.d("Received Share with App (text): $value");
       _sharedText = value;
-      WidgetsBinding.instance.addPostFrameCallback((_) => handleShare());
+      WidgetsBinding.instance!.addPostFrameCallback((_) => handleShare());
     });
   }
 
   @override
   void dispose() {
-    _intentDataStreamSubscription.cancel();
+    _intentDataStreamSubscription?.cancel();
     super.dispose();
   }
 
@@ -326,9 +323,9 @@ class _JournalAppState extends State<JournalApp> {
       navigatorKey: _navigatorKey,
       title: 'GitJournal',
 
-      localizationsDelegates: EasyLocalization.of(context).delegates,
-      supportedLocales: EasyLocalization.of(context).supportedLocales,
-      locale: EasyLocalization.of(context).locale,
+      localizationsDelegates: EasyLocalization.of(context)!.delegates,
+      supportedLocales: EasyLocalization.of(context)!.supportedLocales,
+      locale: EasyLocalization.of(context)!.locale,
 
       theme: Themes.light,
       darkTheme: Themes.dark,
@@ -344,8 +341,8 @@ class _JournalAppState extends State<JournalApp> {
       onGenerateRoute: (rs) {
         var r = router
             .generateRoute(rs, stateContainer, _sharedText, _sharedImages, () {
-          _sharedText = null;
-          _sharedImages = null;
+          _sharedText = "";
+          _sharedImages = [];
         });
 
         return r;
