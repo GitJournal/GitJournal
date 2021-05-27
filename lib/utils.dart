@@ -79,15 +79,6 @@ bool folderWithSpecExists(BuildContext context, String spec) {
   return rootFolder.getFolderWithSpec(spec) != null;
 }
 
-String toCurlCommand(Uri url, Map<String, String> headers) {
-  var headersStr = "";
-  headers.forEach((key, value) {
-    headersStr += ' -H "$key: $value" ';
-  });
-
-  return "curl -X GET '$url' $headersStr";
-}
-
 Future<void> shareNote(Note note) async {
   return Share.share(note.serialize());
 }

@@ -108,3 +108,12 @@ class GitHostException implements Exception {
     return "GitHostException: " + cause;
   }
 }
+
+String toCurlCommand(Uri url, Map<String, String> headers) {
+  var headersStr = "";
+  headers.forEach((key, value) {
+    headersStr += ' -H "$key: $value" ';
+  });
+
+  return "curl -X GET '$url' $headersStr";
+}

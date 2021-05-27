@@ -9,7 +9,6 @@ import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'githost.dart';
 
@@ -255,7 +254,7 @@ class GitHub implements GitHost {
       issues: parsedJson['open_issues_count'],
       language: parsedJson['language'],
       private: parsedJson['private'],
-      tags: parsedJson['topics'],
+      tags: parsedJson['topics'] ?? [],
       license: licenseMap != null ? licenseMap['spdx_id'] : null,
     );
   }

@@ -10,7 +10,6 @@ import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'githost.dart';
 
@@ -233,7 +232,7 @@ class GitLab implements GitHost {
       fullName: fullName,
       cloneUrl: parsedJson['ssh_url_to_repo'],
       updatedAt: updatedAt,
-      description: parsedJson['description'],
+      description: parsedJson['description'] ?? "",
       stars: parsedJson['star_count'],
       forks: parsedJson['forks_count'],
       issues: parsedJson['open_issues_count'],
