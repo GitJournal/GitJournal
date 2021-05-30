@@ -96,7 +96,7 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
       ProOverlay(
         feature: Feature.singleJournalEntry,
         child: ListPreference(
-          title: tr('settings.note.fileName'),
+          title: tr('settings.note.newNoteFileName'),
           currentOption: settings.journalNoteFileNameFormat.toPublicString(),
           options: NoteFileNameFormat.options
               .map((f) => f.toPublicString())
