@@ -1,5 +1,3 @@
-// @dart=2.9
-
 /*
 Copyright 2020-2021 Roland Fredenhagen <important@van-fredenhagen.de>
 
@@ -21,7 +19,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class HeroDialogRoute<T> extends PageRoute<T> {
-  HeroDialogRoute({this.builder}) : super();
+  HeroDialogRoute({required this.builder}) : super();
 
   final WidgetBuilder builder;
 
