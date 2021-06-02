@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -141,8 +139,8 @@ class MonthlyRentalWidget extends StatelessWidget {
   final String minYearlyPurchase;
 
   const MonthlyRentalWidget({
-    Key key,
-    @required this.minYearlyPurchase,
+    Key? key,
+    required this.minYearlyPurchase,
   }) : super(key: key);
 
   @override
@@ -178,7 +176,7 @@ class MonthlyRentalWidget extends StatelessWidget {
 
 class YearlyPurchaseWidget extends StatelessWidget {
   const YearlyPurchaseWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -211,7 +209,7 @@ class YearlyPurchaseWidget extends StatelessWidget {
 class PurchaseCard extends StatelessWidget {
   final Widget child;
 
-  PurchaseCard({@required this.child});
+  PurchaseCard({required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -235,7 +233,7 @@ class PurchaseCard extends StatelessWidget {
 class PurchaseCards extends StatelessWidget {
   final List<Widget> children;
 
-  PurchaseCards({@required this.children});
+  PurchaseCards({required this.children});
 
   @override
   Widget build(BuildContext context) {

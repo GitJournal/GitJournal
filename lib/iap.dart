@@ -1,12 +1,9 @@
-// @dart=2.9
-
 import 'dart:convert';
 import 'dart:io' show Platform;
 
 import 'package:http/http.dart' as http;
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase/store_kit_wrappers.dart';
-import 'package:meta/meta.dart';
 
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/app_settings.dart';
@@ -32,7 +29,7 @@ class InAppPurchases {
     var exp = AppSettings.instance.proExpirationDate;
 
     Log.i("Checking if ProMode should be enabled. Exp: $exp");
-    if (exp != null && exp.isNotEmpty && exp.compareTo(currentDt) > 0) {
+    if (exp.isNotEmpty && exp.compareTo(currentDt) > 0) {
       Log.i("Not checking PurchaseInfo as exp = $exp and cur = $currentDt");
       return;
     }
@@ -51,10 +48,6 @@ class InAppPurchases {
     Log.i("Trying to confirmProPurchase");
     try {
       sub = await _subscriptionStatus();
-      if (sub == null) {
-        Log.i("Failed to get subscription status");
-        return;
-      }
     } catch (e, stackTrace) {
       Log.e("Failed to get subscription status", ex: e, stacktrace: stackTrace);
       Log.i("Disabling Pro mode as it has probably expired");
@@ -93,7 +86,7 @@ class InAppPurchases {
 
     var subs = <SubscriptionStatus>[];
     for (var purchase in response.pastPurchases) {
-      DateTime dt;
+      DateTime? dt;
       try {
         dt = await getExpiryDate(
             purchase.verificationData.serverVerificationData,
@@ -184,7 +177,7 @@ const base_url = 'https://us-central1-gitjournal-io.cloudfunctions.net';
 const ios_url = '$base_url/IAPIosVerify';
 const android_url = '$base_url/IAPAndroidVerify';
 
-Future<DateTime> getExpiryDate(
+Future<DateTime?> getExpiryDate(
     String receipt, String sku, bool isPurchase) async {
   assert(receipt.isNotEmpty);
 
@@ -214,7 +207,7 @@ Future<DateTime> getExpiryDate(
 
   Log.i("IAP Verify body: ${response.body}");
 
-  var b = json.decode(response.body) as Map;
+  var b = json.decode(response.body) as Map?;
   if (b == null || !b.containsKey("expiry_date")) {
     Log.e("Received Invalid Body from GCP IAP Verify", props: {
       "code": response.statusCode,
@@ -245,7 +238,7 @@ Future<SubscriptionStatus> verifyPurchase(PurchaseDetails purchase) async {
     _isPurchase(purchase),
   );
   if (dt == null || !dt.isAfter(DateTime.now())) {
-    return SubscriptionStatus(false, dt);
+    return SubscriptionStatus(false, dt!);
   }
   return SubscriptionStatus(true, dt);
 }
@@ -264,11 +257,11 @@ class IAPVerifyException implements Exception {
   final bool isPurchase;
 
   IAPVerifyException({
-    @required this.code,
-    @required this.body,
-    @required this.receipt,
-    @required this.sku,
-    @required this.isPurchase,
+    required this.code,
+    required this.body,
+    required this.receipt,
+    required this.sku,
+    required this.isPurchase,
   });
 
   @override
