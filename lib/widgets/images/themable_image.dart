@@ -1,5 +1,3 @@
-// @dart=2.9
-
 /*
 Copyright 2020-2021 Roland Fredenhagen <important@van-fredenhagen.de>
 
@@ -25,9 +23,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 
 class ThemableImage extends StatelessWidget {
-  final double width;
-  final double height;
-  final File file;
+  final double? width;
+  final double? height;
+  final File? file;
   final String string;
   final ThemingMethod themingMethod;
   final ThemingCondition themingCondition;
@@ -57,12 +55,12 @@ class ThemableImage extends StatelessWidget {
 
   ThemableImage.from(
     ThemableImage ti, {
-    double width,
-    double height,
-    ThemingMethod themingMethod,
-    ThemingCondition themingCondition,
-    ColorCondition colorCondition,
-    Color bg,
+    double? width,
+    double? height,
+    ThemingMethod? themingMethod,
+    ThemingCondition? themingCondition,
+    ColorCondition? colorCondition,
+    Color? bg,
   })  : file = ti.file,
         string = ti.string,
         width = width ?? ti.width,
@@ -76,7 +74,7 @@ class ThemableImage extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget image;
     if (file != null) {
-      image = Image.file(file, width: width, height: height);
+      image = Image.file(file!, width: width, height: height);
     } else if (string.isNotEmpty) {
       image = SvgPicture(
           StringPicture(
@@ -104,7 +102,7 @@ class ThemableImage extends StatelessWidget {
         !_hasBackground(svgRoot, svgRoot.viewport.viewBox.width,
             svgRoot.viewport.viewBox.height) ||
         themingMethod == ThemingMethod.wToBg) {
-      svgRoot = _themeDrawable(svgRoot, (Color color) {
+      svgRoot = _themeDrawable(svgRoot, (Color? color) {
         switch (themingMethod) {
           case ThemingMethod.wToBg:
             return color == Colors.white ? bg : color;
@@ -114,7 +112,7 @@ class ThemableImage extends StatelessWidget {
             return color;
 
           case ThemingMethod.invertBrightness:
-            final hslColor = HSLColor.fromColor(color);
+            final hslColor = HSLColor.fromColor(color!);
             final backGroundLightness = HSLColor.fromColor(bg).lightness;
             switch (colorCondition) {
               case ColorCondition.all:
@@ -142,8 +140,7 @@ class ThemableImage extends StatelessWidget {
                 return color;
             }
         }
-        return color;
-      });
+      }) as DrawableRoot;
     }
 
     final Picture pic = svgRoot.toPicture(
@@ -178,7 +175,7 @@ bool _hasBackground(Drawable draw, double width, double height,
     if (draw is DrawableShape) {
       final drawShape = draw;
       return drawShape.style.fill != null &&
-          drawShape.style.fill.color.alpha > minAlpha &&
+          drawShape.style.fill!.color!.alpha > minAlpha &&
           [
             Offset(width * maxBorder, height * maxBorder),
             Offset(width - width * maxBorder, height * maxBorder),
@@ -189,7 +186,7 @@ bool _hasBackground(Drawable draw, double width, double height,
     // TODO Allow for two shapes to be the background together
     if (draw is DrawableParent) {
       final drawParent = draw;
-      return drawParent.children.any((element) => _hasBackground(
+      return drawParent.children!.any((element) => _hasBackground(
           element, width, height,
           minAlpha: minAlpha, maxBorder: maxBorder, maxDepth: maxDepth - 1));
     }
@@ -198,28 +195,28 @@ bool _hasBackground(Drawable draw, double width, double height,
 }
 
 Drawable _themeDrawable(
-    Drawable draw, Color Function(Color color) transformColor) {
+    Drawable draw, Color? Function(Color? color) transformColor) {
   if (draw is DrawableStyleable && !(draw is DrawableGroup)) {
     final DrawableStyleable drawStylable = draw;
     draw = drawStylable.mergeStyle(DrawableStyle(
-        stroke: drawStylable.style.stroke != null &&
-                drawStylable.style.stroke.color != null
+        stroke: drawStylable.style!.stroke != null &&
+                drawStylable.style!.stroke!.color != null
             ? DrawablePaint.merge(
-                DrawablePaint(drawStylable.style.stroke.style,
-                    color: transformColor(drawStylable.style.stroke.color)),
-                drawStylable.style.stroke)
+                DrawablePaint(drawStylable.style!.stroke!.style,
+                    color: transformColor(drawStylable.style!.stroke!.color)),
+                drawStylable.style!.stroke)
             : null,
-        fill: drawStylable.style.fill != null &&
-                drawStylable.style.fill.color != null
+        fill: drawStylable.style!.fill != null &&
+                drawStylable.style!.fill!.color != null
             ? DrawablePaint.merge(
-                DrawablePaint(drawStylable.style.fill.style,
-                    color: transformColor(drawStylable.style.fill.color)),
-                drawStylable.style.fill)
+                DrawablePaint(drawStylable.style!.fill!.style,
+                    color: transformColor(drawStylable.style!.fill!.color)),
+                drawStylable.style!.fill)
             : null));
   }
   if (draw is DrawableParent) {
     final DrawableParent drawParent = draw;
-    final children = drawParent.children
+    final children = drawParent.children!
         .map((e) => _themeDrawable(e, transformColor))
         .toList(growable: false);
     if (draw is DrawableRoot) {

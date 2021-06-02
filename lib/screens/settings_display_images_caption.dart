@@ -1,5 +1,3 @@
-// @dart=2.9
-
 /*
 Copyright 2020-2021 Roland Fredenhagen <important@van-fredenhagen.de>
 
@@ -38,7 +36,10 @@ class SettingsDisplayImagesCaptionScreenState
   @override
   Widget build(BuildContext context) {
     var settings = Provider.of<Settings>(context);
-    var saveDoNotCaptionTag = (String doNotCaptionTags) {
+    var saveDoNotCaptionTag = (String? doNotCaptionTags) {
+      if (doNotCaptionTags == null) {
+        return;
+      }
       settings.doNotCaptionTags = parseTags(doNotCaptionTags);
       settings.save();
     };
@@ -52,8 +53,8 @@ class SettingsDisplayImagesCaptionScreenState
           labelText:
               tr('settings.display.images.captions.doNotCaptionTags.label'),
         ),
-        validator: (String value) {
-          value = value.trim();
+        validator: (String? value) {
+          value = value!.trim();
           if (parseTags(value).isEmpty) {
             return tr(
                 'settings.display.images.captions.doNotCaptionTags.validator.empty');
@@ -74,12 +75,15 @@ class SettingsDisplayImagesCaptionScreenState
         initialValue: csvTags(settings.doNotCaptionTags),
       ),
       onChanged: () {
-        if (!doNotCaptionTagsKey.currentState.validate()) return;
-        saveDoNotCaptionTag(doNotCaptionTagsKey.currentState.value);
+        if (!doNotCaptionTagsKey.currentState!.validate()) return;
+        saveDoNotCaptionTag(doNotCaptionTagsKey.currentState!.value);
       },
     );
 
-    var saveDoThemeTag = (String doCaptionTags) {
+    var saveDoThemeTag = (String? doCaptionTags) {
+      if (doCaptionTags == null) {
+        return;
+      }
       settings.doCaptionTags = parseTags(doCaptionTags);
       settings.save();
       doNotCaptionTagsForm.createState();
@@ -92,8 +96,8 @@ class SettingsDisplayImagesCaptionScreenState
           hintText: tr('settings.display.images.captions.doCaptionTags.hint'),
           labelText: tr('settings.display.images.captions.doCaptionTags.label'),
         ),
-        validator: (String value) {
-          if (parseTags(value).isEmpty) {
+        validator: (String? value) {
+          if (parseTags(value!).isEmpty) {
             return tr(
                 'settings.display.images.captions.doCaptionTags.validator.empty');
           }
@@ -113,8 +117,8 @@ class SettingsDisplayImagesCaptionScreenState
         initialValue: csvTags(settings.doCaptionTags),
       ),
       onChanged: () {
-        if (!doCaptionTagsKey.currentState.validate()) return;
-        saveDoThemeTag(doCaptionTagsKey.currentState.value);
+        if (!doCaptionTagsKey.currentState!.validate()) return;
+        saveDoThemeTag(doCaptionTagsKey.currentState!.value);
       },
     );
 

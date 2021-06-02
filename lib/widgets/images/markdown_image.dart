@@ -1,5 +1,3 @@
-// @dart=2.9
-
 /*
 Copyright 2020-2021 Roland Fredenhagen <important@van-fredenhagen.de>
 
@@ -35,19 +33,21 @@ import 'package:gitjournal/widgets/images/image_details.dart';
 import 'package:gitjournal/widgets/images/themable_image.dart';
 
 class MarkdownImage extends StatelessWidget {
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
   final String altText;
   final String tooltip;
+
+  // FIXME: Avoid using dynamic!
   final Future<dynamic> data;
 
   MarkdownImage._(
-      this.data, this.width, this.height, String altText, String tooltip)
+      this.data, this.width, this.height, String? altText, String? tooltip)
       : altText = altText ?? "",
         tooltip = tooltip ?? "";
 
   factory MarkdownImage(Uri uri, String imageDirectory,
-      {double width, double height, String altText, String titel}) {
+      {double? width, double? height, String? altText, String? titel}) {
     final file = ((uri.isScheme("http") || uri.isScheme("https"))
         ? DefaultCacheManager().getSingleFile(uri.toString())
         : Future.sync(
@@ -118,7 +118,7 @@ class MarkdownImage extends StatelessWidget {
                             ),
                             Text(
                               errorMessage,
-                              style: theme.textTheme.bodyText1
+                              style: theme.textTheme.bodyText1!
                                   .copyWith(color: theme.errorColor),
                               textAlign: TextAlign.center,
                               maxLines: 2,
@@ -134,7 +134,7 @@ class MarkdownImage extends StatelessWidget {
                 Widget im;
                 if (snapshot.data is String) {
                   im = ThemableImage.svg(
-                    snapshot.data,
+                    snapshot.data as String,
                     width: width ?? MediaQuery.of(context).size.width,
                     height: height,
                     themingMethod: override == ThemeOverride.No ||
@@ -167,7 +167,7 @@ class MarkdownImage extends StatelessWidget {
                   );
                 } else {
                   im = ThemableImage.image(
-                    snapshot.data,
+                    snapshot.data as File,
                     width: width,
                     height: height,
                     doTheme: (settings.themeRasterGraphics ||
@@ -185,7 +185,8 @@ class MarkdownImage extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => ImageDetails(
-                                im, captionText(context, altText, tooltip))));
+                                im as ThemableImage,
+                                captionText(context, altText, tooltip))));
                   },
                 );
               }
@@ -215,7 +216,7 @@ class MarkdownImage extends StatelessWidget {
 }
 
 Color getOverlayBackgroundColor(BuildContext context,
-    {Color light, Color dark}) {
+    {Color? light, Color? dark}) {
   final settings = Provider.of<Settings>(context);
   final theme = Theme.of(context);
   return theme.brightness == Brightness.dark

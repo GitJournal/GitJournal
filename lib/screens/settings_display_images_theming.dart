@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 /*
 Copyright 2020-2021 Roland Fredenhagen <important@van-fredenhagen.de>
@@ -40,8 +40,8 @@ class SettingsDisplayImagesThemingScreenState
   Widget build(BuildContext context) {
     var settings = Provider.of<Settings>(context);
 
-    var saveDoNotThemeTag = (String doNotThemeTags) {
-      settings.doNotThemeTags = parseTags(doNotThemeTags);
+    var saveDoNotThemeTag = (String? doNotThemeTags) {
+      settings.doNotThemeTags = parseTags(doNotThemeTags!);
       settings.save();
     };
     var doNotThemeTagsForm = Form(
@@ -52,8 +52,8 @@ class SettingsDisplayImagesThemingScreenState
           hintText: tr('settings.display.images.theming.doNotThemeTags.hint'),
           labelText: tr('settings.display.images.theming.doNotThemeTags.label'),
         ),
-        validator: (String value) {
-          value = value.trim();
+        validator: (String? value) {
+          value = value!.trim();
           if (parseTags(value).isEmpty) {
             return tr(
                 'settings.display.images.theming.doNotThemeTags.validator.empty');
@@ -72,13 +72,13 @@ class SettingsDisplayImagesThemingScreenState
         initialValue: csvTags(settings.doNotThemeTags),
       ),
       onChanged: () {
-        if (!doNotThemeTagsKey.currentState.validate()) return;
-        saveDoNotThemeTag(doNotThemeTagsKey.currentState.value);
+        if (!doNotThemeTagsKey.currentState!.validate()) return;
+        saveDoNotThemeTag(doNotThemeTagsKey.currentState!.value);
       },
     );
 
-    var saveDoThemeTag = (String doThemeTags) {
-      settings.doThemeTags = parseTags(doThemeTags);
+    var saveDoThemeTag = (String? doThemeTags) {
+      settings.doThemeTags = parseTags(doThemeTags!);
       settings.save();
     };
     var doThemeTagsForm = Form(
@@ -89,8 +89,8 @@ class SettingsDisplayImagesThemingScreenState
           hintText: tr('settings.display.images.theming.doThemeTags.hint'),
           labelText: tr('settings.display.images.theming.doThemeTags.label'),
         ),
-        validator: (String value) {
-          if (parseTags(value).isEmpty) {
+        validator: (String? value) {
+          if (parseTags(value!).isEmpty) {
             return tr(
                 'settings.display.images.theming.doThemeTags.validator.empty');
           }
@@ -110,8 +110,8 @@ class SettingsDisplayImagesThemingScreenState
         initialValue: csvTags(settings.doThemeTags),
       ),
       onChanged: () {
-        if (!doThemeTagsKey.currentState.validate()) return;
-        saveDoThemeTag(doThemeTagsKey.currentState.value);
+        if (!doThemeTagsKey.currentState!.validate()) return;
+        saveDoThemeTag(doThemeTagsKey.currentState!.value);
       },
     );
     var body = ListView(children: <Widget>[
