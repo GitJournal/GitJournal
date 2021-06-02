@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:dashbook/dashbook.dart';
@@ -46,7 +44,7 @@ void main() async {
     dashbook.storiesOf(routeName).decorator(CenterDecorator()).add('all',
         (context) {
       return appRouter.screenForRoute(
-          routeName, repo, settings, null, null, () {});
+          routeName, repo, settings, null, null, () {})!;
     });
   }
 

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:gitjournal/editors/autocompletion_widget.dart';
@@ -20,9 +18,9 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, this.title}) : super(key: key);
 
-  final String title;
+  final String? title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -33,7 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
   GlobalKey _textFieldKey = GlobalKey();
   TextStyle _textFieldStyle = const TextStyle(fontSize: 20);
 
-  TextEditingController _textController;
+  TextEditingController? _textController;
 
   @override
   void initState() {
@@ -56,12 +54,12 @@ class _MyHomePageState extends State<MyHomePage> {
       textFieldStyle: _textFieldStyle,
       textFieldKey: _textFieldKey,
       textFieldFocusNode: _focusNode,
-      textController: _textController,
+      textController: _textController!,
       child: textField,
     );
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.title!),
       ),
       body: Center(
         child: SingleChildScrollView(

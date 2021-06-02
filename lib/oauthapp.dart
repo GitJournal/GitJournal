@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'apis/githost_factory.dart';
@@ -15,14 +13,14 @@ var key =
     'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+VAh8r+vn0c+M+DacOo/szXcdMpxO1kIO3USkzgE5XdO83kQdDwh4Xc4P3dcc+FFSfVcEl3mSXGKbYC3G0ZoVcWd4ed40Gt3sLHSfNRQlRv+obnqKbzDLuOGfq65EkaJ90vrWBo/k7K8tBC2j1FZ/PUYy3DxeQkPEZXCMZDSG5P/+XoHn5IPcaxDpvlZjtOrx4H3pQ/YVI+XmyFAsZe+/Shy5sg4ilsdo4BQN2nODuBLwmgYu/hHmCcd8t4OxgBANVN8TMqHnZfRLixRSuXn0DbV4YOa/b2lBFQNvjkoBF6KhXOxZ+awyjyTpNp4AgF5c+3xptkNwUlwiQDCzcUmH your_email@example.com';
 
 class OAuthAppState extends State<OAuthApp> {
-  GitHost githost;
+  GitHost? githost;
 
   @override
   void initState() {
     super.initState();
 
     githost = createGitHost(GitHostType.GitHub);
-    githost.init((GitHostException e) {
+    githost!.init((GitHostException? e) {
       if (e != null) {
         print("Got exeception: $e");
       } else {
@@ -43,14 +41,14 @@ class OAuthAppState extends State<OAuthApp> {
           ElevatedButton(
             child: const Text("Open OAuth URL"),
             onPressed: () {
-              githost.launchOAuthScreen();
+              githost!.launchOAuthScreen();
             },
           ),
           ElevatedButton(
             child: const Text("List Repos"),
             onPressed: () async {
               try {
-                var repos = await githost.listRepos();
+                var repos = await githost!.listRepos();
                 for (var repo in repos) {
                   print(repo);
                 }
@@ -63,7 +61,7 @@ class OAuthAppState extends State<OAuthApp> {
             child: const Text("Create Repo"),
             onPressed: () async {
               try {
-                var repo = await githost.createRepo("journal_test2");
+                var repo = await githost!.createRepo("journal_test2");
                 print(repo);
               } catch (err) {
                 print("Create Repo: " + err.toString());
@@ -74,7 +72,7 @@ class OAuthAppState extends State<OAuthApp> {
             child: const Text("Add Deploy Key"),
             onPressed: () async {
               try {
-                await githost.addDeployKey(key, "vhanda/journal_test2");
+                await githost!.addDeployKey(key, "vhanda/journal_test2");
               } catch (err) {
                 print("Deploy Key: " + err.toString());
               }

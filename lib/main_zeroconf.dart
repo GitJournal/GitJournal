@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:io';
 
@@ -21,10 +19,10 @@ class AppService {
   static const int port = 4000;
 
   /// The cached service.
-  static BonsoirService _service;
+  static BonsoirService? _service;
 
   /// Returns (and create if needed) the app Bonsoir service.
-  static Future<BonsoirService> getService() async {
+  static Future<BonsoirService?> getService() async {
     if (_service != null) {
       return _service;
     }
@@ -47,7 +45,7 @@ class AppService {
 /// Provider model that allows to handle Bonsoir broadcasts.
 class BonsoirBroadcastModel extends ChangeNotifier {
   /// The current Bonsoir broadcast object instance.
-  BonsoirBroadcast _bonsoirBroadcast;
+  BonsoirBroadcast? _bonsoirBroadcast;
 
   /// Whether Bonsoir is currently broadcasting the app's service.
   bool _isBroadcasting = false;
@@ -57,13 +55,13 @@ class BonsoirBroadcastModel extends ChangeNotifier {
 
   /// Starts the Bonsoir broadcast.
   Future<void> start({bool notify = true}) async {
-    if (_bonsoirBroadcast == null || _bonsoirBroadcast.isStopped) {
-      _bonsoirBroadcast =
-          BonsoirBroadcast(service: await AppService.getService());
-      await _bonsoirBroadcast.ready;
+    if (_bonsoirBroadcast == null || _bonsoirBroadcast!.isStopped) {
+      _bonsoirBroadcast = BonsoirBroadcast(
+          service: await (AppService.getService() as FutureOr<BonsoirService>));
+      await _bonsoirBroadcast!.ready;
     }
 
-    await _bonsoirBroadcast.start();
+    await _bonsoirBroadcast!.start();
     _isBroadcasting = true;
     if (notify) {
       notifyListeners();
@@ -89,13 +87,13 @@ class BonsoirBroadcastModel extends ChangeNotifier {
 /// Provider model that allows to handle Bonsoir discoveries.
 class BonsoirDiscoveryModel extends ChangeNotifier {
   /// The current Bonsoir discovery object instance.
-  BonsoirDiscovery _bonsoirDiscovery;
+  BonsoirDiscovery? _bonsoirDiscovery;
 
   /// Contains all discovered (and resolved) services.
-  final List<ResolvedBonsoirService> _resolvedServices = [];
+  final List<ResolvedBonsoirService?> _resolvedServices = [];
 
   /// The subscription object.
-  StreamSubscription<BonsoirDiscoveryEvent> _subscription;
+  StreamSubscription<BonsoirDiscoveryEvent>? _subscription;
 
   /// Creates a new Bonsoir discovery model instance.
   BonsoirDiscoveryModel() {
@@ -103,19 +101,19 @@ class BonsoirDiscoveryModel extends ChangeNotifier {
   }
 
   /// Returns all discovered (and resolved) services.
-  List<ResolvedBonsoirService> get discoveredServices =>
+  List<ResolvedBonsoirService?> get discoveredServices =>
       List.of(_resolvedServices);
 
   /// Starts the Bonsoir discovery.
   Future<void> start() async {
-    if (_bonsoirDiscovery == null || _bonsoirDiscovery.isStopped) {
+    if (_bonsoirDiscovery == null || _bonsoirDiscovery!.isStopped) {
       _bonsoirDiscovery =
-          BonsoirDiscovery(type: (await AppService.getService()).type);
-      await _bonsoirDiscovery.ready;
+          BonsoirDiscovery(type: (await AppService.getService())!.type);
+      await _bonsoirDiscovery!.ready;
     }
 
-    await _bonsoirDiscovery.start();
-    _subscription = _bonsoirDiscovery.eventStream.listen(_onEventOccurred);
+    await _bonsoirDiscovery!.start();
+    _subscription = _bonsoirDiscovery!.eventStream!.listen(_onEventOccurred);
   }
 
   /// Stops the Bonsoir discovery.
@@ -132,7 +130,7 @@ class BonsoirDiscoveryModel extends ChangeNotifier {
     }
 
     if (event.type == BonsoirDiscoveryEventType.DISCOVERY_SERVICE_RESOLVED) {
-      _resolvedServices.add(event.service);
+      _resolvedServices.add(event.service as ResolvedBonsoirService?);
       notifyListeners();
     } else if (event.type == BonsoirDiscoveryEventType.DISCOVERY_SERVICE_LOST) {
       _resolvedServices.remove(event.service);
@@ -184,7 +182,7 @@ class ServiceList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BonsoirDiscoveryModel model = context.watch<BonsoirDiscoveryModel>();
-    List<ResolvedBonsoirService> discoveredServices = model.discoveredServices;
+    List<ResolvedBonsoirService?> discoveredServices = model.discoveredServices;
     if (discoveredServices.isEmpty) {
       return const Padding(
         padding: EdgeInsets.all(20),
@@ -211,18 +209,18 @@ class ServiceList extends StatelessWidget {
 /// Allows to display a discovered service.
 class _ServiceWidget extends StatelessWidget {
   /// The discovered service.
-  final ResolvedBonsoirService service;
+  final ResolvedBonsoirService? service;
 
   /// Creates a new service widget.
   const _ServiceWidget({
-    @required this.service,
+    required this.service,
   });
 
   @override
   Widget build(BuildContext context) => ListTile(
-        title: Text(service.name),
+        title: Text(service!.name),
         subtitle: Text(
-            'Type : ${service.type}, ip : ${service.ip}, port : ${service.port}'),
+            'Type : ${service!.type}, ip : ${service!.ip}, port : ${service!.port}'),
       );
 }
 
