@@ -76,9 +76,6 @@ class Graph extends ChangeNotifier {
     var node = _getNode(note);
 
     var links = await node.note.fetchLinks();
-    if (links == null) {
-      return;
-    }
     var linkResolver = LinkResolver(note);
     for (var l in links) {
       var noteB = linkResolver.resolveLink(l);

@@ -1,6 +1,3 @@
-// @dart=2.9
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:collection/collection.dart';
@@ -21,9 +18,9 @@ class NoteBacklinkRenderer extends StatefulWidget {
   final NotesFolder parentFolder;
 
   NoteBacklinkRenderer({
-    @required this.note,
-    @required this.rootFolder,
-    @required this.parentFolder,
+    required this.note,
+    required this.rootFolder,
+    required this.parentFolder,
   });
 
   @override
@@ -120,18 +117,16 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
 class NoteSnippet extends StatelessWidget {
   final Note note;
   final Note parentNote;
-  final Function onTap;
+  final void Function() onTap;
 
   NoteSnippet({
-    @required this.note,
-    @required this.parentNote,
-    @required this.onTap,
+    required this.note,
+    required this.parentNote,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    assert(note != null);
-
     var theme = Theme.of(context);
     var textTheme = theme.textTheme;
     var title = note.title;
@@ -193,7 +188,9 @@ class NoteSnippet extends StatelessWidget {
     // vHanda: This isn't a very fool proof way of figuring out the line
     // FIXME: Ideally, we should be parsing the entire markdown properly and rendering all of it
     return RichText(
-      text: TextSpan(children: _extraMetaLinks(textTheme.bodyText2, paragraph)),
+      text: TextSpan(
+        children: _extraMetaLinks(textTheme.bodyText2!, paragraph),
+      ),
       maxLines: 3,
     );
   }
@@ -212,7 +209,7 @@ List<TextSpan> _extraMetaLinks(TextStyle textStyle, String line) {
     var text = line.substring(0, match.start);
     spans.add(TextSpan(style: textStyle, text: text));
 
-    text = match.group(0);
+    text = match.group(0)!;
     spans.add(TextSpan(
         style: textStyle.copyWith(fontWeight: FontWeight.bold), text: text));
 

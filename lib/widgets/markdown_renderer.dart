@@ -1,5 +1,3 @@
-// @dart=2.9
-
 /*
 Copyright 2020-2021 Vishesh Handa <me@vhanda.in>
                     Roland Fredenhagen <important@van-fredenhagen.de>
@@ -40,9 +38,9 @@ class MarkdownRenderer extends StatelessWidget {
   final Func1<Note, void> onNoteTapped;
 
   const MarkdownRenderer({
-    Key key,
-    @required this.note,
-    @required this.onNoteTapped,
+    Key? key,
+    required this.note,
+    required this.onNoteTapped,
   }) : super(key: key);
 
   @override
@@ -58,10 +56,10 @@ class MarkdownRenderer extends StatelessWidget {
 
     // Copied from MarkdownStyleSheet except Grey is replaced with Highlight color
     var markdownStyleSheet = MarkdownStyleSheet.fromTheme(theme).copyWith(
-      code: theme.textTheme.bodyText2.copyWith(
+      code: theme.textTheme.bodyText2!.copyWith(
         backgroundColor: theme.dialogBackgroundColor,
         fontFamily: 'monospace',
-        fontSize: theme.textTheme.bodyText2.fontSize * 0.85,
+        fontSize: theme.textTheme.bodyText2!.fontSize! * 0.85,
       ),
       tableBorder: TableBorder.all(color: theme.highlightColor, width: 0),
       tableCellsDecoration: BoxDecoration(color: theme.dialogBackgroundColor),
@@ -78,7 +76,7 @@ class MarkdownRenderer extends StatelessWidget {
         color: theme.primaryColorLight,
         borderRadius: BorderRadius.circular(2.0),
       ),
-      checkbox: theme.textTheme.bodyText2.copyWith(
+      checkbox: theme.textTheme.bodyText2!.copyWith(
         color: isDark ? theme.primaryColorLight : theme.primaryColor,
       ),
     );
@@ -87,10 +85,10 @@ class MarkdownRenderer extends StatelessWidget {
       data: note.body,
       // selectable: false, -> making this true breaks link navigation
       styleSheet: markdownStyleSheet,
-      onTapLink: (String _, String link, String __) async {
+      onTapLink: (String _, String? link, String __) async {
         final linkResolver = LinkResolver(note);
 
-        var linkedNote = linkResolver.resolve(link);
+        var linkedNote = linkResolver.resolve(link!);
         if (linkedNote != null) {
           onNoteTapped(linkedNote);
           return;

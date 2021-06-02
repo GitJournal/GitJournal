@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:meta/meta.dart';
-
 import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/repository.dart';

@@ -603,13 +603,13 @@ class Note with NotesNotifier {
     return date.toString();
   }
 
-  Future<List<Link>?> fetchLinks() async {
+  Future<List<Link>> fetchLinks() async {
     if (_links != null) {
-      return _links;
+      return _links!;
     }
 
     _links = await _linksLoader.parseLinks(body: _body, filePath: _filePath!);
-    return _links;
+    return _links!;
   }
 
   List<Link>? links() {

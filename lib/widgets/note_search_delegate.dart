@@ -1,4 +1,4 @@
-// @dart=2.9
+
 
 import 'package:flutter/material.dart';
 
@@ -12,7 +12,7 @@ import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/themes.dart';
 
-class NoteSearchDelegate extends SearchDelegate<Note> {
+class NoteSearchDelegate extends SearchDelegate<Note?> {
   final List<Note> notes;
   final FolderViewType viewType;
 

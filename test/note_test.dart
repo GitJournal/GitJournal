@@ -139,7 +139,7 @@ bar: Foo
       await note.load();
 
       var linksOrNull = await note.fetchLinks();
-      var links = linksOrNull!;
+      var links = linksOrNull;
       expect(links[0].filePath, p.join(tempDir.path, "foo.md"));
       expect(links[0].publicTerm, "Hi");
 
@@ -160,7 +160,7 @@ bar: Foo
       await note.load();
 
       var linksOrNull = await note.fetchLinks();
-      var links = linksOrNull!;
+      var links = linksOrNull;
       expect(links[0].isWikiLink, true);
       expect(links[0].wikiTerm, "GitJournal");
 
