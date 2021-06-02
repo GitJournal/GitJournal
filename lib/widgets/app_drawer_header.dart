@@ -10,7 +10,6 @@ import 'package:time/time.dart';
 import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/utils/logger.dart';
 
 class AppDrawerHeader extends StatelessWidget {
   final Func0<void> repoListToggled;
@@ -171,10 +170,6 @@ class __CurrentRepoState extends State<_CurrentRepo>
 
     var repo = context.watch<GitJournalRepo>();
     var repoPath = await repo.settings.buildRepoPath(repo.gitBaseDirectory);
-    if (repoPath == null) {
-      Log.e("Failed to build repo path");
-      return;
-    }
     _repoFolderName = p.basename(repoPath);
 
     var remoteConfigs = await repo.remoteConfigs();

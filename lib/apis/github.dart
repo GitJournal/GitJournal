@@ -161,7 +161,10 @@ class GitHub implements GitHost {
       throw GitHostException.MissingAccessCode;
     }
 
-    var userInfo = await (getUserInfo() as FutureOr<UserInfo>);
+    var userInfo = await getUserInfo();
+    if (userInfo == null) {
+      throw Exception("GitHub UserInfo not found. This is bad");
+    }
     var owner = userInfo.username;
     var url = Uri.parse("https://api.github.com/repos/$owner/$name");
 

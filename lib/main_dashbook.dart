@@ -44,7 +44,7 @@ void main() async {
     dashbook.storiesOf(routeName).decorator(CenterDecorator()).add('all',
         (context) {
       return appRouter.screenForRoute(
-          routeName, repo, settings, null, null, () {})!;
+          routeName, repo, settings, "", [], () {})!;
     });
   }
 

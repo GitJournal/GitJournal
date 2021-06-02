@@ -147,7 +147,10 @@ class GitLab implements GitHost {
       throw GitHostException.MissingAccessCode;
     }
 
-    var userInfo = await (getUserInfo() as FutureOr<UserInfo>);
+    var userInfo = await getUserInfo();
+    if (userInfo == null) {
+      throw Exception("GitLab no userInfo found!!");
+    }
     var repo = userInfo.username + '%2F' + name;
     var url = Uri.parse(
         "https://gitlab.com/api/v4/projects/$repo?access_token=$_accessCode");

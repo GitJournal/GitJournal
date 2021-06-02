@@ -74,13 +74,11 @@ class GitJournalRepo with ChangeNotifier {
     var settings = Settings(id);
     settings.load(pref);
 
-    logEvent(Event.Settings,
-        parameters: settings.toLoggableMap() as Map<String, String>);
+    logEvent(Event.Settings, parameters: settings.toLoggableMap());
 
     Log.i("Setting ${settings.toLoggableMap()}");
 
-    var repoPath =
-        await (settings.buildRepoPath(gitBaseDir) as FutureOr<String>);
+    var repoPath = await settings.buildRepoPath(gitBaseDir);
     Log.i("Loading Repo at path $repoPath");
 
     var repoDir = Directory(repoPath);
@@ -466,10 +464,6 @@ class GitJournalRepo with ChangeNotifier {
 
   Future<void> moveRepoToPath() async {
     var newRepoPath = await settings.buildRepoPath(gitBaseDirectory);
-    if (newRepoPath == null) {
-      Log.e("failed to get newRepoPath");
-      return;
-    }
 
     if (newRepoPath != repoPath) {
       Log.i("Old Path: $repoPath");

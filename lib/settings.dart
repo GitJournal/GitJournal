@@ -478,8 +478,8 @@ class Settings extends ChangeNotifier {
     }
   }
 
-  Map<String, String?> toMap() {
-    return <String, String?>{
+  Map<String, String> toMap() {
+    return <String, String>{
       "gitAuthor": gitAuthor,
       "gitAuthorEmail": gitAuthorEmail,
       "noteFileNameFormat": noteFileNameFormat.toInternalString(),
@@ -543,7 +543,7 @@ class Settings extends ChangeNotifier {
     };
   }
 
-  Map<String, String?> toLoggableMap() {
+  Map<String, String> toLoggableMap() {
     var m = toMap();
     m.remove("gitAuthor");
     m.remove("gitAuthorEmail");
@@ -551,7 +551,7 @@ class Settings extends ChangeNotifier {
     return m;
   }
 
-  Future<String?> buildRepoPath(String internalDir) async {
+  Future<String> buildRepoPath(String internalDir) async {
     if (storeInternally) {
       return p.join(internalDir, folderName);
     }
@@ -564,7 +564,8 @@ class Settings extends ChangeNotifier {
       //
       var basePath = await ICloudDocumentsPath.documentsPath;
       if (basePath == null) {
-        return null;
+        // Go back to the normal path
+        return p.join(storageLocation, folderName);
       }
       assert(basePath == storageLocation);
       return p.join(basePath, folderName);
