@@ -32,7 +32,7 @@ class ListPreference extends StatelessWidget {
                   label: o,
                   value: o,
                   groupValue: currentOption,
-                  onChanged: (String val) {
+                  onChanged: (String? val) {
                     Navigator.of(context).pop(val);
                   },
                 );
@@ -75,7 +75,7 @@ class _LabeledRadio extends StatelessWidget {
   final String label;
   final String? groupValue;
   final String? value;
-  final Function onChanged;
+  final void Function(String?) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +88,7 @@ class _LabeledRadio extends StatelessWidget {
           Radio<String?>(
             groupValue: groupValue,
             value: value,
-            onChanged: onChanged as void Function(String?)?,
+            onChanged: onChanged,
           ),
           Text(label),
         ],

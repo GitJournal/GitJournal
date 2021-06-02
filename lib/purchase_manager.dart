@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -13,17 +11,17 @@ import 'package:gitjournal/widgets/purchase_slider.dart';
 
 // ignore_for_file: cancel_subscriptions
 
-typedef PurchaseCallback = void Function(String, SubscriptionStatus);
+typedef PurchaseCallback = void Function(String, SubscriptionStatus?);
 
 class PurchaseManager {
-  InAppPurchaseConnection con;
-  StreamSubscription<List<PurchaseDetails>> _subscription;
+  late InAppPurchaseConnection con;
+  late StreamSubscription<List<PurchaseDetails>> _subscription;
   List<PurchaseCallback> _callbacks = [];
 
-  static String error;
-  static PurchaseManager _instance;
+  static String? error;
+  static PurchaseManager? _instance;
 
-  static Future<PurchaseManager> init() async {
+  static Future<PurchaseManager?> init() async {
     if (_instance != null) {
       return _instance;
     }
@@ -31,9 +29,9 @@ class PurchaseManager {
     _instance = PurchaseManager();
 
     InAppPurchaseConnection.enablePendingPurchases();
-    _instance.con = InAppPurchaseConnection.instance;
+    _instance!.con = InAppPurchaseConnection.instance;
 
-    final bool available = await _instance.con.isAvailable();
+    final bool available = await _instance!.con.isAvailable();
     if (!available) {
       error = "Store cannot be reached";
       _instance = null;
@@ -41,7 +39,7 @@ class PurchaseManager {
     }
 
     // Start listening for changes
-    var i = _instance;
+    var i = _instance!;
     final purchaseUpdates = i.con.purchaseUpdatedStream;
     i._subscription = purchaseUpdates.listen(i._listenToPurchaseUpdated);
 
@@ -49,7 +47,7 @@ class PurchaseManager {
   }
 
   void destroy() {
-    _instance._subscription.cancel();
+    _instance!._subscription.cancel();
   }
 
   void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetails) async {
@@ -68,7 +66,7 @@ class PurchaseManager {
     }
 
     if (purchaseDetails.status == PurchaseStatus.error) {
-      _handleIAPError(purchaseDetails.error);
+      _handleIAPError(purchaseDetails.error!);
       return;
     } else if (purchaseDetails.status == PurchaseStatus.purchased) {
       Log.i("Verifying purchase sub");
@@ -127,10 +125,11 @@ class PurchaseManager {
   /// Returns the ProductDetails sorted by price
   Future<ProductDetailsResponse> queryProductDetails(Set<String> skus) async {
     // Cache this response?
-    var response = await _instance.con.queryProductDetails(skus);
+    // FIXME: What if the sotre cannot be reached?
+    var response = await _instance!.con.queryProductDetails(skus);
     response.productDetails.sort((a, b) {
-      var pa = PaymentInfo.fromProductDetail(a);
-      var pb = PaymentInfo.fromProductDetail(b);
+      var pa = PaymentInfo.fromProductDetail(a)!;
+      var pb = PaymentInfo.fromProductDetail(b)!;
       return pa.value.compareTo(pb.value);
     });
 

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -17,7 +15,7 @@ import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/purchase_slider.dart';
 
 class PurchaseButton extends StatelessWidget {
-  final ProductDetails product;
+  final ProductDetails? product;
   final String timePeriod;
   final bool subscription;
   final Func1<bool, void> purchaseStarted;
@@ -26,9 +24,9 @@ class PurchaseButton extends StatelessWidget {
   PurchaseButton(
     this.product,
     this.timePeriod, {
-    @required this.subscription,
-    @required this.purchaseStarted,
-    @required this.purchaseCompleted,
+    required this.subscription,
+    required this.purchaseStarted,
+    required this.purchaseCompleted,
   });
 
   @override
@@ -36,7 +34,7 @@ class PurchaseButton extends StatelessWidget {
     String text;
     if (product != null) {
       text = tr("widgets.PurchaseButton.text", namedArgs: {
-        'price': product.price,
+        'price': product!.price,
       });
       if (subscription) {
         text += '/ $timePeriod';
@@ -56,11 +54,11 @@ class PurchaseButton extends StatelessWidget {
   Future<void> _initPurchase(BuildContext context) async {
     var pm = await PurchaseManager.init();
     if (pm == null) {
-      purchaseCompleted(PurchaseManager.error, null);
+      purchaseCompleted(PurchaseManager.error!, null);
       return;
     }
 
-    var sentSuccess = await pm.buyNonConsumable(product, purchaseCompleted);
+    var sentSuccess = await pm.buyNonConsumable(product!, purchaseCompleted);
     purchaseStarted(sentSuccess);
 
     /*
@@ -95,10 +93,10 @@ class PurchaseWidget extends StatefulWidget {
   final bool isSubscription;
 
   PurchaseWidget({
-    @required this.skus,
-    @required this.defaultSku,
+    required this.skus,
+    required this.defaultSku,
     this.timePeriod = "",
-    @required this.isSubscription,
+    required this.isSubscription,
   });
 
   @override
@@ -106,8 +104,8 @@ class PurchaseWidget extends StatefulWidget {
 }
 
 class _PurchaseWidgetState extends State<PurchaseWidget> {
-  List<ProductDetails> _products;
-  ProductDetails _selectedProduct;
+  List<ProductDetails>? _products;
+  ProductDetails? _selectedProduct;
 
   String error = "";
   bool _pendingPurchase = false;
@@ -122,11 +120,11 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
     var pm = await PurchaseManager.init();
     if (pm == null) {
       setState(() {
-        error = PurchaseManager.error;
+        error = PurchaseManager.error!;
       });
     }
 
-    final response = await pm.queryProductDetails(widget.skus);
+    final response = await pm!.queryProductDetails(widget.skus);
     if (response.error != null) {
       Log.e("IAP queryProductDetails: ${response.error}");
     }
@@ -134,17 +132,19 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
     if (!mounted) return;
 
     var products = response.productDetails;
+    /*
     Log.i("Products: ${products.length}");
     for (var p in products) {
       Log.i("Product ${p.id} -> ${p.price}");
     }
+    */
 
     setState(() {
       _products = products;
-      _selectedProduct = _products.isNotEmpty ? _products.first : null;
+      _selectedProduct = _products!.isNotEmpty ? _products!.first : null;
 
-      if (_products.length > 1) {
-        for (var p in _products) {
+      if (_products!.length > 1) {
+        for (var p in _products!) {
           if (p.id == widget.defaultSku) {
             _selectedProduct = p;
             break;
@@ -169,8 +169,8 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
         : buildBody(context);
   }
 
-  ProductDetails _fromPaymentInfo(PaymentInfo info) {
-    for (var p in _products) {
+  ProductDetails? _fromPaymentInfo(PaymentInfo info) {
+    for (var p in _products!) {
       if (p.id == info.id) {
         return p;
       }
@@ -181,8 +181,8 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
 
   Widget buildBody(BuildContext context) {
     var slider = PurchaseSlider(
-      values: _products.map(PaymentInfo.fromProductDetail).toList(),
-      selectedValue: PaymentInfo.fromProductDetail(_selectedProduct),
+      values: _products!.map(PaymentInfo.fromProductDetail).toList(),
+      selectedValue: PaymentInfo.fromProductDetail(_selectedProduct!),
       onChanged: (PaymentInfo info) {
         setState(() {
           _selectedProduct = _fromPaymentInfo(info);
@@ -231,27 +231,27 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
     );
   }
 
-  ProductDetails _prevProduct() {
-    for (var i = 0; i < _products.length; i++) {
-      if (_products[i] == _selectedProduct) {
-        return i > 0 ? _products[i - 1] : _products[i];
+  ProductDetails? _prevProduct() {
+    for (var i = 0; i < _products!.length; i++) {
+      if (_products![i] == _selectedProduct) {
+        return i > 0 ? _products![i - 1] : _products![i];
       }
     }
 
     return null;
   }
 
-  ProductDetails _nextProduct() {
-    for (var i = 0; i < _products.length; i++) {
-      if (_products[i] == _selectedProduct) {
-        return i < _products.length - 1 ? _products[i + 1] : _products[i];
+  ProductDetails? _nextProduct() {
+    for (var i = 0; i < _products!.length; i++) {
+      if (_products![i] == _selectedProduct) {
+        return i < _products!.length - 1 ? _products![i + 1] : _products![i];
       }
     }
 
     return null;
   }
 
-  void _purchaseCompleted(String err, SubscriptionStatus subStatus) {
+  void _purchaseCompleted(String err, SubscriptionStatus? subStatus) {
     if (!mounted) return;
 
     if (err.isEmpty) {
@@ -275,9 +275,9 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
 
 class _PurchaseSliderButton extends StatelessWidget {
   final Widget icon;
-  final Function onPressed;
+  final void Function() onPressed;
 
-  _PurchaseSliderButton({@required this.icon, @required this.onPressed});
+  _PurchaseSliderButton({required this.icon, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

@@ -420,7 +420,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
 }
 
 class AddItemButton extends StatelessWidget {
-  final Function onPressed;
+  final void Function() onPressed;
 
   AddItemButton({Key? key, required this.onPressed}) : super(key: key);
 
@@ -440,7 +440,7 @@ class AddItemButton extends StatelessWidget {
             child: IconButton(
               padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
               icon: const Icon(Icons.add),
-              onPressed: onPressed as void Function()?,
+              onPressed: onPressed,
             ),
           ),
         ],
@@ -450,7 +450,7 @@ class AddItemButton extends StatelessWidget {
     );
 
     return GestureDetector(
-      onTap: onPressed as void Function()?,
+      onTap: onPressed,
       child: tile,
     );
   }
