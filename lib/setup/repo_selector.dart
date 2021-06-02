@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:collection/collection.dart';
@@ -27,9 +25,9 @@ class GitHostSetupRepoSelector extends StatefulWidget {
   final Func1<GitHostRepo, void> onDone;
 
   GitHostSetupRepoSelector({
-    @required this.gitHost,
-    @required this.userInfo,
-    @required this.onDone,
+    required this.gitHost,
+    required this.userInfo,
+    required this.onDone,
   });
 
   @override
@@ -44,14 +42,15 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
   List<GitHostRepo> repos = [];
   var fetchedRepos = false;
 
-  GitHostRepo selectedRepo;
-  var _textController = TextEditingController();
+  GitHostRepo? selectedRepo;
+  late TextEditingController _textController;
   bool createRepo = false;
 
   @override
   void initState() {
     super.initState();
 
+    _textController = TextEditingController();
     _textController.addListener(() {
       var q = _textController.text.toLowerCase();
       if (q.isEmpty) {
@@ -85,7 +84,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
       var allRepos = await widget.gitHost.listRepos();
       allRepos.sort((GitHostRepo a, GitHostRepo b) {
         if (a.updatedAt != null && b.updatedAt != null) {
-          return a.updatedAt.compareTo(b.updatedAt);
+          return a.updatedAt!.compareTo(b.updatedAt!);
         }
         if (a.updatedAt == null && b.updatedAt == null) {
           return a.fullName.compareTo(b.fullName);
@@ -138,7 +137,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
 
   @override
   Widget build(BuildContext context) {
-    if (errorMessage != null && errorMessage.isNotEmpty) {
+    if (errorMessage.isNotEmpty) {
       return GitHostSetupErrorPage(errorMessage);
     }
     if (!fetchedRepos) {
@@ -218,7 +217,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
             text: tr('setup.next'),
             onPressed: () async {
               if (selectedRepo != null) {
-                widget.onDone(selectedRepo);
+                widget.onDone(selectedRepo!);
                 return;
               }
 
@@ -228,7 +227,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
                 widget.onDone(repo);
                 return;
               } catch (e, stacktrace) {
-                _handleGitHostException(e, stacktrace);
+                _handleGitHostException(e as Exception, stacktrace);
               }
             },
           ),
@@ -287,14 +286,14 @@ List<GitHostRepo> filterList(List<GitHostRepo> repos, String q) {
 class _RepoTile extends StatelessWidget {
   final GitHostRepo repo;
   final String searchText;
-  final Function onTap;
+  final void Function() onTap;
   final bool selected;
 
   _RepoTile({
-    @required this.repo,
-    @required this.searchText,
-    @required this.onTap,
-    @required this.selected,
+    required this.repo,
+    required this.searchText,
+    required this.onTap,
+    required this.selected,
   });
 
   @override
@@ -350,7 +349,7 @@ class _RepoTile extends StatelessWidget {
               text: repo.name,
               highlightText: searchText,
               highlightTextLowerCase: searchText,
-              style: style,
+              style: style!,
               highlightStyle: style.copyWith(fontWeight: FontWeight.bold),
             ).build(context),
           ],
@@ -401,8 +400,8 @@ class _IconText extends StatelessWidget {
 */
 
 class _SmartDateTime extends StatelessWidget {
-  final DateTime dt;
-  final TextStyle style;
+  final DateTime? dt;
+  final TextStyle? style;
 
   _SmartDateTime(this.dt, this.style);
 
@@ -412,12 +411,13 @@ class _SmartDateTime extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (dt == null) {
+    if (this.dt == null) {
       return Container();
     }
 
     String text;
 
+    var dt = this.dt!;
     if (dt.isAfter(thirtyDaysAgo)) {
       Locale locale = Localizations.localeOf(context);
       text = timeago.format(dt, locale: locale.languageCode);

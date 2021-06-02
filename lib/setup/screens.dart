@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -36,9 +34,9 @@ class GitHostSetupScreen extends StatefulWidget {
   final Func2<String, String, Future<void>> onCompletedFunction;
 
   GitHostSetupScreen({
-    @required this.repoFolderName,
-    @required this.remoteName,
-    @required this.onCompletedFunction,
+    required this.repoFolderName,
+    required this.remoteName,
+    required this.onCompletedFunction,
   });
 
   @override
@@ -61,21 +59,21 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   var _keyGenerationChoice = KeyGenerationChoice.Unknown;
 
   var _gitHostType = GitHostType.Unknown;
-  GitHost _gitHost;
-  GitHostRepo _gitHostRepo;
+  GitHost? _gitHost;
+  late GitHostRepo _gitHostRepo;
   String _autoConfigureMessage = "";
   String _autoConfigureErrorMessage = "";
 
   var _gitCloneUrl = "";
-  var gitCloneErrorMessage = "";
+  String? gitCloneErrorMessage = "";
   var publicKey = "";
 
   var pageController = PageController();
   int _currentPageIndex = 0;
 
-  UserInfo _userInfo;
+  UserInfo? _userInfo;
 
-  Widget _buildPage(BuildContext context, int pos) {
+  Widget? _buildPage(BuildContext context, int pos) {
     assert(_pageCount >= 1);
 
     if (pos == 0) {
@@ -179,14 +177,20 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       } else if (_pageChoice[1] == PageChoice1.Auto) {
         return GitHostSetupAutoConfigure(
           gitHostType: _gitHostType,
-          onDone: (GitHost gitHost, UserInfo userInfo) {
-            setState(() {
-              _gitHost = gitHost;
-              _userInfo = userInfo;
-              _pageCount = pos + 2;
+          onDone: (GitHost? gitHost, UserInfo? userInfo) {
+            if (gitHost == null) {
+              setState(() {
+                // FIXME: Set an error when it failed to get the gitHost
+              });
+            } else {
+              setState(() {
+                _gitHost = gitHost;
+                _userInfo = userInfo;
+                _pageCount = pos + 2;
 
-              _nextPage();
-            });
+                _nextPage();
+              });
+            }
           },
         );
       }
@@ -259,8 +263,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         );
       } else if (_pageChoice[1] == PageChoice1.Auto) {
         return GitHostSetupRepoSelector(
-          gitHost: _gitHost,
-          userInfo: _userInfo,
+          gitHost: _gitHost!,
+          userInfo: _userInfo!,
           onDone: (GitHostRepo repo) {
             // close keyboard
             FocusManager.instance.primaryFocus?.unfocus();
@@ -355,7 +359,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   Widget build(BuildContext context) {
     var pageView = PageView.builder(
       controller: pageController,
-      itemBuilder: _buildPage,
+      itemBuilder: _buildPage as Widget Function(BuildContext, int),
       itemCount: _pageCount,
       onPageChanged: (int pageNum) {
         setState(() {
@@ -457,9 +461,9 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         "-" +
         DateTime.now().toIso8601String().substring(0, 10); // only the date
 
-    generateSSHKeys(comment: comment).then((SshKey sshKey) {
+    generateSSHKeys(comment: comment).then((SshKey? sshKey) {
       var settings = Provider.of<Settings>(context, listen: false);
-      settings.sshPublicKey = sshKey.publicKey;
+      settings.sshPublicKey = sshKey!.publicKey;
       settings.sshPrivateKey = sshKey.privateKey;
       settings.sshPassword = sshKey.password;
       settings.save();
@@ -528,7 +532,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   }
 
   void _startGitClone(BuildContext context) async {
-    if (gitCloneErrorMessage.isNotEmpty) {
+    if (gitCloneErrorMessage!.isNotEmpty) {
       return;
     }
 
@@ -539,7 +543,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     var repoPath = p.join(basePath, widget.repoFolderName);
     Log.i("RepoPath: $repoPath");
 
-    String error;
+    String? error;
     try {
       await cloneRemote(
         cloneUrl: _gitCloneUrl,
@@ -560,7 +564,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       Log.i("Not completing gitClone because of error");
       setState(() {
         logEvent(Event.GitHostSetupGitCloneError, parameters: {
-          'error': error,
+          'error': error!,
         });
         gitCloneErrorMessage = error;
       });
@@ -602,6 +606,10 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         _autoConfigureMessage = tr('setup.sshKey.generate');
       });
       var sshKey = await generateSSHKeys(comment: "GitJournal");
+      if (sshKey == null) {
+        // FIXME: Handle case when sshKey generation failed
+        return;
+      }
       var settings = Provider.of<Settings>(context, listen: false);
       settings.sshPublicKey = sshKey.publicKey;
       settings.sshPrivateKey = sshKey.privateKey;
@@ -615,7 +623,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       Log.i("Adding as a deploy key");
       _autoConfigureMessage = tr('setup.sshKey.addDeploy');
 
-      await _gitHost.addDeployKey(publicKey, _gitHostRepo.fullName);
+      await _gitHost!.addDeployKey(publicKey, _gitHostRepo.fullName);
     } on Exception catch (e, stacktrace) {
       _handleGitHostException(e, stacktrace);
       return;
@@ -677,8 +685,8 @@ class GitHostChoicePage extends StatelessWidget {
   final Func0<void> onCustomGitHost;
 
   GitHostChoicePage({
-    @required this.onKnownGitHost,
-    @required this.onCustomGitHost,
+    required this.onKnownGitHost,
+    required this.onCustomGitHost,
   });
 
   @override
@@ -729,7 +737,7 @@ enum GitHostSetupType {
 class GitHostAutoConfigureChoicePage extends StatelessWidget {
   final Func1<GitHostSetupType, void> onDone;
 
-  GitHostAutoConfigureChoicePage({@required this.onDone});
+  GitHostAutoConfigureChoicePage({required this.onDone});
 
   @override
   Widget build(BuildContext context) {

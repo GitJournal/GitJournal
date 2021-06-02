@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:function_types/function_types.dart';
@@ -10,11 +8,11 @@ import 'package:gitjournal/utils/logger.dart';
 class GitHostSetupButton extends StatelessWidget {
   final Func0<void> onPressed;
   final String text;
-  final String iconUrl;
+  final String? iconUrl;
 
   GitHostSetupButton({
-    @required this.text,
-    @required this.onPressed,
+    required this.text,
+    required this.onPressed,
     this.iconUrl,
   });
 
@@ -42,7 +40,7 @@ class GitHostSetupButton extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.button,
           ),
-          icon: Image.asset(iconUrl, width: 32, height: 32),
+          icon: Image.asset(iconUrl!, width: 32, height: 32),
           color: Theme.of(context).primaryColor,
           onPressed: _onPressedWithAnalytics,
         ),
@@ -54,7 +52,7 @@ class GitHostSetupButton extends StatelessWidget {
     Log.d("githostsetup_button_click " + text);
     logEvent(Event.GitHostSetupButtonClick, parameters: {
       'text': text,
-      'icon_url': iconUrl == null ? "" : iconUrl,
+      'icon_url': iconUrl == null ? "" : iconUrl!,
     });
     onPressed();
   }

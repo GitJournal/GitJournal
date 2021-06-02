@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -15,8 +13,8 @@ class GitCloneUrlPage extends StatefulWidget {
   final String initialValue;
 
   GitCloneUrlPage({
-    @required this.doneFunction,
-    @required this.initialValue,
+    required this.doneFunction,
+    required this.initialValue,
   });
 
   @override
@@ -35,10 +33,10 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
   @override
   Widget build(BuildContext context) {
     final formSubmitted = () {
-      if (_formKey.currentState.validate()) {
-        _formKey.currentState.save();
+      if (_formKey.currentState!.validate()) {
+        _formKey.currentState!.save();
 
-        var url = sshUrlKey.currentState.value;
+        var url = sshUrlKey.currentState!.value!;
         widget.doneFunction(url.trim());
         inputFormFocus.unfocus();
       }
@@ -95,10 +93,10 @@ class GitCloneUrlKnownProviderPage extends StatefulWidget {
   final String initialValue;
 
   GitCloneUrlKnownProviderPage({
-    @required this.doneFunction,
-    @required this.launchCreateUrlPage,
-    @required this.gitHostType,
-    @required this.initialValue,
+    required this.doneFunction,
+    required this.launchCreateUrlPage,
+    required this.gitHostType,
+    required this.initialValue,
   });
 
   @override
@@ -118,10 +116,10 @@ class GitCloneUrlKnownProviderPageState
   @override
   Widget build(BuildContext context) {
     final formSubmitted = () {
-      if (_formKey.currentState.validate()) {
-        _formKey.currentState.save();
+      if (_formKey.currentState!.validate()) {
+        _formKey.currentState!.save();
 
-        var url = sshUrlKey.currentState.value;
+        var url = sshUrlKey.currentState!.value!;
         widget.doneFunction(url.trim());
         inputFormFocus.unfocus();
       }
@@ -185,8 +183,8 @@ class GitCloneUrlKnownProviderPageState
 }
 
 // Returns null when valid
-String _isCloneUrlValid(String url) {
-  url = url.trim();
+String? _isCloneUrlValid(String? url) {
+  url = url!.trim();
   if (url.isEmpty) {
     return tr("setup.cloneUrl.validator.empty");
   }

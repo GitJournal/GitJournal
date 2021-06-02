@@ -1,21 +1,18 @@
-// @dart=2.9
-
 import 'package:dart_git/dart_git.dart';
 import 'package:git_bindings/git_bindings.dart' as git_bindings;
-import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 
 import 'package:gitjournal/utils/logger.dart';
 
 Future<void> cloneRemote({
-  @required String repoPath,
-  @required String cloneUrl,
-  @required String remoteName,
-  @required String sshPublicKey,
-  @required String sshPrivateKey,
-  @required String sshPassword,
-  @required String authorName,
-  @required String authorEmail,
+  required String repoPath,
+  required String cloneUrl,
+  required String remoteName,
+  required String sshPublicKey,
+  required String sshPrivateKey,
+  required String sshPassword,
+  required String authorName,
+  required String authorEmail,
 }) async {
   var repo = await GitRepository.load(repoPath);
 
@@ -42,11 +39,11 @@ Future<void> cloneRemote({
   var branches = await repo.branches();
   if (branches.isEmpty) {
     Log.i("Completing - no local branch");
-    var remoteBranch = await repo.remoteBranch(remoteName, remoteBranchName);
+    var remoteBranch = await repo.remoteBranch(remoteName, remoteBranchName!);
 
-    if (remoteBranchName != null &&
-        remoteBranchName.isNotEmpty &&
-        remoteBranch != null) {
+    // FIXME: This logic doesn't seem right. What if the remoteBranchName is empty
+    if (/*remoteBranchName != null &&*/
+        remoteBranchName.isNotEmpty && remoteBranch != null) {
       await repo.createBranch(remoteBranchName, hash: remoteBranch.hash);
       await repo.checkoutBranch(remoteBranchName);
     }
@@ -66,7 +63,7 @@ Future<void> cloneRemote({
         await repo.checkoutBranch(branch);
       }
 
-      await repo.setUpstreamTo(remote, remoteBranchName);
+      await repo.setUpstreamTo(remote, remoteBranchName!);
       var remoteBranch = await repo.remoteBranch(remoteName, remoteBranchName);
       if (remoteBranch != null) {
         Log.i("Merging '$remoteName/$remoteBranchName'");
@@ -78,7 +75,7 @@ Future<void> cloneRemote({
       }
     } else {
       Log.i("Completing - localBranch diff remote: $branch $remoteBranchName");
-      await repo.createBranch(remoteBranchName);
+      await repo.createBranch(remoteBranchName!);
       await repo.checkoutBranch(remoteBranchName);
 
       await repo.deleteBranch(branch);
@@ -102,13 +99,13 @@ Future<void> cloneRemote({
   await repo.checkout(".");
 }
 
-Future<String> _remoteDefaultBranch({
-  @required GitRepository repo,
-  @required git_bindings.GitRepo libGit2Repo,
-  @required String remoteName,
-  @required String sshPublicKey,
-  @required String sshPrivateKey,
-  @required String sshPassword,
+Future<String?> _remoteDefaultBranch({
+  required GitRepository repo,
+  required git_bindings.GitRepo libGit2Repo,
+  required String remoteName,
+  required String sshPublicKey,
+  required String sshPrivateKey,
+  required String sshPassword,
 }) async {
   try {
     var branch = await libGit2Repo.defaultBranch(
@@ -129,7 +126,7 @@ Future<String> _remoteDefaultBranch({
   if (remoteBranch == null) {
     return 'master';
   }
-  return remoteBranch.target.branchName();
+  return remoteBranch.target!.branchName();
 }
 
 String folderNameFromCloneUrl(String cloneUrl) {

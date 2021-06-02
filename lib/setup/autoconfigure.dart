@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -18,11 +16,11 @@ import 'loading.dart';
 
 class GitHostSetupAutoConfigure extends StatefulWidget {
   final GitHostType gitHostType;
-  final Func2<GitHost, UserInfo, void> onDone;
+  final Func2<GitHost?, UserInfo?, void> onDone;
 
   GitHostSetupAutoConfigure({
-    @required this.gitHostType,
-    @required this.onDone,
+    required this.gitHostType,
+    required this.onDone,
   });
 
   @override
@@ -32,7 +30,7 @@ class GitHostSetupAutoConfigure extends StatefulWidget {
 }
 
 class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
-  GitHost gitHost;
+  GitHost? gitHost;
   String errorMessage = "";
 
   bool _configuringStarted = false;
@@ -46,7 +44,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
 
     gitHost = createGitHost(widget.gitHostType);
     try {
-      gitHost.init((Exception error) async {
+      gitHost!.init((Exception? error) async {
         if (error != null) {
           if (mounted) {
             setState(() {
@@ -59,18 +57,18 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
         }
         Log.d("GitHost Initalized: " + widget.gitHostType.toString());
 
-        UserInfo userInfo;
+        UserInfo? userInfo;
         try {
           setState(() {
             _message = tr('setup.autoconfigure.readUser');
           });
 
-          userInfo = await gitHost.getUserInfo();
+          userInfo = await gitHost!.getUserInfo();
           var settings = Provider.of<Settings>(context, listen: false);
-          if (userInfo.name != null && userInfo.name.isNotEmpty) {
+          if (userInfo != null && userInfo.name.isNotEmpty) {
             settings.gitAuthor = userInfo.name;
           }
-          if (userInfo.email != null && userInfo.email.isNotEmpty) {
+          if (userInfo != null && userInfo.email.isNotEmpty) {
             settings.gitAuthorEmail = userInfo.email;
           }
           settings.save();
@@ -82,7 +80,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
       });
 
       try {
-        await gitHost.launchOAuthScreen();
+        await gitHost!.launchOAuthScreen();
       } on PlatformException catch (e, stack) {
         Log.d("LaunchOAuthScreen: Caught platform exception:",
             ex: e, stacktrace: stack);
@@ -111,11 +109,11 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
   @override
   Widget build(BuildContext context) {
     if (_configuringStarted) {
-      if (errorMessage == null || errorMessage.isEmpty) {
-        return GitHostSetupLoadingPage(_message);
+      if (errorMessage.isNotEmpty) {
+        return GitHostSetupErrorPage(errorMessage);
       }
 
-      return GitHostSetupErrorPage(errorMessage);
+      return GitHostSetupLoadingPage(_message);
     }
 
     var columns = Column(
@@ -146,7 +144,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
         const SizedBox(height: 32.0),
         Text(
           tr('setup.autoconfigure.warning'),
-          style: Theme.of(context).textTheme.bodyText1.copyWith(
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(
                 fontStyle: FontStyle.italic,
               ),
         ),
