@@ -119,6 +119,8 @@ bool openNewNoteEditor(BuildContext context, String term) {
       parentFolder,
       defaultEditor,
       newNoteFileName: fileName,
+      existingText: "",
+      existingImages: [],
     ),
     settings: const RouteSettings(name: '/newNote/'),
   );

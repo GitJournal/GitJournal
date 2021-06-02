@@ -223,6 +223,8 @@ class _FolderViewState extends State<FolderView> {
         widget.notesFolder,
         editorType,
         newNoteExtraProps: extraProps,
+        existingText: "",
+        existingImages: [],
       ),
       settings: RouteSettings(name: '/newNote/$routeType'),
     );
