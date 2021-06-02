@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -30,10 +28,10 @@ class AppDrawer extends StatefulWidget {
 
 class _AppDrawerState extends State<AppDrawer>
     with SingleTickerProviderStateMixin {
-  AnimationController animController;
+  late AnimationController animController;
 
-  Animation<double> sizeAnimation;
-  Animation<Offset> slideAnimation;
+  late Animation<double> sizeAnimation;
+  late Animation<Offset> slideAnimation;
 
   @override
   void initState() {
@@ -99,15 +97,15 @@ class _AppDrawerState extends State<AppDrawer>
 
   @override
   Widget build(BuildContext context) {
-    Widget setupGitButton;
+    Widget? setupGitButton;
     var repo = Provider.of<GitJournalRepo>(context);
     var appSettings = Provider.of<AppSettings>(context);
     var textStyle = Theme.of(context).textTheme.bodyText1;
-    var currentRoute = ModalRoute.of(context).settings.name;
+    var currentRoute = ModalRoute.of(context)!.settings.name;
 
     if (!repo.remoteGitRepoConfigured) {
       setupGitButton = ListTile(
-        leading: Icon(Icons.sync, color: textStyle.color),
+        leading: Icon(Icons.sync, color: textStyle!.color),
         title: Text(tr('drawer.setup'), style: textStyle),
         trailing: const Icon(
           Icons.info,
@@ -247,7 +245,7 @@ class _AppDrawerState extends State<AppDrawer>
               body += "isPro: $isPro\n";
 
               var exp = AppSettings.instance.proExpirationDate;
-              if (exp != null && exp.isNotEmpty) {
+              if (exp.isNotEmpty) {
                 body += "expiryDate: $exp";
               }
 
@@ -280,7 +278,7 @@ class _AppDrawerState extends State<AppDrawer>
               body += "isPro: $isPro\n";
 
               var exp = AppSettings.instance.proExpirationDate;
-              if (exp != null && exp.isNotEmpty) {
+              if (exp.isNotEmpty) {
                 body += "expiryDate: $exp";
               }
 
@@ -315,15 +313,15 @@ class _AppDrawerState extends State<AppDrawer>
 
   Widget _buildDrawerTile(
     BuildContext context, {
-    @required IconData icon,
-    @required String title,
-    @required Function onTap,
+    required IconData icon,
+    required String title,
+    required void Function() onTap,
     bool isFontAwesome = false,
     bool selected = false,
   }) {
     var theme = Theme.of(context);
     var listTileTheme = ListTileTheme.of(context);
-    var textStyle = theme.textTheme.bodyText1.copyWith(
+    var textStyle = theme.textTheme.bodyText1!.copyWith(
       color: selected ? theme.accentColor : listTileTheme.textColor,
     );
 
@@ -347,7 +345,7 @@ class _AppDrawerState extends State<AppDrawer>
 class RepoTile extends StatelessWidget {
   const RepoTile(
     this.id, {
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   final String id;
@@ -360,7 +358,7 @@ class RepoTile extends StatelessWidget {
 
     // FIXME: Improve marking the selected repo
     var selected = repoManager.currentId == id;
-    var textStyle = theme.textTheme.bodyText1.copyWith(
+    var textStyle = theme.textTheme.bodyText1!.copyWith(
       color: selected ? theme.accentColor : listTileTheme.textColor,
     );
 
@@ -378,7 +376,7 @@ class RepoTile extends StatelessWidget {
 }
 
 void _navTopLevel(BuildContext context, String toRoute) {
-  var fromRoute = ModalRoute.of(context).settings.name;
+  var fromRoute = ModalRoute.of(context)!.settings.name;
   Log.i("Routing from $fromRoute -> $toRoute");
 
   // Always first pop the AppBar

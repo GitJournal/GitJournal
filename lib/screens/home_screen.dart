@@ -44,6 +44,6 @@ class _HomeScreenState extends State<HomeScreen> {
       return Container();
     }
 
-    return FolderView(notesFolder: notesFolder);
+    return FolderView(notesFolder: notesFolder!);
   }
 }

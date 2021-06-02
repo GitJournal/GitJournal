@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -39,7 +37,7 @@ class FolderView extends StatefulWidget {
   final Map<String, dynamic> newNoteExtraProps;
 
   FolderView({
-    @required this.notesFolder,
+    required this.notesFolder,
     this.newNoteExtraProps = const {},
   });
 
@@ -48,14 +46,14 @@ class FolderView extends StatefulWidget {
 }
 
 class _FolderViewState extends State<FolderView> {
-  SortedNotesFolder sortedNotesFolder;
+  late SortedNotesFolder sortedNotesFolder;
   FolderViewType _viewType = FolderViewType.Standard;
 
-  StandardViewHeader _headerType = StandardViewHeader.TitleGenerated;
+  var _headerType = StandardViewHeader.TitleGenerated;
   bool _showSummary = true;
 
   bool inSelectionMode = false;
-  Note selectedNote;
+  Note? selectedNote;
 
   @override
   void initState() {
@@ -187,8 +185,8 @@ class _FolderViewState extends State<FolderView> {
 
   void _newPost(EditorType editorType) async {
     var folder = widget.notesFolder;
-    NotesFolderFS fsFolder = folder.fsFolder;
-    var isVirtualFolder = folder.name != folder.fsFolder.name;
+    var fsFolder = folder.fsFolder as NotesFolderFS;
+    var isVirtualFolder = folder.name != folder.fsFolder!.name;
     if (isVirtualFolder) {
       var rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
       var settings = Provider.of<Settings>(context, listen: false);
@@ -260,7 +258,10 @@ class _FolderViewState extends State<FolderView> {
     await showDialog<SortingMode>(
       context: context,
       builder: (BuildContext context) {
-        var headerTypeChanged = (StandardViewHeader newHeader) {
+        var headerTypeChanged = (StandardViewHeader? newHeader) {
+          if (newHeader == null) {
+            return;
+          }
           setState(() {
             _headerType = newHeader;
           });
@@ -366,7 +367,7 @@ class _FolderViewState extends State<FolderView> {
   }
 
   void _folderViewChooserSelected() async {
-    var onViewChange = (FolderViewType vt) => Navigator.of(context).pop(vt);
+    var onViewChange = (FolderViewType? vt) => Navigator.of(context).pop(vt);
 
     var newViewType = await showDialog<FolderViewType>(
       context: context,
@@ -484,7 +485,7 @@ class _FolderViewState extends State<FolderView> {
       IconButton(
         icon: const Icon(Icons.share),
         onPressed: () async {
-          await shareNote(selectedNote);
+          await shareNote(selectedNote!);
           _resetSelection();
         },
       ),
@@ -508,7 +509,7 @@ class _FolderViewState extends State<FolderView> {
     }
     if (shouldDelete == true) {
       var stateContainer = context.read<GitJournalRepo>();
-      stateContainer.removeNote(note);
+      stateContainer.removeNote(note!);
     }
 
     _resetSelection();
