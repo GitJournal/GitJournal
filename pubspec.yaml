@@ -107,7 +107,7 @@ flutter:
     - "assets/icon/gitlab-icon.png"
     - "assets/OnBoardingMarkdown.png"
     - "assets/OnBoardingGitProviders.png"
-    - "assets/langs/en.yaml"
+    - "assets/langs/"
   fonts:
     - family: Lato
       fonts:
