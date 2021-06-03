@@ -20,7 +20,7 @@ import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/iap.dart';
+import 'package:gitjournal/iap/iap.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings.dart';
