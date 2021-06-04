@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/src/localization.dart';
 import 'package:easy_localization/src/translations.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
-import 'package:gitjournal/themes.dart';
 import 'package:monarch_annotations/monarch_annotations.dart';
+
+import 'package:gitjournal/themes.dart';
 
 // ignore_for_file: implementation_imports
 

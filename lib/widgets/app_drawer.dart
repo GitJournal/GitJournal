@@ -16,8 +16,8 @@ import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
-import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/app_drawer_header.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 

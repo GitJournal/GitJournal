@@ -7,11 +7,11 @@ import 'package:share/share.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/settings.dart';
-import 'app.dart';
-import 'core/note.dart';
-import 'editors/common_types.dart';
-import 'repository.dart';
-import 'utils/logger.dart';
+import '../app.dart';
+import '../core/note.dart';
+import '../editors/common_types.dart';
+import '../repository.dart';
+import 'logger.dart';
 
 Future<String> getVersionString() async {
   var info = await PackageInfo.fromPlatform();

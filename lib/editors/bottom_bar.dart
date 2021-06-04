@@ -12,7 +12,7 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/features.dart';
-import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class EditorBottomBar extends StatelessWidget {

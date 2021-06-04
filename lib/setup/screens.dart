@@ -25,8 +25,8 @@ import 'package:gitjournal/setup/loading_error.dart';
 import 'package:gitjournal/setup/repo_selector.dart';
 import 'package:gitjournal/setup/sshkey.dart';
 import 'package:gitjournal/ssh/keygen.dart';
-import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/utils/utils.dart';
 
 class GitHostSetupScreen extends StatefulWidget {
   final String repoFolderName;

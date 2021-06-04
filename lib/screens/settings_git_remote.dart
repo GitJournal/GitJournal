@@ -14,8 +14,8 @@ import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/setup/screens.dart';
 import 'package:gitjournal/setup/sshkey.dart';
 import 'package:gitjournal/ssh/keygen.dart';
-import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/utils/utils.dart';
 
 class GitRemoteSettingsScreen extends StatefulWidget {
   final String sshPublicKey;

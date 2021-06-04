@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -11,7 +9,7 @@ import 'package:git_bindings/git_bindings.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/repository.dart';
-import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/utils/utils.dart';
 
 class SyncButton extends StatefulWidget {
   @override

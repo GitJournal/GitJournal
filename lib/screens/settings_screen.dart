@@ -49,8 +49,8 @@ import 'package:gitjournal/screens/settings_note_metadata.dart';
 import 'package:gitjournal/screens/settings_tags.dart';
 import 'package:gitjournal/screens/settings_widgets.dart';
 import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 

@@ -17,8 +17,8 @@ import 'package:gitjournal/screens/signup_screen.dart';
 import 'package:gitjournal/screens/tag_listing.dart';
 import 'package:gitjournal/settings.dart';
 import 'package:gitjournal/setup/screens.dart';
-import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/utils/utils.dart';
 
 class AppRoute {
   static const OnBoarding = '/onBoarding';

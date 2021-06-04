@@ -18,7 +18,7 @@ import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/screens/settings_screen.dart';
 import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/new_note_nav_bar.dart';
