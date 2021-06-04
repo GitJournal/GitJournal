@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'apis/githost_factory.dart';
+import '../apis/githost_factory.dart';
 
 class OAuthApp extends StatefulWidget {
   @override
