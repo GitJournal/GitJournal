@@ -7,9 +7,9 @@ import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
-import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/repository.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 
 class AppDrawerHeader extends StatelessWidget {
   final Func0<void> repoListToggled;

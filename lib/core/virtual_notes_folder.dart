@@ -1,4 +1,4 @@
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'note.dart';
 import 'notes_folder.dart';
 import 'notes_folder_notifier.dart';

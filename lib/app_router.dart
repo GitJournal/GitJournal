@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/iap/purchase_screen.dart';
 import 'package:gitjournal/iap/purchase_thankyou_screen.dart';
@@ -12,10 +11,11 @@ import 'package:gitjournal/screens/home_screen.dart';
 import 'package:gitjournal/screens/login_screen.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/screens/onboarding_screens.dart';
-import 'package:gitjournal/screens/settings_screen.dart';
 import 'package:gitjournal/screens/signup_screen.dart';
 import 'package:gitjournal/screens/tag_listing.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/setup/screens.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/utils/utils.dart';

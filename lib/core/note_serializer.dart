@@ -20,7 +20,7 @@ import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:yaml/yaml.dart';
 
 import 'package:gitjournal/core/notes_folder.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'md_yaml_doc.dart';

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 import '../app.dart';
 import '../core/note.dart';
 import '../editors/common_types.dart';

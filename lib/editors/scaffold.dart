@@ -13,7 +13,7 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/org_links_handler.dart';
 import 'package:gitjournal/editors/bottom_bar.dart';
 import 'package:gitjournal/editors/common.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/widgets/note_viewer.dart';
 
 class EditorScaffold extends StatefulWidget {

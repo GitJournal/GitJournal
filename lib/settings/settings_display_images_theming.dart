@@ -1,5 +1,3 @@
-
-
 /*
 Copyright 2020-2021 Roland Fredenhagen <important@van-fredenhagen.de>
 
@@ -21,9 +19,9 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/screens/settings_screen.dart';
-import 'package:gitjournal/screens/settings_widgets.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/settings_screen.dart';
+import 'package:gitjournal/settings/settings_widgets.dart';
 
 class SettingsDisplayImagesThemingScreen extends StatefulWidget {
   @override

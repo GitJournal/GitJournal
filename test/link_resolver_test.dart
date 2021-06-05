@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 
 import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
 
 void main() {

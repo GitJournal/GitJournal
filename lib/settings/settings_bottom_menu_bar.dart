@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/screens/home_screen.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 
 class BottomMenuBarSettings extends StatefulWidget {
   @override

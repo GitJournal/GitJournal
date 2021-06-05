@@ -9,7 +9,7 @@ import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 
 void main() {
   group('Notes Folder Config', () {

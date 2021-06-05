@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'button.dart';
 import 'error.dart';

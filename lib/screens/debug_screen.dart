@@ -7,7 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
-import 'package:gitjournal/app_settings.dart';
+import 'package:gitjournal/settings/app_settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 class DebugScreen extends StatefulWidget {

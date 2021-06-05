@@ -5,9 +5,9 @@ import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/features.dart';
-import 'package:gitjournal/screens/settings_screen.dart';
-import 'package:gitjournal/screens/settings_widgets.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/settings_screen.dart';
+import 'package:gitjournal/settings/settings_widgets.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';

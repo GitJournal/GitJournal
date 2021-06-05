@@ -6,7 +6,7 @@ import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_serializer.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 
 void main() {
   group('Note Serializer Test', () {

@@ -2,7 +2,7 @@ import 'package:test/test.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/processors/wiki_links_auto_add.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 
 void main() {
   test('Should process body', () {

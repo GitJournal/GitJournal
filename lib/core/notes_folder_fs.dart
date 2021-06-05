@@ -6,7 +6,7 @@ import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 import 'package:synchronized/synchronized.dart';
 
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'note.dart';
 import 'notes_folder.dart';

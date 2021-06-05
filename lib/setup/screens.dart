@@ -16,7 +16,7 @@ import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/repository.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/setup/autoconfigure.dart';
 import 'package:gitjournal/setup/button.dart';
 import 'package:gitjournal/setup/clone.dart';

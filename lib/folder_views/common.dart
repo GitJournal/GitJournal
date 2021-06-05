@@ -11,7 +11,7 @@ import 'package:gitjournal/folder_views/grid_view.dart';
 import 'package:gitjournal/folder_views/journal_view.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/screens/note_editor.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'common_types.dart';

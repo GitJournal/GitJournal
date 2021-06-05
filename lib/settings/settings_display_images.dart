@@ -21,10 +21,10 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/screens/settings_display_images_caption.dart';
-import 'package:gitjournal/screens/settings_display_images_theming.dart';
-import 'package:gitjournal/screens/settings_screen.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/settings_display_images_caption.dart';
+import 'package:gitjournal/settings/settings_display_images_theming.dart';
+import 'package:gitjournal/settings/settings_screen.dart';
 
 class SettingsDisplayImagesScreen extends StatefulWidget {
   @override

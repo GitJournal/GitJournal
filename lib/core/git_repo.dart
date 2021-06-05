@@ -8,7 +8,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 bool useDartGit = false;

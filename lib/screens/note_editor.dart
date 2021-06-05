@@ -35,7 +35,7 @@ import 'package:gitjournal/editors/org_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/repository.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';

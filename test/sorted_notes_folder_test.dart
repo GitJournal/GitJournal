@@ -8,7 +8,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/sorted_notes_folder.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 
 void main() {
   group('Sorted Notes Folder Test', () {

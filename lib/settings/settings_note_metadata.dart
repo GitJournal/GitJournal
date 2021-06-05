@@ -30,8 +30,8 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/features.dart';
-import 'package:gitjournal/screens/settings_widgets.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/settings_widgets.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class NoteMetadataSettingsScreen extends StatefulWidget {

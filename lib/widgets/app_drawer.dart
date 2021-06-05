@@ -12,10 +12,10 @@ import 'package:time/time.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
-import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
+import 'package:gitjournal/settings/app_settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/app_drawer_header.dart';

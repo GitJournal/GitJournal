@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:gitjournal/core/sorting_mode.dart';
-import 'package:gitjournal/screens/settings_screen.dart';
+import 'package:gitjournal/settings/settings_screen.dart';
 
 class SortingModeSelector extends StatefulWidget {
   final SortingMode selectedMode;

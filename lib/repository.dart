@@ -21,8 +21,8 @@ import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/features.dart';
-import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/settings_migrations.dart';
+import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/settings_migrations.dart';
 import 'package:gitjournal/setup/clone.dart';
 import 'package:gitjournal/utils/logger.dart';
 

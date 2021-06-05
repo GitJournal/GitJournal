@@ -9,8 +9,8 @@ import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/repository.dart';
-import 'package:gitjournal/screens/settings_widgets.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/settings_widgets.dart';
 import 'package:gitjournal/setup/screens.dart';
 import 'package:gitjournal/setup/sshkey.dart';
 import 'package:gitjournal/ssh/keygen.dart';

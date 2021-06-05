@@ -26,7 +26,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/images/image_caption.dart';
 import 'package:gitjournal/widgets/images/image_details.dart';

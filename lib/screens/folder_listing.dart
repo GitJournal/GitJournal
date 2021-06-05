@@ -19,10 +19,10 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/core/flattened_notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/repository.dart';
+import 'package:gitjournal/settings/app_settings.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/folder_tree_view.dart';

@@ -26,7 +26,7 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/processors/image_extractor.dart';
 import 'package:gitjournal/core/processors/inline_tags.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/utils/markdown.dart';

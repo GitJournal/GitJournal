@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 import 'package:gitjournal/core/checklist.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 
 void main() {
   group('Note', () {

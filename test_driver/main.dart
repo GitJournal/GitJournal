@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time/time.dart';
 
 import 'package:gitjournal/app.dart';
-import 'package:gitjournal/app_settings.dart';
+import 'package:gitjournal/settings/app_settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
 
 void main() async {
