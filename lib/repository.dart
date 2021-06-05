@@ -23,7 +23,6 @@ import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_migrations.dart';
-import 'package:gitjournal/setup/clone.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 enum SyncStatus {
@@ -96,19 +95,20 @@ class GitJournalRepo with ChangeNotifier {
       // has disappeared?
     }
 
-    var repo = await GitRepository.load(repoPath);
+    var repo = await GitRepository.load(repoPath).getOrThrow();
     var remoteConfigured = repo.config.remotes.isNotEmpty;
+    /*
     if (remoteConfigured) {
       // Code path for 'branch is null' exception
-      var branch = await repo.currentBranch();
-      var head = await repo.head();
+      var branchR = await repo.currentBranch();
+      var headR = await repo.head();
 
       BranchConfig? branchConfig;
       if (branch != null) {
         branchConfig = repo.config.branch(branch);
       }
 
-      if (branch == null || head == null || branchConfig == null) {
+      if (branchR.isFailure || headR.isFailure || branchConfig == null) {
         var remoteConfig = repo.config.remotes[0];
         await cloneRemote(
           repoPath: repoPath,
@@ -122,6 +122,7 @@ class GitJournalRepo with ChangeNotifier {
         );
       }
     }
+    */
 
     return GitJournalRepo._internal(
       repoPath: repoPath,
@@ -130,7 +131,7 @@ class GitJournalRepo with ChangeNotifier {
       remoteGitRepoConfigured: remoteConfigured,
       settings: settings,
       id: id,
-      currentBranch: await repo.currentBranch(),
+      currentBranch: await repo.currentBranch().getOrThrow(),
     );
   }
 
@@ -485,22 +486,22 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   Future<void> discardChanges(Note note) async {
-    var repo = await GitRepository.load(repoPath);
-    await repo.checkout(note.filePath);
+    var repo = await GitRepository.load(repoPath).getOrThrow();
+    await repo.checkout(note.filePath).throwOnError();
     await note.load();
   }
 
   Future<List<GitRemoteConfig>> remoteConfigs() async {
-    var repo = await GitRepository.load(repoPath);
+    var repo = await GitRepository.load(repoPath).getOrThrow();
     return repo.config.remotes;
   }
 
   Future<List<String>> branches() async {
-    var repo = await GitRepository.load(repoPath);
-    var branches = Set<String>.from(await repo.branches());
+    var repo = await GitRepository.load(repoPath).getOrThrow();
+    var branches = Set<String>.from(await repo.branches().getOrThrow());
     if (repo.config.remotes.isNotEmpty) {
       var remoteName = repo.config.remotes.first.name;
-      var remoteBranches = await repo.remoteBranches(remoteName);
+      var remoteBranches = await repo.remoteBranches(remoteName).getOrThrow();
       branches.addAll(remoteBranches.map((e) {
         return e.name.branchName()!;
       }));
@@ -512,15 +513,19 @@ class GitJournalRepo with ChangeNotifier {
 
   Future<String> checkoutBranch(String branchName) async {
     Log.i("Changing branch to $branchName");
-    var repo = await GitRepository.load(repoPath);
+    var repo = await GitRepository.load(repoPath).getOrThrow();
 
-    var created = await createBranchIfRequired(repo, branchName);
-    if (created.isEmpty) {
-      return "";
+    try {
+      var created = await createBranchIfRequired(repo, branchName);
+      if (created.isEmpty) {
+        return "";
+      }
+    } catch (ex, st) {
+      Log.e("createBranch", ex: ex, stacktrace: st);
     }
 
     try {
-      await repo.checkoutBranch(branchName);
+      await repo.checkoutBranch(branchName).getOrThrow();
       _currentBranch = branchName;
       print("Done checking out $branchName");
 
@@ -537,8 +542,10 @@ class GitJournalRepo with ChangeNotifier {
     return branchName;
   }
 
+  // FIXME: Why does this need to return a string?
+  /// throws exceptions
   Future<String> createBranchIfRequired(GitRepository repo, String name) async {
-    var localBranches = await repo.branches();
+    var localBranches = await repo.branches().getOrThrow();
     if (localBranches.contains(name)) {
       return name;
     }
@@ -547,15 +554,17 @@ class GitJournalRepo with ChangeNotifier {
       return "";
     }
     var remoteConfig = repo.config.remotes.first;
-    var remoteBranches = await repo.remoteBranches(remoteConfig.name);
-    var remoteBranchRef =
-        remoteBranches.firstWhereOrNull((ref) => ref.name.branchName() == name);
+    var remoteBranches =
+        await repo.remoteBranches(remoteConfig.name).getOrThrow();
+    var remoteBranchRef = remoteBranches.firstWhereOrNull(
+      (ref) => ref.name.branchName() == name,
+    );
     if (remoteBranchRef == null) {
       return "";
     }
 
-    await repo.createBranch(name, hash: remoteBranchRef.hash);
-    await repo.setBranchUpstreamTo(name, remoteConfig, name);
+    await repo.createBranch(name, hash: remoteBranchRef.hash).throwOnError();
+    await repo.setBranchUpstreamTo(name, remoteConfig, name).throwOnError();
 
     Log.i("Created branch $name");
     return name;

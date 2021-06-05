@@ -272,7 +272,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "51e16c02aba0628211ee29b42a5d45b3a7d596df"
+      resolved-ref: "445f7a3fcb0c06cf957f3f300a5930a61f7611cb"
       url: "https://github.com/GitJournal/dart-git.git"
     source: git
     version: "0.0.2"
@@ -304,6 +304,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  diff_match_patch:
+    dependency: transitive
+    description:
+      name: diff_match_patch
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.1"
   dots_indicator:
     dependency: "direct main"
     description:

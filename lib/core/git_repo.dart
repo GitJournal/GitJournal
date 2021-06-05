@@ -40,8 +40,8 @@ class GitNoteRepository {
 
   Future<void> _add(String pathSpec) async {
     if (useDartGit) {
-      var repo = await git.GitRepository.load(gitDirPath);
-      await repo.add(pathSpec);
+      var repo = await git.GitRepository.load(gitDirPath).getOrThrow();
+      await repo.add(pathSpec).throwOnError();
     } else {
       await _gitRepo.add(pathSpec);
     }
@@ -49,8 +49,8 @@ class GitNoteRepository {
 
   Future<void> _rm(String pathSpec) async {
     if (useDartGit) {
-      var repo = await git.GitRepository.load(gitDirPath);
-      await repo.rm(pathSpec);
+      var repo = await git.GitRepository.load(gitDirPath).getOrThrow();
+      await repo.rm(pathSpec).throwOnError();
     } else {
       await _gitRepo.rm(pathSpec);
     }
@@ -61,9 +61,9 @@ class GitNoteRepository {
       required String authorEmail,
       required String authorName}) async {
     if (useDartGit) {
-      var repo = await git.GitRepository.load(gitDirPath);
+      var repo = await git.GitRepository.load(gitDirPath).getOrThrow();
       var author = git.GitAuthor(name: authorName, email: authorEmail);
-      await repo.commit(message: message, author: author);
+      await repo.commit(message: message, author: author).throwOnError();
     } else {
       await _gitRepo.commit(
         message: message,
@@ -222,11 +222,9 @@ class GitNoteRepository {
   }
 
   Future<void> merge() async {
-    var repo = await git.GitRepository.load(gitDirPath);
-    var branch = await repo.currentBranch();
-    if (branch == null) {
-      throw Exception('No current branch found');
-    }
+    var repo = await git.GitRepository.load(gitDirPath).getOrThrow();
+    var branch = await repo.currentBranch().getOrThrow();
+
     var branchConfig = repo.config.branch(branch);
     if (branchConfig == null) {
       logExceptionWarning(
@@ -234,13 +232,13 @@ class GitNoteRepository {
       return;
     }
 
-    var remoteRef = await repo.remoteBranch(
+    var result = await repo.remoteBranch(
       branchConfig.remote!,
       branchConfig.trackingBranch()!,
     );
-    if (remoteRef == null) {
-      Log.i('Remote has no refs');
-      return;
+    if (result.isFailure) {
+      Log.e("Failed to get remote refs",
+          ex: result.error, stacktrace: result.stackTrace);
     }
 
     try {
@@ -257,11 +255,14 @@ class GitNoteRepository {
   Future<void> push() async {
     // Only push if we have something we need to push
     try {
-      var repo = await git.GitRepository.load(gitDirPath);
-      if ((await repo.canPush()) == false) {
+      var repo = await git.GitRepository.load(gitDirPath).getOrThrow();
+      var canPush = await repo.canPush().getOrThrow();
+      if (!canPush) {
         return;
       }
-    } catch (_) {}
+    } catch (ex, st) {
+      Log.e("Can Push", ex: ex, stacktrace: st);
+    }
 
     try {
       await _gitRepo.push(
@@ -283,8 +284,8 @@ class GitNoteRepository {
 
   Future<int?> numChanges() async {
     try {
-      var repo = await git.GitRepository.load(gitDirPath);
-      var n = await repo.numChangesToPush();
+      var repo = await git.GitRepository.load(gitDirPath).getOrThrow();
+      var n = await repo.numChangesToPush().getOrThrow();
       return n;
     } catch (ex, st) {
       Log.e("numChanges", ex: ex, stacktrace: st);

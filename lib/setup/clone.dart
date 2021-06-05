@@ -1,10 +1,11 @@
 import 'package:dart_git/dart_git.dart';
+import 'package:dart_git/exceptions.dart';
 import 'package:git_bindings/git_bindings.dart' as git_bindings;
 import 'package:path/path.dart' as p;
 
 import 'package:gitjournal/utils/logger.dart';
 
-Future<void> cloneRemote({
+Future<Result<void>> cloneRemote({
   required String repoPath,
   required String cloneUrl,
   required String remoteName,
@@ -14,9 +15,8 @@ Future<void> cloneRemote({
   required String authorName,
   required String authorEmail,
 }) async {
-  var repo = await GitRepository.load(repoPath);
-
-  var remote = await repo.addOrUpdateRemote(remoteName, cloneUrl);
+  var repo = await GitRepository.load(repoPath).getOrThrow();
+  var remote = await repo.addOrUpdateRemote(remoteName, cloneUrl).getOrThrow();
 
   var _gitRepo = git_bindings.GitRepo(folderPath: repoPath);
   await _gitRepo.fetch(
@@ -36,18 +36,25 @@ Future<void> cloneRemote({
   );
   Log.i("Using remote branch: $remoteBranchName");
 
-  var branches = await repo.branches();
+  var branches = await repo.branches().getOrThrow();
   if (branches.isEmpty) {
     Log.i("Completing - no local branch");
-    var remoteBranch = await repo.remoteBranch(remoteName, remoteBranchName!);
+    var remoteBranchR = await repo.remoteBranch(remoteName, remoteBranchName);
+    if (remoteBranchR.isFailure) {
+      if (remoteBranchR.error is! GitNotFound) {
+        return fail(remoteBranchR);
+      }
 
-    // FIXME: This logic doesn't seem right. What if the remoteBranchName is empty
-    if (/*remoteBranchName != null &&*/
-        remoteBranchName.isNotEmpty && remoteBranch != null) {
+      // remoteBranch doesn't exist - do nothing? Are you sure?
+    } else {
+      // remote branch exists
+      var remoteBranch = remoteBranchR.getOrThrow();
       await repo.createBranch(remoteBranchName, hash: remoteBranch.hash);
       await repo.checkoutBranch(remoteBranchName);
     }
-    await repo.setUpstreamTo(remote, remoteBranchName);
+
+    // FIXME: This will fail if the currentBranch doesn't exist!!
+    await repo.setUpstreamTo(remote, remoteBranchName).getOrThrow();
   } else {
     Log.i("Local branches $branches");
     var branch = branches[0];
@@ -55,7 +62,7 @@ Future<void> cloneRemote({
     if (branch == remoteBranchName) {
       Log.i("Completing - localBranch: $branch");
 
-      var currentBranch = await repo.currentBranch();
+      var currentBranch = await repo.currentBranch().getOrThrow();
       if (currentBranch != branch) {
         // Shit happens sometimes
         // There is only one local branch, and that branch is not the current
@@ -63,9 +70,9 @@ Future<void> cloneRemote({
         await repo.checkoutBranch(branch);
       }
 
-      await repo.setUpstreamTo(remote, remoteBranchName!);
-      var remoteBranch = await repo.remoteBranch(remoteName, remoteBranchName);
-      if (remoteBranch != null) {
+      await repo.setUpstreamTo(remote, remoteBranchName).getOrThrow();
+      var remoteBranchR = await repo.remoteBranch(remoteName, remoteBranchName);
+      if (remoteBranchR.isSuccess) {
         Log.i("Merging '$remoteName/$remoteBranchName'");
         await _gitRepo.merge(
           branch: '$remoteName/$remoteBranchName',
@@ -75,11 +82,11 @@ Future<void> cloneRemote({
       }
     } else {
       Log.i("Completing - localBranch diff remote: $branch $remoteBranchName");
-      await repo.createBranch(remoteBranchName!);
-      await repo.checkoutBranch(remoteBranchName);
+      await repo.createBranch(remoteBranchName).getOrThrow();
+      await repo.checkoutBranch(remoteBranchName).getOrThrow();
 
-      await repo.deleteBranch(branch);
-      await repo.setUpstreamTo(remote, remoteBranchName);
+      await repo.deleteBranch(branch).getOrThrow();
+      await repo.setUpstreamTo(remote, remoteBranchName).getOrThrow();
 
       Log.i("Merging '$remoteName/$remoteBranchName'");
       await _gitRepo.merge(
@@ -97,9 +104,11 @@ Future<void> cloneRemote({
   //   https://sentry.io/organizations/gitjournal/issues/2254310735/?project=5168082&query=is%3Aunresolved
   //
   await repo.checkout(".");
+
+  return Result(null);
 }
 
-Future<String?> _remoteDefaultBranch({
+Future<String> _remoteDefaultBranch({
   required GitRepository repo,
   required git_bindings.GitRepo libGit2Repo,
   required String remoteName,
@@ -126,7 +135,7 @@ Future<String?> _remoteDefaultBranch({
   if (remoteBranch == null) {
     return 'master';
   }
-  return remoteBranch.target!.branchName();
+  return remoteBranch.target!.branchName()!;
 }
 
 String folderNameFromCloneUrl(String cloneUrl) {
@@ -143,3 +152,5 @@ String folderNameFromCloneUrl(String cloneUrl) {
 // * Existing Repo (master default), No Local Changes
 // * Existing Repo (master default), Local changes in 'master' branch
 // * Existing Repo (main default), Local changes in 'master' branch
+
+// GIT_SSH_COMMAND='ssh -i private_key_file -o IdentitiesOnly=yes' git clone user@host:repo.git
