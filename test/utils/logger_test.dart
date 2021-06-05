@@ -15,7 +15,7 @@ void main() {
 
     var provider = await FakePathProviderPlatform.init();
     PathProviderPlatform.instance = provider;
-    await Log.init();
+    await Log.init(ignoreFimber: true);
   });
 
   test('Logger', () async {

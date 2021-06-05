@@ -14,8 +14,8 @@ class Log {
   static late String logFolderPath;
   static RandomAccessFile? logFile;
 
-  static Future<void> init() async {
-    if (foundation.kDebugMode) {
+  static Future<void> init({bool ignoreFimber = false}) async {
+    if (foundation.kDebugMode && !ignoreFimber) {
       Fimber.plantTree(DebugTree.elapsed(useColors: true));
     }
 
@@ -149,7 +149,6 @@ class Log {
       var today = DateTime.now().toString().substring(0, 10);
       var logFilePath = p.join(logFolderPath, '$today.jsonl');
       logFile = await File(logFilePath).open(mode: FileMode.append);
-      print("Writing logs to file $logFilePath");
     } else {
       if (logFile != null) {
         await logFile!.close();
