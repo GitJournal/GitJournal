@@ -1,5 +1,5 @@
 - version: "1.76"
-  draft: true
+  date: 2021-04-23
   features:
     - text: "Add Git Branch selection - #127"
   bugs:
