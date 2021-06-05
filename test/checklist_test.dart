@@ -39,7 +39,7 @@ Booga Wooga
 """;
 
       var notePath = p.join(tempDir.path, "note.md");
-      File(notePath).writeAsString(content);
+      await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
       var note = Note(parentFolder, notePath);
