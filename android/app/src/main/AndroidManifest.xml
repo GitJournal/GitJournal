@@ -89,6 +89,7 @@ limitations under the License.
         <meta-data android:name="flutterEmbedding" android:value="2" />
         <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
         <meta-data android:name="firebase_analytics_collection_enabled" android:value="false" />
+        <meta-data android:name="google_analytics_ssaid_collection_enabled" android:value="false" />
         <meta-data android:name="io.sentry.dsn" android:value="https://35f34dbec289435fbe16483faacf49a5@sentry.io/5168082" />
     </application>
 </manifest>
