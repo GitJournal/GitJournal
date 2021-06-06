@@ -254,13 +254,16 @@ class Button extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: RaisedButton(
+      child: ElevatedButton(
         child: Text(
           text,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.button,
         ),
-        color: Theme.of(context).primaryColor,
+        style: ButtonStyle(
+          backgroundColor:
+              MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+        ),
         onPressed: onPressed,
       ),
     );
@@ -277,13 +280,15 @@ class RedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: RaisedButton(
+      child: ElevatedButton(
         child: Text(
           text,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.button,
         ),
-        color: Colors.red,
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+        ),
         onPressed: onPressed,
       ),
     );

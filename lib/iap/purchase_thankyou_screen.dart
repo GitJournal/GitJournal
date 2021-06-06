@@ -15,14 +15,19 @@ class PurchaseThankYouScreen extends StatelessWidget {
           style: textTheme.headline4,
           textAlign: TextAlign.center,
         ),
-        RaisedButton(
-          child: const Text("Back"),
-          color: theme.primaryColor,
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+        Padding(
           padding: const EdgeInsets.fromLTRB(64.0, 16.0, 64.0, 16.0),
-        )
+          child: ElevatedButton(
+            child: const Text("Back"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  Theme.of(context).primaryColor),
+            ),
+          ),
+        ),
       ],
       mainAxisAlignment: MainAxisAlignment.spaceAround,
     );

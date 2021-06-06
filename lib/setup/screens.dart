@@ -73,7 +73,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
   UserInfo? _userInfo;
 
-  Widget? _buildPage(BuildContext context, int pos) {
+  Widget _buildPage(BuildContext context, int pos) {
     assert(_pageCount >= 1);
 
     if (pos == 0) {
@@ -350,16 +350,16 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     }
 
     assert(_pageChoice[0] != PageChoice0.CustomProvider);
-
     assert(false, "Pos is $pos");
-    return null;
+
+    return Container();
   }
 
   @override
   Widget build(BuildContext context) {
     var pageView = PageView.builder(
       controller: pageController,
-      itemBuilder: _buildPage as Widget Function(BuildContext, int),
+      itemBuilder: _buildPage,
       itemCount: _pageCount,
       onPageChanged: (int pageNum) {
         setState(() {

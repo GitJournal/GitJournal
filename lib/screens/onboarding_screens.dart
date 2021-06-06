@@ -102,14 +102,17 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       bottomBar = SizedBox(
         width: double.infinity,
         height: _bottomBarHeight,
-        child: RaisedButton(
+        child: ElevatedButton(
           key: const ValueKey("GetStarted"),
           child: Text(
             tr("OnBoarding.getStarted"),
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.button,
           ),
-          color: Theme.of(context).primaryColor,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(
+                Theme.of(context).primaryColor),
+          ),
           onPressed: _finish,
         ),
       );

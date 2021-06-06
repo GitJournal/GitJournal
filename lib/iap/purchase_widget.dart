@@ -43,11 +43,16 @@ class PurchaseButton extends StatelessWidget {
       text = tr("widgets.PurchaseButton.fail");
     }
 
-    return RaisedButton(
-      child: Text(text, textAlign: TextAlign.center),
-      color: Theme.of(context).primaryColor,
+    return Padding(
       padding: const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 16.0),
-      onPressed: product != null ? () => _reportExceptions(context) : null,
+      child: ElevatedButton(
+        child: Text(text, textAlign: TextAlign.center),
+        onPressed: product != null ? () => _reportExceptions(context) : null,
+        style: ButtonStyle(
+          backgroundColor:
+              MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+        ),
+      ),
     );
   }
 
