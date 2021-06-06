@@ -13,8 +13,7 @@ jobs:
           command: echo 'Host *\n    StrictHostKeyChecking no' > ~/.ssh/config
       - run:
           name: Test
-          # FIXME: Run `flutter test` with sound null safety
-          command: flutter test --no-sound-null-safety --coverage --machine | tojunit --output junit.xml
+          command: flutter test --coverage --machine | tojunit --output junit.xml
       - store_test_results:
           path: ./
       #   - run:
