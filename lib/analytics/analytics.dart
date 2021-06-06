@@ -146,8 +146,10 @@ class Analytics {
     Map<String, String> parameters = const {},
   }) async {
     String name = _eventToString(e);
-    if (Platform.isAndroid || Platform.isIOS) {
-      await firebase.logEvent(name: name, parameters: parameters);
+    if (enabled) {
+      if (Platform.isAndroid || Platform.isIOS) {
+        await firebase.logEvent(name: name, parameters: parameters);
+      }
     }
     captureErrorBreadcrumb(name: name, parameters: parameters);
   }
@@ -160,13 +162,21 @@ class Analytics {
   }
 
   Future<void> setCurrentScreen({required String screenName}) async {
+    if (!enabled) {
+      return;
+    }
     if (Platform.isAndroid || Platform.isIOS) {
       await firebase.setCurrentScreen(screenName: screenName);
     }
   }
 
-  Future<void> setUserProperty(
-      {required String name, required String value}) async {
+  Future<void> setUserProperty({
+    required String name,
+    required String value,
+  }) async {
+    if (!enabled) {
+      return;
+    }
     if (Platform.isAndroid || Platform.isIOS) {
       await firebase.setUserProperty(name: name, value: value);
     }

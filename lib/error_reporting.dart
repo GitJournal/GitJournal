@@ -125,6 +125,10 @@ void captureErrorBreadcrumb({
   required String name,
   required Map<String, String> parameters,
 }) {
+  if (!reportCrashes) {
+    return;
+  }
+
   var b = Breadcrumb(
     message: name,
     timestamp: DateTime.now(),
