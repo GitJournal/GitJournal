@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:basic_utils/basic_utils.dart';
 import 'package:git_bindings/git_bindings.dart' as gb;
 import 'package:path/path.dart' as p;
 
@@ -75,4 +76,23 @@ Future<SshKey?> generateSSHKeysNative({required String comment}) async {
   }
 
   return null;
+}
+
+Future<SshKey> generateSSHEccKeys({required String comment}) async {
+  print("Generating KeyPair ...");
+  var stopwatch = Stopwatch()..start();
+  var keyPair = CryptoUtils.generateEcKeyPair(curve: 'secp384r1');
+  var publicKey = keyPair.publicKey as ECPublicKey;
+  var privateKey = keyPair.privateKey as ECPrivateKey;
+  print("Generating KeyPair took: ${stopwatch.elapsed}");
+
+  var publicPem = CryptoUtils.encodeEcPublicKeyToPem(publicKey);
+  var privatePem = CryptoUtils.encodeEcPrivateKeyToPem(privateKey);
+
+  // FIXME: I need to learn to convert from the public key PEM format to ecdsa-sha2-nistp384
+  return SshKey(
+    publicKey: publicPem,
+    privateKey: privatePem,
+    password: "",
+  );
 }

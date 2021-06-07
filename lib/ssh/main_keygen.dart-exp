@@ -55,3 +55,27 @@ String privateKeyString() {
 // -> https://golang.org/src/crypto/x509/pkcs8.go
 
 // Key format is PKCS8 or OpenSSH.
+
+/*
+String publicKeyString(ECPublicKey publicKey, String comment) {
+  var publicPem = CryptoUtils.encodeEcPublicKeyToPem(publicKey);
+
+  print('public PEM');
+  print(publicPem);
+  print('\n');
+
+  var publicKeyBytes = CryptoUtils.getBytesFromPEMString(publicPem);
+  var data = BinaryLengthValue.encode([
+    BinaryLengthValue.fromString("ecdsa-sha2-nistp384"),
+    BinaryLengthValue(publicKeyBytes),
+  ]);
+
+  if (comment.isNotEmpty) {
+    comment = comment.replaceAll('\r', ' ');
+    comment = comment.replaceAll('\n', ' ');
+    comment = ' $comment';
+  }
+
+  return 'ecdsa-sha2-nistp384 ${base64.encode(data)}$comment';
+}
+*/
