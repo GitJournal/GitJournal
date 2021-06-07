@@ -444,15 +444,16 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
       const SizedBox(height: 16.0),
-      SwitchListTile(
-        title: Text(tr('settings.usageStats')),
-        value: appSettings.collectUsageStatistics,
-        onChanged: (bool val) {
-          appSettings.collectUsageStatistics = val;
-          appSettings.save();
-          setState(() {});
-        },
-      ),
+      // Disabled until we find a replacement for Firebase Analytics
+      // SwitchListTile(
+      //   title: Text(tr('settings.usageStats')),
+      //   value: appSettings.collectUsageStatistics,
+      //   onChanged: (bool val) {
+      //     appSettings.collectUsageStatistics = val;
+      //     appSettings.save();
+      //     setState(() {});
+      //   },
+      // ),
       SwitchListTile(
         title: Text(tr('settings.crashReports')),
         value: appSettings.collectCrashReports,

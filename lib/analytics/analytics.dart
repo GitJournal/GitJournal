@@ -3,7 +3,6 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 
 import 'package:device_info/device_info.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/error_reporting.dart';
@@ -138,7 +137,7 @@ String _eventToString(Event e) {
 }
 
 class Analytics {
-  var firebase = FirebaseAnalytics();
+  // var firebase = FirebaseAnalytics();
   bool enabled = false;
 
   Future<void> log({
@@ -148,7 +147,7 @@ class Analytics {
     String name = _eventToString(e);
     if (enabled) {
       if (Platform.isAndroid || Platform.isIOS) {
-        await firebase.logEvent(name: name, parameters: parameters);
+        // await firebase.logEvent(name: name, parameters: parameters);
       }
     }
     captureErrorBreadcrumb(name: name, parameters: parameters);
@@ -157,7 +156,7 @@ class Analytics {
   Future<void> setAnalyticsCollectionEnabled(bool enabled) async {
     this.enabled = enabled;
     if (Platform.isAndroid || Platform.isIOS) {
-      await firebase.setAnalyticsCollectionEnabled(enabled);
+      // await firebase.setAnalyticsCollectionEnabled(enabled);
     }
   }
 
@@ -166,7 +165,7 @@ class Analytics {
       return;
     }
     if (Platform.isAndroid || Platform.isIOS) {
-      await firebase.setCurrentScreen(screenName: screenName);
+      // await firebase.setCurrentScreen(screenName: screenName);
     }
   }
 
@@ -178,7 +177,7 @@ class Analytics {
       return;
     }
     if (Platform.isAndroid || Platform.isIOS) {
-      await firebase.setUserProperty(name: name, value: value);
+      // await firebase.setUserProperty(name: name, value: value);
     }
   }
 }
