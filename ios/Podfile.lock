@@ -42,76 +42,14 @@ PODS:
   - file_picker (0.0.1):
     - DKImagePickerController/PhotoGallery
     - Flutter
-  - Firebase/Analytics (7.3.0):
-    - Firebase/Core
-  - Firebase/Core (7.3.0):
-    - Firebase/CoreOnly
-    - FirebaseAnalytics (= 7.3.0)
-  - Firebase/CoreOnly (7.3.0):
-    - FirebaseCore (= 7.3.0)
-  - firebase_analytics (8.0.0):
-    - Firebase/Analytics (= 7.3.0)
-    - firebase_core
-    - Flutter
-  - firebase_core (1.0.3):
-    - Firebase/CoreOnly (= 7.3.0)
-    - Flutter
-  - FirebaseAnalytics (7.3.0):
-    - FirebaseCore (~> 7.0)
-    - FirebaseInstallations (~> 7.0)
-    - GoogleAppMeasurement (= 7.3.0)
-    - GoogleUtilities/AppDelegateSwizzler (~> 7.0)
-    - GoogleUtilities/MethodSwizzler (~> 7.0)
-    - GoogleUtilities/Network (~> 7.0)
-    - "GoogleUtilities/NSData+zlib (~> 7.0)"
-    - nanopb (~> 2.30906.0)
-  - FirebaseCore (7.3.0):
-    - FirebaseCoreDiagnostics (~> 7.0)
-    - GoogleUtilities/Environment (~> 7.0)
-    - GoogleUtilities/Logger (~> 7.0)
-  - FirebaseCoreDiagnostics (7.3.0):
-    - GoogleDataTransport (~> 8.0)
-    - GoogleUtilities/Environment (~> 7.0)
-    - GoogleUtilities/Logger (~> 7.0)
-    - nanopb (~> 2.30906.0)
-  - FirebaseInstallations (7.10.0):
-    - FirebaseCore (~> 7.0)
-    - GoogleUtilities/Environment (~> 7.0)
-    - GoogleUtilities/UserDefaults (~> 7.0)
-    - PromisesObjC (~> 1.2)
   - Flutter (1.0.0)
   - flutter_email_sender (0.0.1):
+    - Flutter
+  - flutter_tex_js (0.0.1):
     - Flutter
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - GoogleAppMeasurement (7.3.0):
-    - GoogleUtilities/AppDelegateSwizzler (~> 7.0)
-    - GoogleUtilities/MethodSwizzler (~> 7.0)
-    - GoogleUtilities/Network (~> 7.0)
-    - "GoogleUtilities/NSData+zlib (~> 7.0)"
-    - nanopb (~> 2.30906.0)
-  - GoogleDataTransport (8.1.0):
-    - nanopb (~> 2.30906.0)
-  - GoogleUtilities/AppDelegateSwizzler (7.3.1):
-    - GoogleUtilities/Environment
-    - GoogleUtilities/Logger
-    - GoogleUtilities/Network
-  - GoogleUtilities/Environment (7.3.1):
-    - PromisesObjC (~> 1.2)
-  - GoogleUtilities/Logger (7.3.1):
-    - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (7.3.1):
-    - GoogleUtilities/Logger
-  - GoogleUtilities/Network (7.3.1):
-    - GoogleUtilities/Logger
-    - "GoogleUtilities/NSData+zlib"
-    - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (7.3.1)"
-  - GoogleUtilities/Reachability (7.3.1):
-    - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (7.3.1):
-    - GoogleUtilities/Logger
   - icloud_documents_path (0.0.1):
     - Flutter
   - image_picker (0.0.1):
@@ -120,11 +58,6 @@ PODS:
     - Flutter
   - launch_review (0.0.1):
     - Flutter
-  - nanopb (2.30906.0):
-    - nanopb/decode (= 2.30906.0)
-    - nanopb/encode (= 2.30906.0)
-  - nanopb/decode (2.30906.0)
-  - nanopb/encode (2.30906.0)
   - package_info (0.0.1):
     - Flutter
   - package_info_plus (0.4.5):
@@ -133,7 +66,6 @@ PODS:
     - Flutter
   - "permission_handler (5.1.0+2)":
     - Flutter
-  - PromisesObjC (1.2.12)
   - quick_actions (0.0.1):
     - Flutter
   - Reachability (3.2)
@@ -165,10 +97,9 @@ DEPENDENCIES:
   - device_info (from `.symlinks/plugins/device_info/ios`)
   - ext_storage (from `.symlinks/plugins/ext_storage/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
-  - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
-  - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
   - flutter_email_sender (from `.symlinks/plugins/flutter_email_sender/ios`)
+  - flutter_tex_js (from `.symlinks/plugins/flutter_tex_js/ios`)
   - icloud_documents_path (from `.symlinks/plugins/icloud_documents_path/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - in_app_purchase (from `.symlinks/plugins/in_app_purchase/ios`)
@@ -189,17 +120,7 @@ SPEC REPOS:
   trunk:
     - DKImagePickerController
     - DKPhotoGallery
-    - Firebase
-    - FirebaseAnalytics
-    - FirebaseCore
-    - FirebaseCoreDiagnostics
-    - FirebaseInstallations
     - FMDB
-    - GoogleAppMeasurement
-    - GoogleDataTransport
-    - GoogleUtilities
-    - nanopb
-    - PromisesObjC
     - Reachability
     - SDWebImage
     - Sentry
@@ -216,14 +137,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/ext_storage/ios"
   file_picker:
     :path: ".symlinks/plugins/file_picker/ios"
-  firebase_analytics:
-    :path: ".symlinks/plugins/firebase_analytics/ios"
-  firebase_core:
-    :path: ".symlinks/plugins/firebase_core/ios"
   Flutter:
     :path: Flutter
   flutter_email_sender:
     :path: ".symlinks/plugins/flutter_email_sender/ios"
+  flutter_tex_js:
+    :path: ".symlinks/plugins/flutter_tex_js/ios"
   icloud_documents_path:
     :path: ".symlinks/plugins/icloud_documents_path/ios"
   image_picker:
@@ -263,29 +182,18 @@ SPEC CHECKSUMS:
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   ext_storage: 4eaf3a84d5594106e2ebcc2502248cfde53c8fa1
   file_picker: 3e6c3790de664ccf9b882732d9db5eaf6b8d4eb1
-  Firebase: 26223c695fe322633274198cb19dca8cb7e54416
-  firebase_analytics: b0d6f5a3c2208510a14b7e9f5b7f3a03b284a386
-  firebase_core: b5d81dfd4fb2d6f700e67de34d9a633ae325c4e9
-  FirebaseAnalytics: 2580c2d62535ae7b644143d48941fcc239ea897a
-  FirebaseCore: 4d3c72622ce0e2106aaa07bb4b2935ba2c370972
-  FirebaseCoreDiagnostics: d50e11039e5984d92c8a512be2395f13df747350
-  FirebaseInstallations: bf2ec8dbf36ff4c91af6b9a003d15855757680c1
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_email_sender: 02d7443217d8c41483223627972bfdc09f74276b
+  flutter_tex_js: 010eab32e3bc329fe1b6d48efd8a3b0c0506bb50
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  GoogleAppMeasurement: 8d3c0aeede16ab7764144b5a4ca8e1d4323841b7
-  GoogleDataTransport: 116c84c4bdeb76be2a7a46de51244368f9794eab
-  GoogleUtilities: e1d9ed4e544fc32a93e00e721400cbc3f377200d
   icloud_documents_path: 11c858abe03d6900cacce4ef86267f527c89ab7d
   image_picker: 50e7c7ff960e5f58faa4d1f4af84a771c671bc4a
   in_app_purchase: 3e2155afa9d03d4fa32d9e62d567885080ce97d6
   launch_review: 75d5a956ba8eaa493e9c9d4bf4c05e505e8d5ed0
-  nanopb: 1bf24dd71191072e120b83dd02d08f3da0d65e53
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
-  PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   quick_actions: 6cb2390c4dab0e737c94573c27e18d9666710720
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   receive_sharing_intent: c0d87310754e74c0f9542947e7cbdf3a0335a3b1

@@ -23,7 +23,6 @@ dependencies:
     git: https://github.com/GitJournal/icloud_documents_path.git
   auto_size_text: ^3.0.0-nullsafety.0
   badges: ^2.0.1
-  cached_network_image: ^3.0.0
   connectivity: ^3.0.3
   # cryptography: ^1.4.1
   # cryptography_flutter: ^1.0.0
@@ -40,6 +39,7 @@ dependencies:
   file_picker: ^3.0.1
   filesystem_picker: ^2.0.0-nullsafety.0 # for directories
   fimber: ^0.6.1
+  flutter_cache_manager: ^3.0.1
   flutter_email_sender: ^5.0.0
   flutter_emoji:
     git: https://github.com/cek-cek/flutter-emoji
