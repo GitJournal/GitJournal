@@ -91,8 +91,38 @@ Future<SshKey> generateSSHEccKeys({required String comment}) async {
 
   // FIXME: I need to learn to convert from the public key PEM format to ecdsa-sha2-nistp384
   return SshKey(
-    publicKey: publicPem,
+    publicKey: publicKeyString(publicKey, comment),
     privateKey: privatePem,
     password: "",
   );
+}
+
+// https://datatracker.ietf.org/doc/html/rfc5656
+String publicKeyString(ECPublicKey publicKey, String comment) {
+  var publicPem = CryptoUtils.encodeEcPublicKeyToPem(publicKey);
+
+  print('public PEM');
+  print(publicPem);
+  print('\n');
+
+  var publicKeyBytes2 = CryptoUtils.getBytesFromPEMString(publicPem);
+
+  var publicKeyBytes = publicKey.Q!.getEncoded(false);
+  if (publicKeyBytes != publicKeyBytes2) {
+    print("THE BYTES ARE NOT EQAU~L");
+  }
+  print("HUURAY");
+
+  var data = BinaryLengthValue.encode([
+    BinaryLengthValue.fromString("ecdsa-sha2-nistp384"),
+    BinaryLengthValue(publicKeyBytes),
+  ]);
+
+  if (comment.isNotEmpty) {
+    comment = comment.replaceAll('\r', ' ');
+    comment = comment.replaceAll('\n', ' ');
+    comment = ' $comment';
+  }
+
+  return 'ecdsa-sha2-nistp384 ${base64.encode(data)}$comment';
 }
