@@ -395,6 +395,7 @@ setup:
     title: Select or Create a Repository
     hint: Type to Search or Create a Repo
     create: Create Private Repo {}
+    loading: Loading
   cloneUrl:
     enter: Enter the Git Clone URL
     validator:

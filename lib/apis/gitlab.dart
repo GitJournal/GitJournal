@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/services.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/utils/logger.dart';
@@ -204,8 +203,7 @@ class GitLab implements GitHost {
     return json.decode(response.body);
   }
 
-  @visibleForTesting
-  GitHostRepo repoFromJson(Map<String, dynamic> parsedJson) {
+  static GitHostRepo repoFromJson(Map<String, dynamic> parsedJson) {
     DateTime? updatedAt;
     try {
       updatedAt = DateTime.parse(parsedJson['last_activity_at'].toString());

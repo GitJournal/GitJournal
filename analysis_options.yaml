@@ -14,8 +14,8 @@ analyzer:
     todo: ignore
   exclude:
     - "bin/cache/**"
-  # enable-experiment:
-  # - non-nullable
+  enable-experiment:
+    - nonfunction-type-aliases
 
 linter:
   rules:
