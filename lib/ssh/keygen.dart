@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:basic_utils/basic_utils.dart';
 import 'package:git_bindings/git_bindings.dart' as gb;
 import 'package:path/path.dart' as p;
 
+import 'package:gitjournal/ssh/binary_length_value.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 // import 'package:gitjournal/ssh/rsa_key_pair.dart';
@@ -86,7 +88,7 @@ Future<SshKey> generateSSHEccKeys({required String comment}) async {
   var privateKey = keyPair.privateKey as ECPrivateKey;
   print("Generating KeyPair took: ${stopwatch.elapsed}");
 
-  var publicPem = CryptoUtils.encodeEcPublicKeyToPem(publicKey);
+  //var publicPem = CryptoUtils.encodeEcPublicKeyToPem(publicKey);
   var privatePem = CryptoUtils.encodeEcPrivateKeyToPem(privateKey);
 
   // FIXME: I need to learn to convert from the public key PEM format to ecdsa-sha2-nistp384
