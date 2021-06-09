@@ -149,7 +149,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
   void _customSshKeys() {
     var route = MaterialPageRoute(
       builder: (context) => Scaffold(
-        body: GitHostUserProvidedKeys(
+        body: GitHostUserProvidedKeysPage(
           doneFunction: _updateKeys,
           saveText: tr("setup.sshKey.save"),
         ),

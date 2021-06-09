@@ -7,7 +7,7 @@ import 'button.dart';
 import 'key_editors.dart';
 import 'loading.dart';
 
-class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
+class GitHostSetupSshKeyKnownProviderPage extends StatelessWidget {
   final Func0<void> doneFunction;
   final Func0<void> regenerateFunction;
   final Func1<BuildContext, void> copyKeyFunction;
@@ -15,7 +15,7 @@ class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
 
   final Func0<void> openDeployKeyPage;
 
-  GitHostSetupSshKeyKnownProvider({
+  GitHostSetupSshKeyKnownProviderPage({
     required this.doneFunction,
     required this.regenerateFunction,
     required this.copyKeyFunction,
@@ -91,13 +91,13 @@ class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
   }
 }
 
-class GitHostSetupSshKeyUnknownProvider extends StatelessWidget {
+class GitHostSetupSshKeyUnknownProviderPage extends StatelessWidget {
   final Func0<void> doneFunction;
   final Func0<void> regenerateFunction;
   final Func1<BuildContext, void> copyKeyFunction;
   final String? publicKey;
 
-  GitHostSetupSshKeyUnknownProvider({
+  GitHostSetupSshKeyUnknownProviderPage({
     required this.doneFunction,
     required this.regenerateFunction,
     required this.copyKeyFunction,
@@ -167,11 +167,11 @@ class GitHostSetupSshKeyUnknownProvider extends StatelessWidget {
   }
 }
 
-class GitHostSetupKeyChoice extends StatelessWidget {
+class GitHostSetupKeyChoicePage extends StatelessWidget {
   final Func0<void> onGenerateKeys;
   final Func0<void> onUserProvidedKeys;
 
-  GitHostSetupKeyChoice({
+  GitHostSetupKeyChoicePage({
     required this.onGenerateKeys,
     required this.onUserProvidedKeys,
   });
@@ -203,22 +203,23 @@ class GitHostSetupKeyChoice extends StatelessWidget {
   }
 }
 
-class GitHostUserProvidedKeys extends StatefulWidget {
+class GitHostUserProvidedKeysPage extends StatefulWidget {
   final Func3<String, String, String, void>
       doneFunction; // public, private, password
   final String saveText;
 
-  GitHostUserProvidedKeys({
+  GitHostUserProvidedKeysPage({
     required this.doneFunction,
     this.saveText = "",
   });
 
   @override
-  _GitHostUserProvidedKeysState createState() =>
-      _GitHostUserProvidedKeysState();
+  _GitHostUserProvidedKeysPageState createState() =>
+      _GitHostUserProvidedKeysPageState();
 }
 
-class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
+class _GitHostUserProvidedKeysPageState
+    extends State<GitHostUserProvidedKeysPage> {
   late GlobalKey<FormState> _publicFormKey;
   late GlobalKey<FormState> _privateFormKey;
   late TextEditingController _publicKeyController;

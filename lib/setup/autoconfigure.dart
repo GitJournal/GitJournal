@@ -14,22 +14,23 @@ import 'button.dart';
 import 'error.dart';
 import 'loading.dart';
 
-class GitHostSetupAutoConfigure extends StatefulWidget {
+class GitHostSetupAutoConfigurePage extends StatefulWidget {
   final GitHostType gitHostType;
   final Func2<GitHost?, UserInfo?, void> onDone;
 
-  GitHostSetupAutoConfigure({
+  GitHostSetupAutoConfigurePage({
     required this.gitHostType,
     required this.onDone,
   });
 
   @override
-  GitHostSetupAutoConfigureState createState() {
-    return GitHostSetupAutoConfigureState();
+  GitHostSetupAutoConfigurePageState createState() {
+    return GitHostSetupAutoConfigurePageState();
   }
 }
 
-class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
+class GitHostSetupAutoConfigurePageState
+    extends State<GitHostSetupAutoConfigurePage> {
   GitHost? gitHost;
   String errorMessage = "";
 
