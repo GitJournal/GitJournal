@@ -57,36 +57,14 @@ class JournalApp extends StatefulWidget {
     );
     await repoManager.buildActiveRepository();
 
-    Widget app = ChangeNotifierProvider.value(
-      value: repoManager,
-      child: Consumer<RepositoryManager>(
-        builder: (_, repoManager, __) => ChangeNotifierProvider.value(
-          value: repoManager.currentRepo,
-          child: Consumer<GitJournalRepo>(
-            builder: (_, repo, __) => ChangeNotifierProvider<Settings>.value(
-              value: repo.settings,
-              child: Consumer<GitJournalRepo>(
-                builder: (_, repo, __) =>
-                    ChangeNotifierProvider<NotesFolderFS>.value(
-                  value: repo.notesFolder,
-                  child: JournalApp(),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-
-    app = ChangeNotifierProvider.value(
-      value: appSettings,
-      child: app,
-    );
-
     InAppPurchases.confirmProPurchaseBoot();
 
     runApp(EasyLocalization(
-      child: app,
+      child: GitJournalChangeNotifiers(
+        repoManager: repoManager,
+        appSettings: appSettings,
+        child: JournalApp(),
+      ),
       supportedLocales: [
         const Locale('en', 'US'),
       ], // Remember to update Info.plist
@@ -347,6 +325,48 @@ class _JournalAppState extends State<JournalApp> {
 
         return r;
       },
+    );
+  }
+}
+
+class GitJournalChangeNotifiers extends StatelessWidget {
+  final RepositoryManager repoManager;
+  final AppSettings appSettings;
+  final Widget child;
+
+  GitJournalChangeNotifiers({
+    required this.repoManager,
+    required this.appSettings,
+    required this.child,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var app = ChangeNotifierProvider.value(
+      value: repoManager,
+      child: Consumer<RepositoryManager>(
+        builder: (_, repoManager, __) => ChangeNotifierProvider.value(
+          value: repoManager.currentRepo,
+          child: Consumer<GitJournalRepo>(
+            builder: (_, repo, __) => ChangeNotifierProvider<Settings>.value(
+              value: repo.settings,
+              child: Consumer<GitJournalRepo>(
+                builder: (_, repo, __) =>
+                    ChangeNotifierProvider<NotesFolderFS>.value(
+                  value: repo.notesFolder,
+                  child: child,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    return ChangeNotifierProvider.value(
+      value: appSettings,
+      child: app,
     );
   }
 }
