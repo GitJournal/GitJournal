@@ -41,10 +41,10 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
 
   List<GitHostRepo> repos = [];
   var fetchedRepos = false;
+  bool createRepo = false;
 
   GitHostRepo? selectedRepo;
   late TextEditingController _textController;
-  bool createRepo = false;
 
   @override
   void initState() {
@@ -100,18 +100,6 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
         repos = allRepos.reversed.toList();
         fetchedRepos = true;
       });
-
-      var repo = repos.firstWhereOrNull((r) => r.fullName.endsWith('/journal'));
-      if (repo != null) {
-        setState(() {
-          selectedRepo = repo;
-        });
-      } else {
-        setState(() {
-          _textController.text = "journal";
-          createRepo = true;
-        });
-      }
     } on Exception catch (e, stacktrace) {
       _handleGitHostException(e, stacktrace);
       return;
