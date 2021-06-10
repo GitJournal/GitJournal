@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:io' show Platform;
 
-import 'package:dart_git/dart_git.dart' as git;
-import 'package:git_bindings/git_bindings.dart';
+import 'package:dart_git/dart_git.dart';
+import 'package:dart_git/utils/result.dart';
+import 'package:git_bindings/git_bindings.dart' as gb;
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
@@ -25,44 +26,57 @@ class NoteRepoResult {
 
 class GitNoteRepository {
   final String gitDirPath;
-  final GitRepo _gitRepo;
+  final gb.GitRepo _gitRepo;
   final Settings settings;
 
   GitNoteRepository({
     required this.gitDirPath,
     required this.settings,
-  }) : _gitRepo = GitRepo(folderPath: gitDirPath) {
+  }) : _gitRepo = gb.GitRepo(folderPath: gitDirPath) {
     // git-bindings aren't properly implemented in these platforms
     if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
       useDartGit = true;
     }
   }
 
-  Future<void> _add(String pathSpec) async {
+  Future<Result<void>> _add(String pathSpec) async {
     if (useDartGit) {
-      var repo = await git.GitRepository.load(gitDirPath).getOrThrow();
-      await repo.add(pathSpec).throwOnError();
+      var repo = await GitRepository.load(gitDirPath).getOrThrow();
+      return await repo.add(pathSpec);
     } else {
-      await _gitRepo.add(pathSpec);
+      try {
+        await _gitRepo.add(pathSpec);
+      } on Exception catch (ex, st) {
+        return Result.fail(ex, st);
+      }
     }
+
+    return Result(null);
   }
 
-  Future<void> _rm(String pathSpec) async {
+  Future<Result<void>> _rm(String pathSpec) async {
     if (useDartGit) {
-      var repo = await git.GitRepository.load(gitDirPath).getOrThrow();
-      await repo.rm(pathSpec).throwOnError();
+      var repo = await GitRepository.load(gitDirPath).getOrThrow();
+      return await repo.rm(pathSpec);
     } else {
-      await _gitRepo.rm(pathSpec);
+      try {
+        await _gitRepo.rm(pathSpec);
+      } on Exception catch (ex, st) {
+        return Result.fail(ex, st);
+      }
     }
+
+    return Result(null);
   }
 
-  Future<void> _commit(
-      {required String /*!*/ message,
-      required String authorEmail,
-      required String authorName}) async {
+  Future<void> _commit({
+    required String message,
+    required String authorEmail,
+    required String authorName,
+  }) async {
     if (useDartGit) {
-      var repo = await git.GitRepository.load(gitDirPath).getOrThrow();
-      var author = git.GitAuthor(name: authorName, email: authorEmail);
+      var repo = await GitRepository.load(gitDirPath).getOrThrow();
+      var author = GitAuthor(name: authorName, email: authorEmail);
       await repo.commit(message: message, author: author).throwOnError();
     } else {
       await _gitRepo.commit(
@@ -216,13 +230,13 @@ class GitNoteRepository {
         privateKey: settings.sshPrivateKey,
         password: settings.sshPassword,
       );
-    } on GitException catch (ex, stackTrace) {
+    } on gb.GitException catch (ex, stackTrace) {
       Log.e("GitPull Failed", ex: ex, stacktrace: stackTrace);
     }
   }
 
   Future<void> merge() async {
-    var repo = await git.GitRepository.load(gitDirPath).getOrThrow();
+    var repo = await GitRepository.load(gitDirPath).getOrThrow();
     var branch = await repo.currentBranch().getOrThrow();
 
     var branchConfig = repo.config.branch(branch);
@@ -247,7 +261,7 @@ class GitNoteRepository {
         authorEmail: settings.gitAuthorEmail,
         authorName: settings.gitAuthor,
       );
-    } on GitException catch (ex, stackTrace) {
+    } on gb.GitException catch (ex, stackTrace) {
       Log.e("Git Merge Failed", ex: ex, stacktrace: stackTrace);
     }
   }
@@ -255,7 +269,7 @@ class GitNoteRepository {
   Future<void> push() async {
     // Only push if we have something we need to push
     try {
-      var repo = await git.GitRepository.load(gitDirPath).getOrThrow();
+      var repo = await GitRepository.load(gitDirPath).getOrThrow();
       var canPush = await repo.canPush().getOrThrow();
       if (!canPush) {
         return;
@@ -271,7 +285,7 @@ class GitNoteRepository {
         privateKey: settings.sshPrivateKey,
         password: settings.sshPassword,
       );
-    } on GitException catch (ex, stackTrace) {
+    } on gb.GitException catch (ex, stackTrace) {
       if (ex.cause == 'cannot push non-fastforwardable reference') {
         await fetch();
         await merge();
@@ -284,7 +298,7 @@ class GitNoteRepository {
 
   Future<int?> numChanges() async {
     try {
-      var repo = await git.GitRepository.load(gitDirPath).getOrThrow();
+      var repo = await GitRepository.load(gitDirPath).getOrThrow();
       var n = await repo.numChangesToPush().getOrThrow();
       return n;
     } catch (ex, st) {
@@ -314,7 +328,7 @@ const ignoredMessages = [
 ];
 
 bool shouldLogGitException(Exception ex) {
-  if (ex is! GitException) {
+  if (ex is! gb.GitException) {
     return false;
   }
   var msg = ex.cause.toLowerCase();
