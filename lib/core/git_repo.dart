@@ -14,16 +14,6 @@ import 'package:gitjournal/utils/logger.dart';
 
 bool useDartGit = false;
 
-class NoteRepoResult {
-  bool error;
-  String? noteFilePath;
-
-  NoteRepoResult({
-    required this.error,
-    this.noteFilePath,
-  });
-}
-
 class GitNoteRepository {
   final String gitDirPath;
   final gb.GitRepo _gitRepo;
@@ -69,7 +59,7 @@ class GitNoteRepository {
     return Result(null);
   }
 
-  Future<void> _commit({
+  Future<Result<void>> _commit({
     required String message,
     required String authorEmail,
     required String authorName,
@@ -77,152 +67,131 @@ class GitNoteRepository {
     if (useDartGit) {
       var repo = await GitRepository.load(gitDirPath).getOrThrow();
       var author = GitAuthor(name: authorName, email: authorEmail);
-      await repo.commit(message: message, author: author).throwOnError();
+      var r = await repo.commit(message: message, author: author);
+      if (r.isFailure) {
+        return fail(r);
+      }
     } else {
-      await _gitRepo.commit(
-        message: message,
-        authorEmail: settings.gitAuthorEmail,
-        authorName: settings.gitAuthor,
-      );
+      try {
+        await _gitRepo.commit(
+          message: message,
+          authorEmail: settings.gitAuthorEmail,
+          authorName: settings.gitAuthor,
+        );
+      } on Exception catch (ex, st) {
+        return Result.fail(ex, st);
+      }
     }
+
+    return Result(null);
   }
 
-  Future<NoteRepoResult> addNote(Note note) async {
-    return _addNote(note, "Added Note");
+  // FIXME: Is this actually used?
+  Future<Result<void>> addNote(Note note) async {
+    return _addAllAndCommit("Added Note");
   }
 
-  Future<NoteRepoResult> _addNote(Note note, String commitMessage) async {
-    await _add(".");
-    await _commit(
+  Future<Result<void>> _addAllAndCommit(String commitMessage) async {
+    var r = await _add(".");
+    if (r.isFailure) {
+      return fail(r);
+    }
+
+    var res = await _commit(
       message: commitMessage,
       authorEmail: settings.gitAuthorEmail,
       authorName: settings.gitAuthor,
     );
+    if (res.isFailure) {
+      return fail(r);
+    }
 
-    return NoteRepoResult(noteFilePath: note.filePath, error: false);
+    return Result(null);
   }
 
-  Future<NoteRepoResult> addFolder(NotesFolderFS folder) async {
-    await _add(".");
-    await _commit(
-      message: "Created New Folder",
-      authorEmail: settings.gitAuthorEmail,
-      authorName: settings.gitAuthor,
-    );
-
-    return NoteRepoResult(noteFilePath: folder.folderPath, error: false);
+  Future<Result<void>> addFolder(NotesFolderFS folder) async {
+    return _addAllAndCommit("Created New Folder");
   }
 
-  Future<NoteRepoResult> addFolderConfig(NotesFolderConfig config) async {
+  Future<Result<void>> addFolderConfig(NotesFolderConfig config) async {
     var pathSpec = config.folder!.pathSpec();
     pathSpec = pathSpec.isNotEmpty ? pathSpec : '/';
 
-    await _add(".");
-    await _commit(
-      message: "Update folder config for $pathSpec",
-      authorEmail: settings.gitAuthorEmail,
-      authorName: settings.gitAuthor,
-    );
-
-    return NoteRepoResult(
-        noteFilePath: config.folder!.folderPath, error: false);
+    return _addAllAndCommit("Update folder config for $pathSpec");
   }
 
-  Future<NoteRepoResult> renameFolder(
+  Future<Result<void>> renameFolder(
     String oldFullPath,
     String newFullPath,
   ) async {
     // FIXME: This is a hacky way of adding the changes, ideally we should be calling rm + add or something
-    await _add(".");
-    await _commit(
-      message: "Renamed Folder",
-      authorEmail: settings.gitAuthorEmail,
-      authorName: settings.gitAuthor,
-    );
-
-    return NoteRepoResult(noteFilePath: newFullPath, error: false);
+    return _addAllAndCommit("Renamed Folder");
   }
 
-  Future<NoteRepoResult> renameNote(
+  Future<Result<void>> renameNote(
     String oldFullPath,
     String newFullPath,
   ) async {
-    // FIXME: This is a hacky way of adding the changes, ideally we should be calling rm + add or something
-    await _add(".");
-    await _commit(
-      message: "Renamed Note",
-      authorEmail: settings.gitAuthorEmail,
-      authorName: settings.gitAuthor,
-    );
-
-    return NoteRepoResult(noteFilePath: newFullPath, error: false);
+    return _addAllAndCommit("Renamed Note");
   }
 
-  Future<NoteRepoResult> renameFile(
+  Future<Result<void>> renameFile(
     String oldFullPath,
     String newFullPath,
   ) async {
-    // FIXME: This is a hacky way of adding the changes, ideally we should be calling rm + add or something
-    await _add(".");
-    await _commit(
-      message: "Renamed File",
-      authorEmail: settings.gitAuthorEmail,
-      authorName: settings.gitAuthor,
-    );
-
-    return NoteRepoResult(noteFilePath: newFullPath, error: false);
+    return _addAllAndCommit("Renamed File");
   }
 
-  Future<NoteRepoResult> moveNote(
+  Future<Result<void>> moveNote(
     String oldFullPath,
     String newFullPath,
   ) async {
-    // FIXME: This is a hacky way of adding the changes, ideally we should be calling rm + add or something
-    await _add(".");
-    await _commit(
-      message: "Note Moved",
-      authorEmail: settings.gitAuthorEmail,
-      authorName: settings.gitAuthor,
-    );
-
-    return NoteRepoResult(noteFilePath: newFullPath, error: false);
+    return _addAllAndCommit("Note Moved");
   }
 
-  Future<NoteRepoResult> removeNote(Note note) async {
-    // We are not calling note.remove() as gitRm will also remove the file
-    var spec = note.pathSpec();
-    await _rm(spec);
-    await _commit(
-      message: "Removed Note " + spec,
-      authorEmail: settings.gitAuthorEmail,
-      authorName: settings.gitAuthor,
-    );
+  Future<Result<void>> removeNote(Note note) async {
+    return catchAll(() async {
+      // We are not calling note.remove() as gitRm will also remove the file
+      var spec = note.pathSpec();
+      await _rm(spec).throwOnError();
+      await _commit(
+        message: "Removed Note " + spec,
+        authorEmail: settings.gitAuthorEmail,
+        authorName: settings.gitAuthor,
+      ).throwOnError();
 
-    return NoteRepoResult(noteFilePath: note.filePath, error: false);
+      return Result(null);
+    });
   }
 
-  Future<NoteRepoResult> removeFolder(NotesFolderFS folder) async {
-    var spec = folder.pathSpec();
-    await _rm(spec);
-    await _commit(
-      message: "Removed Folder " + spec,
-      authorEmail: settings.gitAuthorEmail,
-      authorName: settings.gitAuthor,
-    );
+  Future<Result<void>> removeFolder(NotesFolderFS folder) async {
+    return catchAll(() async {
+      var spec = folder.pathSpec();
+      await _rm(spec).throwOnError();
+      await _commit(
+        message: "Removed Folder " + spec,
+        authorEmail: settings.gitAuthorEmail,
+        authorName: settings.gitAuthor,
+      ).throwOnError();
 
-    return NoteRepoResult(noteFilePath: folder.folderPath, error: false);
+      return Result(null);
+    });
   }
 
-  Future<NoteRepoResult> resetLastCommit() async {
-    await _gitRepo.resetLast();
-    return NoteRepoResult(error: false);
+  Future<Result<void>> resetLastCommit() async {
+    try {
+      await _gitRepo.resetLast();
+    } on Exception catch (e, st) {
+      return Result.fail(e, st);
+    }
+    return Result(null);
   }
 
-  Future<NoteRepoResult> updateNote(Note note) async {
-    return _addNote(note, "Edited Note");
+  Future<Result<void>> updateNote(Note note) async {
+    return _addAllAndCommit("Edited Note");
   }
 
-  Future<void> fetch() async {
+  Future<Result<void>> fetch() async {
     try {
       await _gitRepo.fetch(
         remote: "origin",
@@ -232,9 +201,15 @@ class GitNoteRepository {
       );
     } on gb.GitException catch (ex, stackTrace) {
       Log.e("GitPull Failed", ex: ex, stacktrace: stackTrace);
+      return Result.fail(ex, stackTrace);
+    } on Exception catch (ex, stackTrace) {
+      return Result.fail(ex, stackTrace);
     }
+
+    return Result(null);
   }
 
+  // FIXME: Convert to Result!
   Future<void> merge() async {
     var repo = await GitRepository.load(gitDirPath).getOrThrow();
     var branch = await repo.currentBranch().getOrThrow();

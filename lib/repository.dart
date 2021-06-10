@@ -247,7 +247,7 @@ class GitJournalRepo with ChangeNotifier {
       Log.d("Created New Folder: " + newFolderPath);
       parent.addFolder(newFolder);
 
-      _gitRepo.addFolder(newFolder).then((NoteRepoResult _) {
+      _gitRepo.addFolder(newFolder).then((Result<void> _) {
         _syncNotes();
         numChanges += 1;
         notifyListeners();
@@ -263,7 +263,7 @@ class GitJournalRepo with ChangeNotifier {
       Log.d("Removing Folder: " + folder.folderPath);
 
       folder.parentFS!.removeFolder(folder);
-      _gitRepo.removeFolder(folder).then((NoteRepoResult _) {
+      _gitRepo.removeFolder(folder).then((Result<void> _) {
         _syncNotes();
         numChanges += 1;
         notifyListeners();
@@ -283,7 +283,7 @@ class GitJournalRepo with ChangeNotifier {
 
       _gitRepo
           .renameFolder(oldFolderPath, folder.folderPath)
-          .then((NoteRepoResult _) {
+          .then((Result<void> _) {
         _syncNotes();
         numChanges += 1;
         notifyListeners();
@@ -300,7 +300,7 @@ class GitJournalRepo with ChangeNotifier {
     return _opLock.synchronized(() async {
       Log.d("Got renameNote lock");
 
-      _gitRepo.renameNote(oldNotePath, note.filePath).then((NoteRepoResult _) {
+      _gitRepo.renameNote(oldNotePath, note.filePath).then((Result<void> _) {
         _syncNotes();
         numChanges += 1;
         notifyListeners();
@@ -318,7 +318,7 @@ class GitJournalRepo with ChangeNotifier {
       await File(oldPath).rename(newPath);
       notifyListeners();
 
-      _gitRepo.renameFile(oldPath, newPath).then((NoteRepoResult _) {
+      _gitRepo.renameFile(oldPath, newPath).then((Result<void> _) {
         _syncNotes();
         numChanges += 1;
         notifyListeners();
@@ -338,7 +338,7 @@ class GitJournalRepo with ChangeNotifier {
       var oldNotePath = note.filePath;
       note.move(destFolder);
 
-      _gitRepo.moveNote(oldNotePath, note.filePath).then((NoteRepoResult _) {
+      _gitRepo.moveNote(oldNotePath, note.filePath).then((Result<void> _) {
         _syncNotes();
         numChanges += 1;
         notifyListeners();
@@ -357,7 +357,7 @@ class GitJournalRepo with ChangeNotifier {
     return _opLock.synchronized(() async {
       Log.d("Got addNote lock");
 
-      _gitRepo.addNote(note).then((NoteRepoResult _) {
+      _gitRepo.addNote(note).then((Result<void> _) {
         _syncNotes();
         numChanges += 1;
         notifyListeners();
@@ -373,7 +373,7 @@ class GitJournalRepo with ChangeNotifier {
 
       // FIXME: What if the Note hasn't yet been saved?
       note.parent.remove(note);
-      _gitRepo.removeNote(note).then((NoteRepoResult _) async {
+      _gitRepo.removeNote(note).then((Result<void> _) async {
         numChanges += 1;
         notifyListeners();
         // FIXME: Is there a way of figuring this amount dynamically?
@@ -393,7 +393,7 @@ class GitJournalRepo with ChangeNotifier {
       Log.d("Got undoRemoveNote lock");
 
       note.parent.add(note);
-      _gitRepo.resetLastCommit().then((NoteRepoResult _) {
+      _gitRepo.resetLastCommit().then((Result<void> _) {
         _syncNotes();
         numChanges -= 1;
         notifyListeners();
@@ -410,7 +410,7 @@ class GitJournalRepo with ChangeNotifier {
     return _opLock.synchronized(() async {
       Log.d("Got updateNote lock");
 
-      _gitRepo.updateNote(note).then((NoteRepoResult _) {
+      _gitRepo.updateNote(note).then((Result<void> _) {
         _syncNotes();
         numChanges += 1;
         notifyListeners();
@@ -428,7 +428,7 @@ class GitJournalRepo with ChangeNotifier {
       Log.d("Got saveFolderConfig lock");
 
       await config.saveToFS();
-      _gitRepo.addFolderConfig(config).then((NoteRepoResult _) {
+      _gitRepo.addFolderConfig(config).then((Result<void> _) {
         _syncNotes();
         numChanges += 1;
         notifyListeners();
