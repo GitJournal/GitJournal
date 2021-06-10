@@ -16,7 +16,7 @@ jobs:
           command: flutter pub get
       - run:
           name: Test
-          command: flutter test --coverage
+          command: flutter test
           #command: flutter test --coverage --machine | tojunit --output junit.xml
       - store_test_results:
           path: ./
