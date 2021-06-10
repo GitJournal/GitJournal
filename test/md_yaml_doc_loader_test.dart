@@ -1,9 +1,9 @@
 import 'dart:io';
 
+import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
-import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/md_yaml_doc_loader.dart';
 
 void main() {
@@ -29,7 +29,7 @@ Alright.""";
 
     test('Should load one doc', () async {
       var loader = MdYamlDocLoader();
-      var doc = (await loader.loadDoc(filePath)) as MdYamlDoc;
+      var doc = await loader.loadDoc(filePath).getOrThrow();
 
       expect(doc.body, "Alright.");
       expect(doc.props["type"], "Journal");

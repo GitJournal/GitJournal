@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:isolate';
 
+import 'package:dart_git/utils/result.dart';
 import 'package:synchronized/synchronized.dart';
 
 import 'package:gitjournal/core/md_yaml_doc.dart';
@@ -34,13 +35,13 @@ class MdYamlDocLoader {
     });
   }
 
-  // FIXME: Don't throw exceptions!
-  Future<MdYamlDoc?> loadDoc(String filePath) async {
+  Future<Result<MdYamlDoc>> loadDoc(String filePath) async {
     await _initIsolate();
 
     final file = File(filePath);
     if (!file.existsSync()) {
-      throw MdYamlDocNotFoundException(filePath);
+      var ex = MdYamlDocNotFoundException(filePath);
+      return Result.fail(ex);
     }
 
     var rec = ReceivePort();
@@ -52,10 +53,11 @@ class MdYamlDocLoader {
     assert(resp.filePath == filePath);
 
     if (resp.doc != null) {
-      return resp.doc;
+      return Result(resp.doc!);
     }
 
-    throw MdYamlParsingException(filePath, resp.err.toString());
+    var ex = MdYamlParsingException(filePath, resp.err.toString());
+    return Result.fail(ex);
   }
 }
 

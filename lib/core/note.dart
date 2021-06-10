@@ -366,20 +366,21 @@ class Note with NotesNotifier {
     var isOrg = fpLowerCase.endsWith('.org');
 
     if (isMarkdown) {
-      try {
-        var dataMaybe = await _mdYamlDocLoader.loadDoc(_filePath!);
-        data = dataMaybe!;
+      var dataResult = await _mdYamlDocLoader.loadDoc(_filePath!);
+      if (dataResult.isSuccess) {
+        data = dataResult.getOrThrow();
         _fileFormat = NoteFileFormat.Markdown;
-      } on MdYamlDocNotFoundException catch (_) {
-        _loadState = NoteLoadState.NotExists;
-        _notifyModified();
-        return _loadState;
-      } on MdYamlParsingException catch (err, stackTrace) {
-        logException(err, stackTrace);
-
-        _loadState = NoteLoadState.Error;
-        _notifyModified();
-        return _loadState;
+      } else {
+        if (dataResult.error is MdYamlDocNotFoundException) {
+          _loadState = NoteLoadState.NotExists;
+          _notifyModified();
+          return _loadState;
+        }
+        if (dataResult.error is MdYamlParsingException) {
+          _loadState = NoteLoadState.Error;
+          _notifyModified();
+          return _loadState;
+        }
       }
     } else if (isTxt) {
       try {
