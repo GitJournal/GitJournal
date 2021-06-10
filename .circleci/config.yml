@@ -41,11 +41,11 @@ jobs:
       - store_artifacts:
           path: build/app/outputs/flutter-apk/app-prod-release.apk
           destination: gitjournal.apk
-      - run:
-          name: Generate Test Coverage
-          command: ./scripts/test_coverage.sh
-      - store_artifacts:
-          path: coverage
+      #   - run:
+      #       name: Generate Test Coverage
+      #       command: ./scripts/test_coverage.sh
+      #   - store_artifacts:
+      #       path: coverage
       #      - run:
       #          name: Upload Crashlytics Symbols
       #          command: ./scripts/android_crashlytics.sh
