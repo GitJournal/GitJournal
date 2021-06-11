@@ -137,7 +137,7 @@ settings:
       title: Example Title
     titleMetaData:
       title: タイトル
-      fromH1: テキストヘッダーのひとつめ
+      fromH1: テキストヘッダー1から取得
       fromYaml: YAMLの'title'から取得
       filename: ファイル名から取得
     exampleTitle: ハト
@@ -301,7 +301,7 @@ widgets:
     yes: リネームする
     no: キャンセル
     validator:
-      empty: 名称を入力して下さい
+      empty: 名称を入力してください
       exists: 既に存在します
       contains: /を含むことはできません
   backlinks:
@@ -338,7 +338,7 @@ widgets:
       journal: Journalビュー
       grid: Gridビュー
       card: Carビュー
-      select: ビューを選択して下さい
+      select: ビューを選択してください
     sortingOptions: ソートオプション
     viewOptions: 表示オプション
     searchFailed: 検索結果が見つかりませんでした
@@ -383,7 +383,7 @@ setup:
     step1: 1. 既存のリポジトリを表示・新規リポジトリの作成
     step2: 2. このデバイスでの、SSHキーの生成
     step3: 3. 生成したキーをデプロイし、リポジトリへの書き込み権限を取得
-    warning: これはつまり、プライベートリポジトリを含む全てのリポジトリのアクセス権をGitJournalに与えるということです。もしこれに抵抗があるようであれば、前の画面に戻って手動セットアップを選択して下さい。
+    warning: これはつまり、プライベートリポジトリを含む、全てのリポジトリのアクセス権をGitJournalに与えるということです。もしこれに抵抗があるようであれば、前の画面に戻って手動セットアップを選択してください。
     authorize: GitJournalを認証する
     waitPerm: 権限を待機中...
     readUser: ユーザー情報の読み込み中
@@ -399,7 +399,7 @@ setup:
       invalid: 不正な入力です
       onlySsh: SSH URLのみ現在使用できます
     manual:
-      title: 新規Gitリポジトリを作成して下さい
+      title: 新規Gitリポジトリを作成してください
       step1: 1. Webサイトに行き、リポジトリを作成して、git cloneのURLをコピーしてください
       step2: 2. コピーしたURLをペーストするか入力してください
       button: 新規リポジトリ作成画面をWebで開く
@@ -413,9 +413,9 @@ setup:
     generate: SSHキーを作成します
     title: このリポジトリにアクセスするためには、この公開鍵をデプロイキーとしてコピーする必要があります
     step1: 1. キーをコピーします
-    step2a: 2. Webページを開き、デプロイキーに貼り付けます。この際、書き込み権限を与えた事を確認してください。
-    step2b: 2. このSSHキーに、Gitリポジトリへのアクセス権を与えます。(これがどういう事かは理解する必要があります)
-    step3: 3. Cloneしてみて下さい
+    step2a: 2. Webページを開き、デプロイキーに貼り付けます。この際、書き込み権限を与えたことを確認してください。
+    step2b: 2. このSSHキーに、Gitリポジトリへのアクセス権を与えます。(これがどういうことか理解しているべきです)
+    step3: 3. Cloneしてみてください
     copy: キーをコピー
     copied: 公開鍵がクリップボードにコピーされました
     regenerate: キーを再生成
@@ -433,7 +433,7 @@ setup:
     password: パスフレーズ
   cloning: Cloneしています ...
   host:
-    title: Gitをホストしているサービスを選択して下さい
+    title: Gitをホストしているサービスを選択してください
     custom: カスタム
   autoConfigure:
     title: どのように設定しますか？
@@ -474,7 +474,7 @@ feature:
     subtitle: ":heart: を ❤️ に変換"
   allNotesView: 「全てのノート」の表示画面追加
   basicSearch: 基本的な検索機能
-  customSSHKeys: SSHキーの提供 
+  customSSHKeys: SSHキーの提供
   customMetaData: 新規ノートへのカスタムメタデータの追加
   graphVisualization: グラフ可視化
   mutliRepos: 複数のGitリポジトリのサポート
@@ -505,14 +505,14 @@ purchase_screen:
   desc: 'GitJournalは完全にオープンソースであり、その重要な開発行為の成果物です。ベンチャーキャピタルや企業の支援を受けたことはありませんし、これからもありえません。あなたのご支援が直接、開発を支えます。
 
 
-GitJournalは "((最低費用のある)必要な分だけ支払う"モデルで運営されています。'
+GitJournalは "(最低限)必要な分だけ支払う"モデルで運営されています。'
   restore: 購入を復元する
   oneTime:
     title: 一括購入
-    desc: 現時点の全てのProの機能と、12ヶ月間に追加される全ての機能が永久に有効になります。
+    desc: 現時点で実装されている全てのProの機能と、12箇月間に追加される全ての機能が永久に有効になります。
   monthly:
     title: 月々の分割払い
-    desc: 全てのProの機能を有効にします。12ヶ月後または {minYearlyPurchase} の支払後、一括購入と同じ特典が有効になります。
+    desc: 全てのProの機能を有効にします。12箇月後または {minYearlyPurchase} の支払い後、一括購入と同じ特典が有効になります。
   thanks:
     title: ありがとうございます！
     subtitle: GitJournalのご支援ありがとうございます。
