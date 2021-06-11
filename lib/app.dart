@@ -162,7 +162,7 @@ class _JournalAppState extends State<JournalApp> {
   void initState() {
     super.initState();
 
-    if (!Platform.isAndroid || !Platform.isIOS) {
+    if (!Platform.isAndroid && !Platform.isIOS) {
       return;
     }
 
@@ -210,7 +210,7 @@ class _JournalAppState extends State<JournalApp> {
   }
 
   void _initShareSubscriptions() {
-    if (!Platform.isAndroid || !Platform.isIOS) {
+    if (!Platform.isAndroid && !Platform.isIOS) {
       return;
     }
 
