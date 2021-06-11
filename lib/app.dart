@@ -66,7 +66,7 @@ class JournalApp extends StatefulWidget {
         child: JournalApp(),
       ),
       supportedLocales: [
-        const Locale('en', 'US'),
+        const Locale('en', 'US'),const Locale('ja', 'JP'),
       ], // Remember to update Info.plist
       path: 'assets/langs',
       useOnlyLangCode: true,
