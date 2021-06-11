@@ -15,6 +15,7 @@
 	<key>CFBundleLocalizations</key>
 	<array>
 		<string>en</string>
+		<string>ja</string>
 	</array>
 	<key>CFBundleName</key>
 	<string>GitJournal</string>
