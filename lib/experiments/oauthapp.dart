@@ -48,7 +48,7 @@ class OAuthAppState extends State<OAuthApp> {
             child: const Text("List Repos"),
             onPressed: () async {
               try {
-                var repos = await githost!.listRepos();
+                var repos = await githost!.listRepos().getOrThrow();
                 for (var repo in repos) {
                   print(repo);
                 }

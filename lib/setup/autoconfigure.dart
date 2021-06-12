@@ -64,12 +64,12 @@ class GitHostSetupAutoConfigurePageState
             _message = tr('setup.autoconfigure.readUser');
           });
 
-          userInfo = await gitHost!.getUserInfo();
+          var userInfo = await gitHost!.getUserInfo().getOrThrow();
           var settings = Provider.of<Settings>(context, listen: false);
-          if (userInfo != null && userInfo.name.isNotEmpty) {
+          if (userInfo.name.isNotEmpty) {
             settings.gitAuthor = userInfo.name;
           }
-          if (userInfo != null && userInfo.email.isNotEmpty) {
+          if (userInfo.email.isNotEmpty) {
             settings.gitAuthorEmail = userInfo.email;
           }
           settings.save();

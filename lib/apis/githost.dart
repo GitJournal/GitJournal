@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
+import 'package:dart_git/utils/result.dart';
+
+export 'package:dart_git/utils/result.dart';
 
 typedef OAuthCallback = void Function(GitHostException?);
 
@@ -8,11 +11,11 @@ abstract class GitHost {
   void init(OAuthCallback oAuthCallback);
   Future launchOAuthScreen();
 
-  Future<UserInfo?> getUserInfo();
-  Future<List<GitHostRepo>> listRepos();
-  Future<GitHostRepo> createRepo(String name);
-  Future<GitHostRepo> getRepo(String name);
-  Future addDeployKey(String sshPublicKey, String repoFullName);
+  Future<Result<UserInfo>> getUserInfo();
+  Future<Result<List<GitHostRepo>>> listRepos();
+  Future<Result<GitHostRepo>> createRepo(String name);
+  Future<Result<GitHostRepo>> getRepo(String name);
+  Future<Result<void>> addDeployKey(String sshPublicKey, String repoFullName);
 }
 
 class UserInfo {
@@ -99,6 +102,8 @@ class GitHostException implements Exception {
   static const CreateRepoFailed = GitHostException("CreateRepoFailed");
   static const DeployKeyFailed = GitHostException("DeployKeyFailed");
   static const GetRepoFailed = GitHostException("GetRepoFailed");
+  static const HttpResponseFail = GitHostException("HttpResponseFail");
+  static const JsonDecodingFail = GitHostException("JsonDecodingFail");
 
   final String cause;
   const GitHostException(this.cause);
