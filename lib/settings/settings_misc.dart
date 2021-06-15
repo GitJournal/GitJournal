@@ -35,6 +35,14 @@ class _SettingsMiscState extends State<SettingsMisc> {
             settings.save();
           },
         ),
+        SwitchListTile(
+          title: Text(tr('settings.misc.hardWrap')),
+          value: settings.hardWrap,
+          onChanged: (bool newVal) {
+            settings.hardWrap = newVal;
+            settings.save();
+          },
+        ),
       ],
       crossAxisAlignment: CrossAxisAlignment.start,
     );
