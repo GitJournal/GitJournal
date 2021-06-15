@@ -112,6 +112,7 @@ class Settings extends ChangeNotifier {
 
   bool bottomMenuBar = true;
   bool confirmDelete = true;
+  bool hardWrap = false;
 
   bool storeInternally = true;
   String storageLocation = "";
@@ -231,6 +232,8 @@ class Settings extends ChangeNotifier {
     confirmDelete = _getBool(pref, "confirmDelete") ?? confirmDelete;
     storeInternally = _getBool(pref, "storeInternally") ?? storeInternally;
     storageLocation = _getString(pref, "storageLocation") ?? "";
+
+    hardWrap = _getBool(pref, "hardWrap") ?? hardWrap;
   }
 
   String? _getString(SharedPreferences pref, String key) {
@@ -400,6 +403,8 @@ class Settings extends ChangeNotifier {
     await _setInt(pref, "settingsVersion", version, defaultSet.version);
 
     await _setString(pref, FOLDER_NAME_KEY, folderName, defaultSet.folderName);
+
+    await _setBool(pref, "hardWrap", hardWrap, defaultSet.hardWrap);
 
     notifyListeners();
   }
