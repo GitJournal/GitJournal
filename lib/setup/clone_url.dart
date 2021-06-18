@@ -1,9 +1,25 @@
+/*
+Copyright 2021 Vishesh Handa <me@vhanda.in>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:dart_git/git_url_parse.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
-import 'package:git_url_parse2/git_url_parse2.dart';
 
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'button.dart';
@@ -13,8 +29,8 @@ class GitCloneUrlPage extends StatefulWidget {
   final String initialValue;
 
   GitCloneUrlPage({
-    @required this.doneFunction,
-    @required this.initialValue,
+    required this.doneFunction,
+    required this.initialValue,
   });
 
   @override
@@ -33,10 +49,10 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
   @override
   Widget build(BuildContext context) {
     final formSubmitted = () {
-      if (_formKey.currentState.validate()) {
-        _formKey.currentState.save();
+      if (_formKey.currentState!.validate()) {
+        _formKey.currentState!.save();
 
-        var url = sshUrlKey.currentState.value;
+        var url = sshUrlKey.currentState!.value!;
         widget.doneFunction(url.trim());
         inputFormFocus.unfocus();
       }
@@ -93,10 +109,10 @@ class GitCloneUrlKnownProviderPage extends StatefulWidget {
   final String initialValue;
 
   GitCloneUrlKnownProviderPage({
-    @required this.doneFunction,
-    @required this.launchCreateUrlPage,
-    @required this.gitHostType,
-    @required this.initialValue,
+    required this.doneFunction,
+    required this.launchCreateUrlPage,
+    required this.gitHostType,
+    required this.initialValue,
   });
 
   @override
@@ -116,10 +132,10 @@ class GitCloneUrlKnownProviderPageState
   @override
   Widget build(BuildContext context) {
     final formSubmitted = () {
-      if (_formKey.currentState.validate()) {
-        _formKey.currentState.save();
+      if (_formKey.currentState!.validate()) {
+        _formKey.currentState!.save();
 
-        var url = sshUrlKey.currentState.value;
+        var url = sshUrlKey.currentState!.value!;
         widget.doneFunction(url.trim());
         inputFormFocus.unfocus();
       }
@@ -183,8 +199,8 @@ class GitCloneUrlKnownProviderPageState
 }
 
 // Returns null when valid
-String _isCloneUrlValid(String url) {
-  url = url.trim();
+String? _isCloneUrlValid(String? url) {
+  url = url!.trim();
   if (url.isEmpty) {
     return tr("setup.cloneUrl.validator.empty");
   }

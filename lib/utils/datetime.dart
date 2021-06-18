@@ -4,9 +4,14 @@ import 'package:intl/intl.dart';
 
 import 'package:gitjournal/utils/logger.dart';
 
+final _dateOnlyFormat = DateFormat("yyyy-MM-dd");
 final _simpleDateFormat = DateFormat("yyyy-MM-dd-HH-mm-ss");
 final _iso8601DateFormat = DateFormat("yyyy-MM-ddTHH:mm:ss");
 final _zettleDateFormat = DateFormat("yyyyMMddHHmmss");
+
+String toDateString(DateTime dt) {
+  return _dateOnlyFormat.format(dt);
+}
 
 String toSimpleDateTime(DateTime dt) {
   return _simpleDateFormat.format(dt);
@@ -20,7 +25,7 @@ String toZettleDateTime(DateTime dt) {
   return _zettleDateFormat.format(dt);
 }
 
-String toIso8601WithTimezone(DateTime dt, [Duration offset]) {
+String toIso8601WithTimezone(DateTime dt, [Duration? offset]) {
   var result = _iso8601DateFormat.format(dt);
 
   offset = offset ?? dt.timeZoneOffset;
@@ -51,10 +56,8 @@ String toIso8601WithTimezone(DateTime dt, [Duration offset]) {
   return result + sign + hourStr + ':' + minutesStr;
 }
 
-DateTime parseDateTime(String str) {
-  if (str == null) return null;
-
-  DateTime dt;
+DateTime? parseDateTime(String str) {
+  DateTime? dt;
   try {
     dt = DateTime.parse(str).toLocal();
   } catch (ex) {

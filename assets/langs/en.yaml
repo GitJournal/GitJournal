@@ -14,10 +14,88 @@ settings:
       invalid: Please enter a valid email
   display:
     title: Display Settings
-    darkTheme: Dark Theme
     homeScreen: Home Screen
+    theme: Theme
+    images:
+      title: Image Settings
+      subtitle: Configure how images are displayed
+      imageTextType:
+        alt: Alt Text
+        altAndTooltip: Alt Text and Tooltip
+        tooltip: Tooltip
+        none: None
+      captions:
+        title: Image Captions
+        subtitle: Configure the image captions
+        useAsCaption: Use as caption
+        overlayCaption: Draw caption on top of large enough images
+        transparentCaption: Overlay captions have a semitransparent background
+        blurBehindCaption: Blur Image behind caption
+        tooltipFirst:
+          title: Show tooltip before alt text
+          tooltip: Current order is “<tooltip> - <altText>”
+          altText: Current order is “<altText> - <tooltip>”
+        captionOverrides: Caption Overrides
+        tagDescription: Put these tags in “![altText](... "tooltip")” to override the behavior for it.
+        doNotCaptionTags:
+          hint: DoNotCaption-Tags
+          label: Never use as caption with tags
+          validator:
+            empty: Tags cannot be empty.
+            same: Tag cannot be identical to a “DoCaption-Tag”.
+        doCaptionTags:
+          hint: DoCaption-Tags
+          label: Always use as caption with tags
+          validator:
+            empty: Tags cannot be empty.
+            same: Tag cannot be identical to a “DoNotCaption-Tag”.
+      detailsView:
+        header: Detail View
+        maxZoom: Maximal zoom level
+        rotateGestures:
+          title: Rotate Image with gestures
+          subtitle: Rotate by moving two fingers in a circle
+      theming:
+        title: Image Theming
+        subtitle: Configure how images are themed
+        adjustColors:
+          all: All
+          blackAndWhite: Only black and white
+          grays: Only grays
+        doNotThemeTags:
+          hint: DoNotTheme-Tags
+          label: Never theme images with tags
+          validator:
+            empty: Tags cannot be empty.
+            same: Tag cannot be identical to a “DoTheme-Tag”.
+        doThemeTags:
+          hint: DoTheme-Tag
+          label: Always theme images with tags
+          validator:
+            empty: Tags cannot be empty.
+            same: Tag cannot be identical to a “DoNotTheme-Tag”.
+        matchCanvasColor:
+          title: Match Background Color
+          subtitle: Replaces white/black parts of vector graphics with the canvas color
+        tagDescription: Put these tags in “![altText](... "tooltip")” to override the behavior for the image.
+        themeOverrides: Theme Overrides
+        themeOverrideTagLocation: Theme Override Tag Location
+        themeRasterGraphics: Theme Raster Graphics (.png/.jpg)
+        themeSvgWithBackground: Theme SVGs With Background
+        themeVectorGraphics:
+          title: Theme Vector Graphics
+          filter: Using Color Filter
+          off: No
+          on: Yes
+        vectorGraphics: Vector Graphics (.svg)
+        vectorGraphicsAdjustColors: Colors to Adjust
+  theme:
+    light: Light
+    dark: Dark
+    default: System Default
   gitAuthor: Git Author Settings
   versionInfo: Version Info
+  versionCopied: Version Number Copied
   analytics: Analytics
   crashReports: Collect Anonymous Crash Reports
   usageStats: Collect Anonymous Usage Statistics
@@ -46,6 +124,7 @@ settings:
     title: Git Remote Settings
     subtitle: Configure where your notes are synced
     host: Git Host
+    branch: Branch
   noteMetaData:
     title: Note Metadata Settings
     subtitle: Configure how the Note Metadata is saved
@@ -60,6 +139,7 @@ settings:
       title: Title
       fromH1: Text Header 1
       fromYaml: From YAML 'title'
+      filename: FileName
     exampleTitle: Pigeons
     exampleBody: I think they might be evil. Even more evil than penguins.
     exampleTag1: Birds
@@ -77,6 +157,7 @@ settings:
     markdownToolbar: Show Markdown Toolbar in Editor
     graphView: Graph View
     accounts: Platform Independent Accounts
+    includeSubfolders: Include Subfolders
   editors:
     title: Editor Settings
     subtitle: Configure how different editors work
@@ -86,6 +167,7 @@ settings:
     journalEditor: Journal Editor
     defaultFolder: Default Folder
     checklistEditor: Checklist Editor
+    orgEditor: Org Editor
     rawEditor: Raw Editor
     choose: Choose Editor
   sortingField:
@@ -112,14 +194,16 @@ settings:
     swipe: Swipe to Delete Note
     listView: List View
     confirmDelete: Show a Popup to Confirm Deletes
+    hardWrap: Enable hardWrap
   NoteFileNameFormat:
     iso8601WithTimeZone: ISO8601 With TimeZone
     iso8601: ISO8601
     iso8601WithoutColon: ISO8601 without Colons
     title: Title
     uuid: Uuid V4
-    simmple: yyyy-mm-dd-hh-mm-ss
+    simple: yyyy-mm-dd-hh-mm-ss
     zettelkasten: yyyymmddhhmmss
+    dateOnly: yyyy-mm-dd
   HomeScreen:
     allNotes: All Notes
     allFolders: All Folders
@@ -133,10 +217,10 @@ settings:
   note:
     title: Note Settings
     defaultFolder: Default Folder for new notes
-    fileName: Filename
+    newNoteFileName: New Note Filename
   storage:
     title: Storage
-    fileName: Filename
+    fileName: filename
     external: Store Repo Externally
     icloud: Store in iCloud
     repoLocation: Repo Location
@@ -144,8 +228,9 @@ settings:
     title: Sidebar Settings
   bottomMenuBar:
     title: Bottom Menu Bar
-    subtitle: Configure its appearance and behaviour
-    enable: Enable Buttom Menu Bar
+    subtitle: Configure its appearance and behavior
+    enable: Enable Bottom Menu Bar
+  deleteRepo: Delete Repository
 
 editors:
   checklist:
@@ -212,7 +297,7 @@ OnBoarding:
   subtitle: 'An Open Source Note Taking App
 built on top of Git'
   page2: 'Your Notes are stored in a
-standard Markdown + YAML\nHeader format'
+standard Markdown + YAML Header format'
   page3: 'Sync your Local Git Repo
 with any provider'
 
@@ -232,6 +317,9 @@ widgets:
       two: "{} Notes link to this Note"
       few: "{} Notes link to this Note"
       other: "{} Notes link to this Note"
+  imageRenderer:
+    caption: "{first} - {second}"
+    httpError: "Code: {status} for {url}"
   SortingOrderSelector:
     title: Sorting Criteria
   PurchaseButton:
@@ -292,6 +380,8 @@ drawer:
   rate: Rate Us
   feedback: Feedback
   bug: Bug Report
+  remote: No Git Host
+  addRepo: Add Repository
 setup:
   autoconfigure:
     title: We need permission to perform the following steps
@@ -306,6 +396,7 @@ setup:
     title: Select or Create a Repository
     hint: Type to Search or Create a Repo
     create: Create Private Repo {}
+    loading: Loading
   cloneUrl:
     enter: Enter the Git Clone URL
     validator:
@@ -406,6 +497,7 @@ feature:
   singleJournalEntry: Single Journal Entry File per day
   configureBottomMenuBar: Configure the Bottom Menu Bar
   customFileNamePerEditor: Custom FileName per Editor
+  branchSelection: Git Branch Selection
 
 feature_timeline:
   title: Feature Timeline

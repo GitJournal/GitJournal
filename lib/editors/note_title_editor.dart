@@ -10,7 +10,8 @@ class NoteTitleEditor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var style = Theme.of(context).textTheme.headline6;
+    var theme = Theme.of(context);
+    var style = theme.textTheme.headline6;
 
     return TextField(
       keyboardType: TextInputType.text,
@@ -18,7 +19,9 @@ class NoteTitleEditor extends StatelessWidget {
       decoration: InputDecoration(
         hintText: tr('editors.common.defaultTitleHint'),
         border: InputBorder.none,
-        isDense: true,
+        fillColor: theme.scaffoldBackgroundColor,
+        hoverColor: theme.scaffoldBackgroundColor,
+        contentPadding: const EdgeInsets.all(0.0),
       ),
       controller: textController,
       textCapitalization: TextCapitalization.sentences,

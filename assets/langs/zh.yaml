@@ -1,0 +1,52 @@
+settings:
+  ok: 好的
+  cancel: 取消
+  title: 设置
+  author:
+    label: 全名
+    hint: 谁应该编写这些更改？
+    validator: 请输入名字
+  email:
+    label: E-mail
+    hint: E-mail地址
+    validator:
+      empty: 请输入E-mail地址
+      invalid: 请输入有效的E-mail地址
+  display:
+    title: 显示设置
+    darkTheme: 深色主题
+    homeScreen: 主页显示
+  gitAuthor: Git 权限设置
+  versionInfo: 版本信息
+  analytics: 分析
+  crashReports: 收集匿名崩溃报告
+  usageStats: 收集匿名使用数据
+  debug:
+    title: 调试程序
+    subtitle: 在列表预览
+  images:
+    title: 图像设置
+    subtitle: 图片存储方式
+    imageLocation: 图片地址
+    currentFolder: 文件夹与笔记同名
+    customFolder: 自定义文件夹
+  gitRemote:
+    changeHost:
+      title: 重新配置 Git 地址？
+      subtitle: 未同步的笔记将会丢失
+      ok: 好的
+      cancel: 取消
+    title: Git 远程仓库设置
+    subtitle: 设置您的笔记的同步位置
+  noteMetaData:
+    title: 笔记元信息设置
+    subtitle: 配置如何保存笔记的元信息
+    text: ""
+    enableHeader: 启用 YAML 头文件
+    modified: 被修改的
+    created: 新增的
+    tags: 标签部分
+    example:
+      title: 示例标题
+    titleMetaData:
+      title: 标题

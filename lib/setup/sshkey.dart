@@ -7,25 +7,25 @@ import 'button.dart';
 import 'key_editors.dart';
 import 'loading.dart';
 
-class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
+class GitHostSetupSshKeyKnownProviderPage extends StatelessWidget {
   final Func0<void> doneFunction;
   final Func0<void> regenerateFunction;
   final Func1<BuildContext, void> copyKeyFunction;
-  final String publicKey;
+  final String? publicKey;
 
   final Func0<void> openDeployKeyPage;
 
-  GitHostSetupSshKeyKnownProvider({
-    @required this.doneFunction,
-    @required this.regenerateFunction,
-    @required this.copyKeyFunction,
-    @required this.openDeployKeyPage,
-    @required this.publicKey,
+  GitHostSetupSshKeyKnownProviderPage({
+    required this.doneFunction,
+    required this.regenerateFunction,
+    required this.copyKeyFunction,
+    required this.openDeployKeyPage,
+    required this.publicKey,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (publicKey == null || publicKey.isEmpty) {
+    if (publicKey == null || publicKey!.isEmpty) {
       return GitHostSetupLoadingPage(tr("setup.sshKey.generate"));
     }
 
@@ -45,7 +45,7 @@ class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
           style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 8.0),
-        PublicKeyWidget(publicKey),
+        PublicKeyWidget(publicKey!),
         const SizedBox(height: 8.0),
 
         GitHostSetupButton(
@@ -91,22 +91,22 @@ class GitHostSetupSshKeyKnownProvider extends StatelessWidget {
   }
 }
 
-class GitHostSetupSshKeyUnknownProvider extends StatelessWidget {
+class GitHostSetupSshKeyUnknownProviderPage extends StatelessWidget {
   final Func0<void> doneFunction;
   final Func0<void> regenerateFunction;
   final Func1<BuildContext, void> copyKeyFunction;
-  final String publicKey;
+  final String? publicKey;
 
-  GitHostSetupSshKeyUnknownProvider({
-    @required this.doneFunction,
-    @required this.regenerateFunction,
-    @required this.copyKeyFunction,
-    @required this.publicKey,
+  GitHostSetupSshKeyUnknownProviderPage({
+    required this.doneFunction,
+    required this.regenerateFunction,
+    required this.copyKeyFunction,
+    required this.publicKey,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (publicKey == null || publicKey.isEmpty) {
+    if (publicKey == null || publicKey!.isEmpty) {
       return GitHostSetupLoadingPage(tr("setup.sshKey.generate"));
     }
 
@@ -126,7 +126,7 @@ class GitHostSetupSshKeyUnknownProvider extends StatelessWidget {
           style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 8.0),
-        PublicKeyWidget(publicKey),
+        PublicKeyWidget(publicKey!),
         const SizedBox(height: 8.0),
 
         GitHostSetupButton(
@@ -167,13 +167,13 @@ class GitHostSetupSshKeyUnknownProvider extends StatelessWidget {
   }
 }
 
-class GitHostSetupKeyChoice extends StatelessWidget {
+class GitHostSetupKeyChoicePage extends StatelessWidget {
   final Func0<void> onGenerateKeys;
   final Func0<void> onUserProvidedKeys;
 
-  GitHostSetupKeyChoice({
-    @required this.onGenerateKeys,
-    @required this.onUserProvidedKeys,
+  GitHostSetupKeyChoicePage({
+    required this.onGenerateKeys,
+    required this.onUserProvidedKeys,
   });
 
   @override
@@ -203,29 +203,30 @@ class GitHostSetupKeyChoice extends StatelessWidget {
   }
 }
 
-class GitHostUserProvidedKeys extends StatefulWidget {
+class GitHostUserProvidedKeysPage extends StatefulWidget {
   final Func3<String, String, String, void>
       doneFunction; // public, private, password
   final String saveText;
 
-  GitHostUserProvidedKeys({
-    @required this.doneFunction,
+  GitHostUserProvidedKeysPage({
+    required this.doneFunction,
     this.saveText = "",
   });
 
   @override
-  _GitHostUserProvidedKeysState createState() =>
-      _GitHostUserProvidedKeysState();
+  _GitHostUserProvidedKeysPageState createState() =>
+      _GitHostUserProvidedKeysPageState();
 }
 
-class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
-  GlobalKey<FormState> _publicFormKey;
-  GlobalKey<FormState> _privateFormKey;
-  TextEditingController _publicKeyController;
-  TextEditingController _privateKeyController;
-  TextEditingController _passwordController;
+class _GitHostUserProvidedKeysPageState
+    extends State<GitHostUserProvidedKeysPage> {
+  late GlobalKey<FormState> _publicFormKey;
+  late GlobalKey<FormState> _privateFormKey;
+  late TextEditingController _publicKeyController;
+  late TextEditingController _privateKeyController;
+  late TextEditingController _passwordController;
 
-  String saveText;
+  late String saveText;
 
   @override
   void initState() {
@@ -280,8 +281,8 @@ class _GitHostUserProvidedKeysState extends State<GitHostUserProvidedKeys> {
           GitHostSetupButton(
             text: saveText,
             onPressed: () {
-              var publicValid = _publicFormKey.currentState.validate();
-              var privateValid = _privateFormKey.currentState.validate();
+              var publicValid = _publicFormKey.currentState!.validate();
+              var privateValid = _privateFormKey.currentState!.validate();
 
               if (!publicValid || !privateValid) {
                 return;

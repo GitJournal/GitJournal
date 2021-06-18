@@ -33,7 +33,7 @@ class _WikiLinkSyntax extends md.InlineSyntax {
 
   @override
   bool onMatch(md.InlineParser parser, Match match) {
-    var term = match[1].trim();
+    var term = match[1]!.trim();
     var displayText = term;
     if (term.contains('|')) {
       var s = term.split('|');
@@ -63,7 +63,7 @@ class _TaskListSyntax extends md.InlineSyntax {
     md.Element el = md.Element.withTag('input');
     el.attributes['type'] = 'checkbox';
     el.attributes['disabled'] = 'true';
-    el.attributes['checked'] = '${match[1].trim().isNotEmpty}';
+    el.attributes['checked'] = '${match[1]!.trim().isNotEmpty}';
     parser.addNode(el);
     return true;
   }

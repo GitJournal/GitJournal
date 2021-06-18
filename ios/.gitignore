@@ -38,6 +38,7 @@ Icon?
 /Flutter/flutter_assets/
 /Flutter/App.framework
 /Flutter/Flutter.framework
+/Flutter/Flutter.podspec
 /Flutter/Generated.xcconfig
 /ServiceDefinitions.json
 
@@ -53,3 +54,4 @@ fastlane/screenshots/
 
 Runner.app.dSYM.zip
 *.ipa
+Gemfile.lock

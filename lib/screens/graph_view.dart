@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/graph.dart';
-import 'package:gitjournal/core/interactive_viewer.dart' as fork;
 import 'package:gitjournal/core/notes_folder_fs.dart';
 
 class GraphViewScreen extends StatefulWidget {
@@ -12,7 +11,7 @@ class GraphViewScreen extends StatefulWidget {
 }
 
 class _GraphViewScreenState extends State<GraphViewScreen> {
-  Graph graph;
+  Graph? graph;
 
   @override
   Widget build(BuildContext context) {
@@ -20,19 +19,19 @@ class _GraphViewScreenState extends State<GraphViewScreen> {
       var rootFolder = Provider.of<NotesFolderFS>(context);
       setState(() {
         graph = Graph.fromFolder(rootFolder);
-        graph.addListener(_setState);
+        graph!.addListener(_setState);
       });
       return Container(width: 2500, height: 2500);
     }
 
-    return SafeArea(child: GraphView(graph));
+    return SafeArea(child: graph != null ? GraphView(graph!) : Container());
   }
 
   @override
   void dispose() {
     if (graph != null) {
-      graph.stopLayout();
-      graph.removeListener(_setState);
+      graph!.stopLayout();
+      graph!.removeListener(_setState);
     }
 
     super.dispose();
@@ -56,7 +55,7 @@ class GraphView extends StatefulWidget {
 
 class _GraphViewState extends State<GraphView> {
   final nodeSize = 50.0;
-  fork.TransformationController transformationController;
+  late TransformationController transformationController;
 
   @override
   void initState() {
@@ -67,12 +66,11 @@ class _GraphViewState extends State<GraphView> {
       setState(() {});
     });
 
-    transformationController = fork.TransformationController();
+    transformationController = TransformationController();
   }
 
   Offset _getLocationPosition(Offset globalPos) {
-    RenderBox graphViewRenderBox = context.findRenderObject();
-    assert(graphViewRenderBox != null);
+    RenderBox graphViewRenderBox = context.findRenderObject() as RenderBox;
 
     var pos = graphViewRenderBox.globalToLocal(globalPos);
     var matrix = transformationController.value;
@@ -137,13 +135,14 @@ class _GraphViewState extends State<GraphView> {
     var view = Container(
       width: 2500,
       height: 2500,
+      color: Colors.white,
       child: Stack(
         children: children,
         fit: StackFit.expand,
       ),
     );
 
-    return fork.InteractiveViewer(
+    return InteractiveViewer(
       child: view,
       panEnabled: true,
       constrained: false,
@@ -192,9 +191,9 @@ class NodeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    var textStyle = theme.textTheme.subtitle1.copyWith(fontSize: 8.0);
+    var textStyle = theme.textTheme.subtitle1!.copyWith(fontSize: 8.0);
 
-    var label = node.label;
+    var label = node.label!;
     if (label.startsWith('docs/')) {
       label = label.substring(5);
     }

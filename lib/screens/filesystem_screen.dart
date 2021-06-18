@@ -47,14 +47,14 @@ class _FileSystemScreenState extends State<FileSystemScreen> {
           title: Text(tr("screens.filesystem.ignoredFile.title")),
           content: Text(ignoredFile.reason.toString()),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               onPressed: () async {
                 Navigator.of(context).pop(false);
                 _renameFile(ignoredFile.filePath);
               },
               child: Text(tr('screens.filesystem.ignoredFile.rename')),
             ),
-            FlatButton(
+            TextButton(
               onPressed: () => Navigator.of(context).pop(false),
               child: Text(tr('screens.filesystem.ignoredFile.ok')),
             ),
@@ -74,7 +74,7 @@ class _FileSystemScreenState extends State<FileSystemScreen> {
       ),
     );
     if (newFileName is String) {
-      var container = Provider.of<Repository>(context, listen: false);
+      var container = context.read<GitJournalRepo>();
       container.renameFile(oldPath, newFileName);
     }
   }
@@ -89,9 +89,9 @@ class FileSystemView extends StatelessWidget {
 
   FileSystemView(
     this.folder, {
-    @required this.onFolderSelected,
-    @required this.onNoteSelected,
-    @required this.onIgnoredFileSelected,
+    required this.onFolderSelected,
+    required this.onNoteSelected,
+    required this.onIgnoredFileSelected,
   });
 
   @override

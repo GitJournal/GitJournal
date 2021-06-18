@@ -6,11 +6,11 @@ import 'package:gitjournal/widgets/markdown_toolbar.dart';
 
 void main() {
   void _testLine({
-    @required String before,
-    @required int beforeOffset,
-    @required String after,
-    @required int afterOffset,
-    @required String char,
+    required String before,
+    required int beforeOffset,
+    required String after,
+    required int afterOffset,
+    required String char,
   }) {
     var val = TextEditingValue(
       text: before,
@@ -26,10 +26,10 @@ void main() {
   }
 
   void _testH1({
-    @required String before,
-    @required int beforeOffset,
-    @required String after,
-    @required int afterOffset,
+    required String before,
+    required int beforeOffset,
+    required String after,
+    required int afterOffset,
   }) {
     _testLine(
       before: before,
@@ -128,11 +128,11 @@ void main() {
   // Word based
   //
   void _testWord({
-    @required String before,
-    @required int beforeOffset,
-    @required String after,
-    @required int afterOffset,
-    @required String char,
+    required String before,
+    required int beforeOffset,
+    required String after,
+    required int afterOffset,
+    required String char,
   }) {
     var val = TextEditingValue(
       text: before,

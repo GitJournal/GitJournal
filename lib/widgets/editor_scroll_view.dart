@@ -7,7 +7,7 @@ class EditorScrollView extends StatelessWidget {
   final EdgeInsetsGeometry padding;
 
   EditorScrollView({
-    @required this.child,
+    required this.child,
     this.padding = const EdgeInsets.all(16.0),
   });
 

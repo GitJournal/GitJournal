@@ -33,31 +33,32 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:gotrue/gotrue.dart';
-
 import 'package:gitjournal/widgets/scroll_view_without_animation.dart';
 
-const _localDevServer = 'http://192.168.1.130:9999/';
+//import 'package:gotrue/gotrue.dart';
+
+// const _localDevServer = 'http://192.168.1.130:9999/';
 // const _prodServer = 'https://api.gitjournal.io/auth/';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key, this.title}) : super(key: key);
+  LoginPage({Key? key, this.title}) : super(key: key);
 
-  final String title;
+  final String? title;
 
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  var goTrue = GoTrue(_localDevServer);
+  //var goTrue = GoTrue(_localDevServer);
 
   Future<void> _loginAction() async {
-    var t = await goTrue.login('handa.vish@gmail.com', 'blah');
+    /*var t = await goTrue.login('handa.vish@gmail.com', 'blah');
     print("Got Token: $t");
 
     var user = await goTrue.user(t.accessToken);
     print("Got usre: $user");
+    */
   }
 
   Widget _submitButton() {
@@ -87,9 +88,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     return InkWell(
-      onTap: () {
-        _loginAction();
-      },
+      onTap: _loginAction,
       child: c,
     );
   }
@@ -315,7 +314,7 @@ class FormTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
-    var style = textTheme.headline2.copyWith(fontFamily: "Lato");
+    var style = textTheme.headline2!.copyWith(fontFamily: "Lato");
     return Text('GitJournal', style: style);
   }
 }

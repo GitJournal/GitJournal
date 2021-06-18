@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/features.dart';
 
 class FeatureTimelineScreen extends StatelessWidget {
@@ -53,7 +53,7 @@ class FeatureTile extends StatelessWidget {
       subtitle += ' - ' + feature.subtitle;
     }
 
-    Color color;
+    late Color color;
     var theme = Theme.of(context);
 
     if (feature.pro) {
@@ -80,19 +80,19 @@ class _Tile extends StatelessWidget {
   final Color iconColor;
 
   _Tile({
-    @required this.title,
-    @required this.subTitle,
-    @required this.iconText,
-    @required this.iconColor,
+    required this.title,
+    required this.subTitle,
+    required this.iconText,
+    required this.iconColor,
   });
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     var textTheme = theme.textTheme;
-    var titleTextStyle = textTheme.subtitle1.copyWith();
-    var subTitleTextStyle = textTheme.bodyText2.copyWith(
-      color: textTheme.caption.color,
+    var titleTextStyle = textTheme.subtitle1!.copyWith();
+    var subTitleTextStyle = textTheme.bodyText2!.copyWith(
+      color: textTheme.caption!.color,
     );
 
     return Container(
@@ -135,7 +135,7 @@ class _Tile extends StatelessWidget {
 
 class _Sign extends StatelessWidget {
   final String text;
-  final Color color;
+  final Color? color;
 
   _Sign(this.text, this.color);
 
@@ -144,7 +144,7 @@ class _Sign extends StatelessWidget {
     var theme = Theme.of(context);
     var textStyle = theme.textTheme.subtitle2;
     if (color != null) {
-      textStyle = textStyle.copyWith(color: color);
+      textStyle = textStyle!.copyWith(color: color);
     }
 
     return Text(text, style: textStyle);

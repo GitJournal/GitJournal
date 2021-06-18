@@ -1,4 +1,4 @@
-import 'dart:collection';
+
 
 import 'package:flutter/material.dart';
 
@@ -21,13 +21,12 @@ class TagListingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var rootFolder = Provider.of<NotesFolderFS>(context);
     var allTags = rootFolder.getNoteTagsRecursively();
-    var allTagsSorted = SplayTreeSet<String>.from(allTags);
 
     Widget body;
-    if (allTagsSorted.isNotEmpty) {
+    if (allTags.isNotEmpty) {
       body = ListView(
         children: <Widget>[
-          for (var tag in allTagsSorted) _buildTagTile(context, tag),
+          for (var tag in allTags) _buildTagTile(context, tag),
         ],
       );
     } else {
@@ -61,7 +60,7 @@ class TagListingScreen extends StatelessWidget {
 
   Widget _buildTagTile(BuildContext context, String tag) {
     var theme = Theme.of(context);
-    var titleColor = theme.textTheme.headline1.color;
+    var titleColor = theme.textTheme.headline1!.color;
 
     return ListTile(
       leading: FaIcon(FontAwesomeIcons.tag, color: titleColor),

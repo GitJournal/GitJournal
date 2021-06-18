@@ -14,76 +14,83 @@ typedef NoteRenamedCallback = void Function(
     int index, Note note, String oldPath);
 
 class NotesFolderNotifier implements ChangeNotifier {
-  var _folderAddedListeners = ObserverList<FolderNotificationCallback>();
-  var _folderRemovedListeners = ObserverList<FolderNotificationCallback>();
-  var _thisFolderRenamedListeners = ObserverList<FolderRenamedCallback>();
+  ObserverList<void Function(int, NotesFolder)>? _folderAddedListeners =
+      ObserverList<FolderNotificationCallback>();
+  ObserverList<void Function(int, NotesFolder)>? _folderRemovedListeners =
+      ObserverList<FolderNotificationCallback>();
+  ObserverList<void Function(NotesFolderFS, String)>?
+      _thisFolderRenamedListeners = ObserverList<FolderRenamedCallback>();
 
-  var _noteAddedListeners = ObserverList<NoteNotificationCallback>();
-  var _noteRemovedListeners = ObserverList<NoteNotificationCallback>();
-  var _noteModifiedListeners = ObserverList<NoteNotificationCallback>();
-  var _noteRenameListeners = ObserverList<NoteRenamedCallback>();
+  ObserverList<void Function(int, Note)>? _noteAddedListeners =
+      ObserverList<NoteNotificationCallback>();
+  ObserverList<void Function(int, Note)>? _noteRemovedListeners =
+      ObserverList<NoteNotificationCallback>();
+  ObserverList<void Function(int, Note)>? _noteModifiedListeners =
+      ObserverList<NoteNotificationCallback>();
+  ObserverList<void Function(int, Note, String)>? _noteRenameListeners =
+      ObserverList<NoteRenamedCallback>();
 
   void addFolderRemovedListener(FolderNotificationCallback listener) {
-    _folderRemovedListeners.add(listener);
+    _folderRemovedListeners!.add(listener);
   }
 
   void removeFolderRemovedListener(FolderNotificationCallback listener) {
-    assert(_folderRemovedListeners.contains(listener));
-    _folderRemovedListeners.remove(listener);
+    assert(_folderRemovedListeners!.contains(listener));
+    _folderRemovedListeners!.remove(listener);
   }
 
   void addFolderAddedListener(FolderNotificationCallback listener) {
-    _folderAddedListeners.add(listener);
+    _folderAddedListeners!.add(listener);
   }
 
   void removeFolderAddedListener(FolderNotificationCallback listener) {
-    assert(_folderAddedListeners.contains(listener));
-    _folderAddedListeners.remove(listener);
+    assert(_folderAddedListeners!.contains(listener));
+    _folderAddedListeners!.remove(listener);
   }
 
   void addThisFolderRenamedListener(FolderRenamedCallback listener) {
-    _thisFolderRenamedListeners.add(listener);
+    _thisFolderRenamedListeners!.add(listener);
   }
 
   void removeThisFolderRenamedListener(FolderRenamedCallback listener) {
-    assert(_thisFolderRenamedListeners.contains(listener));
-    _thisFolderRenamedListeners.remove(listener);
+    assert(_thisFolderRenamedListeners!.contains(listener));
+    _thisFolderRenamedListeners!.remove(listener);
   }
 
   void addNoteAddedListener(NoteNotificationCallback listener) {
-    _noteAddedListeners.add(listener);
+    _noteAddedListeners!.add(listener);
   }
 
   void removeNoteAddedListener(NoteNotificationCallback listener) {
-    assert(_noteAddedListeners.contains(listener));
-    _noteAddedListeners.remove(listener);
+    assert(_noteAddedListeners!.contains(listener));
+    _noteAddedListeners!.remove(listener);
   }
 
   void addNoteRemovedListener(NoteNotificationCallback listener) {
-    _noteRemovedListeners.add(listener);
+    _noteRemovedListeners!.add(listener);
   }
 
   void removeNoteRemovedListener(NoteNotificationCallback listener) {
-    assert(_noteRemovedListeners.contains(listener));
-    _noteRemovedListeners.remove(listener);
+    assert(_noteRemovedListeners!.contains(listener));
+    _noteRemovedListeners!.remove(listener);
   }
 
   void addNoteModifiedListener(NoteNotificationCallback listener) {
-    _noteModifiedListeners.add(listener);
+    _noteModifiedListeners!.add(listener);
   }
 
   void removeNoteModifiedListener(NoteNotificationCallback listener) {
-    assert(_noteModifiedListeners.contains(listener));
-    _noteModifiedListeners.remove(listener);
+    assert(_noteModifiedListeners!.contains(listener));
+    _noteModifiedListeners!.remove(listener);
   }
 
   void addNoteRenameListener(NoteRenamedCallback listener) {
-    _noteRenameListeners.add(listener);
+    _noteRenameListeners!.add(listener);
   }
 
   void removeNoteRenameListener(NoteRenamedCallback listener) {
-    assert(_noteRenameListeners.contains(listener));
-    _noteRenameListeners.remove(listener);
+    assert(_noteRenameListeners!.contains(listener));
+    _noteRenameListeners!.remove(listener);
   }
 
   @mustCallSuper
@@ -102,7 +109,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   }
 
   void _notifyFolderCallback(
-    ObserverList<FolderNotificationCallback> _listeners,
+    ObserverList<FolderNotificationCallback>? _listeners,
     int index,
     NotesFolder folder,
   ) {
@@ -145,10 +152,10 @@ class NotesFolderNotifier implements ChangeNotifier {
 
   void notifyThisFolderRenamed(NotesFolderFS folder, String oldPath) {
     final localListeners =
-        List<FolderRenamedCallback>.from(_thisFolderRenamedListeners);
+        List<FolderRenamedCallback>.from(_thisFolderRenamedListeners!);
     for (var listener in localListeners) {
       try {
-        if (_thisFolderRenamedListeners.contains(listener)) {
+        if (_thisFolderRenamedListeners!.contains(listener)) {
           listener(folder, oldPath);
         }
       } catch (exception, stack) {
@@ -172,7 +179,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   }
 
   void _notifyNoteCallback(
-    ObserverList<NoteNotificationCallback> _listeners,
+    ObserverList<NoteNotificationCallback>? _listeners,
     int index,
     Note note,
   ) {
@@ -218,10 +225,11 @@ class NotesFolderNotifier implements ChangeNotifier {
   }
 
   void notifyNoteRenamed(int index, Note note, String oldPath) {
-    final localListeners = List<NoteRenamedCallback>.from(_noteRenameListeners);
+    final localListeners =
+        List<NoteRenamedCallback>.from(_noteRenameListeners!);
     for (var listener in localListeners) {
       try {
-        if (_noteRenameListeners.contains(listener)) {
+        if (_noteRenameListeners!.contains(listener)) {
           listener(index, note, oldPath);
         }
       } catch (exception, stack) {
@@ -247,7 +255,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   //
   // ChangeNotifier implementation - How to not duplicate this?
   //
-  ObserverList<VoidCallback> _listeners = ObserverList<VoidCallback>();
+  ObserverList<VoidCallback>? _listeners = ObserverList<VoidCallback>();
 
   bool _debugAssertNotDisposed() {
     assert(() {
@@ -282,7 +290,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   @override
   bool get hasListeners {
     assert(_debugAssertNotDisposed());
-    return _listeners.isNotEmpty;
+    return _listeners!.isNotEmpty;
   }
 
   /// Register a closure to be called when the object changes.
@@ -291,7 +299,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   @override
   void addListener(VoidCallback listener) {
     assert(_debugAssertNotDisposed());
-    _listeners.add(listener);
+    _listeners!.add(listener);
   }
 
   /// Remove a previously registered closure from the list of closures that are
@@ -316,7 +324,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   @override
   void removeListener(VoidCallback listener) {
     assert(_debugAssertNotDisposed());
-    _listeners.remove(listener);
+    _listeners!.remove(listener);
   }
 
   /// Call all the registered listeners.
@@ -341,10 +349,10 @@ class NotesFolderNotifier implements ChangeNotifier {
     assert(_debugAssertNotDisposed());
     if (_listeners != null) {
       final List<VoidCallback> localListeners =
-          List<VoidCallback>.from(_listeners);
+          List<VoidCallback>.from(_listeners!);
       for (VoidCallback listener in localListeners) {
         try {
-          if (_listeners.contains(listener)) {
+          if (_listeners!.contains(listener)) {
             listener();
           }
         } catch (exception, stack) {

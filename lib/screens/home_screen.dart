@@ -15,37 +15,35 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  NotesFolder notesFolder;
+  NotesFolder? notesFolder;
+  NotesFolderFS? rootFolder;
 
   @override
   void initState() {
     super.initState();
-
     initializeDateFormatting();
-    Future.delayed(Duration.zero, _initFolder);
   }
 
-  // This is nto done inside build as we want to avoid rebuilding the
-  // FlattenedNotesFolder as much as possible. It's very expensive, since
-  // it sorts all the notes.
   void _initFolder() async {
     if (!mounted) return;
 
-    final rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
-    setState(() {
+    var root = Provider.of<NotesFolderFS>(context);
+    if (root != rootFolder) {
+      rootFolder = root;
       notesFolder = FlattenedNotesFolder(
-        rootFolder,
+        root,
         title: tr('screens.home.allNotes'),
       );
-    });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    _initFolder();
     if (notesFolder == null) {
       return Container();
     }
 
-    return FolderView(notesFolder: notesFolder);
+    return FolderView(notesFolder: notesFolder!);
   }
 }

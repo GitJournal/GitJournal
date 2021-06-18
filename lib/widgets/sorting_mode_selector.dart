@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:gitjournal/core/sorting_mode.dart';
-import 'package:gitjournal/screens/settings_screen.dart';
+import 'package:gitjournal/settings/settings_screen.dart';
 
 class SortingModeSelector extends StatefulWidget {
   final SortingMode selectedMode;
@@ -15,8 +15,8 @@ class SortingModeSelector extends StatefulWidget {
 }
 
 class _SortingModeSelectorState extends State<SortingModeSelector> {
-  SortingField field;
-  SortingOrder order;
+  late SortingField field;
+  late SortingOrder order;
 
   @override
   void initState() {
@@ -43,14 +43,14 @@ class _SortingModeSelectorState extends State<SortingModeSelector> {
         crossAxisAlignment: CrossAxisAlignment.start,
       ),
       actions: [
-        OutlineButton(
+        OutlinedButton(
           key: const ValueKey("Cancel"),
           child: Text(tr('settings.cancel')),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        OutlineButton(
+        OutlinedButton(
           key: const ValueKey("Ok"),
           child: Text(tr('settings.ok')),
           onPressed: () {
@@ -66,9 +66,9 @@ class _SortingModeSelectorState extends State<SortingModeSelector> {
       title: Text(sf.toPublicString()),
       value: sf,
       groupValue: field,
-      onChanged: (SortingField sf) {
+      onChanged: (SortingField? sf) {
         setState(() {
-          field = sf;
+          field = sf!;
         });
       },
     );
@@ -79,9 +79,9 @@ class _SortingModeSelectorState extends State<SortingModeSelector> {
       title: Text(so.toPublicString()),
       value: so,
       groupValue: order,
-      onChanged: (SortingOrder so) {
+      onChanged: (SortingOrder? so) {
         setState(() {
-          order = so;
+          order = so!;
         });
       },
     );

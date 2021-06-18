@@ -7,25 +7,27 @@ typedef NoteModificationCallback = void Function(Note note);
 typedef NoteRenameCallback = void Function(Note note, String oldPath);
 
 class NotesNotifier implements ChangeNotifier {
-  var _modListeners = ObserverList<NoteModificationCallback>();
-  var _renameListeners = ObserverList<NoteRenameCallback>();
+  ObserverList<NoteModificationCallback>? _modListeners =
+      ObserverList<NoteModificationCallback>();
+  ObserverList<NoteRenameCallback>? _renameListeners =
+      ObserverList<NoteRenameCallback>();
 
   void addModifiedListener(NoteModificationCallback listener) {
-    _modListeners.add(listener);
+    _modListeners?.add(listener);
   }
 
   void removeModifiedListener(NoteModificationCallback listener) {
-    assert(_modListeners.contains(listener));
-    _modListeners.remove(listener);
+    assert(_modListeners!.contains(listener));
+    _modListeners?.remove(listener);
   }
 
   void addRenameListener(NoteRenameCallback listener) {
-    _renameListeners.add(listener);
+    _renameListeners?.add(listener);
   }
 
   void removeRenameListener(NoteRenameCallback listener) {
-    assert(_renameListeners.contains(listener));
-    _renameListeners.remove(listener);
+    assert(_renameListeners!.contains(listener));
+    _renameListeners?.remove(listener);
   }
 
   @mustCallSuper
@@ -40,7 +42,7 @@ class NotesNotifier implements ChangeNotifier {
   //
   // ChangeNotifier implementation - How to not duplicate this?
   //
-  ObserverList<VoidCallback> _listeners = ObserverList<VoidCallback>();
+  ObserverList<VoidCallback>? _listeners = ObserverList<VoidCallback>();
 
   bool _debugAssertNotDisposed() {
     assert(() {
@@ -75,7 +77,7 @@ class NotesNotifier implements ChangeNotifier {
   @override
   bool get hasListeners {
     assert(_debugAssertNotDisposed());
-    return _listeners.isNotEmpty;
+    return _listeners!.isNotEmpty;
   }
 
   /// Register a closure to be called when the object changes.
@@ -84,7 +86,7 @@ class NotesNotifier implements ChangeNotifier {
   @override
   void addListener(VoidCallback listener) {
     assert(_debugAssertNotDisposed());
-    _listeners.add(listener);
+    _listeners!.add(listener);
   }
 
   /// Remove a previously registered closure from the list of closures that are
@@ -109,7 +111,7 @@ class NotesNotifier implements ChangeNotifier {
   @override
   void removeListener(VoidCallback listener) {
     assert(_debugAssertNotDisposed());
-    _listeners.remove(listener);
+    _listeners!.remove(listener);
   }
 
   /// Call all the registered listeners.
@@ -134,10 +136,10 @@ class NotesNotifier implements ChangeNotifier {
     assert(_debugAssertNotDisposed());
     if (_listeners != null) {
       final List<VoidCallback> localListeners =
-          List<VoidCallback>.from(_listeners);
+          List<VoidCallback>.from(_listeners!);
       for (VoidCallback listener in localListeners) {
         try {
-          if (_listeners.contains(listener)) {
+          if (_listeners!.contains(listener)) {
             listener();
           }
         } catch (exception, stack) {
@@ -163,10 +165,11 @@ class NotesNotifier implements ChangeNotifier {
   void notifyModifiedListeners(Note note) {
     assert(_debugAssertNotDisposed());
     if (_modListeners != null) {
-      final localListeners = List<NoteModificationCallback>.from(_modListeners);
+      final localListeners =
+          List<NoteModificationCallback>.from(_modListeners!);
       for (var listener in localListeners) {
         try {
-          if (_modListeners.contains(listener)) {
+          if (_modListeners!.contains(listener)) {
             listener(note);
           }
         } catch (exception, stack) {
@@ -192,10 +195,10 @@ class NotesNotifier implements ChangeNotifier {
   void notifyRenameListeners(Note note, String oldPath) {
     assert(_debugAssertNotDisposed());
     if (_renameListeners != null) {
-      final localListeners = List<NoteRenameCallback>.from(_renameListeners);
+      final localListeners = List<NoteRenameCallback>.from(_renameListeners!);
       for (var listener in localListeners) {
         try {
-          if (_renameListeners.contains(listener)) {
+          if (_renameListeners!.contains(listener)) {
             listener(note, oldPath);
           }
         } catch (exception, stack) {

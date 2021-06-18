@@ -1,3 +1,19 @@
+/*
+Copyright 2020-2021 Vishesh Handa <me@vhanda.in>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import 'package:path/path.dart' as p;
 
 import 'package:gitjournal/core/link.dart';
@@ -9,19 +25,24 @@ class LinkResolver {
 
   LinkResolver(this.inputNote);
 
-  Note resolveLink(Link l) {
+  Note? resolveLink(Link l) {
     if (l.isWikiLink) {
-      return resolveWikiLink(l.wikiTerm);
+      return resolveWikiLink(l.wikiTerm!);
     }
 
     var rootFolder = inputNote.parent.rootFolder;
-    assert(l.filePath.startsWith(rootFolder.folderPath));
-    var spec = l.filePath.substring(rootFolder.folderPath.length + 1);
+    if (l.filePath!.startsWith(rootFolder.folderPath)) {
+      var spec = l.filePath!.substring(rootFolder.folderPath.length);
+      if (spec.startsWith('/')) {
+        spec = spec.substring(1);
+      }
+      return _getNoteWithSpec(rootFolder, spec);
+    }
 
-    return _getNoteWithSpec(rootFolder, spec);
+    return null;
   }
 
-  Note resolve(String link) {
+  Note? resolve(String link) {
     if (isWikiLink(link)) {
       // FIXME: What if the case is different?
       return resolveWikiLink(stripWikiSyntax(link));
@@ -38,44 +59,34 @@ class LinkResolver {
     return link.substring(2, link.length - 2).trim();
   }
 
-  Note resolveWikiLink(String term) {
+  Note? resolveWikiLink(String term) {
     if (term.contains(p.separator)) {
       var spec = p.normalize(term);
       return _getNoteWithSpec(inputNote.parent.rootFolder, spec);
     }
 
     var lowerCaseTerm = term.toLowerCase();
-    var termEndsWithMd = lowerCaseTerm.endsWith('.md');
-    var termEndsWithTxt = lowerCaseTerm.endsWith('.txt');
 
     var rootFolder = inputNote.parent.rootFolder;
     for (var note in rootFolder.getAllNotes()) {
       var fileName = note.fileName;
-      if (fileName.toLowerCase().endsWith('.md')) {
-        if (termEndsWithMd) {
-          if (fileName == term) {
-            return note;
-          } else {
-            continue;
-          }
-        }
+      var fileNameLower = fileName.toLowerCase();
 
-        var f = fileName.substring(0, fileName.length - 3);
-        if (f == term) {
-          return note;
-        }
-      } else if (fileName.toLowerCase().endsWith('.txt')) {
-        if (termEndsWithTxt) {
-          if (fileName == term) {
-            return note;
-          } else {
-            continue;
+      for (var ext in NoteFileFormatInfo.allowedExtensions) {
+        if (fileNameLower.endsWith(ext)) {
+          var termEndsWithSameExt = lowerCaseTerm.endsWith(ext);
+          if (termEndsWithSameExt) {
+            if (fileName == term) {
+              return note;
+            } else {
+              break; // go to next note
+            }
           }
-        }
 
-        var f = fileName.substring(0, fileName.length - 4);
-        if (f == term) {
-          return note;
+          var f = fileName.substring(0, fileName.length - ext.length);
+          if (f == term) {
+            return note;
+          }
         }
       }
     }
@@ -83,7 +94,7 @@ class LinkResolver {
     return null;
   }
 
-  Note _getNoteWithSpec(NotesFolderFS folder, String spec) {
+  Note? _getNoteWithSpec(NotesFolderFS folder, String spec) {
     var fullPath = p.normalize(p.join(folder.folderPath, spec));
     if (!fullPath.startsWith(folder.folderPath)) {
       folder = folder.rootFolder;
@@ -96,17 +107,12 @@ class LinkResolver {
       return linkedNote;
     }
 
-    if (!spec.endsWith('.md')) {
-      linkedNote = folder.getNoteWithSpec(spec + '.md');
-      if (linkedNote != null) {
-        return linkedNote;
-      }
-    }
-
-    if (!spec.endsWith('.txt')) {
-      linkedNote = folder.getNoteWithSpec(spec + '.txt');
-      if (linkedNote != null) {
-        return linkedNote;
+    for (var ext in NoteFileFormatInfo.allowedExtensions) {
+      if (!spec.endsWith(ext)) {
+        linkedNote = folder.getNoteWithSpec(spec + ext);
+        if (linkedNote != null) {
+          return linkedNote;
+        }
       }
     }
 

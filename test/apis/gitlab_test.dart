@@ -22,13 +22,11 @@ void main() {
 
     var jsonString = File(testDataPath).readAsStringSync();
 
-    var api = GitLab();
-
     List<dynamic> list = jsonDecode(jsonString);
     var repos = <GitHostRepo>[];
     list.forEach((dynamic d) {
       var map = Map<String, dynamic>.from(d);
-      var repo = api.repoFromJson(map);
+      var repo = GitLab.repoFromJson(map);
       repos.add(repo);
     });
 

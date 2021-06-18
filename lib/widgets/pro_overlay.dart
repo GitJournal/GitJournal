@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/analytics.dart';
-import 'package:gitjournal/app_settings.dart';
+import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/features.dart';
+import 'package:gitjournal/settings/app_settings.dart';
 
 class ProOverlay extends StatelessWidget {
   final Widget child;
   final Feature feature;
 
-  ProOverlay({@required this.child, @required this.feature}) {
+  ProOverlay({required this.child, required this.feature}) {
     assert(feature.pro == true);
   }
 

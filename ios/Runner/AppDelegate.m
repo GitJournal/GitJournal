@@ -55,6 +55,11 @@ static FlutterMethodChannel* gitChannel = 0;
                 [self handleMethodCallAsync:call result:result];
             });
         }
+        else if ([@"gitDefaultBranch" isEqualToString:method]) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [self handleMethodCallAsync:call result:result];
+            });
+        }
         else if ([@"gitAdd" isEqualToString:method]) {
             NSString *folderPath = arguments[@"folderPath"];
             NSString *filePattern = arguments[@"filePattern"];
@@ -146,6 +151,11 @@ static FlutterMethodChannel* gitChannel = 0;
                 result(@YES);
                 return;
             }
+        }
+        else if ([@"generateSSHKeys" isEqualToString:method]) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [self handleMethodCallAsync:call result:result];
+            });
         }
         else {
             NSLog(@"Not Implemented");
@@ -309,6 +319,78 @@ bool handleError(FlutterResult result, int err) {
         }
 
         int err = gj_git_push([folderPath UTF8String], [remote UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String], true);
+        if (!handleError(result, err)) {
+            result(@YES);
+            return;
+        }
+    }
+    else if ([@"gitDefaultBranch" isEqualToString:method]) {
+        NSString *folderPath = arguments[@"folderPath"];
+        NSString *remote = arguments[@"remote"];
+        NSString *publicKey = arguments[@"publicKey"];
+        NSString *privateKey = arguments[@"privateKey"];
+        NSString *password = arguments[@"password"];
+
+        if (publicKey == nil || [publicKey length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid publicKey" details:nil]);
+            return;
+        }
+        if (privateKey == nil || [privateKey length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid privateKey" details:nil]);
+            return;
+        }
+        if (password == nil || [privateKey length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid password" details:nil]);
+            return;
+        }
+
+        if (folderPath == nil || [folderPath length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid folderPath" details:nil]);
+            return;
+        }
+        if (remote == nil || [remote length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid remote" details:nil]);
+            return;
+        }
+
+        char branch_name[1024];
+        int err = gj_git_default_branch([folderPath UTF8String], [remote UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String], true, branch_name);
+        if (err == 0)
+        {
+            result(@(branch_name));
+            return;
+        }
+        if (!handleError(result, err)) {
+            result(@YES);
+            return;
+        }
+    }
+    else if ([@"generateSSHKeys" isEqualToString:method]) {
+        NSString *comment = arguments[@"comment"];
+        NSString *privateKeyPath = arguments[@"privateKeyPath"];
+        NSString *publicKeyPath = arguments[@"publicKeyPath"];
+
+        if (comment == nil || [comment length] == 0) {
+            NSLog(@"generateSSHKeys: Using default comment");
+            comment = @"Generated on iOS";
+        }
+        if (privateKeyPath == nil || [privateKeyPath length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid privateKeyPath" details:nil]);
+            return;
+        }
+        if (publicKeyPath == nil || [publicKeyPath length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid publicKeyPath" details:nil]);
+            return;
+        }
+
+        int err = gj_generate_ssh_keys([privateKeyPath UTF8String], [publicKeyPath UTF8String], [comment UTF8String]);
         if (!handleError(result, err)) {
             result(@YES);
             return;

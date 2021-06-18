@@ -18,7 +18,11 @@ class PublicKeyEditor extends StatelessWidget {
     return KeyEditor(formKey, _controller, _validator);
   }
 
-  String _validator(String val) {
+  String? _validator(String? val) {
+    if (val == null) {
+      return null;
+    }
+
     val = val.trim();
     if (!val.startsWith("ssh-rsa ")) {
       return tr("setup.keyEditors.public");
@@ -38,7 +42,11 @@ class PrivateKeyEditor extends StatelessWidget {
     return KeyEditor(formKey, _controller, _validator);
   }
 
-  String _validator(String val) {
+  String? _validator(String? val) {
+    if (val == null) {
+      return null;
+    }
+
     val = val.trim();
     if (!val.startsWith("-----BEGIN ")) {
       return tr("setup.keyEditors.private");
@@ -54,13 +62,9 @@ class PrivateKeyEditor extends StatelessWidget {
 class KeyEditor extends StatelessWidget {
   final Key formKey;
   final TextEditingController textEditingController;
-  final Function validator;
+  final String? Function(String?) validator;
 
-  KeyEditor(this.formKey, this.textEditingController, this.validator) {
-    assert(formKey != null);
-    assert(textEditingController != null);
-    assert(validator != null);
-  }
+  KeyEditor(this.formKey, this.textEditingController, this.validator);
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +99,7 @@ class KeyEditor extends StatelessWidget {
             ),
           ),
         ),
-        OutlineButton(
+        OutlinedButton(
           child: Text(tr("setup.keyEditors.load")),
           onPressed: _pickAndLoadFile,
         ),
@@ -107,7 +111,7 @@ class KeyEditor extends StatelessWidget {
     var result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
-      var file = File(result.files.single.path);
+      var file = File(result.files.single.path!);
       try {
         var data = await file.readAsString();
         textEditingController.text = data.trim();

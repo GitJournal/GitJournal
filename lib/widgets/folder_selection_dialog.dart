@@ -36,9 +36,9 @@ class FolderTreeView extends StatelessWidget {
   final FolderSelectedCallback onFolderEntered;
 
   FolderTreeView({
-    Key key,
-    @required this.rootFolder,
-    @required this.onFolderEntered,
+    Key? key,
+    required this.rootFolder,
+    required this.onFolderEntered,
   }) : super(key: key);
 
   @override
@@ -59,8 +59,8 @@ class FolderMiniTile extends StatefulWidget {
   final FolderSelectedCallback onTap;
 
   FolderMiniTile({
-    @required this.folder,
-    @required this.onTap,
+    required this.folder,
+    required this.onTap,
   });
 
   @override
@@ -130,7 +130,7 @@ class FolderMiniTileState extends State<FolderMiniTile> {
     var children = <FolderMiniTile>[];
     widget.folder.subFolders.forEach((folder) {
       children.add(FolderMiniTile(
-        folder: folder,
+        folder: folder as NotesFolderFS,
         onTap: widget.onTap,
       ));
     });

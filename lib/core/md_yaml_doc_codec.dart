@@ -7,10 +7,6 @@ import 'package:gitjournal/utils/logger.dart';
 import 'md_yaml_doc.dart';
 
 class MarkdownYAMLCodec {
-  bool reverse;
-
-  MarkdownYAMLCodec({this.reverse = false});
-
   MdYamlDoc decode(String str) {
     const startYamlStr = "---\n";
     const endYamlStr = "\n---\n";
@@ -25,7 +21,7 @@ class MarkdownYAMLCodec {
         bodyBeginingPos += 1;
       }
       var body = str.substring(bodyBeginingPos);
-      return MdYamlDoc(body);
+      return MdYamlDoc(body: body);
     }
 
     if (str.startsWith(startYamlStr)) {
@@ -37,10 +33,10 @@ class MarkdownYAMLCodec {
           var yamlText =
               str.substring(4, str.length - endYamlStrWithoutLineEding.length);
           var map = parseYamlText(yamlText);
-          return MdYamlDoc("", map);
+          return MdYamlDoc(props: map);
         }
 
-        return MdYamlDoc(str);
+        return MdYamlDoc(body: str);
       }
 
       var yamlText = str.substring(4, endYamlPos);
@@ -57,27 +53,10 @@ class MarkdownYAMLCodec {
         }
       }
 
-      return MdYamlDoc(body, map);
+      return MdYamlDoc(body: body, props: map);
     }
 
-    if (str.endsWith(endYamlStr)) {
-      var endYamlPos = str.length - endYamlStr.length;
-      var startYamlPos = str.lastIndexOf(startYamlStr, endYamlPos);
-      if (startYamlPos == -1) {
-        return MdYamlDoc(str);
-      }
-
-      // FIXME: What if there is nothing afterwards?
-      var yamlText =
-          str.substring(startYamlPos + startYamlStr.length, endYamlPos);
-      var map = parseYamlText(yamlText);
-      var body = str.substring(0, startYamlPos);
-
-      reverse = true;
-      return MdYamlDoc(body, map);
-    }
-
-    return MdYamlDoc(str, LinkedHashMap<String, dynamic>());
+    return MdYamlDoc(body: str);
   }
 
   static LinkedHashMap<String, dynamic> parseYamlText(String yamlText) {
@@ -91,7 +70,7 @@ class MarkdownYAMLCodec {
       if (yamlMap is! Map) {
         return map;
       }
-      map = _convertMap(yamlMap);
+      map = _convertMap(yamlMap as YamlMap);
     } catch (err) {
       Log.d('MarkdownYAMLSerializer::decode("$yamlText") -> ${err.toString()}');
     }
@@ -104,16 +83,9 @@ class MarkdownYAMLCodec {
       return note.body;
     }
 
-    var str = "";
-    if (reverse) {
-      str += note.body.trimRight();
-      str += '\n\n';
-      str += toYamlHeader(note.props);
-    } else {
-      str += toYamlHeader(note.props);
-      str += '\n';
-      str += note.body;
-    }
+    var str = toYamlHeader(note.props);
+    str += '\n';
+    str += note.body;
 
     return str;
   }

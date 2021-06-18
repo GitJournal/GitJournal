@@ -1,0 +1,348 @@
+settings:
+  ok: Ok
+  cancel: Abbrechen
+  title: Einstellungen
+  author:
+    label: Name
+    hint: Wer soll die Änderungen verfassen?
+    validator: Bitte gebe einen Namen ein
+  email:
+    label: Email
+    hint: Email Adresse
+    validator:
+      empty: Bitte gebe eine Email Adresse ein
+      invalid: Bitte gebe eine gültige Email Adresse ein
+  display:
+    title: Ansicht Einstellungen
+    darkTheme: Dark Theme
+    homeScreen: Startbildschirm
+  gitAuthor: Git Author Einstellungen
+  versionInfo: Versions Info
+  analytics: Auswertungen
+  crashReports: Sammle anonyme Crash Reports
+  usageStats: Sammle anonyme Nutzungsdaten
+  debug:
+    title: Debug App
+    subtitle: Blicke unter die Motorhaube
+    levels:
+      title: Level wählen
+      error: Fehler
+      warning: Warnung
+      info: Info
+      debug: Debug
+      verbose: Ausführlich
+  images:
+    title: Bilder Einstellungen
+    subtitle: Stelle ein wie Bilder gespeichert werden
+    imageLocation: Bilder Speicherort
+    currentFolder: Selbes Verzeichnis wie Notiz
+    customFolder: Benutzerdefiniertes Verzeichnis
+  gitRemote:
+    changeHost:
+      title: Git Host neu konfigurieren?
+      subtitle: Notizen die nicht gesynct sind gehen verloren
+      ok: Ok
+      cancel: Abbrechen
+    title: Git Remote Einstellungen
+    subtitle: Konfiguriere wohin Deine Notizen gesynct werden
+  noteMetaData:
+    title: Notiz Metadaten Einstellungen
+    subtitle: Konfiguriere wie Notiz Metadaten gespeichert werden
+    text: Jede Notiz hat Metadaten die in einem YAML Header wie folgt gespeichert werden
+    enableHeader: YAML Header einschalten
+    modified: Änderungsdatum Feld
+    created: Erstellungsdatum Feld
+    tags: Tags Feld
+    example:
+      title: Beispiel Titel
+    titleMetaData:
+      title: Titel
+      fromH1: Text Header 1
+      fromYaml: Von YAML 'Titel'
+    exampleTitle: Pinguine
+    exampleBody: Ich denke sie sind teuflisch. Sogar teuflischer als Pinguine.
+    exampleTag1: Vögel
+    exampleTag2: Teufel
+    customMetaData:
+      title: Custom Metadaten
+      invalid: Ungültiges YAML
+  privacy: Datenschutz Regelung
+  terms: Allgemeine Geschäftsbedingungen
+  experimental:
+    title: Experimentelle Features
+    subtitle: Probiere Features in Entwicklung
+    backlinks: Zeige Backlinks in Markdown Vorschau
+    fs: Zeige Dateisystem
+    markdownToolbar: Zeige Markdown Toolbar in Editor
+  editors:
+    title: Editor Einstellungen
+    subtitle: Konfiguriere wie verschiedene Editoren arbeiten
+    defaultEditor: Default Editor
+    defaultState: Default Zustand
+    markdownEditor: Markdown Editor
+    journalEditor: Journal Editor
+    defaultFolder: Default Verzeichnis
+    checklistEditor: Checklist Editor
+    rawEditor: Raw Editor
+    choose: Wähle Editor
+  sortingField:
+    modified: Zuletzt geändert
+    created: Erstellt
+    filename: Dateiname
+    title: Titel
+  sortingOrder:
+    asc: Aufsteigend
+    desc: Absteigend
+  sortingMode:
+    field: Feld
+    order: Reihenfolge
+  remoteSync:
+    auto: Automatisch
+    manual: Manuel
+  tags:
+    title: Tags Einstellungen
+    subtitle: Konfiguriere wie Inline Tags geparsed werden
+    enable: Inline Tags parsen
+    prefixes: Inline Tags Prefixe
+  misc:
+    title: Verschiedene Einstellungen
+    swipe: Wische um Notiz zu löschen
+    listView: Listenansicht
+  NoteFileNameFormat:
+    iso8601WithTimeZone: ISO8601 mit Zeitzone
+    iso8601: ISO8601
+    iso8601WithoutColon: ISO8601 ohne Doppelpunkte
+    title: Titel
+    uuid: Uuid V4
+    simmple: "\nyyyy-mm-dd-hh-mm-ss"
+    zettelkasten: yyymmddhhmmss
+  HomeScreen:
+    allNotes: Alle Notizen
+    allFolders: Alle Verzeichnisse
+  EditorDefaultView:
+    edit: Bearbeiten
+editors:
+  checklist:
+    add: Item hinzufügen
+  common:
+    defaultBodyHint: Schreibe hier
+    defaultTitleHint: Titel
+    discard: Änderungen verwerfen
+    share: Teile Notiz
+    takePhoto: Photo aufnehmen
+    addImage: Füge Bild aus Gallery hinzu
+    editFileName: Editiere Dateiname
+    tags: Editiere Tags
+    zen:
+      enable: Zen Mode einschalten
+      disable: Zen Mode auschalten
+    saveNoteFailed:
+      title: Notiz sichern gescheitert
+      message: Leider scheint es, daß wir die Notiz nicht sichern konnten. Sie wurde in die Zwischenablage kopiert um Datenverluste zu verhindern.
+pro: Pro
+actions:
+  newNote: Neue Notiz
+  newJournal: Neuer Journal Eintrag
+  newChecklist: Neue Checkliste
+screens:
+  folders:
+    title: Verzeichnisse
+    selected: Ausgewähltes Verzeichnis
+    dialog:
+      title: Erstelle neues Verzeichnis
+      create: Erstelle
+      discard: Verwerfe
+    errorDialog:
+      title: Fehler
+      deleteContent: Verzeichnis mit Notizen kann nicht gelöscht werden
+      renameContent: Root Verzeichnis kann nicht umbenannt werden
+      ok: Ok
+    actions:
+      rename: Verzeichnis umbenennen
+      subFolder: Erstelle Unter-Verzeichnis
+      delete: Lösche Verzeichnis
+      decoration: Verzeichnisname
+      empty: Bitte geben Sie einen Namen ein
+  tags:
+    title: Tags
+    empty: Keine Tags gefunden
+  filesystem:
+    ignoredFile:
+      title: Datei ignoriert
+      ok: Ok
+      rename: Umbenennen
+    rename:
+      decoration: Dateiname
+      title: Umbennen
+  folder_view:
+    empty: Einige Notizen hinzufügen?
+widgets:
+  rename:
+    'yes': Umbennen
+    'no': Abbrechen
+    validator:
+      empty: Bitte geben Sie einen Namen ein
+      exists: Bereits vorhanden
+      contains: Kann kein / enthalten
+  backlinks:
+    title:
+      one: "Notiz verlinkt zu dieser Notiz"
+      other: "Notizen verlinken zu dieser Notiz"
+  SortingOrderSelector:
+    title: Sortierkriterien
+  PurchaseButton:
+    text: Erwerben für {price}
+    fail: Konnte nicht geladen werden
+  FolderView:
+    noteSelected: Ausgewählte Notiz
+    syncError: Sync Fehler {}
+    headerOptions:
+      heading: Header Optionen
+      auto: Automatisch erstellter Titel
+      titleFileName: Titel oder Dateiname
+      fileName: Dateiname
+      summary: Zeige Zusammenfassung
+      customize: Angepasste Ansicht
+    views:
+      standard: Standard Ansicht
+      journal: Journal Ansicht
+      grid: Grid Ansicht
+      card: Karten Ansicht
+      select: Wähle Ansicht
+    sortingOptions: Sortier Optionen
+    viewOptions: Ansicht Optionen
+rootFolder: Root Verzeichnis
+ignoredFiles:
+  dot: Beginnt mit einem .
+  ext: Endet nicht mit .md oder .txt
+drawer:
+  setup: Git Host einrichten
+  pro: Pro Version freischalten
+  all: Alle Notizen
+  folders: Verzeichnisse
+  fs: Dateisystem
+  tags: Tags
+  share: Teile App
+  rate: Bewerte uns
+  feedback: Feedback
+  bug: Bug Report
+setup:
+  autoConfigure:
+    title: Wie möchten Sie das machen?
+    automatic: Automatisches Einrichten
+    manual: Lass es mich manuell machen
+  autoconfigure:
+    step1: 1. Trage existierende Repos ein oder erstelle ein neues
+    step2: 2. Erstelle einen SSH Schlüssel auf diesem Gerät
+    step3: 3. Füge den Schlüssel als Anwendungsschlüssel mit Schreibzugriff dem Repository hinzu
+    warning: Dies erfordert GitJournal Zugriff auf alle privaten und öffentlichen Repos zu gewähren. Wenn Du damit nicht einverstanden bist, gehe bitte zurück und wähle die manuelle Einrichtung.
+    authorize: Authorisiere GitJournal
+    waitPerm: Warte auf Rechte ...
+    readUser: Lese Nutzer Info
+  repoSelector:
+    title: Wähle oder erstelle ein Repository
+    hint: Tippen Sie zum Suchen oder Erstellen eines Repos
+    create: Erstelle Repo {}
+  cloneUrl:
+    enter: Geben Sie die Git Clone URL ein
+    validator:
+      empty: Bitte geben Sie etwas Text ein
+      invalid: Ungültige Eingabe
+      onlySsh: Nur ssh URLs sind momentan erlaubt
+    manual:
+      title: Bitte erstellen Sie ein neues Git Repository
+      step1: 1. Gehen Sie zur Webseite, erstellen Sie ein Repo und kopieren dessen Git Clone URL
+      step2: 2. Geben Sie die Git Clone URL ein
+      button: Öffne Erstelle Neues Repo Webseite
+  next: Nächste
+  fail: Gescheitert
+  keyEditors:
+    public: Ungültiger Öffentlicher Schlüssel - Beginnt nicht mit ssh-rsa
+    private: Ungültiger Privater Schlüssel
+  sshKey:
+    generate: Erstelle SSH Schlüssel
+    title: Um auf das Repository zuzugreifen muß dieser Öffentliche Schlüssel als Anwendungsschlüssel kopiert werden
+    step1: 1. Kopiere den Schlüssel
+    step2a: 2. Öffnen Sie die Webseite und geben den "Deploy" Schlüssel ein. Stellen Sie sicher das Schreibzugriff gewährt ist.
+    step2b: 2. Geben Sie diesem SSH Schlüssel Zugang zu dem Git Repo. (Das müssen Sie selber herausfinden)
+    step3: 3. Versuche zu Clonen ...
+    copy: Kopiere Schlüssel
+    copied: Öffentlicher Schlüssel in Zwischenablage kopiert
+    regenerate: Schlüssel neu erstellen
+    openDeploy: Öffnen Anwenden Schlüssel Webseite
+    clone: Clone Repo
+    addDeploy: Als Anwendungsschlüssel hinzufügen
+  sshKeyChoice:
+    title: Wir brauchen SSH Schlüssel zum authentifizieren
+    generate: Erstelle neue Schlüssel
+    custom: Benutzerdefinierte SSH Schlüssel bereitstellen
+  sshKeyUserProvided:
+    public: Öffentlicher Schlüssel -
+    private: Privater Schlüssel
+  cloning: Clonen ...
+  host:
+    title: Wähle einen Git Hosting Anbieter
+    custom: Benutzerdefiniert
+feature:
+  darkMode: Dark Mode
+  rawEditor: Raw Editor
+  folderSupport: Verzeichnis Support
+  fileNameCustomize: Anpassen des Dateinamen der Notiz
+  noteMetaDataCustomize:
+    title: Anpassen der Metadaten der Notiz
+    subtitle: Zulassen daß GitJournal mit Generatoren statischer Webseiten benutzt wird
+  autoMergeConflicts: Automatisierte Merge-Konflikt Lösung
+  noteSorting: Einstellbare Notizensortierung
+  gitPushFreq: Einstellbare Git Sync Häufigkeit
+  checklistEditor: Checklist Editor
+  journalEditor: Journal Editor
+  diffViews: Verschiedene Verzeichnisansichten - Journal, Grid, Standard
+  imageSupport: Bilder Support
+  tags: Notiz Tags
+  appShortcuts: App Kürzel
+  createRepo: Erstelle angepasste Repos aus der App heraus
+  backlinks: Unterstützung für Notiz Backlinks
+  txtFiles: Textdatei Unterstützung
+  wikiLinks: Wiki-Style Link Unterstützung
+  metaDataTitle: Titel Metadaten anpassen
+  journalEditorDefaultFolder: Anpassen des Default-Verzeichnisses des Journal Editors
+  yamlModifiedKey: Anpassen des YAML veränderten Schlüssels
+  yamlCreatedKey: Anpassen des YAML erstellten Schlüssels
+  yamlTagsKey: Anpassen des YAML Tags Schlüssels
+  disableYamlHeader: Ausschalten der YAML Meatadaten Header
+  customizeHomeScreen: Startbildschirm anpassen
+  zenMode: Zen Schreib Modus
+  emojiSupport:
+    title: Emoji Unterstützung
+    subtitle: "Ändere :heart zu ❤️"
+  allNotesView: Füge eine Ansicht hinzu um "Alle Notizen" zu zeigen
+  basicSearch: Basis Suche
+  customSSHKeys: Verwende Deine eigenen SSH Schlüssel
+  customMetaData: Füge angepasste Metadaten zu neuen Notizen hinzu
+  graphVisualization: Graph Virtualisierung
+  mutliRepos: Mehrere Git Repos
+  customThemes: Angepasste Themes
+  gitLog: Betrachte und Suche in der Git Historie
+  latex: Latex Unterstützung
+  mermaid: Mermaid Diagramm Unterstützung
+  encryptedHosting: Verschlüsseltes Git Hosting
+  desktop: Desktop App
+  markdownToolbar: Markdown Toolbar
+  localization:
+    title: Lokalisierung
+    subtitle: Erlaube GitJournal übersetzt zu werden
+  inlineTags: Inline Tags
+feature_timeline:
+  title: Feature Zeitleiste
+  progress: In Bearbeitung
+  plan: Geplant
+purchase_screen:
+  title: Pro Version
+  desc: 'GitJournal ist vollständig Open Source und das Ergebnis erheblicher Entwicklungsarbeit. Es hat kein Wagniskapital oder Unternehmen im Rücken, und wird dies auch nie haben. Deine Unterstützung hält die Weiterentwicklung aufrecht. GitJournal funktioniert auf einer "Zahle wieviel Du willst"-Basis (mit einem unteren Limit).'
+  restore: Erwerb wiederherstellen
+  oneTime:
+    title: Einmal Erwerb
+    desc: Schaltet alle bestehenden Pro Features in GitJournal frei und alle neuen Features der folgenden 12 Monate
+  monthly:
+    title: Monatliche Subscription
+    desc: Schaltet alle Pro Features frei. Nach 12 Monaten oder nach Zahlung von {minYearlyPurchase} bekommst Du alle Vorteile des Einmal Erwerbs

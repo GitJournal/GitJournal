@@ -35,52 +35,68 @@ class ChecklistEditor extends StatefulWidget implements Editor {
   final bool editMode;
 
   ChecklistEditor({
-    Key key,
-    @required this.note,
-    @required this.noteModified,
-    @required this.noteDeletionSelected,
-    @required this.noteEditorChooserSelected,
-    @required this.exitEditorSelected,
-    @required this.renameNoteSelected,
-    @required this.editTagsSelected,
-    @required this.moveNoteToFolderSelected,
-    @required this.discardChangesSelected,
-    @required this.editMode,
+    Key? key,
+    required this.note,
+    required this.noteModified,
+    required this.noteDeletionSelected,
+    required this.noteEditorChooserSelected,
+    required this.exitEditorSelected,
+    required this.renameNoteSelected,
+    required this.editTagsSelected,
+    required this.moveNoteToFolderSelected,
+    required this.discardChangesSelected,
+    required this.editMode,
   }) : super(key: key);
 
   @override
   ChecklistEditorState createState() {
-    return ChecklistEditorState(note);
+    return ChecklistEditorState();
   }
 }
 
 class ChecklistEditorState extends State<ChecklistEditor>
     with DisposableChangeNotifier
     implements EditorState {
-  Checklist checklist;
+  late Checklist checklist;
   var focusNodes = <UniqueKey, FocusScopeNode>{};
   var keys = <UniqueKey, ChecklistItem>{};
 
-  TextEditingController _titleTextController = TextEditingController();
-  bool _noteModified;
-
-  ChecklistEditorState(Note note) {
-    _titleTextController = TextEditingController(text: note.title);
-    checklist = Checklist(note);
-  }
+  var _titleTextController = TextEditingController();
+  late bool _noteModified;
 
   @override
   void initState() {
     super.initState();
+    _init();
+  }
+
+  void _init() {
+    var note = widget.note;
+    _titleTextController = TextEditingController(text: note.title);
+    checklist = Checklist(note);
+
     _noteModified = widget.noteModified;
 
     if (checklist.items.isEmpty) {
       var item = checklist.buildItem(false, "");
       checklist.addItem(item);
     }
+    focusNodes = {};
+    keys = {};
     for (var item in checklist.items) {
       keys[UniqueKey()] = item;
     }
+  }
+
+  @override
+  void didUpdateWidget(ChecklistEditor oldWidget) {
+    if (oldWidget.noteModified != widget.noteModified) {
+      _noteModified = widget.noteModified;
+    }
+    if (oldWidget.note != widget.note) {
+      _init();
+    }
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -89,15 +105,6 @@ class ChecklistEditorState extends State<ChecklistEditor>
 
     super.disposeListenables();
     super.dispose();
-  }
-
-  @override
-  void didUpdateWidget(ChecklistEditor oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.noteModified != widget.noteModified) {
-      _noteModified = widget.noteModified;
-    }
   }
 
   UniqueKey _getKey(ChecklistItem item) {
@@ -183,6 +190,10 @@ class ChecklistEditorState extends State<ChecklistEditor>
           Expanded(child: FocusScope(child: checklistWidget)),
         ],
       ),
+      onUndoSelected: _undo,
+      onRedoSelected: _redo,
+      undoAllowed: false,
+      redoAllowed: false,
     );
   }
 
@@ -219,9 +230,11 @@ class ChecklistEditorState extends State<ChecklistEditor>
       item: item,
       focusNode: _getFn(item),
       autofocus: autofocus,
-      statusChanged: (bool newVal) {
+      statusChanged: (bool? newVal) {
         setState(() {
-          item.checked = newVal;
+          if (newVal != null) {
+            item.checked = newVal;
+          }
         });
         _noteTextChanged();
       },
@@ -239,7 +252,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
           }
           print("Next focus index $nextIndex");
 
-          FocusNode fn;
+          FocusNode? fn;
           if (nextIndex >= 0) {
             var nextItemForFocus = checklist.items[nextIndex];
             fn = _getFn(nextItemForFocus);
@@ -291,28 +304,32 @@ class ChecklistEditorState extends State<ChecklistEditor>
 
   @override
   bool get noteModified => _noteModified;
+
+  Future<void> _undo() async {}
+
+  Future<void> _redo() async {}
 }
 
 typedef TextChangedFunction = void Function(String);
-typedef StatusChangedFunction = void Function(bool);
+typedef StatusChangedFunction = void Function(bool?);
 
 class ChecklistItemTile extends StatefulWidget {
   final ChecklistItem item;
   final StatusChangedFunction statusChanged;
   final TextChangedFunction textChanged;
-  final Function itemRemoved;
-  final Function itemFinished;
+  final void Function() itemRemoved;
+  final void Function() itemFinished;
   final FocusNode focusNode;
   final bool autofocus;
 
   ChecklistItemTile({
-    Key key,
-    @required this.item,
-    @required this.statusChanged,
-    @required this.textChanged,
-    @required this.itemRemoved,
-    @required this.itemFinished,
-    @required this.focusNode,
+    Key? key,
+    required this.item,
+    required this.statusChanged,
+    required this.textChanged,
+    required this.itemRemoved,
+    required this.itemFinished,
+    required this.focusNode,
     this.autofocus = false,
   }) : super(key: key);
 
@@ -321,22 +338,21 @@ class ChecklistItemTile extends StatefulWidget {
 }
 
 class _ChecklistItemTileState extends State<ChecklistItemTile> {
-  TextEditingController _textController;
+  TextEditingController? _textController;
 
   @override
   void initState() {
     super.initState();
     _textController = TextEditingController(text: widget.item.text);
-    _textController.addListener(() {
-      widget.textChanged(_textController.value.text);
+    _textController!.addListener(() {
+      widget.textChanged(_textController!.value.text);
     });
-    assert(widget.focusNode != null);
     widget.focusNode.addListener(_onFocus);
   }
 
   @override
   void dispose() {
-    _textController.dispose();
+    _textController!.dispose();
     widget.focusNode.removeListener(_onFocus);
 
     super.dispose();
@@ -351,7 +367,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
     var theme = Theme.of(context);
     var style = theme.textTheme.subtitle1;
     if (widget.item.checked) {
-      style = style.copyWith(
+      style = style!.copyWith(
         decoration: TextDecoration.lineThrough,
         color: theme.disabledColor,
       );
@@ -404,9 +420,9 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
 }
 
 class AddItemButton extends StatelessWidget {
-  final Function onPressed;
+  final void Function() onPressed;
 
-  AddItemButton({Key key, @required this.onPressed}) : super(key: key);
+  AddItemButton({Key? key, required this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

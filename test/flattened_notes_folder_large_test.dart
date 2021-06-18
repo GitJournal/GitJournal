@@ -7,12 +7,12 @@ import 'package:test/test.dart';
 import 'package:gitjournal/core/flattened_notes_folder.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 
 void main() {
   group('Flattened Notes Folder Large Test', () {
-    Directory tempDir;
-    NotesFolderFS rootFolder;
+    late Directory tempDir;
+    late NotesFolderFS rootFolder;
 
     setUp(() async {
       tempDir = await Directory.systemTemp.createTemp('__flat_folder_test__');

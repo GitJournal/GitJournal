@@ -5,32 +5,33 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'button.dart';
 import 'error.dart';
 import 'loading.dart';
 
-class GitHostSetupAutoConfigure extends StatefulWidget {
+class GitHostSetupAutoConfigurePage extends StatefulWidget {
   final GitHostType gitHostType;
-  final Func2<GitHost, UserInfo, void> onDone;
+  final Func2<GitHost?, UserInfo?, void> onDone;
 
-  GitHostSetupAutoConfigure({
-    @required this.gitHostType,
-    @required this.onDone,
+  GitHostSetupAutoConfigurePage({
+    required this.gitHostType,
+    required this.onDone,
   });
 
   @override
-  GitHostSetupAutoConfigureState createState() {
-    return GitHostSetupAutoConfigureState();
+  GitHostSetupAutoConfigurePageState createState() {
+    return GitHostSetupAutoConfigurePageState();
   }
 }
 
-class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
-  GitHost gitHost;
+class GitHostSetupAutoConfigurePageState
+    extends State<GitHostSetupAutoConfigurePage> {
+  GitHost? gitHost;
   String errorMessage = "";
 
   bool _configuringStarted = false;
@@ -44,7 +45,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
 
     gitHost = createGitHost(widget.gitHostType);
     try {
-      gitHost.init((Exception error) async {
+      gitHost!.init((Exception? error) async {
         if (error != null) {
           if (mounted) {
             setState(() {
@@ -57,18 +58,18 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
         }
         Log.d("GitHost Initalized: " + widget.gitHostType.toString());
 
-        UserInfo userInfo;
+        UserInfo? userInfo;
         try {
           setState(() {
             _message = tr('setup.autoconfigure.readUser');
           });
 
-          userInfo = await gitHost.getUserInfo();
+          var userInfo = await gitHost!.getUserInfo().getOrThrow();
           var settings = Provider.of<Settings>(context, listen: false);
-          if (userInfo.name != null && userInfo.name.isNotEmpty) {
+          if (userInfo.name.isNotEmpty) {
             settings.gitAuthor = userInfo.name;
           }
-          if (userInfo.email != null && userInfo.email.isNotEmpty) {
+          if (userInfo.email.isNotEmpty) {
             settings.gitAuthorEmail = userInfo.email;
           }
           settings.save();
@@ -80,7 +81,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
       });
 
       try {
-        await gitHost.launchOAuthScreen();
+        await gitHost!.launchOAuthScreen();
       } on PlatformException catch (e, stack) {
         Log.d("LaunchOAuthScreen: Caught platform exception:",
             ex: e, stacktrace: stack);
@@ -109,11 +110,11 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
   @override
   Widget build(BuildContext context) {
     if (_configuringStarted) {
-      if (errorMessage == null || errorMessage.isEmpty) {
-        return GitHostSetupLoadingPage(_message);
+      if (errorMessage.isNotEmpty) {
+        return GitHostSetupErrorPage(errorMessage);
       }
 
-      return GitHostSetupErrorPage(errorMessage);
+      return GitHostSetupLoadingPage(_message);
     }
 
     var columns = Column(
@@ -144,7 +145,7 @@ class GitHostSetupAutoConfigureState extends State<GitHostSetupAutoConfigure> {
         const SizedBox(height: 32.0),
         Text(
           tr('setup.autoconfigure.warning'),
-          style: Theme.of(context).textTheme.bodyText1.copyWith(
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(
                 fontStyle: FontStyle.italic,
               ),
         ),

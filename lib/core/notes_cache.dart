@@ -10,7 +10,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 class NotesCache {
@@ -22,14 +22,15 @@ class NotesCache {
   static const CACHE_SIZE = 20;
 
   NotesCache({
-    @required this.filePath,
-    @required this.notesBasePath,
-    @required this.settings,
+    required this.filePath,
+    required this.notesBasePath,
+    required this.settings,
   });
 
   Future load(NotesFolderFS rootFolder) async {
     if (!enabled) return;
     var fileList = await loadFromDisk();
+    Log.i("Notes Cache Loaded: ${fileList.length} items");
 
     var sep = Platform.pathSeparator;
     var notesBasePath = this.notesBasePath;
@@ -38,6 +39,9 @@ class NotesCache {
     }
 
     for (var fullFilePath in fileList) {
+      if (!fullFilePath.startsWith(notesBasePath)) {
+        continue;
+      }
       var filePath = fullFilePath.substring(notesBasePath.length);
       var components = filePath.split(sep);
 
@@ -68,18 +72,18 @@ class NotesCache {
 
   Future<void> clear() async {
     if (!enabled) return;
-    return File(filePath).delete();
+    await File(filePath).delete();
   }
 
   Future<void> buildCache(NotesFolderFS rootFolder) async {
     if (!enabled) return;
 
-    Log.d("Saving the NotesCache");
-
     var notes = rootFolder.getAllNotes();
     var sortingMode = rootFolder.config.sortingMode;
     var fileList =
         _fetchFirst10(notes, sortingMode).map((f) => f.filePath).toList();
+
+    Log.i("Notes Cache saving: ${fileList.length} items");
     return saveToDisk(fileList);
   }
 
@@ -114,10 +118,14 @@ class NotesCache {
     try {
       contents = await File(filePath).readAsString();
     } on FileSystemException catch (ex) {
-      if (ex.osError.errorCode == 2 /* file not found */) {
+      if (ex.osError?.errorCode == 2 /* file not found */) {
         return [];
       }
       rethrow;
+    }
+
+    if (contents.isEmpty) {
+      return [];
     }
 
     try {
@@ -130,8 +138,12 @@ class NotesCache {
   }
 
   @visibleForTesting
-  Future<void> saveToDisk(List<String> files) {
+  Future<void> saveToDisk(List<String> files) async {
     var contents = json.encode(files);
-    return File(filePath).writeAsString(contents);
+    var newFilePath = filePath + ".new";
+
+    var file = File(newFilePath);
+    await file.writeAsString(contents);
+    await file.rename(filePath);
   }
 }

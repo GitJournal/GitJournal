@@ -1,4 +1,4 @@
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'note.dart';
 import 'notes_folder.dart';
 import 'notes_folder_notifier.dart';
@@ -22,7 +22,7 @@ class VirtualNotesFolder with NotesFolderNotifier implements NotesFolder {
   bool get hasNotes => _notes.isNotEmpty;
 
   @override
-  NotesFolder get parent => null;
+  NotesFolder? get parent => null;
 
   @override
   String pathSpec() => "";
@@ -34,12 +34,13 @@ class VirtualNotesFolder with NotesFolderNotifier implements NotesFolder {
   String get publicName => "";
 
   @override
-  NotesFolder get fsFolder {
+  NotesFolder? get fsFolder {
     return null;
   }
 
   @override
   NotesFolderConfig get config {
+    // fixme: This isn't expecting null!
     return NotesFolderConfig.fromSettings(null, settings);
   }
 }

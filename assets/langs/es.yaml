@@ -1,0 +1,431 @@
+settings:
+  ok: Ok
+  cancel: Cancelar
+  title: Ajustes
+  author:
+    label: Nombre completo
+    hint: ¿Quién debería ser el autor de los cambios?
+    validator: Introduzca un nombre
+  email:
+    label: Email
+    hint: Dirección de email
+    validator:
+      empty: Introduzca una dirección de email
+      invalid: Introduzca una dirección de email válida
+  display:
+    title: Mostrar Ajustes
+    darkTheme: Tema Oscuro
+    homeScreen: Pantalla de Inicio
+  gitAuthor: Ajustes del Autor de Git
+  versionInfo: Info de versión
+  analytics: Analítica
+  crashReports: Recoger informes de error anónimos
+  usageStats: Recoger estadísticas de uso anónimas
+  debug:
+    title: Debug App
+    subtitle: Look under the hood
+    levels:
+      title: Select Level
+      error: Error
+      warning: warning
+      info: Info
+      debug: Debug
+      verbose: Verbose
+  images:
+    title: Ajustes de Imágenes
+    subtitle: Configurar cómo se almacenan las imágenes
+    imageLocation: Localización de Imágenes
+    currentFolder: Misma carpeta que las notas
+    customFolder: Carpeta personalizada
+  gitRemote:
+    changeHost:
+      title: ¿Reconfigurar Git Host?
+      subtitle: Las notas que no se hayan sincronizado se perderán
+      ok: Ok
+      cancel: Cancelar
+    title: Ajustes de Git Remoto
+    subtitle: Configurar dónde se sincronizan las notas
+    host: Git Host
+  noteMetaData:
+    title: Ajustes de Metadatos de Notas
+    subtitle: Configurar cómo se guardan los metadatos de las notas
+    text: Cada nota tiene unos metadatos que se almacenan en una Cabecera YAML de la siguiente forma -
+    enableHeader: Habilitar Cabecera YAML
+    modified: Campo Modificado
+    created: Campo Creado
+    tags: Campo Etiquetas
+    example:
+      title: Título de Ejemplo
+    titleMetaData:
+      title: Título
+      fromH1: Texto de Cabecera 1
+      fromYaml: De la etiqueta 'title' de YAML
+    exampleTitle: Palomas
+    exampleBody: Creo que son malvadas. Incluso más que los pingüinos.
+    exampleTag1: Pájaros
+    exampleTag2: Maldad
+    customMetaData:
+      title: Metadatos Personalizados
+      invalid: YAML Inválido
+  privacy: Política de Privacidad
+  terms: Términos y Condiciones
+  experimental:
+    title: Experimental Features
+    subtitle: Try out features in Development
+    backlinks: Show Backlinks in Markdown Preview
+    fs: Show File System
+    markdownToolbar: Show Markdown Toolbar in Editor
+    graphView: Graph View
+    accounts: Platform Independent Accounts
+  editors:
+    title: Ajustes del Editor
+    subtitle: Configurar cómo funcionan los diferentes editores
+    defaultEditor: Editor Por Defecto
+    defaultState: Estado Por Defecto
+    markdownEditor: Editor formato Markdown
+    journalEditor: Editor formato Diario
+    defaultFolder: Carpeta Por Defecto
+    checklistEditor: Editor formato Lista
+    rawEditor: Editor formato Texto Plano
+    choose: Elige un Editor
+  sortingField:
+    modified: Última Modificación
+    created: Creación
+    filename: Nombre del Archivo
+    title: Título
+  sortingOrder:
+    asc: Ascendente
+    desc: Descendente
+  sortingMode:
+    field: Campo
+    order: Orden
+  remoteSync:
+    auto: Automática
+    manual: Manual
+  tags:
+    title: Tags Settings
+    subtitle: Configure how inline tags are parsed
+    enable: Parse Inline Tags
+    prefixes: Inline Tags Prefixes
+  misc:
+    title: Ajustes Misceláneos
+    swipe: Deslizar para Borrar una Nota
+    listView: Vista de Lista
+    confirmDelete: Mostrar Diálogo para Confirmar Eliminación
+  NoteFileNameFormat:
+    iso8601WithTimeZone: ISO8601 Con ZonaHOraria
+    iso8601: ISO8601
+    iso8601WithoutColon: ISO8601 Sin Comas
+    title: Título
+    uuid: Uuid V4
+    simple: yyyy-mm-dd-hh-mm-ss
+    zettelkasten: yyyymmddhhmmss
+  HomeScreen:
+    allNotes: Todas las Notas
+    allFolders: Todas las Carpetas
+  EditorDefaultView:
+    edit: Editar
+    view: Ver
+    lastUsed: Último Uso
+  ssh:
+    syncFreq: Frecuencia de Sincronización
+    reset: Resetear Git Host
+  note:
+    title: Ajustes de Notas
+    defaultFolder: Carpeta Por Defecto para notas nuevas
+    fileName: Nombre de Archivo
+  storage:
+    title: Almacenamiento
+    fileName: Nombre de Archivo
+    external: Almacenar Repo externamente
+    icloud: Almacenar en iCloud
+    repoLocation: Localización de Repo
+  drawer:
+    title: Ajustes de Menú Lateral
+  bottomMenuBar:
+    title: Barra de Menú Inferior
+    subtitle: Configurar su aspecto y comportamiento
+    enable: Habilitar Botón de la Barra de Menú
+
+editors:
+  checklist:
+    add: Añadir Ítem
+  common:
+    defaultBodyHint: Escribe aquí
+    defaultTitleHint: Título
+    discard: Descartar Cambios
+    share: Compartir Nota
+    takePhoto: Hacer Foto
+    addImage: Añadir Imagen de Galería
+    editFileName: Editar Nombre de Fichero
+    tags: Editar Etiquetas
+    zen:
+      enable: Habilitar Modo Zen
+      disable: Deshabilitar Modo Zen
+    saveNoteFailed:
+      title: Error al Guardar Nota
+      message: Lo sentimos, no hemos podido guardar la nota. Se ha copiado al portapapeles para evitar pérdidas.
+pro: Pro
+actions:
+  newNote: Nueva Nota
+  newJournal: Nueva Entrada de Diario
+  newChecklist: Nueva Lista
+screens:
+  home:
+    allNotes: Todas las Notas
+  folders:
+    title: Carpetas
+    selected: Carpeta Seleccionada
+    dialog:
+      title: Crear nueva Carpeta
+      create: Crear
+      discard: Descartar
+    errorDialog:
+      title: Error
+      deleteContent: No se puede borrar una Carpeta que contiene notas
+      renameContent: No se puede renombrar la Carpeta Raíz
+      ok: Ok
+    actions:
+      rename: Renombrar Carpeta
+      subFolder: Crear Sub-Carpeta
+      delete: Borrar Carpeta
+      decoration: Nombre de Carpeta
+      empty: Introduzca un nombre
+  tags:
+    title: Etiquetas
+    empty: No se encontraron Etiquetas
+  filesystem:
+    ignoredFile:
+      title: Archivo Ignorado
+      ok: Ok
+      rename: Renombrar
+    rename:
+      decoration: Nombre de Archivo
+      title: Renombrar
+  folder_view:
+    empty: ¿Quieres añadir algunas notas?
+
+OnBoarding:
+  Skip: Omitir
+  Next: Siguiente
+  getStarted: Empezar
+  subtitle: 'Una App De Código Abierto Para Tomar Notas
+construida sobre Git'
+  page2: 'Tus Notas se almacenan en un
+formato estándar usando\nMarkdown + Cabecera YAML'
+  page3: 'Sincroniza tu Repo Git Local
+con cualquier proveedor'
+
+widgets:
+  rename:
+    yes: Renombrar
+    no: Cancelar
+    validator:
+      empty: Introduzca un nombre
+      exists: Ya existe
+      contains: No puede contener /
+  backlinks:
+    title:
+      zero: ""
+      one: "{} Nota enlaza a esta Nota"
+      many: "{} Notas enlazan a esta Nota"
+      two: "{} Notas enlazan a esta Note"
+      few: "{} Notas enlazan a esta Note"
+      other: "{} Notas enlazan a esta Note"
+  SortingOrderSelector:
+    title: Criterio de Ordenación
+  PurchaseButton:
+    text: Comprar por {price}
+    fail: Error al Cargar
+    failSend: Error al enviar la petición de compra
+    failPurchase: Error al Comprar - {}
+  FolderView:
+    noteDeleted: Nota Eliminada
+    undo: Deshacer
+    syncError: Error de Sincronización {}
+    headerOptions:
+      heading: Opciones de Cabecera
+      auto: Título Auto-Generado
+      titleFileName: Título o Nombre de Archivo
+      fileName: Nombre de Archivo
+      summary: Mostrar Resumen
+      customize: Personalizar Vista
+    views:
+      standard: Vista Estándar
+      journal: Vista Diario
+      grid: Vista en Cuadrícula
+      card: Vista de Tarjeta
+      select: Seleccionar Vista
+    sortingOptions: Opciones de Ordenación
+    viewOptions: Ver Opciones
+    searchFailed: No se han Encontrado Resultados de Búsqueda
+  NoteDeleteDialog:
+    title: ¿Quieres eliminar esta nota?
+    yes: Sí
+    no: No
+  NoteEditor:
+    renameFile: Renombrar Archivo
+    fileName: Nombre de Archivo
+  SyncButton:
+    error: Error de Sincronización {}
+  PurchaseWidget:
+    failed: Error al Comprar
+  NoteViewer:
+    linkNotFound: Enlace '{}' no encontrado
+    linkInvalid: Enlace '{}' inválido.
+  FolderSelectionDialog:
+    title: Selecciona una Carpeta
+
+rootFolder: Carpeta Raíz
+ignoredFiles:
+  dot: Empieza con un .
+  ext: No termina en -
+drawer:
+  setup: Configurar Git Host
+  pro: Desbloquear Versión Pro
+  all: Todas Las Notas
+  folders: Carpetas
+  fs: Sistema de Archivos
+  graph: Vista de Gráfico
+  tags: Etiquetas
+  share: Compartir App
+  rate: Califícanos
+  feedback: Feedback
+  bug: Reportar Bug
+setup:
+  autoconfigure:
+    title: Necesitamos permiso para completar los siguientes pasos
+    step1: 1. Listar tus repos existentes o crear un repo nuevo
+    step2: 2. Generar una Clave SSH en este dispositivo
+    step3: 3. Añadir la clave como una clave de deploy con permisos de escritura en este repositorio
+    warning: Esto requiere otorgar a GitJournal acceso a todos los repos públicos y privados. Si no estás de acuerdo con esto, por favor vuelve atrás y elige la opción de configuración manual.
+    authorize: Autorizar a GitJournal
+    waitPerm: Esperando Permisos ...
+    readUser: Leyendo Info de Usuario
+  repoSelector:
+    title: Seleccionar o Crear un Repositorio
+    hint: Escribe para Buscar o Crear un Repo
+    create: Crear Repo Privado {}
+  cloneUrl:
+    enter: Introduce la URL de Git Clone
+    validator:
+      empty: Introduce texto
+      invalid: Input Inválido
+      onlySsh: Sólo se aceptan urls SSH
+    manual:
+      title: Por favor, crea un nuevo repositorio git -
+      step1: 1. Ve al sitio web, crea un repo y copia su URL de git clone
+      step2: 2. Introduce la URL de Git clone
+      button: Abrir Página Web de Crear Nuevo Repo
+  next: Siguiente
+  fail: Error
+  keyEditors:
+    public: Clave Pública Inválida - No empieza por ssh-rsa
+    private: Clave Privada Inválida
+    load: Cargar de Fichero
+  sshKey:
+    generate: Generando Clave SSH
+    title: Para acceder a este repositorio, esta clave pública debe copiarse como clave de deploy
+    step1: 1. Copia la clave
+    step2a: 2. Abre la página web y pega la clave de deploy. Asegúrate de que tiene Permiso de Escritura.
+    step2b: 2. Otorga acceso a la clave SSH al repo git. (Tendrás que buscar cómo hacerlo tú mismo)
+    step3: 3. Intentando Clonar ..
+    copy: Copiar Clave
+    copied: Clave Pública copiada al Portapapeles
+    regenerate: Regenerar Clave
+    openDeploy: Abrir Página Web de Clave de Deploy
+    clone: Clonar Repo
+    addDeploy: Añadir como Clave de Deploy
+    save: Guardar
+  sshKeyChoice:
+    title: Necesitamos claves SSH para la autenticación -
+    generate: Generar nuevas claves
+    custom: Proporcionar claves SSH personalizadas
+  sshKeyUserProvided:
+    public: Clave Pública -
+    private: Clave Privada -
+    password: Contraseña
+  cloning: Clonando ...
+  host:
+    title: Selecciona un Proveedor de Hosting Git -
+    custom: Personalizado
+  autoConfigure:
+    title: ¿Cómo quieres hacer esto?
+    automatic: Configurar Automáticamente
+    manual: Déjame hacerlo Manualmente
+
+feature:
+  darkMode: Dark Mode
+  rawEditor: Raw Editor
+  folderSupport: Folder Support
+  fileNameCustomize: Customize Note FileName
+  noteMetaDataCustomize:
+    title: Customize Note Metadata
+    subtitle: Allows GitJournal to be used with static website generators
+  autoMergeConflicts: Automation Merge Conflict Resolution
+  noteSorting: Configurable Note Sorting
+  gitPushFreq: Configurable Git Sync Frequency
+  checklistEditor: Checklist Editor
+  journalEditor: Journal Editor
+  diffViews: Different Folder Views - Journal, Grid, Standard
+  imageSupport: Image Support
+  tags: Note Tags
+  appShortcuts: App Shortcuts
+  createRepo: Create Custom Repos from within App
+  backlinks: Note Backlinks Support
+  txtFiles: Txt File Support
+  wikiLinks: Wiki Style Links Support
+  metaDataTitle: Customize Title MetaData
+  journalEditorDefaultFolder: Customize Default Folder for Journal Editor
+  yamlModifiedKey: Customize the YAML modified key
+  yamlCreatedKey: Customize the YAML created key
+  yamlTagsKey: Customize the YAML tags key
+  disableYamlHeader: Disable YAML Metadata Header
+  customizeHomeScreen: Customize Home Screen
+  zenMode: Zen Writing Mode
+  emojiSupport:
+    title: Emoji Support
+    subtitle: "Convert :heart: to ❤️"
+  allNotesView: Add a screen to show "All Notes"
+  basicSearch: Basic Search
+  customSSHKeys: Provide your own SSH Keys
+  customMetaData: Add Custom Metadata to new Notes
+  graphVisualization: Graph Visualization
+  mutliRepos: Multiple Git Repos
+  customThemes: Custom Themes
+  gitLog: View and Search through Git History
+  latex: Latex Support
+  mermaid: Mermaid Diagram Support
+  encryptedHosting: Encrypted Git Hosting
+  desktop: Desktop App
+  markdownToolbar: Markdown Toolbar
+  localization:
+    title: Localization
+    subtitle: Allow GitJournal to be translated
+  inlineTags: Inline Tags
+  singleJournalEntry: Single Journal Entry File per day
+  configureBottomMenuBar: Configure the Bottom Menu Bar
+  customFileNamePerEditor: Custom FileName per Editor
+
+feature_timeline:
+  title: Línea temporal de Funcionalidades
+  progress: In Progress
+  plan: Planned
+  issues: GitJournal's development is tracked on Github. Please consider voting on the issues you consider important.
+
+purchase_screen:
+  title: Pro Version
+  desc: 'GitJournal is completely open source and is the result of significant development work. It has no venture capital or corporation backing and it never will. Your support directly sustains development.
+
+
+GitJournal operates on a "pay what you want model (with a minimum)".'
+  restore: Restore Purchase
+  oneTime:
+    title: One Time Purchase
+    desc: Permanently enables all Pro features currently in GitJournal and new features added in the following 12 months.
+  monthly:
+    title: Monthly Installments
+    desc: Enables all Pro Features. After 12 months or after paying {minYearlyPurchase}, you will get all the benefits of the 'One Time Purchase'
+  thanks:
+    title: Thank You
+    subtitle: You're awesome for supporting GitJournal

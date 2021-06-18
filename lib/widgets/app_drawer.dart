@@ -5,30 +5,107 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:gitjournal/widgets/app_drawer_header.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
+import 'package:time/time.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:gitjournal/analytics.dart';
-import 'package:gitjournal/app_settings.dart';
+import 'package:gitjournal/analytics/analytics.dart';
+import 'package:gitjournal/features.dart';
 import 'package:gitjournal/repository.dart';
-import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/repository_manager.dart';
+import 'package:gitjournal/settings/app_settings.dart';
 import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/utils/utils.dart';
+import 'package:gitjournal/widgets/app_drawer_header.dart';
+import 'package:gitjournal/widgets/pro_overlay.dart';
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends StatefulWidget {
+  @override
+  _AppDrawerState createState() => _AppDrawerState();
+}
+
+class _AppDrawerState extends State<AppDrawer>
+    with SingleTickerProviderStateMixin {
+  late AnimationController animController;
+
+  late Animation<double> sizeAnimation;
+  late Animation<Offset> slideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    animController =
+        AnimationController(duration: 250.milliseconds, vsync: this);
+
+    slideAnimation = Tween(begin: const Offset(0.0, -0.5), end: Offset.zero)
+        .animate(CurvedAnimation(
+      parent: animController,
+      curve: standardEasing,
+    ));
+    sizeAnimation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+      parent: animController,
+      curve: standardEasing,
+    ));
+  }
+
+  @override
+  void dispose() {
+    animController.dispose();
+    super.dispose();
+  }
+
+  Widget _buildRepoList() {
+    var divider = Row(children: <Widget>[const Expanded(child: Divider())]);
+    var repoManager = context.watch<RepositoryManager>();
+    var repoIds = repoManager.repoIds;
+
+    Widget w = Column(
+      children: <Widget>[
+        const SizedBox(height: 8),
+        for (var id in repoIds) RepoTile(id),
+        ProOverlay(
+          feature: Feature.multiRepos,
+          child: _buildDrawerTile(
+            context,
+            icon: Icons.add,
+            title: tr('drawer.addRepo'),
+            onTap: () {
+              repoManager.addRepo();
+              Navigator.pop(context);
+            },
+            selected: false,
+          ),
+        ),
+        divider,
+      ],
+    );
+
+    w = SlideTransition(
+      position: slideAnimation,
+      transformHitTests: false,
+      child: w,
+    );
+
+    return SizeTransition(
+      sizeFactor: sizeAnimation,
+      child: w,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    Widget setupGitButton;
-    var repo = Provider.of<Repository>(context);
+    Widget? setupGitButton;
+    var repo = Provider.of<GitJournalRepo>(context);
     var appSettings = Provider.of<AppSettings>(context);
     var textStyle = Theme.of(context).textTheme.bodyText1;
-    var currentRoute = ModalRoute.of(context).settings.name;
+    var currentRoute = ModalRoute.of(context)!.settings.name;
 
     if (!repo.remoteGitRepoConfigured) {
       setupGitButton = ListTile(
-        leading: Icon(Icons.sync, color: textStyle.color),
+        leading: Icon(Icons.sync, color: textStyle!.color),
         title: Text(tr('drawer.setup'), style: textStyle),
         trailing: const Icon(
           Icons.info,
@@ -50,7 +127,17 @@ class AppDrawer extends StatelessWidget {
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: <Widget>[
-          AppDrawerHeader(),
+          AppDrawerHeader(
+            repoListToggled: () {
+              if (animController.isCompleted) {
+                animController.reverse(from: 1.0);
+              } else {
+                animController.forward(from: 0.0);
+              }
+            },
+          ),
+          // If they are multiple show the current one which a tick mark
+          _buildRepoList(),
           if (setupGitButton != null) ...[setupGitButton, divider],
           if (!appSettings.proMode)
             _buildDrawerTile(
@@ -158,7 +245,7 @@ class AppDrawer extends StatelessWidget {
               body += "isPro: $isPro\n";
 
               var exp = AppSettings.instance.proExpirationDate;
-              if (exp != null && exp.isNotEmpty) {
+              if (exp.isNotEmpty) {
                 body += "expiryDate: $exp";
               }
 
@@ -191,7 +278,7 @@ class AppDrawer extends StatelessWidget {
               body += "isPro: $isPro\n";
 
               var exp = AppSettings.instance.proExpirationDate;
-              if (exp != null && exp.isNotEmpty) {
+              if (exp.isNotEmpty) {
                 body += "expiryDate: $exp";
               }
 
@@ -226,15 +313,15 @@ class AppDrawer extends StatelessWidget {
 
   Widget _buildDrawerTile(
     BuildContext context, {
-    @required IconData icon,
-    @required String title,
-    @required Function onTap,
+    required IconData icon,
+    required String title,
+    required void Function() onTap,
     bool isFontAwesome = false,
     bool selected = false,
   }) {
     var theme = Theme.of(context);
     var listTileTheme = ListTileTheme.of(context);
-    var textStyle = theme.textTheme.bodyText1.copyWith(
+    var textStyle = theme.textTheme.bodyText1!.copyWith(
       color: selected ? theme.accentColor : listTileTheme.textColor,
     );
 
@@ -255,8 +342,41 @@ class AppDrawer extends StatelessWidget {
   }
 }
 
+class RepoTile extends StatelessWidget {
+  const RepoTile(
+    this.id, {
+    Key? key,
+  }) : super(key: key);
+
+  final String id;
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    var listTileTheme = ListTileTheme.of(context);
+    var repoManager = context.watch<RepositoryManager>();
+
+    // FIXME: Improve marking the selected repo
+    var selected = repoManager.currentId == id;
+    var textStyle = theme.textTheme.bodyText1!.copyWith(
+      color: selected ? theme.accentColor : listTileTheme.textColor,
+    );
+
+    var icon = FaIcon(FontAwesomeIcons.book, color: textStyle.color);
+
+    return ListTile(
+      leading: icon,
+      title: Text(repoManager.repoFolderName(id)),
+      onTap: () {
+        repoManager.setCurrentRepo(id);
+        Navigator.pop(context);
+      },
+    );
+  }
+}
+
 void _navTopLevel(BuildContext context, String toRoute) {
-  var fromRoute = ModalRoute.of(context).settings.name;
+  var fromRoute = ModalRoute.of(context)!.settings.name;
   Log.i("Routing from $fromRoute -> $toRoute");
 
   // Always first pop the AppBar

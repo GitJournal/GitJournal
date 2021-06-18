@@ -5,11 +5,11 @@ import 'package:test/test.dart';
 
 import 'package:gitjournal/core/notes_cache.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 
 void main() {
   group('Notes Cache', () {
-    Directory tempDir;
+    late Directory tempDir;
     String cacheFilePath;
     var fileList = [
       '/base/file.md',
@@ -17,7 +17,7 @@ void main() {
       '/base/d5/file.md',
       '/base/d1/file.md',
     ];
-    NotesCache cache;
+    late NotesCache cache;
 
     setUp(() async {
       tempDir = await Directory.systemTemp.createTemp('__notes_test__');

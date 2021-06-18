@@ -7,7 +7,7 @@ import 'package:test/test.dart';
 import 'package:gitjournal/core/flattened_notes_folder.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 
 void main() {
   var random = Random(DateTime.now().millisecondsSinceEpoch);
@@ -16,7 +16,6 @@ void main() {
     while (true) {
       var filePath = p.join(basePath, "${random.nextInt(1000)}.md");
       if (File(filePath).existsSync()) {
-        filePath = null;
         continue;
       }
 
@@ -25,8 +24,8 @@ void main() {
   }
 
   group('Flattened Notes Folder Test', () {
-    Directory tempDir;
-    NotesFolderFS rootFolder;
+    late Directory tempDir;
+    late NotesFolderFS rootFolder;
 
     setUp(() async {
       tempDir = await Directory.systemTemp.createTemp('__sorted_folder_test__');
@@ -36,7 +35,7 @@ void main() {
       for (var i = 0; i < 3; i++) {
         var note = Note(rootFolder, _getRandomFilePath(rootFolder.folderPath));
         note.modified = DateTime(2020, 1, 10 + (i * 2));
-        note.body = "$i";
+        note.body = "$i\n";
         await note.save();
       }
 
@@ -52,7 +51,7 @@ void main() {
           _getRandomFilePath(sub1Folder.folderPath),
         );
         note.modified = DateTime(2020, 1, 10 + (i * 2));
-        note.body = "sub1-$i";
+        note.body = "sub1-$i\n";
         await note.save();
       }
 
@@ -64,7 +63,7 @@ void main() {
           _getRandomFilePath(sub2Folder.folderPath),
         );
         note.modified = DateTime(2020, 1, 10 + (i * 2));
-        note.body = "sub2-$i";
+        note.body = "sub2-$i\n";
         await note.save();
       }
 
@@ -76,7 +75,7 @@ void main() {
           _getRandomFilePath(p1Folder.folderPath),
         );
         note.modified = DateTime(2020, 1, 10 + (i * 2));
-        note.body = "p1-$i";
+        note.body = "p1-$i\n";
         await note.save();
       }
 
@@ -98,24 +97,24 @@ void main() {
       var notes = List<Note>.from(f.notes);
       notes.sort((Note n1, Note n2) => n1.body.compareTo(n2.body));
 
-      expect(notes[0].body, "0");
-      expect(notes[1].body, "1");
-      expect(notes[2].body, "2");
-      expect(notes[3].body, "p1-0");
-      expect(notes[4].body, "p1-1");
-      expect(notes[5].body, "sub1-0");
-      expect(notes[6].body, "sub1-1");
-      expect(notes[7].body, "sub2-0");
-      expect(notes[8].body, "sub2-1");
+      expect(notes[0].body, "0\n");
+      expect(notes[1].body, "1\n");
+      expect(notes[2].body, "2\n");
+      expect(notes[3].body, "p1-0\n");
+      expect(notes[4].body, "p1-1\n");
+      expect(notes[5].body, "sub1-0\n");
+      expect(notes[6].body, "sub1-1\n");
+      expect(notes[7].body, "sub2-0\n");
+      expect(notes[8].body, "sub2-1\n");
     });
 
     test('Should add a note properly', () async {
       var f = FlattenedNotesFolder(rootFolder, title: "");
 
-      var p1 = (f.fsFolder as NotesFolderFS).getFolderWithSpec("sub1/p1");
+      var p1 = (f.fsFolder as NotesFolderFS).getFolderWithSpec("sub1/p1")!;
       var note = Note(p1, p.join(p1.folderPath, "new.md"));
       note.modified = DateTime(2020, 2, 1);
-      note.body = "new";
+      note.body = "new\n";
       await note.save();
       p1.add(note);
 
@@ -124,16 +123,16 @@ void main() {
       var notes = List<Note>.from(f.notes);
       notes.sort((Note n1, Note n2) => n1.body.compareTo(n2.body));
 
-      expect(notes[0].body, "0");
-      expect(notes[1].body, "1");
-      expect(notes[2].body, "2");
-      expect(notes[3].body, "new");
-      expect(notes[4].body, "p1-0");
-      expect(notes[5].body, "p1-1");
-      expect(notes[6].body, "sub1-0");
-      expect(notes[7].body, "sub1-1");
-      expect(notes[8].body, "sub2-0");
-      expect(notes[9].body, "sub2-1");
+      expect(notes[0].body, "0\n");
+      expect(notes[1].body, "1\n");
+      expect(notes[2].body, "2\n");
+      expect(notes[3].body, "new\n");
+      expect(notes[4].body, "p1-0\n");
+      expect(notes[5].body, "p1-1\n");
+      expect(notes[6].body, "sub1-0\n");
+      expect(notes[7].body, "sub1-1\n");
+      expect(notes[8].body, "sub2-0\n");
+      expect(notes[9].body, "sub2-1\n");
 
       // FIXME: Check if the callback for added is called with the correct index
     });

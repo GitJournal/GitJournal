@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:meta/meta.dart';
-
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/error_reporting.dart';
 
@@ -9,13 +7,13 @@ class ChecklistItem {
   bool checked;
   String text;
 
-  String pre;
+  String? pre;
   bool upperCase;
   int lineNo;
 
   ChecklistItem({
-    @required this.checked,
-    @required this.text,
+    required this.checked,
+    required this.text,
     this.pre = '',
     this.upperCase = false,
     this.lineNo = -1,
@@ -24,7 +22,11 @@ class ChecklistItem {
   @override
   String toString() => '$pre- [$_x] $text';
 
-  String get _x => checked ? upperCase ? 'X' : 'x' : ' ';
+  String get _x => checked
+      ? upperCase
+          ? 'X'
+          : 'x'
+      : ' ';
 
   @override
   bool operator ==(Object other) =>
@@ -56,8 +58,8 @@ class Checklist {
   Note _note;
   List<ChecklistItem> items = [];
 
-  List<String> _lines;
-  bool endsWithNewLine;
+  late List<String> _lines;
+  late bool endsWithNewLine;
 
   Checklist(this._note) {
     _lines = LineSplitter.split(_note.body).toList();
@@ -77,7 +79,7 @@ class Checklist {
 
       var pre = match.group(1);
       var state = match.group(2);
-      var post = match.group(3);
+      var post = match.group(3)!;
 
       var item = ChecklistItem(
         pre: pre,

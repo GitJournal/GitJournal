@@ -1,9 +1,26 @@
+/*
+Copyright 2020-2021 Vishesh Handa <me@vhanda.in>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import 'dart:convert';
 
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:yaml/yaml.dart';
 
 import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'md_yaml_doc.dart';
@@ -26,7 +43,7 @@ class NoteSerializationSettings {
   bool tagsInString = false;
   bool tagsHaveHash = false;
 
-  bool saveTitleAsH1 = true;
+  SettingsTitle titleSettings = SettingsTitle.Default;
 }
 
 class NoteSerializer implements NoteSerializerInterface {
@@ -36,7 +53,7 @@ class NoteSerializer implements NoteSerializerInterface {
     settings.modifiedKey = config.yamlModifiedKey;
     settings.createdKey = config.yamlCreatedKey;
     settings.tagsKey = config.yamlTagsKey;
-    settings.saveTitleAsH1 = config.saveTitleInH1;
+    settings.titleSettings = config.titleSettings;
   }
 
   NoteSerializer.raw();
@@ -46,20 +63,20 @@ class NoteSerializer implements NoteSerializerInterface {
     data.body = emojiParser.unemojify(note.body);
 
     if (note.created != null) {
-      data.props[settings.createdKey] = toIso8601WithTimezone(note.created);
+      data.props[settings.createdKey] = toIso8601WithTimezone(note.created!);
     } else {
       data.props.remove(settings.createdKey);
     }
 
     if (note.modified != null) {
-      data.props[settings.modifiedKey] = toIso8601WithTimezone(note.modified);
+      data.props[settings.modifiedKey] = toIso8601WithTimezone(note.modified!);
     } else {
       data.props.remove(settings.modifiedKey);
     }
 
-    if (note.title != null) {
+    if (note.title.isNotEmpty) {
       var title = emojiParser.unemojify(note.title.trim());
-      if (settings.saveTitleAsH1) {
+      if (settings.titleSettings == SettingsTitle.InH1) {
         if (title.isNotEmpty) {
           data.body = '# $title\n\n${data.body}';
           data.props.remove(settings.titleKey);
@@ -148,7 +165,7 @@ class NoteSerializer implements NoteSerializerInterface {
       note.title = emojiParser.emojify(title);
 
       propsUsed.add(settings.titleKey);
-      settings.saveTitleAsH1 = false;
+      settings.titleSettings = SettingsTitle.InYaml;
     } else {
       var startsWithH1 = false;
       for (var line in LineSplitter.split(note.body)) {
@@ -193,6 +210,7 @@ class NoteSerializer implements NoteSerializerInterface {
       var tagKeyOptions = [
         "tags",
         "categories",
+        "keywords",
       ];
       for (var possibleKey in tagKeyOptions) {
         var tags = data.props[possibleKey];

@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/repository.dart';
-import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/icon_dismissable.dart';
 
 typedef Widget NoteTileBuilder(BuildContext context, Note note);
@@ -20,11 +20,11 @@ class FolderListView extends StatefulWidget {
   final String searchTerm;
 
   FolderListView({
-    @required this.folder,
-    @required this.noteTileBuilder,
-    @required this.emptyText,
-    @required this.isNoteSelected,
-    @required this.searchTerm,
+    required this.folder,
+    required this.noteTileBuilder,
+    required this.emptyText,
+    required this.isNoteSelected,
+    required this.searchTerm,
   });
 
   @override
@@ -73,14 +73,14 @@ class _FolderListViewState extends State<FolderListView> {
     if (_listKey.currentState == null) {
       return;
     }
-    _listKey.currentState.insertItem(index);
+    _listKey.currentState!.insertItem(index);
   }
 
   void _noteRemoved(int index, Note note) {
     if (_listKey.currentState == null) {
       return;
     }
-    _listKey.currentState.removeItem(index, (context, animation) {
+    _listKey.currentState!.removeItem(index, (context, animation) {
       var i = deletedViaDismissed.indexWhere((path) => path == note.filePath);
       if (i == -1) {
         return _buildNote(note, widget.isNoteSelected(note), animation);
@@ -115,6 +115,7 @@ class _FolderListViewState extends State<FolderListView> {
       key: _listKey,
       itemBuilder: _buildItem,
       initialItemCount: widget.folder.notes.length,
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 48),
     );
   }
 
@@ -149,16 +150,16 @@ class _FolderListViewState extends State<FolderListView> {
       viewItem = IconDismissable(
         key: ValueKey("FolderListView_" + note.filePath),
         child: viewItem,
-        backgroundColor: Colors.red[800],
+        backgroundColor: Colors.red[800]!,
         iconData: Icons.delete,
         onDismissed: (direction) {
           deletedViaDismissed.add(note.filePath);
 
-          var stateContainer = Provider.of<Repository>(context, listen: false);
+          var stateContainer = context.read<GitJournalRepo>();
           stateContainer.removeNote(note);
 
           var snackBar = buildUndoDeleteSnackbar(stateContainer, note);
-          Scaffold.of(context)
+          ScaffoldMessenger.of(context)
             ..removeCurrentSnackBar()
             ..showSnackBar(snackBar);
         },

@@ -1,3 +1,19 @@
+/*
+Copyright 2020-2021 Vishesh Handa <me@vhanda.in>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import 'dart:io';
 
 import 'package:path/path.dart' as p;
@@ -10,7 +26,7 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/processors/image_extractor.dart';
 import 'package:gitjournal/core/processors/inline_tags.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/utils/markdown.dart';
@@ -30,24 +46,17 @@ enum NoteLoadState {
   Error,
 }
 
-enum NoteType {
-  Unknown,
-  Checklist,
-  Journal,
-}
+enum NoteType { Unknown, Checklist, Journal, Org }
 
 class NoteFileFormatInfo {
-  static List<String> allowedExtensions() {
-    return [
-      '.md',
-      '.txt',
-    ];
-  }
+  static List<String> allowedExtensions = ['.md', '.org', '.txt'];
 
   static String defaultExtension(NoteFileFormat format) {
     switch (format) {
       case NoteFileFormat.Markdown:
         return ".md";
+      case NoteFileFormat.OrgMode:
+        return '.org';
       case NoteFileFormat.Txt:
         return ".txt";
       default:
@@ -57,45 +66,49 @@ class NoteFileFormatInfo {
 
   static bool isAllowedFileName(String filePath) {
     var noteFilePath = filePath.toLowerCase();
-    var isMarkdownFile = noteFilePath.endsWith('.md');
-    var isTxtFile = noteFilePath.endsWith('.txt');
+    for (var ext in allowedExtensions) {
+      if (noteFilePath.endsWith(ext)) {
+        return true;
+      }
+    }
 
-    return isMarkdownFile || isTxtFile;
+    return false;
   }
 }
 
 enum NoteFileFormat {
   Markdown,
+  OrgMode,
   Txt,
 }
 
 class Note with NotesNotifier {
   NotesFolderFS parent;
-  String _filePath;
+  String? _filePath;
 
   String _title = "";
-  DateTime _created;
-  DateTime _modified;
+  DateTime? _created;
+  DateTime? _modified;
   String _body = "";
   NoteType _type = NoteType.Unknown;
   Set<String> _tags = {};
   Map<String, dynamic> _extraProps = {};
 
-  NoteFileFormat _fileFormat;
+  NoteFileFormat? _fileFormat;
 
   MdYamlDoc _data = MdYamlDoc();
-  NoteSerializer noteSerializer;
+  late NoteSerializer noteSerializer;
 
-  DateTime fileLastModified;
+  DateTime? fileLastModified;
 
   var _loadState = NoteLoadState.None;
   var _serializer = MarkdownYAMLCodec();
 
   // Computed from body
-  String _summary;
-  List<Link> _links;
-  Set<String> _inlineTags;
-  Set<NoteImage> _images;
+  String? _summary;
+  List<Link>? _links;
+  Set<String>? _inlineTags;
+  Set<NoteImage>? _images;
 
   static final _mdYamlDocLoader = MdYamlDocLoader();
   static final _linksLoader = LinksLoader();
@@ -135,51 +148,61 @@ class Note with NotesNotifier {
 
   String get filePath {
     if (_filePath == null) {
+      var fp = "";
       try {
-        _filePath = p.join(parent.folderPath, _buildFileName());
+        fp = p.join(parent.folderPath, _buildFileName());
       } catch (e, stackTrace) {
         Log.e("_buildFileName: $e");
         logExceptionWarning(e, stackTrace);
-        _filePath = p.join(parent.folderPath, Uuid().v4());
+        fp = p.join(parent.folderPath, const Uuid().v4());
       }
       switch (_fileFormat) {
-        case NoteFileFormat.Txt:
-          if (!_filePath.toLowerCase().endsWith('.txt')) {
-            _filePath += '.txt';
+        case NoteFileFormat.OrgMode:
+          if (!fp.toLowerCase().endsWith('.org')) {
+            fp += '.org';
           }
           break;
+
+        case NoteFileFormat.Txt:
+          if (!fp.toLowerCase().endsWith('.txt')) {
+            fp += '.txt';
+          }
+          break;
+
         case NoteFileFormat.Markdown:
         default:
-          if (!_filePath.toLowerCase().endsWith('.md')) {
-            _filePath += '.md';
+          if (!fp.toLowerCase().endsWith('.md')) {
+            fp += '.md';
           }
           break;
       }
+
+      _filePath = fp;
     }
 
-    return _filePath;
+    return _filePath as String;
   }
 
   String get fileName {
     return p.basename(filePath);
   }
 
-  DateTime get created {
+  DateTime? get created {
     return _created;
   }
 
-  set created(DateTime dt) {
+  set created(DateTime? dt) {
     if (!canHaveMetadata) return;
 
     _created = dt;
     _notifyModified();
   }
 
-  DateTime get modified {
+  DateTime? get modified {
     return _modified;
   }
 
-  set modified(DateTime dt) {
+  set modified(DateTime? dt) {
     if (!canHaveMetadata) return;
 
     _modified = dt;
@@ -233,7 +256,6 @@ class Note with NotesNotifier {
   }
 
   set tags(Set<String> tags) {
-    assert(tags != null);
     if (!canHaveMetadata) return;
 
     _tags = tags;
@@ -248,16 +270,16 @@ class Note with NotesNotifier {
       var p = InlineTagsProcessor(tagPrefixes: tagPrefixes);
       _inlineTags = p.extractTags(body);
     }
-    return _inlineTags;
+    return _inlineTags!;
   }
 
   Set<NoteImage> get images {
     if (_loadState != NoteLoadState.Loaded) return {};
 
     var p = ImageExtractor();
-    _images ??= p.extract(body);
+    _images = p.extract(body);
 
-    return _images;
+    return _images!;
   }
 
   Map<String, dynamic> get extraProps {
@@ -272,7 +294,8 @@ class Note with NotesNotifier {
   }
 
   bool get canHaveMetadata {
-    if (_fileFormat == NoteFileFormat.Txt) {
+    if (_fileFormat == NoteFileFormat.Txt ||
+        _fileFormat == NoteFileFormat.OrgMode) {
       return false;
     }
     return parent.config.yamlHeaderEnabled;
@@ -298,7 +321,7 @@ class Note with NotesNotifier {
     if (_loadState != NoteLoadState.Loaded) return "";
 
     _summary ??= stripMarkdownFormatting(body);
-    return _summary;
+    return _summary!;
   }
 
   NoteLoadState get loadState {
@@ -307,13 +330,13 @@ class Note with NotesNotifier {
 
   Future<NoteLoadState> load() async {
     assert(_filePath != null);
-    assert(_filePath.isNotEmpty);
+    assert(_filePath!.isNotEmpty);
 
     if (_loadState == NoteLoadState.Loading) {
       return _loadState;
     }
 
-    final file = File(_filePath);
+    final file = File(_filePath!);
     if (_loadState == NoteLoadState.Loaded) {
       try {
         var fileLastModified = file.lastModifiedSync();
@@ -323,7 +346,7 @@ class Note with NotesNotifier {
         this.fileLastModified = fileLastModified;
       } catch (e, stackTrace) {
         if (e is FileSystemException &&
-            e.osError.errorCode == 2 /* File Not Found */) {
+            e.osError!.errorCode == 2 /* File Not Found */) {
           _loadState = NoteLoadState.NotExists;
           _notifyModified();
           return _loadState;
@@ -337,29 +360,43 @@ class Note with NotesNotifier {
       Log.d("Note modified: $_filePath");
     }
 
-    var fpLowerCase = _filePath.toLowerCase();
+    var fpLowerCase = _filePath!.toLowerCase();
     var isMarkdown = fpLowerCase.endsWith('.md');
     var isTxt = fpLowerCase.endsWith('.txt');
+    var isOrg = fpLowerCase.endsWith('.org');
 
     if (isMarkdown) {
-      try {
-        data = await _mdYamlDocLoader.loadDoc(_filePath);
+      var dataResult = await _mdYamlDocLoader.loadDoc(_filePath!);
+      if (dataResult.isSuccess) {
+        data = dataResult.getOrThrow();
         _fileFormat = NoteFileFormat.Markdown;
-      } on MdYamlDocNotFoundException catch (_) {
-        _loadState = NoteLoadState.NotExists;
-        _notifyModified();
-        return _loadState;
-      } on MdYamlParsingException catch (err, stackTrace) {
-        logException(err, stackTrace);
+      } else {
+        if (dataResult.error is MdYamlDocNotFoundException) {
+          _loadState = NoteLoadState.NotExists;
+          _notifyModified();
+          return _loadState;
+        }
+        if (dataResult.error is MdYamlParsingException) {
+          _loadState = NoteLoadState.Error;
+          _notifyModified();
+          return _loadState;
+        }
+      }
+    } else if (isTxt) {
+      try {
+        body = await File(_filePath!).readAsString();
+        _fileFormat = NoteFileFormat.Txt;
+      } catch (e, stackTrace) {
+        logExceptionWarning(e, stackTrace);
 
         _loadState = NoteLoadState.Error;
         _notifyModified();
         return _loadState;
       }
-    } else if (isTxt) {
+    } else if (isOrg) {
       try {
-        body = await File(_filePath).readAsString();
-        _fileFormat = NoteFileFormat.Txt;
+        body = await File(_filePath!).readAsString();
+        _fileFormat = NoteFileFormat.OrgMode;
       } catch (e, stackTrace) {
         logExceptionWarning(e, stackTrace);
 
@@ -382,12 +419,13 @@ class Note with NotesNotifier {
 
   // FIXME: What about error handling?
   Future<void> save() async {
-    assert(_data != null);
-    assert(_data.body != null);
-    assert(_data.props != null);
-
     var file = File(filePath);
     var contents = _serializer.encode(data);
+    // Make sure all docs end with a \n
+    if (!contents.endsWith('\n')) {
+      contents += '\n';
+    }
+
     await file.writeAsString(contents, flush: true);
   }
 
@@ -399,13 +437,21 @@ class Note with NotesNotifier {
   Future<void> remove() async {
     assert(_filePath != null);
 
-    var file = File(_filePath);
+    var file = File(filePath);
     await file.delete();
   }
 
+  ///
+  /// Do not let the user rename it to a different file-type.
+  ///
   void rename(String newName) {
-    // Do not let the user rename it to a non-markdown file
     switch (_fileFormat) {
+      case NoteFileFormat.OrgMode:
+        if (!newName.toLowerCase().endsWith('.org')) {
+          newName += '.org';
+        }
+        break;
+
       case NoteFileFormat.Txt:
         if (!newName.toLowerCase().endsWith('.txt')) {
           newName += '.txt';
@@ -489,8 +535,12 @@ class Note with NotesNotifier {
     if (imageSpec == '.') {
       baseFolder = parent.folderPath;
     } else {
-      baseFolder = parent.rootFolder.getFolderWithSpec(imageSpec).folderPath;
-      baseFolder ??= parent.folderPath;
+      var folder = parent.rootFolder.getFolderWithSpec(imageSpec);
+      if (folder != null) {
+        baseFolder = folder.folderPath;
+      } else {
+        baseFolder = parent.folderPath;
+      }
     }
 
     var imageFileName = p.basename(file.path);
@@ -519,9 +569,6 @@ class Note with NotesNotifier {
   }
 
   String pathSpec() {
-    if (parent == null) {
-      return fileName;
-    }
     return p.join(parent.pathSpec(), fileName);
   }
 
@@ -533,13 +580,15 @@ class Note with NotesNotifier {
         : parent.config.journalFileNameFormat) {
       case NoteFileNameFormat.SimpleDate:
         return toSimpleDateTime(date);
+      case NoteFileNameFormat.DateOnly:
+        var dateStr = toDateString(date);
+        return ensureFileNameUnique(parent.folderPath, dateStr, ".md");
       case NoteFileNameFormat.FromTitle:
         if (title.isNotEmpty) {
           return buildTitleFileName(parent.folderPath, title);
         } else {
           return toSimpleDateTime(date);
         }
-        break;
       case NoteFileNameFormat.Iso8601:
         return toIso8601(date);
       case NoteFileNameFormat.Iso8601WithTimeZone:
@@ -547,7 +596,7 @@ class Note with NotesNotifier {
       case NoteFileNameFormat.Iso8601WithTimeZoneWithoutColon:
         return toIso8601WithTimezone(date).replaceAll(":", "_");
       case NoteFileNameFormat.UuidV4:
-        return Uuid().v4();
+        return const Uuid().v4();
       case NoteFileNameFormat.Zettelkasten:
         return toZettleDateTime(date);
     }
@@ -557,27 +606,24 @@ class Note with NotesNotifier {
 
   Future<List<Link>> fetchLinks() async {
     if (_links != null) {
-      return _links;
+      return _links!;
     }
 
-    _links = await _linksLoader.parseLinks(body: _body, filePath: _filePath);
+    _links = await _linksLoader.parseLinks(body: _body, filePath: _filePath!);
+    return _links!;
+  }
+
+  List<Link>? links() {
     return _links;
   }
 
-  List<Link> links() {
-    return _links;
-  }
-
-  NoteFileFormat get fileFormat {
+  NoteFileFormat? get fileFormat {
     return _fileFormat;
   }
 }
 
-String buildTitleFileName(String parentDir, String title) {
-  // Sanitize the title - these characters are not allowed in Windows
-  title = title.replaceAll(RegExp(r'[/<\>":|?*]'), '_');
-
-  var fileName = title + ".md";
+String ensureFileNameUnique(String parentDir, String name, String ext) {
+  var fileName = name + ext;
   var fullPath = p.join(parentDir, fileName);
   var file = File(fullPath);
   if (!file.existsSync()) {
@@ -585,11 +631,18 @@ String buildTitleFileName(String parentDir, String title) {
   }
 
   for (var i = 1;; i++) {
-    var fileName = title + "_$i.md";
+    var fileName = name + "_$i$ext";
     var fullPath = p.join(parentDir, fileName);
     var file = File(fullPath);
     if (!file.existsSync()) {
       return fileName;
     }
   }
+}
+
+String buildTitleFileName(String parentDir, String title) {
+  // Sanitize the title - these characters are not allowed in Windows
+  title = title.replaceAll(RegExp(r'[/<\>":|?*]'), '_');
+
+  return ensureFileNameUnique(parentDir, title, ".md");
 }

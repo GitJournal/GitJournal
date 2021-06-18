@@ -6,65 +6,65 @@ import 'package:flutter/foundation.dart';
 import 'package:device_info/device_info.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sentry/sentry.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 import 'package:gitjournal/.env.dart';
 import 'package:gitjournal/app.dart';
-import 'package:gitjournal/app_settings.dart';
+import 'package:gitjournal/settings/app_settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
-SentryClient _sentryClient;
-Future<SentryClient> _initSentry() async {
-  return SentryClient(
-    dsn: environment['sentry'],
-    environmentAttributes: await _environmentEvent,
+Future<void> initSentry() async {
+  if (Sentry.isEnabled) {
+    return;
+  }
+  await SentryFlutter.init(
+    (options) {
+      options.dsn = environment['sentry'];
+    },
   );
 }
 
-Future<SentryClient> getSentryClient() async {
-  return _sentryClient ??= await _initSentry();
-}
-
-Future<Event> get _environmentEvent async {
+Future<SentryEvent> get _environmentEvent async {
   final packageInfo = await PackageInfo.fromPlatform();
   final deviceInfoPlugin = DeviceInfoPlugin();
-  OperatingSystem os;
-  Device device;
+  SentryOperatingSystem? os;
+  SentryDevice? device;
   if (Platform.isAndroid) {
     final androidInfo = await deviceInfoPlugin.androidInfo;
-    os = OperatingSystem(
+    os = SentryOperatingSystem(
       name: 'android',
       version: androidInfo.version.release,
     );
-    device = Device(
+    device = SentryDevice(
       model: androidInfo.model,
       manufacturer: androidInfo.manufacturer,
       modelId: androidInfo.product,
     );
   } else if (Platform.isIOS) {
     final iosInfo = await deviceInfoPlugin.iosInfo;
-    os = OperatingSystem(
+    os = SentryOperatingSystem(
       name: iosInfo.systemName,
       version: iosInfo.systemVersion,
     );
-    device = Device(
+    device = SentryDevice(
       model: iosInfo.utsname.machine,
       family: iosInfo.model,
       manufacturer: 'Apple',
     );
   }
-  final environment = Event(
+  final environment = SentryEvent(
     release: '${packageInfo.version} (${packageInfo.buildNumber})',
     contexts: Contexts(
       operatingSystem: os,
       device: device,
-      app: App(
+      app: SentryApp(
         name: packageInfo.appName,
         version: packageInfo.version,
         build: packageInfo.buildNumber,
       ),
     ),
-    userContext: User(
+    user: SentryUser(
       id: AppSettings.instance.pseudoId,
     ),
   );
@@ -75,19 +75,19 @@ void flutterOnErrorHandler(FlutterErrorDetails details) {
   if (reportCrashes == true) {
     // vHanda: This doesn't always call our zone error handler, why?
     // Zone.current.handleUncaughtError(details.exception, details.stack);
-    reportError(details.exception, details.stack);
+    reportError(details.exception, details.stack ?? StackTrace.current);
   } else {
     FlutterError.dumpErrorToConsole(details);
   }
 }
 
 bool get reportCrashes => _reportCrashes ??= _initReportCrashes();
-bool _reportCrashes;
+bool? _reportCrashes;
 bool _initReportCrashes() {
   return !JournalApp.isInDebugMode && AppSettings.instance.collectCrashReports;
 }
 
-Future<void> reportError(Object error, StackTrace stackTrace) async {
+Future<void> reportError(dynamic error, StackTrace stackTrace) async {
   Log.e("Uncaught Exception", ex: error, stacktrace: stackTrace);
 
   if (reportCrashes) {
@@ -116,34 +116,42 @@ Future<void> logExceptionWarning(Object e, StackTrace stackTrace) async {
     return;
   }
 
-  await captureSentryException(e, stackTrace, level: SeverityLevel.warning);
+  await captureSentryException(e, stackTrace, level: SentryLevel.warning);
 }
 
 List<Breadcrumb> breadcrumbs = [];
 
 void captureErrorBreadcrumb({
-  @required String name,
-  Map<String, String> parameters,
+  required String name,
+  required Map<String, String> parameters,
 }) {
-  var b = Breadcrumb(name, DateTime.now(), data: parameters);
+  if (!reportCrashes) {
+    return;
+  }
+
+  var b = Breadcrumb(
+    message: name,
+    timestamp: DateTime.now(),
+    data: parameters,
+  );
   breadcrumbs.add(b);
 }
 
 Future<void> captureSentryException(
-  Object exception,
+  dynamic exception,
   StackTrace stackTrace, {
-  SeverityLevel level = SeverityLevel.error,
+  SentryLevel level = SentryLevel.error,
 }) async {
   try {
-    final sentry = await getSentryClient();
-    final Event event = Event(
-      exception: exception,
-      stackTrace: Trace.from(stackTrace).terse,
+    await initSentry();
+    final event = (await _environmentEvent).copyWith(
+      throwable: exception,
       breadcrumbs: breadcrumbs,
       level: level,
     );
 
-    return sentry.capture(event: event);
+    await Sentry.captureEvent(event, stackTrace: Trace.from(stackTrace).terse);
+    return;
   } catch (e) {
     print("Failed to report with Sentry: $e");
   }

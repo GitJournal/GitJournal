@@ -1,11 +1,6 @@
-class EditorHeuristicResult {
-  String text;
-  int cursorPos;
+import 'package:gitjournal/editors/common.dart';
 
-  EditorHeuristicResult(this.text, this.cursorPos);
-}
-
-EditorHeuristicResult autoAddBulletList(
+TextEditorState? autoAddBulletList(
     String oldText, String curText, final int cursorPos) {
   // We only want to do this on inserts
   if (curText.length <= oldText.length) {
@@ -42,9 +37,9 @@ EditorHeuristicResult autoAddBulletList(
   }
 
   var indent = match.group(1) ?? "";
-  var bulletType = match.group(2);
-  var spacesBeforeContent = match.group(3);
-  var contents = match.group(4);
+  var bulletType = match.group(2)!;
+  var spacesBeforeContent = match.group(3)!;
+  var contents = match.group(4)!;
   var remainingText =
       curText.length > cursorPos ? curText.substring(cursorPos) : "";
 
@@ -64,7 +59,7 @@ EditorHeuristicResult autoAddBulletList(
     var newCursorPos = text.length;
 
     text += remainingText;
-    return EditorHeuristicResult(text, newCursorPos);
+    return TextEditorState(text, newCursorPos);
   }
 
   var extraText = indent + bulletType + spacesBeforeContent;
@@ -72,5 +67,20 @@ EditorHeuristicResult autoAddBulletList(
   var newCursorPos = text.length;
   text += remainingText;
 
-  return EditorHeuristicResult(text, newCursorPos);
+  return TextEditorState(text, newCursorPos);
+}
+
+class EditorHeuristics {
+  EditorHeuristics({String text = ''}) {
+    _lastState = TextEditorState(text, 0);
+  }
+
+  late TextEditorState _lastState;
+
+  TextEditorState? textChanged(TextEditorState es) {
+    var lastState = _lastState;
+    _lastState = es;
+
+    return autoAddBulletList(lastState.text, es.text, es.cursorPos);
+  }
 }

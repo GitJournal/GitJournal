@@ -7,7 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
-import 'package:gitjournal/app_settings.dart';
+import 'package:gitjournal/settings/app_settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 class DebugScreen extends StatefulWidget {
@@ -18,14 +18,14 @@ class DebugScreen extends StatefulWidget {
 class _DebugScreenState extends State<DebugScreen> {
   ScrollController _controller = ScrollController();
 
-  List<LogMessage> _logs;
+  late List<LogMessage> _logs;
 
   @override
   void initState() {
     super.initState();
 
     _logs = Log.fetchLogs().toList();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
+    WidgetsBinding.instance!.addPostFrameCallback((_) => _scrollToBottom());
   }
 
   void _scrollToTop() {
@@ -90,7 +90,7 @@ class _DebugScreenState extends State<DebugScreen> {
     var appSettings = Provider.of<AppSettings>(context);
     var filterLevel = appSettings.debugLogLevel;
 
-    if (filterLevel == null || filterLevel.isEmpty) {
+    if (filterLevel.isEmpty) {
       return true;
     }
 
@@ -144,7 +144,7 @@ class _DebugScreenState extends State<DebugScreen> {
   Widget _buildLogWidget(LogMessage msg) {
     var textStyle = Theme.of(context)
         .textTheme
-        .bodyText2
+        .bodyText2!
         .copyWith(fontFamily: "Roboto Mono");
 
     textStyle = textStyle.copyWith(color: _colorForLevel(msg.l));
@@ -154,10 +154,10 @@ class _DebugScreenState extends State<DebugScreen> {
     var str = ' ' + msg.msg;
 
     if (msg.ex != null) {
-      str += ' ' + msg.ex;
+      str += ' ' + msg.ex!;
     }
     if (msg.stack != null) {
-      str += ' ' + msg.stack;
+      str += ' ' + msg.stack.toString();
     }
 
     var props = <TextSpan>[];
@@ -202,7 +202,7 @@ class _DebugScreenState extends State<DebugScreen> {
   Widget _buildDateWidget(DateTime dt) {
     var textStyle = Theme.of(context)
         .textTheme
-        .headline6
+        .headline6!
         .copyWith(fontFamily: "Roboto Mono");
 
     var text = dt.toIso8601String().substring(0, 10);
@@ -262,7 +262,7 @@ class FilterListTile extends StatelessWidget {
 
   Icon _getIcon(BuildContext context) {
     var theme = Theme.of(context);
-    var color = theme.textTheme.headline6.color;
+    var color = theme.textTheme.headline6!.color;
     if (_isSelected()) {
       switch (theme.brightness) {
         case Brightness.light:
@@ -276,7 +276,7 @@ class FilterListTile extends StatelessWidget {
 
     switch (internalLevel) {
       case 'e':
-        return Icon(Icons.error, color: color);
+        return Icon(Icons.report, color: color);
       case 'w':
         return Icon(Icons.warning, color: color);
       case 'i':

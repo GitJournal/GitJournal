@@ -1,13 +1,19 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
+import 'package:function_types/function_types.dart';
+import 'package:org_flutter/org_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/core/org_links_handler.dart';
+import 'package:gitjournal/editors/bottom_bar.dart';
 import 'package:gitjournal/editors/common.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/widgets/note_viewer.dart';
 
 class EditorScaffold extends StatefulWidget {
@@ -15,17 +21,30 @@ class EditorScaffold extends StatefulWidget {
   final EditorState editorState;
   final bool noteModified;
   final bool editMode;
-  final IconButton extraButton;
+  final IconButton? extraButton;
   final Widget body;
   final NotesFolderFS parentFolder;
 
+  final Func0<void> onUndoSelected;
+  final Func0<void> onRedoSelected;
+
+  final bool undoAllowed;
+  final bool redoAllowed;
+
+  final Widget? extraBottomWidget;
+
   EditorScaffold({
-    @required this.editor,
-    @required this.editorState,
-    @required this.noteModified,
-    @required this.editMode,
-    @required this.body,
-    @required this.parentFolder,
+    required this.editor,
+    required this.editorState,
+    required this.noteModified,
+    required this.editMode,
+    required this.body,
+    required this.parentFolder,
+    required this.onUndoSelected,
+    required this.onRedoSelected,
+    required this.undoAllowed,
+    required this.redoAllowed,
+    this.extraBottomWidget,
     this.extraButton,
   });
 
@@ -36,13 +55,15 @@ class EditorScaffold extends StatefulWidget {
 class _EditorScaffoldState extends State<EditorScaffold> {
   var hideUIElements = false;
   var editingMode = true;
-  Note note;
+  late Note note;
 
   @override
   void initState() {
     super.initState();
 
-    SchedulerBinding.instance
+    note = widget.editorState.getNote();
+
+    SchedulerBinding.instance!
         .addPostFrameCallback((_) => _initStateWithContext());
   }
 
@@ -67,8 +88,6 @@ class _EditorScaffoldState extends State<EditorScaffold> {
       if (widget.editMode) {
         editingMode = true;
       }
-
-      note = widget.editorState.getNote();
     });
   }
 
@@ -110,12 +129,33 @@ class _EditorScaffoldState extends State<EditorScaffold> {
   @override
   Widget build(BuildContext context) {
     var settings = Provider.of<Settings>(context);
-    Widget body = editingMode
-        ? widget.body
-        : NoteViewer(
+    Widget body;
+    if (editingMode) {
+      body = widget.body;
+    } else {
+      switch (note.fileFormat) {
+        case NoteFileFormat.OrgMode:
+          OrgLinkHandler handler = OrgLinkHandler(context, note);
+
+          body = Org(
+            note.body,
+            onLinkTap: handler.launchUrl,
+            onLocalSectionLinkTap: (OrgSection section) {
+              log("local section link: " + section.toString());
+            },
+            onSectionLongPress: (OrgSection section) {
+              log('local section long-press: ' + section.headline.rawTitle!);
+            },
+          );
+          break;
+        default:
+          body = NoteViewer(
             note: note,
             parentFolder: widget.parentFolder,
           );
+          break;
+      }
+    }
 
     return Scaffold(
       body: GestureDetector(
@@ -159,9 +199,14 @@ class _EditorScaffoldState extends State<EditorScaffold> {
                     }
                   });
                 },
-                metaDataEditable: note != null ? note.canHaveMetadata : false,
+                metaDataEditable: note.canHaveMetadata,
+                onUndoSelected: widget.onUndoSelected,
+                onRedoSelected: widget.onRedoSelected,
+                undoAllowed: widget.undoAllowed,
+                redoAllowed: widget.redoAllowed,
               ),
-            )
+            ),
+            if (widget.extraBottomWidget != null) widget.extraBottomWidget!,
           ],
         ),
       ),
@@ -173,7 +218,7 @@ class _AnimatedOpacityIgnorePointer extends StatelessWidget {
   final bool visible;
   final Widget child;
 
-  _AnimatedOpacityIgnorePointer({@required this.visible, @required this.child});
+  _AnimatedOpacityIgnorePointer({required this.visible, required this.child});
 
   @override
   Widget build(BuildContext context) {

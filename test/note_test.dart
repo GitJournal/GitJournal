@@ -5,11 +5,11 @@ import 'package:test/test.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 
 void main() {
   group('Note', () {
-    Directory tempDir;
+    late Directory tempDir;
 
     setUpAll(() async {
       tempDir = await Directory.systemTemp.createTemp('__notes_test__');
@@ -25,7 +25,8 @@ bar: Foo
 modified: 2017-02-15T22:41:19+01:00
 ---
 
-Hello""";
+Hello
+""";
 
       var notePath = p.join(tempDir.path, "note.md");
       await File(notePath).writeAsString(content);
@@ -43,7 +44,8 @@ bar: Foo
 modified: 2019-12-02T04:00:00+00:00
 ---
 
-Hello""";
+Hello
+""";
 
       var actualContent = File(notePath).readAsStringSync();
       expect(actualContent, equals(expectedContent));
@@ -55,7 +57,8 @@ bar: Foo
 mod: 2017-02-15T22:41:19+01:00
 ---
 
-Hello""";
+Hello
+""";
 
       var notePath = p.join(tempDir.path, "note.md");
       await File(notePath).writeAsString(content);
@@ -73,7 +76,8 @@ bar: Foo
 mod: 2019-12-02T04:00:00+00:00
 ---
 
-Hello""";
+Hello
+""";
 
       var actualContent = File(notePath).readAsStringSync();
       expect(actualContent, equals(expectedContent));
@@ -85,7 +89,8 @@ bar: Foo
 tags: [A, B]
 ---
 
-Hello""";
+Hello
+""";
 
       var notePath = p.join(tempDir.path, "note5.md");
       await File(notePath).writeAsString(content);
@@ -109,7 +114,8 @@ bar: Foo
 tags: [A, C, D]
 ---
 
-Hello""";
+Hello
+""";
 
       var actualContent = File(notePath).readAsStringSync();
       expect(actualContent, equals(expectedContent));
@@ -132,7 +138,8 @@ bar: Foo
       var note = Note(parentFolder, notePath);
       await note.load();
 
-      var links = await note.fetchLinks();
+      var linksOrNull = await note.fetchLinks();
+      var links = linksOrNull;
       expect(links[0].filePath, p.join(tempDir.path, "foo.md"));
       expect(links[0].publicTerm, "Hi");
 
@@ -143,7 +150,7 @@ bar: Foo
     });
 
     test('Should parse wiki style links', () async {
-      var content = "[[GitJournal]] needs some [[Wild Fire]]";
+      var content = "[[GitJournal]] needs some [[Wild Fire]]\n";
 
       var notePath = p.join(tempDir.path, "note63.md");
       await File(notePath).writeAsString(content);
@@ -152,7 +159,8 @@ bar: Foo
       var note = Note(parentFolder, notePath);
       await note.load();
 
-      var links = await note.fetchLinks();
+      var linksOrNull = await note.fetchLinks();
+      var links = linksOrNull;
       expect(links[0].isWikiLink, true);
       expect(links[0].wikiTerm, "GitJournal");
 

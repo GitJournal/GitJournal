@@ -11,13 +11,14 @@ import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/sorted_notes_folder.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
+import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/screens/note_editor.dart';
-import 'package:gitjournal/screens/settings_screen.dart';
-import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/settings_screen.dart';
+import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/new_note_nav_bar.dart';
@@ -36,7 +37,7 @@ class FolderView extends StatefulWidget {
   final Map<String, dynamic> newNoteExtraProps;
 
   FolderView({
-    @required this.notesFolder,
+    required this.notesFolder,
     this.newNoteExtraProps = const {},
   });
 
@@ -45,20 +46,22 @@ class FolderView extends StatefulWidget {
 }
 
 class _FolderViewState extends State<FolderView> {
-  SortedNotesFolder sortedNotesFolder;
+  late SortedNotesFolder sortedNotesFolder;
   FolderViewType _viewType = FolderViewType.Standard;
 
-  StandardViewHeader _headerType = StandardViewHeader.TitleGenerated;
+  var _headerType = StandardViewHeader.TitleGenerated;
   bool _showSummary = true;
 
   bool inSelectionMode = false;
-  Note selectedNote;
-
-  var _scaffoldKey = GlobalKey<ScaffoldState>();
+  Note? selectedNote;
 
   @override
   void initState() {
     super.initState();
+    _init();
+  }
+
+  void _init() {
     sortedNotesFolder = SortedNotesFolder(
       folder: widget.notesFolder,
       sortingMode: widget.notesFolder.config.sortingMode,
@@ -67,6 +70,15 @@ class _FolderViewState extends State<FolderView> {
     _viewType = widget.notesFolder.config.defaultView;
     _showSummary = widget.notesFolder.config.showNoteSummary;
     _headerType = widget.notesFolder.config.viewHeader;
+  }
+
+  @override
+  void didUpdateWidget(FolderView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.notesFolder != widget.notesFolder) {
+      _init();
+    }
   }
 
   @override
@@ -126,7 +138,6 @@ class _FolderViewState extends State<FolderView> {
     );
 
     return Scaffold(
-      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(title),
         leading: inSelectionMode ? backButton : GJAppBarMenuButton(),
@@ -160,7 +171,7 @@ class _FolderViewState extends State<FolderView> {
 
   void _syncRepo(BuildContext context) async {
     try {
-      var container = Provider.of<Repository>(context, listen: false);
+      var container = context.read<GitJournalRepo>();
       await container.syncNotes();
     } on GitException catch (e) {
       showSnackbar(
@@ -174,8 +185,8 @@ class _FolderViewState extends State<FolderView> {
 
   void _newPost(EditorType editorType) async {
     var folder = widget.notesFolder;
-    NotesFolderFS fsFolder = folder.fsFolder;
-    var isVirtualFolder = folder.name != folder.fsFolder.name;
+    var fsFolder = folder.fsFolder as NotesFolderFS;
+    var isVirtualFolder = folder.name != folder.fsFolder!.name;
     if (isVirtualFolder) {
       var rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
       var settings = Provider.of<Settings>(context, listen: false);
@@ -212,11 +223,13 @@ class _FolderViewState extends State<FolderView> {
         widget.notesFolder,
         editorType,
         newNoteExtraProps: extraProps,
+        existingText: "",
+        existingImages: [],
       ),
       settings: RouteSettings(name: '/newNote/$routeType'),
     );
     await Navigator.of(context).push(route);
-    _scaffoldKey.currentState.removeCurrentSnackBar();
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
   }
 
   void _sortButtonPressed() async {
@@ -234,7 +247,7 @@ class _FolderViewState extends State<FolderView> {
       var settings = Provider.of<Settings>(context, listen: false);
       config.saveToSettings(settings);
 
-      var container = Provider.of<Repository>(context, listen: false);
+      var container = context.read<GitJournalRepo>();
       container.saveFolderConfig(sortedNotesFolder.config);
 
       setState(() {
@@ -247,7 +260,10 @@ class _FolderViewState extends State<FolderView> {
     await showDialog<SortingMode>(
       context: context,
       builder: (BuildContext context) {
-        var headerTypeChanged = (StandardViewHeader newHeader) {
+        var headerTypeChanged = (StandardViewHeader? newHeader) {
+          if (newHeader == null) {
+            return;
+          }
           setState(() {
             _headerType = newHeader;
           });
@@ -259,7 +275,7 @@ class _FolderViewState extends State<FolderView> {
           var settings = Provider.of<Settings>(context, listen: false);
           config.saveToSettings(settings);
 
-          var container = Provider.of<Repository>(context, listen: false);
+          var container = context.read<GitJournalRepo>();
           container.saveFolderConfig(sortedNotesFolder.config);
         };
 
@@ -275,7 +291,7 @@ class _FolderViewState extends State<FolderView> {
           var settings = Provider.of<Settings>(context, listen: false);
           config.saveToSettings(settings);
 
-          var container = Provider.of<Repository>(context, listen: false);
+          var container = context.read<GitJournalRepo>();
           container.saveFolderConfig(sortedNotesFolder.config);
         };
 
@@ -353,7 +369,7 @@ class _FolderViewState extends State<FolderView> {
   }
 
   void _folderViewChooserSelected() async {
-    var onViewChange = (FolderViewType vt) => Navigator.of(context).pop(vt);
+    var onViewChange = (FolderViewType? vt) => Navigator.of(context).pop(vt);
 
     var newViewType = await showDialog<FolderViewType>(
       context: context,
@@ -407,13 +423,13 @@ class _FolderViewState extends State<FolderView> {
       var settings = Provider.of<Settings>(context, listen: false);
       config.saveToSettings(settings);
 
-      var container = Provider.of<Repository>(context, listen: false);
+      var container = context.read<GitJournalRepo>();
       container.saveFolderConfig(widget.notesFolder.config);
     }
   }
 
   List<Widget> _buildNoteActions() {
-    final repo = Provider.of<Repository>(context);
+    final repo = Provider.of<GitJournalRepo>(context);
 
     var extraActions = PopupMenuButton<DropDownChoices>(
       key: const ValueKey("PopupMenu"),
@@ -471,7 +487,7 @@ class _FolderViewState extends State<FolderView> {
       IconButton(
         icon: const Icon(Icons.share),
         onPressed: () async {
-          await shareNote(selectedNote);
+          await shareNote(selectedNote!);
           _resetSelection();
         },
       ),
@@ -494,8 +510,8 @@ class _FolderViewState extends State<FolderView> {
       );
     }
     if (shouldDelete == true) {
-      var stateContainer = Provider.of<Repository>(context, listen: false);
-      stateContainer.removeNote(note);
+      var stateContainer = context.read<GitJournalRepo>();
+      stateContainer.removeNote(note!);
     }
 
     _resetSelection();

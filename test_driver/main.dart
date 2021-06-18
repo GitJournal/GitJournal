@@ -1,19 +1,17 @@
 import 'dart:io';
 
 import 'package:dart_git/git.dart';
-import 'package:flutter_driver/driver_extension.dart';
-import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time/time.dart';
 
 import 'package:gitjournal/app.dart';
-import 'package:gitjournal/app_settings.dart';
+import 'package:gitjournal/settings/app_settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
 
 void main() async {
-  enableFlutterDriverExtension();
+  // enableFlutterDriverExtension();
 
   var pref = await SharedPreferences.getInstance();
   AppSettings.instance.load(pref);
@@ -104,7 +102,7 @@ Future<void> populateWithData(SharedPreferences pref) async {
 }
 
 void createNote(String filePath, DateTime dt,
-    {@required String body, String title}) {
+    {required String body, String? title}) {
   var content = "";
 
   if (title == null) {

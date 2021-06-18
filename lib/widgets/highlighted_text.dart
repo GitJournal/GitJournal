@@ -6,15 +6,15 @@ class HighlightedText extends StatelessWidget {
   final String highlightTextLowerCase;
 
   final TextStyle style;
-  final TextStyle highlightStyle;
-  final TextOverflow overflow;
-  final int maxLines;
+  final TextStyle? highlightStyle;
+  final TextOverflow? overflow;
+  final int? maxLines;
 
   HighlightedText({
-    @required this.text,
-    @required this.highlightText,
-    @required this.highlightTextLowerCase,
-    @required this.style,
+    required this.text,
+    required this.highlightText,
+    required this.highlightTextLowerCase,
+    required this.style,
     this.highlightStyle,
     this.overflow,
     this.maxLines,
@@ -59,14 +59,14 @@ class HighlightTextSpan {
   final String highlightTextLowerCase;
 
   final TextStyle style;
-  final TextStyle highlightStyle;
+  TextStyle? highlightStyle;
 
   HighlightTextSpan({
-    @required this.text,
-    @required this.highlightText,
-    @required this.highlightTextLowerCase,
-    @required this.style,
-    this.highlightStyle,
+    required this.text,
+    required this.highlightText,
+    required this.highlightTextLowerCase,
+    required this.style,
+    required this.highlightStyle,
   });
 
   List<InlineSpan> build(BuildContext context) {

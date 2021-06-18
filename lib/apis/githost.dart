@@ -1,20 +1,21 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-
 import 'package:collection/collection.dart';
+import 'package:dart_git/utils/result.dart';
 
-typedef OAuthCallback = void Function(GitHostException);
+export 'package:dart_git/utils/result.dart';
+
+typedef OAuthCallback = void Function(GitHostException?);
 
 abstract class GitHost {
   void init(OAuthCallback oAuthCallback);
   Future launchOAuthScreen();
 
-  Future<UserInfo> getUserInfo();
-  Future<List<GitHostRepo>> listRepos();
-  Future<GitHostRepo> createRepo(String name);
-  Future<GitHostRepo> getRepo(String name);
-  Future addDeployKey(String sshPublicKey, String repoFullName);
+  Future<Result<UserInfo>> getUserInfo();
+  Future<Result<List<GitHostRepo>>> listRepos();
+  Future<Result<GitHostRepo>> createRepo(String name);
+  Future<Result<GitHostRepo>> getRepo(String name);
+  Future<Result<void>> addDeployKey(String sshPublicKey, String repoFullName);
 }
 
 class UserInfo {
@@ -23,9 +24,9 @@ class UserInfo {
   final String username;
 
   UserInfo({
-    @required this.name,
-    @required this.email,
-    @required this.username,
+    required this.name,
+    required this.email,
+    required this.username,
   });
 }
 
@@ -36,31 +37,31 @@ class GitHostRepo {
   final String description;
 
   final String cloneUrl;
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
 
-  final bool private;
-  final int stars;
-  final int forks;
-  final String language;
-  final int issues;
-  final String license;
+  final bool? private;
+  final int? stars;
+  final int? forks;
+  final String? language;
+  final int? issues;
+  final String? license;
 
   final List<String> tags;
 
   GitHostRepo({
-    @required this.name,
-    @required this.username,
-    @required this.fullName,
-    @required this.description,
-    @required this.cloneUrl,
-    @required this.updatedAt,
-    @required this.private,
-    @required this.stars,
-    @required this.forks,
-    @required this.language,
-    @required this.issues,
-    @required this.tags,
-    @required this.license,
+    required this.name,
+    required this.username,
+    required this.fullName,
+    required this.description,
+    required this.cloneUrl,
+    required this.updatedAt,
+    required this.private,
+    required this.stars,
+    required this.forks,
+    required this.language,
+    required this.issues,
+    required this.tags,
+    required this.license,
   });
 
   Map<String, dynamic> toJson() => {
@@ -92,7 +93,7 @@ class GitHostRepo {
   int get hashCode => toJson().hashCode;
 }
 
-var _mapEquals = (const MapEquality()).equals;
+final _mapEquals = (const MapEquality()).equals;
 
 class GitHostException implements Exception {
   static const OAuthFailed = GitHostException("OAuthFailed");
@@ -101,6 +102,8 @@ class GitHostException implements Exception {
   static const CreateRepoFailed = GitHostException("CreateRepoFailed");
   static const DeployKeyFailed = GitHostException("DeployKeyFailed");
   static const GetRepoFailed = GitHostException("GetRepoFailed");
+  static const HttpResponseFail = GitHostException("HttpResponseFail");
+  static const JsonDecodingFail = GitHostException("JsonDecodingFail");
 
   final String cause;
   const GitHostException(this.cause);
@@ -109,4 +112,13 @@ class GitHostException implements Exception {
   String toString() {
     return "GitHostException: " + cause;
   }
+}
+
+String toCurlCommand(Uri url, Map<String, String> headers) {
+  var headersStr = "";
+  headers.forEach((key, value) {
+    headersStr += ' -H "$key: $value" ';
+  });
+
+  return "curl -X GET '$url' $headersStr";
 }

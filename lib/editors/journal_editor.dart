@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/disposable_change_notifier.dart';
+import 'package:gitjournal/editors/heuristics.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
+import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/editor_scroll_view.dart';
 import 'package:gitjournal/widgets/journal_editor_header.dart';
 
@@ -31,16 +34,16 @@ class JournalEditor extends StatefulWidget implements Editor {
   final bool editMode;
 
   JournalEditor({
-    Key key,
-    @required this.note,
-    @required this.noteModified,
-    @required this.noteDeletionSelected,
-    @required this.noteEditorChooserSelected,
-    @required this.exitEditorSelected,
-    @required this.renameNoteSelected,
-    @required this.editTagsSelected,
-    @required this.moveNoteToFolderSelected,
-    @required this.discardChangesSelected,
+    Key? key,
+    required this.note,
+    required this.noteModified,
+    required this.noteDeletionSelected,
+    required this.noteEditorChooserSelected,
+    required this.exitEditorSelected,
+    required this.renameNoteSelected,
+    required this.editTagsSelected,
+    required this.moveNoteToFolderSelected,
+    required this.discardChangesSelected,
     this.editMode = false,
   }) : super(key: key);
 
@@ -54,17 +57,19 @@ class JournalEditorState extends State<JournalEditor>
     with DisposableChangeNotifier
     implements EditorState {
   Note note;
-  TextEditingController _textController = TextEditingController();
-  bool _noteModified;
+  late TextEditingController _textController;
+  late bool _noteModified;
 
-  JournalEditorState(this.note) {
-    _textController = TextEditingController(text: note.body);
-  }
+  late EditorHeuristics _heuristics;
 
+  JournalEditorState(this.note);
   @override
   void initState() {
     super.initState();
     _noteModified = widget.noteModified;
+    _textController = TextEditingController(text: note.body);
+
+    _heuristics = EditorHeuristics(text: note.body);
   }
 
   @override
@@ -106,6 +111,10 @@ class JournalEditorState extends State<JournalEditor>
       editMode: widget.editMode,
       parentFolder: note.parent,
       body: editor,
+      onUndoSelected: _undo,
+      onRedoSelected: _redo,
+      undoAllowed: false,
+      redoAllowed: false,
     );
   }
 
@@ -117,6 +126,13 @@ class JournalEditorState extends State<JournalEditor>
   }
 
   void _noteTextChanged() {
+    try {
+      _applyHeuristics();
+    } catch (e, stackTrace) {
+      Log.e("EditorHeuristics: $e");
+      logExceptionWarning(e, stackTrace);
+    }
+
     if (_noteModified && !widget.editMode) {
       notifyListeners();
       return;
@@ -132,6 +148,14 @@ class JournalEditorState extends State<JournalEditor>
     notifyListeners();
   }
 
+  void _applyHeuristics() {
+    var editState = TextEditorState.fromValue(_textController.value);
+    var es = _heuristics.textChanged(editState);
+    if (es != null) {
+      _textController.value = es.toValue();
+    }
+  }
+
   @override
   Future<void> addImage(File file) async {
     await getNote().addImage(file);
@@ -143,4 +167,8 @@ class JournalEditorState extends State<JournalEditor>
 
   @override
   bool get noteModified => _noteModified;
+
+  Future<void> _undo() async {}
+
+  Future<void> _redo() async {}
 }

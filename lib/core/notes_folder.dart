@@ -12,8 +12,8 @@ abstract class NotesFolder implements NotesFolderNotifier {
 
   List<Note> get notes;
   List<NotesFolder> get subFolders;
-  NotesFolder get parent;
-  NotesFolder get fsFolder;
+  NotesFolder? get parent;
+  NotesFolder? get fsFolder;
 
   NotesFolderConfig get config;
 

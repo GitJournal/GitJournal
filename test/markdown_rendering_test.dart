@@ -1,7 +1,7 @@
 import 'package:markdown/markdown.dart' as md;
 import 'package:test/test.dart';
 
-import 'package:gitjournal/widgets/note_viewer.dart';
+import 'package:gitjournal/widgets/markdown_renderer.dart';
 
 void main() {
   test('Parses Wiki Lnks and task items', () {
@@ -10,8 +10,8 @@ void main() {
 
     var doc = md.Document(
       encodeHtml: false,
-      extensionSet: NoteViewer.markdownExtensions(),
-      inlineSyntaxes: NoteViewer.markdownExtensions().inlineSyntaxes,
+      extensionSet: MarkdownRenderer.markdownExtensions(),
+      inlineSyntaxes: MarkdownRenderer.markdownExtensions().inlineSyntaxes,
     );
     var nodes = doc.parseLines(lines);
 
@@ -30,8 +30,8 @@ void main() {
 
     var doc = md.Document(
       encodeHtml: false,
-      extensionSet: NoteViewer.markdownExtensions(),
-      inlineSyntaxes: NoteViewer.markdownExtensions().inlineSyntaxes,
+      extensionSet: MarkdownRenderer.markdownExtensions(),
+      inlineSyntaxes: MarkdownRenderer.markdownExtensions().inlineSyntaxes,
     );
     var nodes = doc.parseLines(lines);
 

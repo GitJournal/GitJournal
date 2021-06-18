@@ -1,0 +1,348 @@
+settings:
+  ok: Ok
+  cancel: Cancelar
+  title: Configurações
+  author:
+    label: Nome Completo
+    hint: Quem deveria criar as mudanças?
+    validator: Por favor, insira um nome
+  email:
+    label: Email
+    hint: Endereço de Email
+    validator:
+      empty: Por favor, insira um email
+      invalid: Por favor, insira um email válido
+  display:
+    title: Configurações de Tela
+    darkTheme: Tema Escuro
+    homeScreen: Tela Inicial
+  gitAuthor: Configurações de Autor do Git
+  versionInfo: Informação de Versão
+  analytics: Análises
+  crashReports: Coletar Relatórios de Falhas Anônimos
+  usageStats: "Coletar Estatísticas de Uso \nAnônimas"
+  debug:
+    title: App Debug
+    subtitle: Olhar debaixo dos panos
+    levels:
+      title: ""
+      error: Erro
+      warning: aviso
+      info: ""
+      debug: ""
+      verbose: ""
+  images:
+    title: Configurações de Imagem
+    subtitle: Configurar como as Imagens são armazenadas
+    imageLocation: Local da Imagem
+    currentFolder: Mesma Pasta da Nota
+    customFolder: Pasta Personalizada
+  gitRemote:
+    changeHost:
+      title: Reconfigurar Git Host?
+      subtitle: Notas que não foram sincronizadas serão perdidas
+      ok: OK
+      cancel: Cancelar
+    title: Configurações Remotas do Git
+    subtitle: Configurar onde suas notas são sincronizadas
+  noteMetaData:
+    title: Configurações de Metadados da Nota
+    subtitle: Configurar como os Metadados da Nota são salvos
+    text: "Toda nota tem algum metadado que é salvo em um Cabeçalho YAML como a seguir - "
+    enableHeader: Habilitar Cabeçalho YAML
+    modified: Campo Modificado
+    created: Campo Criado
+    tags: Campo de Tags
+    example:
+      title: Título Exemplo
+    titleMetaData:
+      title: Título
+      fromH1: Cabeçalho do Texto 1
+      fromYaml: Do 'título' do YAML
+    exampleTitle: Pombos
+    exampleBody: Eu acho que eles podem ser maus. Ainda mais malvados que os penguins.
+    exampleTag1: Pássaros
+    exampleTag2: Mal
+    customMetaData:
+      title: Metadada Personalizada
+      invalid: YAML Inválido
+  privacy: Política de Privacidade
+  terms: Termos e Condições
+  experimental:
+    title: Recursos Experimentais
+    subtitle: Testar funcionalidades em Desenvolvimento
+    backlinks: ""
+    fs: ""
+    markdownToolbar: Mostrar Barra de Ferramentas de Markdown no Editor
+  editors:
+    title: Configurações do Editor
+    subtitle: Configurar quão diferente os editores trabalham
+    defaultEditor: Editor Padrão
+    defaultState: ""
+    markdownEditor: Editor Markdown
+    journalEditor: ""
+    defaultFolder: Pasta padrão
+    checklistEditor: ""
+    rawEditor: ""
+    choose: ""
+  sortingField:
+    modified: ""
+    created: Criado
+    filename: Nome do Arquivo
+    title: Título
+  sortingOrder:
+    asc: Ascendente
+    desc: Descendente
+  sortingMode:
+    field: Campo
+    order: ""
+  remoteSync:
+    auto: Automárico
+    manual: Manual
+  tags:
+    title: Configurações de Tags
+    subtitle: ""
+    enable: ""
+    prefixes: ""
+  misc:
+    title: ""
+    swipe: Deslize para Deletar a Nota
+    listView: ""
+  NoteFileNameFormat:
+    iso8601WithTimeZone: ISO8601 com Fuso Horário
+    iso8601: ISO8601
+    iso8601WithoutColon: ISO8601 sem ponto vírgula
+    title: Título
+    uuid: Uuid V4
+    simmple: aaaa-mm-dd-hh-mm-ss
+    zettelkasten: aaaammddhhmmss
+  HomeScreen:
+    allNotes: Todas as Notas
+    allFolders: Todas as pastas
+  EditorDefaultView:
+    edit: Editar
+editors:
+  checklist:
+    add: Adicionar Item
+  common:
+    defaultBodyHint: Escreva Aqui
+    defaultTitleHint: Título
+    discard: Descartar Mudanças
+    share: Compartilhar Nota
+    takePhoto: Tirar Foto
+    addImage: Adicionar Imagem da Galeria
+    editFileName: Editar Nome do Arquivo
+    tags: Editar Tags
+    zen:
+      enable: Habilitar Modo Zen
+      disable: Desabilitar Modo Zen
+    saveNoteFailed:
+      title: Falha ao Salvar Nota
+      message: Desculpe, mas não conseguimos salvar a Nota. Ela foi copiada para a Área de Transferencia para evitar perda de dados
+pro: Pro
+actions:
+  newNote: Nova Nota
+  newJournal: ""
+  newChecklist: ""
+screens:
+  folders:
+    title: Pastas
+    selected: Pasta Selecionada
+    dialog:
+      title: Criar nova Pasta
+      create: Criar
+      discard: Descartar
+    errorDialog:
+      title: Erro
+      deleteContent: Não é possível deletar umas Pasta que contenha notas
+      renameContent: Não é possível renomear Pasta Raíz
+      ok: OK
+    actions:
+      rename: Renomear Pasta
+      subFolder: Criar Sub-Pasta
+      delete: Deletar Pasta
+      decoration: Nome da Pasta
+      empty: "Por favor, i\nnsira um nome"
+  tags:
+    title: Tags
+    empty: ""
+  filesystem:
+    ignoredFile:
+      title: Arquivo Ignorado
+      ok: Ok
+      rename: Renomear
+    rename:
+      decoration: Nome do Arquivo
+      title: Renomear
+  folder_view:
+    empty: Vamos adicionar algumas notas
+widgets:
+  rename:
+    'yes': Renomear
+    'no': Cancelar
+    validator:
+      empty: Por favor, insira um nome
+      exists: Já Existe
+      contains: ""
+  backlinks:
+    title:
+      one: ""
+      other: ""
+  SortingOrderSelector:
+    title: ""
+  PurchaseButton:
+    text: Comprar por {price}
+    fail: Falha ao Carregar
+  FolderView:
+    noteSelected: Nota Selecionada
+    syncError: ""
+    headerOptions:
+      heading: Opções de Cabeçaho
+      auto: Título Auto Gerado
+      titleFileName: Título ou Nome do Arquivo
+      fileName: Nome do Arquivo
+      summary: ""
+      customize: ""
+    views:
+      standard: ""
+      journal: ""
+      grid: ""
+      card: ""
+      select: ""
+    sortingOptions: ""
+    viewOptions: ""
+rootFolder: Pasta Raíz
+ignoredFiles:
+  dot: Começa com um .
+  ext: Não terminam com .md ou .txt
+drawer:
+  setup: ""
+  pro: ""
+  all: Todas as Notas
+  folders: Pastas
+  fs: Sistema de Arquivos
+  tags: Tags
+  share: Compartilhar App
+  rate: Nos Avalie
+  feedback: ""
+  bug: ""
+setup:
+  autoConfigure:
+    title: Como você quer fazer isso?
+    automatic: ""
+    manual: Deixe-me fazer isto manualmente
+  autoconfigure:
+    step1: Listar seus repositórios existentes ou criar um novo repositório
+    step2: Gerar um Chave SSH nesse dispositivo
+    step3: ""
+    warning: ""
+    authorize: Autorizar GitJournal
+    waitPerm: Aguardando Permissões...
+    readUser: ""
+  repoSelector:
+    title: ""
+    hint: ""
+    create: ""
+  cloneUrl:
+    enter: ""
+    validator:
+      empty: Por favor, insira algum texto
+      invalid: Entrada Inválida
+      onlySsh: Apenas urls SSH são aceitas atualmente
+    manual:
+      title: Por favor crie um novo repositório git -
+      step1: ""
+      step2: ""
+      button: ""
+  next: Próximo
+  fail: ""
+  keyEditors:
+    public: Chave Publica Inválida - Não começa com ssh-rsa
+    private: Chave Privada Inválida
+  sshKey:
+    generate: Gerando Chave SSH
+    title: ""
+    step1: Copiar a chave
+    step2a: ""
+    step2b: ""
+    step3: Tentando Clonar...
+    copy: Copiar Chave
+    copied: Chave Publica copiada para a Área de Transferência
+    regenerate: ""
+    openDeploy: ""
+    clone: Clonar Repositório
+    addDeploy: ""
+  sshKeyChoice:
+    title: Precisamos das chaves SSH para autenticar -
+    generate: Gerar novas chaves
+    custom: ""
+  sshKeyUserProvided:
+    public: "Chave Publica - "
+    private: Chave Privada -
+  cloning: Clonando...
+  host:
+    title: ""
+    custom: ""
+feature:
+  darkMode: Modo Escuro
+  rawEditor: ""
+  folderSupport: ""
+  fileNameCustomize: ""
+  noteMetaDataCustomize:
+    title: ""
+    subtitle: Permite GitJournal ser usado com geradores de website estáticos.
+  autoMergeConflicts: ""
+  noteSorting: ""
+  gitPushFreq: ""
+  checklistEditor: ""
+  journalEditor: ""
+  diffViews: ""
+  imageSupport: ""
+  tags: ""
+  appShortcuts: ""
+  createRepo: ""
+  backlinks: ""
+  txtFiles: ""
+  wikiLinks: ""
+  metaDataTitle: ""
+  journalEditorDefaultFolder: ""
+  yamlModifiedKey: ""
+  yamlCreatedKey: ""
+  yamlTagsKey: ""
+  disableYamlHeader: ""
+  customizeHomeScreen: ""
+  zenMode: Modo de Escrita Zen
+  emojiSupport:
+    title: ""
+    subtitle: "Converter :heart: para ❤️"
+  allNotesView: Adicionar uma tela para mostrar "Todas as Notas"
+  basicSearch: Busca Básica
+  customSSHKeys: ""
+  customMetaData: Adicionar Metadados personalizados às novas Notas
+  graphVisualization: ""
+  mutliRepos: ""
+  customThemes: Temas personalizados
+  gitLog: ""
+  latex: ""
+  mermaid: ""
+  encryptedHosting: ""
+  desktop: ""
+  markdownToolbar: ""
+  localization:
+    title: Localização
+    subtitle: Permitir GitJournal ser traduzido
+  inlineTags: ""
+feature_timeline:
+  title: ""
+  progress: Em Progresso
+  plan: ""
+purchase_screen:
+  title: Versão Pro
+  desc: ''
+  restore: ""
+  oneTime:
+    title: ""
+    desc: ""
+  monthly:
+    title: ""
+    desc: Habilitar todas as Funcionalidades Pro. Depois de 12 meses ou após pagar {minYearlyPurchase}, você terá todos os benefícios da 'Compra Única'

@@ -1,0 +1,1 @@
+enum EditorType { Markdown, Raw, Checklist, Journal, Org }

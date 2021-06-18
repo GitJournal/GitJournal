@@ -1,5 +1,26 @@
+- version: "1.76"
+  date: 2021-04-23
+  features:
+    - text: "Add Git Branch selection - #127"
+  bugs:
+    - text: "MD files should end with a single newline character #383"
+
+- version: "1.74"
+  date: 2021-02-23
+  reddit: https://www.reddit.com/r/GitJournal/comments/lr9n0r/gitjournal_v174/
+  features:
+    - text: "Support Multiple Repos #229"
+      image: repos.gif
+  improvements:
+    - text: "Add Date Only FileName option #346"
+    - text: "Ignore folders with a .gjignore file. It's a temporary hack until we start reading the .gjignore files like the .gitignore files"
+    - text: "Add a working Experimental Markdown Toolbar. This can be enabled from the Settings."
+      image: markdown_toolbar.jpeg
+    - text: "Basic Undo/Redo support for Raw Editor"
+    - text: "Automatically use dark mode based on system settings - #193"
+
 - version: "1.73"
-  draft: true
+  date: 2020-11-15
   features:
     - text: "Allow the Git Repo to be accessible by other apps. You can now edit the notes with any other editor in Android, and additionally sync with any other mechanism as the folder is in a public location - #99"
   improvements:
@@ -12,6 +33,7 @@
     - text: "Create new note when clicking on non existing Wiki Link - #240"
     - text: "Debug Screen: Add a button to easily copy all the logs"
     - text: "Git Remote Settings: Expose the git host"
+    - text: "When sharing a note share it's metadata as well #360"
   bugs:
     - text: "Fix notes not always showing up - #270"
     - text: "Fix sharing to GitJournal - #293"
@@ -72,7 +94,7 @@
   date: 2020-08-31
   features:
     - title: One Time Purchase
-      text: "I'm changing the buisness model from typical subscriptions to a model where you forever own the features you have paid for. The earlier monthly subscription is still available, but that will automatically convert into a One Time Purchase after 12 months."
+      text: "I'm changing the business model from typical subscriptions to a model where you forever own the features you have paid for. The earlier monthly subscription is still available, but that will automatically convert into a One Time Purchase after 12 months."
       image: new_pro.gif
     - title: Zettelkasten filename format
       text: Allow notes to be saved with the 'yyyymmddmmhhss' format
@@ -85,7 +107,7 @@
       text: Make it clearer that GitJournal will require permissions to all your repos
       image: oauth_perm_screen.jpeg
     - text: Beautify the purchase slider
-    - text: Allow `tags` to be a space seperated string in the YAML header. Earlier it had to be list.
+    - text: Allow `tags` to be a space separated string in the YAML header. Earlier it had to be list.
     - text: Show `Pro mode` label in AppBar for pro members
       image: pro_tag.jpeg
   bugs:
@@ -121,9 +143,9 @@
   date: 2020-08-11
   features:
     - text: Make Wiki Link resolution be similar to the way it is done in Obsidian
-    - text: "Support Piped Wiki Links format `[[fileName | text-to-dispaly]]` - #203"
+    - text: "Support Piped Wiki Links format `[[fileName | text-to-display]]` - #203"
     - text: Allow 'tags' metadata field to be configured
-    - text: Allow 'created' metdata field to be configured
+    - text: Allow 'created' metadata field to be configured
   bugs:
     - text: "Fix annoying cursor not moving for spaces bug - #131"
 

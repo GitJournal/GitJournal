@@ -8,8 +8,8 @@ import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
-import 'package:gitjournal/analytics.dart';
-import 'package:gitjournal/app_settings.dart';
+import 'package:gitjournal/analytics/analytics.dart';
+import 'package:gitjournal/settings/app_settings.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   OnBoardingScreen();
@@ -73,7 +73,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
               children: [
                 DotsIndicator(
                   dotsCount: pages.length,
-                  position: _currentPageIndex,
+                  position: _currentPageIndex.toDouble(),
                   decorator: DotsDecorator(
                     activeColor: Theme.of(context).primaryColorDark,
                   ),
@@ -102,14 +102,17 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       bottomBar = SizedBox(
         width: double.infinity,
         height: _bottomBarHeight,
-        child: RaisedButton(
+        child: ElevatedButton(
           key: const ValueKey("GetStarted"),
           child: Text(
             tr("OnBoarding.getStarted"),
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.button,
           ),
-          color: Theme.of(context).primaryColor,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(
+                Theme.of(context).primaryColor),
+          ),
           onPressed: _finish,
         ),
       );
@@ -151,14 +154,14 @@ class OnBoardingBottomButton extends StatelessWidget {
   final String text;
 
   OnBoardingBottomButton({
-    Key key,
-    @required this.text,
-    @required this.onPressed,
+    Key? key,
+    required this.text,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
+    return TextButton(
       key: key,
       child: Text(
         text,
@@ -175,7 +178,7 @@ class OnBoardingPage1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
-    var headerTextStyle = textTheme.headline2.copyWith(fontFamily: "Lato");
+    var headerTextStyle = textTheme.headline2!.copyWith(fontFamily: "Lato");
     var header = Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,

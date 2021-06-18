@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:meta/meta.dart';
-
-import 'package:gitjournal/app_settings.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
+import 'package:gitjournal/iap/purchase_screen.dart';
+import 'package:gitjournal/iap/purchase_thankyou_screen.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/screens/filesystem_screen.dart';
 import 'package:gitjournal/screens/folder_listing.dart';
@@ -12,52 +11,81 @@ import 'package:gitjournal/screens/home_screen.dart';
 import 'package:gitjournal/screens/login_screen.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/screens/onboarding_screens.dart';
-import 'package:gitjournal/screens/purchase_screen.dart';
-import 'package:gitjournal/screens/purchase_thankyou_screen.dart';
-import 'package:gitjournal/screens/settings_screen.dart';
 import 'package:gitjournal/screens/signup_screen.dart';
 import 'package:gitjournal/screens/tag_listing.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/setup/screens.dart';
-import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/utils/utils.dart';
+
+class AppRoute {
+  static const OnBoarding = '/onBoarding';
+  static const AllFolders = '/folders';
+  static const AllTags = '/tags';
+  static const FileSystem = '/filesystem';
+  static const Graph = '/graph';
+  static const Settings = '/settings';
+  static const Login = '/login';
+  static const Register = '/register';
+  static const SetupRemoteGit = '/setupRemoteGit';
+  static const Purchase = '/purchase';
+  static const PurchaseThank = '/purchase_thank_you';
+
+  static const all = [
+    OnBoarding,
+    AllFolders,
+    AllTags,
+    FileSystem,
+    Graph,
+    Settings,
+    Login,
+    Register,
+    SetupRemoteGit,
+    Purchase,
+    PurchaseThank,
+  ];
+}
 
 class AppRouter {
   final AppSettings appSettings;
   final Settings settings;
 
-  AppRouter({@required this.appSettings, @required this.settings});
+  AppRouter({required this.appSettings, required this.settings});
 
   String initialRoute() {
     var route = '/';
     if (!appSettings.onBoardingCompleted) {
-      route = '/onBoarding';
+      route = AppRoute.OnBoarding;
     }
     if (settings.homeScreen == SettingsHomeScreen.AllFolders) {
-      route = '/folders';
+      route = AppRoute.AllFolders;
     }
     return route;
   }
 
   Route<dynamic> generateRoute(
     RouteSettings routeSettings,
-    Repository repository,
+    GitJournalRepo repository,
     String sharedText,
     List<String> sharedImages,
     Function callbackIfUsedShared,
   ) {
-    var route = routeSettings.name;
-    if (route == '/folders' || route == '/tags' || route == '/filesystem') {
+    var route = routeSettings.name ?? "";
+    if (route == AppRoute.AllFolders ||
+        route == AppRoute.AllTags ||
+        route == AppRoute.FileSystem) {
       return PageRouteBuilder(
         settings: routeSettings,
-        pageBuilder: (_, __, ___) => _screenForRoute(
+        pageBuilder: (_, __, ___) => screenForRoute(
           route,
           repository,
           settings,
           sharedText,
           sharedImages,
           callbackIfUsedShared,
-        ),
+        )!,
         transitionsBuilder: (_, anim, __, child) {
           return FadeTransition(opacity: anim, child: child);
         },
@@ -66,20 +94,20 @@ class AppRouter {
 
     return MaterialPageRoute(
       settings: routeSettings,
-      builder: (context) => _screenForRoute(
+      builder: (context) => screenForRoute(
         route,
         repository,
         settings,
         sharedText,
         sharedImages,
         callbackIfUsedShared,
-      ),
+      )!,
     );
   }
 
-  Widget _screenForRoute(
+  Widget? screenForRoute(
     String route,
-    Repository repository,
+    GitJournalRepo repository,
     Settings settings,
     String sharedText,
     List<String> sharedImages,
@@ -88,31 +116,31 @@ class AppRouter {
     switch (route) {
       case '/':
         return HomeScreen();
-      case '/folders':
+      case AppRoute.AllFolders:
         return FolderListingScreen();
-      case '/filesystem':
+      case AppRoute.FileSystem:
         return FileSystemScreen();
-      case '/tags':
+      case AppRoute.AllTags:
         return TagListingScreen();
-      case '/graph':
+      case AppRoute.Graph:
         return GraphViewScreen();
-      case '/settings':
+      case AppRoute.Settings:
         return SettingsScreen();
-      case '/login':
+      case AppRoute.Login:
         return LoginPage();
-      case '/register':
+      case AppRoute.Register:
         return SignUpScreen();
-      case '/setupRemoteGit':
+      case AppRoute.SetupRemoteGit:
         return GitHostSetupScreen(
           repoFolderName: settings.folderName,
           remoteName: "origin",
           onCompletedFunction: repository.completeGitHostSetup,
         );
-      case '/onBoarding':
+      case AppRoute.OnBoarding:
         return OnBoardingScreen();
-      case '/purchase':
+      case AppRoute.Purchase:
         return PurchaseScreen();
-      case '/purchase_thank_you':
+      case AppRoute.PurchaseThank:
         return PurchaseThankYouScreen();
     }
 
@@ -124,9 +152,6 @@ class AppRouter {
       Log.i("EditorType: $et");
 
       var rootFolder = repository.notesFolder;
-
-      Log.d("sharedText: $sharedText");
-      Log.d("sharedImages: $sharedImages");
 
       var extraProps = <String, dynamic>{};
       if (settings.customMetaData.isNotEmpty) {
@@ -149,7 +174,7 @@ class AppRouter {
       );
     }
 
-    assert(false, "Not found named route in _screenForRoute");
+    assert(false, "Not found named route in screenForRoute");
     return null;
   }
 }

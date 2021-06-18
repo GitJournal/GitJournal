@@ -1,3 +1,5 @@
+/*
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -5,7 +7,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:crypto/crypto.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:mutex/mutex.dart';
 import 'package:path/path.dart' as p;
 
@@ -124,3 +125,4 @@ html2canvas(document.body, {backgroundColor: 'rgba(0, 0, 0, 0)', removeContainer
     return Image.file(File(imagePath));
   }
 }
+*/

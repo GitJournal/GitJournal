@@ -1,6 +1,12 @@
 name: gitjournal
 description: A Note Taking App Built on top of Git
-version: 1.73.4+10
+version: 1.76.1+10
+
+environment:
+  sdk: ">=2.13.0 <3.0.0"
+  flutter: ">=2.0.3"
+
+publish_to: none
 
 dependencies:
   flutter:
@@ -9,89 +15,87 @@ dependencies:
     sdk: flutter
   dart_git:
     git: https://github.com/GitJournal/dart-git.git
-    #path: /Users/vishesh/src/gitjournal/dart-git
-  git_bindings: #^0.0.18
+    # path: /Users/vishesh/src/gitjournal/dart-git
+  git_bindings:
     #path: /Users/vishesh/src/gitjournal/git_bindings
     git: https://github.com/GitJournal/git_bindings.git
-  gotrue:
-    #path: /Users/vishesh/src/gitjournal/gotrue-dart/
-    git: https://github.com/GitJournal/gotrue-dart.git
   icloud_documents_path:
     git: https://github.com/GitJournal/icloud_documents_path.git
-  auto_size_text: ^2.0.1
-  badges: ^1.1.1
-  connectivity: ^0.4.6+1
-  cached_network_image: ^2.2.0+1
-  crypton: ^1.1.3
-  device_info: ">=0.4.2+4 <2.0.0"
-  dots_indicator: ^0.0.3
-  dynamic_theme: ^1.0.0
-  easy_localization: ^2.3.2
-  easy_localization_loader: ^0.0.2
-  email_validator: ^1.0.6
-  equatable: ^1.1.0
-  ext_storage: ^1.0.3
-  file_picker: ^2.0.7
-  filesystem_picker: ^1.0.3 # for directories
-  fimber: ^0.3.0
-  firebase_analytics: ^6.2.0
-  flutter_email_sender: ^3.0.1
-  flutter_emoji: ">= 2.0.0"
-  flutter_markdown: ^0.4.3
-  flutter_plugin_android_lifecycle: ^1.0.8 # for fixing the build
-  flutter_sentry: ^0.4.4
-  flutter_staggered_grid_view: ^0.3.0
-  font_awesome_flutter: ^8.7.0
-  function_types: ^0.0.2
-  git_url_parse2: ^0.0.1
-  google_fonts: ^1.1.1
-  http: ^0.12.0+1
-  image_picker: ^0.6.7
-  in_app_purchase: ^0.3.4+5
-  intl: ^0.16.1
-  isolate: ^2.0.3
-  launch_review: ^2.0.0
-  mutex: ^1.0.3
-  package_info: ">=0.4.1 <2.0.0"
-  path: ^1.6.2
-  permission_handler: ^5.0.1+1
-  provider: ^4.3.2+2
-  quick_actions: ^0.4.0+10
-  receive_sharing_intent: ^1.4.0+2
-  sentry: ">=3.0.0 <4.0.0"
-  share: ^0.6.3+5
-  shared_preferences: ^0.5.6
-  ssh_key: ^0.6.0
-  stack_trace: ^1.9.6
-  synchronized: ^2.2.0
-  time: ^1.3.0
-  timeago: ^2.0.27
-  url_launcher: ^5.4.1
-  uuid: ^2.0.1
-  yaml: ^2.2.0
-  yaml_serializer: ^0.0.9
+  auto_size_text: ^3.0.0-nullsafety.0
+  badges: ^2.0.1
+  basic_utils: ^3.1.0
+  connectivity: ^3.0.3
+  # cryptography: ^1.4.1
+  # cryptography_flutter: ^1.0.0
+  dashbook: ^0.1.2
+  device_info: ^2.0.0
+  dots_indicator: ^2.0.0
+  easy_localization: ^3.0.0
+  easy_localization_loader: ^1.0.0
+  email_validator: ^2.0.1
+  equatable: ^2.0.0
+  ext_storage:
+    git: https://github.com/GitJournal/ext_storage.git
+  file_picker: ^3.0.1
+  filesystem_picker: ^2.0.0-nullsafety.0 # for directories
+  fimber: ^0.6.1
+  flutter_cache_manager: ^3.0.1
+  flutter_email_sender: ^5.0.0
+  flutter_emoji:
+    git: https://github.com/cek-cek/flutter-emoji
+  flutter_markdown: ^0.6.1
+  flutter_runtime_env: ^0.0.4
+  flutter_staggered_grid_view: ^0.4.0
+  flutter_svg: ^0.21.0+1
+  font_awesome_flutter: ^9.0.0
+  function_types: ^0.1.0
+  google_fonts: ^2.1.0
+  http: ^0.13.1
+  image_picker: ^0.7.4
+  in_app_purchase: ^0.5.2
+  intl: ^0.17.0
+  launch_review: ^3.0.1
+  mutex: ^3.0.0
+  org_flutter: ^1.4.0
+  package_info: ^2.0.0
+  path: ^1.8.0
+  permission_handler: ^6.1.1
+  photo_view: ^0.11.1
+  provider: ^5.0.0
+  quick_actions: ^0.6.0
+  receive_sharing_intent: ^1.4.5
+  sentry: ^5.0.0
+  sentry_flutter: ^5.0.0
+  share: ^2.0.1
+  shared_preferences: ^2.0.5
+  #ssh_key: ^0.6.0
+  stack_trace: ^1.10.0
+  synchronized: ^3.0.0
+  time: ^2.0.0
+  timeago: ^3.0.2
+  url_launcher: ^6.0.3
+  uuid: ^3.0.4
+  yaml: ^3.1.0
+  yaml_serializer: ^0.0.11
+  collection: ^1.15.0-nullsafety.4
+  flex_color_scheme: ^2.1.1
 
 dev_dependencies:
-  flutter_driver:
-    sdk: flutter
+  #flutter_driver:
+  #  sdk: flutter
   flutter_test:
     sdk: flutter
-  benchmark_harness: any
-  bonsoir: ^0.1.2+2
-  flutter_launcher_icons: "^0.7.2"
-  flutter_webview_plugin: ^0.3.11
-  import_sorter: ^4.2.2
-  multicast_dns: ^0.2.2
-  screenshots: ^2.1.1
-  test: ^1.5.1
-
-dependency_overrides:
-  markdown:
-    git: https://github.com/GitJournal/markdown.git
-  # Required for screenshots package
-  process: ^4.0.0-nullsafety.1
-  platform: ^3.0.0-nullsafety.1
-  file: ^6.0.0-nullsafety.1
+  benchmark_harness: ^2.0.0
+  bonsoir: ^1.0.0
+  flutter_launcher_icons:
+    git: https://github.com/dirkbo/flutter_launcher_icons
+  # flutter_webview_plugin: ^0.3.11
+  import_sorter: ^4.6.0
+  multicast_dns: ^0.3.0
+  #screenshots: ^2.1.1
+  test: ^1.16.5
+  monarch: ^0.2.0
+  build_runner: ^1.10.3
 
 flutter:
   uses-material-design: true
@@ -101,7 +105,7 @@ flutter:
     - "assets/icon/gitlab-icon.png"
     - "assets/OnBoardingMarkdown.png"
     - "assets/OnBoardingGitProviders.png"
-    - "assets/langs/en.yaml"
+    - "assets/langs/"
   fonts:
     - family: Lato
       fonts:
@@ -115,3 +119,9 @@ flutter_icons:
   image_path: "assets/icon/icon.png"
   image_path_ios: "assets/icon/icon_ios.png"
   ios: true
+  macos: true
+  windows: false
+  linux: false
+
+import_sorter:
+  comments: false

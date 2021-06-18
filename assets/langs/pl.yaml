@@ -1,0 +1,438 @@
+# Polish translation  by Witold Firlej (grizz) https://grizz.pl https://github.com/grizz-pl
+settings:
+  ok: Ok
+  cancel: Anuluj
+  title: Opcje
+  author:
+    label: Imię i nazwisko
+    hint: Kto jest autorem zmian?
+    validator: Podaj imię
+  email:
+    label: Email
+    hint: Adres email
+    validator:
+      empty: Proszę wpisz email
+      invalid: Proszę podaj poprawny email
+  display:
+    title: Opcje wyświetlania
+    homeScreen: Ekran główny
+    theme: Motyw
+  theme:
+    light: Jasny
+    dark: Ciemny
+    default: Ustawienia systemu
+  gitAuthor: Ustawienia autora dla Git
+  versionInfo: Informacja o wersji
+  analytics: Analityka
+  crashReports: Zbieraj anonimowe raporty awarii
+  usageStats: Zbieraj anonimowe statystyki używania
+  debug:
+    title: Debuguj aplikację
+    subtitle: Zerknij pod maskę
+    levels:
+      title: Wybierz poziom
+      error: Error
+      warning: warning
+      info: Info
+      debug: Debug
+      verbose: Verbose
+  images:
+    title: Ustawienia obrazów
+    subtitle: Skonfiguruj jak przechowywane są obrazy
+    imageLocation: Położenie obrazów
+    currentFolder: W tym samym folderze co notatki
+    customFolder: Wybrany folder
+  gitRemote:
+    changeHost:
+      title: Zmienić host Git?
+      subtitle: Notatki, które nie są jeszcze zsynchronizowane zostaną utracone
+      ok: Ok
+      cancel: Anuluj
+    title: Opcje Git Remote
+    subtitle: Skonfiguruj, gdzie są synchronizowane Twoje notatki
+    host: Git Host
+  noteMetaData:
+    title: Opcje metadanych notatek
+    subtitle: Skonfiguruj jak przechowywane są metadane notatek
+    text: Każda notatk ma metadane, które są przechowywane w nagłówku YAML, takie jak -
+    enableHeader: Włącz nagłówek YAML
+    modified: Pole - Modified 
+    created: Pole - Created
+    tags: Pole - Tags
+    example:
+      title: Przykładowy tytuł
+    titleMetaData:
+      title: Tytuł
+      fromH1: Tekst nagłówka 1
+      fromYaml: Z pola YAML 'title'
+      filename: NazwaPliku
+    exampleTitle: Gołąb
+    exampleBody: Myślę, że one mogą być złe. Nawet bardziej złe niż pingwiny.
+    exampleTag1: Ptaki
+    exampleTag2: Zło
+    customMetaData:
+      title: Konfigurowalne metadane
+      invalid: Błędny YAML
+  privacy: Polityka prywatności
+  terms: Reulamin
+  experimental:
+    title: Funkcjonalności eksperymentalne
+    subtitle: Wypróbuj funkcjonalności będące w trakcie rozwoju
+    backlinks: Pokazuj linki zwrotne w podglądzie Markdown
+    fs: Pokazuj system plików
+    markdownToolbar: Pokazuj pasek narzędzi Markdown w edytorze
+    graphView: Widok grafu
+    accounts: Platform Independent Accounts
+  editors:
+    title: opcje edytora
+    subtitle: Skonfiguruj jak działają poszczególne edytory
+    defaultEditor: Domyślny edytor
+    defaultState: Domyślny stan
+    markdownEditor: Edytor Markdown
+    journalEditor: Edytor dziennika
+    defaultFolder: Domyślny katalog
+    checklistEditor: Edytor listy
+    rawEditor: Edytor źródłowy
+    choose: Wybierz edytor
+  sortingField:
+    modified: Ostatnia modyfikacja
+    created: Data utworzenia
+    filename: Nazwa pliku
+    title: Tytuł
+  sortingOrder:
+    asc: Rosnąco
+    desc: Malejąco
+  sortingMode:
+    field: Pole
+    order: Kolejność
+  remoteSync:
+    auto: Automatycznie
+    manual: Ręcznie
+  tags:
+    title: Opcje tagów
+    subtitle: Skonfiguruj jak interpretowane są tagi wewnątrz tekstu
+    enable: Interperetuj tagi wewnątrz tekstu
+    prefixes: Prefixy tagów wewnątrz tekstu
+  misc:
+    title: Różne opcje
+    swipe: Przesuń, aby wykasować notatkę
+    listView: Widok listy
+    confirmDelete: Pokazuj okno potwierdzenia kasowania pliku
+  NoteFileNameFormat:
+    iso8601WithTimeZone: ISO8601 ze strefą czasową
+    iso8601: ISO8601
+    iso8601WithoutColon: ISO8601 bez dwukropków
+    title: Tytuł
+    uuid: Uuid V4
+    simple: yyyy-mm-dd-hh-mm-ss
+    zettelkasten: yyyymmddhhmmss
+    dateOnly: yyyy-mm-dd
+  HomeScreen:
+    allNotes: Wszystkie notatki
+    allFolders: Wszystkie katalogi
+  EditorDefaultView:
+    edit: Edycja
+    view: Widok
+    lastUsed: Ostatnio używane
+  ssh:
+    syncFreq: Częstotliwość odświeżania
+    reset: Reset Git Host
+  note:
+    title: Ustawienia notatek
+    defaultFolder: Katalod domyślny dla nowych notatek
+    newNoteFileName: Nazwa nowej notatki
+  storage:
+    title: Miejsce przechowywania
+    fileName: filename
+    external: Przechowuj w zewnętrznym repozytorium
+    icloud: Przechowuj w iCloud
+    repoLocation: Lokalizacja repozytorium
+  drawer:
+    title: Ustawienia paska bocznego
+  bottomMenuBar:
+    title: Dolny pasek menu
+    subtitle: Skonfiguruj jego wygląd i zachowanie
+    enable: Włącz dolny pasek menu
+  deleteRepo: Usuń Repozytorium
+
+editors:
+  checklist:
+    add: Dodaj element
+  common:
+    defaultBodyHint: Napisz tutaj
+    defaultTitleHint: Tytuł
+    discard: Odrzuć zmiany
+    share: Share Note
+    takePhoto: Zrób zdjęcie
+    addImage: Dodaj obraz z galerii
+    editFileName: Edytuj nazwę pliku
+    tags: Edytuj znaczniki
+    zen:
+      enable: Włącz tryb Zen
+      disable: Wyłącz tryb Zen
+    saveNoteFailed:
+      title: Nie udało się zapisać notatki
+      message: Przepraszamy, ale nie możemy zapisać tej notatki. Została ona skopiowana do schowka, aby uniknąć utraty danych.
+pro: Pro
+actions:
+  newNote: Nowa notatka
+  newJournal: Nowy wpis do dziennika
+  newChecklist: Nowa lista kontrolna
+screens:
+  home:
+    allNotes: Wszystkie notatki
+  folders:
+    title: Katalogi
+    selected: Katalog wybrany
+    dialog:
+      title: Utwórz nowy katalog
+      create: Utwórz
+      discard: Odrzuć
+    errorDialog:
+      title: Error
+      deleteContent: Nie można usunąć katalogu, który zawiera notatki
+      renameContent: Nie można zmienić nazwy katalogu głównego
+      ok: Ok
+    actions:
+      rename: Zmień nazwę katalogu
+      subFolder: Utwórz podkatalog
+      delete: Usuń katalog
+      decoration: Nazwa katalogu
+      empty: Proszę wpisać nazwę
+  tags:
+    title: Tagi
+    empty: Nie znaleziono żadnych tagów
+  filesystem:
+    ignoredFile:
+      title: Plik zignorowany
+      ok: Ok
+      rename: Zmień nazwę
+    rename:
+      decoration: Nazwa pliku
+      title: Zmień nazwę
+  folder_view:
+    empty: Dodajmy jakieś notatki?
+
+OnBoarding:
+  Skip: Pomiń
+  Next: Dalej
+  getStarted: Zacznijmy
+  subtitle: 'Otwartoźródłowa aplikacja do notatek oparta o Git'
+  page2: 'Twoje notatki są przechowywane w plikach markdown z nagłówkami YAML'
+  page3: 'Synchronizuj swoje repozytorium git z dowolnym usługodawcą'
+
+widgets:
+  rename:
+    yes: Zmień nazwę
+    no: Anuluj
+    validator:
+      empty: Proszę podaj nazwę
+      exists: Już istnieje
+      contains: Nie może zawierać /
+  backlinks:
+    title:
+      zero: ""
+      one: "{} odnośnik w notatce do tej notatki"
+      many: "{} odnośników w notatkach do tej notatki"
+      two: "{} odnośniki w notatkach do tej notatki"
+      few: "{} odnośników w notatkach do tej notatki"
+      other: "{} odnośniki w notatkach do tej notatki"
+  SortingOrderSelector:
+    title: Kryteria sortowania
+  PurchaseButton:
+    text: Purchase for {price}
+    fail: Failed to Load
+    failSend: Failed to send purchase request
+    failPurchase: Failed to Purchase - {}
+  FolderView:
+    noteDeleted: Nie wykasowany
+    undo: Cofnij
+    syncError: Błąd synchronizacji {}
+    headerOptions:
+      heading: Opcje nagłówka
+      auto: Automatycznei generowany tytuł
+      titleFileName: Tytuł albo nazwa oliku
+      fileName: NazwaPliku
+      summary: Pokaż podsumowanie
+      customize: Dostosuj widok
+    views:
+      standard: Widok standardowy
+      journal: Widok dziennika
+      grid: Widok siatki
+      card: Widok kart
+      select: Wybierz widok
+    sortingOptions: Opcje sortowania
+    viewOptions: Opcje widoku
+    searchFailed: Nie znaleziono 
+  NoteDeleteDialog:
+    title: Chcesz wykasować tę notatkę?
+    yes: Tak
+    no: Nie
+  NoteEditor:
+    renameFile: Zmień nazwę pliku
+    fileName: Nazwa pliku
+  SyncButton:
+    error: Błąd synchronizacji {}
+  PurchaseWidget:
+    failed: Purchase Failed
+  NoteViewer:
+    linkNotFound: Link '{}' nie znaleziony
+    linkInvalid: Link '{}' jest błędny.
+  FolderSelectionDialog:
+    title: Wybierz katalog
+
+rootFolder: Katalog główny
+ignoredFiles:
+  dot: Rozpoczynające się .
+  ext: Nie kończące się na -
+drawer:
+  setup: Konfiguracja hosta Git
+  pro: Odblokuj wersję Pro
+  all: Wszystkie notatki
+  folders: Katalogi
+  fs: System plików
+  graph: Widok grafu
+  tags: Tagi
+  share: Udostępnij aplikacje
+  rate: Oceń nas
+  feedback: Informacje zwrotne
+  bug: Zgłoszenie błędu
+  remote: Brak hosta Git
+  addRepo: Dodaj repozytorium
+setup:
+  autoconfigure:
+    title: Potrzebujemy zezwoleń na wykonanie następujących czynności
+    step1: 1. Pokaż istniejące repozytoria lub utwórz nowe repozytorium
+    step2: 2. Wygeneruj klucz SSH na tym urządzeniu
+    step3: 3. Dodaj klucz jako klucz z prawem do zapisu w repozytorium
+    warning: Będzie to wymagało przyznania GitJournal dostępu do wszystkich prywatnych i publicznych repozytoriów. Jeśli nie czujesz się z tym dobrze, wróć i wybierz opcję konfiguracji ręcznej.
+    authorize: Autoryzuj GitJournal
+    waitPerm: Oczekiwanie na uprawnienia ...
+    readUser: Czytanie informacji o użytkowniku
+  repoSelector:
+    title: Wybierz lub utwórz repozytorium
+    hint: Wpisz, aby wyszukać lub utworzyć repozytorium
+    create: Utwórz prywatne repozytorium {}
+  cloneUrl:
+    enter: Wprowadź adres URL Git Clone
+    validator:
+      empty: Proszę wprowadzić tekst
+      invalid: Nieprawidłowe dane wejściowe
+      onlySsh: Obecnie akceptowane są tylko adresy URL SSH
+    manual:
+      title: Utwórz nowe repozytorium git -
+      step1: 1. Wejdź na stronę internetową, utwórz repozytorium i skopiuj jego adres URL klonu git
+      step2: 2. Wprowadź adres URL do klonowania Git
+      button: Otwórz "Utwórz nową stronę internetową repozytorium"
+  next: Kolejny
+  fail: Niepowodzenie
+  keyEditors:
+    public: Nieprawidłowy klucz publiczny - Nie zaczyna się od ssh-rsa
+    private: Nieprawidłowy klucz prywatny
+    load: Załaduj z pliku
+  sshKey:
+    generate: Generowanie klucza SSH
+    title: Aby uzyskać dostęp do tego repozytorium, ten klucz publiczny musi zostać skopiowany jako klucz do zapisu
+    step1: 1. Skopiuj klucz
+    step2a: 2. Otwórz stronę internetową i wklej klucz. Upewnij się, że ma on dostęp do zapisu.
+    step2b: 2. Daj temu kluczowi SSH dostęp do repozytorium git. (Musisz sam to rozgryźć)
+    step3: 3. Spróbuj klonować ...
+    copy: Kopiuj klucz
+    copied: Klucz publiczny skopiowany do schowka
+    regenerate: Wygeneruj klucz ponownie
+    openDeploy: Otwórz stronę sieci Web klucza
+    clone: Klonuj repozytorium
+    addDeploy: Dodawanie jako klucza do zapisu
+    save: Zapisać
+  sshKeyChoice:
+    title: Potrzebujemy kluczy SSH do uwierzytelnienia -
+    generate: Generuj nowe klucze
+    custom: Podaj niestandardowe klucze SSH
+  sshKeyUserProvided:
+    public: Klucz publiczny -
+    private: Prywatny klucz -
+    password: Hasło
+  cloning: Klonowanie ...
+  host:
+    title: Wybierz dostawcę hostingu Git -
+    custom: Zwyczaj
+  autoConfigure:
+    title: Jak chcesz to zrobić?
+    automatic: Konfiguracja automatyczna
+    manual: Zrobię to ręcznie
+
+feature:
+  darkMode: Tryb ciemny
+  rawEditor: Editor Raw
+  folderSupport: Obsługa katalogów
+  fileNameCustomize: Dostosuj nazwę pliku notatki
+  noteMetaDataCustomize:
+    title: Dostosuj metadane notatki
+    subtitle: Umożliwia używanie GitJournal ze statycznymi generatorami witryn internetowych
+  autoMergeConflicts: Automatyzacja rozwiązywania konfliktów scalania
+  noteSorting: Konfigurowalne sortowanie notatek
+  gitPushFreq: Konfigurowalna częstotliwość synchronizacji Git
+  checklistEditor: Edytor listy kontrolnej
+  journalEditor: Edytor dziennika
+  diffViews: Różne widoki katalogów - dziennik, siatka, standard
+  imageSupport: Wsparcie obrazu
+  tags: Tagi notatek
+  appShortcuts: Skróty do aplikacji
+  createRepo: Twórz niestandardowe repozytoria z poziomu aplikacji
+  backlinks: Uwaga Wsparcie dla linków zwrotnych
+  txtFiles: Obsługa plików TXT
+  wikiLinks: Obsługa łączy w stylu Wiki
+  metaDataTitle: Dostosuj metadane tytułu
+  journalEditorDefaultFolder: Dostosuj domyślny katalog dla edytora dziennika
+  yamlModifiedKey: Dostosuj zmodyfikowany klucz YAML
+  yamlCreatedKey: Dostosuj klucz utworzony przez YAML
+  yamlTagsKey: Dostosuj klucz znaczników YAML
+  disableYamlHeader: Wyłącz nagłówek metadanych YAML
+  customizeHomeScreen: Dostosuj ekran główny
+  zenMode: Tryb pisania Zen
+  emojiSupport:
+    title: Wsparcie Emoji
+    subtitle: "Konwertuj: serce: na ❤️"
+  allNotesView: Dodaj ekran, aby pokazać „Wszystkie notatki”
+  basicSearch: Podstawowe szukanie
+  customSSHKeys: Podaj własne klucze SSH
+  customMetaData: Dodaj niestandardowe metadane do nowych notatek
+  graphVisualization: Wizualizacja wykresów
+  mutliRepos: Wiele repozytoriów Git
+  customThemes: Motywy niestandardowe
+  gitLog: Przeglądaj i przeszukuj historię Git
+  latex: Wsparcie lateksowe
+  mermaid: Obsługa diagramów syren
+  encryptedHosting: Zaszyfrowany hosting Git
+  desktop: Aplikacja na komputer
+  markdownToolbar: Pasek narzędzi Markdown
+  localization:
+    title: Lokalizacja
+    subtitle: Zezwól na tłumaczenie GitJournal
+  inlineTags: Tagi wbudowane
+  singleJournalEntry: Pojedynczy plik zapisów księgowych dziennie
+  configureBottomMenuBar: Skonfiguruj dolny pasek menu
+  customFileNamePerEditor: Niestandardowa nazwa pliku na edytora
+
+feature_timeline:
+  title: Oś czasu funkcji
+  progress: W trakcie
+  plan: Zaplanowany
+  issues: Rozwój GitJournal jest prowadzony na Github. Rozważ głosowanie w sprawach, które uważasz za ważne.
+
+purchase_screen:
+  title: Wersja Pro
+  desc: „GitJournal jest całkowicie open source i jest wynikiem znacznych prac rozwojowych. Nie ma wsparcia zewnętrznego kapitału ani korporacji i nigdy nie będzie miał. Twoje wsparcie bezpośrednio podtrzymuje rozwój.
+
+
+GitJournal operates on a "pay what you want model (with a minimum)".'
+  restore: Przywróć zakup
+  oneTime:
+    title: Zakup jednorazowy
+    desc: Trwale włącza wszystkie funkcje Pro dostępne obecnie w GitJournal i nowe funkcje dodane w ciągu następnych 12 miesięcy.
+  monthly:
+    title: Miesięczne raty
+    desc: Włącza wszystkie funkcje Pro. Po 12 miesiącach lub po zapłaceniu {minYearlyPurchase} uzyskasz wszystkie korzyści z „jednorazowego zakupu”
+  thanks:
+    title: Dziękuję Ci
+    subtitle: Jesteś niesamowity, jeśli chodzi o wspieranie GitJournal

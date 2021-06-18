@@ -7,15 +7,15 @@ import 'package:test/test.dart';
 import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
 
 void main() {
   group('NoteStorage', () {
     var notes = <Note>[];
-    String n1Path;
-    String n2Path;
-    Directory tempDir;
+    late String n1Path;
+    late String n2Path;
+    late Directory tempDir;
 
     setUpAll(() async {
       tempDir = await Directory.systemTemp.createTemp('__storage_test__');
@@ -30,11 +30,11 @@ void main() {
 
       var parent = NotesFolderFS(null, tempDir.path, Settings(''));
       var n1 = Note(parent, n1Path);
-      n1.body = "test";
+      n1.body = "test\n";
       n1.created = dt;
 
       var n2 = Note(parent, n2Path);
-      n2.data = MdYamlDoc("test2", props);
+      n2.data = MdYamlDoc(body: "test2\n", props: props);
 
       notes = [n1, n2];
     });
@@ -54,7 +54,7 @@ void main() {
       var loadedNotes = <Note>[];
       var parent = NotesFolderFS(null, tempDir.path, Settings(''));
 
-      await Future.forEach(notes, (origNote) async {
+      await Future.forEach(notes, (Note origNote) async {
         var note = Note(parent, origNote.filePath);
         var r = await note.load();
         expect(r, NoteLoadState.Loaded);

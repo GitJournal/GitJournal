@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart';
-
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_notifier.dart';
@@ -8,14 +6,13 @@ typedef NotesFilter = bool Function(Note note);
 
 class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   final NotesFolder _parentFolder;
-  final NotesFilter filter;
+  final NotesFilter? filter;
   final String title;
 
   var _notes = <Note>[];
   var _folders = <NotesFolder>[];
 
-  FlattenedNotesFolder(this._parentFolder,
-      {@required this.title, this.filter}) {
+  FlattenedNotesFolder(this._parentFolder, {required this.title, this.filter}) {
     _addFolder(_parentFolder);
   }
 
@@ -66,7 +63,7 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   }
 
   void _noteAdded(int _, Note note) {
-    if (filter != null && !filter(note)) {
+    if (filter != null && !filter!(note)) {
       return;
     }
     _notes.add(note);
@@ -93,13 +90,13 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
     }
 
     if (_notes.contains(note)) {
-      if (filter(note)) {
+      if (filter!(note)) {
         notifyNoteModified(-1, note);
       } else {
         _noteRemoved(-1, note);
       }
     } else {
-      if (filter(note)) {
+      if (filter!(note)) {
         _noteAdded(-1, note);
       }
     }
@@ -122,7 +119,7 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   bool get isEmpty => _notes.isEmpty;
 
   @override
-  NotesFolder get parent => null;
+  NotesFolder? get parent => null;
 
   @override
   String pathSpec() => "";

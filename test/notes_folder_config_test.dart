@@ -6,14 +6,14 @@ import 'package:test/test.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
+import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
-import 'package:gitjournal/screens/note_editor.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 
 void main() {
   group('Notes Folder Config', () {
-    Directory tempDir;
+    late Directory tempDir;
 
     setUp(() async {
       tempDir = await Directory.systemTemp.createTemp('__notes_config_test__');
@@ -39,7 +39,7 @@ void main() {
         yamlCreatedKey: 'created',
         yamlModifiedKey: 'modified',
         yamlTagsKey: 'tags',
-        saveTitleInH1: true,
+        titleSettings: SettingsTitle.InYaml,
         inlineTagPrefixes: {},
         imageLocationSpec: "",
       );

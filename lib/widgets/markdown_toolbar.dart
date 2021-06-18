@@ -13,13 +13,13 @@ class MarkdownToolBar extends StatelessWidget {
   final TextEditingController textController;
 
   MarkdownToolBar({
-    @required this.textController,
+    required this.textController,
   });
 
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
-    var style = textTheme.bodyText2.copyWith(fontWeight: FontWeight.bold);
+    var style = textTheme.bodyText2!.copyWith(fontWeight: FontWeight.bold);
 
     return Container(
       child: Row(
@@ -149,7 +149,7 @@ TextEditingValue modifyCurrentLine(
   for (var blockTagRegExp in _allowedBlockRegExps) {
     var match = blockTagRegExp.matchAsPrefix(text, lineStartPos);
     if (match != null) {
-      var blockTag = match.group(0);
+      var blockTag = match.group(0)!;
       var newVal = _removeFromLine(text, cursorPos, lineStartPos, blockTag);
       if (blockTag == char) {
         return newVal;

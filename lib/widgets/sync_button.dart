@@ -9,7 +9,7 @@ import 'package:git_bindings/git_bindings.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/repository.dart';
-import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/utils/utils.dart';
 
 class SyncButton extends StatefulWidget {
   @override
@@ -17,8 +17,8 @@ class SyncButton extends StatefulWidget {
 }
 
 class _SyncButtonState extends State<SyncButton> {
-  StreamSubscription<ConnectivityResult> subscription;
-  ConnectivityResult _connectivity;
+  late StreamSubscription<ConnectivityResult> subscription;
+  ConnectivityResult? _connectivity;
 
   @override
   void initState() {
@@ -40,7 +40,7 @@ class _SyncButtonState extends State<SyncButton> {
 
   @override
   Widget build(BuildContext context) {
-    final repo = Provider.of<Repository>(context);
+    final repo = Provider.of<GitJournalRepo>(context);
 
     if (_connectivity == ConnectivityResult.none) {
       return GitPendingChangesBadge(
@@ -97,7 +97,7 @@ class _SyncButtonState extends State<SyncButton> {
 
   void _syncRepo() async {
     try {
-      final repo = Provider.of<Repository>(context, listen: false);
+      final repo = Provider.of<GitJournalRepo>(context, listen: false);
       await repo.syncNotes();
     } on GitException catch (e) {
       showSnackbar(context, tr('widgets.SyncButton.error', args: [e.cause]));
@@ -107,7 +107,7 @@ class _SyncButtonState extends State<SyncButton> {
   }
 
   IconData _syncStatusIcon() {
-    final repo = Provider.of<Repository>(context);
+    final repo = Provider.of<GitJournalRepo>(context);
     switch (repo.syncStatus) {
       case SyncStatus.Error:
         return Icons.cloud_off;
@@ -124,7 +124,7 @@ class BlinkingIcon extends StatefulWidget {
   final Widget child;
   final int interval;
 
-  BlinkingIcon({@required this.child, this.interval = 500, Key key})
+  BlinkingIcon({required this.child, this.interval = 500, Key? key})
       : super(key: key);
 
   @override
@@ -133,8 +133,8 @@ class BlinkingIcon extends StatefulWidget {
 
 class _BlinkingIconState extends State<BlinkingIcon>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _animation;
+  late AnimationController _controller;
+  late Animation<double> _animation;
 
   @override
   void initState() {
@@ -170,24 +170,24 @@ class _BlinkingIconState extends State<BlinkingIcon>
 class GitPendingChangesBadge extends StatelessWidget {
   final Widget child;
 
-  GitPendingChangesBadge({@required this.child});
+  GitPendingChangesBadge({required this.child});
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     var darkMode = theme.brightness == Brightness.dark;
-    var style = theme.textTheme.caption.copyWith(
+    var style = theme.textTheme.caption!.copyWith(
       fontSize: 6.0,
       color: darkMode ? Colors.black : Colors.white,
     );
 
-    final repo = Provider.of<Repository>(context);
+    final repo = Provider.of<GitJournalRepo>(context);
 
     return Badge(
       badgeContent: Text(repo.numChanges.toString(), style: style),
       showBadge: repo.numChanges != 0,
-      badgeColor: theme.iconTheme.color,
-      position: BadgePosition.topRight(top: 10.0, right: 4.0),
+      badgeColor: theme.iconTheme.color!,
+      position: BadgePosition.topEnd(top: 10.0, end: 4.0),
       child: child,
     );
   }

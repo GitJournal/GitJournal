@@ -17,7 +17,9 @@ void main() {
     test('Markdown Serializer', () {
       var created = toIso8601WithTimezone(nowWithoutMicro());
       var note = MdYamlDoc(
-          "This is the body", LinkedHashMap.from({"created": created}));
+        body: "This is the body",
+        props: LinkedHashMap.from({"created": created}),
+      );
 
       var serializer = MarkdownYAMLCodec();
       var str = serializer.encode(note);
@@ -185,30 +187,6 @@ foo: bar
       var actualStr = serializer.encode(note);
       expect(actualStr, str + '\n');
     });
-
-    test('YAML at the end of the doc', () {
-      var str = """Alright.
-
----
-type: Journal
-created: 2017-02-15T22:41:19+01:00
-foo: bar
----
-""";
-
-      var serializer = MarkdownYAMLCodec(reverse: true);
-      var doc = serializer.decode(str);
-      expect(doc.body, "Alright.\n\n");
-      expect(doc.props.length, 3);
-
-      var actualStr = serializer.encode(doc);
-
-      expect(actualStr, str);
-    });
-
-    // FIXME: Add another test for yaml header at the bottom without a newline
-    // FIXME: Add another test for yaml header at the bottom with lots of new lines after
-    // FIXME: Add another test for yaml header at the bottom with lots of new lines with spaces after
 
     test('Should not have any YamlMaps', () {
       // YamlMaps cannot be sent over an isolate

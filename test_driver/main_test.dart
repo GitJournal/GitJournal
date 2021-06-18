@@ -1,14 +1,11 @@
-import 'package:flutter_driver/flutter_driver.dart';
-import 'package:screenshots/screenshots.dart';
+/*
+
 import 'package:test/test.dart';
 import 'package:time/time.dart';
-
-import 'isolates_workaround.dart';
 
 void main() {
   group('Test', () {
     FlutterDriver driver;
-    IsolatesWorkaround workaround;
 
     int screenshotNum = 0;
     final config = Config();
@@ -16,18 +13,8 @@ void main() {
     // Connect to the Flutter driver before running any tests
     setUpAll(() async {
       driver = await FlutterDriver.connect();
-      workaround = IsolatesWorkaround(driver);
-      await workaround.resumeIsolates();
 
       await Future.delayed(15.seconds);
-    });
-
-    // Close the connection to the driver after the tests have completed
-    tearDownAll(() async {
-      if (driver != null) {
-        await driver.close();
-        await workaround.tearDown();
-      }
     });
 
     Future _takeScreenshot() async {
@@ -246,3 +233,4 @@ void main() {
     }, timeout: Timeout(20.minutes));
   });
 }
+*/

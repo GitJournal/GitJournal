@@ -26,7 +26,7 @@ class SortingOrder {
     Descending,
   ];
 
-  static SortingOrder fromInternalString(String str) {
+  static SortingOrder fromInternalString(String? str) {
     for (var opt in options) {
       if (opt.toInternalString() == str) {
         return opt;
@@ -90,7 +90,7 @@ class SortingField {
     Title,
   ];
 
-  static SortingField fromInternalString(String str) {
+  static SortingField fromInternalString(String? str) {
     for (var opt in options) {
       if (opt.toInternalString() == str) {
         return opt;
@@ -158,7 +158,7 @@ int _sortCreatedDesc(Note a, Note b) {
   if (bDt == null && aDt == null) {
     return a.fileName.compareTo(b.fileName);
   }
-  return bDt.compareTo(aDt);
+  return bDt!.compareTo(aDt!);
 }
 
 int _sortModifiedDesc(Note a, Note b) {
@@ -173,12 +173,12 @@ int _sortModifiedDesc(Note a, Note b) {
   if (bDt == null && aDt == null) {
     return a.fileName.compareTo(b.fileName);
   }
-  return bDt.compareTo(aDt);
+  return bDt!.compareTo(aDt!);
 }
 
 int _sortTitleAsc(Note a, Note b) {
-  var aTitleExists = a.title != null && a.title.isNotEmpty;
-  var bTitleExists = b.title != null && b.title.isNotEmpty;
+  var aTitleExists = a.title.isNotEmpty;
+  var bTitleExists = b.title.isNotEmpty;
 
   if (!aTitleExists && bTitleExists) {
     return 1;
@@ -187,13 +187,17 @@ int _sortTitleAsc(Note a, Note b) {
     return -1;
   }
   if (!aTitleExists && !bTitleExists) {
-    return a.fileName.compareTo(b.fileName);
+    return _sortFileNameAsc(a, b);
   }
-  return a.title.compareTo(b.title);
+  var aTitle = a.title.toLowerCase();
+  var bTitle = b.title.toLowerCase();
+  return aTitle.compareTo(bTitle);
 }
 
 int _sortFileNameAsc(Note a, Note b) {
-  return a.fileName.compareTo(b.fileName);
+  var aFileName = a.fileName.toLowerCase();
+  var bFileName = b.fileName.toLowerCase();
+  return aFileName.compareTo(bFileName);
 }
 
 NoteSortingFunction _reverse(NoteSortingFunction func) {

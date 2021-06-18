@@ -11,28 +11,24 @@ import 'package:gitjournal/folder_views/grid_view.dart';
 import 'package:gitjournal/folder_views/journal_view.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/screens/note_editor.dart';
-import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/utils/utils.dart';
+import 'common_types.dart';
 import 'standard_view.dart';
 
-enum FolderViewType {
-  Standard,
-  Journal,
-  Card,
-  Grid,
-}
+export 'common_types.dart';
 
 Widget buildFolderView({
-  @required FolderViewType viewType,
-  @required NotesFolder folder,
-  @required String emptyText,
-  @required StandardViewHeader header,
-  @required bool showSummary,
-  @required NoteSelectedFunction noteTapped,
-  @required NoteSelectedFunction noteLongPressed,
-  @required NoteBoolPropertyFunction isNoteSelected,
-  @required String searchTerm,
+  required FolderViewType viewType,
+  required NotesFolder folder,
+  required String emptyText,
+  required StandardViewHeader header,
+  required bool showSummary,
+  required NoteSelectedFunction noteTapped,
+  required NoteSelectedFunction noteLongPressed,
+  required NoteBoolPropertyFunction isNoteSelected,
+  required String searchTerm,
 }) {
   switch (viewType) {
     case FolderViewType.Standard:
@@ -74,9 +70,6 @@ Widget buildFolderView({
         searchTerm: searchTerm,
       );
   }
-
-  assert(false, "Code path should never be executed");
-  return Container();
 }
 
 void openNoteEditor(
@@ -94,9 +87,9 @@ void openNoteEditor(
   if (showUndoSnackBar != null) {
     Log.d("Showing an undo snackbar");
 
-    var stateContainer = Provider.of<Repository>(context, listen: false);
+    var stateContainer = context.read<GitJournalRepo>();
     var snackBar = buildUndoDeleteSnackbar(stateContainer, note);
-    Scaffold.of(context)
+    ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()
       ..showSnackBar(snackBar);
   }
@@ -110,10 +103,11 @@ bool openNewNoteEditor(BuildContext context, String term) {
 
   var fileName = term;
   if (fileName.contains(p.separator)) {
-    parentFolder = rootFolder.getFolderWithSpec(p.dirname(fileName));
-    if (parentFolder == null) {
+    var pFolder = rootFolder.getFolderWithSpec(p.dirname(fileName));
+    if (pFolder == null) {
       return false;
     }
+    parentFolder = pFolder;
     Log.i("New Note Parent Folder: ${parentFolder.folderPath}");
 
     fileName = p.basename(term);
@@ -125,6 +119,8 @@ bool openNewNoteEditor(BuildContext context, String term) {
       parentFolder,
       defaultEditor,
       newNoteFileName: fileName,
+      existingText: "",
+      existingImages: [],
     ),
     settings: const RouteSettings(name: '/newNote/'),
   );

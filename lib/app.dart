@@ -5,23 +5,25 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 
 import 'package:device_info/device_info.dart';
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
-import 'package:flutter_sentry/flutter_sentry.dart';
+import 'package:flutter_runtime_env/flutter_runtime_env.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:gitjournal/analytics.dart';
+import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/app_router.dart';
-import 'package:gitjournal/app_settings.dart';
-import 'package:gitjournal/iap.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/iap/iap.dart';
 import 'package:gitjournal/repository.dart';
-import 'package:gitjournal/settings.dart';
+import 'package:gitjournal/repository_manager.dart';
+import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/themes.dart';
 import 'package:gitjournal/utils/logger.dart';
 
@@ -48,37 +50,33 @@ class JournalApp extends StatefulWidget {
     final gitBaseDirectory = (await getApplicationDocumentsDirectory()).path;
     final cacheDir = (await getApplicationSupportDirectory()).path;
 
-    var repo = await Repository.load(
+    var repoManager = RepositoryManager(
       gitBaseDir: gitBaseDirectory,
       cacheDir: cacheDir,
       pref: pref,
-      id: DEFAULT_ID,
     );
-
-    Widget app = ChangeNotifierProvider.value(
-      value: repo,
-      child: Consumer<Repository>(
-        builder: (_, repo, __) => ChangeNotifierProvider.value(
-          value: repo.settings,
-          child: ChangeNotifierProvider.value(
-            child: JournalApp(),
-            value: repo.notesFolder,
-          ),
-        ),
-      ),
-    );
-
-    app = ChangeNotifierProvider.value(
-      value: appSettings,
-      child: app,
-    );
+    await repoManager.buildActiveRepository();
 
     InAppPurchases.confirmProPurchaseBoot();
 
     runApp(EasyLocalization(
-      child: app,
+      child: GitJournalChangeNotifiers(
+        repoManager: repoManager,
+        appSettings: appSettings,
+        child: JournalApp(),
+      ),
       supportedLocales: [
         const Locale('en', 'US'),
+        // Arranged Alphabetically after English
+        const Locale('de'),
+        const Locale('es'),
+        const Locale('id'),
+        const Locale('ja'),
+        const Locale('pl'),
+        const Locale('pr'),
+        const Locale('ru'),
+        const Locale('sv'),
+        const Locale('zh'),
       ], // Remember to update Info.plist
       path: 'assets/langs',
       useOnlyLangCode: true,
@@ -95,19 +93,23 @@ class JournalApp extends StatefulWidget {
       if (Platform.isAndroid) {
         var info = await deviceInfo.androidInfo;
         isPhysicalDevice = info.isPhysicalDevice;
+
+        Log.i("Running on Android", props: readAndroidBuildData(info));
       } else if (Platform.isIOS) {
         var info = await deviceInfo.iosInfo;
         isPhysicalDevice = info.isPhysicalDevice;
+
+        Log.i("Running on ios", props: readIosDeviceInfo(info));
       }
     } catch (e) {
-      Log.d(e);
+      Log.d(e.toString());
     }
 
     if (isPhysicalDevice == false) {
       JournalApp.isInDebugMode = true;
     }
 
-    bool inFireBaseTestLab = await FlutterSentry.isFirebaseTestLab();
+    bool inFireBaseTestLab = await inFirebaseTestLab();
     bool enabled = !JournalApp.isInDebugMode && !inFireBaseTestLab;
 
     Log.d("Analytics Collection: $enabled");
@@ -129,6 +131,9 @@ class JournalApp extends StatefulWidget {
   static Future<void> _sendAppUpdateEvent(AppSettings appSettings) async {
     var info = await PackageInfo.fromPlatform();
     var version = info.version;
+
+    Log.i("App Version: $version");
+    Log.i("App Build Number: ${info.buildNumber}");
 
     if (appSettings.appVersion == version) {
       return;
@@ -157,28 +162,33 @@ class JournalApp extends StatefulWidget {
 
 class _JournalAppState extends State<JournalApp> {
   final _navigatorKey = GlobalKey<NavigatorState>();
-  String _pendingShortcut;
+  String? _pendingShortcut;
 
-  StreamSubscription _intentDataStreamSubscription;
-  String _sharedText;
-  List<String> _sharedImages;
+  StreamSubscription? _intentDataStreamSubscription;
+  var _sharedText = "";
+  var _sharedImages = <String>[];
 
   @override
   void initState() {
     super.initState();
+
+    if (!Platform.isAndroid && !Platform.isIOS) {
+      return;
+    }
+
     final QuickActions quickActions = QuickActions();
     quickActions.initialize((String shortcutType) {
       Log.i("Quick Action Open: $shortcutType");
       if (_navigatorKey.currentState == null) {
         Log.i("Quick Action delegating for after build");
-        WidgetsBinding.instance
+        WidgetsBinding.instance!
             .addPostFrameCallback((_) => _afterBuild(context));
         setState(() {
           _pendingShortcut = shortcutType;
         });
         return;
       }
-      _navigatorKey.currentState.pushNamed("/newNote/$shortcutType");
+      _navigatorKey.currentState!.pushNamed("/newNote/$shortcutType");
     });
 
     quickActions.setShortcutItems(<ShortcutItem>[
@@ -204,41 +214,45 @@ class _JournalAppState extends State<JournalApp> {
 
   void _afterBuild(BuildContext context) {
     if (_pendingShortcut != null) {
-      _navigatorKey.currentState.pushNamed("/newNote/$_pendingShortcut");
+      _navigatorKey.currentState!.pushNamed("/newNote/$_pendingShortcut");
       _pendingShortcut = null;
     }
   }
 
   void _initShareSubscriptions() {
+    if (!Platform.isAndroid && !Platform.isIOS) {
+      return;
+    }
+
     var handleShare = () {
-      if (_sharedText == null && _sharedImages == null) {
+      var noText = _sharedText.isEmpty;
+      var noImages = _sharedImages.isEmpty;
+      if (noText && noImages) {
         return;
       }
 
       var settings = Provider.of<Settings>(context, listen: false);
       var editor = settings.defaultEditor.toInternalString();
-      _navigatorKey.currentState.pushNamed("/newNote/$editor");
+      _navigatorKey.currentState!.pushNamed("/newNote/$editor");
     };
 
     // For sharing images coming from outside the app while the app is in the memory
     _intentDataStreamSubscription = ReceiveSharingIntent.getMediaStream()
         .listen((List<SharedMediaFile> value) {
-      if (value == null) return;
       Log.d("Received Share $value");
 
-      _sharedImages = value.map((f) => f.path)?.toList();
-      WidgetsBinding.instance.addPostFrameCallback((_) => handleShare());
+      _sharedImages = value.map((f) => f.path).toList();
+      WidgetsBinding.instance!.addPostFrameCallback((_) => handleShare());
     }, onError: (err) {
       Log.e("getIntentDataStream error: $err");
     });
 
     // For sharing images coming from outside the app while the app is closed
     ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
-      if (value == null) return;
       Log.d("Received Share with App (media): $value");
 
-      _sharedImages = value.map((f) => f.path)?.toList();
-      WidgetsBinding.instance.addPostFrameCallback((_) => handleShare());
+      _sharedImages = value.map((f) => f.path).toList();
+      WidgetsBinding.instance!.addPostFrameCallback((_) => handleShare());
     });
 
     // For sharing or opening text coming from outside the app while the app is in the memory
@@ -246,52 +260,68 @@ class _JournalAppState extends State<JournalApp> {
         ReceiveSharingIntent.getTextStream().listen((String value) {
       Log.d("Received Share $value");
       _sharedText = value;
-      WidgetsBinding.instance.addPostFrameCallback((_) => handleShare());
+      WidgetsBinding.instance!.addPostFrameCallback((_) => handleShare());
     }, onError: (err) {
       Log.e("getLinkStream error: $err");
     });
 
     // For sharing or opening text coming from outside the app while the app is closed
-    ReceiveSharingIntent.getInitialText().then((String value) {
+    ReceiveSharingIntent.getInitialText().then((String? value) {
+      if (value == null) return;
       Log.d("Received Share with App (text): $value");
       _sharedText = value;
-      WidgetsBinding.instance.addPostFrameCallback((_) => handleShare());
+      WidgetsBinding.instance!.addPostFrameCallback((_) => handleShare());
     });
   }
 
   @override
   void dispose() {
-    _intentDataStreamSubscription.cancel();
+    _intentDataStreamSubscription?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return DynamicTheme(
-      defaultBrightness: Brightness.light,
-      data: (b) => b == Brightness.light ? Themes.light : Themes.dark,
-      themedWidgetBuilder: buildApp,
-    );
-  }
-
-  MaterialApp buildApp(BuildContext context, ThemeData themeData) {
-    var stateContainer = Provider.of<Repository>(context);
+    var stateContainer = Provider.of<GitJournalRepo>(context);
     var settings = Provider.of<Settings>(context);
     var appSettings = Provider.of<AppSettings>(context);
     var router = AppRouter(settings: settings, appSettings: appSettings);
+
+    /*
+    const FlexSchemeData customFlexScheme = FlexSchemeData(
+      name: 'Toledo purple',
+      description: 'Purple theme created from custom defined colors.',
+      light: FlexSchemeColor(
+        primary: Color(0xFF66bb6a),
+        primaryVariant: Color(0xFF338a3e),
+        secondary: Color(0xff6d4c41),
+        secondaryVariant: Color(0xFF338a3e),
+      ),
+      dark: FlexSchemeColor(
+        primary: Color(0xff212121),
+        primaryVariant: Color(0xffc8635f),
+        secondary: Color(0xff689f38),
+        secondaryVariant: Color(0xff00be00),
+      ),
+    );
+    */
 
     return MaterialApp(
       key: const ValueKey("App"),
       navigatorKey: _navigatorKey,
       title: 'GitJournal',
 
-      localizationsDelegates: EasyLocalization.of(context).delegates,
-      supportedLocales: EasyLocalization.of(context).supportedLocales,
-      locale: EasyLocalization.of(context).locale,
+      localizationsDelegates: EasyLocalization.of(context)!.delegates,
+      supportedLocales: EasyLocalization.of(context)!.supportedLocales,
+      locale: EasyLocalization.of(context)!.locale,
 
-      theme: themeData,
+      theme: Themes.light,
+      darkTheme: Themes.dark,
+      themeMode: settings.theme.toThemeMode(),
+
       navigatorObservers: <NavigatorObserver>[
         AnalyticsRouteObserver(),
+        SentryNavigatorObserver(),
       ],
       initialRoute: router.initialRoute(),
       debugShowCheckedModeBanner: false,
@@ -299,12 +329,54 @@ class _JournalAppState extends State<JournalApp> {
       onGenerateRoute: (rs) {
         var r = router
             .generateRoute(rs, stateContainer, _sharedText, _sharedImages, () {
-          _sharedText = null;
-          _sharedImages = null;
+          _sharedText = "";
+          _sharedImages = [];
         });
 
         return r;
       },
+    );
+  }
+}
+
+class GitJournalChangeNotifiers extends StatelessWidget {
+  final RepositoryManager repoManager;
+  final AppSettings appSettings;
+  final Widget child;
+
+  GitJournalChangeNotifiers({
+    required this.repoManager,
+    required this.appSettings,
+    required this.child,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var app = ChangeNotifierProvider.value(
+      value: repoManager,
+      child: Consumer<RepositoryManager>(
+        builder: (_, repoManager, __) => ChangeNotifierProvider.value(
+          value: repoManager.currentRepo,
+          child: Consumer<GitJournalRepo>(
+            builder: (_, repo, __) => ChangeNotifierProvider<Settings>.value(
+              value: repo.settings,
+              child: Consumer<GitJournalRepo>(
+                builder: (_, repo, __) =>
+                    ChangeNotifierProvider<NotesFolderFS>.value(
+                  value: repo.notesFolder,
+                  child: child,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    return ChangeNotifierProvider.value(
+      value: appSettings,
+      child: app,
     );
   }
 }

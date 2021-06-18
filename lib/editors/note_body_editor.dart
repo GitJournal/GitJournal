@@ -7,11 +7,16 @@ class NoteBodyEditor extends StatelessWidget {
   final bool autofocus;
   final Function onChanged;
 
-  NoteBodyEditor({this.textController, this.autofocus, this.onChanged});
+  NoteBodyEditor({
+    required this.textController,
+    required this.autofocus,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
-    var style = Theme.of(context).textTheme.subtitle1;
+    var theme = Theme.of(context);
+    var style = theme.textTheme.subtitle1;
 
     return TextField(
       autofocus: autofocus,
@@ -21,7 +26,9 @@ class NoteBodyEditor extends StatelessWidget {
       decoration: InputDecoration(
         hintText: tr('editors.common.defaultBodyHint'),
         border: InputBorder.none,
-        isDense: true,
+        fillColor: theme.scaffoldBackgroundColor,
+        hoverColor: theme.scaffoldBackgroundColor,
+        contentPadding: const EdgeInsets.all(0.0),
       ),
       controller: textController,
       textCapitalization: TextCapitalization.sentences,

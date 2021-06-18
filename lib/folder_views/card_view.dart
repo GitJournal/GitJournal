@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -19,12 +18,12 @@ class CardView extends StatelessWidget {
   final String searchTerm;
 
   CardView({
-    @required this.folder,
-    @required this.noteTapped,
-    @required this.noteLongPressed,
-    @required this.isNoteSelected,
-    @required this.emptyText,
-    @required this.searchTerm,
+    required this.folder,
+    required this.noteTapped,
+    required this.noteLongPressed,
+    required this.isNoteSelected,
+    required this.emptyText,
+    required this.searchTerm,
     this.fixedHeight = false,
   });
 

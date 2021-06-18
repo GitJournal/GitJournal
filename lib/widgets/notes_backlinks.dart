@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:gitjournal/core/link.dart';
@@ -18,9 +18,9 @@ class NoteBacklinkRenderer extends StatefulWidget {
   final NotesFolder parentFolder;
 
   NoteBacklinkRenderer({
-    @required this.note,
-    @required this.rootFolder,
-    @required this.parentFolder,
+    required this.note,
+    required this.rootFolder,
+    required this.parentFolder,
   });
 
   @override
@@ -43,7 +43,7 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
 
       var links = await n.fetchLinks();
       var linkResolver = LinkResolver(n);
-      var matchedLink = links.firstWhere(
+      var matchedLink = links.firstWhereOrNull(
         (l) {
           var matchedNote = linkResolver.resolveLink(l);
           if (matchedNote == null) {
@@ -52,7 +52,6 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
 
           return matchedNote.filePath == widget.note.filePath;
         },
-        orElse: () => null,
       );
 
       // Log.d("NoteBacklinkRenderer Predicate ${matchedLink != null}");
@@ -118,18 +117,16 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
 class NoteSnippet extends StatelessWidget {
   final Note note;
   final Note parentNote;
-  final Function onTap;
+  final void Function() onTap;
 
   NoteSnippet({
-    @required this.note,
-    @required this.parentNote,
-    @required this.onTap,
+    required this.note,
+    required this.parentNote,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    assert(note != null);
-
     var theme = Theme.of(context);
     var textTheme = theme.textTheme;
     var title = note.title;
@@ -165,11 +162,18 @@ class NoteSnippet extends StatelessWidget {
       return Container();
     }
 
-    var link = links.where((l) {
+    links = links.where((l) {
       var linkResolver = LinkResolver(note);
       var resolvedNote = linkResolver.resolveLink(l);
+      if (resolvedNote == null) {
+        return false;
+      }
       return resolvedNote.filePath == parentNote.filePath;
-    }).first;
+    }).toList();
+    if (links.isEmpty) {
+      return Container();
+    }
+    var link = links.first;
 
     var body = note.body.split('\n');
     var paragraph = body.firstWhere(
@@ -184,7 +188,9 @@ class NoteSnippet extends StatelessWidget {
     // vHanda: This isn't a very fool proof way of figuring out the line
     // FIXME: Ideally, we should be parsing the entire markdown properly and rendering all of it
     return RichText(
-      text: TextSpan(children: _extraMetaLinks(textTheme.bodyText2, paragraph)),
+      text: TextSpan(
+        children: _extraMetaLinks(textTheme.bodyText2!, paragraph),
+      ),
       maxLines: 3,
     );
   }
@@ -203,7 +209,7 @@ List<TextSpan> _extraMetaLinks(TextStyle textStyle, String line) {
     var text = line.substring(0, match.start);
     spans.add(TextSpan(style: textStyle, text: text));
 
-    text = match.group(0);
+    text = match.group(0)!;
     spans.add(TextSpan(
         style: textStyle.copyWith(fontWeight: FontWeight.bold), text: text));
 

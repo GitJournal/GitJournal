@@ -6,12 +6,12 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/services.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:gitjournal/utils.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'githost.dart';
+
+// FIXME: Handle for edge cases of json.decode
 
 class GitHub implements GitHost {
   static const _clientID = "aa3072cbfb02b1db14ed";
@@ -53,8 +53,8 @@ class GitHub implements GitHost {
   }
 
   Future<String> _getAccessCode(String authCode) async {
-    var url =
-        "https://github.com/login/oauth/access_token?client_id=$_clientID&client_secret=$_clientSecret&code=$authCode";
+    var url = Uri.parse(
+        "https://github.com/login/oauth/access_token?client_id=$_clientID&client_secret=$_clientSecret&code=$authCode");
 
     var response = await http.post(url);
     if (response.statusCode != 200) {
@@ -64,7 +64,7 @@ class GitHub implements GitHost {
           response.body);
       throw GitHostException.OAuthFailed;
     }
-    Log.d("GithubResponse: " + response.body);
+    // Log.d("GithubResponse: " + response.body);
 
     var map = Uri.splitQueryString(response.body);
     return map["access_token"] ?? "";
@@ -81,12 +81,14 @@ class GitHub implements GitHost {
   }
 
   @override
-  Future<List<GitHostRepo>> listRepos() async {
+  Future<Result<List<GitHostRepo>>> listRepos() async {
     if (_accessCode.isEmpty) {
-      throw GitHostException.MissingAccessCode;
+      var ex = GitHostException.MissingAccessCode;
+      return Result.fail(ex);
     }
 
-    var url = "https://api.github.com/user/repos?page=1&per_page=100";
+    var url =
+        Uri.parse("https://api.github.com/user/repos?page=1&per_page=100");
     var headers = {
       HttpHeaders.authorizationHeader: _buildAuthHeader(),
     };
@@ -97,11 +99,12 @@ class GitHub implements GitHost {
 
     var response = await http.get(url, headers: headers);
     if (response.statusCode != 200) {
-      Log.d("Github listRepos: Invalid response " +
+      Log.e("Github listRepos: Invalid response " +
           response.statusCode.toString() +
           ": " +
           response.body);
-      return null;
+      var ex = GitHostException.HttpResponseFail;
+      return Result.fail(ex);
     }
 
     List<dynamic> list = jsonDecode(response.body);
@@ -113,16 +116,17 @@ class GitHub implements GitHost {
     });
 
     // FIXME: Sort these based on some criteria
-    return repos;
+    return Result(repos);
   }
 
   @override
-  Future<GitHostRepo> createRepo(String name) async {
+  Future<Result<GitHostRepo>> createRepo(String name) async {
     if (_accessCode.isEmpty) {
-      throw GitHostException.MissingAccessCode;
+      var ex = GitHostException.MissingAccessCode;
+      return Result.fail(ex);
     }
 
-    var url = "https://api.github.com/user/repos";
+    var url = Uri.parse("https://api.github.com/user/repos");
     var data = <String, dynamic>{
       'name': name,
       'private': true,
@@ -136,34 +140,41 @@ class GitHub implements GitHost {
     var response =
         await http.post(url, headers: headers, body: json.encode(data));
     if (response.statusCode != 201) {
-      Log.d("Github createRepo: Invalid response " +
+      Log.e("Github createRepo: Invalid response " +
           response.statusCode.toString() +
           ": " +
           response.body);
 
       if (response.statusCode == 422) {
         if (response.body.contains("name already exists")) {
-          throw GitHostException.RepoExists;
+          var ex = GitHostException.RepoExists;
+          return Result.fail(ex);
         }
       }
 
-      throw GitHostException.CreateRepoFailed;
+      var ex = GitHostException.CreateRepoFailed;
+      return Result.fail(ex);
     }
 
     Log.d("GitHub createRepo: " + response.body);
     Map<String, dynamic> map = json.decode(response.body);
-    return repoFromJson(map);
+    return Result(repoFromJson(map));
   }
 
   @override
-  Future<GitHostRepo> getRepo(String name) async {
+  Future<Result<GitHostRepo>> getRepo(String name) async {
     if (_accessCode.isEmpty) {
-      throw GitHostException.MissingAccessCode;
+      var ex = GitHostException.MissingAccessCode;
+      return Result.fail(ex);
     }
 
-    var userInfo = await getUserInfo();
+    var userInfoR = await getUserInfo();
+    if (userInfoR.isFailure) {
+      return fail(userInfoR);
+    }
+    var userInfo = userInfoR.getOrThrow();
     var owner = userInfo.username;
-    var url = "https://api.github.com/repos/$owner/$name";
+    var url = Uri.parse("https://api.github.com/repos/$owner/$name");
 
     var headers = {
       HttpHeaders.authorizationHeader: _buildAuthHeader(),
@@ -171,26 +182,32 @@ class GitHub implements GitHost {
 
     var response = await http.get(url, headers: headers);
     if (response.statusCode != 200) {
-      Log.d("Github getRepo: Invalid response " +
+      Log.e("Github getRepo: Invalid response " +
           response.statusCode.toString() +
           ": " +
           response.body);
 
-      throw GitHostException.GetRepoFailed;
+      var ex = GitHostException.GetRepoFailed;
+      return Result.fail(ex);
     }
 
     Log.d("GitHub getRepo: " + response.body);
-    Map<String, dynamic> map = json.decode(response.body);
-    return repoFromJson(map);
+    try {
+      Map<String, dynamic> map = json.decode(response.body);
+      return Result(repoFromJson(map));
+    } on Exception catch (ex, st) {
+      return Result.fail(ex, st);
+    }
   }
 
   @override
-  Future addDeployKey(String sshPublicKey, String repo) async {
+  Future<Result<void>> addDeployKey(String sshPublicKey, String repo) async {
     if (_accessCode.isEmpty) {
-      throw GitHostException.MissingAccessCode;
+      var ex = GitHostException.MissingAccessCode;
+      return Result.fail(ex);
     }
 
-    var url = "https://api.github.com/repos/$repo/keys";
+    var url = Uri.parse("https://api.github.com/repos/$repo/keys");
 
     var data = <String, dynamic>{
       'title': "GitJournal",
@@ -210,20 +227,20 @@ class GitHub implements GitHost {
           response.statusCode.toString() +
           ": " +
           response.body);
-      throw GitHostException.DeployKeyFailed;
+      var ex = GitHostException.DeployKeyFailed;
+      return Result.fail(ex);
     }
 
     Log.d("GitHub addDeployKey: " + response.body);
-    return json.decode(response.body);
+    return Result(null);
   }
 
-  @visibleForTesting
-  GitHostRepo repoFromJson(Map<String, dynamic> parsedJson) {
-    DateTime updatedAt;
+  static GitHostRepo repoFromJson(Map<String, dynamic> parsedJson) {
+    DateTime? updatedAt;
     try {
       updatedAt = DateTime.parse(parsedJson['updated_at'].toString());
-    } catch (e) {
-      Log.e(e);
+    } catch (e, st) {
+      Log.e("github repoFromJson", ex: e, stacktrace: st);
     }
     var licenseMap = parsedJson['license'];
     var fullName = parsedJson['full_name'].toString();
@@ -254,18 +271,19 @@ class GitHub implements GitHost {
       issues: parsedJson['open_issues_count'],
       language: parsedJson['language'],
       private: parsedJson['private'],
-      tags: parsedJson['topics'],
+      tags: parsedJson['topics'] ?? [],
       license: licenseMap != null ? licenseMap['spdx_id'] : null,
     );
   }
 
   @override
-  Future<UserInfo> getUserInfo() async {
+  Future<Result<UserInfo>> getUserInfo() async {
     if (_accessCode.isEmpty) {
-      throw GitHostException.MissingAccessCode;
+      var ex = GitHostException.MissingAccessCode;
+      return Result.fail(ex);
     }
 
-    var url = "https://api.github.com/user";
+    var url = Uri.parse("https://api.github.com/user");
 
     var headers = {
       HttpHeaders.authorizationHeader: _buildAuthHeader(),
@@ -277,23 +295,26 @@ class GitHub implements GitHost {
           response.statusCode.toString() +
           ": " +
           response.body);
-      return null;
+      var ex = GitHostException.HttpResponseFail;
+      return Result.fail(ex);
     }
 
-    Map<String, dynamic> map = jsonDecode(response.body);
+    Map<String, dynamic>? map = jsonDecode(response.body);
     if (map == null || map.isEmpty) {
       Log.d("Github getUserInfo: jsonDecode Failed " +
           response.statusCode.toString() +
           ": " +
           response.body);
-      return null;
+
+      var ex = GitHostException.JsonDecodingFail;
+      return Result.fail(ex);
     }
 
-    return UserInfo(
+    return Result(UserInfo(
       name: map['name'],
       email: map['email'],
       username: map['login'],
-    );
+    ));
   }
 
   String _buildAuthHeader() {

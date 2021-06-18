@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
@@ -23,12 +22,12 @@ class JournalView extends StatelessWidget {
   static final _timeFormat = DateFormat('Hm');
 
   JournalView({
-    @required this.folder,
-    @required this.noteTapped,
-    @required this.noteLongPressed,
-    @required this.isNoteSelected,
-    @required this.emptyText,
-    @required this.searchTerm,
+    required this.folder,
+    required this.noteTapped,
+    required this.noteLongPressed,
+    required this.isNoteSelected,
+    required this.emptyText,
+    required this.searchTerm,
   }) : searchTermLowerCase = searchTerm.toLowerCase();
 
   @override
@@ -46,7 +45,7 @@ class JournalView extends StatelessWidget {
     Widget titleWidget = Container();
     var textTheme = Theme.of(context).textTheme;
 
-    DateTime date;
+    DateTime? date;
     var sortingField = folder.config.sortingMode.field;
     if (sortingField == SortingField.Created) {
       date = note.created;
@@ -58,12 +57,12 @@ class JournalView extends StatelessWidget {
       var dateStr = _dateFormat.format(date);
       var time = _timeFormat.format(date);
 
-      var timeColor = textTheme.bodyText2.color.withAlpha(100);
+      var timeColor = textTheme.bodyText2!.color!.withAlpha(100);
 
       titleWidget = Row(
         children: <Widget>[
           Text(dateStr, style: textTheme.headline6),
-          Text(time, style: textTheme.bodyText2.copyWith(color: timeColor)),
+          Text(time, style: textTheme.bodyText2!.copyWith(color: timeColor)),
         ],
         crossAxisAlignment: CrossAxisAlignment.baseline,
         textBaseline: TextBaseline.alphabetic,
@@ -76,7 +75,7 @@ class JournalView extends StatelessWidget {
         text: note.summary + '\n', // no minLines option
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
-        style: textTheme.bodyText2,
+        style: textTheme.bodyText2!,
         highlightText: searchTerm,
         highlightTextLowerCase: searchTermLowerCase,
       ),

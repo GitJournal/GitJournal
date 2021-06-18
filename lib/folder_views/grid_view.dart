@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
@@ -16,12 +15,12 @@ class GridFolderView extends StatelessWidget {
   final String searchTerm;
 
   GridFolderView({
-    @required this.folder,
-    @required this.noteTapped,
-    @required this.noteLongPressed,
-    @required this.isNoteSelected,
-    @required this.emptyText,
-    @required this.searchTerm,
+    required this.folder,
+    required this.noteTapped,
+    required this.noteLongPressed,
+    required this.isNoteSelected,
+    required this.emptyText,
+    required this.searchTerm,
   });
 
   @override

@@ -1,3 +1,19 @@
+/*
+Copyright 2020-2021 Vishesh Handa <me@vhanda.in>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -12,14 +28,16 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/editors/checklist_editor.dart';
+import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/editors/journal_editor.dart';
 import 'package:gitjournal/editors/markdown_editor.dart';
+import 'package:gitjournal/editors/org_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/repository.dart';
-import 'package:gitjournal/settings.dart';
-import 'package:gitjournal/utils.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/note_delete_dialog.dart';
 import 'package:gitjournal/widgets/note_editor_selector.dart';
@@ -29,15 +47,15 @@ import 'package:gitjournal/widgets/rename_dialog.dart';
 class ShowUndoSnackbar {}
 
 class NoteEditor extends StatefulWidget {
-  final Note note;
+  final Note? note;
   final NotesFolderFS notesFolder;
   final NotesFolder parentFolderView;
-  final EditorType defaultEditorType;
+  final EditorType? defaultEditorType;
 
-  final String existingText;
-  final List<String> existingImages;
+  final String? existingText;
+  final List<String>? existingImages;
 
-  final Map<String, dynamic> newNoteExtraProps;
+  final Map<String, dynamic>? newNoteExtraProps;
   final String newNoteFileName;
   final bool editMode;
 
@@ -45,7 +63,7 @@ class NoteEditor extends StatefulWidget {
     this.note,
     this.parentFolderView, {
     this.editMode = false,
-  })  : notesFolder = note.parent,
+  })  : notesFolder = note!.parent,
         defaultEditorType = null,
         existingText = null,
         existingImages = null,
@@ -56,8 +74,8 @@ class NoteEditor extends StatefulWidget {
     this.notesFolder,
     this.parentFolderView,
     this.defaultEditorType, {
-    this.existingText,
-    this.existingImages,
+    required String this.existingText,
+    required List<String> this.existingImages,
     this.newNoteExtraProps = const {},
     this.newNoteFileName = "",
   })  : note = null,
@@ -68,9 +86,9 @@ class NoteEditor extends StatefulWidget {
     if (note == null) {
       return NoteEditorState.newNote(
         notesFolder,
-        existingText,
-        existingImages,
-        newNoteExtraProps,
+        existingText!,
+        existingImages!,
+        newNoteExtraProps!,
         newNoteFileName,
       );
     } else {
@@ -79,10 +97,8 @@ class NoteEditor extends StatefulWidget {
   }
 }
 
-enum EditorType { Markdown, Raw, Checklist, Journal }
-
 class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
-  Note note;
+  Note? note;
   EditorType editorType = EditorType.Markdown;
   MdYamlDoc originalNoteData = MdYamlDoc();
 
@@ -90,6 +106,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
   final _markdownEditorKey = GlobalKey<MarkdownEditorState>();
   final _checklistEditorKey = GlobalKey<ChecklistEditorState>();
   final _journalEditorKey = GlobalKey<JournalEditorState>();
+  final _orgEditorKey = GlobalKey<OrgEditorState>();
 
   bool get _isNewNote {
     return widget.note == null;
@@ -103,33 +120,34 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
     String fileName,
   ) {
     note = Note.newNote(folder, extraProps: extraProps, fileName: fileName);
-    if (existingText != null) {
-      note.body = existingText;
+    if (existingText.isNotEmpty) {
+      note!.body = existingText;
     }
 
-    if (existingImages != null) {
+    if (existingImages.isNotEmpty) {
       for (var imagePath in existingImages) {
         try {
           var file = File(imagePath);
-          note.addImageSync(file);
-        } catch (e) {
-          Log.e(e);
+          note!.addImageSync(file);
+        } catch (e, st) {
+          Log.e("New Note Existing Image", ex: e, stacktrace: st);
         }
       }
     }
   }
 
   NoteEditorState.fromNote(this.note) {
-    originalNoteData = MdYamlDoc.from(note.data);
+    originalNoteData = MdYamlDoc.from(note!.data);
   }
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
+    var note = this.note!;
 
     if (widget.defaultEditorType != null) {
-      editorType = widget.defaultEditorType;
+      editorType = widget.defaultEditorType!;
     } else {
       switch (note.type) {
         case NoteType.Journal:
@@ -138,10 +156,19 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
         case NoteType.Checklist:
           editorType = EditorType.Checklist;
           break;
+        case NoteType.Org:
+          editorType = EditorType.Org;
+          break;
         case NoteType.Unknown:
           editorType = widget.notesFolder.config.defaultEditor;
           break;
       }
+    }
+
+    // Org files
+    if (note.fileFormat == NoteFileFormat.OrgMode &&
+        editorType == EditorType.Markdown) {
+      editorType = EditorType.Org;
     }
 
     // Txt files
@@ -153,13 +180,14 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     Log.i("Note Edit State: $state");
+
     if (state != AppLifecycleState.resumed) {
       var note = _getNoteFromEditor();
       if (!_noteModified(note)) return;
@@ -176,11 +204,13 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
         var savedNote = await _saveNote(_getNoteFromEditor());
         return savedNote;
       },
-      child: _getEditor(),
+      child: _getEditor()!,
     );
   }
 
-  Widget _getEditor() {
+  Widget? _getEditor() {
+    var note = this.note!;
+
     switch (editorType) {
       case EditorType.Markdown:
         return MarkdownEditor(
@@ -239,15 +269,28 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
           discardChangesSelected: _discardChangesSelected,
           editMode: widget.editMode,
         );
+      case EditorType.Org:
+        return OrgEditor(
+          key: _orgEditorKey,
+          note: note,
+          noteModified: _noteModified(note),
+          noteDeletionSelected: _noteDeletionSelected,
+          noteEditorChooserSelected: _noteEditorChooserSelected,
+          exitEditorSelected: _exitEditorSelected,
+          renameNoteSelected: _renameNoteSelected,
+          editTagsSelected: _editTagsSelected,
+          moveNoteToFolderSelected: _moveNoteToFolderSelected,
+          discardChangesSelected: _discardChangesSelected,
+          editMode: widget.editMode,
+        );
     }
-    return null;
   }
 
   void _noteEditorChooserSelected(Note _note) async {
     var newEditorType = await showDialog<EditorType>(
       context: context,
       builder: (BuildContext context) {
-        return NoteEditorSelector(editorType, _note.fileFormat);
+        return NoteEditorSelector(editorType, _note.fileFormat!);
       },
     );
 
@@ -267,6 +310,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
   }
 
   void _renameNoteSelected(Note _note) async {
+    var note = this.note!;
     var fileName = await showDialog(
       context: context,
       builder: (_) => RenameDialog(
@@ -278,12 +322,12 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
     if (fileName is String) {
       if (_isNewNote) {
         setState(() {
-          note = _note;
+          this.note = _note;
           note.rename(fileName);
         });
         return;
       }
-      var container = Provider.of<Repository>(context, listen: false);
+      var container = context.read<GitJournalRepo>();
       container.renameNote(note, fileName);
     }
   }
@@ -295,7 +339,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
     }
 
     var settings = Provider.of<Settings>(context, listen: false);
-    var shouldDelete = true;
+    bool shouldDelete = true;
     if (settings.confirmDelete) {
       shouldDelete = await showDialog(
         context: context,
@@ -318,7 +362,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
       return;
     }
 
-    var stateContainer = Provider.of<Repository>(context, listen: false);
+    var stateContainer = context.read<GitJournalRepo>();
     stateContainer.removeNote(note);
   }
 
@@ -353,7 +397,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
 
     Log.d("Note modified - saving");
     try {
-      var stateContainer = Provider.of<Repository>(context, listen: false);
+      var stateContainer = context.read<GitJournalRepo>();
       _isNewNote
           ? await stateContainer.addNote(note)
           : await stateContainer.updateNote(note);
@@ -375,15 +419,16 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
   Note _getNoteFromEditor() {
     switch (editorType) {
       case EditorType.Markdown:
-        return _markdownEditorKey.currentState.getNote();
+        return _markdownEditorKey.currentState!.getNote();
       case EditorType.Raw:
-        return _rawEditorKey.currentState.getNote();
+        return _rawEditorKey.currentState!.getNote();
       case EditorType.Checklist:
-        return _checklistEditorKey.currentState.getNote();
+        return _checklistEditorKey.currentState!.getNote();
       case EditorType.Journal:
-        return _journalEditorKey.currentState.getNote();
+        return _journalEditorKey.currentState!.getNote();
+      case EditorType.Org:
+        return _orgEditorKey.currentState!.getNote();
     }
-    return null;
   }
 
   void _moveNoteToFolderSelected(Note note) async {
@@ -396,14 +441,14 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
         note.parent = destFolder;
         setState(() {});
       } else {
-        var stateContainer = Provider.of<Repository>(context, listen: false);
+        var stateContainer = context.read<GitJournalRepo>();
         stateContainer.moveNote(note, destFolder);
       }
     }
   }
 
   void _discardChangesSelected(Note note) async {
-    var stateContainer = Provider.of<Repository>(context, listen: false);
+    var stateContainer = context.read<GitJournalRepo>();
     stateContainer.discardChanges(note);
 
     Navigator.pop(context);
@@ -415,7 +460,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
 
     var route = MaterialPageRoute(
       builder: (context) => NoteTagEditor(
-        selectedTags: note.tags,
+        selectedTags: note!.tags,
         allTags: allTags,
       ),
       settings: const RouteSettings(name: '/editTags/'),
@@ -424,10 +469,10 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
     assert(newTags != null);
 
     Function eq = const SetEquality().equals;
-    if (!eq(note.tags, newTags)) {
+    if (!eq(note!.tags, newTags)) {
       setState(() {
         Log.i("Settings tags to: $newTags");
-        note.tags = newTags;
+        note!.tags = newTags;
       });
     }
   }
