@@ -167,7 +167,7 @@ class GitCloneUrlKnownProviderPageState
 
         // Step 2
         Text(
-          tr("setup.cloneUrl.manual.step1"),
+          tr("setup.cloneUrl.manual.step2"),
           style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 8.0),
