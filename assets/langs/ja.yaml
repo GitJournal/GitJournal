@@ -194,6 +194,7 @@ settings:
     swipe: スワイプでノートを削除する
     listView: リストビュー
     confirmDelete: 削除時に確認をポップアップする
+    hardWrap: hardWrapを有効にする
   NoteFileNameFormat:
     iso8601WithTimeZone: タイムゾーン付きISO8601形式
     iso8601: ISO8601形式

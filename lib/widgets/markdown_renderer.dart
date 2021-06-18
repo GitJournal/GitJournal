@@ -23,10 +23,13 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:function_types/function_types.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:path/path.dart' as p;
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/hardwrap.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
 import 'package:gitjournal/utils/logger.dart';
@@ -46,6 +49,7 @@ class MarkdownRenderer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    var settings = Provider.of<Settings>(context);
     theme = theme.copyWith(
       textTheme: theme.textTheme.copyWith(
         subtitle1: theme.textTheme.subtitle1,
@@ -120,22 +124,29 @@ class MarkdownRenderer extends StatelessWidget {
       imageBuilder: (url, title, alt) => MarkdownImage(
           url, note.parent.folderPath + p.separator,
           titel: title, altText: alt),
-      extensionSet: markdownExtensions(),
+      extensionSet: markdownExtensions(hardWrapEnabled: settings.hardWrap),
     );
 
     return view;
   }
 
-  static md.ExtensionSet markdownExtensions() {
+  static md.ExtensionSet markdownExtensions({bool hardWrapEnabled = false}) {
     // It's important to add both these inline syntaxes before the other
     // syntaxes as the LinkSyntax intefers with both of these
     var markdownExtensions = md.ExtensionSet(
       md.ExtensionSet.gitHubFlavored.blockSyntaxes,
-      [
-        WikiLinkSyntax(),
-        TaskListSyntax(),
-        ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes,
-      ],
+      hardWrapEnabled
+          ? [
+              HardWrapSyntax(),
+              WikiLinkSyntax(),
+              TaskListSyntax(),
+              ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes,
+            ]
+          : [
+              WikiLinkSyntax(),
+              TaskListSyntax(),
+              ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes,
+            ],
     );
     return markdownExtensions;
   }
