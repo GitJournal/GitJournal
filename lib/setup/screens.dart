@@ -392,7 +392,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       body: Stack(
         children: <Widget>[
           body,
-          if (Platform.isIOS)
+          if (!Platform.isAndroid)
             SafeArea(
               child: InkWell(
                 child: Container(
