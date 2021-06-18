@@ -25,10 +25,11 @@ class SshKey {
 final bool useDartKeyGen = false;
 
 Future<SshKey?> generateSSHKeys({required String comment}) async {
-  if (useDartKeyGen) {
-    //return generateSSHKeysDart(comment: comment);
-  } else {}
-  return generateSSHKeysNative(comment: comment);
+  if (Platform.isAndroid || Platform.isIOS) {
+    return generateSSHKeysNative(comment: comment);
+  } else {
+    return generateSSHKeysKeygen(comment: comment);
+  }
 }
 
 /*
@@ -78,6 +79,37 @@ Future<SshKey?> generateSSHKeysNative({required String comment}) async {
   }
 
   return null;
+}
+
+Future<SshKey?> generateSSHKeysKeygen({required String comment}) async {
+  var privateFile = p.join(Directory.systemTemp.path, 'id_rsa');
+
+  // ssh-keygen -f /tmp/r -t rsa -b 4096 -q -N "" -C 'happy'
+  var process = await Process.start('ssh-keygen', [
+    '-f',
+    privateFile,
+    '-t',
+    'rsa',
+    '-b',
+    '4096',
+    '-q',
+    '-N',
+    '',
+    '-C',
+    comment,
+  ]);
+
+  var exitCode = await process.exitCode;
+  if (exitCode != 0) {
+    // FIXME: Give me an error!
+    return null;
+  }
+
+  return SshKey(
+    publicKey: await File(privateFile + '.pub').readAsString(),
+    privateKey: await File(privateFile).readAsString(),
+    password: "",
+  );
 }
 
 Future<SshKey> generateSSHEccKeys({required String comment}) async {
