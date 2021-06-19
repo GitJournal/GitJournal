@@ -8,8 +8,6 @@ import 'package:path/path.dart' as p;
 import 'package:gitjournal/ssh/binary_length_value.dart';
 import 'package:gitjournal/utils/logger.dart';
 
-// import 'package:gitjournal/ssh/rsa_key_pair.dart';
-
 class SshKey {
   final String publicKey;
   final String privateKey;
