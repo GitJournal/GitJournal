@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 
 class Features {
-  static const bool alwaysPro = false;
+  // Make the desktop version always pro, for now.
+  static bool alwaysPro =
+      Platform.isWindows || Platform.isLinux || Platform.isMacOS;
   static const bool perFolderConfig = false;
 
   static final all = <Feature>[
