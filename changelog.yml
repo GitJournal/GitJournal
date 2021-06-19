@@ -6,6 +6,7 @@
     - "More robust error handling"
   bugs:
     - text: "Fix ShareTo being broken in the last release"
+    - text: "Support for non-rsa ssh keys - #516"
 
 - version: "1.76"
   date: 2021-04-23
