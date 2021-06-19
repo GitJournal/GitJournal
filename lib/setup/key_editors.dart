@@ -24,7 +24,7 @@ class PublicKeyEditor extends StatelessWidget {
     }
 
     val = val.trim();
-    if (!val.startsWith("ssh-rsa ") && !val.startsWith("ecdsa-sha2")) {
+    if (!val.startsWith("ssh-") && !val.startsWith("ecdsa-")) {
       return tr("setup.keyEditors.public");
     }
     return null;
