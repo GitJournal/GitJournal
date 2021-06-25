@@ -16,6 +16,7 @@ limitations under the License.
 
 import 'dart:io';
 
+import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:uuid/uuid.dart';
 
@@ -38,6 +39,7 @@ import 'note_serializer.dart';
 typedef void NoteSelectedFunction(Note note);
 typedef bool NoteBoolPropertyFunction(Note note);
 
+/// Move this to NotesFolderFS
 enum NoteLoadState {
   None,
   Loading,
@@ -328,12 +330,12 @@ class Note with NotesNotifier {
     return _loadState;
   }
 
-  Future<NoteLoadState> load() async {
+  Future<Result<NoteLoadState>> load() async {
     assert(_filePath != null);
     assert(_filePath!.isNotEmpty);
 
     if (_loadState == NoteLoadState.Loading) {
-      return _loadState;
+      return Result(_loadState);
     }
 
     final file = File(_filePath!);
@@ -341,7 +343,7 @@ class Note with NotesNotifier {
       try {
         var fileLastModified = file.lastModifiedSync();
         if (this.fileLastModified == fileLastModified) {
-          return _loadState;
+          return Result(_loadState);
         }
         this.fileLastModified = fileLastModified;
       } catch (e, stackTrace) {
@@ -349,13 +351,13 @@ class Note with NotesNotifier {
             e.osError!.errorCode == 2 /* File Not Found */) {
           _loadState = NoteLoadState.NotExists;
           _notifyModified();
-          return _loadState;
+          return Result(_loadState);
         }
 
         logExceptionWarning(e, stackTrace);
         _loadState = NoteLoadState.Error;
         _notifyModified();
-        return _loadState;
+        return Result(_loadState);
       }
       Log.d("Note modified: $_filePath");
     }
@@ -374,12 +376,12 @@ class Note with NotesNotifier {
         if (dataResult.error is MdYamlDocNotFoundException) {
           _loadState = NoteLoadState.NotExists;
           _notifyModified();
-          return _loadState;
+          return Result(_loadState);
         }
         if (dataResult.error is MdYamlParsingException) {
           _loadState = NoteLoadState.Error;
           _notifyModified();
-          return _loadState;
+          return Result(_loadState);
         }
       }
     } else if (isTxt) {
@@ -391,7 +393,7 @@ class Note with NotesNotifier {
 
         _loadState = NoteLoadState.Error;
         _notifyModified();
-        return _loadState;
+        return Result(_loadState);
       }
     } else if (isOrg) {
       try {
@@ -402,19 +404,19 @@ class Note with NotesNotifier {
 
         _loadState = NoteLoadState.Error;
         _notifyModified();
-        return _loadState;
+        return Result(_loadState);
       }
     } else {
       _loadState = NoteLoadState.Error;
       _notifyModified();
-      return _loadState;
+      return Result(_loadState);
     }
 
     fileLastModified = file.lastModifiedSync();
     _loadState = NoteLoadState.Loaded;
 
     _notifyModified();
-    return _loadState;
+    return Result(_loadState);
   }
 
   // FIXME: What about error handling?
