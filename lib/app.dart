@@ -189,25 +189,25 @@ class _JournalAppState extends State<JournalApp> {
         return;
       }
       _navigatorKey.currentState!.pushNamed("/newNote/$shortcutType");
-    });
 
-    quickActions.setShortcutItems(<ShortcutItem>[
-      ShortcutItem(
-        type: 'Markdown',
-        localizedTitle: tr('actions.newNote'),
-        icon: "ic_markdown",
-      ),
-      ShortcutItem(
-        type: 'Checklist',
-        localizedTitle: tr('actions.newChecklist'),
-        icon: "ic_tasks",
-      ),
-      ShortcutItem(
-        type: 'Journal',
-        localizedTitle: tr('actions.newJournal'),
-        icon: "ic_book",
-      ),
-    ]);
+      quickActions.setShortcutItems(<ShortcutItem>[
+        ShortcutItem(
+          type: 'Markdown',
+          localizedTitle: tr('actions.newNote'),
+          icon: "ic_markdown",
+        ),
+        ShortcutItem(
+          type: 'Checklist',
+          localizedTitle: tr('actions.newChecklist'),
+          icon: "ic_tasks",
+        ),
+        ShortcutItem(
+          type: 'Journal',
+          localizedTitle: tr('actions.newJournal'),
+          icon: "ic_book",
+        ),
+      ]);
+    });
 
     _initShareSubscriptions();
   }
