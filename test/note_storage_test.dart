@@ -57,7 +57,7 @@ void main() {
       await Future.forEach(notes, (Note origNote) async {
         var note = Note(parent, origNote.filePath);
         var r = await note.load();
-        expect(r, NoteLoadState.Loaded);
+        expect(r.getOrThrow(), NoteLoadState.Loaded);
 
         loadedNotes.add(note);
       });
