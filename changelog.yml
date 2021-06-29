@@ -1,8 +1,9 @@
 - version: "1.77"
-  draft: true
+  date: 2021-06-29
   improvments:
     - "Remove firebase analytics as it seemed to be sending data to Google even when it was switched off"
     - "Add support for Markdown Hard Wraps - #511"
+    - "Experimental support for new merging mechanism"
     - "More robust error handling"
   bugs:
     - text: "Fix ShareTo being broken in the last release"
