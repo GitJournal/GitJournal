@@ -158,6 +158,8 @@ settings:
     graphView: Graph View
     accounts: Platform Independent Accounts
     includeSubfolders: Include Subfolders
+    experimentalGitOps: Dart-only Git implementation
+    merge: Dart-only merge implementation
   editors:
     title: Editor Settings
     subtitle: Configure how different editors work

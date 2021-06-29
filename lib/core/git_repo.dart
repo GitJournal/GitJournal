@@ -9,6 +9,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/settings/app_settings.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 
@@ -30,9 +31,10 @@ class GitNoteRepository {
   }
 
   Future<Result<void>> _add(String pathSpec) async {
-    if (useDartGit) {
+    if (useDartGit || AppSettings.instance.experimentalGitOps) {
       var repo = await GitRepository.load(gitDirPath).getOrThrow();
-      return await repo.add(pathSpec);
+      await repo.add(pathSpec).throwOnError();
+      return Result(null);
     } else {
       try {
         await _gitRepo.add(pathSpec);
@@ -45,7 +47,7 @@ class GitNoteRepository {
   }
 
   Future<Result<void>> _rm(String pathSpec) async {
-    if (useDartGit) {
+    if (useDartGit || AppSettings.instance.experimentalGitOps) {
       var repo = await GitRepository.load(gitDirPath).getOrThrow();
       return await repo.rm(pathSpec);
     } else {
@@ -64,7 +66,7 @@ class GitNoteRepository {
     required String authorEmail,
     required String authorName,
   }) async {
-    if (useDartGit) {
+    if (useDartGit || AppSettings.instance.experimentalGitOps) {
       var repo = await GitRepository.load(gitDirPath).getOrThrow();
       var author = GitAuthor(name: authorName, email: authorEmail);
       var r = await repo.commit(message: message, author: author);
@@ -179,6 +181,20 @@ class GitNoteRepository {
   }
 
   Future<Result<void>> resetLastCommit() async {
+    if (useDartGit || AppSettings.instance.experimentalGitOps) {
+      var repo = await GitRepository.load(gitDirPath).getOrThrow();
+      var headCommitR = await repo.headCommit();
+      if (headCommitR.isFailure) {
+        return fail(headCommitR);
+      }
+      var headCommit = headCommitR.getOrThrow();
+      var result = await repo.resetHard(headCommit.parents[0]);
+      if (result.isFailure) {
+        return fail(result);
+      }
+
+      return Result(null);
+    }
     try {
       await _gitRepo.resetLast();
     } on Exception catch (e, st) {
@@ -209,25 +225,43 @@ class GitNoteRepository {
     return Result(null);
   }
 
-  // FIXME: Convert to Result!
-  Future<void> merge() async {
+  Future<Result<void>> merge() => catchAll(_merge);
+
+  Future<Result<void>> _merge() async {
     var repo = await GitRepository.load(gitDirPath).getOrThrow();
     var branch = await repo.currentBranch().getOrThrow();
 
     var branchConfig = repo.config.branch(branch);
     if (branchConfig == null) {
-      logExceptionWarning(
-          Exception("Branch '$branch' not in config"), StackTrace.current);
-      return;
+      var ex = Exception("Branch '$branch' not in config");
+      logExceptionWarning(ex, StackTrace.current);
+      return Result.fail(ex);
     }
 
-    var result = await repo.remoteBranch(
+    var r = await repo.remoteBranch(
       branchConfig.remote!,
       branchConfig.trackingBranch()!,
     );
-    if (result.isFailure) {
-      Log.e("Failed to get remote refs",
-          ex: result.error, stacktrace: result.stackTrace);
+    if (r.isFailure) {
+      Log.e("Failed to get remote refs", ex: r.error, stacktrace: r.stackTrace);
+      return fail(r);
+    }
+    var remoteBranchRef = r.getOrThrow();
+
+    if (useDartGit || AppSettings.instance.experimentalGitMerge) {
+      var hash = remoteBranchRef.hash!;
+      var commit = await repo.objStorage.read(hash).getOrThrow();
+      await repo
+          .merge(
+            theirCommit: commit as GitCommit,
+            author: GitAuthor(
+              email: settings.gitAuthorEmail,
+              name: settings.gitAuthor,
+            ),
+            message: "Merging ...",
+          )
+          .throwOnError();
+      return Result(null);
     }
 
     try {
@@ -238,7 +272,10 @@ class GitNoteRepository {
       );
     } on gb.GitException catch (ex, stackTrace) {
       Log.e("Git Merge Failed", ex: ex, stacktrace: stackTrace);
+      return Result.fail(Exception('Git Merge Bindings failed'));
     }
+
+    return Result(null);
   }
 
   Future<void> push() async {

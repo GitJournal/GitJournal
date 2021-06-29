@@ -94,6 +94,24 @@ class _ExperimentalSettingsScreenState
                 setState(() {});
               },
             ),
+            SwitchListTile(
+              title: Text(tr('settings.experimental.merge')),
+              value: appSettings.experimentalGitMerge,
+              onChanged: (bool newVal) {
+                appSettings.experimentalGitMerge = newVal;
+                appSettings.save();
+                setState(() {});
+              },
+            ),
+            SwitchListTile(
+              title: Text(tr('settings.experimental.experimentalGitOps')),
+              value: appSettings.experimentalGitOps,
+              onChanged: (bool newVal) {
+                appSettings.experimentalGitMerge = newVal;
+                appSettings.save();
+                setState(() {});
+              },
+            ),
             ListTile(
               title: const Text('Enter Pro Password'),
               subtitle: Text('Pro: ' + AppSettings.instance.proMode.toString()),

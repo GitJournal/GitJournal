@@ -52,6 +52,8 @@ class AppSettings extends ChangeNotifier {
   var experimentalGraphView = false;
   var experimentalZeroConf = false;
   var experimentalAccounts = false;
+  var experimentalGitMerge = false;
+  var experimentalGitOps = false;
 
   var appVersion = "";
 
@@ -89,6 +91,10 @@ class AppSettings extends ChangeNotifier {
         pref.getBool("experimentalZeroConf") ?? experimentalZeroConf;
     experimentalAccounts =
         pref.getBool("experimentalAccounts") ?? experimentalAccounts;
+    experimentalGitMerge =
+        pref.getBool("experimentalGitMerge") ?? experimentalGitMerge;
+    experimentalGitOps =
+        pref.getBool("experimentalGitOps") ?? experimentalGitOps;
 
     appVersion = pref.getString("appVersion") ?? "";
   }
@@ -121,6 +127,10 @@ class AppSettings extends ChangeNotifier {
         defaultSet.experimentalZeroConf);
     _setBool(pref, "experimentalAccounts", experimentalAccounts,
         defaultSet.experimentalAccounts);
+    _setBool(pref, "experimentalGitMerge", experimentalGitMerge,
+        defaultSet.experimentalGitMerge);
+    _setBool(pref, "experimentalGitOps", experimentalGitOps,
+        defaultSet.experimentalGitOps);
 
     pref.setInt("appSettingsVersion", version);
     pref.setString("appVersion", appVersion);
@@ -144,6 +154,8 @@ class AppSettings extends ChangeNotifier {
       'experimentalGraphView': experimentalGraphView.toString(),
       'experimentalZeroConf': experimentalZeroConf.toString(),
       'experimentalAccounts': experimentalAccounts.toString(),
+      'experimentalGitMerge': experimentalGitMerge.toString(),
+      'experimentalGitOps': experimentalGitOps.toString(),
     };
   }
 

@@ -258,7 +258,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: ff8c5eaa2dc1f2f6bfa3d71c73a38950cd220a28
+      resolved-ref: "3de541d82476b7cd0e2ce1c1edd4a7ad689aab2d"
       url: "https://github.com/GitJournal/dart-git.git"
     source: git
     version: "0.0.2"
@@ -361,7 +361,7 @@ packages:
       name: ffi
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.1.2"
   file:
     dependency: transitive
     description:
@@ -775,6 +775,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.0"
+  os:
+    dependency: transitive
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "43464348ffdd7b00983caa62133c89b1b3045735"
+      url: "https://github.com/GitJournal/os.git"
+    source: git
+    version: "0.1.2"
   package_config:
     dependency: transitive
     description:
