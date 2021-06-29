@@ -172,7 +172,7 @@ class NoteSerializer implements NoteSerializerInterface {
         if (line.trim().isEmpty) {
           continue;
         }
-        startsWithH1 = line.startsWith('#');
+        startsWithH1 = line.startsWith('#') && !line.startsWith('##');
         break;
       }
 
