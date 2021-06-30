@@ -53,15 +53,13 @@ class FeatureTile extends StatelessWidget {
       subtitle += ' - ' + feature.subtitle;
     }
 
-    late Color color;
     var theme = Theme.of(context);
+    var color = theme.accentColor;
 
     if (feature.pro) {
       if (theme.brightness == Brightness.light) {
         color = theme.primaryColor;
       }
-    } else {
-      color = theme.accentColor;
     }
 
     return _Tile(
