@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import 'package:path/path.dart' as p;
@@ -33,7 +31,6 @@ class RepositoryManager with ChangeNotifier {
 
   Future<GitJournalRepo> buildActiveRepository() async {
     var repoCacheDir = p.join(cacheDir, currentId);
-    await Directory(repoCacheDir).create(recursive: true);
 
     _repo = await GitJournalRepo.load(
       gitBaseDir: gitBaseDir,
@@ -97,13 +94,7 @@ class RepositoryManager with ChangeNotifier {
     Log.i("Deleting repo: $currentId");
 
     var i = repoIds.indexOf(currentId);
-
-    var repoPath = _repo.repoPath;
-    var cachePath = _repo.cacheDir;
-
-    await Directory(repoPath).delete(recursive: true);
-    await Directory(cachePath).delete(recursive: true);
-
+    await _repo.delete();
     repoIds.removeAt(i);
 
     i = i.clamp(0, repoIds.length - 1);

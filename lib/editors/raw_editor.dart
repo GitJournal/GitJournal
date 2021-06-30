@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -135,8 +133,8 @@ class RawEditorState extends State<RawEditor>
   }
 
   @override
-  Future<void> addImage(File file) async {
-    await getNote().addImage(file);
+  Future<void> addImage(String filePath) async {
+    await getNote().addImage(filePath);
     setState(() {
       _textController.text = note.body;
       _noteModified = true;

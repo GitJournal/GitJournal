@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -197,8 +195,8 @@ class MarkdownEditorState extends State<MarkdownEditor>
   }
 
   @override
-  Future<void> addImage(File file) async {
-    await getNote().addImage(file);
+  Future<void> addImage(String filePath) async {
+    await getNote().addImage(filePath);
     setState(() {
       _textController.text = note.body;
       _noteModified = true;

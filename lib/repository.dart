@@ -124,6 +124,8 @@ class GitJournalRepo with ChangeNotifier {
     }
     */
 
+    await Directory(cacheDir).create(recursive: true);
+
     return GitJournalRepo._internal(
       repoPath: repoPath,
       gitBaseDirectory: gitBaseDir,
@@ -568,6 +570,11 @@ class GitJournalRepo with ChangeNotifier {
 
     Log.i("Created branch $name");
     return name;
+  }
+
+  Future<void> delete() async {
+    await Directory(repoPath).delete(recursive: true);
+    await Directory(cacheDir).delete(recursive: true);
   }
 }
 

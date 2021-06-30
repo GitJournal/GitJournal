@@ -498,7 +498,8 @@ class Note with NotesNotifier {
     return true;
   }
 
-  Future<void> addImage(File file) async {
+  Future<void> addImage(String filePath) async {
+    var file = File(filePath);
     var absImagePath = _buildImagePath(file);
     await file.copy(absImagePath);
 

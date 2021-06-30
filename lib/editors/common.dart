@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import 'package:function_types/function_types.dart';
@@ -22,7 +20,7 @@ abstract class Editor {
 
 abstract class EditorState with ChangeNotifier {
   Note getNote();
-  Future<void> addImage(File file);
+  Future<void> addImage(String filePath);
 
   bool get noteModified;
 }

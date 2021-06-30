@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 
@@ -151,8 +150,8 @@ class OrgEditorState extends State<OrgEditor>
   }
 
   @override
-  Future<void> addImage(File file) async {
-    await getNote().addImage(file);
+  Future<void> addImage(String filePath) async {
+    await getNote().addImage(filePath);
     setState(() {
       _textController.text = note.body;
       _noteModified = true;

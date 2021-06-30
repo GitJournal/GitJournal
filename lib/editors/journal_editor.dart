@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
@@ -157,8 +155,8 @@ class JournalEditorState extends State<JournalEditor>
   }
 
   @override
-  Future<void> addImage(File file) async {
-    await getNote().addImage(file);
+  Future<void> addImage(String filePath) async {
+    await getNote().addImage(filePath);
     setState(() {
       _textController.text = note.body;
       _noteModified = true;

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -137,7 +135,7 @@ Widget _buildAddBottomSheet(
               );
 
               if (image != null) {
-                await editorState.addImage(File(image.path));
+                await editorState.addImage(image.path);
               }
             } catch (e) {
               reportError(e, StackTrace.current);
@@ -155,7 +153,7 @@ Widget _buildAddBottomSheet(
               );
 
               if (image != null) {
-                await editorState.addImage(File(image.path));
+                await editorState.addImage(image.path);
               }
             } catch (e) {
               if (e is PlatformException && e.code == "photo_access_denied") {

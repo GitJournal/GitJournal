@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -292,9 +291,9 @@ class ChecklistEditorState extends State<ChecklistEditor>
   }
 
   @override
-  Future<void> addImage(File file) async {
+  Future<void> addImage(String filePath) async {
     var note = getNote();
-    await note.addImage(file);
+    await note.addImage(filePath);
 
     setState(() {
       checklist = Checklist(note);
