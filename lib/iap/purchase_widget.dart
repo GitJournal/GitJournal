@@ -185,6 +185,10 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
   }
 
   Widget buildBody(BuildContext context) {
+    if (_products == null || _products!.isEmpty) {
+      return const Icon(Icons.error, size: 64);
+    }
+
     var slider = PurchaseSlider(
       values: _products!.map(PaymentInfo.fromProductDetail).toList(),
       selectedValue: PaymentInfo.fromProductDetail(_selectedProduct!),

@@ -128,8 +128,8 @@ class PurchaseManager {
     // FIXME: What if the sotre cannot be reached?
     var response = await _instance!.con.queryProductDetails(skus);
     response.productDetails.sort((a, b) {
-      var pa = PaymentInfo.fromProductDetail(a)!;
-      var pb = PaymentInfo.fromProductDetail(b)!;
+      var pa = PaymentInfo.fromProductDetail(a);
+      var pb = PaymentInfo.fromProductDetail(b);
       return pa.value.compareTo(pb.value);
     });
 

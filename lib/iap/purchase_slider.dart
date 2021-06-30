@@ -15,7 +15,7 @@ class PaymentInfo extends Equatable {
   @override
   List<Object> get props => [value, text, id];
 
-  static PaymentInfo? fromProductDetail(ProductDetails pd) {
+  static PaymentInfo fromProductDetail(ProductDetails pd) {
     double value = -1;
     if (pd.skProduct != null) {
       value = double.parse(pd.skProduct!.price);
@@ -34,8 +34,8 @@ class PaymentInfo extends Equatable {
 typedef PaymentSliderChanged = void Function(PaymentInfo);
 
 class PurchaseSlider extends StatelessWidget {
-  final List<PaymentInfo?> values;
-  final PaymentInfo? selectedValue;
+  final List<PaymentInfo> values;
+  final PaymentInfo selectedValue;
   final PaymentSliderChanged onChanged;
 
   PurchaseSlider({
@@ -43,7 +43,7 @@ class PurchaseSlider extends StatelessWidget {
     required this.selectedValue,
     required this.onChanged,
   }) {
-    values.sort((a, b) => a!.value.compareTo(b!.value));
+    values.sort((a, b) => a.value.compareTo(b.value));
   }
 
   @override
@@ -63,8 +63,8 @@ class PurchaseSlider extends StatelessWidget {
 }
 
 class ShapePainter extends CustomPainter {
-  final List<PaymentInfo?> values;
-  final PaymentInfo? selectedValue;
+  final List<PaymentInfo> values;
+  final PaymentInfo selectedValue;
   final Color color;
 
   ShapePainter({
@@ -91,8 +91,8 @@ class ShapePainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.fill;
 
-    var diff = (values.last!.value - values.first!.value);
-    var w = (size.width / diff) * (selectedValue!.value - values.first!.value);
+    var diff = (values.last.value - values.first.value);
+    var w = (size.width / diff) * (selectedValue.value - values.first.value);
 
     var angle = atan(size.height / size.width);
     var h = w * tan(angle);
