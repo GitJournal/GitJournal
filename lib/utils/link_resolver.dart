@@ -100,6 +100,11 @@ class LinkResolver {
       folder = folder.rootFolder;
     }
 
+    assert(fullPath.length == folder.folderPath.length);
+    if (fullPath.length == folder.folderPath.length) {
+      // FIXME: Why is this case occurring?
+      return null;
+    }
     spec = fullPath.substring(folder.folderPath.length + 1);
 
     var linkedNote = folder.getNoteWithSpec(spec);
