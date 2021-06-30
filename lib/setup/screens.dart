@@ -262,6 +262,9 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           },
         );
       } else if (_pageChoice[1] == PageChoice1.Auto) {
+        if (_gitHost == null || _userInfo == null) {
+          return const Icon(Icons.error, size: 64);
+        }
         return GitHostSetupRepoSelector(
           gitHost: _gitHost!,
           userInfo: _userInfo!,
