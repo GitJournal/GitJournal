@@ -1,3 +1,5 @@
+/*
+
 import 'package:multicast_dns/multicast_dns.dart';
 
 Future<void> main() async {
@@ -46,3 +48,5 @@ Future<void> main() async {
 // TODO:
 // * I don't know if/how I can run an HTTP Server in the Background
 //   Is that still possible with current Android Versions?
+
+*/

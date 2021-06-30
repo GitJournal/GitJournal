@@ -64,20 +64,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
-  bonsoir:
-    dependency: "direct dev"
-    description:
-      name: bonsoir
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
-  bonsoir_platform_interface:
-    dependency: transitive
-    description:
-      name: bonsoir_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -1023,19 +1009,19 @@ packages:
     source: hosted
     version: "0.27.1"
   sentry:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: sentry
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.0"
+    version: "5.1.0"
   sentry_flutter:
     dependency: "direct main"
     description:
       name: sentry_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.0"
+    version: "5.1.0"
   share:
     dependency: "direct main"
     description:

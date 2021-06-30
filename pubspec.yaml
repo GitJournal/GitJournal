@@ -64,8 +64,7 @@ dependencies:
   provider: ^5.0.0
   quick_actions: ^0.6.0
   receive_sharing_intent: ^1.4.5
-  sentry: ^5.0.0
-  sentry_flutter: ^5.0.0
+  sentry_flutter: ^5.1.0
   share: ^2.0.1
   shared_preferences: ^2.0.5
   #ssh_key: ^0.6.0
@@ -86,7 +85,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   benchmark_harness: ^2.0.0
-  bonsoir: ^1.0.0
+  # bonsoir: ^1.0.0
   flutter_launcher_icons:
     git: https://github.com/dirkbo/flutter_launcher_icons
   # flutter_webview_plugin: ^0.3.11
