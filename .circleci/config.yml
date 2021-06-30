@@ -34,7 +34,7 @@ jobs:
           command: echo "$ANDROID_KEY_FILE" | base64 -di > android/key.properties
       - run:
           name: Build
-          command: ./scripts/build.sh
+          command: ./scripts/build_android.sh
       - store_artifacts:
           path: build/app/outputs/bundle/prodRelease/app.aab
           destination: gitjournal.aab
