@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eux
+set -eu
 
 cd "$(dirname "$0")"
 
@@ -13,8 +13,8 @@ cd "../assets/langs"
 for lang in $langs; do
     echo "Downloading for $lang"
 
-    url=$(curl -X POST https://api.poeditor.com/v2/projects/export -d api_token="$TOKEN" -d id="$ID" -d language="$lang" -d type="yml" | jq -r .result.url)
-    wget -O "$lang.yaml" "$url"
+    url=$(curl -s -X POST https://api.poeditor.com/v2/projects/export -d api_token="$TOKEN" -d id="$ID" -d language="$lang" -d type="yml" | jq -r .result.url)
+    wget -q -O "$lang.yaml" "$url"
 done
 
 echo "Done"

@@ -1,3 +1,4 @@
+# Polish translation  by Witold Firlej (grizz) https://grizz.pl https://github.com/grizz-pl
 settings:
   ok: Ok
   cancel: キャンセル
@@ -489,7 +490,7 @@ feature_timeline:
   issues: GitJournalの開発はGitHubで行われています。重要だと思うIssueには是非投票してください。
 purchase_screen:
   title: Pro Version
-  desc: 'GitJournalは完全にオープンソースであり、その重要な開発行為の成果物です。ベンチャーキャピタルや企業の支援を受けたことはありませんし、これからもありえません。あなたのご支援が直接、開発を支えます。   GitJournalは "(最低限)必要な分だけ支払う"モデルで運営されています。'
+  desc: GitJournalは完全にオープンソースであり、その重要な開発行為の成果物です。ベンチャーキャピタルや企業の支援を受けたことはありませんし、これからもありえません。あなたのご支援が直接、開発を支えます。   GitJournalは "(最低限)必要な分だけ支払う"モデルで運営されています。
   restore: 購入を復元する
   oneTime:
     title: 一括購入
@@ -507,3 +508,4 @@ OnBoarding:
   subtitle: 'Gitで構築されたオープンソースのノートアプリ'
   page2: 'ノートはYAMLヘッダー付きの標準的なMarkdownとして保存されます'
   page3: 'ローカルのGitリポジトリをお好みのリモートと同期できます'
+0: ""

@@ -15,12 +15,82 @@ settings:
       invalid: Proszę podaj poprawny email
   display:
     title: Opcje wyświetlania
+    darkTheme: Dark Theme
     homeScreen: Ekran główny
     theme: Motyw
-  theme:
-    light: Jasny
-    dark: Ciemny
-    default: Ustawienia systemu
+    images:
+      title: Image Settings
+      subtitle: Configure how images are displayed
+      imageTextType:
+        alt: Alt Text
+        altAndTooltip: Alt Text and Tooltip
+        tooltip: Tooltip
+        none: None
+      captions:
+        title: Image Captions
+        subtitle: Configure the image captions
+        useAsCaption: Use as caption
+        overlayCaption: Draw caption on top of large enough images
+        transparentCaption: Overlay captions have a semitransparent background
+        blurBehindCaption: Blur Image behind caption
+        tooltipFirst:
+          title: Show tooltip before alt text
+          tooltip: Current order is “<tooltip> - <altText>”
+          altText: Current order is “<altText> - <tooltip>”
+        captionOverrides: Caption Overrides
+        tagDescription: Put these tags in “![altText](... "tooltip")” to override the behavior for it.
+        doNotCaptionTags:
+          hint: DoNotCaption-Tags
+          label: Never use as caption with tags
+          validator:
+            empty: Tags cannot be empty.
+            same: Tag cannot be identical to a “DoCaption-Tag”.
+        doCaptionTags:
+          hint: DoCaption-Tags
+          label: Always use as caption with tags
+          validator:
+            empty: Tags cannot be empty.
+            same: Tag cannot be identical to a “DoNotCaption-Tag”.
+      detailsView:
+        header: Detail View
+        maxZoom: Maximal zoom level
+        rotateGestures:
+          title: Rotate Image with gestures
+          subtitle: Rotate by moving two fingers in a circle
+      theming:
+        title: Image Theming
+        subtitle: Configure how images are themed
+        adjustColors:
+          all: All
+          blackAndWhite: Only black and white
+          grays: Only grays
+        doNotThemeTags:
+          hint: DoNotTheme-Tags
+          label: Never theme images with tags
+          validator:
+            empty: Tags cannot be empty.
+            same: Tag cannot be identical to a “DoTheme-Tag”.
+        doThemeTags:
+          hint: DoTheme-Tag
+          label: Always theme images with tags
+          validator:
+            empty: Tags cannot be empty.
+            same: Tag cannot be identical to a “DoNotTheme-Tag”.
+        matchCanvasColor:
+          title: Match Background Color
+          subtitle: Replaces white/black parts of vector graphics with the canvas color
+        tagDescription: Put these tags in “![altText](... "tooltip")” to override the behavior for the image.
+        themeOverrides: Theme Overrides
+        themeOverrideTagLocation: Theme Override Tag Location
+        themeRasterGraphics: Theme Raster Graphics (.png/.jpg)
+        themeSvgWithBackground: Theme SVGs With Background
+        themeVectorGraphics:
+          title: Theme Vector Graphics
+          filter: Using Color Filter
+          'off': false
+          'on': true
+        vectorGraphics: Vector Graphics (.svg)
+        vectorGraphicsAdjustColors: Colors to Adjust
   gitAuthor: Ustawienia autora dla Git
   versionInfo: Informacja o wersji
   analytics: Analityka
@@ -51,12 +121,13 @@ settings:
     title: Opcje Git Remote
     subtitle: Skonfiguruj, gdzie są synchronizowane Twoje notatki
     host: Git Host
+    branch: Branch
   noteMetaData:
     title: Opcje metadanych notatek
     subtitle: Skonfiguruj jak przechowywane są metadane notatek
     text: Każda notatk ma metadane, które są przechowywane w nagłówku YAML, takie jak -
     enableHeader: Włącz nagłówek YAML
-    modified: Pole - Modified 
+    modified: Pole - Modified
     created: Pole - Created
     tags: Pole - Tags
     example:
@@ -83,6 +154,9 @@ settings:
     markdownToolbar: Pokazuj pasek narzędzi Markdown w edytorze
     graphView: Widok grafu
     accounts: Platform Independent Accounts
+    includeSubfolders: Include Subfolders
+    experimentalGitOps: Dart-only Git implementation
+    merge: Dart-only merge implementation
   editors:
     title: opcje edytora
     subtitle: Skonfiguruj jak działają poszczególne edytory
@@ -94,6 +168,7 @@ settings:
     checklistEditor: Edytor listy
     rawEditor: Edytor źródłowy
     choose: Wybierz edytor
+    orgEditor: Org Editor
   sortingField:
     modified: Ostatnia modyfikacja
     created: Data utworzenia
@@ -118,14 +193,16 @@ settings:
     swipe: Przesuń, aby wykasować notatkę
     listView: Widok listy
     confirmDelete: Pokazuj okno potwierdzenia kasowania pliku
+    hardWrap: Enable hardWrap
   NoteFileNameFormat:
     iso8601WithTimeZone: ISO8601 ze strefą czasową
     iso8601: ISO8601
     iso8601WithoutColon: ISO8601 bez dwukropków
     title: Tytuł
     uuid: Uuid V4
-    simple: yyyy-mm-dd-hh-mm-ss
+    simmple: yyyy-mm-dd-hh-mm-ss
     zettelkasten: yyyymmddhhmmss
+    simple: yyyy-mm-dd-hh-mm-ss
     dateOnly: yyyy-mm-dd
   HomeScreen:
     allNotes: Wszystkie notatki
@@ -134,6 +211,11 @@ settings:
     edit: Edycja
     view: Widok
     lastUsed: Ostatnio używane
+  theme:
+    light: Jasny
+    dark: Ciemny
+    default: Ustawienia systemu
+  versionCopied: Version Number Copied
   ssh:
     syncFreq: Częstotliwość odświeżania
     reset: Reset Git Host
@@ -154,7 +236,6 @@ settings:
     subtitle: Skonfiguruj jego wygląd i zachowanie
     enable: Włącz dolny pasek menu
   deleteRepo: Usuń Repozytorium
-
 editors:
   checklist:
     add: Dodaj element
@@ -179,8 +260,6 @@ actions:
   newJournal: Nowy wpis do dziennika
   newChecklist: Nowa lista kontrolna
 screens:
-  home:
-    allNotes: Wszystkie notatki
   folders:
     title: Katalogi
     selected: Katalog wybrany
@@ -212,30 +291,21 @@ screens:
       title: Zmień nazwę
   folder_view:
     empty: Dodajmy jakieś notatki?
-
-OnBoarding:
-  Skip: Pomiń
-  Next: Dalej
-  getStarted: Zacznijmy
-  subtitle: 'Otwartoźródłowa aplikacja do notatek oparta o Git'
-  page2: 'Twoje notatki są przechowywane w plikach markdown z nagłówkami YAML'
-  page3: 'Synchronizuj swoje repozytorium git z dowolnym usługodawcą'
-
+  home:
+    allNotes: Wszystkie notatki
 widgets:
   rename:
-    yes: Zmień nazwę
-    no: Anuluj
+    'yes': Zmień nazwę
+    'no': Anuluj
     validator:
       empty: Proszę podaj nazwę
       exists: Już istnieje
       contains: Nie może zawierać /
   backlinks:
     title:
-      zero: ""
       one: "{} odnośnik w notatce do tej notatki"
-      many: "{} odnośników w notatkach do tej notatki"
-      two: "{} odnośniki w notatkach do tej notatki"
       few: "{} odnośników w notatkach do tej notatki"
+      many: "{} odnośników w notatkach do tej notatki"
       other: "{} odnośniki w notatkach do tej notatki"
   SortingOrderSelector:
     title: Kryteria sortowania
@@ -245,8 +315,7 @@ widgets:
     failSend: Failed to send purchase request
     failPurchase: Failed to Purchase - {}
   FolderView:
-    noteDeleted: Nie wykasowany
-    undo: Cofnij
+    noteSelected: Note Selected
     syncError: Błąd synchronizacji {}
     headerOptions:
       heading: Opcje nagłówka
@@ -263,11 +332,16 @@ widgets:
       select: Wybierz widok
     sortingOptions: Opcje sortowania
     viewOptions: Opcje widoku
-    searchFailed: Nie znaleziono 
+    noteDeleted: Nie wykasowany
+    undo: Cofnij
+    searchFailed: Nie znaleziono
+  imageRenderer:
+    caption: "{first} - {second}"
+    httpError: "Code: {status} for {url}"
   NoteDeleteDialog:
     title: Chcesz wykasować tę notatkę?
-    yes: Tak
-    no: Nie
+    'yes': Tak
+    'no': Nie
   NoteEditor:
     renameFile: Zmień nazwę pliku
     fileName: Nazwa pliku
@@ -280,7 +354,6 @@ widgets:
     linkInvalid: Link '{}' jest błędny.
   FolderSelectionDialog:
     title: Wybierz katalog
-
 rootFolder: Katalog główny
 ignoredFiles:
   dot: Rozpoczynające się .
@@ -291,17 +364,20 @@ drawer:
   all: Wszystkie notatki
   folders: Katalogi
   fs: System plików
-  graph: Widok grafu
   tags: Tagi
   share: Udostępnij aplikacje
   rate: Oceń nas
   feedback: Informacje zwrotne
   bug: Zgłoszenie błędu
+  graph: Widok grafu
   remote: Brak hosta Git
   addRepo: Dodaj repozytorium
 setup:
+  autoConfigure:
+    title: Jak chcesz to zrobić?
+    automatic: Konfiguracja automatyczna
+    manual: Zrobię to ręcznie
   autoconfigure:
-    title: Potrzebujemy zezwoleń na wykonanie następujących czynności
     step1: 1. Pokaż istniejące repozytoria lub utwórz nowe repozytorium
     step2: 2. Wygeneruj klucz SSH na tym urządzeniu
     step3: 3. Dodaj klucz jako klucz z prawem do zapisu w repozytorium
@@ -313,6 +389,7 @@ setup:
     title: Wybierz lub utwórz repozytorium
     hint: Wpisz, aby wyszukać lub utworzyć repozytorium
     create: Utwórz prywatne repozytorium {}
+    loading: Loading
   cloneUrl:
     enter: Wprowadź adres URL Git Clone
     validator:
@@ -356,11 +433,6 @@ setup:
   host:
     title: Wybierz dostawcę hostingu Git -
     custom: Zwyczaj
-  autoConfigure:
-    title: Jak chcesz to zrobić?
-    automatic: Konfiguracja automatyczna
-    manual: Zrobię to ręcznie
-
 feature:
   darkMode: Tryb ciemny
   rawEditor: Editor Raw
@@ -413,26 +485,30 @@ feature:
   singleJournalEntry: Pojedynczy plik zapisów księgowych dziennie
   configureBottomMenuBar: Skonfiguruj dolny pasek menu
   customFileNamePerEditor: Niestandardowa nazwa pliku na edytora
-
+  branchSelection: Git Branch Selection
 feature_timeline:
   title: Oś czasu funkcji
   progress: W trakcie
   plan: Zaplanowany
   issues: Rozwój GitJournal jest prowadzony na Github. Rozważ głosowanie w sprawach, które uważasz za ważne.
-
 purchase_screen:
   title: Wersja Pro
   desc: „GitJournal jest całkowicie open source i jest wynikiem znacznych prac rozwojowych. Nie ma wsparcia zewnętrznego kapitału ani korporacji i nigdy nie będzie miał. Twoje wsparcie bezpośrednio podtrzymuje rozwój.
-
-
-GitJournal operates on a "pay what you want model (with a minimum)".'
-  restore: Przywróć zakup
+  restore: Restore Purchase
   oneTime:
-    title: Zakup jednorazowy
-    desc: Trwale włącza wszystkie funkcje Pro dostępne obecnie w GitJournal i nowe funkcje dodane w ciągu następnych 12 miesięcy.
+    title: One Time Purchase
+    desc: Permanently enables all Pro features currently in GitJournal and new features added in the following 12 months.
   monthly:
-    title: Miesięczne raty
-    desc: Włącza wszystkie funkcje Pro. Po 12 miesiącach lub po zapłaceniu {minYearlyPurchase} uzyskasz wszystkie korzyści z „jednorazowego zakupu”
+    title: Monthly Installments
+    desc: Enables all Pro Features. After 12 months or after paying {minYearlyPurchase}, you will get all the benefits of the 'One Time Purchase'
   thanks:
-    title: Dziękuję Ci
-    subtitle: Jesteś niesamowity, jeśli chodzi o wspieranie GitJournal
+    title: Thank You
+    subtitle: You're awesome for supporting GitJournal
+OnBoarding:
+  Skip: Pomiń
+  Next: Dalej
+  getStarted: Zacznijmy
+  subtitle: 'Otwartoźródłowa aplikacja do notatek oparta o Git'
+  page2: 'Twoje notatki są przechowywane w plikach markdown z nagłówkami YAML'
+  page3: 'Synchronizuj swoje repozytorium git z dowolnym usługodawcą'
+0: ""

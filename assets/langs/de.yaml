@@ -1,3 +1,4 @@
+# Polish translation  by Witold Firlej (grizz) https://grizz.pl https://github.com/grizz-pl
 settings:
   ok: Ok
   cancel: Abbrechen
@@ -18,51 +19,52 @@ settings:
     homeScreen: Startbildschirm
     theme: Theme
     images:
-      title: Image Settings
-      subtitle: Configure how images are displayed
+      title: Bildeinstellungen
+      subtitle: Einstellen wie die Bilder dargestellt werden
       imageTextType:
         alt: Alt Text
         altAndTooltip: Alt Text and Tooltip
         tooltip: Tooltip
         none: None
       captions:
-        title: Image Captions
-        subtitle: Configure the image captions
-        useAsCaption: Use as caption
-        overlayCaption: Draw caption on top of large enough images
-        transparentCaption: Overlay captions have a semitransparent background
-        blurBehindCaption: Blur Image behind caption
+        title: Bildbeschreibungen
+        subtitle: Einstellen der Bildbeschreibungen
+        useAsCaption: Als Beschreibungen nutzen
+        overlayCaption: Beschreibungen über entsprechend große Bilder anzeigen
+        transparentCaption: Überlagerte Beschreibungen haben einen halbtransparenten Hintergrund
+        blurBehindCaption: Das Bild hinter der Beschreibung verwischen
         tooltipFirst:
           title: Show tooltip before alt text
-          tooltip: Current order is “<tooltip> - <altText>”
-          altText: Current order is “<altText> - <tooltip>”
+          tooltip: Die aktuelle Reihenfolge ist “<tooltip> - <altText>”
+          altText: Die aktuelle Reihenfolge ist  “<altText> - <tooltip>”
         captionOverrides: Caption Overrides
-        tagDescription: Put these tags in “![altText](... "tooltip")” to override the behavior for it.
+        tagDescription: Nutze diese Schlagworte “![altText](... "tooltip")” um das Verhalten zu beeinflussen.
         doNotCaptionTags:
           hint: DoNotCaption-Tags
+          # does ist actually mean: "Never use _a_ caption with tags" ?
           label: Never use as caption with tags
           validator:
-            empty: Tags cannot be empty.
+            empty: Schlagworte müssen gesetzt sein.
             same: Tag cannot be identical to a “DoCaption-Tag”.
         doCaptionTags:
           hint: DoCaption-Tags
           label: Always use as caption with tags
           validator:
-            empty: Tags cannot be empty.
+            empty: Never use as caption with tags
             same: Tag cannot be identical to a “DoNotCaption-Tag”.
       detailsView:
-        header: Detail View
-        maxZoom: Maximal zoom level
+        header: Detailansicht
+        maxZoom: Maximale Vergrößerung
         rotateGestures:
-          title: Rotate Image with gestures
-          subtitle: Rotate by moving two fingers in a circle
+          title: Bild per Gesten drehen
+          subtitle: Bild mit einer Kreibewegung zweier Finger drehen
       theming:
         title: Image Theming
         subtitle: Configure how images are themed
         adjustColors:
-          all: All
-          blackAndWhite: Only black and white
-          grays: Only grays
+          all: Alles
+          blackAndWhite: nur schwarz-weiß
+          grays: nur Grautöne
         doNotThemeTags:
           hint: DoNotTheme-Tags
           label: Never theme images with tags
@@ -76,20 +78,20 @@ settings:
             empty: Tags cannot be empty.
             same: Tag cannot be identical to a “DoNotTheme-Tag”.
         matchCanvasColor:
-          title: Match Background Color
-          subtitle: Replaces white/black parts of vector graphics with the canvas color
-        tagDescription: Put these tags in “![altText](... "tooltip")” to override the behavior for the image.
+          title: mit der Hintergrundfareb abgleichen
+          subtitle: Die Schwarz-Weiß-Teile eine Vektor-Grafik durch die Hintergrundfarbe ersetzen
+        tagDescription: Nutze diese Schlagworte “![altText](... "tooltip")” um das Verhalten der Bildes zu beeinflussen.
         themeOverrides: Theme Overrides
         themeOverrideTagLocation: Theme Override Tag Location
         themeRasterGraphics: Theme Raster Graphics (.png/.jpg)
         themeSvgWithBackground: Theme SVGs With Background
         themeVectorGraphics:
           title: Theme Vector Graphics
-          filter: Using Color Filter
-          'off': false
-          'on': true
-        vectorGraphics: Vector Graphics (.svg)
-        vectorGraphicsAdjustColors: Colors to Adjust
+          filter: Farbfilter verwenden
+          'off': falsch
+          'on': richtig
+        vectorGraphics: Vektor-Grafik (.svg)
+        vectorGraphicsAdjustColors: Anpassbare Farben
   gitAuthor: Git Author Einstellungen
   versionInfo: Versions Info
   analytics: Auswertungen
@@ -135,7 +137,7 @@ settings:
       title: Titel
       fromH1: Text Header 1
       fromYaml: Von YAML 'Titel'
-      filename: FileName
+      filename: Dateiname
     exampleTitle: Pinguine
     exampleBody: Ich denke sie sind teuflisch. Sogar teuflischer als Pinguine.
     exampleTag1: Vögel
@@ -153,7 +155,7 @@ settings:
     markdownToolbar: Zeige Markdown Toolbar in Editor
     graphView: Graph View
     accounts: Platform Independent Accounts
-    includeSubfolders: Include Subfolders
+    includeSubfolders: Unterordner berücksichtigen
     experimentalGitOps: Dart-only Git implementation
     merge: Dart-only merge implementation
   editors:
@@ -191,7 +193,7 @@ settings:
     title: Verschiedene Einstellungen
     swipe: Wische um Notiz zu löschen
     listView: Listenansicht
-    confirmDelete: Show a Popup to Confirm Deletes
+    confirmDelete: Löschungen per Popop-Dialog bestätigen
     hardWrap: Enable hardWrap
   NoteFileNameFormat:
     iso8601WithTimeZone: ISO8601 mit Zeitzone
@@ -208,23 +210,23 @@ settings:
     allFolders: Alle Verzeichnisse
   EditorDefaultView:
     edit: Bearbeiten
-    view: View
-    lastUsed: Last Used
+    view: Ansicht
+    lastUsed: zuletzt benutzt
   theme:
-    light: Light
-    dark: Dark
-    default: System Default
-  versionCopied: Version Number Copied
+    light: hell
+    dark: dunkel
+    default: System-Vorgabe
+  versionCopied: Versionsnummer kopiert
   ssh:
-    syncFreq: Sync Frequency
+    syncFreq: Häufigkeit der Synchronization
     reset: Reset Git Host
   note:
-    title: Note Settings
-    defaultFolder: Default Folder for new notes
-    newNoteFileName: New Note Filename
+    title: Notiz-Einstellungen
+    defaultFolder: Standard-Verzeichnis für neue Notizen
+    newNoteFileName: Dateiname für neue Notizen
   storage:
-    title: Storage
-    fileName: filename
+    title: Ablage
+    fileName: Dateiname
     external: Store Repo Externally
     icloud: Store in iCloud
     repoLocation: Repo Location
@@ -291,7 +293,7 @@ screens:
   folder_view:
     empty: Einige Notizen hinzufügen?
   home:
-    allNotes: All Notes
+    allNotes: Alle Notizen
 widgets:
   rename:
     'yes': Umbennen
@@ -309,8 +311,8 @@ widgets:
   PurchaseButton:
     text: Erwerben für {price}
     fail: Konnte nicht geladen werden
-    failSend: Failed to send purchase request
-    failPurchase: Failed to Purchase - {}
+    failSend: Konnte die Kaufanfrage nicht senden
+    failPurchase: "Konnte {} nicht kaufen\n"
   FolderView:
     noteSelected: Ausgewählte Notiz
     syncError: Sync Fehler {}
@@ -329,23 +331,23 @@ widgets:
       select: Wähle Ansicht
     sortingOptions: Sortier Optionen
     viewOptions: Ansicht Optionen
-    noteDeleted: Note Deleted
-    undo: Undo
-    searchFailed: No Search Results Found
+    noteDeleted: Notiz gelöscht
+    undo: Rückgängig machen
+    searchFailed: Keine Suchtreffer gefunden
   imageRenderer:
     caption: "{first} - {second}"
     httpError: "Code: {status} for {url}"
   NoteDeleteDialog:
-    title: Do you want to delete this note?
-    'yes': true
-    'no': false
+    title: Möchtest Du diese Notiz löschen?
+    'yes': wahr
+    'no': falsch
   NoteEditor:
-    renameFile: Rename File
-    fileName: Filename
+    renameFile: Datei umbenennen
+    fileName: Dateiname
   SyncButton:
     error: Sync Error {}
   PurchaseWidget:
-    failed: Purchase Failed
+    failed: Kauf fehlgeschlagen
   NoteViewer:
     linkNotFound: Link '{}' not found
     linkInvalid: Link '{}' is invalid.
@@ -386,7 +388,7 @@ setup:
     title: Wähle oder erstelle ein Repository
     hint: Tippen Sie zum Suchen oder Erstellen eines Repos
     create: Erstelle Repo {}
-    loading: Loading
+    loading: Laden
   cloneUrl:
     enter: Geben Sie die Git Clone URL ein
     validator:
@@ -403,7 +405,7 @@ setup:
   keyEditors:
     public: Ungültiger Öffentlicher Schlüssel - Beginnt nicht mit ssh-rsa
     private: Ungültiger Privater Schlüssel
-    load: Load from File
+    load: Aus einer Datei laden
   sshKey:
     generate: Erstelle SSH Schlüssel
     title: Um auf das Repository zuzugreifen muß dieser Öffentliche Schlüssel als Anwendungsschlüssel kopiert werden
@@ -417,7 +419,7 @@ setup:
     openDeploy: Öffnen Anwenden Schlüssel Webseite
     clone: Clone Repo
     addDeploy: Als Anwendungsschlüssel hinzufügen
-    save: Save
+    save: Speichern
   sshKeyChoice:
     title: Wir brauchen SSH Schlüssel zum authentifizieren
     generate: Erstelle neue Schlüssel
@@ -425,7 +427,7 @@ setup:
   sshKeyUserProvided:
     public: Öffentlicher Schlüssel -
     private: Privater Schlüssel
-    password: Password
+    password: Passwort
   cloning: Clonen ...
   host:
     title: Wähle einen Git Hosting Anbieter
@@ -481,7 +483,7 @@ feature:
   inlineTags: Inline Tags
   singleJournalEntry: Single Journal Entry File per day
   configureBottomMenuBar: Configure the Bottom Menu Bar
-  customFileNamePerEditor: Custom FileName per Editor
+  customFileNamePerEditor: Angepasste Dateinamen je Editor
   branchSelection: Git Branch Selection
 feature_timeline:
   title: Feature Zeitleiste
@@ -490,7 +492,7 @@ feature_timeline:
   issues: GitJournal's development is tracked on Github. Please consider voting on the issues you consider important.
 purchase_screen:
   title: Pro Version
-  desc: 'GitJournal ist vollständig Open Source und das Ergebnis erheblicher Entwicklungsarbeit. Es hat kein Wagniskapital oder Unternehmen im Rücken, und wird dies auch nie haben. Deine Unterstützung hält die Weiterentwicklung aufrecht. GitJournal funktioniert auf einer "Zahle wieviel Du willst"-Basis (mit einem unteren Limit).'
+  desc: GitJournal ist vollständig Open Source und das Ergebnis erheblicher Entwicklungsarbeit. Es hat kein Wagniskapital oder Unternehmen im Rücken, und wird dies auch nie haben. Deine Unterstützung hält die Weiterentwicklung aufrecht. GitJournal funktioniert auf einer "Zahle wieviel Du willst"-Basis (mit einem unteren Limit).
   restore: Erwerb wiederherstellen
   oneTime:
     title: Einmal Erwerb
@@ -499,12 +501,13 @@ purchase_screen:
     title: Monatliche Subscription
     desc: Schaltet alle Pro Features frei. Nach 12 Monaten oder nach Zahlung von {minYearlyPurchase} bekommst Du alle Vorteile des Einmal Erwerbs
   thanks:
-    title: Thank You
-    subtitle: You're awesome for supporting GitJournal
+    title: Danke
+    subtitle: Toll, dass Du GitJournal unterstütztst
 OnBoarding:
-  Skip: Skip
-  Next: Next
+  Skip: Überspringen
+  Next: Nächster
   getStarted: Get Started
-  subtitle: 'An Open Source Note Taking App built on top of Git'
-  page2: 'Your Notes are stored in a standard Markdown + YAML Header format'
+  subtitle: 'Eine Notizen-App basierend auf GitHub'
+  page2: 'Deine Notizen werden im Markdown + YAML Header Format bespeichert'
   page3: 'Sync your Local Git Repo with any provider'
+0: ""

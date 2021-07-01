@@ -1,3 +1,4 @@
+# Polish translation  by Witold Firlej (grizz) https://grizz.pl https://github.com/grizz-pl
 settings:
   ok: Ok
   cancel: Batal
@@ -489,7 +490,7 @@ feature_timeline:
   issues: GitJournal's development is tracked on Github. Please consider voting on the issues you consider important.
 purchase_screen:
   title: Versi Pro
-  desc: 'GitJournal sepenuhnya open source dan hasil dari pengembangan kerja yang dignifikan. GitJournal tidak memiliki modal usaha atau korporasi yang menyokong dan itu tidak akan pernah. Dukungan Anda secara langsung menopang pengembangan. GitJournal beroperasi dari "model pembayaran apa yang Anda inginkan (dengan batas minimal)"'
+  desc: GitJournal sepenuhnya open source dan hasil dari pengembangan kerja yang dignifikan. GitJournal tidak memiliki modal usaha atau korporasi yang menyokong dan itu tidak akan pernah. Dukungan Anda secara langsung menopang pengembangan. GitJournal beroperasi dari "model pembayaran apa yang Anda inginkan (dengan batas minimal)"
   restore: Pulihkan Pembayaran
   oneTime:
     title: Sekali Bayar
@@ -507,3 +508,4 @@ OnBoarding:
   subtitle: 'An Open Source Note Taking App built on top of Git'
   page2: 'Your Notes are stored in a standard Markdown + YAML Header format'
   page3: 'Sync your Local Git Repo with any provider'
+0: ""
