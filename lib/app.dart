@@ -66,10 +66,10 @@ class JournalApp extends StatefulWidget {
         child: JournalApp(),
       ),
       supportedLocales: [
-        const Locale('en', 'US'),
-        // Arranged Alphabetically after English
+        // Arranged Alphabetically
         const Locale('de'),
         const Locale('es'),
+        const Locale('en', 'US'),
         const Locale('fr'),
         const Locale('hu'),
         const Locale('id'),
@@ -83,6 +83,8 @@ class JournalApp extends StatefulWidget {
         const Locale('vi'),
         const Locale('zh'),
       ], // Remember to update Info.plist
+      fallbackLocale: const Locale('en', 'US'),
+      useFallbackTranslations: true,
       path: 'assets/langs',
       useOnlyLangCode: true,
       assetLoader: YamlAssetLoader(),
