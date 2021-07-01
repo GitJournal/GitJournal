@@ -16,6 +16,7 @@ settings:
     title: Display Settings
     homeScreen: Home Screen
     theme: Theme
+    lang: Language
     images:
       title: Image Settings
       subtitle: Configure how images are displayed

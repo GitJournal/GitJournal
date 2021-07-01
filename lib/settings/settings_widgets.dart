@@ -40,9 +40,11 @@ class ListPreference extends StatelessWidget {
               }
               return AlertDialog(
                 title: Text(title),
-                content: Column(
-                  children: children,
-                  mainAxisSize: MainAxisSize.min,
+                content: SingleChildScrollView(
+                  child: Column(
+                    children: children,
+                    mainAxisSize: MainAxisSize.min,
+                  ),
                 ),
                 actions: <Widget>[
                   TextButton(

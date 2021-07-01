@@ -178,6 +178,8 @@ class SettingsListState extends State<SettingsList> {
       }
     }
 
+    var easyLocale = EasyLocalization.of(context)!;
+
     return ListView(children: [
       SettingsHeader(tr('settings.display.title')),
       ListPreference(
@@ -189,6 +191,17 @@ class SettingsListState extends State<SettingsList> {
           settings.theme = s;
           settings.save();
           setState(() {});
+        },
+      ),
+      ListPreference(
+        title: tr('settings.display.lang'),
+        currentOption: easyLocale.currentLocale?.toLanguageTag(),
+        options:
+            easyLocale.supportedLocales.map((f) => f.toLanguageTag()).toList(),
+        onChange: (String langTag) {
+          var locale = easyLocale.supportedLocales
+              .firstWhere((e) => e.toLanguageTag() == langTag);
+          easyLocale.setLocale(locale);
         },
       ),
       ListTile(
