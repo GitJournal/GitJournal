@@ -45,14 +45,20 @@ class _SortingModeSelectorState extends State<SortingModeSelector> {
       actions: [
         OutlinedButton(
           key: const ValueKey("Cancel"),
-          child: Text(tr('settings.cancel')),
+          child: Text(
+            tr('settings.cancel'),
+            style: Theme.of(context).textTheme.bodyText2,
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
         OutlinedButton(
           key: const ValueKey("Ok"),
-          child: Text(tr('settings.ok')),
+          child: Text(
+            tr('settings.ok'),
+            style: Theme.of(context).textTheme.bodyText2,
+          ),
           onPressed: () {
             Navigator.of(context).pop(SortingMode(field, order));
           },

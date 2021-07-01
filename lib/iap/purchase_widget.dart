@@ -332,7 +332,10 @@ class _RestorePurchaseButtonState extends State<RestorePurchaseButton> {
     var text = computing ? '...' : tr('purchase_screen.restore');
 
     return OutlinedButton(
-      child: Text(text),
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.bodyText2,
+      ),
       onPressed: () async {
         setState(() {
           computing = true;

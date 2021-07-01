@@ -93,6 +93,8 @@ class GitJournalRepo with ChangeNotifier {
     if (!valid) {
       // What happened that the directory still exists but the .git folder
       // has disappeared?
+      // FIXME: What if the '.config' file is not accessible?
+      // -> https://sentry.io/share/issue/bafc5c417bdb4fd196cead1d28432f12/
     }
 
     var repo = await GitRepository.load(repoPath).getOrThrow();

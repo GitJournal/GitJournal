@@ -73,6 +73,8 @@ class EditorBottomBar extends StatelessWidget {
       },
     );
 
+    var theme = Theme.of(context);
+
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
       child: SafeArea(
@@ -95,7 +97,10 @@ class EditorBottomBar extends StatelessWidget {
               ),
             TextButton.icon(
               icon: const Icon(Icons.folder),
-              label: Text(parentFolder.publicName),
+              label: Text(
+                parentFolder.publicName,
+                style: theme.textTheme.bodyText2,
+              ),
               onPressed: () {
                 var note = editorState.getNote();
                 editor.moveNoteToFolderSelected(note);

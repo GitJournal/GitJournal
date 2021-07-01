@@ -100,7 +100,10 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
             children: [
               RestorePurchaseButton(),
               OutlinedButton(
-                child: Text(tr("feature_timeline.title")),
+                child: Text(
+                  tr("feature_timeline.title"),
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
                 onPressed: () {
                   var route = MaterialPageRoute(
                     builder: (context) => FeatureTimelineScreen(),
