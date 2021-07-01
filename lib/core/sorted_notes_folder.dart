@@ -74,7 +74,7 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
     assert(i != -1);
     // FIXME: This should never be happening
     //        However, lets not crash!
-    if (i != -1) {
+    if (i == -1) {
       return;
     }
 
