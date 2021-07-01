@@ -203,8 +203,8 @@ class GitJournalRepo with ChangeNotifier {
 
     Future? noteLoadingFuture;
     try {
-      await _gitRepo.fetch();
-      await _gitRepo.merge();
+      await _gitRepo.fetch().throwOnError();
+      await _gitRepo.merge().throwOnError();
 
       syncStatus = SyncStatus.Pushing;
       notifyListeners();
