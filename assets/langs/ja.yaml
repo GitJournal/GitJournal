@@ -14,6 +14,7 @@ settings:
       invalid: 不正なメールアドレスです
   display:
     title: 表示設定
+    darkTheme: ダークテーマ
     homeScreen: ホーム画面
     theme: テーマ
     images:
@@ -85,17 +86,12 @@ settings:
         themeVectorGraphics:
           title: ベクター画像にテーマを適用する
           filter: カラーフィルターを使用する
-          off: しない
-          on: する
+          'off': しない
+          'on': する
         vectorGraphics: ベクター画像 (.svg)
         vectorGraphicsAdjustColors: 調整対象の色
-  theme:
-    light: Light
-    dark: Dark
-    default: システム設定に合わせる
   gitAuthor: GitのAuthor設定
   versionInfo: バージョン情報
-  versionCopied: バージョン情報がコピーされました
   analytics: アナリティクス
   crashReports: 匿名でクラッシュレポートを収集する
   usageStats: 匿名で使用状況の統計を収集する
@@ -158,6 +154,8 @@ settings:
     graphView: グラフビュー
     accounts: プラットフォームに依存しないアカウント
     includeSubfolders: サブフォルダを含む
+    experimentalGitOps: Dart-only Git implementation
+    merge: Dart-only merge implementation
   editors:
     title: エディタ設定
     subtitle: エディタの動作を設定する
@@ -167,9 +165,9 @@ settings:
     journalEditor: Journalエディタ
     defaultFolder: デフォルトフォルダー
     checklistEditor: チェックリストエディタ
-    orgEditor: Orgエディタ
     rawEditor: Rawエディタ
     choose: エディタの選択
+    orgEditor: Orgエディタ
   sortingField:
     modified: 更新日
     created: 作成日
@@ -201,8 +199,9 @@ settings:
     iso8601WithoutColon: コロン無しのISO8601形式
     title: タイトル
     uuid: Uuid V4
-    simple: yyyy-mm-dd-hh-mm-ss
+    simmple: yyyy-mm-dd-hh-mm-ss
     zettelkasten: yyyymmddhhmmss
+    simple: yyyy-mm-dd-hh-mm-ss
     dateOnly: yyyy-mm-dd
   HomeScreen:
     allNotes: 全てのノート
@@ -211,6 +210,11 @@ settings:
     edit: 編集
     view: 閲覧
     lastUsed: 最後に使用した形式
+  theme:
+    light: Light
+    dark: Dark
+    default: システム設定に合わせる
+  versionCopied: バージョン情報がコピーされました
   ssh:
     syncFreq: 同期の周期
     reset: Gitのホストをリセットする
@@ -231,7 +235,6 @@ settings:
     subtitle: メニューバーの表示と挙動を設定する
     enable: メニューバーを表示する
   deleteRepo: リポジトリを削除する
-
 editors:
   checklist:
     add: アイテム追加
@@ -256,8 +259,6 @@ actions:
   newJournal: 新規Journal Entry
   newChecklist: 新規チェックリスト
 screens:
-  home:
-    allNotes: 全てのノート
   folders:
     title: フォルダー
     selected: フォルダーが選択されました
@@ -289,33 +290,19 @@ screens:
       title: リネームする
   folder_view:
     empty: ノートを追加してみません？
-
-OnBoarding:
-  Skip: スキップ
-  Next: 次へ
-  getStarted: さあ始めましょう！
-  subtitle: 'Gitで構築されたオープンソースのノートアプリ'
-  page2: 'ノートはYAMLヘッダー付きの標準的なMarkdownとして保存されます'
-  page3: 'ローカルのGitリポジトリをお好みのリモートと同期できます'
+  home:
+    allNotes: 全てのノート
 widgets:
   rename:
-    yes: リネームする
-    no: キャンセル
+    'yes': リネームする
+    'no': キャンセル
     validator:
       empty: 名称を入力してください
       exists: 既に存在します
       contains: /を含むことはできません
   backlinks:
     title:
-      zero: ""
-      one: "{} 件のノートがこのノートを参照しています"
-      many: "{} 件のノートがこのノートを参照しています"
-      two: "{} 件のノートがこのノートを参照しています"
-      few: "{} 件のノートがこのノートを参照しています"
       other: "{} 件のノートがこのノートを参照しています"
-  imageRenderer:
-    caption: "{first} - {second}"
-    httpError: "Code: {status} for {url}"
   SortingOrderSelector:
     title: ソート条件
   PurchaseButton:
@@ -324,8 +311,7 @@ widgets:
     failSend: 購入リクエストの送信に失敗しました
     failPurchase: 購入に失敗しました - {}
   FolderView:
-    noteDeleted: ノートが削除されました
-    undo: Undo
+    noteSelected: Note Selected
     syncError: 同期エラー {}
     headerOptions:
       heading: ヘッダーオプション
@@ -342,11 +328,16 @@ widgets:
       select: ビューを選択してください
     sortingOptions: ソートオプション
     viewOptions: 表示オプション
+    noteDeleted: ノートが削除されました
+    undo: Undo
     searchFailed: 検索結果が見つかりませんでした
+  imageRenderer:
+    caption: "{first} - {second}"
+    httpError: "Code: {status} for {url}"
   NoteDeleteDialog:
     title: 削除してもよろしいですか？
-    yes: はい
-    no: いいえ
+    'yes': はい
+    'no': いいえ
   NoteEditor:
     renameFile: ファイルをリネームする
     fileName: ファイル名
@@ -359,7 +350,6 @@ widgets:
     linkInvalid: リンク '{}' が無効です
   FolderSelectionDialog:
     title: フォルダを選択してください
-
 rootFolder: ルートフォルダ
 ignoredFiles:
   dot: .から始まるファイル
@@ -370,17 +360,20 @@ drawer:
   all: 全てのノート
   folders: フォルダー
   fs: ファイルシステム
-  graph: グラフビュー
   tags: タグ
   share: アプリを共有
   rate: アプリを評価
   feedback: フィードバック送信
   bug: バグレポート送信
+  graph: グラフビュー
   remote: Gitホスト未設定
   addRepo: リポジトリを追加
 setup:
+  autoConfigure:
+    title: どのように設定しますか？
+    automatic: 自動セットアップする
+    manual: 手動セットアップする
   autoconfigure:
-    title: 次のステップのために権限を取得します
     step1: 1. 既存のリポジトリを表示・新規リポジトリの作成
     step2: 2. このデバイスでの、SSHキーの生成
     step3: 3. 生成したキーをデプロイし、リポジトリへの書き込み権限を取得
@@ -436,11 +429,6 @@ setup:
   host:
     title: Gitをホストしているサービスを選択してください
     custom: カスタム
-  autoConfigure:
-    title: どのように設定しますか？
-    automatic: 自動セットアップする
-    manual: 手動セットアップする
-
 feature:
   darkMode: Darkモード
   rawEditor: Rawエディタ
@@ -494,19 +482,14 @@ feature:
   configureBottomMenuBar: メニューバーの設定
   customFileNamePerEditor: エディタごとのファイル名の設定
   branchSelection: GitのBranch選択機能
-
 feature_timeline:
   title: 機能追加のタイムライン
   progress: 進行中
   plan: 計画済
   issues: GitJournalの開発はGitHubで行われています。重要だと思うIssueには是非投票してください。
-
 purchase_screen:
   title: Pro Version
-  desc: 'GitJournalは完全にオープンソースであり、その重要な開発行為の成果物です。ベンチャーキャピタルや企業の支援を受けたことはありませんし、これからもありえません。あなたのご支援が直接、開発を支えます。
-
-
-GitJournalは "(最低限)必要な分だけ支払う"モデルで運営されています。'
+  desc: 'GitJournalは完全にオープンソースであり、その重要な開発行為の成果物です。ベンチャーキャピタルや企業の支援を受けたことはありませんし、これからもありえません。あなたのご支援が直接、開発を支えます。   GitJournalは "(最低限)必要な分だけ支払う"モデルで運営されています。'
   restore: 購入を復元する
   oneTime:
     title: 一括購入
@@ -517,3 +500,10 @@ GitJournalは "(最低限)必要な分だけ支払う"モデルで運営され�
   thanks:
     title: ありがとうございます！
     subtitle: GitJournalのご支援ありがとうございます。
+OnBoarding:
+  Skip: スキップ
+  Next: 次へ
+  getStarted: さあ始めましょう！
+  subtitle: 'Gitで構築されたオープンソースのノートアプリ'
+  page2: 'ノートはYAMLヘッダー付きの標準的なMarkdownとして保存されます'
+  page3: 'ローカルのGitリポジトリをお好みのリモートと同期できます'

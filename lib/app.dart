@@ -70,12 +70,17 @@ class JournalApp extends StatefulWidget {
         // Arranged Alphabetically after English
         const Locale('de'),
         const Locale('es'),
+        const Locale('fr'),
+        const Locale('hu'),
         const Locale('id'),
+        const Locale('it'),
         const Locale('ja'),
+        const Locale('ko'),
         const Locale('pl'),
-        const Locale('pr'),
+        const Locale('pt', 'BR'),
         const Locale('ru'),
         const Locale('sv'),
+        const Locale('vi'),
         const Locale('zh'),
       ], // Remember to update Info.plist
       path: 'assets/langs',

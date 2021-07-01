@@ -16,6 +16,80 @@ settings:
     title: Setelan Tampilan
     darkTheme: Tema Gelap
     homeScreen: Layar Utama
+    theme: Theme
+    images:
+      title: Image Settings
+      subtitle: Configure how images are displayed
+      imageTextType:
+        alt: Alt Text
+        altAndTooltip: Alt Text and Tooltip
+        tooltip: Tooltip
+        none: None
+      captions:
+        title: Image Captions
+        subtitle: Configure the image captions
+        useAsCaption: Use as caption
+        overlayCaption: Draw caption on top of large enough images
+        transparentCaption: Overlay captions have a semitransparent background
+        blurBehindCaption: Blur Image behind caption
+        tooltipFirst:
+          title: Show tooltip before alt text
+          tooltip: Current order is “<tooltip> - <altText>”
+          altText: Current order is “<altText> - <tooltip>”
+        captionOverrides: Caption Overrides
+        tagDescription: Put these tags in “![altText](... "tooltip")” to override the behavior for it.
+        doNotCaptionTags:
+          hint: DoNotCaption-Tags
+          label: Never use as caption with tags
+          validator:
+            empty: Tags cannot be empty.
+            same: Tag cannot be identical to a “DoCaption-Tag”.
+        doCaptionTags:
+          hint: DoCaption-Tags
+          label: Always use as caption with tags
+          validator:
+            empty: Tags cannot be empty.
+            same: Tag cannot be identical to a “DoNotCaption-Tag”.
+      detailsView:
+        header: Detail View
+        maxZoom: Maximal zoom level
+        rotateGestures:
+          title: Rotate Image with gestures
+          subtitle: Rotate by moving two fingers in a circle
+      theming:
+        title: Image Theming
+        subtitle: Configure how images are themed
+        adjustColors:
+          all: All
+          blackAndWhite: Only black and white
+          grays: Only grays
+        doNotThemeTags:
+          hint: DoNotTheme-Tags
+          label: Never theme images with tags
+          validator:
+            empty: Tags cannot be empty.
+            same: Tag cannot be identical to a “DoTheme-Tag”.
+        doThemeTags:
+          hint: DoTheme-Tag
+          label: Always theme images with tags
+          validator:
+            empty: Tags cannot be empty.
+            same: Tag cannot be identical to a “DoNotTheme-Tag”.
+        matchCanvasColor:
+          title: Match Background Color
+          subtitle: Replaces white/black parts of vector graphics with the canvas color
+        tagDescription: Put these tags in “![altText](... "tooltip")” to override the behavior for the image.
+        themeOverrides: Theme Overrides
+        themeOverrideTagLocation: Theme Override Tag Location
+        themeRasterGraphics: Theme Raster Graphics (.png/.jpg)
+        themeSvgWithBackground: Theme SVGs With Background
+        themeVectorGraphics:
+          title: Theme Vector Graphics
+          filter: Using Color Filter
+          'off': false
+          'on': true
+        vectorGraphics: Vector Graphics (.svg)
+        vectorGraphicsAdjustColors: Colors to Adjust
   gitAuthor: Setelan Penulis Git
   versionInfo: Info Versi
   analytics: Analitik
@@ -27,7 +101,7 @@ settings:
     levels:
       title: Pilih Tingkat
       error: Kesalahan
-      warning: Peringatan
+      warning: peringatan
       info: Info
       debug: Debug
       verbose: Berlebih
@@ -35,7 +109,7 @@ settings:
     title: Setelan Gambar
     subtitle: Atur bagaimana gambar disimpan
     imageLocation: Lokasi Gambar
-    currentFolder: Satu Folder dengan Catatan
+    currentFolder: Sefolder dengan Catatan
     customFolder: Folder Kustom
   gitRemote:
     changeHost:
@@ -45,6 +119,8 @@ settings:
       cancel: Batal
     title: Setelan Remote Git
     subtitle: Setel di mana catatan Anda disinkronkan
+    host: Git Host
+    branch: Branch
   noteMetaData:
     title: Setelan Metadata Catatan
     subtitle: Setel bagaimana Metadata Catatan disimpan
@@ -59,12 +135,13 @@ settings:
       title: Judul
       fromH1: Judul Teks 1
       fromYaml: Dari 'judul' YAML
+      filename: FileName
     exampleTitle: Merpati
     exampleBody: Saya pikir mereka dapat menjadi jahat. Bahkan lebih Jahat daripada pinguin.
     exampleTag1: Burung
     exampleTag2: Jahat
     customMetaData:
-      title: Metadata Kustom
+      title: MetaData Kustom
       invalid: YAML Tidak Valid
   privacy: Kebijakan Privasi
   terms: Syarat dan Kententuan
@@ -74,6 +151,11 @@ settings:
     backlinks: Tampilkan Backlink di Pratinjau Markdown
     fs: Tampilkan Sistem File
     markdownToolbar: Tampilkan Toolbar  Markdown di Editor
+    graphView: Graph View
+    accounts: Platform Independent Accounts
+    includeSubfolders: Include Subfolders
+    experimentalGitOps: Dart-only Git implementation
+    merge: Dart-only merge implementation
   editors:
     title: Setelan Editor
     subtitle: Setel bagaimana editor bekerja
@@ -85,6 +167,7 @@ settings:
     checklistEditor: Editor Daftar Periksa
     rawEditor: Editor Raw
     choose: Pilih Editor
+    orgEditor: Org Editor
   sortingField:
     modified: Terakhir Diubah
     created: Dibuat
@@ -108,19 +191,50 @@ settings:
     title: Setelan Lain-lain
     swipe: Geser untuk Hapus Catatan
     listView: Tampilan Daftar
+    confirmDelete: Show a Popup to Confirm Deletes
+    hardWrap: Enable hardWrap
   NoteFileNameFormat:
-    iso8601WithTimeZone: ISO8601 Dengan Zona Waktu
+    iso8601WithTimeZone: ISO8601 Dengan ZonaWaktu
     iso8601: ISO8601
     iso8601WithoutColon: ISO8601 tanpa Titik Dua
     title: Judul
     uuid: Uuid V4
     simmple: yyyy-mm-dd-hh-mm-ss
     zettelkasten: yyyymmddhhmmss
+    simple: yyyy-mm-dd-hh-mm-ss
+    dateOnly: yyyy-mm-dd
   HomeScreen:
     allNotes: Semua Catatan
     allFolders: Semua Folder
   EditorDefaultView:
     edit: Edit
+    view: View
+    lastUsed: Last Used
+  theme:
+    light: Light
+    dark: Dark
+    default: System Default
+  versionCopied: Version Number Copied
+  ssh:
+    syncFreq: Sync Frequency
+    reset: Reset Git Host
+  note:
+    title: Note Settings
+    defaultFolder: Default Folder for new notes
+    newNoteFileName: New Note Filename
+  storage:
+    title: Storage
+    fileName: filename
+    external: Store Repo Externally
+    icloud: Store in iCloud
+    repoLocation: Repo Location
+  drawer:
+    title: Sidebar Settings
+  bottomMenuBar:
+    title: Bottom Menu Bar
+    subtitle: Configure its appearance and behavior
+    enable: Enable Bottom Menu Bar
+  deleteRepo: Delete Repository
 editors:
   checklist:
     add: Tambahkan Item
@@ -176,6 +290,8 @@ screens:
       title: Namai Ulang
   folder_view:
     empty: Mari tambahkan catatan?
+  home:
+    allNotes: All Notes
 widgets:
   rename:
     'yes': Namai Ulang
@@ -192,6 +308,8 @@ widgets:
   PurchaseButton:
     text: Bayar seharga {price}
     fail: Gagal Memuat
+    failSend: Failed to send purchase request
+    failPurchase: Failed to Purchase - {}
   FolderView:
     noteSelected: Catatan Dipilih
     syncError: Sinkronisasi Error {}
@@ -210,6 +328,28 @@ widgets:
       select: Pilih Tampilan
     sortingOptions: Opsi Pengurutan
     viewOptions: Opsi Tampilan
+    noteDeleted: Note Deleted
+    undo: Undo
+    searchFailed: No Search Results Found
+  imageRenderer:
+    caption: "{first} - {second}"
+    httpError: "Code: {status} for {url}"
+  NoteDeleteDialog:
+    title: Do you want to delete this note?
+    'yes': true
+    'no': false
+  NoteEditor:
+    renameFile: Rename File
+    fileName: Filename
+  SyncButton:
+    error: Sync Error {}
+  PurchaseWidget:
+    failed: Purchase Failed
+  NoteViewer:
+    linkNotFound: Link '{}' not found
+    linkInvalid: Link '{}' is invalid.
+  FolderSelectionDialog:
+    title: Select a Folder
 rootFolder: Folder Akar
 ignoredFiles:
   dot: Mulai dengan a
@@ -224,7 +364,10 @@ drawer:
   share: Bagikan Apl
   rate: Nilai Kami
   feedback: Tanggapan
-  bug: Laporan Kesalahan
+  bug: Laporan Serangga
+  graph: Graph View
+  remote: No Git Host
+  addRepo: Add Repository
 setup:
   autoConfigure:
     title: Bagaimana Anda ingin melakukan ini?
@@ -242,6 +385,7 @@ setup:
     title: Pilih atau Buat Repositori
     hint: "Ketik untuk Cari atau Buat Repo "
     create: Buat Repo {}
+    loading: Loading
   cloneUrl:
     enter: Masukan URL Klon Git
     validator:
@@ -258,6 +402,7 @@ setup:
   keyEditors:
     public: Kunci Publik Tidak Valid - Tidak berawalan dengan ssh-rsa
     private: Kunci Privat Tidak Valid
+    load: Load from File
   sshKey:
     generate: Membuat Kunci SSH
     title: Untuk mengakses repositori ini, kunci publik ini harus disalin sebagai sebar kunci
@@ -271,6 +416,7 @@ setup:
     openDeploy: Buka Situs Web Sebar Kunci
     clone: Klon Repo
     addDeploy: Tambahkan sebagai Sebar Kunci
+    save: Save
   sshKeyChoice:
     title: Kami butuh kunci SSH untuk mengautentikasi -
     generate: Buat kunci baru
@@ -278,6 +424,7 @@ setup:
   sshKeyUserProvided:
     public: Kunci Publik -
     private: Kunci Privat -
+    password: Password
   cloning: Mengkloning ...
   host:
     title: Pilih Provider Hosting Git -
@@ -308,7 +455,7 @@ feature:
   yamlModifiedKey: Kustomisasi kunci yang diubah YAM
   yamlCreatedKey: Kustomisasi kunci dibuat YAML
   yamlTagsKey: Kustomisasi kunci tag YAML
-  disableYamlHeader: Nonaktifkan Judul Metadata YAML
+  disableYamlHeader: "Nonaktifkan Judul Metadata YAML "
   customizeHomeScreen: Kustomisasi Layar Utama
   zenMode: Mode Menulis Zen
   emojiSupport:
@@ -322,7 +469,7 @@ feature:
   mutliRepos: Multi Repo Git
   customThemes: Tema Kustom
   gitLog: Tampilkan dan Cari melalui Riwayat Git
-  latex: Dukung LaTeX
+  latex: Dukung Latex
   mermaid: Dukung Diagram Mermaid
   encryptedHosting: Hosting Git Terenkripsi
   desktop: Apl Desktop
@@ -331,10 +478,15 @@ feature:
     title: Lokalisasi
     subtitle: Izinkan GitJournal diterjemahkan
   inlineTags: Tag Sebaris
+  singleJournalEntry: Single Journal Entry File per day
+  configureBottomMenuBar: Configure the Bottom Menu Bar
+  customFileNamePerEditor: Custom FileName per Editor
+  branchSelection: Git Branch Selection
 feature_timeline:
   title: Garis Waktu Fitur
   progress: Dalam Proses
   plan: Direncanakan
+  issues: GitJournal's development is tracked on Github. Please consider voting on the issues you consider important.
 purchase_screen:
   title: Versi Pro
   desc: 'GitJournal sepenuhnya open source dan hasil dari pengembangan kerja yang dignifikan. GitJournal tidak memiliki modal usaha atau korporasi yang menyokong dan itu tidak akan pernah. Dukungan Anda secara langsung menopang pengembangan. GitJournal beroperasi dari "model pembayaran apa yang Anda inginkan (dengan batas minimal)"'
@@ -345,3 +497,13 @@ purchase_screen:
   monthly:
     title: Langganan Bulanan
     desc: Aktifkan semua fitur Pro. Setelah 12 bulan atau membayar {minYearlyPurchase}, Anda akan mendapat semua keuntungan dari 'Sekali Bayar'
+  thanks:
+    title: Thank You
+    subtitle: You're awesome for supporting GitJournal
+OnBoarding:
+  Skip: Skip
+  Next: Next
+  getStarted: Get Started
+  subtitle: 'An Open Source Note Taking App built on top of Git'
+  page2: 'Your Notes are stored in a standard Markdown + YAML Header format'
+  page3: 'Sync your Local Git Repo with any provider'

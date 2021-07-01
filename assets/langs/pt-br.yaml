@@ -1,21 +1,21 @@
 settings:
-  ok: 好的
-  cancel: 取消
-  title: 设置
+  ok: Ok
+  cancel: Cancelar
+  title: Configurações
   author:
-    label: 全名
-    hint: 谁应该编写这些更改？
-    validator: 请输入名字
+    label: Nome Completo
+    hint: Quem deveria criar as mudanças?
+    validator: Por favor, insira um nome
   email:
-    label: E-mail
-    hint: E-mail地址
+    label: Email
+    hint: Endereço de Email
     validator:
-      empty: 请输入E-mail地址
-      invalid: 请输入有效的E-mail地址
+      empty: Por favor, insira um email
+      invalid: Por favor, insira um email válido
   display:
-    title: 显示设置
-    darkTheme: 深色主题
-    homeScreen: 主页显示
+    title: Configurações de Tela
+    darkTheme: Tema Escuro
+    homeScreen: Tela Inicial
     theme: Theme
     images:
       title: Image Settings
@@ -90,124 +90,124 @@ settings:
           'on': true
         vectorGraphics: Vector Graphics (.svg)
         vectorGraphicsAdjustColors: Colors to Adjust
-  gitAuthor: Git 权限设置
-  versionInfo: 版本信息
-  analytics: 分析
-  crashReports: 收集匿名崩溃报告
-  usageStats: 收集匿名使用数据
+  gitAuthor: Configurações de Autor do Git
+  versionInfo: Informação de Versão
+  analytics: Análises
+  crashReports: Coletar Relatórios de Falhas Anônimos
+  usageStats: "Coletar Estatísticas de Uso \nAnônimas"
   debug:
-    title: 调试程序
-    subtitle: 在列表预览
+    title: App Debug
+    subtitle: Olhar debaixo dos panos
     levels:
       title: Select Level
-      error: Error
-      warning: warning
+      error: Erro
+      warning: aviso
       info: Info
       debug: Debug
       verbose: Verbose
   images:
-    title: 图像设置
-    subtitle: 图片存储方式
-    imageLocation: 图片地址
-    currentFolder: 文件夹与笔记同名
-    customFolder: 自定义文件夹
+    title: Configurações de Imagem
+    subtitle: Configurar como as Imagens são armazenadas
+    imageLocation: Local da Imagem
+    currentFolder: Mesma Pasta da Nota
+    customFolder: Pasta Personalizada
   gitRemote:
     changeHost:
-      title: 重新配置 Git 地址？
-      subtitle: 未同步的笔记将会丢失
-      ok: 好的
-      cancel: 取消
-    title: Git 远程仓库设置
-    subtitle: 设置您的笔记的同步位置
+      title: Reconfigurar Git Host?
+      subtitle: Notas que não foram sincronizadas serão perdidas
+      ok: OK
+      cancel: Cancelar
+    title: Configurações Remotas do Git
+    subtitle: Configurar onde suas notas são sincronizadas
     host: Git Host
     branch: Branch
   noteMetaData:
-    title: 笔记元信息设置
-    subtitle: 配置如何保存笔记的元信息
-    text: Every note has some metadata which is stored in a YAML Header as follows -
-    enableHeader: 启用 YAML 头文件
-    modified: 被修改的
-    created: 新增的
-    tags: 标签部分
+    title: Configurações de Metadados da Nota
+    subtitle: Configurar como os Metadados da Nota são salvos
+    text: "Toda nota tem algum metadado que é salvo em um Cabeçalho YAML como a seguir - "
+    enableHeader: Habilitar Cabeçalho YAML
+    modified: Campo Modificado
+    created: Campo Criado
+    tags: Campo de Tags
     example:
-      title: 示例标题
+      title: Título Exemplo
     titleMetaData:
-      title: 标题
-      fromH1: Text Header 1
-      fromYaml: From YAML 'title'
+      title: Título
+      fromH1: Cabeçalho do Texto 1
+      fromYaml: Do 'título' do YAML
       filename: FileName
-    exampleTitle: Pigeons
-    exampleBody: I think they might be evil. Even more evil than penguins.
-    exampleTag1: Birds
-    exampleTag2: Evil
+    exampleTitle: Pombos
+    exampleBody: Eu acho que eles podem ser maus. Ainda mais malvados que os penguins.
+    exampleTag1: Pássaros
+    exampleTag2: Mal
     customMetaData:
-      title: Custom MetaData
-      invalid: Invalid YAML
-  privacy: Privacy Policy
-  terms: Terms and Conditions
+      title: Metadada Personalizada
+      invalid: YAML Inválido
+  privacy: Política de Privacidade
+  terms: Termos e Condições
   experimental:
-    title: Experimental Features
-    subtitle: Try out features in Development
+    title: Recursos Experimentais
+    subtitle: Testar funcionalidades em Desenvolvimento
     backlinks: Show Backlinks in Markdown Preview
     fs: Show File System
-    markdownToolbar: Show Markdown Toolbar in Editor
+    markdownToolbar: Mostrar Barra de Ferramentas de Markdown no Editor
     graphView: Graph View
     accounts: Platform Independent Accounts
     includeSubfolders: Include Subfolders
     experimentalGitOps: Dart-only Git implementation
     merge: Dart-only merge implementation
   editors:
-    title: Editor Settings
-    subtitle: Configure how different editors work
-    defaultEditor: Default Editor
+    title: Configurações do Editor
+    subtitle: Configurar quão diferente os editores trabalham
+    defaultEditor: Editor Padrão
     defaultState: Default State
-    markdownEditor: Markdown Editor
+    markdownEditor: Editor Markdown
     journalEditor: Journal Editor
-    defaultFolder: Default Folder
+    defaultFolder: Pasta padrão
     checklistEditor: Checklist Editor
     rawEditor: Raw Editor
     choose: Choose Editor
     orgEditor: Org Editor
   sortingField:
-    modified: Last Modified
-    created: Created
-    filename: File Name
-    title: Title
+    modified: Última modificação
+    created: Criado
+    filename: Nome do Arquivo
+    title: Título
   sortingOrder:
-    asc: Ascending
-    desc: Descending
+    asc: Ascendente
+    desc: Descendente
   sortingMode:
-    field: Field
+    field: Campo
     order: Order
   remoteSync:
-    auto: Automatic
+    auto: Automárico
     manual: Manual
   tags:
-    title: Tags Settings
+    title: Configurações de Tags
     subtitle: Configure how inline tags are parsed
     enable: Parse Inline Tags
     prefixes: Inline Tags Prefixes
   misc:
     title: Misc Settings
-    swipe: Swipe to Delete Note
+    swipe: Deslize para Deletar a Nota
     listView: List View
     confirmDelete: Show a Popup to Confirm Deletes
     hardWrap: Enable hardWrap
   NoteFileNameFormat:
-    iso8601WithTimeZone: ISO8601 With TimeZone
+    iso8601WithTimeZone: ISO8601 com Fuso Horário
     iso8601: ISO8601
-    iso8601WithoutColon: ISO8601 without Colons
-    title: Title
+    iso8601WithoutColon: ISO8601 sem ponto vírgula
+    title: Título
     uuid: Uuid V4
-    simmple: yyyy-mm-dd-hh-mm-ss
-    zettelkasten: yyyymmddhhmmss
+    simmple: aaaa-mm-dd-hh-mm-ss
+    zettelkasten: aaaammddhhmmss
     simple: yyyy-mm-dd-hh-mm-ss
     dateOnly: yyyy-mm-dd
   HomeScreen:
-    allNotes: All Notes
-    allFolders: All Folders
+    allNotes: Todas as Notas
+    allFolders: Todas as pastas
   EditorDefaultView:
-    edit: Edit
+    edit: Editar
     view: View
     lastUsed: Last Used
   theme:
@@ -237,87 +237,88 @@ settings:
   deleteRepo: Delete Repository
 editors:
   checklist:
-    add: Add Item
+    add: Adicionar Item
   common:
-    defaultBodyHint: Write here
-    defaultTitleHint: Title
-    discard: Discard Changes
-    share: Share Note
-    takePhoto: Take Photo
-    addImage: Add Image from Gallery
-    editFileName: Edit File Name
-    tags: Edit Tags
+    defaultBodyHint: Escreva Aqui
+    defaultTitleHint: Título
+    discard: Descartar Mudanças
+    share: Compartilhar Nota
+    takePhoto: Tirar Foto
+    addImage: Adicionar Imagem da Galeria
+    editFileName: Editar Nome do Arquivo
+    tags: Editar Tags
     zen:
-      enable: Enable Zen Mode
-      disable: Disable Zen Mode
+      enable: Habilitar Modo Zen
+      disable: Desabilitar Modo Zen
     saveNoteFailed:
-      title: Failed to Save Note
-      message: We're sorry, but we cannot seem to save the Note. It has been copied to the clipboard to avoid data loss.
+      title: Falha ao Salvar Nota
+      message: Desculpe, mas não conseguimos salvar a Nota. Ela foi copiada para a Área de Transferencia para evitar perda de dados
 pro: Pro
 actions:
-  newNote: New Note
+  newNote: Nova Nota
   newJournal: New Journal Entry
   newChecklist: New Checklist
 screens:
   folders:
-    title: Folders
-    selected: Folder Selected
+    title: Pastas
+    selected: Pasta Selecionada
     dialog:
-      title: Create new Folder
-      create: Create
-      discard: Discard
+      title: Criar nova Pasta
+      create: Criar
+      discard: Descartar
     errorDialog:
-      title: Error
-      deleteContent: Cannot delete a Folder which contains notes
-      renameContent: Cannot rename Root Folder
-      ok: Ok
+      title: Erro
+      deleteContent: Não é possível deletar umas Pasta que contenha notas
+      renameContent: Não é possível renomear Pasta Raíz
+      ok: OK
     actions:
-      rename: Rename Folder
-      subFolder: Create Sub-Folder
-      delete: Delete Folder
-      decoration: Folder Name
-      empty: Please enter a name
+      rename: Renomear Pasta
+      subFolder: Criar Sub-Pasta
+      delete: Deletar Pasta
+      decoration: Nome da Pasta
+      empty: "Por favor, i\nnsira um nome"
   tags:
     title: Tags
     empty: No Tags Found
   filesystem:
     ignoredFile:
-      title: File Ignored
+      title: Arquivo Ignorado
       ok: Ok
-      rename: Rename
+      rename: Renomear
     rename:
-      decoration: File Name
-      title: Rename
+      decoration: Nome do Arquivo
+      title: Renomear
   folder_view:
-    empty: Let's add some notes?
+    empty: Vamos adicionar algumas notas
   home:
     allNotes: All Notes
 widgets:
   rename:
-    'yes': Rename
-    'no': Cancel
+    'yes': Renomear
+    'no': Cancelar
     validator:
-      empty: Please enter a name
-      exists: Already Exists
-      contains: Cannot contain /
+      empty: Por favor, insira um nome
+      exists: Já Existe
+      contains: Não pode conter /
   backlinks:
     title:
-      other: "{} Note links to this Note"
+      one: "{} Note links to this Note"
+      other: ""
   SortingOrderSelector:
     title: Sorting Criteria
   PurchaseButton:
-    text: Purchase for {price}
-    fail: Failed to Load
+    text: Comprar por {price}
+    fail: Falha ao Carregar
     failSend: Failed to send purchase request
     failPurchase: Failed to Purchase - {}
   FolderView:
-    noteSelected: Note Selected
+    noteSelected: Nota Selecionada
     syncError: Sync Error {}
     headerOptions:
-      heading: Header Options
-      auto: Auto Generated Title
-      titleFileName: Title or FileName
-      fileName: FileName
+      heading: Opções de Cabeçaho
+      auto: Título Auto Gerado
+      titleFileName: Título ou Nome do Arquivo
+      fileName: Nome do Arquivo
       summary: Show Summary
       customize: Customize View
     views:
@@ -350,19 +351,19 @@ widgets:
     linkInvalid: Link '{}' is invalid.
   FolderSelectionDialog:
     title: Select a Folder
-rootFolder: Root Folder
+rootFolder: Pasta Raíz
 ignoredFiles:
-  dot: Starts with a .
-  ext: Doesn't end with one of the following -
+  dot: Começa com um .
+  ext: Não terminam com .md ou .txt
 drawer:
   setup: Setup Git Host
   pro: Unlock Pro Version
-  all: All Notes
-  folders: Folders
-  fs: File System
+  all: Todas as Notas
+  folders: Pastas
+  fs: Sistema de Arquivos
   tags: Tags
-  share: Share App
-  rate: Rate Us
+  share: Compartilhar App
+  rate: Nos Avalie
   feedback: Feedback
   bug: Bug Report
   graph: Graph View
@@ -370,16 +371,16 @@ drawer:
   addRepo: Add Repository
 setup:
   autoConfigure:
-    title: How do you want to do this?
+    title: Como você quer fazer isso?
     automatic: Setup Automatically
-    manual: Let me do it manually
+    manual: Deixe-me fazer isto manualmente
   autoconfigure:
-    step1: 1. List your existing repos or create a new repo
-    step2: 2. Generate an SSH Key on this device
+    step1: Listar seus repositórios existentes ou criar um novo repositório
+    step2: Gerar um Chave SSH nesse dispositivo
     step3: 3. Add the key as a deploy key with write access to the repository
     warning: This will require granting GitJournal access to all private and public repos. If you're not comfortable with that please go back and chose the manual setup option.
-    authorize: Authorize GitJournal
-    waitPerm: Waiting for Permissions ...
+    authorize: Autorizar GitJournal
+    waitPerm: Aguardando Permissões...
     readUser: Reading User Info
   repoSelector:
     title: Select or Create a Repository
@@ -389,63 +390,63 @@ setup:
   cloneUrl:
     enter: Enter the Git Clone URL
     validator:
-      empty: Please enter some text
-      invalid: Invalid Input
-      onlySsh: Only SSH urls are currently accepted
+      empty: Por favor, insira algum texto
+      invalid: Entrada Inválida
+      onlySsh: Apenas urls SSH são aceitas atualmente
     manual:
-      title: Please create a new git repository -
+      title: Por favor crie um novo repositório git -
       step1: 1. Go to the website, create a repo and copy its git clone URL
       step2: 2. Enter the Git clone URL
       button: Open Create New Repo Webpage
-  next: Next
+  next: Próximo
   fail: Failed
   keyEditors:
-    public: Invalid Public Key - Doesn't start with ssh-rsa
-    private: Invalid Private Key
+    public: Chave Publica Inválida - Não começa com ssh-rsa
+    private: Chave Privada Inválida
     load: Load from File
   sshKey:
-    generate: Generating SSH Key
+    generate: Gerando Chave SSH
     title: In order to access this repository, this public key must be copied as a deploy key
-    step1: 1. Copy the key
+    step1: Copiar a chave
     step2a: 2. Open webpage, and paste the deploy key. Make sure it is given Write Access.
     step2b: 2. Give this SSH Key access to the git repo. (You need to figure it out yourself)
-    step3: 3. Try Cloning ..
-    copy: Copy Key
-    copied: Public Key copied to Clipboard
+    step3: Tentando Clonar...
+    copy: Copiar Chave
+    copied: Chave Publica copiada para a Área de Transferência
     regenerate: Regenerate Key
     openDeploy: Open Deploy Key Webpage
-    clone: Clone Repo
+    clone: Clonar Repositório
     addDeploy: Adding as a Deploy Key
     save: Save
   sshKeyChoice:
-    title: We need SSH keys to authenticate -
-    generate: Generate new keys
+    title: Precisamos das chaves SSH para autenticar -
+    generate: Gerar novas chaves
     custom: Provide Custom SSH Keys
   sshKeyUserProvided:
-    public: Public Key -
-    private: Private Key -
+    public: "Chave Publica - "
+    private: Chave Privada -
     password: Password
-  cloning: Cloning ...
+  cloning: Clonando...
   host:
     title: Select a Git Hosting Provider -
     custom: Custom
 feature:
-  darkMode: Dark Mode
+  darkMode: Modo Escuro
   rawEditor: Raw Editor
-  folderSupport: Folder Support
+  folderSupport: Suporte a pastas
   fileNameCustomize: Customize Note FileName
   noteMetaDataCustomize:
     title: Customize Note Metadata
-    subtitle: Allows GitJournal to be used with static website generators
+    subtitle: Permite GitJournal ser usado com geradores de website estáticos.
   autoMergeConflicts: Automation Merge Conflict Resolution
   noteSorting: Configurable Note Sorting
   gitPushFreq: Configurable Git Sync Frequency
   checklistEditor: Checklist Editor
   journalEditor: Journal Editor
   diffViews: Different Folder Views - Journal, Grid, Standard
-  imageSupport: Image Support
+  imageSupport: Suporte a imagens
   tags: Note Tags
-  appShortcuts: App Shortcuts
+  appShortcuts: Atalhos
   createRepo: Create Custom Repos from within App
   backlinks: Note Backlinks Support
   txtFiles: Txt File Support
@@ -456,18 +457,18 @@ feature:
   yamlCreatedKey: Customize the YAML created key
   yamlTagsKey: Customize the YAML tags key
   disableYamlHeader: Disable YAML Metadata Header
-  customizeHomeScreen: Customize Home Screen
-  zenMode: Zen Writing Mode
+  customizeHomeScreen: Customizar tela inicial
+  zenMode: Modo de Escrita Zen
   emojiSupport:
-    title: Emoji Support
-    subtitle: "Convert :heart: to ❤️"
-  allNotesView: Add a screen to show "All Notes"
-  basicSearch: Basic Search
+    title: Suporte a emoji
+    subtitle: "Converter :heart: para ❤️"
+  allNotesView: Adicionar uma tela para mostrar "Todas as Notas"
+  basicSearch: Busca Básica
   customSSHKeys: Provide your own SSH Keys
-  customMetaData: Add Custom Metadata to new Notes
+  customMetaData: Adicionar Metadados personalizados às novas Notas
   graphVisualization: Graph Visualization
   mutliRepos: Multiple Git Repos
-  customThemes: Custom Themes
+  customThemes: Temas personalizados
   gitLog: View and Search through Git History
   latex: Latex Support
   mermaid: Mermaid Diagram Support
@@ -475,8 +476,8 @@ feature:
   desktop: Desktop App
   markdownToolbar: Markdown Toolbar
   localization:
-    title: Localization
-    subtitle: Allow GitJournal to be translated
+    title: Localização
+    subtitle: Permitir GitJournal ser traduzido
   inlineTags: Inline Tags
   singleJournalEntry: Single Journal Entry File per day
   configureBottomMenuBar: Configure the Bottom Menu Bar
@@ -484,11 +485,11 @@ feature:
   branchSelection: Git Branch Selection
 feature_timeline:
   title: Feature Timeline
-  progress: In Progress
+  progress: Em Progresso
   plan: Planned
   issues: GitJournal's development is tracked on Github. Please consider voting on the issues you consider important.
 purchase_screen:
-  title: Pro Version
+  title: Versão Pro
   desc: 'GitJournal is completely open source and is the result of significant development work. It has no venture capital or corporation backing and it never will. Your support directly sustains development.   GitJournal operates on a "pay what you want model (with a minimum)".'
   restore: Restore Purchase
   oneTime:
@@ -496,7 +497,7 @@ purchase_screen:
     desc: Permanently enables all Pro features currently in GitJournal and new features added in the following 12 months.
   monthly:
     title: Monthly Installments
-    desc: Enables all Pro Features. After 12 months or after paying {minYearlyPurchase}, you will get all the benefits of the 'One Time Purchase'
+    desc: Habilitar todas as Funcionalidades Pro. Depois de 12 meses ou após pagar {minYearlyPurchase}, você terá todos os benefícios da 'Compra Única'
   thanks:
     title: Thank You
     subtitle: You're awesome for supporting GitJournal
