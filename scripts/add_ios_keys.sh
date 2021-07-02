@@ -37,6 +37,14 @@ security default-keychain -s "$KEYCHAIN_PATH"
 security set-keychain-settings "$KEYCHAIN_PATH" # Remove relock timeout
 security unlock-keychain -p "" "$KEYCHAIN_PATH"
 
+# To fix "codesign  unable to build chain to self-signed root for signer"
+# https://stackoverflow.com/a/66083449/147435
+wget -q https://developer.apple.com/certificationauthority/AppleWWDRCA.cer
+wget -q https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer
+
+security add-certificates -k "KEYCHAIN_PATH" "AppleWWDRCA.cer" || true
+security add-certificates -k "KEYCHAIN_PATH" "AppleWWDRCAG3.cer" || true
+
 # Apple Magic https://stackoverflow.com/a/40870033/147435
 security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" "$KEYCHAIN_PATH"
 
