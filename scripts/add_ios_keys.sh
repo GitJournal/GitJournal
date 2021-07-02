@@ -43,8 +43,8 @@ security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
 wget -q https://developer.apple.com/certificationauthority/AppleWWDRCA.cer
 wget -q https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer
 
-security add-certificates -k "KEYCHAIN_PATH" "AppleWWDRCA.cer" || true
-security add-certificates -k "KEYCHAIN_PATH" "AppleWWDRCAG3.cer" || true
+security add-certificates -k "$KEYCHAIN_PATH" "AppleWWDRCA.cer" || true
+security add-certificates -k "$KEYCHAIN_PATH" "AppleWWDRCAG3.cer" || true
 
 # Apple Magic https://stackoverflow.com/a/40870033/147435
 security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
