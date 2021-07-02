@@ -155,8 +155,8 @@ settings:
     graphView: グラフビュー
     accounts: プラットフォームに依存しないアカウント
     includeSubfolders: サブフォルダを含む
-    experimentalGitOps: Dart-only Git implementation
-    merge: Dart-only merge implementation
+    experimentalGitOps: Dart実装のGitを使用する
+    merge: Dart実装のマージを使用する
   editors:
     title: エディタ設定
     subtitle: エディタの動作を設定する
@@ -312,6 +312,7 @@ widgets:
     failSend: 購入リクエストの送信に失敗しました
     failPurchase: 購入に失敗しました - {}
   FolderView:
+    # Where is it used?
     noteSelected: Note Selected
     syncError: 同期エラー {}
     headerOptions:
