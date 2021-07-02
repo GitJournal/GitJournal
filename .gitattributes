@@ -1,5 +1,5 @@
 android/app/keystore.jks filter=git-crypt diff=git-crypt
-android/google-play-api-key.json filter=git-crypt diff=git-crypt
+android/fastlane/google-play-api-key.json filter=git-crypt diff=git-crypt
 android/key.properties filter=git-crypt diff=git-crypt
 ios/keys/* filter=git-crypt diff=git-crypt
 scripts/secrets/* filter=git-crypt diff=git-crypt
