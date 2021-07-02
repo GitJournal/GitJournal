@@ -77,7 +77,6 @@ dependencies:
   yaml_serializer: ^0.0.11
   collection: ^1.15.0-nullsafety.4
   flex_color_scheme: ^2.1.1
-  bitsdojo_window: ^0.1.1+1
 
 dev_dependencies:
   #flutter_driver:
