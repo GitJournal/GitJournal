@@ -69,7 +69,7 @@ class JournalApp extends StatefulWidget {
         // Arranged Alphabetically
         const Locale('de'),
         const Locale('es'),
-        const Locale('en', 'US'),
+        const Locale('en'),
         const Locale('fr'),
         const Locale('hu'),
         const Locale('id'),
@@ -77,7 +77,7 @@ class JournalApp extends StatefulWidget {
         const Locale('ja'),
         const Locale('ko'),
         const Locale('pl'),
-        const Locale('pt', 'BR'),
+        const Locale('pt'),
         const Locale('ru'),
         const Locale('sv'),
         const Locale('vi'),

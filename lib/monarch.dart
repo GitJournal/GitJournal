@@ -50,7 +50,7 @@ class MonarchLocalizationsDelegate extends LocalizationsDelegate<Localization> {
   MonarchLocale('es'),
   MonarchLocale('id'),
   MonarchLocale('pl'),
-  MonarchLocale('pr'),
+  MonarchLocale('pt', 'BR'),
   MonarchLocale('ru'),
   MonarchLocale('sv'),
   MonarchLocale('zh'),
