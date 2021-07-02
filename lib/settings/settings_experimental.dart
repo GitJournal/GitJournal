@@ -107,7 +107,7 @@ class _ExperimentalSettingsScreenState
               title: Text(tr('settings.experimental.experimentalGitOps')),
               value: appSettings.experimentalGitOps,
               onChanged: (bool newVal) {
-                appSettings.experimentalGitMerge = newVal;
+                appSettings.experimentalGitOps = newVal;
                 appSettings.save();
                 setState(() {});
               },
