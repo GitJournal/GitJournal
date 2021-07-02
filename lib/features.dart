@@ -374,7 +374,7 @@ class Feature {
     DateTime(2021, 04, 20),
     tr("feature.branchSelection"),
     "",
-    true,
+    false,
   );
 }
 
