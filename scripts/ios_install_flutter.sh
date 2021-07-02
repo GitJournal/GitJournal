@@ -2,8 +2,8 @@
 
 set -eux
 
-wget https://storage.googleapis.com/flutter_infra/releases/stable/macos/flutter_macos_1.22.4-stable.zip
-unzip flutter_macos_1.22.4-stable.zip
+wget -O flutter.zip https://storage.googleapis.com/flutter_infra_release/releases/stable/macos/flutter_macos_2.2.3-stable.zip
+unzip flutter.zip
 export PATH="$PATH:$(pwd)/flutter/bin"
 
 flutter precache
