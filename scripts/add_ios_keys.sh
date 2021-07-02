@@ -34,6 +34,7 @@ security import dev.p12 -k "$KEYCHAIN_PATH" -P "" -A
 
 security list-keychains -s "$KEYCHAIN_PATH"
 security default-keychain -s "$KEYCHAIN_PATH"
+security set-keychain-settings "$KEYCHAIN_PATH" # Remove relock timeout
 security unlock-keychain -p "" "$KEYCHAIN_PATH"
 
 # Apple Magic https://stackoverflow.com/a/40870033/147435
