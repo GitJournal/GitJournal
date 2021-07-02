@@ -68,8 +68,8 @@ class JournalApp extends StatefulWidget {
       supportedLocales: [
         // Arranged Alphabetically
         const Locale('de'),
-        const Locale('es'),
         const Locale('en'),
+        const Locale('es'),
         const Locale('fr'),
         const Locale('hu'),
         const Locale('id'),
@@ -83,7 +83,7 @@ class JournalApp extends StatefulWidget {
         const Locale('vi'),
         const Locale('zh'),
       ], // Remember to update Info.plist
-      fallbackLocale: const Locale('en', 'US'),
+      fallbackLocale: const Locale('en'),
       useFallbackTranslations: true,
       path: 'assets/langs',
       useOnlyLangCode: true,
