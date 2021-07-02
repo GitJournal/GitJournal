@@ -15,6 +15,7 @@ platform :ios do
       }
     )
     #upload_to_app_store(skip_metadata: true, skip_screenshots: true)
-    upload_to_testflight(apple_id:"1466519634", skip_waiting_for_build_processing:true)
+    changelog_from_git_commits
+    upload_to_testflight(apple_id:"1466519634", skip_waiting_for_build_processing:false)
   end
 end
