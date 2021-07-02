@@ -74,6 +74,12 @@ jobs:
           name: Setup GitJournal Build Env
           command: ./flutter/bin/cache/dart-sdk/bin/dart ./scripts/setup_env.dart
       - run:
+          name: Pub get
+          command: flutter pub get
+      - run:
+          name: Test
+          command: flutter test
+      - run:
           name: Setup provisioning profile
           command: ./scripts/add_ios_keys.sh
       - run:
