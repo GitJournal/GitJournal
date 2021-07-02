@@ -1,4 +1,6 @@
 PODS:
+  - bitsdojo_window_macos (0.0.1):
+    - FlutterMacOS
   - connectivity_macos (0.0.1):
     - FlutterMacOS
     - Reachability
@@ -29,6 +31,7 @@ PODS:
     - FlutterMacOS
 
 DEPENDENCIES:
+  - bitsdojo_window_macos (from `Flutter/ephemeral/.symlinks/plugins/bitsdojo_window_macos/macos`)
   - connectivity_macos (from `Flutter/ephemeral/.symlinks/plugins/connectivity_macos/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
   - package_info (from `Flutter/ephemeral/.symlinks/plugins/package_info/macos`)
@@ -46,6 +49,8 @@ SPEC REPOS:
     - Sentry
 
 EXTERNAL SOURCES:
+  bitsdojo_window_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/bitsdojo_window_macos/macos
   connectivity_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/connectivity_macos/macos
   FlutterMacOS:
@@ -66,6 +71,7 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos
 
 SPEC CHECKSUMS:
+  bitsdojo_window_macos: 7e9b1bbb09bdce418d9657ead7fc9d824203ff0d
   connectivity_macos: 9f30e9d0e67a0bc08a0c563ee82310b51ca6e818
   FlutterMacOS: 57701585bf7de1b3fc2bb61f6378d73bbdea8424
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a

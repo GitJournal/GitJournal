@@ -4,6 +4,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:device_info/device_info.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
@@ -313,7 +314,7 @@ class _JournalAppState extends State<JournalApp> {
     );
     */
 
-    return MaterialApp(
+    var app = MaterialApp(
       key: const ValueKey("App"),
       navigatorKey: _navigatorKey,
       title: 'GitJournal',
@@ -343,6 +344,23 @@ class _JournalAppState extends State<JournalApp> {
         return r;
       },
     );
+
+    if (Platform.isLinux || Platform.isWindows) {
+      return WindowBorder(
+        color: app.theme!.primaryColor,
+        child: app,
+      );
+    }
+    if (Platform.isMacOS) {
+      return Container(
+        color: app.theme!.primaryColor,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 24.0, 0, 0),
+          child: app,
+        ),
+      );
+    }
+    return app;
   }
 }
 
