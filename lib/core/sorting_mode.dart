@@ -171,7 +171,11 @@ int _sortModifiedDesc(Note a, Note b) {
     return -1;
   }
   if (bDt == null && aDt == null) {
-    return a.fileName.compareTo(b.fileName);
+    if (a.fileLastModified != null && b.fileLastModified != null) {
+      return a.fileLastModified!.compareTo(b.fileLastModified!);
+    } else {
+      return a.fileName.compareTo(b.fileName);
+    }
   }
   return bDt!.compareTo(aDt!);
 }
