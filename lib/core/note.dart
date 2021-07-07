@@ -315,10 +315,8 @@ class Note with NotesNotifier {
     _notifyModified();
   }
 
-  bool isEmpty() {
-    return body.isEmpty;
-  }
-
+  // FIXME: When building this, take the title type into account
+  //         If the summary starts with the title, then remove it
   String get summary {
     if (_loadState != NoteLoadState.Loaded) return "";
 
