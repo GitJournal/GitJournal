@@ -4,7 +4,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter_runtime_env/flutter_runtime_env.dart';
@@ -99,14 +99,15 @@ class JournalApp extends StatefulWidget {
       var deviceInfo = DeviceInfoPlugin();
       if (Platform.isAndroid) {
         var info = await deviceInfo.androidInfo;
-        isPhysicalDevice = info.isPhysicalDevice;
+        isPhysicalDevice =
+            info.isPhysicalDevice == null ? false : info.isPhysicalDevice!;
 
-        Log.i("Running on Android", props: readAndroidBuildData(info));
+        Log.i("Running on Android", props: info.toMap());
       } else if (Platform.isIOS) {
         var info = await deviceInfo.iosInfo;
         isPhysicalDevice = info.isPhysicalDevice;
 
-        Log.i("Running on ios", props: readIosDeviceInfo(info));
+        Log.i("Running on ios", props: info.toMap());
       }
     } catch (e) {
       Log.d(e.toString());

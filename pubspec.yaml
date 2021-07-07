@@ -27,7 +27,7 @@ dependencies:
   connectivity: ^3.0.3
   # cryptography: ^1.4.1
   # cryptography_flutter: ^1.0.0
-  device_info: ^2.0.0
+  device_info_plus: ^2.1.0
   dots_indicator: ^2.0.0
   easy_localization: ^3.0.0
   easy_localization_loader: ^1.0.0

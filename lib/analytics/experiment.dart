@@ -1,6 +1,6 @@
 import 'dart:io' show Platform;
 
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 // - https://support.google.com/firebase/answer/7029846?hl=en
 // - https://support.google.com/firebase/answer/6317485?hl=en
