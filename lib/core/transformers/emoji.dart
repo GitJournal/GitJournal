@@ -2,7 +2,7 @@ import 'package:flutter_emoji/flutter_emoji.dart';
 
 import 'base.dart';
 
-class EmojiProcessor implements NoteReadTransformer, NoteWriteTransformer {
+class EmojiTransformer implements NoteReadTransformer, NoteWriteTransformer {
   static final _emojiParser = EmojiParser();
 
   @override
