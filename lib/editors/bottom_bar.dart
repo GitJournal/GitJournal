@@ -49,7 +49,7 @@ class EditorBottomBar extends StatelessWidget {
       onPressed: () {
         showModalBottomSheet(
           context: context,
-          builder: (c) => _buildAddBottomSheet(c, editor, editorState),
+          builder: (c) => AddBottomSheet(editor, editorState),
           elevation: 0,
         );
       },
@@ -60,13 +60,12 @@ class EditorBottomBar extends StatelessWidget {
       onPressed: () {
         showModalBottomSheet(
           context: context,
-          builder: (c) => _buildBottomMenuSheet(
-            c,
-            editor,
-            editorState,
-            zenMode,
-            onZenModeChanged,
-            metaDataEditable,
+          builder: (c) => BottomMenuSheet(
+            editor: editor,
+            editorState: editorState,
+            zenModeEnabled: zenMode,
+            zenModeChanged: onZenModeChanged,
+            metaDataEditable: metaDataEditable,
           ),
           elevation: 0,
         );
@@ -121,131 +120,147 @@ class EditorBottomBar extends StatelessWidget {
   }
 }
 
-Widget _buildAddBottomSheet(
-  BuildContext context,
-  Editor editor,
-  EditorState editorState,
-) {
-  return Container(
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        ListTile(
-          leading: const Icon(Icons.camera),
-          title: Text(tr('editors.common.takePhoto')),
-          onTap: () async {
-            try {
-              var image = await ImagePicker().getImage(
-                source: ImageSource.camera,
-              );
+class AddBottomSheet extends StatelessWidget {
+  final Editor editor;
+  final EditorState editorState;
 
-              if (image != null) {
-                await editorState.addImage(image.path);
+  const AddBottomSheet(this.editor, this.editorState, {Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ListTile(
+            leading: const Icon(Icons.camera),
+            title: Text(tr('editors.common.takePhoto')),
+            onTap: () async {
+              try {
+                var image = await ImagePicker().getImage(
+                  source: ImageSource.camera,
+                );
+
+                if (image != null) {
+                  await editorState.addImage(image.path);
+                }
+              } catch (e) {
+                reportError(e, StackTrace.current);
               }
-            } catch (e) {
-              reportError(e, StackTrace.current);
-            }
-            Navigator.of(context).pop();
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.image),
-          title: Text(tr('editors.common.addImage')),
-          onTap: () async {
-            try {
-              var image = await ImagePicker().getImage(
-                source: ImageSource.gallery,
-              );
-
-              if (image != null) {
-                await editorState.addImage(image.path);
-              }
-            } catch (e) {
-              if (e is PlatformException && e.code == "photo_access_denied") {
-                Navigator.of(context).pop();
-                return;
-              }
-              reportError(e, StackTrace.current);
-            }
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    ),
-  );
-}
-
-Widget _buildBottomMenuSheet(
-  BuildContext context,
-  Editor editor,
-  EditorState editorState,
-  bool zenModeEnabled,
-  Func0<void> zenModeChanged,
-  bool metaDataEditable,
-) {
-  return Container(
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        ListTile(
-          leading: const Icon(Icons.undo),
-          title: Text(tr('editors.common.discard')),
-          onTap: () {
-            var note = editorState.getNote();
-            Navigator.of(context).pop();
-
-            editor.discardChangesSelected(note);
-          },
-          enabled: editorState.noteModified,
-        ),
-        ListTile(
-          leading: const Icon(Icons.share),
-          title: Text(tr('editors.common.share')),
-          onTap: () {
-            var note = editorState.getNote();
-            Navigator.of(context).pop();
-
-            shareNote(note);
-          },
-        ),
-        if (metaDataEditable)
-          ProOverlay(
-            feature: Feature.tags,
-            child: ListTile(
-              leading: const FaIcon(FontAwesomeIcons.tag),
-              title: Text(tr('editors.common.tags')),
-              onTap: () {
-                var note = editorState.getNote();
-                Navigator.of(context).pop();
-
-                editor.editTagsSelected(note);
-              },
-            ),
-          ),
-        ListTile(
-          leading: const Icon(Icons.edit),
-          title: Text(tr('editors.common.editFileName')),
-          onTap: () {
-            var note = editorState.getNote();
-            Navigator.of(context).pop();
-
-            editor.renameNoteSelected(note);
-          },
-        ),
-        ProOverlay(
-          feature: Feature.zenMode,
-          child: ListTile(
-            leading: const FaIcon(FontAwesomeIcons.peace),
-            title: Text(tr(zenModeEnabled
-                ? 'editors.common.zen.disable'
-                : 'editors.common.zen.enable')),
-            onTap: () {
-              zenModeChanged();
               Navigator.of(context).pop();
             },
           ),
-        ),
-      ],
-    ),
-  );
+          ListTile(
+            leading: const Icon(Icons.image),
+            title: Text(tr('editors.common.addImage')),
+            onTap: () async {
+              try {
+                var image = await ImagePicker().getImage(
+                  source: ImageSource.gallery,
+                );
+
+                if (image != null) {
+                  await editorState.addImage(image.path);
+                }
+              } catch (e) {
+                if (e is PlatformException && e.code == "photo_access_denied") {
+                  Navigator.of(context).pop();
+                  return;
+                }
+                reportError(e, StackTrace.current);
+              }
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class BottomMenuSheet extends StatelessWidget {
+  final Editor editor;
+  final EditorState editorState;
+  final bool zenModeEnabled;
+  final Func0<void> zenModeChanged;
+  final bool metaDataEditable;
+
+  const BottomMenuSheet({
+    Key? key,
+    required this.editor,
+    required this.editorState,
+    required this.zenModeEnabled,
+    required this.zenModeChanged,
+    required this.metaDataEditable,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ListTile(
+            leading: const Icon(Icons.undo),
+            title: Text(tr('editors.common.discard')),
+            onTap: () {
+              var note = editorState.getNote();
+              Navigator.of(context).pop();
+
+              editor.discardChangesSelected(note);
+            },
+            enabled: editorState.noteModified,
+          ),
+          ListTile(
+            leading: const Icon(Icons.share),
+            title: Text(tr('editors.common.share')),
+            onTap: () {
+              var note = editorState.getNote();
+              Navigator.of(context).pop();
+
+              shareNote(note);
+            },
+          ),
+          if (metaDataEditable)
+            ProOverlay(
+              feature: Feature.tags,
+              child: ListTile(
+                leading: const FaIcon(FontAwesomeIcons.tag),
+                title: Text(tr('editors.common.tags')),
+                onTap: () {
+                  var note = editorState.getNote();
+                  Navigator.of(context).pop();
+
+                  editor.editTagsSelected(note);
+                },
+              ),
+            ),
+          ListTile(
+            leading: const Icon(Icons.edit),
+            title: Text(tr('editors.common.editFileName')),
+            onTap: () {
+              var note = editorState.getNote();
+              Navigator.of(context).pop();
+
+              editor.renameNoteSelected(note);
+            },
+          ),
+          ProOverlay(
+            feature: Feature.zenMode,
+            child: ListTile(
+              leading: const FaIcon(FontAwesomeIcons.peace),
+              title: Text(tr(zenModeEnabled
+                  ? 'editors.common.zen.disable'
+                  : 'editors.common.zen.enable')),
+              onTap: () {
+                zenModeChanged();
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
