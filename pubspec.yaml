@@ -77,6 +77,7 @@ dependencies:
   yaml_serializer: ^0.0.11
   collection: ^1.15.0-nullsafety.4
   flex_color_scheme: ^2.1.1
+  fs_shim: ^2.0.1+2
 
 dev_dependencies:
   #flutter_driver:

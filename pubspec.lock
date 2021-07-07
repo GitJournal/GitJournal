@@ -540,6 +540,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.14.1"
+  fs_shim:
+    dependency: "direct main"
+    description:
+      name: fs_shim
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1+2"
   function_types:
     dependency: "direct main"
     description:
@@ -614,6 +621,13 @@ packages:
       url: "https://github.com/GitJournal/icloud_documents_path.git"
     source: git
     version: "0.0.1"
+  idb_shim:
+    dependency: transitive
+    description:
+      name: idb_shim
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0+2"
   image:
     dependency: transitive
     description:
@@ -1029,6 +1043,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.27.1"
+  sembast:
+    dependency: transitive
+    description:
+      name: sembast
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.0+2"
   sentry:
     dependency: transitive
     description:
