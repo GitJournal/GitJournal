@@ -2,6 +2,8 @@ PODS:
   - connectivity_macos (0.0.1):
     - FlutterMacOS
     - Reachability
+  - device_info_plus_macos (0.0.1):
+    - FlutterMacOS
   - FlutterMacOS (1.0.0)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
@@ -30,6 +32,7 @@ PODS:
 
 DEPENDENCIES:
   - connectivity_macos (from `Flutter/ephemeral/.symlinks/plugins/connectivity_macos/macos`)
+  - device_info_plus_macos (from `Flutter/ephemeral/.symlinks/plugins/device_info_plus_macos/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
   - package_info (from `Flutter/ephemeral/.symlinks/plugins/package_info/macos`)
   - package_info_plus_macos (from `Flutter/ephemeral/.symlinks/plugins/package_info_plus_macos/macos`)
@@ -48,6 +51,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   connectivity_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/connectivity_macos/macos
+  device_info_plus_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/device_info_plus_macos/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
   package_info:
@@ -67,6 +72,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   connectivity_macos: 9f30e9d0e67a0bc08a0c563ee82310b51ca6e818
+  device_info_plus_macos: 1ad388a1ef433505c4038e7dd9605aadd1e2e9c7
   FlutterMacOS: 57701585bf7de1b3fc2bb61f6378d73bbdea8424
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   package_info: 6eba2fd8d3371dda2d85c8db6fe97488f24b74b2
