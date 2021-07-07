@@ -272,5 +272,87 @@ void main() {
     _testPrevWord(text, 0, 0);
   });
 
-  // Test that if some text is selected then it should be modified
+  void _testTab({
+    required String before,
+    required int beforeOffset,
+    required String after,
+    required int afterOffset,
+  }) {
+    var val = TextEditingValue(
+      text: before,
+      selection: TextSelection.collapsed(offset: beforeOffset),
+    );
+
+    var expectedVal = TextEditingValue(
+      text: after,
+      selection: TextSelection.collapsed(offset: afterOffset),
+    );
+
+    expect(addTab(val), expectedVal);
+  }
+
+  void _testBackTab({
+    required String before,
+    required int beforeOffset,
+    required String after,
+    required int afterOffset,
+  }) {
+    var val = TextEditingValue(
+      text: before,
+      selection: TextSelection.collapsed(offset: beforeOffset),
+    );
+
+    var expectedVal = TextEditingValue(
+      text: after,
+      selection: TextSelection.collapsed(offset: afterOffset),
+    );
+
+    expect(addBackTab(val), expectedVal);
+  }
+
+  test('Tab', () {
+    _testTab(
+      before: 'Hello',
+      beforeOffset: 0,
+      after: '\tHello',
+      afterOffset: 1,
+    );
+
+    _testTab(
+      before: 'Hello',
+      beforeOffset: 1,
+      after: 'H\tello',
+      afterOffset: 2,
+    );
+
+    _testTab(
+      before: 'Hi',
+      beforeOffset: 2,
+      after: 'Hi\t',
+      afterOffset: 3,
+    );
+
+    _testBackTab(
+      before: '\tHello',
+      beforeOffset: 1,
+      after: 'Hello',
+      afterOffset: 0,
+    );
+
+    _testBackTab(
+      before: 'Hi',
+      beforeOffset: 0,
+      after: 'Hi',
+      afterOffset: 0,
+    );
+
+    _testBackTab(
+      before: 'Hi',
+      beforeOffset: 1,
+      after: 'Hi',
+      afterOffset: 1,
+    );
+  });
+
+  // TODO: Test that if some text is selected then it should be modified
 }

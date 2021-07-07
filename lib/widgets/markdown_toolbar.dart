@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'package:gitjournal/forks/icon_button_more_gestures.dart' as fork;
+
 // FIXME:
 // - Pin this on top of the keyboard
 // - It should only be visible when the keyboard is shown
@@ -58,15 +60,17 @@ class MarkdownToolBar extends StatelessWidget {
             height: 20,
             child: const VerticalDivider(),
           ),
-          IconButton(
+          fork.IconButton(
             icon: const Icon(Icons.navigate_before),
             padding: const EdgeInsets.all(0.0),
             onPressed: _navigateToPrevWord,
+            onLongPressed: _addBackTab,
           ),
-          IconButton(
+          fork.IconButton(
             icon: const Icon(Icons.navigate_next),
             padding: const EdgeInsets.all(0.0),
             onPressed: _navigateToNextWord,
+            onLongPressed: _addTab,
           ),
         ],
       ),
@@ -89,6 +93,16 @@ class MarkdownToolBar extends StatelessWidget {
   void _navigateToNextWord() {
     var offset = nextWordPos(textController.value);
     textController.selection = TextSelection.collapsed(offset: offset);
+  }
+
+  // FIXME: Maybe add Tab should work on lines instead? Independent of the cursor pos
+  // FIXME: Make addTab work for selections as well?
+  void _addTab() {
+    textController.value = addTab(textController.value);
+  }
+
+  void _addBackTab() {
+    textController.value = addBackTab(textController.value);
   }
 }
 
@@ -286,4 +300,48 @@ int prevWordPos(TextEditingValue textEditingValue) {
   }
 
   return lastSpacePos + 1;
+}
+
+TextEditingValue addTab(TextEditingValue textEditingValue) {
+  var cursorPos = textEditingValue.selection.baseOffset;
+  var text = textEditingValue.text;
+
+  var newText = "";
+  if (cursorPos == text.length) {
+    newText = text + "\t";
+  } else {
+    newText = text.substring(0, cursorPos) + "\t" + text.substring(cursorPos);
+  }
+
+  return TextEditingValue(
+    text: newText,
+    selection: TextSelection.collapsed(offset: cursorPos + 1),
+  );
+}
+
+TextEditingValue addBackTab(TextEditingValue textEditingValue) {
+  var cursorPos = textEditingValue.selection.baseOffset;
+  var text = textEditingValue.text;
+
+  if (cursorPos <= 0) {
+    return textEditingValue;
+  }
+
+  var prevChar = text[cursorPos - 1];
+  if (prevChar == '\t') {
+    var newText = "";
+    if (cursorPos - 1 > 1) {
+      newText += text.substring(0, cursorPos - 1);
+    }
+    if (cursorPos != text.length) {
+      newText += text.substring(cursorPos);
+    }
+
+    return TextEditingValue(
+      text: newText,
+      selection: TextSelection.collapsed(offset: cursorPos - 1),
+    );
+  }
+
+  return textEditingValue;
 }
