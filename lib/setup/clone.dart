@@ -1,8 +1,11 @@
+import 'dart:io' show Platform;
+
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/exceptions.dart';
 import 'package:git_bindings/git_bindings.dart' as git_bindings;
 import 'package:path/path.dart' as p;
 
+import 'package:gitjournal/utils/git_desktop.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 Future<Result<void>> cloneRemote({
@@ -18,22 +21,36 @@ Future<Result<void>> cloneRemote({
   var repo = await GitRepository.load(repoPath).getOrThrow();
   var remote = await repo.addOrUpdateRemote(remoteName, cloneUrl).getOrThrow();
 
+  var remoteBranchName = "master";
   var _gitRepo = git_bindings.GitRepo(folderPath: repoPath);
-  await _gitRepo.fetch(
-    remote: remoteName,
-    publicKey: sshPublicKey,
-    privateKey: sshPrivateKey,
-    password: sshPassword,
-  );
 
-  var remoteBranchName = await _remoteDefaultBranch(
-    repo: repo,
-    libGit2Repo: _gitRepo,
-    remoteName: remoteName,
-    sshPublicKey: sshPublicKey,
-    sshPrivateKey: sshPrivateKey,
-    sshPassword: sshPassword,
-  );
+  if (Platform.isAndroid || Platform.isIOS) {
+    await _gitRepo.fetch(
+      remote: remoteName,
+      publicKey: sshPublicKey,
+      privateKey: sshPrivateKey,
+      password: sshPassword,
+    );
+
+    remoteBranchName = await _remoteDefaultBranch(
+      repo: repo,
+      libGit2Repo: _gitRepo,
+      remoteName: remoteName,
+      sshPublicKey: sshPublicKey,
+      sshPrivateKey: sshPrivateKey,
+      sshPassword: sshPassword,
+    );
+  } else if (Platform.isMacOS) {
+    var r = await gitFetchViaExecutable(
+      repoPath: repoPath,
+      privateKey: sshPrivateKey,
+      privateKeyPassword: sshPassword,
+      remoteName: remoteName,
+    );
+    if (r.isFailure) {
+      return fail(r);
+    }
+  }
   Log.i("Using remote branch: $remoteBranchName");
 
   var branches = await repo.branches().getOrThrow();
@@ -152,5 +169,3 @@ String folderNameFromCloneUrl(String cloneUrl) {
 // * Existing Repo (master default), No Local Changes
 // * Existing Repo (master default), Local changes in 'master' branch
 // * Existing Repo (main default), Local changes in 'master' branch
-
-// GIT_SSH_COMMAND='ssh -i private_key_file -o IdentitiesOnly=yes' git clone user@host:repo.git

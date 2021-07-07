@@ -11,6 +11,7 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings/app_settings.dart';
 import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/utils/git_desktop.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 bool useDartGit = false;
@@ -208,18 +209,29 @@ class GitNoteRepository {
   }
 
   Future<Result<void>> fetch() async {
-    try {
-      await _gitRepo.fetch(
-        remote: "origin",
-        publicKey: settings.sshPublicKey,
+    var remoteName = 'origin';
+
+    if (Platform.isAndroid || Platform.isIOS) {
+      try {
+        await _gitRepo.fetch(
+          remote: remoteName,
+          publicKey: settings.sshPublicKey,
+          privateKey: settings.sshPrivateKey,
+          password: settings.sshPassword,
+        );
+      } on gb.GitException catch (ex, stackTrace) {
+        Log.e("GitPull Failed", ex: ex, stacktrace: stackTrace);
+        return Result.fail(ex, stackTrace);
+      } on Exception catch (ex, stackTrace) {
+        return Result.fail(ex, stackTrace);
+      }
+    } else if (Platform.isMacOS) {
+      await gitPushViaExecutable(
         privateKey: settings.sshPrivateKey,
-        password: settings.sshPassword,
-      );
-    } on gb.GitException catch (ex, stackTrace) {
-      Log.e("GitPull Failed", ex: ex, stacktrace: stackTrace);
-      return Result.fail(ex, stackTrace);
-    } on Exception catch (ex, stackTrace) {
-      return Result.fail(ex, stackTrace);
+        privateKeyPassword: settings.sshPassword,
+        remoteName: remoteName,
+        repoPath: gitDirPath,
+      ).throwOnError();
     }
 
     return Result(null);
@@ -290,21 +302,31 @@ class GitNoteRepository {
       Log.e("Can Push", ex: ex, stacktrace: st);
     }
 
-    try {
-      await _gitRepo.push(
-        remote: "origin",
-        publicKey: settings.sshPublicKey,
-        privateKey: settings.sshPrivateKey,
-        password: settings.sshPassword,
-      );
-    } on gb.GitException catch (ex, stackTrace) {
-      if (ex.cause == 'cannot push non-fastforwardable reference') {
-        await fetch();
-        await merge();
-        return push();
+    var remoteName = 'origin';
+    if (Platform.isAndroid || Platform.isIOS) {
+      try {
+        await _gitRepo.push(
+          remote: remoteName,
+          publicKey: settings.sshPublicKey,
+          privateKey: settings.sshPrivateKey,
+          password: settings.sshPassword,
+        );
+      } on gb.GitException catch (ex, stackTrace) {
+        if (ex.cause == 'cannot push non-fastforwardable reference') {
+          await fetch();
+          await merge();
+          return push();
+        }
+        Log.e("GitPush Failed", ex: ex, stacktrace: stackTrace);
+        rethrow;
       }
-      Log.e("GitPush Failed", ex: ex, stacktrace: stackTrace);
-      rethrow;
+    } else if (Platform.isMacOS) {
+      await gitPushViaExecutable(
+        privateKey: settings.sshPrivateKey,
+        privateKeyPassword: settings.sshPassword,
+        remoteName: remoteName,
+        repoPath: gitDirPath,
+      ).throwOnError();
     }
   }
 
