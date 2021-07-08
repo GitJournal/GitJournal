@@ -258,22 +258,13 @@ class GitNoteRepository {
       Log.e("Failed to get remote refs", ex: r.error, stacktrace: r.stackTrace);
       return fail(r);
     }
-    var remoteBranchRef = r.getOrThrow();
 
     if (useDartGit || AppSettings.instance.experimentalGitMerge) {
-      var hash = remoteBranchRef.hash!;
-      var commit = await repo.objStorage.read(hash).getOrThrow();
-      await repo
-          .merge(
-            theirCommit: commit as GitCommit,
-            author: GitAuthor(
-              email: settings.gitAuthorEmail,
-              name: settings.gitAuthor,
-            ),
-            message: "Merging ...",
-          )
-          .throwOnError();
-      return Result(null);
+      var author = GitAuthor(
+        email: settings.gitAuthorEmail,
+        name: settings.gitAuthor,
+      );
+      return repo.mergeCurrentTrackingBranch(author: author);
     }
 
     try {

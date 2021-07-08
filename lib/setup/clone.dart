@@ -91,11 +91,17 @@ Future<Result<void>> cloneRemote({
       var remoteBranchR = await repo.remoteBranch(remoteName, remoteBranchName);
       if (remoteBranchR.isSuccess) {
         Log.i("Merging '$remoteName/$remoteBranchName'");
-        await _gitRepo.merge(
-          branch: '$remoteName/$remoteBranchName',
-          authorName: authorName,
-          authorEmail: authorEmail,
-        );
+        if (Platform.isAndroid || Platform.isIOS) {
+          await _gitRepo.merge(
+            branch: '$remoteName/$remoteBranchName',
+            authorName: authorName,
+            authorEmail: authorEmail,
+          );
+        } else {
+          var repo = await GitRepository.load(repoPath).getOrThrow();
+          var author = GitAuthor(name: authorName, email: authorEmail);
+          repo.mergeCurrentTrackingBranch(author: author).throwOnError();
+        }
       }
     } else {
       Log.i("Completing - localBranch diff remote: $branch $remoteBranchName");
@@ -106,11 +112,17 @@ Future<Result<void>> cloneRemote({
       await repo.setUpstreamTo(remote, remoteBranchName).getOrThrow();
 
       Log.i("Merging '$remoteName/$remoteBranchName'");
-      await _gitRepo.merge(
-        branch: '$remoteName/$remoteBranchName',
-        authorName: authorName,
-        authorEmail: authorEmail,
-      );
+      if (Platform.isAndroid || Platform.isIOS) {
+        await _gitRepo.merge(
+          branch: '$remoteName/$remoteBranchName',
+          authorName: authorName,
+          authorEmail: authorEmail,
+        );
+      } else {
+        var repo = await GitRepository.load(repoPath).getOrThrow();
+        var author = GitAuthor(name: authorName, email: authorEmail);
+        repo.mergeCurrentTrackingBranch(author: author).throwOnError();
+      }
     }
   }
 
