@@ -483,10 +483,10 @@ class Settings extends ChangeNotifier {
     }
   }
 
-  Map<String, String> toMap() {
+  Map<String, String> toLoggableMap() {
     return <String, String>{
-      "gitAuthor": gitAuthor,
-      "gitAuthorEmail": gitAuthorEmail,
+      "gitAuthor": gitAuthor.isNotEmpty.toString(),
+      "gitAuthorEmail": gitAuthorEmail.isNotEmpty.toString(),
       "noteFileNameFormat": noteFileNameFormat.toInternalString(),
       "journalNoteFileNameFormat": journalNoteFileNameFormat.toInternalString(),
       "yamlModifiedKey": yamlModifiedKey,
@@ -494,7 +494,8 @@ class Settings extends ChangeNotifier {
       "yamlTagsKey": yamlTagsKey,
       "customMetaData": customMetaData,
       "yamlHeaderEnabled": yamlHeaderEnabled.toString(),
-      "defaultNewNoteFolderSpec": defaultNewNoteFolderSpec,
+      "defaultNewNoteFolderSpec":
+          defaultNewNoteFolderSpec.isNotEmpty.toString(),
       "journalEditordefaultNewNoteFolderSpec":
           journalEditordefaultNewNoteFolderSpec,
       'journalEditorSingleNote': journalEditorSingleNote.toString(),
@@ -546,14 +547,6 @@ class Settings extends ChangeNotifier {
       'sshPublicKey': sshPublicKey.isNotEmpty.toString(),
       'sshPrivateKey': sshPrivateKey.isNotEmpty.toString(),
     };
-  }
-
-  Map<String, String> toLoggableMap() {
-    var m = toMap();
-    m.remove("gitAuthor");
-    m.remove("gitAuthorEmail");
-    m.remove("defaultNewNoteFolderSpec");
-    return m;
   }
 
   Future<String> buildRepoPath(String internalDir) async {
