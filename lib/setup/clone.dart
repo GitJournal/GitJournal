@@ -50,6 +50,17 @@ Future<Result<void>> cloneRemote({
     if (r.isFailure) {
       return fail(r);
     }
+
+    var branchR = await gitDefaultBranchViaExecutable(
+      repoPath: repoPath,
+      privateKey: sshPrivateKey,
+      privateKeyPassword: sshPassword,
+      remoteName: remoteName,
+    );
+    if (r.isFailure) {
+      return fail(r);
+    }
+    remoteBranchName = branchR.getOrThrow();
   }
   Log.i("Using remote branch: $remoteBranchName");
 
