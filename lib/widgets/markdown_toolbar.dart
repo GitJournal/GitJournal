@@ -302,19 +302,14 @@ int prevWordPos(TextEditingValue textEditingValue) {
   return lastSpacePos + 1;
 }
 
+var indentStr = '\t';
+
 TextEditingValue addTab(TextEditingValue textEditingValue) {
   var cursorPos = textEditingValue.selection.baseOffset;
   var text = textEditingValue.text;
 
-  var newText = "";
-  if (cursorPos == text.length) {
-    newText = text + "\t";
-  } else {
-    newText = text.substring(0, cursorPos) + "\t" + text.substring(cursorPos);
-  }
-
   return TextEditingValue(
-    text: newText,
+    text: indentStr + text,
     selection: TextSelection.collapsed(offset: cursorPos + 1),
   );
 }
@@ -323,25 +318,14 @@ TextEditingValue addBackTab(TextEditingValue textEditingValue) {
   var cursorPos = textEditingValue.selection.baseOffset;
   var text = textEditingValue.text;
 
-  if (cursorPos <= 0) {
-    return textEditingValue;
+  var newText = text;
+  if (newText.startsWith(indentStr)) {
+    newText = newText.substring(indentStr.length);
+    cursorPos -= indentStr.length;
   }
 
-  var prevChar = text[cursorPos - 1];
-  if (prevChar == '\t') {
-    var newText = "";
-    if (cursorPos - 1 > 1) {
-      newText += text.substring(0, cursorPos - 1);
-    }
-    if (cursorPos != text.length) {
-      newText += text.substring(cursorPos);
-    }
-
-    return TextEditingValue(
-      text: newText,
-      selection: TextSelection.collapsed(offset: cursorPos - 1),
-    );
-  }
-
-  return textEditingValue;
+  return TextEditingValue(
+    text: newText,
+    selection: TextSelection.collapsed(offset: cursorPos),
+  );
 }

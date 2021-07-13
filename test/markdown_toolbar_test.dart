@@ -321,15 +321,22 @@ void main() {
     _testTab(
       before: 'Hello',
       beforeOffset: 1,
-      after: 'H\tello',
+      after: '\tHello',
       afterOffset: 2,
     );
 
     _testTab(
       before: 'Hi',
       beforeOffset: 2,
-      after: 'Hi\t',
+      after: '\tHi',
       afterOffset: 3,
+    );
+
+    _testTab(
+      before: '- Hi',
+      beforeOffset: 4,
+      after: '\t- Hi',
+      afterOffset: 5,
     );
 
     _testBackTab(
@@ -337,6 +344,13 @@ void main() {
       beforeOffset: 1,
       after: 'Hello',
       afterOffset: 0,
+    );
+
+    _testBackTab(
+      before: '\tHello',
+      beforeOffset: 4,
+      after: 'Hello',
+      afterOffset: 3,
     );
 
     _testBackTab(
