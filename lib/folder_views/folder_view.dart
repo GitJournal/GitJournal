@@ -127,19 +127,23 @@ class _FolderViewState extends State<FolderView> {
       onPressed: _resetSelection,
     );
 
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          title: Text(title),
-          leading: inSelectionMode ? backButton : GJAppBarMenuButton(),
-          actions: inSelectionMode
-              ? _buildInSelectionNoteActions()
-              : _buildNoteActions(),
-          floating: true,
-          forceElevated: true,
-        ),
-        folderView,
-      ],
+    return NestedScrollView(
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return [
+          SliverAppBar(
+            title: Text(title),
+            leading: inSelectionMode ? backButton : GJAppBarMenuButton(),
+            actions: inSelectionMode
+                ? _buildInSelectionNoteActions()
+                : _buildNoteActions(),
+            forceElevated: true,
+          ),
+        ];
+      },
+      floatHeaderSlivers: true,
+      body: CustomScrollView(
+        slivers: [folderView],
+      ),
     );
   }
 
