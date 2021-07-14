@@ -99,32 +99,6 @@ class GitJournalRepo with ChangeNotifier {
 
     var repo = await GitRepository.load(repoPath).getOrThrow();
     var remoteConfigured = repo.config.remotes.isNotEmpty;
-    /*
-    if (remoteConfigured) {
-      // Code path for 'branch is null' exception
-      var branchR = await repo.currentBranch();
-      var headR = await repo.head();
-
-      BranchConfig? branchConfig;
-      if (branch != null) {
-        branchConfig = repo.config.branch(branch);
-      }
-
-      if (branchR.isFailure || headR.isFailure || branchConfig == null) {
-        var remoteConfig = repo.config.remotes[0];
-        await cloneRemote(
-          repoPath: repoPath,
-          remoteName: remoteConfig.name,
-          cloneUrl: remoteConfig.url,
-          authorName: settings.gitAuthor,
-          authorEmail: settings.gitAuthorEmail,
-          sshPublicKey: settings.sshPublicKey,
-          sshPrivateKey: settings.sshPrivateKey,
-          sshPassword: settings.sshPassword,
-        );
-      }
-    }
-    */
 
     await Directory(cacheDir).create(recursive: true);
 
