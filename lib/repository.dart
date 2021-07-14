@@ -17,10 +17,8 @@ import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/core/git_repo.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_cache.dart';
-import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/features.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_migrations.dart';
 import 'package:gitjournal/utils/logger.dart';
@@ -389,24 +387,6 @@ class GitJournalRepo with ChangeNotifier {
       Log.d("Got updateNote lock");
 
       _gitRepo.updateNote(note).then((Result<void> _) {
-        _syncNotes();
-        numChanges += 1;
-        notifyListeners();
-      });
-    });
-  }
-
-  void saveFolderConfig(NotesFolderConfig config) async {
-    if (!Features.perFolderConfig) {
-      return;
-    }
-    logEvent(Event.FolderConfigUpdated);
-
-    return _opLock.synchronized(() async {
-      Log.d("Got saveFolderConfig lock");
-
-      await config.saveToFS();
-      _gitRepo.addFolderConfig(config).then((Result<void> _) {
         _syncNotes();
         numChanges += 1;
         notifyListeners();

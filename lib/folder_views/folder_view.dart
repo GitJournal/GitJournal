@@ -257,9 +257,6 @@ class _FolderViewState extends State<FolderView> {
       var settings = Provider.of<Settings>(context, listen: false);
       config.saveToSettings(settings);
 
-      var container = context.read<GitJournalRepo>();
-      container.saveFolderConfig(sortedNotesFolder.config);
-
       setState(() {
         sortedNotesFolder.changeSortingMode(newSortingMode);
       });
@@ -284,9 +281,6 @@ class _FolderViewState extends State<FolderView> {
 
           var settings = Provider.of<Settings>(context, listen: false);
           config.saveToSettings(settings);
-
-          var container = context.read<GitJournalRepo>();
-          container.saveFolderConfig(sortedNotesFolder.config);
         };
 
         var summaryChanged = (bool newVal) {
@@ -300,9 +294,6 @@ class _FolderViewState extends State<FolderView> {
 
           var settings = Provider.of<Settings>(context, listen: false);
           config.saveToSettings(settings);
-
-          var container = context.read<GitJournalRepo>();
-          container.saveFolderConfig(sortedNotesFolder.config);
         };
 
         return StatefulBuilder(
@@ -432,9 +423,6 @@ class _FolderViewState extends State<FolderView> {
 
       var settings = Provider.of<Settings>(context, listen: false);
       config.saveToSettings(settings);
-
-      var container = context.read<GitJournalRepo>();
-      container.saveFolderConfig(widget.notesFolder.config);
     }
   }
 

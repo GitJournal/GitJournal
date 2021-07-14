@@ -1,10 +1,5 @@
-import 'dart:io';
-
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:path/path.dart' as p;
-import 'package:yaml/yaml.dart';
-import 'package:yaml_serializer/yaml_serializer.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
@@ -12,7 +7,6 @@ import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/settings/settings.dart';
-import 'package:gitjournal/utils/logger.dart';
 
 @immutable
 class NotesFolderConfig extends Equatable {
@@ -177,119 +171,5 @@ class NotesFolderConfig extends Equatable {
       inlineTagPrefixes: inlineTagPrefixes ?? this.inlineTagPrefixes,
       imageLocationSpec: imageLocationSpec ?? this.imageLocationSpec,
     );
-  }
-
-  static Future<NotesFolderConfig?> fromFS(NotesFolderFS folder) async {
-    var file = File(p.join(folder.folderPath, FILENAME));
-    if (!file.existsSync()) {
-      return null;
-    }
-
-    var map = <String, dynamic>{};
-    var contents = await file.readAsString();
-    try {
-      var yamlMap = loadYaml(contents);
-      yamlMap.forEach((key, value) {
-        map[key] = value;
-      });
-    } catch (err) {
-      Log.d('NotesFolderConfig::decode("$contents") -> ${err.toString()}');
-    }
-
-    var sortingField =
-        SortingField.fromInternalString(map["sortingField"]!.toString());
-    var sortingOrder =
-        SortingOrder.fromInternalString(map["sortingOrder"]!.toString());
-    var sortingMode = SortingMode(sortingField, sortingOrder);
-
-    var defaultEditor =
-        SettingsEditorType.fromInternalString(map["defaultEditor"]?.toString());
-    var defaultView = SettingsFolderViewType.fromInternalString(
-        map["defaultView"]?.toString());
-
-    var showNoteSummary = map["showNoteSummary"].toString() != "false";
-
-    var folderViewHeaderType = map["folderViewHeaderType"]?.toString();
-    late StandardViewHeader viewHeader;
-    switch (folderViewHeaderType) {
-      case "TitleGenerated":
-        viewHeader = StandardViewHeader.TitleGenerated;
-        break;
-      case "FileName":
-        viewHeader = StandardViewHeader.FileName;
-        break;
-      case "TitleOrFileName":
-      default:
-        viewHeader = StandardViewHeader.TitleOrFileName;
-        break;
-    }
-
-    var fileNameFormat = map['noteFileNameFormat']?.toString();
-    var journalFileNameFormat = map['journalFileNameFormat'].toString();
-    var yamlHeaderEnabled = map["yamlHeaderEnabled"]?.toString() != "false";
-
-    var yamlCreatedKey = map['yamlCreatedKey']!.toString();
-    var yamlModifiedKey = map['yamlModifiedKey']!.toString();
-    var yamlTagsKey = map['yamlTagsKey']!.toString();
-    var titleSettings = map['titleSettings']?.toString();
-
-    // FIXME: What about inlineTagPrefixes?
-
-    return NotesFolderConfig(
-      defaultEditor: defaultEditor.toEditorType(),
-      defaultView: defaultView.toFolderViewType(),
-      sortingMode: sortingMode,
-      showNoteSummary: showNoteSummary,
-      viewHeader: viewHeader,
-      fileNameFormat: NoteFileNameFormat.fromInternalString(fileNameFormat),
-      journalFileNameFormat:
-          NoteFileNameFormat.fromInternalString(journalFileNameFormat),
-      folder: folder,
-      yamlHeaderEnabled: yamlHeaderEnabled,
-      yamlCreatedKey: yamlCreatedKey,
-      yamlModifiedKey: yamlModifiedKey,
-      yamlTagsKey: yamlTagsKey,
-      titleSettings: SettingsTitle.fromInternalString(titleSettings),
-      inlineTagPrefixes: {},
-      imageLocationSpec: "",
-    );
-  }
-
-  Future<void> saveToFS() async {
-    String? ht;
-    switch (viewHeader) {
-      case StandardViewHeader.FileName:
-        ht = "FileName";
-        break;
-      case StandardViewHeader.TitleGenerated:
-        ht = "TitleGenerated";
-        break;
-      case StandardViewHeader.TitleOrFileName:
-        ht = "TitleOrFileName";
-        break;
-    }
-
-    var map = <String, dynamic>{
-      "sortingField": sortingMode.field.toInternalString(),
-      "sortingOrder": sortingMode.order.toInternalString(),
-      "defaultEditor":
-          SettingsEditorType.fromEditorType(defaultEditor).toInternalString(),
-      "defaultView": SettingsFolderViewType.fromFolderViewType(defaultView)
-          .toInternalString(),
-      "showNoteSummary": showNoteSummary,
-      "folderViewHeaderType": ht,
-      "noteFileNameFormat": fileNameFormat.toInternalString(),
-      'journalFileNameFormat': journalFileNameFormat.toInternalString(),
-      'yamlHeaderEnabled': yamlHeaderEnabled,
-      'yamlModifiedKey': yamlModifiedKey,
-      'yamlCreatedKey': yamlCreatedKey,
-      'yamlTagsKey': yamlTagsKey,
-      'titleSettings': titleSettings.toInternalString(),
-    };
-
-    var yaml = toYAML(map);
-
-    var file = File(p.join(folder!.folderPath, FILENAME));
-    await file.writeAsString(yaml);
   }
 }
