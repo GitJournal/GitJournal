@@ -64,7 +64,7 @@ class GitHostSetupAutoConfigurePageState
             _message = tr('setup.autoconfigure.readUser');
           });
 
-          var userInfo = await gitHost!.getUserInfo().getOrThrow();
+          userInfo = await gitHost!.getUserInfo().getOrThrow();
           var settings = Provider.of<Settings>(context, listen: false);
           if (userInfo.name.isNotEmpty) {
             settings.gitAuthor = userInfo.name;
@@ -77,6 +77,7 @@ class GitHostSetupAutoConfigurePageState
           _handleGitHostException(e, stacktrace);
           return;
         }
+        Log.i('Got User Info: $userInfo');
         widget.onDone(gitHost, userInfo);
       });
 

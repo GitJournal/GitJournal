@@ -28,6 +28,10 @@ class UserInfo {
     required this.email,
     required this.username,
   });
+
+  @override
+  String toString() =>
+      'UserInfo{name: "$name", email: "$email", username: "$username"}';
 }
 
 class GitHostRepo {
