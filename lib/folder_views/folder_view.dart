@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:git_bindings/git_bindings.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/app.dart';
@@ -140,8 +141,17 @@ class _FolderViewState extends State<FolderView> {
         ];
       },
       floatHeaderSlivers: true,
-      body: CustomScrollView(
-        slivers: [folderView],
+      body: Scrollbar(
+        child: Builder(builder: (context) {
+          var view = CustomScrollView(slivers: [folderView]);
+          if (settings.remoteSyncFrequency == RemoteSyncFrequency.Manual) {
+            return view;
+          }
+          return RefreshIndicator(
+            onRefresh: () => _syncRepo(context),
+            child: view,
+          );
+        }),
       ),
     );
   }
@@ -159,22 +169,6 @@ class _FolderViewState extends State<FolderView> {
 
     return Scaffold(
       body: Builder(builder: _buildBody),
-      /*
-      Center(
-        child: Builder(
-          builder: (context) {
-            var child = Scrollbar(child: folderView);
-            if (settings.remoteSyncFrequency == RemoteSyncFrequency.Manual) {
-              return child;
-            }
-            return RefreshIndicator(
-              child: child,
-              onRefresh: () async => _syncRepo(context),
-            );
-          },
-        ),
-      ),
-      */
       extendBody: true,
       drawer: AppDrawer(),
       floatingActionButton: createButton,
@@ -184,9 +178,6 @@ class _FolderViewState extends State<FolderView> {
           showButtomMenuBar ? NewNoteNavBar(onPressed: _newPost) : null,
     );
   }
-
-  /*
-  BUG: https://github.com/flutter/flutter/issues/54272
 
   Future<void> _syncRepo(BuildContext context) async {
     try {
@@ -201,7 +192,6 @@ class _FolderViewState extends State<FolderView> {
       showSnackbar(context, e.toString());
     }
   }
-  */
 
   void _newPost(EditorType editorType) async {
     var folder = widget.notesFolder;
