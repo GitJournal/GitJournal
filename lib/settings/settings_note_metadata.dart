@@ -113,6 +113,7 @@ class _NoteMetadataSettingsScreenState
             "mod",
             "lastmodified",
             "lastmod",
+            "updated",
           ],
           currentOption: settings.yamlModifiedKey,
           onChange: (String newVal) {

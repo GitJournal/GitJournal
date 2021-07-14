@@ -128,6 +128,7 @@ class NoteSerializer implements NoteSerializerInterface {
       "lastMod",
       "lastmodified",
       "lastmod",
+      "updated",
     ];
     for (var possibleKey in modifiedKeyOptions) {
       var val = data.props[possibleKey];
