@@ -81,20 +81,12 @@ class _FolderViewState extends State<FolderView> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    var createButton = FloatingActionButton(
-      key: const ValueKey("FAB"),
-      onPressed: () => _newPost(widget.notesFolder.config.defaultEditor),
-      child: const Icon(Icons.add),
-    );
-
+  Widget _buildBody(BuildContext context) {
     var title = widget.notesFolder.publicName;
     if (inSelectionMode) {
       title = NumberFormat.compact().format(1);
     }
 
-    // vHanda: Fixme the openNoteEditor will fail! Wrong context!
     var folderView = buildFolderView(
       viewType: _viewType,
       folder: sortedNotesFolder,
@@ -135,21 +127,35 @@ class _FolderViewState extends State<FolderView> {
       onPressed: _resetSelection,
     );
 
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          title: Text(title),
+          leading: inSelectionMode ? backButton : GJAppBarMenuButton(),
+          actions: inSelectionMode
+              ? _buildInSelectionNoteActions()
+              : _buildNoteActions(),
+          floating: true,
+          forceElevated: true,
+        ),
+        folderView,
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var createButton = FloatingActionButton(
+      key: const ValueKey("FAB"),
+      onPressed: () => _newPost(widget.notesFolder.config.defaultEditor),
+      child: const Icon(Icons.add),
+    );
+
+    var settings = Provider.of<Settings>(context);
+    final showButtomMenuBar = settings.bottomMenuBar;
+
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            title: Text(title),
-            leading: inSelectionMode ? backButton : GJAppBarMenuButton(),
-            actions: inSelectionMode
-                ? _buildInSelectionNoteActions()
-                : _buildNoteActions(),
-            floating: true,
-            forceElevated: true,
-          ),
-          folderView,
-        ],
-      ),
+      body: Builder(builder: _buildBody),
       /*
       Center(
         child: Builder(
