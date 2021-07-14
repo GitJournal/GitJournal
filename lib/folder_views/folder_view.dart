@@ -182,7 +182,10 @@ class _FolderViewState extends State<FolderView> {
     );
   }
 
-  void _syncRepo(BuildContext context) async {
+  /*
+  BUG: https://github.com/flutter/flutter/issues/54272
+
+  Future<void> _syncRepo(BuildContext context) async {
     try {
       var container = context.read<GitJournalRepo>();
       await container.syncNotes();
@@ -195,6 +198,7 @@ class _FolderViewState extends State<FolderView> {
       showSnackbar(context, e.toString());
     }
   }
+  */
 
   void _newPost(EditorType editorType) async {
     var folder = widget.notesFolder;
