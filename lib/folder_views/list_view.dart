@@ -9,6 +9,7 @@ import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/icon_dismissable.dart';
+import 'empty_text_sliver.dart';
 
 typedef Widget NoteTileBuilder(BuildContext context, Note note);
 
@@ -97,25 +98,14 @@ class _FolderListViewState extends State<FolderListView> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.folder.notes.isEmpty) {
-      return Center(
-        child: Text(
-          widget.emptyText,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 28.0,
-            fontWeight: FontWeight.w300,
-            color: Colors.grey[350],
-          ),
-        ),
-      );
+    if (widget.folder.isEmpty) {
+      return EmptyTextSliver(emptyText: widget.emptyText);
     }
 
-    return AnimatedList(
+    return SliverAnimatedList(
       key: _listKey,
       itemBuilder: _buildItem,
       initialItemCount: widget.folder.notes.length,
-      padding: const EdgeInsets.fromLTRB(0, 0, 0, 48),
     );
   }
 

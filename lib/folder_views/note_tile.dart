@@ -81,6 +81,7 @@ class NoteTile extends StatelessWidget {
 
   static const _maxLines = 12;
 
+  // FIXME: vHanda: This doesn't need to be computed again and again!
   String _displayText() {
     var foundSearchTerm = searchTerm.isEmpty ? true : false;
     var buffer = <String>[];

@@ -94,40 +94,38 @@ class _FolderViewState extends State<FolderView> {
       title = NumberFormat.compact().format(1);
     }
 
-    Widget folderView = Builder(
-      builder: (BuildContext context) {
-        return buildFolderView(
-          viewType: _viewType,
-          folder: sortedNotesFolder,
-          emptyText: tr('screens.folder_view.empty'),
-          header: _headerType,
-          showSummary: _showSummary,
-          noteTapped: (Note note) {
-            if (!inSelectionMode) {
-              openNoteEditor(context, note, widget.notesFolder);
-            } else {
-              _resetSelection();
-            }
-          },
-          noteLongPressed: (Note note) {
-            setState(() {
-              inSelectionMode = true;
-              selectedNote = note;
-            });
-          },
-          isNoteSelected: (n) => n == selectedNote,
-          searchTerm: "",
-        );
+    // vHanda: Fixme the openNoteEditor will fail! Wrong context!
+    var folderView = buildFolderView(
+      viewType: _viewType,
+      folder: sortedNotesFolder,
+      emptyText: tr('screens.folder_view.empty'),
+      header: _headerType,
+      showSummary: _showSummary,
+      noteTapped: (Note note) {
+        if (!inSelectionMode) {
+          openNoteEditor(context, note, widget.notesFolder);
+        } else {
+          _resetSelection();
+        }
       },
+      noteLongPressed: (Note note) {
+        setState(() {
+          inSelectionMode = true;
+          selectedNote = note;
+        });
+      },
+      isNoteSelected: (n) => n == selectedNote,
+      searchTerm: "",
     );
+    // assert(folderView is SliverWithKeepAliveWidget);
 
     var settings = Provider.of<Settings>(context);
     final showButtomMenuBar = settings.bottomMenuBar;
 
     // So the FAB doesn't hide parts of the last entry
     if (!showButtomMenuBar) {
-      folderView = Padding(
-        child: folderView,
+      folderView = SliverPadding(
+        sliver: folderView,
         padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 48.0),
       );
     }
@@ -138,14 +136,22 @@ class _FolderViewState extends State<FolderView> {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        leading: inSelectionMode ? backButton : GJAppBarMenuButton(),
-        actions: inSelectionMode
-            ? _buildInSelectionNoteActions()
-            : _buildNoteActions(),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            title: Text(title),
+            leading: inSelectionMode ? backButton : GJAppBarMenuButton(),
+            actions: inSelectionMode
+                ? _buildInSelectionNoteActions()
+                : _buildNoteActions(),
+            floating: true,
+            forceElevated: true,
+          ),
+          folderView,
+        ],
       ),
-      body: Center(
+      /*
+      Center(
         child: Builder(
           builder: (context) {
             var child = Scrollbar(child: folderView);
@@ -159,6 +165,7 @@ class _FolderViewState extends State<FolderView> {
           },
         ),
       ),
+      */
       extendBody: true,
       drawer: AppDrawer(),
       floatingActionButton: createButton,

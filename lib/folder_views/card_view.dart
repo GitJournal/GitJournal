@@ -4,6 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/folder_views/empty_text_sliver.dart';
 import 'package:gitjournal/folder_views/note_tile.dart';
 
 class CardView extends StatelessWidget {
@@ -30,17 +31,7 @@ class CardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (folder.isEmpty) {
-      return Center(
-        child: Text(
-          emptyText,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 28.0,
-            fontWeight: FontWeight.w300,
-            color: Colors.grey[350],
-          ),
-        ),
-      );
+      return EmptyTextSliver(emptyText: emptyText);
     }
 
     StaggeredTile stagTile;
@@ -50,7 +41,7 @@ class CardView extends StatelessWidget {
       stagTile = const StaggeredTile.fit(1);
     }
 
-    var gridView = StaggeredGridView.extentBuilder(
+    var gridView = SliverStaggeredGrid.extentBuilder(
       itemCount: folder.notes.length,
       itemBuilder: (BuildContext context, int index) {
         var note = folder.notes[index];
@@ -66,9 +57,11 @@ class CardView extends StatelessWidget {
       staggeredTileBuilder: (int i) => stagTile,
       mainAxisSpacing: 8.0,
       crossAxisSpacing: 8.0,
-      padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 16.0),
     );
 
-    return gridView;
+    return SliverPadding(
+      sliver: gridView,
+      padding: const EdgeInsets.fromLTRB(8.0, 12.0, 8.0, 12.0 + 48.0),
+    );
   }
 }
