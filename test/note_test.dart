@@ -226,5 +226,43 @@ Gee
       expect(txtNote.title.isEmpty, true);
       expect(txtNote.body, content);
     });
+
+    test('Dendron FrontMatter', () async {
+      var content = """---
+bar: Foo
+updated: 1626257689
+created: 1626257689
+---
+
+Hello
+""";
+
+      var notePath = p.join(tempDir.path, "note.md");
+      await File(notePath).writeAsString(content);
+
+      var parentFolder = NotesFolderFS(null, tempDir.path, Settings(''));
+      var note = Note(parentFolder, notePath);
+      await note.load();
+
+      expect(note.modified, DateTime.parse('2021-07-14T10:14:49Z'));
+      expect(note.created, DateTime.parse('2021-07-14T10:14:49Z'));
+
+      note.modified = DateTime.parse('2020-07-14T10:14:49Z');
+      note.created = DateTime.parse('2020-06-14T10:14:49Z');
+
+      var expectedContent = """---
+bar: Foo
+updated: 1626257689
+created: 1626257689
+---
+
+Hello
+""";
+
+      await note.save();
+
+      var actualContent = File(notePath).readAsStringSync();
+      expect(actualContent, equals(expectedContent));
+    }, skip: true);
   });
 }
