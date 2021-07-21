@@ -66,6 +66,14 @@ class NoteSearchDelegate extends SearchDelegate<Note?> {
   }
 
   Widget buildView(BuildContext context, String query) {
+    var fv = _buildFolderView(context, query);
+
+    return CustomScrollView(
+      slivers: [fv],
+    );
+  }
+
+  Widget _buildFolderView(BuildContext context, String query) {
     // TODO: This should be made far more efficient
     var q = query.toLowerCase();
     var filteredNotes = notes.where((note) {
