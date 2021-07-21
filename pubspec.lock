@@ -559,7 +559,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "693a9266b845bed900f2c076ce2a4096d47d0039"
+      resolved-ref: "24612004500f388dc94b4670ae6fd39c14311f04"
       url: "https://github.com/GitJournal/git_bindings.git"
     source: git
     version: "0.0.18"

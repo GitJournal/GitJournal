@@ -1,9 +1,10 @@
 import 'dart:async';
-import 'dart:io' show Platform;
+import 'dart:io' show Platform, Directory;
 
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/utils/result.dart';
 import 'package:git_bindings/git_bindings.dart' as gb;
+import 'package:path/path.dart' as p;
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
@@ -218,6 +219,7 @@ class GitNoteRepository {
           publicKey: settings.sshPublicKey,
           privateKey: settings.sshPrivateKey,
           password: settings.sshPassword,
+          statusFile: p.join(Directory.systemTemp.path, 'gj'),
         );
       } on gb.GitException catch (ex, stackTrace) {
         Log.e("GitPull Failed", ex: ex, stacktrace: stackTrace);
@@ -301,6 +303,7 @@ class GitNoteRepository {
           publicKey: settings.sshPublicKey,
           privateKey: settings.sshPrivateKey,
           password: settings.sshPassword,
+          statusFile: p.join(Directory.systemTemp.path, 'gj'),
         );
       } on gb.GitException catch (ex, stackTrace) {
         if (ex.cause == 'cannot push non-fastforwardable reference') {

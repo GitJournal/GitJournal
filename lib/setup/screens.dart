@@ -65,6 +65,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   String _autoConfigureErrorMessage = "";
 
   var _gitCloneUrl = "";
+  var _cloneProgress = GitTransferProgress();
   String? gitCloneErrorMessage = "";
   var publicKey = "";
 
@@ -287,9 +288,10 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
     if (pos == 4) {
       if (_pageChoice[0] == PageChoice0.CustomProvider) {
-        return GitHostSetupLoadingErrorPage(
+        return GitHostCloningPage(
           loadingMessage: tr('setup.cloning'),
           errorMessage: gitCloneErrorMessage,
+          cloneProgress: _cloneProgress,
         );
       }
 
@@ -559,6 +561,11 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         sshPublicKey: settings.sshPublicKey,
         authorEmail: settings.gitAuthorEmail,
         authorName: settings.gitAuthor,
+        progressUpdate: (GitTransferProgress p) {
+          setState(() {
+            _cloneProgress = p;
+          });
+        },
       );
     } on Exception catch (e, stacktrace) {
       Log.e("Failed to clone", ex: e, stacktrace: stacktrace);

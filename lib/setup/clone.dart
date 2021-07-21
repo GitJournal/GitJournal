@@ -1,12 +1,44 @@
-import 'dart:io' show Platform;
+import 'dart:async';
+import 'dart:io' show Platform, Directory, File;
 
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/exceptions.dart';
+import 'package:function_types/function_types.dart';
 import 'package:git_bindings/git_bindings.dart' as git_bindings;
 import 'package:path/path.dart' as p;
 
 import 'package:gitjournal/utils/git_desktop.dart';
 import 'package:gitjournal/utils/logger.dart';
+
+class GitTransferProgress {
+  int totalObjects = 0;
+  int indexedObjects = 0;
+  int receivedObjects = 0;
+  int localObjects = 0;
+  int totalDeltas = 0;
+  int indexedDeltas = 0;
+  int receivedBytes = 0;
+
+  static Future<GitTransferProgress?> load(String statusFile) async {
+    if (!File(statusFile).existsSync()) {
+      return null;
+    }
+    var str = await File(statusFile).readAsString();
+    var parts = str.split(' ');
+    print('Str #$str#');
+    print('Parts $parts');
+
+    var tp = GitTransferProgress();
+    tp.totalObjects = int.parse(parts[0]);
+    tp.indexedObjects = int.parse(parts[1]);
+    tp.receivedObjects = int.parse(parts[2]);
+    tp.localObjects = int.parse(parts[3]);
+    tp.totalDeltas = int.parse(parts[4]);
+    tp.indexedDeltas = int.parse(parts[5]);
+    tp.receivedBytes = int.parse(parts[6]);
+    return tp;
+  }
+}
 
 Future<Result<void>> cloneRemote({
   required String repoPath,
@@ -17,6 +49,7 @@ Future<Result<void>> cloneRemote({
   required String sshPassword,
   required String authorName,
   required String authorEmail,
+  required Func1<GitTransferProgress, void> progressUpdate,
 }) async {
   var repo = await GitRepository.load(repoPath).getOrThrow();
   var remote = await repo.addOrUpdateRemote(remoteName, cloneUrl).getOrThrow();
@@ -25,12 +58,22 @@ Future<Result<void>> cloneRemote({
   var _gitRepo = git_bindings.GitRepo(folderPath: repoPath);
 
   if (Platform.isAndroid || Platform.isIOS) {
+    var statusFile = p.join(Directory.systemTemp.path, 'gj');
+    var duration = const Duration(milliseconds: 10);
+    var timer = Timer.periodic(duration, (_) async {
+      var progress = await GitTransferProgress.load(statusFile);
+      if (progress != null) {
+        progressUpdate(progress);
+      }
+    });
     await _gitRepo.fetch(
       remote: remoteName,
       publicKey: sshPublicKey,
       privateKey: sshPrivateKey,
       password: sshPassword,
+      statusFile: statusFile,
     );
+    timer.cancel();
 
     remoteBranchName = await _remoteDefaultBranch(
       repo: repo,

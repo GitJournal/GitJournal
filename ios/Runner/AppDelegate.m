@@ -217,6 +217,7 @@ bool handleError(FlutterResult result, int err) {
         NSString *publicKey = arguments[@"publicKey"];
         NSString *privateKey = arguments[@"privateKey"];
         NSString *password = arguments[@"password"];
+        NSString *statusFile = arguments[@"statusFile"];
 
         if (publicKey == nil || [publicKey length] == 0) {
             result([FlutterError errorWithCode:@"InvalidParams"
@@ -244,8 +245,13 @@ bool handleError(FlutterResult result, int err) {
                                        message:@"Invalid remote" details:nil]);
             return;
         }
+        if (statusFile == nil) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid statusFile" details:nil]);
+            return;
+        }
 
-        int err = gj_git_fetch([folderPath UTF8String], [remote UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String], true);
+        int err = gj_git_fetch([folderPath UTF8String], [remote UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String], true, [statusFile UTF8String]);
         if (!handleError(result, err)) {
             result(@YES);
             return;
@@ -290,6 +296,7 @@ bool handleError(FlutterResult result, int err) {
         NSString *publicKey = arguments[@"publicKey"];
         NSString *privateKey = arguments[@"privateKey"];
         NSString *password = arguments[@"password"];
+        NSString *statusFile = arguments[@"statusFile"];
 
         if (publicKey == nil || [publicKey length] == 0) {
             result([FlutterError errorWithCode:@"InvalidParams"
@@ -317,8 +324,13 @@ bool handleError(FlutterResult result, int err) {
                                        message:@"Invalid remote" details:nil]);
             return;
         }
+        if (statusFile == nil) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid statusFile" details:nil]);
+            return;
+        }
 
-        int err = gj_git_push([folderPath UTF8String], [remote UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String], true);
+        int err = gj_git_push([folderPath UTF8String], [remote UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String], true, [statusFile UTF8String]);
         if (!handleError(result, err)) {
             result(@YES);
             return;
