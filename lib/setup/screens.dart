@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:io' show Platform, Directory;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

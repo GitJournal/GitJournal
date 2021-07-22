@@ -14,8 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -127,8 +125,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
     if (existingImages.isNotEmpty) {
       for (var imagePath in existingImages) {
         try {
-          var file = File(imagePath);
-          note!.addImageSync(file);
+          note!.addImageSync(imagePath);
         } catch (e, st) {
           Log.e("New Note Existing Image", ex: e, stacktrace: st);
         }

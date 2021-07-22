@@ -513,7 +513,8 @@ class Note with NotesNotifier {
     }
   }
 
-  Future<void> addImageSync(File file) async {
+  Future<void> addImageSync(String filePath) async {
+    var file = File(filePath);
     var absImagePath = _buildImagePath(file);
     file.copySync(absImagePath);
 
