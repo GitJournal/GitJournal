@@ -1,0 +1,68 @@
+# appimage-builder recipe see https://appimage-builder.readthedocs.io for details
+version: 1
+script:
+  - rm -rf AppDir | true
+  - mkdir AppDir
+  - mkdir -p AppDir/usr/share/icons
+AppDir:
+  after_bundle:
+    - cp build/linux/x64/release/bundle/gitjournal AppDir
+    - cp -r build/linux/x64/release/bundle/lib/. AppDir/lib
+    - cp -r build/linux/x64/release/bundle/data AppDir
+    - cp assets/icon/icon.svg AppDir/usr/share/icons/gitjournal.svg
+  path: /home/vishesh/src/journal/AppDir
+  app_info:
+    id: io.gitjournal.gitjournal
+    name: GitJournal
+    icon: gitjournal
+    version: latest
+    exec: gitjournal
+    exec_args: $@
+  apt:
+    arch: [x86_64]
+    allow_unauthenticated: true
+    sources:
+    - sourceline: deb http://es.archive.ubuntu.com/ubuntu/ focal main restricted
+    - sourceline: deb http://es.archive.ubuntu.com/ubuntu/ focal-updates main restricted
+    - sourceline: deb http://es.archive.ubuntu.com/ubuntu/ focal universe
+    - sourceline: deb http://es.archive.ubuntu.com/ubuntu/ focal-updates universe
+    - sourceline: deb http://es.archive.ubuntu.com/ubuntu/ focal multiverse
+    - sourceline: deb http://es.archive.ubuntu.com/ubuntu/ focal-updates multiverse
+    - sourceline: deb http://es.archive.ubuntu.com/ubuntu/ focal-backports main restricted
+        universe multiverse
+    - sourceline: deb http://security.ubuntu.com/ubuntu focal-security main restricted
+    - sourceline: deb http://security.ubuntu.com/ubuntu focal-security universe
+    - sourceline: deb http://security.ubuntu.com/ubuntu focal-security multiverse
+    include: []
+  files:
+    include: []
+    exclude:
+    - usr/share/man
+    - usr/share/doc/*/README.*
+    - usr/share/doc/*/changelog.*
+    - usr/share/doc/*/NEWS.*
+    - usr/share/doc/*/TODO.*
+  test:
+    fedora-30:
+      image: appimagecrafters/tests-env:fedora-30
+      command: ./AppRun
+      use_host_x: true
+    debian-stable:
+      image: appimagecrafters/tests-env:debian-stable
+      command: ./AppRun
+      use_host_x: true
+    archlinux-latest:
+      image: appimagecrafters/tests-env:archlinux-latest
+      command: ./AppRun
+      use_host_x: true
+    centos-7:
+      image: appimagecrafters/tests-env:centos-7
+      command: ./AppRun
+      use_host_x: true
+    ubuntu-xenial:
+      image: appimagecrafters/tests-env:ubuntu-xenial
+      command: ./AppRun
+      use_host_x: true
+AppImage:
+  arch: x86_64
+  update-information: guess

@@ -62,3 +62,7 @@ debugSymbols
 .classpath
 .project
 .cproject
+
+# Linux Building
+/AppDir
+appimage-builder-cache/
