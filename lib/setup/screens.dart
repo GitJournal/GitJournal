@@ -20,6 +20,7 @@ import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/setup/autoconfigure.dart';
 import 'package:gitjournal/setup/button.dart';
 import 'package:gitjournal/setup/clone.dart';
+import 'package:gitjournal/setup/clone_auto_select.dart';
 import 'package:gitjournal/setup/clone_url.dart';
 import 'package:gitjournal/setup/loading_error.dart';
 import 'package:gitjournal/setup/repo_selector.dart';
@@ -566,7 +567,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
             _cloneProgress = p;
           });
         },
-      );
+      ).throwOnError();
     } on Exception catch (e, stacktrace) {
       Log.e("Failed to clone", ex: e, stacktrace: stacktrace);
       error = e.toString();

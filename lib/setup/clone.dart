@@ -1,13 +1,11 @@
 import 'dart:async';
-import 'dart:io' show Platform, Directory, File;
+import 'dart:io' show Directory, File;
 
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/exceptions.dart';
 import 'package:function_types/function_types.dart';
-import 'package:git_bindings/git_bindings.dart' as git_bindings;
 import 'package:path/path.dart' as p;
 
-import 'package:gitjournal/utils/git_desktop.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 class GitTransferProgress {
@@ -25,8 +23,6 @@ class GitTransferProgress {
     }
     var str = await File(statusFile).readAsString();
     var parts = str.split(' ');
-    print('Str #$str#');
-    print('Parts $parts');
 
     var tp = GitTransferProgress();
     tp.totalObjects = int.parse(parts[0]);
@@ -40,7 +36,32 @@ class GitTransferProgress {
   }
 }
 
-Future<Result<void>> cloneRemote({
+typedef GitFetchFunction = Future<Result<void>> Function(
+  String repoPath,
+  String remoteName,
+  String sshPublicKey,
+  String sshPrivateKey,
+  String sshPassword,
+  String statusFile,
+);
+
+typedef GitDefaultBranchFunction = Future<Result<String>> Function(
+  String repoPath,
+  String remoteName,
+  String sshPublicKey,
+  String sshPrivateKey,
+  String sshPassword,
+);
+
+typedef GitMergeFn = Future<Result<void>> Function(
+  String repoPath,
+  String remoteName,
+  String remoteBranchName,
+  String authorName,
+  String authorEmail,
+);
+
+Future<Result<void>> cloneRemotePluggable({
   required String repoPath,
   required String cloneUrl,
   required String remoteName,
@@ -50,61 +71,38 @@ Future<Result<void>> cloneRemote({
   required String authorName,
   required String authorEmail,
   required Func1<GitTransferProgress, void> progressUpdate,
+  required GitFetchFunction gitFetchFn,
+  required GitDefaultBranchFunction defaultBranchFn,
+  required GitMergeFn gitMergeFn,
 }) async {
+  // FIXME: Do not throw exceptions
   var repo = await GitRepository.load(repoPath).getOrThrow();
   var remote = await repo.addOrUpdateRemote(remoteName, cloneUrl).getOrThrow();
 
-  var remoteBranchName = "master";
-  var _gitRepo = git_bindings.GitRepo(folderPath: repoPath);
-
-  if (Platform.isAndroid || Platform.isIOS) {
-    var statusFile = p.join(Directory.systemTemp.path, 'gj');
-    var duration = const Duration(milliseconds: 10);
-    var timer = Timer.periodic(duration, (_) async {
-      var progress = await GitTransferProgress.load(statusFile);
-      if (progress != null) {
-        progressUpdate(progress);
-      }
-    });
-    await _gitRepo.fetch(
-      remote: remoteName,
-      publicKey: sshPublicKey,
-      privateKey: sshPrivateKey,
-      password: sshPassword,
-      statusFile: statusFile,
-    );
-    timer.cancel();
-
-    remoteBranchName = await _remoteDefaultBranch(
-      repo: repo,
-      libGit2Repo: _gitRepo,
-      remoteName: remoteName,
-      sshPublicKey: sshPublicKey,
-      sshPrivateKey: sshPrivateKey,
-      sshPassword: sshPassword,
-    );
-  } else if (Platform.isMacOS) {
-    var r = await gitFetchViaExecutable(
-      repoPath: repoPath,
-      privateKey: sshPrivateKey,
-      privateKeyPassword: sshPassword,
-      remoteName: remoteName,
-    );
-    if (r.isFailure) {
-      return fail(r);
+  var statusFile = p.join(Directory.systemTemp.path, 'gj');
+  var duration = const Duration(milliseconds: 50);
+  var timer = Timer.periodic(duration, (_) async {
+    var progress = await GitTransferProgress.load(statusFile);
+    if (progress != null) {
+      progressUpdate(progress);
     }
+  });
 
-    var branchR = await gitDefaultBranchViaExecutable(
-      repoPath: repoPath,
-      privateKey: sshPrivateKey,
-      privateKeyPassword: sshPassword,
-      remoteName: remoteName,
-    );
-    if (r.isFailure) {
-      return fail(r);
-    }
-    remoteBranchName = branchR.getOrThrow();
+  var fetchR = await gitFetchFn(repoPath, remoteName, sshPublicKey,
+      sshPrivateKey, sshPassword, statusFile);
+  timer.cancel();
+  if (fetchR.isFailure) {
+    // FIXME: Give a better error?
+    return fail(fetchR);
   }
+
+  var branchNameR = await defaultBranchFn(
+      repoPath, remoteName, sshPublicKey, sshPrivateKey, sshPassword);
+  if (branchNameR.isFailure) {
+    return fail(branchNameR);
+  }
+  var remoteBranchName = branchNameR.getOrThrow();
+
   Log.i("Using remote branch: $remoteBranchName");
 
   var branches = await repo.branches().getOrThrow();
@@ -145,16 +143,10 @@ Future<Result<void>> cloneRemote({
       var remoteBranchR = await repo.remoteBranch(remoteName, remoteBranchName);
       if (remoteBranchR.isSuccess) {
         Log.i("Merging '$remoteName/$remoteBranchName'");
-        if (Platform.isAndroid || Platform.isIOS) {
-          await _gitRepo.merge(
-            branch: '$remoteName/$remoteBranchName',
-            authorName: authorName,
-            authorEmail: authorEmail,
-          );
-        } else {
-          var repo = await GitRepository.load(repoPath).getOrThrow();
-          var author = GitAuthor(name: authorName, email: authorEmail);
-          repo.mergeCurrentTrackingBranch(author: author).throwOnError();
+        var r = await gitMergeFn(
+            repoPath, remoteName, remoteBranchName, authorName, authorEmail);
+        if (r.isFailure) {
+          return fail(r);
         }
       }
     } else {
@@ -166,16 +158,10 @@ Future<Result<void>> cloneRemote({
       await repo.setUpstreamTo(remote, remoteBranchName).getOrThrow();
 
       Log.i("Merging '$remoteName/$remoteBranchName'");
-      if (Platform.isAndroid || Platform.isIOS) {
-        await _gitRepo.merge(
-          branch: '$remoteName/$remoteBranchName',
-          authorName: authorName,
-          authorEmail: authorEmail,
-        );
-      } else {
-        var repo = await GitRepository.load(repoPath).getOrThrow();
-        var author = GitAuthor(name: authorName, email: authorEmail);
-        repo.mergeCurrentTrackingBranch(author: author).throwOnError();
+      var r = await gitMergeFn(
+          repoPath, remoteName, remoteBranchName, authorName, authorEmail);
+      if (r.isFailure) {
+        return fail(r);
       }
     }
   }
@@ -189,36 +175,6 @@ Future<Result<void>> cloneRemote({
   await repo.checkout(".");
 
   return Result(null);
-}
-
-Future<String> _remoteDefaultBranch({
-  required GitRepository repo,
-  required git_bindings.GitRepo libGit2Repo,
-  required String remoteName,
-  required String sshPublicKey,
-  required String sshPrivateKey,
-  required String sshPassword,
-}) async {
-  try {
-    var branch = await libGit2Repo.defaultBranch(
-      remote: remoteName,
-      publicKey: sshPublicKey,
-      privateKey: sshPrivateKey,
-      password: sshPassword,
-    );
-    Log.i("Got default branch: $branch");
-    if (branch != null && branch.isNotEmpty) {
-      return branch;
-    }
-  } catch (ex) {
-    Log.w("Could not fetch git main branch", ex: ex);
-  }
-
-  var remoteBranch = await repo.guessRemoteHead(remoteName);
-  if (remoteBranch == null) {
-    return 'master';
-  }
-  return remoteBranch.target!.branchName()!;
 }
 
 String folderNameFromCloneUrl(String cloneUrl) {
