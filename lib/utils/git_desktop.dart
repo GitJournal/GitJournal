@@ -3,7 +3,10 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dart_git/utils/file_extensions.dart';
 import 'package:dart_git/utils/result.dart';
+
+import 'package:gitjournal/utils/logger.dart';
 
 Future<Result<void>> gitFetchViaExecutable({
   required String repoPath,
@@ -48,8 +51,10 @@ Future<Result<void>> _gitCommandViaExecutable({
 
   var dir = Directory.systemTemp.createTempSync();
   var temp = File("${dir.path}/key");
-  temp.writeAsString(privateKey);
+  await temp.writeAsString(privateKey);
+  await temp.chmod(int.parse('0600', radix: 8));
 
+  Log.i("Running git $command $remoteName");
   var process = await Process.start(
     'git',
     [
