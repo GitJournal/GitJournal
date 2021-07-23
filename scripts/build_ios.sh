@@ -51,4 +51,11 @@ flutter build ios --release --no-codesign --build-number="$BUILD_NUM" --build-na
 cd ios
 
 export FASTLANE_PASSWORD=$(cat keys/fastlane_password)
+
+echo "Updating fastlane ..."
+bundle exec fastlane --version
+bundle update fastlane
+bundle exec fastlane --version
+
+echo "fastlane release ..."
 bundle exec fastlane release
