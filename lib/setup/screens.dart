@@ -571,6 +571,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     } on Exception catch (e, stacktrace) {
       Log.e("Failed to clone", ex: e, stacktrace: stacktrace);
       error = e.toString();
+
+      await _removeRemote();
     }
 
     if (error != null && error.isNotEmpty) {
