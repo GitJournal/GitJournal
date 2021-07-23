@@ -551,35 +551,29 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     var repoPath = p.join(basePath, widget.repoFolderName);
     Log.i("RepoPath: $repoPath");
 
-    String? error;
-    try {
-      await cloneRemote(
-        cloneUrl: _gitCloneUrl,
-        remoteName: widget.remoteName,
-        repoPath: repoPath,
-        sshPassword: settings.sshPassword,
-        sshPrivateKey: settings.sshPrivateKey,
-        sshPublicKey: settings.sshPublicKey,
-        authorEmail: settings.gitAuthorEmail,
-        authorName: settings.gitAuthor,
-        progressUpdate: (GitTransferProgress p) {
-          setState(() {
-            _cloneProgress = p;
-          });
-        },
-      ).throwOnError();
-    } on Exception catch (e, stacktrace) {
-      Log.e("Failed to clone", ex: e, stacktrace: stacktrace);
-      error = e.toString();
-
+    var cloneR = await cloneRemote(
+      cloneUrl: _gitCloneUrl,
+      remoteName: widget.remoteName,
+      repoPath: repoPath,
+      sshPassword: settings.sshPassword,
+      sshPrivateKey: settings.sshPrivateKey,
+      sshPublicKey: settings.sshPublicKey,
+      authorEmail: settings.gitAuthorEmail,
+      authorName: settings.gitAuthor,
+      progressUpdate: (GitTransferProgress p) {
+        setState(() {
+          _cloneProgress = p;
+        });
+      },
+    );
+    if (cloneR.isFailure) {
+      Log.e("Failed to clone", ex: cloneR.error);
+      var error = cloneR.error.toString();
       await _removeRemote();
-    }
 
-    if (error != null && error.isNotEmpty) {
-      Log.i("Not completing gitClone because of error");
       setState(() {
         logEvent(Event.GitHostSetupGitCloneError, parameters: {
-          'error': error!,
+          'error': error,
         });
         gitCloneErrorMessage = error;
       });

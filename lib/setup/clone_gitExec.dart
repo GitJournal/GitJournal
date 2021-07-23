@@ -15,8 +15,9 @@ Future<Result<void>> cloneRemote({
   required String authorName,
   required String authorEmail,
   required Func1<GitTransferProgress, void> progressUpdate,
-}) =>
-    cloneRemotePluggable(
+}) {
+  return catchAll(
+    () => cloneRemotePluggable(
       repoPath: repoPath,
       cloneUrl: cloneUrl,
       remoteName: remoteName,
@@ -29,7 +30,9 @@ Future<Result<void>> cloneRemote({
       gitFetchFn: _fetch,
       defaultBranchFn: _defaultBranch,
       gitMergeFn: _merge,
-    );
+    ),
+  );
+}
 
 Future<Result<void>> _fetch(
   String repoPath,

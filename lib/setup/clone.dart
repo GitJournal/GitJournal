@@ -75,7 +75,6 @@ Future<Result<void>> cloneRemotePluggable({
   required GitDefaultBranchFunction defaultBranchFn,
   required GitMergeFn gitMergeFn,
 }) async {
-  // FIXME: Do not throw exceptions
   var repo = await GitRepository.load(repoPath).getOrThrow();
   var remote = await repo.addOrUpdateRemote(remoteName, cloneUrl).getOrThrow();
 
