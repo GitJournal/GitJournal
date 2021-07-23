@@ -64,9 +64,6 @@ jobs:
           name: Install Flutter
           command: ./scripts/ios_install_flutter.sh
       - run:
-          name: Update fastlane
-          command: bundle update fastlane
-      - run:
           name: Setup Environment Variables
           command: |
             echo "export PATH=flutter/bin:$PATH" >> $BASH_ENV
