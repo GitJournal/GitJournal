@@ -1,6 +1,8 @@
+import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/utils/result.dart';
 import 'package:function_types/function_types.dart';
 import 'package:git_bindings/git_bindings.dart' as git_bindings;
+import 'package:gitjournal/utils/logger.dart';
 
 import 'clone.dart';
 
@@ -72,15 +74,21 @@ Future<Result<String>> _defaultBranch(
       privateKey: sshPrivateKey,
       password: sshPassword,
     );
+    Log.i("Got default branch: $branch");
     if (branch != null && branch.isNotEmpty) {
       return Result(branch);
     }
-  } on Exception catch (e, st) {
-    return Result.fail(e, st);
+  } catch (ex) {
+    Log.w("Could not fetch git main branch", ex: ex);
   }
 
-  var ex = Exception("No Remote Branch found");
-  return Result.fail(ex);
+  var repo = await GitRepository.load(repoPath).getOrThrow();
+  var remoteBranch = await repo.guessRemoteHead(remoteName);
+  if (remoteBranch == null) {
+    return Result('master');
+  }
+  var branch = remoteBranch.target!.branchName()!;
+  return Result(branch);
 }
 
 Future<Result<void>> _merge(
