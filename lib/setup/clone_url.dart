@@ -73,6 +73,7 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
         textInputAction: TextInputAction.done,
         onFieldSubmitted: (String _) => formSubmitted(),
         initialValue: widget.initialValue,
+        autocorrect: false,
       ),
     );
 
