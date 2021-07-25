@@ -171,7 +171,7 @@ Future<Result<void>> cloneRemotePluggable({
   // - Pack files are read into memory, this causes OOM issues
   //   https://sentry.io/organizations/gitjournal/issues/2254310735/?project=5168082&query=is%3Aunresolved
   //
-  await repo.checkout(".");
+  await repo.checkout(".").throwOnError();
 
   return Result(null);
 }
