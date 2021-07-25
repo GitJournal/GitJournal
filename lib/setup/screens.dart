@@ -406,6 +406,10 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
                   padding: const EdgeInsets.all(8.0),
                 ),
                 onTap: () {
+                  if (_currentPageIndex != 0) {
+                    _previousPage();
+                    return;
+                  }
                   _removeRemote();
                   Navigator.of(context).pop();
                 },
@@ -418,10 +422,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     return WillPopScope(
       onWillPop: () async {
         if (_currentPageIndex != 0) {
-          pageController.previousPage(
-            duration: 200.milliseconds,
-            curve: Curves.easeIn,
-          );
+          _previousPage();
           return false;
         }
 
@@ -452,8 +453,15 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     }
   }
 
-  void _nextPage() {
-    pageController.nextPage(
+  Future<void> _previousPage() {
+    return pageController.previousPage(
+      duration: 200.milliseconds,
+      curve: Curves.easeIn,
+    );
+  }
+
+  Future<void> _nextPage() {
+    return pageController.nextPage(
       duration: 200.milliseconds,
       curve: Curves.easeIn,
     );
