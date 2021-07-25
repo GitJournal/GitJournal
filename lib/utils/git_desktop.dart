@@ -125,6 +125,10 @@ Future<Result<String>> gitDefaultBranchViaExecutable({
   for (var line in LineSplitter.split(stdout)) {
     if (line.contains('HEAD branch:')) {
       var branch = line.split(':')[1].trim();
+      // Everyone seems to default to 'main' these days
+      if (branch == '(unknown)') {
+        return Result('main');
+      }
       return Result(branch);
     }
   }
