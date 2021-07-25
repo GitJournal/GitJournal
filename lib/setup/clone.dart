@@ -104,6 +104,7 @@ Future<Result<void>> cloneRemotePluggable({
   var remoteBranchName = branchNameR.getOrThrow();
 
   Log.i("Using remote branch: $remoteBranchName");
+  var skipCheckout = false;
 
   var branches = await repo.branches().getOrThrow();
   if (branches.isEmpty) {
@@ -115,6 +116,7 @@ Future<Result<void>> cloneRemotePluggable({
       }
 
       // remoteBranch doesn't exist - do nothing? Are you sure?
+      skipCheckout = true;
     } else {
       // remote branch exists
       var remoteBranch = remoteBranchR.getOrThrow();
@@ -172,9 +174,11 @@ Future<Result<void>> cloneRemotePluggable({
   // - Pack files are read into memory, this causes OOM issues
   //   https://sentry.io/organizations/gitjournal/issues/2254310735/?project=5168082&query=is%3Aunresolved
   //
-  var r = await repo.checkout(".");
-  if (r.isFailure) {
-    return fail(r);
+  if (!skipCheckout) {
+    var r = await repo.checkout(".");
+    if (r.isFailure) {
+      return fail(r);
+    }
   }
 
   return Result(null);

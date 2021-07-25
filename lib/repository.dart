@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:dart_git/config.dart';
 import 'package:dart_git/dart_git.dart';
+import 'package:dart_git/exceptions.dart';
 import 'package:git_bindings/git_bindings.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -176,7 +177,15 @@ class GitJournalRepo with ChangeNotifier {
     Future? noteLoadingFuture;
     try {
       await _gitRepo.fetch().throwOnError();
-      await _gitRepo.merge().throwOnError();
+
+      var r = await _gitRepo.merge();
+      if (r.isFailure) {
+        var ex = r.error!;
+        // When there is nothing to merge into
+        if (ex is! GitRefNotFound) {
+          throw ex;
+        }
+      }
 
       syncStatus = SyncStatus.Pushing;
       notifyListeners();
