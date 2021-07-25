@@ -23,6 +23,7 @@ class GitTransferProgress {
     }
     var str = await File(statusFile).readAsString();
     var parts = str.split(' ');
+    print('GitTransferProgress: #$str#');
 
     var tp = GitTransferProgress();
     tp.totalObjects = int.parse(parts[0]);
@@ -171,7 +172,10 @@ Future<Result<void>> cloneRemotePluggable({
   // - Pack files are read into memory, this causes OOM issues
   //   https://sentry.io/organizations/gitjournal/issues/2254310735/?project=5168082&query=is%3Aunresolved
   //
-  await repo.checkout(".").throwOnError();
+  var r = await repo.checkout(".");
+  if (r.isFailure) {
+    return fail(r);
+  }
 
   return Result(null);
 }
