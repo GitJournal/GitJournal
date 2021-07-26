@@ -241,6 +241,7 @@ editors:
   common:
     defaultBodyHint: Write here
     defaultTitleHint: Title
+    defaultFileNameHint: File Name
     discard: Discard Changes
     share: Share Note
     takePhoto: Take Photo
