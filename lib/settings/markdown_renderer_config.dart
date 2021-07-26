@@ -22,8 +22,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/settings/settings_sharedpref.dart';
 
-class MarkdownRendererSettings extends ChangeNotifier with SettingsSharedPref {
-  MarkdownRendererSettings(this.id);
+class MarkdownRendererConfig extends ChangeNotifier with SettingsSharedPref {
+  MarkdownRendererConfig(this.id);
 
   @override
   final String id;
@@ -88,7 +88,7 @@ class MarkdownRendererSettings extends ChangeNotifier with SettingsSharedPref {
 
   Future<void> save() async {
     var pref = await SharedPreferences.getInstance();
-    var defaultSet = MarkdownRendererSettings(id);
+    var defaultSet = MarkdownRendererConfig(id);
 
     // Display - Image
     await setBool(pref, "rotateImageGestures", rotateImageGestures,

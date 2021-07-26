@@ -19,8 +19,8 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/settings/markdown_renderer_config.dart';
 import 'package:gitjournal/settings/settings.dart';
-import 'package:gitjournal/settings/settings_markdown_renderer.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/settings/settings_widgets.dart';
 
@@ -37,7 +37,7 @@ class SettingsDisplayImagesThemingScreenState
 
   @override
   Widget build(BuildContext context) {
-    var settings = Provider.of<MarkdownRendererSettings>(context);
+    var settings = Provider.of<MarkdownRendererConfig>(context);
 
     var saveDoNotThemeTag = (String? doNotThemeTags) {
       settings.doNotThemeTags = parseTags(doNotThemeTags!);

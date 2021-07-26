@@ -26,7 +26,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/settings/settings_markdown_renderer.dart';
+import 'package:gitjournal/settings/markdown_renderer_config.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/images/image_caption.dart';
 import 'package:gitjournal/widgets/images/image_details.dart';
@@ -61,7 +61,7 @@ class MarkdownImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final settings = Provider.of<MarkdownRendererSettings>(context);
+    final settings = Provider.of<MarkdownRendererConfig>(context);
     final theme = Theme.of(context);
     final dark = theme.brightness == Brightness.dark;
 
@@ -217,7 +217,7 @@ class MarkdownImage extends StatelessWidget {
 
 Color getOverlayBackgroundColor(BuildContext context,
     {Color? light, Color? dark}) {
-  final settings = Provider.of<MarkdownRendererSettings>(context);
+  final settings = Provider.of<MarkdownRendererConfig>(context);
   final theme = Theme.of(context);
   return theme.brightness == Brightness.dark
       ? settings.transparentCaption

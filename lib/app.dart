@@ -23,8 +23,8 @@ import 'package:gitjournal/iap/iap.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/markdown_renderer_config.dart';
 import 'package:gitjournal/settings/settings.dart';
-import 'package:gitjournal/settings/settings_markdown_renderer.dart';
 import 'package:gitjournal/themes.dart';
 import 'package:gitjournal/utils/logger.dart';
 
@@ -397,7 +397,7 @@ class GitJournalChangeNotifiers extends StatelessWidget {
   Widget buildMarkdownSettings({required Widget child}) {
     return Consumer<RepositoryManager>(
       builder: (_, repoManager, __) {
-        var markdown = MarkdownRendererSettings(repoManager.currentId);
+        var markdown = MarkdownRendererConfig(repoManager.currentId);
         markdown.load(pref);
 
         return ChangeNotifierProvider.value(value: markdown, child: child);
