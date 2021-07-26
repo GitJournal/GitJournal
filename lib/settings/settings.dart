@@ -35,27 +35,28 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
   @override
   final String id;
 
-  NoteFileNameFormat noteFileNameFormat = NoteFileNameFormat.Default;
-  NoteFileNameFormat journalNoteFileNameFormat = NoteFileNameFormat.Default;
+  var noteFileNameFormat = NoteFileNameFormat.Default;
+  var journalNoteFileNameFormat = NoteFileNameFormat.Default;
 
-  String yamlModifiedKey = "modified";
-  String yamlCreatedKey = "created";
-  String yamlTagsKey = "tags";
+  var yamlModifiedKey = "modified";
+  var yamlCreatedKey = "created";
+  var yamlTagsKey = "tags";
   String customMetaData = "";
-  SettingsTitle titleSettings = SettingsTitle.Default;
+  var titleSettings = SettingsTitle.Default;
 
-  bool yamlHeaderEnabled = true;
+  var yamlHeaderEnabled = true;
   String defaultNewNoteFolderSpec = "";
   String journalEditordefaultNewNoteFolderSpec = "";
   bool journalEditorSingleNote = false;
 
   RemoteSyncFrequency remoteSyncFrequency = RemoteSyncFrequency.Default;
-  SortingField sortingField = SortingField.Default;
-  SortingOrder sortingOrder = SortingOrder.Default;
-  SettingsEditorType defaultEditor = SettingsEditorType.Default;
-  SettingsFolderViewType defaultView = SettingsFolderViewType.Default;
-  bool showNoteSummary = true;
-  String folderViewHeaderType = "TitleGenerated";
+  var sortingField = SortingField.Default;
+  var sortingOrder = SortingOrder.Default;
+  var defaultEditor = SettingsEditorType.Default;
+  var defaultView = SettingsFolderViewType.Default;
+  var showNoteSummary = true;
+  var folderViewHeaderType = "TitleGenerated";
+
   int version = SETTINGS_VERSION;
 
   SettingsHomeScreen homeScreen = SettingsHomeScreen.Default;
@@ -66,14 +67,14 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
   SettingsMarkdownDefaultView markdownLastUsedView =
       SettingsMarkdownDefaultView.Edit;
 
-  String imageLocationSpec = "."; // . means the same folder
+  var imageLocationSpec = "."; // . means the same folder
 
   bool zenMode = false;
 
   bool swipeToDelete = true;
   bool emojiParser = true;
 
-  Set<String> inlineTagPrefixes = {'#'};
+  var inlineTagPrefixes = {'#'};
 
   bool bottomMenuBar = true;
   bool confirmDelete = true;

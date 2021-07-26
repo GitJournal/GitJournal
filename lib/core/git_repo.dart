@@ -7,7 +7,6 @@ import 'package:git_bindings/git_bindings.dart' as gb;
 import 'package:path/path.dart' as p;
 
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings/app_settings.dart';
@@ -115,13 +114,6 @@ class GitNoteRepository {
 
   Future<Result<void>> addFolder(NotesFolderFS folder) async {
     return _addAllAndCommit("Created New Folder");
-  }
-
-  Future<Result<void>> addFolderConfig(NotesFolderConfig config) async {
-    var pathSpec = config.folder!.pathSpec();
-    pathSpec = pathSpec.isNotEmpty ? pathSpec : '/';
-
-    return _addAllAndCommit("Update folder config for $pathSpec");
   }
 
   Future<Result<void>> renameFolder(

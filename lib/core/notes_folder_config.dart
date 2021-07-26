@@ -10,8 +10,6 @@ import 'package:gitjournal/settings/settings.dart';
 
 @immutable
 class NotesFolderConfig extends Equatable {
-  static const FILENAME = ".gitjournal.yaml";
-
   final SortingMode sortingMode;
   final EditorType defaultEditor;
   final FolderViewType defaultView;
@@ -20,7 +18,6 @@ class NotesFolderConfig extends Equatable {
   final bool showNoteSummary;
   final NoteFileNameFormat fileNameFormat;
   final NoteFileNameFormat journalFileNameFormat;
-  final NotesFolderFS? folder;
   final bool yamlHeaderEnabled;
   //int _version = 1;
 
@@ -40,7 +37,6 @@ class NotesFolderConfig extends Equatable {
     required this.showNoteSummary,
     required this.fileNameFormat,
     required this.journalFileNameFormat,
-    required this.folder,
     required this.yamlHeaderEnabled,
     required this.yamlModifiedKey,
     required this.yamlCreatedKey,
@@ -58,7 +54,6 @@ class NotesFolderConfig extends Equatable {
         viewHeader,
         fileNameFormat,
         journalFileNameFormat,
-        if (folder != null) folder!,
         yamlHeaderEnabled,
         yamlModifiedKey,
         yamlCreatedKey,
@@ -92,7 +87,6 @@ class NotesFolderConfig extends Equatable {
       viewHeader: viewHeader,
       fileNameFormat: settings.noteFileNameFormat,
       journalFileNameFormat: settings.journalNoteFileNameFormat,
-      folder: folder,
       yamlHeaderEnabled: settings.yamlHeaderEnabled,
       yamlCreatedKey: settings.yamlCreatedKey,
       yamlModifiedKey: settings.yamlModifiedKey,
@@ -144,7 +138,6 @@ class NotesFolderConfig extends Equatable {
     bool? showNoteSummary,
     NoteFileNameFormat? fileNameFormat,
     NoteFileNameFormat? journalFileNameFormat,
-    NotesFolderFS? folder,
     bool? yamlHeaderEnabled,
     String? yamlCreatedKey,
     String? yamlModifiedKey,
@@ -162,7 +155,6 @@ class NotesFolderConfig extends Equatable {
       fileNameFormat: fileNameFormat ?? this.fileNameFormat,
       journalFileNameFormat:
           journalFileNameFormat ?? this.journalFileNameFormat,
-      folder: folder ?? this.folder,
       yamlHeaderEnabled: yamlHeaderEnabled ?? this.yamlHeaderEnabled,
       yamlCreatedKey: yamlCreatedKey ?? this.yamlCreatedKey,
       yamlModifiedKey: yamlModifiedKey ?? this.yamlModifiedKey,
