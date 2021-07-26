@@ -21,7 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/settings_markdown_renderer.dart';
 import 'package:gitjournal/utils/hero_dialog.dart';
 
 class ImageCaption extends StatelessWidget {
@@ -33,7 +33,7 @@ class ImageCaption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final settings = Provider.of<Settings>(context);
+    final settings = Provider.of<MarkdownRendererSettings>(context);
 
     final text = captionText(context, altText, tooltip);
 
@@ -116,7 +116,7 @@ bool shouldCaption(BuildContext context, String altText, String tooltip) {
 }
 
 String captionText(BuildContext context, String altText, String tooltip) {
-  final settings = Provider.of<Settings>(context);
+  final settings = Provider.of<MarkdownRendererSettings>(context);
 
   bool altTextCaption =
       settings.useAsCaption == SettingsImageTextType.AltTool ||
@@ -152,7 +152,7 @@ String captionText(BuildContext context, String altText, String tooltip) {
 }
 
 String _cleanCaption(BuildContext context, String caption) {
-  final settings = Provider.of<Settings>(context);
+  final settings = Provider.of<MarkdownRendererSettings>(context);
   final tags = [
     ...settings.doThemeTags,
     ...settings.doNotThemeTags,
@@ -171,7 +171,7 @@ String _cleanCaption(BuildContext context, String caption) {
 }
 
 Color _overlayBackgroundColor(context) {
-  final settings = Provider.of<Settings>(context);
+  final settings = Provider.of<MarkdownRendererSettings>(context);
   final theme = Theme.of(context);
   return settings.transparentCaption
       ? (theme.brightness == Brightness.dark ? Colors.black : Colors.white)

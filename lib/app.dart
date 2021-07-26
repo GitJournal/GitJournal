@@ -24,6 +24,7 @@ import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/app_settings.dart';
 import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/settings_markdown_renderer.dart';
 import 'package:gitjournal/themes.dart';
 import 'package:gitjournal/utils/logger.dart';
 
@@ -63,6 +64,7 @@ class JournalApp extends StatefulWidget {
       child: GitJournalChangeNotifiers(
         repoManager: repoManager,
         appSettings: appSettings,
+        pref: pref,
         child: JournalApp(),
       ),
       supportedLocales: [
@@ -350,11 +352,13 @@ class _JournalAppState extends State<JournalApp> {
 class GitJournalChangeNotifiers extends StatelessWidget {
   final RepositoryManager repoManager;
   final AppSettings appSettings;
+  final SharedPreferences pref;
   final Widget child;
 
   GitJournalChangeNotifiers({
     required this.repoManager,
     required this.appSettings,
+    required this.pref,
     required this.child,
     Key? key,
   }) : super(key: key);
@@ -364,16 +368,18 @@ class GitJournalChangeNotifiers extends StatelessWidget {
     var app = ChangeNotifierProvider.value(
       value: repoManager,
       child: Consumer<RepositoryManager>(
-        builder: (_, repoManager, __) => ChangeNotifierProvider.value(
-          value: repoManager.currentRepo,
-          child: Consumer<GitJournalRepo>(
-            builder: (_, repo, __) => ChangeNotifierProvider<Settings>.value(
-              value: repo.settings,
-              child: Consumer<GitJournalRepo>(
-                builder: (_, repo, __) =>
-                    ChangeNotifierProvider<NotesFolderFS>.value(
-                  value: repo.notesFolder,
-                  child: child,
+        builder: (_, repoManager, __) => buildMarkdownSettings(
+          child: ChangeNotifierProvider.value(
+            value: repoManager.currentRepo,
+            child: Consumer<GitJournalRepo>(
+              builder: (_, repo, __) => ChangeNotifierProvider<Settings>.value(
+                value: repo.settings,
+                child: Consumer<GitJournalRepo>(
+                  builder: (_, repo, __) =>
+                      ChangeNotifierProvider<NotesFolderFS>.value(
+                    value: repo.notesFolder,
+                    child: child,
+                  ),
                 ),
               ),
             ),
@@ -385,6 +391,17 @@ class GitJournalChangeNotifiers extends StatelessWidget {
     return ChangeNotifierProvider.value(
       value: appSettings,
       child: app,
+    );
+  }
+
+  Widget buildMarkdownSettings({required Widget child}) {
+    return Consumer<RepositoryManager>(
+      builder: (_, repoManager, __) {
+        var markdown = MarkdownRendererSettings(repoManager.currentId);
+        markdown.load(pref);
+
+        return ChangeNotifierProvider.value(value: markdown, child: child);
+      },
     );
   }
 }

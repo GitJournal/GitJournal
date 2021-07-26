@@ -42,9 +42,13 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
 
   String folderName = "journal";
 
-  // Properties
+  // Git Settings
   String gitAuthor = "GitJournal";
   String gitAuthorEmail = "app@gitjournal.io";
+  String sshPublicKey = "";
+  String sshPrivateKey = "";
+  String sshPassword = "";
+
   NoteFileNameFormat noteFileNameFormat = NoteFileNameFormat.Default;
   NoteFileNameFormat journalNoteFileNameFormat = NoteFileNameFormat.Default;
 
@@ -71,32 +75,6 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
   SettingsHomeScreen homeScreen = SettingsHomeScreen.Default;
   SettingsTheme theme = SettingsTheme.Default;
 
-  // Display - Image
-  bool rotateImageGestures = false;
-  double maxImageZoom = 10;
-
-  // Display - Image - Theming
-  bool themeRasterGraphics = false;
-  SettingsImageTextType themeOverrideTagLocation =
-      SettingsImageTextType.Default;
-  Set<String> doNotThemeTags = {"notheme", "!nt"};
-  Set<String> doThemeTags = {"dotheme", "!dt"};
-  SettingsThemeVectorGraphics themeVectorGraphics =
-      SettingsThemeVectorGraphics.Default;
-  bool themeSvgWithBackground = false;
-  bool matchCanvasColor = true;
-  SettingsVectorGraphicsAdjustColors vectorGraphicsAdjustColors =
-      SettingsVectorGraphicsAdjustColors.Default;
-
-  // Display - Image - Caption
-  bool overlayCaption = true;
-  bool transparentCaption = true;
-  bool blurBehindCaption = true;
-  bool tooltipFirst = false;
-  SettingsImageTextType useAsCaption = SettingsImageTextType.Default;
-  Set<String> doNotCaptionTags = {"nocaption", "!nc"};
-  Set<String> doCaptionTags = {"docaption", "!dc"};
-
   SettingsMarkdownDefaultView markdownDefaultView =
       SettingsMarkdownDefaultView.Default;
   SettingsMarkdownDefaultView markdownLastUsedView =
@@ -118,13 +96,12 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
   bool storeInternally = true;
   String storageLocation = "";
 
-  String sshPublicKey = "";
-  String sshPrivateKey = "";
-  String sshPassword = "";
-
   void load(SharedPreferences pref) {
     gitAuthor = getString(pref, "gitAuthor") ?? gitAuthor;
     gitAuthorEmail = getString(pref, "gitAuthorEmail") ?? gitAuthorEmail;
+    sshPublicKey = getString(pref, "sshPublicKey") ?? sshPublicKey;
+    sshPrivateKey = getString(pref, "sshPrivateKey") ?? sshPrivateKey;
+    sshPassword = getString(pref, "sshPassword") ?? sshPassword;
 
     noteFileNameFormat = NoteFileNameFormat.fromInternalString(
         getString(pref, "noteFileNameFormat"));
@@ -176,39 +153,6 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
         SettingsHomeScreen.fromInternalString(getString(pref, "homeScreen"));
     theme = SettingsTheme.fromInternalString(getString(pref, "theme"));
 
-    // Display - Image
-    rotateImageGestures =
-        getBool(pref, "rotateImageGestures") ?? rotateImageGestures;
-    maxImageZoom = getDouble(pref, "maxImageZoom") ?? maxImageZoom;
-
-    // Display - Image - Theming
-    themeRasterGraphics =
-        getBool(pref, "themeRasterGraphics") ?? themeRasterGraphics;
-    themeOverrideTagLocation = SettingsImageTextType.fromInternalString(
-        getString(pref, "themeOverrideTagLocation"));
-    doNotThemeTags = getStringSet(pref, "doNotThemeTags") ?? doNotThemeTags;
-    doThemeTags = getStringSet(pref, "doThemeTags") ?? doThemeTags;
-    themeVectorGraphics = SettingsThemeVectorGraphics.fromInternalString(
-        getString(pref, "themeVectorGraphics"));
-    themeSvgWithBackground =
-        getBool(pref, "themeSvgWithBackground") ?? themeSvgWithBackground;
-    matchCanvasColor = getBool(pref, "matchCanvasColor") ?? matchCanvasColor;
-    vectorGraphicsAdjustColors =
-        SettingsVectorGraphicsAdjustColors.fromInternalString(
-            getString(pref, "vectorGraphicsAdjustColors"));
-
-    // Display - Image - Caption
-    overlayCaption = getBool(pref, "overlayCaption") ?? overlayCaption;
-    transparentCaption =
-        getBool(pref, "transparentCaption") ?? transparentCaption;
-    blurBehindCaption = getBool(pref, "blurBehindCaption") ?? blurBehindCaption;
-    tooltipFirst = getBool(pref, "tooltipFirst") ?? tooltipFirst;
-    useAsCaption = SettingsImageTextType.fromInternalString(
-        getString(pref, "useAsCaption"));
-    doNotCaptionTags =
-        getStringSet(pref, "doNotCaptionTag") ?? doNotCaptionTags;
-    doCaptionTags = getStringSet(pref, "doCaptionTag") ?? doCaptionTags;
-
     imageLocationSpec =
         getString(pref, "imageLocationSpec") ?? imageLocationSpec;
 
@@ -222,10 +166,6 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
 
     // From AppState
     folderName = getString(pref, FOLDER_NAME_KEY) ?? folderName;
-
-    sshPublicKey = getString(pref, "sshPublicKey") ?? sshPublicKey;
-    sshPrivateKey = getString(pref, "sshPrivateKey") ?? sshPrivateKey;
-    sshPassword = getString(pref, "sshPassword") ?? sshPassword;
 
     bottomMenuBar = getBool(pref, "bottomMenuBar") ?? bottomMenuBar;
     confirmDelete = getBool(pref, "confirmDelete") ?? confirmDelete;
@@ -242,6 +182,12 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
     await setString(pref, "gitAuthor", gitAuthor, defaultSet.gitAuthor);
     await setString(
         pref, "gitAuthorEmail", gitAuthorEmail, defaultSet.gitAuthorEmail);
+    await setString(
+        pref, "sshPublicKey", sshPublicKey, defaultSet.sshPublicKey);
+    await setString(
+        pref, "sshPrivateKey", sshPrivateKey, defaultSet.sshPrivateKey);
+    await setString(pref, "sshPassword", sshPassword, defaultSet.sshPassword);
+
     await setString(
         pref,
         "noteFileNameFormat",
@@ -303,54 +249,6 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
     await setString(pref, "theme", theme.toInternalString(),
         defaultSet.theme.toInternalString());
 
-    // Display - Image
-    await setBool(pref, "rotateImageGestures", rotateImageGestures,
-        defaultSet.rotateImageGestures);
-    await setDouble(
-        pref, "maxImageZoom", maxImageZoom, defaultSet.maxImageZoom);
-
-    // Display - Image - Theme
-    await setBool(pref, "themeRasterGraphics", themeRasterGraphics,
-        defaultSet.themeRasterGraphics);
-    await setString(
-        pref,
-        "themeOverrideTagLocation",
-        themeOverrideTagLocation.toInternalString(),
-        defaultSet.themeOverrideTagLocation.toInternalString());
-    await setStringSet(
-        pref, "doNotThemeTags", doNotThemeTags, defaultSet.doNotThemeTags);
-    await setStringSet(
-        pref, "doThemeTags", doThemeTags, defaultSet.doThemeTags);
-    await setString(
-        pref,
-        "themeVectorGraphics",
-        themeVectorGraphics.toInternalString(),
-        defaultSet.themeVectorGraphics.toInternalString());
-    await setBool(pref, "themeSvgWithBackground", themeSvgWithBackground,
-        defaultSet.themeSvgWithBackground);
-    await setBool(pref, "matchCanvasColor", matchCanvasColor,
-        defaultSet.matchCanvasColor);
-    await setString(
-        pref,
-        "vectorGraphicsAdjustColors",
-        vectorGraphicsAdjustColors.toInternalString(),
-        defaultSet.vectorGraphicsAdjustColors.toInternalString());
-
-    // Display - Image - Caption
-    await setBool(
-        pref, "overlayCaption", overlayCaption, defaultSet.overlayCaption);
-    await setBool(pref, "transparentCaption", transparentCaption,
-        defaultSet.transparentCaption);
-    await setBool(pref, "blurBehindCaption", blurBehindCaption,
-        defaultSet.blurBehindCaption);
-    await setBool(pref, "tooltipFirst", tooltipFirst, defaultSet.tooltipFirst);
-    await setString(pref, "useAsCaption", useAsCaption.toInternalString(),
-        defaultSet.useAsCaption.toInternalString());
-    await setStringSet(
-        pref, "doNotCaptionTag", doNotCaptionTags, defaultSet.doNotCaptionTags);
-    await setStringSet(
-        pref, "doCaptionTag", doCaptionTags, defaultSet.doCaptionTags);
-
     await setString(pref, "imageLocationSpec", imageLocationSpec,
         defaultSet.imageLocationSpec);
     await setBool(pref, "zenMode", zenMode, defaultSet.zenMode);
@@ -369,12 +267,6 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
     await setString(
         pref, "storageLocation", storageLocation, defaultSet.storageLocation);
 
-    await setString(
-        pref, "sshPublicKey", sshPublicKey, defaultSet.sshPublicKey);
-    await setString(
-        pref, "sshPrivateKey", sshPrivateKey, defaultSet.sshPrivateKey);
-    await setString(pref, "sshPassword", sshPassword, defaultSet.sshPassword);
-
     await setInt(pref, "settingsVersion", version, defaultSet.version);
 
     await setString(pref, FOLDER_NAME_KEY, folderName, defaultSet.folderName);
@@ -388,6 +280,8 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
     return <String, String>{
       "gitAuthor": gitAuthor.isNotEmpty.toString(),
       "gitAuthorEmail": gitAuthorEmail.isNotEmpty.toString(),
+      'sshPublicKey': sshPublicKey.isNotEmpty.toString(),
+      'sshPrivateKey': sshPrivateKey.isNotEmpty.toString(),
       "noteFileNameFormat": noteFileNameFormat.toInternalString(),
       "journalNoteFileNameFormat": journalNoteFileNameFormat.toInternalString(),
       "yamlModifiedKey": yamlModifiedKey,
@@ -412,28 +306,6 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
       'markdownLastUsedView': markdownLastUsedView.toInternalString(),
       'homeScreen': homeScreen.toInternalString(),
       'theme': theme.toInternalString(),
-      // Display - Image
-      'rotateImageGestures': rotateImageGestures.toString(),
-      'maxImageZoom': maxImageZoom.toString(),
-      // Display - Image - Theming
-      'themeRasterGraphics': themeRasterGraphics.toString(),
-      'themeOverrideTagLocation': themeOverrideTagLocation.toInternalString(),
-      'doNotThemeTags': csvTags(doNotThemeTags),
-      'doThemeTags': csvTags(doThemeTags),
-      'themeVectorGraphics': themeVectorGraphics.toInternalString(),
-      'themeSvgWithBackground': themeSvgWithBackground.toString(),
-      'matchCanvasColor': matchCanvasColor.toString(),
-      'vectorGraphicsAdjustColors':
-          vectorGraphicsAdjustColors.toInternalString(),
-      // Display - Image - Caption
-      'overlayCaption': overlayCaption.toString(),
-      'transparentCaption': transparentCaption.toString(),
-      'blurBehindCaption': blurBehindCaption.toString(),
-      'tooltipFirst': tooltipFirst.toString(),
-      'useAsCaption': useAsCaption.toInternalString(),
-      'doNotCaptionTag': csvTags(doNotCaptionTags),
-      'doCaptionTag': csvTags(doCaptionTags),
-      //
       'imageLocationSpec': imageLocationSpec,
       'zenMode': zenMode.toString(),
       'titleSettings': titleSettings.toInternalString(),
@@ -445,8 +317,6 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
       'confirmDelete': confirmDelete.toString(),
       'storeInternally': storeInternally.toString(),
       'storageLocation': storageLocation,
-      'sshPublicKey': sshPublicKey.isNotEmpty.toString(),
-      'sshPrivateKey': sshPrivateKey.isNotEmpty.toString(),
     };
   }
 
@@ -863,169 +733,6 @@ class SettingsHomeScreen {
   }
 }
 
-class SettingsImageTextType {
-  static const AltTool = SettingsImageTextType(
-      "settings.display.images.imageTextType.altAndTooltip", "alt_and_tooltip");
-  static const Tooltip = SettingsImageTextType(
-      "settings.display.images.imageTextType.tooltip", "tooltip");
-  static const Alt =
-      SettingsImageTextType("settings.display.images.imageTextType.alt", "alt");
-  static const None = SettingsImageTextType(
-      "settings.display.images.imageTextType.none", "none");
-  static const Default = AltTool;
-
-  final String _str;
-  final String _publicString;
-  const SettingsImageTextType(this._publicString, this._str);
-
-  String toInternalString() {
-    return _str;
-  }
-
-  String toPublicString() {
-    return tr(_publicString);
-  }
-
-  static const options = <SettingsImageTextType>[
-    AltTool,
-    Tooltip,
-    Alt,
-    None,
-  ];
-
-  static SettingsImageTextType fromInternalString(String? str) {
-    for (var opt in options) {
-      if (opt.toInternalString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  static SettingsImageTextType fromPublicString(String str) {
-    for (var opt in options) {
-      if (opt.toPublicString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  @override
-  String toString() {
-    assert(false,
-        "SettingsThemeOverrideTagLocation toString should never be called");
-    return "";
-  }
-}
-
-class SettingsThemeVectorGraphics {
-  static const On = SettingsThemeVectorGraphics(
-      "settings.display.images.theming.themeVectorGraphics.on", "on");
-  static const Off = SettingsThemeVectorGraphics(
-      "settings.display.images.theming.themeVectorGraphics.off", "off");
-  static const Filter = SettingsThemeVectorGraphics(
-      "settings.display.images.theming.themeVectorGraphics.filter", "filter");
-  static const Default = On;
-
-  final String _str;
-  final String _publicString;
-  const SettingsThemeVectorGraphics(this._publicString, this._str);
-
-  String toInternalString() {
-    return _str;
-  }
-
-  String toPublicString() {
-    return tr(_publicString);
-  }
-
-  static const options = <SettingsThemeVectorGraphics>[
-    On,
-    Off,
-    Filter,
-  ];
-
-  static SettingsThemeVectorGraphics fromInternalString(String? str) {
-    for (var opt in options) {
-      if (opt.toInternalString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  static SettingsThemeVectorGraphics fromPublicString(String str) {
-    for (var opt in options) {
-      if (opt.toPublicString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  @override
-  String toString() {
-    assert(
-        false, "SettingsThemeVectorGraphics toString should never be called");
-    return "";
-  }
-}
-
-class SettingsVectorGraphicsAdjustColors {
-  static const All = SettingsVectorGraphicsAdjustColors(
-      "settings.display.images.theming.adjustColors.all", "all");
-  static const BnW = SettingsVectorGraphicsAdjustColors(
-      "settings.display.images.theming.adjustColors.blackAndWhite",
-      "black_and_white");
-  static const Grays = SettingsVectorGraphicsAdjustColors(
-      "settings.display.images.theming.adjustColors.grays", "grays");
-  static const Default = All;
-
-  final String _str;
-  final String _publicString;
-  const SettingsVectorGraphicsAdjustColors(this._publicString, this._str);
-
-  String toInternalString() {
-    return _str;
-  }
-
-  String toPublicString() {
-    return tr(_publicString);
-  }
-
-  static const options = <SettingsVectorGraphicsAdjustColors>[
-    BnW,
-    Grays,
-    All,
-  ];
-
-  static SettingsVectorGraphicsAdjustColors fromInternalString(String? str) {
-    for (var opt in options) {
-      if (opt.toInternalString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  static SettingsVectorGraphicsAdjustColors fromPublicString(String str) {
-    for (var opt in options) {
-      if (opt.toPublicString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  @override
-  String toString() {
-    assert(false,
-        "SettingsVectorGraphicsAdjustColors toString should never be called");
-    return "";
-  }
-}
-
 String generateRandomId() {
   return const Uuid().v4().substring(0, 8);
 }
@@ -1150,8 +857,4 @@ Set<String> parseTags(String tags) {
       .map((e) => e.trim())
       .where((e) => e.isNotEmpty)
       .toSet();
-}
-
-String csvTags(Set<String> tags) {
-  return tags.join(", ");
 }

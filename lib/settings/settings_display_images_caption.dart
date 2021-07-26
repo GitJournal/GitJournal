@@ -20,6 +20,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/settings_markdown_renderer.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/settings/settings_widgets.dart';
 
@@ -35,7 +36,7 @@ class SettingsDisplayImagesCaptionScreenState
   final doCaptionTagsKey = GlobalKey<FormFieldState<String>>();
   @override
   Widget build(BuildContext context) {
-    var settings = Provider.of<Settings>(context);
+    var settings = Provider.of<MarkdownRendererSettings>(context);
     var saveDoNotCaptionTag = (String? doNotCaptionTags) {
       if (doNotCaptionTags == null) {
         return;
