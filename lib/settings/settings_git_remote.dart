@@ -9,6 +9,7 @@ import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/repository.dart';
+import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_widgets.dart';
 import 'package:gitjournal/setup/screens.dart';
@@ -163,15 +164,15 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
   }
 
   void _updateKeys(String publicKey, String privateKey, String password) {
-    var settings = Provider.of<Settings>(context, listen: false);
+    var config = Provider.of<GitConfig>(context, listen: false);
 
     if (publicKey.isEmpty || privateKey.isEmpty) {
       return;
     }
-    settings.sshPublicKey = publicKey;
-    settings.sshPrivateKey = privateKey;
-    settings.sshPassword = password;
-    settings.save();
+    config.sshPublicKey = publicKey;
+    config.sshPrivateKey = privateKey;
+    config.sshPassword = password;
+    config.save();
 
     Navigator.of(context).pop();
   }
@@ -188,11 +189,11 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
         DateTime.now().toIso8601String().substring(0, 10); // only the date
 
     generateSSHKeys(comment: comment).then((SshKey? sshKey) {
-      var settings = Provider.of<Settings>(context, listen: false);
-      settings.sshPublicKey = sshKey!.publicKey;
-      settings.sshPrivateKey = sshKey.publicKey;
-      settings.sshPassword = sshKey.password;
-      settings.save();
+      var config = Provider.of<GitConfig>(context, listen: false);
+      config.sshPublicKey = sshKey!.publicKey;
+      config.sshPrivateKey = sshKey.publicKey;
+      config.sshPassword = sshKey.password;
+      config.save();
 
       Log.d("PublicKey: " + sshKey.publicKey);
       _copyKeyToClipboard(context);

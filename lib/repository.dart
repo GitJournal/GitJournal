@@ -20,6 +20,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_cache.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_migrations.dart';
 import 'package:gitjournal/utils/logger.dart';
@@ -34,6 +35,7 @@ enum SyncStatus {
 
 class GitJournalRepo with ChangeNotifier {
   final Settings settings;
+  final GitConfig gitConfig;
 
   final _opLock = Lock();
   final _loadLock = Lock();
@@ -76,6 +78,9 @@ class GitJournalRepo with ChangeNotifier {
 
     Log.i("Setting ${settings.toLoggableMap()}");
 
+    var gitConfig = GitConfig(id);
+    gitConfig.load(pref);
+
     var repoPath = await settings.buildRepoPath(gitBaseDir);
     Log.i("Loading Repo at path $repoPath");
 
@@ -107,6 +112,7 @@ class GitJournalRepo with ChangeNotifier {
       cacheDir: cacheDir,
       remoteGitRepoConfigured: remoteConfigured,
       settings: settings,
+      gitConfig: gitConfig,
       id: id,
       currentBranch: await repo.currentBranch().getOrThrow(),
     );
@@ -118,10 +124,11 @@ class GitJournalRepo with ChangeNotifier {
     required this.gitBaseDirectory,
     required this.cacheDir,
     required this.settings,
+    required this.gitConfig,
     required this.remoteGitRepoConfigured,
     required String? currentBranch,
   }) {
-    _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);
+    _gitRepo = GitNoteRepository(gitDirPath: repoPath, config: gitConfig);
     notesFolder = NotesFolderFS(null, _gitRepo.gitDirPath, settings);
     _currentBranch = currentBranch;
 
@@ -408,9 +415,9 @@ class GitJournalRepo with ChangeNotifier {
     repoPath = p.join(gitBaseDirectory, repoFolderName);
     Log.i("repoPath: $repoPath");
 
-    _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);
+    _gitRepo = GitNoteRepository(gitDirPath: repoPath, config: gitConfig);
 
-    await _addFileInRepo(repo: this, settings: settings);
+    await _addFileInRepo(repo: this, config: gitConfig);
 
     _notesCache.clear();
     remoteGitRepoConfigured = true;
@@ -442,7 +449,7 @@ class GitJournalRepo with ChangeNotifier {
       await Directory(repoPath).delete(recursive: true);
 
       repoPath = newRepoPath;
-      _gitRepo = GitNoteRepository(gitDirPath: repoPath, settings: settings);
+      _gitRepo = GitNoteRepository(gitDirPath: repoPath, config: gitConfig);
 
       _notesCache.clear();
       notesFolder.reset(repoPath);
@@ -560,7 +567,7 @@ Future<void> _copyDirectory(String source, String destination) async {
 /// one commit. It makes doing a git pull and push easier
 Future<void> _addFileInRepo({
   required GitJournalRepo repo,
-  required Settings settings,
+  required GitConfig config,
 }) async {
   var repoPath = repo.repoPath;
   var dirList = await Directory(repoPath).list().toList();
@@ -577,8 +584,8 @@ Future<void> _addFileInRepo({
 
     await repo.commit(
       message: "Add gitignore file",
-      authorEmail: settings.gitAuthorEmail,
-      authorName: settings.gitAuthor,
+      authorEmail: config.gitAuthorEmail,
+      authorName: config.gitAuthor,
     );
   }
 }

@@ -38,6 +38,7 @@ import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/screens/debug_screen.dart';
 import 'package:gitjournal/screens/feature_timeline_screen.dart';
 import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_bottom_menu_bar.dart';
 import 'package:gitjournal/settings/settings_display_images.dart';
@@ -87,14 +88,15 @@ class SettingsListState extends State<SettingsList> {
   @override
   Widget build(BuildContext context) {
     var settings = Provider.of<Settings>(context);
+    var gitConfig = Provider.of<GitConfig>(context);
     var appSettings = Provider.of<AppSettings>(context);
     final repo = Provider.of<GitJournalRepo>(context);
     var repoManager = Provider.of<RepositoryManager>(context);
 
     var saveGitAuthor = (String? gitAuthor) {
       if (gitAuthor == null) return;
-      settings.gitAuthor = gitAuthor;
-      settings.save();
+      gitConfig.gitAuthor = gitAuthor;
+      gitConfig.save();
     };
 
     var gitAuthorForm = Form(
@@ -116,7 +118,7 @@ class SettingsListState extends State<SettingsList> {
         textInputAction: TextInputAction.done,
         onFieldSubmitted: saveGitAuthor,
         onSaved: saveGitAuthor,
-        initialValue: settings.gitAuthor,
+        initialValue: gitConfig.gitAuthor,
       ),
       onChanged: () {
         if (!gitAuthorKey.currentState!.validate()) return;
@@ -128,8 +130,8 @@ class SettingsListState extends State<SettingsList> {
     var saveGitAuthorEmail = (String? gitAuthorEmail) {
       if (gitAuthorEmail == null) return;
 
-      settings.gitAuthorEmail = gitAuthorEmail;
-      settings.save();
+      gitConfig.gitAuthorEmail = gitAuthorEmail;
+      gitConfig.save();
     };
     var gitAuthorEmailForm = Form(
       child: TextFormField(
@@ -155,7 +157,7 @@ class SettingsListState extends State<SettingsList> {
         textInputAction: TextInputAction.done,
         onFieldSubmitted: saveGitAuthorEmail,
         onSaved: saveGitAuthorEmail,
-        initialValue: settings.gitAuthorEmail,
+        initialValue: gitConfig.gitAuthorEmail,
       ),
       onChanged: () {
         if (!gitAuthorEmailKey.currentState!.validate()) return;
@@ -270,7 +272,7 @@ class SettingsListState extends State<SettingsList> {
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) =>
-                GitRemoteSettingsScreen(settings.sshPublicKey),
+                GitRemoteSettingsScreen(gitConfig.sshPublicKey),
             settings: const RouteSettings(name: '/settings/gitRemote'),
           );
           Navigator.of(context).push(route);

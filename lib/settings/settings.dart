@@ -42,13 +42,6 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
 
   String folderName = "journal";
 
-  // Git Settings
-  String gitAuthor = "GitJournal";
-  String gitAuthorEmail = "app@gitjournal.io";
-  String sshPublicKey = "";
-  String sshPrivateKey = "";
-  String sshPassword = "";
-
   NoteFileNameFormat noteFileNameFormat = NoteFileNameFormat.Default;
   NoteFileNameFormat journalNoteFileNameFormat = NoteFileNameFormat.Default;
 
@@ -97,12 +90,6 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
   String storageLocation = "";
 
   void load(SharedPreferences pref) {
-    gitAuthor = getString(pref, "gitAuthor") ?? gitAuthor;
-    gitAuthorEmail = getString(pref, "gitAuthorEmail") ?? gitAuthorEmail;
-    sshPublicKey = getString(pref, "sshPublicKey") ?? sshPublicKey;
-    sshPrivateKey = getString(pref, "sshPrivateKey") ?? sshPrivateKey;
-    sshPassword = getString(pref, "sshPassword") ?? sshPassword;
-
     noteFileNameFormat = NoteFileNameFormat.fromInternalString(
         getString(pref, "noteFileNameFormat"));
     journalNoteFileNameFormat = NoteFileNameFormat.fromInternalString(
@@ -178,15 +165,6 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
   Future<void> save() async {
     var pref = await SharedPreferences.getInstance();
     var defaultSet = Settings(id);
-
-    await setString(pref, "gitAuthor", gitAuthor, defaultSet.gitAuthor);
-    await setString(
-        pref, "gitAuthorEmail", gitAuthorEmail, defaultSet.gitAuthorEmail);
-    await setString(
-        pref, "sshPublicKey", sshPublicKey, defaultSet.sshPublicKey);
-    await setString(
-        pref, "sshPrivateKey", sshPrivateKey, defaultSet.sshPrivateKey);
-    await setString(pref, "sshPassword", sshPassword, defaultSet.sshPassword);
 
     await setString(
         pref,
@@ -278,10 +256,6 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
 
   Map<String, String> toLoggableMap() {
     return <String, String>{
-      "gitAuthor": gitAuthor.isNotEmpty.toString(),
-      "gitAuthorEmail": gitAuthorEmail.isNotEmpty.toString(),
-      'sshPublicKey': sshPublicKey.isNotEmpty.toString(),
-      'sshPrivateKey': sshPrivateKey.isNotEmpty.toString(),
       "noteFileNameFormat": noteFileNameFormat.toInternalString(),
       "journalNoteFileNameFormat": journalNoteFileNameFormat.toInternalString(),
       "yamlModifiedKey": yamlModifiedKey,

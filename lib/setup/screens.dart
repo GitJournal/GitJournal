@@ -16,6 +16,7 @@ import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/repository.dart';
+import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/setup/autoconfigure.dart';
 import 'package:gitjournal/setup/button.dart';
@@ -225,11 +226,11 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           return GitHostUserProvidedKeysPage(
             doneFunction:
                 (String publicKey, String privateKey, String password) async {
-              var settings = Provider.of<Settings>(context, listen: false);
-              settings.sshPublicKey = publicKey;
-              settings.sshPrivateKey = privateKey;
-              settings.sshPassword = password;
-              settings.save();
+              var gitConfig = Provider.of<GitConfig>(context, listen: false);
+              gitConfig.sshPublicKey = publicKey;
+              gitConfig.sshPrivateKey = privateKey;
+              gitConfig.sshPassword = password;
+              gitConfig.save();
 
               setState(() {
                 this.publicKey = publicKey;
@@ -323,11 +324,11 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         } else if (_keyGenerationChoice == KeyGenerationChoice.UserProvided) {
           return GitHostUserProvidedKeysPage(
             doneFunction: (publicKey, privateKey, password) async {
-              var settings = Provider.of<Settings>(context, listen: false);
-              settings.sshPublicKey = publicKey;
-              settings.sshPrivateKey = privateKey;
-              settings.sshPassword = password;
-              settings.save();
+              var gitConfig = Provider.of<GitConfig>(context, listen: false);
+              gitConfig.sshPublicKey = publicKey;
+              gitConfig.sshPrivateKey = privateKey;
+              gitConfig.sshPassword = password;
+              gitConfig.save();
 
               setState(() {
                 this.publicKey = publicKey;
@@ -478,11 +479,11 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         DateTime.now().toIso8601String().substring(0, 10); // only the date
 
     generateSSHKeys(comment: comment).then((SshKey? sshKey) {
-      var settings = Provider.of<Settings>(context, listen: false);
-      settings.sshPublicKey = sshKey!.publicKey;
-      settings.sshPrivateKey = sshKey.privateKey;
-      settings.sshPassword = sshKey.password;
-      settings.save();
+      var gitConfig = Provider.of<GitConfig>(context, listen: false);
+      gitConfig.sshPublicKey = sshKey!.publicKey;
+      gitConfig.sshPrivateKey = sshKey.privateKey;
+      gitConfig.sshPassword = sshKey.password;
+      gitConfig.save();
 
       setState(() {
         publicKey = sshKey.publicKey;
@@ -555,7 +556,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     var repo = context.read<GitJournalRepo>();
     var basePath = repo.gitBaseDirectory;
 
-    var settings = Provider.of<Settings>(context, listen: false);
+    var gitConfig = Provider.of<GitConfig>(context, listen: false);
     var repoPath = p.join(basePath, widget.repoFolderName);
     Log.i("RepoPath: $repoPath");
 
@@ -563,11 +564,11 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       cloneUrl: _gitCloneUrl,
       remoteName: widget.remoteName,
       repoPath: repoPath,
-      sshPassword: settings.sshPassword,
-      sshPrivateKey: settings.sshPrivateKey,
-      sshPublicKey: settings.sshPublicKey,
-      authorEmail: settings.gitAuthorEmail,
-      authorName: settings.gitAuthor,
+      sshPassword: gitConfig.sshPassword,
+      sshPrivateKey: gitConfig.sshPrivateKey,
+      sshPublicKey: gitConfig.sshPublicKey,
+      authorEmail: gitConfig.gitAuthorEmail,
+      authorName: gitConfig.gitAuthor,
       progressUpdate: (GitTransferProgress p) {
         setState(() {
           _cloneProgress = p;
@@ -593,6 +594,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       parameters: _buildOnboardingAnalytics(),
     );
 
+    var settings = Provider.of<Settings>(context, listen: false);
     var folderName = folderNameFromCloneUrl(_gitCloneUrl);
     if (folderName != widget.repoFolderName) {
       var newRepoPath = p.join(basePath, folderName);
@@ -627,11 +629,11 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         // FIXME: Handle case when sshKey generation failed
         return;
       }
-      var settings = Provider.of<Settings>(context, listen: false);
-      settings.sshPublicKey = sshKey.publicKey;
-      settings.sshPrivateKey = sshKey.privateKey;
-      settings.sshPassword = sshKey.password;
-      settings.save();
+      var gitConfig = Provider.of<GitConfig>(context, listen: false);
+      gitConfig.sshPublicKey = sshKey.publicKey;
+      gitConfig.sshPrivateKey = sshKey.privateKey;
+      gitConfig.sshPassword = sshKey.password;
+      gitConfig.save();
 
       setState(() {
         publicKey = sshKey.publicKey;

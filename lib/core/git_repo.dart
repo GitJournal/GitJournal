@@ -11,7 +11,7 @@ import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings/app_settings.dart';
-import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/utils/git_desktop.dart';
 import 'package:gitjournal/utils/logger.dart';
 
@@ -20,11 +20,11 @@ bool useDartGit = false;
 class GitNoteRepository {
   final String gitDirPath;
   final gb.GitRepo _gitRepo;
-  final Settings settings;
+  final GitConfig config;
 
   GitNoteRepository({
     required this.gitDirPath,
-    required this.settings,
+    required this.config,
   }) : _gitRepo = gb.GitRepo(folderPath: gitDirPath) {
     // git-bindings aren't properly implemented in these platforms
     if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
@@ -79,8 +79,8 @@ class GitNoteRepository {
       try {
         await _gitRepo.commit(
           message: message,
-          authorEmail: settings.gitAuthorEmail,
-          authorName: settings.gitAuthor,
+          authorEmail: config.gitAuthorEmail,
+          authorName: config.gitAuthor,
         );
       } on Exception catch (ex, st) {
         return Result.fail(ex, st);
@@ -103,8 +103,8 @@ class GitNoteRepository {
 
     var res = await _commit(
       message: commitMessage,
-      authorEmail: settings.gitAuthorEmail,
-      authorName: settings.gitAuthor,
+      authorEmail: config.gitAuthorEmail,
+      authorName: config.gitAuthor,
     );
     if (res.isFailure) {
       return fail(r);
@@ -160,8 +160,8 @@ class GitNoteRepository {
       await _rm(spec).throwOnError();
       await _commit(
         message: "Removed Note " + spec,
-        authorEmail: settings.gitAuthorEmail,
-        authorName: settings.gitAuthor,
+        authorEmail: config.gitAuthorEmail,
+        authorName: config.gitAuthor,
       ).throwOnError();
 
       return Result(null);
@@ -174,8 +174,8 @@ class GitNoteRepository {
       await _rm(spec).throwOnError();
       await _commit(
         message: "Removed Folder " + spec,
-        authorEmail: settings.gitAuthorEmail,
-        authorName: settings.gitAuthor,
+        authorEmail: config.gitAuthorEmail,
+        authorName: config.gitAuthor,
       ).throwOnError();
 
       return Result(null);
@@ -216,9 +216,9 @@ class GitNoteRepository {
       try {
         await _gitRepo.fetch(
           remote: remoteName,
-          publicKey: settings.sshPublicKey,
-          privateKey: settings.sshPrivateKey,
-          password: settings.sshPassword,
+          publicKey: config.sshPublicKey,
+          privateKey: config.sshPrivateKey,
+          password: config.sshPassword,
           statusFile: p.join(Directory.systemTemp.path, 'gj'),
         );
       } on gb.GitException catch (ex, stackTrace) {
@@ -229,8 +229,8 @@ class GitNoteRepository {
       }
     } else if (Platform.isMacOS) {
       await gitPushViaExecutable(
-        privateKey: settings.sshPrivateKey,
-        privateKeyPassword: settings.sshPassword,
+        privateKey: config.sshPrivateKey,
+        privateKeyPassword: config.sshPassword,
         remoteName: remoteName,
         repoPath: gitDirPath,
       ).throwOnError();
@@ -263,8 +263,8 @@ class GitNoteRepository {
 
     if (useDartGit || AppSettings.instance.experimentalGitMerge) {
       var author = GitAuthor(
-        email: settings.gitAuthorEmail,
-        name: settings.gitAuthor,
+        email: config.gitAuthorEmail,
+        name: config.gitAuthor,
       );
       return repo.mergeCurrentTrackingBranch(author: author);
     }
@@ -272,8 +272,8 @@ class GitNoteRepository {
     try {
       await _gitRepo.merge(
         branch: branchConfig.remoteTrackingBranch(),
-        authorEmail: settings.gitAuthorEmail,
-        authorName: settings.gitAuthor,
+        authorEmail: config.gitAuthorEmail,
+        authorName: config.gitAuthor,
       );
     } on gb.GitException catch (ex, stackTrace) {
       Log.e("Git Merge Failed", ex: ex, stacktrace: stackTrace);
@@ -300,9 +300,9 @@ class GitNoteRepository {
       try {
         await _gitRepo.push(
           remote: remoteName,
-          publicKey: settings.sshPublicKey,
-          privateKey: settings.sshPrivateKey,
-          password: settings.sshPassword,
+          publicKey: config.sshPublicKey,
+          privateKey: config.sshPrivateKey,
+          password: config.sshPassword,
           statusFile: p.join(Directory.systemTemp.path, 'gj'),
         );
       } on gb.GitException catch (ex, stackTrace) {
@@ -316,8 +316,8 @@ class GitNoteRepository {
       }
     } else if (Platform.isMacOS) {
       await gitPushViaExecutable(
-        privateKey: settings.sshPrivateKey,
-        privateKeyPassword: settings.sshPassword,
+        privateKey: config.sshPrivateKey,
+        privateKeyPassword: config.sshPassword,
         remoteName: remoteName,
         repoPath: gitDirPath,
       ).throwOnError();

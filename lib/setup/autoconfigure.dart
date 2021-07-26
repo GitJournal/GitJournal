@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'button.dart';
 import 'error.dart';
@@ -65,14 +65,14 @@ class GitHostSetupAutoConfigurePageState
           });
 
           userInfo = await gitHost!.getUserInfo().getOrThrow();
-          var settings = Provider.of<Settings>(context, listen: false);
+          var gitConfig = Provider.of<GitConfig>(context, listen: false);
           if (userInfo.name.isNotEmpty) {
-            settings.gitAuthor = userInfo.name;
+            gitConfig.gitAuthor = userInfo.name;
           }
           if (userInfo.email.isNotEmpty) {
-            settings.gitAuthorEmail = userInfo.email;
+            gitConfig.gitAuthorEmail = userInfo.email;
           }
-          settings.save();
+          gitConfig.save();
         } on Exception catch (e, stacktrace) {
           _handleGitHostException(e, stacktrace);
           return;
