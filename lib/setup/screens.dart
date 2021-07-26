@@ -17,7 +17,7 @@ import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/git_config.dart';
-import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/setup/autoconfigure.dart';
 import 'package:gitjournal/setup/button.dart';
 import 'package:gitjournal/setup/clone.dart';
@@ -594,7 +594,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       parameters: _buildOnboardingAnalytics(),
     );
 
-    var settings = Provider.of<Settings>(context, listen: false);
+    var storageConfig = Provider.of<StorageConfig>(context, listen: false);
     var folderName = folderNameFromCloneUrl(_gitCloneUrl);
     if (folderName != widget.repoFolderName) {
       var newRepoPath = p.join(basePath, folderName);
@@ -608,7 +608,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       var repoPath = p.join(basePath, widget.repoFolderName);
       Log.i("Renaming $repoPath --> $newRepoPath");
       await Directory(repoPath).rename(newRepoPath);
-      settings.folderName = p.basename(newRepoPath);
+      storageConfig.folderName = p.basename(newRepoPath);
     }
 
     Log.i("calling onComplete $folderName ${widget.remoteName}");

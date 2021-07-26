@@ -8,7 +8,6 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter_runtime_env/flutter_runtime_env.dart';
-import 'package:gitjournal/settings/git_config.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -24,8 +23,10 @@ import 'package:gitjournal/iap/iap.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/settings/markdown_renderer_config.dart';
 import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/themes.dart';
 import 'package:gitjournal/utils/logger.dart';
 
@@ -296,7 +297,12 @@ class _JournalAppState extends State<JournalApp> {
     var stateContainer = Provider.of<GitJournalRepo>(context);
     var settings = Provider.of<Settings>(context);
     var appSettings = Provider.of<AppSettings>(context);
-    var router = AppRouter(settings: settings, appSettings: appSettings);
+    var storageConfig = Provider.of<StorageConfig>(context);
+    var router = AppRouter(
+      settings: settings,
+      appSettings: appSettings,
+      storageConfig: storageConfig,
+    );
 
     /*
     const FlexSchemeData customFlexScheme = FlexSchemeData(
@@ -375,13 +381,16 @@ class GitJournalChangeNotifiers extends StatelessWidget {
             child: Consumer<GitJournalRepo>(
               builder: (_, repo, __) => ChangeNotifierProvider<GitConfig>.value(
                 value: repo.gitConfig,
-                child: ChangeNotifierProvider<Settings>.value(
-                  value: repo.settings,
-                  child: Consumer<GitJournalRepo>(
-                    builder: (_, repo, __) =>
-                        ChangeNotifierProvider<NotesFolderFS>.value(
-                      value: repo.notesFolder,
-                      child: child,
+                child: ChangeNotifierProvider<StorageConfig>.value(
+                  value: repo.storageConfig,
+                  child: ChangeNotifierProvider<Settings>.value(
+                    value: repo.settings,
+                    child: Consumer<GitJournalRepo>(
+                      builder: (_, repo, __) =>
+                          ChangeNotifierProvider<NotesFolderFS>.value(
+                        value: repo.notesFolder,
+                        child: child,
+                      ),
                     ),
                   ),
                 ),

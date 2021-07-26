@@ -12,6 +12,7 @@ import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_widgets.dart';
+import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/setup/screens.dart';
 import 'package:gitjournal/setup/sshkey.dart';
 import 'package:gitjournal/ssh/keygen.dart';
@@ -227,10 +228,10 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     }
     repoFolderName = repoFolderName + num.toString();
 
-    var settings = Provider.of<Settings>(context, listen: false);
-    settings.folderName = repoFolderName;
-    settings.storeInternally = true;
-    await settings.save();
+    var storageConfig = Provider.of<StorageConfig>(context, listen: false);
+    storageConfig.folderName = repoFolderName;
+    storageConfig.storeInternally = true;
+    await storageConfig.save();
 
     var route = MaterialPageRoute(
       builder: (context) => GitHostSetupScreen(

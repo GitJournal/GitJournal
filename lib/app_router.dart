@@ -16,6 +16,7 @@ import 'package:gitjournal/screens/tag_listing.dart';
 import 'package:gitjournal/settings/app_settings.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
+import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/setup/screens.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/utils/utils.dart';
@@ -51,8 +52,13 @@ class AppRoute {
 class AppRouter {
   final AppSettings appSettings;
   final Settings settings;
+  final StorageConfig storageConfig;
 
-  AppRouter({required this.appSettings, required this.settings});
+  AppRouter({
+    required this.appSettings,
+    required this.settings,
+    required this.storageConfig,
+  });
 
   String initialRoute() {
     var route = '/';
@@ -81,7 +87,7 @@ class AppRouter {
         pageBuilder: (_, __, ___) => screenForRoute(
           route,
           repository,
-          settings,
+          storageConfig,
           sharedText,
           sharedImages,
           callbackIfUsedShared,
@@ -97,7 +103,7 @@ class AppRouter {
       builder: (context) => screenForRoute(
         route,
         repository,
-        settings,
+        storageConfig,
         sharedText,
         sharedImages,
         callbackIfUsedShared,
@@ -108,7 +114,7 @@ class AppRouter {
   Widget? screenForRoute(
     String route,
     GitJournalRepo repository,
-    Settings settings,
+    StorageConfig storageConfig,
     String sharedText,
     List<String> sharedImages,
     Function callbackIfUsedShared,
@@ -132,7 +138,7 @@ class AppRouter {
         return SignUpScreen();
       case AppRoute.SetupRemoteGit:
         return GitHostSetupScreen(
-          repoFolderName: settings.folderName,
+          repoFolderName: storageConfig.folderName,
           remoteName: "origin",
           onCompletedFunction: repository.completeGitHostSetup,
         );

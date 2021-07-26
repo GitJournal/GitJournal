@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 class RepositoryManager with ChangeNotifier {

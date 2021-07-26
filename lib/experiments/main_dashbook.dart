@@ -38,13 +38,17 @@ void main() async {
   await repoManager.buildActiveRepository();
   var repo = repoManager.currentRepo;
   var settings = repo.settings;
-  var appRouter = AppRouter(settings: settings, appSettings: appSettings);
+  var storageConfig = repo.storageConfig;
+  var appRouter = AppRouter(
+      settings: settings,
+      appSettings: appSettings,
+      storageConfig: storageConfig);
 
   for (var routeName in AppRoute.all) {
     dashbook.storiesOf(routeName).decorator(CenterDecorator()).add('all',
         (context) {
       return appRouter.screenForRoute(
-          routeName, repo, settings, "", [], () {})!;
+          routeName, repo, storageConfig, "", [], () {})!;
     });
   }
 

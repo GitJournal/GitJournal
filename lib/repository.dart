@@ -23,6 +23,7 @@ import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_migrations.dart';
+import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/utils/logger.dart';
 
 enum SyncStatus {
@@ -34,8 +35,9 @@ enum SyncStatus {
 }
 
 class GitJournalRepo with ChangeNotifier {
-  final Settings settings;
+  final StorageConfig storageConfig;
   final GitConfig gitConfig;
+  final Settings settings;
 
   final _opLock = Lock();
   final _loadLock = Lock();
@@ -71,26 +73,31 @@ class GitJournalRepo with ChangeNotifier {
   }) async {
     await migrateSettings(id, pref, gitBaseDir);
 
+    var storageConfig = StorageConfig(id);
+    storageConfig.load(pref);
+
     var settings = Settings(id);
     settings.load(pref);
-
-    logEvent(Event.Settings, parameters: settings.toLoggableMap());
-
-    Log.i("Setting ${settings.toLoggableMap()}");
 
     var gitConfig = GitConfig(id);
     gitConfig.load(pref);
 
-    var repoPath = await settings.buildRepoPath(gitBaseDir);
+    // logEvent(Event.Settings, parameters: settings.toLoggableMap());
+
+    Log.i("StorageConfig ${storageConfig.toLoggableMap()}");
+    Log.i("GitConfig ${gitConfig.toLoggableMap()}");
+    Log.i("Settings ${settings.toLoggableMap()}");
+
+    var repoPath = await storageConfig.buildRepoPath(gitBaseDir);
     Log.i("Loading Repo at path $repoPath");
 
     var repoDir = Directory(repoPath);
 
     if (!repoDir.existsSync()) {
-      Log.i("Calling GitInit for ${settings.folderName} at: $repoPath");
+      Log.i("Calling GitInit for ${storageConfig.folderName} at: $repoPath");
       await GitRepository.init(repoPath);
 
-      settings.save();
+      storageConfig.save();
     }
 
     var valid = await GitRepository.isValidRepo(repoPath);
@@ -111,6 +118,7 @@ class GitJournalRepo with ChangeNotifier {
       gitBaseDirectory: gitBaseDir,
       cacheDir: cacheDir,
       remoteGitRepoConfigured: remoteConfigured,
+      storageConfig: storageConfig,
       settings: settings,
       gitConfig: gitConfig,
       id: id,
@@ -123,6 +131,7 @@ class GitJournalRepo with ChangeNotifier {
     required this.repoPath,
     required this.gitBaseDirectory,
     required this.cacheDir,
+    required this.storageConfig,
     required this.settings,
     required this.gitConfig,
     required this.remoteGitRepoConfigured,
@@ -423,8 +432,8 @@ class GitJournalRepo with ChangeNotifier {
     remoteGitRepoConfigured = true;
     notesFolder.reset(repoPath);
 
-    settings.folderName = repoFolderName;
-    settings.save();
+    storageConfig.folderName = repoFolderName;
+    storageConfig.save();
 
     await _persistConfig();
     _loadNotes();
@@ -435,10 +444,12 @@ class GitJournalRepo with ChangeNotifier {
 
   Future _persistConfig() async {
     await settings.save();
+    await storageConfig.save();
+    await gitConfig.save();
   }
 
   Future<void> moveRepoToPath() async {
-    var newRepoPath = await settings.buildRepoPath(gitBaseDirectory);
+    var newRepoPath = await storageConfig.buildRepoPath(gitBaseDirectory);
 
     if (newRepoPath != repoPath) {
       Log.i("Old Path: $repoPath");

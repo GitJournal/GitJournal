@@ -15,13 +15,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import 'dart:io' show Platform;
-
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:icloud_documents_path/icloud_documents_path.dart';
-import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -31,7 +27,6 @@ import 'package:gitjournal/folder_views/common_types.dart';
 import 'settings_sharedpref.dart';
 
 const DEFAULT_ID = "0";
-const FOLDER_NAME_KEY = "remoteGitRepoPath";
 const SETTINGS_VERSION = 3;
 
 class Settings extends ChangeNotifier with SettingsSharedPref {
@@ -39,8 +34,6 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
 
   @override
   final String id;
-
-  String folderName = "journal";
 
   NoteFileNameFormat noteFileNameFormat = NoteFileNameFormat.Default;
   NoteFileNameFormat journalNoteFileNameFormat = NoteFileNameFormat.Default;
@@ -85,9 +78,6 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
   bool bottomMenuBar = true;
   bool confirmDelete = true;
   bool hardWrap = false;
-
-  bool storeInternally = true;
-  String storageLocation = "";
 
   void load(SharedPreferences pref) {
     noteFileNameFormat = NoteFileNameFormat.fromInternalString(
@@ -152,12 +142,8 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
         getStringSet(pref, "inlineTagPrefixes") ?? inlineTagPrefixes;
 
     // From AppState
-    folderName = getString(pref, FOLDER_NAME_KEY) ?? folderName;
-
     bottomMenuBar = getBool(pref, "bottomMenuBar") ?? bottomMenuBar;
     confirmDelete = getBool(pref, "confirmDelete") ?? confirmDelete;
-    storeInternally = getBool(pref, "storeInternally") ?? storeInternally;
-    storageLocation = getString(pref, "storageLocation") ?? "";
 
     hardWrap = getBool(pref, "hardWrap") ?? hardWrap;
   }
@@ -240,14 +226,8 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
         pref, "bottomMenuBar", bottomMenuBar, defaultSet.bottomMenuBar);
     await setBool(
         pref, "confirmDelete", confirmDelete, defaultSet.confirmDelete);
-    await setBool(
-        pref, "storeInternally", storeInternally, defaultSet.storeInternally);
-    await setString(
-        pref, "storageLocation", storageLocation, defaultSet.storageLocation);
 
     await setInt(pref, "settingsVersion", version, defaultSet.version);
-
-    await setString(pref, FOLDER_NAME_KEY, folderName, defaultSet.folderName);
 
     await setBool(pref, "hardWrap", hardWrap, defaultSet.hardWrap);
 
@@ -286,35 +266,9 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
       'swipeToDelete': swipeToDelete.toString(),
       'inlineTagPrefixes': inlineTagPrefixes.join(' '),
       'emojiParser': emojiParser.toString(),
-      'folderName': folderName.toString(),
       'bottomMenuBar': bottomMenuBar.toString(),
       'confirmDelete': confirmDelete.toString(),
-      'storeInternally': storeInternally.toString(),
-      'storageLocation': storageLocation,
     };
-  }
-
-  Future<String> buildRepoPath(String internalDir) async {
-    if (storeInternally) {
-      return p.join(internalDir, folderName);
-    }
-    if (Platform.isIOS) {
-      //
-      // iOS is strange as fuck and it seems if you don't call this function
-      // asking for the path, you won't be able to access the path
-      // So even though we have it stored in the settings, this method
-      // must be called
-      //
-      var basePath = await ICloudDocumentsPath.documentsPath;
-      if (basePath == null) {
-        // Go back to the normal path
-        return p.join(storageLocation, folderName);
-      }
-      assert(basePath == storageLocation);
-      return p.join(basePath, folderName);
-    }
-
-    return p.join(storageLocation, folderName);
   }
 }
 

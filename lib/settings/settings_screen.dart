@@ -50,6 +50,7 @@ import 'package:gitjournal/settings/settings_misc.dart';
 import 'package:gitjournal/settings/settings_note_metadata.dart';
 import 'package:gitjournal/settings/settings_tags.dart';
 import 'package:gitjournal/settings/settings_widgets.dart';
+import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
@@ -89,6 +90,7 @@ class SettingsListState extends State<SettingsList> {
   Widget build(BuildContext context) {
     var settings = Provider.of<Settings>(context);
     var gitConfig = Provider.of<GitConfig>(context);
+    var storageConfig = Provider.of<StorageConfig>(context);
     var appSettings = Provider.of<AppSettings>(context);
     final repo = Provider.of<GitJournalRepo>(context);
     var repoManager = Provider.of<RepositoryManager>(context);
@@ -343,13 +345,13 @@ class SettingsListState extends State<SettingsList> {
       if (Platform.isAndroid)
         SwitchListTile(
           title: Text(tr('settings.storage.external')),
-          value: !settings.storeInternally,
+          value: !storageConfig.storeInternally,
           onChanged: (bool newVal) async {
             Future<void> moveBackToInternal(bool showError) async {
-              settings.storeInternally = true;
-              settings.storageLocation = "";
+              storageConfig.storeInternally = true;
+              storageConfig.storageLocation = "";
 
-              settings.save();
+              storageConfig.save();
               setState(() {});
               await repo.moveRepoToPath();
 
@@ -372,10 +374,9 @@ class SettingsListState extends State<SettingsList> {
 
               Log.i("Moving repo to $path");
 
-              settings.storeInternally = false;
-              settings.storageLocation = p.join(path, "GitJournal");
-
-              settings.save();
+              storageConfig.storeInternally = false;
+              storageConfig.storageLocation = p.join(path, "GitJournal");
+              storageConfig.save();
               setState(() {});
 
               try {
@@ -393,22 +394,23 @@ class SettingsListState extends State<SettingsList> {
       if (Platform.isAndroid)
         ListTile(
           title: Text(tr('settings.storage.repoLocation')),
-          subtitle: Text(p.join(settings.storageLocation, settings.folderName)),
-          enabled: !settings.storeInternally,
+          subtitle: Text(
+              p.join(storageConfig.storageLocation, storageConfig.folderName)),
+          enabled: !storageConfig.storeInternally,
         ),
       if (Platform.isIOS)
         SwitchListTile(
           title: Text(tr('settings.storage.icloud')),
-          value: !settings.storeInternally,
+          value: !storageConfig.storeInternally,
           onChanged: (bool newVal) async {
             if (newVal == false) {
-              settings.storeInternally = true;
-              settings.storageLocation = "";
+              storageConfig.storeInternally = true;
+              storageConfig.storageLocation = "";
             } else {
-              settings.storageLocation =
+              storageConfig.storageLocation =
                   (await ICloudDocumentsPath.documentsPath)!;
-              if (settings.storageLocation.isNotEmpty) {
-                settings.storeInternally = false;
+              if (storageConfig.storageLocation.isNotEmpty) {
+                storageConfig.storeInternally = false;
               }
             }
             settings.save();
