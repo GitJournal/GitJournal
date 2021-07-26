@@ -19,7 +19,6 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 
-import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:icloud_documents_path/icloud_documents_path.dart';
 import 'package:path/path.dart' as p;
@@ -29,14 +28,16 @@ import 'package:uuid/uuid.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/folder_views/common_types.dart';
+import 'settings_sharedpref.dart';
 
 const DEFAULT_ID = "0";
 const FOLDER_NAME_KEY = "remoteGitRepoPath";
 const SETTINGS_VERSION = 3;
 
-class Settings extends ChangeNotifier {
+class Settings extends ChangeNotifier with SettingsSharedPref {
   Settings(this.id);
 
+  @override
   final String id;
 
   String folderName = "journal";
@@ -122,365 +123,265 @@ class Settings extends ChangeNotifier {
   String sshPassword = "";
 
   void load(SharedPreferences pref) {
-    gitAuthor = _getString(pref, "gitAuthor") ?? gitAuthor;
-    gitAuthorEmail = _getString(pref, "gitAuthorEmail") ?? gitAuthorEmail;
+    gitAuthor = getString(pref, "gitAuthor") ?? gitAuthor;
+    gitAuthorEmail = getString(pref, "gitAuthorEmail") ?? gitAuthorEmail;
 
     noteFileNameFormat = NoteFileNameFormat.fromInternalString(
-        _getString(pref, "noteFileNameFormat"));
+        getString(pref, "noteFileNameFormat"));
     journalNoteFileNameFormat = NoteFileNameFormat.fromInternalString(
-        _getString(pref, "journalNoteFileNameFormat"));
+        getString(pref, "journalNoteFileNameFormat"));
 
-    yamlModifiedKey = _getString(pref, "yamlModifiedKey") ?? yamlModifiedKey;
-    yamlCreatedKey = _getString(pref, "yamlCreatedKey") ?? yamlCreatedKey;
-    yamlTagsKey = _getString(pref, "yamlTagsKey") ?? yamlTagsKey;
-    customMetaData = _getString(pref, "customMetaData") ?? customMetaData;
+    yamlModifiedKey = getString(pref, "yamlModifiedKey") ?? yamlModifiedKey;
+    yamlCreatedKey = getString(pref, "yamlCreatedKey") ?? yamlCreatedKey;
+    yamlTagsKey = getString(pref, "yamlTagsKey") ?? yamlTagsKey;
+    customMetaData = getString(pref, "customMetaData") ?? customMetaData;
 
-    yamlHeaderEnabled =
-        _getBool(pref, "yamlHeaderEnabled") ?? yamlHeaderEnabled;
-    defaultNewNoteFolderSpec = _getString(pref, "defaultNewNoteFolderSpec") ??
-        defaultNewNoteFolderSpec;
+    yamlHeaderEnabled = getBool(pref, "yamlHeaderEnabled") ?? yamlHeaderEnabled;
+    defaultNewNoteFolderSpec =
+        getString(pref, "defaultNewNoteFolderSpec") ?? defaultNewNoteFolderSpec;
     journalEditordefaultNewNoteFolderSpec =
-        _getString(pref, "journalEditordefaultNewNoteFolderSpec") ??
+        getString(pref, "journalEditordefaultNewNoteFolderSpec") ??
             journalEditordefaultNewNoteFolderSpec;
     journalEditorSingleNote =
-        _getBool(pref, "journalEditorSingleNote") ?? journalEditorSingleNote;
+        getBool(pref, "journalEditorSingleNote") ?? journalEditorSingleNote;
 
     remoteSyncFrequency = RemoteSyncFrequency.fromInternalString(
-        _getString(pref, "remoteSyncFrequency"));
+        getString(pref, "remoteSyncFrequency"));
 
     sortingField =
-        SortingField.fromInternalString(_getString(pref, "sortingField"));
+        SortingField.fromInternalString(getString(pref, "sortingField"));
     sortingOrder =
-        SortingOrder.fromInternalString(_getString(pref, "sortingOrder"));
-    defaultEditor = SettingsEditorType.fromInternalString(
-        _getString(pref, "defaultEditor"));
+        SortingOrder.fromInternalString(getString(pref, "sortingOrder"));
+    defaultEditor =
+        SettingsEditorType.fromInternalString(getString(pref, "defaultEditor"));
     defaultView = SettingsFolderViewType.fromInternalString(
-        _getString(pref, "defaultView"));
+        getString(pref, "defaultView"));
 
     markdownDefaultView = SettingsMarkdownDefaultView.fromInternalString(
-        _getString(pref, "markdownDefaultView"));
+        getString(pref, "markdownDefaultView"));
     markdownLastUsedView = SettingsMarkdownDefaultView.fromInternalString(
-        _getString(pref, "markdownLastUsedView"));
+        getString(pref, "markdownLastUsedView"));
     if (markdownLastUsedView == SettingsMarkdownDefaultView.LastUsed) {
       markdownLastUsedView = SettingsMarkdownDefaultView.Edit;
     }
 
-    showNoteSummary = _getBool(pref, "showNoteSummary") ?? showNoteSummary;
+    showNoteSummary = getBool(pref, "showNoteSummary") ?? showNoteSummary;
     folderViewHeaderType =
-        _getString(pref, "folderViewHeaderType") ?? folderViewHeaderType;
+        getString(pref, "folderViewHeaderType") ?? folderViewHeaderType;
 
-    version = _getInt(pref, "settingsVersion") ?? version;
-    emojiParser = _getBool(pref, "emojiParser") ?? emojiParser;
+    version = getInt(pref, "settingsVersion") ?? version;
+    emojiParser = getBool(pref, "emojiParser") ?? emojiParser;
 
     homeScreen =
-        SettingsHomeScreen.fromInternalString(_getString(pref, "homeScreen"));
-    theme = SettingsTheme.fromInternalString(_getString(pref, "theme"));
+        SettingsHomeScreen.fromInternalString(getString(pref, "homeScreen"));
+    theme = SettingsTheme.fromInternalString(getString(pref, "theme"));
 
     // Display - Image
     rotateImageGestures =
-        _getBool(pref, "rotateImageGestures") ?? rotateImageGestures;
-    maxImageZoom = _getDouble(pref, "maxImageZoom") ?? maxImageZoom;
+        getBool(pref, "rotateImageGestures") ?? rotateImageGestures;
+    maxImageZoom = getDouble(pref, "maxImageZoom") ?? maxImageZoom;
 
     // Display - Image - Theming
     themeRasterGraphics =
-        _getBool(pref, "themeRasterGraphics") ?? themeRasterGraphics;
+        getBool(pref, "themeRasterGraphics") ?? themeRasterGraphics;
     themeOverrideTagLocation = SettingsImageTextType.fromInternalString(
-        _getString(pref, "themeOverrideTagLocation"));
-    doNotThemeTags = _getStringSet(pref, "doNotThemeTags") ?? doNotThemeTags;
-    doThemeTags = _getStringSet(pref, "doThemeTags") ?? doThemeTags;
+        getString(pref, "themeOverrideTagLocation"));
+    doNotThemeTags = getStringSet(pref, "doNotThemeTags") ?? doNotThemeTags;
+    doThemeTags = getStringSet(pref, "doThemeTags") ?? doThemeTags;
     themeVectorGraphics = SettingsThemeVectorGraphics.fromInternalString(
-        _getString(pref, "themeVectorGraphics"));
+        getString(pref, "themeVectorGraphics"));
     themeSvgWithBackground =
-        _getBool(pref, "themeSvgWithBackground") ?? themeSvgWithBackground;
-    matchCanvasColor = _getBool(pref, "matchCanvasColor") ?? matchCanvasColor;
+        getBool(pref, "themeSvgWithBackground") ?? themeSvgWithBackground;
+    matchCanvasColor = getBool(pref, "matchCanvasColor") ?? matchCanvasColor;
     vectorGraphicsAdjustColors =
         SettingsVectorGraphicsAdjustColors.fromInternalString(
-            _getString(pref, "vectorGraphicsAdjustColors"));
+            getString(pref, "vectorGraphicsAdjustColors"));
 
     // Display - Image - Caption
-    overlayCaption = _getBool(pref, "overlayCaption") ?? overlayCaption;
+    overlayCaption = getBool(pref, "overlayCaption") ?? overlayCaption;
     transparentCaption =
-        _getBool(pref, "transparentCaption") ?? transparentCaption;
-    blurBehindCaption =
-        _getBool(pref, "blurBehindCaption") ?? blurBehindCaption;
-    tooltipFirst = _getBool(pref, "tooltipFirst") ?? tooltipFirst;
+        getBool(pref, "transparentCaption") ?? transparentCaption;
+    blurBehindCaption = getBool(pref, "blurBehindCaption") ?? blurBehindCaption;
+    tooltipFirst = getBool(pref, "tooltipFirst") ?? tooltipFirst;
     useAsCaption = SettingsImageTextType.fromInternalString(
-        _getString(pref, "useAsCaption"));
+        getString(pref, "useAsCaption"));
     doNotCaptionTags =
-        _getStringSet(pref, "doNotCaptionTag") ?? doNotCaptionTags;
-    doCaptionTags = _getStringSet(pref, "doCaptionTag") ?? doCaptionTags;
+        getStringSet(pref, "doNotCaptionTag") ?? doNotCaptionTags;
+    doCaptionTags = getStringSet(pref, "doCaptionTag") ?? doCaptionTags;
 
     imageLocationSpec =
-        _getString(pref, "imageLocationSpec") ?? imageLocationSpec;
+        getString(pref, "imageLocationSpec") ?? imageLocationSpec;
 
-    zenMode = _getBool(pref, "zenMode") ?? zenMode;
+    zenMode = getBool(pref, "zenMode") ?? zenMode;
     titleSettings =
-        SettingsTitle.fromInternalString(_getString(pref, "titleSettings"));
-    swipeToDelete = _getBool(pref, "swipeToDelete") ?? swipeToDelete;
+        SettingsTitle.fromInternalString(getString(pref, "titleSettings"));
+    swipeToDelete = getBool(pref, "swipeToDelete") ?? swipeToDelete;
 
     inlineTagPrefixes =
-        _getStringList(pref, "inlineTagPrefixes")?.toSet() ?? inlineTagPrefixes;
+        getStringSet(pref, "inlineTagPrefixes") ?? inlineTagPrefixes;
 
     // From AppState
-    folderName = _getString(pref, FOLDER_NAME_KEY) ?? folderName;
+    folderName = getString(pref, FOLDER_NAME_KEY) ?? folderName;
 
-    sshPublicKey = _getString(pref, "sshPublicKey") ?? sshPublicKey;
-    sshPrivateKey = _getString(pref, "sshPrivateKey") ?? sshPrivateKey;
-    sshPassword = _getString(pref, "sshPassword") ?? sshPassword;
+    sshPublicKey = getString(pref, "sshPublicKey") ?? sshPublicKey;
+    sshPrivateKey = getString(pref, "sshPrivateKey") ?? sshPrivateKey;
+    sshPassword = getString(pref, "sshPassword") ?? sshPassword;
 
-    bottomMenuBar = _getBool(pref, "bottomMenuBar") ?? bottomMenuBar;
-    confirmDelete = _getBool(pref, "confirmDelete") ?? confirmDelete;
-    storeInternally = _getBool(pref, "storeInternally") ?? storeInternally;
-    storageLocation = _getString(pref, "storageLocation") ?? "";
+    bottomMenuBar = getBool(pref, "bottomMenuBar") ?? bottomMenuBar;
+    confirmDelete = getBool(pref, "confirmDelete") ?? confirmDelete;
+    storeInternally = getBool(pref, "storeInternally") ?? storeInternally;
+    storageLocation = getString(pref, "storageLocation") ?? "";
 
-    hardWrap = _getBool(pref, "hardWrap") ?? hardWrap;
-  }
-
-  String? _getString(SharedPreferences pref, String key) {
-    return pref.getString(id + '_' + key);
-  }
-
-  bool? _getBool(SharedPreferences pref, String key) {
-    return pref.getBool(id + '_' + key);
-  }
-
-  List<String>? _getStringList(SharedPreferences pref, String key) {
-    return pref.getStringList(id + '_' + key);
-  }
-
-  Set<String>? _getStringSet(SharedPreferences pref, String key) {
-    return _getStringList(pref, key)?.toSet();
-  }
-
-  int? _getInt(SharedPreferences pref, String key) {
-    return pref.getInt(id + '_' + key);
-  }
-
-  double? _getDouble(SharedPreferences pref, String key) {
-    return pref.getDouble(id + '_' + key);
+    hardWrap = getBool(pref, "hardWrap") ?? hardWrap;
   }
 
   Future<void> save() async {
     var pref = await SharedPreferences.getInstance();
     var defaultSet = Settings(id);
 
-    await _setString(pref, "gitAuthor", gitAuthor, defaultSet.gitAuthor);
-    await _setString(
+    await setString(pref, "gitAuthor", gitAuthor, defaultSet.gitAuthor);
+    await setString(
         pref, "gitAuthorEmail", gitAuthorEmail, defaultSet.gitAuthorEmail);
-    await _setString(
+    await setString(
         pref,
         "noteFileNameFormat",
         noteFileNameFormat.toInternalString(),
         defaultSet.noteFileNameFormat.toInternalString());
-    await _setString(
+    await setString(
         pref,
         "journalNoteFileNameFormat",
         journalNoteFileNameFormat.toInternalString(),
         defaultSet.journalNoteFileNameFormat.toInternalString());
-    await _setString(
+    await setString(
         pref, "yamlModifiedKey", yamlModifiedKey, defaultSet.yamlModifiedKey);
-    await _setString(
+    await setString(
         pref, "yamlCreatedKey", yamlCreatedKey, defaultSet.yamlCreatedKey);
-    await _setString(pref, "yamlTagsKey", yamlTagsKey, defaultSet.yamlTagsKey);
-    await _setString(
+    await setString(pref, "yamlTagsKey", yamlTagsKey, defaultSet.yamlTagsKey);
+    await setString(
         pref, "customMetaData", customMetaData, defaultSet.customMetaData);
-    await _setBool(pref, "yamlHeaderEnabled", yamlHeaderEnabled,
+    await setBool(pref, "yamlHeaderEnabled", yamlHeaderEnabled,
         defaultSet.yamlHeaderEnabled);
-    await _setString(pref, "defaultNewNoteFolderSpec", defaultNewNoteFolderSpec,
+    await setString(pref, "defaultNewNoteFolderSpec", defaultNewNoteFolderSpec,
         defaultSet.defaultNewNoteFolderSpec);
-    await _setString(
+    await setString(
         pref,
         "journalEditordefaultNewNoteFolderSpec",
         journalEditordefaultNewNoteFolderSpec,
         defaultSet.journalEditordefaultNewNoteFolderSpec);
-    await _setBool(pref, "journalEditorSingleNote", journalEditorSingleNote,
+    await setBool(pref, "journalEditorSingleNote", journalEditorSingleNote,
         defaultSet.journalEditorSingleNote);
-    await _setString(
+    await setString(
         pref,
         "remoteSyncFrequency",
         remoteSyncFrequency.toInternalString(),
         defaultSet.remoteSyncFrequency.toInternalString());
-    await _setString(pref, "sortingField", sortingField.toInternalString(),
+    await setString(pref, "sortingField", sortingField.toInternalString(),
         defaultSet.sortingField.toInternalString());
-    await _setString(pref, "sortingOrder", sortingOrder.toInternalString(),
+    await setString(pref, "sortingOrder", sortingOrder.toInternalString(),
         defaultSet.sortingOrder.toInternalString());
-    await _setString(pref, "defaultEditor", defaultEditor.toInternalString(),
+    await setString(pref, "defaultEditor", defaultEditor.toInternalString(),
         defaultSet.defaultEditor.toInternalString());
-    await _setString(pref, "defaultView", defaultView.toInternalString(),
+    await setString(pref, "defaultView", defaultView.toInternalString(),
         defaultSet.defaultView.toInternalString());
-    await _setString(
+    await setString(
         pref,
         "markdownDefaultView",
         markdownDefaultView.toInternalString(),
         defaultSet.markdownDefaultView.toInternalString());
-    await _setString(
+    await setString(
         pref,
         "markdownLastUsedView",
         markdownLastUsedView.toInternalString(),
         defaultSet.markdownLastUsedView.toInternalString());
-    await _setBool(
+    await setBool(
         pref, "showNoteSummary", showNoteSummary, defaultSet.showNoteSummary);
-    await _setString(pref, "folderViewHeaderType", folderViewHeaderType,
+    await setString(pref, "folderViewHeaderType", folderViewHeaderType,
         defaultSet.folderViewHeaderType);
-    await _setBool(pref, "emojiParser", emojiParser, defaultSet.emojiParser);
-    await _setString(pref, "homeScreen", homeScreen.toInternalString(),
+    await setBool(pref, "emojiParser", emojiParser, defaultSet.emojiParser);
+    await setString(pref, "homeScreen", homeScreen.toInternalString(),
         defaultSet.homeScreen.toInternalString());
-    await _setString(pref, "theme", theme.toInternalString(),
+    await setString(pref, "theme", theme.toInternalString(),
         defaultSet.theme.toInternalString());
 
     // Display - Image
-    await _setBool(pref, "rotateImageGestures", rotateImageGestures,
+    await setBool(pref, "rotateImageGestures", rotateImageGestures,
         defaultSet.rotateImageGestures);
-    await _setDouble(
+    await setDouble(
         pref, "maxImageZoom", maxImageZoom, defaultSet.maxImageZoom);
 
     // Display - Image - Theme
-    await _setBool(pref, "themeRasterGraphics", themeRasterGraphics,
+    await setBool(pref, "themeRasterGraphics", themeRasterGraphics,
         defaultSet.themeRasterGraphics);
-    await _setString(
+    await setString(
         pref,
         "themeOverrideTagLocation",
         themeOverrideTagLocation.toInternalString(),
         defaultSet.themeOverrideTagLocation.toInternalString());
-    await _setStringSet(
+    await setStringSet(
         pref, "doNotThemeTags", doNotThemeTags, defaultSet.doNotThemeTags);
-    await _setStringSet(
+    await setStringSet(
         pref, "doThemeTags", doThemeTags, defaultSet.doThemeTags);
-    await _setString(
+    await setString(
         pref,
         "themeVectorGraphics",
         themeVectorGraphics.toInternalString(),
         defaultSet.themeVectorGraphics.toInternalString());
-    await _setBool(pref, "themeSvgWithBackground", themeSvgWithBackground,
+    await setBool(pref, "themeSvgWithBackground", themeSvgWithBackground,
         defaultSet.themeSvgWithBackground);
-    await _setBool(pref, "matchCanvasColor", matchCanvasColor,
+    await setBool(pref, "matchCanvasColor", matchCanvasColor,
         defaultSet.matchCanvasColor);
-    await _setString(
+    await setString(
         pref,
         "vectorGraphicsAdjustColors",
         vectorGraphicsAdjustColors.toInternalString(),
         defaultSet.vectorGraphicsAdjustColors.toInternalString());
 
     // Display - Image - Caption
-    await _setBool(
+    await setBool(
         pref, "overlayCaption", overlayCaption, defaultSet.overlayCaption);
-    await _setBool(pref, "transparentCaption", transparentCaption,
+    await setBool(pref, "transparentCaption", transparentCaption,
         defaultSet.transparentCaption);
-    await _setBool(pref, "blurBehindCaption", blurBehindCaption,
+    await setBool(pref, "blurBehindCaption", blurBehindCaption,
         defaultSet.blurBehindCaption);
-    await _setBool(pref, "tooltipFirst", tooltipFirst, defaultSet.tooltipFirst);
-    await _setString(pref, "useAsCaption", useAsCaption.toInternalString(),
+    await setBool(pref, "tooltipFirst", tooltipFirst, defaultSet.tooltipFirst);
+    await setString(pref, "useAsCaption", useAsCaption.toInternalString(),
         defaultSet.useAsCaption.toInternalString());
-    await _setStringSet(
+    await setStringSet(
         pref, "doNotCaptionTag", doNotCaptionTags, defaultSet.doNotCaptionTags);
-    await _setStringSet(
+    await setStringSet(
         pref, "doCaptionTag", doCaptionTags, defaultSet.doCaptionTags);
 
-    await _setString(pref, "imageLocationSpec", imageLocationSpec,
+    await setString(pref, "imageLocationSpec", imageLocationSpec,
         defaultSet.imageLocationSpec);
-    await _setBool(pref, "zenMode", zenMode, defaultSet.zenMode);
-    await _setString(pref, "titleSettings", titleSettings.toInternalString(),
+    await setBool(pref, "zenMode", zenMode, defaultSet.zenMode);
+    await setString(pref, "titleSettings", titleSettings.toInternalString(),
         defaultSet.titleSettings.toInternalString());
-    await _setBool(
+    await setBool(
         pref, "swipeToDelete", swipeToDelete, defaultSet.swipeToDelete);
-    await _setStringSet(pref, "inlineTagPrefixes", inlineTagPrefixes,
+    await setStringSet(pref, "inlineTagPrefixes", inlineTagPrefixes,
         defaultSet.inlineTagPrefixes);
-    await _setBool(
+    await setBool(
         pref, "bottomMenuBar", bottomMenuBar, defaultSet.bottomMenuBar);
-    await _setBool(
+    await setBool(
         pref, "confirmDelete", confirmDelete, defaultSet.confirmDelete);
-    await _setBool(
+    await setBool(
         pref, "storeInternally", storeInternally, defaultSet.storeInternally);
-    await _setString(
+    await setString(
         pref, "storageLocation", storageLocation, defaultSet.storageLocation);
 
-    await _setString(
+    await setString(
         pref, "sshPublicKey", sshPublicKey, defaultSet.sshPublicKey);
-    await _setString(
+    await setString(
         pref, "sshPrivateKey", sshPrivateKey, defaultSet.sshPrivateKey);
-    await _setString(pref, "sshPassword", sshPassword, defaultSet.sshPassword);
+    await setString(pref, "sshPassword", sshPassword, defaultSet.sshPassword);
 
-    await _setInt(pref, "settingsVersion", version, defaultSet.version);
+    await setInt(pref, "settingsVersion", version, defaultSet.version);
 
-    await _setString(pref, FOLDER_NAME_KEY, folderName, defaultSet.folderName);
+    await setString(pref, FOLDER_NAME_KEY, folderName, defaultSet.folderName);
 
-    await _setBool(pref, "hardWrap", hardWrap, defaultSet.hardWrap);
+    await setBool(pref, "hardWrap", hardWrap, defaultSet.hardWrap);
 
     notifyListeners();
-  }
-
-  Future<void> _setString(
-    SharedPreferences pref,
-    String key,
-    String value,
-    String? defaultValue,
-  ) async {
-    key = id + '_' + key;
-    if (value == defaultValue) {
-      await pref.remove(key);
-    } else {
-      await pref.setString(key, value);
-    }
-  }
-
-  Future<void> _setBool(
-    SharedPreferences pref,
-    String key,
-    bool value,
-    bool defaultValue,
-  ) async {
-    key = id + '_' + key;
-    if (value == defaultValue) {
-      await pref.remove(key);
-    } else {
-      await pref.setBool(key, value);
-    }
-  }
-
-  Future<void> _setInt(
-    SharedPreferences pref,
-    String key,
-    int value,
-    int defaultValue,
-  ) async {
-    key = id + '_' + key;
-    if (value == defaultValue) {
-      await pref.remove(key);
-    } else {
-      await pref.setInt(key, value);
-    }
-  }
-
-  Future<void> _setDouble(
-    SharedPreferences pref,
-    String key,
-    double value,
-    double defaultValue,
-  ) async {
-    key = id + '_' + key;
-    if (value == defaultValue) {
-      await pref.remove(key);
-    } else {
-      await pref.setDouble(key, value);
-    }
-  }
-
-  Future<void> _setStringSet(
-    SharedPreferences pref,
-    String key,
-    Set<String> value,
-    Set<String> defaultValue,
-  ) async {
-    key = id + '_' + key;
-
-    final bool Function(Set<dynamic>, Set<dynamic>) eq =
-        const SetEquality().equals;
-
-    if (eq(value, defaultValue)) {
-      await pref.remove(key);
-    } else {
-      await pref.setStringList(key, value.toList());
-    }
   }
 
   Map<String, String> toLoggableMap() {
