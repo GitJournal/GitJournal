@@ -71,7 +71,10 @@ class NoteTile extends StatelessWidget {
       borderRadius: borderRadius,
       type: MaterialType.card,
       child: InkWell(
-        child: tileContent,
+        child: Hero(
+          tag: note.filePath,
+          child: tileContent,
+        ),
         borderRadius: borderRadius,
         onTap: () => noteTapped(note),
         onLongPress: () => noteLongPressed(note),
