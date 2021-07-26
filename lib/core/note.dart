@@ -240,8 +240,10 @@ class Note with NotesNotifier {
   }
 
   set title(String title) {
-    _title = title;
-    _notifyModified();
+    if (title != _title) {
+      _title = title;
+      _notifyModified();
+    }
   }
 
   NoteType get type {
@@ -251,8 +253,10 @@ class Note with NotesNotifier {
   set type(NoteType type) {
     if (!canHaveMetadata) return;
 
-    _type = type;
-    _notifyModified();
+    if (type != _type) {
+      _type = type;
+      _notifyModified();
+    }
   }
 
   Set<String> get tags {
