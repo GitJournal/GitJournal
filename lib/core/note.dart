@@ -116,7 +116,8 @@ class Note with NotesNotifier {
   static final _linksLoader = LinksLoader();
 
   Note(this.parent, this._filePath) {
-    noteSerializer = NoteSerializer.fromConfig(parent.config);
+    var settings = NoteSerializationSettings.fromConfig(parent.config);
+    noteSerializer = NoteSerializer.fromConfig(settings);
   }
 
   Note.newNote(
@@ -127,7 +128,8 @@ class Note with NotesNotifier {
     created = DateTime.now();
     _loadState = NoteLoadState.Loaded;
     _fileFormat = NoteFileFormat.Markdown;
-    noteSerializer = NoteSerializer.fromConfig(parent.config);
+    var settings = NoteSerializationSettings.fromConfig(parent.config);
+    noteSerializer = NoteSerializer.fromConfig(settings);
 
     if (extraProps.isNotEmpty) {
       extraProps.forEach((key, value) {

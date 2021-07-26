@@ -211,8 +211,9 @@ class NoteOutputExample extends StatelessWidget {
     var settings = Provider.of<Settings>(context);
 
     var doc = MdYamlDoc();
-    NoteSerializer.fromConfig(NotesFolderConfig.fromSettings(null, settings))
-        .encode(note, doc);
+    var folderConfig = NotesFolderConfig.fromSettings(null, settings);
+    var serialSettings = NoteSerializationSettings.fromConfig(folderConfig);
+    NoteSerializer.fromConfig(serialSettings).encode(note, doc);
 
     var codec = MarkdownYAMLCodec();
     var noteStr = codec.encode(doc);

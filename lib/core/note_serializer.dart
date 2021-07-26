@@ -44,18 +44,20 @@ class NoteSerializationSettings {
   bool tagsHaveHash = false;
 
   SettingsTitle titleSettings = SettingsTitle.Default;
+
+  NoteSerializationSettings.fromConfig(NotesFolderConfig config) {
+    modifiedKey = config.yamlModifiedKey;
+    createdKey = config.yamlCreatedKey;
+    tagsKey = config.yamlTagsKey;
+    titleSettings = config.titleSettings;
+  }
+  NoteSerializationSettings();
 }
 
 class NoteSerializer implements NoteSerializerInterface {
   var settings = NoteSerializationSettings();
 
-  NoteSerializer.fromConfig(NotesFolderConfig config) {
-    settings.modifiedKey = config.yamlModifiedKey;
-    settings.createdKey = config.yamlCreatedKey;
-    settings.tagsKey = config.yamlTagsKey;
-    settings.titleSettings = config.titleSettings;
-  }
-
+  NoteSerializer.fromConfig(this.settings);
   NoteSerializer.raw();
 
   @override
