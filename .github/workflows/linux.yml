@@ -1,0 +1,23 @@
+name: Linux App
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  AppImage:
+    runs-on: ubuntu-latest
+    container: vhanda/flutter-android:latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Build
+        run: ./scripts/build_linux.sh
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v2
+        with:
+          name: AppImage
+          path: GitJournal-latest-x86_64.AppImage
