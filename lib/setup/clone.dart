@@ -25,6 +25,10 @@ class GitTransferProgress {
     var parts = str.split(' ');
     print('GitTransferProgress: #$str#');
 
+    if (parts.length < 7) {
+      return null;
+    }
+
     var tp = GitTransferProgress();
     tp.totalObjects = int.parse(parts[0]);
     tp.indexedObjects = int.parse(parts[1]);
