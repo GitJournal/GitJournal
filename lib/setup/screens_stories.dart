@@ -134,6 +134,7 @@ Widget repoSelector() {
 }
 
 Widget cloning() {
+  print(_cloneProgress);
   return Padding(
     padding: const EdgeInsets.all(16.0),
     child: GitHostCloningPage(
