@@ -23,6 +23,7 @@ import 'package:gitjournal/setup/button.dart';
 import 'package:gitjournal/setup/clone.dart';
 import 'package:gitjournal/setup/clone_auto_select.dart';
 import 'package:gitjournal/setup/clone_url.dart';
+import 'package:gitjournal/setup/cloning.dart';
 import 'package:gitjournal/setup/loading_error.dart';
 import 'package:gitjournal/setup/repo_selector.dart';
 import 'package:gitjournal/setup/sshkey.dart';
@@ -291,7 +292,6 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     if (pos == 4) {
       if (_pageChoice[0] == PageChoice0.CustomProvider) {
         return GitHostCloningPage(
-          loadingMessage: tr('setup.cloning'),
           errorMessage: gitCloneErrorMessage,
           cloneProgress: _cloneProgress,
         );
