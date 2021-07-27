@@ -21,3 +21,4 @@ jobs:
         with:
           name: AppImage
           path: GitJournal-latest-x86_64.AppImage
+          if-no-files-found: error
