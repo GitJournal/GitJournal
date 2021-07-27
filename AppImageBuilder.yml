@@ -10,7 +10,7 @@ AppDir:
     - cp -r build/linux/x64/release/bundle/lib/. AppDir/lib
     - cp -r build/linux/x64/release/bundle/data AppDir
     - cp assets/icon/icon.svg AppDir/usr/share/icons/gitjournal.svg
-  path: /home/vishesh/src/journal/AppDir
+  path: /root/journal/AppDir
   app_info:
     id: io.gitjournal.gitjournal
     name: GitJournal
@@ -22,19 +22,10 @@ AppDir:
     arch: [x86_64]
     allow_unauthenticated: true
     sources:
-    - sourceline: deb http://es.archive.ubuntu.com/ubuntu/ focal main restricted
-    - sourceline: deb http://es.archive.ubuntu.com/ubuntu/ focal-updates main restricted
-    - sourceline: deb http://es.archive.ubuntu.com/ubuntu/ focal universe
-    - sourceline: deb http://es.archive.ubuntu.com/ubuntu/ focal-updates universe
-    - sourceline: deb http://es.archive.ubuntu.com/ubuntu/ focal multiverse
-    - sourceline: deb http://es.archive.ubuntu.com/ubuntu/ focal-updates multiverse
-    - sourceline: deb http://es.archive.ubuntu.com/ubuntu/ focal-backports main restricted
-        universe multiverse
-    - sourceline: deb http://security.ubuntu.com/ubuntu focal-security main restricted
-    - sourceline: deb http://security.ubuntu.com/ubuntu focal-security universe
-    - sourceline: deb http://security.ubuntu.com/ubuntu focal-security multiverse
-    include:
-    - libgtk-3-0
+    - sourceline: deb http://deb.debian.org/debian buster main
+    - sourceline: deb http://security.debian.org/debian-security buster/updates main
+    - sourceline: deb http://deb.debian.org/debian buster-updates main
+    include: []
     exclude:
     - humanity-icon-theme
     - hicolor-icon-theme
@@ -51,27 +42,6 @@ AppDir:
   runtime:
     env:
       GIO_MODULE_DIR: $APPDIR/usr/lib/x86_64-linux-gnu/gio/modules/
-  test:
-    fedora-30:
-      image: appimagecrafters/tests-env:fedora-30
-      command: ./AppRun
-      use_host_x: true
-    debian-stable:
-      image: appimagecrafters/tests-env:debian-stable
-      command: ./AppRun
-      use_host_x: true
-    archlinux-latest:
-      image: appimagecrafters/tests-env:archlinux-latest
-      command: ./AppRun
-      use_host_x: true
-    centos-7:
-      image: appimagecrafters/tests-env:centos-7
-      command: ./AppRun
-      use_host_x: true
-    ubuntu-xenial:
-      image: appimagecrafters/tests-env:ubuntu-xenial
-      command: ./AppRun
-      use_host_x: true
 AppImage:
   arch: x86_64
   update-information: guess
