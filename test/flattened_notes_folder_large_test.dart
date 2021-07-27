@@ -6,8 +6,8 @@ import 'package:test/test.dart';
 
 import 'package:gitjournal/core/flattened_notes_folder.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/settings/settings.dart';
 
 void main() {
   group('Flattened Notes Folder Large Test', () {
@@ -24,7 +24,7 @@ void main() {
         await _writeRandomNote(random, tempDir.path);
       }
 
-      rootFolder = NotesFolderFS(null, tempDir.path, Settings(''));
+      rootFolder = NotesFolderFS(null, tempDir.path, NotesFolderConfig(''));
       await rootFolder.loadRecursively();
     });
 
@@ -56,7 +56,7 @@ Future<void> _writeRandomNote(Random random, String dirPath) async {
     }
   }
 
-  var note = Note(NotesFolderFS(null, dirPath, Settings('')), path);
+  var note = Note(NotesFolderFS(null, dirPath, NotesFolderConfig('')), path);
   note.modified = DateTime(2014, 1, 1 + (random.nextInt(2000)));
   note.body = "p1";
   await note.save();

@@ -137,6 +137,8 @@ class MarkdownRendererConfig extends ChangeNotifier with SettingsSharedPref {
         pref, "doNotCaptionTag", doNotCaptionTags, defaultSet.doNotCaptionTags);
     await setStringSet(
         pref, "doCaptionTag", doCaptionTags, defaultSet.doCaptionTags);
+
+    notifyListeners();
   }
 
   Map<String, String> toLoggableMap() {

@@ -31,6 +31,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/repository.dart';
@@ -183,6 +184,7 @@ class SettingsListState extends State<SettingsList> {
     }
 
     var easyLocale = EasyLocalization.of(context)!;
+    var folderConfig = Provider.of<NotesFolderConfig>(context);
 
     return ListView(children: [
       SettingsHeader(tr('settings.display.title')),
@@ -296,13 +298,13 @@ class SettingsListState extends State<SettingsList> {
       SettingsHeader(tr('settings.storage.title')),
       ListPreference(
         title: tr('settings.note.newNoteFileName'),
-        currentOption: settings.noteFileNameFormat.toPublicString(),
+        currentOption: folderConfig.fileNameFormat.toPublicString(),
         options:
             NoteFileNameFormat.options.map((f) => f.toPublicString()).toList(),
         onChange: (String publicStr) {
           var format = NoteFileNameFormat.fromPublicString(publicStr);
-          settings.noteFileNameFormat = format;
-          settings.save();
+          folderConfig.fileNameFormat = format;
+          folderConfig.save();
           setState(() {});
         },
       ),

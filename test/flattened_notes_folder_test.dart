@@ -6,8 +6,8 @@ import 'package:test/test.dart';
 
 import 'package:gitjournal/core/flattened_notes_folder.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/settings/settings.dart';
 
 void main() {
   var random = Random(DateTime.now().millisecondsSinceEpoch);
@@ -30,7 +30,7 @@ void main() {
     setUp(() async {
       tempDir = await Directory.systemTemp.createTemp('__sorted_folder_test__');
 
-      rootFolder = NotesFolderFS(null, tempDir.path, Settings(''));
+      rootFolder = NotesFolderFS(null, tempDir.path, NotesFolderConfig(''));
 
       for (var i = 0; i < 3; i++) {
         var note = Note(rootFolder, _getRandomFilePath(rootFolder.folderPath));
@@ -43,8 +43,8 @@ void main() {
       Directory(p.join(tempDir.path, "sub1", "p1")).createSync();
       Directory(p.join(tempDir.path, "sub2")).createSync();
 
-      var sub1Folder =
-          NotesFolderFS(rootFolder, p.join(tempDir.path, "sub1"), Settings(''));
+      var sub1Folder = NotesFolderFS(
+          rootFolder, p.join(tempDir.path, "sub1"), NotesFolderConfig(''));
       for (var i = 0; i < 2; i++) {
         var note = Note(
           sub1Folder,
@@ -55,8 +55,8 @@ void main() {
         await note.save();
       }
 
-      var sub2Folder =
-          NotesFolderFS(rootFolder, p.join(tempDir.path, "sub2"), Settings(''));
+      var sub2Folder = NotesFolderFS(
+          rootFolder, p.join(tempDir.path, "sub2"), NotesFolderConfig(''));
       for (var i = 0; i < 2; i++) {
         var note = Note(
           sub2Folder,
@@ -67,8 +67,8 @@ void main() {
         await note.save();
       }
 
-      var p1Folder = NotesFolderFS(
-          sub1Folder, p.join(tempDir.path, "sub1", "p1"), Settings(''));
+      var p1Folder = NotesFolderFS(sub1Folder,
+          p.join(tempDir.path, "sub1", "p1"), NotesFolderConfig(''));
       for (var i = 0; i < 2; i++) {
         var note = Note(
           p1Folder,

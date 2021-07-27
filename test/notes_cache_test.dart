@@ -4,8 +4,8 @@ import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
 import 'package:gitjournal/core/notes_cache.dart';
+import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/settings/settings.dart';
 
 void main() {
   group('Notes Cache', () {
@@ -25,7 +25,7 @@ void main() {
       cache = NotesCache(
         filePath: cacheFilePath,
         notesBasePath: '/base',
-        settings: Settings(''),
+        folderConfig: NotesFolderConfig(''),
       );
     });
 
@@ -45,7 +45,7 @@ void main() {
 
     test('Should create directory structure accurately', () async {
       await cache.saveToDisk(fileList);
-      var rootFolder = NotesFolderFS(null, '/base', Settings(''));
+      var rootFolder = NotesFolderFS(null, '/base', NotesFolderConfig(''));
       await cache.load(rootFolder);
 
       expect(rootFolder.subFolders.length, 2);

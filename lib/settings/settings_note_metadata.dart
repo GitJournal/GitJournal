@@ -57,8 +57,9 @@ class _NoteMetadataSettingsScreenState
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     var settings = Provider.of<Settings>(context);
+    var folderConfig = Provider.of<NotesFolderConfig>(context);
 
-    var parent = NotesFolderFS(null, '', settings);
+    var parent = NotesFolderFS(null, '', folderConfig);
     var note = Note(parent, "fileName.md");
     note.title = tr("settings.noteMetaData.exampleTitle");
     note.body = tr("settings.noteMetaData.exampleBody");
@@ -94,15 +95,16 @@ class _NoteMetadataSettingsScreenState
         const Divider(),
         SwitchListTile(
           title: Text(tr("settings.noteMetaData.enableHeader")),
-          value: settings.yamlHeaderEnabled,
+          value: folderConfig.yamlHeaderEnabled,
           onChanged: (bool newVal) {
             setState(() {
-              settings.yamlHeaderEnabled = newVal;
-              var titleInYaml = settings.titleSettings == SettingsTitle.InYaml;
+              folderConfig.yamlHeaderEnabled = newVal;
+              var titleInYaml =
+                  folderConfig.titleSettings == SettingsTitle.InYaml;
               if (newVal == false && titleInYaml) {
-                settings.titleSettings = SettingsTitle.Default;
+                folderConfig.titleSettings = SettingsTitle.Default;
               }
-              settings.save();
+              folderConfig.save();
             });
           },
         ),
@@ -115,14 +117,14 @@ class _NoteMetadataSettingsScreenState
             "lastmod",
             "updated",
           ],
-          currentOption: settings.yamlModifiedKey,
+          currentOption: folderConfig.yamlModifiedKey,
           onChange: (String newVal) {
             setState(() {
-              settings.yamlModifiedKey = newVal;
-              settings.save();
+              folderConfig.yamlModifiedKey = newVal;
+              folderConfig.save();
             });
           },
-          enabled: settings.yamlHeaderEnabled,
+          enabled: folderConfig.yamlHeaderEnabled,
         ),
         ListPreference(
           title: tr("settings.noteMetaData.created"),
@@ -130,14 +132,14 @@ class _NoteMetadataSettingsScreenState
             "created",
             "date",
           ],
-          currentOption: settings.yamlCreatedKey,
+          currentOption: folderConfig.yamlCreatedKey,
           onChange: (String newVal) {
             setState(() {
-              settings.yamlCreatedKey = newVal;
-              settings.save();
+              folderConfig.yamlCreatedKey = newVal;
+              folderConfig.save();
             });
           },
-          enabled: settings.yamlHeaderEnabled,
+          enabled: folderConfig.yamlHeaderEnabled,
         ),
         ListPreference(
           title: tr("settings.noteMetaData.tags"),
@@ -146,24 +148,24 @@ class _NoteMetadataSettingsScreenState
             "categories",
             "keywords",
           ],
-          currentOption: settings.yamlTagsKey,
+          currentOption: folderConfig.yamlTagsKey,
           onChange: (String newVal) {
             setState(() {
-              settings.yamlTagsKey = newVal;
-              settings.save();
+              folderConfig.yamlTagsKey = newVal;
+              folderConfig.save();
             });
           },
-          enabled: settings.yamlHeaderEnabled,
+          enabled: folderConfig.yamlHeaderEnabled,
         ),
         ListPreference(
           title: tr("settings.noteMetaData.titleMetaData.title"),
           options:
               SettingsTitle.options.map((f) => f.toPublicString()).toList(),
-          currentOption: settings.titleSettings.toPublicString(),
+          currentOption: folderConfig.titleSettings.toPublicString(),
           onChange: (String publicStr) {
             var format = SettingsTitle.fromPublicString(publicStr);
-            settings.titleSettings = format;
-            settings.save();
+            folderConfig.titleSettings = format;
+            folderConfig.save();
             setState(() {});
           },
         ),
@@ -208,10 +210,8 @@ class NoteOutputExample extends StatelessWidget {
     var style = theme.textTheme.subtitle1!;
     style = style.copyWith(fontFamily: "Roboto Mono");
 
-    var settings = Provider.of<Settings>(context);
-
     var doc = MdYamlDoc();
-    var folderConfig = NotesFolderConfig.fromSettings(null, settings);
+    var folderConfig = Provider.of<NotesFolderConfig>(context);
     var serialSettings = NoteSerializationSettings.fromConfig(folderConfig);
     NoteSerializer.fromConfig(serialSettings).encode(note, doc);
 

@@ -11,7 +11,6 @@ import 'package:gitjournal/folder_views/grid_view.dart';
 import 'package:gitjournal/folder_views/journal_view.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/screens/note_editor.dart';
-import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'common_types.dart';
@@ -98,8 +97,8 @@ void openNoteEditor(
 bool openNewNoteEditor(BuildContext context, String term) {
   var rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
   var parentFolder = rootFolder;
-  var settings = Provider.of<Settings>(context, listen: false);
-  var defaultEditor = settings.defaultEditor.toEditorType();
+  var folderConfig = Provider.of<NotesFolderConfig>(context, listen: false);
+  var defaultEditor = folderConfig.defaultEditor.toEditorType();
 
   var fileName = term;
   if (fileName.contains(p.separator)) {

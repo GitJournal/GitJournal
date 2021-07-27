@@ -40,7 +40,7 @@ class VirtualNotesFolder with NotesFolderNotifier implements NotesFolder {
 
   @override
   NotesFolderConfig get config {
-    // fixme: This isn't expecting null!
-    return NotesFolderConfig.fromSettings(null, settings);
+    // FIXME: This isn't expecting null!
+    return NotesFolderConfig('_');
   }
 }

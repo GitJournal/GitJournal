@@ -67,7 +67,7 @@ class _FolderViewState extends State<FolderView> {
       sortingMode: widget.notesFolder.config.sortingMode,
     );
 
-    _viewType = widget.notesFolder.config.defaultView;
+    _viewType = widget.notesFolder.config.defaultView.toFolderViewType();
     _showSummary = widget.notesFolder.config.showNoteSummary;
     _headerType = widget.notesFolder.config.viewHeader;
   }
@@ -160,7 +160,8 @@ class _FolderViewState extends State<FolderView> {
   Widget build(BuildContext context) {
     var createButton = FloatingActionButton(
       key: const ValueKey("FAB"),
-      onPressed: () => _newPost(widget.notesFolder.config.defaultEditor),
+      onPressed: () =>
+          _newPost(widget.notesFolder.config.defaultEditor.toEditorType()),
       child: const Icon(Icons.add),
     );
 
@@ -250,12 +251,10 @@ class _FolderViewState extends State<FolderView> {
     );
 
     if (newSortingMode != null) {
-      var config = sortedNotesFolder.config.copyWith(
-        sortingMode: newSortingMode,
-      );
-
-      var settings = Provider.of<Settings>(context, listen: false);
-      config.saveToSettings(settings);
+      var folderConfig = sortedNotesFolder.config;
+      folderConfig.sortingField = newSortingMode.field;
+      folderConfig.sortingOrder = newSortingMode.order;
+      folderConfig.save();
 
       setState(() {
         sortedNotesFolder.changeSortingMode(newSortingMode);
@@ -275,12 +274,9 @@ class _FolderViewState extends State<FolderView> {
             _headerType = newHeader;
           });
 
-          var config = sortedNotesFolder.config.copyWith(
-            viewHeader: _headerType,
-          );
-
-          var settings = Provider.of<Settings>(context, listen: false);
-          config.saveToSettings(settings);
+          var folderConfig = sortedNotesFolder.config;
+          folderConfig.viewHeader = _headerType;
+          folderConfig.save();
         };
 
         var summaryChanged = (bool newVal) {
@@ -288,12 +284,9 @@ class _FolderViewState extends State<FolderView> {
             _showSummary = newVal;
           });
 
-          var config = sortedNotesFolder.config.copyWith(
-            showNoteSummary: newVal,
-          );
-
-          var settings = Provider.of<Settings>(context, listen: false);
-          config.saveToSettings(settings);
+          var folderConfig = sortedNotesFolder.config;
+          folderConfig.showNoteSummary = newVal;
+          folderConfig.save();
         };
 
         return StatefulBuilder(
@@ -417,12 +410,10 @@ class _FolderViewState extends State<FolderView> {
         _viewType = newViewType;
       });
 
-      var config = widget.notesFolder.config.copyWith(
-        defaultView: newViewType,
-      );
-
-      var settings = Provider.of<Settings>(context, listen: false);
-      config.saveToSettings(settings);
+      var folderConfig = widget.notesFolder.config;
+      folderConfig.defaultView =
+          SettingsFolderViewType.fromFolderViewType(newViewType);
+      folderConfig.save();
     }
   }
 

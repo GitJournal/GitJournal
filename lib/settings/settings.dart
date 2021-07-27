@@ -21,7 +21,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/folder_views/common_types.dart';
 import 'settings_sharedpref.dart';
@@ -34,28 +33,13 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
 
   @override
   final String id;
-
-  var noteFileNameFormat = NoteFileNameFormat.Default;
-  var journalNoteFileNameFormat = NoteFileNameFormat.Default;
-
-  var yamlModifiedKey = "modified";
-  var yamlCreatedKey = "created";
-  var yamlTagsKey = "tags";
   String customMetaData = "";
-  var titleSettings = SettingsTitle.Default;
 
-  var yamlHeaderEnabled = true;
   String defaultNewNoteFolderSpec = "";
   String journalEditordefaultNewNoteFolderSpec = "";
   bool journalEditorSingleNote = false;
 
   RemoteSyncFrequency remoteSyncFrequency = RemoteSyncFrequency.Default;
-  var sortingField = SortingField.Default;
-  var sortingOrder = SortingOrder.Default;
-  var defaultEditor = SettingsEditorType.Default;
-  var defaultView = SettingsFolderViewType.Default;
-  var showNoteSummary = true;
-  var folderViewHeaderType = "TitleGenerated";
 
   int version = SETTINGS_VERSION;
 
@@ -67,31 +51,16 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
   SettingsMarkdownDefaultView markdownLastUsedView =
       SettingsMarkdownDefaultView.Edit;
 
-  var imageLocationSpec = "."; // . means the same folder
-
   bool zenMode = false;
 
   bool swipeToDelete = true;
   bool emojiParser = true;
-
-  var inlineTagPrefixes = {'#'};
 
   bool bottomMenuBar = true;
   bool confirmDelete = true;
   bool hardWrap = false;
 
   void load(SharedPreferences pref) {
-    noteFileNameFormat = NoteFileNameFormat.fromInternalString(
-        getString(pref, "noteFileNameFormat"));
-    journalNoteFileNameFormat = NoteFileNameFormat.fromInternalString(
-        getString(pref, "journalNoteFileNameFormat"));
-
-    yamlModifiedKey = getString(pref, "yamlModifiedKey") ?? yamlModifiedKey;
-    yamlCreatedKey = getString(pref, "yamlCreatedKey") ?? yamlCreatedKey;
-    yamlTagsKey = getString(pref, "yamlTagsKey") ?? yamlTagsKey;
-    customMetaData = getString(pref, "customMetaData") ?? customMetaData;
-
-    yamlHeaderEnabled = getBool(pref, "yamlHeaderEnabled") ?? yamlHeaderEnabled;
     defaultNewNoteFolderSpec =
         getString(pref, "defaultNewNoteFolderSpec") ?? defaultNewNoteFolderSpec;
     journalEditordefaultNewNoteFolderSpec =
@@ -103,15 +72,6 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
     remoteSyncFrequency = RemoteSyncFrequency.fromInternalString(
         getString(pref, "remoteSyncFrequency"));
 
-    sortingField =
-        SortingField.fromInternalString(getString(pref, "sortingField"));
-    sortingOrder =
-        SortingOrder.fromInternalString(getString(pref, "sortingOrder"));
-    defaultEditor =
-        SettingsEditorType.fromInternalString(getString(pref, "defaultEditor"));
-    defaultView = SettingsFolderViewType.fromInternalString(
-        getString(pref, "defaultView"));
-
     markdownDefaultView = SettingsMarkdownDefaultView.fromInternalString(
         getString(pref, "markdownDefaultView"));
     markdownLastUsedView = SettingsMarkdownDefaultView.fromInternalString(
@@ -120,10 +80,6 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
       markdownLastUsedView = SettingsMarkdownDefaultView.Edit;
     }
 
-    showNoteSummary = getBool(pref, "showNoteSummary") ?? showNoteSummary;
-    folderViewHeaderType =
-        getString(pref, "folderViewHeaderType") ?? folderViewHeaderType;
-
     version = getInt(pref, "settingsVersion") ?? version;
     emojiParser = getBool(pref, "emojiParser") ?? emojiParser;
 
@@ -131,16 +87,8 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
         SettingsHomeScreen.fromInternalString(getString(pref, "homeScreen"));
     theme = SettingsTheme.fromInternalString(getString(pref, "theme"));
 
-    imageLocationSpec =
-        getString(pref, "imageLocationSpec") ?? imageLocationSpec;
-
     zenMode = getBool(pref, "zenMode") ?? zenMode;
-    titleSettings =
-        SettingsTitle.fromInternalString(getString(pref, "titleSettings"));
     swipeToDelete = getBool(pref, "swipeToDelete") ?? swipeToDelete;
-
-    inlineTagPrefixes =
-        getStringSet(pref, "inlineTagPrefixes") ?? inlineTagPrefixes;
 
     // From AppState
     bottomMenuBar = getBool(pref, "bottomMenuBar") ?? bottomMenuBar;
@@ -153,25 +101,6 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
     var pref = await SharedPreferences.getInstance();
     var defaultSet = Settings(id);
 
-    await setString(
-        pref,
-        "noteFileNameFormat",
-        noteFileNameFormat.toInternalString(),
-        defaultSet.noteFileNameFormat.toInternalString());
-    await setString(
-        pref,
-        "journalNoteFileNameFormat",
-        journalNoteFileNameFormat.toInternalString(),
-        defaultSet.journalNoteFileNameFormat.toInternalString());
-    await setString(
-        pref, "yamlModifiedKey", yamlModifiedKey, defaultSet.yamlModifiedKey);
-    await setString(
-        pref, "yamlCreatedKey", yamlCreatedKey, defaultSet.yamlCreatedKey);
-    await setString(pref, "yamlTagsKey", yamlTagsKey, defaultSet.yamlTagsKey);
-    await setString(
-        pref, "customMetaData", customMetaData, defaultSet.customMetaData);
-    await setBool(pref, "yamlHeaderEnabled", yamlHeaderEnabled,
-        defaultSet.yamlHeaderEnabled);
     await setString(pref, "defaultNewNoteFolderSpec", defaultNewNoteFolderSpec,
         defaultSet.defaultNewNoteFolderSpec);
     await setString(
@@ -186,14 +115,6 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
         "remoteSyncFrequency",
         remoteSyncFrequency.toInternalString(),
         defaultSet.remoteSyncFrequency.toInternalString());
-    await setString(pref, "sortingField", sortingField.toInternalString(),
-        defaultSet.sortingField.toInternalString());
-    await setString(pref, "sortingOrder", sortingOrder.toInternalString(),
-        defaultSet.sortingOrder.toInternalString());
-    await setString(pref, "defaultEditor", defaultEditor.toInternalString(),
-        defaultSet.defaultEditor.toInternalString());
-    await setString(pref, "defaultView", defaultView.toInternalString(),
-        defaultSet.defaultView.toInternalString());
     await setString(
         pref,
         "markdownDefaultView",
@@ -204,25 +125,15 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
         "markdownLastUsedView",
         markdownLastUsedView.toInternalString(),
         defaultSet.markdownLastUsedView.toInternalString());
-    await setBool(
-        pref, "showNoteSummary", showNoteSummary, defaultSet.showNoteSummary);
-    await setString(pref, "folderViewHeaderType", folderViewHeaderType,
-        defaultSet.folderViewHeaderType);
     await setBool(pref, "emojiParser", emojiParser, defaultSet.emojiParser);
     await setString(pref, "homeScreen", homeScreen.toInternalString(),
         defaultSet.homeScreen.toInternalString());
     await setString(pref, "theme", theme.toInternalString(),
         defaultSet.theme.toInternalString());
 
-    await setString(pref, "imageLocationSpec", imageLocationSpec,
-        defaultSet.imageLocationSpec);
     await setBool(pref, "zenMode", zenMode, defaultSet.zenMode);
-    await setString(pref, "titleSettings", titleSettings.toInternalString(),
-        defaultSet.titleSettings.toInternalString());
     await setBool(
         pref, "swipeToDelete", swipeToDelete, defaultSet.swipeToDelete);
-    await setStringSet(pref, "inlineTagPrefixes", inlineTagPrefixes,
-        defaultSet.inlineTagPrefixes);
     await setBool(
         pref, "bottomMenuBar", bottomMenuBar, defaultSet.bottomMenuBar);
     await setBool(
@@ -237,35 +148,20 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
 
   Map<String, String> toLoggableMap() {
     return <String, String>{
-      "noteFileNameFormat": noteFileNameFormat.toInternalString(),
-      "journalNoteFileNameFormat": journalNoteFileNameFormat.toInternalString(),
-      "yamlModifiedKey": yamlModifiedKey,
-      "yamlCreatedKey": yamlCreatedKey,
-      "yamlTagsKey": yamlTagsKey,
       "customMetaData": customMetaData,
-      "yamlHeaderEnabled": yamlHeaderEnabled.toString(),
       "defaultNewNoteFolderSpec":
           defaultNewNoteFolderSpec.isNotEmpty.toString(),
       "journalEditordefaultNewNoteFolderSpec":
           journalEditordefaultNewNoteFolderSpec,
       'journalEditorSingleNote': journalEditorSingleNote.toString(),
-      "defaultEditor": defaultEditor.toInternalString(),
-      "defaultView": defaultView.toInternalString(),
-      "sortingField": sortingField.toInternalString(),
-      "sortingOrder": sortingOrder.toInternalString(),
       "remoteSyncFrequency": remoteSyncFrequency.toInternalString(),
-      "showNoteSummary": showNoteSummary.toString(),
-      "folderViewHeaderType": folderViewHeaderType,
       "version": version.toString(),
       'markdownDefaultView': markdownDefaultView.toInternalString(),
       'markdownLastUsedView': markdownLastUsedView.toInternalString(),
       'homeScreen': homeScreen.toInternalString(),
       'theme': theme.toInternalString(),
-      'imageLocationSpec': imageLocationSpec,
       'zenMode': zenMode.toString(),
-      'titleSettings': titleSettings.toInternalString(),
       'swipeToDelete': swipeToDelete.toString(),
-      'inlineTagPrefixes': inlineTagPrefixes.join(' '),
       'emojiParser': emojiParser.toString(),
       'bottomMenuBar': bottomMenuBar.toString(),
       'confirmDelete': confirmDelete.toString(),

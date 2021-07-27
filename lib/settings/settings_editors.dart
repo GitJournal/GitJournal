@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/settings/settings.dart';
@@ -21,6 +22,7 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
   @override
   Widget build(BuildContext context) {
     var settings = Provider.of<Settings>(context);
+    var folderConfig = Provider.of<NotesFolderConfig>(context);
     var defaultNewFolder = settings.journalEditordefaultNewNoteFolderSpec;
     if (defaultNewFolder.isEmpty) {
       defaultNewFolder = tr("rootFolder");
@@ -38,13 +40,13 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
     var body = ListView(children: <Widget>[
       ListPreference(
         title: tr("settings.editors.defaultEditor"),
-        currentOption: settings.defaultEditor.toPublicString(),
+        currentOption: folderConfig.defaultEditor.toPublicString(),
         options:
             SettingsEditorType.options.map((f) => f.toPublicString()).toList(),
         onChange: (String publicStr) {
           var val = SettingsEditorType.fromPublicString(publicStr);
-          settings.defaultEditor = val;
-          settings.save();
+          folderConfig.defaultEditor = val;
+          folderConfig.save();
           setState(() {});
         },
       ),
@@ -97,14 +99,14 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
         feature: Feature.singleJournalEntry,
         child: ListPreference(
           title: tr('settings.note.newNoteFileName'),
-          currentOption: settings.journalNoteFileNameFormat.toPublicString(),
+          currentOption: folderConfig.journalFileNameFormat.toPublicString(),
           options: NoteFileNameFormat.options
               .map((f) => f.toPublicString())
               .toList(),
           onChange: (String publicStr) {
             var format = NoteFileNameFormat.fromPublicString(publicStr);
-            settings.journalNoteFileNameFormat = format;
-            settings.save();
+            folderConfig.journalFileNameFormat = format;
+            folderConfig.save();
             setState(() {});
           },
         ),

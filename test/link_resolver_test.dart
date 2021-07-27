@@ -4,8 +4,8 @@ import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
 import 'package:gitjournal/core/link.dart';
+import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
 
 void main() {
@@ -15,7 +15,7 @@ void main() {
   setUpAll(() async {
     tempDir = await Directory.systemTemp.createTemp('__link_resolver__');
 
-    rootFolder = NotesFolderFS(null, tempDir.path, Settings(''));
+    rootFolder = NotesFolderFS(null, tempDir.path, NotesFolderConfig(''));
 
     await generateNote(tempDir.path, "Hello.md");
     await generateNote(tempDir.path, "Fire.md");

@@ -36,6 +36,8 @@ class GitConfig extends ChangeNotifier with SettingsSharedPref {
     await setString(
         pref, "sshPrivateKey", sshPrivateKey, defaultSet.sshPrivateKey);
     await setString(pref, "sshPassword", sshPassword, defaultSet.sshPassword);
+
+    notifyListeners();
   }
 
   Map<String, String> toLoggableMap() {

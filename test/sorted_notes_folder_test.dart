@@ -5,10 +5,10 @@ import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/sorted_notes_folder.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
-import 'package:gitjournal/settings/settings.dart';
 
 void main() {
   group('Sorted Notes Folder Test', () {
@@ -18,7 +18,7 @@ void main() {
     setUp(() async {
       tempDir = await Directory.systemTemp.createTemp('__sorted_folder_test__');
 
-      folder = NotesFolderFS(null, tempDir.path, Settings(''));
+      folder = NotesFolderFS(null, tempDir.path, NotesFolderConfig(''));
 
       var random = Random();
       for (var i = 0; i < 5; i++) {
@@ -122,7 +122,7 @@ void main() {
     });
 
     test('If still sorted while loading the notes', () async {
-      var folder = NotesFolderFS(null, tempDir.path, Settings(''));
+      var folder = NotesFolderFS(null, tempDir.path, NotesFolderConfig(''));
       var sf = SortedNotesFolder(
         folder: folder,
         sortingMode:

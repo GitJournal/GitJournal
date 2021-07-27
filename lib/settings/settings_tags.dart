@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
 
 class SettingsTagsScreen extends StatefulWidget {
@@ -14,49 +14,49 @@ class SettingsTagsScreen extends StatefulWidget {
 class SettingsTagsScreenState extends State<SettingsTagsScreen> {
   @override
   Widget build(BuildContext context) {
-    var settings = Provider.of<Settings>(context);
+    var folderConfig = Provider.of<NotesFolderConfig>(context);
 
     var body = ListView(children: <Widget>[
       SettingsHeader(tr("settings.tags.prefixes")),
       SwitchListTile(
         title: const Text('#'),
-        value: settings.inlineTagPrefixes.contains('#'),
+        value: folderConfig.inlineTagPrefixes.contains('#'),
         onChanged: (bool newVal) {
           setState(() {
             if (newVal) {
-              settings.inlineTagPrefixes.add('#');
+              folderConfig.inlineTagPrefixes.add('#');
             } else {
-              settings.inlineTagPrefixes.remove('#');
+              folderConfig.inlineTagPrefixes.remove('#');
             }
-            settings.save();
+            folderConfig.save();
           });
         },
       ),
       SwitchListTile(
         title: const Text('@'),
-        value: settings.inlineTagPrefixes.contains('@'),
+        value: folderConfig.inlineTagPrefixes.contains('@'),
         onChanged: (bool newVal) {
           setState(() {
             if (newVal) {
-              settings.inlineTagPrefixes.add('@');
+              folderConfig.inlineTagPrefixes.add('@');
             } else {
-              settings.inlineTagPrefixes.remove('@');
+              folderConfig.inlineTagPrefixes.remove('@');
             }
-            settings.save();
+            folderConfig.save();
           });
         },
       ),
       SwitchListTile(
         title: const Text('+'),
-        value: settings.inlineTagPrefixes.contains('+'),
+        value: folderConfig.inlineTagPrefixes.contains('+'),
         onChanged: (bool newVal) {
           setState(() {
             if (newVal) {
-              settings.inlineTagPrefixes.add('+');
+              folderConfig.inlineTagPrefixes.add('+');
             } else {
-              settings.inlineTagPrefixes.remove('+');
+              folderConfig.inlineTagPrefixes.remove('+');
             }
-            settings.save();
+            folderConfig.save();
           });
         },
       ),

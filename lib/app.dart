@@ -18,6 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/app_router.dart';
+import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/iap/iap.dart';
 import 'package:gitjournal/repository.dart';
@@ -243,8 +244,8 @@ class _JournalAppState extends State<JournalApp> {
         return;
       }
 
-      var settings = Provider.of<Settings>(context, listen: false);
-      var editor = settings.defaultEditor.toInternalString();
+      var folderConfig = Provider.of<NotesFolderConfig>(context, listen: false);
+      var editor = folderConfig.defaultEditor.toInternalString();
       _navigatorKey.currentState!.pushNamed("/newNote/$editor");
     };
 
@@ -385,11 +386,14 @@ class GitJournalChangeNotifiers extends StatelessWidget {
                   value: repo.storageConfig,
                   child: ChangeNotifierProvider<Settings>.value(
                     value: repo.settings,
-                    child: Consumer<GitJournalRepo>(
-                      builder: (_, repo, __) =>
-                          ChangeNotifierProvider<NotesFolderFS>.value(
-                        value: repo.notesFolder,
-                        child: child,
+                    child: ChangeNotifierProvider<NotesFolderConfig>.value(
+                      value: repo.folderConfig,
+                      child: Consumer<GitJournalRepo>(
+                        builder: (_, repo, __) =>
+                            ChangeNotifierProvider<NotesFolderFS>.value(
+                          value: repo.notesFolder,
+                          child: child,
+                        ),
                       ),
                     ),
                   ),

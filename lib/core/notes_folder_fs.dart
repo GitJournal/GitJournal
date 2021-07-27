@@ -6,7 +6,6 @@ import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 import 'package:synchronized/synchronized.dart';
 
-import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'note.dart';
 import 'notes_folder.dart';
@@ -38,9 +37,9 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   List<IgnoredFile> _ignoredFiles = [];
 
   Map<String, dynamic> _entityMap = {};
-  Settings settings;
+  NotesFolderConfig _config;
 
-  NotesFolderFS(this._parent, this._folderPath, this.settings);
+  NotesFolderFS(this._parent, this._folderPath, this._config);
 
   @override
   void dispose() {
@@ -228,7 +227,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       }
 
       if (fsEntity is Directory) {
-        var subFolder = NotesFolderFS(this, fsEntity.path, settings);
+        var subFolder = NotesFolderFS(this, fsEntity.path, _config);
         if (subFolder.name.startsWith('.')) {
           // Log.v("Ignoring Folder", props: {
           //   "path": fsEntity.path,
@@ -499,9 +498,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   }
 
   @override
-  NotesFolderConfig get config {
-    return NotesFolderConfig.fromSettings(this, settings);
-  }
+  NotesFolderConfig get config => _config;
 
   SplayTreeSet<String> getNoteTagsRecursively() {
     return _fetchTags(this, SplayTreeSet<String>());

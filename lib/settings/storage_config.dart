@@ -35,6 +35,8 @@ class StorageConfig extends ChangeNotifier with SettingsSharedPref {
         pref, "storeInternally", storeInternally, defaultSet.storeInternally);
     await setString(
         pref, "storageLocation", storageLocation, defaultSet.storageLocation);
+
+    notifyListeners();
   }
 
   Map<String, String> toLoggableMap() {

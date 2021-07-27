@@ -1,167 +1,167 @@
-import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/foundation.dart';
 
-import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:gitjournal/core/sorting_mode.dart';
-import 'package:gitjournal/editors/common_types.dart';
-import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/settings_sharedpref.dart';
 
-@immutable
-class NotesFolderConfig extends Equatable {
-  final SortingMode sortingMode;
-  final EditorType defaultEditor;
-  final FolderViewType defaultView;
-
-  final StandardViewHeader viewHeader;
-  final bool showNoteSummary;
-  final NoteFileNameFormat fileNameFormat;
-  final NoteFileNameFormat journalFileNameFormat;
-  final bool yamlHeaderEnabled;
-  //int _version = 1;
-
-  final String yamlModifiedKey;
-  final String yamlCreatedKey;
-  final String yamlTagsKey;
-  final SettingsTitle titleSettings;
-
-  final Set<String> inlineTagPrefixes;
-  final String imageLocationSpec;
-
-  NotesFolderConfig({
-    required this.sortingMode,
-    required this.defaultEditor,
-    required this.defaultView,
-    required this.viewHeader,
-    required this.showNoteSummary,
-    required this.fileNameFormat,
-    required this.journalFileNameFormat,
-    required this.yamlHeaderEnabled,
-    required this.yamlModifiedKey,
-    required this.yamlCreatedKey,
-    required this.yamlTagsKey,
-    required this.titleSettings,
-    required this.inlineTagPrefixes,
-    required this.imageLocationSpec,
-  });
+class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
+  NotesFolderConfig(this.id);
 
   @override
-  List<Object> get props => [
-        sortingMode,
-        defaultEditor,
-        defaultView,
-        viewHeader,
-        fileNameFormat,
-        journalFileNameFormat,
-        yamlHeaderEnabled,
-        yamlModifiedKey,
-        yamlCreatedKey,
-        yamlTagsKey,
-        titleSettings,
-        inlineTagPrefixes,
-        imageLocationSpec,
-      ];
+  final String id;
 
-  static NotesFolderConfig fromSettings(
-      NotesFolderFS? folder, Settings settings) {
-    late StandardViewHeader viewHeader;
-    switch (settings.folderViewHeaderType) {
+  var sortingField = SortingField.Default;
+  var sortingOrder = SortingOrder.Default;
+
+  var defaultEditor = SettingsEditorType.Default;
+  var defaultView = SettingsFolderViewType.Default;
+
+  var folderViewHeaderType = "TitleGenerated";
+  var showNoteSummary = true;
+  var fileNameFormat = NoteFileNameFormat.Default;
+  var journalFileNameFormat = NoteFileNameFormat.Default;
+
+  var yamlHeaderEnabled = true;
+
+  var yamlModifiedKey = "modified";
+  var yamlCreatedKey = "created";
+  var yamlTagsKey = "tags";
+  var titleSettings = SettingsTitle.Default;
+
+  var inlineTagPrefixes = {'#'};
+  var imageLocationSpec = "."; // . means the same folder
+
+  void load(SharedPreferences pref) {
+    fileNameFormat = NoteFileNameFormat.fromInternalString(
+        getString(pref, "noteFileNameFormat"));
+    journalFileNameFormat = NoteFileNameFormat.fromInternalString(
+        getString(pref, "journalNoteFileNameFormat"));
+
+    yamlModifiedKey = getString(pref, "yamlModifiedKey") ?? yamlModifiedKey;
+    yamlCreatedKey = getString(pref, "yamlCreatedKey") ?? yamlCreatedKey;
+    yamlTagsKey = getString(pref, "yamlTagsKey") ?? yamlTagsKey;
+
+    yamlHeaderEnabled = getBool(pref, "yamlHeaderEnabled") ?? yamlHeaderEnabled;
+
+    sortingField =
+        SortingField.fromInternalString(getString(pref, "sortingField"));
+    sortingOrder =
+        SortingOrder.fromInternalString(getString(pref, "sortingOrder"));
+    defaultEditor =
+        SettingsEditorType.fromInternalString(getString(pref, "defaultEditor"));
+    defaultView = SettingsFolderViewType.fromInternalString(
+        getString(pref, "defaultView"));
+
+    showNoteSummary = getBool(pref, "showNoteSummary") ?? showNoteSummary;
+    folderViewHeaderType =
+        getString(pref, "folderViewHeaderType") ?? folderViewHeaderType;
+
+    imageLocationSpec =
+        getString(pref, "imageLocationSpec") ?? imageLocationSpec;
+
+    titleSettings =
+        SettingsTitle.fromInternalString(getString(pref, "titleSettings"));
+
+    inlineTagPrefixes =
+        getStringSet(pref, "inlineTagPrefixes") ?? inlineTagPrefixes;
+  }
+
+  Future<void> save() async {
+    var pref = await SharedPreferences.getInstance();
+    var defaultSet = NotesFolderConfig(id);
+
+    await setString(
+        pref,
+        "noteFileNameFormat",
+        fileNameFormat.toInternalString(),
+        defaultSet.fileNameFormat.toInternalString());
+    await setString(
+        pref,
+        "journalNoteFileNameFormat",
+        journalFileNameFormat.toInternalString(),
+        defaultSet.journalFileNameFormat.toInternalString());
+
+    await setString(pref, "sortingField", sortingField.toInternalString(),
+        defaultSet.sortingField.toInternalString());
+    await setString(pref, "sortingOrder", sortingOrder.toInternalString(),
+        defaultSet.sortingOrder.toInternalString());
+    await setString(pref, "defaultEditor", defaultEditor.toInternalString(),
+        defaultSet.defaultEditor.toInternalString());
+    await setString(pref, "defaultView", defaultView.toInternalString(),
+        defaultSet.defaultView.toInternalString());
+    await setBool(
+        pref, "showNoteSummary", showNoteSummary, defaultSet.showNoteSummary);
+    await setString(pref, "folderViewHeaderType", folderViewHeaderType,
+        defaultSet.folderViewHeaderType);
+
+    await setBool(pref, "yamlHeaderEnabled", yamlHeaderEnabled,
+        defaultSet.yamlHeaderEnabled);
+    await setString(
+        pref, "yamlModifiedKey", yamlModifiedKey, defaultSet.yamlModifiedKey);
+    await setString(
+        pref, "yamlCreatedKey", yamlCreatedKey, defaultSet.yamlCreatedKey);
+    await setString(pref, "yamlTagsKey", yamlTagsKey, defaultSet.yamlTagsKey);
+    await setString(pref, "titleSettings", titleSettings.toInternalString(),
+        defaultSet.titleSettings.toInternalString());
+
+    await setStringSet(pref, "inlineTagPrefixes", inlineTagPrefixes,
+        defaultSet.inlineTagPrefixes);
+    await setString(pref, "imageLocationSpec", imageLocationSpec,
+        defaultSet.imageLocationSpec);
+
+    notifyListeners();
+  }
+
+  Map<String, String> toLoggableMap() {
+    return <String, String>{
+      "noteFileNameFormat": fileNameFormat.toInternalString(),
+      "journalNoteFileNameFormat": journalFileNameFormat.toInternalString(),
+      "yamlModifiedKey": yamlModifiedKey,
+      "yamlCreatedKey": yamlCreatedKey,
+      "yamlTagsKey": yamlTagsKey,
+      "yamlHeaderEnabled": yamlHeaderEnabled.toString(),
+      "defaultEditor": defaultEditor.toInternalString(),
+      "defaultView": defaultView.toInternalString(),
+      "sortingField": sortingField.toInternalString(),
+      "sortingOrder": sortingOrder.toInternalString(),
+      "showNoteSummary": showNoteSummary.toString(),
+      "folderViewHeaderType": folderViewHeaderType,
+      'imageLocationSpec': imageLocationSpec,
+      'titleSettings': titleSettings.toInternalString(),
+      'inlineTagPrefixes': inlineTagPrefixes.join(' '),
+    };
+  }
+
+  StandardViewHeader get viewHeader {
+    switch (folderViewHeaderType) {
       case "TitleGenerated":
-        viewHeader = StandardViewHeader.TitleGenerated;
-        break;
+        return StandardViewHeader.TitleGenerated;
       case "FileName":
-        viewHeader = StandardViewHeader.FileName;
-        break;
+        return StandardViewHeader.FileName;
       case "TitleOrFileName":
       default:
-        viewHeader = StandardViewHeader.TitleOrFileName;
-        break;
+        return StandardViewHeader.TitleOrFileName;
     }
-
-    return NotesFolderConfig(
-      defaultEditor: settings.defaultEditor.toEditorType(),
-      defaultView: settings.defaultView.toFolderViewType(),
-      sortingMode: SortingMode(settings.sortingField, settings.sortingOrder),
-      showNoteSummary: settings.showNoteSummary,
-      viewHeader: viewHeader,
-      fileNameFormat: settings.noteFileNameFormat,
-      journalFileNameFormat: settings.journalNoteFileNameFormat,
-      yamlHeaderEnabled: settings.yamlHeaderEnabled,
-      yamlCreatedKey: settings.yamlCreatedKey,
-      yamlModifiedKey: settings.yamlModifiedKey,
-      yamlTagsKey: settings.yamlTagsKey,
-      titleSettings: settings.titleSettings,
-      inlineTagPrefixes: settings.inlineTagPrefixes,
-      imageLocationSpec: settings.imageLocationSpec,
-    );
   }
 
-  Future<void> saveToSettings(Settings settings) async {
-    settings.sortingField = sortingMode.field;
-    settings.sortingOrder = sortingMode.order;
-    settings.showNoteSummary = showNoteSummary;
-    settings.defaultEditor = SettingsEditorType.fromEditorType(defaultEditor);
-    settings.defaultView =
-        SettingsFolderViewType.fromFolderViewType(defaultView);
-
-    String? ht;
+  set viewHeader(StandardViewHeader viewHeader) {
     switch (viewHeader) {
       case StandardViewHeader.FileName:
-        ht = "FileName";
+        folderViewHeaderType = "FileName";
         break;
       case StandardViewHeader.TitleGenerated:
-        ht = "TitleGenerated";
+        folderViewHeaderType = "TitleGenerated";
         break;
       case StandardViewHeader.TitleOrFileName:
-        ht = "TitleOrFileName";
+        folderViewHeaderType = "TitleOrFileName";
         break;
     }
-    settings.folderViewHeaderType = ht;
-    settings.noteFileNameFormat = fileNameFormat;
-    settings.journalNoteFileNameFormat = journalFileNameFormat;
-    settings.yamlHeaderEnabled = yamlHeaderEnabled;
-    settings.yamlCreatedKey = yamlCreatedKey;
-    settings.yamlModifiedKey = yamlModifiedKey;
-    settings.yamlTagsKey = yamlTagsKey;
-    settings.titleSettings = titleSettings;
-    settings.inlineTagPrefixes = inlineTagPrefixes;
-    settings.imageLocationSpec = imageLocationSpec;
-    settings.save();
   }
 
-  NotesFolderConfig copyWith({
-    SortingMode? sortingMode,
-    EditorType? defaultEditor,
-    FolderViewType? defaultView,
-    StandardViewHeader? viewHeader,
-    bool? showNoteSummary,
-    NoteFileNameFormat? fileNameFormat,
-    NoteFileNameFormat? journalFileNameFormat,
-    bool? yamlHeaderEnabled,
-    String? yamlCreatedKey,
-    String? yamlModifiedKey,
-    String? yamlTagsKey,
-    SettingsTitle? titleSettings,
-    Set<String>? inlineTagPrefixes,
-    String? imageLocationSpec,
-  }) {
-    return NotesFolderConfig(
-      sortingMode: sortingMode ?? this.sortingMode,
-      defaultEditor: defaultEditor ?? this.defaultEditor,
-      defaultView: defaultView ?? this.defaultView,
-      viewHeader: viewHeader ?? this.viewHeader,
-      showNoteSummary: showNoteSummary ?? this.showNoteSummary,
-      fileNameFormat: fileNameFormat ?? this.fileNameFormat,
-      journalFileNameFormat:
-          journalFileNameFormat ?? this.journalFileNameFormat,
-      yamlHeaderEnabled: yamlHeaderEnabled ?? this.yamlHeaderEnabled,
-      yamlCreatedKey: yamlCreatedKey ?? this.yamlCreatedKey,
-      yamlModifiedKey: yamlModifiedKey ?? this.yamlModifiedKey,
-      yamlTagsKey: yamlTagsKey ?? this.yamlTagsKey,
-      titleSettings: titleSettings ?? this.titleSettings,
-      inlineTagPrefixes: inlineTagPrefixes ?? this.inlineTagPrefixes,
-      imageLocationSpec: imageLocationSpec ?? this.imageLocationSpec,
-    );
+  SortingMode get sortingMode {
+    return SortingMode(sortingField, sortingOrder);
   }
 }

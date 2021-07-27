@@ -157,7 +157,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
           editorType = EditorType.Org;
           break;
         case NoteType.Unknown:
-          editorType = widget.notesFolder.config.defaultEditor;
+          editorType = widget.notesFolder.config.defaultEditor.toEditorType();
           break;
       }
     }

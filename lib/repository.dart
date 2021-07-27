@@ -18,6 +18,7 @@ import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/core/git_repo.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_cache.dart';
+import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings/git_config.dart';
@@ -37,6 +38,7 @@ enum SyncStatus {
 class GitJournalRepo with ChangeNotifier {
   final StorageConfig storageConfig;
   final GitConfig gitConfig;
+  final NotesFolderConfig folderConfig;
   final Settings settings;
 
   final _opLock = Lock();
@@ -76,17 +78,20 @@ class GitJournalRepo with ChangeNotifier {
     var storageConfig = StorageConfig(id);
     storageConfig.load(pref);
 
-    var settings = Settings(id);
-    settings.load(pref);
+    var folderConfig = NotesFolderConfig(id);
+    folderConfig.load(pref);
 
     var gitConfig = GitConfig(id);
     gitConfig.load(pref);
+
+    var settings = Settings(id);
+    settings.load(pref);
 
     // logEvent(Event.Settings, parameters: settings.toLoggableMap());
 
     Log.i("StorageConfig ${storageConfig.toLoggableMap()}");
     Log.i("GitConfig ${gitConfig.toLoggableMap()}");
-    Log.i("Settings ${settings.toLoggableMap()}");
+    Log.i("FolderConfig ${folderConfig.toLoggableMap()}");
 
     var repoPath = await storageConfig.buildRepoPath(gitBaseDir);
     Log.i("Loading Repo at path $repoPath");
@@ -120,6 +125,7 @@ class GitJournalRepo with ChangeNotifier {
       remoteGitRepoConfigured: remoteConfigured,
       storageConfig: storageConfig,
       settings: settings,
+      folderConfig: folderConfig,
       gitConfig: gitConfig,
       id: id,
       currentBranch: await repo.currentBranch().getOrThrow(),
@@ -132,13 +138,14 @@ class GitJournalRepo with ChangeNotifier {
     required this.gitBaseDirectory,
     required this.cacheDir,
     required this.storageConfig,
+    required this.folderConfig,
     required this.settings,
     required this.gitConfig,
     required this.remoteGitRepoConfigured,
     required String? currentBranch,
   }) {
     _gitRepo = GitNoteRepository(gitDirPath: repoPath, config: gitConfig);
-    notesFolder = NotesFolderFS(null, _gitRepo.gitDirPath, settings);
+    notesFolder = NotesFolderFS(null, _gitRepo.gitDirPath, folderConfig);
     _currentBranch = currentBranch;
 
     Log.i("Branch $_currentBranch");
@@ -153,7 +160,7 @@ class GitJournalRepo with ChangeNotifier {
     _notesCache = NotesCache(
       filePath: cachePath,
       notesBasePath: _gitRepo.gitDirPath,
-      settings: settings,
+      folderConfig: folderConfig,
     );
 
     _loadFromCache();
@@ -242,7 +249,7 @@ class GitJournalRepo with ChangeNotifier {
     return _opLock.synchronized(() async {
       Log.d("Got createFolder lock");
       var newFolderPath = p.join(parent.folderPath, folderName);
-      var newFolder = NotesFolderFS(parent, newFolderPath, settings);
+      var newFolder = NotesFolderFS(parent, newFolderPath, folderConfig);
       newFolder.create();
 
       Log.d("Created New Folder: " + newFolderPath);
