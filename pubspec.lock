@@ -577,6 +577,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  googleapis_auth:
+    dependency: transitive
+    description:
+      name: googleapis_auth
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   graphs:
     dependency: transitive
     description:
@@ -584,6 +591,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  grpc:
+    dependency: "direct main"
+    description:
+      name: grpc
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0"
   highlight:
     dependency: transitive
     description:
@@ -598,6 +612,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.13.1"
+  http2:
+    dependency: transitive
+    description:
+      name: http2
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -980,6 +1001,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.1"
+  protobuf:
+    dependency: "direct main"
+    description:
+      name: protobuf
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   provider:
     dependency: "direct main"
     description:
