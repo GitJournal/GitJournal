@@ -24,7 +24,7 @@ dependencies:
   auto_size_text: ^3.0.0-nullsafety.0
   badges: ^2.0.1
   basic_utils: ^3.1.0
-  connectivity: ^3.0.3
+  connectivity_plus: ^1.0.6
   # cryptography: ^1.4.1
   # cryptography_flutter: ^1.0.0
   device_info_plus: ^2.1.0
@@ -64,7 +64,7 @@ dependencies:
   quick_actions: ^0.6.0
   receive_sharing_intent: ^1.4.5
   sentry_flutter: ^5.1.0
-  share: ^2.0.1
+  share_plus: ^2.1.4
   shared_preferences: ^2.0.5
   #ssh_key: ^0.6.0
   stack_trace: ^1.10.0
