@@ -193,25 +193,6 @@ class __CurrentRepoState extends State<_CurrentRepo>
   }
 }
 
-class ProButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: theme.scaffoldBackgroundColor,
-        boxShadow: [
-          BoxShadow(color: theme.accentColor, spreadRadius: 0),
-        ],
-      ),
-      padding: const EdgeInsets.all(8.0),
-      child: Text('PRO', style: theme.textTheme.button),
-    );
-  }
-}
-
 class ThemeSwitcherButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
