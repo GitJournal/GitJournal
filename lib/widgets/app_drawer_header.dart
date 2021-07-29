@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -65,8 +67,9 @@ class AppDrawerHeader extends StatelessWidget {
       return header;
     }
 
+    var isDesktop = Platform.isLinux || Platform.isWindows || Platform.isMacOS;
     return Banner(
-      message: tr('pro'),
+      message: isDesktop ? 'BETA' : tr('pro'),
       location: BannerLocation.topStart,
       color: Theme.of(context).accentColor,
       child: header,
