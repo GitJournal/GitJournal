@@ -29,10 +29,14 @@ const DEFAULT_ID = "0";
 const SETTINGS_VERSION = 3;
 
 class Settings extends ChangeNotifier with SettingsSharedPref {
-  Settings(this.id);
+  Settings(this.id, this.pref);
 
   @override
   final String id;
+
+  @override
+  final SharedPreferences pref;
+
   String customMetaData = "";
 
   String defaultNewNoteFolderSpec = "";
@@ -60,88 +64,80 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
   bool confirmDelete = true;
   bool hardWrap = false;
 
-  void load(SharedPreferences pref) {
+  void load() {
     defaultNewNoteFolderSpec =
-        getString(pref, "defaultNewNoteFolderSpec") ?? defaultNewNoteFolderSpec;
+        getString("defaultNewNoteFolderSpec") ?? defaultNewNoteFolderSpec;
     journalEditordefaultNewNoteFolderSpec =
-        getString(pref, "journalEditordefaultNewNoteFolderSpec") ??
+        getString("journalEditordefaultNewNoteFolderSpec") ??
             journalEditordefaultNewNoteFolderSpec;
     journalEditorSingleNote =
-        getBool(pref, "journalEditorSingleNote") ?? journalEditorSingleNote;
+        getBool("journalEditorSingleNote") ?? journalEditorSingleNote;
 
     remoteSyncFrequency = RemoteSyncFrequency.fromInternalString(
-        getString(pref, "remoteSyncFrequency"));
+        getString("remoteSyncFrequency"));
 
     markdownDefaultView = SettingsMarkdownDefaultView.fromInternalString(
-        getString(pref, "markdownDefaultView"));
+        getString("markdownDefaultView"));
     markdownLastUsedView = SettingsMarkdownDefaultView.fromInternalString(
-        getString(pref, "markdownLastUsedView"));
+        getString("markdownLastUsedView"));
     if (markdownLastUsedView == SettingsMarkdownDefaultView.LastUsed) {
       markdownLastUsedView = SettingsMarkdownDefaultView.Edit;
     }
 
-    version = getInt(pref, "settingsVersion") ?? version;
-    emojiParser = getBool(pref, "emojiParser") ?? emojiParser;
+    version = getInt("settingsVersion") ?? version;
+    emojiParser = getBool("emojiParser") ?? emojiParser;
 
-    homeScreen =
-        SettingsHomeScreen.fromInternalString(getString(pref, "homeScreen"));
-    theme = SettingsTheme.fromInternalString(getString(pref, "theme"));
+    homeScreen = SettingsHomeScreen.fromInternalString(getString("homeScreen"));
+    theme = SettingsTheme.fromInternalString(getString("theme"));
 
-    zenMode = getBool(pref, "zenMode") ?? zenMode;
-    swipeToDelete = getBool(pref, "swipeToDelete") ?? swipeToDelete;
+    zenMode = getBool("zenMode") ?? zenMode;
+    swipeToDelete = getBool("swipeToDelete") ?? swipeToDelete;
 
     // From AppState
-    bottomMenuBar = getBool(pref, "bottomMenuBar") ?? bottomMenuBar;
-    confirmDelete = getBool(pref, "confirmDelete") ?? confirmDelete;
+    bottomMenuBar = getBool("bottomMenuBar") ?? bottomMenuBar;
+    confirmDelete = getBool("confirmDelete") ?? confirmDelete;
 
-    hardWrap = getBool(pref, "hardWrap") ?? hardWrap;
+    hardWrap = getBool("hardWrap") ?? hardWrap;
   }
 
   Future<void> save() async {
     var pref = await SharedPreferences.getInstance();
-    var defaultSet = Settings(id);
+    var def = Settings(id, pref);
 
-    await setString(pref, "defaultNewNoteFolderSpec", defaultNewNoteFolderSpec,
-        defaultSet.defaultNewNoteFolderSpec);
+    await setString("defaultNewNoteFolderSpec", defaultNewNoteFolderSpec,
+        def.defaultNewNoteFolderSpec);
     await setString(
-        pref,
         "journalEditordefaultNewNoteFolderSpec",
         journalEditordefaultNewNoteFolderSpec,
-        defaultSet.journalEditordefaultNewNoteFolderSpec);
-    await setBool(pref, "journalEditorSingleNote", journalEditorSingleNote,
-        defaultSet.journalEditorSingleNote);
+        def.journalEditordefaultNewNoteFolderSpec);
+    await setBool("journalEditorSingleNote", journalEditorSingleNote,
+        def.journalEditorSingleNote);
     await setString(
-        pref,
         "remoteSyncFrequency",
         remoteSyncFrequency.toInternalString(),
-        defaultSet.remoteSyncFrequency.toInternalString());
+        def.remoteSyncFrequency.toInternalString());
     await setString(
-        pref,
         "markdownDefaultView",
         markdownDefaultView.toInternalString(),
-        defaultSet.markdownDefaultView.toInternalString());
+        def.markdownDefaultView.toInternalString());
     await setString(
-        pref,
         "markdownLastUsedView",
         markdownLastUsedView.toInternalString(),
-        defaultSet.markdownLastUsedView.toInternalString());
-    await setBool(pref, "emojiParser", emojiParser, defaultSet.emojiParser);
-    await setString(pref, "homeScreen", homeScreen.toInternalString(),
-        defaultSet.homeScreen.toInternalString());
-    await setString(pref, "theme", theme.toInternalString(),
-        defaultSet.theme.toInternalString());
+        def.markdownLastUsedView.toInternalString());
+    await setBool("emojiParser", emojiParser, def.emojiParser);
+    await setString("homeScreen", homeScreen.toInternalString(),
+        def.homeScreen.toInternalString());
+    await setString(
+        "theme", theme.toInternalString(), def.theme.toInternalString());
 
-    await setBool(pref, "zenMode", zenMode, defaultSet.zenMode);
-    await setBool(
-        pref, "swipeToDelete", swipeToDelete, defaultSet.swipeToDelete);
-    await setBool(
-        pref, "bottomMenuBar", bottomMenuBar, defaultSet.bottomMenuBar);
-    await setBool(
-        pref, "confirmDelete", confirmDelete, defaultSet.confirmDelete);
+    await setBool("zenMode", zenMode, def.zenMode);
+    await setBool("swipeToDelete", swipeToDelete, def.swipeToDelete);
+    await setBool("bottomMenuBar", bottomMenuBar, def.bottomMenuBar);
+    await setBool("confirmDelete", confirmDelete, def.confirmDelete);
 
-    await setInt(pref, "settingsVersion", version, defaultSet.version);
+    await setInt("settingsVersion", version, def.version);
 
-    await setBool(pref, "hardWrap", hardWrap, defaultSet.hardWrap);
+    await setBool("hardWrap", hardWrap, def.hardWrap);
 
     notifyListeners();
   }

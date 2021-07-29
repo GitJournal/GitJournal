@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 
 import 'package:gitjournal/core/notes_folder_config.dart';
@@ -5,11 +6,13 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/processors/wiki_links_auto_add.dart';
 
 void main() {
-  test('Should process body', () {
+  test('Should process body', () async {
     var body =
         "GitJournal is the best? And it works quite well with Foam, Foam and Obsidian.";
 
-    var folder = NotesFolderFS(null, '/', NotesFolderConfig(''));
+    SharedPreferences.setMockInitialValues({});
+    var config = NotesFolderConfig('', await SharedPreferences.getInstance());
+    var folder = NotesFolderFS(null, '/', config);
     var p = WikiLinksAutoAddProcessor(folder);
     var newBody = p.processBody(body, ['GitJournal', 'Foam', 'Obsidian']);
     var expectedBody =

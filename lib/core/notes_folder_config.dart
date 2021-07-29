@@ -8,10 +8,13 @@ import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_sharedpref.dart';
 
 class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
-  NotesFolderConfig(this.id);
+  NotesFolderConfig(this.id, this.pref);
 
   @override
   final String id;
+
+  @override
+  final SharedPreferences pref;
 
   var sortingField = SortingField.Default;
   var sortingOrder = SortingOrder.Default;
@@ -34,83 +37,71 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
   var inlineTagPrefixes = {'#'};
   var imageLocationSpec = "."; // . means the same folder
 
-  void load(SharedPreferences pref) {
-    fileNameFormat = NoteFileNameFormat.fromInternalString(
-        getString(pref, "noteFileNameFormat"));
+  void load() {
+    fileNameFormat =
+        NoteFileNameFormat.fromInternalString(getString("noteFileNameFormat"));
     journalFileNameFormat = NoteFileNameFormat.fromInternalString(
-        getString(pref, "journalNoteFileNameFormat"));
+        getString("journalNoteFileNameFormat"));
 
-    yamlModifiedKey = getString(pref, "yamlModifiedKey") ?? yamlModifiedKey;
-    yamlCreatedKey = getString(pref, "yamlCreatedKey") ?? yamlCreatedKey;
-    yamlTagsKey = getString(pref, "yamlTagsKey") ?? yamlTagsKey;
+    yamlModifiedKey = getString("yamlModifiedKey") ?? yamlModifiedKey;
+    yamlCreatedKey = getString("yamlCreatedKey") ?? yamlCreatedKey;
+    yamlTagsKey = getString("yamlTagsKey") ?? yamlTagsKey;
 
-    yamlHeaderEnabled = getBool(pref, "yamlHeaderEnabled") ?? yamlHeaderEnabled;
+    yamlHeaderEnabled = getBool("yamlHeaderEnabled") ?? yamlHeaderEnabled;
 
-    sortingField =
-        SortingField.fromInternalString(getString(pref, "sortingField"));
-    sortingOrder =
-        SortingOrder.fromInternalString(getString(pref, "sortingOrder"));
+    sortingField = SortingField.fromInternalString(getString("sortingField"));
+    sortingOrder = SortingOrder.fromInternalString(getString("sortingOrder"));
     defaultEditor =
-        SettingsEditorType.fromInternalString(getString(pref, "defaultEditor"));
-    defaultView = SettingsFolderViewType.fromInternalString(
-        getString(pref, "defaultView"));
+        SettingsEditorType.fromInternalString(getString("defaultEditor"));
+    defaultView =
+        SettingsFolderViewType.fromInternalString(getString("defaultView"));
 
-    showNoteSummary = getBool(pref, "showNoteSummary") ?? showNoteSummary;
+    showNoteSummary = getBool("showNoteSummary") ?? showNoteSummary;
     folderViewHeaderType =
-        getString(pref, "folderViewHeaderType") ?? folderViewHeaderType;
+        getString("folderViewHeaderType") ?? folderViewHeaderType;
 
-    imageLocationSpec =
-        getString(pref, "imageLocationSpec") ?? imageLocationSpec;
+    imageLocationSpec = getString("imageLocationSpec") ?? imageLocationSpec;
 
     titleSettings =
-        SettingsTitle.fromInternalString(getString(pref, "titleSettings"));
+        SettingsTitle.fromInternalString(getString("titleSettings"));
 
-    inlineTagPrefixes =
-        getStringSet(pref, "inlineTagPrefixes") ?? inlineTagPrefixes;
+    inlineTagPrefixes = getStringSet("inlineTagPrefixes") ?? inlineTagPrefixes;
   }
 
   Future<void> save() async {
-    var pref = await SharedPreferences.getInstance();
-    var defaultSet = NotesFolderConfig(id);
+    var def = NotesFolderConfig(id, pref);
 
+    await setString("noteFileNameFormat", fileNameFormat.toInternalString(),
+        def.fileNameFormat.toInternalString());
     await setString(
-        pref,
-        "noteFileNameFormat",
-        fileNameFormat.toInternalString(),
-        defaultSet.fileNameFormat.toInternalString());
-    await setString(
-        pref,
         "journalNoteFileNameFormat",
         journalFileNameFormat.toInternalString(),
-        defaultSet.journalFileNameFormat.toInternalString());
+        def.journalFileNameFormat.toInternalString());
 
-    await setString(pref, "sortingField", sortingField.toInternalString(),
-        defaultSet.sortingField.toInternalString());
-    await setString(pref, "sortingOrder", sortingOrder.toInternalString(),
-        defaultSet.sortingOrder.toInternalString());
-    await setString(pref, "defaultEditor", defaultEditor.toInternalString(),
-        defaultSet.defaultEditor.toInternalString());
-    await setString(pref, "defaultView", defaultView.toInternalString(),
-        defaultSet.defaultView.toInternalString());
+    await setString("sortingField", sortingField.toInternalString(),
+        def.sortingField.toInternalString());
+    await setString("sortingOrder", sortingOrder.toInternalString(),
+        def.sortingOrder.toInternalString());
+    await setString("defaultEditor", defaultEditor.toInternalString(),
+        def.defaultEditor.toInternalString());
+    await setString("defaultView", defaultView.toInternalString(),
+        def.defaultView.toInternalString());
+    await setBool("showNoteSummary", showNoteSummary, def.showNoteSummary);
+    await setString(
+        "folderViewHeaderType", folderViewHeaderType, def.folderViewHeaderType);
+
     await setBool(
-        pref, "showNoteSummary", showNoteSummary, defaultSet.showNoteSummary);
-    await setString(pref, "folderViewHeaderType", folderViewHeaderType,
-        defaultSet.folderViewHeaderType);
+        "yamlHeaderEnabled", yamlHeaderEnabled, def.yamlHeaderEnabled);
+    await setString("yamlModifiedKey", yamlModifiedKey, def.yamlModifiedKey);
+    await setString("yamlCreatedKey", yamlCreatedKey, def.yamlCreatedKey);
+    await setString("yamlTagsKey", yamlTagsKey, def.yamlTagsKey);
+    await setString("titleSettings", titleSettings.toInternalString(),
+        def.titleSettings.toInternalString());
 
-    await setBool(pref, "yamlHeaderEnabled", yamlHeaderEnabled,
-        defaultSet.yamlHeaderEnabled);
+    await setStringSet(
+        "inlineTagPrefixes", inlineTagPrefixes, def.inlineTagPrefixes);
     await setString(
-        pref, "yamlModifiedKey", yamlModifiedKey, defaultSet.yamlModifiedKey);
-    await setString(
-        pref, "yamlCreatedKey", yamlCreatedKey, defaultSet.yamlCreatedKey);
-    await setString(pref, "yamlTagsKey", yamlTagsKey, defaultSet.yamlTagsKey);
-    await setString(pref, "titleSettings", titleSettings.toInternalString(),
-        defaultSet.titleSettings.toInternalString());
-
-    await setStringSet(pref, "inlineTagPrefixes", inlineTagPrefixes,
-        defaultSet.inlineTagPrefixes);
-    await setString(pref, "imageLocationSpec", imageLocationSpec,
-        defaultSet.imageLocationSpec);
+        "imageLocationSpec", imageLocationSpec, def.imageLocationSpec);
 
     notifyListeners();
   }

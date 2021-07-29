@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 
 import 'package:gitjournal/core/flattened_notes_folder.dart';
@@ -26,11 +27,14 @@ void main() {
   group('Flattened Notes Folder Test', () {
     late Directory tempDir;
     late NotesFolderFS rootFolder;
+    late NotesFolderConfig config;
 
     setUp(() async {
       tempDir = await Directory.systemTemp.createTemp('__sorted_folder_test__');
+      SharedPreferences.setMockInitialValues({});
+      config = NotesFolderConfig('', await SharedPreferences.getInstance());
 
-      rootFolder = NotesFolderFS(null, tempDir.path, NotesFolderConfig(''));
+      rootFolder = NotesFolderFS(null, tempDir.path, config);
 
       for (var i = 0; i < 3; i++) {
         var note = Note(rootFolder, _getRandomFilePath(rootFolder.folderPath));
@@ -43,8 +47,8 @@ void main() {
       Directory(p.join(tempDir.path, "sub1", "p1")).createSync();
       Directory(p.join(tempDir.path, "sub2")).createSync();
 
-      var sub1Folder = NotesFolderFS(
-          rootFolder, p.join(tempDir.path, "sub1"), NotesFolderConfig(''));
+      var sub1Folder =
+          NotesFolderFS(rootFolder, p.join(tempDir.path, "sub1"), config);
       for (var i = 0; i < 2; i++) {
         var note = Note(
           sub1Folder,
@@ -55,8 +59,8 @@ void main() {
         await note.save();
       }
 
-      var sub2Folder = NotesFolderFS(
-          rootFolder, p.join(tempDir.path, "sub2"), NotesFolderConfig(''));
+      var sub2Folder =
+          NotesFolderFS(rootFolder, p.join(tempDir.path, "sub2"), config);
       for (var i = 0; i < 2; i++) {
         var note = Note(
           sub2Folder,
@@ -67,8 +71,8 @@ void main() {
         await note.save();
       }
 
-      var p1Folder = NotesFolderFS(sub1Folder,
-          p.join(tempDir.path, "sub1", "p1"), NotesFolderConfig(''));
+      var p1Folder =
+          NotesFolderFS(sub1Folder, p.join(tempDir.path, "sub1", "p1"), config);
       for (var i = 0; i < 2; i++) {
         var note = Note(
           p1Folder,

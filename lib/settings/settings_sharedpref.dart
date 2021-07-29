@@ -7,42 +7,40 @@ abstract class SettingsSharedPref {
   String get id;
 
   @protected
-  String? getString(SharedPreferences pref, String key) {
+  SharedPreferences get pref;
+
+  @protected
+  String? getString(String key) {
     return pref.getString(id + '_' + key);
   }
 
   @protected
-  bool? getBool(SharedPreferences pref, String key) {
+  bool? getBool(String key) {
     return pref.getBool(id + '_' + key);
   }
 
   @protected
-  List<String>? getStringList(SharedPreferences pref, String key) {
+  List<String>? getStringList(String key) {
     return pref.getStringList(id + '_' + key);
   }
 
   @protected
-  Set<String>? getStringSet(SharedPreferences pref, String key) {
-    return getStringList(pref, key)?.toSet();
+  Set<String>? getStringSet(String key) {
+    return getStringList(key)?.toSet();
   }
 
   @protected
-  int? getInt(SharedPreferences pref, String key) {
+  int? getInt(String key) {
     return pref.getInt(id + '_' + key);
   }
 
   @protected
-  double? getDouble(SharedPreferences pref, String key) {
+  double? getDouble(String key) {
     return pref.getDouble(id + '_' + key);
   }
 
   @protected
-  Future<void> setString(
-    SharedPreferences pref,
-    String key,
-    String value,
-    String? defaultValue,
-  ) async {
+  Future<void> setString(String key, String value, String? defaultValue) async {
     key = id + '_' + key;
     if (value == defaultValue) {
       await pref.remove(key);
@@ -52,12 +50,7 @@ abstract class SettingsSharedPref {
   }
 
   @protected
-  Future<void> setBool(
-    SharedPreferences pref,
-    String key,
-    bool value,
-    bool defaultValue,
-  ) async {
+  Future<void> setBool(String key, bool value, bool defaultValue) async {
     key = id + '_' + key;
     if (value == defaultValue) {
       await pref.remove(key);
@@ -67,12 +60,7 @@ abstract class SettingsSharedPref {
   }
 
   @protected
-  Future<void> setInt(
-    SharedPreferences pref,
-    String key,
-    int value,
-    int defaultValue,
-  ) async {
+  Future<void> setInt(String key, int value, int defaultValue) async {
     key = id + '_' + key;
     if (value == defaultValue) {
       await pref.remove(key);
@@ -82,12 +70,7 @@ abstract class SettingsSharedPref {
   }
 
   @protected
-  Future<void> setDouble(
-    SharedPreferences pref,
-    String key,
-    double value,
-    double defaultValue,
-  ) async {
+  Future<void> setDouble(String key, double value, double defaultValue) async {
     key = id + '_' + key;
     if (value == defaultValue) {
       await pref.remove(key);
@@ -98,11 +81,7 @@ abstract class SettingsSharedPref {
 
   @protected
   Future<void> setStringSet(
-    SharedPreferences pref,
-    String key,
-    Set<String> value,
-    Set<String> defaultValue,
-  ) async {
+      String key, Set<String> value, Set<String> defaultValue) async {
     key = id + '_' + key;
 
     final bool Function(Set<dynamic>, Set<dynamic>) eq =

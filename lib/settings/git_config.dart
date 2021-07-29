@@ -5,10 +5,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gitjournal/settings/settings_sharedpref.dart';
 
 class GitConfig extends ChangeNotifier with SettingsSharedPref {
-  GitConfig(this.id);
+  GitConfig(this.id, this.pref);
 
   @override
   final String id;
+
+  @override
+  final SharedPreferences pref;
 
   var gitAuthor = "GitJournal";
   var gitAuthorEmail = "app@gitjournal.io";
@@ -16,26 +19,22 @@ class GitConfig extends ChangeNotifier with SettingsSharedPref {
   var sshPrivateKey = "";
   var sshPassword = "";
 
-  void load(SharedPreferences pref) {
-    gitAuthor = getString(pref, "gitAuthor") ?? gitAuthor;
-    gitAuthorEmail = getString(pref, "gitAuthorEmail") ?? gitAuthorEmail;
-    sshPublicKey = getString(pref, "sshPublicKey") ?? sshPublicKey;
-    sshPrivateKey = getString(pref, "sshPrivateKey") ?? sshPrivateKey;
-    sshPassword = getString(pref, "sshPassword") ?? sshPassword;
+  void load() {
+    gitAuthor = getString("gitAuthor") ?? gitAuthor;
+    gitAuthorEmail = getString("gitAuthorEmail") ?? gitAuthorEmail;
+    sshPublicKey = getString("sshPublicKey") ?? sshPublicKey;
+    sshPrivateKey = getString("sshPrivateKey") ?? sshPrivateKey;
+    sshPassword = getString("sshPassword") ?? sshPassword;
   }
 
   Future<void> save() async {
-    var pref = await SharedPreferences.getInstance();
-    var defaultSet = GitConfig(id);
+    var def = GitConfig(id, pref);
 
-    await setString(pref, "gitAuthor", gitAuthor, defaultSet.gitAuthor);
-    await setString(
-        pref, "gitAuthorEmail", gitAuthorEmail, defaultSet.gitAuthorEmail);
-    await setString(
-        pref, "sshPublicKey", sshPublicKey, defaultSet.sshPublicKey);
-    await setString(
-        pref, "sshPrivateKey", sshPrivateKey, defaultSet.sshPrivateKey);
-    await setString(pref, "sshPassword", sshPassword, defaultSet.sshPassword);
+    await setString("gitAuthor", gitAuthor, def.gitAuthor);
+    await setString("gitAuthorEmail", gitAuthorEmail, def.gitAuthorEmail);
+    await setString("sshPublicKey", sshPublicKey, def.sshPublicKey);
+    await setString("sshPrivateKey", sshPrivateKey, def.sshPrivateKey);
+    await setString("sshPassword", sshPassword, def.sshPassword);
 
     notifyListeners();
   }

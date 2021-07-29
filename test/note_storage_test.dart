@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:io';
 
 import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 
 import 'package:gitjournal/core/md_yaml_doc.dart';
@@ -16,9 +17,12 @@ void main() {
     late String n1Path;
     late String n2Path;
     late Directory tempDir;
+    late NotesFolderConfig config;
 
     setUpAll(() async {
       tempDir = await Directory.systemTemp.createTemp('__storage_test__');
+      SharedPreferences.setMockInitialValues({});
+      config = NotesFolderConfig('', await SharedPreferences.getInstance());
 
       var dt = DateTime(2019, 12, 2, 5, 4, 2);
       // ignore: prefer_collection_literals
@@ -28,7 +32,7 @@ void main() {
       n1Path = p.join(tempDir.path, "1.md");
       n2Path = p.join(tempDir.path, "2.md");
 
-      var parent = NotesFolderFS(null, tempDir.path, NotesFolderConfig(''));
+      var parent = NotesFolderFS(null, tempDir.path, config);
       var n1 = Note(parent, n1Path);
       n1.body = "test\n";
       n1.created = dt;
@@ -52,7 +56,7 @@ void main() {
       expect(File(n2Path).existsSync(), isTrue);
 
       var loadedNotes = <Note>[];
-      var parent = NotesFolderFS(null, tempDir.path, NotesFolderConfig(''));
+      var parent = NotesFolderFS(null, tempDir.path, config);
 
       await Future.forEach(notes, (Note origNote) async {
         var note = Note(parent, origNote.filePath);

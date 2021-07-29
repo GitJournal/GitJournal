@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 
 import 'package:gitjournal/core/md_yaml_doc.dart';
@@ -11,7 +12,14 @@ import 'package:gitjournal/settings/settings.dart';
 
 void main() {
   group('Note Serializer Test', () {
-    var parent = NotesFolderFS(null, '/tmp', NotesFolderConfig(''));
+    late NotesFolderConfig config;
+    late NotesFolderFS parent;
+
+    setUpAll(() async {
+      SharedPreferences.setMockInitialValues({});
+      config = NotesFolderConfig('', await SharedPreferences.getInstance());
+      parent = NotesFolderFS(null, '/tmp', config);
+    });
 
     test('Test emojis', () {
       var props = LinkedHashMap<String, dynamic>.from(

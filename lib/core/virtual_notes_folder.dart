@@ -1,13 +1,12 @@
-import 'package:gitjournal/settings/settings.dart';
 import 'note.dart';
 import 'notes_folder.dart';
 import 'notes_folder_notifier.dart';
 
 class VirtualNotesFolder with NotesFolderNotifier implements NotesFolder {
   final List<Note> _notes;
-  final Settings settings;
+  final NotesFolderConfig _config;
 
-  VirtualNotesFolder(this._notes, this.settings);
+  VirtualNotesFolder(this._notes, this._config);
 
   @override
   List<Note> get notes => _notes;
@@ -39,8 +38,5 @@ class VirtualNotesFolder with NotesFolderNotifier implements NotesFolder {
   }
 
   @override
-  NotesFolderConfig get config {
-    // FIXME: This isn't expecting null!
-    return NotesFolderConfig('_');
-  }
+  NotesFolderConfig get config => _config;
 }

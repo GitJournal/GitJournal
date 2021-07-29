@@ -23,10 +23,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gitjournal/settings/settings_sharedpref.dart';
 
 class MarkdownRendererConfig extends ChangeNotifier with SettingsSharedPref {
-  MarkdownRendererConfig(this.id);
+  MarkdownRendererConfig(this.id, this.pref);
 
   @override
   final String id;
+
+  @override
+  final SharedPreferences pref;
 
   // Display - Image
   bool rotateImageGestures = false;
@@ -51,92 +54,78 @@ class MarkdownRendererConfig extends ChangeNotifier with SettingsSharedPref {
   var doNotCaptionTags = {"nocaption", "!nc"};
   var doCaptionTags = {"docaption", "!dc"};
 
-  void load(SharedPreferences pref) {
+  void load() {
     // Display - Image
-    rotateImageGestures =
-        getBool(pref, "rotateImageGestures") ?? rotateImageGestures;
-    maxImageZoom = getDouble(pref, "maxImageZoom") ?? maxImageZoom;
+    rotateImageGestures = getBool("rotateImageGestures") ?? rotateImageGestures;
+    maxImageZoom = getDouble("maxImageZoom") ?? maxImageZoom;
 
     // Display - Image - Theming
-    themeRasterGraphics =
-        getBool(pref, "themeRasterGraphics") ?? themeRasterGraphics;
+    themeRasterGraphics = getBool("themeRasterGraphics") ?? themeRasterGraphics;
     themeOverrideTagLocation = SettingsImageTextType.fromInternalString(
-        getString(pref, "themeOverrideTagLocation"));
-    doNotThemeTags = getStringSet(pref, "doNotThemeTags") ?? doNotThemeTags;
-    doThemeTags = getStringSet(pref, "doThemeTags") ?? doThemeTags;
+        getString("themeOverrideTagLocation"));
+    doNotThemeTags = getStringSet("doNotThemeTags") ?? doNotThemeTags;
+    doThemeTags = getStringSet("doThemeTags") ?? doThemeTags;
     themeVectorGraphics = SettingsThemeVectorGraphics.fromInternalString(
-        getString(pref, "themeVectorGraphics"));
+        getString("themeVectorGraphics"));
     themeSvgWithBackground =
-        getBool(pref, "themeSvgWithBackground") ?? themeSvgWithBackground;
-    matchCanvasColor = getBool(pref, "matchCanvasColor") ?? matchCanvasColor;
+        getBool("themeSvgWithBackground") ?? themeSvgWithBackground;
+    matchCanvasColor = getBool("matchCanvasColor") ?? matchCanvasColor;
     vectorGraphicsAdjustColors =
         SettingsVectorGraphicsAdjustColors.fromInternalString(
-            getString(pref, "vectorGraphicsAdjustColors"));
+            getString("vectorGraphicsAdjustColors"));
 
     // Display - Image - Caption
-    overlayCaption = getBool(pref, "overlayCaption") ?? overlayCaption;
-    transparentCaption =
-        getBool(pref, "transparentCaption") ?? transparentCaption;
-    blurBehindCaption = getBool(pref, "blurBehindCaption") ?? blurBehindCaption;
-    tooltipFirst = getBool(pref, "tooltipFirst") ?? tooltipFirst;
-    useAsCaption = SettingsImageTextType.fromInternalString(
-        getString(pref, "useAsCaption"));
-    doNotCaptionTags =
-        getStringSet(pref, "doNotCaptionTag") ?? doNotCaptionTags;
-    doCaptionTags = getStringSet(pref, "doCaptionTag") ?? doCaptionTags;
+    overlayCaption = getBool("overlayCaption") ?? overlayCaption;
+    transparentCaption = getBool("transparentCaption") ?? transparentCaption;
+    blurBehindCaption = getBool("blurBehindCaption") ?? blurBehindCaption;
+    tooltipFirst = getBool("tooltipFirst") ?? tooltipFirst;
+    useAsCaption =
+        SettingsImageTextType.fromInternalString(getString("useAsCaption"));
+    doNotCaptionTags = getStringSet("doNotCaptionTag") ?? doNotCaptionTags;
+    doCaptionTags = getStringSet("doCaptionTag") ?? doCaptionTags;
   }
 
   Future<void> save() async {
-    var pref = await SharedPreferences.getInstance();
-    var defaultSet = MarkdownRendererConfig(id);
+    var def = MarkdownRendererConfig(id, pref);
 
     // Display - Image
-    await setBool(pref, "rotateImageGestures", rotateImageGestures,
-        defaultSet.rotateImageGestures);
-    await setDouble(
-        pref, "maxImageZoom", maxImageZoom, defaultSet.maxImageZoom);
+    await setBool(
+        "rotateImageGestures", rotateImageGestures, def.rotateImageGestures);
+    await setDouble("maxImageZoom", maxImageZoom, def.maxImageZoom);
 
     // Display - Image - Theme
-    await setBool(pref, "themeRasterGraphics", themeRasterGraphics,
-        defaultSet.themeRasterGraphics);
+    await setBool(
+        "themeRasterGraphics", themeRasterGraphics, def.themeRasterGraphics);
     await setString(
-        pref,
         "themeOverrideTagLocation",
         themeOverrideTagLocation.toInternalString(),
-        defaultSet.themeOverrideTagLocation.toInternalString());
-    await setStringSet(
-        pref, "doNotThemeTags", doNotThemeTags, defaultSet.doNotThemeTags);
-    await setStringSet(
-        pref, "doThemeTags", doThemeTags, defaultSet.doThemeTags);
+        def.themeOverrideTagLocation.toInternalString());
+    await setStringSet("doNotThemeTags", doNotThemeTags, def.doNotThemeTags);
+    await setStringSet("doThemeTags", doThemeTags, def.doThemeTags);
     await setString(
-        pref,
         "themeVectorGraphics",
         themeVectorGraphics.toInternalString(),
-        defaultSet.themeVectorGraphics.toInternalString());
-    await setBool(pref, "themeSvgWithBackground", themeSvgWithBackground,
-        defaultSet.themeSvgWithBackground);
-    await setBool(pref, "matchCanvasColor", matchCanvasColor,
-        defaultSet.matchCanvasColor);
+        def.themeVectorGraphics.toInternalString());
+    await setBool("themeSvgWithBackground", themeSvgWithBackground,
+        def.themeSvgWithBackground);
+    await setBool("matchCanvasColor", matchCanvasColor, def.matchCanvasColor);
     await setString(
-        pref,
         "vectorGraphicsAdjustColors",
         vectorGraphicsAdjustColors.toInternalString(),
-        defaultSet.vectorGraphicsAdjustColors.toInternalString());
+        def.vectorGraphicsAdjustColors.toInternalString());
 
     // Display - Image - Caption
+    await setBool("overlayCaption", overlayCaption, def.overlayCaption);
     await setBool(
-        pref, "overlayCaption", overlayCaption, defaultSet.overlayCaption);
-    await setBool(pref, "transparentCaption", transparentCaption,
-        defaultSet.transparentCaption);
-    await setBool(pref, "blurBehindCaption", blurBehindCaption,
-        defaultSet.blurBehindCaption);
-    await setBool(pref, "tooltipFirst", tooltipFirst, defaultSet.tooltipFirst);
-    await setString(pref, "useAsCaption", useAsCaption.toInternalString(),
-        defaultSet.useAsCaption.toInternalString());
+        "transparentCaption", transparentCaption, def.transparentCaption);
+    await setBool(
+        "blurBehindCaption", blurBehindCaption, def.blurBehindCaption);
+    await setBool("tooltipFirst", tooltipFirst, def.tooltipFirst);
+    await setString("useAsCaption", useAsCaption.toInternalString(),
+        def.useAsCaption.toInternalString());
     await setStringSet(
-        pref, "doNotCaptionTag", doNotCaptionTags, defaultSet.doNotCaptionTags);
-    await setStringSet(
-        pref, "doCaptionTag", doCaptionTags, defaultSet.doCaptionTags);
+        "doNotCaptionTag", doNotCaptionTags, def.doNotCaptionTags);
+    await setStringSet("doCaptionTag", doCaptionTags, def.doCaptionTags);
 
     notifyListeners();
   }

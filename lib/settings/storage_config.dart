@@ -11,30 +11,30 @@ import 'package:gitjournal/settings/settings_sharedpref.dart';
 const FOLDER_NAME_KEY = "remoteGitRepoPath";
 
 class StorageConfig extends ChangeNotifier with SettingsSharedPref {
-  StorageConfig(this.id);
+  StorageConfig(this.id, this.pref);
 
   @override
   final String id;
+
+  @override
+  final SharedPreferences pref;
 
   var folderName = "journal";
   var storeInternally = true;
   var storageLocation = "";
 
-  void load(SharedPreferences pref) {
-    folderName = getString(pref, FOLDER_NAME_KEY) ?? folderName;
-    storeInternally = getBool(pref, "storeInternally") ?? storeInternally;
-    storageLocation = getString(pref, "storageLocation") ?? "";
+  void load() {
+    folderName = getString(FOLDER_NAME_KEY) ?? folderName;
+    storeInternally = getBool("storeInternally") ?? storeInternally;
+    storageLocation = getString("storageLocation") ?? "";
   }
 
   Future<void> save() async {
-    var pref = await SharedPreferences.getInstance();
-    var defaultSet = StorageConfig(id);
+    var def = StorageConfig(id, pref);
 
-    await setString(pref, FOLDER_NAME_KEY, folderName, defaultSet.folderName);
-    await setBool(
-        pref, "storeInternally", storeInternally, defaultSet.storeInternally);
-    await setString(
-        pref, "storageLocation", storageLocation, defaultSet.storageLocation);
+    await setString(FOLDER_NAME_KEY, folderName, def.folderName);
+    await setBool("storeInternally", storeInternally, def.storeInternally);
+    await setString("storageLocation", storageLocation, def.storageLocation);
 
     notifyListeners();
   }

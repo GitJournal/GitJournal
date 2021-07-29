@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 
 import 'package:gitjournal/core/link.dart';
@@ -11,11 +12,14 @@ import 'package:gitjournal/utils/link_resolver.dart';
 void main() {
   late Directory tempDir;
   late NotesFolderFS rootFolder;
+  late NotesFolderConfig config;
 
   setUpAll(() async {
     tempDir = await Directory.systemTemp.createTemp('__link_resolver__');
+    SharedPreferences.setMockInitialValues({});
+    config = NotesFolderConfig('', await SharedPreferences.getInstance());
 
-    rootFolder = NotesFolderFS(null, tempDir.path, NotesFolderConfig(''));
+    rootFolder = NotesFolderFS(null, tempDir.path, config);
 
     await generateNote(tempDir.path, "Hello.md");
     await generateNote(tempDir.path, "Fire.md");

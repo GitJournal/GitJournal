@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 
 import 'package:gitjournal/core/notes_cache.dart';
@@ -18,14 +19,17 @@ void main() {
       '/base/d1/file.md',
     ];
     late NotesCache cache;
+    late NotesFolderConfig config;
 
     setUp(() async {
       tempDir = await Directory.systemTemp.createTemp('__notes_test__');
+      SharedPreferences.setMockInitialValues({});
+      config = NotesFolderConfig('', await SharedPreferences.getInstance());
       cacheFilePath = p.join(tempDir.path, "cache.raw");
       cache = NotesCache(
         filePath: cacheFilePath,
         notesBasePath: '/base',
-        folderConfig: NotesFolderConfig(''),
+        folderConfig: config,
       );
     });
 
@@ -45,7 +49,7 @@ void main() {
 
     test('Should create directory structure accurately', () async {
       await cache.saveToDisk(fileList);
-      var rootFolder = NotesFolderFS(null, '/base', NotesFolderConfig(''));
+      var rootFolder = NotesFolderFS(null, '/base', config);
       await cache.load(rootFolder);
 
       expect(rootFolder.subFolders.length, 2);

@@ -4,10 +4,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/virtual_notes_folder.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
-import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/themes.dart';
 
 class NoteSearchDelegate extends SearchDelegate<Note?> {
@@ -86,8 +86,8 @@ class NoteSearchDelegate extends SearchDelegate<Note?> {
       return note.body.toLowerCase().contains(q);
     }).toList();
 
-    var settings = Provider.of<Settings>(context);
-    var folder = VirtualNotesFolder(filteredNotes, settings);
+    var folderConfig = Provider.of<NotesFolderConfig>(context);
+    var folder = VirtualNotesFolder(filteredNotes, folderConfig);
     var emptyText = tr('widgets.FolderView.searchFailed');
 
     return buildFolderView(

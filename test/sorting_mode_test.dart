@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 
 import 'package:gitjournal/core/note.dart';
@@ -7,8 +8,15 @@ import 'package:gitjournal/core/sorting_mode.dart';
 
 void main() {
   group('Sorting Mode', () {
+    late NotesFolderConfig config;
+
+    setUpAll(() async {
+      SharedPreferences.setMockInitialValues({});
+      config = NotesFolderConfig('', await SharedPreferences.getInstance());
+    });
+
     test('Created', () async {
-      var folder = NotesFolderFS(null, '/tmp/', NotesFolderConfig(''));
+      var folder = NotesFolderFS(null, '/tmp/', config);
       var n1 = Note(folder, '/tmp/1.md');
       n1.created = DateTime(2020, 10, 01);
 
@@ -33,7 +41,7 @@ void main() {
     });
 
     test('Modified', () async {
-      var folder = NotesFolderFS(null, '/tmp/', NotesFolderConfig(''));
+      var folder = NotesFolderFS(null, '/tmp/', config);
       var n1 = Note(folder, '/tmp/1.md');
       n1.modified = DateTime(2020, 10, 01);
 
@@ -58,7 +66,7 @@ void main() {
     });
 
     test('Title', () async {
-      var folder = NotesFolderFS(null, '/tmp/', NotesFolderConfig(''));
+      var folder = NotesFolderFS(null, '/tmp/', config);
       var n1 = Note(folder, '/tmp/1.md');
       n1.title = "alpha";
 

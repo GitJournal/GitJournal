@@ -75,17 +75,17 @@ class GitJournalRepo with ChangeNotifier {
   }) async {
     await migrateSettings(id, pref, gitBaseDir);
 
-    var storageConfig = StorageConfig(id);
-    storageConfig.load(pref);
+    var storageConfig = StorageConfig(id, pref);
+    storageConfig.load();
 
-    var folderConfig = NotesFolderConfig(id);
-    folderConfig.load(pref);
+    var folderConfig = NotesFolderConfig(id, pref);
+    folderConfig.load();
 
-    var gitConfig = GitConfig(id);
-    gitConfig.load(pref);
+    var gitConfig = GitConfig(id, pref);
+    gitConfig.load();
 
-    var settings = Settings(id);
-    settings.load(pref);
+    var settings = Settings(id, pref);
+    settings.load();
 
     // logEvent(Event.Settings, parameters: settings.toLoggableMap());
 

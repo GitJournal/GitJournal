@@ -414,8 +414,8 @@ class GitJournalChangeNotifiers extends StatelessWidget {
   Widget buildMarkdownSettings({required Widget child}) {
     return Consumer<RepositoryManager>(
       builder: (_, repoManager, __) {
-        var markdown = MarkdownRendererConfig(repoManager.currentId);
-        markdown.load(pref);
+        var markdown = MarkdownRendererConfig(repoManager.currentId, pref);
+        markdown.load();
 
         return ChangeNotifierProvider.value(value: markdown, child: child);
       },

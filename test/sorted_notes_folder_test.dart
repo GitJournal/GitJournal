@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 
 import 'package:gitjournal/core/note.dart';
@@ -14,11 +15,14 @@ void main() {
   group('Sorted Notes Folder Test', () {
     late Directory tempDir;
     late NotesFolderFS folder;
+    late NotesFolderConfig config;
 
     setUp(() async {
       tempDir = await Directory.systemTemp.createTemp('__sorted_folder_test__');
+      SharedPreferences.setMockInitialValues({});
+      config = NotesFolderConfig('', await SharedPreferences.getInstance());
 
-      folder = NotesFolderFS(null, tempDir.path, NotesFolderConfig(''));
+      folder = NotesFolderFS(null, tempDir.path, config);
 
       var random = Random();
       for (var i = 0; i < 5; i++) {
@@ -122,7 +126,7 @@ void main() {
     });
 
     test('If still sorted while loading the notes', () async {
-      var folder = NotesFolderFS(null, tempDir.path, NotesFolderConfig(''));
+      var folder = NotesFolderFS(null, tempDir.path, config);
       var sf = SortedNotesFolder(
         folder: folder,
         sortingMode:
