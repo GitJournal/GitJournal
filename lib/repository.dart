@@ -90,8 +90,9 @@ class GitJournalRepo with ChangeNotifier {
     // logEvent(Event.Settings, parameters: settings.toLoggableMap());
 
     Log.i("StorageConfig ${storageConfig.toLoggableMap()}");
-    Log.i("GitConfig ${gitConfig.toLoggableMap()}");
     Log.i("FolderConfig ${folderConfig.toLoggableMap()}");
+    Log.i("GitConfig ${gitConfig.toLoggableMap()}");
+    Log.i("Settings ${settings.toLoggableMap()}");
 
     var repoPath = await storageConfig.buildRepoPath(gitBaseDir);
     Log.i("Loading Repo at path $repoPath");
@@ -450,9 +451,10 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   Future _persistConfig() async {
-    await settings.save();
     await storageConfig.save();
+    await folderConfig.save();
     await gitConfig.save();
+    await settings.save();
   }
 
   Future<void> moveRepoToPath() async {
