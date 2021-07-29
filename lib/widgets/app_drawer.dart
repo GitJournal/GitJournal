@@ -215,20 +215,21 @@ class _AppDrawerState extends State<AppDrawer>
               logEvent(Event.DrawerShare);
             },
           ),
-          _buildDrawerTile(
-            context,
-            icon: Icons.feedback,
-            title: tr('drawer.rate'),
-            onTap: () {
-              LaunchReview.launch(
-                androidAppId: "io.gitjournal.gitjournal",
-                iOSAppId: "1466519634",
-              );
+          if (Platform.isAndroid || Platform.isIOS)
+            _buildDrawerTile(
+              context,
+              icon: Icons.feedback,
+              title: tr('drawer.rate'),
+              onTap: () {
+                LaunchReview.launch(
+                  androidAppId: "io.gitjournal.gitjournal",
+                  iOSAppId: "1466519634",
+                );
 
-              Navigator.pop(context);
-              logEvent(Event.DrawerRate);
-            },
-          ),
+                Navigator.pop(context);
+                logEvent(Event.DrawerRate);
+              },
+            ),
           _buildDrawerTile(
             context,
             icon: Icons.rate_review,
