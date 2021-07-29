@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
 import 'package:fixnum/fixnum.dart';
 import 'package:grpc/grpc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -83,14 +86,47 @@ class SharedPreferencesService extends SharedPreferencesServiceBase {
 }
 
 Future<void> main(List<String> args) async {
-  var pref = await SharedPreferences.getInstance();
-  final server = Server(
-    [SharedPreferencesService(pref)],
-    const <Interceptor>[],
-    CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
-  );
-  await server.serve(port: 50051);
-  print('Server listening on port ${server.port}...');
+  return runApp(MyApp());
 }
 
-// todo: Create some kind of QR code for getting the URL
+// todo: Create some kind of QR code for getting the IP and hostname
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+
+    _initAsync();
+  }
+
+  void _initAsync() async {
+    var pref = await SharedPreferences.getInstance();
+    final server = Server(
+      [SharedPreferencesService(pref)],
+      const <Interceptor>[],
+      CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
+    );
+    await server.serve(port: 50052);
+    print('Server listening on port ${server.port}...');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Welcome to Flutter',
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Welcome to Flutter'),
+        ),
+        body: const Center(
+          child: Text('Hello World'),
+        ),
+      ),
+    );
+  }
+}
