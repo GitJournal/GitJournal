@@ -7,7 +7,7 @@ import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/editors/heuristics.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/widgets/journal_editor_header.dart';
 
 class JournalEditor extends StatefulWidget implements Editor {

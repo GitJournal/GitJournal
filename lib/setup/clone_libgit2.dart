@@ -3,7 +3,7 @@ import 'package:dart_git/utils/result.dart';
 import 'package:function_types/function_types.dart';
 import 'package:git_bindings/git_bindings.dart' as git_bindings;
 
-import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'clone.dart';
 import 'git_transfer_progress.dart';
 

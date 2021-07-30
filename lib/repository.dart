@@ -21,11 +21,11 @@ import 'package:gitjournal/core/notes_cache.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_migrations.dart';
 import 'package:gitjournal/settings/storage_config.dart';
-import 'package:gitjournal/utils/logger.dart';
 
 enum SyncStatus {
   Unknown,

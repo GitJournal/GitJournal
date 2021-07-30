@@ -12,8 +12,8 @@ import 'package:gitjournal/editors/markdown_toolbar.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_settings.dart';
-import 'package:gitjournal/utils/logger.dart';
 
 class MarkdownEditor extends StatefulWidget implements Editor {
   final Note note;

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:function_types/function_types.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
-import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/logger/logger.dart';
 
 class GitHostSetupButton extends StatelessWidget {
   final Func0<void> onPressed;

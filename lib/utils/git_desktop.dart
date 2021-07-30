@@ -6,7 +6,7 @@ import 'package:dart_git/utils/file_extensions.dart';
 import 'package:dart_git/utils/result.dart';
 import 'package:universal_io/io.dart';
 
-import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/logger/logger.dart';
 
 Future<Result<void>> gitFetchViaExecutable({
   required String repoPath,

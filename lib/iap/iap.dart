@@ -8,8 +8,8 @@ import 'package:universal_io/io.dart' show Platform;
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/features.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_settings.dart';
-import 'package:gitjournal/utils/logger.dart';
 
 class InAppPurchases {
   static Future<void> confirmProPurchaseBoot() async {

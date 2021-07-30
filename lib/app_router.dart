@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/iap/purchase_screen.dart';
 import 'package:gitjournal/iap/purchase_thankyou_screen.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/screens/filesystem_screen.dart';
 import 'package:gitjournal/screens/folder_listing.dart';
@@ -18,7 +19,6 @@ import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/setup/screens.dart';
-import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/utils/utils.dart';
 
 class AppRoute {

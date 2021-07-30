@@ -6,7 +6,7 @@ import 'package:function_types/function_types.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' show Directory;
 
-import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'git_transfer_progress.dart';
 
 typedef GitFetchFunction = Future<Result<void>> Function(

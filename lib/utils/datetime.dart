@@ -2,7 +2,7 @@ import 'dart:core';
 
 import 'package:intl/intl.dart';
 
-import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/logger/logger.dart';
 
 final _dateOnlyFormat = DateFormat("yyyy-MM-dd");
 final _simpleDateFormat = DateFormat("yyyy-MM-dd-HH-mm-ss");

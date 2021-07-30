@@ -6,7 +6,7 @@ import 'package:test/fake.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart';
 
-import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/logger/logger.dart';
 
 void main() {
   setUp(() async {

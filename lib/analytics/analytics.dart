@@ -4,7 +4,7 @@ import 'package:universal_io/io.dart' show Platform;
 
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/logger/logger.dart';
 
 Analytics getAnalytics() {
   return JournalApp.analytics;

@@ -11,8 +11,8 @@ import 'package:universal_io/io.dart' show Platform;
 
 import 'package:gitjournal/.env.dart';
 import 'package:gitjournal/app.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_settings.dart';
-import 'package:gitjournal/utils/logger.dart';
 
 Future<void> initSentry() async {
   if (Sentry.isEnabled) {

@@ -5,8 +5,8 @@ import 'package:git_bindings/git_bindings.dart' as gb;
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
 
+import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/ssh/binary_length_value.dart';
-import 'package:gitjournal/utils/logger.dart';
 
 class SshKey {
   final String publicKey;

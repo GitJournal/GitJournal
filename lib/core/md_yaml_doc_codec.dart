@@ -3,7 +3,7 @@ import 'dart:collection';
 import 'package:yaml/yaml.dart';
 import 'package:yaml_serializer/yaml_serializer.dart';
 
-import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'md_yaml_doc.dart';
 
 class MarkdownYAMLCodec {

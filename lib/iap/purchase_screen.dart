@@ -7,8 +7,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/iap/purchase_manager.dart';
 import 'package:gitjournal/iap/purchase_widget.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/screens/feature_timeline_screen.dart';
-import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/scroll_view_without_animation.dart';
 
 Set<String> _generateMonthlySkus() {

@@ -6,7 +6,7 @@ import 'package:path/path.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:universal_io/io.dart';
 
-import 'package:gitjournal/utils/logger.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'note.dart';
 import 'notes_folder.dart';
 import 'notes_folder_notifier.dart';

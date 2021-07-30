@@ -11,8 +11,8 @@ import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/iap/iap.dart';
 import 'package:gitjournal/iap/purchase_manager.dart';
 import 'package:gitjournal/iap/purchase_slider.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_settings.dart';
-import 'package:gitjournal/utils/logger.dart';
 
 class PurchaseButton extends StatelessWidget {
   final ProductDetails? product;

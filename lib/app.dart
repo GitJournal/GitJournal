@@ -21,6 +21,7 @@ import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/iap/iap.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/app_settings.dart';
@@ -29,7 +30,6 @@ import 'package:gitjournal/settings/markdown_renderer_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/themes.dart';
-import 'package:gitjournal/utils/logger.dart';
 
 class JournalApp extends StatefulWidget {
   static Future main(SharedPreferences pref) async {

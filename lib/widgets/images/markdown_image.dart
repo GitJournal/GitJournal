@@ -26,8 +26,8 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_io/io.dart';
 
+import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/markdown_renderer_config.dart';
-import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/images/image_caption.dart';
 import 'package:gitjournal/widgets/images/image_details.dart';
 import 'package:gitjournal/widgets/images/themable_image.dart';

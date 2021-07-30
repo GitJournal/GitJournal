@@ -10,8 +10,8 @@ import 'package:gitjournal/settings/settings.dart';
 import '../app.dart';
 import '../core/note.dart';
 import '../editors/common_types.dart';
+import '../logger/logger.dart';
 import '../repository.dart';
-import 'logger.dart';
 
 Future<String> getVersionString() async {
   var info = await PackageInfo.fromPlatform();

@@ -10,10 +10,10 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/setup/button.dart';
 import 'package:gitjournal/setup/error.dart';
 import 'package:gitjournal/setup/loading.dart';
-import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/widgets/highlighted_text.dart';
 
 //import 'package:font_awesome_flutter/font_awesome_flutter.dart';

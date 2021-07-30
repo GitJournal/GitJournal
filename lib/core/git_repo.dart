@@ -9,10 +9,10 @@ import 'package:universal_io/io.dart' show Platform, Directory;
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_settings.dart';
 import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/utils/git_desktop.dart';
-import 'package:gitjournal/utils/logger.dart';
 
 bool useDartGit = false;
 

@@ -6,8 +6,8 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/iap/iap.dart';
 import 'package:gitjournal/iap/purchase_slider.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_settings.dart';
-import 'package:gitjournal/utils/logger.dart';
 
 // ignore_for_file: cancel_subscriptions
 
