@@ -81,6 +81,7 @@ dependencies:
   grpc: ^3.0.0
   protobuf: ^2.0.0
   universal_io: ^2.0.4
+  sprintf: ^6.0.0
 
 dev_dependencies:
   #flutter_driver:
