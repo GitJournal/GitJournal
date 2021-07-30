@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:io' show Directory, File;
 
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/exceptions.dart';
 import 'package:function_types/function_types.dart';
 import 'package:path/path.dart' as p;
+import 'package:universal_io/io.dart' show Directory, File;
 
 import 'package:gitjournal/utils/logger.dart';
 

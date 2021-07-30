@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 
 import 'package:collection/collection.dart';
 import 'package:path/path.dart' as p;
+import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';

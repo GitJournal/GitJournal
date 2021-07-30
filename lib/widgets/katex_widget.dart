@@ -2,13 +2,13 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 
 import 'package:crypto/crypto.dart';
 import 'package:mutex/mutex.dart';
 import 'package:path/path.dart' as p;
+import 'package:universal_io/io.dart';
 
 class KatexWidget extends StatefulWidget {
   final String input;

@@ -1,9 +1,9 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
+import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/core/flattened_notes_folder.dart';
 import 'package:gitjournal/core/note.dart';

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +12,7 @@ import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:time/time.dart';
+import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/core/git_repo.dart';

@@ -1,5 +1,3 @@
-import 'dart:io' show Platform, Directory;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -10,6 +8,7 @@ import 'package:function_types/function_types.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
+import 'package:universal_io/io.dart' show Platform, Directory;
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';

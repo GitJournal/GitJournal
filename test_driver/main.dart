@@ -1,10 +1,9 @@
-import 'dart:io';
-
 import 'package:dart_git/git.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time/time.dart';
+import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/settings/app_settings.dart';

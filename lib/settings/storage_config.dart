@@ -1,10 +1,9 @@
-import 'dart:io' show Platform;
-
 import 'package:flutter/foundation.dart';
 
 import 'package:icloud_documents_path/icloud_documents_path.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:universal_io/io.dart' show Platform;
 
 import 'package:gitjournal/settings/settings_sharedpref.dart';
 

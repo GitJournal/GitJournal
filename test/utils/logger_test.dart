@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter_test/flutter_test.dart' as ft;
 import 'package:path/path.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:test/fake.dart';
 import 'package:test/test.dart';
+import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/utils/logger.dart';
 

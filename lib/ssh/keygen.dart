@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:basic_utils/basic_utils.dart';
 import 'package:git_bindings/git_bindings.dart' as gb;
 import 'package:path/path.dart' as p;
+import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/ssh/binary_length_value.dart';
 import 'package:gitjournal/utils/logger.dart';

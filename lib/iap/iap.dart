@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'dart:io' show Platform;
 
 import 'package:http/http.dart' as http;
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase/store_kit_wrappers.dart';
+import 'package:universal_io/io.dart' show Platform;
 
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/error_reporting.dart';

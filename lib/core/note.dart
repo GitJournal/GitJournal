@@ -14,10 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import 'dart:io';
-
 import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
+import 'package:universal_io/io.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:gitjournal/core/links_loader.dart';

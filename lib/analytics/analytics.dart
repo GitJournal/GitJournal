@@ -1,6 +1,6 @@
-import 'dart:io' show Platform;
-
 import 'package:flutter/material.dart';
+
+import 'package:universal_io/io.dart' show Platform;
 
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/error_reporting.dart';

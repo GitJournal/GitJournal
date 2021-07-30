@@ -1,13 +1,13 @@
 /*
 
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 
 import 'package:bonsoir/bonsoir.dart';
 import 'package:device_info/device_info.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_io/io.dart';
 
 /// Plugin's main method.
 void main() => runApp(BonsoirExampleMainWidget());

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -7,6 +5,7 @@ import 'package:dart_git/dart_git.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
+import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/git_config.dart';

@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -25,6 +24,7 @@ import 'package:flutter/widgets.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/settings/markdown_renderer_config.dart';
 import 'package:gitjournal/utils/logger.dart';

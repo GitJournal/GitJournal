@@ -14,13 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:universal_io/io.dart';
 
 class ThemableImage extends StatelessWidget {
   final double? width;

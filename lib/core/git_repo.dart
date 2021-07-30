@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:io' show Platform, Directory;
 
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/utils/result.dart';
 import 'package:git_bindings/git_bindings.dart' as gb;
 import 'package:path/path.dart' as p;
+import 'package:universal_io/io.dart' show Platform, Directory;
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';

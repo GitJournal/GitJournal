@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io' show HttpHeaders;
 import 'dart:math';
 
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/services.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:universal_io/io.dart' show HttpHeaders;
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/utils/logger.dart';

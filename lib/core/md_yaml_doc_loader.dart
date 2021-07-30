@@ -1,8 +1,8 @@
-import 'dart:io';
 import 'dart:isolate';
 
 import 'package:dart_git/utils/result.dart';
 import 'package:synchronized/synchronized.dart';
+import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';

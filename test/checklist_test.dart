@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
+import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/core/checklist.dart';
 import 'package:gitjournal/core/note.dart';

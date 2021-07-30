@@ -1,6 +1,5 @@
-import 'dart:io' show Platform;
-
 import 'package:easy_localization/easy_localization.dart';
+import 'package:universal_io/io.dart' show Platform;
 
 class Features {
   // Make the desktop version always pro, for now.
