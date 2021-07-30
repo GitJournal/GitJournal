@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:dashbook/dashbook.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/logger/fakes/debug_screen_fake.dart';
@@ -14,9 +15,9 @@ import 'package:gitjournal/setup/fakes/clone_fake.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  await Log.init();
 
   PathProviderPlatform.instance = await FakePathProviderPlatform.init();
+  await Log.init();
 
   final dashbook = Dashbook();
 
@@ -26,6 +27,10 @@ void main() async {
 
   var appSettings = AppSettings.instance;
   Log.i("AppSetting ${appSettings.toMap()}");
+
+  dashbook
+      .storiesOf('Settings')
+      .add('Debug Screen', (context) => const DebugScreenFake());
 
   dashbook.storiesOf('Setup').decorator(CenterDecorator()).add(
     'clone',
@@ -37,10 +42,10 @@ void main() async {
     },
   );
 
-  dashbook.storiesOf('Settings').decorator(CenterDecorator()).add(
-        'Debug Screen',
-        (context) => const DebugScreenFake(),
-      );
+  var app = ChangeNotifierProvider.value(
+    value: appSettings,
+    child: dashbook,
+  );
 
-  runApp(dashbook);
+  runApp(app);
 }
