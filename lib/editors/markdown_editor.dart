@@ -6,14 +6,14 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/disposable_change_notifier.dart';
+import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/editors/heuristics.dart';
+import 'package:gitjournal/editors/markdown_toolbar.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings/app_settings.dart';
 import 'package:gitjournal/utils/logger.dart';
-import 'package:gitjournal/widgets/editor_scroll_view.dart';
-import 'package:gitjournal/widgets/markdown_toolbar.dart';
 
 class MarkdownEditor extends StatefulWidget implements Editor {
   final Note note;

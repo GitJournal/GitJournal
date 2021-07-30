@@ -29,6 +29,9 @@ class GitConfig extends ChangeNotifier with SettingsSharedPref {
 
   Future<void> save() async {
     var def = GitConfig(id, pref);
+    // I could call _load and get all the values
+    // and then compare it.
+    // why am I doing this? - I'm not sure
 
     await setString("gitAuthor", gitAuthor, def.gitAuthor);
     await setString("gitAuthorEmail", gitAuthorEmail, def.gitAuthorEmail);
@@ -49,3 +52,8 @@ class GitConfig extends ChangeNotifier with SettingsSharedPref {
     };
   }
 }
+
+// 1. Make sure we don't need to set the value and call save
+// 2. Less calls to setString so this is much faster
+
+// Optimizing this doesn't matter

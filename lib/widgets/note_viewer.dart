@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/folder_views/common.dart';
-import 'package:gitjournal/widgets/editor_scroll_view.dart';
 import 'package:gitjournal/widgets/markdown_renderer.dart';
 import 'package:gitjournal/widgets/notes_backlinks.dart';
 

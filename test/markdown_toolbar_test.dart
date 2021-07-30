@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:test/test.dart';
 
-import 'package:gitjournal/widgets/markdown_toolbar.dart';
+import 'package:gitjournal/editors/markdown_toolbar.dart';
 
 void main() {
   void _testLine({

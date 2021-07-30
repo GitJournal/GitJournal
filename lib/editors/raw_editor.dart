@@ -6,8 +6,8 @@ import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/disposable_change_notifier.dart';
+import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/editors/undo_redo.dart';
-import 'package:gitjournal/widgets/editor_scroll_view.dart';
 
 class RawEditor extends StatefulWidget implements Editor {
   final Note note;
