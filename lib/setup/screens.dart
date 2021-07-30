@@ -29,6 +29,7 @@ import 'package:gitjournal/setup/sshkey.dart';
 import 'package:gitjournal/ssh/keygen.dart';
 import 'package:gitjournal/utils/logger.dart';
 import 'package:gitjournal/utils/utils.dart';
+import 'git_transfer_progress.dart';
 
 class GitHostSetupScreen extends StatefulWidget {
   final String repoFolderName;

@@ -5,6 +5,7 @@ import 'package:git_bindings/git_bindings.dart' as git_bindings;
 
 import 'package:gitjournal/utils/logger.dart';
 import 'clone.dart';
+import 'git_transfer_progress.dart';
 
 Future<Result<void>> cloneRemote({
   required String repoPath,
