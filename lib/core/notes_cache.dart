@@ -32,7 +32,7 @@ class NotesCache {
     var fileList = await loadFromDisk();
     Log.i("Notes Cache Loaded: ${fileList.length} items");
 
-    var sep = Platform.pathSeparator;
+    var sep = p.separator;
     var notesBasePath = this.notesBasePath;
     if (!notesBasePath.endsWith(sep)) {
       notesBasePath += sep;
