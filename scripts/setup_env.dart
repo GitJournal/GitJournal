@@ -1,7 +1,7 @@
 #!/usr/bin/env dart
 
 import 'dart:convert';
-import 'package:universal_io/io.dart';
+import 'dart:io';
 
 Future<void> main() async {
   final config = {
