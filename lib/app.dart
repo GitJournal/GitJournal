@@ -189,7 +189,7 @@ class _JournalAppState extends State<JournalApp> {
       return;
     }
 
-    final QuickActions quickActions = QuickActions();
+    final QuickActions quickActions = const QuickActions();
     quickActions.initialize((String shortcutType) {
       Log.i("Quick Action Open: $shortcutType");
       if (_navigatorKey.currentState == null) {
