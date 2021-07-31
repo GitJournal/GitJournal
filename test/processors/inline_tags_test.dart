@@ -175,4 +175,22 @@ Provides a combined #structure\tof `DateTime` with an `Offset` property defining
 
     expect(tags, {'csharp', 'structure'});
   });
+
+  test("Ignore Code Blocks", () {
+    var body = """# DateTimeOffset
+#csharp
+
+`#foo double #inside hell`
+```
+Provides a combined #structure
+```
+
+## Then *bold* **italic**.
+""";
+
+    var p = InlineTagsProcessor(tagPrefixes: {'#'});
+    var tags = p.extractTags(body);
+
+    expect(tags, {'csharp'});
+  }, skip: true);
 }
