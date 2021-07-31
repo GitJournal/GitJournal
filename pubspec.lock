@@ -56,7 +56,7 @@ packages:
       name: basic_utils
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.0"
+    version: "3.4.0"
   benchmark_harness:
     dependency: "direct dev"
     description:
@@ -632,7 +632,7 @@ packages:
       name: http
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.13.1"
+    version: "0.13.3"
   http2:
     dependency: transitive
     description:
@@ -1007,7 +1007,7 @@ packages:
       name: pointycastle
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.1"
+    version: "3.2.0"
   pool:
     dependency: transitive
     description:
@@ -1056,7 +1056,7 @@ packages:
       name: quick_actions
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.0"
+    version: "0.6.0+3"
   quick_actions_platform_interface:
     dependency: transitive
     description:
@@ -1348,7 +1348,7 @@ packages:
       name: timeago
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.2"
+    version: "3.1.0"
   timing:
     dependency: transitive
     description:

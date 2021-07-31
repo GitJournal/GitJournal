@@ -23,7 +23,7 @@ dependencies:
     git: https://github.com/GitJournal/icloud_documents_path.git
   auto_size_text: ^3.0.0-nullsafety.0
   badges: ^2.0.1
-  basic_utils: ^3.1.0
+  basic_utils: ^3.4.0
   connectivity_plus: ^1.0.6
   # cryptography: ^1.4.1
   # cryptography_flutter: ^1.0.0
@@ -61,7 +61,7 @@ dependencies:
   permission_handler: ^6.1.1
   photo_view: ^0.11.1
   provider: ^5.0.0
-  quick_actions: ^0.6.0
+  quick_actions: ^0.6.0+3
   receive_sharing_intent: ^1.4.5
   sentry_flutter: ^5.1.0
   share_plus: ^2.1.4
@@ -70,7 +70,7 @@ dependencies:
   stack_trace: ^1.10.0
   synchronized: ^3.0.0
   time: ^2.0.0
-  timeago: ^3.0.2
+  timeago: ^3.1.0
   url_launcher: ^6.0.3
   uuid: ^3.0.4
   yaml: ^3.1.0
