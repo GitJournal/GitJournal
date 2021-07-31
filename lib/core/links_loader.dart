@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:isolate';
 
 import 'package:flutter/material.dart';
@@ -77,7 +78,7 @@ List<Link> parseLinks(String body, String filePath) {
     inlineSyntaxes: [WikiLinkSyntax()],
   );
 
-  var lines = body.replaceAll('\r\n', '\n').split('\n');
+  var lines = LineSplitter.split(body).toList();
   var nodes = doc.parseLines(lines);
   var possibleLinks = LinkExtractor(filePath).visit(nodes);
 
