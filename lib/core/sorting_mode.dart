@@ -1,3 +1,19 @@
+/*
+Copyright 2020-2021 Vishesh Handa <me@vhanda.in>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:gitjournal/core/note.dart';
@@ -172,7 +188,15 @@ int _sortModifiedDesc(Note a, Note b) {
   }
   if (bDt == null && aDt == null) {
     if (a.fileLastModified != null && b.fileLastModified != null) {
-      return a.fileLastModified!.compareTo(b.fileLastModified!);
+      if (a.fileLastModified == null && b.fileLastModified != null) {
+        return 1;
+      } else if (a.fileLastModified != null && b.fileLastModified == null) {
+        return -1;
+      } else if (a.fileLastModified != null && b.fileLastModified != null) {
+        return a.fileLastModified!.compareTo(b.fileLastModified!);
+      } else {
+        return a.fileName.compareTo(b.fileName);
+      }
     } else {
       return a.fileName.compareTo(b.fileName);
     }
