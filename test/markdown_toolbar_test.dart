@@ -197,6 +197,22 @@ void main() {
     );
   });
 
+  test("Word selection", () {
+    var val = const TextEditingValue(
+      text: 'Hello\nHydra Person',
+      selection: TextSelection(baseOffset: 6, extentOffset: 11),
+    );
+
+    var newVal = modifyCurrentWord(val, '**');
+
+    expect(newVal.text, 'Hello\n**Hydra** Person');
+    expect(newVal.selection.baseOffset, 6);
+    expect(newVal.selection.extentOffset, 15);
+
+    var newVal2 = modifyCurrentWord(newVal, '**');
+    expect(newVal2, val);
+  });
+
   //
   // Navigation
   //
@@ -367,6 +383,4 @@ void main() {
       afterOffset: 1,
     );
   });
-
-  // TODO: Test that if some text is selected then it should be modified
 }

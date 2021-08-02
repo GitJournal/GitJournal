@@ -212,25 +212,34 @@ TextEditingValue modifyCurrentWord(
   var selection = textEditingValue.selection;
   var text = textEditingValue.text;
 
-  //print('Base offset: ${selection.baseOffset}');
-  //print('Extent offset: ${selection.extentOffset}');
-  var cursorPos = selection.baseOffset;
-  if (cursorPos == -1) {
-    cursorPos = 0;
-  }
-  //print('CursorPos: $cursorPos');
+  late int wordStartPos;
+  late int wordEndPos;
+  var selectionMode = false;
 
-  var wordStartPos =
-      text.lastIndexOf(RegExp('\\s'), cursorPos == 0 ? 0 : cursorPos - 1);
-  if (wordStartPos == -1) {
-    wordStartPos = 0;
+  // Text Selected
+  if (selection.baseOffset != selection.extentOffset) {
+    wordStartPos = selection.baseOffset;
+    wordEndPos = selection.extentOffset;
+    selectionMode = true;
   } else {
-    wordStartPos += 1;
-  }
+    var cursorPos = selection.baseOffset;
+    if (cursorPos == -1) {
+      cursorPos = 0;
+    }
+    //print('CursorPos: $cursorPos');
 
-  var wordEndPos = text.indexOf(RegExp('\\s'), cursorPos);
-  if (wordEndPos == -1) {
-    wordEndPos = text.length;
+    wordStartPos =
+        text.lastIndexOf(RegExp('\\s'), cursorPos == 0 ? 0 : cursorPos - 1);
+    if (wordStartPos == -1) {
+      wordStartPos = 0;
+    } else {
+      wordStartPos += 1;
+    }
+
+    wordEndPos = text.indexOf(RegExp('\\s'), cursorPos);
+    if (wordEndPos == -1) {
+      wordEndPos = text.length;
+    }
   }
 
   //print('Word Start: $wordStartPos');
@@ -243,11 +252,16 @@ TextEditingValue modifyCurrentWord(
     text = text.replaceFirst(char, '', wordStartPos);
     wordEndPos -= char.length;
 
+    var newSelection = selectionMode
+        ? TextSelection(
+            baseOffset: wordStartPos,
+            extentOffset: wordEndPos - char.length,
+          )
+        : TextSelection.collapsed(offset: wordEndPos - char.length);
+
     return TextEditingValue(
       text: text.replaceFirst(char, '', wordEndPos - char.length),
-      selection: TextSelection.collapsed(
-        offset: wordEndPos - char.length,
-      ),
+      selection: newSelection,
     );
   }
 
@@ -255,9 +269,16 @@ TextEditingValue modifyCurrentWord(
   text = text.replaceRange(wordStartPos, wordStartPos, char);
   wordEndPos += char.length;
 
+  var newSelection = selectionMode
+      ? TextSelection(
+          baseOffset: wordStartPos,
+          extentOffset: wordEndPos + char.length,
+        )
+      : TextSelection.collapsed(offset: wordEndPos);
+
   return TextEditingValue(
     text: text.replaceRange(wordEndPos, wordEndPos, char),
-    selection: TextSelection.collapsed(offset: wordEndPos),
+    selection: newSelection,
   );
 }
 
