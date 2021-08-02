@@ -2,13 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:universal_io/io.dart' show Platform;
 
-import 'package:gitjournal/app.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
-
-Analytics getAnalytics() {
-  return JournalApp.analytics;
-}
 
 enum Event {
   NoteAdded,
@@ -135,8 +130,17 @@ String _eventToString(Event e) {
 }
 
 class Analytics {
-  // var firebase = FirebaseAnalytics();
   bool enabled = false;
+
+  static Analytics? _global;
+  static Analytics init({required bool enable}) {
+    _global = Analytics();
+    _global!.enabled = enable;
+
+    return _global!;
+  }
+
+  static Analytics get instance => _global!;
 
   Future<void> log({
     required Event e,
@@ -149,13 +153,6 @@ class Analytics {
       }
     }
     captureErrorBreadcrumb(name: name, parameters: parameters);
-  }
-
-  Future<void> setAnalyticsCollectionEnabled(bool enabled) async {
-    this.enabled = enabled;
-    if (Platform.isAndroid || Platform.isIOS) {
-      // await firebase.setAnalyticsCollectionEnabled(enabled);
-    }
   }
 
   Future<void> setCurrentScreen({required String screenName}) async {
@@ -181,7 +178,7 @@ class Analytics {
 }
 
 void logEvent(Event event, {Map<String, String> parameters = const {}}) {
-  getAnalytics().log(e: event, parameters: parameters);
+  Analytics.instance.log(e: event, parameters: parameters);
   Log.d("$event", props: parameters);
 }
 
@@ -198,7 +195,7 @@ class AnalyticsRouteObserver extends RouteObserver<PageRoute<dynamic>> {
     }
 
     try {
-      await getAnalytics().setCurrentScreen(screenName: screenName);
+      await Analytics.instance.setCurrentScreen(screenName: screenName);
     } catch (e, stackTrace) {
       Log.e("AnalyticsRouteObserver", ex: e, stacktrace: stackTrace);
     }
@@ -209,8 +206,6 @@ class AnalyticsRouteObserver extends RouteObserver<PageRoute<dynamic>> {
     super.didPush(route, previousRoute);
     if (route is PageRoute) {
       _sendScreenView(route);
-    } else {
-      // print("route in not a PageRoute! $route");
     }
   }
 
@@ -219,8 +214,6 @@ class AnalyticsRouteObserver extends RouteObserver<PageRoute<dynamic>> {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
     if (newRoute is PageRoute) {
       _sendScreenView(newRoute);
-    } else {
-      // print("newRoute in not a PageRoute! $newRoute");
     }
   }
 
@@ -229,9 +222,6 @@ class AnalyticsRouteObserver extends RouteObserver<PageRoute<dynamic>> {
     super.didPop(route, previousRoute);
     if (previousRoute is PageRoute && route is PageRoute) {
       _sendScreenView(previousRoute);
-    } else {
-      // print("previousRoute in not a PageRoute! $previousRoute");
-      // print("route in not a PageRoute! $route");
     }
   }
 }

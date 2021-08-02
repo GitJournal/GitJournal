@@ -126,15 +126,15 @@ class JournalApp extends StatefulWidget {
     bool enabled = !JournalApp.isInDebugMode && !inFireBaseTestLab;
 
     Log.d("Analytics Collection: $enabled");
-    JournalApp.analytics.setAnalyticsCollectionEnabled(enabled);
+    var analytics = Analytics.init(enable: enabled);
 
     if (enabled) {
-      getAnalytics().setUserProperty(
+      analytics.setUserProperty(
         name: 'proMode',
         value: appSettings.proMode.toString(),
       );
 
-      getAnalytics().setUserProperty(
+      analytics.setUserProperty(
         name: 'proExpirationDate',
         value: appSettings.proExpirationDate.toString(),
       );
@@ -164,7 +164,6 @@ class JournalApp extends StatefulWidget {
     appSettings.save();
   }
 
-  static final analytics = Analytics();
   static bool isInDebugMode = false;
 
   JournalApp();

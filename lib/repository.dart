@@ -152,7 +152,7 @@ class GitJournalRepo with ChangeNotifier {
     Log.i("Branch $_currentBranch");
 
     // Makes it easier to filter the analytics
-    getAnalytics().setUserProperty(
+    Analytics.instance.setUserProperty(
       name: 'onboarded',
       value: remoteGitRepoConfigured.toString(),
     );
