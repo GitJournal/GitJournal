@@ -17,6 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_io/io.dart' show Platform;
 
 import 'package:gitjournal/analytics/analytics.dart';
+import 'package:gitjournal/analytics/route_observer.dart';
 import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';

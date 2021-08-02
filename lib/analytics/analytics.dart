@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:universal_io/io.dart' show Platform;
-
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 
@@ -148,9 +144,7 @@ class Analytics {
   }) async {
     String name = _eventToString(e);
     if (enabled) {
-      if (Platform.isAndroid || Platform.isIOS) {
-        // await firebase.logEvent(name: name, parameters: parameters);
-      }
+      // await firebase.logEvent(name: name, parameters: parameters);
     }
     captureErrorBreadcrumb(name: name, parameters: parameters);
   }
@@ -159,9 +153,7 @@ class Analytics {
     if (!enabled) {
       return;
     }
-    if (Platform.isAndroid || Platform.isIOS) {
-      // await firebase.setCurrentScreen(screenName: screenName);
-    }
+    // await firebase.setCurrentScreen(screenName: screenName);
   }
 
   Future<void> setUserProperty({
@@ -171,57 +163,11 @@ class Analytics {
     if (!enabled) {
       return;
     }
-    if (Platform.isAndroid || Platform.isIOS) {
-      // await firebase.setUserProperty(name: name, value: value);
-    }
+    // await firebase.setUserProperty(name: name, value: value);
   }
 }
 
 void logEvent(Event event, {Map<String, String> parameters = const {}}) {
   Analytics.instance.log(e: event, parameters: parameters);
   Log.d("$event", props: parameters);
-}
-
-class AnalyticsRouteObserver extends RouteObserver<PageRoute<dynamic>> {
-  void _sendScreenView(PageRoute<dynamic> route) async {
-    var screenName = route.settings.name;
-    if (route.runtimeType.toString().startsWith("_SearchPageRoute")) {
-      screenName = "/search";
-    }
-
-    if (screenName == null) {
-      screenName = 'Unknown';
-      return;
-    }
-
-    try {
-      await Analytics.instance.setCurrentScreen(screenName: screenName);
-    } catch (e, stackTrace) {
-      Log.e("AnalyticsRouteObserver", ex: e, stacktrace: stackTrace);
-    }
-  }
-
-  @override
-  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    super.didPush(route, previousRoute);
-    if (route is PageRoute) {
-      _sendScreenView(route);
-    }
-  }
-
-  @override
-  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
-    super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
-    if (newRoute is PageRoute) {
-      _sendScreenView(newRoute);
-    }
-  }
-
-  @override
-  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    super.didPop(route, previousRoute);
-    if (previousRoute is PageRoute && route is PageRoute) {
-      _sendScreenView(previousRoute);
-    }
-  }
 }
