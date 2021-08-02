@@ -1,0 +1,177 @@
+syntax = "proto3";
+
+package gitjournal;
+
+// FIXME: Add a service
+
+message AnalyticsMessage {
+  string appId = 1;
+  repeated Event events = 2;
+
+  DeviceInfo deviceInfo = 3;
+  PackageInfo packageInfo = 4;
+  // FIXME: What about AppInfo
+}
+
+message Any {
+  oneof value {
+    string stringValue = 1;
+    int64 intValue = 2;
+    double doubleValue = 3;
+    bool boolValue = 4;
+  }
+}
+
+message Event {
+  string name = 1;
+  int64 date = 2; // unix timestamp
+  map<string, Any> params = 3;
+
+  string userId = 4;
+  string psuedoId = 5;
+  map<string, Any> userProperties = 6;
+
+  string sessionID = 7;
+  string platform = 8;
+  int64 userFirstTouchTimestamp = 9;
+}
+
+message DeviceInfo {
+  oneof deviceInfo {
+    AndroidDeviceInfo androidDeviceInfo = 1;
+    IosDeviceInfo iosDeviceInfo = 2;
+    LinuxDeviceInfo linuxDeviceInfo = 3;
+    MacOSDeviceInfo macOSDeviceInfo = 4;
+    WindowsDeviceInfo windowsDeviceInfo = 5;
+    WebBrowserInfo webBrowserInfo = 6;
+  }
+}
+
+message PackageInfo {
+  string appName = 1;
+  string packageName = 2;
+  string version = 3;
+  string buildNumber = 4;
+  string buildSignature = 5;
+}
+
+message AppInfo {
+  string id = 1;
+  string version = 2;
+  string firebaseAppId = 3;
+  string installSource = 4;
+}
+
+message AndroidBuildVersion {
+  string baseOS = 1;
+  string codename = 2;
+  string incremental = 3;
+  int32 previewSdkInt = 4;
+  string release = 5;
+  int32 sdkInt = 6;
+  string securityPatch = 7;
+}
+
+message AndroidDeviceInfo {
+  AndroidBuildVersion version = 1;
+  string board = 2;
+  string bootloader = 3;
+  string brand = 4;
+  string device = 5;
+  string display = 6;
+  string fingerprint = 7;
+  string hardware = 8;
+  string host = 9;
+  string id = 10;
+  string manufacturer = 11;
+  string model = 12;
+  string product = 13;
+  repeated string supported32BitAbis = 14;
+  repeated string supported64BitAbis = 15;
+  repeated string supportedAbis = 16;
+  string tags = 17;
+  string type = 18;
+  bool isPhysicalDevice = 19;
+  string androidId = 20;
+  repeated string systemFeatures = 21;
+}
+
+message IosUtsname {
+  string sysname = 1;
+  string nodename = 2;
+  string release = 3;
+  string version = 4;
+  string machine = 5;
+}
+
+message IosDeviceInfo {
+  string name = 1;
+  string systemName = 2;
+  string systemVersion = 3;
+  string model = 4;
+  string localizedModel = 5;
+  string identifierForVendor = 6;
+  bool isPhysicalDevice = 7;
+  IosUtsname utsname = 8;
+}
+
+message LinuxDeviceInfo {
+  string name = 1;
+  string version = 2;
+  string id = 3;
+  repeated string idLike = 4;
+  string versionCodename = 5;
+  string versionId = 6;
+  string prettyName = 7;
+  string buildId = 8;
+  string variant = 9;
+  string variantId = 10;
+  string machineId = 11;
+}
+
+message MacOSDeviceInfo {
+  string computerName = 1;
+  string hostName = 2;
+  string arch = 3;
+  string model = 4;
+  string kernelVersion = 5;
+  string osRelease = 6;
+  int32 activeCPUs = 7;
+  int32 memorySize = 8;
+  int32 cpuFrequency = 9;
+}
+
+message WindowsDeviceInfo {
+  string computerName = 1;
+  int32 numberOfCores = 2;
+  int32 systemMemoryInMegabytes = 3;
+}
+
+enum BrowserName {
+  unknown = 0;
+  firefox = 1;
+  samsungInternet = 2;
+  opera = 3;
+  msie = 4;
+  edge = 5;
+  chrome = 6;
+  safari = 7;
+}
+
+message WebBrowserInfo {
+  BrowserName browserName = 1;
+  string appCodeName = 2;
+  string appName = 3;
+  string appVersion = 4;
+  int32 deviceMemory = 5;
+  string language = 6;
+  repeated string languages = 7;
+  string platform = 8;
+  string product = 9;
+  string productSub = 10;
+  string userAgent = 11;
+  string vendor = 12;
+  string vendorSub = 13;
+  int32 hardwareConcurrency = 14;
+  int32 maxTouchPoints = 15;
+}
