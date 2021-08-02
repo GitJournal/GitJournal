@@ -36,11 +36,13 @@ class _SortingModeSelectorState extends State<SortingModeSelector> {
 
     return AlertDialog(
       title: Text(tr("widgets.SortingOrderSelector.title")),
-      content: Column(
-        children: children,
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      content: SingleChildScrollView(
+        child: Column(
+          children: children,
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+        ),
       ),
       actions: [
         OutlinedButton(
