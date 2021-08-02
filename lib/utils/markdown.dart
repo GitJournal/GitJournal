@@ -27,15 +27,15 @@ String replaceMarkdownChars(String line) {
   line = line.replaceFirst('- [x]', '☑');
   line = line.replaceFirst('- [X]', '☑');
 
-  line = replaceListChar(line, '*');
-  line = replaceListChar(line, '-');
-  line = replaceListChar(line, '+');
+  line = replaceListChar(line, '* ');
+  line = replaceListChar(line, '- ');
+  line = replaceListChar(line, '+ ');
 
   return line;
 }
 
 String replaceListChar(String line, String char) {
-  const String bullet = '•';
+  const String bullet = '• ';
 
   var starPos = line.indexOf(char);
   if (starPos == 0) {
