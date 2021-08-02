@@ -23,7 +23,8 @@ class MarkdownToolBar extends StatelessWidget {
     var textTheme = Theme.of(context).textTheme;
     var style = textTheme.bodyText2!.copyWith(fontWeight: FontWeight.bold);
 
-    return Container(
+    var scroll = SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
       child: Row(
         children: [
           IconButton(
@@ -75,6 +76,16 @@ class MarkdownToolBar extends StatelessWidget {
         ],
       ),
     );
+
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints viewportConstraints) {
+      return ConstrainedBox(
+        constraints: BoxConstraints(
+          minWidth: viewportConstraints.maxWidth,
+        ),
+        child: scroll,
+      );
+    });
   }
 
   void _modifyCurrentLine(String char) {
