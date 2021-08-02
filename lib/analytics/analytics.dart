@@ -136,7 +136,7 @@ class Analytics {
     return _global!;
   }
 
-  static Analytics get instance => _global!;
+  static Analytics? get instance => _global!;
 
   Future<void> log({
     required Event e,
@@ -168,6 +168,6 @@ class Analytics {
 }
 
 void logEvent(Event event, {Map<String, String> parameters = const {}}) {
-  Analytics.instance.log(e: event, parameters: parameters);
+  Analytics.instance?.log(e: event, parameters: parameters);
   Log.d("$event", props: parameters);
 }

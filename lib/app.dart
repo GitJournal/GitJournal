@@ -97,7 +97,8 @@ class JournalApp extends StatefulWidget {
     ));
   }
 
-  static void _enableAnalyticsIfPossible(AppSettings appSettings) async {
+  static Future<void> _enableAnalyticsIfPossible(
+      AppSettings appSettings) async {
     JournalApp.isInDebugMode = foundation.kDebugMode;
 
     var isPhysicalDevice = true;

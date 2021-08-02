@@ -16,7 +16,7 @@ class AnalyticsRouteObserver extends RouteObserver<PageRoute<dynamic>> {
     }
 
     try {
-      await Analytics.instance.setCurrentScreen(screenName: screenName);
+      await Analytics.instance?.setCurrentScreen(screenName: screenName);
     } catch (e, stackTrace) {
       Log.e("AnalyticsRouteObserver", ex: e, stacktrace: stackTrace);
     }
