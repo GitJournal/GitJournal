@@ -16,7 +16,6 @@ message AnalyticsMessage {
 
   DeviceInfo deviceInfo = 3;
   PackageInfo packageInfo = 4;
-  // FIXME: What about AppInfo
 }
 
 // message Any {
@@ -59,13 +58,6 @@ message PackageInfo {
   string version = 3;
   string buildNumber = 4;
   string buildSignature = 5;
-}
-
-message AppInfo {
-  string id = 1;
-  string version = 2;
-  string firebaseAppId = 3;
-  string installSource = 4;
 }
 
 enum Platform {

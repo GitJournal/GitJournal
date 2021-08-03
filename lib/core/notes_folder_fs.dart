@@ -189,11 +189,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     await Future.wait(futures);
   }
 
-  Future<void> load() async {
-    return _lock.synchronized(() async {
-      return _load();
-    });
-  }
+  Future<void> load() => _lock.synchronized(_load);
 
   // FIXME: This should not reconstruct the Notes or NotesFolders once constructed.
   Future<void> _load() async {
