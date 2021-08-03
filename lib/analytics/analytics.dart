@@ -57,6 +57,7 @@ enum Event {
     user_engagement
 
   */
+  ScreenView,
 }
 const int _intMaxValue = 9007199254740991;
 
@@ -77,10 +78,10 @@ class Analytics {
   late String sessionId;
   var userProps = <String, String>{};
 
-  Future<void> log({
-    required Event e,
+  Future<void> log(
+    Event e, [
     Map<String, String> parameters = const {},
-  }) async {
+  ]) async {
     String name = _eventToString(e);
     if (enabled) {
       var event = _buildEvent(name, parameters);
@@ -94,7 +95,7 @@ class Analytics {
     if (!enabled) {
       return;
     }
-    // await firebase.setCurrentScreen(screenName: screenName);
+    return log(Event.ScreenView, {'screen_name': screenName});
   }
 
   Future<void> setUserProperty({
@@ -121,7 +122,7 @@ class Analytics {
 }
 
 void logEvent(Event event, {Map<String, String> parameters = const {}}) {
-  Analytics.instance?.log(e: event, parameters: parameters);
+  Analytics.instance?.log(event, parameters);
   Log.d("$event", props: parameters);
 }
 
