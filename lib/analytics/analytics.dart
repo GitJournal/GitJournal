@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:fixnum/fixnum.dart';
 import 'package:recase/recase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -61,7 +59,6 @@ enum Event {
   */
   ScreenView,
 }
-const int _intMaxValue = 9007199254740991;
 
 class Analytics {
   bool enabled = false;
@@ -73,7 +70,8 @@ class Analytics {
   }) {
     _global = Analytics();
     _global!.enabled = enable;
-    _global!.sessionId = Random().nextInt(_intMaxValue).toRadixString(16);
+    _global!.sessionId =
+        DateTime.now().millisecondsSinceEpoch.toRadixString(16);
 
     var p = pref.getString("pseudoId");
     if (p == null) {
