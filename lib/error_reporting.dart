@@ -10,7 +10,6 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:universal_io/io.dart' show Platform;
 
 import 'package:gitjournal/.env.dart';
-import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_settings.dart';
@@ -64,9 +63,6 @@ Future<SentryEvent> get _environmentEvent async {
         version: packageInfo.version,
         build: packageInfo.buildNumber,
       ),
-    ),
-    user: SentryUser(
-      id: Analytics.instance?.pseudoId,
     ),
   );
   return environment;
