@@ -43,7 +43,7 @@ Future<pb.DeviceInfo> buildDeviceInfo() async {
       androidId: androidInfo.androidId,
       systemFeatures: androidInfo.systemFeatures.whereType(),
     );
-    return pb.DeviceInfo(androidDeviceInfo: info);
+    return pb.DeviceInfo(platform: _currentPlatform(), androidDeviceInfo: info);
   }
 
   if (Platform.isIOS) {
@@ -66,7 +66,7 @@ Future<pb.DeviceInfo> buildDeviceInfo() async {
       isPhysicalDevice: iosInfo.isPhysicalDevice,
       utsname: utsName,
     );
-    return pb.DeviceInfo(iosDeviceInfo: info);
+    return pb.DeviceInfo(platform: _currentPlatform(), iosDeviceInfo: info);
   }
 
   if (Platform.isLinux) {
@@ -85,7 +85,7 @@ Future<pb.DeviceInfo> buildDeviceInfo() async {
       machineId: linuxInfo.machineId,
     );
 
-    return pb.DeviceInfo(linuxDeviceInfo: info);
+    return pb.DeviceInfo(platform: _currentPlatform(), linuxDeviceInfo: info);
   }
 
   if (Platform.isMacOS) {
@@ -102,7 +102,7 @@ Future<pb.DeviceInfo> buildDeviceInfo() async {
       cpuFrequency: macOsInfo.cpuFrequency,
     );
 
-    return pb.DeviceInfo(macOSDeviceInfo: info);
+    return pb.DeviceInfo(platform: _currentPlatform(), macOSDeviceInfo: info);
   }
 
   if (Platform.isWindows) {
@@ -113,7 +113,7 @@ Future<pb.DeviceInfo> buildDeviceInfo() async {
       systemMemoryInMegabytes: windowsInfo.systemMemoryInMegabytes,
     );
 
-    return pb.DeviceInfo(windowsDeviceInfo: info);
+    return pb.DeviceInfo(platform: _currentPlatform(), windowsDeviceInfo: info);
   }
 
   if (kIsWeb) {
@@ -165,8 +165,31 @@ Future<pb.DeviceInfo> buildDeviceInfo() async {
       maxTouchPoints: webInfo.maxTouchPoints,
     );
 
-    return pb.DeviceInfo(webBrowserInfo: info);
+    return pb.DeviceInfo(platform: _currentPlatform(), webBrowserInfo: info);
   }
 
   throw Exception("Unknown Platform for Analytics");
+}
+
+pb.Platform _currentPlatform() {
+  if (Platform.isAndroid) {
+    return pb.Platform.android;
+  }
+  if (Platform.isIOS) {
+    return pb.Platform.ios;
+  }
+  if (Platform.isMacOS) {
+    return pb.Platform.macos;
+  }
+  if (Platform.isLinux) {
+    return pb.Platform.linux;
+  }
+  if (Platform.isWindows) {
+    return pb.Platform.windows;
+  }
+  if (kIsWeb) {
+    return pb.Platform.web;
+  }
+
+  throw UnimplementedError('Invalid Analytics Platform');
 }

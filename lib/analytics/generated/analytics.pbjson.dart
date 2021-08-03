@@ -9,6 +9,21 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+@$core.Deprecated('Use platformDescriptor instead')
+const Platform$json = const {
+  '1': 'Platform',
+  '2': const [
+    const {'1': 'android', '2': 0},
+    const {'1': 'ios', '2': 1},
+    const {'1': 'linux', '2': 2},
+    const {'1': 'macos', '2': 3},
+    const {'1': 'windows', '2': 4},
+    const {'1': 'web', '2': 5},
+  ],
+};
+
+/// Descriptor for `Platform`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List platformDescriptor = $convert.base64Decode('CghQbGF0Zm9ybRILCgdhbmRyb2lkEAASBwoDaW9zEAESCQoFbGludXgQAhIJCgVtYWNvcxADEgsKB3dpbmRvd3MQBBIHCgN3ZWIQBQ==');
 @$core.Deprecated('Use browserNameDescriptor instead')
 const BrowserName$json = const {
   '1': 'BrowserName',
@@ -26,6 +41,13 @@ const BrowserName$json = const {
 
 /// Descriptor for `BrowserName`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List browserNameDescriptor = $convert.base64Decode('CgtCcm93c2VyTmFtZRILCgd1bmtub3duEAASCwoHZmlyZWZveBABEhMKD3NhbXN1bmdJbnRlcm5ldBACEgkKBW9wZXJhEAMSCAoEbXNpZRAEEggKBGVkZ2UQBRIKCgZjaHJvbWUQBhIKCgZzYWZhcmkQBw==');
+@$core.Deprecated('Use analyticsReplyDescriptor instead')
+const AnalyticsReply$json = const {
+  '1': 'AnalyticsReply',
+};
+
+/// Descriptor for `AnalyticsReply`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List analyticsReplyDescriptor = $convert.base64Decode('Cg5BbmFseXRpY3NSZXBseQ==');
 @$core.Deprecated('Use analyticsMessageDescriptor instead')
 const AnalyticsMessage$json = const {
   '1': 'AnalyticsMessage',
@@ -39,22 +61,6 @@ const AnalyticsMessage$json = const {
 
 /// Descriptor for `AnalyticsMessage`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List analyticsMessageDescriptor = $convert.base64Decode('ChBBbmFseXRpY3NNZXNzYWdlEhQKBWFwcElkGAEgASgJUgVhcHBJZBIpCgZldmVudHMYAiADKAsyES5naXRqb3VybmFsLkV2ZW50UgZldmVudHMSNgoKZGV2aWNlSW5mbxgDIAEoCzIWLmdpdGpvdXJuYWwuRGV2aWNlSW5mb1IKZGV2aWNlSW5mbxI5CgtwYWNrYWdlSW5mbxgEIAEoCzIXLmdpdGpvdXJuYWwuUGFja2FnZUluZm9SC3BhY2thZ2VJbmZv');
-@$core.Deprecated('Use anyDescriptor instead')
-const Any$json = const {
-  '1': 'Any',
-  '2': const [
-    const {'1': 'stringValue', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'stringValue'},
-    const {'1': 'intValue', '3': 2, '4': 1, '5': 3, '9': 0, '10': 'intValue'},
-    const {'1': 'doubleValue', '3': 3, '4': 1, '5': 1, '9': 0, '10': 'doubleValue'},
-    const {'1': 'boolValue', '3': 4, '4': 1, '5': 8, '9': 0, '10': 'boolValue'},
-  ],
-  '8': const [
-    const {'1': 'value'},
-  ],
-};
-
-/// Descriptor for `Any`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List anyDescriptor = $convert.base64Decode('CgNBbnkSIgoLc3RyaW5nVmFsdWUYASABKAlIAFILc3RyaW5nVmFsdWUSHAoIaW50VmFsdWUYAiABKANIAFIIaW50VmFsdWUSIgoLZG91YmxlVmFsdWUYAyABKAFIAFILZG91YmxlVmFsdWUSHgoJYm9vbFZhbHVlGAQgASgISABSCWJvb2xWYWx1ZUIHCgV2YWx1ZQ==');
 @$core.Deprecated('Use eventDescriptor instead')
 const Event$json = const {
   '1': 'Event',
@@ -66,8 +72,7 @@ const Event$json = const {
     const {'1': 'psuedoId', '3': 5, '4': 1, '5': 9, '10': 'psuedoId'},
     const {'1': 'userProperties', '3': 6, '4': 3, '5': 11, '6': '.gitjournal.Event.UserPropertiesEntry', '10': 'userProperties'},
     const {'1': 'sessionID', '3': 7, '4': 1, '5': 9, '10': 'sessionID'},
-    const {'1': 'platform', '3': 8, '4': 1, '5': 9, '10': 'platform'},
-    const {'1': 'userFirstTouchTimestamp', '3': 9, '4': 1, '5': 3, '10': 'userFirstTouchTimestamp'},
+    const {'1': 'userFirstTouchTimestamp', '3': 8, '4': 1, '5': 3, '10': 'userFirstTouchTimestamp'},
   ],
   '3': const [Event_ParamsEntry$json, Event_UserPropertiesEntry$json],
 };
@@ -77,7 +82,7 @@ const Event_ParamsEntry$json = const {
   '1': 'ParamsEntry',
   '2': const [
     const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
-    const {'1': 'value', '3': 2, '4': 1, '5': 11, '6': '.gitjournal.Any', '10': 'value'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 9, '10': 'value'},
   ],
   '7': const {'7': true},
 };
@@ -87,23 +92,24 @@ const Event_UserPropertiesEntry$json = const {
   '1': 'UserPropertiesEntry',
   '2': const [
     const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
-    const {'1': 'value', '3': 2, '4': 1, '5': 11, '6': '.gitjournal.Any', '10': 'value'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 9, '10': 'value'},
   ],
   '7': const {'7': true},
 };
 
 /// Descriptor for `Event`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List eventDescriptor = $convert.base64Decode('CgVFdmVudBISCgRuYW1lGAEgASgJUgRuYW1lEhIKBGRhdGUYAiABKANSBGRhdGUSNQoGcGFyYW1zGAMgAygLMh0uZ2l0am91cm5hbC5FdmVudC5QYXJhbXNFbnRyeVIGcGFyYW1zEhYKBnVzZXJJZBgEIAEoCVIGdXNlcklkEhoKCHBzdWVkb0lkGAUgASgJUghwc3VlZG9JZBJNCg51c2VyUHJvcGVydGllcxgGIAMoCzIlLmdpdGpvdXJuYWwuRXZlbnQuVXNlclByb3BlcnRpZXNFbnRyeVIOdXNlclByb3BlcnRpZXMSHAoJc2Vzc2lvbklEGAcgASgJUglzZXNzaW9uSUQSGgoIcGxhdGZvcm0YCCABKAlSCHBsYXRmb3JtEjgKF3VzZXJGaXJzdFRvdWNoVGltZXN0YW1wGAkgASgDUhd1c2VyRmlyc3RUb3VjaFRpbWVzdGFtcBpKCgtQYXJhbXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIlCgV2YWx1ZRgCIAEoCzIPLmdpdGpvdXJuYWwuQW55UgV2YWx1ZToCOAEaUgoTVXNlclByb3BlcnRpZXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIlCgV2YWx1ZRgCIAEoCzIPLmdpdGpvdXJuYWwuQW55UgV2YWx1ZToCOAE=');
+final $typed_data.Uint8List eventDescriptor = $convert.base64Decode('CgVFdmVudBISCgRuYW1lGAEgASgJUgRuYW1lEhIKBGRhdGUYAiABKANSBGRhdGUSNQoGcGFyYW1zGAMgAygLMh0uZ2l0am91cm5hbC5FdmVudC5QYXJhbXNFbnRyeVIGcGFyYW1zEhYKBnVzZXJJZBgEIAEoCVIGdXNlcklkEhoKCHBzdWVkb0lkGAUgASgJUghwc3VlZG9JZBJNCg51c2VyUHJvcGVydGllcxgGIAMoCzIlLmdpdGpvdXJuYWwuRXZlbnQuVXNlclByb3BlcnRpZXNFbnRyeVIOdXNlclByb3BlcnRpZXMSHAoJc2Vzc2lvbklEGAcgASgJUglzZXNzaW9uSUQSOAoXdXNlckZpcnN0VG91Y2hUaW1lc3RhbXAYCCABKANSF3VzZXJGaXJzdFRvdWNoVGltZXN0YW1wGjkKC1BhcmFtc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgJUgV2YWx1ZToCOAEaQQoTVXNlclByb3BlcnRpZXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoCVIFdmFsdWU6AjgB');
 @$core.Deprecated('Use deviceInfoDescriptor instead')
 const DeviceInfo$json = const {
   '1': 'DeviceInfo',
   '2': const [
-    const {'1': 'androidDeviceInfo', '3': 1, '4': 1, '5': 11, '6': '.gitjournal.AndroidDeviceInfo', '9': 0, '10': 'androidDeviceInfo'},
-    const {'1': 'iosDeviceInfo', '3': 2, '4': 1, '5': 11, '6': '.gitjournal.IosDeviceInfo', '9': 0, '10': 'iosDeviceInfo'},
-    const {'1': 'linuxDeviceInfo', '3': 3, '4': 1, '5': 11, '6': '.gitjournal.LinuxDeviceInfo', '9': 0, '10': 'linuxDeviceInfo'},
-    const {'1': 'macOSDeviceInfo', '3': 4, '4': 1, '5': 11, '6': '.gitjournal.MacOSDeviceInfo', '9': 0, '10': 'macOSDeviceInfo'},
-    const {'1': 'windowsDeviceInfo', '3': 5, '4': 1, '5': 11, '6': '.gitjournal.WindowsDeviceInfo', '9': 0, '10': 'windowsDeviceInfo'},
-    const {'1': 'webBrowserInfo', '3': 6, '4': 1, '5': 11, '6': '.gitjournal.WebBrowserInfo', '9': 0, '10': 'webBrowserInfo'},
+    const {'1': 'platform', '3': 1, '4': 1, '5': 14, '6': '.gitjournal.Platform', '10': 'platform'},
+    const {'1': 'androidDeviceInfo', '3': 11, '4': 1, '5': 11, '6': '.gitjournal.AndroidDeviceInfo', '9': 0, '10': 'androidDeviceInfo'},
+    const {'1': 'iosDeviceInfo', '3': 12, '4': 1, '5': 11, '6': '.gitjournal.IosDeviceInfo', '9': 0, '10': 'iosDeviceInfo'},
+    const {'1': 'linuxDeviceInfo', '3': 13, '4': 1, '5': 11, '6': '.gitjournal.LinuxDeviceInfo', '9': 0, '10': 'linuxDeviceInfo'},
+    const {'1': 'macOSDeviceInfo', '3': 14, '4': 1, '5': 11, '6': '.gitjournal.MacOSDeviceInfo', '9': 0, '10': 'macOSDeviceInfo'},
+    const {'1': 'windowsDeviceInfo', '3': 15, '4': 1, '5': 11, '6': '.gitjournal.WindowsDeviceInfo', '9': 0, '10': 'windowsDeviceInfo'},
+    const {'1': 'webBrowserInfo', '3': 16, '4': 1, '5': 11, '6': '.gitjournal.WebBrowserInfo', '9': 0, '10': 'webBrowserInfo'},
   ],
   '8': const [
     const {'1': 'deviceInfo'},
@@ -111,7 +117,7 @@ const DeviceInfo$json = const {
 };
 
 /// Descriptor for `DeviceInfo`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List deviceInfoDescriptor = $convert.base64Decode('CgpEZXZpY2VJbmZvEk0KEWFuZHJvaWREZXZpY2VJbmZvGAEgASgLMh0uZ2l0am91cm5hbC5BbmRyb2lkRGV2aWNlSW5mb0gAUhFhbmRyb2lkRGV2aWNlSW5mbxJBCg1pb3NEZXZpY2VJbmZvGAIgASgLMhkuZ2l0am91cm5hbC5Jb3NEZXZpY2VJbmZvSABSDWlvc0RldmljZUluZm8SRwoPbGludXhEZXZpY2VJbmZvGAMgASgLMhsuZ2l0am91cm5hbC5MaW51eERldmljZUluZm9IAFIPbGludXhEZXZpY2VJbmZvEkcKD21hY09TRGV2aWNlSW5mbxgEIAEoCzIbLmdpdGpvdXJuYWwuTWFjT1NEZXZpY2VJbmZvSABSD21hY09TRGV2aWNlSW5mbxJNChF3aW5kb3dzRGV2aWNlSW5mbxgFIAEoCzIdLmdpdGpvdXJuYWwuV2luZG93c0RldmljZUluZm9IAFIRd2luZG93c0RldmljZUluZm8SRAoOd2ViQnJvd3NlckluZm8YBiABKAsyGi5naXRqb3VybmFsLldlYkJyb3dzZXJJbmZvSABSDndlYkJyb3dzZXJJbmZvQgwKCmRldmljZUluZm8=');
+final $typed_data.Uint8List deviceInfoDescriptor = $convert.base64Decode('CgpEZXZpY2VJbmZvEjAKCHBsYXRmb3JtGAEgASgOMhQuZ2l0am91cm5hbC5QbGF0Zm9ybVIIcGxhdGZvcm0STQoRYW5kcm9pZERldmljZUluZm8YCyABKAsyHS5naXRqb3VybmFsLkFuZHJvaWREZXZpY2VJbmZvSABSEWFuZHJvaWREZXZpY2VJbmZvEkEKDWlvc0RldmljZUluZm8YDCABKAsyGS5naXRqb3VybmFsLklvc0RldmljZUluZm9IAFINaW9zRGV2aWNlSW5mbxJHCg9saW51eERldmljZUluZm8YDSABKAsyGy5naXRqb3VybmFsLkxpbnV4RGV2aWNlSW5mb0gAUg9saW51eERldmljZUluZm8SRwoPbWFjT1NEZXZpY2VJbmZvGA4gASgLMhsuZ2l0am91cm5hbC5NYWNPU0RldmljZUluZm9IAFIPbWFjT1NEZXZpY2VJbmZvEk0KEXdpbmRvd3NEZXZpY2VJbmZvGA8gASgLMh0uZ2l0am91cm5hbC5XaW5kb3dzRGV2aWNlSW5mb0gAUhF3aW5kb3dzRGV2aWNlSW5mbxJECg53ZWJCcm93c2VySW5mbxgQIAEoCzIaLmdpdGpvdXJuYWwuV2ViQnJvd3NlckluZm9IAFIOd2ViQnJvd3NlckluZm9CDAoKZGV2aWNlSW5mbw==');
 @$core.Deprecated('Use packageInfoDescriptor instead')
 const PackageInfo$json = const {
   '1': 'PackageInfo',

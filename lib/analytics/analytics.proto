@@ -19,37 +19,37 @@ message AnalyticsMessage {
   // FIXME: What about AppInfo
 }
 
-message Any {
-  oneof value {
-    string stringValue = 1;
-    int64 intValue = 2;
-    double doubleValue = 3;
-    bool boolValue = 4;
-  }
-}
+// message Any {
+//   oneof value {
+//     string stringValue = 1;
+//     int64 intValue = 2;
+//     double doubleValue = 3;
+//     bool boolValue = 4;
+//   }
+// }
 
 message Event {
   string name = 1;
   int64 date = 2; // unix timestamp
-  map<string, Any> params = 3;
+  map<string, string> params = 3;
 
   string userId = 4;
   string psuedoId = 5;
-  map<string, Any> userProperties = 6;
+  map<string, string> userProperties = 6;
 
   string sessionID = 7;
-  string platform = 8;
-  int64 userFirstTouchTimestamp = 9;
+  int64 userFirstTouchTimestamp = 8;
 }
 
 message DeviceInfo {
+  Platform platform = 1;
   oneof deviceInfo {
-    AndroidDeviceInfo androidDeviceInfo = 1;
-    IosDeviceInfo iosDeviceInfo = 2;
-    LinuxDeviceInfo linuxDeviceInfo = 3;
-    MacOSDeviceInfo macOSDeviceInfo = 4;
-    WindowsDeviceInfo windowsDeviceInfo = 5;
-    WebBrowserInfo webBrowserInfo = 6;
+    AndroidDeviceInfo androidDeviceInfo = 11;
+    IosDeviceInfo iosDeviceInfo = 12;
+    LinuxDeviceInfo linuxDeviceInfo = 13;
+    MacOSDeviceInfo macOSDeviceInfo = 14;
+    WindowsDeviceInfo windowsDeviceInfo = 15;
+    WebBrowserInfo webBrowserInfo = 16;
   }
 }
 
@@ -66,6 +66,15 @@ message AppInfo {
   string version = 2;
   string firebaseAppId = 3;
   string installSource = 4;
+}
+
+enum Platform {
+  android = 0;
+  ios = 1;
+  linux = 2;
+  macos = 3;
+  windows = 4;
+  web = 5;
 }
 
 message AndroidBuildVersion {

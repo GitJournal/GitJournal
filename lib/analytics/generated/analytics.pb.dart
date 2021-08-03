@@ -14,6 +14,35 @@ import 'analytics.pbenum.dart';
 
 export 'analytics.pbenum.dart';
 
+class AnalyticsReply extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'AnalyticsReply', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'gitjournal'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  AnalyticsReply._() : super();
+  factory AnalyticsReply() => create();
+  factory AnalyticsReply.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory AnalyticsReply.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  AnalyticsReply clone() => AnalyticsReply()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  AnalyticsReply copyWith(void Function(AnalyticsReply) updates) => super.copyWith((message) => updates(message as AnalyticsReply)) as AnalyticsReply; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static AnalyticsReply create() => AnalyticsReply._();
+  AnalyticsReply createEmptyInstance() => create();
+  static $pb.PbList<AnalyticsReply> createRepeated() => $pb.PbList<AnalyticsReply>();
+  @$core.pragma('dart2js:noInline')
+  static AnalyticsReply getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AnalyticsReply>(create);
+  static AnalyticsReply? _defaultInstance;
+}
+
 class AnalyticsMessage extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'AnalyticsMessage', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'gitjournal'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'appId', protoName: 'appId')
@@ -101,125 +130,16 @@ class AnalyticsMessage extends $pb.GeneratedMessage {
   PackageInfo ensurePackageInfo() => $_ensure(3);
 }
 
-enum Any_Value {
-  stringValue, 
-  intValue, 
-  doubleValue, 
-  boolValue, 
-  notSet
-}
-
-class Any extends $pb.GeneratedMessage {
-  static const $core.Map<$core.int, Any_Value> _Any_ValueByTag = {
-    1 : Any_Value.stringValue,
-    2 : Any_Value.intValue,
-    3 : Any_Value.doubleValue,
-    4 : Any_Value.boolValue,
-    0 : Any_Value.notSet
-  };
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Any', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'gitjournal'), createEmptyInstance: create)
-    ..oo(0, [1, 2, 3, 4])
-    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'stringValue', protoName: 'stringValue')
-    ..aInt64(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'intValue', protoName: 'intValue')
-    ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'doubleValue', $pb.PbFieldType.OD, protoName: 'doubleValue')
-    ..aOB(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'boolValue', protoName: 'boolValue')
-    ..hasRequiredFields = false
-  ;
-
-  Any._() : super();
-  factory Any({
-    $core.String? stringValue,
-    $fixnum.Int64? intValue,
-    $core.double? doubleValue,
-    $core.bool? boolValue,
-  }) {
-    final _result = create();
-    if (stringValue != null) {
-      _result.stringValue = stringValue;
-    }
-    if (intValue != null) {
-      _result.intValue = intValue;
-    }
-    if (doubleValue != null) {
-      _result.doubleValue = doubleValue;
-    }
-    if (boolValue != null) {
-      _result.boolValue = boolValue;
-    }
-    return _result;
-  }
-  factory Any.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Any.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  Any clone() => Any()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  Any copyWith(void Function(Any) updates) => super.copyWith((message) => updates(message as Any)) as Any; // ignore: deprecated_member_use
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static Any create() => Any._();
-  Any createEmptyInstance() => create();
-  static $pb.PbList<Any> createRepeated() => $pb.PbList<Any>();
-  @$core.pragma('dart2js:noInline')
-  static Any getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Any>(create);
-  static Any? _defaultInstance;
-
-  Any_Value whichValue() => _Any_ValueByTag[$_whichOneof(0)]!;
-  void clearValue() => clearField($_whichOneof(0));
-
-  @$pb.TagNumber(1)
-  $core.String get stringValue => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set stringValue($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasStringValue() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearStringValue() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $fixnum.Int64 get intValue => $_getI64(1);
-  @$pb.TagNumber(2)
-  set intValue($fixnum.Int64 v) { $_setInt64(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasIntValue() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearIntValue() => clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.double get doubleValue => $_getN(2);
-  @$pb.TagNumber(3)
-  set doubleValue($core.double v) { $_setDouble(2, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasDoubleValue() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearDoubleValue() => clearField(3);
-
-  @$pb.TagNumber(4)
-  $core.bool get boolValue => $_getBF(3);
-  @$pb.TagNumber(4)
-  set boolValue($core.bool v) { $_setBool(3, v); }
-  @$pb.TagNumber(4)
-  $core.bool hasBoolValue() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearBoolValue() => clearField(4);
-}
-
 class Event extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Event', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'gitjournal'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
     ..aInt64(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'date')
-    ..m<$core.String, Any>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'params', entryClassName: 'Event.ParamsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OM, valueCreator: Any.create, packageName: const $pb.PackageName('gitjournal'))
+    ..m<$core.String, $core.String>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'params', entryClassName: 'Event.ParamsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('gitjournal'))
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userId', protoName: 'userId')
     ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'psuedoId', protoName: 'psuedoId')
-    ..m<$core.String, Any>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userProperties', protoName: 'userProperties', entryClassName: 'Event.UserPropertiesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OM, valueCreator: Any.create, packageName: const $pb.PackageName('gitjournal'))
+    ..m<$core.String, $core.String>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userProperties', protoName: 'userProperties', entryClassName: 'Event.UserPropertiesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('gitjournal'))
     ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sessionID', protoName: 'sessionID')
-    ..aOS(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'platform')
-    ..aInt64(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userFirstTouchTimestamp', protoName: 'userFirstTouchTimestamp')
+    ..aInt64(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userFirstTouchTimestamp', protoName: 'userFirstTouchTimestamp')
     ..hasRequiredFields = false
   ;
 
@@ -227,12 +147,11 @@ class Event extends $pb.GeneratedMessage {
   factory Event({
     $core.String? name,
     $fixnum.Int64? date,
-    $core.Map<$core.String, Any>? params,
+    $core.Map<$core.String, $core.String>? params,
     $core.String? userId,
     $core.String? psuedoId,
-    $core.Map<$core.String, Any>? userProperties,
+    $core.Map<$core.String, $core.String>? userProperties,
     $core.String? sessionID,
-    $core.String? platform,
     $fixnum.Int64? userFirstTouchTimestamp,
   }) {
     final _result = create();
@@ -256,9 +175,6 @@ class Event extends $pb.GeneratedMessage {
     }
     if (sessionID != null) {
       _result.sessionID = sessionID;
-    }
-    if (platform != null) {
-      _result.platform = platform;
     }
     if (userFirstTouchTimestamp != null) {
       _result.userFirstTouchTimestamp = userFirstTouchTimestamp;
@@ -305,7 +221,7 @@ class Event extends $pb.GeneratedMessage {
   void clearDate() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.Map<$core.String, Any> get params => $_getMap(2);
+  $core.Map<$core.String, $core.String> get params => $_getMap(2);
 
   @$pb.TagNumber(4)
   $core.String get userId => $_getSZ(3);
@@ -326,7 +242,7 @@ class Event extends $pb.GeneratedMessage {
   void clearPsuedoId() => clearField(5);
 
   @$pb.TagNumber(6)
-  $core.Map<$core.String, Any> get userProperties => $_getMap(5);
+  $core.Map<$core.String, $core.String> get userProperties => $_getMap(5);
 
   @$pb.TagNumber(7)
   $core.String get sessionID => $_getSZ(6);
@@ -338,22 +254,13 @@ class Event extends $pb.GeneratedMessage {
   void clearSessionID() => clearField(7);
 
   @$pb.TagNumber(8)
-  $core.String get platform => $_getSZ(7);
+  $fixnum.Int64 get userFirstTouchTimestamp => $_getI64(7);
   @$pb.TagNumber(8)
-  set platform($core.String v) { $_setString(7, v); }
+  set userFirstTouchTimestamp($fixnum.Int64 v) { $_setInt64(7, v); }
   @$pb.TagNumber(8)
-  $core.bool hasPlatform() => $_has(7);
+  $core.bool hasUserFirstTouchTimestamp() => $_has(7);
   @$pb.TagNumber(8)
-  void clearPlatform() => clearField(8);
-
-  @$pb.TagNumber(9)
-  $fixnum.Int64 get userFirstTouchTimestamp => $_getI64(8);
-  @$pb.TagNumber(9)
-  set userFirstTouchTimestamp($fixnum.Int64 v) { $_setInt64(8, v); }
-  @$pb.TagNumber(9)
-  $core.bool hasUserFirstTouchTimestamp() => $_has(8);
-  @$pb.TagNumber(9)
-  void clearUserFirstTouchTimestamp() => clearField(9);
+  void clearUserFirstTouchTimestamp() => clearField(8);
 }
 
 enum DeviceInfo_DeviceInfo {
@@ -368,27 +275,29 @@ enum DeviceInfo_DeviceInfo {
 
 class DeviceInfo extends $pb.GeneratedMessage {
   static const $core.Map<$core.int, DeviceInfo_DeviceInfo> _DeviceInfo_DeviceInfoByTag = {
-    1 : DeviceInfo_DeviceInfo.androidDeviceInfo,
-    2 : DeviceInfo_DeviceInfo.iosDeviceInfo,
-    3 : DeviceInfo_DeviceInfo.linuxDeviceInfo,
-    4 : DeviceInfo_DeviceInfo.macOSDeviceInfo,
-    5 : DeviceInfo_DeviceInfo.windowsDeviceInfo,
-    6 : DeviceInfo_DeviceInfo.webBrowserInfo,
+    11 : DeviceInfo_DeviceInfo.androidDeviceInfo,
+    12 : DeviceInfo_DeviceInfo.iosDeviceInfo,
+    13 : DeviceInfo_DeviceInfo.linuxDeviceInfo,
+    14 : DeviceInfo_DeviceInfo.macOSDeviceInfo,
+    15 : DeviceInfo_DeviceInfo.windowsDeviceInfo,
+    16 : DeviceInfo_DeviceInfo.webBrowserInfo,
     0 : DeviceInfo_DeviceInfo.notSet
   };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'DeviceInfo', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'gitjournal'), createEmptyInstance: create)
-    ..oo(0, [1, 2, 3, 4, 5, 6])
-    ..aOM<AndroidDeviceInfo>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'androidDeviceInfo', protoName: 'androidDeviceInfo', subBuilder: AndroidDeviceInfo.create)
-    ..aOM<IosDeviceInfo>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'iosDeviceInfo', protoName: 'iosDeviceInfo', subBuilder: IosDeviceInfo.create)
-    ..aOM<LinuxDeviceInfo>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'linuxDeviceInfo', protoName: 'linuxDeviceInfo', subBuilder: LinuxDeviceInfo.create)
-    ..aOM<MacOSDeviceInfo>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'macOSDeviceInfo', protoName: 'macOSDeviceInfo', subBuilder: MacOSDeviceInfo.create)
-    ..aOM<WindowsDeviceInfo>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'windowsDeviceInfo', protoName: 'windowsDeviceInfo', subBuilder: WindowsDeviceInfo.create)
-    ..aOM<WebBrowserInfo>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'webBrowserInfo', protoName: 'webBrowserInfo', subBuilder: WebBrowserInfo.create)
+    ..oo(0, [11, 12, 13, 14, 15, 16])
+    ..e<Platform>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'platform', $pb.PbFieldType.OE, defaultOrMaker: Platform.android, valueOf: Platform.valueOf, enumValues: Platform.values)
+    ..aOM<AndroidDeviceInfo>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'androidDeviceInfo', protoName: 'androidDeviceInfo', subBuilder: AndroidDeviceInfo.create)
+    ..aOM<IosDeviceInfo>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'iosDeviceInfo', protoName: 'iosDeviceInfo', subBuilder: IosDeviceInfo.create)
+    ..aOM<LinuxDeviceInfo>(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'linuxDeviceInfo', protoName: 'linuxDeviceInfo', subBuilder: LinuxDeviceInfo.create)
+    ..aOM<MacOSDeviceInfo>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'macOSDeviceInfo', protoName: 'macOSDeviceInfo', subBuilder: MacOSDeviceInfo.create)
+    ..aOM<WindowsDeviceInfo>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'windowsDeviceInfo', protoName: 'windowsDeviceInfo', subBuilder: WindowsDeviceInfo.create)
+    ..aOM<WebBrowserInfo>(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'webBrowserInfo', protoName: 'webBrowserInfo', subBuilder: WebBrowserInfo.create)
     ..hasRequiredFields = false
   ;
 
   DeviceInfo._() : super();
   factory DeviceInfo({
+    Platform? platform,
     AndroidDeviceInfo? androidDeviceInfo,
     IosDeviceInfo? iosDeviceInfo,
     LinuxDeviceInfo? linuxDeviceInfo,
@@ -397,6 +306,9 @@ class DeviceInfo extends $pb.GeneratedMessage {
     WebBrowserInfo? webBrowserInfo,
   }) {
     final _result = create();
+    if (platform != null) {
+      _result.platform = platform;
+    }
     if (androidDeviceInfo != null) {
       _result.androidDeviceInfo = androidDeviceInfo;
     }
@@ -442,70 +354,79 @@ class DeviceInfo extends $pb.GeneratedMessage {
   void clearDeviceInfo() => clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
-  AndroidDeviceInfo get androidDeviceInfo => $_getN(0);
+  Platform get platform => $_getN(0);
   @$pb.TagNumber(1)
-  set androidDeviceInfo(AndroidDeviceInfo v) { setField(1, v); }
+  set platform(Platform v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasAndroidDeviceInfo() => $_has(0);
+  $core.bool hasPlatform() => $_has(0);
   @$pb.TagNumber(1)
-  void clearAndroidDeviceInfo() => clearField(1);
-  @$pb.TagNumber(1)
-  AndroidDeviceInfo ensureAndroidDeviceInfo() => $_ensure(0);
+  void clearPlatform() => clearField(1);
 
-  @$pb.TagNumber(2)
-  IosDeviceInfo get iosDeviceInfo => $_getN(1);
-  @$pb.TagNumber(2)
-  set iosDeviceInfo(IosDeviceInfo v) { setField(2, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasIosDeviceInfo() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearIosDeviceInfo() => clearField(2);
-  @$pb.TagNumber(2)
-  IosDeviceInfo ensureIosDeviceInfo() => $_ensure(1);
+  @$pb.TagNumber(11)
+  AndroidDeviceInfo get androidDeviceInfo => $_getN(1);
+  @$pb.TagNumber(11)
+  set androidDeviceInfo(AndroidDeviceInfo v) { setField(11, v); }
+  @$pb.TagNumber(11)
+  $core.bool hasAndroidDeviceInfo() => $_has(1);
+  @$pb.TagNumber(11)
+  void clearAndroidDeviceInfo() => clearField(11);
+  @$pb.TagNumber(11)
+  AndroidDeviceInfo ensureAndroidDeviceInfo() => $_ensure(1);
 
-  @$pb.TagNumber(3)
-  LinuxDeviceInfo get linuxDeviceInfo => $_getN(2);
-  @$pb.TagNumber(3)
-  set linuxDeviceInfo(LinuxDeviceInfo v) { setField(3, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasLinuxDeviceInfo() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearLinuxDeviceInfo() => clearField(3);
-  @$pb.TagNumber(3)
-  LinuxDeviceInfo ensureLinuxDeviceInfo() => $_ensure(2);
+  @$pb.TagNumber(12)
+  IosDeviceInfo get iosDeviceInfo => $_getN(2);
+  @$pb.TagNumber(12)
+  set iosDeviceInfo(IosDeviceInfo v) { setField(12, v); }
+  @$pb.TagNumber(12)
+  $core.bool hasIosDeviceInfo() => $_has(2);
+  @$pb.TagNumber(12)
+  void clearIosDeviceInfo() => clearField(12);
+  @$pb.TagNumber(12)
+  IosDeviceInfo ensureIosDeviceInfo() => $_ensure(2);
 
-  @$pb.TagNumber(4)
-  MacOSDeviceInfo get macOSDeviceInfo => $_getN(3);
-  @$pb.TagNumber(4)
-  set macOSDeviceInfo(MacOSDeviceInfo v) { setField(4, v); }
-  @$pb.TagNumber(4)
-  $core.bool hasMacOSDeviceInfo() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearMacOSDeviceInfo() => clearField(4);
-  @$pb.TagNumber(4)
-  MacOSDeviceInfo ensureMacOSDeviceInfo() => $_ensure(3);
+  @$pb.TagNumber(13)
+  LinuxDeviceInfo get linuxDeviceInfo => $_getN(3);
+  @$pb.TagNumber(13)
+  set linuxDeviceInfo(LinuxDeviceInfo v) { setField(13, v); }
+  @$pb.TagNumber(13)
+  $core.bool hasLinuxDeviceInfo() => $_has(3);
+  @$pb.TagNumber(13)
+  void clearLinuxDeviceInfo() => clearField(13);
+  @$pb.TagNumber(13)
+  LinuxDeviceInfo ensureLinuxDeviceInfo() => $_ensure(3);
 
-  @$pb.TagNumber(5)
-  WindowsDeviceInfo get windowsDeviceInfo => $_getN(4);
-  @$pb.TagNumber(5)
-  set windowsDeviceInfo(WindowsDeviceInfo v) { setField(5, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasWindowsDeviceInfo() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearWindowsDeviceInfo() => clearField(5);
-  @$pb.TagNumber(5)
-  WindowsDeviceInfo ensureWindowsDeviceInfo() => $_ensure(4);
+  @$pb.TagNumber(14)
+  MacOSDeviceInfo get macOSDeviceInfo => $_getN(4);
+  @$pb.TagNumber(14)
+  set macOSDeviceInfo(MacOSDeviceInfo v) { setField(14, v); }
+  @$pb.TagNumber(14)
+  $core.bool hasMacOSDeviceInfo() => $_has(4);
+  @$pb.TagNumber(14)
+  void clearMacOSDeviceInfo() => clearField(14);
+  @$pb.TagNumber(14)
+  MacOSDeviceInfo ensureMacOSDeviceInfo() => $_ensure(4);
 
-  @$pb.TagNumber(6)
-  WebBrowserInfo get webBrowserInfo => $_getN(5);
-  @$pb.TagNumber(6)
-  set webBrowserInfo(WebBrowserInfo v) { setField(6, v); }
-  @$pb.TagNumber(6)
-  $core.bool hasWebBrowserInfo() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearWebBrowserInfo() => clearField(6);
-  @$pb.TagNumber(6)
-  WebBrowserInfo ensureWebBrowserInfo() => $_ensure(5);
+  @$pb.TagNumber(15)
+  WindowsDeviceInfo get windowsDeviceInfo => $_getN(5);
+  @$pb.TagNumber(15)
+  set windowsDeviceInfo(WindowsDeviceInfo v) { setField(15, v); }
+  @$pb.TagNumber(15)
+  $core.bool hasWindowsDeviceInfo() => $_has(5);
+  @$pb.TagNumber(15)
+  void clearWindowsDeviceInfo() => clearField(15);
+  @$pb.TagNumber(15)
+  WindowsDeviceInfo ensureWindowsDeviceInfo() => $_ensure(5);
+
+  @$pb.TagNumber(16)
+  WebBrowserInfo get webBrowserInfo => $_getN(6);
+  @$pb.TagNumber(16)
+  set webBrowserInfo(WebBrowserInfo v) { setField(16, v); }
+  @$pb.TagNumber(16)
+  $core.bool hasWebBrowserInfo() => $_has(6);
+  @$pb.TagNumber(16)
+  void clearWebBrowserInfo() => clearField(16);
+  @$pb.TagNumber(16)
+  WebBrowserInfo ensureWebBrowserInfo() => $_ensure(6);
 }
 
 class PackageInfo extends $pb.GeneratedMessage {

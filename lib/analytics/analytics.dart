@@ -1,7 +1,11 @@
+import 'dart:math';
+
+import 'package:fixnum/fixnum.dart';
 import 'package:recase/recase.dart';
 
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
+import 'generated/analytics.pb.dart' as pb;
 
 enum Event {
   NoteAdded,
@@ -54,6 +58,7 @@ enum Event {
 
   */
 }
+const int _intMaxValue = 9007199254740991;
 
 class Analytics {
   bool enabled = false;
@@ -62,11 +67,15 @@ class Analytics {
   static Analytics init({required bool enable}) {
     _global = Analytics();
     _global!.enabled = enable;
+    _global!.sessionId = Random().nextInt(_intMaxValue).toRadixString(16);
 
     return _global!;
   }
 
   static Analytics? get instance => _global!;
+
+  late String sessionId;
+  var userProps = <String, String>{};
 
   Future<void> log({
     required Event e,
@@ -74,6 +83,8 @@ class Analytics {
   }) async {
     String name = _eventToString(e);
     if (enabled) {
+      var event = _buildEvent(name, parameters);
+      print(event);
       // await firebase.logEvent(name: name, parameters: parameters);
     }
     captureErrorBreadcrumb(name: name, parameters: parameters);
@@ -93,7 +104,19 @@ class Analytics {
     if (!enabled) {
       return;
     }
-    // await firebase.setUserProperty(name: name, value: value);
+    userProps[name] = value;
+  }
+
+  pb.Event _buildEvent(String name, Map<String, String> params) {
+    return pb.Event(
+      name: name,
+      date: Int64(DateTime.now().millisecondsSinceEpoch ~/ 1000),
+      params: params,
+      psuedoId: null,
+      userProperties: userProps,
+      sessionID: sessionId,
+      userFirstTouchTimestamp: null,
+    );
   }
 }
 

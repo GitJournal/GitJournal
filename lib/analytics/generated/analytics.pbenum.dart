@@ -11,6 +11,29 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+class Platform extends $pb.ProtobufEnum {
+  static const Platform android = Platform._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'android');
+  static const Platform ios = Platform._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ios');
+  static const Platform linux = Platform._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'linux');
+  static const Platform macos = Platform._(3, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'macos');
+  static const Platform windows = Platform._(4, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'windows');
+  static const Platform web = Platform._(5, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'web');
+
+  static const $core.List<Platform> values = <Platform> [
+    android,
+    ios,
+    linux,
+    macos,
+    windows,
+    web,
+  ];
+
+  static final $core.Map<$core.int, Platform> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static Platform? valueOf($core.int value) => _byValue[value];
+
+  const Platform._($core.int v, $core.String n) : super(v, n);
+}
+
 class BrowserName extends $pb.ProtobufEnum {
   static const BrowserName unknown = BrowserName._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'unknown');
   static const BrowserName firefox = BrowserName._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'firefox');
