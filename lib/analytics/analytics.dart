@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:fixnum/fixnum.dart';
 import 'package:recase/recase.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
@@ -65,10 +67,21 @@ class Analytics {
   bool enabled = false;
 
   static Analytics? _global;
-  static Analytics init({required bool enable}) {
+  static Analytics init({
+    required bool enable,
+    required SharedPreferences pref,
+  }) {
     _global = Analytics();
     _global!.enabled = enable;
     _global!.sessionId = Random().nextInt(_intMaxValue).toRadixString(16);
+
+    var p = pref.getString("pseudoId");
+    if (p == null) {
+      _global!.pseudoId = const Uuid().v4();
+      pref.setString("pseudoId", _global!.pseudoId);
+    } else {
+      _global!.pseudoId = p;
+    }
 
     return _global!;
   }
@@ -76,6 +89,7 @@ class Analytics {
   static Analytics? get instance => _global!;
 
   late String sessionId;
+  late String pseudoId;
   var userProps = <String, String>{};
 
   Future<void> log(
@@ -113,7 +127,7 @@ class Analytics {
       name: name,
       date: Int64(DateTime.now().millisecondsSinceEpoch ~/ 1000),
       params: params,
-      psuedoId: null,
+      pseudoId: pseudoId,
       userProperties: userProps,
       sessionID: sessionId,
       userFirstTouchTimestamp: null,

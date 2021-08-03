@@ -136,7 +136,7 @@ class Event extends $pb.GeneratedMessage {
     ..aInt64(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'date')
     ..m<$core.String, $core.String>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'params', entryClassName: 'Event.ParamsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('gitjournal'))
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userId', protoName: 'userId')
-    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'psuedoId', protoName: 'psuedoId')
+    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'pseudoId', protoName: 'pseudoId')
     ..m<$core.String, $core.String>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userProperties', protoName: 'userProperties', entryClassName: 'Event.UserPropertiesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('gitjournal'))
     ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sessionID', protoName: 'sessionID')
     ..aInt64(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userFirstTouchTimestamp', protoName: 'userFirstTouchTimestamp')
@@ -149,7 +149,7 @@ class Event extends $pb.GeneratedMessage {
     $fixnum.Int64? date,
     $core.Map<$core.String, $core.String>? params,
     $core.String? userId,
-    $core.String? psuedoId,
+    $core.String? pseudoId,
     $core.Map<$core.String, $core.String>? userProperties,
     $core.String? sessionID,
     $fixnum.Int64? userFirstTouchTimestamp,
@@ -167,8 +167,8 @@ class Event extends $pb.GeneratedMessage {
     if (userId != null) {
       _result.userId = userId;
     }
-    if (psuedoId != null) {
-      _result.psuedoId = psuedoId;
+    if (pseudoId != null) {
+      _result.pseudoId = pseudoId;
     }
     if (userProperties != null) {
       _result.userProperties.addAll(userProperties);
@@ -233,13 +233,13 @@ class Event extends $pb.GeneratedMessage {
   void clearUserId() => clearField(4);
 
   @$pb.TagNumber(5)
-  $core.String get psuedoId => $_getSZ(4);
+  $core.String get pseudoId => $_getSZ(4);
   @$pb.TagNumber(5)
-  set psuedoId($core.String v) { $_setString(4, v); }
+  set pseudoId($core.String v) { $_setString(4, v); }
   @$pb.TagNumber(5)
-  $core.bool hasPsuedoId() => $_has(4);
+  $core.bool hasPseudoId() => $_has(4);
   @$pb.TagNumber(5)
-  void clearPsuedoId() => clearField(5);
+  void clearPseudoId() => clearField(5);
 
   @$pb.TagNumber(6)
   $core.Map<$core.String, $core.String> get userProperties => $_getMap(5);

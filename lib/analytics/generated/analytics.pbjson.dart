@@ -69,7 +69,7 @@ const Event$json = const {
     const {'1': 'date', '3': 2, '4': 1, '5': 3, '10': 'date'},
     const {'1': 'params', '3': 3, '4': 3, '5': 11, '6': '.gitjournal.Event.ParamsEntry', '10': 'params'},
     const {'1': 'userId', '3': 4, '4': 1, '5': 9, '10': 'userId'},
-    const {'1': 'psuedoId', '3': 5, '4': 1, '5': 9, '10': 'psuedoId'},
+    const {'1': 'pseudoId', '3': 5, '4': 1, '5': 9, '10': 'pseudoId'},
     const {'1': 'userProperties', '3': 6, '4': 3, '5': 11, '6': '.gitjournal.Event.UserPropertiesEntry', '10': 'userProperties'},
     const {'1': 'sessionID', '3': 7, '4': 1, '5': 9, '10': 'sessionID'},
     const {'1': 'userFirstTouchTimestamp', '3': 8, '4': 1, '5': 3, '10': 'userFirstTouchTimestamp'},
@@ -98,7 +98,7 @@ const Event_UserPropertiesEntry$json = const {
 };
 
 /// Descriptor for `Event`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List eventDescriptor = $convert.base64Decode('CgVFdmVudBISCgRuYW1lGAEgASgJUgRuYW1lEhIKBGRhdGUYAiABKANSBGRhdGUSNQoGcGFyYW1zGAMgAygLMh0uZ2l0am91cm5hbC5FdmVudC5QYXJhbXNFbnRyeVIGcGFyYW1zEhYKBnVzZXJJZBgEIAEoCVIGdXNlcklkEhoKCHBzdWVkb0lkGAUgASgJUghwc3VlZG9JZBJNCg51c2VyUHJvcGVydGllcxgGIAMoCzIlLmdpdGpvdXJuYWwuRXZlbnQuVXNlclByb3BlcnRpZXNFbnRyeVIOdXNlclByb3BlcnRpZXMSHAoJc2Vzc2lvbklEGAcgASgJUglzZXNzaW9uSUQSOAoXdXNlckZpcnN0VG91Y2hUaW1lc3RhbXAYCCABKANSF3VzZXJGaXJzdFRvdWNoVGltZXN0YW1wGjkKC1BhcmFtc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgJUgV2YWx1ZToCOAEaQQoTVXNlclByb3BlcnRpZXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoCVIFdmFsdWU6AjgB');
+final $typed_data.Uint8List eventDescriptor = $convert.base64Decode('CgVFdmVudBISCgRuYW1lGAEgASgJUgRuYW1lEhIKBGRhdGUYAiABKANSBGRhdGUSNQoGcGFyYW1zGAMgAygLMh0uZ2l0am91cm5hbC5FdmVudC5QYXJhbXNFbnRyeVIGcGFyYW1zEhYKBnVzZXJJZBgEIAEoCVIGdXNlcklkEhoKCHBzZXVkb0lkGAUgASgJUghwc2V1ZG9JZBJNCg51c2VyUHJvcGVydGllcxgGIAMoCzIlLmdpdGpvdXJuYWwuRXZlbnQuVXNlclByb3BlcnRpZXNFbnRyeVIOdXNlclByb3BlcnRpZXMSHAoJc2Vzc2lvbklEGAcgASgJUglzZXNzaW9uSUQSOAoXdXNlckZpcnN0VG91Y2hUaW1lc3RhbXAYCCABKANSF3VzZXJGaXJzdFRvdWNoVGltZXN0YW1wGjkKC1BhcmFtc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgJUgV2YWx1ZToCOAEaQQoTVXNlclByb3BlcnRpZXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoCVIFdmFsdWU6AjgB');
 @$core.Deprecated('Use deviceInfoDescriptor instead')
 const DeviceInfo$json = const {
   '1': 'DeviceInfo',

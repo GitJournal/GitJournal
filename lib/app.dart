@@ -48,7 +48,7 @@ class JournalApp extends StatefulWidget {
     Log.i("AppSetting ${appSettings.toMap()}");
 
     if (appSettings.collectUsageStatistics) {
-      _enableAnalyticsIfPossible(appSettings);
+      _enableAnalyticsIfPossible(appSettings, pref);
     }
     _sendAppUpdateEvent(appSettings);
 
@@ -98,7 +98,7 @@ class JournalApp extends StatefulWidget {
   }
 
   static Future<void> _enableAnalyticsIfPossible(
-      AppSettings appSettings) async {
+      AppSettings appSettings, SharedPreferences pref) async {
     JournalApp.isInDebugMode = foundation.kDebugMode;
 
     var isPhysicalDevice = true;
@@ -128,7 +128,7 @@ class JournalApp extends StatefulWidget {
     bool enabled = !JournalApp.isInDebugMode && !inFireBaseTestLab;
 
     Log.d("Analytics Collection: $enabled");
-    var analytics = Analytics.init(enable: enabled);
+    var analytics = Analytics.init(enable: enabled, pref: pref);
 
     if (enabled) {
       analytics.setUserProperty(

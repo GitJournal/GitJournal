@@ -17,7 +17,6 @@ limitations under the License.
 import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart';
 
 import 'package:gitjournal/features.dart';
 
@@ -40,9 +39,6 @@ class AppSettings extends ChangeNotifier {
   var proMode = Features.alwaysPro;
   var proExpirationDate = "";
   var validateProMode = true;
-
-  late String _pseudoId;
-  String get pseudoId => _pseudoId;
 
   var debugLogLevel = 'v';
 
@@ -70,14 +66,6 @@ class AppSettings extends ChangeNotifier {
     proExpirationDate =
         pref.getString("proExpirationDate") ?? proExpirationDate;
     validateProMode = pref.getBool("validateProMode") ?? validateProMode;
-
-    var p = pref.getString("pseudoId");
-    if (p == null) {
-      _pseudoId = const Uuid().v4();
-      pref.setString("pseudoId", _pseudoId);
-    } else {
-      _pseudoId = p;
-    }
 
     debugLogLevel = pref.getString("debugLogLevel") ?? debugLogLevel;
     experimentalFs = pref.getBool("experimentalFs") ?? experimentalFs;
@@ -147,7 +135,6 @@ class AppSettings extends ChangeNotifier {
       "proMode": proMode.toString(),
       'validateProMode': validateProMode.toString(),
       'proExpirationDate': proExpirationDate,
-      'pseudoId': pseudoId,
       'debugLogLevel': debugLogLevel,
       'experimentalFs': experimentalFs.toString(),
       'experimentalMarkdownToolbar': experimentalMarkdownToolbar.toString(),
