@@ -2,7 +2,13 @@ syntax = "proto3";
 
 package gitjournal;
 
-// FIXME: Add a service
+option go_package = "github.com/gitjournal/analytics_backend";
+
+service AnalyticsService {
+  rpc SendData(AnalyticsMessage) returns (AnalyticsReply) {}
+}
+
+message AnalyticsReply {}
 
 message AnalyticsMessage {
   string appId = 1;
