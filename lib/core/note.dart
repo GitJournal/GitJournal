@@ -492,20 +492,29 @@ class Note with NotesNotifier {
     var absImagePath = _buildImagePath(file);
     await file.copy(absImagePath);
 
-    addImageMarkdown(absImagePath);
+    if (_fileFormat == NoteFileFormat.OrgMode) {
+      _addImageOrgMode(absImagePath);
+      return;
+    }
+    _addImageMarkdown(absImagePath);
   }
 
-  void addImageMarkdown(String absImagePath) {
+  void _addImageMarkdown(String absImagePath) {
     var relativeImagePath = p.relative(absImagePath, from: parent.folderPath);
     if (!relativeImagePath.startsWith('.')) {
       relativeImagePath = './$relativeImagePath';
     }
     var imageMarkdown = "![Image]($relativeImagePath)\n";
-    if (body.isEmpty) {
-      body = imageMarkdown;
-    } else {
-      body = "$body\n$imageMarkdown";
+    body = body.isEmpty ? imageMarkdown : "$body\n$imageMarkdown";
+  }
+
+  void _addImageOrgMode(String absImagePath) {
+    var relativeImagePath = p.relative(absImagePath, from: parent.folderPath);
+    if (!relativeImagePath.startsWith('.')) {
+      relativeImagePath = './$relativeImagePath';
     }
+    var imageMarkdown = "[[$relativeImagePath]]\n";
+    body = body.isEmpty ? imageMarkdown : "$body\n$imageMarkdown";
   }
 
   String _buildImagePath(File file) {
