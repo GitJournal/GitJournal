@@ -124,11 +124,13 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
 
     if (existingImages.isNotEmpty) {
       for (var imagePath in existingImages) {
-        try {
-          note!.addImageSync(imagePath);
-        } catch (e, st) {
-          Log.e("New Note Existing Image", ex: e, stacktrace: st);
-        }
+        () async {
+          try {
+            await note!.addImage(imagePath);
+          } catch (e, st) {
+            Log.e("New Note Existing Image", ex: e, stacktrace: st);
+          }
+        }();
       }
     }
   }

@@ -508,23 +508,6 @@ class Note with NotesNotifier {
     }
   }
 
-  Future<void> addImageSync(String filePath) async {
-    var file = File(filePath);
-    var absImagePath = _buildImagePath(file);
-    file.copySync(absImagePath);
-
-    var relativeImagePath = p.relative(absImagePath, from: parent.folderPath);
-    if (!relativeImagePath.startsWith('.')) {
-      relativeImagePath = './$relativeImagePath';
-    }
-    var imageMarkdown = "![Image]($relativeImagePath)\n";
-    if (body.isEmpty) {
-      body = imageMarkdown;
-    } else {
-      body = "$body\n$imageMarkdown";
-    }
-  }
-
   String _buildImagePath(File file) {
     String baseFolder;
 
