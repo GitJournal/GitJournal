@@ -492,6 +492,10 @@ class Note with NotesNotifier {
     var absImagePath = _buildImagePath(file);
     await file.copy(absImagePath);
 
+    addImageMarkdown(absImagePath);
+  }
+
+  void addImageMarkdown(String absImagePath) {
     var relativeImagePath = p.relative(absImagePath, from: parent.folderPath);
     if (!relativeImagePath.startsWith('.')) {
       relativeImagePath = './$relativeImagePath';

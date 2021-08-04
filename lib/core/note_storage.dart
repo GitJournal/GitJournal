@@ -7,14 +7,11 @@ class NoteStorage {
   Future<Result<void>> save(Note note) async {
     var contents = note.serialize();
 
-    try {
+    return catchAll(() async {
       var file = File(note.filePath);
       await file.writeAsString(contents, flush: true);
-    } on Exception catch (e, st) {
-      return Result.fail(e, st);
-    }
-
-    return Result(null);
+      return Result(null);
+    });
   }
 
   Future<Note> load(Note note) async {
