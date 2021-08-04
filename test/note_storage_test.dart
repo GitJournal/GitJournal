@@ -75,7 +75,7 @@ void main() {
       expect(loadedNotes, notes);
 
       await Future.forEach(notes, (Note note) async {
-        await note.remove();
+        await File(note.filePath).delete();
       });
       expect(tempDir.listSync(recursive: true).length, 0);
       expect(File(n1Path).existsSync(), isFalse);

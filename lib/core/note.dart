@@ -432,14 +432,6 @@ class Note with NotesNotifier {
     return contents;
   }
 
-  // FIXME: What about error handling?
-  Future<void> remove() async {
-    assert(_filePath != null);
-
-    var file = File(filePath);
-    await file.delete();
-  }
-
   ///
   /// Do not let the user rename it to a different file-type.
   ///
