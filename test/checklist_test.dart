@@ -1,3 +1,4 @@
+import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
@@ -5,6 +6,7 @@ import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/core/checklist.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 
@@ -76,7 +78,7 @@ Booga Wooga
 
       checklist.removeItem(checklist.items[4]);
 
-      await checklist.note.save();
+      await NoteStorage().save(checklist.note).throwOnError();
 
       var expectedContent = """---
 bar: Foo

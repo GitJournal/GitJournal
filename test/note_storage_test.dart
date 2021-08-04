@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
@@ -7,6 +8,7 @@ import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/utils/datetime.dart';
@@ -49,7 +51,7 @@ void main() {
 
     test('Should persist and load Notes from disk', () async {
       await Future.forEach(notes, (Note note) async {
-        await note.save();
+        await NoteStorage().save(note).throwOnError();
       });
       expect(tempDir.listSync(recursive: true).length, 2);
       expect(File(n1Path).existsSync(), isTrue);

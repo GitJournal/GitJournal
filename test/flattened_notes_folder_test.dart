@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
@@ -7,6 +8,7 @@ import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/core/flattened_notes_folder.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 
@@ -40,7 +42,7 @@ void main() {
         var note = Note(rootFolder, _getRandomFilePath(rootFolder.folderPath));
         note.modified = DateTime(2020, 1, 10 + (i * 2));
         note.body = "$i\n";
-        await note.save();
+        await NoteStorage().save(note).throwOnError();
       }
 
       Directory(p.join(tempDir.path, "sub1")).createSync();
@@ -56,7 +58,7 @@ void main() {
         );
         note.modified = DateTime(2020, 1, 10 + (i * 2));
         note.body = "sub1-$i\n";
-        await note.save();
+        await NoteStorage().save(note).throwOnError();
       }
 
       var sub2Folder =
@@ -68,7 +70,7 @@ void main() {
         );
         note.modified = DateTime(2020, 1, 10 + (i * 2));
         note.body = "sub2-$i\n";
-        await note.save();
+        await NoteStorage().save(note).throwOnError();
       }
 
       var p1Folder =
@@ -80,7 +82,7 @@ void main() {
         );
         note.modified = DateTime(2020, 1, 10 + (i * 2));
         note.body = "p1-$i\n";
-        await note.save();
+        await NoteStorage().save(note).throwOnError();
       }
 
       await rootFolder.loadRecursively();
@@ -119,7 +121,8 @@ void main() {
       var note = Note(p1, p.join(p1.folderPath, "new.md"));
       note.modified = DateTime(2020, 2, 1);
       note.body = "new\n";
-      await note.save();
+      await NoteStorage().save(note).throwOnError();
+
       p1.add(note);
 
       expect(f.notes.length, 10);

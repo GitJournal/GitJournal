@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
@@ -7,6 +8,7 @@ import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/core/flattened_notes_folder.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 
@@ -63,5 +65,6 @@ Future<void> _writeRandomNote(
   var note = Note(NotesFolderFS(null, dirPath, config), path);
   note.modified = DateTime(2014, 1, 1 + (random.nextInt(2000)));
   note.body = "p1";
-  await note.save();
+
+  await NoteStorage().save(note).throwOnError();
 }

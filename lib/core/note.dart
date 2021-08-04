@@ -422,20 +422,14 @@ class Note with NotesNotifier {
     return Result(_loadState);
   }
 
-  // FIXME: What about error handling?
-  Future<void> save() async {
-    var file = File(filePath);
+  String serialize() {
     var contents = _serializer.encode(data);
     // Make sure all docs end with a \n
     if (!contents.endsWith('\n')) {
       contents += '\n';
     }
 
-    await file.writeAsString(contents, flush: true);
-  }
-
-  String serialize() {
-    return _serializer.encode(data);
+    return contents;
   }
 
   // FIXME: What about error handling?

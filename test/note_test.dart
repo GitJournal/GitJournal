@@ -1,9 +1,11 @@
+import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 
@@ -40,7 +42,7 @@ Hello
 
       note.modified = DateTime.utc(2019, 12, 02, 4, 0, 0);
 
-      await note.save();
+      await NoteStorage().save(note).throwOnError();
 
       var expectedContent = """---
 bar: Foo
@@ -72,7 +74,7 @@ Hello
 
       note.modified = DateTime.utc(2019, 12, 02, 4, 0, 0);
 
-      await note.save();
+      await NoteStorage().save(note).throwOnError();
 
       var expectedContent = """---
 bar: Foo
@@ -110,7 +112,7 @@ Hello
       note.tags.add('D');
       note.tags.remove('B');
 
-      await note.save();
+      await NoteStorage().save(note).throwOnError();
 
       var expectedContent = """---
 bar: Foo
@@ -262,7 +264,7 @@ created: 1626257689
 Hello
 """;
 
-      await note.save();
+      await NoteStorage().save(note).throwOnError();
 
       var actualContent = File(notePath).readAsStringSync();
       expect(actualContent, equals(expectedContent));

@@ -1,11 +1,13 @@
 import 'dart:math';
 
+import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/sorted_notes_folder.dart';
@@ -32,7 +34,7 @@ void main() {
         );
         note.modified = DateTime(2020, 1, 10 + (i * 2));
         note.body = "$i\n";
-        await note.save();
+        await NoteStorage().save(note).throwOnError();
       }
       await folder.loadRecursively();
     });
@@ -87,7 +89,7 @@ void main() {
       var note = Note(folder, p.join(folder.folderPath, "new.md"));
       note.modified = DateTime(2020, 2, 1);
       note.body = "new\n";
-      await note.save();
+      await NoteStorage().save(note).throwOnError();
 
       folder.add(note);
 
@@ -111,7 +113,7 @@ void main() {
       var note = Note(folder, p.join(folder.folderPath, "new.md"));
       note.modified = DateTime(2020, 1, 1);
       note.body = "new\n";
-      await note.save();
+      await NoteStorage().save(note).throwOnError();
 
       folder.add(note);
 

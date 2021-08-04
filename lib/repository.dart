@@ -17,6 +17,7 @@ import 'package:universal_io/io.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/core/git_repo.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/notes_cache.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
@@ -355,11 +356,27 @@ class GitJournalRepo with ChangeNotifier {
     });
   }
 
+  Future<Result<void>> saveNoteToDisk(Note note) async {
+    var noteStorage = NoteStorage();
+    var r = await noteStorage.save(note);
+    if (r.isFailure) {
+      return fail(r);
+    }
+
+    return Result(null);
+  }
+
   Future<void> addNote(Note note) async {
     logEvent(Event.NoteAdded);
 
     note.updateModified();
-    await note.save();
+
+    var noteStorage = NoteStorage();
+    var r = await noteStorage.save(note);
+    if (r.isFailure) {
+      Log.e("Note saving failed", ex: r.error, stacktrace: r.stackTrace);
+      // FIXME: Shouldn't we signal the error?
+    }
 
     note.parent.add(note);
 
@@ -414,7 +431,13 @@ class GitJournalRepo with ChangeNotifier {
     logEvent(Event.NoteUpdated);
 
     note.updateModified();
-    await note.save();
+
+    var noteStorage = NoteStorage();
+    var r = await noteStorage.save(note);
+    if (r.isFailure) {
+      Log.e("Note saving failed", ex: r.error, stacktrace: r.stackTrace);
+      // FIXME: Shouldn't we signal the error?
+    }
 
     return _opLock.synchronized(() async {
       Log.d("Got updateNote lock");
