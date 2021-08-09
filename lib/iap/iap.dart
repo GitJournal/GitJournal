@@ -5,7 +5,6 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase/store_kit_wrappers.dart';
 import 'package:universal_io/io.dart' show Platform;
 
-import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/features.dart';
@@ -185,7 +184,7 @@ Future<DateTime?> getExpiryDate(
   var body = {
     'receipt': receipt,
     "sku": sku,
-    'pseudoId': Analytics.instance?.pseudoId,
+    'pseudoId': '',
     'is_purchase': isPurchase,
   };
   Log.i("getExpiryDate ${json.encode(body)}");

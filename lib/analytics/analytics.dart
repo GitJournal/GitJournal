@@ -70,15 +70,15 @@ class Analytics {
   }) {
     _global = Analytics();
     _global!.enabled = enable;
-    _global!.sessionId =
+    _global!._sessionId =
         DateTime.now().millisecondsSinceEpoch.toRadixString(16);
 
     var p = pref.getString("pseudoId");
     if (p == null) {
-      _global!.pseudoId = const Uuid().v4();
-      pref.setString("pseudoId", _global!.pseudoId);
+      _global!._pseudoId = const Uuid().v4();
+      pref.setString("pseudoId", _global!._pseudoId);
     } else {
-      _global!.pseudoId = p;
+      _global!._pseudoId = p;
     }
 
     return _global!;
@@ -86,8 +86,8 @@ class Analytics {
 
   static Analytics? get instance => _global!;
 
-  late String sessionId;
-  late String pseudoId;
+  late String _sessionId;
+  late String _pseudoId;
   var userProps = <String, String>{};
 
   Future<void> log(
@@ -125,9 +125,9 @@ class Analytics {
       name: name,
       date: Int64(DateTime.now().millisecondsSinceEpoch ~/ 1000),
       params: params,
-      pseudoId: pseudoId,
+      pseudoId: _pseudoId,
       userProperties: userProps,
-      sessionID: sessionId,
+      sessionID: _sessionId,
       userFirstTouchTimestamp: null,
     );
   }
