@@ -21,6 +21,7 @@ import 'package:gitjournal/analytics/route_observer.dart';
 import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/iap/iap.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
@@ -128,7 +129,11 @@ class JournalApp extends StatefulWidget {
     bool enabled = !JournalApp.isInDebugMode && !inFireBaseTestLab;
 
     Log.d("Analytics Collection: $enabled");
-    var analytics = Analytics.init(enable: enabled, pref: pref);
+    var analytics = Analytics.init(
+      enable: enabled,
+      pref: pref,
+      analyticsCallback: captureErrorBreadcrumb,
+    );
 
     if (enabled) {
       analytics.setUserProperty(

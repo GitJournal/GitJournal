@@ -1,9 +1,9 @@
 import 'package:fixnum/fixnum.dart';
+import 'package:function_types/function_types.dart';
 import 'package:recase/recase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'generated/analytics.pb.dart' as pb;
 
@@ -62,13 +62,17 @@ enum Event {
 
 class Analytics {
   bool enabled = false;
+  final Func2<String, Map<String, String>, void> analyticsCallback;
+
+  Analytics._(this.analyticsCallback);
 
   static Analytics? _global;
   static Analytics init({
     required bool enable,
     required SharedPreferences pref,
+    required Func2<String, Map<String, String>, void> analyticsCallback,
   }) {
-    _global = Analytics();
+    _global = Analytics._(analyticsCallback);
     _global!.enabled = enable;
     _global!._sessionId =
         DateTime.now().millisecondsSinceEpoch.toRadixString(16);
@@ -100,7 +104,7 @@ class Analytics {
       print(event);
       // await firebase.logEvent(name: name, parameters: parameters);
     }
-    captureErrorBreadcrumb(name: name, parameters: parameters);
+    analyticsCallback(name, parameters);
   }
 
   Future<void> setCurrentScreen({required String screenName}) async {

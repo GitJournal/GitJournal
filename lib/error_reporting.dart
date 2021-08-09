@@ -118,10 +118,7 @@ Future<void> logExceptionWarning(Object e, StackTrace stackTrace) async {
 
 List<Breadcrumb> breadcrumbs = [];
 
-void captureErrorBreadcrumb({
-  required String name,
-  required Map<String, String> parameters,
-}) {
+void captureErrorBreadcrumb(String name, Map<String, String> parameters) {
   if (!reportCrashes) {
     return;
   }
