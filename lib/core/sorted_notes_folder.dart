@@ -109,7 +109,7 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
 
       var r = _sortFunc(_notes[mid], note);
       if (r == 0) {
-        return low;
+        return mid;
       }
 
       if (low == high) {
