@@ -6,8 +6,8 @@ import 'generated/analytics.pb.dart' as pb;
 
 Future<void> main(List<String> args) async {
   final channel = ClientChannel(
-    'https://analyticsbackend-wetu2tkdpq-ew.a.run.app',
-    port: 8080,
+    'analyticsbackend-wetu2tkdpq-ew.a.run.app',
+    port: 443,
     options: ChannelOptions(
       // credentials: const ChannelCredentials.insecure(),
       credentials: const ChannelCredentials.secure(),
