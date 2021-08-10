@@ -84,7 +84,8 @@ bool _initReportCrashes() {
   return !JournalApp.isInDebugMode && AppSettings.instance.collectCrashReports;
 }
 
-Future<void> reportError(dynamic error, StackTrace stackTrace) async {
+Future<void> reportError(Object error, StackTrace stackTrace) async {
+  assert(error is Exception || error is Error);
   Log.e("Uncaught Exception", ex: error, stacktrace: stackTrace);
 
   if (reportCrashes) {
