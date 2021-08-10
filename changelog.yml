@@ -1,3 +1,19 @@
+- version: "1.79"
+  date: 2021-08-10
+  improvements:
+    - text: "Make the sorting mode selector work on all screen sizes - #385"
+    - text: "Let the markdown toolbar be horizontally scrollable - $451"
+    - text: "Markdown Toolbar - Make it work for selected text - #522"
+    - text: "Show progress on the cloning page - #397"
+    - text: "Card View - Add hero animation"
+    - text: "Allow 'updated' to be used for the modified key - #525"
+    - text: "Markdown Toolbar: Add tab/backtab on long press of > or <"
+    - text: "Support ecdsa keys"
+  bugs:
+    - text: "Fix sorting not always working - #172"
+    - text: "OrgMode images in correct syntax - #145"
+    - text: "ListView preview renders unnecessary bullets - #420"
+
 - version: "1.77"
   date: 2021-06-29
   improvments:
