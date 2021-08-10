@@ -244,6 +244,22 @@ void main() {
     _testPrevWord(text, 5, 0);
   });
 
+  test('Navigation with spaces', () {
+    const text = ' Hello ';
+
+    _testNextWord(text, 0, 1);
+    _testNextWord(text, 3, 6);
+    _testNextWord(text, 6, 7);
+    _testNextWord(text, 7, 7);
+    _testNextWord(text, 8, 7);
+
+    _testPrevWord(text, 0, 0);
+    _testPrevWord(text, 1, 0);
+    _testPrevWord(text, 3, 1);
+    _testPrevWord(text, 6, 1);
+    _testPrevWord(text, 7, 6);
+  });
+
   test('Navigation with multiple words', () {
     const text = 'Hello there Obiwan.';
 
