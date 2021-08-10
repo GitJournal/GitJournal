@@ -88,7 +88,7 @@ class Analytics {
     return _global!;
   }
 
-  static Analytics? get instance => _global!;
+  static Analytics? get instance => _global;
 
   late String _sessionId;
   late String _pseudoId;
