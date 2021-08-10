@@ -80,3 +80,11 @@ DateTime? parseDateTime(String str) {
 
   return dt;
 }
+
+DateTime parseUnixTimeStamp(int val) {
+  return DateTime.fromMillisecondsSinceEpoch(val * 1000, isUtc: true);
+}
+
+int toUnixTimeStamp(DateTime dt) {
+  return dt.toUtc().millisecondsSinceEpoch ~/ 1000;
+}

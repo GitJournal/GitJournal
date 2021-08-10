@@ -253,12 +253,12 @@ Hello
       expect(note.created, DateTime.parse('2021-07-14T10:14:49Z'));
 
       note.modified = DateTime.parse('2020-07-14T10:14:49Z');
-      note.created = DateTime.parse('2020-06-14T10:14:49Z');
+      note.created = DateTime.parse('2020-06-13T10:14:49Z');
 
       var expectedContent = """---
 bar: Foo
-updated: 1626257689
-created: 1626257689
+updated: 1594721689
+created: 1592043289
 ---
 
 Hello
@@ -268,6 +268,6 @@ Hello
 
       var actualContent = File(notePath).readAsStringSync();
       expect(actualContent, equals(expectedContent));
-    }, skip: true);
+    });
   });
 }

@@ -33,6 +33,11 @@ abstract class NoteSerializerInterface {
 
 var emojiParser = EmojiParser();
 
+enum DateFormat {
+  Iso8601,
+  UnixTimeStamp,
+}
+
 class NoteSerializationSettings {
   String modifiedKey = "modified";
   String createdKey = "created";
@@ -45,11 +50,16 @@ class NoteSerializationSettings {
 
   SettingsTitle titleSettings = SettingsTitle.Default;
 
+  var modifiedFormat = DateFormat.Iso8601;
+  var createdFormat = DateFormat.Iso8601;
+
   NoteSerializationSettings.fromConfig(NotesFolderConfig config) {
     modifiedKey = config.yamlModifiedKey;
     createdKey = config.yamlCreatedKey;
     tagsKey = config.yamlTagsKey;
     titleSettings = config.titleSettings;
+
+    // FIXME: modified / created format!
   }
   NoteSerializationSettings();
 }
@@ -65,13 +75,27 @@ class NoteSerializer implements NoteSerializerInterface {
     data.body = emojiParser.unemojify(note.body);
 
     if (note.created != null) {
-      data.props[settings.createdKey] = toIso8601WithTimezone(note.created!);
+      switch (settings.createdFormat) {
+        case DateFormat.Iso8601:
+          data.props[settings.createdKey] =
+              toIso8601WithTimezone(note.created!);
+          break;
+        case DateFormat.UnixTimeStamp:
+          data.props[settings.createdKey] = toUnixTimeStamp(note.created!);
+      }
     } else {
       data.props.remove(settings.createdKey);
     }
 
     if (note.modified != null) {
-      data.props[settings.modifiedKey] = toIso8601WithTimezone(note.modified!);
+      switch (settings.modifiedFormat) {
+        case DateFormat.Iso8601:
+          data.props[settings.modifiedKey] =
+              toIso8601WithTimezone(note.modified!);
+          break;
+        case DateFormat.UnixTimeStamp:
+          data.props[settings.modifiedKey] = toUnixTimeStamp(note.modified!);
+      }
     } else {
       data.props.remove(settings.modifiedKey);
     }
@@ -135,7 +159,13 @@ class NoteSerializer implements NoteSerializerInterface {
     for (var possibleKey in modifiedKeyOptions) {
       var val = data.props[possibleKey];
       if (val != null) {
-        note.modified = parseDateTime(val.toString());
+        if (val is int) {
+          note.modified = parseUnixTimeStamp(val);
+          settings.modifiedFormat = DateFormat.UnixTimeStamp;
+        } else {
+          note.modified = parseDateTime(val.toString());
+          settings.modifiedFormat = DateFormat.Iso8601;
+        }
         settings.modifiedKey = possibleKey;
 
         propsUsed.add(possibleKey);
@@ -152,7 +182,13 @@ class NoteSerializer implements NoteSerializerInterface {
     for (var possibleKey in createdKeyOptions) {
       var val = data.props[possibleKey];
       if (val != null) {
-        note.created = parseDateTime(val.toString());
+        if (val is int) {
+          note.created = parseUnixTimeStamp(val);
+          settings.createdFormat = DateFormat.UnixTimeStamp;
+        } else {
+          note.created = parseDateTime(val.toString());
+          settings.createdFormat = DateFormat.Iso8601;
+        }
         settings.createdKey = possibleKey;
 
         propsUsed.add(possibleKey);
