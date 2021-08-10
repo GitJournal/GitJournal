@@ -30,6 +30,7 @@ import 'package:provider/provider.dart';
 import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/features.dart';
@@ -462,16 +463,21 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
       const SizedBox(height: 16.0),
-      // Disabled until we find a replacement for Firebase Analytics
-      // SwitchListTile(
-      //   title: Text(tr('settings.usageStats')),
-      //   value: appSettings.collectUsageStatistics,
-      //   onChanged: (bool val) {
-      //     appSettings.collectUsageStatistics = val;
-      //     appSettings.save();
-      //     setState(() {});
-      //   },
-      // ),
+      if (Features.newAnalytics)
+        SwitchListTile(
+          title: Text(tr('settings.usageStats')),
+          value: appSettings.collectUsageStatistics,
+          onChanged: (bool val) {
+            appSettings.collectUsageStatistics = val;
+            appSettings.save();
+            setState(() {});
+
+            logEvent(
+              Event.AnalyticsLevelChanged,
+              parameters: {"state": val.toString()},
+            );
+          },
+        ),
       SwitchListTile(
         title: Text(tr('settings.crashReports')),
         value: appSettings.collectCrashReports,
@@ -479,6 +485,11 @@ class SettingsListState extends State<SettingsList> {
           appSettings.collectCrashReports = val;
           appSettings.save();
           setState(() {});
+
+          logEvent(
+            Event.CrashReportingLevelChanged,
+            parameters: {"state": val.toString()},
+          );
         },
       ),
       VersionNumberTile(),

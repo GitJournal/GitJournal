@@ -55,9 +55,10 @@ enum Event {
     screen_view
     session_start
     user_engagement
-
   */
   ScreenView,
+  AnalyticsLevelChanged,
+  CrashReportingLevelChanged,
 }
 
 class Analytics {

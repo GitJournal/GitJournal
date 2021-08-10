@@ -6,6 +6,8 @@ class Features {
   static bool alwaysPro =
       Platform.isWindows || Platform.isLinux || Platform.isMacOS;
 
+  static bool newAnalytics = false;
+
   static final all = <Feature>[
     Feature.basicSearch,
     Feature.darkMode,
