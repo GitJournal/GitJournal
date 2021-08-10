@@ -200,12 +200,6 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     }
     Set<String> pathsFound = {};
 
-    // Load the Folder config if exists
-    /*
-    if (Features.perFolderConfig) {
-      _config = await NotesFolderConfig.fromFS(this);
-    } */
-
     _ignoredFiles = <IgnoredFile>[];
 
     final dir = Directory(folderPath);

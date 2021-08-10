@@ -5,7 +5,6 @@ class Features {
   // Make the desktop version always pro, for now.
   static bool alwaysPro =
       Platform.isWindows || Platform.isLinux || Platform.isMacOS;
-  static const bool perFolderConfig = false;
 
   static final all = <Feature>[
     Feature.basicSearch,
