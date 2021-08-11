@@ -28,7 +28,7 @@ class AnalyticsStorage {
     currentFile = p.join(folderPath, name);
   }
 
-  Future<void> appendEvent(pb.Event event) async {
+  Future<void> logEvent(pb.Event event) async {
     await _lock.synchronized(() {
       return appendEventToFile(event, currentFile);
     });

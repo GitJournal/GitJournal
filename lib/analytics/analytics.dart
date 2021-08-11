@@ -4,8 +4,10 @@ import 'package:recase/recase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:gitjournal/features.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'generated/analytics.pb.dart' as pb;
+import 'storage.dart';
 
 enum Event {
   NoteAdded,
@@ -64,16 +66,25 @@ enum Event {
 class Analytics {
   bool enabled = false;
   final Func2<String, Map<String, String>, void> analyticsCallback;
+  final AnalyticsStorage storage;
 
-  Analytics._(this.analyticsCallback);
+  Analytics._({required this.storage, required this.analyticsCallback});
 
   static Analytics? _global;
   static Analytics init({
     required bool enable,
     required SharedPreferences pref,
     required Func2<String, Map<String, String>, void> analyticsCallback,
+    required String storagePath,
   }) {
-    _global = Analytics._(analyticsCallback);
+    if (!Features.newAnalytics) {
+      enable = false;
+    }
+
+    _global = Analytics._(
+      analyticsCallback: analyticsCallback,
+      storage: AnalyticsStorage(storagePath),
+    );
     _global!.enabled = enable;
     _global!._sessionId =
         DateTime.now().millisecondsSinceEpoch.toRadixString(16);
@@ -100,18 +111,12 @@ class Analytics {
     Map<String, String> parameters = const {},
   ]) async {
     String name = _eventToString(e);
-    if (enabled) {
-      var event = _buildEvent(name, parameters);
-      print(event);
-      // await firebase.logEvent(name: name, parameters: parameters);
-    }
+
+    await storage.logEvent(_buildEvent(name, parameters));
     analyticsCallback(name, parameters);
   }
 
   Future<void> setCurrentScreen({required String screenName}) async {
-    if (!enabled) {
-      return;
-    }
     return log(Event.ScreenView, {'screen_name': screenName});
   }
 
@@ -119,9 +124,6 @@ class Analytics {
     required String name,
     required String value,
   }) async {
-    if (!enabled) {
-      return;
-    }
     userProps[name] = value;
   }
 

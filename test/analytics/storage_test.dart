@@ -35,8 +35,8 @@ void main() {
     var dir = await Directory.systemTemp.createTemp('_analytics_');
     var storage = AnalyticsStorage(dir.path);
 
-    await storage.appendEvent(ev1);
-    await storage.appendEvent(ev2);
+    await storage.logEvent(ev1);
+    await storage.logEvent(ev2);
 
     await storage.fetchAll((events) async {
       expect(events.length, 2);
@@ -45,7 +45,7 @@ void main() {
       return false;
     });
 
-    await storage.appendEvent(ev3);
+    await storage.logEvent(ev3);
     await storage.fetchAll((events) async {
       expect(events.length, 3);
       expect(events[0].toDebugString(), ev1.toDebugString());

@@ -8,6 +8,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter_runtime_env/flutter_runtime_env.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_actions/quick_actions.dart';
@@ -128,11 +129,15 @@ class JournalApp extends StatefulWidget {
     bool inFireBaseTestLab = await inFirebaseTestLab();
     bool enabled = !JournalApp.isInDebugMode && !inFireBaseTestLab;
 
+    var supportDir = await getApplicationSupportDirectory();
+    var analyticsStorage = p.join(supportDir.path, 'analytics');
+
     Log.d("Analytics Collection: $enabled");
     var analytics = Analytics.init(
       enable: enabled,
       pref: pref,
       analyticsCallback: captureErrorBreadcrumb,
+      storagePath: analyticsStorage,
     );
 
     if (enabled) {
