@@ -109,6 +109,9 @@ class AnalyticsStorage {
   Future<DateTime> oldestEvent() async {
     var fileNames = (await _availableFiles()).map(p.basename);
     var timestamps = fileNames.map(int.parse);
+    if (timestamps.isEmpty) {
+      return DateTime.now();
+    }
     var smallest = timestamps.reduce(math.min);
 
     return DateTime.fromMillisecondsSinceEpoch(smallest, isUtc: true);
