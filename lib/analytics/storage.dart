@@ -1,7 +1,7 @@
-import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:buffer/buffer.dart';
+import 'package:collection/collection.dart';
 import 'package:function_types/function_types.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
@@ -109,10 +109,10 @@ class AnalyticsStorage {
   Future<DateTime> oldestEvent() async {
     var fileNames = (await _availableFiles()).map(p.basename);
     var timestamps = fileNames.map(int.parse);
-    if (timestamps.isEmpty) {
+    var smallest = maxBy(timestamps, (i) => i);
+    if (smallest == null) {
       return DateTime.now();
     }
-    var smallest = timestamps.reduce(math.min);
 
     return DateTime.fromMillisecondsSinceEpoch(smallest, isUtc: true);
   }
