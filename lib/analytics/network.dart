@@ -1,13 +1,17 @@
-import 'package:fixnum/fixnum.dart';
+import 'package:dart_git/utils/result.dart';
 import 'package:grpc/grpc.dart';
 
 import 'package:gitjournal/analytics/generated/analytics.pbgrpc.dart';
 import 'generated/analytics.pb.dart' as pb;
 
-Future<void> main(List<String> args) async {
+const _url = 'analyticsbackend-wetu2tkdpq-ew.a.run.app';
+const _port = 444;
+const _timeout = Duration(seconds: 30);
+
+Future<Result<void>> sendAnalytics(pb.AnalyticsMessage msg) async {
   final channel = ClientChannel(
-    'analyticsbackend-wetu2tkdpq-ew.a.run.app',
-    port: 443,
+    _url,
+    port: _port,
     options: ChannelOptions(
       // credentials: const ChannelCredentials.insecure(),
       credentials: const ChannelCredentials.secure(),
@@ -18,38 +22,21 @@ Future<void> main(List<String> args) async {
     ),
   );
 
-  final stub = AnalyticsServiceClient(channel);
+  final client = AnalyticsServiceClient(channel);
   try {
-    var dt = DateTime.now().add(const Duration(days: -1));
-    var ev = pb.Event(
-      name: 'test',
-      date: Int64(dt.millisecondsSinceEpoch ~/ 1000),
-      params: {'a': 'hello'},
-      pseudoId: 'id',
-      userProperties: {'b': 'c'},
-      sessionID: 'session',
+    var call = client.sendData(
+      msg,
+      options: CallOptions(
+        timeout: _timeout,
+        compression: const GzipCodec(),
+      ),
     );
-
-    var request = AnalyticsMessage(
-      appId: 'io.gitjournal',
-      events: [ev],
-    );
-    print("Sending ${request.toDebugString()}");
-    var call = stub.sendData(
-      request,
-      options: CallOptions(timeout: const Duration(seconds: 10)),
-    );
-    call.headers.then((headers) {
-      print('Received header metadata: $headers');
-    });
-    call.trailers.then((trailers) {
-      print('Received trailer metadata: $trailers');
-    });
-    var response = await call;
-    print('Greeter client received: $response');
-  } catch (e) {
-    print('Caught error: $e');
-    return;
+    await call;
+  } on Exception catch (e, st) {
+    await channel.shutdown();
+    return Result.fail(e, st);
   }
+
   await channel.shutdown();
+  return Result(null);
 }

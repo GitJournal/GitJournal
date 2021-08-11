@@ -15,7 +15,7 @@ import 'package:quick_actions/quick_actions.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:universal_io/io.dart' show Platform;
+import 'package:universal_io/io.dart' show Directory, Platform;
 
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/analytics/route_observer.dart';
@@ -131,8 +131,10 @@ class JournalApp extends StatefulWidget {
 
     var supportDir = await getApplicationSupportDirectory();
     var analyticsStorage = p.join(supportDir.path, 'analytics');
+    await Directory(analyticsStorage).create(recursive: true);
 
     Log.d("Analytics Collection: $enabled");
+    Log.d("Analytics Storage: $analyticsStorage");
     var analytics = Analytics.init(
       enable: enabled,
       pref: pref,

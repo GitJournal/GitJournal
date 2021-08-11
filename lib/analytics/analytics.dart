@@ -6,7 +6,10 @@ import 'package:uuid/uuid.dart';
 
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/logger/logger.dart';
+import 'device_info.dart';
 import 'generated/analytics.pb.dart' as pb;
+import 'network.dart';
+import 'package_info.dart';
 import 'storage.dart';
 
 enum Event {
@@ -114,6 +117,8 @@ class Analytics {
 
     await storage.logEvent(_buildEvent(name, parameters));
     analyticsCallback(name, parameters);
+
+    await _sendAnalytics();
   }
 
   Future<void> setCurrentScreen({required String screenName}) async {
@@ -138,6 +143,39 @@ class Analytics {
       userFirstTouchTimestamp: null,
     );
   }
+
+  Future<void> _sendAnalytics() async {
+    if (!enabled) {
+      return;
+    }
+
+    var oldestEvent = await storage.oldestEvent();
+    if (DateTime.now().difference(oldestEvent) < const Duration(hours: 1)) {
+      return;
+    }
+
+    await storage.fetchAll((events) async {
+      var msg = pb.AnalyticsMessage(
+        appId: 'io.gitjournal',
+        deviceInfo: await buildDeviceInfo(),
+        packageInfo: await buildPackageInfo(),
+        events: events,
+      );
+      Log.i("Sending ${events.length} events");
+      var result = await sendAnalytics(msg);
+      if (result.isFailure) {
+        Log.e(
+          "Failed to send Analytics",
+          ex: result.error,
+          stacktrace: result.stackTrace,
+        );
+        return false;
+      }
+
+      Log.i("Sent ${events.length} Analytics Events");
+      return true;
+    });
+  }
 }
 
 void logEvent(Event event, {Map<String, String> parameters = const {}}) {
@@ -149,3 +187,7 @@ String _eventToString(Event e) {
   var str = e.toString().substring('Event.'.length);
   return ReCase(str).snakeCase;
 }
+
+// FIXME: Discard the old analytics, if there are way too many!
+// TODO: Take network connectivity into account
+// TODO: Take connection type (wifi vs mobile) into account
