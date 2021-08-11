@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:device_info_plus_platform_interface/model/web_browser_info.dart';
+import 'package:fixnum/fixnum.dart';
 import 'package:universal_io/io.dart' show Platform;
 
 import 'generated/analytics.pb.dart' as pb;
@@ -98,8 +99,8 @@ Future<pb.DeviceInfo> buildDeviceInfo() async {
       kernelVersion: macOsInfo.kernelVersion,
       osRelease: macOsInfo.osRelease,
       activeCPUs: macOsInfo.activeCPUs,
-      memorySize: macOsInfo.memorySize,
-      cpuFrequency: macOsInfo.cpuFrequency,
+      memorySize: Int64(macOsInfo.memorySize),
+      // cpuFrequency: Int64(macOsInfo.cpuFrequency),
     );
 
     return pb.DeviceInfo(platform: _currentPlatform(), macOSDeviceInfo: info);
@@ -152,7 +153,8 @@ Future<pb.DeviceInfo> buildDeviceInfo() async {
       appCodeName: webInfo.appCodeName,
       appName: webInfo.appName,
       appVersion: webInfo.appVersion,
-      deviceMemory: webInfo.deviceMemory,
+      deviceMemory:
+          webInfo.deviceMemory != null ? Int64(webInfo.deviceMemory!) : null,
       language: webInfo.language,
       languages: webInfo.languages?.map((e) => e.toString()),
       platform: webInfo.platform,

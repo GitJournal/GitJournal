@@ -91,7 +91,7 @@ const Event$json = const {
   '1': 'Event',
   '2': const [
     const {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
-    const {'1': 'date', '3': 2, '4': 1, '5': 3, '10': 'date'},
+    const {'1': 'date', '3': 2, '4': 1, '5': 4, '10': 'date'},
     const {
       '1': 'params',
       '3': 3,
@@ -115,7 +115,7 @@ const Event$json = const {
       '1': 'userFirstTouchTimestamp',
       '3': 8,
       '4': 1,
-      '5': 3,
+      '5': 4,
       '10': 'userFirstTouchTimestamp'
     },
   ],
@@ -144,7 +144,7 @@ const Event_UserPropertiesEntry$json = const {
 
 /// Descriptor for `Event`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List eventDescriptor = $convert.base64Decode(
-    'CgVFdmVudBISCgRuYW1lGAEgASgJUgRuYW1lEhIKBGRhdGUYAiABKANSBGRhdGUSNQoGcGFyYW1zGAMgAygLMh0uZ2l0am91cm5hbC5FdmVudC5QYXJhbXNFbnRyeVIGcGFyYW1zEhYKBnVzZXJJZBgEIAEoCVIGdXNlcklkEhoKCHBzZXVkb0lkGAUgASgJUghwc2V1ZG9JZBJNCg51c2VyUHJvcGVydGllcxgGIAMoCzIlLmdpdGpvdXJuYWwuRXZlbnQuVXNlclByb3BlcnRpZXNFbnRyeVIOdXNlclByb3BlcnRpZXMSHAoJc2Vzc2lvbklEGAcgASgJUglzZXNzaW9uSUQSOAoXdXNlckZpcnN0VG91Y2hUaW1lc3RhbXAYCCABKANSF3VzZXJGaXJzdFRvdWNoVGltZXN0YW1wGjkKC1BhcmFtc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgJUgV2YWx1ZToCOAEaQQoTVXNlclByb3BlcnRpZXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoCVIFdmFsdWU6AjgB');
+    'CgVFdmVudBISCgRuYW1lGAEgASgJUgRuYW1lEhIKBGRhdGUYAiABKARSBGRhdGUSNQoGcGFyYW1zGAMgAygLMh0uZ2l0am91cm5hbC5FdmVudC5QYXJhbXNFbnRyeVIGcGFyYW1zEhYKBnVzZXJJZBgEIAEoCVIGdXNlcklkEhoKCHBzZXVkb0lkGAUgASgJUghwc2V1ZG9JZBJNCg51c2VyUHJvcGVydGllcxgGIAMoCzIlLmdpdGpvdXJuYWwuRXZlbnQuVXNlclByb3BlcnRpZXNFbnRyeVIOdXNlclByb3BlcnRpZXMSHAoJc2Vzc2lvbklEGAcgASgJUglzZXNzaW9uSUQSOAoXdXNlckZpcnN0VG91Y2hUaW1lc3RhbXAYCCABKARSF3VzZXJGaXJzdFRvdWNoVGltZXN0YW1wGjkKC1BhcmFtc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgJUgV2YWx1ZToCOAEaQQoTVXNlclByb3BlcnRpZXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoCVIFdmFsdWU6AjgB');
 @$core.Deprecated('Use deviceInfoDescriptor instead')
 const DeviceInfo$json = const {
   '1': 'DeviceInfo',
@@ -248,16 +248,22 @@ const AndroidBuildVersion$json = const {
     const {'1': 'baseOS', '3': 1, '4': 1, '5': 9, '10': 'baseOS'},
     const {'1': 'codename', '3': 2, '4': 1, '5': 9, '10': 'codename'},
     const {'1': 'incremental', '3': 3, '4': 1, '5': 9, '10': 'incremental'},
-    const {'1': 'previewSdkInt', '3': 4, '4': 1, '5': 5, '10': 'previewSdkInt'},
+    const {
+      '1': 'previewSdkInt',
+      '3': 4,
+      '4': 1,
+      '5': 13,
+      '10': 'previewSdkInt'
+    },
     const {'1': 'release', '3': 5, '4': 1, '5': 9, '10': 'release'},
-    const {'1': 'sdkInt', '3': 6, '4': 1, '5': 5, '10': 'sdkInt'},
+    const {'1': 'sdkInt', '3': 6, '4': 1, '5': 13, '10': 'sdkInt'},
     const {'1': 'securityPatch', '3': 7, '4': 1, '5': 9, '10': 'securityPatch'},
   ],
 };
 
 /// Descriptor for `AndroidBuildVersion`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List androidBuildVersionDescriptor = $convert.base64Decode(
-    'ChNBbmRyb2lkQnVpbGRWZXJzaW9uEhYKBmJhc2VPUxgBIAEoCVIGYmFzZU9TEhoKCGNvZGVuYW1lGAIgASgJUghjb2RlbmFtZRIgCgtpbmNyZW1lbnRhbBgDIAEoCVILaW5jcmVtZW50YWwSJAoNcHJldmlld1Nka0ludBgEIAEoBVINcHJldmlld1Nka0ludBIYCgdyZWxlYXNlGAUgASgJUgdyZWxlYXNlEhYKBnNka0ludBgGIAEoBVIGc2RrSW50EiQKDXNlY3VyaXR5UGF0Y2gYByABKAlSDXNlY3VyaXR5UGF0Y2g=');
+    'ChNBbmRyb2lkQnVpbGRWZXJzaW9uEhYKBmJhc2VPUxgBIAEoCVIGYmFzZU9TEhoKCGNvZGVuYW1lGAIgASgJUghjb2RlbmFtZRIgCgtpbmNyZW1lbnRhbBgDIAEoCVILaW5jcmVtZW50YWwSJAoNcHJldmlld1Nka0ludBgEIAEoDVINcHJldmlld1Nka0ludBIYCgdyZWxlYXNlGAUgASgJUgdyZWxlYXNlEhYKBnNka0ludBgGIAEoDVIGc2RrSW50EiQKDXNlY3VyaXR5UGF0Y2gYByABKAlSDXNlY3VyaXR5UGF0Y2g=');
 @$core.Deprecated('Use androidDeviceInfoDescriptor instead')
 const AndroidDeviceInfo$json = const {
   '1': 'AndroidDeviceInfo',
@@ -421,26 +427,32 @@ const MacOSDeviceInfo$json = const {
     const {'1': 'model', '3': 4, '4': 1, '5': 9, '10': 'model'},
     const {'1': 'kernelVersion', '3': 5, '4': 1, '5': 9, '10': 'kernelVersion'},
     const {'1': 'osRelease', '3': 6, '4': 1, '5': 9, '10': 'osRelease'},
-    const {'1': 'activeCPUs', '3': 7, '4': 1, '5': 5, '10': 'activeCPUs'},
-    const {'1': 'memorySize', '3': 8, '4': 1, '5': 5, '10': 'memorySize'},
-    const {'1': 'cpuFrequency', '3': 9, '4': 1, '5': 5, '10': 'cpuFrequency'},
+    const {'1': 'activeCPUs', '3': 7, '4': 1, '5': 13, '10': 'activeCPUs'},
+    const {'1': 'memorySize', '3': 8, '4': 1, '5': 4, '10': 'memorySize'},
+    const {'1': 'cpuFrequency', '3': 9, '4': 1, '5': 4, '10': 'cpuFrequency'},
   ],
 };
 
 /// Descriptor for `MacOSDeviceInfo`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List macOSDeviceInfoDescriptor = $convert.base64Decode(
-    'Cg9NYWNPU0RldmljZUluZm8SIgoMY29tcHV0ZXJOYW1lGAEgASgJUgxjb21wdXRlck5hbWUSGgoIaG9zdE5hbWUYAiABKAlSCGhvc3ROYW1lEhIKBGFyY2gYAyABKAlSBGFyY2gSFAoFbW9kZWwYBCABKAlSBW1vZGVsEiQKDWtlcm5lbFZlcnNpb24YBSABKAlSDWtlcm5lbFZlcnNpb24SHAoJb3NSZWxlYXNlGAYgASgJUglvc1JlbGVhc2USHgoKYWN0aXZlQ1BVcxgHIAEoBVIKYWN0aXZlQ1BVcxIeCgptZW1vcnlTaXplGAggASgFUgptZW1vcnlTaXplEiIKDGNwdUZyZXF1ZW5jeRgJIAEoBVIMY3B1RnJlcXVlbmN5');
+    'Cg9NYWNPU0RldmljZUluZm8SIgoMY29tcHV0ZXJOYW1lGAEgASgJUgxjb21wdXRlck5hbWUSGgoIaG9zdE5hbWUYAiABKAlSCGhvc3ROYW1lEhIKBGFyY2gYAyABKAlSBGFyY2gSFAoFbW9kZWwYBCABKAlSBW1vZGVsEiQKDWtlcm5lbFZlcnNpb24YBSABKAlSDWtlcm5lbFZlcnNpb24SHAoJb3NSZWxlYXNlGAYgASgJUglvc1JlbGVhc2USHgoKYWN0aXZlQ1BVcxgHIAEoDVIKYWN0aXZlQ1BVcxIeCgptZW1vcnlTaXplGAggASgEUgptZW1vcnlTaXplEiIKDGNwdUZyZXF1ZW5jeRgJIAEoBFIMY3B1RnJlcXVlbmN5');
 @$core.Deprecated('Use windowsDeviceInfoDescriptor instead')
 const WindowsDeviceInfo$json = const {
   '1': 'WindowsDeviceInfo',
   '2': const [
     const {'1': 'computerName', '3': 1, '4': 1, '5': 9, '10': 'computerName'},
-    const {'1': 'numberOfCores', '3': 2, '4': 1, '5': 5, '10': 'numberOfCores'},
+    const {
+      '1': 'numberOfCores',
+      '3': 2,
+      '4': 1,
+      '5': 13,
+      '10': 'numberOfCores'
+    },
     const {
       '1': 'systemMemoryInMegabytes',
       '3': 3,
       '4': 1,
-      '5': 5,
+      '5': 13,
       '10': 'systemMemoryInMegabytes'
     },
   ],
@@ -448,7 +460,7 @@ const WindowsDeviceInfo$json = const {
 
 /// Descriptor for `WindowsDeviceInfo`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List windowsDeviceInfoDescriptor = $convert.base64Decode(
-    'ChFXaW5kb3dzRGV2aWNlSW5mbxIiCgxjb21wdXRlck5hbWUYASABKAlSDGNvbXB1dGVyTmFtZRIkCg1udW1iZXJPZkNvcmVzGAIgASgFUg1udW1iZXJPZkNvcmVzEjgKF3N5c3RlbU1lbW9yeUluTWVnYWJ5dGVzGAMgASgFUhdzeXN0ZW1NZW1vcnlJbk1lZ2FieXRlcw==');
+    'ChFXaW5kb3dzRGV2aWNlSW5mbxIiCgxjb21wdXRlck5hbWUYASABKAlSDGNvbXB1dGVyTmFtZRIkCg1udW1iZXJPZkNvcmVzGAIgASgNUg1udW1iZXJPZkNvcmVzEjgKF3N5c3RlbU1lbW9yeUluTWVnYWJ5dGVzGAMgASgNUhdzeXN0ZW1NZW1vcnlJbk1lZ2FieXRlcw==');
 @$core.Deprecated('Use webBrowserInfoDescriptor instead')
 const WebBrowserInfo$json = const {
   '1': 'WebBrowserInfo',
@@ -464,7 +476,7 @@ const WebBrowserInfo$json = const {
     const {'1': 'appCodeName', '3': 2, '4': 1, '5': 9, '10': 'appCodeName'},
     const {'1': 'appName', '3': 3, '4': 1, '5': 9, '10': 'appName'},
     const {'1': 'appVersion', '3': 4, '4': 1, '5': 9, '10': 'appVersion'},
-    const {'1': 'deviceMemory', '3': 5, '4': 1, '5': 5, '10': 'deviceMemory'},
+    const {'1': 'deviceMemory', '3': 5, '4': 1, '5': 4, '10': 'deviceMemory'},
     const {'1': 'language', '3': 6, '4': 1, '5': 9, '10': 'language'},
     const {'1': 'languages', '3': 7, '4': 3, '5': 9, '10': 'languages'},
     const {'1': 'platform', '3': 8, '4': 1, '5': 9, '10': 'platform'},
@@ -477,14 +489,14 @@ const WebBrowserInfo$json = const {
       '1': 'hardwareConcurrency',
       '3': 14,
       '4': 1,
-      '5': 5,
+      '5': 13,
       '10': 'hardwareConcurrency'
     },
     const {
       '1': 'maxTouchPoints',
       '3': 15,
       '4': 1,
-      '5': 5,
+      '5': 13,
       '10': 'maxTouchPoints'
     },
   ],
@@ -492,4 +504,4 @@ const WebBrowserInfo$json = const {
 
 /// Descriptor for `WebBrowserInfo`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List webBrowserInfoDescriptor = $convert.base64Decode(
-    'Cg5XZWJCcm93c2VySW5mbxI5Cgticm93c2VyTmFtZRgBIAEoDjIXLmdpdGpvdXJuYWwuQnJvd3Nlck5hbWVSC2Jyb3dzZXJOYW1lEiAKC2FwcENvZGVOYW1lGAIgASgJUgthcHBDb2RlTmFtZRIYCgdhcHBOYW1lGAMgASgJUgdhcHBOYW1lEh4KCmFwcFZlcnNpb24YBCABKAlSCmFwcFZlcnNpb24SIgoMZGV2aWNlTWVtb3J5GAUgASgFUgxkZXZpY2VNZW1vcnkSGgoIbGFuZ3VhZ2UYBiABKAlSCGxhbmd1YWdlEhwKCWxhbmd1YWdlcxgHIAMoCVIJbGFuZ3VhZ2VzEhoKCHBsYXRmb3JtGAggASgJUghwbGF0Zm9ybRIYCgdwcm9kdWN0GAkgASgJUgdwcm9kdWN0Eh4KCnByb2R1Y3RTdWIYCiABKAlSCnByb2R1Y3RTdWISHAoJdXNlckFnZW50GAsgASgJUgl1c2VyQWdlbnQSFgoGdmVuZG9yGAwgASgJUgZ2ZW5kb3ISHAoJdmVuZG9yU3ViGA0gASgJUgl2ZW5kb3JTdWISMAoTaGFyZHdhcmVDb25jdXJyZW5jeRgOIAEoBVITaGFyZHdhcmVDb25jdXJyZW5jeRImCg5tYXhUb3VjaFBvaW50cxgPIAEoBVIObWF4VG91Y2hQb2ludHM=');
+    'Cg5XZWJCcm93c2VySW5mbxI5Cgticm93c2VyTmFtZRgBIAEoDjIXLmdpdGpvdXJuYWwuQnJvd3Nlck5hbWVSC2Jyb3dzZXJOYW1lEiAKC2FwcENvZGVOYW1lGAIgASgJUgthcHBDb2RlTmFtZRIYCgdhcHBOYW1lGAMgASgJUgdhcHBOYW1lEh4KCmFwcFZlcnNpb24YBCABKAlSCmFwcFZlcnNpb24SIgoMZGV2aWNlTWVtb3J5GAUgASgEUgxkZXZpY2VNZW1vcnkSGgoIbGFuZ3VhZ2UYBiABKAlSCGxhbmd1YWdlEhwKCWxhbmd1YWdlcxgHIAMoCVIJbGFuZ3VhZ2VzEhoKCHBsYXRmb3JtGAggASgJUghwbGF0Zm9ybRIYCgdwcm9kdWN0GAkgASgJUgdwcm9kdWN0Eh4KCnByb2R1Y3RTdWIYCiABKAlSCnByb2R1Y3RTdWISHAoJdXNlckFnZW50GAsgASgJUgl1c2VyQWdlbnQSFgoGdmVuZG9yGAwgASgJUgZ2ZW5kb3ISHAoJdmVuZG9yU3ViGA0gASgJUgl2ZW5kb3JTdWISMAoTaGFyZHdhcmVDb25jdXJyZW5jeRgOIAEoDVITaGFyZHdhcmVDb25jdXJyZW5jeRImCg5tYXhUb3VjaFBvaW50cxgPIAEoDVIObWF4VG91Y2hQb2ludHM=');

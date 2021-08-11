@@ -29,7 +29,7 @@ message AnalyticsMessage {
 
 message Event {
   string name = 1;
-  int64 date = 2; // unix timestamp
+  uint64 date = 2; // unix timestamp
   map<string, string> params = 3;
 
   string userId = 4;
@@ -37,7 +37,7 @@ message Event {
   map<string, string> userProperties = 6;
 
   string sessionID = 7;
-  int64 userFirstTouchTimestamp = 8;
+  uint64 userFirstTouchTimestamp = 8;
 }
 
 message DeviceInfo {
@@ -73,9 +73,9 @@ message AndroidBuildVersion {
   string baseOS = 1;
   string codename = 2;
   string incremental = 3;
-  int32 previewSdkInt = 4;
+  uint32 previewSdkInt = 4;
   string release = 5;
-  int32 sdkInt = 6;
+  uint32 sdkInt = 6;
   string securityPatch = 7;
 }
 
@@ -143,15 +143,15 @@ message MacOSDeviceInfo {
   string model = 4;
   string kernelVersion = 5;
   string osRelease = 6;
-  int32 activeCPUs = 7;
-  int32 memorySize = 8;
-  int32 cpuFrequency = 9;
+  uint32 activeCPUs = 7;
+  uint64 memorySize = 8;
+  uint64 cpuFrequency = 9;
 }
 
 message WindowsDeviceInfo {
   string computerName = 1;
-  int32 numberOfCores = 2;
-  int32 systemMemoryInMegabytes = 3;
+  uint32 numberOfCores = 2;
+  uint32 systemMemoryInMegabytes = 3;
 }
 
 enum BrowserName {
@@ -170,7 +170,7 @@ message WebBrowserInfo {
   string appCodeName = 2;
   string appName = 3;
   string appVersion = 4;
-  int32 deviceMemory = 5;
+  uint64 deviceMemory = 5;
   string language = 6;
   repeated string languages = 7;
   string platform = 8;
@@ -179,6 +179,6 @@ message WebBrowserInfo {
   string userAgent = 11;
   string vendor = 12;
   string vendorSub = 13;
-  int32 hardwareConcurrency = 14;
-  int32 maxTouchPoints = 15;
+  uint32 hardwareConcurrency = 14;
+  uint32 maxTouchPoints = 15;
 }

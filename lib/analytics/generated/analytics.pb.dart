@@ -133,13 +133,13 @@ class AnalyticsMessage extends $pb.GeneratedMessage {
 class Event extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Event', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'gitjournal'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
-    ..aInt64(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'date')
+    ..a<$fixnum.Int64>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'date', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
     ..m<$core.String, $core.String>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'params', entryClassName: 'Event.ParamsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('gitjournal'))
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userId', protoName: 'userId')
     ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'pseudoId', protoName: 'pseudoId')
     ..m<$core.String, $core.String>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userProperties', protoName: 'userProperties', entryClassName: 'Event.UserPropertiesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('gitjournal'))
     ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sessionID', protoName: 'sessionID')
-    ..aInt64(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userFirstTouchTimestamp', protoName: 'userFirstTouchTimestamp')
+    ..a<$fixnum.Int64>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userFirstTouchTimestamp', $pb.PbFieldType.OU6, protoName: 'userFirstTouchTimestamp', defaultOrMaker: $fixnum.Int64.ZERO)
     ..hasRequiredFields = false
   ;
 
@@ -264,12 +264,12 @@ class Event extends $pb.GeneratedMessage {
 }
 
 enum DeviceInfo_DeviceInfo {
-  androidDeviceInfo, 
-  iosDeviceInfo, 
-  linuxDeviceInfo, 
-  macOSDeviceInfo, 
-  windowsDeviceInfo, 
-  webBrowserInfo, 
+  androidDeviceInfo,
+  iosDeviceInfo,
+  linuxDeviceInfo,
+  macOSDeviceInfo,
+  windowsDeviceInfo,
+  webBrowserInfo,
   notSet
 }
 
@@ -537,9 +537,9 @@ class AndroidBuildVersion extends $pb.GeneratedMessage {
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baseOS', protoName: 'baseOS')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'codename')
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'incremental')
-    ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'previewSdkInt', $pb.PbFieldType.O3, protoName: 'previewSdkInt')
+    ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'previewSdkInt', $pb.PbFieldType.OU3, protoName: 'previewSdkInt')
     ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'release')
-    ..a<$core.int>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sdkInt', $pb.PbFieldType.O3, protoName: 'sdkInt')
+    ..a<$core.int>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sdkInt', $pb.PbFieldType.OU3, protoName: 'sdkInt')
     ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'securityPatch', protoName: 'securityPatch')
     ..hasRequiredFields = false
   ;
@@ -629,7 +629,7 @@ class AndroidBuildVersion extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.int get previewSdkInt => $_getIZ(3);
   @$pb.TagNumber(4)
-  set previewSdkInt($core.int v) { $_setSignedInt32(3, v); }
+  set previewSdkInt($core.int v) { $_setUnsignedInt32(3, v); }
   @$pb.TagNumber(4)
   $core.bool hasPreviewSdkInt() => $_has(3);
   @$pb.TagNumber(4)
@@ -647,7 +647,7 @@ class AndroidBuildVersion extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   $core.int get sdkInt => $_getIZ(5);
   @$pb.TagNumber(6)
-  set sdkInt($core.int v) { $_setSignedInt32(5, v); }
+  set sdkInt($core.int v) { $_setUnsignedInt32(5, v); }
   @$pb.TagNumber(6)
   $core.bool hasSdkInt() => $_has(5);
   @$pb.TagNumber(6)
@@ -1407,9 +1407,9 @@ class MacOSDeviceInfo extends $pb.GeneratedMessage {
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'model')
     ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'kernelVersion', protoName: 'kernelVersion')
     ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'osRelease', protoName: 'osRelease')
-    ..a<$core.int>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'activeCPUs', $pb.PbFieldType.O3, protoName: 'activeCPUs')
-    ..a<$core.int>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'memorySize', $pb.PbFieldType.O3, protoName: 'memorySize')
-    ..a<$core.int>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'cpuFrequency', $pb.PbFieldType.O3, protoName: 'cpuFrequency')
+    ..a<$core.int>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'activeCPUs', $pb.PbFieldType.OU3, protoName: 'activeCPUs')
+    ..a<$fixnum.Int64>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'memorySize', $pb.PbFieldType.OU6, protoName: 'memorySize', defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'cpuFrequency', $pb.PbFieldType.OU6, protoName: 'cpuFrequency', defaultOrMaker: $fixnum.Int64.ZERO)
     ..hasRequiredFields = false
   ;
 
@@ -1422,8 +1422,8 @@ class MacOSDeviceInfo extends $pb.GeneratedMessage {
     $core.String? kernelVersion,
     $core.String? osRelease,
     $core.int? activeCPUs,
-    $core.int? memorySize,
-    $core.int? cpuFrequency,
+    $fixnum.Int64? memorySize,
+    $fixnum.Int64? cpuFrequency,
   }) {
     final _result = create();
     if (computerName != null) {
@@ -1533,25 +1533,25 @@ class MacOSDeviceInfo extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   $core.int get activeCPUs => $_getIZ(6);
   @$pb.TagNumber(7)
-  set activeCPUs($core.int v) { $_setSignedInt32(6, v); }
+  set activeCPUs($core.int v) { $_setUnsignedInt32(6, v); }
   @$pb.TagNumber(7)
   $core.bool hasActiveCPUs() => $_has(6);
   @$pb.TagNumber(7)
   void clearActiveCPUs() => clearField(7);
 
   @$pb.TagNumber(8)
-  $core.int get memorySize => $_getIZ(7);
+  $fixnum.Int64 get memorySize => $_getI64(7);
   @$pb.TagNumber(8)
-  set memorySize($core.int v) { $_setSignedInt32(7, v); }
+  set memorySize($fixnum.Int64 v) { $_setInt64(7, v); }
   @$pb.TagNumber(8)
   $core.bool hasMemorySize() => $_has(7);
   @$pb.TagNumber(8)
   void clearMemorySize() => clearField(8);
 
   @$pb.TagNumber(9)
-  $core.int get cpuFrequency => $_getIZ(8);
+  $fixnum.Int64 get cpuFrequency => $_getI64(8);
   @$pb.TagNumber(9)
-  set cpuFrequency($core.int v) { $_setSignedInt32(8, v); }
+  set cpuFrequency($fixnum.Int64 v) { $_setInt64(8, v); }
   @$pb.TagNumber(9)
   $core.bool hasCpuFrequency() => $_has(8);
   @$pb.TagNumber(9)
@@ -1561,8 +1561,8 @@ class MacOSDeviceInfo extends $pb.GeneratedMessage {
 class WindowsDeviceInfo extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'WindowsDeviceInfo', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'gitjournal'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'computerName', protoName: 'computerName')
-    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'numberOfCores', $pb.PbFieldType.O3, protoName: 'numberOfCores')
-    ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'systemMemoryInMegabytes', $pb.PbFieldType.O3, protoName: 'systemMemoryInMegabytes')
+    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'numberOfCores', $pb.PbFieldType.OU3, protoName: 'numberOfCores')
+    ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'systemMemoryInMegabytes', $pb.PbFieldType.OU3, protoName: 'systemMemoryInMegabytes')
     ..hasRequiredFields = false
   ;
 
@@ -1617,7 +1617,7 @@ class WindowsDeviceInfo extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.int get numberOfCores => $_getIZ(1);
   @$pb.TagNumber(2)
-  set numberOfCores($core.int v) { $_setSignedInt32(1, v); }
+  set numberOfCores($core.int v) { $_setUnsignedInt32(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasNumberOfCores() => $_has(1);
   @$pb.TagNumber(2)
@@ -1626,7 +1626,7 @@ class WindowsDeviceInfo extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.int get systemMemoryInMegabytes => $_getIZ(2);
   @$pb.TagNumber(3)
-  set systemMemoryInMegabytes($core.int v) { $_setSignedInt32(2, v); }
+  set systemMemoryInMegabytes($core.int v) { $_setUnsignedInt32(2, v); }
   @$pb.TagNumber(3)
   $core.bool hasSystemMemoryInMegabytes() => $_has(2);
   @$pb.TagNumber(3)
@@ -1639,7 +1639,7 @@ class WebBrowserInfo extends $pb.GeneratedMessage {
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'appCodeName', protoName: 'appCodeName')
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'appName', protoName: 'appName')
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'appVersion', protoName: 'appVersion')
-    ..a<$core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deviceMemory', $pb.PbFieldType.O3, protoName: 'deviceMemory')
+    ..a<$fixnum.Int64>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deviceMemory', $pb.PbFieldType.OU6, protoName: 'deviceMemory', defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'language')
     ..pPS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'languages')
     ..aOS(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'platform')
@@ -1648,8 +1648,8 @@ class WebBrowserInfo extends $pb.GeneratedMessage {
     ..aOS(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userAgent', protoName: 'userAgent')
     ..aOS(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'vendor')
     ..aOS(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'vendorSub', protoName: 'vendorSub')
-    ..a<$core.int>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hardwareConcurrency', $pb.PbFieldType.O3, protoName: 'hardwareConcurrency')
-    ..a<$core.int>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maxTouchPoints', $pb.PbFieldType.O3, protoName: 'maxTouchPoints')
+    ..a<$core.int>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hardwareConcurrency', $pb.PbFieldType.OU3, protoName: 'hardwareConcurrency')
+    ..a<$core.int>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maxTouchPoints', $pb.PbFieldType.OU3, protoName: 'maxTouchPoints')
     ..hasRequiredFields = false
   ;
 
@@ -1659,7 +1659,7 @@ class WebBrowserInfo extends $pb.GeneratedMessage {
     $core.String? appCodeName,
     $core.String? appName,
     $core.String? appVersion,
-    $core.int? deviceMemory,
+    $fixnum.Int64? deviceMemory,
     $core.String? language,
     $core.Iterable<$core.String>? languages,
     $core.String? platform,
@@ -1777,9 +1777,9 @@ class WebBrowserInfo extends $pb.GeneratedMessage {
   void clearAppVersion() => clearField(4);
 
   @$pb.TagNumber(5)
-  $core.int get deviceMemory => $_getIZ(4);
+  $fixnum.Int64 get deviceMemory => $_getI64(4);
   @$pb.TagNumber(5)
-  set deviceMemory($core.int v) { $_setSignedInt32(4, v); }
+  set deviceMemory($fixnum.Int64 v) { $_setInt64(4, v); }
   @$pb.TagNumber(5)
   $core.bool hasDeviceMemory() => $_has(4);
   @$pb.TagNumber(5)
@@ -1854,7 +1854,7 @@ class WebBrowserInfo extends $pb.GeneratedMessage {
   @$pb.TagNumber(14)
   $core.int get hardwareConcurrency => $_getIZ(13);
   @$pb.TagNumber(14)
-  set hardwareConcurrency($core.int v) { $_setSignedInt32(13, v); }
+  set hardwareConcurrency($core.int v) { $_setUnsignedInt32(13, v); }
   @$pb.TagNumber(14)
   $core.bool hasHardwareConcurrency() => $_has(13);
   @$pb.TagNumber(14)
@@ -1863,10 +1863,9 @@ class WebBrowserInfo extends $pb.GeneratedMessage {
   @$pb.TagNumber(15)
   $core.int get maxTouchPoints => $_getIZ(14);
   @$pb.TagNumber(15)
-  set maxTouchPoints($core.int v) { $_setSignedInt32(14, v); }
+  set maxTouchPoints($core.int v) { $_setUnsignedInt32(14, v); }
   @$pb.TagNumber(15)
   $core.bool hasMaxTouchPoints() => $_has(14);
   @$pb.TagNumber(15)
   void clearMaxTouchPoints() => clearField(15);
 }
-
