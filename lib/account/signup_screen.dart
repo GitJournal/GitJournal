@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:gitjournal/screens/login_screen.dart';
+import 'package:gitjournal/account/login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   SignUpScreen({Key? key}) : super(key: key);
