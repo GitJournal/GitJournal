@@ -34,7 +34,7 @@ class Analytics {
     required this.pseudoId,
     required this.config,
   }) {
-    _sessionId = DateTime.now().millisecondsSinceEpoch.toRadixString(16);
+    _sessionId = DateTime.now().millisecondsSinceEpoch ~/ 1000;
   }
 
   static Analytics? _global;
@@ -90,7 +90,7 @@ class Analytics {
 
   static Analytics? get instance => _global;
 
-  late String _sessionId;
+  late int _sessionId;
   late String pseudoId;
   var userProps = <String, String>{};
 
@@ -125,7 +125,6 @@ class Analytics {
       pseudoId: pseudoId,
       userProperties: userProps,
       sessionID: _sessionId,
-      userFirstTouchTimestamp: null,
     );
   }
 

@@ -36,8 +36,7 @@ message Event {
   string pseudoId = 5;
   map<string, string> userProperties = 6;
 
-  string sessionID = 7;
-  uint64 userFirstTouchTimestamp = 8;
+  uint32 sessionID = 7;
 }
 
 message DeviceInfo {

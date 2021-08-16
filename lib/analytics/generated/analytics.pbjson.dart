@@ -110,14 +110,7 @@ const Event$json = const {
       '6': '.gitjournal.Event.UserPropertiesEntry',
       '10': 'userProperties'
     },
-    const {'1': 'sessionID', '3': 7, '4': 1, '5': 9, '10': 'sessionID'},
-    const {
-      '1': 'userFirstTouchTimestamp',
-      '3': 8,
-      '4': 1,
-      '5': 4,
-      '10': 'userFirstTouchTimestamp'
-    },
+    const {'1': 'sessionID', '3': 7, '4': 1, '5': 13, '10': 'sessionID'},
   ],
   '3': const [Event_ParamsEntry$json, Event_UserPropertiesEntry$json],
 };
@@ -144,7 +137,7 @@ const Event_UserPropertiesEntry$json = const {
 
 /// Descriptor for `Event`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List eventDescriptor = $convert.base64Decode(
-    'CgVFdmVudBISCgRuYW1lGAEgASgJUgRuYW1lEhIKBGRhdGUYAiABKARSBGRhdGUSNQoGcGFyYW1zGAMgAygLMh0uZ2l0am91cm5hbC5FdmVudC5QYXJhbXNFbnRyeVIGcGFyYW1zEhYKBnVzZXJJZBgEIAEoCVIGdXNlcklkEhoKCHBzZXVkb0lkGAUgASgJUghwc2V1ZG9JZBJNCg51c2VyUHJvcGVydGllcxgGIAMoCzIlLmdpdGpvdXJuYWwuRXZlbnQuVXNlclByb3BlcnRpZXNFbnRyeVIOdXNlclByb3BlcnRpZXMSHAoJc2Vzc2lvbklEGAcgASgJUglzZXNzaW9uSUQSOAoXdXNlckZpcnN0VG91Y2hUaW1lc3RhbXAYCCABKARSF3VzZXJGaXJzdFRvdWNoVGltZXN0YW1wGjkKC1BhcmFtc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgJUgV2YWx1ZToCOAEaQQoTVXNlclByb3BlcnRpZXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoCVIFdmFsdWU6AjgB');
+    'CgVFdmVudBISCgRuYW1lGAEgASgJUgRuYW1lEhIKBGRhdGUYAiABKARSBGRhdGUSNQoGcGFyYW1zGAMgAygLMh0uZ2l0am91cm5hbC5FdmVudC5QYXJhbXNFbnRyeVIGcGFyYW1zEhYKBnVzZXJJZBgEIAEoCVIGdXNlcklkEhoKCHBzZXVkb0lkGAUgASgJUghwc2V1ZG9JZBJNCg51c2VyUHJvcGVydGllcxgGIAMoCzIlLmdpdGpvdXJuYWwuRXZlbnQuVXNlclByb3BlcnRpZXNFbnRyeVIOdXNlclByb3BlcnRpZXMSHAoJc2Vzc2lvbklEGAcgASgNUglzZXNzaW9uSUQaOQoLUGFyYW1zRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAiABKAlSBXZhbHVlOgI4ARpBChNVc2VyUHJvcGVydGllc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgJUgV2YWx1ZToCOAE=');
 @$core.Deprecated('Use deviceInfoDescriptor instead')
 const DeviceInfo$json = const {
   '1': 'DeviceInfo',

@@ -138,8 +138,7 @@ class Event extends $pb.GeneratedMessage {
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userId', protoName: 'userId')
     ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'pseudoId', protoName: 'pseudoId')
     ..m<$core.String, $core.String>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userProperties', protoName: 'userProperties', entryClassName: 'Event.UserPropertiesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('gitjournal'))
-    ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sessionID', protoName: 'sessionID')
-    ..a<$fixnum.Int64>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userFirstTouchTimestamp', $pb.PbFieldType.OU6, protoName: 'userFirstTouchTimestamp', defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$core.int>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sessionID', $pb.PbFieldType.OU3, protoName: 'sessionID')
     ..hasRequiredFields = false
   ;
 
@@ -151,8 +150,7 @@ class Event extends $pb.GeneratedMessage {
     $core.String? userId,
     $core.String? pseudoId,
     $core.Map<$core.String, $core.String>? userProperties,
-    $core.String? sessionID,
-    $fixnum.Int64? userFirstTouchTimestamp,
+    $core.int? sessionID,
   }) {
     final _result = create();
     if (name != null) {
@@ -175,9 +173,6 @@ class Event extends $pb.GeneratedMessage {
     }
     if (sessionID != null) {
       _result.sessionID = sessionID;
-    }
-    if (userFirstTouchTimestamp != null) {
-      _result.userFirstTouchTimestamp = userFirstTouchTimestamp;
     }
     return _result;
   }
@@ -245,22 +240,13 @@ class Event extends $pb.GeneratedMessage {
   $core.Map<$core.String, $core.String> get userProperties => $_getMap(5);
 
   @$pb.TagNumber(7)
-  $core.String get sessionID => $_getSZ(6);
+  $core.int get sessionID => $_getIZ(6);
   @$pb.TagNumber(7)
-  set sessionID($core.String v) { $_setString(6, v); }
+  set sessionID($core.int v) { $_setUnsignedInt32(6, v); }
   @$pb.TagNumber(7)
   $core.bool hasSessionID() => $_has(6);
   @$pb.TagNumber(7)
   void clearSessionID() => clearField(7);
-
-  @$pb.TagNumber(8)
-  $fixnum.Int64 get userFirstTouchTimestamp => $_getI64(7);
-  @$pb.TagNumber(8)
-  set userFirstTouchTimestamp($fixnum.Int64 v) { $_setInt64(7, v); }
-  @$pb.TagNumber(8)
-  $core.bool hasUserFirstTouchTimestamp() => $_has(7);
-  @$pb.TagNumber(8)
-  void clearUserFirstTouchTimestamp() => clearField(8);
 }
 
 enum DeviceInfo_DeviceInfo {
