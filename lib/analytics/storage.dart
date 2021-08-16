@@ -15,6 +15,7 @@ class AnalyticsStorage {
   late String currentFile;
 
   final _lock = Lock();
+  final _fetchAllLock = Lock();
 
   var numEventsThisSession = 0;
 
@@ -89,21 +90,23 @@ class AnalyticsStorage {
   // If the callback returns 'true' then the events are deleted
   // otherwise a subsequent call to fetchAll will return them!
   Future<void> fetchAll(Func1<List<pb.Event>, Future<bool>> callback) async {
-    await _lock.synchronized(_resetFile);
+    await _fetchAllLock.synchronized(() async {
+      await _lock.synchronized(_resetFile);
 
-    var allEvents = <pb.Event>[];
-    var filePaths = await _availableFiles();
-    for (var filePath in filePaths) {
-      var events = await fetchFromFile(filePath);
-      allEvents.addAll(events);
-    }
-
-    var shouldDelete = await callback(allEvents);
-    if (shouldDelete) {
+      var allEvents = <pb.Event>[];
+      var filePaths = await _availableFiles();
       for (var filePath in filePaths) {
-        File(filePath).deleteSync();
+        var events = await fetchFromFile(filePath);
+        allEvents.addAll(events);
       }
-    }
+
+      var shouldDelete = await callback(allEvents);
+      if (shouldDelete) {
+        for (var filePath in filePaths) {
+          File(filePath).deleteSync();
+        }
+      }
+    });
   }
 
   Future<DateTime> oldestEvent() async {
