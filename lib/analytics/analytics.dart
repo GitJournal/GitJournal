@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart' as foundation;
+
 import 'package:fixnum/fixnum.dart';
+import 'package:flutter_runtime_env/flutter_runtime_env.dart';
 import 'package:function_types/function_types.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,11 +18,8 @@ import 'storage.dart';
 
 export 'events.dart';
 
-const defaultAnalyticsEnabled = true;
-
 class Analytics {
-  bool enabled = defaultAnalyticsEnabled;
-  bool collectUsageStatistics = defaultAnalyticsEnabled;
+  late bool enabled;
 
   final Func2<String, Map<String, String>, void> analyticsCallback;
   final AnalyticsStorage storage;
@@ -32,55 +32,46 @@ class Analytics {
     required this.enabled,
     required this.pref,
     required this.pseudoId,
-  }) : config = AnalyticsConfig("", pref) {
-    collectUsageStatistics =
-        pref.getBool("collectUsageStatistics") ?? collectUsageStatistics;
-
+    required this.config,
+  }) {
     _sessionId = DateTime.now().millisecondsSinceEpoch.toRadixString(16);
   }
 
   static Analytics? _global;
-  static Analytics init({
-    required bool enable,
+  static Future<Analytics> init({
     required SharedPreferences pref,
     required Func2<String, Map<String, String>, void> analyticsCallback,
     required String storagePath,
-  }) {
+  }) async {
+    bool inFireBaseTestLab = await inFirebaseTestLab();
+    bool canBeEnabled = !foundation.kDebugMode && !inFireBaseTestLab;
+
     var pseudoId = pref.getString("pseudoId");
     if (pseudoId == null) {
       pseudoId = const Uuid().v4();
       pref.setString("pseudoId", pseudoId);
     }
 
+    var config = AnalyticsConfig("", pref);
+    config.load(pref);
+
+    var enabled = canBeEnabled && config.enabled;
+
     _global = Analytics._(
       analyticsCallback: analyticsCallback,
       storage: AnalyticsStorage(storagePath),
-      enabled: enable,
+      enabled: enabled,
       pseudoId: pseudoId,
       pref: pref,
+      config: config,
     );
+
+    Log.d("Analytics Collection: $enabled");
+    Log.d("Analytics Storage: $storagePath");
 
     _global!._sendAppUpdateEvent();
 
     return _global!;
-  }
-
-  Future<void> save() async {
-    _setBool(pref, "collectUsageStatistics", collectUsageStatistics,
-        defaultAnalyticsEnabled);
-  }
-
-  Future<void> _setBool(
-    SharedPreferences pref,
-    String key,
-    bool value,
-    bool defaultValue,
-  ) async {
-    if (value == defaultValue) {
-      await pref.remove(key);
-    } else {
-      await pref.setBool(key, value);
-    }
   }
 
   static Analytics? get instance => _global;

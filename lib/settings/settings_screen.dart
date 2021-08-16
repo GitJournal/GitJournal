@@ -466,11 +466,11 @@ class SettingsListState extends State<SettingsList> {
       if (Analytics.instance != null)
         SwitchListTile(
           title: Text(tr('settings.usageStats')),
-          value: Analytics.instance!.collectUsageStatistics,
+          value: Analytics.instance!.config.enabled,
           onChanged: (bool val) {
-            Analytics.instance!.collectUsageStatistics = val;
-            Analytics.instance!.save();
-            setState(() {});
+            Analytics.instance!.config.enabled = val;
+            Analytics.instance!.config.save();
+            setState(() {}); // Remove this once Analytics.instace is not used
 
             // FIXME: This also should go in the ananlytics package
             logEvent(

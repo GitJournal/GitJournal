@@ -14,22 +14,18 @@ class AnalyticsConfig extends ChangeNotifier with SettingsSharedPref {
   final SharedPreferences pref;
 
   var appVersion = "";
+  var enabled = true;
 
   void load(SharedPreferences pref) {
     appVersion = pref.getString("appVersion") ?? "";
+
+    enabled = pref.getBool("collectUsageStatistics") ?? enabled;
   }
 
   Future<void> save() async {
-    // var def = AnalyticsConfig(id, pref);
+    var def = AnalyticsConfig(id, pref);
 
-    pref.setString("appVersion", appVersion);
+    await setBool("collectUsageStatistics", enabled, def.enabled);
+    await pref.setString("appVersion", appVersion);
   }
 }
-
-
-// TODO
-// 1. Config
-// 2. Move all the logic from app to here (firebase)
-// 3. Move the controlling logic over here
-// 4. Backend stuff
-// 5. Simple event log - UI

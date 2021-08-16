@@ -1,11 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
-import 'package:flutter_runtime_env/flutter_runtime_env.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -99,17 +97,11 @@ class JournalApp extends StatefulWidget {
     AppSettings appSettings,
     SharedPreferences pref,
   ) async {
-    bool inFireBaseTestLab = await inFirebaseTestLab();
-    bool enabled = !foundation.kDebugMode && !inFireBaseTestLab;
-
     var supportDir = await getApplicationSupportDirectory();
     var analyticsStorage = p.join(supportDir.path, 'analytics');
     await Directory(analyticsStorage).create(recursive: true);
 
-    Log.d("Analytics Collection: $enabled");
-    Log.d("Analytics Storage: $analyticsStorage");
-    var analytics = Analytics.init(
-      enable: enabled,
+    var analytics = await Analytics.init(
       pref: pref,
       analyticsCallback: captureErrorBreadcrumb,
       storagePath: analyticsStorage,
