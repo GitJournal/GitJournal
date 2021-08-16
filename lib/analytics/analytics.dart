@@ -7,8 +7,8 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:gitjournal/analytics/config.dart';
 import 'package:gitjournal/logger/logger.dart';
+import 'config.dart';
 import 'device_info.dart';
 import 'events.dart';
 import 'generated/analytics.pb.dart' as pb;
@@ -19,7 +19,7 @@ import 'storage.dart';
 export 'events.dart';
 
 class Analytics {
-  late bool enabled;
+  final bool canBeEnabled;
 
   final Func2<String, Map<String, String>, void> analyticsCallback;
   final AnalyticsStorage storage;
@@ -29,7 +29,7 @@ class Analytics {
   Analytics._({
     required this.storage,
     required this.analyticsCallback,
-    required this.enabled,
+    required this.canBeEnabled,
     required this.pref,
     required this.pseudoId,
     required this.config,
@@ -55,23 +55,37 @@ class Analytics {
     var config = AnalyticsConfig("", pref);
     config.load(pref);
 
-    var enabled = canBeEnabled && config.enabled;
-
     _global = Analytics._(
       analyticsCallback: analyticsCallback,
       storage: AnalyticsStorage(storagePath),
-      enabled: enabled,
+      canBeEnabled: canBeEnabled,
       pseudoId: pseudoId,
       pref: pref,
       config: config,
     );
 
-    Log.d("Analytics Collection: $enabled");
+    Log.d("Analytics Collection: ${_global!.enabled}");
     Log.d("Analytics Storage: $storagePath");
 
     _global!._sendAppUpdateEvent();
 
     return _global!;
+  }
+
+  bool get enabled {
+    return canBeEnabled && config.enabled;
+  }
+
+  set enabled(bool newVal) {
+    if (enabled != newVal) {
+      config.enabled = newVal;
+      config.save();
+
+      logEvent(
+        Event.AnalyticsLevelChanged,
+        parameters: {"state": newVal.toString()},
+      );
+    }
   }
 
   static Analytics? get instance => _global;
@@ -115,6 +129,7 @@ class Analytics {
     );
   }
 
+  // FIXME: Send the backlog events when disabled
   Future<void> _sendAnalytics() async {
     if (!enabled) {
       return;
@@ -171,8 +186,3 @@ class Analytics {
     config.save();
   }
 }
-
-
-// FIXME: Discard the old analytics, if there are way too many!
-// TODO: Take network connectivity into account
-// TODO: Take connection type (wifi vs mobile) into account

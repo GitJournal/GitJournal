@@ -468,15 +468,8 @@ class SettingsListState extends State<SettingsList> {
           title: Text(tr('settings.usageStats')),
           value: Analytics.instance!.config.enabled,
           onChanged: (bool val) {
-            Analytics.instance!.config.enabled = val;
-            Analytics.instance!.config.save();
+            Analytics.instance!.enabled = val;
             setState(() {}); // Remove this once Analytics.instace is not used
-
-            // FIXME: This also should go in the ananlytics package
-            logEvent(
-              Event.AnalyticsLevelChanged,
-              parameters: {"state": val.toString()},
-            );
           },
         ),
       SwitchListTile(
