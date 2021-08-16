@@ -5,7 +5,7 @@ import 'package:gitjournal/analytics/generated/analytics.pbgrpc.dart';
 import 'generated/analytics.pb.dart' as pb;
 
 const _url = 'analyticsbackend-wetu2tkdpq-ew.a.run.app';
-const _port = 444;
+const _port = 443;
 const _timeout = Duration(seconds: 30);
 
 Future<Result<void>> sendAnalytics(pb.AnalyticsMessage msg) async {
@@ -26,10 +26,7 @@ Future<Result<void>> sendAnalytics(pb.AnalyticsMessage msg) async {
   try {
     var call = client.sendData(
       msg,
-      options: CallOptions(
-        timeout: _timeout,
-        compression: const GzipCodec(),
-      ),
+      options: CallOptions(timeout: _timeout),
     );
     await call;
   } on Exception catch (e, st) {
