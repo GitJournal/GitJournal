@@ -28,7 +28,7 @@ class Analytics {
     required this.analyticsCallback,
     required this.enabled,
     required this.pref,
-    required String pseudoId,
+    required this.pseudoId,
   }) {
     collectUsageStatistics =
         pref.getBool("collectUsageStatistics") ?? collectUsageStatistics;
@@ -46,7 +46,7 @@ class Analytics {
     var pseudoId = pref.getString("pseudoId");
     if (pseudoId == null) {
       pseudoId = const Uuid().v4();
-      pref.setString("pseudoId", _global!._pseudoId);
+      pref.setString("pseudoId", pseudoId);
     }
 
     _global = Analytics._(
@@ -81,7 +81,7 @@ class Analytics {
   static Analytics? get instance => _global;
 
   late String _sessionId;
-  late String _pseudoId;
+  late String pseudoId;
   var userProps = <String, String>{};
 
   Future<void> log(
@@ -112,7 +112,7 @@ class Analytics {
       name: name,
       date: Int64(DateTime.now().millisecondsSinceEpoch ~/ 1000),
       params: params,
-      pseudoId: _pseudoId,
+      pseudoId: pseudoId,
       userProperties: userProps,
       sessionID: _sessionId,
       userFirstTouchTimestamp: null,
