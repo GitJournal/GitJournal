@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:gitjournal/account/login_screen.dart';
+import 'package:gitjournal/account/signup_screen.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/iap/purchase_screen.dart';
 import 'package:gitjournal/iap/purchase_thankyou_screen.dart';
@@ -9,10 +11,8 @@ import 'package:gitjournal/screens/filesystem_screen.dart';
 import 'package:gitjournal/screens/folder_listing.dart';
 import 'package:gitjournal/screens/graph_view.dart';
 import 'package:gitjournal/screens/home_screen.dart';
-import 'package:gitjournal/account/login_screen.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/screens/onboarding_screens.dart';
-import 'package:gitjournal/account/signup_screen.dart';
 import 'package:gitjournal/screens/tag_listing.dart';
 import 'package:gitjournal/settings/app_settings.dart';
 import 'package:gitjournal/settings/settings.dart';

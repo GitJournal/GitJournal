@@ -1,74 +1,22 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:function_types/function_types.dart';
-import 'package:recase/recase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:gitjournal/logger/logger.dart';
 import 'device_info.dart';
+import 'events.dart';
 import 'generated/analytics.pb.dart' as pb;
 import 'network.dart';
 import 'package_info.dart';
 import 'storage.dart';
 
-enum Event {
-  NoteAdded,
-  NoteUpdated,
-  NoteDeleted,
-  NoteUndoDeleted,
-  NoteRenamed,
-  NoteMoved,
-  FileRenamed,
-  FolderAdded,
-  FolderDeleted,
-  FolderRenamed,
-  FolderConfigUpdated,
-  RepoSynced,
-
-  DrawerSetupGitHost,
-  DrawerShare,
-  DrawerRate,
-  DrawerFeedback,
-  DrawerBugReport,
-  DrawerSettings,
-
-  PurchaseScreenOpen,
-  PurchaseScreenClose,
-  PurchaseScreenThankYou,
-
-  GitHostSetupError,
-  GitHostSetupComplete,
-  GitHostSetupGitCloneError,
-  GitHostSetupButtonClick,
-
-  Settings,
-  FeatureTimelineGithubClicked,
-
-  AppFirstOpen,
-  AppUpdate,
-
-  // FIXME: Add os_update
-
-  /*
-  Firebase Automatic Events:
-    app_update:
-      previous_app_version
-
-    first_open
-    in_app_purchase
-    screen_view
-    session_start
-    user_engagement
-  */
-  ScreenView,
-  AnalyticsLevelChanged,
-  CrashReportingLevelChanged,
-}
+export 'events.dart';
 
 const defaultAnalyticsEnabled = true;
 
 class Analytics {
-  bool enabled = false;
+  bool enabled = defaultAnalyticsEnabled;
   bool collectUsageStatistics = defaultAnalyticsEnabled;
 
   final Func2<String, Map<String, String>, void> analyticsCallback;
@@ -140,7 +88,7 @@ class Analytics {
     Event e, [
     Map<String, String> parameters = const {},
   ]) async {
-    String name = _eventToString(e);
+    String name = eventToString(e);
 
     await storage.logEvent(_buildEvent(name, parameters));
     analyticsCallback(name, parameters);
@@ -205,15 +153,6 @@ class Analytics {
   }
 }
 
-void logEvent(Event event, {Map<String, String> parameters = const {}}) {
-  Analytics.instance?.log(event, parameters);
-  Log.d("$event", props: parameters);
-}
-
-String _eventToString(Event e) {
-  var str = e.toString().substring('Event.'.length);
-  return ReCase(str).snakeCase;
-}
 
 // FIXME: Discard the old analytics, if there are way too many!
 // TODO: Take network connectivity into account
