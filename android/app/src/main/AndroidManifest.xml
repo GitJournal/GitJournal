@@ -78,11 +78,19 @@ limitations under the License.
             android:name=".UriReceiverActivity"
             android:parentActivityName=".MainActivity">
             <intent-filter>
+                <!-- Used for "Automatic Git Setup" -->
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="gitjournal" android:host="login.oauth2" />
                 <!-- Triggering URI would be gitjournal://login.oauth2 -->
+            </intent-filter>
+            <intent-filter>
+                <!-- Used for logging into the App -->
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="gitjournal-identity" android:host="login-callback" />
             </intent-filter>
         </activity>
 

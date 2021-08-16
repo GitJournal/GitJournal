@@ -12,6 +12,7 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings/app_settings.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +21,14 @@ void main() async {
     LevelMessages.error,
     LevelMessages.warning,
   ];
+
+  // FIXME: Does this need to be done over here?
+  await Supabase.initialize(
+    url: 'https://tefpmcttotopcptdivsj.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYyODA2NDAyNiwiZXhwIjoxOTQzNjQwMDI2fQ.xAN-giE3m1MPjoRkkdcg_0NJueLH0_L-Wu-V0TSnpwU',
+    authCallbackUrlHostname: 'login-callback',
+  );
 
   var pref = await SharedPreferences.getInstance();
   AppSettings.instance.load(pref);

@@ -83,6 +83,7 @@ dependencies:
   universal_io: ^2.0.4
   sprintf: ^6.0.0
   recase: ^4.0.0
+  supabase_flutter: ^0.1.0
 
 dev_dependencies:
   #flutter_driver:

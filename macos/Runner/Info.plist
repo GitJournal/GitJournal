@@ -26,6 +26,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>gitjournal</string>
+				<string>gitjournal-identity</string>
 			</array>
 		</dict>
 	</array>
