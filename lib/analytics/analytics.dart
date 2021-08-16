@@ -1,8 +1,10 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:function_types/function_types.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:gitjournal/analytics/config.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'device_info.dart';
 import 'events.dart';
@@ -22,6 +24,7 @@ class Analytics {
   final Func2<String, Map<String, String>, void> analyticsCallback;
   final AnalyticsStorage storage;
   final SharedPreferences pref;
+  final AnalyticsConfig config;
 
   Analytics._({
     required this.storage,
@@ -29,7 +32,7 @@ class Analytics {
     required this.enabled,
     required this.pref,
     required this.pseudoId,
-  }) {
+  }) : config = AnalyticsConfig("", pref) {
     collectUsageStatistics =
         pref.getBool("collectUsageStatistics") ?? collectUsageStatistics;
 
@@ -56,6 +59,8 @@ class Analytics {
       pseudoId: pseudoId,
       pref: pref,
     );
+
+    _global!._sendAppUpdateEvent();
 
     return _global!;
   }
@@ -150,6 +155,29 @@ class Analytics {
       Log.i("Sent ${events.length} Analytics Events");
       return true;
     });
+  }
+
+  Future<void> _sendAppUpdateEvent() async {
+    var info = await PackageInfo.fromPlatform();
+    var version = info.version;
+
+    Log.i("App Version: $version");
+    Log.i("App Build Number: ${info.buildNumber}");
+
+    if (config.appVersion == version) {
+      return;
+    }
+
+    logEvent(Event.AppUpdate, parameters: {
+      "version": version,
+      "previous_app_version": config.appVersion,
+      "app_name": info.appName,
+      "package_name": info.packageName,
+      "build_number": info.buildNumber,
+    });
+
+    config.appVersion = version;
+    config.save();
   }
 }
 

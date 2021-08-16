@@ -50,8 +50,6 @@ class AppSettings extends ChangeNotifier {
   var experimentalGitMerge = false;
   var experimentalGitOps = false;
 
-  var appVersion = "";
-
   void load(SharedPreferences pref) {
     onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
 
@@ -80,8 +78,6 @@ class AppSettings extends ChangeNotifier {
         pref.getBool("experimentalGitMerge") ?? experimentalGitMerge;
     experimentalGitOps =
         pref.getBool("experimentalGitOps") ?? experimentalGitOps;
-
-    appVersion = pref.getString("appVersion") ?? "";
   }
 
   Future<void> save() async {
@@ -116,7 +112,6 @@ class AppSettings extends ChangeNotifier {
         defaultSet.experimentalGitOps);
 
     pref.setInt("appSettingsVersion", version);
-    pref.setString("appVersion", appVersion);
 
     notifyListeners();
   }

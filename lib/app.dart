@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter_runtime_env/flutter_runtime_env.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -125,31 +124,6 @@ class JournalApp extends StatefulWidget {
       name: 'proExpirationDate',
       value: appSettings.proExpirationDate.toString(),
     );
-
-    await _sendAppUpdateEvent(appSettings);
-  }
-
-  static Future<void> _sendAppUpdateEvent(AppSettings appSettings) async {
-    var info = await PackageInfo.fromPlatform();
-    var version = info.version;
-
-    Log.i("App Version: $version");
-    Log.i("App Build Number: ${info.buildNumber}");
-
-    if (appSettings.appVersion == version) {
-      return;
-    }
-
-    logEvent(Event.AppUpdate, parameters: {
-      "version": version,
-      "previous_app_version": appSettings.appVersion,
-      "app_name": info.appName,
-      "package_name": info.packageName,
-      "build_number": info.buildNumber,
-    });
-
-    appSettings.appVersion = version;
-    appSettings.save();
   }
 
   JournalApp();
