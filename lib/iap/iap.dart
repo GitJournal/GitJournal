@@ -1,11 +1,12 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart' as foundation;
+
 import 'package:http/http.dart' as http;
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase/store_kit_wrappers.dart';
 import 'package:universal_io/io.dart' show Platform;
 
-import 'package:gitjournal/app.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/logger/logger.dart';
@@ -34,7 +35,7 @@ class InAppPurchases {
       return;
     }
 
-    if (JournalApp.isInDebugMode) {
+    if (foundation.kDebugMode) {
       Log.d("Ignoring IAP pro check - debug mode");
       return;
     }

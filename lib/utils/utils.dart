@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -7,7 +8,6 @@ import 'package:share_plus/share_plus.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/settings/settings.dart';
-import '../app.dart';
 import '../core/note.dart';
 import '../editors/common_types.dart';
 import '../logger/logger.dart';
@@ -18,7 +18,7 @@ Future<String> getVersionString() async {
   var versionText = "";
   versionText = info.appName + " " + info.version + "+" + info.buildNumber;
 
-  if (JournalApp.isInDebugMode) {
+  if (foundation.kDebugMode) {
     versionText += " (Debug)";
   }
 

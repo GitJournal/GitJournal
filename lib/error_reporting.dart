@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/foundation.dart';
 
 import 'package:device_info_plus/device_info_plus.dart';
@@ -10,7 +11,6 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:universal_io/io.dart' show Platform;
 
 import 'package:gitjournal/.env.dart';
-import 'package:gitjournal/app.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_settings.dart';
 
@@ -81,7 +81,7 @@ void flutterOnErrorHandler(FlutterErrorDetails details) {
 bool get reportCrashes => _reportCrashes ??= _initReportCrashes();
 bool? _reportCrashes;
 bool _initReportCrashes() {
-  return !JournalApp.isInDebugMode && AppSettings.instance.collectCrashReports;
+  return !foundation.kDebugMode && AppSettings.instance.collectCrashReports;
 }
 
 Future<void> reportError(Object error, StackTrace stackTrace) async {

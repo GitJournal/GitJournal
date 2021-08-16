@@ -4,7 +4,6 @@ import 'package:recase/recase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:gitjournal/features.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'device_info.dart';
 import 'generated/analytics.pb.dart' as pb;
@@ -66,12 +65,28 @@ enum Event {
   CrashReportingLevelChanged,
 }
 
+const defaultAnalyticsEnabled = true;
+
 class Analytics {
   bool enabled = false;
+  bool collectUsageStatistics = defaultAnalyticsEnabled;
+
   final Func2<String, Map<String, String>, void> analyticsCallback;
   final AnalyticsStorage storage;
+  final SharedPreferences pref;
 
-  Analytics._({required this.storage, required this.analyticsCallback});
+  Analytics._({
+    required this.storage,
+    required this.analyticsCallback,
+    required this.enabled,
+    required this.pref,
+    required String pseudoId,
+  }) {
+    collectUsageStatistics =
+        pref.getBool("collectUsageStatistics") ?? collectUsageStatistics;
+
+    _sessionId = DateTime.now().millisecondsSinceEpoch.toRadixString(16);
+  }
 
   static Analytics? _global;
   static Analytics init({
@@ -80,27 +95,39 @@ class Analytics {
     required Func2<String, Map<String, String>, void> analyticsCallback,
     required String storagePath,
   }) {
-    if (!Features.newAnalytics) {
-      enable = false;
+    var pseudoId = pref.getString("pseudoId");
+    if (pseudoId == null) {
+      pseudoId = const Uuid().v4();
+      pref.setString("pseudoId", _global!._pseudoId);
     }
 
     _global = Analytics._(
       analyticsCallback: analyticsCallback,
       storage: AnalyticsStorage(storagePath),
+      enabled: enable,
+      pseudoId: pseudoId,
+      pref: pref,
     );
-    _global!.enabled = enable;
-    _global!._sessionId =
-        DateTime.now().millisecondsSinceEpoch.toRadixString(16);
-
-    var p = pref.getString("pseudoId");
-    if (p == null) {
-      _global!._pseudoId = const Uuid().v4();
-      pref.setString("pseudoId", _global!._pseudoId);
-    } else {
-      _global!._pseudoId = p;
-    }
 
     return _global!;
+  }
+
+  Future<void> save() async {
+    _setBool(pref, "collectUsageStatistics", collectUsageStatistics,
+        defaultAnalyticsEnabled);
+  }
+
+  Future<void> _setBool(
+    SharedPreferences pref,
+    String key,
+    bool value,
+    bool defaultValue,
+  ) async {
+    if (value == defaultValue) {
+      await pref.remove(key);
+    } else {
+      await pref.setBool(key, value);
+    }
   }
 
   static Analytics? get instance => _global;

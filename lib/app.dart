@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter_runtime_env/flutter_runtime_env.dart';
@@ -49,10 +48,7 @@ class JournalApp extends StatefulWidget {
     var appSettings = AppSettings.instance;
     Log.i("AppSetting ${appSettings.toMap()}");
 
-    if (appSettings.collectUsageStatistics) {
-      _enableAnalyticsIfPossible(appSettings, pref);
-    }
-    _sendAppUpdateEvent(appSettings);
+    _enableAnalyticsIfPossible(appSettings, pref);
 
     final gitBaseDirectory = (await getApplicationDocumentsDirectory()).path;
     final cacheDir = (await getApplicationSupportDirectory()).path;
@@ -99,35 +95,13 @@ class JournalApp extends StatefulWidget {
     ));
   }
 
+  // TODO: All this logic should go inside the analytics package
   static Future<void> _enableAnalyticsIfPossible(
-      AppSettings appSettings, SharedPreferences pref) async {
-    JournalApp.isInDebugMode = foundation.kDebugMode;
-
-    var isPhysicalDevice = true;
-    try {
-      var deviceInfo = DeviceInfoPlugin();
-      if (Platform.isAndroid) {
-        var info = await deviceInfo.androidInfo;
-        isPhysicalDevice =
-            info.isPhysicalDevice == null ? false : info.isPhysicalDevice!;
-
-        Log.i("Running on Android", props: info.toMap());
-      } else if (Platform.isIOS) {
-        var info = await deviceInfo.iosInfo;
-        isPhysicalDevice = info.isPhysicalDevice;
-
-        Log.i("Running on ios", props: info.toMap());
-      }
-    } catch (e) {
-      Log.d(e.toString());
-    }
-
-    if (isPhysicalDevice == false) {
-      JournalApp.isInDebugMode = true;
-    }
-
+    AppSettings appSettings,
+    SharedPreferences pref,
+  ) async {
     bool inFireBaseTestLab = await inFirebaseTestLab();
-    bool enabled = !JournalApp.isInDebugMode && !inFireBaseTestLab;
+    bool enabled = !foundation.kDebugMode && !inFireBaseTestLab;
 
     var supportDir = await getApplicationSupportDirectory();
     var analyticsStorage = p.join(supportDir.path, 'analytics');
@@ -142,17 +116,17 @@ class JournalApp extends StatefulWidget {
       storagePath: analyticsStorage,
     );
 
-    if (enabled) {
-      analytics.setUserProperty(
-        name: 'proMode',
-        value: appSettings.proMode.toString(),
-      );
+    analytics.setUserProperty(
+      name: 'proMode',
+      value: appSettings.proMode.toString(),
+    );
 
-      analytics.setUserProperty(
-        name: 'proExpirationDate',
-        value: appSettings.proExpirationDate.toString(),
-      );
-    }
+    analytics.setUserProperty(
+      name: 'proExpirationDate',
+      value: appSettings.proExpirationDate.toString(),
+    );
+
+    await _sendAppUpdateEvent(appSettings);
   }
 
   static Future<void> _sendAppUpdateEvent(AppSettings appSettings) async {
@@ -177,8 +151,6 @@ class JournalApp extends StatefulWidget {
     appSettings.appVersion = version;
     appSettings.save();
   }
-
-  static bool isInDebugMode = false;
 
   JournalApp();
 

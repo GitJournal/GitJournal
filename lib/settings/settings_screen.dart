@@ -463,15 +463,16 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
       const SizedBox(height: 16.0),
-      if (Features.newAnalytics)
+      if (Analytics.instance != null)
         SwitchListTile(
           title: Text(tr('settings.usageStats')),
-          value: appSettings.collectUsageStatistics,
+          value: Analytics.instance!.collectUsageStatistics,
           onChanged: (bool val) {
-            appSettings.collectUsageStatistics = val;
-            appSettings.save();
+            Analytics.instance!.collectUsageStatistics = val;
+            Analytics.instance!.save();
             setState(() {});
 
+            // FIXME: This also should go in the ananlytics package
             logEvent(
               Event.AnalyticsLevelChanged,
               parameters: {"state": val.toString()},

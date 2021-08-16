@@ -1,10 +1,10 @@
+import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:git_bindings/git_bindings.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/app.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
@@ -342,7 +342,7 @@ class _FolderViewState extends State<FolderView> {
                 onTap: () {
                   // Hack to get out of the dialog in the tests
                   // driver.findByType('ModalBarrier') doesn't seem to be working
-                  if (JournalApp.isInDebugMode) {
+                  if (foundation.kDebugMode) {
                     Navigator.of(context).pop();
                   }
                 },
