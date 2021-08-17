@@ -63,17 +63,21 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   }
 
   void _noteRenamed(Note note, String oldPath) {
-    assert(_entityMap.containsKey(oldPath));
-    _entityMap.remove(oldPath);
-    _entityMap[note.filePath] = note;
+    _lock.synchronized(() {
+      assert(_entityMap.containsKey(oldPath));
+      _entityMap.remove(oldPath);
+      _entityMap[note.filePath] = note;
 
-    notifyNoteRenamed(-1, note, oldPath);
+      notifyNoteRenamed(-1, note, oldPath);
+    });
   }
 
   void _subFolderRenamed(NotesFolderFS folder, String oldPath) {
-    assert(_entityMap.containsKey(oldPath));
-    _entityMap.remove(oldPath);
-    _entityMap[folder.folderPath] = folder;
+    _lock.synchronized(() {
+      assert(_entityMap.containsKey(oldPath));
+      _entityMap.remove(oldPath);
+      _entityMap[folder.folderPath] = folder;
+    });
   }
 
   void reset(String folderPath) {
@@ -168,18 +172,20 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     futures = <Future>[];
 
     // Remove notes which have errors
-    var errFunc = (Note n) => n.loadState == NoteLoadState.Error;
-    var hasBadNotes = _notes.any(errFunc);
-    if (hasBadNotes) {
-      while (true) {
-        var i = _notes.indexWhere(errFunc);
-        if (i == -1) {
-          break;
+    await _lock.synchronized(() {
+      var errFunc = (Note n) => n.loadState == NoteLoadState.Error;
+      var hasBadNotes = _notes.any(errFunc);
+      if (hasBadNotes) {
+        while (true) {
+          var i = _notes.indexWhere(errFunc);
+          if (i == -1) {
+            break;
+          }
+          var note = _notes.removeAt(i);
+          notifyNoteRemoved(i, note);
         }
-        var note = _notes.removeAt(i);
-        notifyNoteRemoved(i, note);
       }
-    }
+    });
 
     for (var folder in _folders) {
       var f = folder.loadRecursively();
