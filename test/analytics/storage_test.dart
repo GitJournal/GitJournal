@@ -75,7 +75,7 @@ pb.Event _randomEvent() {
     params: {'a': 'hello'},
     pseudoId: 'id',
     userProperties: {'b': 'c'},
-    sessionID: 'session',
+    sessionID: 123,
   );
   return ev;
 }
