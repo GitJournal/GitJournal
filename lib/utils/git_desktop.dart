@@ -68,6 +68,9 @@ Future<Result<void>> _gitCommandViaExecutable({
     mode: ProcessStartMode.inheritStdio,
   );
 
+  print('env GIT_SSH_COMMAND="ssh -i ${temp.path} -o IdentitiesOnly=yes"');
+  print('git $command $remoteName');
+
   var exitCode = await process.exitCode;
   await dir.delete(recursive: true);
 

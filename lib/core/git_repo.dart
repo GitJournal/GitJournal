@@ -219,8 +219,8 @@ class GitNoteRepository {
       } on Exception catch (ex, stackTrace) {
         return Result.fail(ex, stackTrace);
       }
-    } else if (Platform.isMacOS) {
-      await gitPushViaExecutable(
+    } else if (Platform.isMacOS || Platform.isLinux) {
+      await gitFetchViaExecutable(
         privateKey: config.sshPrivateKey,
         privateKeyPassword: config.sshPassword,
         remoteName: remoteName,
@@ -306,7 +306,7 @@ class GitNoteRepository {
         Log.e("GitPush Failed", ex: ex, stacktrace: stackTrace);
         rethrow;
       }
-    } else if (Platform.isMacOS) {
+    } else if (Platform.isMacOS || Platform.isLinux) {
       await gitPushViaExecutable(
         privateKey: config.sshPrivateKey,
         privateKeyPassword: config.sshPassword,
