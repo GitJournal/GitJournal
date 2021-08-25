@@ -18,7 +18,7 @@ jobs:
           GITCRYPT_KEY: ${{ secrets.GITCRYPT_KEY }}
         run: ./scripts/decrypt_secrets.sh
       - name: Setup provisioning profile
-        run: ./scripts/add_ios_keys.sh
+        run: ./scripts/add_macos_keys.sh
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: "2.2.2"
