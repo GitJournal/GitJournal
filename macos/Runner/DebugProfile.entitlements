@@ -6,7 +6,11 @@
 	<false/>
 	<key>com.apple.security.cs.allow-jit</key>
 	<true/>
+	<key>com.apple.security.device.camera</key>
+	<true/>
 	<key>com.apple.security.network.server</key>
+	<true/>
+	<key>com.apple.security.personal-information.photos-library</key>
 	<true/>
 </dict>
 </plist>

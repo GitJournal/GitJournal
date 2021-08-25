@@ -1,0 +1,38 @@
+name: MacOS
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: macos-11
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install Deps
+        run: brew install git-crypt md5sha1sum gnu-sed create-dmg
+      - name: Unlock Secrets
+        env:
+          GITCRYPT_KEY: ${{ secrets.GITCRYPT_KEY }}
+        run: ./scripts/decrypt_secrets.sh
+      - name: Setup provisioning profile
+        run: ./scripts/add_ios_keys.sh
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: "2.2.2"
+      - run: flutter pub get
+      - run: dart ./scripts/setup_env.dart
+        env:
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      - run: ./scripts/build_macos.sh
+        env:
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      - name: "Upload Artifact"
+        uses: actions/upload-artifact@v2
+        with:
+          name: AppImage
+          path: build/macos/Build/Products/Release/GitJournal.dmg
+          if-no-files-found: error
