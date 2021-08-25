@@ -1,6 +1,24 @@
 #!/usr/bin/env bash
 
 set -eo pipefail
+set -x
+
+function notarize_check() {
+    $APP_NOTARIZER -c -u "ios.ci@gitjournal.io" -p "$FASTLANE_PASSWORD" -k "$1" |
+        grep -A 1 '<key>Status</key>' |
+        tail -n 1 >/tmp/foo
+
+    grep -m 1 success /tmp/foo
+}
+
+function wait_for_notary() {
+    xml sel -t -v "//plist" /tmp/app_notarizer | grep -A 1 RequestUUID | tail -n 1 | tr -d "[:blank:]" >/tmp/dmg_notarize
+    ID=$(cat /tmp/dmg_notarize)
+    until notarize_check "$ID"; do
+        echo "Waiting for Notary ..."
+        sleep 1
+    done
+}
 
 cd "$(dirname "$0")"
 cd ../
@@ -32,9 +50,8 @@ $APP_NOTARIZER --notarize -a "$APP_NAME.app" -b "io.gitjournal.gitjournal" \
     -e "$ENTITLEMENTS" -v "4NYTN6RU3N" \
     -i "Developer ID Application: Vishesh Handa (4NYTN6RU3N)"
 
-xml sel -t -v "//plist" /tmp/app_notarizer | grep -A 1 RequestUUID | tail -n 1 | tr -d "[:blank:]" >/tmp/app_notarize
+wait_for_notary
 
-# FIXME: What till request is done?
 $APP_NOTARIZER --staple --file "$APP_NAME.app"
 
 echo ""
@@ -59,7 +76,6 @@ $APP_NOTARIZER --notarize -a "$APP_NAME.dmg" -b "io.gitjournal.gitjournal" \
     -v "4NYTN6RU3N" \
     -i "Developer ID Installer: Vishesh Handa (4NYTN6RU3N)"
 
-xml sel -t -v "//plist" /tmp/app_notarizer | grep -A 1 RequestUUID | tail -n 1 | tr -d "[:blank:]" >/tmp/dmg_notarize
+wait_for_notary
 
-# FIXME: What till request is done?
 $APP_NOTARIZER --staple --file "$APP_NAME.dmg"

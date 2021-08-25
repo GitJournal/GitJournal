@@ -36,15 +36,3 @@ jobs:
           name: Installer
           path: build/macos/Build/Products/Release/GitJournal.dmg
           if-no-files-found: error
-      - name: "Upload Artifact"
-        uses: actions/upload-artifact@v2
-        with:
-          name: App-Notarize-ID
-          path: /tmp/app_notarize
-          if-no-files-found: error
-      - name: "Upload Artifact"
-        uses: actions/upload-artifact@v2
-        with:
-          name: DMG-Notarize-ID
-          path: /tmp/dmg_notarize
-          if-no-files-found: error
