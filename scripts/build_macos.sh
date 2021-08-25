@@ -16,7 +16,7 @@ echo "Build Name: $BUILD_NAME"
 xcodebuild -version
 
 export MACOS_APP_RELEASE_PATH=build/macos/Build/Products/Release
-flutter build macos --release --no-codesign --build-number="$BUILD_NUM" --build-name="$BUILD_NAME"
+flutter build macos --release --build-number="$BUILD_NUM" --build-name="$BUILD_NAME"
 
 # Signing
 export APP_NAME=GitJournal
