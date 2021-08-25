@@ -23,9 +23,12 @@ flutter build macos --release --build-number="$BUILD_NUM" --build-name="$BUILD_N
 export APP_NAME=GitJournal
 export MACOS_APP_PATH=./$MACOS_APP_RELEASE_PATH/$APP_NAME.app
 
-/usr/bin/codesign -vv --force --deep -s 2BC9130EA0A9C6F623E1AAEB5594BFA04FA875F3 "$MACOS_APP_PATH"
+/usr/bin/codesign -vv --force --deep --timestamp -s 2BC9130EA0A9C6F623E1AAEB5594BFA04FA875F3 "$MACOS_APP_PATH"
 
 # Debugging Signing Issues
+echo ""
+echo " -- Code Signing Debug Info -- "
+echo ""
 pkgutil --check-signature "$MACOS_APP_PATH"
 codesign -dvv "$MACOS_APP_PATH"
 
