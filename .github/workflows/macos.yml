@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Install Deps
-        run: brew install git-crypt md5sha1sum gnu-sed create-dmg
+        run: brew install git-crypt md5sha1sum gnu-sed create-dmg xmlstarlet
       - name: Unlock Secrets
         env:
           GITCRYPT_KEY: ${{ secrets.GITCRYPT_KEY }}
@@ -35,4 +35,16 @@ jobs:
         with:
           name: Installer
           path: build/macos/Build/Products/Release/GitJournal.dmg
+          if-no-files-found: error
+      - name: "Upload Artifact"
+        uses: actions/upload-artifact@v2
+        with:
+          name: App-Notarize-ID
+          path: /tmp/app_notarize
+          if-no-files-found: error
+      - name: "Upload Artifact"
+        uses: actions/upload-artifact@v2
+        with:
+          name: DMG-Notarize-ID
+          path: /tmp/dmg_notarize
           if-no-files-found: error
