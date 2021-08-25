@@ -19,24 +19,23 @@ export MACOS_APP_RELEASE_PATH=build/macos/Build/Products/Release
 flutter config --enable-macos-desktop
 flutter build macos --release --build-number="$BUILD_NUM" --build-name="$BUILD_NAME"
 
-# Signing
+# Signing and Notarizing
 export APP_NAME=GitJournal
-export MACOS_APP_PATH=./$MACOS_APP_RELEASE_PATH/$APP_NAME.app
+export APP_NOTARIZER="$(pwd)/scripts/app_notarizer.sh"
+export FASTLANE_PASSWORD=$(cat ios/keys/fastlane_password)
+export ENTITLEMENTS="$(pwd)/macos/Runner/Release.entitlements"
 
-/usr/bin/codesign -vv --force --deep --timestamp -s 2BC9130EA0A9C6F623E1AAEB5594BFA04FA875F3 "$MACOS_APP_PATH"
+cd "$MACOS_APP_RELEASE_PATH"
 
-# Debugging Signing Issues
+$APP_NOTARIZER --notarize -a "$APP_NAME.app" -b "io.gitjournal.gitjournal" \
+    -u "ios.ci@gitjournal.io" -p "$FASTLANE_PASSWORD" \
+    -e "$ENTITLEMENTS" -v "4NYTN6RU3N" \
+    -i "Developer ID Application: Vishesh Handa (4NYTN6RU3N)"
+
+$APP_NOTARIZER --staple --file "$APP_NAME.app"
+
 echo ""
-echo " -- Code Signing Debug Info -- "
-echo ""
-pkgutil --check-signature "$MACOS_APP_PATH"
-codesign -dvv "$MACOS_APP_PATH"
-
-# Build dmg
-cd $MACOS_APP_RELEASE_PATH
-
-echo ""
-echo "Creating DMG"
+echo " -- Creating DMG -- "
 echo ""
 
 create-dmg \
@@ -51,3 +50,10 @@ create-dmg \
     --hdiutil-quiet \
     "$APP_NAME.dmg" \
     "$APP_NAME.app"
+
+$APP_NOTARIZER --notarize -a "$APP_NAME.dmg" -b "io.gitjournal.gitjournal" \
+    -u "ios.ci@gitjournal.io" -p "$FASTLANE_PASSWORD" \
+    -v "4NYTN6RU3N" \
+    -i "Developer ID Installer: Vishesh Handa (4NYTN6RU3N)"
+
+$APP_NOTARIZER --staple --file "$APP_NAME.dmg"

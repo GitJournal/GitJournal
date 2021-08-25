@@ -15,7 +15,8 @@ KEYCHAIN_PATH="$HOME/Library/Keychains/$KEYCHAIN_NAME"
 KEYCHAIN_PASSWORD=""
 
 security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_NAME"
-security import dev_id.p12 -k "$KEYCHAIN_PATH" -P "$KEYCHAIN_PASSWORD" -A
+security import dev_id_app.p12 -k "$KEYCHAIN_PATH" -P "$KEYCHAIN_PASSWORD" -A
+security import dev_id_installer.p12 -k "$KEYCHAIN_PATH" -P "$KEYCHAIN_PASSWORD" -A
 
 security list-keychains -s "$KEYCHAIN_PATH"
 security default-keychain -s "$KEYCHAIN_PATH"
