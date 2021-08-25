@@ -256,7 +256,7 @@ esac
 notarizationUpload()
 {
 	echo "[INFO] Uploading $APP_NAME for notarization"
-	xcrun altool --notarize-app -t osx -f "$1" --primary-bundle-id "$BUNDLE_ID" -u "$USERNAME" -p "$PASSWORD" --asc-provider "$PROVIDER"  --output-format xml
+	xcrun altool --notarize-app -t osx -f "$1" --primary-bundle-id "$BUNDLE_ID" -u "$USERNAME" -p "$PASSWORD" --asc-provider "$PROVIDER"  --output-format xml | tee /tmp/app_notarizer
 
 }
 

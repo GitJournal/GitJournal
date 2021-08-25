@@ -30,9 +30,9 @@ cd "$MACOS_APP_RELEASE_PATH"
 $APP_NOTARIZER --notarize -a "$APP_NAME.app" -b "io.gitjournal.gitjournal" \
     -u "ios.ci@gitjournal.io" -p "$FASTLANE_PASSWORD" \
     -e "$ENTITLEMENTS" -v "4NYTN6RU3N" \
-    -i "Developer ID Application: Vishesh Handa (4NYTN6RU3N)" | tee /tmp/foo
+    -i "Developer ID Application: Vishesh Handa (4NYTN6RU3N)"
 
-xml sel -t -v "//plist" /tmp/foo | grep -A 1 RequestUUID | tail -n 1 | tr -d '\t' >/tmp/app_notarize
+xml sel -t -v "//plist" /tmp/app_notarizer | grep -A 1 RequestUUID | tail -n 1 | tr -d "[:blank:]" >/tmp/app_notarize
 
 # FIXME: What till request is done?
 $APP_NOTARIZER --staple --file "$APP_NAME.app"
@@ -57,9 +57,9 @@ create-dmg \
 $APP_NOTARIZER --notarize -a "$APP_NAME.dmg" -b "io.gitjournal.gitjournal" \
     -u "ios.ci@gitjournal.io" -p "$FASTLANE_PASSWORD" \
     -v "4NYTN6RU3N" \
-    -i "Developer ID Installer: Vishesh Handa (4NYTN6RU3N)" | tee /tmp/foo
+    -i "Developer ID Installer: Vishesh Handa (4NYTN6RU3N)"
 
-xml sel -t -v "//plist" /tmp/foo | grep -A 1 RequestUUID | tail -n 1 | tr -d '\t' >/tmp/dmg_notarize
+xml sel -t -v "//plist" /tmp/app_notarizer | grep -A 1 RequestUUID | tail -n 1 | tr -d "[:blank:]" >/tmp/dmg_notarize
 
 # FIXME: What till request is done?
 $APP_NOTARIZER --staple --file "$APP_NAME.dmg"
