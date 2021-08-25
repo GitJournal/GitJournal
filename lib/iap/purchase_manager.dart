@@ -86,7 +86,7 @@ class PurchaseManager {
       Log.i("Pending Complete Purchase - ${purchaseDetails.productID}");
 
       try {
-        await InAppPurchaseConnection.instance
+        var _ = await InAppPurchaseConnection.instance
             .completePurchase(purchaseDetails);
       } catch (e, stackTrace) {
         logException(e, stackTrace);

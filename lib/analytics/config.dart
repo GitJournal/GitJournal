@@ -26,6 +26,6 @@ class AnalyticsConfig extends ChangeNotifier with SettingsSharedPref {
     var def = AnalyticsConfig(id, pref);
 
     await setBool("collectUsageStatistics", enabled, def.enabled);
-    await pref.setString("appVersion", appVersion);
+    var _ = await pref.setString("appVersion", appVersion);
   }
 }

@@ -49,7 +49,7 @@ class Analytics {
     var pseudoId = pref.getString("pseudoId");
     if (pseudoId == null) {
       pseudoId = const Uuid().v4();
-      pref.setString("pseudoId", pseudoId);
+      var _ = pref.setString("pseudoId", pseudoId);
     }
 
     var config = AnalyticsConfig("", pref);

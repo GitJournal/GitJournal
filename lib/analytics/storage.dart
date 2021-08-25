@@ -46,7 +46,10 @@ class AnalyticsStorage {
     builder.add(intData.buffer.asUint8List());
     builder.add(eventData);
 
-    await File(filePath).writeAsBytes(builder.toBytes(), mode: FileMode.append);
+    var _ = await File(filePath).writeAsBytes(
+      builder.toBytes(),
+      mode: FileMode.append,
+    );
     numEventsThisSession++;
   }
 

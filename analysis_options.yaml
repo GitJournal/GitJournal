@@ -17,8 +17,8 @@ analyzer:
     - "lib/generated_plugin_registrant.dart"
   enable-experiment:
     - nonfunction-type-aliases
-  plugins:
-  - dart_code_metrics
+  # plugins:
+  # - dart_code_metrics
 
 linter:
   rules:
@@ -149,4 +149,3 @@ dart_code_metrics:
     # - no-magic-number
     # - no-object-declaration
     # - prefer-conditional-expressions
-

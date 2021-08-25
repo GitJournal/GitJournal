@@ -123,6 +123,7 @@ bool openNewNoteEditor(BuildContext context, String term) {
     ),
     settings: const RouteSettings(name: '/newNote/'),
   );
-  Navigator.of(context).push(route);
+
+  var _ = Navigator.of(context).push(route);
   return true;
 }

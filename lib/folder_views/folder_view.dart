@@ -239,7 +239,7 @@ class _FolderViewState extends State<FolderView> {
       ),
       settings: RouteSettings(name: '/newNote/$routeType'),
     );
-    await Navigator.of(context).push(route);
+    var _ = await Navigator.of(context).push(route);
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
   }
 
