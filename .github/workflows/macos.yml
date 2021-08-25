@@ -33,6 +33,6 @@ jobs:
       - name: "Upload Artifact"
         uses: actions/upload-artifact@v2
         with:
-          name: AppImage
+          name: Installer
           path: build/macos/Build/Products/Release/GitJournal.dmg
           if-no-files-found: error

@@ -32,6 +32,10 @@ codesign -dvv "$MACOS_APP_PATH"
 # Build dmg
 cd $MACOS_APP_RELEASE_PATH
 
+echo ""
+echo "Creating DMG"
+echo ""
+
 create-dmg \
     --volname "$APP_NAME" \
     --window-pos 200 120 \
