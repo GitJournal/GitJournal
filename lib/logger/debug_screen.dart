@@ -7,6 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_settings.dart';
 
@@ -48,7 +49,7 @@ class _DebugScreenState extends State<DebugScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr('settings.debug.title')),
+        title: Text(tr(LocaleKeys.settings_debug_title)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -221,14 +222,19 @@ class _DebugScreenState extends State<DebugScreen> {
     var filterLevel = appSettings.debugLogLevel;
 
     var dialog = AlertDialog(
-      title: Text(tr('settings.debug.levels.title')),
+      title: Text(tr(LocaleKeys.settings_debug_levels_title)),
       content: Column(
         children: <Widget>[
-          FilterListTile(tr('settings.debug.levels.error'), 'e', filterLevel),
-          FilterListTile(tr('settings.debug.levels.warning'), 'w', filterLevel),
-          FilterListTile(tr('settings.debug.levels.info'), 'i', filterLevel),
-          FilterListTile(tr('settings.debug.levels.debug'), 'd', filterLevel),
-          FilterListTile(tr('settings.debug.levels.verbose'), 'v', filterLevel),
+          FilterListTile(
+              tr(LocaleKeys.settings_debug_levels_error), 'e', filterLevel),
+          FilterListTile(
+              tr(LocaleKeys.settings_debug_levels_warning), 'w', filterLevel),
+          FilterListTile(
+              tr(LocaleKeys.settings_debug_levels_info), 'i', filterLevel),
+          FilterListTile(
+              tr(LocaleKeys.settings_debug_levels_debug), 'd', filterLevel),
+          FilterListTile(
+              tr(LocaleKeys.settings_debug_levels_verbose), 'v', filterLevel),
         ],
         mainAxisSize: MainAxisSize.min,
       ),

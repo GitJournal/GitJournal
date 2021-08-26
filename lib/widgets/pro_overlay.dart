@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/features.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/app_settings.dart';
 
 class ProOverlay extends StatelessWidget {
@@ -26,7 +27,7 @@ class ProOverlay extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       child: Banner(
-        message: tr('pro'),
+        message: tr(LocaleKeys.pro),
         location: BannerLocation.topEnd,
         color: Theme.of(context).accentColor,
         child: IgnorePointer(child: Opacity(opacity: 0.5, child: child)),

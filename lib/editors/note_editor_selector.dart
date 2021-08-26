@@ -21,6 +21,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common_types.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 
 class NoteEditorSelector extends StatelessWidget {
   final EditorType currentEditor;
@@ -36,32 +37,32 @@ class NoteEditorSelector extends StatelessWidget {
           _buildTile(
             context,
             EditorType.Markdown,
-            tr('settings.editors.markdownEditor'),
+            tr(LocaleKeys.settings_editors_markdownEditor),
             FontAwesomeIcons.markdown,
           ),
         _buildTile(
           context,
           EditorType.Raw,
-          tr('settings.editors.rawEditor'),
+          tr(LocaleKeys.settings_editors_rawEditor),
           FontAwesomeIcons.dna,
         ),
         _buildTile(
           context,
           EditorType.Checklist,
-          tr('settings.editors.checklistEditor'),
+          tr(LocaleKeys.settings_editors_checklistEditor),
           FontAwesomeIcons.tasks,
         ),
         _buildTile(
           context,
           EditorType.Journal,
-          tr('settings.editors.journalEditor'),
+          tr(LocaleKeys.settings_editors_journalEditor),
           FontAwesomeIcons.book,
         ),
         // FIXME: Do not show this editor, unless the file is an org file?
         _buildTile(
           context,
           EditorType.Org,
-          tr('settings.editors.orgEditor'),
+          tr(LocaleKeys.settings_editors_orgEditor),
           FontAwesomeIcons.horseHead,
         )
       ],
@@ -69,7 +70,7 @@ class NoteEditorSelector extends StatelessWidget {
     );
 
     return AlertDialog(
-      title: Text(tr('settings.editors.choose')),
+      title: Text(tr(LocaleKeys.settings_editors_choose)),
       content: list,
     );
   }

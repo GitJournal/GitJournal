@@ -10,6 +10,7 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/features.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
@@ -135,7 +136,7 @@ class AddBottomSheet extends StatelessWidget {
         children: <Widget>[
           ListTile(
             leading: const Icon(Icons.camera),
-            title: Text(tr('editors.common.takePhoto')),
+            title: Text(tr(LocaleKeys.editors_common_takePhoto)),
             onTap: () async {
               try {
                 var image = await ImagePicker().getImage(
@@ -153,7 +154,7 @@ class AddBottomSheet extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.image),
-            title: Text(tr('editors.common.addImage')),
+            title: Text(tr(LocaleKeys.editors_common_addImage)),
             onTap: () async {
               try {
                 var image = await ImagePicker().getImage(
@@ -203,7 +204,7 @@ class BottomMenuSheet extends StatelessWidget {
         children: <Widget>[
           ListTile(
             leading: const Icon(Icons.undo),
-            title: Text(tr('editors.common.discard')),
+            title: Text(tr(LocaleKeys.editors_common_discard)),
             onTap: () {
               var note = editorState.getNote();
               Navigator.of(context).pop();
@@ -214,7 +215,7 @@ class BottomMenuSheet extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.share),
-            title: Text(tr('editors.common.share')),
+            title: Text(tr(LocaleKeys.editors_common_share)),
             onTap: () {
               var note = editorState.getNote();
               Navigator.of(context).pop();
@@ -227,7 +228,7 @@ class BottomMenuSheet extends StatelessWidget {
               feature: Feature.tags,
               child: ListTile(
                 leading: const FaIcon(FontAwesomeIcons.tag),
-                title: Text(tr('editors.common.tags')),
+                title: Text(tr(LocaleKeys.editors_common_tags)),
                 onTap: () {
                   var note = editorState.getNote();
                   Navigator.of(context).pop();
@@ -238,7 +239,7 @@ class BottomMenuSheet extends StatelessWidget {
             ),
           ListTile(
             leading: const Icon(Icons.edit),
-            title: Text(tr('editors.common.editFileName')),
+            title: Text(tr(LocaleKeys.editors_common_editFileName)),
             onTap: () {
               var note = editorState.getNote();
               Navigator.of(context).pop();
@@ -251,8 +252,8 @@ class BottomMenuSheet extends StatelessWidget {
             child: ListTile(
               leading: const FaIcon(FontAwesomeIcons.peace),
               title: Text(tr(zenModeEnabled
-                  ? 'editors.common.zen.disable'
-                  : 'editors.common.zen.enable')),
+                  ? LocaleKeys.editors_common_zen_disable
+                  : LocaleKeys.editors_common_zen_enable)),
               onTap: () {
                 zenModeChanged();
                 Navigator.of(context).pop();

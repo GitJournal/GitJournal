@@ -8,6 +8,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:git_bindings/git_bindings.dart';
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/utils/utils.dart';
 
@@ -100,7 +101,10 @@ class _SyncButtonState extends State<SyncButton> {
       final repo = Provider.of<GitJournalRepo>(context, listen: false);
       await repo.syncNotes();
     } on GitException catch (e) {
-      showSnackbar(context, tr('widgets.SyncButton.error', args: [e.cause]));
+      showSnackbar(
+        context,
+        tr(LocaleKeys.widgets_SyncButton_error, args: [e.cause]),
+      );
     } catch (e) {
       showSnackbar(context, e.toString());
     }

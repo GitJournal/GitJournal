@@ -28,6 +28,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/folder_views/common.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
 import 'package:gitjournal/utils/utils.dart';
@@ -97,7 +98,7 @@ class OrgLinkHandler {
           //Log.e('Opening Link', ex: e, stacktrace: stackTrace);
           showSnackbar(
             context,
-            tr('widgets.NoteViewer.linkInvalid', args: [link]),
+            tr(LocaleKeys.widgets_NoteViewer_linkInvalid, args: [link]),
           );
         }
       } else {

@@ -19,6 +19,7 @@ import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/iap/iap.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
@@ -157,17 +158,17 @@ class _JournalAppState extends State<JournalApp> {
       quickActions.setShortcutItems(<ShortcutItem>[
         ShortcutItem(
           type: 'Markdown',
-          localizedTitle: tr('actions.newNote'),
+          localizedTitle: tr(LocaleKeys.actions_newNote),
           icon: "ic_markdown",
         ),
         ShortcutItem(
           type: 'Checklist',
-          localizedTitle: tr('actions.newChecklist'),
+          localizedTitle: tr(LocaleKeys.actions_newChecklist),
           icon: "ic_tasks",
         ),
         ShortcutItem(
           type: 'Journal',
-          localizedTitle: tr('actions.newJournal'),
+          localizedTitle: tr(LocaleKeys.actions_newJournal),
           icon: "ic_book",
         ),
       ]);
