@@ -80,10 +80,6 @@ class SortingField {
     "settings.sortingField.filename",
     "FileName",
   );
-  static const Title = SortingField(
-    "settings.sortingField.title",
-    "Title",
-  );
 
   static const Default = Modified;
 
@@ -103,7 +99,6 @@ class SortingField {
     Modified,
     Created,
     FileName,
-    Title,
   ];
 
   static SortingField fromInternalString(String? str) {
@@ -134,11 +129,6 @@ class SortingMode {
         return order == SortingOrder.Descending
             ? _sortCreatedDesc
             : _reverse(_sortCreatedDesc);
-
-      case SortingField.Title:
-        return order == SortingOrder.Descending
-            ? _reverse(_sortTitleAsc)
-            : _sortTitleAsc;
 
       case SortingField.FileName:
         return order == SortingOrder.Descending
@@ -205,24 +195,6 @@ int _sortModifiedDesc(Note a, Note b) {
     }
   }
   return bDt!.compareTo(aDt!);
-}
-
-int _sortTitleAsc(Note a, Note b) {
-  var aTitleExists = a.title.isNotEmpty;
-  var bTitleExists = b.title.isNotEmpty;
-
-  if (!aTitleExists && bTitleExists) {
-    return 1;
-  }
-  if (aTitleExists && !bTitleExists) {
-    return -1;
-  }
-  if (!aTitleExists && !bTitleExists) {
-    return _sortFileNameAsc(a, b);
-  }
-  var aTitle = a.title.toLowerCase();
-  var bTitle = b.title.toLowerCase();
-  return aTitle.compareTo(bTitle);
 }
 
 int _sortFileNameAsc(Note a, Note b) {
