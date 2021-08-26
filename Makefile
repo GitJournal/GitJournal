@@ -19,3 +19,6 @@ fmt:
 
 lint:
 	flutter pub run dart_code_metrics:metrics lib
+
+build_env:
+	dart scripts/setup_env.dart gen
