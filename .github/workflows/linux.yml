@@ -14,9 +14,15 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Unlock Secrets
+        env:
+          GITCRYPT_KEY: ${{ secrets.GITCRYPT_KEY }}
+        run: ./scripts/decrypt_secrets.sh
+      - name: Setup Env
+        run: dart ./scripts/setup_env.dart
       - name: Build
         run: ./scripts/build_linux.sh
-      - name: 'Upload Artifact'
+      - name: "Upload Artifact"
         uses: actions/upload-artifact@v2
         with:
           name: AppImage

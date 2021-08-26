@@ -23,9 +23,8 @@ jobs:
         with:
           flutter-version: "2.2.2"
       - run: flutter pub get
-      - run: dart ./scripts/setup_env.dart
-        env:
-          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      - name: Setup Env
+        run: dart ./scripts/setup_env.dart
       - run: ./scripts/build_macos.sh
         env:
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
