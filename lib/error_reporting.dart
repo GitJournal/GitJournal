@@ -20,7 +20,7 @@ Future<void> initSentry() async {
   }
   await SentryFlutter.init(
     (options) {
-      options.dsn = environment['sentry'];
+      options.dsn = Env.sentry;
     },
   );
 }

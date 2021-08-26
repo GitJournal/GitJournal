@@ -1,1 +1,3 @@
-final environment = {"sentry":null};
+class Env {
+  static final String sentry = "";
+}

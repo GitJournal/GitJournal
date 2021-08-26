@@ -20,12 +20,22 @@ Future<int> main(List<String> args) async {
   }
 
   print(config);
+  print('');
+
+  var contents = 'class Env {\n';
+  config.forEach((key, value) {
+    if (value == null) {
+      contents += '  static final String $key = "";\n';
+    } else {
+      contents += '  static final String $key = "$value";\n';
+    }
+  });
+  contents += '}\n';
+
+  print(contents);
 
   final filename = 'lib/.env.dart';
-  await File(filename)
-      .writeAsString('final environment = ${json.encode(config)};');
+  await File(filename).writeAsString(contents);
 
   return 0;
 }
-
-// FIXME: Make the .env.dart file type safe
