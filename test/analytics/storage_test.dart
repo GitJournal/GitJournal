@@ -10,8 +10,8 @@ import 'package:gitjournal/analytics/storage.dart';
 
 void main() {
   test('Read and write', () async {
-    var ev1 = _randomEvent();
-    var ev2 = _randomEvent();
+    var ev1 = _randomEvent(1);
+    var ev2 = _randomEvent(2);
 
     var dir = await Directory.systemTemp.createTemp('_analytics_');
     var af = p.join(dir.path, "analytics");
@@ -28,9 +28,9 @@ void main() {
   });
 
   test('Fetch All', () async {
-    var ev1 = _randomEvent();
-    var ev2 = _randomEvent();
-    var ev3 = _randomEvent();
+    var ev1 = _randomEvent(1);
+    var ev2 = _randomEvent(2);
+    var ev3 = _randomEvent(3);
 
     var dir = await Directory.systemTemp.createTemp('_analytics_');
     var storage = AnalyticsStorage(dir.path);
@@ -66,11 +66,11 @@ void main() {
   });
 }
 
-pb.Event _randomEvent() {
+pb.Event _randomEvent(int num) {
   var random = Random();
   var dt = DateTime.now().add(Duration(days: random.nextInt(5000) * -1));
   var ev = pb.Event(
-    name: 'test-' + random.nextInt(100).toString(),
+    name: 'test-$num',
     date: Int64(dt.millisecondsSinceEpoch ~/ 1000),
     params: {'a': 'hello'},
     pseudoId: 'id',
