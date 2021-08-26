@@ -12,6 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/features.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
@@ -70,7 +71,7 @@ class _AppDrawerState extends State<AppDrawer>
           child: _buildDrawerTile(
             context,
             icon: Icons.add,
-            title: tr('drawer.addRepo'),
+            title: tr(LocaleKeys.drawer_addRepo),
             onTap: () {
               repoManager.addRepo();
               Navigator.pop(context);
@@ -105,7 +106,7 @@ class _AppDrawerState extends State<AppDrawer>
     if (!repo.remoteGitRepoConfigured) {
       setupGitButton = ListTile(
         leading: Icon(Icons.sync, color: textStyle!.color),
-        title: Text(tr('drawer.setup'), style: textStyle),
+        title: Text(tr(LocaleKeys.drawer_setup), style: textStyle),
         trailing: const Icon(
           Icons.info,
           color: Colors.red,
@@ -142,7 +143,7 @@ class _AppDrawerState extends State<AppDrawer>
             _buildDrawerTile(
               context,
               icon: Icons.power,
-              title: tr('drawer.pro'),
+              title: tr(LocaleKeys.drawer_pro),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, "/purchase");
@@ -165,14 +166,14 @@ class _AppDrawerState extends State<AppDrawer>
           _buildDrawerTile(
             context,
             icon: Icons.note,
-            title: tr('drawer.all'),
+            title: tr(LocaleKeys.drawer_all),
             onTap: () => _navTopLevel(context, '/'),
             selected: currentRoute == '/',
           ),
           _buildDrawerTile(
             context,
             icon: Icons.folder,
-            title: tr('drawer.folders'),
+            title: tr(LocaleKeys.drawer_folders),
             onTap: () => _navTopLevel(context, '/folders'),
             selected: currentRoute == "/folders",
           ),
@@ -181,7 +182,7 @@ class _AppDrawerState extends State<AppDrawer>
               context,
               icon: FontAwesomeIcons.solidFolderOpen,
               isFontAwesome: true,
-              title: tr('drawer.fs'),
+              title: tr(LocaleKeys.drawer_fs),
               onTap: () => _navTopLevel(context, '/filesystem'),
               selected: currentRoute == "/filesystem",
             ),
@@ -190,7 +191,7 @@ class _AppDrawerState extends State<AppDrawer>
               context,
               icon: FontAwesomeIcons.projectDiagram,
               isFontAwesome: true,
-              title: tr('drawer.graph'),
+              title: tr(LocaleKeys.drawer_graph),
               onTap: () => _navTopLevel(context, '/graph'),
               selected: currentRoute == "/graph",
             ),
@@ -198,7 +199,7 @@ class _AppDrawerState extends State<AppDrawer>
             context,
             icon: FontAwesomeIcons.tag,
             isFontAwesome: true,
-            title: tr('drawer.tags'),
+            title: tr(LocaleKeys.drawer_tags),
             onTap: () => _navTopLevel(context, '/tags'),
             selected: currentRoute == "/tags",
           ),
@@ -206,7 +207,7 @@ class _AppDrawerState extends State<AppDrawer>
           _buildDrawerTile(
             context,
             icon: Icons.share,
-            title: tr('drawer.share'),
+            title: tr(LocaleKeys.drawer_share),
             onTap: () {
               Navigator.pop(context);
               Share.share('Checkout GitJournal https://gitjournal.io/');
@@ -218,7 +219,7 @@ class _AppDrawerState extends State<AppDrawer>
             _buildDrawerTile(
               context,
               icon: Icons.feedback,
-              title: tr('drawer.rate'),
+              title: tr(LocaleKeys.drawer_rate),
               onTap: () {
                 LaunchReview.launch(
                   androidAppId: "io.gitjournal.gitjournal",
@@ -232,7 +233,7 @@ class _AppDrawerState extends State<AppDrawer>
           _buildDrawerTile(
             context,
             icon: Icons.rate_review,
-            title: tr('drawer.feedback'),
+            title: tr(LocaleKeys.drawer_feedback),
             onTap: () async {
               var platform = Platform.operatingSystem;
               var versionText = await getVersionString();
@@ -266,7 +267,7 @@ class _AppDrawerState extends State<AppDrawer>
           _buildDrawerTile(
             context,
             icon: Icons.bug_report,
-            title: tr('drawer.bug'),
+            title: tr(LocaleKeys.drawer_bug),
             onTap: () async {
               var platform = Platform.operatingSystem;
               var versionText = await getVersionString();
@@ -298,7 +299,7 @@ class _AppDrawerState extends State<AppDrawer>
           _buildDrawerTile(
             context,
             icon: Icons.settings,
-            title: tr('settings.title'),
+            title: tr(LocaleKeys.settings_title),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, "/settings");
