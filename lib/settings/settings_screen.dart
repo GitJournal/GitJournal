@@ -368,7 +368,7 @@ class SettingsListState extends State<SettingsList> {
             if (newVal == false) {
               await moveBackToInternal(false);
             } else {
-              var path = await _getExternalDir();
+              var path = await _getExternalDir(context);
               if (path.isEmpty) {
                 await moveBackToInternal(true);
                 return;
@@ -597,7 +597,7 @@ Future<bool> _isDirWritable(String path) async {
   return true;
 }
 
-Future<String> _getExternalDir() async {
+Future<String> _getExternalDir(BuildContext context) async {
   if (!await Permission.storage.request().isGranted) {
     return "";
   }
@@ -608,6 +608,7 @@ Future<String> _getExternalDir() async {
       return dir;
     } else {
       Log.e("FilePicker: Got $dir but it is not writable");
+      showSnackbar(context, tr('settings.storage.notWritable', args: [dir]));
     }
   }
 

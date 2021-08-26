@@ -227,6 +227,7 @@ settings:
     external: Store Repo Externally
     icloud: Store in iCloud
     repoLocation: Repo Location
+    notWritable: "{} is not writable"
   drawer:
     title: Sidebar Settings
   bottomMenuBar:
