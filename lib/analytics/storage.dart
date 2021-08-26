@@ -87,6 +87,7 @@ class AnalyticsStorage {
 
       paths.add(entity.path);
     }
+    paths.sort();
 
     return paths;
   }
@@ -110,7 +111,7 @@ class AnalyticsStorage {
           try {
             File(filePath).deleteSync();
           } catch (ex, st) {
-            Log.e("Failing to delete analytics file", ex: ex, stacktrace: st);
+            Log.e("Failed to delete analytics file", ex: ex, stacktrace: st);
           }
         }
       }
