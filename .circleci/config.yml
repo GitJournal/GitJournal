@@ -38,11 +38,6 @@ jobs:
       #   - run:
       #       name: Generate Test Coverage
       #       command: ./scripts/test_coverage.sh
-      #   - store_artifacts:
-      #       path: coverage
-      #      - run:
-      #          name: Upload Crashlytics Symbols
-      #          command: ./scripts/android_crashlytics.sh
       - run:
           name: Publish Alpha
           command: cd android && fastlane alphaBuild
