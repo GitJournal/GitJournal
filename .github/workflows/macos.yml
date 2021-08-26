@@ -26,6 +26,7 @@ jobs:
           flutter-version: "2.2.2"
       - name: Setup Env
         run: dart ./scripts/setup_env.dart
+      - run: flutter pub get
       - run: ./scripts/build_macos.sh
         env:
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}

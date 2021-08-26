@@ -22,6 +22,7 @@ jobs:
         run: ./scripts/decrypt_secrets.sh
       - name: Setup Env
         run: dart ./scripts/setup_env.dart
+      - run: flutter pub get
       - name: Build
         run: ./scripts/build_linux.sh
       - name: "Upload Artifact"
