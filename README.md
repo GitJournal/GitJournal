@@ -16,13 +16,6 @@
   <a href="https://github.com/sponsors/vHanda"><img alt="Sponsor via GitHub" src="https://img.shields.io/badge/Sponsor-Github-%235a353"></a>
 </p>
 
-<p align="center">
-  This project receives generous infrastructure support from
-  <a href="https://www.digitalocean.com/">
-    <img src="https://opensource.nyc3.cdn.digitaloceanspaces.com/attribution/assets/SVG/DO_Logo_horizontal_blue.svg" width="91px">
-  </a>
-</p>
-
 # Summary
 
 GitJournal is a note taking app focused on privacy and data portability. It stores all its notes in a standardized Markdown + YAML header format (optional). The notes are stored in a Git Repo of your choice - GitHub / Gitlab / Custom-provider. This means you can easily self host or host your notes in one of the many [Git providers](./docs/git_hosts.md).
