@@ -6,6 +6,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Unlock Secrets
+          command: ./scripts/decrypt_secrets.sh
+      - run:
           name: Setup GitJournal Build Env
           command: /opt/flutter/bin/cache/dart-sdk/bin/dart ./scripts/setup_env.dart
       - run:
@@ -18,20 +21,11 @@ jobs:
           name: Test
           command: flutter test
           #command: flutter test --coverage --machine | tojunit --output junit.xml
-      - store_test_results:
-          path: ./
+      #   - store_test_results:
+      #   path: ./
       - run:
           name: Analyze
           command: flutter analyze
-      - run:
-          name: Decode Android key store
-          command: echo "$KEYSTORE" | base64 -di > android/app/keystore.jks
-      - run:
-          name: Create Google Play key
-          command: echo "$GOOGLE_PLAY_KEY" | base64 -di > android/google-play-api-key.json
-      - run:
-          name: Create Android Key file
-          command: echo "$ANDROID_KEY_FILE" | base64 -di > android/key.properties
       - run:
           name: Build
           command: ./scripts/build_android.sh
