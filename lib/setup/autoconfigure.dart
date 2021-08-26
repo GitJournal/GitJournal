@@ -58,13 +58,21 @@ class GitHostSetupAutoConfigurePageState
         }
         Log.d("GitHost Initalized: " + widget.gitHostType.toString());
 
+        if (!mounted) {
+          Log.d("AutoConfigure not mounted any more");
+          return;
+        }
+
         UserInfo? userInfo;
         try {
           setState(() {
             _message = tr('setup.autoconfigure.readUser');
           });
 
+          Log.d("Starting to fetch userInfo");
           userInfo = await gitHost!.getUserInfo().getOrThrow();
+          Log.d("Got UserInfo - $userInfo");
+
           var gitConfig = Provider.of<GitConfig>(context, listen: false);
           if (userInfo.name.isNotEmpty) {
             gitConfig.gitAuthor = userInfo.name;
@@ -94,7 +102,7 @@ class GitHostSetupAutoConfigurePageState
   }
 
   void _handleGitHostException(Exception e, StackTrace stacktrace) {
-    Log.d("GitHostSetupAutoConfigure: " + e.toString());
+    Log.e("GitHostSetupAutoConfigure", ex: e, stacktrace: stacktrace);
     setState(() {
       errorMessage = widget.gitHostType.toString() + ": " + e.toString();
       logEvent(
