@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/iap/purchase_manager.dart';
 import 'package:gitjournal/iap/purchase_widget.dart';
 import 'package:gitjournal/logger/logger.dart';
@@ -65,7 +66,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     return WillPopScope(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(tr('purchase_screen.title')),
+          title: Text(tr(LocaleKeys.purchase_screen_title)),
         ),
         body: buildBody(context),
       ),
@@ -79,7 +80,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
         Padding(
           padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
           child: Text(
-            tr('purchase_screen.desc'),
+            tr(LocaleKeys.purchase_screen_desc),
             style: Theme.of(context).textTheme.bodyText2,
           ),
         ),
@@ -154,7 +155,7 @@ class MonthlyRentalWidget extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            tr('purchase_screen.monthly.title'),
+            tr(LocaleKeys.purchase_screen_monthly_title),
             style: textTheme.headline5,
             textAlign: TextAlign.center,
           ),
@@ -167,7 +168,7 @@ class MonthlyRentalWidget extends StatelessWidget {
           ),
           const SizedBox(height: 32.0),
           Text(tr(
-            "purchase_screen.monthly.desc",
+            LocaleKeys.purchase_screen_monthly_desc,
             namedArgs: {'minYearlyPurchase': minYearlyPurchase},
           )),
         ],
@@ -190,7 +191,7 @@ class YearlyPurchaseWidget extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            tr('purchase_screen.oneTime.title'),
+            tr(LocaleKeys.purchase_screen_oneTime_title),
             style: textTheme.headline5,
             textAlign: TextAlign.center,
           ),
@@ -201,7 +202,7 @@ class YearlyPurchaseWidget extends StatelessWidget {
             isSubscription: false,
           ),
           const SizedBox(height: 32.0),
-          Text(tr('purchase_screen.oneTime.desc')),
+          Text(tr(LocaleKeys.purchase_screen_oneTime_desc)),
         ],
         mainAxisAlignment: MainAxisAlignment.start,
       ),

@@ -9,6 +9,7 @@ import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/app_settings.dart';
 import 'package:gitjournal/settings/settings.dart';
@@ -69,7 +70,7 @@ class AppDrawerHeader extends StatelessWidget {
 
     var isDesktop = Platform.isLinux || Platform.isWindows || Platform.isMacOS;
     return Banner(
-      message: isDesktop ? 'BETA' : tr('pro'),
+      message: isDesktop ? tr(LocaleKeys.beta) : tr(LocaleKeys.pro),
       location: BannerLocation.topStart,
       color: Theme.of(context).accentColor,
       child: header,

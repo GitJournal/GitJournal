@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/features.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 
 class FeatureTimelineScreen extends StatelessWidget {
   @override
@@ -14,7 +15,7 @@ class FeatureTimelineScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr('feature_timeline.title')),
+        title: Text(tr(LocaleKeys.feature_timeline_title)),
       ),
       body: ListView(
         children: [
@@ -22,14 +23,14 @@ class FeatureTimelineScreen extends StatelessWidget {
           for (var title in Features.inProgress)
             _Tile(
               title: title,
-              subTitle: tr('feature_timeline.progress'),
+              subTitle: tr(LocaleKeys.feature_timeline_progress),
               iconText: "DEV",
               iconColor: theme.primaryColorDark,
             ),
           for (var title in Features.planned)
             _Tile(
               title: title,
-              subTitle: tr('feature_timeline.plan'),
+              subTitle: tr(LocaleKeys.feature_timeline_plan),
               iconText: "PLAN",
               iconColor: theme.accentColor,
             ),
@@ -157,7 +158,7 @@ class _DevelopmentText extends StatelessWidget {
   Widget build(BuildContext context) {
     var style = Theme.of(context).textTheme.bodyText2;
 
-    var str = tr('feature_timeline.issues');
+    var str = tr(LocaleKeys.feature_timeline_issues);
     var i = str.toLowerCase().indexOf('github');
     if (i == -1) {
       return Padding(

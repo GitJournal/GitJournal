@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/settings_widgets.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 
@@ -65,7 +66,7 @@ class SettingsImagesScreenState extends State<SettingsImagesScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr('settings.images.title')),
+        title: Text(tr(LocaleKeys.settings_images_title)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

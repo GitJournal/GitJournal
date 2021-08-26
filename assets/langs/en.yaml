@@ -228,6 +228,7 @@ settings:
     icloud: Store in iCloud
     repoLocation: Repo Location
     notWritable: "{} is not writable"
+    failedExternal: Unable to get External Storage Directory
   drawer:
     title: Sidebar Settings
   bottomMenuBar:
@@ -256,6 +257,7 @@ editors:
       title: Failed to Save Note
       message: We're sorry, but we cannot seem to save the Note. It has been copied to the clipboard to avoid data loss.
 pro: Pro
+beta: BETA
 actions:
   newNote: New Note
   newJournal: New Journal Entry

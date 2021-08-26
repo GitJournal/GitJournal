@@ -8,6 +8,7 @@ import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/disposable_change_notifier.dart';
 import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/editors/undo_redo.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 
 class RawEditor extends StatefulWidget implements Editor {
   final Note note;
@@ -183,7 +184,7 @@ class _NoteEditor extends StatelessWidget {
       maxLines: null,
       style: style,
       decoration: InputDecoration(
-        hintText: tr('editors.common.defaultBodyHint'),
+        hintText: tr(LocaleKeys.editors_common_defaultBodyHint),
         border: InputBorder.none,
         isDense: true,
         fillColor: theme.scaffoldBackgroundColor,

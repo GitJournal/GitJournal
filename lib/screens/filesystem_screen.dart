@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
@@ -52,11 +53,11 @@ class _FileSystemScreenState extends State<FileSystemScreen> {
                 Navigator.of(context).pop(false);
                 _renameFile(ignoredFile.filePath);
               },
-              child: Text(tr('screens.filesystem.ignoredFile.rename')),
+              child: Text(tr(LocaleKeys.screens_filesystem_ignoredFile_rename)),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: Text(tr('screens.filesystem.ignoredFile.ok')),
+              child: Text(tr(LocaleKeys.screens_filesystem_ignoredFile_ok)),
             ),
           ],
         );

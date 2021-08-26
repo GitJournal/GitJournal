@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 
+import 'package:gitjournal/generated/locale_keys.g.dart';
+
 class PurchaseThankYouScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -9,9 +11,12 @@ class PurchaseThankYouScreen extends StatelessWidget {
     var textTheme = theme.textTheme;
     Widget w = Column(
       children: <Widget>[
-        Text(tr('purchase_screen.thanks.title'), style: textTheme.headline3),
         Text(
-          tr('purchase_screen.thanks.subtitle'),
+          tr(LocaleKeys.purchase_screen_thanks_title),
+          style: textTheme.headline3,
+        ),
+        Text(
+          tr(LocaleKeys.purchase_screen_thanks_subtitle),
           style: textTheme.headline4,
           textAlign: TextAlign.center,
         ),

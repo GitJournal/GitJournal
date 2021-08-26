@@ -10,6 +10,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/setup/button.dart';
 import 'package:gitjournal/setup/error.dart';
@@ -175,7 +176,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
       controller: _textController,
       maxLines: 1,
       decoration: InputDecoration(
-        hintText: tr('setup.repoSelector.hint'),
+        hintText: tr(LocaleKeys.setup_repoSelector_hint),
         border: const OutlineInputBorder(),
         suffixIcon: IconButton(
           onPressed: () => _textController.clear(),
@@ -190,7 +191,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          tr('setup.repoSelector.title'),
+          tr(LocaleKeys.setup_repoSelector_title),
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 16.0),
@@ -201,7 +202,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
         Opacity(
           opacity: canContinue ? 1.0 : 0.0,
           child: GitHostSetupButton(
-            text: tr('setup.next'),
+            text: tr(LocaleKeys.setup_next),
             onPressed: () async {
               if (selectedRepo != null) {
                 widget.onDone(selectedRepo!);
@@ -234,7 +235,9 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
     return ListTile(
       leading: const Icon(Icons.add),
       title: Align(
-        child: Text(tr('setup.repoSelector.create', args: [fullRepoName])),
+        child: Text(
+          tr(LocaleKeys.setup_repoSelector_create, args: [fullRepoName]),
+        ),
         alignment: const Alignment(-1.3, 0),
       ),
       contentPadding: const EdgeInsets.all(0.0),

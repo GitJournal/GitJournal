@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 
 typedef NoteFolderCallback = void Function(NotesFolderFS);
 
@@ -23,7 +24,7 @@ class FolderSelectionDialog extends StatelessWidget {
     );
 
     return AlertDialog(
-      title: Text(tr('widgets.FolderSelectionDialog.title')),
+      title: Text(tr(LocaleKeys.widgets_FolderSelectionDialog_title)),
       content: body,
     );
   }

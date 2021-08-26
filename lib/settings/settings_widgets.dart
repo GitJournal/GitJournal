@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 
+import 'package:gitjournal/generated/locale_keys.g.dart';
+
 class ListPreference extends StatelessWidget {
   final String title;
   final String? currentOption;
@@ -48,7 +50,7 @@ class ListPreference extends StatelessWidget {
                 ),
                 actions: <Widget>[
                   TextButton(
-                    child: Text(tr('settings.cancel')),
+                    child: Text(tr(LocaleKeys.settings_cancel)),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },

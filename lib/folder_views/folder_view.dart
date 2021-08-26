@@ -14,6 +14,7 @@ import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/settings/settings.dart';
@@ -90,7 +91,7 @@ class _FolderViewState extends State<FolderView> {
     var folderView = buildFolderView(
       viewType: _viewType,
       folder: sortedNotesFolder,
-      emptyText: tr('screens.folder_view.empty'),
+      emptyText: tr(LocaleKeys.screens_folder_view_empty),
       header: _headerType,
       showSummary: _showSummary,
       noteTapped: (Note note) {
@@ -187,7 +188,7 @@ class _FolderViewState extends State<FolderView> {
     } on GitException catch (e) {
       showSnackbar(
         context,
-        tr('widgets.FolderView.syncError', args: [e.cause]),
+        tr(LocaleKeys.widgets_FolderView_syncError, args: [e.cause]),
       );
     } catch (e) {
       showSnackbar(context, e.toString());
@@ -292,10 +293,11 @@ class _FolderViewState extends State<FolderView> {
         return StatefulBuilder(
           builder: (BuildContext context, Function setState) {
             var children = <Widget>[
-              SettingsHeader(tr('widgets.FolderView.headerOptions.heading')),
+              SettingsHeader(
+                  tr(LocaleKeys.widgets_FolderView_headerOptions_heading)),
               RadioListTile<StandardViewHeader>(
-                title:
-                    Text(tr('widgets.FolderView.headerOptions.titleFileName')),
+                title: Text(tr(
+                    LocaleKeys.widgets_FolderView_headerOptions_titleFileName)),
                 value: StandardViewHeader.TitleOrFileName,
                 groupValue: _headerType,
                 onChanged: (newVal) {
@@ -304,7 +306,8 @@ class _FolderViewState extends State<FolderView> {
                 },
               ),
               RadioListTile<StandardViewHeader>(
-                title: Text(tr('widgets.FolderView.headerOptions.auto')),
+                title:
+                    Text(tr(LocaleKeys.widgets_FolderView_headerOptions_auto)),
                 value: StandardViewHeader.TitleGenerated,
                 groupValue: _headerType,
                 onChanged: (newVal) {
@@ -314,7 +317,8 @@ class _FolderViewState extends State<FolderView> {
               ),
               RadioListTile<StandardViewHeader>(
                 key: const ValueKey("ShowFileNameOnly"),
-                title: Text(tr('widgets.FolderView.headerOptions.fileName')),
+                title: Text(
+                    tr(LocaleKeys.widgets_FolderView_headerOptions_fileName)),
                 value: StandardViewHeader.FileName,
                 groupValue: _headerType,
                 onChanged: (newVal) {
@@ -324,7 +328,8 @@ class _FolderViewState extends State<FolderView> {
               ),
               SwitchListTile(
                 key: const ValueKey("SummaryToggle"),
-                title: Text(tr('widgets.FolderView.headerOptions.summary')),
+                title: Text(
+                    tr(LocaleKeys.widgets_FolderView_headerOptions_summary)),
                 value: _showSummary,
                 onChanged: (bool newVal) {
                   setState(() {
@@ -338,7 +343,8 @@ class _FolderViewState extends State<FolderView> {
             return AlertDialog(
               title: GestureDetector(
                 key: const ValueKey("Hack_Back"),
-                child: Text(tr('widgets.FolderView.headerOptions.customize')),
+                child: Text(
+                    tr(LocaleKeys.widgets_FolderView_headerOptions_customize)),
                 onTap: () {
                   // Hack to get out of the dialog in the tests
                   // driver.findByType('ModalBarrier') doesn't seem to be working
@@ -370,25 +376,25 @@ class _FolderViewState extends State<FolderView> {
       builder: (BuildContext context) {
         var children = <Widget>[
           RadioListTile<FolderViewType>(
-            title: Text(tr('widgets.FolderView.views.standard')),
+            title: Text(tr(LocaleKeys.widgets_FolderView_views_standard)),
             value: FolderViewType.Standard,
             groupValue: _viewType,
             onChanged: onViewChange,
           ),
           RadioListTile<FolderViewType>(
-            title: Text(tr('widgets.FolderView.views.journal')),
+            title: Text(tr(LocaleKeys.widgets_FolderView_views_journal)),
             value: FolderViewType.Journal,
             groupValue: _viewType,
             onChanged: onViewChange,
           ),
           RadioListTile<FolderViewType>(
-            title: Text(tr('widgets.FolderView.views.grid')),
+            title: Text(tr(LocaleKeys.widgets_FolderView_views_grid)),
             value: FolderViewType.Grid,
             groupValue: _viewType,
             onChanged: onViewChange,
           ),
           RadioListTile<FolderViewType>(
-            title: Text(tr('widgets.FolderView.views.card')),
+            title: Text(tr(LocaleKeys.widgets_FolderView_views_card)),
             value: FolderViewType.Card,
             groupValue: _viewType,
             onChanged: onViewChange,
@@ -396,7 +402,7 @@ class _FolderViewState extends State<FolderView> {
         ];
 
         return AlertDialog(
-          title: Text(tr('widgets.FolderView.views.select')),
+          title: Text(tr(LocaleKeys.widgets_FolderView_views_select)),
           content: Column(
             children: children,
             mainAxisSize: MainAxisSize.min,
@@ -437,13 +443,13 @@ class _FolderViewState extends State<FolderView> {
         PopupMenuItem<DropDownChoices>(
           key: const ValueKey("SortingOptions"),
           value: DropDownChoices.SortingOptions,
-          child: Text(tr('widgets.FolderView.sortingOptions')),
+          child: Text(tr(LocaleKeys.widgets_FolderView_sortingOptions)),
         ),
         if (_viewType == FolderViewType.Standard)
           PopupMenuItem<DropDownChoices>(
             key: const ValueKey("ViewOptions"),
             value: DropDownChoices.ViewOptions,
-            child: Text(tr('widgets.FolderView.viewOptions')),
+            child: Text(tr(LocaleKeys.widgets_FolderView_viewOptions)),
           ),
       ],
     );

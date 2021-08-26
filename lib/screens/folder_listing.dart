@@ -22,6 +22,7 @@ import 'package:provider/provider.dart';
 import 'package:gitjournal/core/flattened_notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/folder_views/folder_view.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/app_settings.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
@@ -150,7 +151,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
       },
     );
 
-    var title = Text(tr('screens.folders.title'));
+    var title = Text(tr(LocaleKeys.screens_folders_title));
     if (selectedFolder != null) {
       title = Text(tr("screens.folders.selected"));
     }

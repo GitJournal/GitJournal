@@ -10,6 +10,7 @@ import 'package:gitjournal/core/note_serializer.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/folder_views/folder_view.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
@@ -43,7 +44,7 @@ class TagListingScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr('screens.tags.title')),
+        title: Text(tr(LocaleKeys.screens_tags_title)),
         leading: GJAppBarMenuButton(),
       ),
       body: Scrollbar(

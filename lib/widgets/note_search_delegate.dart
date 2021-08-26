@@ -8,6 +8,7 @@ import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/virtual_notes_folder.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/themes.dart';
 
 class NoteSearchDelegate extends SearchDelegate<Note?> {
@@ -88,7 +89,7 @@ class NoteSearchDelegate extends SearchDelegate<Note?> {
 
     var folderConfig = Provider.of<NotesFolderConfig>(context);
     var folder = VirtualNotesFolder(filteredNotes, folderConfig);
-    var emptyText = tr('widgets.FolderView.searchFailed');
+    var emptyText = tr(LocaleKeys.widgets_FolderView_searchFailed);
 
     return buildFolderView(
       viewType: viewType,

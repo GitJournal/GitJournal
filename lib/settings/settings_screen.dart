@@ -109,13 +109,13 @@ class SettingsListState extends State<SettingsList> {
         style: Theme.of(context).textTheme.headline6,
         decoration: InputDecoration(
           icon: const Icon(Icons.person),
-          hintText: tr('settings.author.hint'),
-          labelText: tr('settings.author.label'),
+          hintText: tr(LocaleKeys.settings_author_hint),
+          labelText: tr(LocaleKeys.settings_author_label),
         ),
         validator: (String? value) {
           value = value!.trim();
           if (value.isEmpty) {
-            return tr('settings.author.validator');
+            return tr(LocaleKeys.settings_author_validator);
           }
           return null;
         },
@@ -144,17 +144,17 @@ class SettingsListState extends State<SettingsList> {
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           icon: const Icon(Icons.email),
-          hintText: tr('settings.email.hint'),
-          labelText: tr('settings.email.label'),
+          hintText: tr(LocaleKeys.settings_email_hint),
+          labelText: tr(LocaleKeys.settings_email_label),
         ),
         validator: (String? value) {
           value = value!.trim();
           if (value.isEmpty) {
-            return tr('settings.email.validator.empty');
+            return tr(LocaleKeys.settings_email_validator_empty);
           }
 
           if (!EmailValidator.validate(value)) {
-            return tr('settings.email.validator.invalid');
+            return tr(LocaleKeys.settings_email_validator_invalid);
           }
           return null;
         },
@@ -172,11 +172,11 @@ class SettingsListState extends State<SettingsList> {
 
     var defaultNewFolder = settings.defaultNewNoteFolderSpec;
     if (defaultNewFolder.isEmpty) {
-      defaultNewFolder = tr("rootFolder");
+      defaultNewFolder = tr(LocaleKeys.rootFolder);
     } else {
       if (!folderWithSpecExists(context, defaultNewFolder)) {
         setState(() {
-          defaultNewFolder = tr("rootFolder");
+          defaultNewFolder = tr(LocaleKeys.rootFolder);
 
           settings.defaultNewNoteFolderSpec = "";
           settings.save();
@@ -188,9 +188,9 @@ class SettingsListState extends State<SettingsList> {
     var folderConfig = Provider.of<NotesFolderConfig>(context);
 
     return ListView(children: [
-      SettingsHeader(tr('settings.display.title')),
+      SettingsHeader(tr(LocaleKeys.settings_display_title)),
       ListPreference(
-        title: tr('settings.display.theme'),
+        title: tr(LocaleKeys.settings_display_theme),
         currentOption: settings.theme.toPublicString(),
         options: SettingsTheme.options.map((f) => f.toPublicString()).toList(),
         onChange: (String publicStr) {
@@ -201,7 +201,7 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
       ListPreference(
-        title: tr('settings.display.lang'),
+        title: tr(LocaleKeys.settings_display_lang),
         currentOption: easyLocale.currentLocale?.toLanguageTag(),
         options:
             easyLocale.supportedLocales.map((f) => f.toLanguageTag()).toList(),
@@ -212,8 +212,8 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
       ListTile(
-        title: Text(tr("settings.display.images.title")),
-        subtitle: Text(tr("settings.display.images.subtitle")),
+        title: Text(tr(LocaleKeys.settings_display_images_title)),
+        subtitle: Text(tr(LocaleKeys.settings_display_images_subtitle)),
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) => SettingsDisplayImagesScreen(),
@@ -225,7 +225,7 @@ class SettingsListState extends State<SettingsList> {
       ProOverlay(
         feature: Feature.customizeHomeScreen,
         child: ListPreference(
-          title: tr('settings.display.homeScreen'),
+          title: tr(LocaleKeys.settings_display_homeScreen),
           currentOption: settings.homeScreen.toPublicString(),
           options: SettingsHomeScreen.options
               .map((f) => f.toPublicString())
@@ -241,8 +241,8 @@ class SettingsListState extends State<SettingsList> {
       ProOverlay(
         feature: Feature.configureBottomMenuBar,
         child: ListTile(
-          title: Text(tr("settings.bottomMenuBar.title")),
-          subtitle: Text(tr("settings.bottomMenuBar.subtitle")),
+          title: Text(tr(LocaleKeys.settings_bottomMenuBar_title)),
+          subtitle: Text(tr(LocaleKeys.settings_bottomMenuBar_subtitle)),
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => BottomMenuBarSettings(),
@@ -252,9 +252,9 @@ class SettingsListState extends State<SettingsList> {
           },
         ),
       ),
-      SettingsHeader(tr('settings.note.title')),
+      SettingsHeader(tr(LocaleKeys.settings_note_title)),
       ListTile(
-        title: Text(tr('settings.note.defaultFolder')),
+        title: Text(tr(LocaleKeys.settings_note_defaultFolder)),
         subtitle: Text(defaultNewFolder),
         onTap: () async {
           var destFolder = await showDialog<NotesFolderFS>(
@@ -268,12 +268,12 @@ class SettingsListState extends State<SettingsList> {
           }
         },
       ),
-      SettingsHeader(tr('settings.gitAuthor')),
+      SettingsHeader(tr(LocaleKeys.settings_gitAuthor)),
       ListTile(title: gitAuthorForm),
       ListTile(title: gitAuthorEmailForm),
       ListTile(
-        title: Text(tr("settings.gitRemote.title")),
-        subtitle: Text(tr("settings.gitRemote.subtitle")),
+        title: Text(tr(LocaleKeys.settings_gitRemote_title)),
+        subtitle: Text(tr(LocaleKeys.settings_gitRemote_subtitle)),
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) =>
@@ -286,8 +286,8 @@ class SettingsListState extends State<SettingsList> {
       ),
       const SizedBox(height: 16.0),
       ListTile(
-        title: Text(tr("settings.editors.title")),
-        subtitle: Text(tr("settings.editors.subtitle")),
+        title: Text(tr(LocaleKeys.settings_editors_title)),
+        subtitle: Text(tr(LocaleKeys.settings_editors_subtitle)),
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) => SettingsEditorsScreen(),
@@ -296,9 +296,9 @@ class SettingsListState extends State<SettingsList> {
           Navigator.of(context).push(route);
         },
       ),
-      SettingsHeader(tr('settings.storage.title')),
+      SettingsHeader(tr(LocaleKeys.settings_storage_title)),
       ListPreference(
-        title: tr('settings.note.newNoteFileName'),
+        title: tr(LocaleKeys.settings_note_newNoteFileName),
         currentOption: folderConfig.fileNameFormat.toPublicString(),
         options:
             NoteFileNameFormat.options.map((f) => f.toPublicString()).toList(),
@@ -310,8 +310,8 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
       ListTile(
-        title: Text(tr("settings.noteMetaData.title")),
-        subtitle: Text(tr("settings.noteMetaData.subtitle")),
+        title: Text(tr(LocaleKeys.settings_noteMetaData_title)),
+        subtitle: Text(tr(LocaleKeys.settings_noteMetaData_subtitle)),
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) => NoteMetadataSettingsScreen(),
@@ -323,8 +323,8 @@ class SettingsListState extends State<SettingsList> {
       ProOverlay(
         feature: Feature.inlineTags,
         child: ListTile(
-          title: Text(tr("settings.tags.title")),
-          subtitle: Text(tr("settings.tags.subtitle")),
+          title: Text(tr(LocaleKeys.settings_tags_title)),
+          subtitle: Text(tr(LocaleKeys.settings_tags_subtitle)),
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => SettingsTagsScreen(),
@@ -335,8 +335,8 @@ class SettingsListState extends State<SettingsList> {
         ),
       ),
       ListTile(
-        title: Text(tr('settings.images.title')),
-        subtitle: Text(tr('settings.images.subtitle')),
+        title: Text(tr(LocaleKeys.settings_misc_title)),
+        subtitle: Text(tr(LocaleKeys.settings_images_subtitle)),
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) => SettingsImagesScreen(),
@@ -347,7 +347,7 @@ class SettingsListState extends State<SettingsList> {
       ),
       if (Platform.isAndroid)
         SwitchListTile(
-          title: Text(tr('settings.storage.external')),
+          title: Text(tr(LocaleKeys.settings_storage_external)),
           value: !storageConfig.storeInternally,
           onChanged: (bool newVal) async {
             Future<void> moveBackToInternal(bool showError) async {
@@ -361,7 +361,7 @@ class SettingsListState extends State<SettingsList> {
               if (showError) {
                 showSnackbar(
                   context,
-                  "Unable to get External Storage Directory",
+                  LocaleKeys.settings_storage_failedExternal,
                 );
               }
             }
@@ -396,14 +396,14 @@ class SettingsListState extends State<SettingsList> {
         ),
       if (Platform.isAndroid)
         ListTile(
-          title: Text(tr('settings.storage.repoLocation')),
+          title: Text(tr(LocaleKeys.settings_storage_repoLocation)),
           subtitle: Text(
               p.join(storageConfig.storageLocation, storageConfig.folderName)),
           enabled: !storageConfig.storeInternally,
         ),
       if (Platform.isIOS)
         SwitchListTile(
-          title: Text(tr('settings.storage.icloud')),
+          title: Text(tr(LocaleKeys.settings_storage_icloud)),
           value: !storageConfig.storeInternally,
           onChanged: (bool newVal) async {
             if (newVal == false) {
@@ -423,7 +423,7 @@ class SettingsListState extends State<SettingsList> {
           },
         ),
       ListTile(
-        title: Text(tr('settings.misc.title')),
+        title: Text(tr(LocaleKeys.settings_misc_title)),
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) => SettingsMisc(),
@@ -434,12 +434,12 @@ class SettingsListState extends State<SettingsList> {
       ),
       if (repoManager.repoIds.length > 1)
         RedButton(
-          text: tr('settings.deleteRepo'),
+          text: tr(LocaleKeys.settings_deleteRepo),
           onPressed: () async {
             var ok = await showDialog(
               context: context,
               builder: (_) => IrreversibleActionConfirmationDialog(
-                tr('settings.deleteRepo'),
+                tr(LocaleKeys.settings_deleteRepo),
               ),
             );
             if (ok == null) {
@@ -454,7 +454,7 @@ class SettingsListState extends State<SettingsList> {
         ),
       const SizedBox(height: 16.0),
       ListTile(
-        title: Text(tr("feature_timeline.title")),
+        title: Text(tr(LocaleKeys.feature_timeline_title)),
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) => FeatureTimelineScreen(),
@@ -466,7 +466,7 @@ class SettingsListState extends State<SettingsList> {
       const SizedBox(height: 16.0),
       if (Analytics.instance != null)
         SwitchListTile(
-          title: Text(tr('settings.usageStats')),
+          title: Text(tr(LocaleKeys.settings_usageStats)),
           value: Analytics.instance!.config.enabled,
           onChanged: (bool val) {
             Analytics.instance!.enabled = val;
@@ -474,7 +474,7 @@ class SettingsListState extends State<SettingsList> {
           },
         ),
       SwitchListTile(
-        title: Text(tr('settings.crashReports')),
+        title: Text(tr(LocaleKeys.settings_crashReports)),
         value: appSettings.collectCrashReports,
         onChanged: (bool val) {
           appSettings.collectCrashReports = val;
@@ -489,8 +489,8 @@ class SettingsListState extends State<SettingsList> {
       ),
       VersionNumberTile(),
       ListTile(
-        title: Text(tr('settings.debug.title')),
-        subtitle: Text(tr('settings.debug.subtitle')),
+        title: Text(tr(LocaleKeys.settings_debug_title)),
+        subtitle: Text(tr(LocaleKeys.settings_debug_subtitle)),
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) => DebugScreen(),
@@ -500,8 +500,8 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
       ListTile(
-        title: Text(tr('settings.experimental.title')),
-        subtitle: Text(tr('settings.experimental.subtitle')),
+        title: Text(tr(LocaleKeys.settings_experimental_title)),
+        subtitle: Text(tr(LocaleKeys.settings_experimental_subtitle)),
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) => ExperimentalSettingsScreen(),
@@ -511,13 +511,13 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
       ListTile(
-        title: Text(tr('settings.privacy')),
+        title: Text(tr(LocaleKeys.settings_privacy)),
         onTap: () {
           launch("https://gitjournal.io/privacy");
         },
       ),
       ListTile(
-        title: Text(tr('settings.terms')),
+        title: Text(tr(LocaleKeys.settings_terms)),
         onTap: () {
           launch("https://gitjournal.io/terms");
         },
@@ -570,7 +570,8 @@ class VersionNumberTileState extends State<VersionNumberTile> {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     return ListTile(
-      title: Text(tr('settings.versionInfo'), style: textTheme.subtitle1),
+      title:
+          Text(tr(LocaleKeys.settings_versionInfo), style: textTheme.subtitle1),
       subtitle: Text(
         versionText,
         style: textTheme.bodyText2,
@@ -578,7 +579,7 @@ class VersionNumberTileState extends State<VersionNumberTile> {
       ),
       onLongPress: () {
         Clipboard.setData(ClipboardData(text: versionText));
-        showSnackbar(context, tr('settings.versionCopied'));
+        showSnackbar(context, tr(LocaleKeys.settings_versionCopied));
       },
     );
   }

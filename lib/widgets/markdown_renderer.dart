@@ -30,6 +30,7 @@ import 'package:gitjournal/core/hardwrap.dart';
 import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/folder_views/common.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
@@ -104,7 +105,7 @@ class MarkdownRenderer extends StatelessWidget {
           if (!opened) {
             showSnackbar(
               context,
-              tr('widgets.NoteViewer.linkInvalid', args: [link]),
+              tr(LocaleKeys.widgets_NoteViewer_linkInvalid, args: [link]),
             );
           }
           return;
@@ -117,7 +118,7 @@ class MarkdownRenderer extends StatelessWidget {
           Log.e('Opening Link', ex: e, stacktrace: stackTrace);
           showSnackbar(
             context,
-            tr('widgets.NoteViewer.linkNotFound', args: [link]),
+            tr(LocaleKeys.widgets_NoteViewer_linkNotFound, args: [link]),
           );
         }
       },

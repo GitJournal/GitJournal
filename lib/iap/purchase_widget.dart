@@ -8,6 +8,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/iap/iap.dart';
 import 'package:gitjournal/iap/purchase_manager.dart';
 import 'package:gitjournal/iap/purchase_slider.dart';
@@ -307,11 +308,11 @@ class PurchaseFailedDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(tr('widgets.PurchaseWidget.failed')),
+      title: Text(tr(LocaleKeys.widgets_PurchaseWidget_failed)),
       content: Text(text),
       actions: <Widget>[
         TextButton(
-          child: Text(tr('settings.ok')),
+          child: Text(tr(LocaleKeys.settings_ok)),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ],
@@ -329,7 +330,7 @@ class _RestorePurchaseButtonState extends State<RestorePurchaseButton> {
 
   @override
   Widget build(BuildContext context) {
-    var text = computing ? '...' : tr('purchase_screen.restore');
+    var text = computing ? '...' : tr(LocaleKeys.purchase_screen_restore);
 
     return OutlinedButton(
       child: Text(

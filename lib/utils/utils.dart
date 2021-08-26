@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/settings.dart';
 import '../core/note.dart';
 import '../editors/common_types.dart';
@@ -28,9 +29,9 @@ Future<String> getVersionString() async {
 SnackBar buildUndoDeleteSnackbar(
     GitJournalRepo stateContainer, Note deletedNote) {
   return SnackBar(
-    content: Text(tr('widgets.FolderView.noteDeleted')),
+    content: Text(tr(LocaleKeys.widgets_FolderView_noteDeleted)),
     action: SnackBarAction(
-      label: tr('widgets.FolderView.undo'),
+      label: tr(LocaleKeys.widgets_FolderView_undo),
       onPressed: () {
         Log.d("Undoing delete");
         stateContainer.undoRemoveNote(deletedNote);

@@ -348,6 +348,8 @@ abstract class LocaleKeys {
   static const settings_storage_icloud = 'settings.storage.icloud';
   static const settings_storage_repoLocation = 'settings.storage.repoLocation';
   static const settings_storage_notWritable = 'settings.storage.notWritable';
+  static const settings_storage_failedExternal =
+      'settings.storage.failedExternal';
   static const settings_storage = 'settings.storage';
   static const settings_drawer_title = 'settings.drawer.title';
   static const settings_drawer = 'settings.drawer';
@@ -383,6 +385,7 @@ abstract class LocaleKeys {
   static const editors_common = 'editors.common';
   static const editors = 'editors';
   static const pro = 'pro';
+  static const beta = 'beta';
   static const actions_newNote = 'actions.newNote';
   static const actions_newJournal = 'actions.newJournal';
   static const actions_newChecklist = 'actions.newChecklist';

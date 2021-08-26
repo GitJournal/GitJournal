@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'package:gitjournal/generated/locale_keys.g.dart';
+
 class NoteTagEditor extends StatefulWidget {
   final Set<String> selectedTags;
   final Set<String> allTags;
@@ -51,7 +53,7 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
           style: theme.textTheme.headline6,
           decoration: InputDecoration(
             border: InputBorder.none,
-            hintText: tr('editors.common.tags'),
+            hintText: tr(LocaleKeys.editors_common_tags),
             hintStyle: theme.inputDecorationTheme.hintStyle,
           ),
           onSubmitted: _addTag,

@@ -7,6 +7,7 @@ import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import 'package:universal_io/io.dart';
 
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/git_config.dart';
@@ -62,14 +63,14 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
       children: <Widget>[
         if (remoteHost.isNotEmpty)
           Text(
-            tr('settings.gitRemote.host'),
+            tr(LocaleKeys.settings_gitRemote_host),
             style: textTheme.bodyText1,
             textAlign: TextAlign.left,
           ),
         if (remoteHost.isNotEmpty) ListTile(title: Text(remoteHost)),
         if (branches.isNotEmpty)
           ListPreference(
-            title: tr('settings.gitRemote.branch'),
+            title: tr(LocaleKeys.settings_gitRemote_branch),
             currentOption: currentBranch, // FIXME
             options: branches,
             onChange: (String branch) {
@@ -81,7 +82,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
           ),
         const SizedBox(height: 8.0),
         Text(
-          tr('setup.sshKeyUserProvided.public'),
+          tr(LocaleKeys.setup_sshKeyUserProvided_public),
           style: textTheme.bodyText1,
           textAlign: TextAlign.left,
         ),
@@ -91,24 +92,24 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
         const Divider(),
         Builder(
           builder: (BuildContext context) => Button(
-            text: tr('setup.sshKey.copy'),
+            text: tr(LocaleKeys.setup_sshKey_copy),
             onPressed: () => _copyKeyToClipboard(context),
           ),
         ),
         Builder(
           builder: (BuildContext context) => Button(
-            text: tr('setup.sshKey.regenerate'),
+            text: tr(LocaleKeys.setup_sshKey_regenerate),
             onPressed: () => _generateSshKey(context),
           ),
         ),
         Builder(
           builder: (BuildContext context) => Button(
-            text: tr('setup.sshKeyChoice.custom'),
+            text: tr(LocaleKeys.setup_sshKeyChoice_custom),
             onPressed: _customSshKeys,
           ),
         ),
         ListPreference(
-          title: tr('settings.ssh.syncFreq'),
+          title: tr(LocaleKeys.settings_ssh_syncFreq),
           currentOption: settings.remoteSyncFrequency.toPublicString(),
           options: RemoteSyncFrequency.options
               .map((f) => f.toPublicString())
@@ -121,7 +122,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
           },
         ),
         RedButton(
-          text: tr('settings.ssh.reset'),
+          text: tr(LocaleKeys.settings_ssh_reset),
           onPressed: _resetGitHost,
         ),
       ],
@@ -130,7 +131,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr("settings.gitRemote.title")),
+        title: Text(tr(LocaleKeys.settings_gitRemote_title)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -152,10 +153,10 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
       builder: (context) => Scaffold(
         body: GitHostUserProvidedKeysPage(
           doneFunction: _updateKeys,
-          saveText: tr("setup.sshKey.save"),
+          saveText: tr(LocaleKeys.setup_sshKey_save),
         ),
         appBar: AppBar(
-          title: Text(tr('setup.sshKeyChoice.custom')),
+          title: Text(tr(LocaleKeys.setup_sshKeyChoice_custom)),
         ),
       ),
       settings: const RouteSettings(name: '/settings/gitRemote/customKeys'),
@@ -179,7 +180,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
 
   void _copyKeyToClipboard(BuildContext context) {
     Clipboard.setData(ClipboardData(text: widget.sshPublicKey));
-    showSnackbar(context, tr('setup.sshKey.copied'));
+    showSnackbar(context, tr(LocaleKeys.setup_sshKey_copied));
   }
 
   void _generateSshKey(BuildContext context) {

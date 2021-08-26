@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
 
@@ -34,9 +35,9 @@ class _SettingsMiscState extends State<SettingsMisc> {
 
     var body = Column(
       children: <Widget>[
-        SettingsHeader(tr('settings.misc.listView')),
+        SettingsHeader(tr(LocaleKeys.settings_misc_listView)),
         SwitchListTile(
-          title: Text(tr('settings.misc.swipe')),
+          title: Text(tr(LocaleKeys.settings_misc_swipe)),
           value: settings.swipeToDelete,
           onChanged: (bool newVal) {
             settings.swipeToDelete = newVal;
@@ -44,7 +45,7 @@ class _SettingsMiscState extends State<SettingsMisc> {
           },
         ),
         SwitchListTile(
-          title: Text(tr('settings.misc.confirmDelete')),
+          title: Text(tr(LocaleKeys.settings_misc_confirmDelete)),
           value: settings.confirmDelete,
           onChanged: (bool newVal) {
             settings.confirmDelete = newVal;
@@ -52,7 +53,7 @@ class _SettingsMiscState extends State<SettingsMisc> {
           },
         ),
         SwitchListTile(
-          title: Text(tr('settings.misc.hardWrap')),
+          title: Text(tr(LocaleKeys.settings_misc_hardWrap)),
           value: settings.hardWrap,
           onChanged: (bool newVal) {
             settings.hardWrap = newVal;
@@ -65,7 +66,7 @@ class _SettingsMiscState extends State<SettingsMisc> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr("settings.misc.title")),
+        title: Text(tr(LocaleKeys.settings_misc_title)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
