@@ -90,7 +90,7 @@ limitations under the License.
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="gitjournal-identity" android:host="login-callback" />
+                <data android:scheme="gitjournal-identity" android:host="register-callback" />
             </intent-filter>
         </activity>
 

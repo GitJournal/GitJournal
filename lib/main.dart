@@ -7,8 +7,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_logger/easy_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stack_trace/stack_trace.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'package:gitjournal/account/init.dart';
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings/app_settings.dart';
@@ -21,13 +21,7 @@ void main() async {
     LevelMessages.warning,
   ];
 
-  // FIXME: Does this need to be done over here?
-  await Supabase.initialize(
-    url: 'https://tefpmcttotopcptdivsj.supabase.co',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYyODA2NDAyNiwiZXhwIjoxOTQzNjQwMDI2fQ.xAN-giE3m1MPjoRkkdcg_0NJueLH0_L-Wu-V0TSnpwU',
-    authCallbackUrlHostname: 'login-callback',
-  );
+  initSupabase();
 
   var pref = await SharedPreferences.getInstance();
   AppSettings.instance.load(pref);

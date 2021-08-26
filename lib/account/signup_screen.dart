@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'package:gotrue/gotrue.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 import 'package:gitjournal/account/login_screen.dart';
+import 'package:gitjournal/settings/settings_git_remote.dart';
 
 class SignUpScreen extends StatefulWidget {
   SignUpScreen({Key? key}) : super(key: key);
@@ -11,27 +15,25 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   Widget _submitButton() {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.symmetric(vertical: 15),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-                color: Colors.grey.shade200,
-                offset: const Offset(2, 4),
-                blurRadius: 5,
-                spreadRadius: 2)
-          ],
-          gradient: const LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [Color(0xfffbb448), Color(0xfff7892b)])),
-      child: const Text(
-        'Register Now',
-        style: TextStyle(fontSize: 20, color: Colors.white),
-      ),
+    return Button(
+      text: "Register Now",
+      onPressed: () async {
+        var auth = Supabase.instance.client.auth;
+        var result = await auth.signUp(
+          'test@gitjournal.io',
+          'hellohello',
+          options: AuthOptions(
+            redirectTo: 'gitjournal-identity://register-callback',
+          ),
+        );
+
+        if (result.data == null && result.error == null) {
+          // Email Validation
+        }
+        if (result.error != null) {
+          // Show the error
+        }
+      },
     );
   }
 

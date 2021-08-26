@@ -35,11 +35,6 @@ import 'package:flutter/material.dart';
 
 import 'package:gitjournal/widgets/scroll_view_without_animation.dart';
 
-//import 'package:gotrue/gotrue.dart';
-
-// const _localDevServer = 'http://192.168.1.130:9999/';
-// const _prodServer = 'https://api.gitjournal.io/auth/';
-
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key, this.title}) : super(key: key);
 
@@ -145,23 +140,6 @@ class _LoginPageState extends State<LoginPage> {
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 25,
-                      fontWeight: FontWeight.w400)),
-            ),
-          ),
-          Expanded(
-            flex: 5,
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Color(0xff2872ba),
-                borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(5),
-                    topRight: Radius.circular(5)),
-              ),
-              alignment: Alignment.center,
-              child: const Text('Log in with Facebook',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
                       fontWeight: FontWeight.w400)),
             ),
           ),
