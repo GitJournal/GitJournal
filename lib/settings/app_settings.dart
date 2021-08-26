@@ -45,7 +45,6 @@ class AppSettings extends ChangeNotifier {
   var experimentalSubfolders = false;
   var experimentalMarkdownToolbar = false;
   var experimentalGraphView = false;
-  var experimentalZeroConf = false;
   var experimentalAccounts = false;
   var experimentalGitMerge = false;
   var experimentalGitOps = false;
@@ -70,8 +69,6 @@ class AppSettings extends ChangeNotifier {
         experimentalMarkdownToolbar;
     experimentalGraphView =
         pref.getBool("experimentalGraphView") ?? experimentalGraphView;
-    experimentalZeroConf =
-        pref.getBool("experimentalZeroConf") ?? experimentalZeroConf;
     experimentalAccounts =
         pref.getBool("experimentalAccounts") ?? experimentalAccounts;
     experimentalGitMerge =
@@ -102,8 +99,6 @@ class AppSettings extends ChangeNotifier {
         defaultSet.experimentalMarkdownToolbar);
     _setBool(pref, "experimentalGraphView", experimentalGraphView,
         defaultSet.experimentalGraphView);
-    _setBool(pref, "experimentalZeroConf", experimentalZeroConf,
-        defaultSet.experimentalZeroConf);
     _setBool(pref, "experimentalAccounts", experimentalAccounts,
         defaultSet.experimentalAccounts);
     _setBool(pref, "experimentalGitMerge", experimentalGitMerge,
@@ -128,7 +123,6 @@ class AppSettings extends ChangeNotifier {
       'experimentalFs': experimentalFs.toString(),
       'experimentalMarkdownToolbar': experimentalMarkdownToolbar.toString(),
       'experimentalGraphView': experimentalGraphView.toString(),
-      'experimentalZeroConf': experimentalZeroConf.toString(),
       'experimentalAccounts': experimentalAccounts.toString(),
       'experimentalGitMerge': experimentalGitMerge.toString(),
       'experimentalGitOps': experimentalGitOps.toString(),
