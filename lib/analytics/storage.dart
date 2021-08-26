@@ -8,6 +8,7 @@ import 'package:path/path.dart' as p;
 import 'package:synchronized/synchronized.dart';
 import 'package:universal_io/io.dart';
 
+import 'package:gitjournal/logger/logger.dart';
 import 'generated/analytics.pb.dart' as pb;
 
 class AnalyticsStorage {
@@ -106,7 +107,11 @@ class AnalyticsStorage {
       var shouldDelete = await callback(allEvents);
       if (shouldDelete) {
         for (var filePath in filePaths) {
-          File(filePath).deleteSync();
+          try {
+            File(filePath).deleteSync();
+          } catch (ex, st) {
+            Log.e("Failing to delete analytics file", ex: ex, stacktrace: st);
+          }
         }
       }
     });
