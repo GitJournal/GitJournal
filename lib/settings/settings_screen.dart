@@ -34,6 +34,7 @@ import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/features.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/debug_screen.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
@@ -62,7 +63,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr('settings.title')),
+        title: Text(tr(LocaleKeys.settings_title)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -608,7 +609,10 @@ Future<String> _getExternalDir(BuildContext context) async {
       return dir;
     } else {
       Log.e("FilePicker: Got $dir but it is not writable");
-      showSnackbar(context, tr('settings.storage.notWritable', args: [dir]));
+      showSnackbar(
+        context,
+        tr(LocaleKeys.settings_storage_notWritable, args: [dir]),
+      );
     }
   }
 
