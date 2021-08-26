@@ -70,6 +70,7 @@ void _isolateMain(SendPort toMainSender) {
   ReceivePort fromMainRec = ReceivePort();
   toMainSender.send(fromMainRec.sendPort);
 
+  // ignore: cancel_subscriptions
   var _ = fromMainRec.listen((data) async {
     assert(data is _LoadingMessage);
     var msg = data as _LoadingMessage;
