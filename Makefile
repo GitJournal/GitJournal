@@ -10,3 +10,12 @@ protos:
 	protoc --dart_out=grpc:lib/generated -Iprotos protos/shared_preferences.proto
 	dart format lib/generated
 	flutter pub run import_sorter:main lib/generated/*
+
+unused:
+	flutter pub run dart_code_metrics:metrics check-unused-files lib
+
+fmt:
+	flutter pub run import_sorter:main
+
+lint:
+	flutter pub run dart_code_metrics:metrics lib
