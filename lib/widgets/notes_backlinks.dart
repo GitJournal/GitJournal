@@ -71,11 +71,6 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
       return Container();
     }
 
-    var title = widget.note.title;
-    if (title.isEmpty) {
-      title = widget.note.fileName;
-    }
-
     var num = linkedNotes.length;
     var textTheme = Theme.of(context).textTheme;
     var c = Column(
