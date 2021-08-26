@@ -13,6 +13,9 @@ jobs:
       - uses: actions/checkout@v1
       - name: Install Deps
         run: brew install git-crypt md5sha1sum gnu-sed create-dmg xmlstarlet
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: "2.2.2"
       - name: Test
         run: flutter test
       - name: Unlock Secrets
@@ -21,9 +24,6 @@ jobs:
         run: ./scripts/decrypt_secrets.sh
       - name: Setup provisioning profile
         run: ./scripts/add_macos_keys.sh
-      - uses: subosito/flutter-action@v1
-        with:
-          flutter-version: "2.2.2"
       - name: Setup Env
         run: dart ./scripts/setup_env.dart
       - run: flutter pub get
