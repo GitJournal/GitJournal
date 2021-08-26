@@ -1,16 +1,16 @@
 import 'package:dart_git/utils/result.dart';
 import 'package:grpc/grpc.dart';
 
+import 'package:gitjournal/.env.dart';
 import 'package:gitjournal/analytics/generated/analytics.pbgrpc.dart';
 import 'generated/analytics.pb.dart' as pb;
 
-const _url = 'analyticsbackend-wetu2tkdpq-ew.a.run.app';
 const _port = 443;
 const _timeout = Duration(seconds: 30);
 
 Future<Result<void>> sendAnalytics(pb.AnalyticsMessage msg) async {
   final channel = ClientChannel(
-    _url,
+    Env.analyticsUrl,
     port: _port,
     options: ChannelOptions(
       // credentials: const ChannelCredentials.insecure(),
