@@ -33,6 +33,7 @@ import 'package:gitjournal/editors/note_editor_selector.dart';
 import 'package:gitjournal/editors/org_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
 import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/settings.dart';
@@ -322,8 +323,8 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
       context: context,
       builder: (_) => RenameDialog(
         oldPath: note.filePath,
-        inputDecoration: tr('widgets.NoteEditor.fileName'),
-        dialogTitle: tr('widgets.NoteEditor.renameFile'),
+        inputDecoration: tr(LocaleKeys.widgets_NoteEditor_fileName),
+        dialogTitle: tr(LocaleKeys.widgets_NoteEditor_renameFile),
       ),
     );
     if (fileName is String) {
@@ -414,8 +415,8 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
 
       await showAlertDialog(
         context,
-        tr("editors.common.saveNoteFailed.title"),
-        tr("editors.common.saveNoteFailed.message"),
+        tr(LocaleKeys.editors_common_saveNoteFailed_title),
+        tr(LocaleKeys.editors_common_saveNoteFailed_message),
       );
       return false;
     }

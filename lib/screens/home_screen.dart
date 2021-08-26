@@ -8,6 +8,7 @@ import 'package:gitjournal/core/flattened_notes_folder.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/folder_views/folder_view.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -32,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
       rootFolder = root;
       notesFolder = FlattenedNotesFolder(
         root,
-        title: tr('screens.home.allNotes'),
+        title: tr(LocaleKeys.screens_home_allNotes),
       );
     }
   }

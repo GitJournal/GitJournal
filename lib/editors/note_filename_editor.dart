@@ -5,6 +5,8 @@ import 'package:fs_shim/fs_shim.dart';
 import 'package:function_types/function_types.dart';
 import 'package:path/path.dart' as p;
 
+import 'package:gitjournal/generated/locale_keys.g.dart';
+
 class NoteFileNameEditor extends StatefulWidget {
   final String filePath;
   final FileSystem fs;
@@ -36,7 +38,7 @@ class _NoteFileNameEditorState extends State<NoteFileNameEditor> {
       keyboardType: TextInputType.text,
       style: style,
       decoration: InputDecoration(
-        hintText: tr('editors.common.defaultFileNameHint'),
+        hintText: tr(LocaleKeys.editors_common_defaultFileNameHint),
         border: InputBorder.none,
         fillColor: theme.scaffoldBackgroundColor,
         hoverColor: theme.scaffoldBackgroundColor,
