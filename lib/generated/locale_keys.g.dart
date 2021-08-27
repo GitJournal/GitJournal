@@ -544,6 +544,7 @@ abstract class LocaleKeys {
   static const drawer_bug = 'drawer.bug';
   static const drawer_remote = 'drawer.remote';
   static const drawer_addRepo = 'drawer.addRepo';
+  static const drawer_login = 'drawer.login';
   static const drawer = 'drawer';
   static const setup_autoconfigure_title = 'setup.autoconfigure.title';
   static const setup_autoconfigure_step1 = 'setup.autoconfigure.step1';

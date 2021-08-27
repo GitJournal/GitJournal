@@ -33,6 +33,10 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/widgets/scroll_view_without_animation.dart';
 
 class LoginPage extends StatefulWidget {
@@ -45,15 +49,17 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  //var goTrue = GoTrue(_localDevServer);
-
   Future<void> _loginAction() async {
-    /*var t = await goTrue.login('handa.vish@gmail.com', 'blah');
-    print("Got Token: $t");
+    var auth = Supabase.instance.client.auth;
+    var result = await auth.signIn(
+      email: 'test@gitjournal.io',
+      password: 'hellohello',
+    );
 
-    var user = await goTrue.user(t.accessToken);
-    print("Got usre: $user");
-    */
+    // FIXME: Add redirect once we implement social logins
+
+    print(result.data);
+    print(result.data?.toJson());
   }
 
   Widget _submitButton() {
@@ -76,75 +82,15 @@ class _LoginPageState extends State<LoginPage> {
             end: Alignment.centerRight,
             colors: [Color(0xfffbb448), Color(0xfff7892b)]),
       ),
-      child: const Text(
-        'Login',
-        style: TextStyle(fontSize: 20, color: Colors.white),
+      child: Text(
+        tr(LocaleKeys.drawer_login),
+        style: const TextStyle(fontSize: 20, color: Colors.white),
       ),
     );
 
     return InkWell(
       onTap: _loginAction,
       child: c,
-    );
-  }
-
-  Widget _divider() {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        children: <Widget>[
-          const SizedBox(width: 20),
-          const Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Divider(
-                thickness: 1,
-              ),
-            ),
-          ),
-          const Text('or'),
-          const Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Divider(
-                thickness: 1,
-              ),
-            ),
-          ),
-          const SizedBox(width: 20),
-        ],
-      ),
-    );
-  }
-
-  Widget _facebookButton() {
-    return Container(
-      height: 50,
-      margin: const EdgeInsets.symmetric(vertical: 20),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            flex: 1,
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Color(0xff1959a9),
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(5),
-                    topLeft: Radius.circular(5)),
-              ),
-              alignment: Alignment.center,
-              child: const Text('f',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25,
-                      fontWeight: FontWeight.w400)),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -215,8 +161,6 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.w500)),
                   ),
-                  _divider(),
-                  _facebookButton(),
                   SizedBox(height: height * .055),
                   _createAccountLabel(),
                 ],

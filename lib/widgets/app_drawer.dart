@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:time/time.dart';
 import 'package:universal_io/io.dart' show Platform;
 import 'package:url_launcher/url_launcher.dart';
@@ -121,6 +122,7 @@ class _AppDrawerState extends State<AppDrawer>
     }
 
     var divider = Row(children: <Widget>[const Expanded(child: Divider())]);
+    var user = Supabase.instance.client.auth.currentUser;
 
     return Drawer(
       child: ListView(
@@ -154,11 +156,11 @@ class _AppDrawerState extends State<AppDrawer>
                 );
               },
             ),
-          if (appSettings.experimentalAccounts)
+          if (appSettings.experimentalAccounts && user == null)
             _buildDrawerTile(
               context,
               icon: Icons.account_circle,
-              title: 'Login',
+              title: tr(LocaleKeys.drawer_login),
               onTap: () => _navTopLevel(context, '/login'),
               selected: currentRoute == '/login',
             ),
