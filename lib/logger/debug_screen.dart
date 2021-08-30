@@ -203,11 +203,21 @@ class _DebugScreenState extends State<DebugScreen> {
           text: '\n           ',
           style: textStyle.copyWith(fontWeight: FontWeight.bold));
 
+      var largestMemberLength = 0;
+      for (var entry in msg.stack!) {
+        var member = entry['member'];
+        if (member != null && member is String) {
+          if (member.length > largestMemberLength) {
+            largestMemberLength = member.length;
+          }
+        }
+      }
+
       for (var entry in msg.stack!) {
         var member = entry['member'];
         if (member != null) {
           var exSpan = TextSpan(
-            text: '$member',
+            text: '$member'.padRight(largestMemberLength),
             style: origTextStyle.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -218,7 +228,11 @@ class _DebugScreenState extends State<DebugScreen> {
         }
 
         var location = entry['location'];
-        if (location != null) {
+        if (location != null && location is String) {
+          const prefix = 'package:';
+          if (location.startsWith(prefix)) {
+            location = location.substring(prefix.length);
+          }
           var locSpan = TextSpan(
             text: ' - $location',
             style: origTextStyle,
