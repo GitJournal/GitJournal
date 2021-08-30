@@ -77,12 +77,18 @@ class _DebugScreenState extends State<DebugScreen> {
         ],
       ),
       body: Scrollbar(
-        child: ListView(
-          controller: _controller,
-          children: <Widget>[
-            ..._fetchLogWidgets(),
-          ],
-          padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: SizedBox(
+            width: 1000.0,
+            child: ListView(
+              controller: _controller,
+              children: <Widget>[
+                ..._fetchLogWidgets(),
+              ],
+              padding: const EdgeInsets.all(16.0),
+            ),
+          ),
         ),
       ),
     );
