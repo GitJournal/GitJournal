@@ -5,15 +5,14 @@
 ## Environment Setup
 
 1. Install [Flutter](https://flutter.dev/docs/get-started/install) v1 through official guidelines. The last v1.22.6 will do.
-2. As a part of flutter installation, you will need to install [Android Studio](https://developer.android.com/studio)
-3. Use [AVD manager](https://developer.android.com/studio/run/managing-avds) from Android Studio, to create device for local development.
-4. Project contains `:git_binding` dependency, so it needs Android NDK. You need to install through [SDK Manager](https://developer.android.com/studio/projects/install-ndk). GitJournal has only been tested with NDK release 19. It would be best to install that.
-5. Run the `scripts/setup_env.dart` script
-6. Run command `flutter run --flavor dev --debug`: it will connect to available device and run program.
+1. As a part of flutter installation, you will need to install [Android Studio](https://developer.android.com/studio)
+1. Use [AVD manager](https://developer.android.com/studio/run/managing-avds) from Android Studio, to create device for local development.
+1. Project contains `:git_binding` dependency, so it needs Android NDK. You need to install through [SDK Manager](https://developer.android.com/studio/projects/install-ndk). GitJournal has only been tested with NDK release 19. It would be best to install that.
+1. Run command `flutter run --flavor dev --debug`: it will connect to available device and run program.
 
    1. Or you can run `flutter build apk --flavor dev --debug` and see apk under `build/app/outputs/apk/` folder
 
-7. You will see application on emulator, you are all setup. You can start with [app.dart](lib/app.dart) file to exploring code.
+1. You will see application on emulator, you are all setup. You can start with [app.dart](lib/app.dart) file to exploring code.
 
 ## Trouble Shooting
 
@@ -67,4 +66,3 @@ Example launch.json:
     ]
 }
 ```
-
