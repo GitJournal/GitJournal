@@ -174,8 +174,6 @@ class Log {
   static Iterable<LogMessage> fetchLogsForDate(DateTime date) sync* {
     var file = File(filePathForDate(date));
     if (!file.existsSync()) {
-      var dateOnly = date.toIso8601String().substring(0, 10);
-      Log.i("No log file for $dateOnly");
       return;
     }
 
