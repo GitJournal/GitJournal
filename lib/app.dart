@@ -44,7 +44,7 @@ class JournalApp extends StatefulWidget {
     Log.i("--------------------------------");
 
     var appSettings = AppSettings.instance;
-    Log.i("AppSetting ${appSettings.toMap()}");
+    Log.i("AppSetting", props: appSettings.toMap());
 
     _enableAnalyticsIfPossible(appSettings, pref);
 

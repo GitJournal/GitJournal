@@ -90,10 +90,10 @@ class GitJournalRepo with ChangeNotifier {
 
     // logEvent(Event.Settings, parameters: settings.toLoggableMap());
 
-    Log.i("StorageConfig ${storageConfig.toLoggableMap()}");
-    Log.i("FolderConfig ${folderConfig.toLoggableMap()}");
-    Log.i("GitConfig ${gitConfig.toLoggableMap()}");
-    Log.i("Settings ${settings.toLoggableMap()}");
+    Log.i("StorageConfig", props: storageConfig.toLoggableMap());
+    Log.i("FolderConfig", props: folderConfig.toLoggableMap());
+    Log.i("GitConfig", props: gitConfig.toLoggableMap());
+    Log.i("Settings", props: settings.toLoggableMap());
 
     var repoPath = await storageConfig.buildRepoPath(gitBaseDir);
     Log.i("Loading Repo at path $repoPath");
