@@ -151,35 +151,28 @@ class _DebugScreenState extends State<DebugScreen> {
   }
 
   Widget _buildLogWidget(LogMessage msg) {
-    var textStyle = Theme.of(context)
+    var origTextStyle = Theme.of(context)
         .textTheme
         .bodyText2!
         .copyWith(fontFamily: "Roboto Mono");
 
-    textStyle = textStyle.copyWith(color: _colorForLevel(msg.l));
+    var textStyle = origTextStyle.copyWith(color: _colorForLevel(msg.l));
 
     var dt = DateTime.fromMillisecondsSinceEpoch(msg.t);
     var timeStr = dt.toIso8601String().substring(11, 11 + 8);
     var str = ' ' + msg.msg;
 
-    if (msg.ex != null) {
-      str += ' ' + msg.ex!;
-    }
-    if (msg.stack != null) {
-      str += ' ' + msg.stack.toString();
-    }
-
     var props = <TextSpan>[];
     msg.props?.forEach((key, value) {
       var emptySpace = TextSpan(
-          text: '\n         ',
+          text: '\n           ',
           style: textStyle.copyWith(fontWeight: FontWeight.bold));
       props.add(emptySpace);
 
       var keySpan = TextSpan(
         text: '$key: ',
         style: textStyle.copyWith(
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w600,
         ),
       );
       var valueSpan = TextSpan(text: value.toString());
@@ -188,6 +181,55 @@ class _DebugScreenState extends State<DebugScreen> {
       props.add(valueSpan);
     });
 
+    var errorSpans = <TextSpan>[];
+    if (msg.ex != null) {
+      var emptySpace = TextSpan(
+          text: '\n         ',
+          style: origTextStyle.copyWith(fontWeight: FontWeight.bold));
+
+      var exSpan = TextSpan(
+        text: '${msg.ex}',
+        style: textStyle.copyWith(
+          fontWeight: FontWeight.bold,
+        ),
+      );
+
+      errorSpans.add(emptySpace);
+      errorSpans.add(exSpan);
+    }
+
+    if (msg.stack != null) {
+      var emptySpace = TextSpan(
+          text: '\n           ',
+          style: textStyle.copyWith(fontWeight: FontWeight.bold));
+
+      for (var entry in msg.stack!) {
+        var member = entry['member'];
+        if (member != null) {
+          var exSpan = TextSpan(
+            text: '$member',
+            style: origTextStyle.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          );
+
+          errorSpans.add(emptySpace);
+          errorSpans.add(exSpan);
+        }
+
+        var location = entry['location'];
+        if (location != null) {
+          var locSpan = TextSpan(
+            text: ' - $location',
+            style: origTextStyle,
+          );
+
+          // errorSpans.add(emptySpace);
+          errorSpans.add(locSpan);
+        }
+      }
+    }
+
     return SelectableText.rich(
       TextSpan(children: [
         TextSpan(
@@ -195,6 +237,7 @@ class _DebugScreenState extends State<DebugScreen> {
             style: textStyle.copyWith(fontWeight: FontWeight.bold)),
         TextSpan(text: str),
         ...props,
+        ...errorSpans,
       ], style: textStyle),
     );
   }
