@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:rich_text_controller/rich_text_controller.dart';
 
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/note.dart';
@@ -30,6 +31,7 @@ class RawEditor extends StatefulWidget implements Editor {
   final NoteCallback discardChangesSelected;
 
   final bool editMode;
+  final String? highlightString;
 
   RawEditor({
     Key? key,
@@ -43,6 +45,7 @@ class RawEditor extends StatefulWidget implements Editor {
     required this.moveNoteToFolderSelected,
     required this.discardChangesSelected,
     required this.editMode,
+    required this.highlightString,
   }) : super(key: key);
 
   @override
@@ -56,7 +59,7 @@ class RawEditorState extends State<RawEditor>
     implements EditorState {
   Note note;
   late bool _noteModified;
-  late TextEditingController _textController;
+  late RichTextController _textController;
   late UndoRedoStack _undoRedoStack;
 
   final serializer = MarkdownYAMLCodec();
@@ -67,7 +70,17 @@ class RawEditorState extends State<RawEditor>
   void initState() {
     super.initState();
     _noteModified = widget.noteModified;
-    _textController = TextEditingController(text: serializer.encode(note.data));
+
+    // FIXME: Stop hardcoding the highlight color
+    _textController = RichTextController(
+      text: serializer.encode(note.data),
+      stringMap: {
+        if (widget.highlightString != null)
+          widget.highlightString!:
+              const TextStyle(backgroundColor: Colors.green),
+      },
+    );
+
     _undoRedoStack = UndoRedoStack();
   }
 

@@ -1162,6 +1162,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.4.5"
+  rich_text_controller:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "7a032886e950cf1181fd82719da0d3af10ea93aa"
+      url: "https://github.com/micazi/rich_text_controller"
+    source: git
+    version: "1.3.0"
   rxdart:
     dependency: transitive
     description:

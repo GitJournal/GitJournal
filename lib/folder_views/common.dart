@@ -76,10 +76,15 @@ void openNoteEditor(
   Note note,
   NotesFolder parentFolder, {
   bool editMode = false,
+  String? highlightString,
 }) async {
   var route = MaterialPageRoute(
-    builder: (context) =>
-        NoteEditor.fromNote(note, parentFolder, editMode: editMode),
+    builder: (context) => NoteEditor.fromNote(
+      note,
+      parentFolder,
+      editMode: editMode,
+      highlightString: highlightString,
+    ),
     settings: const RouteSettings(name: '/note/'),
   );
   var showUndoSnackBar = await Navigator.of(context).push(route);

@@ -58,10 +58,13 @@ class NoteEditor extends StatefulWidget {
   final String newNoteFileName;
   final bool editMode;
 
+  final String? highlightString;
+
   NoteEditor.fromNote(
     this.note,
     this.parentFolderView, {
     this.editMode = false,
+    this.highlightString,
   })  : notesFolder = note!.parent,
         defaultEditorType = null,
         existingText = null,
@@ -78,7 +81,8 @@ class NoteEditor extends StatefulWidget {
     this.newNoteExtraProps = const {},
     this.newNoteFileName = "",
   })  : note = null,
-        editMode = true;
+        editMode = true,
+        highlightString = null;
 
   @override
   NoteEditorState createState() {
@@ -248,6 +252,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
           editMode: widget.editMode,
+          highlightString: widget.highlightString,
         );
       case EditorType.Checklist:
         return ChecklistEditor(

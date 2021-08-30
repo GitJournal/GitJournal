@@ -84,6 +84,9 @@ dependencies:
   sprintf: ^6.0.0
   recase: ^4.0.0
   supabase_flutter: ^0.1.0
+  rich_text_controller:
+    git:
+      url: https://github.com/micazi/rich_text_controller
 
 dev_dependencies:
   #flutter_driver:
