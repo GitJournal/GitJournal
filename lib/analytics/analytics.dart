@@ -7,6 +7,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'config.dart';
 import 'device_info.dart';
@@ -154,6 +155,7 @@ class Analytics {
           ex: result.error,
           stacktrace: result.stackTrace,
         );
+        logException(result.error!, result.stackTrace!);
         return false;
       }
 
