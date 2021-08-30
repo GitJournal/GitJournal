@@ -75,10 +75,11 @@ class Log {
     }
 
     if (foundation.kDebugMode) {
+      var debugMsg = msg;
       if (props != null && props.isNotEmpty) {
-        msg += " $props";
+        debugMsg += " $props";
       }
-      Fimber.log("I", msg,
+      Fimber.log("I", debugMsg,
           ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
     }
     _write('i', msg, ex, stacktrace, props);
