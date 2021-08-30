@@ -110,6 +110,7 @@ settings:
       info: Info
       debug: Debug
       verbose: Verbose
+    copy: Debug Logs Copied
   images:
     title: Image Settings
     subtitle: Configure how Images are stored

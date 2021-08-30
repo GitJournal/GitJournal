@@ -10,6 +10,7 @@ import 'package:time/time.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/utils/utils.dart';
 
 class DebugScreen extends StatefulWidget {
   @override
@@ -140,6 +141,7 @@ class _DebugScreenState extends State<DebugScreen> {
     }
 
     Clipboard.setData(ClipboardData(text: messages.join('\n')));
+    showSnackbar(context, tr(LocaleKeys.settings_debug_copy));
   }
 
   Widget _buildLogWidget(LogMessage msg) {

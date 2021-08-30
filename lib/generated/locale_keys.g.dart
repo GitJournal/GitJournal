@@ -184,6 +184,7 @@ abstract class LocaleKeys {
   static const settings_debug_levels_debug = 'settings.debug.levels.debug';
   static const settings_debug_levels_verbose = 'settings.debug.levels.verbose';
   static const settings_debug_levels = 'settings.debug.levels';
+  static const settings_debug_copy = 'settings.debug.copy';
   static const settings_debug = 'settings.debug';
   static const settings_images_title = 'settings.images.title';
   static const settings_images_subtitle = 'settings.images.subtitle';
