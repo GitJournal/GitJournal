@@ -18,6 +18,7 @@ import 'package:gitjournal/analytics/route_observer.dart';
 import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/core/views/inline_tags_view.dart';
 import 'package:gitjournal/core/views/summary_view.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
@@ -367,7 +368,14 @@ class GitJournalChangeNotifiers extends StatelessWidget {
   }
 
   Widget _buildNoteMaterializedViews(GitJournalRepo repo, Widget child) {
-    return NoteSummaryView(repoPath: repo.repoPath, child: child);
+    var repoPath = repo.repoPath;
+    return NoteSummaryView(
+      repoPath: repoPath,
+      child: InlineTagsView(
+        repoPath: repoPath,
+        child: child,
+      ),
+    );
   }
 
   Widget _buildMarkdownSettings({required Widget child}) {

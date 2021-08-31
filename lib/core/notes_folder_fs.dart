@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:universal_io/io.dart';
 
+import 'package:gitjournal/core/views/notes_materialized_view.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'note.dart';
 import 'notes_folder.dart';
@@ -496,8 +497,10 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   @override
   NotesFolderConfig get config => _config;
 
-  SplayTreeSet<String> getNoteTagsRecursively() {
-    return _fetchTags(this, SplayTreeSet<String>());
+  SplayTreeSet<String> getNoteTagsRecursively(
+    NotesMaterializedView<Set<String>> inlineTagsView,
+  ) {
+    return _fetchTags(this, inlineTagsView, SplayTreeSet<String>());
   }
 
   Future<List<Note>> matchNotes(NoteMatcherAsync pred) async {
@@ -526,14 +529,18 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
 typedef NoteMatcherAsync = Future<bool> Function(Note n);
 
-SplayTreeSet<String> _fetchTags(NotesFolder folder, SplayTreeSet<String> tags) {
+SplayTreeSet<String> _fetchTags(
+  NotesFolder folder,
+  NotesMaterializedView<Set<String>> inlineTagsView,
+  SplayTreeSet<String> tags,
+) {
   for (var note in folder.notes) {
     tags.addAll(note.tags);
-    tags.addAll(note.inlineTags);
+    tags.addAll(inlineTagsView.fetch(note) ?? {});
   }
 
   for (var folder in folder.subFolders) {
-    tags = _fetchTags(folder, tags);
+    tags = _fetchTags(folder, inlineTagsView, tags);
   }
 
   return tags;

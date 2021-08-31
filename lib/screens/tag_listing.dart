@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -8,6 +10,7 @@ import 'package:gitjournal/core/flattened_notes_folder.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_serializer.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/core/views/inline_tags_view.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/folder_views/folder_view.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
@@ -19,7 +22,10 @@ class TagListingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var rootFolder = Provider.of<NotesFolderFS>(context);
-    var allTags = rootFolder.getNoteTagsRecursively();
+    var inlineTagsView = InlineTagsView.of(context);
+    var allTags = inlineTagsView == null
+        ? SplayTreeSet<String>()
+        : rootFolder.getNoteTagsRecursively(inlineTagsView);
 
     Widget body;
     if (allTags.isNotEmpty) {
@@ -60,6 +66,7 @@ class TagListingScreen extends StatelessWidget {
   Widget _buildTagTile(BuildContext context, String tag) {
     var theme = Theme.of(context);
     var titleColor = theme.textTheme.headline1!.color;
+    var inlineTagsView = InlineTagsView.of(context);
 
     return ListTile(
       leading: FaIcon(FontAwesomeIcons.tag, color: titleColor),
@@ -70,8 +77,18 @@ class TagListingScreen extends StatelessWidget {
             var rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
             var folder = FlattenedNotesFolder(
               rootFolder,
-              filter: (Note n) =>
-                  n.tags.contains(tag) || n.inlineTags.contains(tag),
+              filter: (Note n) {
+                if (n.tags.contains(tag)) {
+                  return true;
+                }
+
+                var inlineTags = inlineTagsView?.fetch(n);
+                if (inlineTags != null && inlineTags.contains(tag)) {
+                  return true;
+                }
+
+                return false;
+              },
               title: tag,
             );
 
