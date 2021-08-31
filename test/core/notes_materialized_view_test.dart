@@ -9,8 +9,8 @@ import 'package:test/test.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/core/notes_materialized_view.dart';
 import 'package:gitjournal/core/transformers/base.dart';
+import 'package:gitjournal/core/views/notes_materialized_view.dart';
 
 void main() {
   group('ViewTest', () {

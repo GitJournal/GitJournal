@@ -18,6 +18,7 @@ import 'package:gitjournal/analytics/route_observer.dart';
 import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/core/views/summary_view.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/iap/iap.dart';
@@ -354,10 +355,19 @@ class GitJournalChangeNotifiers extends StatelessWidget {
         ChangeNotifierProvider<StorageConfig>.value(value: repo.storageConfig),
         ChangeNotifierProvider<Settings>.value(value: repo.settings),
         ChangeNotifierProvider<NotesFolderConfig>.value(value: folderConfig),
-        ChangeNotifierProvider<NotesFolderFS>.value(value: repo.notesFolder),
       ],
-      child: child,
+      child: _buildNoteMaterializedViews(
+        repo,
+        ChangeNotifierProvider<NotesFolderFS>.value(
+          value: repo.notesFolder,
+          child: child,
+        ),
+      ),
     );
+  }
+
+  Widget _buildNoteMaterializedViews(GitJournalRepo repo, Widget child) {
+    return NoteSummaryView(repoPath: repo.repoPath, child: child);
   }
 
   Widget _buildMarkdownSettings({required Widget child}) {

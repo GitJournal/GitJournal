@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:path/path.dart' as p;
 
-import 'note.dart';
+import '../note.dart';
 
 typedef NotesViewComputer<T> = T Function(Note note);
 

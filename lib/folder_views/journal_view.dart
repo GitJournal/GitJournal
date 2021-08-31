@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
+import 'package:gitjournal/core/views/summary_view.dart';
 import 'package:gitjournal/folder_views/list_view.dart';
 import 'package:gitjournal/widgets/highlighted_text.dart';
 
@@ -69,10 +70,16 @@ class JournalView extends StatelessWidget {
       );
     }
 
+    var noteSummary = "";
+    var summaryProvider = NoteSummaryView.of(context);
+    if (summaryProvider != null) {
+      noteSummary = summaryProvider.fetch(note) ?? noteSummary;
+    }
+
     var children = <Widget>[
       const SizedBox(height: 8.0),
       HighlightedText(
-        text: note.summary + '\n', // no minLines option
+        text: noteSummary + '\n', // no minLines option
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
         style: textTheme.bodyText2!,

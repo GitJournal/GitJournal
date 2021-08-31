@@ -28,7 +28,6 @@ import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
-import 'package:gitjournal/utils/markdown.dart';
 import 'link.dart';
 import 'md_yaml_doc.dart';
 import 'md_yaml_doc_codec.dart';
@@ -76,6 +75,7 @@ class NoteFileFormatInfo {
   }
 }
 
+// FIXME: Treat Markdown and Markdown + YAML differently
 enum NoteFileFormat {
   Markdown,
   OrgMode,
@@ -105,7 +105,6 @@ class Note with NotesNotifier {
   var _serializer = MarkdownYAMLCodec();
 
   // Computed from body
-  String? _summary;
   List<Link>? _links;
   Set<String>? _inlineTags;
 
@@ -224,7 +223,6 @@ class Note with NotesNotifier {
     }
 
     _body = newBody;
-    _summary = null;
     _links = null;
     _inlineTags = null;
 
@@ -306,15 +304,6 @@ class Note with NotesNotifier {
     noteSerializer.decode(_data, this);
 
     _notifyModified();
-  }
-
-  // FIXME: When building this, take the title type into account
-  //         If the summary starts with the title, then remove it
-  String get summary {
-    if (_loadState != NoteLoadState.Loaded) return "";
-
-    _summary ??= stripMarkdownFormatting(body);
-    return _summary!;
   }
 
   NoteLoadState get loadState {
