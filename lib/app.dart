@@ -328,29 +328,11 @@ class GitJournalChangeNotifiers extends StatelessWidget {
     var app = ChangeNotifierProvider.value(
       value: repoManager,
       child: Consumer<RepositoryManager>(
-        builder: (_, repoManager, __) => buildMarkdownSettings(
+        builder: (_, repoManager, __) => _buildMarkdownSettings(
           child: ChangeNotifierProvider.value(
             value: repoManager.currentRepo,
             child: Consumer<GitJournalRepo>(
-              builder: (_, repo, __) => ChangeNotifierProvider<GitConfig>.value(
-                value: repo.gitConfig,
-                child: ChangeNotifierProvider<StorageConfig>.value(
-                  value: repo.storageConfig,
-                  child: ChangeNotifierProvider<Settings>.value(
-                    value: repo.settings,
-                    child: ChangeNotifierProvider<NotesFolderConfig>.value(
-                      value: repo.folderConfig,
-                      child: Consumer<GitJournalRepo>(
-                        builder: (_, repo, __) =>
-                            ChangeNotifierProvider<NotesFolderFS>.value(
-                          value: repo.notesFolder,
-                          child: child,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              builder: (_, repo, __) => _buildRepoDependentProviders(repo),
             ),
           ),
         ),
@@ -363,7 +345,22 @@ class GitJournalChangeNotifiers extends StatelessWidget {
     );
   }
 
-  Widget buildMarkdownSettings({required Widget child}) {
+  Widget _buildRepoDependentProviders(GitJournalRepo repo) {
+    var folderConfig = repo.folderConfig;
+
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<GitConfig>.value(value: repo.gitConfig),
+        ChangeNotifierProvider<StorageConfig>.value(value: repo.storageConfig),
+        ChangeNotifierProvider<Settings>.value(value: repo.settings),
+        ChangeNotifierProvider<NotesFolderConfig>.value(value: folderConfig),
+        ChangeNotifierProvider<NotesFolderFS>.value(value: repo.notesFolder),
+      ],
+      child: child,
+    );
+  }
+
+  Widget _buildMarkdownSettings({required Widget child}) {
     return Consumer<RepositoryManager>(
       builder: (_, repoManager, __) {
         var markdown = MarkdownRendererConfig(repoManager.currentId, pref);
