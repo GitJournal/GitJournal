@@ -50,8 +50,11 @@ Hello
         return random;
       };
 
-      var view =
-          await NotesMaterializedView.loadView<String>('_test_box', compute);
+      var view = await NotesMaterializedView.loadView<String>(
+        name: '_test_box',
+        computeFn: compute,
+        repoPath: tempDir.path,
+      );
       var note = await _createExampleNote();
 
       expect(view.fetch(note), random);
