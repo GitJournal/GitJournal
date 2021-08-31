@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/core/notes_view.dart';
+import 'package:gitjournal/core/notes_materialized_view.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/transformers/base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -48,7 +48,8 @@ Hello
         return note.fileName;
       };
 
-      var view = await NotesView.loadView<String>('_test_box', compute);
+      var view =
+          await NotesMaterializedView.loadView<String>('_test_box', compute);
       var note = await _createExampleNote();
 
       expect(view.fetch(note), note.fileName);
