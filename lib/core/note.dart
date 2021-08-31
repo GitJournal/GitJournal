@@ -487,55 +487,6 @@ class Note with NotesNotifier {
     return true;
   }
 
-  Future<void> addImage(String filePath) async {
-    var file = File(filePath);
-    var absImagePath = _buildImagePath(file);
-    await file.copy(absImagePath);
-
-    if (_fileFormat == NoteFileFormat.OrgMode) {
-      _addImageOrgMode(absImagePath);
-      return;
-    }
-    _addImageMarkdown(absImagePath);
-  }
-
-  void _addImageMarkdown(String absImagePath) {
-    var relativeImagePath = p.relative(absImagePath, from: parent.folderPath);
-    if (!relativeImagePath.startsWith('.')) {
-      relativeImagePath = './$relativeImagePath';
-    }
-    var imageMarkdown = "![Image]($relativeImagePath)\n";
-    body = body.isEmpty ? imageMarkdown : "$body\n$imageMarkdown";
-  }
-
-  void _addImageOrgMode(String absImagePath) {
-    var relativeImagePath = p.relative(absImagePath, from: parent.folderPath);
-    if (!relativeImagePath.startsWith('.')) {
-      relativeImagePath = './$relativeImagePath';
-    }
-    var imageMarkdown = "[[$relativeImagePath]]\n";
-    body = body.isEmpty ? imageMarkdown : "$body\n$imageMarkdown";
-  }
-
-  String _buildImagePath(File file) {
-    String baseFolder;
-
-    var imageSpec = parent.config.imageLocationSpec;
-    if (imageSpec == '.') {
-      baseFolder = parent.folderPath;
-    } else {
-      var folder = parent.rootFolder.getFolderWithSpec(imageSpec);
-      if (folder != null) {
-        baseFolder = folder.folderPath;
-      } else {
-        baseFolder = parent.folderPath;
-      }
-    }
-
-    var imageFileName = p.basename(file.path);
-    return p.join(baseFolder, imageFileName);
-  }
-
   @override
   int get hashCode => _filePath.hashCode;
 

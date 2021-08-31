@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/core/image.dart' as core;
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/editors/common.dart';
@@ -196,7 +197,10 @@ class MarkdownEditorState extends State<MarkdownEditor>
 
   @override
   Future<void> addImage(String filePath) async {
-    await getNote().addImage(filePath);
+    var note = getNote();
+    var image = await core.Image.copyIntoFs(note.parent, filePath);
+    note.body += image.toMarkup(note.fileFormat);
+
     setState(() {
       _textController.text = note.body;
       _noteModified = true;

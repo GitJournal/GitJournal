@@ -21,6 +21,7 @@ import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/core/image.dart' as core;
 import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
@@ -131,7 +132,8 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
       for (var imagePath in existingImages) {
         () async {
           try {
-            await note!.addImage(imagePath);
+            var image = await core.Image.copyIntoFs(note!.parent, imagePath);
+            note!.body += image.toMarkup(note!.fileFormat);
           } catch (e, st) {
             Log.e("New Note Existing Image", ex: e, stacktrace: st);
           }

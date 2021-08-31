@@ -7,6 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:time/time.dart';
 
 import 'package:gitjournal/core/checklist.dart';
+import 'package:gitjournal/core/image.dart' as core;
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/disposable_change_notifier.dart';
@@ -293,7 +294,8 @@ class ChecklistEditorState extends State<ChecklistEditor>
   @override
   Future<void> addImage(String filePath) async {
     var note = getNote();
-    await note.addImage(filePath);
+    var image = await core.Image.copyIntoFs(note.parent, filePath);
+    note.body += image.toMarkup(note.fileFormat);
 
     setState(() {
       checklist = Checklist(note);

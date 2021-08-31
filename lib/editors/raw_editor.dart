@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:rich_text_controller/rich_text_controller.dart';
 
+import 'package:gitjournal/core/image.dart' as core;
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
@@ -148,7 +149,10 @@ class RawEditorState extends State<RawEditor>
 
   @override
   Future<void> addImage(String filePath) async {
-    await getNote().addImage(filePath);
+    var note = getNote();
+    var image = await core.Image.copyIntoFs(note.parent, filePath);
+    note.body += image.toMarkup(note.fileFormat);
+
     setState(() {
       _textController.text = note.body;
       _noteModified = true;
