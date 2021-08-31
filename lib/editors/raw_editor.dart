@@ -60,7 +60,7 @@ class RawEditorState extends State<RawEditor>
     implements EditorState {
   Note note;
   late bool _noteModified;
-  late RichTextController _textController;
+  late TextEditingController _textController;
   late UndoRedoStack _undoRedoStack;
 
   final serializer = MarkdownYAMLCodec();
@@ -73,14 +73,18 @@ class RawEditorState extends State<RawEditor>
     _noteModified = widget.noteModified;
 
     // FIXME: Stop hardcoding the highlight color
-    _textController = RichTextController(
-      text: serializer.encode(note.data),
-      stringMap: {
-        if (widget.highlightString != null)
+    var rawText = serializer.encode(note.data);
+    if (widget.highlightString != null) {
+      _textController = RichTextController(
+        text: rawText,
+        stringMap: {
           widget.highlightString!:
               const TextStyle(backgroundColor: Colors.green),
-      },
-    );
+        },
+      );
+    } else {
+      _textController = TextEditingController(text: rawText);
+    }
 
     _undoRedoStack = UndoRedoStack();
   }
