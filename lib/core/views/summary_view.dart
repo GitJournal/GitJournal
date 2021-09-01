@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
+import 'package:nested/nested.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/transformers/base.dart';
 import 'package:gitjournal/utils/markdown.dart';
 import 'notes_materialized_view.dart';
 
-class NoteSummaryView extends StatelessWidget {
-  final Widget child;
+class NoteSummaryView extends SingleChildStatelessWidget {
   final String repoPath;
 
   NoteSummaryView({
     Key? key,
-    required this.child,
+    Widget? child,
     required this.repoPath,
-  }) : super(key: key);
+  }) : super(key: key, child: child);
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildWithChild(BuildContext context, Widget? child) {
     return FutureProvider(
       create: (_) {
         return NotesMaterializedView.loadView<String>(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
+import 'package:nested/nested.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -369,12 +370,12 @@ class GitJournalChangeNotifiers extends StatelessWidget {
 
   Widget _buildNoteMaterializedViews(GitJournalRepo repo, Widget child) {
     var repoPath = repo.repoPath;
-    return NoteSummaryView(
-      repoPath: repoPath,
-      child: InlineTagsView(
-        repoPath: repoPath,
-        child: child,
-      ),
+    return Nested(
+      children: [
+        NoteSummaryView(repoPath: repoPath),
+        InlineTagsView(repoPath: repoPath),
+      ],
+      child: child,
     );
   }
 

@@ -87,6 +87,7 @@ dependencies:
   rich_text_controller:
     git:
       url: https://github.com/micazi/rich_text_controller
+  nested: ^1.0.0
 
 dev_dependencies:
   #flutter_driver:

@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
+import 'package:nested/nested.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/processors/inline_tags.dart';
 import 'package:gitjournal/core/transformers/base.dart';
 import 'notes_materialized_view.dart';
 
-class InlineTagsView extends StatelessWidget {
-  final Widget child;
+class InlineTagsView extends SingleChildStatelessWidget {
   final String repoPath;
 
   InlineTagsView({
     Key? key,
-    required this.child,
+    Widget? child,
     required this.repoPath,
-  }) : super(key: key);
+  }) : super(key: key, child: child);
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildWithChild(BuildContext context, Widget? child) {
     return FutureProvider(
       create: (_) {
         return NotesMaterializedView.loadView<Set<String>>(
@@ -36,8 +36,6 @@ class InlineTagsView extends StatelessWidget {
   }
 }
 
-// FIXME: When building this, take the title type into account
-//         If the summary starts with the title, then remove it
 Set<String> _compute(Note note) {
   var tagPrefixes = note.parent.config.inlineTagPrefixes;
   var p = InlineTagsProcessor(tagPrefixes: tagPrefixes);
