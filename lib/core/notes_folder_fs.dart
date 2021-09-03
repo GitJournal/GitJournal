@@ -498,7 +498,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   NotesFolderConfig get config => _config;
 
   SplayTreeSet<String> getNoteTagsRecursively(
-    NotesMaterializedView<Set<String>> inlineTagsView,
+    NotesMaterializedView<List<String>> inlineTagsView,
   ) {
     return _fetchTags(this, inlineTagsView, SplayTreeSet<String>());
   }
@@ -531,7 +531,7 @@ typedef NoteMatcherAsync = Future<bool> Function(Note n);
 
 SplayTreeSet<String> _fetchTags(
   NotesFolder folder,
-  NotesMaterializedView<Set<String>> inlineTagsView,
+  NotesMaterializedView<List<String>> inlineTagsView,
   SplayTreeSet<String> tags,
 ) {
   for (var note in folder.notes) {

@@ -20,7 +20,7 @@ class InlineTagsView extends SingleChildStatelessWidget {
   Widget buildWithChild(BuildContext context, Widget? child) {
     return FutureProvider(
       create: (_) {
-        return NotesMaterializedView.loadView<Set<String>>(
+        return NotesMaterializedView.loadView<List<String>>(
           name: 'inline_tags',
           repoPath: repoPath,
           computeFn: _compute,
@@ -31,13 +31,13 @@ class InlineTagsView extends SingleChildStatelessWidget {
     );
   }
 
-  static NotesMaterializedView<Set<String>>? of(BuildContext context) {
-    return Provider.of<NotesMaterializedView<Set<String>>?>(context);
+  static NotesMaterializedView<List<String>>? of(BuildContext context) {
+    return Provider.of<NotesMaterializedView<List<String>>?>(context);
   }
 }
 
-Set<String> _compute(Note note) {
+List<String> _compute(Note note) {
   var tagPrefixes = note.parent.config.inlineTagPrefixes;
   var p = InlineTagsProcessor(tagPrefixes: tagPrefixes);
-  return p.extractTags(note.body);
+  return p.extractTags(note.body).toList();
 }
