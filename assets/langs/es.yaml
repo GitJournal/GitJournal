@@ -261,7 +261,7 @@ editors:
     tags: Editar Etiquetas
     zen:
       enable: Habilitar Modo Zen
-      disable: Sehabilitar Modo Zen
+      disable: Deshabilitar Modo Zen
     saveNoteFailed:
       title: Error al Guardar la Nota
       message: Lo sentimos, parece que la nota no pudo ser guardada. Ha sido copiada al portapapeles para evitar perder datos.
@@ -334,7 +334,7 @@ widgets:
       summary: Mostrar Resumen
       customize: Personalizar Vista
     views:
-      standard: Vista Estandar
+      standard: Vista Estándar
       journal: Vista de Diario
       grid: Vista de Cuadrícula
       card: Vista de Tarjeta
@@ -455,7 +455,7 @@ feature:
   gitPushFreq: Frecuencia de Sincronización Git Configurable
   checklistEditor: Editor de Lista
   journalEditor: Editor de Diario
-  diffViews: Distintas Vistas de Carpeta - Diario, Cuadrícula, Estandar
+  diffViews: Distintas Vistas de Carpeta - Diario, Cuadrícula, Estándar
   imageSupport: Soporte de Imagen
   tags: Etiquetas de Nota
   appShortcuts: Atajos de Aplicación
