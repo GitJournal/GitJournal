@@ -21,7 +21,6 @@ import 'package:uuid/uuid.dart';
 
 import 'package:gitjournal/core/links_loader.dart';
 import 'package:gitjournal/core/md_yaml_doc_loader.dart';
-import 'package:gitjournal/core/note_notifier.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
@@ -81,7 +80,7 @@ enum NoteFileFormat {
   Txt,
 }
 
-class Note with NotesNotifier {
+class Note {
   NotesFolderFS parent;
   String? _filePath;
 
@@ -417,13 +416,7 @@ class Note with NotesNotifier {
   }
 
   void _notifyModified() {
-    notifyModifiedListeners(this);
-    notifyListeners();
-  }
-
-  void notifyModified() {
-    notifyModifiedListeners(this);
-    notifyListeners();
+    parent.noteModified(this);
   }
 
   String pathSpec() {

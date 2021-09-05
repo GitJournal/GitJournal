@@ -45,7 +45,6 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   @override
   void dispose() {
     _folders.forEach((f) => f.removeListener(_entityChanged));
-    _notes.forEach((f) => f.removeListener(_entityChanged));
 
     super.dispose();
   }
@@ -59,7 +58,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     notifyListeners();
   }
 
-  void _noteModified(Note note) {
+  void noteModified(Note note) {
     notifyNoteModified(-1, note);
   }
 
@@ -272,7 +271,6 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         continue;
       }
       // Log.v("Found file", props: {"path": fsEntity.path});
-      _addNoteListeners(note);
 
       _notes.add(note);
       _entityMap[fsEntity.path] = note;
@@ -291,8 +289,6 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
       if (e is Note) {
         // Log.v("File $path was no longer found");
-        _removeNoteListeners(e);
-
         var i = _notes.indexWhere((n) => n.filePath == path);
         assert(i != -1);
         var note = _notes[i];
@@ -313,7 +309,6 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
   void add(Note note) {
     assert(note.parent == this);
-    _addNoteListeners(note);
 
     _notes.add(note);
     _entityMap[note.filePath] = note;
@@ -323,7 +318,6 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
   void remove(Note note) {
     assert(note.parent == this);
-    _removeNoteListeners(note);
 
     assert(_notes.indexWhere((n) => n.filePath == note.filePath) != -1);
     assert(_entityMap.containsKey(note.filePath));
@@ -334,16 +328,6 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     _entityMap.remove(note.filePath);
 
     notifyNoteRemoved(index, note);
-  }
-
-  void _addNoteListeners(Note note) {
-    note.addModifiedListener(_noteModified);
-    note.addRenameListener(_noteRenamed);
-  }
-
-  void _removeNoteListeners(Note note) {
-    note.removeModifiedListener(_noteModified);
-    note.removeRenameListener(_noteRenamed);
   }
 
   void create() {
@@ -596,6 +580,6 @@ bool moveNote(Note note, NotesFolderFS destFolder) {
   note.parent = destFolder;
   note.parent.add(note);
 
-  note.notifyModified();
+  note.parent.noteModified(note);
   return true;
 }
