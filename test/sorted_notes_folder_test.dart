@@ -87,11 +87,11 @@ void main() {
       );
 
       var note = Note(folder, p.join(folder.folderPath, "new.md"));
+      folder.add(note);
+
       note.modified = DateTime(2020, 2, 1);
       note.body = "new\n";
       await NoteStorage().save(note).throwOnError();
-
-      folder.add(note);
 
       expect(sf.notes.length, 6);
 
@@ -111,11 +111,11 @@ void main() {
       );
 
       var note = Note(folder, p.join(folder.folderPath, "new.md"));
+      folder.add(note);
+
       note.modified = DateTime(2020, 1, 1);
       note.body = "new\n";
       await NoteStorage().save(note).throwOnError();
-
-      folder.add(note);
 
       expect(sf.notes.length, 6);
 
