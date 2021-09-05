@@ -15,7 +15,7 @@ class NotesMaterializedView<T> {
 
   static Future<NotesMaterializedView<T>> loadView<T>({
     required String name,
-    required NotesViewComputer computeFn,
+    required NotesViewComputer<T> computeFn,
     required String repoPath,
   }) async {
     var path = repoPath;
@@ -50,12 +50,3 @@ class NotesMaterializedView<T> {
     return val;
   }
 }
-
-/*
-
-  String? _summary;
-  List<Link>? _links;
-  Set<String>? _inlineTags;
-  Set<NoteImage>? _images;
-
-*/
