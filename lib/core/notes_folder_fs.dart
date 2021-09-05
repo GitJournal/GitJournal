@@ -525,6 +525,44 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     }
     return matchedNotes;
   }
+
+  ///
+  /// Do not let the user rename it to a different file-type.
+  ///
+  void renameNote(Note note, String newName) {
+    switch (note.fileFormat) {
+      case NoteFileFormat.OrgMode:
+        if (!newName.toLowerCase().endsWith('.org')) {
+          newName += '.org';
+        }
+        break;
+
+      case NoteFileFormat.Txt:
+        if (!newName.toLowerCase().endsWith('.txt')) {
+          newName += '.txt';
+        }
+        break;
+
+      case NoteFileFormat.Markdown:
+      default:
+        if (!newName.toLowerCase().endsWith('.md')) {
+          newName += '.md';
+        }
+        break;
+    }
+
+    var oldFilePath = note.filePath;
+    var parentDirName = p.dirname(oldFilePath);
+    var newFilePath = p.join(parentDirName, newName);
+
+    // The file will not exist for new notes
+    if (File(oldFilePath).existsSync()) {
+      File(note.filePath).renameSync(newFilePath);
+    }
+    note.filePath = newFilePath;
+
+    _noteRenamed(note, oldFilePath);
+  }
 }
 
 typedef NoteMatcherAsync = Future<bool> Function(Note n);

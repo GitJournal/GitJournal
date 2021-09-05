@@ -305,7 +305,7 @@ class GitJournalRepo with ChangeNotifier {
     logEvent(Event.NoteRenamed);
 
     var oldNotePath = note.filePath;
-    note.rename(newFileName);
+    note.parent.renameNote(note, newFileName);
 
     return _opLock.synchronized(() async {
       Log.d("Got renameNote lock");

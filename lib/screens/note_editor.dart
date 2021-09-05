@@ -341,7 +341,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
       if (_isNewNote) {
         setState(() {
           this.note = _note;
-          note.rename(fileName);
+          note.parent.rename(fileName);
         });
         return;
       }

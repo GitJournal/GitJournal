@@ -181,6 +181,11 @@ class Note with NotesNotifier {
     return _filePath as String;
   }
 
+  set filePath(String newpath) {
+    _filePath = newpath;
+    _notifyModified();
+  }
+
   String get fileName {
     return p.basename(filePath);
   }
@@ -393,45 +398,6 @@ class Note with NotesNotifier {
     }
 
     return contents;
-  }
-
-  ///
-  /// Do not let the user rename it to a different file-type.
-  ///
-  void rename(String newName) {
-    switch (_fileFormat) {
-      case NoteFileFormat.OrgMode:
-        if (!newName.toLowerCase().endsWith('.org')) {
-          newName += '.org';
-        }
-        break;
-
-      case NoteFileFormat.Txt:
-        if (!newName.toLowerCase().endsWith('.txt')) {
-          newName += '.txt';
-        }
-        break;
-
-      case NoteFileFormat.Markdown:
-      default:
-        if (!newName.toLowerCase().endsWith('.md')) {
-          newName += '.md';
-        }
-        break;
-    }
-
-    var oldFilePath = filePath;
-    var parentDirName = p.dirname(filePath);
-    var newFilePath = p.join(parentDirName, newName);
-
-    // The file will not exist for new notes
-    if (File(oldFilePath).existsSync()) {
-      File(filePath).renameSync(newFilePath);
-    }
-    _filePath = newFilePath;
-
-    notifyRenameListeners(this, oldFilePath);
-    _notifyModified();
   }
 
   @override
