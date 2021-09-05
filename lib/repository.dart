@@ -346,7 +346,7 @@ class GitJournalRepo with ChangeNotifier {
       Log.d("Got moveNote lock");
 
       var oldNotePath = note.filePath;
-      note.move(destFolder);
+      moveNote(note, destFolder);
 
       _gitRepo.moveNote(oldNotePath, note.filePath).then((Result<void> _) {
         _syncNotes();
