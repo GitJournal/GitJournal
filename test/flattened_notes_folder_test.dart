@@ -144,6 +144,24 @@ void main() {
       // FIXME: Check if the callback for added is called with the correct index
     });
 
+    test('Basic Filter should work', () async {
+      var f = await FlattenedNotesFolder.load(
+        rootFolder,
+        title: "foo",
+        filter: (Note note) async => note.body.contains('sub'),
+      );
+      expect(f.subFolders.length, 0);
+      expect(f.notes.length, 4);
+
+      var notes = List<Note>.from(f.notes);
+      notes.sort((Note n1, Note n2) => n1.body.compareTo(n2.body));
+
+      expect(notes[0].body, "sub1-0\n");
+      expect(notes[1].body, "sub1-1\n");
+      expect(notes[2].body, "sub2-0\n");
+      expect(notes[3].body, "sub2-1\n");
+    });
+
     // Test adding a note
     // Test removing a note
     // Test loading it incrementally

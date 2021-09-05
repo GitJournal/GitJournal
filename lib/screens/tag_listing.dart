@@ -66,44 +66,71 @@ class TagListingScreen extends StatelessWidget {
   Widget _buildTagTile(BuildContext context, String tag) {
     var theme = Theme.of(context);
     var titleColor = theme.textTheme.headline1!.color;
-    var inlineTagsView = InlineTagsView.of(context);
 
     return ListTile(
       leading: FaIcon(FontAwesomeIcons.tag, color: titleColor),
       title: Text(tag),
       onTap: () {
         var route = MaterialPageRoute(
-          builder: (context) {
-            var rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
-            var folder = FlattenedNotesFolder(
-              rootFolder,
-              filter: (Note n) {
-                if (n.tags.contains(tag)) {
-                  return true;
-                }
-
-                var inlineTags = inlineTagsView?.fetch(n);
-                if (inlineTags != null && inlineTags.contains(tag)) {
-                  return true;
-                }
-
-                return false;
-              },
-              title: tag,
-            );
-
-            final propNames = NoteSerializationSettings();
-            return FolderView(
-              notesFolder: folder,
-              newNoteExtraProps: {
-                propNames.tagsKey: [tag],
-              },
-            );
-          },
+          builder: (context) => FutureBuilderWithProgress(
+            future: _tagFolderView(context, tag),
+          ),
           settings: const RouteSettings(name: '/tags/'),
         );
         Navigator.of(context).push(route);
       },
+    );
+  }
+}
+
+Future<FolderView> _tagFolderView(BuildContext context, String tag) async {
+  var rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
+  var inlineTagsView = InlineTagsView.of(context);
+
+  var folder = await FlattenedNotesFolder.load(
+    rootFolder,
+    filter: (Note n) async {
+      if (n.tags.contains(tag)) {
+        return true;
+      }
+
+      var inlineTags = inlineTagsView?.fetch(n);
+      if (inlineTags != null && inlineTags.contains(tag)) {
+        return true;
+      }
+
+      return false;
+    },
+    title: tag,
+  );
+
+  final propNames = NoteSerializationSettings();
+  return FolderView(
+    notesFolder: folder,
+    newNoteExtraProps: {
+      propNames.tagsKey: [tag],
+    },
+  );
+}
+
+class FutureBuilderWithProgress<T> extends StatelessWidget {
+  final Future<T> future;
+
+  const FutureBuilderWithProgress({
+    Key? key,
+    required this.future,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<T>(
+      builder: (context, AsyncSnapshot<T> snapshot) {
+        if (snapshot.hasData) {
+          return snapshot.data as Widget;
+        }
+        return const CircularProgressIndicator();
+      },
+      future: future,
     );
   }
 }

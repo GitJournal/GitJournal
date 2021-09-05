@@ -2,7 +2,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_notifier.dart';
 
-typedef NotesFilter = bool Function(Note note);
+typedef NotesFilter = Future<bool> Function(Note note);
 
 class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   final NotesFolder _parentFolder;
@@ -12,11 +12,25 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   var _notes = <Note>[];
   var _folders = <NotesFolder>[];
 
-  FlattenedNotesFolder(this._parentFolder, {required this.title, this.filter}) {
+  FlattenedNotesFolder(this._parentFolder, {required this.title})
+      : filter = null {
     _addFolder(_parentFolder);
   }
 
-  void _addFolder(NotesFolder folder) {
+  FlattenedNotesFolder._internal(this._parentFolder, this.title, this.filter);
+
+  static Future<FlattenedNotesFolder> load(
+    NotesFolder parentFolder, {
+    required String title,
+    required NotesFilter filter,
+  }) async {
+    var folder = FlattenedNotesFolder._internal(parentFolder, title, filter);
+    await folder._addFolder(parentFolder);
+
+    return folder;
+  }
+
+  Future<void> _addFolder(NotesFolder folder) async {
     _folders.add(folder);
 
     // Add Change notifiers
@@ -30,12 +44,12 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
 
     // Add Individual Notes
     for (var note in folder.notes) {
-      _noteAdded(-1, note);
+      await _noteAdded(-1, note);
     }
 
     // Add Sub-Folders
     for (var folder in folder.subFolders) {
-      _addFolder(folder);
+      await _addFolder(folder);
     }
   }
 
@@ -62,10 +76,16 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
     folder.removeNoteRenameListener(_noteRenamed);
   }
 
-  void _noteAdded(int _, Note note) {
-    if (filter != null && !filter!(note)) {
-      return;
+  Future<void> _noteAdded(int _, Note note) async {
+    var _filter = filter;
+    if (_filter != null) {
+      var shouldAllow = await _filter(note);
+      if (!shouldAllow) {
+        return;
+      }
     }
+
+    // FIXME: Add a lock?
     _notes.add(note);
     notifyNoteAdded(-1, note);
   }
@@ -83,20 +103,21 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
     notifyNoteRemoved(-1, note);
   }
 
-  void _noteModified(int i, Note note) {
-    if (filter == null) {
+  Future<void> _noteModified(int i, Note note) async {
+    var _filter = filter;
+    if (_filter == null) {
       notifyNoteModified(-1, note);
       return;
     }
 
     if (_notes.contains(note)) {
-      if (filter!(note)) {
+      if (await _filter(note)) {
         notifyNoteModified(-1, note);
       } else {
         _noteRemoved(-1, note);
       }
     } else {
-      if (filter!(note)) {
+      if (await _filter(note)) {
         _noteAdded(-1, note);
       }
     }
