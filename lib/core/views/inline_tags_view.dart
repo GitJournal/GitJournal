@@ -7,10 +7,12 @@ import 'package:gitjournal/core/processors/inline_tags.dart';
 import 'package:gitjournal/core/transformers/base.dart';
 import 'notes_materialized_view.dart';
 
-class InlineTagsView extends SingleChildStatelessWidget {
+typedef InlineTagsView = NotesMaterializedView<List<String>>;
+
+class InlineTagsProvider extends SingleChildStatelessWidget {
   final String repoPath;
 
-  InlineTagsView({
+  InlineTagsProvider({
     Key? key,
     Widget? child,
     required this.repoPath,
@@ -30,8 +32,8 @@ class InlineTagsView extends SingleChildStatelessWidget {
     );
   }
 
-  static NotesMaterializedView<List<String>> of(BuildContext context) {
-    return Provider.of<NotesMaterializedView<List<String>>>(context);
+  static InlineTagsView of(BuildContext context) {
+    return Provider.of<InlineTagsView>(context);
   }
 }
 

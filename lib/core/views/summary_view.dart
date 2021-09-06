@@ -7,10 +7,12 @@ import 'package:gitjournal/core/transformers/base.dart';
 import 'package:gitjournal/utils/markdown.dart';
 import 'notes_materialized_view.dart';
 
-class NoteSummaryView extends SingleChildStatelessWidget {
+typedef NotesSummaryView = NotesMaterializedView<String>;
+
+class NoteSummaryProvider extends SingleChildStatelessWidget {
   final String repoPath;
 
-  NoteSummaryView({
+  NoteSummaryProvider({
     Key? key,
     Widget? child,
     required this.repoPath,
@@ -30,8 +32,8 @@ class NoteSummaryView extends SingleChildStatelessWidget {
     );
   }
 
-  static NotesMaterializedView<String> of(BuildContext context) {
-    return Provider.of<NotesMaterializedView<String>>(context);
+  static NotesSummaryView of(BuildContext context) {
+    return Provider.of<NotesSummaryView>(context);
   }
 }
 

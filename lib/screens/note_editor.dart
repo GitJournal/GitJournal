@@ -472,7 +472,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
 
   void _editTagsSelected(Note _note) async {
     final rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
-    var inlineTagsView = InlineTagsView.of(context);
+    var inlineTagsView = InlineTagsProvider.of(context);
     var allTags = await rootFolder.getNoteTagsRecursively(inlineTagsView);
 
     var route = MaterialPageRoute(

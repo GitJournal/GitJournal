@@ -6,7 +6,7 @@ import 'package:path/path.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:universal_io/io.dart';
 
-import 'package:gitjournal/core/views/notes_materialized_view.dart';
+import 'package:gitjournal/core/views/inline_tags_view.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'note.dart';
 import 'notes_folder.dart';
@@ -482,7 +482,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   NotesFolderConfig get config => _config;
 
   Future<SplayTreeSet<String>> getNoteTagsRecursively(
-    NotesMaterializedView<List<String>> inlineTagsView,
+    InlineTagsView inlineTagsView,
   ) async {
     return _fetchTags(this, inlineTagsView, SplayTreeSet<String>());
   }
@@ -553,7 +553,7 @@ typedef NoteMatcherAsync = Future<bool> Function(Note n);
 
 Future<SplayTreeSet<String>> _fetchTags(
   NotesFolder folder,
-  NotesMaterializedView<List<String>> inlineTagsView,
+  InlineTagsView inlineTagsView,
   SplayTreeSet<String> tags,
 ) async {
   for (var note in folder.notes) {

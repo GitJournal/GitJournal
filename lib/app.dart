@@ -372,8 +372,8 @@ class GitJournalChangeNotifiers extends StatelessWidget {
     var repoPath = repo.repoPath;
     return Nested(
       children: [
-        NoteSummaryView(repoPath: repoPath),
-        InlineTagsView(repoPath: repoPath),
+        NoteSummaryProvider(repoPath: repoPath),
+        InlineTagsProvider(repoPath: repoPath),
       ],
       child: child,
     );

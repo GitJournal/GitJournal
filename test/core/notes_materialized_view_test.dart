@@ -57,7 +57,7 @@ Hello
       );
       var note = await _createExampleNote();
 
-      expect(view.fetch(note), random);
+      expect(await view.fetch(note), random);
     });
   });
 }

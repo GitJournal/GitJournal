@@ -55,7 +55,7 @@ class StandardView extends StatelessWidget {
   }
 
   Widget _buildRow(BuildContext context, Note note) {
-    var summaryProvider = NoteSummaryView.of(context);
+    var summaryProvider = NoteSummaryProvider.of(context);
 
     return FutureBuilderWithProgress(future: () async {
       var summary = await summaryProvider.fetch(note) ?? "";

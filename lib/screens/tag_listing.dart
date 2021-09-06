@@ -23,7 +23,7 @@ class TagListingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var rootFolder = Provider.of<NotesFolderFS>(context);
-    var inlineTagsView = InlineTagsView.of(context);
+    var inlineTagsView = InlineTagsProvider.of(context);
 
     return FutureBuilderWithProgress(future: () async {
       var allTags = await rootFolder.getNoteTagsRecursively(inlineTagsView);
@@ -90,7 +90,7 @@ class TagListingScreen extends StatelessWidget {
 
 Future<FolderView> _tagFolderView(BuildContext context, String tag) async {
   var rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
-  var inlineTagsView = InlineTagsView.of(context);
+  var inlineTagsView = InlineTagsProvider.of(context);
 
   var folder = await FlattenedFilteredNotesFolder.load(
     rootFolder,
