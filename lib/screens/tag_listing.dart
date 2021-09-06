@@ -16,6 +16,7 @@ import 'package:gitjournal/folder_views/folder_view.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
+import 'package:gitjournal/widgets/future_builder_with_progress.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class TagListingScreen extends StatelessWidget {
@@ -23,10 +24,14 @@ class TagListingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var rootFolder = Provider.of<NotesFolderFS>(context);
     var inlineTagsView = InlineTagsView.of(context);
-    var allTags = inlineTagsView == null
-        ? SplayTreeSet<String>()
-        : rootFolder.getNoteTagsRecursively(inlineTagsView);
 
+    return FutureBuilderWithProgress(future: () async {
+      var allTags = await rootFolder.getNoteTagsRecursively(inlineTagsView);
+      return _buildWithTags(context, allTags);
+    }());
+  }
+
+  Widget _buildWithTags(BuildContext context, SplayTreeSet<String> allTags) {
     Widget body;
     if (allTags.isNotEmpty) {
       body = ListView(
@@ -94,7 +99,7 @@ Future<FolderView> _tagFolderView(BuildContext context, String tag) async {
         return true;
       }
 
-      var inlineTags = inlineTagsView?.fetch(n);
+      var inlineTags = await inlineTagsView.fetch(n);
       if (inlineTags != null && inlineTags.contains(tag)) {
         return true;
       }
@@ -111,26 +116,4 @@ Future<FolderView> _tagFolderView(BuildContext context, String tag) async {
       propNames.tagsKey: [tag],
     },
   );
-}
-
-class FutureBuilderWithProgress<T> extends StatelessWidget {
-  final Future<T> future;
-
-  const FutureBuilderWithProgress({
-    Key? key,
-    required this.future,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<T>(
-      builder: (context, AsyncSnapshot<T> snapshot) {
-        if (snapshot.hasData) {
-          return snapshot.data as Widget;
-        }
-        return const CircularProgressIndicator();
-      },
-      future: future,
-    );
-  }
 }

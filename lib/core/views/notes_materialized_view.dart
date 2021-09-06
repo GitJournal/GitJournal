@@ -3,34 +3,30 @@ import 'package:path/path.dart' as p;
 
 import '../note.dart';
 
-typedef NotesViewComputer<T> = T Function(Note note);
+typedef NotesViewComputer<T> = Future<T> Function(Note note);
 
 class NotesMaterializedView<T> {
-  final Box storageBox;
-  final NotesViewComputer computeFn;
+  Box? storageBox;
+  final String name;
+
+  final NotesViewComputer<T> computeFn;
   final String repoPath;
 
-  NotesMaterializedView._internal(
-      this.storageBox, this.computeFn, this.repoPath);
-
-  static Future<NotesMaterializedView<T>> loadView<T>({
-    required String name,
-    required NotesViewComputer<T> computeFn,
-    required String repoPath,
-  }) async {
+  NotesMaterializedView({
+    required this.name,
+    required this.computeFn,
+    required this.repoPath,
+  }) {
     var path = repoPath;
     if (!path.endsWith(p.separator)) {
       path += p.separator;
     }
-
-    var box = await Hive.openBox<T>(name);
-    return NotesMaterializedView<T>._internal(box, computeFn, path);
   }
 
   // FIXME: The return value doesn't need to be optional
   // FIXME: Make sure the old values are discarded
 
-  T? fetch(Note note) {
+  Future<T?> fetch(Note note) async {
     assert(note.filePath.startsWith(repoPath));
 
     if (note.fileLastModified == null) {
@@ -41,10 +37,13 @@ class NotesMaterializedView<T> {
     var path = note.filePath.substring(repoPath.length);
     var key = '${path}_$ts';
 
-    T? val = storageBox.get(key, defaultValue: null);
+    storageBox ??= await Hive.openBox<T>(name);
+    var box = storageBox!;
+
+    T? val = box.get(key, defaultValue: null);
     if (val == null) {
-      val = computeFn(note);
-      storageBox.put(key, val);
+      val = await computeFn(note);
+      box.put(key, val);
     }
 
     return val;

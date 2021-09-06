@@ -46,11 +46,11 @@ Hello
 
     test('Test', () async {
       var random = Random().nextInt(10000).toString();
-      var compute = (Note note) {
+      var compute = (Note note) async {
         return random;
       };
 
-      var view = await NotesMaterializedView.loadView<String>(
+      var view = NotesMaterializedView<String>(
         name: '_test_box',
         computeFn: compute,
         repoPath: tempDir.path,

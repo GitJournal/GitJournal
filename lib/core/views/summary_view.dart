@@ -18,26 +18,25 @@ class NoteSummaryView extends SingleChildStatelessWidget {
 
   @override
   Widget buildWithChild(BuildContext context, Widget? child) {
-    return FutureProvider(
+    return Provider(
       create: (_) {
-        return NotesMaterializedView.loadView<String>(
+        return NotesMaterializedView<String>(
           name: 'summary',
           repoPath: repoPath,
           computeFn: _compute,
         );
       },
-      initialData: null,
       child: child,
     );
   }
 
-  static NotesMaterializedView<String>? of(BuildContext context) {
-    return Provider.of<NotesMaterializedView<String>?>(context);
+  static NotesMaterializedView<String> of(BuildContext context) {
+    return Provider.of<NotesMaterializedView<String>>(context);
   }
 }
 
 // FIXME: When building this, take the title type into account
 //         If the summary starts with the title, then remove it
-String _compute(Note note) {
+Future<String> _compute(Note note) async {
   return stripMarkdownFormatting(note.body);
 }

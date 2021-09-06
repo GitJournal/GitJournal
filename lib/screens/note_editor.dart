@@ -14,8 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -475,9 +473,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
   void _editTagsSelected(Note _note) async {
     final rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
     var inlineTagsView = InlineTagsView.of(context);
-    var allTags = inlineTagsView == null
-        ? SplayTreeSet<String>()
-        : rootFolder.getNoteTagsRecursively(inlineTagsView);
+    var allTags = await rootFolder.getNoteTagsRecursively(inlineTagsView);
 
     var route = MaterialPageRoute(
       builder: (context) => NoteTagEditor(

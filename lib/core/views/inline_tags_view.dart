@@ -18,25 +18,24 @@ class InlineTagsView extends SingleChildStatelessWidget {
 
   @override
   Widget buildWithChild(BuildContext context, Widget? child) {
-    return FutureProvider(
+    return Provider(
       create: (_) {
-        return NotesMaterializedView.loadView<List<String>>(
+        return NotesMaterializedView<List<String>>(
           name: 'inline_tags',
           repoPath: repoPath,
           computeFn: _compute,
         );
       },
-      initialData: null,
       child: child,
     );
   }
 
-  static NotesMaterializedView<List<String>>? of(BuildContext context) {
-    return Provider.of<NotesMaterializedView<List<String>>?>(context);
+  static NotesMaterializedView<List<String>> of(BuildContext context) {
+    return Provider.of<NotesMaterializedView<List<String>>>(context);
   }
 }
 
-List<String> _compute(Note note) {
+Future<List<String>> _compute(Note note) async {
   var tagPrefixes = note.parent.config.inlineTagPrefixes;
   var p = InlineTagsProcessor(tagPrefixes: tagPrefixes);
   return p.extractTags(note.body).toList();

@@ -7,6 +7,7 @@ import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/core/views/summary_view.dart';
 import 'package:gitjournal/folder_views/list_view.dart';
+import 'package:gitjournal/widgets/future_builder_with_progress.dart';
 import 'package:gitjournal/widgets/highlighted_text.dart';
 
 enum StandardViewHeader {
@@ -54,14 +55,19 @@ class StandardView extends StatelessWidget {
   }
 
   Widget _buildRow(BuildContext context, Note note) {
-    var textTheme = Theme.of(context).textTheme;
-
-    var noteSummary = "";
     var summaryProvider = NoteSummaryView.of(context);
-    if (summaryProvider != null) {
-      noteSummary = summaryProvider.fetch(note) ?? noteSummary;
-    }
 
+    return FutureBuilderWithProgress(future: () async {
+      var summary = await summaryProvider.fetch(note) ?? "";
+      return _buildRowWithSummary(context, note, summary);
+    }());
+  }
+
+  Widget _buildRowWithSummary(
+    BuildContext context,
+    Note note,
+    String noteSummary,
+  ) {
     String title;
     switch (headerType) {
       case StandardViewHeader.TitleOrFileName:
@@ -83,6 +89,7 @@ class StandardView extends StatelessWidget {
         break;
     }
 
+    var textTheme = Theme.of(context).textTheme;
     Widget titleWidget = HighlightedText(
       text: title,
       style: textTheme.headline6!,
