@@ -47,7 +47,7 @@ Booga Wooga
       await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath);
+      var note = Note(parentFolder, notePath, DateTime.now());
       await note.load();
 
       var checklist = Checklist(note);
@@ -111,7 +111,7 @@ Booga Wooga
       await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath);
+      var note = Note(parentFolder, notePath, DateTime.now());
       await note.load();
 
       var checklist = Checklist(note);
@@ -126,7 +126,7 @@ Booga Wooga
       await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath);
+      var note = Note(parentFolder, notePath, DateTime.now());
       await note.load();
 
       var checklist = Checklist(note);
@@ -147,7 +147,7 @@ Booga Wooga
       await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath);
+      var note = Note(parentFolder, notePath, DateTime.now());
       await note.load();
 
       var checklist = Checklist(note);
@@ -167,7 +167,7 @@ Booga Wooga
       await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath);
+      var note = Note(parentFolder, notePath, DateTime.now());
       await note.load();
 
       var checklist = Checklist(note);
@@ -187,7 +187,7 @@ Booga Wooga
       await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath);
+      var note = Note(parentFolder, notePath, DateTime.now());
       await note.load();
 
       var checklist = Checklist(note);
@@ -203,7 +203,7 @@ Booga Wooga
       await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath);
+      var note = Note(parentFolder, notePath, DateTime.now());
       await note.load();
 
       var checklist = Checklist(note);
@@ -221,7 +221,7 @@ Booga Wooga
       await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath);
+      var note = Note(parentFolder, notePath, DateTime.now());
       await note.load();
 
       var checklist = Checklist(note);
@@ -237,7 +237,7 @@ Booga Wooga
       await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath);
+      var note = Note(parentFolder, notePath, DateTime.now());
       await note.load();
 
       var checklist = Checklist(note);
@@ -253,7 +253,7 @@ Booga Wooga
       await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath);
+      var note = Note(parentFolder, notePath, DateTime.now());
       await note.load();
 
       var checklist = Checklist(note);
@@ -270,7 +270,7 @@ Booga Wooga
       await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath);
+      var note = Note(parentFolder, notePath, DateTime.now());
       await note.load();
 
       var checklist = Checklist(note);

@@ -100,7 +100,7 @@ Future<FolderView> _tagFolderView(BuildContext context, String tag) async {
       }
 
       var inlineTags = await inlineTagsView.fetch(n);
-      if (inlineTags != null && inlineTags.contains(tag)) {
+      if (inlineTags.contains(tag)) {
         return true;
       }
 

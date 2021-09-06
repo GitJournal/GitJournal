@@ -60,7 +60,7 @@ class _NoteMetadataSettingsScreenState
     var folderConfig = Provider.of<NotesFolderConfig>(context);
 
     var parent = NotesFolderFS(null, '', folderConfig);
-    var note = Note(parent, "fileName.md");
+    var note = Note(parent, "fileName.md", DateTime.now());
     note.title = tr("settings.noteMetaData.exampleTitle");
     note.body = tr("settings.noteMetaData.exampleBody");
     note.created = created;

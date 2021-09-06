@@ -30,7 +30,7 @@ class NoteLinksView extends NotesMaterializedView<_LinksList> {
 
   Future<List<Link>> fetchLinks(Note note) async {
     var linksList = await fetch(note);
-    return linksList?.list ?? [];
+    return linksList.list;
   }
 }
 

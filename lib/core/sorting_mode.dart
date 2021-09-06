@@ -177,22 +177,7 @@ int _sortModifiedDesc(Note a, Note b) {
     return -1;
   }
   if (bDt == null && aDt == null) {
-    if (a.fileLastModified != null && b.fileLastModified != null) {
-      if (a.fileLastModified == null && b.fileLastModified != null) {
-        return 1;
-      } else if (a.fileLastModified != null && b.fileLastModified == null) {
-        return -1;
-      } else if (a.fileLastModified != null && b.fileLastModified != null) {
-        if (a.fileLastModified! == b.fileLastModified!) {
-          return a.fileName.compareTo(b.fileName);
-        }
-        return a.fileLastModified!.compareTo(b.fileLastModified!);
-      } else {
-        return a.fileName.compareTo(b.fileName);
-      }
-    } else {
-      return a.fileName.compareTo(b.fileName);
-    }
+    return a.fileLastModified.compareTo(b.fileLastModified);
   }
   return bDt!.compareTo(aDt!);
 }

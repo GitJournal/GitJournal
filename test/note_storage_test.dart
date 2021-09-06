@@ -35,11 +35,11 @@ void main() {
       n2Path = p.join(tempDir.path, "2.md");
 
       var parent = NotesFolderFS(null, tempDir.path, config);
-      var n1 = Note(parent, n1Path);
+      var n1 = Note(parent, n1Path, DateTime.now());
       n1.body = "test\n";
       n1.created = dt;
 
-      var n2 = Note(parent, n2Path);
+      var n2 = Note(parent, n2Path, DateTime.now());
       n2.data = MdYamlDoc(body: "test2\n", props: props);
 
       notes = [n1, n2];
@@ -61,7 +61,7 @@ void main() {
       var parent = NotesFolderFS(null, tempDir.path, config);
 
       await Future.forEach(notes, (Note origNote) async {
-        var note = Note(parent, origNote.filePath);
+        var note = Note(parent, origNote.filePath, DateTime.now());
         var r = await note.load();
         expect(r.getOrThrow(), NoteLoadState.Loaded);
 

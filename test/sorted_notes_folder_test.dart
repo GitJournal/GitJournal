@@ -29,9 +29,9 @@ void main() {
       var random = Random();
       for (var i = 0; i < 5; i++) {
         var note = Note(
-          folder,
-          p.join(folder.folderPath, "${random.nextInt(1000)}.md"),
-        );
+            folder,
+            p.join(folder.folderPath, "${random.nextInt(1000)}.md"),
+            DateTime.now());
         note.modified = DateTime(2020, 1, 10 + (i * 2));
         note.body = "$i\n";
         await NoteStorage().save(note).throwOnError();
@@ -86,7 +86,8 @@ void main() {
             SortingMode(SortingField.Modified, SortingOrder.Descending),
       );
 
-      var note = Note(folder, p.join(folder.folderPath, "new.md"));
+      var note =
+          Note(folder, p.join(folder.folderPath, "new.md"), DateTime.now());
       folder.add(note);
 
       note.modified = DateTime(2020, 2, 1);
@@ -110,7 +111,8 @@ void main() {
             SortingMode(SortingField.Modified, SortingOrder.Descending),
       );
 
-      var note = Note(folder, p.join(folder.folderPath, "new.md"));
+      var note =
+          Note(folder, p.join(folder.folderPath, "new.md"), DateTime.now());
       folder.add(note);
 
       note.modified = DateTime(2020, 1, 1);

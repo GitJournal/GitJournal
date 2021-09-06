@@ -242,7 +242,8 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         continue;
       }
 
-      var note = Note(this, fsEntity.path);
+      var stat = fsEntity.statSync();
+      var note = Note(this, fsEntity.path, stat.modified);
       if (note.fileName.startsWith('.')) {
         // FIXME: Why does 'tr' not work over here
         var ignoredFile = IgnoredFile(
@@ -558,7 +559,7 @@ Future<SplayTreeSet<String>> _fetchTags(
 ) async {
   for (var note in folder.notes) {
     tags.addAll(note.tags);
-    tags.addAll(await inlineTagsView.fetch(note) ?? {});
+    tags.addAll(await inlineTagsView.fetch(note));
   }
 
   for (var folder in folder.subFolders) {

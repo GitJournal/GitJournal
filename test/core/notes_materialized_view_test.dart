@@ -39,8 +39,7 @@ Hello
       await File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath);
-      note.fileLastModified = DateTime.now();
+      var note = Note(parentFolder, notePath, DateTime.now());
       return note;
     };
 

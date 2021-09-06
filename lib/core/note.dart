@@ -95,14 +95,14 @@ class Note {
   MdYamlDoc _data = MdYamlDoc();
   late NoteSerializer noteSerializer;
 
-  DateTime? fileLastModified;
+  DateTime fileLastModified;
 
   var _loadState = NoteLoadState.None;
   var _serializer = MarkdownYAMLCodec();
 
   static final _mdYamlDocLoader = MdYamlDocLoader();
 
-  Note(this.parent, this._filePath) {
+  Note(this.parent, this._filePath, this.fileLastModified) {
     var settings = NoteSerializationSettings.fromConfig(parent.config);
     noteSerializer = NoteSerializer.fromConfig(settings);
   }
@@ -111,7 +111,7 @@ class Note {
     this.parent, {
     Map<String, dynamic> extraProps = const {},
     String fileName = "",
-  }) {
+  }) : fileLastModified = DateTime.fromMillisecondsSinceEpoch(0) {
     created = DateTime.now();
     _loadState = NoteLoadState.Loaded;
     _fileFormat = NoteFileFormat.Markdown;
@@ -417,7 +417,7 @@ class Note {
   }
 
   String _buildFileName() {
-    var date = created ?? modified ?? fileLastModified ?? DateTime.now();
+    var date = created ?? modified ?? fileLastModified;
     var isJournal = type == NoteType.Journal;
     switch (!isJournal
         ? parent.config.fileNameFormat

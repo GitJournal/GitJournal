@@ -29,7 +29,7 @@ void main() {
       var serializer = NoteSerializer.raw();
       serializer.settings.titleSettings = SettingsTitle.InYaml;
 
-      var note = Note(parent, "file-path-not-important");
+      var note = Note(parent, "file-path-not-important", DateTime.now());
       serializer.decode(doc, note);
 
       expect(note.body, "I ❤️ you");
@@ -51,7 +51,7 @@ void main() {
       var serializer = NoteSerializer.raw();
       serializer.settings.titleSettings = SettingsTitle.InH1;
 
-      var note = Note(parent, "file-path-not-important");
+      var note = Note(parent, "file-path-not-important", DateTime.now());
       serializer.decode(doc, note);
 
       expect(note.body, "I ❤️ you");
@@ -72,7 +72,7 @@ void main() {
 
       var serializer = NoteSerializer.raw();
 
-      var note = Note(parent, "file-path-not-important");
+      var note = Note(parent, "file-path-not-important", DateTime.now());
       serializer.decode(doc, note);
 
       expect(note.body, "I ❤️ you");
@@ -85,7 +85,7 @@ void main() {
 
       var serializer = NoteSerializer.raw();
 
-      var note = Note(parent, "file-path-not-important");
+      var note = Note(parent, "file-path-not-important", DateTime.now());
       serializer.decode(doc, note);
 
       expect(note.body.length, 0);
@@ -100,7 +100,7 @@ void main() {
       var serializer = NoteSerializer.raw();
       serializer.settings.titleSettings = SettingsTitle.InH1;
 
-      var note = Note(parent, "file-path-not-important");
+      var note = Note(parent, "file-path-not-important", DateTime.now());
       serializer.decode(doc, note);
 
       expect(note.body, "I ❤️ you");
@@ -122,7 +122,7 @@ void main() {
       var serializer = NoteSerializer.raw();
       serializer.settings.titleSettings = SettingsTitle.InYaml;
 
-      var note = Note(parent, "file-path-not-important");
+      var note = Note(parent, "file-path-not-important", DateTime.now());
       serializer.decode(doc, note);
 
       expect(note.body, "body");
@@ -147,7 +147,7 @@ void main() {
       var serializer = NoteSerializer.raw();
       serializer.settings.titleSettings = SettingsTitle.InYaml;
 
-      var note = Note(parent, "file-path-not-important");
+      var note = Note(parent, "file-path-not-important", DateTime.now());
       serializer.decode(doc, note);
 
       expect(note.body, "body");

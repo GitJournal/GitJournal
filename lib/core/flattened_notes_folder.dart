@@ -79,7 +79,7 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
     notifyNoteRemoved(i, note);
   }
 
-  Future<void> _noteModified(int i, Note note) async {
+  Future<void> _noteModified(int _, Note note) async {
     notifyNoteModified(-1, note);
   }
 

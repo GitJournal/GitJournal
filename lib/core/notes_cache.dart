@@ -64,7 +64,11 @@ class NotesCache {
         parent = subFolder;
       }
 
-      var note = Note(parent, fullFilePath);
+      var note = Note(
+        parent,
+        fullFilePath,
+        DateTime.fromMillisecondsSinceEpoch(0),
+      );
       note.load();
       parent.add(note);
     }

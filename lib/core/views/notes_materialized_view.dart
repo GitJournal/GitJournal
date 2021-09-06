@@ -27,14 +27,10 @@ class NotesMaterializedView<T> {
   // FIXME: Use a LazyBox instead and add a cache on top?
   // FIXME: Maybe removing all the old keys after each put is too expensive?
 
-  Future<T?> fetch(Note note) async {
+  Future<T> fetch(Note note) async {
     assert(note.filePath.startsWith(repoPath));
 
-    if (note.fileLastModified == null) {
-      return null;
-    }
-
-    var ts = note.fileLastModified!.toUtc().millisecondsSinceEpoch ~/ 1000;
+    var ts = note.fileLastModified.toUtc().millisecondsSinceEpoch ~/ 1000;
     var path = note.filePath.substring(repoPath.length);
     var keyPrefix = '${path}_';
     var key = keyPrefix + ts.toString();
@@ -52,6 +48,6 @@ class NotesMaterializedView<T> {
       box.deleteAll(keys);
     }
 
-    return val;
+    return val!;
   }
 }
