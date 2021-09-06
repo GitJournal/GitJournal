@@ -102,10 +102,13 @@ class _FolderListViewState extends State<FolderListView> {
       return EmptyTextSliver(emptyText: widget.emptyText);
     }
 
-    return SliverAnimatedList(
-      key: _listKey,
-      itemBuilder: _buildItem,
-      initialItemCount: widget.folder.notes.length,
+    return SliverPadding(
+      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0 + 48.0),
+      sliver: SliverAnimatedList(
+        key: _listKey,
+        itemBuilder: _buildItem,
+        initialItemCount: widget.folder.notes.length,
+      ),
     );
   }
 
