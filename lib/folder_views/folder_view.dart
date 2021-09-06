@@ -142,17 +142,23 @@ class _FolderViewState extends State<FolderView> {
         ];
       },
       floatHeaderSlivers: true,
-      body: Scrollbar(
-        child: Builder(builder: (context) {
-          var view = CustomScrollView(slivers: [folderView]);
-          if (settings.remoteSyncFrequency == RemoteSyncFrequency.Manual) {
-            return view;
-          }
-          return RefreshIndicator(
-            onRefresh: () => _syncRepo(context),
-            child: view,
-          );
-        }),
+      // Stupid scrollbar has a top padding otherwise
+      // - from : https://stackoverflow.com/questions/64404873/remove-the-top-padding-from-scrollbar-when-wrapping-listview
+      body: MediaQuery.removePadding(
+        context: context,
+        removeTop: true,
+        child: Scrollbar(
+          child: Builder(builder: (context) {
+            var view = CustomScrollView(slivers: [folderView]);
+            if (settings.remoteSyncFrequency == RemoteSyncFrequency.Manual) {
+              return view;
+            }
+            return RefreshIndicator(
+              onRefresh: () => _syncRepo(context),
+              child: view,
+            );
+          }),
+        ),
       ),
     );
   }
