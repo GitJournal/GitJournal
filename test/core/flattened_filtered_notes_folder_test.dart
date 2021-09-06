@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart';
 
-import 'package:gitjournal/core/flattened_notes_folder.dart';
+import 'package:gitjournal/core/flattened_filtered_notes_folder.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
@@ -92,56 +92,22 @@ void main() {
       tempDir.deleteSync(recursive: true);
     });
 
-    test('Should load the notes flattened', () async {
-      var f = FlattenedNotesFolder(rootFolder, title: "foo");
-      expect(f.hasNotes, true);
-      expect(f.isEmpty, false);
-      expect(f.name, "foo");
+    test('Basic Filter should work', () async {
+      var f = await FlattenedFilteredNotesFolder.load(
+        rootFolder,
+        title: "foo",
+        filter: (Note note) async => note.body.contains('sub'),
+      );
       expect(f.subFolders.length, 0);
-      expect(f.notes.length, 9);
+      expect(f.notes.length, 4);
 
       var notes = List<Note>.from(f.notes);
       notes.sort((Note n1, Note n2) => n1.body.compareTo(n2.body));
 
-      expect(notes[0].body, "0\n");
-      expect(notes[1].body, "1\n");
-      expect(notes[2].body, "2\n");
-      expect(notes[3].body, "p1-0\n");
-      expect(notes[4].body, "p1-1\n");
-      expect(notes[5].body, "sub1-0\n");
-      expect(notes[6].body, "sub1-1\n");
-      expect(notes[7].body, "sub2-0\n");
-      expect(notes[8].body, "sub2-1\n");
-    });
-
-    test('Should add a note properly', () async {
-      var f = FlattenedNotesFolder(rootFolder, title: "");
-
-      var p1 = (f.fsFolder as NotesFolderFS).getFolderWithSpec("sub1/p1")!;
-      var note = Note(p1, p.join(p1.folderPath, "new.md"));
-      note.modified = DateTime(2020, 2, 1);
-      note.body = "new\n";
-      await NoteStorage().save(note).throwOnError();
-
-      p1.add(note);
-
-      expect(f.notes.length, 10);
-
-      var notes = List<Note>.from(f.notes);
-      notes.sort((Note n1, Note n2) => n1.body.compareTo(n2.body));
-
-      expect(notes[0].body, "0\n");
-      expect(notes[1].body, "1\n");
-      expect(notes[2].body, "2\n");
-      expect(notes[3].body, "new\n");
-      expect(notes[4].body, "p1-0\n");
-      expect(notes[5].body, "p1-1\n");
-      expect(notes[6].body, "sub1-0\n");
-      expect(notes[7].body, "sub1-1\n");
-      expect(notes[8].body, "sub2-0\n");
-      expect(notes[9].body, "sub2-1\n");
-
-      // FIXME: Check if the callback for added is called with the correct index
+      expect(notes[0].body, "sub1-0\n");
+      expect(notes[1].body, "sub1-1\n");
+      expect(notes[2].body, "sub2-0\n");
+      expect(notes[3].body, "sub2-1\n");
     });
 
     // Test adding a note

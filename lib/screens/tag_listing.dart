@@ -6,7 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/core/flattened_notes_folder.dart';
+import 'package:gitjournal/core/flattened_filtered_notes_folder.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_serializer.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
@@ -87,7 +87,7 @@ Future<FolderView> _tagFolderView(BuildContext context, String tag) async {
   var rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
   var inlineTagsView = InlineTagsView.of(context);
 
-  var folder = await FlattenedNotesFolder.load(
+  var folder = await FlattenedFilteredNotesFolder.load(
     rootFolder,
     filter: (Note n) async {
       if (n.tags.contains(tag)) {

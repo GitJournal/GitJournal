@@ -1,21 +1,39 @@
+import 'package:synchronized/synchronized.dart';
+
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_notifier.dart';
 
 typedef NotesFilter = Future<bool> Function(Note note);
 
-class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
+class FlattenedFilteredNotesFolder
+    with NotesFolderNotifier
+    implements NotesFolder {
   final NotesFolder _parentFolder;
+  final NotesFilter filter;
   final String title;
+
+  final _lock = Lock();
 
   var _notes = <Note>[];
   var _folders = <NotesFolder>[];
 
-  FlattenedNotesFolder(this._parentFolder, {required this.title}) {
-    _addFolder(_parentFolder);
+  FlattenedFilteredNotesFolder._internal(
+      this._parentFolder, this.title, this.filter);
+
+  static Future<FlattenedFilteredNotesFolder> load(
+    NotesFolder parentFolder, {
+    required String title,
+    required NotesFilter filter,
+  }) async {
+    var folder =
+        FlattenedFilteredNotesFolder._internal(parentFolder, title, filter);
+    await folder._addFolder(parentFolder);
+
+    return folder;
   }
 
-  void _addFolder(NotesFolder folder) {
+  Future<void> _addFolder(NotesFolder folder) async {
     _folders.add(folder);
 
     // Add Change notifiers
@@ -29,12 +47,12 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
 
     // Add Individual Notes
     for (var note in folder.notes) {
-      _noteAdded(-1, note);
+      await _noteAdded(-1, note);
     }
 
     // Add Sub-Folders
     for (var folder in folder.subFolders) {
-      _addFolder(folder);
+      await _addFolder(folder);
     }
   }
 
@@ -64,23 +82,45 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
     folder.removeNoteRenameListener(_noteRenamed);
   }
 
-  void _noteAdded(int _, Note note) {
-    _notes.add(note);
-  }
-
-  void _noteRemoved(int _, Note note) {
-    var i = _notes.indexWhere((n) => n.filePath == note.filePath);
-    if (i == -1) {
+  Future<void> _noteAdded(int _, Note note) async {
+    var shouldAllow = await filter(note);
+    if (!shouldAllow) {
       return;
     }
-    assert(i != -1);
 
-    _notes.removeAt(i);
-    notifyNoteRemoved(i, note);
+    await _lock.synchronized(() {
+      _notes.add(note);
+      notifyNoteAdded(-1, note);
+    });
+  }
+
+  Future<void> _noteRemoved(int _, Note note) async {
+    await _lock.synchronized(() {
+      var i = _notes.indexWhere((n) => n.filePath == note.filePath);
+      if (i == -1) {
+        return;
+      }
+      assert(i != -1);
+
+      _notes.removeAt(i);
+      notifyNoteRemoved(i, note);
+    });
   }
 
   Future<void> _noteModified(int i, Note note) async {
-    notifyNoteModified(-1, note);
+    return await _lock.synchronized(() async {
+      if (_notes.contains(note)) {
+        if (await filter(note)) {
+          notifyNoteModified(-1, note);
+        } else {
+          _noteRemoved(-1, note);
+        }
+      } else {
+        if (await filter(note)) {
+          _noteAdded(-1, note);
+        }
+      }
+    });
   }
 
   void _noteRenamed(int i, Note note, String oldPath) {
