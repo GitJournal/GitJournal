@@ -77,7 +77,7 @@ class Graph extends ChangeNotifier {
   Future<void> _addNote(Note note) async {
     var node = _getNode(note);
 
-    var links = await linksView.fetch(note) ?? [];
+    var links = await linksView.fetchLinks(note);
     var linkResolver = LinkResolver(note);
     for (var l in links) {
       var noteB = linkResolver.resolveLink(l);

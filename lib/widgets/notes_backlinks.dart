@@ -45,7 +45,7 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
     var predicate = (Note n) async {
       // Log.d("NoteBacklinkRenderer Predicate", props: {"filePath": n.filePath});
 
-      var links = await widget.linksView.fetch(n) ?? [];
+      var links = await widget.linksView.fetchLinks(n);
       var linkResolver = LinkResolver(n);
       var matchedLink = links.firstWhereOrNull(
         (l) {
@@ -157,8 +157,8 @@ class NoteSnippet extends StatelessWidget {
   Widget _buildSummary(BuildContext context) {
     var linksProvider = NoteLinksProvider.of(context);
     return FutureBuilderWithProgress(future: () async {
-      var links = await linksProvider.fetch(note);
-      if (links == null || links.isEmpty) {
+      var links = await linksProvider.fetchLinks(note);
+      if (links.isEmpty) {
         return Container();
       }
       return _buildSummaryWithLinks(context, links);
