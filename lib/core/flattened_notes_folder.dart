@@ -66,6 +66,7 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
 
   void _noteAdded(int _, Note note) {
     _notes.add(note);
+    notifyNoteAdded(_notes.length - 1, note);
   }
 
   void _noteRemoved(int _, Note note) {
