@@ -1,13 +1,26 @@
+import 'package:hive/hive.dart';
 import 'package:markdown/markdown.dart' as md;
+
+part 'link.g.dart';
 
 // FIXME: This should be split into 2 classes, that way it would be easier
 //        to access to members with null safety
+
+@HiveType(typeId: 0)
 class Link {
+  @HiveField(0)
   String? publicTerm;
+
+  @HiveField(1)
   String? filePath;
+
+  @HiveField(2)
   String? headingID;
+
+  @HiveField(3)
   String? alt;
 
+  @HiveField(5)
   String? wikiTerm;
 
   Link({

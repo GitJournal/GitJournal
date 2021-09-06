@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/core/views/note_links_view.dart';
 import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/widgets/markdown_renderer.dart';
@@ -40,6 +41,7 @@ class NoteViewer extends StatelessWidget {
             note: note,
             rootFolder: rootFolder,
             parentFolder: parentFolder,
+            linksView: NoteLinksProvider.of(context),
           ),
           // _buildFooter(context),
         ],

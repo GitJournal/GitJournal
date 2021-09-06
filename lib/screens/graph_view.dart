@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/graph.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/core/views/note_links_view.dart';
 
 class GraphViewScreen extends StatefulWidget {
   @override
@@ -17,8 +18,10 @@ class _GraphViewScreenState extends State<GraphViewScreen> {
   Widget build(BuildContext context) {
     if (graph == null) {
       var rootFolder = Provider.of<NotesFolderFS>(context);
+      var linksProvider = NoteLinksProvider.of(context);
+
       setState(() {
-        graph = Graph.fromFolder(rootFolder);
+        graph = Graph.fromFolder(rootFolder, linksProvider);
         graph!.addListener(_setState);
       });
       return Container(width: 2500, height: 2500);

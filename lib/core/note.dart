@@ -19,14 +19,12 @@ import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:gitjournal/core/links_loader.dart';
 import 'package:gitjournal/core/md_yaml_doc_loader.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
-import 'link.dart';
 import 'md_yaml_doc.dart';
 import 'md_yaml_doc_codec.dart';
 import 'note_serializer.dart';
@@ -102,11 +100,7 @@ class Note {
   var _loadState = NoteLoadState.None;
   var _serializer = MarkdownYAMLCodec();
 
-  // Computed from body
-  List<Link>? _links;
-
   static final _mdYamlDocLoader = MdYamlDocLoader();
-  static final _linksLoader = LinksLoader();
 
   Note(this.parent, this._filePath) {
     var settings = NoteSerializationSettings.fromConfig(parent.config);
@@ -225,7 +219,6 @@ class Note {
     }
 
     _body = newBody;
-    _links = null;
 
     _notifyModified();
   }
@@ -453,19 +446,6 @@ class Note {
     }
 
     return date.toString();
-  }
-
-  Future<List<Link>> fetchLinks() async {
-    if (_links != null) {
-      return _links!;
-    }
-
-    _links = await _linksLoader.parseLinks(body: _body, filePath: _filePath!);
-    return _links!;
-  }
-
-  List<Link>? links() {
-    return _links;
   }
 
   NoteFileFormat? get fileFormat {

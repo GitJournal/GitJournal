@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
+import 'package:gitjournal/core/views/note_links_view.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
 
 class Node {
@@ -45,10 +46,11 @@ class Graph extends ChangeNotifier {
   Map<String?, int>? _nodeIndexes;
 
   late GraphNodeLayout initLayouter;
+  final NoteLinksView linksView;
 
   final double nodeSize = 50.0;
 
-  Graph.fromFolder(NotesFolder folder) {
+  Graph.fromFolder(NotesFolder folder, this.linksView) {
     initLayouter = GraphNodeLayout(maxHeight: 2000, maxWidth: 2000);
 
     // print("Building graph .... ");
@@ -75,7 +77,7 @@ class Graph extends ChangeNotifier {
   Future<void> _addNote(Note note) async {
     var node = _getNode(note);
 
-    var links = await node.note.fetchLinks();
+    var links = await linksView.fetch(note) ?? [];
     var linkResolver = LinkResolver(note);
     for (var l in links) {
       var noteB = linkResolver.resolveLink(l);

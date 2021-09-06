@@ -7,20 +7,24 @@ import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/core/views/note_links_view.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
+import 'package:gitjournal/widgets/future_builder_with_progress.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class NoteBacklinkRenderer extends StatefulWidget {
   final Note note;
   final NotesFolderFS rootFolder;
   final NotesFolder parentFolder;
+  final NoteLinksView linksView;
 
   NoteBacklinkRenderer({
     required this.note,
     required this.rootFolder,
     required this.parentFolder,
+    required this.linksView,
   });
 
   @override
@@ -41,7 +45,7 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
     var predicate = (Note n) async {
       // Log.d("NoteBacklinkRenderer Predicate", props: {"filePath": n.filePath});
 
-      var links = await n.fetchLinks();
+      var links = await widget.linksView.fetch(n) ?? [];
       var linkResolver = LinkResolver(n);
       var matchedLink = links.firstWhereOrNull(
         (l) {
@@ -151,12 +155,17 @@ class NoteSnippet extends StatelessWidget {
   }
 
   Widget _buildSummary(BuildContext context) {
-    var textTheme = Theme.of(context).textTheme;
-    var links = note.links();
-    if (links == null || links.isEmpty) {
-      return Container();
-    }
+    var linksProvider = NoteLinksProvider.of(context);
+    return FutureBuilderWithProgress(future: () async {
+      var links = await linksProvider.fetch(note);
+      if (links == null || links.isEmpty) {
+        return Container();
+      }
+      return _buildSummaryWithLinks(context, links);
+    }());
+  }
 
+  Widget _buildSummaryWithLinks(BuildContext context, List<Link> links) {
     links = links.where((l) {
       var linkResolver = LinkResolver(note);
       var resolvedNote = linkResolver.resolveLink(l);
@@ -179,6 +188,8 @@ class NoteSnippet extends StatelessWidget {
       },
       orElse: () => "",
     );
+
+    var textTheme = Theme.of(context).textTheme;
 
     // vHanda: This isn't a very fool proof way of figuring out the line
     // FIXME: Ideally, we should be parsing the entire markdown properly and rendering all of it

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
+import 'package:hive/hive.dart';
 import 'package:nested/nested.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -17,9 +18,11 @@ import 'package:universal_io/io.dart' show Directory, Platform;
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/analytics/route_observer.dart';
 import 'package:gitjournal/app_router.dart';
+import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/views/inline_tags_view.dart';
+import 'package:gitjournal/core/views/note_links_view.dart';
 import 'package:gitjournal/core/views/summary_view.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
@@ -53,6 +56,9 @@ class JournalApp extends StatefulWidget {
 
     final gitBaseDirectory = (await getApplicationDocumentsDirectory()).path;
     final cacheDir = (await getApplicationSupportDirectory()).path;
+
+    Hive.init(cacheDir);
+    Hive.registerAdapter(LinkAdapter());
 
     var repoManager = RepositoryManager(
       gitBaseDir: gitBaseDirectory,
@@ -374,6 +380,7 @@ class GitJournalChangeNotifiers extends StatelessWidget {
       children: [
         NoteSummaryProvider(repoPath: repoPath),
         InlineTagsProvider(repoPath: repoPath),
+        NoteLinksProvider(repoPath: repoPath),
       ],
       child: child,
     );
