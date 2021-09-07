@@ -6,7 +6,7 @@ import 'package:gitjournal/analytics/generated/analytics.pbgrpc.dart';
 import 'generated/analytics.pb.dart' as pb;
 
 const _port = 443;
-const _timeout = Duration(seconds: 30);
+const _timeout = Duration(seconds: 120);
 
 Future<Result<void>> sendAnalytics(pb.AnalyticsMessage msg) async {
   final channel = ClientChannel(
