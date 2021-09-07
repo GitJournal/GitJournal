@@ -19,7 +19,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:ext_storage/ext_storage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:icloud_documents_path/icloud_documents_path.dart';
@@ -41,13 +40,13 @@ import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/screens/feature_timeline_screen.dart';
 import 'package:gitjournal/settings/app_settings.dart';
-import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_bottom_menu_bar.dart';
 import 'package:gitjournal/settings/settings_display_images.dart';
 import 'package:gitjournal/settings/settings_editors.dart';
 import 'package:gitjournal/settings/settings_experimental.dart';
 import 'package:gitjournal/settings/settings_git_remote.dart';
+import 'package:gitjournal/settings/settings_git_widgets.dart';
 import 'package:gitjournal/settings/settings_images.dart';
 import 'package:gitjournal/settings/settings_misc.dart';
 import 'package:gitjournal/settings/settings_note_metadata.dart';
@@ -193,8 +192,8 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
       SettingsHeader(tr(LocaleKeys.settings_gitAuthor)),
-      ListTile(title: _GitAuthor()),
-      ListTile(title: _GitAuthorEmail()),
+      ListTile(title: GitAuthor()),
+      ListTile(title: GitAuthorEmail()),
       ListTile(
         title: Text(tr(LocaleKeys.settings_gitRemote_title)),
         subtitle: Text(tr(LocaleKeys.settings_gitRemote_subtitle)),
@@ -446,102 +445,6 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
     ]);
-  }
-}
-
-class _GitAuthorEmail extends StatelessWidget {
-  final gitAuthorEmailKey = GlobalKey<FormFieldState<String>>();
-
-  _GitAuthorEmail({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var gitConfig = Provider.of<GitConfig>(context);
-
-    var saveGitAuthorEmail = (String? gitAuthorEmail) {
-      if (gitAuthorEmail == null) return;
-
-      gitConfig.gitAuthorEmail = gitAuthorEmail;
-      gitConfig.save();
-    };
-
-    return Form(
-      child: TextFormField(
-        key: gitAuthorEmailKey,
-        style: Theme.of(context).textTheme.headline6,
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-          icon: const Icon(Icons.email),
-          hintText: tr(LocaleKeys.settings_email_hint),
-          labelText: tr(LocaleKeys.settings_email_label),
-        ),
-        validator: (String? value) {
-          value = value!.trim();
-          if (value.isEmpty) {
-            return tr(LocaleKeys.settings_email_validator_empty);
-          }
-
-          if (!EmailValidator.validate(value)) {
-            return tr(LocaleKeys.settings_email_validator_invalid);
-          }
-          return null;
-        },
-        textInputAction: TextInputAction.done,
-        onFieldSubmitted: saveGitAuthorEmail,
-        onSaved: saveGitAuthorEmail,
-        initialValue: gitConfig.gitAuthorEmail,
-      ),
-      onChanged: () {
-        if (!gitAuthorEmailKey.currentState!.validate()) return;
-        var gitAuthorEmail = gitAuthorEmailKey.currentState!.value;
-        saveGitAuthorEmail(gitAuthorEmail);
-      },
-    );
-  }
-}
-
-class _GitAuthor extends StatelessWidget {
-  final gitAuthorKey = GlobalKey<FormFieldState<String>>();
-
-  _GitAuthor({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var gitConfig = Provider.of<GitConfig>(context);
-
-    var saveGitAuthor = (String? gitAuthor) {
-      if (gitAuthor == null) return;
-      gitConfig.gitAuthor = gitAuthor;
-      gitConfig.save();
-    };
-
-    return Form(
-      child: TextFormField(
-        key: gitAuthorKey,
-        style: Theme.of(context).textTheme.headline6,
-        decoration: InputDecoration(
-          icon: const Icon(Icons.person),
-          hintText: tr(LocaleKeys.settings_author_hint),
-          labelText: tr(LocaleKeys.settings_author_label),
-        ),
-        validator: (String? value) {
-          value = value!.trim();
-          if (value.isEmpty) {
-            return tr(LocaleKeys.settings_author_validator);
-          }
-          return null;
-        },
-        textInputAction: TextInputAction.done,
-        onFieldSubmitted: saveGitAuthor,
-        onSaved: saveGitAuthor,
-        initialValue: gitConfig.gitAuthor,
-      ),
-      onChanged: () {
-        if (!gitAuthorKey.currentState!.validate()) return;
-        var gitAuthor = gitAuthorKey.currentState!.value;
-        saveGitAuthor(gitAuthor);
-      },
-    );
   }
 }
 
