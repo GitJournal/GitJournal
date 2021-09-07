@@ -342,6 +342,7 @@ class SettingsEditorType {
     Raw,
     Journal,
     Checklist,
+    Org,
   ];
 
   static SettingsEditorType fromInternalString(String? str) {
