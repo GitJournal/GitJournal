@@ -1,4 +1,3 @@
-# Polish translation  by Witold Firlej (grizz) https://grizz.pl https://github.com/grizz-pl
 settings:
   ok: 확인
   cancel: 취소
@@ -15,7 +14,6 @@ settings:
       invalid: 유효한 이메일을 입력하세요
   display:
     title: 화면 설정
-    darkTheme: 다크 테마
     homeScreen: 홈 화면
     theme: Theme
     images:
@@ -91,6 +89,7 @@ settings:
           'on': true
         vectorGraphics: Vector Graphics (.svg)
         vectorGraphicsAdjustColors: Colors to Adjust
+    lang: Language
   gitAuthor: Git 작성자 설정
   versionInfo: 버전 정보
   analytics: 해석학
@@ -106,6 +105,7 @@ settings:
       info: 정보
       debug: 디버그
       verbose: Verbose
+    copy: Debug Logs Copied
   images:
     title: 이미지 설정
     subtitle: 이미지 저장 방법 구성
@@ -194,13 +194,13 @@ settings:
     listView: 목록보기
     confirmDelete: Show a Popup to Confirm Deletes
     hardWrap: Enable hardWrap
+    emoji: Emojify text
   NoteFileNameFormat:
     iso8601WithTimeZone: TimeZone이있는 ISO8601
     iso8601: ISO8601
     iso8601WithoutColon: 콜론없는 ISO8601
     title: 표제
     uuid: Uuid V4
-    simmple: yyyy-mm-dd-hh-mm-ss
     zettelkasten: yyyymmddhhmmss
     simple: yyyy-mm-dd-hh-mm-ss
     dateOnly: yyyy-mm-dd
@@ -229,6 +229,8 @@ settings:
     external: Store Repo Externally
     icloud: Store in iCloud
     repoLocation: Repo Location
+    notWritable: "{} is not writable"
+    failedExternal: Unable to get External Storage Directory
   drawer:
     title: Sidebar Settings
   bottomMenuBar:
@@ -254,6 +256,7 @@ editors:
     saveNoteFailed:
       title: 노트를 저장하지 못했습니다.
       message: 죄송합니다. 노트를 저장할 수 없습니다. 데이터 손실을 방지하기 위해 클립 보드에 복사되었습니다.
+    defaultFileNameHint: File Name
 pro: 프로
 actions:
   newNote: 새로운 노트
@@ -312,7 +315,6 @@ widgets:
     failSend: Failed to send purchase request
     failPurchase: Failed to Purchase - {}
   FolderView:
-    noteSelected: 선택한 노트
     syncError: 동기화 오류 {}
     headerOptions:
       heading: 헤더 옵션
@@ -369,6 +371,7 @@ drawer:
   graph: Graph View
   remote: No Git Host
   addRepo: Add Repository
+  login: Login
 setup:
   autoConfigure:
     title: 어떻게 하시겠습니까?
@@ -425,7 +428,7 @@ setup:
   sshKeyUserProvided:
     public: 공개 키-
     private: 개인 키-
-    password: Password
+    password: Private Key Password
   cloning: 복제 ...
   host:
     title: Git 호스팅 제공 업체 선택-
@@ -490,7 +493,7 @@ feature_timeline:
   issues: GitJournal's development is tracked on Github. Please consider voting on the issues you consider important.
 purchase_screen:
   title: 프로 버전
-  desc: GitJournal은 완전히 오픈 소스이며 상당한 개발 작업의 결과입니다. 벤처 캐피탈이나 기업의 지원이 없으며 결코 그렇게하지 않을 것입니다. 귀하의 지원은 개발을 직접적으로 유지합니다. GitJournal은 "원하는만큼 지불하는 모델 (최소한)"로 작동합니다.
+  desc: 'GitJournal은 완전히 오픈 소스이며 상당한 개발 작업의 결과입니다. 벤처 캐피탈이나 기업의 지원이 없으며 결코 그렇게하지 않을 것입니다. 귀하의 지원은 개발을 직접적으로 유지합니다. GitJournal은 "원하는만큼 지불하는 모델 (최소한)"로 작동합니다.'
   restore: 구매 복원
   oneTime:
     title: 일회성 구매
@@ -508,4 +511,4 @@ OnBoarding:
   subtitle: 'An Open Source Note Taking App built on top of Git'
   page2: 'Your Notes are stored in a standard Markdown + YAML Header format'
   page3: 'Sync your Local Git Repo with any provider'
-0: ""
+beta: BETA

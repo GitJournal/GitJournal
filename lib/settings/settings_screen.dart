@@ -53,6 +53,7 @@ import 'package:gitjournal/settings/settings_note_metadata.dart';
 import 'package:gitjournal/settings/settings_tags.dart';
 import 'package:gitjournal/settings/settings_widgets.dart';
 import 'package:gitjournal/settings/storage_config.dart';
+import 'package:gitjournal/settings/widgets/language_selector.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
@@ -107,7 +108,6 @@ class SettingsListState extends State<SettingsList> {
       }
     }
 
-    var easyLocale = EasyLocalization.of(context)!;
     var folderConfig = Provider.of<NotesFolderConfig>(context);
 
     return ListView(children: [
@@ -123,17 +123,7 @@ class SettingsListState extends State<SettingsList> {
           setState(() {});
         },
       ),
-      ListPreference(
-        title: tr(LocaleKeys.settings_display_lang),
-        currentOption: easyLocale.currentLocale?.toLanguageTag(),
-        options:
-            easyLocale.supportedLocales.map((f) => f.toLanguageTag()).toList(),
-        onChange: (String langTag) {
-          var locale = easyLocale.supportedLocales
-              .firstWhere((e) => e.toLanguageTag() == langTag);
-          easyLocale.setLocale(locale);
-        },
-      ),
+      const LanguageSelector(),
       ListTile(
         title: Text(tr(LocaleKeys.settings_display_images_title)),
         subtitle: Text(tr(LocaleKeys.settings_display_images_subtitle)),

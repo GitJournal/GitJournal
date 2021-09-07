@@ -1,4 +1,3 @@
-# Polish translation  by Witold Firlej (grizz) https://grizz.pl https://github.com/grizz-pl
 settings:
   ok: Ok
   cancel: Avbryt
@@ -15,7 +14,6 @@ settings:
       invalid: Ange ett giltigt e-postmeddelande
   display:
     title: Skärminställningar
-    darkTheme: Mörkt tema
     homeScreen: Hemskärm
     theme: Theme
     images:
@@ -91,6 +89,7 @@ settings:
           'on': true
         vectorGraphics: Vector Graphics (.svg)
         vectorGraphicsAdjustColors: Colors to Adjust
+    lang: Language
   gitAuthor: Git Author Settings
   versionInfo: Information om versionen
   analytics: Analytics
@@ -106,6 +105,7 @@ settings:
       info: Info
       debug: Felsöka
       verbose: Mångordig
+    copy: Debug Logs Copied
   images:
     title: Bildinställningar
     subtitle: Konfigurera hur bilder lagras
@@ -194,13 +194,13 @@ settings:
     listView: Listvy
     confirmDelete: Show a Popup to Confirm Deletes
     hardWrap: Enable hardWrap
+    emoji: Emojify text
   NoteFileNameFormat:
     iso8601WithTimeZone: ISO8601 Med TimeZone
     iso8601: ISO8601
     iso8601WithoutColon: ISO8601 utan kolon
     title: Titel
     uuid: Uuid V4
-    simmple: åååå-mm-dd-hh-mm-ss
     zettelkasten: yyyymmddhhmmss
     simple: yyyy-mm-dd-hh-mm-ss
     dateOnly: yyyy-mm-dd
@@ -229,6 +229,8 @@ settings:
     external: Store Repo Externally
     icloud: Store in iCloud
     repoLocation: Repo Location
+    notWritable: "{} is not writable"
+    failedExternal: Unable to get External Storage Directory
   drawer:
     title: Sidebar Settings
   bottomMenuBar:
@@ -254,6 +256,7 @@ editors:
     saveNoteFailed:
       title: Det gick inte att spara anteckningen
       message: Vi är ledsna, men vi kan inte tycks spara anteckningen. Det har kopierats till Urklipp för att undvika dataförlust.
+    defaultFileNameHint: File Name
 pro: Proffs
 actions:
   newNote: Ny anteckning
@@ -313,7 +316,6 @@ widgets:
     failSend: Failed to send purchase request
     failPurchase: Failed to Purchase - {}
   FolderView:
-    noteSelected: Not vald
     syncError: Synkroniseringsfel {}
     headerOptions:
       heading: Rubrikalternativ
@@ -370,6 +372,7 @@ drawer:
   graph: Graph View
   remote: No Git Host
   addRepo: Add Repository
+  login: Login
 setup:
   autoConfigure:
     title: Hur vill du göra det här?
@@ -426,7 +429,7 @@ setup:
   sshKeyUserProvided:
     public: Allmän nyckel -
     private: Privat nyckel -
-    password: Password
+    password: Private Key Password
   cloning: Kloning ...
   host:
     title: Välj en Git Hosting Provider -
@@ -491,7 +494,7 @@ feature_timeline:
   issues: GitJournal's development is tracked on Github. Please consider voting on the issues you consider important.
 purchase_screen:
   title: Pro-version
-  desc: GitJournal är helt öppen källkod och är resultatet av betydande utvecklingsarbete. Det har inget riskkapital eller stöd från företag och kommer aldrig att göra det. Ditt stöd upprätthåller utvecklingen direkt. GitJournal arbetar med en "betala vad du vill modell (med ett minimum)".
+  desc: 'GitJournal är helt öppen källkod och är resultatet av betydande utvecklingsarbete. Det har inget riskkapital eller stöd från företag och kommer aldrig att göra det. Ditt stöd upprätthåller utvecklingen direkt. GitJournal arbetar med en "betala vad du vill modell (med ett minimum)".'
   restore: Återställa köp
   oneTime:
     title: Engångsköp
@@ -509,4 +512,4 @@ OnBoarding:
   subtitle: 'An Open Source Note Taking App built on top of Git'
   page2: 'Your Notes are stored in a standard Markdown + YAML Header format'
   page3: 'Sync your Local Git Repo with any provider'
-0: ""
+beta: BETA

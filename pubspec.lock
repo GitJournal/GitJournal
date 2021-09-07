@@ -817,6 +817,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.1"
+  language_picker:
+    dependency: "direct main"
+    description:
+      name: language_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.1"
   launch_review:
     dependency: "direct main"
     description:

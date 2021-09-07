@@ -1,4 +1,3 @@
-# Polish translation  by Witold Firlej (grizz) https://grizz.pl https://github.com/grizz-pl
 settings:
   ok: Ok
   cancel: Cancel
@@ -15,7 +14,6 @@ settings:
       invalid: Vui lòng nhập một email đúng định đạng
   display:
     title: Hiển thị cài đặt
-    darkTheme: Giao diện tối
     homeScreen: Màn hình chính
     theme: Theme
     images:
@@ -91,6 +89,7 @@ settings:
           'on': true
         vectorGraphics: Vector Graphics (.svg)
         vectorGraphicsAdjustColors: Colors to Adjust
+    lang: Language
   gitAuthor: Git Author Settings
   versionInfo: Thông tin phiên bản
   analytics: Analytics
@@ -106,6 +105,7 @@ settings:
       info: Info
       debug: Debug
       verbose: Verbose
+    copy: Debug Logs Copied
   images:
     title: Image Settings
     subtitle: Configure how Images are stored
@@ -194,13 +194,13 @@ settings:
     listView: List View
     confirmDelete: Show a Popup to Confirm Deletes
     hardWrap: Enable hardWrap
+    emoji: Emojify text
   NoteFileNameFormat:
     iso8601WithTimeZone: ISO8601 With TimeZone
     iso8601: ISO8601
     iso8601WithoutColon: ISO8601 without Colons
     title: Title
     uuid: Uuid V4
-    simmple: yyyy-mm-dd-hh-mm-ss
     zettelkasten: yyyymmddhhmmss
     simple: yyyy-mm-dd-hh-mm-ss
     dateOnly: yyyy-mm-dd
@@ -229,6 +229,8 @@ settings:
     external: Store Repo Externally
     icloud: Store in iCloud
     repoLocation: Repo Location
+    notWritable: "{} is not writable"
+    failedExternal: Unable to get External Storage Directory
   drawer:
     title: Sidebar Settings
   bottomMenuBar:
@@ -254,6 +256,7 @@ editors:
     saveNoteFailed:
       title: Failed to Save Note
       message: We're sorry, but we cannot seem to save the Note. It has been copied to the clipboard to avoid data loss.
+    defaultFileNameHint: File Name
 pro: Pro
 actions:
   newNote: New Note
@@ -312,7 +315,6 @@ widgets:
     failSend: Failed to send purchase request
     failPurchase: Failed to Purchase - {}
   FolderView:
-    noteSelected: Note Selected
     syncError: Sync Error {}
     headerOptions:
       heading: Header Options
@@ -369,6 +371,7 @@ drawer:
   graph: Graph View
   remote: No Git Host
   addRepo: Add Repository
+  login: Login
 setup:
   autoConfigure:
     title: How do you want to do this?
@@ -425,7 +428,7 @@ setup:
   sshKeyUserProvided:
     public: Public Key -
     private: Private Key -
-    password: Password
+    password: Private Key Password
   cloning: Cloning ...
   host:
     title: Select a Git Hosting Provider -
@@ -490,7 +493,7 @@ feature_timeline:
   issues: GitJournal's development is tracked on Github. Please consider voting on the issues you consider important.
 purchase_screen:
   title: Pro Version
-  desc: GitJournal is completely open source and is the result of significant development work. It has no venture capital or corporation backing and it never will. Your support directly sustains development.   GitJournal operates on a "pay what you want model (with a minimum)".
+  desc: 'GitJournal is completely open source and is the result of significant development work. It has no venture capital or corporation backing and it never will. Your support directly sustains development.   GitJournal operates on a "pay what you want model (with a minimum)".'
   restore: Restore Purchase
   oneTime:
     title: One Time Purchase
@@ -508,4 +511,4 @@ OnBoarding:
   subtitle: 'An Open Source Note Taking App built on top of Git'
   page2: 'Your Notes are stored in a standard Markdown + YAML Header format'
   page3: 'Sync your Local Git Repo with any provider'
-0: ""
+beta: BETA

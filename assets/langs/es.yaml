@@ -1,4 +1,3 @@
-# Polish translation  by Witold Firlej (grizz) https://grizz.pl https://github.com/grizz-pl
 settings:
   ok: Aceptar
   cancel: Cancelar
@@ -15,7 +14,6 @@ settings:
       invalid: Por favor, ingrese un correo electrónico válido
   display:
     title: Mostrar Configuración
-    darkTheme: Tema Oscuro
     homeScreen: Ventana Principal
     theme: Theme
     images:
@@ -91,6 +89,7 @@ settings:
           'on': true
         vectorGraphics: Vector Graphics (.svg)
         vectorGraphicsAdjustColors: Colors to Adjust
+    lang: Language
   gitAuthor: Configuración de Autor Git
   versionInfo: Información de Versión
   analytics: Analítica
@@ -106,6 +105,7 @@ settings:
       info: Info
       debug: Depurar
       verbose: Verboso
+    copy: Debug Logs Copied
   images:
     title: Configuración de Imagen
     subtitle: Configurar como son almacenadas las imágenes
@@ -195,6 +195,7 @@ settings:
     listView: Ver Lista
     confirmDelete: Show a Popup to Confirm Deletes
     hardWrap: Enable hardWrap
+    emoji: Emojify text
   NoteFileNameFormat:
     iso8601WithTimeZone: ISO8601 con Zona Horaria
     # No requerido
@@ -205,10 +206,6 @@ settings:
     # Traducción no requerida
     # No translation required
     uuid: Uuid V4
-    # In Spanish, not many people could understand the convention
-    # aaaa-mm-dd-hh-mm-ss
-    # I hope for clear information (sample) at UI level for all users.
-    simmple: aaaa-mm-dd-hh-mm-ss
     # In Spanish, not many people could understand the convention
     # aaaammddhhmmss
     # I hope for clear information (sample) at UI level for all users.
@@ -240,6 +237,8 @@ settings:
     external: Store Repo Externally
     icloud: Store in iCloud
     repoLocation: Repo Location
+    notWritable: "{} is not writable"
+    failedExternal: Unable to get External Storage Directory
   drawer:
     title: Sidebar Settings
   bottomMenuBar:
@@ -261,10 +260,11 @@ editors:
     tags: Editar Etiquetas
     zen:
       enable: Habilitar Modo Zen
-      disable: Sehabilitar Modo Zen
+      disable: Deshabilitar Modo Zen
     saveNoteFailed:
       title: Error al Guardar la Nota
       message: Lo sentimos, parece que la nota no pudo ser guardada. Ha sido copiada al portapapeles para evitar perder datos.
+    defaultFileNameHint: File Name
 pro: Pro
 actions:
   newNote: Nueva Nota
@@ -324,7 +324,6 @@ widgets:
     failSend: Failed to send purchase request
     failPurchase: Failed to Purchase - {}
   FolderView:
-    noteSelected: Nota Seleccionada
     syncError: Error de Sincronización {}
     headerOptions:
       heading: Opciones de Encabezado
@@ -334,7 +333,7 @@ widgets:
       summary: Mostrar Resumen
       customize: Personalizar Vista
     views:
-      standard: Vista Estandar
+      standard: Vista Estándar
       journal: Vista de Diario
       grid: Vista de Cuadrícula
       card: Vista de Tarjeta
@@ -381,6 +380,7 @@ drawer:
   graph: Graph View
   remote: No Git Host
   addRepo: Add Repository
+  login: Login
 setup:
   autoConfigure:
     title: ¿Cómo desea hacer esto?
@@ -437,7 +437,7 @@ setup:
   sshKeyUserProvided:
     public: Llave Pública -
     private: Llave Privada -
-    password: Password
+    password: Private Key Password
   cloning: Clonando
   host:
     title: Seleccione un Provedor de Hosting de Git
@@ -455,7 +455,7 @@ feature:
   gitPushFreq: Frecuencia de Sincronización Git Configurable
   checklistEditor: Editor de Lista
   journalEditor: Editor de Diario
-  diffViews: Distintas Vistas de Carpeta - Diario, Cuadrícula, Estandar
+  diffViews: Distintas Vistas de Carpeta - Diario, Cuadrícula, Estándar
   imageSupport: Soporte de Imagen
   tags: Etiquetas de Nota
   appShortcuts: Atajos de Aplicación
@@ -503,7 +503,7 @@ feature_timeline:
   issues: GitJournal's development is tracked on Github. Please consider voting on the issues you consider important.
 purchase_screen:
   title: Versión Pro
-  desc: GitJournal es software completamente gratuito/abierto y es el resultado de un significativo trabajo de desarrollo. No cuenta con inversión o alguna corporación respaldándolo y nunca lo hará. Tu apoyo directo mantiene el desarrollo. GitJournal opera bajo el modelo "paga por lo que necesites (con un mínimo)"
+  desc: 'GitJournal es software completamente gratuito/abierto y es el resultado de un significativo trabajo de desarrollo. No cuenta con inversión o alguna corporación respaldándolo y nunca lo hará. Tu apoyo directo mantiene el desarrollo. GitJournal opera bajo el modelo "paga por lo que necesites (con un mínimo)"'
   restore: Restaurar Compra
   oneTime:
     title: Única Compra
@@ -521,4 +521,4 @@ OnBoarding:
   subtitle: 'An Open Source Note Taking App built on top of Git'
   page2: 'Your Notes are stored in a standard Markdown + YAML Header format'
   page3: 'Sync your Local Git Repo with any provider'
-0: ""
+beta: BETA

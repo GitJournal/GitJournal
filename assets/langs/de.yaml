@@ -1,4 +1,3 @@
-# Polish translation  by Witold Firlej (grizz) https://grizz.pl https://github.com/grizz-pl
 settings:
   ok: Ok
   cancel: Abbrechen
@@ -15,7 +14,6 @@ settings:
       invalid: Bitte gebe eine gültige Email Adresse ein
   display:
     title: Ansicht Einstellungen
-    darkTheme: Dark Theme
     homeScreen: Startbildschirm
     theme: Theme
     images:
@@ -92,6 +90,7 @@ settings:
           'on': richtig
         vectorGraphics: Vektor-Grafik (.svg)
         vectorGraphicsAdjustColors: Anpassbare Farben
+    lang: Language
   gitAuthor: Git Author Einstellungen
   versionInfo: Versions Info
   analytics: Auswertungen
@@ -107,6 +106,7 @@ settings:
       info: Info
       debug: Debug
       verbose: Ausführlich
+    copy: Debug Logs Copied
   images:
     title: Bilder Einstellungen
     subtitle: Stelle ein wie Bilder gespeichert werden
@@ -195,13 +195,13 @@ settings:
     listView: Listenansicht
     confirmDelete: Löschungen per Popop-Dialog bestätigen
     hardWrap: Enable hardWrap
+    emoji: Emojify text
   NoteFileNameFormat:
     iso8601WithTimeZone: ISO8601 mit Zeitzone
     iso8601: ISO8601
     iso8601WithoutColon: ISO8601 ohne Doppelpunkte
     title: Titel
     uuid: Uuid V4
-    simmple: "\nyyyy-mm-dd-hh-mm-ss"
     zettelkasten: yyymmddhhmmss
     simple: yyyy-mm-dd-hh-mm-ss
     dateOnly: yyyy-mm-dd
@@ -230,6 +230,8 @@ settings:
     external: Store Repo Externally
     icloud: Store in iCloud
     repoLocation: Repo Location
+    notWritable: "{} is not writable"
+    failedExternal: Unable to get External Storage Directory
   drawer:
     title: Sidebar Settings
   bottomMenuBar:
@@ -255,6 +257,7 @@ editors:
     saveNoteFailed:
       title: Notiz sichern gescheitert
       message: Leider scheint es, daß wir die Notiz nicht sichern konnten. Sie wurde in die Zwischenablage kopiert um Datenverluste zu verhindern.
+    defaultFileNameHint: File Name
 pro: Pro
 actions:
   newNote: Neue Notiz
@@ -314,7 +317,6 @@ widgets:
     failSend: Konnte die Kaufanfrage nicht senden
     failPurchase: "Konnte {} nicht kaufen\n"
   FolderView:
-    noteSelected: Ausgewählte Notiz
     syncError: Sync Fehler {}
     headerOptions:
       heading: Header Optionen
@@ -371,6 +373,7 @@ drawer:
   graph: Graph View
   remote: No Git Host
   addRepo: Add Repository
+  login: Login
 setup:
   autoConfigure:
     title: Wie möchten Sie das machen?
@@ -492,7 +495,7 @@ feature_timeline:
   issues: GitJournal's development is tracked on Github. Please consider voting on the issues you consider important.
 purchase_screen:
   title: Pro Version
-  desc: GitJournal ist vollständig Open Source und das Ergebnis erheblicher Entwicklungsarbeit. Es hat kein Wagniskapital oder Unternehmen im Rücken, und wird dies auch nie haben. Deine Unterstützung hält die Weiterentwicklung aufrecht. GitJournal funktioniert auf einer "Zahle wieviel Du willst"-Basis (mit einem unteren Limit).
+  desc: 'GitJournal ist vollständig Open Source und das Ergebnis erheblicher Entwicklungsarbeit. Es hat kein Wagniskapital oder Unternehmen im Rücken, und wird dies auch nie haben. Deine Unterstützung hält die Weiterentwicklung aufrecht. GitJournal funktioniert auf einer "Zahle wieviel Du willst"-Basis (mit einem unteren Limit).'
   restore: Erwerb wiederherstellen
   oneTime:
     title: Einmal Erwerb
@@ -510,4 +513,4 @@ OnBoarding:
   subtitle: 'Eine Notizen-App basierend auf GitHub'
   page2: 'Deine Notizen werden im Markdown + YAML Header Format bespeichert'
   page3: 'Sync your Local Git Repo with any provider'
-0: ""
+beta: BETA

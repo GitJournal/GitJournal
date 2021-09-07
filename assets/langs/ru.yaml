@@ -1,4 +1,3 @@
-# Polish translation  by Witold Firlej (grizz) https://grizz.pl https://github.com/grizz-pl
 settings:
   # "Ok" can be translated as "Да", "Подтвердить", or leave "Ok"
   ok: Да
@@ -19,7 +18,6 @@ settings:
       invalid: Пожалуйста введите действующую электронную почту
   display:
     title: Настройки экрана
-    darkTheme: Темная тема
     homeScreen: Начальный экран
     theme: Theme
     images:
@@ -95,6 +93,7 @@ settings:
           'on': true
         vectorGraphics: Vector Graphics (.svg)
         vectorGraphicsAdjustColors: Colors to Adjust
+    lang: Language
   gitAuthor: Настройки Git аккаунта
   versionInfo: Версия
   analytics: Аналитика
@@ -112,6 +111,7 @@ settings:
       info: Информация
       debug: Отладка
       verbose: Подробнее
+    copy: Debug Logs Copied
   images:
     title: Настройки изображений
     subtitle: Настроить способ хранения изображений
@@ -212,13 +212,13 @@ settings:
     listView: Посмотреть список
     confirmDelete: Show a Popup to Confirm Deletes
     hardWrap: Enable hardWrap
+    emoji: Emojify text
   NoteFileNameFormat:
     iso8601WithTimeZone: ISO8601 с TimeZone
     iso8601: ISO8601
     iso8601WithoutColon: ISO8601 без двоеточия
     title: Заголовок
     uuid: Uuid V4
-    simmple: yyyy-mm-dd-hh-mm-ss
     zettelkasten: yyyymmddhhmmss
     simple: yyyy-mm-dd-hh-mm-ss
     dateOnly: yyyy-mm-dd
@@ -247,6 +247,8 @@ settings:
     external: Store Repo Externally
     icloud: Store in iCloud
     repoLocation: Repo Location
+    notWritable: "{} is not writable"
+    failedExternal: Unable to get External Storage Directory
   drawer:
     title: Sidebar Settings
   bottomMenuBar:
@@ -274,6 +276,7 @@ editors:
     saveNoteFailed:
       title: Не удалось сохранить заметку
       message: Сожалеем, но мы не можем сохранить заметку. Она была скопирована в буфер обмена, чтобы избежать потери данных.
+    defaultFileNameHint: File Name
 pro: Про
 actions:
   newNote: Новая заметка
@@ -346,7 +349,6 @@ widgets:
     failSend: Failed to send purchase request
     failPurchase: Failed to Purchase - {}
   FolderView:
-    noteSelected: Выделена заметка
     syncError: Ошибка синхронизации {}
     headerOptions:
       heading: Параметры заголовка
@@ -405,6 +407,7 @@ drawer:
   graph: Graph View
   remote: No Git Host
   addRepo: Add Repository
+  login: Login
 setup:
   autoConfigure:
     title: Как вы хотите это сделать?
@@ -461,7 +464,7 @@ setup:
   sshKeyUserProvided:
     public: Публичный ключ -
     private: Приватный ключ -
-    password: Password
+    password: Private Key Password
   cloning: Клонирование ...
   host:
     title: Выберите поставщика хостинга Git -
@@ -531,7 +534,7 @@ feature_timeline:
   issues: GitJournal's development is tracked on Github. Please consider voting on the issues you consider important.
 purchase_screen:
   title: Версия Pro
-  desc: GitJournal является приложением с полностью открытым исходным кодом и является результатом значительной работы. У него нет венчурного капитала или поддержки корпораций. Ваша поддержка напрямую стимулирует развитие. GitJournal работает по модели "плати сколько хочешь (с минимумом)".
+  desc: 'GitJournal является приложением с полностью открытым исходным кодом и является результатом значительной работы. У него нет венчурного капитала или поддержки корпораций. Ваша поддержка напрямую стимулирует развитие. GitJournal работает по модели "плати сколько хочешь (с минимумом)".'
   restore: Восстановить покупку
   oneTime:
     title: Одноразовая покупка
@@ -549,4 +552,4 @@ OnBoarding:
   subtitle: 'An Open Source Note Taking App built on top of Git'
   page2: 'Your Notes are stored in a standard Markdown + YAML Header format'
   page3: 'Sync your Local Git Repo with any provider'
-0: ""
+beta: BETA

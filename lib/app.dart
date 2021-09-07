@@ -95,7 +95,7 @@ class JournalApp extends StatefulWidget {
         const Locale('ru'),
         const Locale('sv'),
         const Locale('vi'),
-        const Locale('zh'),
+        const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'),
       ], // Remember to update Info.plist
       fallbackLocale: const Locale('en'),
       useFallbackTranslations: true,

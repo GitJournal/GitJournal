@@ -1,4 +1,3 @@
-# Polish translation  by Witold Firlej (grizz) https://grizz.pl https://github.com/grizz-pl
 settings:
   ok: Ok
   cancel: キャンセル
@@ -15,7 +14,6 @@ settings:
       invalid: 不正なメールアドレスです
   display:
     title: 表示設定
-    darkTheme: ダークテーマ
     homeScreen: ホーム画面
     theme: テーマ
     images:
@@ -91,6 +89,7 @@ settings:
           'on': する
         vectorGraphics: ベクター画像 (.svg)
         vectorGraphicsAdjustColors: 調整対象の色
+    lang: Language
   gitAuthor: GitのAuthor設定
   versionInfo: バージョン情報
   analytics: アナリティクス
@@ -106,6 +105,7 @@ settings:
       info: 情報
       debug: デバッグ
       verbose: 詳細
+    copy: Debug Logs Copied
   images:
     title: 画像設定
     subtitle: 画像の保存方法を設定する
@@ -194,13 +194,13 @@ settings:
     listView: リストビュー
     confirmDelete: 削除時に確認をポップアップする
     hardWrap: hardWrapを有効にする
+    emoji: Emojify text
   NoteFileNameFormat:
     iso8601WithTimeZone: タイムゾーン付きISO8601形式
     iso8601: ISO8601形式
     iso8601WithoutColon: コロン無しのISO8601形式
     title: タイトル
     uuid: Uuid V4
-    simmple: yyyy-mm-dd-hh-mm-ss
     zettelkasten: yyyymmddhhmmss
     simple: yyyy-mm-dd-hh-mm-ss
     dateOnly: yyyy-mm-dd
@@ -229,6 +229,8 @@ settings:
     external: リポジトリを外部に保存する
     icloud: iCloudに保存する
     repoLocation: リポジトリの場所
+    notWritable: "{} is not writable"
+    failedExternal: Unable to get External Storage Directory
   drawer:
     title: サイドバーの設定
   bottomMenuBar:
@@ -254,6 +256,7 @@ editors:
     saveNoteFailed:
       title: ノートの保存に失敗しました。
       message: 申し訳ありません。ノートを保存できなかったようです。データを失わないように、クリップボードにコピーしました。
+    defaultFileNameHint: File Name
 pro: Pro
 actions:
   newNote: 新規ノート
@@ -312,8 +315,6 @@ widgets:
     failSend: 購入リクエストの送信に失敗しました
     failPurchase: 購入に失敗しました - {}
   FolderView:
-    # Where is it used?
-    noteSelected: Note Selected
     syncError: 同期エラー {}
     headerOptions:
       heading: ヘッダーオプション
@@ -370,6 +371,7 @@ drawer:
   graph: グラフビュー
   remote: Gitホスト未設定
   addRepo: リポジトリを追加
+  login: Login
 setup:
   autoConfigure:
     title: どのように設定しますか？
@@ -491,7 +493,7 @@ feature_timeline:
   issues: GitJournalの開発はGitHubで行われています。重要だと思うIssueには是非投票してください。
 purchase_screen:
   title: Pro Version
-  desc: GitJournalは完全にオープンソースであり、その重要な開発行為の成果物です。ベンチャーキャピタルや企業の支援を受けたことはありませんし、これからもありえません。あなたのご支援が直接、開発を支えます。   GitJournalは "(最低限)必要な分だけ支払う"モデルで運営されています。
+  desc: 'GitJournalは完全にオープンソースであり、その重要な開発行為の成果物です。ベンチャーキャピタルや企業の支援を受けたことはありませんし、これからもありえません。あなたのご支援が直接、開発を支えます。   GitJournalは "(最低限)必要な分だけ支払う"モデルで運営されています。'
   restore: 購入を復元する
   oneTime:
     title: 一括購入
@@ -509,4 +511,4 @@ OnBoarding:
   subtitle: 'Gitで構築されたオープンソースのノートアプリ'
   page2: 'ノートはYAMLヘッダー付きの標準的なMarkdownとして保存されます'
   page3: 'ローカルのGitリポジトリをお好みのリモートと同期できます'
-0: ""
+beta: BETA
