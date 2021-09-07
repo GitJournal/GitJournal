@@ -65,7 +65,6 @@ Future<Result<void>> _gitCommandViaExecutable({
     environment: {
       'GIT_SSH_COMMAND': 'ssh -i ${temp.path} -o IdentitiesOnly=yes',
     },
-    mode: ProcessStartMode.inheritStdio,
   );
 
   print('env GIT_SSH_COMMAND="ssh -i ${temp.path} -o IdentitiesOnly=yes"');
@@ -74,8 +73,14 @@ Future<Result<void>> _gitCommandViaExecutable({
   var exitCode = await process.exitCode;
   await dir.delete(recursive: true);
 
+  var stdoutB = <int>[];
+  await for (var d in process.stdout) {
+    stdoutB.addAll(d);
+  }
+  var stdout = utf8.decode(stdoutB);
+
   if (exitCode != 0) {
-    var ex = Exception("Failed to fetch, exitCode: $exitCode");
+    var ex = Exception("Failed to fetch - $stdout - exitCode: $exitCode");
     return Result.fail(ex);
   }
 
@@ -97,7 +102,8 @@ Future<Result<String>> gitDefaultBranchViaExecutable({
 
   var dir = Directory.systemTemp.createTempSync();
   var temp = File("${dir.path}/key");
-  temp.writeAsString(privateKey);
+  await temp.writeAsString(privateKey);
+  await temp.chmod(int.parse('0600', radix: 8));
 
   var process = await Process.start(
     'git',
@@ -112,11 +118,14 @@ Future<Result<String>> gitDefaultBranchViaExecutable({
     },
   );
 
+  print('env GIT_SSH_COMMAND="ssh -i ${temp.path} -o IdentitiesOnly=yes"');
+  print('git remote show $remoteName');
+
   var exitCode = await process.exitCode;
   await dir.delete(recursive: true);
 
   if (exitCode != 0) {
-    var ex = Exception("Failed to fetch, exitCode: $exitCode");
+    var ex = Exception("Failed to fetch default branch, exitCode: $exitCode");
     return Result.fail(ex);
   }
 
