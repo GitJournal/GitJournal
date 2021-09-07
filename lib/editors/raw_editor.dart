@@ -75,11 +75,14 @@ class RawEditorState extends State<RawEditor>
     // FIXME: Stop hardcoding the highlight color
     var rawText = serializer.encode(note.data);
     if (widget.highlightString != null) {
+      var regex = RegExp(
+        RegExp.escape(widget.highlightString!),
+        caseSensitive: false,
+      );
       _textController = RichTextController(
         text: rawText,
-        stringMap: {
-          widget.highlightString!:
-              const TextStyle(backgroundColor: Colors.green),
+        patternMap: {
+          regex: const TextStyle(backgroundColor: Colors.green),
         },
       );
     } else {
