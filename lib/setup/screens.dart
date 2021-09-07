@@ -753,6 +753,8 @@ enum GitHostSetupType {
   Manual,
 }
 
+var _isDesktop = Platform.isLinux || Platform.isMacOS || Platform.isWindows;
+
 class GitHostAutoConfigureChoicePage extends StatelessWidget {
   final Func1<GitHostSetupType, void> onDone;
 
@@ -768,13 +770,14 @@ class GitHostAutoConfigureChoicePage extends StatelessWidget {
             style: Theme.of(context).textTheme.headline5,
           ),
           const SizedBox(height: 16.0),
-          GitHostSetupButton(
-            text: tr('setup.autoConfigure.automatic'),
-            onPressed: () {
-              onDone(GitHostSetupType.Auto);
-            },
-          ),
-          const SizedBox(height: 8.0),
+          if (!_isDesktop)
+            GitHostSetupButton(
+              text: tr('setup.autoConfigure.automatic'),
+              onPressed: () {
+                onDone(GitHostSetupType.Auto);
+              },
+            ),
+          if (!_isDesktop) const SizedBox(height: 8.0),
           GitHostSetupButton(
             text: tr('setup.autoConfigure.manual'),
             onPressed: () async {
