@@ -16,6 +16,7 @@ class Themes {
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Color(0xFF338a3e),
       selectionHandleColor: Color(0xFF66bb6a),
+      selectionColor: Color(0xFF338a3e),
     ),
   );
 
@@ -34,6 +35,7 @@ class Themes {
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Color(0xFF66bb6a),
       selectionHandleColor: Color(0xFF66bb6a),
+      selectionColor: Color(0xff689f38),
     ),
   );
 }

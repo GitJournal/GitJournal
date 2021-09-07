@@ -256,6 +256,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
           discardChangesSelected: _discardChangesSelected,
           editMode: widget.editMode,
           highlightString: widget.highlightString,
+          theme: Theme.of(context),
         );
       case EditorType.Checklist:
         return ChecklistEditor(

@@ -33,6 +33,7 @@ class RawEditor extends StatefulWidget implements Editor {
 
   final bool editMode;
   final String? highlightString;
+  final ThemeData theme;
 
   RawEditor({
     Key? key,
@@ -47,6 +48,7 @@ class RawEditor extends StatefulWidget implements Editor {
     required this.discardChangesSelected,
     required this.editMode,
     required this.highlightString,
+    required this.theme,
   }) : super(key: key);
 
   @override
@@ -72,13 +74,12 @@ class RawEditorState extends State<RawEditor>
     super.initState();
     _noteModified = widget.noteModified;
 
-    // FIXME: Stop hardcoding the highlight color
     var rawText = serializer.encode(note.data);
     if (widget.highlightString != null) {
       _textController = RichTextController(
         text: rawText,
         highlightText: widget.highlightString!,
-        highlightStyle: const TextStyle(backgroundColor: Colors.green),
+        highlightColor: widget.theme.textSelectionTheme.selectionColor!,
       );
     } else {
       _textController = TextEditingController(text: rawText);
