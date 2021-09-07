@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:rich_text_controller/rich_text_controller.dart';
 
 import 'package:gitjournal/core/image.dart' as core;
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
@@ -11,6 +10,7 @@ import 'package:gitjournal/editors/disposable_change_notifier.dart';
 import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/editors/undo_redo.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'rich_text_controller.dart';
 
 class RawEditor extends StatefulWidget implements Editor {
   final Note note;
@@ -75,15 +75,10 @@ class RawEditorState extends State<RawEditor>
     // FIXME: Stop hardcoding the highlight color
     var rawText = serializer.encode(note.data);
     if (widget.highlightString != null) {
-      var regex = RegExp(
-        RegExp.escape(widget.highlightString!),
-        caseSensitive: false,
-      );
       _textController = RichTextController(
         text: rawText,
-        patternMap: {
-          regex: const TextStyle(backgroundColor: Colors.green),
-        },
+        highlightText: widget.highlightString!,
+        highlightStyle: const TextStyle(backgroundColor: Colors.green),
       );
     } else {
       _textController = TextEditingController(text: rawText);
