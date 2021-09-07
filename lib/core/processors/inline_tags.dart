@@ -33,12 +33,7 @@ class InlineTagsProcessor {
     var tags = <String>{};
 
     for (var prefix in tagPrefixes) {
-      // FIXME: Do not hardcode this
-      var p = prefix;
-      if (p == '+') {
-        p = '\\+';
-      }
-
+      var p = RegExp.escape(prefix);
       var regexp = RegExp(r'(^|\s)' + p + r'([^\s]+)(\s|$)');
       var matches = regexp.allMatches(text);
       for (var match in matches) {
