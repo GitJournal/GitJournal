@@ -20,10 +20,6 @@ import 'package:gitjournal/ssh/keygen.dart';
 import 'package:gitjournal/utils/utils.dart';
 
 class GitRemoteSettingsScreen extends StatefulWidget {
-  final String sshPublicKey;
-
-  GitRemoteSettingsScreen(this.sshPublicKey);
-
   @override
   _GitRemoteSettingsScreenState createState() =>
       _GitRemoteSettingsScreenState();
@@ -38,6 +34,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     var settings = Provider.of<Settings>(context);
+    var gitConfig = Provider.of<GitConfig>(context);
     var repo = Provider.of<GitJournalRepo>(context);
 
     if (remoteHost.isEmpty) {
@@ -87,7 +84,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
           textAlign: TextAlign.left,
         ),
         const SizedBox(height: 16.0),
-        PublicKeyWidget(widget.sshPublicKey),
+        PublicKeyWidget(gitConfig.sshPublicKey),
         const SizedBox(height: 16.0),
         const Divider(),
         Builder(
@@ -179,7 +176,8 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
   }
 
   void _copyKeyToClipboard(BuildContext context) {
-    Clipboard.setData(ClipboardData(text: widget.sshPublicKey));
+    var gitConfig = context.read<GitConfig>();
+    Clipboard.setData(ClipboardData(text: gitConfig.sshPublicKey));
     showSnackbar(context, tr(LocaleKeys.setup_sshKey_copied));
   }
 
