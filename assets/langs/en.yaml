@@ -199,6 +199,7 @@ settings:
     listView: List View
     confirmDelete: Show a Popup to Confirm Deletes
     hardWrap: Enable hardWrap
+    emoji: Emojify text
   NoteFileNameFormat:
     iso8601WithTimeZone: ISO8601 With TimeZone
     iso8601: ISO8601

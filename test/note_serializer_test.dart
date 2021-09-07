@@ -27,6 +27,7 @@ void main() {
       var doc = MdYamlDoc(body: "I :heart: you", props: props);
 
       var serializer = NoteSerializer.raw();
+      serializer.settings.emojify = true;
       serializer.settings.titleSettings = SettingsTitle.InYaml;
 
       var note = Note(parent, "file-path-not-important", DateTime.now());
@@ -46,7 +47,7 @@ void main() {
     test('Test Title Serialization', () {
       var props = LinkedHashMap<String, dynamic>.from({});
       var doc =
-          MdYamlDoc(body: "# Why not :coffee:?\n\nI :heart: you", props: props);
+          MdYamlDoc(body: "# Why not coffee?\n\nI heart you", props: props);
 
       var serializer = NoteSerializer.raw();
       serializer.settings.titleSettings = SettingsTitle.InH1;
@@ -54,34 +55,34 @@ void main() {
       var note = Note(parent, "file-path-not-important", DateTime.now());
       serializer.decode(doc, note);
 
-      expect(note.body, "I ❤️ you");
-      expect(note.title, "Why not ☕?");
+      expect(note.body, "I heart you");
+      expect(note.title, "Why not coffee?");
 
-      note.body = "Why not ☕?";
-      note.title = "I ❤️ you";
+      note.body = "Why not coffee?";
+      note.title = "I heart you";
 
       serializer.encode(note, doc);
-      expect(doc.body, "# I :heart: you\n\nWhy not :coffee:?");
+      expect(doc.body, "# I heart you\n\nWhy not coffee?");
       expect(doc.props.length, 0);
     });
 
     test('Test Title Reading with blank lines', () {
       var props = LinkedHashMap<String, dynamic>.from({});
-      var doc = MdYamlDoc(
-          body: "\n# Why not :coffee:?\n\nI :heart: you", props: props);
+      var doc =
+          MdYamlDoc(body: "\n# Why not coffee?\n\nI heart you", props: props);
 
       var serializer = NoteSerializer.raw();
 
       var note = Note(parent, "file-path-not-important", DateTime.now());
       serializer.decode(doc, note);
 
-      expect(note.body, "I ❤️ you");
-      expect(note.title, "Why not ☕?");
+      expect(note.body, "I heart you");
+      expect(note.title, "Why not coffee?");
     });
 
     test('Test Title Reading with blank lines and no body', () {
       var props = LinkedHashMap<String, dynamic>.from({});
-      var doc = MdYamlDoc(body: "\n# Why not :coffee:?", props: props);
+      var doc = MdYamlDoc(body: "\n# Why not coffee?", props: props);
 
       var serializer = NoteSerializer.raw();
 
@@ -89,13 +90,13 @@ void main() {
       serializer.decode(doc, note);
 
       expect(note.body.length, 0);
-      expect(note.title, "Why not ☕?");
+      expect(note.title, "Why not coffee?");
     });
 
     test('Test Old Title Serialization', () {
       var props = LinkedHashMap<String, dynamic>.from(
-          <String, dynamic>{"title": "Why not :coffee:?"});
-      var doc = MdYamlDoc(body: "I :heart: you", props: props);
+          <String, dynamic>{"title": "Why not coffee?"});
+      var doc = MdYamlDoc(body: "I heart you", props: props);
 
       var serializer = NoteSerializer.raw();
       serializer.settings.titleSettings = SettingsTitle.InH1;
@@ -103,12 +104,12 @@ void main() {
       var note = Note(parent, "file-path-not-important", DateTime.now());
       serializer.decode(doc, note);
 
-      expect(note.body, "I ❤️ you");
-      expect(note.title, "Why not ☕?");
+      expect(note.body, "I heart you");
+      expect(note.title, "Why not coffee?");
 
       serializer.encode(note, doc);
-      expect(note.body, "I ❤️ you");
-      expect(note.title, "Why not ☕?");
+      expect(note.body, "I heart you");
+      expect(note.title, "Why not coffee?");
       expect(doc.props.length, 1);
     });
 

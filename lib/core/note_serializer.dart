@@ -53,6 +53,8 @@ class NoteSerializationSettings {
   var modifiedFormat = DateFormat.Iso8601;
   var createdFormat = DateFormat.Iso8601;
 
+  var emojify = false;
+
   NoteSerializationSettings.fromConfig(NotesFolderConfig config) {
     modifiedKey = config.yamlModifiedKey;
     createdKey = config.yamlCreatedKey;
@@ -72,7 +74,7 @@ class NoteSerializer implements NoteSerializerInterface {
 
   @override
   void encode(Note note, MdYamlDoc data) {
-    data.body = emojiParser.unemojify(note.body);
+    data.body = settings.emojify ? emojiParser.unemojify(note.body) : note.body;
 
     if (note.created != null) {
       switch (settings.createdFormat) {
@@ -101,7 +103,9 @@ class NoteSerializer implements NoteSerializerInterface {
     }
 
     if (note.title.isNotEmpty) {
-      var title = emojiParser.unemojify(note.title.trim());
+      var title = settings.emojify
+          ? emojiParser.unemojify(note.title.trim())
+          : note.title.trim();
       if (settings.titleSettings == SettingsTitle.InH1) {
         if (title.isNotEmpty) {
           data.body = '# $title\n\n${data.body}';
@@ -173,7 +177,7 @@ class NoteSerializer implements NoteSerializerInterface {
       }
     }
 
-    note.body = emojiParser.emojify(data.body);
+    note.body = settings.emojify ? emojiParser.emojify(data.body) : data.body;
 
     var createdKeyOptions = [
       "created",
@@ -201,7 +205,7 @@ class NoteSerializer implements NoteSerializerInterface {
     //
     if (data.props.containsKey(settings.titleKey)) {
       var title = data.props[settings.titleKey]?.toString() ?? "";
-      note.title = emojiParser.emojify(title);
+      note.title = settings.emojify ? emojiParser.emojify(title) : title;
 
       propsUsed.add(settings.titleKey);
       settings.titleSettings = SettingsTitle.InYaml;

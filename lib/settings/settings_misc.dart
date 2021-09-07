@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
@@ -32,6 +33,7 @@ class _SettingsMiscState extends State<SettingsMisc> {
   @override
   Widget build(BuildContext context) {
     var settings = Provider.of<Settings>(context);
+    var folderConfig = Provider.of<NotesFolderConfig>(context);
 
     var body = Column(
       children: <Widget>[
@@ -58,6 +60,14 @@ class _SettingsMiscState extends State<SettingsMisc> {
           onChanged: (bool newVal) {
             settings.hardWrap = newVal;
             settings.save();
+          },
+        ),
+        SwitchListTile(
+          title: Text(tr(LocaleKeys.settings_misc_emoji)),
+          value: folderConfig.emojify,
+          onChanged: (bool newVal) {
+            folderConfig.emojify = newVal;
+            folderConfig.save();
           },
         ),
       ],

@@ -307,6 +307,7 @@ abstract class LocaleKeys {
   static const settings_misc_listView = 'settings.misc.listView';
   static const settings_misc_confirmDelete = 'settings.misc.confirmDelete';
   static const settings_misc_hardWrap = 'settings.misc.hardWrap';
+  static const settings_misc_emoji = 'settings.misc.emoji';
   static const settings_misc = 'settings.misc';
   static const settings_NoteFileNameFormat_iso8601WithTimeZone =
       'settings.NoteFileNameFormat.iso8601WithTimeZone';
