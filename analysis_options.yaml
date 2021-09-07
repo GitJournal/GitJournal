@@ -15,6 +15,7 @@ analyzer:
   exclude:
     - "bin/cache/**"
     - "lib/generated_plugin_registrant.dart"
+    - lib/account/init.dart
   enable-experiment:
     - nonfunction-type-aliases
   # plugins:

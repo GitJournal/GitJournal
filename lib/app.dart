@@ -15,6 +15,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_io/io.dart' show Directory, Platform;
 
+import 'package:gitjournal/account/init.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/analytics/route_observer.dart';
 import 'package:gitjournal/app_router.dart';
@@ -59,6 +60,8 @@ class JournalApp extends StatefulWidget {
 
     Hive.init(cacheDir);
     Hive.registerAdapter(LinkAdapter());
+
+    initSupabase();
 
     var repoManager = RepositoryManager(
       gitBaseDir: gitBaseDirectory,

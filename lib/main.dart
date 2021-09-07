@@ -8,7 +8,6 @@ import 'package:easy_logger/easy_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stack_trace/stack_trace.dart';
 
-import 'package:gitjournal/account/init.dart';
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings/app_settings.dart';
@@ -20,8 +19,6 @@ void main() async {
     LevelMessages.error,
     LevelMessages.warning,
   ];
-
-  initSupabase();
 
   var pref = await SharedPreferences.getInstance();
   AppSettings.instance.load(pref);
