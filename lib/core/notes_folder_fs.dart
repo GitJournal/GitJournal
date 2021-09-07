@@ -7,6 +7,7 @@ import 'package:synchronized/synchronized.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/core/views/inline_tags_view.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'note.dart';
 import 'notes_folder.dart';
@@ -403,7 +404,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   String get publicName {
     var spec = pathSpec();
     if (spec.isEmpty) {
-      return tr("rootFolder");
+      return tr(LocaleKeys.rootFolder);
     }
     return spec;
   }

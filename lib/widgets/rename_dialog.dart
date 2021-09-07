@@ -5,6 +5,8 @@ import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 import 'package:universal_io/io.dart';
 
+import 'package:gitjournal/generated/locale_keys.g.dart';
+
 class RenameDialog extends StatefulWidget {
   final String oldPath;
   final String inputDecoration;
@@ -41,17 +43,17 @@ class _RenameDialogState extends State<RenameDialog> {
             decoration: InputDecoration(labelText: widget.inputDecoration),
             validator: (value) {
               if (value!.isEmpty) {
-                return tr('widgets.rename.validator.empty');
+                return tr(LocaleKeys.widgets_rename_validator_empty);
               }
 
               if (value.contains(p.separator)) {
-                return tr('widgets.rename.validator.contains');
+                return tr(LocaleKeys.widgets_rename_validator_contains);
               }
 
               var newPath = join(dirname(widget.oldPath), value);
               if (FileSystemEntity.typeSync(newPath) !=
                   FileSystemEntityType.notFound) {
-                return tr('widgets.rename.validator.exists');
+                return tr(LocaleKeys.widgets_rename_validator_exists);
               }
               return null;
             },
@@ -69,7 +71,7 @@ class _RenameDialogState extends State<RenameDialog> {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(false),
-          child: Text(tr('widgets.rename.no')),
+          child: Text(tr(LocaleKeys.widgets_rename_no)),
         ),
         TextButton(
           onPressed: () {
@@ -78,7 +80,7 @@ class _RenameDialogState extends State<RenameDialog> {
               Navigator.of(context).pop(newName);
             }
           },
-          child: Text(tr('widgets.rename.yes')),
+          child: Text(tr(LocaleKeys.widgets_rename_yes)),
         ),
       ],
       content: form,

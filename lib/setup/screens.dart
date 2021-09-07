@@ -14,6 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/git_config.dart';
@@ -351,7 +352,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
     if (pos == 5) {
       return GitHostSetupLoadingErrorPage(
-        loadingMessage: tr('setup.cloning'),
+        loadingMessage: tr(LocaleKeys.setup_cloning),
         errorMessage: gitCloneErrorMessage,
       );
     }
@@ -495,7 +496,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
   void _copyKeyToClipboard(BuildContext context) {
     Clipboard.setData(ClipboardData(text: publicKey));
-    showSnackbar(context, tr('setup.sshKey.copied'));
+    showSnackbar(context, tr(LocaleKeys.setup_sshKey_copied));
   }
 
   void _launchDeployKeyPage() async {
@@ -622,7 +623,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     try {
       Log.i("Generating SSH Key");
       setState(() {
-        _autoConfigureMessage = tr('setup.sshKey.generate');
+        _autoConfigureMessage = tr(LocaleKeys.setup_sshKey_generate);
       });
       var sshKey = await generateSSHKeys(comment: "GitJournal");
       if (sshKey == null) {
@@ -640,7 +641,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       });
 
       Log.i("Adding as a deploy key");
-      _autoConfigureMessage = tr('setup.sshKey.addDeploy');
+      _autoConfigureMessage = tr(LocaleKeys.setup_sshKey_addDeploy);
 
       await _gitHost!.addDeployKey(publicKey, _gitHostRepo.fullName);
     } on Exception catch (e, stacktrace) {
@@ -714,7 +715,7 @@ class GitHostChoicePage extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Text(
-            tr('setup.host.title'),
+            tr(LocaleKeys.setup_host_title),
             style: Theme.of(context).textTheme.headline5,
           ),
           const SizedBox(height: 16.0),
@@ -735,7 +736,7 @@ class GitHostChoicePage extends StatelessWidget {
           ),
           const SizedBox(height: 8.0),
           GitHostSetupButton(
-            text: tr('setup.host.custom'),
+            text: tr(LocaleKeys.setup_host_custom),
             onPressed: () async {
               onCustomGitHost();
             },
@@ -766,20 +767,20 @@ class GitHostAutoConfigureChoicePage extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Text(
-            tr('setup.autoConfigure.title'),
+            tr(LocaleKeys.setup_autoConfigure_title),
             style: Theme.of(context).textTheme.headline5,
           ),
           const SizedBox(height: 16.0),
           if (!_isDesktop)
             GitHostSetupButton(
-              text: tr('setup.autoConfigure.automatic'),
+              text: tr(LocaleKeys.setup_autoConfigure_automatic),
               onPressed: () {
                 onDone(GitHostSetupType.Auto);
               },
             ),
           if (!_isDesktop) const SizedBox(height: 8.0),
           GitHostSetupButton(
-            text: tr('setup.autoConfigure.manual'),
+            text: tr(LocaleKeys.setup_autoConfigure_manual),
             onPressed: () async {
               onDone(GitHostSetupType.Manual);
             },

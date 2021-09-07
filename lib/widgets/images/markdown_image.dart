@@ -26,6 +26,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_io/io.dart';
 
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/markdown_renderer_config.dart';
 import 'package:gitjournal/widgets/images/image_caption.dart';
@@ -96,7 +97,7 @@ class MarkdownImage extends StatelessWidget {
                 Log.e(errorMessage);
                 if (snapshot.error is HttpExceptionWithStatus) {
                   final httpError = snapshot.error as HttpExceptionWithStatus;
-                  errorMessage = tr("widgets.imageRenderer.httpError",
+                  errorMessage = tr(LocaleKeys.widgets_imageRenderer_httpError,
                       namedArgs: {
                         "status": httpError.statusCode.toString(),
                         "url": httpError.uri.toString()

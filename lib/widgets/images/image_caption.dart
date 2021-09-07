@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/markdown_renderer_config.dart';
 import 'package:gitjournal/utils/hero_dialog.dart';
 
@@ -140,7 +141,7 @@ String captionText(BuildContext context, String altText, String tooltip) {
   String _tooltip = tooltipCaption ? _cleanCaption(context, tooltip) : "";
   String text = "";
   if (_altText.isNotEmpty && _tooltip.isNotEmpty) {
-    text = tr("widgets.imageRenderer.caption",
+    text = tr(LocaleKeys.widgets_imageRenderer_caption,
         namedArgs: settings.tooltipFirst
             ? {"first": _tooltip, "second": _altText}
             : {"first": _altText, "second": _tooltip});

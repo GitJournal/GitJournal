@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/git_config.dart';
 import 'button.dart';
@@ -35,7 +36,7 @@ class GitHostSetupAutoConfigurePageState
   String errorMessage = "";
 
   bool _configuringStarted = false;
-  String _message = tr('setup.autoconfigure.waitPerm');
+  String _message = tr(LocaleKeys.setup_autoconfigure_waitPerm);
 
   void _startAutoConfigure() async {
     Log.d("Starting autoconfigure");
@@ -66,7 +67,7 @@ class GitHostSetupAutoConfigurePageState
         UserInfo? userInfo;
         try {
           setState(() {
-            _message = tr('setup.autoconfigure.readUser');
+            _message = tr(LocaleKeys.setup_autoconfigure_readUser);
           });
 
           Log.d("Starting to fetch userInfo");
@@ -131,29 +132,29 @@ class GitHostSetupAutoConfigurePageState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          tr('setup.autoconfigure.title'),
+          tr(LocaleKeys.setup_autoconfigure_title),
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 32.0),
 
         // Step 1
         Text(
-          tr('setup.autoconfigure.step1'),
+          tr(LocaleKeys.setup_autoconfigure_step1),
           style: Theme.of(context).textTheme.bodyText1,
         ),
         const SizedBox(height: 8.0),
         Text(
-          tr('setup.autoconfigure.step2'),
+          tr(LocaleKeys.setup_autoconfigure_step2),
           style: Theme.of(context).textTheme.bodyText1,
         ),
         const SizedBox(height: 8.0),
         Text(
-          tr('setup.autoconfigure.step3'),
+          tr(LocaleKeys.setup_autoconfigure_step3),
           style: Theme.of(context).textTheme.bodyText1,
         ),
         const SizedBox(height: 32.0),
         Text(
-          tr('setup.autoconfigure.warning'),
+          tr(LocaleKeys.setup_autoconfigure_warning),
           style: Theme.of(context).textTheme.bodyText1!.copyWith(
                 fontStyle: FontStyle.italic,
               ),
@@ -161,7 +162,7 @@ class GitHostSetupAutoConfigurePageState
         const SizedBox(height: 32.0),
 
         GitHostSetupButton(
-          text: tr('setup.autoconfigure.authorize'),
+          text: tr(LocaleKeys.setup_autoconfigure_authorize),
           onPressed: _startAutoConfigure,
         ),
       ],

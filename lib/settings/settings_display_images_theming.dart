@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/markdown_renderer_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
@@ -48,19 +49,21 @@ class SettingsDisplayImagesThemingScreenState
         key: doNotThemeTagsKey,
         style: Theme.of(context).textTheme.headline6,
         decoration: InputDecoration(
-          hintText: tr('settings.display.images.theming.doNotThemeTags.hint'),
-          labelText: tr('settings.display.images.theming.doNotThemeTags.label'),
+          hintText:
+              tr(LocaleKeys.settings_display_images_theming_doThemeTags_hint),
+          labelText:
+              tr(LocaleKeys.settings_display_images_theming_doThemeTags_label),
         ),
         validator: (String? value) {
           value = value!.trim();
           if (parseTags(value).isEmpty) {
-            return tr(
-                'settings.display.images.theming.doNotThemeTags.validator.empty');
+            return tr(LocaleKeys
+                .settings_display_images_theming_doThemeTags_validator_empty);
           }
 
           if (parseTags(value).intersection(settings.doThemeTags).isNotEmpty) {
-            return tr(
-                'settings.display.images.theming.doNotThemeTags.validator.same');
+            return tr(LocaleKeys
+                .settings_display_images_theming_doThemeTags_validator_same);
           }
 
           return null;
@@ -85,20 +88,22 @@ class SettingsDisplayImagesThemingScreenState
         key: doThemeTagsKey,
         style: Theme.of(context).textTheme.headline6,
         decoration: InputDecoration(
-          hintText: tr('settings.display.images.theming.doThemeTags.hint'),
-          labelText: tr('settings.display.images.theming.doThemeTags.label'),
+          hintText:
+              tr(LocaleKeys.settings_display_images_theming_doThemeTags_hint),
+          labelText:
+              tr(LocaleKeys.settings_display_images_theming_doThemeTags_label),
         ),
         validator: (String? value) {
           if (parseTags(value!).isEmpty) {
-            return tr(
-                'settings.display.images.theming.doThemeTags.validator.empty');
+            return tr(LocaleKeys
+                .settings_display_images_theming_doThemeTags_validator_empty);
           }
 
           if (parseTags(value)
               .intersection(settings.doNotThemeTags)
               .isNotEmpty) {
-            return tr(
-                'settings.display.images.theming.doThemeTags.validator.same');
+            return tr(LocaleKeys
+                .settings_display_images_theming_doThemeTags_validator_same);
           }
 
           return null;
@@ -197,7 +202,7 @@ class SettingsDisplayImagesThemingScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr('settings.display.images.theming.title')),
+        title: Text(tr(LocaleKeys.settings_display_images_theming_title)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

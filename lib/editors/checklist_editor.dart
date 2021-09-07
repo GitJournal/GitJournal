@@ -12,6 +12,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/disposable_change_notifier.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 
 class ChecklistEditor extends StatefulWidget implements Editor {
   final Note note;
@@ -447,7 +448,7 @@ class AddItemButton extends StatelessWidget {
         ],
         mainAxisSize: MainAxisSize.min,
       ),
-      title: Text(tr("editors.checklist.add"), style: style),
+      title: Text(tr(LocaleKeys.editors_checklist_add), style: style),
     );
 
     return GestureDetector(

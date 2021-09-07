@@ -129,7 +129,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
       return GitHostSetupErrorPage(errorMessage);
     }
     if (!fetchedRepos) {
-      return GitHostSetupLoadingPage(tr("setup.repoSelector.loading"));
+      return GitHostSetupLoadingPage(tr(LocaleKeys.setup_repoSelector_loading));
     }
 
     var q = _textController.text.toLowerCase();

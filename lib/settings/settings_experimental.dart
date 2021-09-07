@@ -22,6 +22,7 @@ import 'package:crypto/crypto.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/app_settings.dart';
 
 class ExperimentalSettingsScreen extends StatefulWidget {
@@ -38,7 +39,7 @@ class _ExperimentalSettingsScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr('settings.experimental.title')),
+        title: Text(tr(LocaleKeys.settings_experimental_title)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -50,7 +51,7 @@ class _ExperimentalSettingsScreenState
         child: ListView(
           children: <Widget>[
             SwitchListTile(
-              title: Text(tr('settings.experimental.fs')),
+              title: Text(tr(LocaleKeys.settings_experimental_fs)),
               value: appSettings.experimentalFs,
               onChanged: (bool newVal) {
                 appSettings.experimentalFs = newVal;
@@ -59,7 +60,8 @@ class _ExperimentalSettingsScreenState
               },
             ),
             SwitchListTile(
-              title: Text(tr('settings.experimental.includeSubfolders')),
+              title:
+                  Text(tr(LocaleKeys.settings_experimental_includeSubfolders)),
               value: appSettings.experimentalSubfolders,
               onChanged: (bool newVal) {
                 appSettings.experimentalSubfolders = newVal;
@@ -68,7 +70,7 @@ class _ExperimentalSettingsScreenState
               },
             ),
             SwitchListTile(
-              title: Text(tr('settings.experimental.graphView')),
+              title: Text(tr(LocaleKeys.settings_experimental_graphView)),
               value: appSettings.experimentalGraphView,
               onChanged: (bool newVal) {
                 appSettings.experimentalGraphView = newVal;
@@ -77,7 +79,7 @@ class _ExperimentalSettingsScreenState
               },
             ),
             SwitchListTile(
-              title: Text(tr('settings.experimental.markdownToolbar')),
+              title: Text(tr(LocaleKeys.settings_experimental_markdownToolbar)),
               value: appSettings.experimentalMarkdownToolbar,
               onChanged: (bool newVal) {
                 appSettings.experimentalMarkdownToolbar = newVal;
@@ -86,7 +88,7 @@ class _ExperimentalSettingsScreenState
               },
             ),
             SwitchListTile(
-              title: Text(tr('settings.experimental.accounts')),
+              title: Text(tr(LocaleKeys.settings_experimental_accounts)),
               value: appSettings.experimentalAccounts,
               onChanged: (bool newVal) {
                 appSettings.experimentalAccounts = newVal;
@@ -95,7 +97,7 @@ class _ExperimentalSettingsScreenState
               },
             ),
             SwitchListTile(
-              title: Text(tr('settings.experimental.merge')),
+              title: Text(tr(LocaleKeys.settings_experimental_merge)),
               value: appSettings.experimentalGitMerge,
               onChanged: (bool newVal) {
                 appSettings.experimentalGitMerge = newVal;
@@ -104,7 +106,8 @@ class _ExperimentalSettingsScreenState
               },
             ),
             SwitchListTile(
-              title: Text(tr('settings.experimental.experimentalGitOps')),
+              title:
+                  Text(tr(LocaleKeys.settings_experimental_experimentalGitOps)),
               value: appSettings.experimentalGitOps,
               onChanged: (bool newVal) {
                 appSettings.experimentalGitOps = newVal;
@@ -170,7 +173,7 @@ class _PasswordForm extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
-          child: const Text('Ok'),
+          child: Text(tr(LocaleKeys.settings_ok)),
           onPressed: () {
             Navigator.of(context).pop();
           },

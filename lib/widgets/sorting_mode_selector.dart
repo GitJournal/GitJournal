@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:gitjournal/core/sorting_mode.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
 
 class SortingModeSelector extends StatefulWidget {
@@ -28,14 +29,14 @@ class _SortingModeSelectorState extends State<SortingModeSelector> {
   @override
   Widget build(BuildContext context) {
     var children = <Widget>[
-      SettingsHeader(tr('settings.sortingMode.field')),
+      SettingsHeader(tr(LocaleKeys.settings_sortingMode_field)),
       for (var sf in SortingField.options) _buildSortingTile(sf),
-      SettingsHeader(tr('settings.sortingMode.order')),
+      SettingsHeader(tr(LocaleKeys.settings_sortingMode_order)),
       for (var so in SortingOrder.options) _buildSortingOrderTile(so),
     ];
 
     return AlertDialog(
-      title: Text(tr("widgets.SortingOrderSelector.title")),
+      title: Text(tr(LocaleKeys.widgets_SortingOrderSelector_title)),
       content: SingleChildScrollView(
         child: Column(
           children: children,
@@ -48,7 +49,7 @@ class _SortingModeSelectorState extends State<SortingModeSelector> {
         OutlinedButton(
           key: const ValueKey("Cancel"),
           child: Text(
-            tr('settings.cancel'),
+            tr(LocaleKeys.settings_cancel),
             style: Theme.of(context).textTheme.bodyText2,
           ),
           onPressed: () {
@@ -58,7 +59,7 @@ class _SortingModeSelectorState extends State<SortingModeSelector> {
         OutlinedButton(
           key: const ValueKey("Ok"),
           child: Text(
-            tr('settings.ok'),
+            tr(LocaleKeys.settings_ok),
             style: Theme.of(context).textTheme.bodyText2,
           ),
           onPressed: () {

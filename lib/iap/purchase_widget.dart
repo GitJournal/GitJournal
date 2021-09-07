@@ -34,14 +34,14 @@ class PurchaseButton extends StatelessWidget {
   Widget build(BuildContext context) {
     String text;
     if (product != null) {
-      text = tr("widgets.PurchaseButton.text", namedArgs: {
+      text = tr(LocaleKeys.widgets_PurchaseButton_text, namedArgs: {
         'price': product!.price,
       });
       if (subscription) {
         text += '/ $timePeriod';
       }
     } else {
-      text = tr("widgets.PurchaseButton.fail");
+      text = tr(LocaleKeys.widgets_PurchaseButton_fail);
     }
 
     return Padding(

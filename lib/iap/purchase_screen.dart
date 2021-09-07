@@ -102,7 +102,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
               RestorePurchaseButton(),
               OutlinedButton(
                 child: Text(
-                  tr("feature_timeline.title"),
+                  tr(LocaleKeys.feature_timeline_title),
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
                 onPressed: () {
