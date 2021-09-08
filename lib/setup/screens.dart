@@ -397,28 +397,11 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     );
 
     var scaffold = Scaffold(
-      body: Stack(
-        children: <Widget>[
-          body,
-          if (!Platform.isAndroid)
-            SafeArea(
-              child: InkWell(
-                child: Container(
-                  child: const Icon(Icons.arrow_back, size: 32.0),
-                  padding: const EdgeInsets.all(8.0),
-                ),
-                onTap: () {
-                  if (_currentPageIndex != 0) {
-                    _previousPage();
-                    return;
-                  }
-                  _removeRemote();
-                  Navigator.of(context).pop();
-                },
-              ),
-            ),
-        ],
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0.0,
       ),
+      body: body,
     );
 
     return WillPopScope(
