@@ -5,6 +5,7 @@ import 'package:flutter_login/flutter_login.dart';
 import 'package:gotrue/gotrue.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'package:gitjournal/account/account_screen.dart';
 import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 
@@ -42,13 +43,10 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FlutterLogin(
+    var login = FlutterLogin(
       title: 'GitJournal',
       logo: 'assets/icon/icon.png',
-      // logoTag: Constants.logoTag,
-      // titleTag: Constants.titleTag,
       navigateBackAfterRecovery: true,
-      // hideProvidersTitle: false,
       loginAfterSignUp: true,
       // hideForgotPasswordButton: true,
       // hideSignUpButton: true,
@@ -170,9 +168,10 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
         // return _loginUser(loginData);
       },
       onSubmitAnimationCompleted: () {
-        // Navigator.of(context).pushReplacement(FadePageRoute(
-        //   builder: (context) => DashboardScreen(),
-        // ));
+        // Navigator.of(context).pushReplacementNamed(AppRoute.Account);
+        Navigator.of(context).pushReplacement(_FadePageRoute(
+          builder: (context) => const AccountScreen(),
+        ));
       },
       onRecoverPassword: (name) {
         print('Recover password info');
@@ -180,7 +179,16 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
         // return _recoverPassword(name);
         // Show new password dialog
       },
-      showDebugButtons: true,
+      disableCustomPageTransformer: true,
+      // showDebugButtons: true,
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        elevation: 0.0,
+      ),
+      body: login,
     );
   }
 
@@ -201,7 +209,6 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
 
     if (result.data?.user != null) {
       return null;
-      // Navigator.of(context).pushReplacementNamed(AppRoute.Account);
     }
 
     if (result.error != null) {
@@ -231,6 +238,36 @@ class FormBackButton extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _FadePageRoute<T> extends MaterialPageRoute<T> {
+  _FadePageRoute({
+    required WidgetBuilder builder,
+    RouteSettings? settings,
+  }) : super(
+          builder: builder,
+          settings: settings,
+        );
+
+  @override
+  Duration get transitionDuration => const Duration(milliseconds: 600);
+
+  @override
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    if (settings.name == AppRoute.Login) {
+      return child;
+    }
+
+    return FadeTransition(
+      opacity: animation,
+      child: child,
     );
   }
 }
