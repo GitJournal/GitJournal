@@ -170,11 +170,17 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   void _loadFromCache() async {
+    var startTime = DateTime.now();
     await _notesCache.load(notesFolder);
-    Log.i("Finished loading the notes cache");
+    var endTime = DateTime.now().difference(startTime);
 
+    Log.i("Finished loading the notes cache - $endTime");
+
+    startTime = DateTime.now();
     await _loadNotes();
-    Log.i("Finished loading all the notes");
+    endTime = DateTime.now().difference(startTime);
+
+    Log.i("Finished loading all the notes - $endTime");
   }
 
   Future<void> _loadNotes() async {

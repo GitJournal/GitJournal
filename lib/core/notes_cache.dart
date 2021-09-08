@@ -87,7 +87,6 @@ class NotesCache {
     var fileList =
         _fetchFirst10(notes, sortingMode).map((f) => f.filePath).toList();
 
-    Log.i("Notes Cache saving: ${fileList.length} items");
     return saveToDisk(fileList);
   }
 
