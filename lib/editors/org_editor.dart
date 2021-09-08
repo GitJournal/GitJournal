@@ -26,6 +26,7 @@ import 'package:gitjournal/editors/disposable_change_notifier.dart';
 import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/editors/undo_redo.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'rich_text_controller.dart';
 
 class OrgEditor extends StatefulWidget implements Editor {
   final Note note;
@@ -47,6 +48,8 @@ class OrgEditor extends StatefulWidget implements Editor {
   final NoteCallback discardChangesSelected;
 
   final bool editMode;
+  final String? highlightString;
+  final ThemeData theme;
 
   OrgEditor({
     Key? key,
@@ -60,6 +63,8 @@ class OrgEditor extends StatefulWidget implements Editor {
     required this.moveNoteToFolderSelected,
     required this.discardChangesSelected,
     required this.editMode,
+    required this.highlightString,
+    required this.theme,
   }) : super(key: key);
 
   @override
@@ -84,7 +89,11 @@ class OrgEditorState extends State<OrgEditor>
   void initState() {
     super.initState();
     _noteModified = widget.noteModified;
-    _textController = TextEditingController(text: serializer.encode(note.data));
+    _textController = buildController(
+      text: serializer.encode(note.data),
+      highlightText: widget.highlightString,
+      theme: widget.theme,
+    );
     _undoRedoStack = UndoRedoStack();
   }
 

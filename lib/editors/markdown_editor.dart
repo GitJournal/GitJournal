@@ -15,6 +15,7 @@ import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_settings.dart';
+import 'rich_text_controller.dart';
 
 class MarkdownEditor extends StatefulWidget implements Editor {
   final Note note;
@@ -37,6 +38,8 @@ class MarkdownEditor extends StatefulWidget implements Editor {
   final NoteCallback discardChangesSelected;
 
   final bool editMode;
+  final String? highlightString;
+  final ThemeData theme;
 
   MarkdownEditor({
     Key? key,
@@ -51,6 +54,8 @@ class MarkdownEditor extends StatefulWidget implements Editor {
     required this.moveNoteToFolderSelected,
     required this.discardChangesSelected,
     required this.editMode,
+    required this.highlightString,
+    required this.theme,
   }) : super(key: key);
 
   @override
@@ -77,8 +82,16 @@ class MarkdownEditorState extends State<MarkdownEditor>
     super.initState();
     _noteModified = widget.noteModified;
 
-    _textController = TextEditingController(text: note.body);
-    _titleTextController = TextEditingController(text: note.title);
+    _textController = buildController(
+      text: note.body,
+      highlightText: widget.highlightString,
+      theme: widget.theme,
+    );
+    _titleTextController = buildController(
+      text: note.title,
+      highlightText: widget.highlightString,
+      theme: widget.theme,
+    );
 
     _heuristics = EditorHeuristics(text: note.body);
   }

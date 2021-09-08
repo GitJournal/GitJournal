@@ -74,16 +74,11 @@ class RawEditorState extends State<RawEditor>
     super.initState();
     _noteModified = widget.noteModified;
 
-    var rawText = serializer.encode(note.data);
-    if (widget.highlightString != null) {
-      _textController = RichTextController(
-        text: rawText,
-        highlightText: widget.highlightString!,
-        highlightColor: widget.theme.textSelectionTheme.selectionColor!,
-      );
-    } else {
-      _textController = TextEditingController(text: rawText);
-    }
+    _textController = buildController(
+      text: serializer.encode(note.data),
+      highlightText: widget.highlightString,
+      theme: widget.theme,
+    );
 
     _undoRedoStack = UndoRedoStack();
   }

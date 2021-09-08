@@ -10,6 +10,7 @@ import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/widgets/journal_editor_header.dart';
+import 'rich_text_controller.dart';
 
 class JournalEditor extends StatefulWidget implements Editor {
   final Note note;
@@ -31,6 +32,8 @@ class JournalEditor extends StatefulWidget implements Editor {
   final NoteCallback discardChangesSelected;
 
   final bool editMode;
+  final String? highlightString;
+  final ThemeData theme;
 
   JournalEditor({
     Key? key,
@@ -43,7 +46,9 @@ class JournalEditor extends StatefulWidget implements Editor {
     required this.editTagsSelected,
     required this.moveNoteToFolderSelected,
     required this.discardChangesSelected,
-    this.editMode = false,
+    required this.editMode,
+    required this.highlightString,
+    required this.theme,
   }) : super(key: key);
 
   @override
@@ -66,7 +71,11 @@ class JournalEditorState extends State<JournalEditor>
   void initState() {
     super.initState();
     _noteModified = widget.noteModified;
-    _textController = TextEditingController(text: note.body);
+    _textController = buildController(
+      text: note.body,
+      highlightText: widget.highlightString,
+      theme: widget.theme,
+    );
 
     _heuristics = EditorHeuristics(text: note.body);
   }

@@ -37,3 +37,19 @@ class RichTextController extends TextEditingController {
     return TextSpan(style: style, children: children);
   }
 }
+
+TextEditingController buildController({
+  required String text,
+  required String? highlightText,
+  required ThemeData theme,
+}) {
+  if (highlightText != null) {
+    return RichTextController(
+      text: text,
+      highlightText: highlightText,
+      highlightColor: theme.textSelectionTheme.selectionColor!,
+    );
+  } else {
+    return TextEditingController(text: text);
+  }
+}
