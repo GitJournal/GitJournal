@@ -4,7 +4,6 @@ import 'package:gotrue/gotrue.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:gitjournal/settings/settings_git_remote.dart';
-
 import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {

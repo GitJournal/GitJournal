@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/core/flattened_filtered_notes_folder.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_serializer.dart';
@@ -80,7 +81,7 @@ class TagListingScreen extends StatelessWidget {
           builder: (context) => FutureBuilderWithProgress(
             future: _tagFolderView(context, tag),
           ),
-          settings: const RouteSettings(name: '/tags/'),
+          settings: const RouteSettings(name: AppRoute.AllTags),
         );
         Navigator.of(context).push(route);
       },
