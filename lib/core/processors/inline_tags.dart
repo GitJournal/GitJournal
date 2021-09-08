@@ -34,7 +34,7 @@ class InlineTagsProcessor {
 
     for (var prefix in tagPrefixes) {
       var p = RegExp.escape(prefix);
-      var regexp = RegExp(r'(^|\s)' + p + r'([^\s]+)(\s|$)');
+      var regexp = RegExp(r'(^|\s)' + p + r'([\S]+)');
       var matches = regexp.allMatches(text);
       for (var match in matches) {
         var tag = match.group(2)!;

@@ -193,4 +193,13 @@ Provides a combined #structure
 
     expect(tags, {'csharp'});
   }, skip: true);
+
+  test("Multiple Tags in the same line", () {
+    var body = "I #love #chocolate";
+
+    var p = InlineTagsProcessor(tagPrefixes: {'#'});
+    var tags = p.extractTags(body);
+
+    expect(tags, {'love', 'chocolate'});
+  });
 }
