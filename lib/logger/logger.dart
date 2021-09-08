@@ -16,7 +16,11 @@ class Log {
 
   static Future<void> init({bool ignoreFimber = false}) async {
     if (foundation.kDebugMode && !ignoreFimber) {
-      Fimber.plantTree(DebugTree.elapsed(useColors: true));
+      Fimber.plantTree(CustomFormatTree(
+        logFormat:
+            '${CustomFormatTree.levelToken} ${CustomFormatTree.tagToken}: ${CustomFormatTree.messageToken}',
+        useColors: true,
+      ));
     }
 
     var cacheDir = await getTemporaryDirectory();
