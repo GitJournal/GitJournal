@@ -51,6 +51,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends SupabaseAuthState<LoginPage> {
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+
+  var _isLoading = false;
+
   @override
   void onUnauthenticated() {
     print('onUnauthenticated');
@@ -67,56 +72,43 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
   void onErrorAuthenticating(String message) {}
 
   @override
-  @override
   void initState() {
     super.initState();
+
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+
     recoverSupabaseSession();
   }
 
-  Future<void> _loginAction() async {
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+
+    super.dispose();
+  }
+
+  Future<void> _signIn() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    var email = _emailController.text.trim();
+    var password = _passwordController.text.trim();
+
+    // For testing
+    if (email.isEmpty) email = 'test@gitjournal.io';
+    if (password.isEmpty) password = 'hellohello';
+
     var auth = Supabase.instance.client.auth;
-    var result = await auth.signIn(
-      email: 'test@gitjournal.io',
-      password: 'hellohello',
-    );
+    var result = await auth.signIn(email: email, password: password);
 
     if (result.data?.user != null) {
       Navigator.of(context).pushReplacementNamed(AppRoute.Account);
     }
 
     // FIXME: Handle errors like invalid username or password!
-  }
-
-  Widget _submitButton() {
-    var c = Container(
-      width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.symmetric(vertical: 15),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(5)),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Colors.grey.shade200,
-            offset: const Offset(2, 4),
-            blurRadius: 5,
-            spreadRadius: 2,
-          )
-        ],
-        gradient: const LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [Color(0xfffbb448), Color(0xfff7892b)]),
-      ),
-      child: Text(
-        tr(LocaleKeys.drawer_login),
-        style: const TextStyle(fontSize: 20, color: Colors.white),
-      ),
-    );
-
-    return InkWell(
-      onTap: _loginAction,
-      child: c,
-    );
   }
 
   Widget _createAccountLabel() {
@@ -152,9 +144,29 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
   Widget _emailPasswordWidget() {
     return Column(
       children: <Widget>[
-        EntryField("Email id"),
-        EntryField("Password", isPassword: true),
+        TextFormField(
+          controller: _emailController,
+          decoration: const InputDecoration(labelText: 'Email'),
+        ),
+        const SizedBox(height: 18),
+        TextFormField(
+          controller: _passwordController,
+          decoration: const InputDecoration(labelText: 'Password'),
+          obscureText: true,
+        ),
       ],
+    );
+  }
+
+  Widget _submitButton() {
+    var textTheme = Theme.of(context).textTheme;
+
+    return ElevatedButton(
+      onPressed: _isLoading ? null : _signIn,
+      child: Text(
+        _isLoading ? 'Loading' : 'Login',
+        style: textTheme.headline3,
+      ),
     );
   }
 
@@ -162,41 +174,45 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-        body: Container(
-      height: height,
-      child: Stack(
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: ScrollViewWithoutAnimation(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: height * .12),
-                  FormTitle(),
-                  const SizedBox(height: 50),
-                  _emailPasswordWidget(),
-                  const SizedBox(height: 20),
-                  _submitButton(),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    alignment: Alignment.centerRight,
-                    child: const Text('Forgot Password ?',
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w500)),
-                  ),
-                  SizedBox(height: height * .055),
-                  _createAccountLabel(),
-                ],
+      body: Container(
+        height: height,
+        child: Stack(
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: ScrollViewWithoutAnimation(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(height: height * .12),
+                    FormTitle(),
+                    const SizedBox(height: 50),
+                    _emailPasswordWidget(),
+                    const SizedBox(height: 20),
+                    _submitButton(),
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      alignment: Alignment.centerRight,
+                      child: const Text('Forgot Password ?',
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500)),
+                    ),
+                    SizedBox(height: height * .055),
+                    _createAccountLabel(),
+                  ],
+                ),
               ),
             ),
-          ),
-          Positioned(
-              top: 15, left: 0, child: SafeArea(child: FormBackButton())),
-        ],
+            Positioned(
+              top: 15,
+              left: 0,
+              child: SafeArea(child: FormBackButton()),
+            ),
+          ],
+        ),
       ),
-    ));
+    );
   }
 }
 
@@ -220,38 +236,6 @@ class FormBackButton extends StatelessWidget {
             )
           ],
         ),
-      ),
-    );
-  }
-}
-
-class EntryField extends StatelessWidget {
-  final String title;
-  final bool isPassword;
-
-  EntryField(this.title, {this.isPassword = false});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            title,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-          ),
-          const SizedBox(height: 10),
-          TextField(
-            obscureText: isPassword,
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              fillColor: Color(0xfff3f3f4),
-              filled: true,
-            ),
-          )
-        ],
       ),
     );
   }

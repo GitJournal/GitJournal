@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:gotrue/gotrue.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:gitjournal/account/login_screen.dart';
 import 'package:gitjournal/settings/settings_git_remote.dart';
+
+import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -71,8 +72,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget _emailPasswordWidget() {
     return Column(
       children: <Widget>[
-        EntryField("Email"),
-        EntryField("Password", isPassword: true),
+        TextFormField(
+          // controller: _emailController,
+          decoration: const InputDecoration(labelText: 'Email'),
+        ),
+        const SizedBox(height: 18),
+        TextFormField(
+          // controller: _passwordController,
+          decoration: const InputDecoration(labelText: 'Password'),
+          obscureText: true,
+        ),
       ],
     );
   }
@@ -105,7 +114,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
             Positioned(
-                top: 15, left: 0, child: SafeArea(child: FormBackButton())),
+              top: 15,
+              left: 0,
+              child: SafeArea(child: FormBackButton()),
+            ),
           ],
         ),
       ),
