@@ -86,6 +86,7 @@ dependencies:
   supabase_flutter: ^0.1.0
   nested: ^1.0.0
   language_picker: ^0.4.1
+  flutter_login: ^2.2.1
 
 dev_dependencies:
   #flutter_driver:

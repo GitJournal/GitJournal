@@ -20,7 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       onPressed: () async {
         var auth = Supabase.instance.client.auth;
         var result = await auth.signUp(
-          'test@gitjournal.io',
+          'test3@gitjournal.io',
           'hellohello',
           options: AuthOptions(
             redirectTo: 'gitjournal-identity://register-callback',
@@ -29,9 +29,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
         if (result.data == null && result.error == null) {
           // Email Validation
+          print('Email verification required');
         }
         if (result.error != null) {
           // Show the error
+          print('Error ${result.error}');
         }
       },
     );
@@ -101,7 +103,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(height: height * .12),
-                    FormTitle(),
+                    // FormTitle(),
                     const SizedBox(height: 50),
                     _emailPasswordWidget(),
                     const SizedBox(height: 20),

@@ -1,43 +1,12 @@
-/*
-  Code adapted from https://github.com/TheAlphamerc/flutter_login_signup/
-
-  MIT License
-
-  Copyright (c) 2020 Sonu Sharma
-
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
-
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
-
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-  SOFTWARE.
-*/
-
-/*
-  All Modifications are Licensed under -
-    GNU AFFERO GENERAL PUBLIC LICENSE
-    Copyright (c) 2020 Vishesh Handa
-  See the LICENSE file
-*/
-
 import 'package:flutter/material.dart';
 
+import 'package:email_validator/email_validator.dart';
+import 'package:flutter_login/flutter_login.dart';
 import 'package:gotrue/gotrue.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:gitjournal/app_router.dart';
-import 'package:gitjournal/widgets/scroll_view_without_animation.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key, this.title}) : super(key: key);
@@ -49,11 +18,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends SupabaseAuthState<LoginPage> {
-  late final TextEditingController _emailController;
-  late final TextEditingController _passwordController;
-
-  var _isLoading = false;
-
   @override
   void onUnauthenticated() {
     print('onUnauthenticated');
@@ -73,144 +37,176 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
   void initState() {
     super.initState();
 
-    _emailController = TextEditingController();
-    _passwordController = TextEditingController();
-
     recoverSupabaseSession();
   }
 
   @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-
-    super.dispose();
+  Widget build(BuildContext context) {
+    return FlutterLogin(
+      title: 'GitJournal',
+      logo: 'assets/icon/icon.png',
+      // logoTag: Constants.logoTag,
+      // titleTag: Constants.titleTag,
+      navigateBackAfterRecovery: true,
+      // hideProvidersTitle: false,
+      loginAfterSignUp: true,
+      // hideForgotPasswordButton: true,
+      // hideSignUpButton: true,
+      // disableCustomPageTransformer: true,
+      // messages: LoginMessages(
+      //   userHint: 'User',
+      //   passwordHint: 'Pass',
+      //   confirmPasswordHint: 'Confirm',
+      //   loginButton: 'LOG IN',
+      //   signupButton: 'REGISTER',
+      //   forgotPasswordButton: 'Forgot huh?',
+      //   recoverPasswordButton: 'HELP ME',
+      //   goBackButton: 'GO BACK',
+      //   confirmPasswordError: 'Not match!',
+      //   recoverPasswordIntro: 'Don\'t feel bad. Happens all the time.',
+      //   recoverPasswordDescription: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
+      //   recoverPasswordSuccess: 'Password rescued successfully',
+      //   flushbarTitleError: 'Oh no!',
+      //   flushbarTitleSuccess: 'Succes!',
+      //   providersTitle: 'login with'
+      // ),
+      // theme: LoginTheme(
+      //   primaryColor: Colors.teal,
+      //   accentColor: Colors.yellow,
+      //   errorColor: Colors.deepOrange,
+      //   pageColorLight: Colors.indigo.shade300,
+      //   pageColorDark: Colors.indigo.shade500,
+      //   logoWidth: 0.80,
+      //   titleStyle: TextStyle(
+      //     color: Colors.greenAccent,
+      //     fontFamily: 'Quicksand',
+      //     letterSpacing: 4,
+      //   ),
+      //   // beforeHeroFontSize: 50,
+      //   // afterHeroFontSize: 20,
+      //   bodyStyle: TextStyle(
+      //     fontStyle: FontStyle.italic,
+      //     decoration: TextDecoration.underline,
+      //   ),
+      //   textFieldStyle: TextStyle(
+      //     color: Colors.orange,
+      //     shadows: [Shadow(color: Colors.yellow, blurRadius: 2)],
+      //   ),
+      //   buttonStyle: TextStyle(
+      //     fontWeight: FontWeight.w800,
+      //     color: Colors.yellow,
+      //   ),
+      //   cardTheme: CardTheme(
+      //     color: Colors.yellow.shade100,
+      //     elevation: 5,
+      //     margin: EdgeInsets.only(top: 15),
+      //     shape: ContinuousRectangleBorder(
+      //         borderRadius: BorderRadius.circular(100.0)),
+      //   ),
+      //   inputTheme: InputDecorationTheme(
+      //     filled: true,
+      //     fillColor: Colors.purple.withOpacity(.1),
+      //     contentPadding: EdgeInsets.zero,
+      //     errorStyle: TextStyle(
+      //       backgroundColor: Colors.orange,
+      //       color: Colors.white,
+      //     ),
+      //     labelStyle: TextStyle(fontSize: 12),
+      //     enabledBorder: UnderlineInputBorder(
+      //       borderSide: BorderSide(color: Colors.blue.shade700, width: 4),
+      //       borderRadius: inputBorder,
+      //     ),
+      //     focusedBorder: UnderlineInputBorder(
+      //       borderSide: BorderSide(color: Colors.blue.shade400, width: 5),
+      //       borderRadius: inputBorder,
+      //     ),
+      //     errorBorder: UnderlineInputBorder(
+      //       borderSide: BorderSide(color: Colors.red.shade700, width: 7),
+      //       borderRadius: inputBorder,
+      //     ),
+      //     focusedErrorBorder: UnderlineInputBorder(
+      //       borderSide: BorderSide(color: Colors.red.shade400, width: 8),
+      //       borderRadius: inputBorder,
+      //     ),
+      //     disabledBorder: UnderlineInputBorder(
+      //       borderSide: BorderSide(color: Colors.grey, width: 5),
+      //       borderRadius: inputBorder,
+      //     ),
+      //   ),
+      //   buttonTheme: LoginButtonTheme(
+      //     splashColor: Colors.purple,
+      //     backgroundColor: Colors.pinkAccent,
+      //     highlightColor: Colors.lightGreen,
+      //     elevation: 9.0,
+      //     highlightElevation: 6.0,
+      //     shape: BeveledRectangleBorder(
+      //       borderRadius: BorderRadius.circular(10),
+      //     ),
+      //     // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      //     // shape: CircleBorder(side: BorderSide(color: Colors.green)),
+      //     // shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(55.0)),
+      //   ),
+      // ),
+      userValidator: (value) {
+        if (value == null || value.isEmpty) {
+          return "Email is empty";
+        }
+        if (!EmailValidator.validate(value)) {
+          return LocaleKeys.settings_email_validator_invalid;
+        }
+        return null;
+      },
+      passwordValidator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Password is empty';
+        }
+        return null;
+      },
+      onLogin: _login,
+      onSignup: (loginData) {
+        print('Signup info');
+        print('Name: ${loginData.name}');
+        print('Password: ${loginData.password}');
+        // return _loginUser(loginData);
+      },
+      onSubmitAnimationCompleted: () {
+        // Navigator.of(context).pushReplacement(FadePageRoute(
+        //   builder: (context) => DashboardScreen(),
+        // ));
+      },
+      onRecoverPassword: (name) {
+        print('Recover password info');
+        print('Name: $name');
+        // return _recoverPassword(name);
+        // Show new password dialog
+      },
+      showDebugButtons: true,
+    );
   }
 
-  Future<void> _signIn() async {
-    setState(() {
-      _isLoading = true;
-    });
+  Future<String?> _login(LoginData loginData) async {
+    var email = loginData.name;
+    var password = loginData.password;
 
-    var email = _emailController.text.trim();
-    var password = _passwordController.text.trim();
+    print('Login info');
+    print('Name: ${loginData.name}');
+    print('Password: ${loginData.password}');
 
     // For testing
-    if (email.isEmpty) email = 'test@gitjournal.io';
-    if (password.isEmpty) password = 'hellohello';
+    email = 'test@gitjournal.io';
+    password = 'hellohellod';
 
     var auth = Supabase.instance.client.auth;
     var result = await auth.signIn(email: email, password: password);
 
     if (result.data?.user != null) {
-      Navigator.of(context).pushReplacementNamed(AppRoute.Account);
+      return null;
+      // Navigator.of(context).pushReplacementNamed(AppRoute.Account);
     }
 
-    // FIXME: Handle errors like invalid username or password!
-  }
-
-  Widget _createAccountLabel() {
-    return InkWell(
-      onTap: () => Navigator.pushNamed(context, "/register"),
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 20),
-        padding: const EdgeInsets.all(15),
-        alignment: Alignment.bottomCenter,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              "Don't have an account ?",
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            const Text(
-              'Register',
-              style: TextStyle(
-                  color: Color(0xfff79c4f),
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _emailPasswordWidget() {
-    return Column(
-      children: <Widget>[
-        TextFormField(
-          controller: _emailController,
-          decoration: const InputDecoration(labelText: 'Email'),
-        ),
-        const SizedBox(height: 18),
-        TextFormField(
-          controller: _passwordController,
-          decoration: const InputDecoration(labelText: 'Password'),
-          obscureText: true,
-        ),
-      ],
-    );
-  }
-
-  Widget _submitButton() {
-    var textTheme = Theme.of(context).textTheme;
-
-    return ElevatedButton(
-      onPressed: _isLoading ? null : _signIn,
-      child: Text(
-        _isLoading ? 'Loading' : 'Login',
-        style: textTheme.headline3,
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      body: Container(
-        height: height,
-        child: Stack(
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: ScrollViewWithoutAnimation(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(height: height * .12),
-                    FormTitle(),
-                    const SizedBox(height: 50),
-                    _emailPasswordWidget(),
-                    const SizedBox(height: 20),
-                    _submitButton(),
-                    Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      alignment: Alignment.centerRight,
-                      child: const Text('Forgot Password ?',
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500)),
-                    ),
-                    SizedBox(height: height * .055),
-                    _createAccountLabel(),
-                  ],
-                ),
-              ),
-            ),
-            Positioned(
-              top: 15,
-              left: 0,
-              child: SafeArea(child: FormBackButton()),
-            ),
-          ],
-        ),
-      ),
-    );
+    if (result.error != null) {
+      return result.error!.message;
+    }
   }
 }
 
@@ -236,14 +232,5 @@ class FormBackButton extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class FormTitle extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var textTheme = Theme.of(context).textTheme;
-    var style = textTheme.headline2!.copyWith(fontFamily: "Lato");
-    return Text('GitJournal', style: style);
   }
 }
