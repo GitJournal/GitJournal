@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:gitjournal/account/account_screen.dart';
 import 'package:gitjournal/account/login_screen.dart';
-import 'package:gitjournal/account/signup_screen.dart';
+import 'package:gitjournal/account/register_screen.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/iap/purchase_screen.dart';
 import 'package:gitjournal/iap/purchase_thankyou_screen.dart';
@@ -30,6 +31,7 @@ class AppRoute {
   static const Settings = '/settings';
   static const Login = '/login';
   static const Register = '/register';
+  static const Account = '/account';
   static const SetupRemoteGit = '/setupRemoteGit';
   static const Purchase = '/purchase';
   static const PurchaseThank = '/purchase_thank_you';
@@ -43,6 +45,7 @@ class AppRoute {
     Settings,
     Login,
     Register,
+    Account,
     SetupRemoteGit,
     Purchase,
     PurchaseThank,
@@ -133,9 +136,11 @@ class AppRouter {
       case AppRoute.Settings:
         return SettingsScreen();
       case AppRoute.Login:
-        return LoginPage();
+        return const LoginPage();
       case AppRoute.Register:
-        return SignUpScreen();
+        return const RegisterScreen();
+      case AppRoute.Account:
+        return const AccountScreen();
       case AppRoute.SetupRemoteGit:
         return GitHostSetupScreen(
           repoFolderName: storageConfig.folderName,

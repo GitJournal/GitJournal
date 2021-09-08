@@ -34,13 +34,15 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:gotrue/gotrue.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/widgets/scroll_view_without_animation.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key? key, this.title}) : super(key: key);
+  const LoginPage({Key? key, this.title}) : super(key: key);
 
   final String? title;
 
@@ -48,7 +50,29 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends SupabaseAuthState<LoginPage> {
+  @override
+  void onUnauthenticated() {
+    print('onUnauthenticated');
+  }
+
+  @override
+  void onAuthenticated(Session session) {
+    print('onAuthenticated');
+  }
+
+  @override
+  void onPasswordRecovery(Session session) {}
+  @override
+  void onErrorAuthenticating(String message) {}
+
+  @override
+  @override
+  void initState() {
+    super.initState();
+    recoverSupabaseSession();
+  }
+
   Future<void> _loginAction() async {
     var auth = Supabase.instance.client.auth;
     var result = await auth.signIn(
@@ -56,10 +80,11 @@ class _LoginPageState extends State<LoginPage> {
       password: 'hellohello',
     );
 
-    // FIXME: Add redirect once we implement social logins
+    if (result.data?.user != null) {
+      Navigator.of(context).pushReplacementNamed(AppRoute.Account);
+    }
 
-    print(result.data);
-    print(result.data?.toJson());
+    // FIXME: Handle errors like invalid username or password!
   }
 
   Widget _submitButton() {
