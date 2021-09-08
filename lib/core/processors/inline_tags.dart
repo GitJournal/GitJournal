@@ -45,7 +45,7 @@ class InlineTagsProcessor {
 
         var all = tag.split(prefix);
         for (var t in all) {
-          t = t.trim();
+          t = sanitize(t);
           if (t.isNotEmpty) {
             tags.add(t);
           }
@@ -54,5 +54,15 @@ class InlineTagsProcessor {
     }
 
     return tags;
+  }
+
+  static String sanitize(String input) {
+    input = input.trim();
+    input = input.replaceAll(',', '');
+    input = input.replaceAll('.', '');
+    input = input.replaceAll(':', '');
+    input = input.replaceAll(';', '');
+
+    return input.trim();
   }
 }
