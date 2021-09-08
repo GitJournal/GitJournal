@@ -8,7 +8,6 @@ import 'package:gitjournal/iap/purchase_screen.dart';
 import 'package:gitjournal/iap/purchase_thankyou_screen.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
-import 'package:gitjournal/screens/filesystem_screen.dart';
 import 'package:gitjournal/screens/folder_listing.dart';
 import 'package:gitjournal/screens/graph_view.dart';
 import 'package:gitjournal/screens/home_screen.dart';
@@ -26,7 +25,6 @@ class AppRoute {
   static const OnBoarding = '/onBoarding';
   static const AllFolders = '/folders';
   static const AllTags = '/tags';
-  static const FileSystem = '/filesystem';
   static const Graph = '/graph';
   static const Settings = '/settings';
   static const Login = '/login';
@@ -40,7 +38,6 @@ class AppRoute {
     OnBoarding,
     AllFolders,
     AllTags,
-    FileSystem,
     Graph,
     Settings,
     Login,
@@ -82,9 +79,7 @@ class AppRouter {
     Function callbackIfUsedShared,
   ) {
     var route = routeSettings.name ?? "";
-    if (route == AppRoute.AllFolders ||
-        route == AppRoute.AllTags ||
-        route == AppRoute.FileSystem) {
+    if (route == AppRoute.AllFolders || route == AppRoute.AllTags) {
       return PageRouteBuilder(
         settings: routeSettings,
         pageBuilder: (_, __, ___) => screenForRoute(
@@ -127,8 +122,6 @@ class AppRouter {
         return HomeScreen();
       case AppRoute.AllFolders:
         return FolderListingScreen();
-      case AppRoute.FileSystem:
-        return FileSystemScreen();
       case AppRoute.AllTags:
         return TagListingScreen();
       case AppRoute.Graph:

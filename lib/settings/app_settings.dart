@@ -41,7 +41,6 @@ class AppSettings extends ChangeNotifier {
 
   var debugLogLevel = 'v';
 
-  var experimentalFs = false;
   var experimentalSubfolders = false;
   var experimentalMarkdownToolbar = false;
   var experimentalGraphView = false;
@@ -62,7 +61,6 @@ class AppSettings extends ChangeNotifier {
     validateProMode = pref.getBool("validateProMode") ?? validateProMode;
 
     debugLogLevel = pref.getString("debugLogLevel") ?? debugLogLevel;
-    experimentalFs = pref.getBool("experimentalFs") ?? experimentalFs;
     experimentalSubfolders =
         pref.getBool("experimentalSubfolders") ?? experimentalSubfolders;
     experimentalMarkdownToolbar = pref.getBool("experimentalMarkdownToolbar") ??
@@ -92,7 +90,6 @@ class AppSettings extends ChangeNotifier {
     _setBool(
         pref, "validateProMode", validateProMode, defaultSet.validateProMode);
     _setString(pref, "debugLogLevel", debugLogLevel, defaultSet.debugLogLevel);
-    _setBool(pref, "experimentalFs", experimentalFs, defaultSet.experimentalFs);
     _setBool(pref, "experimentalSubfolders", experimentalSubfolders,
         defaultSet.experimentalSubfolders);
     _setBool(pref, "experimentalMarkdownToolbar", experimentalMarkdownToolbar,
@@ -120,7 +117,6 @@ class AppSettings extends ChangeNotifier {
       'validateProMode': validateProMode.toString(),
       'proExpirationDate': proExpirationDate,
       'debugLogLevel': debugLogLevel,
-      'experimentalFs': experimentalFs.toString(),
       'experimentalMarkdownToolbar': experimentalMarkdownToolbar.toString(),
       'experimentalGraphView': experimentalGraphView.toString(),
       'experimentalAccounts': experimentalAccounts.toString(),

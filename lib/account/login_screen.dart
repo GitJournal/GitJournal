@@ -33,12 +33,10 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:gotrue/gotrue.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:gitjournal/app_router.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/widgets/scroll_view_without_animation.dart';
 
 class LoginPage extends StatefulWidget {

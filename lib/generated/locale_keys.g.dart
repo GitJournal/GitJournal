@@ -249,9 +249,6 @@ abstract class LocaleKeys {
   static const settings_experimental_title = 'settings.experimental.title';
   static const settings_experimental_subtitle =
       'settings.experimental.subtitle';
-  static const settings_experimental_backlinks =
-      'settings.experimental.backlinks';
-  static const settings_experimental_fs = 'settings.experimental.fs';
   static const settings_experimental_markdownToolbar =
       'settings.experimental.markdownToolbar';
   static const settings_experimental_graphView =

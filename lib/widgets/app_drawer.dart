@@ -179,15 +179,6 @@ class _AppDrawerState extends State<AppDrawer>
             onTap: () => _navTopLevel(context, '/folders'),
             selected: currentRoute == "/folders",
           ),
-          if (appSettings.experimentalFs)
-            _buildDrawerTile(
-              context,
-              icon: FontAwesomeIcons.solidFolderOpen,
-              isFontAwesome: true,
-              title: tr(LocaleKeys.drawer_fs),
-              onTap: () => _navTopLevel(context, '/filesystem'),
-              selected: currentRoute == "/filesystem",
-            ),
           if (appSettings.experimentalGraphView)
             _buildDrawerTile(
               context,

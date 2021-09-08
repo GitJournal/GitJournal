@@ -51,15 +51,6 @@ class _ExperimentalSettingsScreenState
         child: ListView(
           children: <Widget>[
             SwitchListTile(
-              title: Text(tr(LocaleKeys.settings_experimental_fs)),
-              value: appSettings.experimentalFs,
-              onChanged: (bool newVal) {
-                appSettings.experimentalFs = newVal;
-                appSettings.save();
-                setState(() {});
-              },
-            ),
-            SwitchListTile(
               title:
                   Text(tr(LocaleKeys.settings_experimental_includeSubfolders)),
               value: appSettings.experimentalSubfolders,

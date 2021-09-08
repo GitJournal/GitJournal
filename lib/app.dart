@@ -270,6 +270,11 @@ class _JournalAppState extends State<JournalApp> {
     );
 
     /*
+
+    Also use -
+    * https://github.com/bernaferrari/RandomColorScheme
+    * https://pub.dev/packages/color_blindness
+
     const FlexSchemeData customFlexScheme = FlexSchemeData(
       name: 'Toledo purple',
       description: 'Purple theme created from custom defined colors.',
