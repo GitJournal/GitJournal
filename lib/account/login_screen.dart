@@ -46,8 +46,8 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
     var login = FlutterLogin(
       title: 'GitJournal',
       logo: 'assets/icon/icon.png',
-      navigateBackAfterRecovery: true,
-      loginAfterSignUp: true,
+      navigateBackAfterRecovery: false,
+      loginAfterSignUp: false,
       // hideForgotPasswordButton: true,
       // hideSignUpButton: true,
       // disableCustomPageTransformer: true,
@@ -145,6 +145,13 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
       //     // shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(55.0)),
       //   ),
       // ),
+      termsOfService: [
+        TermOfService(
+          id: 'newsletter',
+          mandatory: false,
+          text: 'Subscribe to the GitJournal Newsletter',
+        ),
+      ],
       userValidator: (value) {
         if (value == null || value.isEmpty) {
           return "Email is empty";
@@ -161,12 +168,7 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
         return null;
       },
       onLogin: _login,
-      onSignup: (loginData) {
-        print('Signup info');
-        print('Name: ${loginData.name}');
-        print('Password: ${loginData.password}');
-        // return _loginUser(loginData);
-      },
+      onSignup: _signup,
       onSubmitAnimationCompleted: () {
         // Navigator.of(context).pushReplacementNamed(AppRoute.Account);
         Navigator.of(context).pushReplacement(_FadePageRoute(
@@ -190,6 +192,40 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
       ),
       body: login,
     );
+  }
+
+  Future<String?> _signup(SignupData signupData) async {
+    print('Signup info');
+    print('Name: ${signupData.name}');
+    print('Password: ${signupData.password}');
+
+    var email = signupData.name;
+    var password = signupData.password;
+
+    email = 'test3@gitjournal.io';
+    password = 'hellohello';
+
+    var auth = Supabase.instance.client.auth;
+    var result = await auth.signUp(
+      email,
+      password,
+      options: AuthOptions(
+        redirectTo: 'gitjournal-identity://register-callback',
+      ),
+    );
+
+    print('Result: $result');
+
+    if (result.data == null && result.error == null) {
+      // Email Validation
+      print('Email verification required');
+      return null;
+    }
+    if (result.error != null) {
+      // Show the error
+      print('Error ${result.error}');
+      return result.error!.message;
+    }
   }
 
   Future<String?> _login(LoginData loginData) async {

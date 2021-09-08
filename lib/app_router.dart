@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:gitjournal/account/account_screen.dart';
 import 'package:gitjournal/account/login_screen.dart';
-import 'package:gitjournal/account/register_screen.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/iap/purchase_screen.dart';
 import 'package:gitjournal/iap/purchase_thankyou_screen.dart';
@@ -28,7 +27,6 @@ class AppRoute {
   static const Graph = '/graph';
   static const Settings = '/settings';
   static const Login = '/login';
-  static const Register = '/register';
   static const Account = '/account';
   static const SetupRemoteGit = '/setupRemoteGit';
   static const Purchase = '/purchase';
@@ -41,7 +39,6 @@ class AppRoute {
     Graph,
     Settings,
     Login,
-    Register,
     Account,
     SetupRemoteGit,
     Purchase,
@@ -130,8 +127,6 @@ class AppRouter {
         return SettingsScreen();
       case AppRoute.Login:
         return const LoginPage();
-      case AppRoute.Register:
-        return const RegisterScreen();
       case AppRoute.Account:
         return const AccountScreen();
       case AppRoute.SetupRemoteGit:

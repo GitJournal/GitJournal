@@ -540,10 +540,12 @@ packages:
   flutter_login:
     dependency: "direct main"
     description:
-      name: flutter_login
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.1"
+      path: "."
+      ref: develop
+      resolved-ref: "721035599778581b04c36f836b23597e6685102f"
+      url: "https://github.com/NearHuscarl/flutter_login.git"
+    source: git
+    version: "3.0.0-beta.1"
   flutter_markdown:
     dependency: "direct main"
     description:
@@ -602,7 +604,7 @@ packages:
       name: font_awesome_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "9.0.0"
+    version: "9.1.0"
   freezed_annotation:
     dependency: transitive
     description:
