@@ -24,9 +24,6 @@ jobs:
       #   - store_test_results:
       #   path: ./
       - run:
-          name: Analyze
-          command: flutter analyze
-      - run:
           name: Build
           command: ./scripts/build_android.sh
       - store_artifacts:

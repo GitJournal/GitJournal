@@ -1,0 +1,18 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  Lint:
+    runs-on: ubuntu-latest
+    container: vhanda/flutter-android:latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Test
+        run: flutter analyze
