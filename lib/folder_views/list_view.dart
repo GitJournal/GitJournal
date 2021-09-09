@@ -160,7 +160,7 @@ class _FolderListViewState extends State<FolderListView> {
     }
 
     if (selected) {
-      var borderColor = Theme.of(context).accentColor;
+      var borderColor = Theme.of(context).colorScheme.secondary;
       viewItem = Container(
         decoration: BoxDecoration(
           border: Border.all(color: borderColor, width: selected ? 2.0 : 1.0),

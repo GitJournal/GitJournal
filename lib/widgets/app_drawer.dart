@@ -316,7 +316,7 @@ class _AppDrawerState extends State<AppDrawer>
     var theme = Theme.of(context);
     var listTileTheme = ListTileTheme.of(context);
     var textStyle = theme.textTheme.bodyText1!.copyWith(
-      color: selected ? theme.accentColor : listTileTheme.textColor,
+      color: selected ? theme.colorScheme.secondary : listTileTheme.textColor,
     );
 
     var iconW = !isFontAwesome
@@ -353,7 +353,7 @@ class RepoTile extends StatelessWidget {
     // FIXME: Improve marking the selected repo
     var selected = repoManager.currentId == id;
     var textStyle = theme.textTheme.bodyText1!.copyWith(
-      color: selected ? theme.accentColor : listTileTheme.textColor,
+      color: selected ? theme.colorScheme.secondary : listTileTheme.textColor,
     );
 
     var icon = FaIcon(FontAwesomeIcons.book, color: textStyle.color);

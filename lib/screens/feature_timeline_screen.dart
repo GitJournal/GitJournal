@@ -32,7 +32,7 @@ class FeatureTimelineScreen extends StatelessWidget {
               title: title,
               subTitle: tr(LocaleKeys.feature_timeline_plan),
               iconText: "PLAN",
-              iconColor: theme.accentColor,
+              iconColor: theme.colorScheme.secondary,
             ),
           _DevelopmentText(),
         ],
@@ -55,7 +55,7 @@ class FeatureTile extends StatelessWidget {
     }
 
     var theme = Theme.of(context);
-    var color = theme.accentColor;
+    var color = theme.colorScheme.secondary;
 
     if (feature.pro) {
       if (theme.brightness == Brightness.light) {

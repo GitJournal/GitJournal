@@ -29,7 +29,7 @@ class ProOverlay extends StatelessWidget {
       child: Banner(
         message: tr(LocaleKeys.pro),
         location: BannerLocation.topEnd,
-        color: Theme.of(context).accentColor,
+        color: Theme.of(context).colorScheme.secondary,
         child: IgnorePointer(child: Opacity(opacity: 0.5, child: child)),
       ),
       onTap: () {

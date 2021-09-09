@@ -449,7 +449,9 @@ class SettingsHeader extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-            color: Theme.of(context).accentColor, fontWeight: FontWeight.bold),
+          color: Theme.of(context).colorScheme.secondary,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }

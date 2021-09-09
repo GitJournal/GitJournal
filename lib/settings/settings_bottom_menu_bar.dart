@@ -64,7 +64,7 @@ class _BottomMenuBarSettingsState extends State<BottomMenuBarSettings> {
       scale: 0.75,
       child: Container(
         padding: const EdgeInsets.all(2.0),
-        color: theme.accentColor.withAlpha(256 ~/ 10),
+        color: theme.colorScheme.secondary.withAlpha(256 ~/ 10),
         child: Container(
           width: mq.size.width,
           height: mq.size.height,

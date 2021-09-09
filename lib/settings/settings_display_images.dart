@@ -79,7 +79,7 @@ class SettingsDisplayImagesScreenState
               },
               max: 30,
               min: 1,
-              activeColor: theme.accentColor,
+              activeColor: theme.colorScheme.secondary,
               inactiveColor: theme.disabledColor,
             )),
             Container(
@@ -87,12 +87,12 @@ class SettingsDisplayImagesScreenState
                 child: settings.maxImageZoom == double.infinity
                     ? Icon(
                         Icons.all_inclusive,
-                        color: theme.accentColor,
+                        color: theme.colorScheme.secondary,
                       )
                     : Text(
                         NumberFormat("##.0").format(settings.maxImageZoom),
                         style: theme.textTheme.subtitle2!
-                            .copyWith(color: theme.accentColor),
+                            .copyWith(color: theme.colorScheme.secondary),
                         textAlign: TextAlign.center,
                       ))
           ])),

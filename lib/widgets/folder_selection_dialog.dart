@@ -110,7 +110,7 @@ class FolderMiniTileState extends State<FolderMiniTile> {
           child: Icon(
             Icons.folder,
             size: 24,
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).colorScheme.secondary,
           ),
         ),
         title: Text(folder.publicName),

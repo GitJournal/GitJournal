@@ -12,7 +12,6 @@ class Themes {
     primaryColor: const Color(0xFF66bb6a),
     primaryColorLight: const Color(0xFF98ee99),
     primaryColorDark: const Color(0xFF338a3e),
-    accentColor: const Color(0xff6d4c41),
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Color(0xFF338a3e),
       selectionHandleColor: Color(0xFF66bb6a),
@@ -30,7 +29,6 @@ class Themes {
     ),
     brightness: Brightness.dark,
     primaryColor: const Color(0xff212121),
-    accentColor: const Color(0xff689f38),
     toggleableActiveColor: const Color(0xFF66bb6a),
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Color(0xFF66bb6a),

@@ -141,7 +141,7 @@ class FolderTileState extends State<FolderTile> {
           child: Icon(
             Icons.folder,
             size: 36,
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).colorScheme.secondary,
           ),
         ),
         title: Text(publicName),

@@ -340,7 +340,7 @@ class FilterListTile extends StatelessWidget {
           color = theme.primaryColor;
           break;
         case Brightness.dark:
-          color = theme.accentColor;
+          color = theme.colorScheme.secondary;
           break;
       }
     }

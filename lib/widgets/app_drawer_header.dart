@@ -72,7 +72,7 @@ class AppDrawerHeader extends StatelessWidget {
     return Banner(
       message: isDesktop ? tr(LocaleKeys.beta) : tr(LocaleKeys.pro),
       location: BannerLocation.topStart,
-      color: Theme.of(context).accentColor,
+      color: Theme.of(context).colorScheme.secondary,
       child: header,
     );
   }

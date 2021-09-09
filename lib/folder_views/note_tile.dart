@@ -34,7 +34,7 @@ class NoteTile extends StatelessWidget {
     }
 
     if (selected) {
-      borderColor = theme.accentColor;
+      borderColor = theme.colorScheme.secondary;
     }
 
     var tileContent = Container(
