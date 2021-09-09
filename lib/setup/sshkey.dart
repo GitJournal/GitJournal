@@ -327,22 +327,34 @@ class PublicKeyWidget extends StatelessWidget {
   PublicKeyWidget(this.publicKey);
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 160.0,
-      child: Container(
-        color: Theme.of(context).splashColor,
-        child: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              publicKey,
-              textAlign: TextAlign.left,
-              maxLines: null,
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
+    return Container(
+      color: Theme.of(context).splashColor,
+      child: _DoubleScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            publicKey.trim(),
+            textAlign: TextAlign.left,
+            maxLines: null,
+            style: Theme.of(context).textTheme.bodyText2,
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _DoubleScrollView extends StatelessWidget {
+  final Widget child;
+  const _DoubleScrollView({Key? key, required this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: SizedBox(
+        width: 1000.0,
+        child: SingleChildScrollView(child: child),
       ),
     );
   }
