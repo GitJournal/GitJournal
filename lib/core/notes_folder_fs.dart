@@ -586,6 +586,5 @@ bool moveNote(Note note, NotesFolderFS destFolder) {
   note.parent = destFolder;
   note.parent.add(note);
 
-  note.parent.noteModified(note);
   return true;
 }
