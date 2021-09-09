@@ -12,6 +12,7 @@ analyzer:
     missing_required_param: error
     missing_return: error
     todo: ignore
+    directives_ordering: ignore
   exclude:
     - "bin/cache/**"
     - "lib/generated_plugin_registrant.dart"

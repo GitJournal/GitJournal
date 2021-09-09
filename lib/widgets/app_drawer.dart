@@ -9,9 +9,9 @@ import 'package:share_plus/share_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:time/time.dart';
 import 'package:universal_io/io.dart' show Platform;
-import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
+import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
@@ -243,15 +243,18 @@ class _AppDrawerState extends State<AppDrawer>
                 body += "expiryDate: $exp";
               }
 
-              body = Uri.encodeComponent(body);
+              final Email email = Email(
+                body: body,
+                subject: 'GitJournal Feedback',
+                recipients: ['feedback@gitjournal.io'],
+              );
 
-              var subject = 'GitJournal Feedback';
-              subject = Uri.encodeComponent(subject);
-
-              var emailAddress = 'feedback@gitjournal.io';
-
-              var url = 'mailto:$emailAddress?subject=$subject&body=$body';
-              launch(url);
+              try {
+                await FlutterEmailSender.send(email);
+              } catch (ex, st) {
+                logException(ex, st);
+                showSnackbar(context, ex.toString());
+              }
 
               Navigator.pop(context);
               logEvent(Event.DrawerFeedback);
@@ -283,7 +286,12 @@ class _AppDrawerState extends State<AppDrawer>
                 attachmentPaths: Log.filePathsForDates(2),
               );
 
-              await FlutterEmailSender.send(email);
+              try {
+                await FlutterEmailSender.send(email);
+              } catch (ex, st) {
+                logException(ex, st);
+                showSnackbar(context, ex.toString());
+              }
 
               Navigator.pop(context);
               logEvent(Event.DrawerBugReport);

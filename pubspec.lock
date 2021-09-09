@@ -506,7 +506,7 @@ packages:
       name: flutter_email_sender
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.0"
+    version: "5.0.2"
   flutter_emoji:
     dependency: "direct main"
     description:
