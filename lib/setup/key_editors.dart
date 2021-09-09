@@ -75,6 +75,10 @@ class KeyEditor extends StatelessWidget {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: validator,
         controller: textEditingController,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          isDense: true,
+        ),
       );
     });
 
@@ -86,10 +90,9 @@ class KeyEditor extends StatelessWidget {
           constraints: BoxConstraints(
             maxHeight: screenSize.height / 4,
           ),
-          color: Theme.of(context).buttonColor,
           child: SingleChildScrollView(
             child: Container(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: inputField,
             ),
           ),
