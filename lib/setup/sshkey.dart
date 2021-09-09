@@ -331,7 +331,7 @@ class PublicKeyWidget extends StatelessWidget {
       width: double.infinity,
       height: 160.0,
       child: Container(
-        color: Theme.of(context).buttonColor,
+        color: Theme.of(context).splashColor,
         child: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.all(8.0),
