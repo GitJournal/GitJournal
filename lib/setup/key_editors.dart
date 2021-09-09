@@ -67,20 +67,16 @@ class KeyEditor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var form = Form(
-      key: formKey,
-      child: Builder(builder: (context) {
-        return TextFormField(
-          textAlign: TextAlign.left,
-          maxLines: null,
-          style: Theme.of(context).textTheme.bodyText2,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: validator,
-          controller: textEditingController,
-        );
-      }),
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-    );
+    var inputField = Builder(builder: (context) {
+      return TextFormField(
+        textAlign: TextAlign.left,
+        maxLines: null,
+        style: Theme.of(context).textTheme.bodyText2,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: validator,
+        controller: textEditingController,
+      );
+    });
 
     var screenSize = MediaQuery.of(context).size;
 
@@ -94,7 +90,7 @@ class KeyEditor extends StatelessWidget {
           child: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.all(8.0),
-              child: form,
+              child: inputField,
             ),
           ),
         ),
@@ -112,7 +108,7 @@ class KeyEditor extends StatelessWidget {
   void _pickAndLoadFile() async {
     var result = await FilePicker.platform.pickFiles();
 
-    if (result != null) {
+    if (result != null && result.files.isNotEmpty) {
       var file = File(result.files.single.path!);
       try {
         var data = await file.readAsString();
