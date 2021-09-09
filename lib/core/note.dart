@@ -24,7 +24,6 @@ import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
 import 'md_yaml_doc.dart';
-import 'md_yaml_doc_codec.dart';
 import 'note_serializer.dart';
 
 typedef void NoteSelectedFunction(Note note);
@@ -96,7 +95,6 @@ class Note {
   DateTime fileLastModified;
 
   var _loadState = NoteLoadState.None;
-  var _serializer = MarkdownYAMLCodec();
 
   Note(this.parent, this._filePath, this.fileLastModified) {
     var settings = NoteSerializationSettings.fromConfig(parent.config);
@@ -292,16 +290,6 @@ class Note {
   set loadState(NoteLoadState state) {
     _loadState = state;
     _notifyModified();
-  }
-
-  String serialize() {
-    var contents = _serializer.encode(data);
-    // Make sure all docs end with a \n
-    if (!contents.endsWith('\n')) {
-      contents += '\n';
-    }
-
-    return contents;
   }
 
   @override

@@ -1,14 +1,27 @@
 import 'package:dart_git/utils/result.dart';
 import 'package:universal_io/io.dart';
 
+import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/md_yaml_doc_loader.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'note.dart';
 
 class NoteStorage {
+  static final _serializer = MarkdownYAMLCodec();
+
+  static String serialize(Note note) {
+    var contents = _serializer.encode(note.data);
+    // Make sure all docs end with a \n
+    if (!contents.endsWith('\n')) {
+      contents += '\n';
+    }
+
+    return contents;
+  }
+
   Future<Result<void>> save(Note note) async {
-    var contents = note.serialize();
+    var contents = serialize(note);
 
     return catchAll(() async {
       var file = File(note.filePath);

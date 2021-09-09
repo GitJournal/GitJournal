@@ -24,6 +24,7 @@ import 'package:provider/provider.dart';
 import 'package:gitjournal/core/image.dart' as core;
 import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/views/inline_tags_view.dart';
@@ -426,7 +427,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
           : await stateContainer.updateNote(note);
     } catch (e, stackTrace) {
       logException(e, stackTrace);
-      Clipboard.setData(ClipboardData(text: note.serialize()));
+      Clipboard.setData(ClipboardData(text: NoteStorage.serialize(note)));
 
       await showAlertDialog(
         context,
