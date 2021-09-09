@@ -14,12 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:gitjournal/core/md_yaml_doc_loader.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
@@ -99,8 +97,6 @@ class Note {
 
   var _loadState = NoteLoadState.None;
   var _serializer = MarkdownYAMLCodec();
-
-  static final _mdYamlDocLoader = MdYamlDocLoader();
 
   Note(this.parent, this._filePath, this.fileLastModified) {
     var settings = NoteSerializationSettings.fromConfig(parent.config);
@@ -293,93 +289,9 @@ class Note {
     return _loadState;
   }
 
-  Future<Result<NoteLoadState>> load() async {
-    assert(_filePath != null);
-    assert(_filePath!.isNotEmpty);
-
-    if (_loadState == NoteLoadState.Loading) {
-      return Result(_loadState);
-    }
-
-    final file = File(_filePath!);
-    if (_loadState == NoteLoadState.Loaded) {
-      try {
-        var fileLastModified = file.lastModifiedSync();
-        if (this.fileLastModified == fileLastModified) {
-          return Result(_loadState);
-        }
-        this.fileLastModified = fileLastModified;
-      } catch (e, stackTrace) {
-        if (e is FileSystemException &&
-            e.osError!.errorCode == 2 /* File Not Found */) {
-          _loadState = NoteLoadState.NotExists;
-          _notifyModified();
-          return Result(_loadState);
-        }
-
-        logExceptionWarning(e, stackTrace);
-        _loadState = NoteLoadState.Error;
-        _notifyModified();
-        return Result(_loadState);
-      }
-      Log.d("Note modified: $_filePath");
-    }
-
-    var fpLowerCase = _filePath!.toLowerCase();
-    var isMarkdown = fpLowerCase.endsWith('.md');
-    var isTxt = fpLowerCase.endsWith('.txt');
-    var isOrg = fpLowerCase.endsWith('.org');
-
-    if (isMarkdown) {
-      var dataResult = await _mdYamlDocLoader.loadDoc(_filePath!);
-      if (dataResult.isSuccess) {
-        data = dataResult.getOrThrow();
-        _fileFormat = NoteFileFormat.Markdown;
-      } else {
-        if (dataResult.error is MdYamlDocNotFoundException) {
-          _loadState = NoteLoadState.NotExists;
-          _notifyModified();
-          return Result(_loadState);
-        }
-        if (dataResult.error is MdYamlParsingException) {
-          _loadState = NoteLoadState.Error;
-          _notifyModified();
-          return Result(_loadState);
-        }
-      }
-    } else if (isTxt) {
-      try {
-        body = await File(_filePath!).readAsString();
-        _fileFormat = NoteFileFormat.Txt;
-      } catch (e, stackTrace) {
-        logExceptionWarning(e, stackTrace);
-
-        _loadState = NoteLoadState.Error;
-        _notifyModified();
-        return Result(_loadState);
-      }
-    } else if (isOrg) {
-      try {
-        body = await File(_filePath!).readAsString();
-        _fileFormat = NoteFileFormat.OrgMode;
-      } catch (e, stackTrace) {
-        logExceptionWarning(e, stackTrace);
-
-        _loadState = NoteLoadState.Error;
-        _notifyModified();
-        return Result(_loadState);
-      }
-    } else {
-      _loadState = NoteLoadState.Error;
-      _notifyModified();
-      return Result(_loadState);
-    }
-
-    fileLastModified = file.lastModifiedSync();
-    _loadState = NoteLoadState.Loaded;
-
+  set loadState(NoteLoadState state) {
+    _loadState = state;
     _notifyModified();
-    return Result(_loadState);
   }
 
   String serialize() {
@@ -450,6 +362,11 @@ class Note {
 
   NoteFileFormat? get fileFormat {
     return _fileFormat;
+  }
+
+  set fileFormat(NoteFileFormat? format) {
+    _fileFormat = format;
+    _notifyModified();
   }
 }
 

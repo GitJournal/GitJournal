@@ -7,6 +7,7 @@ import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
@@ -37,6 +38,8 @@ class NotesCache {
     if (!notesBasePath.endsWith(sep)) {
       notesBasePath += sep;
     }
+
+    var storage = NoteStorage();
 
     for (var fullFilePath in fileList) {
       if (!fullFilePath.startsWith(notesBasePath)) {
@@ -69,7 +72,7 @@ class NotesCache {
         fullFilePath,
         DateTime.fromMillisecondsSinceEpoch(0),
       );
-      note.load();
+      storage.load(note);
       parent.add(note);
     }
   }

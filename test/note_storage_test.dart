@@ -59,10 +59,11 @@ void main() {
 
       var loadedNotes = <Note>[];
       var parent = NotesFolderFS(null, tempDir.path, config);
+      var storage = NoteStorage();
 
       await Future.forEach(notes, (Note origNote) async {
         var note = Note(parent, origNote.filePath, DateTime.now());
-        var r = await note.load();
+        var r = await storage.load(note);
         expect(r.getOrThrow(), NoteLoadState.Loaded);
 
         loadedNotes.add(note);

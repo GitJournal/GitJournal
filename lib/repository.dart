@@ -511,7 +511,7 @@ class GitJournalRepo with ChangeNotifier {
   Future<void> discardChanges(Note note) async {
     var repo = await GitRepository.load(repoPath).getOrThrow();
     await repo.checkout(note.filePath).throwOnError();
-    await note.load();
+    await NoteStorage().load(note);
   }
 
   Future<List<GitRemoteConfig>> remoteConfigs() async {

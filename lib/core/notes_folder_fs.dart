@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:universal_io/io.dart';
 
+import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/views/inline_tags_view.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
@@ -157,10 +158,11 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
     await load();
 
+    var storage = NoteStorage();
     for (var note in _notes) {
       // FIXME: Collected all the Errors, and report them back, along with "WHY", and the contents of the Note
       //        Each of these needs to be reported to sentry, as Note loading should never fail
-      var f = note.load();
+      var f = storage.load(note);
       futures.add(f);
 
       if (futures.length >= maxParallel) {
@@ -450,6 +452,8 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   }
 
   Note? getNoteWithSpec(String spec) {
+    // FIXME: Once each note is stored with the spec as the path, this becomes
+    //        so much easier!
     var parts = spec.split(p.separator);
     var folder = this;
     while (parts.length != 1) {

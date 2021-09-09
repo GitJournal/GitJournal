@@ -26,6 +26,9 @@ build_env:
 build_runner:
 	flutter packages pub run build_runner build --delete-conflicting-outputs
 
+test:
+	flutter test
+
 # https://stackoverflow.com/a/26339924/147435
 .PHONY: list
 list:

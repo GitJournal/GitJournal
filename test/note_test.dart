@@ -14,6 +14,8 @@ void main() {
     late Directory tempDir;
     late NotesFolderConfig config;
 
+    final storage = NoteStorage();
+
     setUpAll(() async {
       tempDir = await Directory.systemTemp.createTemp('__notes_test__');
       SharedPreferences.setMockInitialValues({});
@@ -38,7 +40,7 @@ Hello
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
       var note = Note(parentFolder, notePath, DateTime.now());
-      await note.load();
+      await storage.load(note);
 
       note.modified = DateTime.utc(2019, 12, 02, 4, 0, 0);
 
@@ -70,7 +72,7 @@ Hello
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
       var note = Note(parentFolder, notePath, DateTime.now());
-      await note.load();
+      await storage.load(note);
 
       note.modified = DateTime.utc(2019, 12, 02, 4, 0, 0);
 
@@ -102,7 +104,7 @@ Hello
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
       var note = Note(parentFolder, notePath, DateTime.now());
-      await note.load();
+      await storage.load(note);
 
       expect(note.tags.contains('A'), true);
       expect(note.tags.contains('B'), true);
@@ -141,7 +143,7 @@ bar: Foo
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
       var note = Note(parentFolder, notePath, DateTime.now());
-      await note.load();
+      await storage.load(note);
 
       var linksOrNull = []; // await note.fetchLinks();
       var links = linksOrNull;
@@ -162,7 +164,7 @@ bar: Foo
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
       var note = Note(parentFolder, notePath, DateTime.now());
-      await note.load();
+      await storage.load(note);
 
       var linksOrNull = []; //await note.fetchLinks();
       var links = linksOrNull;
@@ -188,7 +190,7 @@ Gee
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
       var note = Note(parentFolder, notePath, DateTime.now());
-      await note.load();
+      await storage.load(note);
 
       expect(note.fileFormat, NoteFileFormat.Markdown);
 
@@ -199,7 +201,7 @@ Gee
       await File(txtNotePath).writeAsString(content);
 
       var txtNote = Note(parentFolder, txtNotePath, DateTime.now());
-      await txtNote.load();
+      await storage.load(txtNote);
 
       expect(txtNote.fileFormat, NoteFileFormat.Txt);
       expect(txtNote.canHaveMetadata, false);
@@ -224,7 +226,7 @@ Gee
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
       var txtNote = Note(parentFolder, txtNotePath, DateTime.now());
-      await txtNote.load();
+      await storage.load(txtNote);
 
       expect(txtNote.fileFormat, NoteFileFormat.Txt);
       expect(txtNote.canHaveMetadata, false);
@@ -247,7 +249,7 @@ Hello
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
       var note = Note(parentFolder, notePath, DateTime.now());
-      await note.load();
+      await storage.load(note);
 
       expect(note.modified, DateTime.parse('2021-07-14T10:14:49Z'));
       expect(note.created, DateTime.parse('2021-07-14T10:14:49Z'));
