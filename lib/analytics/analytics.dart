@@ -129,14 +129,23 @@ class Analytics {
     );
   }
 
-  // FIXME: Send the backlog events when disabled
-  Future<void> _sendAnalytics() async {
+  Future<bool> _shouldSend() async {
     if (!enabled) {
-      return;
+      return false;
     }
 
     var oldestEvent = await storage.oldestEvent();
     if (DateTime.now().difference(oldestEvent) < const Duration(hours: 1)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  // FIXME: Send the backlog events when disabled
+  Future<void> _sendAnalytics() async {
+    var shouldSend = await _shouldSend();
+    if (!shouldSend) {
       return;
     }
 
