@@ -134,6 +134,20 @@ Future<pb.DeviceInfo> buildDeviceInfo() async {
     return pb.DeviceInfo(platform: _currentPlatform(), iosDeviceInfo: info);
   }
 
+  /*
+  {
+    "id": "ubuntu",
+    "name": "Ubuntu",
+    "idLike": [
+      "debian"
+    ],
+    "version": "20.04.3 LTS (Focal Fossa)",
+    "machineId": "d7517d7136a9441cb3716f49d1c293f1",
+    "versionId": "20.04.3 LTS (Focal Fossa)",
+    "prettyName": "Ubuntu 20.04.3 LTS",
+    "versionCodename": "focal"
+  }
+  */
   if (Platform.isLinux) {
     var linuxInfo = await infoPlugin.linuxInfo;
     var info = pb.LinuxDeviceInfo(
@@ -147,7 +161,7 @@ Future<pb.DeviceInfo> buildDeviceInfo() async {
       buildId: linuxInfo.buildId,
       variant: linuxInfo.variant,
       variantId: linuxInfo.variantId,
-      machineId: linuxInfo.machineId,
+      // machineId: linuxInfo.machineId,
     );
 
     return pb.DeviceInfo(platform: _currentPlatform(), linuxDeviceInfo: info);
