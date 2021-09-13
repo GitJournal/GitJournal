@@ -7,6 +7,7 @@ class Themes {
     ).copyWith(
       primary: const Color(0xFF66bb6a),
       secondary: const Color(0xff6d4c41),
+      onPrimary: Colors.black,
     ),
     brightness: Brightness.light,
     primaryColor: const Color(0xFF66bb6a),
