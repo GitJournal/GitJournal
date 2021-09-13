@@ -35,7 +35,7 @@ dependencies:
   equatable: ^2.0.0
   ext_storage:
     git: https://github.com/GitJournal/ext_storage.git
-  file_picker: ^3.0.1
+  file_picker: ^4.0.2
   filesystem_picker: ^2.0.0-nullsafety.0 # for directories
   fimber: ^0.6.1
   flutter_cache_manager: ^3.0.1
@@ -59,7 +59,10 @@ dependencies:
   package_info_plus: ^1.0.4
   path: ^1.8.0
   permission_handler: ^6.1.1
-  photo_view: ^0.11.1
+  photo_view:
+    git:
+      url: https://github.com/karvulf/photo_view.git
+      ref: bugfix/flutter-2.5-update
   provider: ^5.0.0
   quick_actions: ^0.6.0+3
   receive_sharing_intent: ^1.4.5
@@ -83,7 +86,7 @@ dependencies:
   universal_io: ^2.0.4
   sprintf: ^6.0.0
   recase: ^4.0.0
-  supabase_flutter: ^0.1.0
+  supabase_flutter: ^0.2.5
   nested: ^1.0.0
   language_picker: ^0.4.1
   flutter_login:
