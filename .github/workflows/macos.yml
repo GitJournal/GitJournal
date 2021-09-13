@@ -15,7 +15,7 @@ jobs:
         run: brew install git-crypt md5sha1sum gnu-sed create-dmg xmlstarlet
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: "2.2.2"
+          flutter-version: "2.5.0"
       - name: Test
         run: flutter test
       - name: Unlock Secrets
