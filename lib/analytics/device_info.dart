@@ -12,6 +12,48 @@ Future<pb.DeviceInfo> buildDeviceInfo() async {
   if (Platform.isAndroid) {
     var androidInfo = await infoPlugin.androidInfo;
 
+    /*
+      {
+        "id": "QKQ1.191014.012",
+        "host": "rd-build-104",
+        "tags": "release-keys",
+        "type": "user",
+        "board": "msm8998",
+        "brand": "OnePlus",
+        "model": "ONEPLUS A5000",
+        "device": "OnePlus5",
+        "display": "ONEPLUS A5000_23_201029",
+        "product": "OnePlus5",
+        "version": {
+          "sdkInt": 29,
+          "release": "10",
+          "codename": "REL",
+          "incremental": "2010292059",
+          "securityPatch": "2020-09-01"
+        },
+        "hardware": "qcom",
+        "androidId": "a8e022b01be3284f",
+        "bootloader": "unknown",
+        "fingerprint": "OnePlus/OnePlus5/OnePlus5:10/QKQ1.191014.012/2010292059:user/release-keys",
+        "manufacturer": "OnePlus",
+        "supportedAbis": [
+          "arm64-v8a",
+          "armeabi-v7a",
+          "armeabi"
+        ],
+        "systemFeatures": [
+          ...
+        ],
+        "isPhysicalDevice": true,
+        "supported32BitAbis": [
+          "armeabi-v7a",
+          "armeabi"
+        ],
+        "supported64BitAbis": [
+          "arm64-v8a"
+        ]
+      }
+    */
     var version = pb.AndroidBuildVersion(
       baseOS: androidInfo.version.baseOS,
       codename: androidInfo.version.codename,
@@ -28,7 +70,7 @@ Future<pb.DeviceInfo> buildDeviceInfo() async {
       brand: androidInfo.brand,
       device: androidInfo.device,
       display: androidInfo.display,
-      fingerprint: androidInfo.fingerprint,
+      // fingerprint: androidInfo.fingerprint,
       hardware: androidInfo.hardware,
       host: androidInfo.host,
       id: androidInfo.id,
@@ -41,7 +83,7 @@ Future<pb.DeviceInfo> buildDeviceInfo() async {
       tags: androidInfo.tags,
       type: androidInfo.type,
       isPhysicalDevice: androidInfo.isPhysicalDevice,
-      androidId: androidInfo.androidId,
+      // androidId: androidInfo.androidId,
       systemFeatures: androidInfo.systemFeatures.whereType(),
     );
     return pb.DeviceInfo(platform: _currentPlatform(), androidDeviceInfo: info);
