@@ -536,6 +536,7 @@ abstract class LocaleKeys {
   static const drawer_folders = 'drawer.folders';
   static const drawer_fs = 'drawer.fs';
   static const drawer_graph = 'drawer.graph';
+  static const drawer_history = 'drawer.history';
   static const drawer_tags = 'drawer.tags';
   static const drawer_share = 'drawer.share';
   static const drawer_rate = 'drawer.rate';

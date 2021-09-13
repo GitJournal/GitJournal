@@ -9,6 +9,7 @@ import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/screens/folder_listing.dart';
 import 'package:gitjournal/screens/graph_view.dart';
+import 'package:gitjournal/screens/history_screen.dart';
 import 'package:gitjournal/screens/home_screen.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/screens/onboarding_screens.dart';
@@ -43,6 +44,7 @@ class AppRoute {
     SetupRemoteGit,
     Purchase,
     PurchaseThank,
+    HistoryScreen.routePath,
   ];
 }
 
@@ -141,6 +143,8 @@ class AppRouter {
         return PurchaseScreen();
       case AppRoute.PurchaseThank:
         return PurchaseThankYouScreen();
+      case HistoryScreen.routePath:
+        return const HistoryScreen();
     }
 
     if (route.startsWith('/newNote/')) {

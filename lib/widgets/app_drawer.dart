@@ -188,6 +188,15 @@ class _AppDrawerState extends State<AppDrawer>
               onTap: () => _navTopLevel(context, '/graph'),
               selected: currentRoute == "/graph",
             ),
+          if (appSettings.experimentalHistory)
+            _buildDrawerTile(
+              context,
+              icon: Icons.history,
+              isFontAwesome: true,
+              title: tr(LocaleKeys.drawer_history),
+              onTap: () => _navTopLevel(context, '/history'),
+              selected: currentRoute == "/history",
+            ),
           _buildDrawerTile(
             context,
             icon: FontAwesomeIcons.tag,

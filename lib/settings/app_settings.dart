@@ -48,6 +48,8 @@ class AppSettings extends ChangeNotifier {
   var experimentalGitMerge = false;
   var experimentalGitOps = false;
 
+  var experimentalHistory = false;
+
   void load(SharedPreferences pref) {
     onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
 

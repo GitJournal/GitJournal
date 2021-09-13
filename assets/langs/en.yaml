@@ -382,6 +382,7 @@ drawer:
   folders: Folders
   fs: File System
   graph: Graph View
+  history: History
   tags: Tags
   share: Share App
   rate: Rate Us
