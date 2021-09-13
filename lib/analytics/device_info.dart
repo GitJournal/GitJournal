@@ -47,23 +47,45 @@ Future<pb.DeviceInfo> buildDeviceInfo() async {
     return pb.DeviceInfo(platform: _currentPlatform(), androidDeviceInfo: info);
   }
 
+  /*
+  Eg -
+  {
+    "name": "Vishesh’s iPhone",
+    "model": "iPhone",
+    "utsname": {
+      "machine": "iPhone8,2",
+      "release": "20.6.0",
+      "sysname": "Darwin",
+      "version": "Darwin Kernel Version 20.6.0: Mon Jun 21 21:23:35 PDT 2021; root:xnu-7195.140.42~10/RELEASE_ARM64_S8000",
+      "nodename": "Visheshs-iPhone"
+    },
+    "systemName": "iOS",
+    "systemVersion": "14.7.1",
+    "localizedModel": "iPhone",
+    "isPhysicalDevice": true,
+    "identifierForVendor": "E309F4D8-7A1E-46FC-9971-61833862EFA7"
+  }
+
+  */
+  // Not sending info which can be uniquely identifying
+
   if (Platform.isIOS) {
     var iosInfo = await infoPlugin.iosInfo;
     var utsName = pb.IosUtsname(
       sysname: iosInfo.utsname.sysname,
-      nodename: iosInfo.utsname.nodename,
+      // nodename: iosInfo.utsname.nodename,
       release: iosInfo.utsname.release,
       version: iosInfo.utsname.version,
       machine: iosInfo.utsname.machine,
     );
 
     var info = pb.IosDeviceInfo(
-      name: iosInfo.name,
+      // name: iosInfo.name,
       systemName: iosInfo.systemName,
       systemVersion: iosInfo.systemVersion,
       model: iosInfo.model,
       localizedModel: iosInfo.localizedModel,
-      identifierForVendor: iosInfo.identifierForVendor,
+      // identifierForVendor: iosInfo.identifierForVendor,
       isPhysicalDevice: iosInfo.isPhysicalDevice,
       utsname: utsName,
     );
