@@ -112,7 +112,7 @@ class KeyEditor extends StatelessWidget {
     var result = await FilePicker.platform.pickFiles();
 
     if (result != null && result.files.isNotEmpty) {
-      var file = File(result.files.single.path!);
+      var file = File(result.files.single.path);
       try {
         var data = await file.readAsString();
         textEditingController.text = data.trim();
