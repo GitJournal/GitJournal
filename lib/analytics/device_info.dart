@@ -167,10 +167,22 @@ Future<pb.DeviceInfo> buildDeviceInfo() async {
     return pb.DeviceInfo(platform: _currentPlatform(), linuxDeviceInfo: info);
   }
 
+  /*
+  {
+    "arch": "x86_64",
+    "model": "MacBookPro11,1",
+    "hostName": "Darwin",
+    "osRelease": "20.3.0",
+    "activeCPUs": 4,
+    "memorySize": 17179869184,
+    "computerName": "Visheshs-MacBook-Pro.local",
+    "kernelVersion": "Darwin Kernel Version 20.3.0: Thu Jan 21 00:07:06 PST 2021; root:xnu-7195.81.3~1/RELEASE_X86_64"
+  }
+  */
   if (Platform.isMacOS) {
     var macOsInfo = await infoPlugin.macOsInfo;
     var info = pb.MacOSDeviceInfo(
-      computerName: macOsInfo.computerName,
+      // computerName: macOsInfo.computerName,
       hostName: macOsInfo.hostName,
       arch: macOsInfo.arch,
       model: macOsInfo.model,
