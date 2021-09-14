@@ -6,9 +6,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> initSupabase() async {
   await Supabase.initialize(
-    url: 'https://tefpmcttotopcptdivsj.supabase.co',
+    url: 'https://kokulrmhlfxdwuvcmblj.supabase.co',
     anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYyODA2NDAyNiwiZXhwIjoxOTQzNjQwMDI2fQ.xAN-giE3m1MPjoRkkdcg_0NJueLH0_L-Wu-V0TSnpwU',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzMTM3NDY4OSwiZXhwIjoxOTQ2OTUwNjg5fQ.LvaFM84Q00RKkRTyIDjzZAnkzba30bnRhQZQldj1AfU',
     authCallbackUrlHostname: 'register-callback',
     localStorage: const _HiveLocalStorage(),
   );

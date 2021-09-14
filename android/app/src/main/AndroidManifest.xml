@@ -72,6 +72,14 @@ limitations under the License.
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="image/*" />
             </intent-filter>
+
+            <intent-filter>
+                <!-- Used for logging into the App -->
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="gitjournal-identity" android:host="register-callback" />
+            </intent-filter>
         </activity>
 
         <activity
@@ -84,13 +92,6 @@ limitations under the License.
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="gitjournal" android:host="login.oauth2" />
                 <!-- Triggering URI would be gitjournal://login.oauth2 -->
-            </intent-filter>
-            <intent-filter>
-                <!-- Used for logging into the App -->
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="gitjournal-identity" android:host="register-callback" />
             </intent-filter>
         </activity>
 

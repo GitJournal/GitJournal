@@ -8,6 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:gitjournal/account/account_screen.dart';
 import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/logger/logger.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key, this.title}) : super(key: key);
@@ -30,9 +31,18 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
   }
 
   @override
-  void onPasswordRecovery(Session session) {}
+  void onReceivedAuthDeeplink(Uri uri) {
+    Supabase.instance.log('onReceivedAuthDeeplink uri: $uri');
+    Log.i("Received Auth Deep Link: $uri");
+  }
+
   @override
-  void onErrorAuthenticating(String message) {}
+  void onPasswordRecovery(Session session) {}
+
+  @override
+  void onErrorAuthenticating(String message) {
+    Log.e(message);
+  }
 
   @override
   void initState() {
@@ -202,7 +212,7 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
     var email = signupData.name;
     var password = signupData.password;
 
-    email = 'test3@gitjournal.io';
+    email = 'test6@gitjournal.io';
     password = 'hellohello';
 
     var auth = Supabase.instance.client.auth;
@@ -216,15 +226,20 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
 
     print('Result: $result');
 
-    if (result.data == null && result.error == null) {
-      // Email Validation
-      print('Email verification required');
-      return null;
-    }
     if (result.error != null) {
       // Show the error
       print('Error ${result.error}');
       return result.error!.message;
+    }
+    if (result.data == null && result.error == null) {
+      // Email Validation
+      print('Email verification required');
+    }
+
+    print('Terms of serveice');
+    print(signupData.termsOfService);
+    if (signupData.termsOfService.isNotEmpty) {
+      print(signupData.termsOfService[0].accepted);
     }
   }
 

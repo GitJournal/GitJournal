@@ -216,7 +216,7 @@ class _JournalAppState extends State<JournalApp> {
     // For sharing images coming from outside the app while the app is in the memory
     _intentDataStreamSubscription = ReceiveSharingIntent.getMediaStream()
         .listen((List<SharedMediaFile> value) {
-      Log.d("Received Share $value");
+      Log.d("Received Media Share $value");
 
       _sharedImages = value.map((f) => f.path).toList();
       WidgetsBinding.instance!.addPostFrameCallback((_) => handleShare());
@@ -226,7 +226,7 @@ class _JournalAppState extends State<JournalApp> {
 
     // For sharing images coming from outside the app while the app is closed
     ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
-      Log.d("Received Share with App (media): $value");
+      Log.d("Received MediaFile Share with App (media): $value");
 
       _sharedImages = value.map((f) => f.path).toList();
       WidgetsBinding.instance!.addPostFrameCallback((_) => handleShare());
@@ -235,7 +235,10 @@ class _JournalAppState extends State<JournalApp> {
     // For sharing or opening text coming from outside the app while the app is in the memory
     _intentDataStreamSubscription =
         ReceiveSharingIntent.getTextStream().listen((String value) {
-      Log.d("Received Share $value");
+      Log.d("Received Text Share $value");
+      if (value.startsWith('gitjournal-identity://')) {
+        return;
+      }
       _sharedText = value;
       WidgetsBinding.instance!.addPostFrameCallback((_) => handleShare());
     }, onError: (err) {
