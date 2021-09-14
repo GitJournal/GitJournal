@@ -22,10 +22,10 @@ if [[ $DEVICE_TARGET == *"android"* ]]; then
     echo
     echo "flutter run -d $DEVICE_ID --flavor dev --track-widget-creation"
     echo
-    flutter run -d "$DEVICE_ID" --flavor dev --track-widget-creation
+    ./flutterw run -d "$DEVICE_ID" --flavor dev --track-widget-creation
 else
     echo
     echo "flutter run -d $DEVICE_ID --track-widget-creation"
     echo
-    flutter run -d "$DEVICE_ID" --track-widget-creation
+    ./flutterw run -d "$DEVICE_ID" --track-widget-creation
 fi
