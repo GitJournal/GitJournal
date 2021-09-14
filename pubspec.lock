@@ -22,6 +22,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.0"
+  android_external_storage:
+    dependency: "direct main"
+    description:
+      name: android_external_storage
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
   another_flushbar:
     dependency: transitive
     description:
@@ -423,15 +430,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
-  ext_storage:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "98faf095ed6786a0bb0db26cb2f3966513f3f7aa"
-      url: "https://github.com/GitJournal/ext_storage.git"
-    source: git
-    version: "1.0.3"
   fake_async:
     dependency: transitive
     description:

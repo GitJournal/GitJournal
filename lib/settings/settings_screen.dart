@@ -18,8 +18,8 @@ limitations under the License.
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:android_external_storage/android_external_storage.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ext_storage/ext_storage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:icloud_documents_path/icloud_documents_path.dart';
 import 'package:path/path.dart' as p;
@@ -536,7 +536,7 @@ Future<String> _getExternalDir(BuildContext context) async {
     return "";
   }
 
-  var path = await ExtStorage.getExternalStorageDirectory();
+  var path = await AndroidExternalStorage.getExternalStorageDirectory();
   if (path != null) {
     if (await _isDirWritable(path)) {
       return path;
