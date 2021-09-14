@@ -7,8 +7,8 @@ cd ..
 
 FILTER="$1"
 
-DEVICE=$(flutter devices --device-timeout=1 --machine | jq -r '.[].name' | fzf -1 -q "$FILTER")
-DEVICE_INFO=$(flutter devices --machine | jq -r ".[] | select(.name==\"$DEVICE\")")
+DEVICE=$(./flutterw devices --device-timeout=1 --machine | jq -r '.[].name' | fzf -1 -q "$FILTER")
+DEVICE_INFO=$(./flutterw devices --machine | jq -r ".[] | select(.name==\"$DEVICE\")")
 DEVICE_ID=$(echo "$DEVICE_INFO" | jq -r .id)
 DEVICE_TARGET=$(echo "$DEVICE_INFO" | jq -r .targetPlatform)
 
