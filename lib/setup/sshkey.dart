@@ -245,7 +245,8 @@ class _GitHostUserProvidedKeysPageState
     _privateKeyController = TextEditingController();
     _passwordController = TextEditingController();
 
-    saveText = widget.saveText.isEmpty ? tr("setup.next") : widget.saveText;
+    saveText =
+        widget.saveText.isEmpty ? tr(LocaleKeys.setup_next) : widget.saveText;
   }
 
   @override
@@ -288,8 +289,12 @@ class _GitHostUserProvidedKeysPageState
           GitHostSetupButton(
             text: saveText,
             onPressed: () {
-              var publicValid = _publicFormKey.currentState!.validate();
-              var privateValid = _privateFormKey.currentState!.validate();
+              if (!mounted) return;
+
+              var publicValid =
+                  _publicFormKey.currentState?.validate() ?? false;
+              var privateValid =
+                  _privateFormKey.currentState?.validate() ?? false;
 
               if (!publicValid || !privateValid) {
                 return;
