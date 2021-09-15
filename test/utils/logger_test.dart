@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
 import 'package:flutter_test/flutter_test.dart' as ft;
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:test/test.dart';
