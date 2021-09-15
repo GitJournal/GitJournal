@@ -1,9 +1,12 @@
 // ignore_for_file: unnecessary_null_comparison, curly_braces_in_flow_control_structures
 // vHanda: Added onLongPressed
 
-// Copyright 2014 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/*
+ * SPDX-FileCopyrightText: 2014 The Flutter Authors
+ * SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
 import 'dart:math' as math;
 
