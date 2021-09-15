@@ -70,10 +70,20 @@ class AnalyticsStorage {
     while (reader.remainingLength != 0) {
       var len = reader.readUint32();
       var bytes = reader.read(len);
+      if (bytes.length != len) {
+        var atEnd = reader.remainingLength == 0;
+        Log.e("Analytics file $filePath corrupted. At End: $atEnd");
+        continue;
+      }
 
-      var event = pb.Event.fromBuffer(bytes);
-      events.add(event);
+      try {
+        var event = pb.Event.fromBuffer(bytes);
+        events.add(event);
+      } catch (ex, st) {
+        Log.e("Failed to create Event from buffer", ex: ex, stacktrace: st);
+      }
     }
+
     return events;
   }
 
