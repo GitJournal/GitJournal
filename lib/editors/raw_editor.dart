@@ -7,15 +7,18 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/image.dart' as core;
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/editors/autocompletion_widget.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/disposable_change_notifier.dart';
 import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/editors/undo_redo.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/settings/app_settings.dart';
 import 'rich_text_controller.dart';
 
 class RawEditor extends StatefulWidget implements Editor {
@@ -183,7 +186,7 @@ class RawEditorState extends State<RawEditor>
   }
 }
 
-class _NoteEditor extends StatelessWidget {
+class _NoteEditor extends StatefulWidget {
   final TextEditingController textController;
   final bool autofocus;
   final Function onChanged;
@@ -195,12 +198,30 @@ class _NoteEditor extends StatelessWidget {
   });
 
   @override
+  State<_NoteEditor> createState() => _NoteEditorState();
+}
+
+class _NoteEditorState extends State<_NoteEditor> {
+  late FocusNode _focusNode;
+  late GlobalKey _textFieldKey;
+
+  @override
+  void initState() {
+    _focusNode = FocusNode();
+    _textFieldKey = GlobalKey();
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     var style = theme.textTheme.subtitle1!.copyWith(fontFamily: "Roboto Mono");
 
-    return TextField(
-      autofocus: autofocus,
+    var textField = TextField(
+      key: _textFieldKey,
+      focusNode: _focusNode,
+      autofocus: widget.autofocus,
       keyboardType: TextInputType.multiline,
       maxLines: null,
       style: style,
@@ -212,10 +233,23 @@ class _NoteEditor extends StatelessWidget {
         hoverColor: theme.scaffoldBackgroundColor,
         isCollapsed: true,
       ),
-      controller: textController,
+      controller: widget.textController,
       textCapitalization: TextCapitalization.sentences,
       scrollPadding: const EdgeInsets.all(0.0),
-      onChanged: (_) => onChanged(),
+      onChanged: (_) => widget.onChanged(),
+    );
+
+    var appSettings = Provider.of<AppSettings>(context);
+    if (!appSettings.experimentalTagAutoCompletion) {
+      return textField;
+    }
+
+    return AutoCompletionWidget(
+      textFieldStyle: style,
+      textFieldKey: _textFieldKey,
+      textFieldFocusNode: _focusNode,
+      textController: widget.textController,
+      child: textField,
     );
   }
 }

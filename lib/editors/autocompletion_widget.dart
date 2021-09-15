@@ -205,6 +205,7 @@ bool enterPressed(String oldText, String newText, int cursorPos) {
 //        or an existing wiki link which has the closing brackets
 // Bug  : Show auto-completion on top if no space at the bottom
 // Bug  : Handle physical tab or Enter key
+// Bug  : Fix the faulty colours
 
 /*
 abstract class AutoCompletionLogic {

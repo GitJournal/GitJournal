@@ -96,6 +96,16 @@ class _ExperimentalSettingsScreenState
                 setState(() {});
               },
             ),
+            SwitchListTile(
+              title:
+                  Text(tr(LocaleKeys.settings_experimental_autoCompleteTags)),
+              value: appSettings.experimentalTagAutoCompletion,
+              onChanged: (bool newVal) {
+                appSettings.experimentalTagAutoCompletion = newVal;
+                appSettings.save();
+                setState(() {});
+              },
+            ),
             ListTile(
               title: const Text('Enter Pro Password'),
               subtitle: Text('Pro: ' + AppSettings.instance.proMode.toString()),

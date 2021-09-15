@@ -37,6 +37,7 @@ class AppSettings extends ChangeNotifier {
   var experimentalAccounts = false;
   var experimentalGitMerge = false;
   var experimentalGitOps = false;
+  var experimentalTagAutoCompletion = false;
 
   var experimentalHistory = false;
 
@@ -65,6 +66,9 @@ class AppSettings extends ChangeNotifier {
         pref.getBool("experimentalGitMerge") ?? experimentalGitMerge;
     experimentalGitOps =
         pref.getBool("experimentalGitOps") ?? experimentalGitOps;
+    experimentalTagAutoCompletion =
+        pref.getBool("experimentalTagAutoCompletion") ??
+            experimentalTagAutoCompletion;
   }
 
   Future<void> save() async {
@@ -94,6 +98,11 @@ class AppSettings extends ChangeNotifier {
         defaultSet.experimentalGitMerge);
     _setBool(pref, "experimentalGitOps", experimentalGitOps,
         defaultSet.experimentalGitOps);
+    _setBool(
+        pref,
+        "experimentalTagAutoCompletion",
+        experimentalTagAutoCompletion,
+        defaultSet.experimentalTagAutoCompletion);
 
     pref.setInt("appSettingsVersion", version);
 
@@ -114,6 +123,7 @@ class AppSettings extends ChangeNotifier {
       'experimentalAccounts': experimentalAccounts.toString(),
       'experimentalGitMerge': experimentalGitMerge.toString(),
       'experimentalGitOps': experimentalGitOps.toString(),
+      'experimentalTagAutoCompletion': experimentalTagAutoCompletion.toString(),
     };
   }
 
