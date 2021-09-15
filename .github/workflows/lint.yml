@@ -4,10 +4,7 @@
 
 name: Lint
 
-on:
-  push:
-    branches:
-      - master
+on: [push, pull_request]
 
 jobs:
   Lint:
@@ -20,3 +17,14 @@ jobs:
           fetch-depth: 0
       - name: Test
         run: flutter analyze
+
+  REUSE-Licensing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: REUSE Compliance Check
+        uses: fsfe/reuse-action@v1
+        continue-on-error: true
