@@ -149,8 +149,6 @@ settings:
   experimental:
     title: Experimental Features
     subtitle: Try out features in Development
-    backlinks: Show Backlinks in Markdown Preview
-    fs: Show File System
     markdownToolbar: Show Markdown Toolbar in Editor
     graphView: Graph View
     accounts: Platform Independent Accounts
@@ -373,6 +371,7 @@ drawer:
   remote: No Git Host
   addRepo: Add Repository
   login: Login
+  history: History
 setup:
   autoConfigure:
     title: How do you want to do this?

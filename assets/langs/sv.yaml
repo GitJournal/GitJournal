@@ -149,8 +149,6 @@ settings:
   experimental:
     title: Experimentella funktioner
     subtitle: Testa utvecklingsfunktioner
-    backlinks: Visa bakåtlänkar i förhandsvisning för Markdown
-    fs: Visa filsystem
     markdownToolbar: Visa Markdown Toolbar i Editor
     graphView: Graph View
     accounts: Platform Independent Accounts
@@ -373,6 +371,7 @@ drawer:
   remote: No Git Host
   addRepo: Add Repository
   login: Login
+  history: History
 setup:
   autoConfigure:
     title: Hur vill du göra det här?

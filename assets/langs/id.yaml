@@ -149,8 +149,6 @@ settings:
   experimental:
     title: Fitur Eksperimental
     subtitle: Coba fitur dalam Pengembangan
-    backlinks: Tampilkan Backlink di Pratinjau Markdown
-    fs: Tampilkan Sistem File
     markdownToolbar: Tampilkan Toolbar  Markdown di Editor
     graphView: "Tampilan Grafik\n"
     accounts: Akun Platform Independen
@@ -372,6 +370,7 @@ drawer:
   remote: Tanpa Git Host
   addRepo: "Add Repository\nINDONESIAN\nTambahkan Repositori"
   login: Login
+  history: History
 setup:
   autoConfigure:
     title: Bagaimana Anda ingin melakukan ini?

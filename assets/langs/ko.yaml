@@ -149,8 +149,6 @@ settings:
   experimental:
     title: 실험적 기능
     subtitle: 개발 기능 사용해보기
-    backlinks: 마크 다운 미리보기에 백 링크 표시
-    fs: 파일 시스템 표시
     markdownToolbar: 에디터에 마크 다운 툴바 표시
     graphView: Graph View
     accounts: Platform Independent Accounts
@@ -372,6 +370,7 @@ drawer:
   remote: No Git Host
   addRepo: Add Repository
   login: Login
+  history: History
 setup:
   autoConfigure:
     title: 어떻게 하시겠습니까?

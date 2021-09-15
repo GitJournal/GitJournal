@@ -149,8 +149,6 @@ settings:
   experimental:
     title: Funkcjonalności eksperymentalne
     subtitle: Wypróbuj funkcjonalności będące w trakcie rozwoju
-    backlinks: Pokazuj linki zwrotne w podglądzie Markdown
-    fs: Pokazuj system plików
     markdownToolbar: Pokazuj pasek narzędzi Markdown w edytorze
     graphView: Widok grafu
     accounts: Platform Independent Accounts
@@ -375,6 +373,7 @@ drawer:
   remote: Brak hosta Git
   addRepo: Dodaj repozytorium
   login: Login
+  history: History
 setup:
   autoConfigure:
     title: Jak chcesz to zrobić?

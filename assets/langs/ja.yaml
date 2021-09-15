@@ -149,8 +149,6 @@ settings:
   experimental:
     title: 実験的な機能
     subtitle: 開発中の機能を試す
-    backlinks: Markdownプレビューでバックリンクを表示する
-    fs: ファイルシステムを表示する
     markdownToolbar: Markdownツールバーをエディタで表示する
     graphView: グラフビュー
     accounts: プラットフォームに依存しないアカウント
@@ -372,6 +370,7 @@ drawer:
   remote: Gitホスト未設定
   addRepo: リポジトリを追加
   login: Login
+  history: History
 setup:
   autoConfigure:
     title: どのように設定しますか？

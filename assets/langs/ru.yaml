@@ -159,8 +159,6 @@ settings:
   experimental:
     title: Экспериментальные возможности
     subtitle: Попробовать функции, находящиеся в разработке
-    backlinks: Показывать обратные ссылки в предварительном просмотре Markdown
-    fs: Показывать файловую систему
     markdownToolbar: Показывать панель инструментов Markdown в редакторе
     graphView: Graph View
     accounts: Platform Independent Accounts
@@ -408,6 +406,7 @@ drawer:
   remote: No Git Host
   addRepo: Add Repository
   login: Login
+  history: History
 setup:
   autoConfigure:
     title: Как вы хотите это сделать?

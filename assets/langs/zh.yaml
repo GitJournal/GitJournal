@@ -125,7 +125,7 @@ settings:
   noteMetaData:
     title: 笔记元信息设置
     subtitle: 配置如何保存笔记的元信息
-    text: Every note has some metadata which is stored in a YAML Header as follows -
+    text: "每条笔记都有一些元数据，这些元数据被存储在YAML格式数据头中，如下所示 "
     enableHeader: 启用 YAML 头文件
     modified: 被修改的
     created: 新增的
@@ -149,8 +149,6 @@ settings:
   experimental:
     title: Experimental Features
     subtitle: Try out features in Development
-    backlinks: Show Backlinks in Markdown Preview
-    fs: Show File System
     markdownToolbar: Show Markdown Toolbar in Editor
     graphView: Graph View
     accounts: Platform Independent Accounts
@@ -372,6 +370,7 @@ drawer:
   remote: No Git Host
   addRepo: Add Repository
   login: Login
+  history: History
 setup:
   autoConfigure:
     title: How do you want to do this?
