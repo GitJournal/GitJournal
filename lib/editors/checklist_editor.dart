@@ -19,6 +19,7 @@ import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/disposable_change_notifier.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'rich_text_controller.dart';
 
 class ChecklistEditor extends StatefulWidget implements Editor {
   final Note note;
@@ -40,6 +41,8 @@ class ChecklistEditor extends StatefulWidget implements Editor {
   final NoteCallback discardChangesSelected;
 
   final bool editMode;
+  final String? highlightString;
+  final ThemeData theme;
 
   ChecklistEditor({
     Key? key,
@@ -53,6 +56,8 @@ class ChecklistEditor extends StatefulWidget implements Editor {
     required this.moveNoteToFolderSelected,
     required this.discardChangesSelected,
     required this.editMode,
+    required this.highlightString,
+    required this.theme,
   }) : super(key: key);
 
   @override
@@ -68,7 +73,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
   var focusNodes = <UniqueKey, FocusScopeNode>{};
   var keys = <UniqueKey, ChecklistItem>{};
 
-  var _titleTextController = TextEditingController();
+  late TextEditingController _titleTextController;
   late bool _noteModified;
 
   @override
@@ -79,7 +84,11 @@ class ChecklistEditorState extends State<ChecklistEditor>
 
   void _init() {
     var note = widget.note;
-    _titleTextController = TextEditingController(text: note.title);
+    _titleTextController = buildController(
+      text: note.title,
+      highlightText: widget.highlightString,
+      theme: widget.theme,
+    );
     checklist = Checklist(note);
 
     _noteModified = widget.noteModified;
@@ -295,6 +304,8 @@ class ChecklistEditorState extends State<ChecklistEditor>
           });
         });
       },
+      theme: widget.theme,
+      highlightString: widget.highlightString,
     );
   }
 
@@ -330,6 +341,9 @@ class ChecklistItemTile extends StatefulWidget {
   final FocusNode focusNode;
   final bool autofocus;
 
+  final String? highlightString;
+  final ThemeData theme;
+
   ChecklistItemTile({
     Key? key,
     required this.item,
@@ -339,6 +353,8 @@ class ChecklistItemTile extends StatefulWidget {
     required this.itemFinished,
     required this.focusNode,
     this.autofocus = false,
+    required this.highlightString,
+    required this.theme,
   }) : super(key: key);
 
   @override
@@ -346,21 +362,25 @@ class ChecklistItemTile extends StatefulWidget {
 }
 
 class _ChecklistItemTileState extends State<ChecklistItemTile> {
-  TextEditingController? _textController;
+  late TextEditingController _textController;
 
   @override
   void initState() {
     super.initState();
-    _textController = TextEditingController(text: widget.item.text);
-    _textController!.addListener(() {
-      widget.textChanged(_textController!.value.text);
+    _textController = buildController(
+      text: widget.item.text,
+      highlightText: widget.highlightString,
+      theme: widget.theme,
+    );
+    _textController.addListener(() {
+      widget.textChanged(_textController.value.text);
     });
     widget.focusNode.addListener(_onFocus);
   }
 
   @override
   void dispose() {
-    _textController!.dispose();
+    _textController.dispose();
     widget.focusNode.removeListener(_onFocus);
 
     super.dispose();

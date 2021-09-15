@@ -264,6 +264,8 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
           discardChangesSelected: _discardChangesSelected,
           editMode: widget.editMode,
+          highlightString: widget.highlightString,
+          theme: Theme.of(context),
         );
       case EditorType.Journal:
         return JournalEditor(
