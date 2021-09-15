@@ -1,3 +1,19 @@
+- version: "1.80"
+  date: 2021-09-15
+  improvements:
+    - text: "Highlight the searched term in the editor"
+    - text: "Experimental Login Support"
+    - text: "Analytics are back. This time without firebase."
+    - text: "Make emojification controllable. Also disable it by default #260"
+    - text: "Huge speed improvement"
+    - text: "Make the Debug screen prettier"
+    - text: "Beta Desktop support for Linux and OSX"
+  bugs:
+    - text: "Allow multiple inline tags in the same line #268"
+    - text: "Add Org Editor as an option for the default editor #529"
+    - text: "Language Selector: Show the full language name"
+    - text: "Update modified/created as unix timestamp if already in that format #349"
+
 - version: "1.79"
   date: 2021-08-10
   improvements:
