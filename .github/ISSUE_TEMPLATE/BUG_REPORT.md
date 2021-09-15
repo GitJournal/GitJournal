@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
+SPDX-FileCopyrightText: 2019-2021 deandreamatias <deandreamatias@gmail.com>
+
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
 ---
 name: Bug report
 about: Something is crashing or not working as intended

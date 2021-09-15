@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
+
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
 QA Process -
 
 * Make a note

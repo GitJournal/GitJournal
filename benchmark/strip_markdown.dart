@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
 // Import BenchmarkBase class.
 import 'package:benchmark_harness/benchmark_harness.dart';
 import 'package:gitjournal/utils/markdown.dart';

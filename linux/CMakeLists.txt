@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
