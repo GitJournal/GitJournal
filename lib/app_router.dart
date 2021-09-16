@@ -38,6 +38,7 @@ class AppRoute {
   static const SetupRemoteGit = '/setupRemoteGit';
   static const Purchase = '/purchase';
   static const PurchaseThank = '/purchase_thank_you';
+  static const NewNotePrefix = '/newNote/';
 
   static const all = [
     OnBoarding,
@@ -86,7 +87,7 @@ class AppRouter {
     var route = routeSettings.name ?? "";
     if (route == AppRoute.AllFolders ||
         route == AppRoute.AllTags ||
-        route.startsWith('/newNote/')) {
+        route.startsWith(AppRoute.NewNotePrefix)) {
       return PageRouteBuilder(
         settings: routeSettings,
         pageBuilder: (_, __, ___) => screenForRoute(
@@ -155,8 +156,8 @@ class AppRouter {
         return const HistoryScreen();
     }
 
-    if (route.startsWith('/newNote/')) {
-      var type = route.substring('/newNote/'.length);
+    if (route.startsWith(AppRoute.NewNotePrefix)) {
+      var type = route.substring(AppRoute.NewNotePrefix.length);
       var et = SettingsEditorType.fromInternalString(type).toEditorType();
 
       Log.i("New Note - $route");

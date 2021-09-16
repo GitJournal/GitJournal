@@ -11,6 +11,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:git_bindings/git_bindings.dart';
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
@@ -250,7 +251,7 @@ class _FolderViewState extends State<FolderView> {
         existingText: "",
         existingImages: [],
       ),
-      '/newNote/$routeType',
+      AppRoute.NewNotePrefix + routeType,
     );
     var _ = await Navigator.of(context).push(route);
     ScaffoldMessenger.of(context).removeCurrentSnackBar();

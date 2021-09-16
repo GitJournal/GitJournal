@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
@@ -133,7 +134,7 @@ bool openNewNoteEditor(BuildContext context, String noteSpec) {
       existingText: "",
       existingImages: [],
     ),
-    '/newNote/',
+    AppRoute.NewNotePrefix,
   );
 
   var _ = Navigator.of(context).push(route);
