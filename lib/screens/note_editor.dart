@@ -207,10 +207,9 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
         var savedNote = await _saveNote(_getNoteFromEditor());
         return savedNote;
       },
-      child: Hero(
-        tag: note!.filePath,
-        child: _getEditor(),
-      ),
+      child: widget.note != null
+          ? Hero(tag: widget.note!.filePath, child: _getEditor())
+          : _getEditor(),
     );
   }
 
