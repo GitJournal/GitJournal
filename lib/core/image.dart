@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'package:convert/convert.dart';
+import 'package:crypto/crypto.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
 
@@ -11,21 +13,28 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/transformers/base.dart';
 
 class Image {
-  NotesFolderFS parent;
-  String filePath;
+  final NotesFolderFS parent;
+  final String filePath;
+  final Digest md5Hash;
 
-  Image(this.parent, this.filePath);
-
-  static Future<Image> copyIntoFs(NotesFolderFS parent, String filePath) async {
-    var file = File(filePath);
-
-    var absImagePath = Image._buildImagePath(parent, file.path);
-    await file.copy(absImagePath);
-
-    return Image(parent, absImagePath);
+  static Future<Image> load(NotesFolderFS parent, String filePath) async {
+    return Image._(parent, filePath, await _md5Hash(filePath));
   }
 
-  static String _buildImagePath(NotesFolderFS parent, String filePath) {
+  Image._(this.parent, this.filePath, this.md5Hash);
+
+  static Future<Image> copyIntoFs(NotesFolderFS parent, String filePath) async {
+    var hash = await _md5Hash(filePath);
+    var ext = p.extension(filePath);
+    var absImagePath = Image._buildImagePath(parent, hash.toString() + ext);
+
+    // FIXME: Handle errors in copying / reading the file
+    await File(filePath).copy(absImagePath);
+
+    return Image._(parent, absImagePath, hash);
+  }
+
+  static String _buildImagePath(NotesFolderFS parent, String imageFileName) {
     String baseFolder;
 
     var imageSpec = parent.config.imageLocationSpec;
@@ -40,7 +49,6 @@ class Image {
       }
     }
 
-    var imageFileName = p.basename(filePath);
     return p.join(baseFolder, imageFileName);
   }
 
@@ -56,6 +64,20 @@ class Image {
 
     return "![Image]($relativeImagePath)\n";
   }
+}
+
+Future<Digest> _md5Hash(String filePath) async {
+  var output = AccumulatorSink<Digest>();
+  var input = md5.startChunkedConversion(output);
+
+  var readStream = File(filePath).openRead();
+  await for (var data in readStream) {
+    input.add(data);
+  }
+  input.close();
+
+  var digest = output.events.single;
+  return digest;
 }
 
 //
