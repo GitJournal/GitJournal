@@ -1,2 +1,2 @@
-json_key_file("./fastlane/google-play-api-key.json")
+json_key_file("../secrets/google-play-api-key.json")
 package_name("io.gitjournal.gitjournal")
