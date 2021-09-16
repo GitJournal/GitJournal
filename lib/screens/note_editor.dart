@@ -191,7 +191,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
       if (!_noteModified(note)) return;
 
       Log.d("App Lost Focus - saving note");
-      var repo = Provider.of<GitJournalRepo>(context);
+      var repo = Provider.of<GitJournalRepo>(context, listen: false);
       repo.saveNoteToDisk(note).then((r) {
         if (r.isFailure) {
           Log.e("Failed to save note", ex: r.error, stacktrace: r.stackTrace);
