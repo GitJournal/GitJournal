@@ -134,7 +134,7 @@ bool openNewNoteEditor(BuildContext context, String noteSpec) {
       existingText: "",
       existingImages: [],
     ),
-    AppRoute.NewNotePrefix,
+    AppRoute.NewNotePrefix + folderConfig.defaultEditor.toInternalString(),
   );
 
   var _ = Navigator.of(context).push(route);
