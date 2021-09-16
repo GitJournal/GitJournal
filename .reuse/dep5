@@ -2,3 +2,13 @@ Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: GitJournal
 Upstream-Contact: Vishesh Handa <me@vhanda.in>
 Source: https://gitjournal.io
+
+Files: macos/Runner/* macos/Runner.xcodeproj/* macos/Runner.xcworkspace/* macos/Flutter/*
+       ios/keys/* ios/Runner.xcodeproj/* ios/Runner/* macos/keys/* android/gradle/* android/app/src/main/res/*
+       scripts/secrets/* *.lock *.iml
+Copyright: Vishesh Handa <me@vhanda.in>
+License: CC0-1.0
+
+Files: *.png *.svg
+Copyright: Vishesh Handa <me@vhanda.in>
+License: CC-BY-4.0
