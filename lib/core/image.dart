@@ -20,13 +20,13 @@ class Image {
     var file = File(filePath);
     var image = Image(parent, file.path);
 
-    var absImagePath = Image.buildImagePath(parent, file.path);
+    var absImagePath = Image._buildImagePath(parent, file.path);
     await file.copy(absImagePath);
 
     return image;
   }
 
-  static String buildImagePath(NotesFolderFS parent, String filePath) {
+  static String _buildImagePath(NotesFolderFS parent, String filePath) {
     String baseFolder;
 
     var imageSpec = parent.config.imageLocationSpec;
