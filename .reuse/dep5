@@ -13,6 +13,6 @@ Files: macos/Runner/* macos/Runner.xcodeproj/* macos/Runner.xcworkspace/* macos/
 Copyright: Vishesh Handa <me@vhanda.in>
 License: CC0-1.0
 
-Files: *.png *.svg
+Files: *.png *.svg *.md
 Copyright: Vishesh Handa <me@vhanda.in>
 License: CC-BY-4.0

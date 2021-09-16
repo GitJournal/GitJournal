@@ -1,9 +1,3 @@
-<!--
-SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
-
-SPDX-License-Identifier: CC-BY-4.0
--->
-
 Download them via -
 
 1. Engine version - cat ~/src/flutter/flutter/bin/internal/engine.version
