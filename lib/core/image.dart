@@ -18,12 +18,11 @@ class Image {
 
   static Future<Image> copyIntoFs(NotesFolderFS parent, String filePath) async {
     var file = File(filePath);
-    var image = Image(parent, file.path);
 
     var absImagePath = Image._buildImagePath(parent, file.path);
     await file.copy(absImagePath);
 
-    return image;
+    return Image(parent, absImagePath);
   }
 
   static String _buildImagePath(NotesFolderFS parent, String filePath) {
