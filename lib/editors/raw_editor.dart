@@ -12,13 +12,17 @@ import 'package:provider/provider.dart';
 import 'package:gitjournal/core/image.dart' as core;
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/core/views/inline_tags_view.dart';
 import 'package:gitjournal/editors/autocompletion_widget.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/disposable_change_notifier.dart';
 import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/editors/undo_redo.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/widgets/future_builder_with_progress.dart';
 import 'rich_text_controller.dart';
 
 class RawEditor extends StatefulWidget implements Editor {
@@ -244,12 +248,22 @@ class _NoteEditorState extends State<_NoteEditor> {
       return textField;
     }
 
-    return AutoCompletionWidget(
-      textFieldStyle: style,
-      textFieldKey: _textFieldKey,
-      textFieldFocusNode: _focusNode,
-      textController: widget.textController,
-      child: textField,
-    );
+    final rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
+    var inlineTagsView = InlineTagsProvider.of(context);
+    var futureBuilder = () async {
+      var allTags = await rootFolder.getNoteTagsRecursively(inlineTagsView);
+
+      Log.d("Building autocompleter with $allTags");
+      return AutoCompletionWidget(
+        textFieldStyle: style,
+        textFieldKey: _textFieldKey,
+        textFieldFocusNode: _focusNode,
+        textController: widget.textController,
+        child: textField,
+        tags: allTags.toList(),
+      );
+    };
+
+    return FutureBuilderWithProgress(future: futureBuilder());
   }
 }

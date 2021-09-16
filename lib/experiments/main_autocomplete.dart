@@ -62,6 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
       textFieldFocusNode: _focusNode,
       textController: _textController!,
       child: textField,
+      tags: ['Hello', 'Howdy', 'Pooper'],
     );
     return Scaffold(
       appBar: AppBar(

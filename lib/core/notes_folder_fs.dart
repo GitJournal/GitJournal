@@ -67,7 +67,9 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   }
 
   void noteModified(Note note) {
-    notifyNoteModified(-1, note);
+    if (_entityMap.containsKey(note.filePath)) {
+      notifyNoteModified(-1, note);
+    }
   }
 
   void _noteRenamed(Note note, String oldPath) {

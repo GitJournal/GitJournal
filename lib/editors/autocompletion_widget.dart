@@ -18,6 +18,7 @@ class AutoCompletionWidget extends StatefulWidget {
   final TextStyle textFieldStyle;
   final TextEditingController textController;
   final Widget child;
+  final List<String> tags;
 
   AutoCompletionWidget({
     required this.textFieldFocusNode,
@@ -25,6 +26,7 @@ class AutoCompletionWidget extends StatefulWidget {
     required this.textFieldStyle,
     required this.textController,
     required this.child,
+    required this.tags,
   });
 
   @override
@@ -35,6 +37,7 @@ class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
   OverlayEntry? overlayEntry;
 
   var autoCompleter = TagsAutoCompleter();
+  List<String>? tags;
 
   @override
   void initState() {
@@ -113,10 +116,9 @@ class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
 
     //print("Painter ${painter.width} $height");
 
-    var tags = ['Hello', 'Howdy', 'Pooper'];
     var list = Column(
       children: [
-        for (var tag in tags)
+        for (var tag in widget.tags)
           Padding(
             padding: const EdgeInsets.all(4.0),
             child: Text('#$tag', style: const TextStyle(fontSize: 20.0)),
