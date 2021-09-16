@@ -1,3 +1,9 @@
+# SPDX-FileCopyrightText: 2019-2021 PADAone <ankiyorihajimeyo@gmail.com>
+# SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
+# SPDX-FileCopyrightText: 2019-2021 vorotamoroz <vrtmrz@gmail.com>
+#
+# SPDX-License-Identifier: CC-BY-4.0
+
 settings:
   ok: Ok
   cancel: キャンセル

@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
+# SPDX-FileCopyrightText: 2019-2021 marlon <marmonto7@hotmail.com>
+#
+# SPDX-License-Identifier: CC-BY-4.0
+
 settings:
   ok: Aceptar
   cancel: Cancelar

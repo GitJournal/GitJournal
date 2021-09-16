@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2019-2021 T2hv33 <t2hv33@gmail.com>
+# SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
+#
+# SPDX-License-Identifier: CC-BY-4.0
+
 settings:
   ok: Ok
   cancel: Cancel

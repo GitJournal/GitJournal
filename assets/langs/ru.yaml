@@ -1,3 +1,12 @@
+# SPDX-FileCopyrightText: 2019-2021 ALEKSANDR SOKOLOV <saanchos@gmail.com>
+# SPDX-FileCopyrightText: 2019-2021 Isaev. ilya.1994 <isaev.ilya.1994@gmail.com>
+# SPDX-FileCopyrightText: 2019-2021 Ivyl2007 <ivyl2007@gmail.com>
+# SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
+# SPDX-FileCopyrightText: 2019-2021 zsxoff <dobratulin@yahoo.com>
+# SPDX-FileCopyrightText: 2019-2021 Фёдор <geohod@gmail.com>
+#
+# SPDX-License-Identifier: CC-BY-4.0
+
 settings:
   # "Ok" can be translated as "Да", "Подтвердить", or leave "Ok"
   ok: Да
