@@ -2,9 +2,7 @@
 #
 # SPDX-License-Identifier: CC0-1.0
 
-android/app/keystore.jks filter=git-crypt diff=git-crypt
-android/fastlane/google-play-api-key.json filter=git-crypt diff=git-crypt
-android/key.properties filter=git-crypt diff=git-crypt
+android/secrets/* filter=git-crypt diff=git-crypt
 ios/keys/* filter=git-crypt diff=git-crypt
 macos/keys/* filter=git-crypt diff=git-crypt
 secrets/* filter=git-crypt diff=git-crypt

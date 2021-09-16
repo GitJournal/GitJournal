@@ -5,8 +5,9 @@ Source: https://gitjournal.io
 
 Files: macos/Runner/* macos/Runner.xcodeproj/* macos/Runner.xcworkspace/* macos/Flutter/*
        ios/keys/* ios/Runner.xcodeproj/* ios/Runner/* ios/Runner.xcworkspace/* ios/Runner.xcworkspace/xcshareddata/*
-       ios/Flutter/* linux/flutter/* secrets/*
+       ios/Flutter/* linux/flutter/* secrets/* android/secrets/*
        macos/keys/* android/gradle/* android/app/src/main/res/* android/fastlane/metadata/*
+       android/app/src/dev/res/values/*
        scripts/secrets/* test/apis/data/*
        *.lock *.iml *.jks *.metadata *.plist *.entitlements
 Copyright: Vishesh Handa <me@vhanda.in>
