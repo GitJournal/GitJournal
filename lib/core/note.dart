@@ -94,7 +94,7 @@ class Note {
   Note.newNote(
     this.parent, {
     Map<String, dynamic> extraProps = const {},
-    String fileName = "",
+    String? fileName,
   }) : fileLastModified = DateTime.fromMillisecondsSinceEpoch(0) {
     _created = DateTime.now();
     _loadState = NoteLoadState.Loaded;
@@ -109,7 +109,7 @@ class Note {
       noteSerializer.decode(_data, this);
     }
 
-    if (fileName.isNotEmpty) {
+    if (fileName != null) {
       // FIXME: We should ensure a note with this fileName does not already
       //        exist
       if (!NoteFileFormatInfo.isAllowedFileName(fileName)) {
