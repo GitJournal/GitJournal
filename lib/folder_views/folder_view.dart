@@ -241,8 +241,8 @@ class _FolderViewState extends State<FolderView> {
         extraProps[key] = val;
       });
     }
-    var route = MaterialPageRoute(
-      builder: (context) => NoteEditor.newNote(
+    var route = newNoteRoute(
+      NoteEditor.newNote(
         fsFolder,
         widget.notesFolder,
         editorType,
@@ -250,7 +250,7 @@ class _FolderViewState extends State<FolderView> {
         existingText: "",
         existingImages: [],
       ),
-      settings: RouteSettings(name: '/newNote/$routeType'),
+      '/newNote/$routeType',
     );
     var _ = await Navigator.of(context).push(route);
     ScaffoldMessenger.of(context).removeCurrentSnackBar();

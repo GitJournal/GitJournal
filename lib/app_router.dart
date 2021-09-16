@@ -84,7 +84,9 @@ class AppRouter {
     Function callbackIfUsedShared,
   ) {
     var route = routeSettings.name ?? "";
-    if (route == AppRoute.AllFolders || route == AppRoute.AllTags) {
+    if (route == AppRoute.AllFolders ||
+        route == AppRoute.AllTags ||
+        route.startsWith('/newNote/')) {
       return PageRouteBuilder(
         settings: routeSettings,
         pageBuilder: (_, __, ___) => screenForRoute(

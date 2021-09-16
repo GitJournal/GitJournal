@@ -105,13 +105,13 @@ void openNoteEditor(
   }
 }
 
-bool openNewNoteEditor(BuildContext context, String term) {
+bool openNewNoteEditor(BuildContext context, String noteSpec) {
   var rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
   var parentFolder = rootFolder;
   var folderConfig = Provider.of<NotesFolderConfig>(context, listen: false);
   var defaultEditor = folderConfig.defaultEditor.toEditorType();
 
-  var fileName = term;
+  var fileName = noteSpec;
   if (fileName.contains(p.separator)) {
     var pFolder = rootFolder.getFolderWithSpec(p.dirname(fileName));
     if (pFolder == null) {
@@ -120,11 +120,12 @@ bool openNewNoteEditor(BuildContext context, String term) {
     parentFolder = pFolder;
     Log.i("New Note Parent Folder: ${parentFolder.folderPath}");
 
-    fileName = p.basename(term);
+    fileName = p.basename(noteSpec);
   }
 
-  var route = MaterialPageRoute(
-    builder: (context) => NoteEditor.newNote(
+  print('building fade route builder ...');
+  var route = newNoteRoute(
+    NoteEditor.newNote(
       parentFolder,
       parentFolder,
       defaultEditor,
@@ -132,9 +133,19 @@ bool openNewNoteEditor(BuildContext context, String term) {
       existingText: "",
       existingImages: [],
     ),
-    settings: const RouteSettings(name: '/newNote/'),
+    '/newNote/',
   );
 
   var _ = Navigator.of(context).push(route);
   return true;
+}
+
+PageRouteBuilder newNoteRoute(NoteEditor editor, String name) {
+  return PageRouteBuilder(
+    pageBuilder: (context, _, __) => editor,
+    settings: RouteSettings(name: name),
+    transitionsBuilder: (_, anim, __, child) {
+      return FadeTransition(opacity: anim, child: child);
+    },
+  );
 }
