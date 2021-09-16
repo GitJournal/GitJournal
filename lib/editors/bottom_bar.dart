@@ -145,7 +145,7 @@ class AddBottomSheet extends StatelessWidget {
             title: Text(tr(LocaleKeys.editors_common_takePhoto)),
             onTap: () async {
               try {
-                var image = await ImagePicker().getImage(
+                var image = await ImagePicker().pickImage(
                   source: ImageSource.camera,
                 );
 
@@ -163,7 +163,7 @@ class AddBottomSheet extends StatelessWidget {
             title: Text(tr(LocaleKeys.editors_common_addImage)),
             onTap: () async {
               try {
-                var image = await ImagePicker().getImage(
+                var image = await ImagePicker().pickImage(
                   source: ImageSource.gallery,
                 );
 

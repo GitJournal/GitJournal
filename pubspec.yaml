@@ -48,7 +48,7 @@ dependencies:
   function_types: ^0.1.0
   google_fonts: ^2.1.0
   http: ^0.13.1
-  image_picker: ^0.7.4
+  image_picker: ^0.8.4+1
   in_app_purchase: ^0.5.2
   intl: ^0.17.0
   launch_review: ^3.0.1
