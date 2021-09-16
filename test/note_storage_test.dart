@@ -42,8 +42,7 @@ void main() {
 
       var parent = NotesFolderFS(null, tempDir.path, config);
       var n1 = Note(parent, n1Path, DateTime.now());
-      n1.body = "test\n";
-      n1.created = dt;
+      n1.apply(created: dt, body: "test\n");
 
       var n2 = Note(parent, n2Path, DateTime.now());
       n2.data = MdYamlDoc(body: "test2\n", props: props);

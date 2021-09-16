@@ -51,22 +51,27 @@ class _NoteMetadataSettingsScreenState
 
     var parent = NotesFolderFS(null, '', folderConfig);
     var note = Note(parent, "fileName.md", DateTime.now());
-    note.title = tr("settings.noteMetaData.exampleTitle");
-    note.body = tr("settings.noteMetaData.exampleBody");
-    note.created = created;
-    note.modified = modified;
-    note.tags = {
-      tr("settings.noteMetaData.exampleTag1"),
-      tr("settings.noteMetaData.exampleTag2"),
-    };
 
+    Map<String, dynamic>? extraProps;
     if (settings.customMetaData != "") {
       var customMetaDataMap =
           MarkdownYAMLCodec.parseYamlText(settings.customMetaData);
       if (customMetaDataMap.isNotEmpty) {
-        note.extraProps = customMetaDataMap;
+        extraProps = customMetaDataMap;
       }
     }
+
+    note.apply(
+      title: tr("settings.noteMetaData.exampleTitle"),
+      body: tr("settings.noteMetaData.exampleBody"),
+      created: created,
+      modified: modified,
+      extraProps: extraProps,
+      tags: {
+        tr("settings.noteMetaData.exampleTag1"),
+        tr("settings.noteMetaData.exampleTag2"),
+      },
+    );
 
     var body = Column(
       children: <Widget>[

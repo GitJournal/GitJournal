@@ -48,7 +48,7 @@ Hello
       var note = Note(parentFolder, notePath, DateTime.now());
       await storage.load(note);
 
-      note.modified = DateTime.utc(2019, 12, 02, 4, 0, 0);
+      note.apply(modified: DateTime.utc(2019, 12, 02, 4, 0, 0));
 
       await NoteStorage().save(note).throwOnError();
 
@@ -80,7 +80,7 @@ Hello
       var note = Note(parentFolder, notePath, DateTime.now());
       await storage.load(note);
 
-      note.modified = DateTime.utc(2019, 12, 02, 4, 0, 0);
+      note.apply(modified: DateTime.utc(2019, 12, 02, 4, 0, 0));
 
       await NoteStorage().save(note).throwOnError();
 
@@ -116,10 +116,7 @@ Hello
       expect(note.tags.contains('B'), true);
       expect(note.tags.length, 2);
 
-      note.tags = {...note.tags}..add('C');
-      note.tags.add('D');
-      note.tags.remove('B');
-
+      note.apply(tags: {'A', 'C', 'D'});
       await NoteStorage().save(note).throwOnError();
 
       var expectedContent = """---
@@ -260,8 +257,10 @@ Hello
       expect(note.modified, DateTime.parse('2021-07-14T10:14:49Z'));
       expect(note.created, DateTime.parse('2021-07-14T10:14:49Z'));
 
-      note.modified = DateTime.parse('2020-07-14T10:14:49Z');
-      note.created = DateTime.parse('2020-06-13T10:14:49Z');
+      note.apply(
+        created: DateTime.parse('2020-06-13T10:14:49Z'),
+        modified: DateTime.parse('2020-07-14T10:14:49Z'),
+      );
 
       var expectedContent = """---
 bar: Foo

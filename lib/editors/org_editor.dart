@@ -154,7 +154,7 @@ class OrgEditorState extends State<OrgEditor>
   Future<void> addImage(String filePath) async {
     var note = getNote();
     var image = await core.Image.copyIntoFs(note.parent, filePath);
-    note.body += image.toMarkup(note.fileFormat);
+    note.apply(body: note.body + image.toMarkup(note.fileFormat));
 
     setState(() {
       _textController.text = note.body;

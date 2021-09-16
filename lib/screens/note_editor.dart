@@ -117,7 +117,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
   ) {
     note = Note.newNote(folder, extraProps: extraProps, fileName: fileName);
     if (existingText.isNotEmpty) {
-      note!.body = existingText;
+      note!.apply(body: existingText);
     }
 
     if (existingImages.isNotEmpty) {
@@ -125,7 +125,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
         () async {
           try {
             var image = await core.Image.copyIntoFs(note!.parent, imagePath);
-            note!.body += image.toMarkup(note!.fileFormat);
+            note!.apply(body: note!.body + image.toMarkup(note!.fileFormat));
           } catch (e, st) {
             Log.e("New Note Existing Image", ex: e, stacktrace: st);
           }
@@ -489,7 +489,7 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
     if (!eq(note!.tags, newTags)) {
       setState(() {
         Log.i("Settings tags to: $newTags");
-        note!.tags = newTags;
+        note!.apply(tags: newTags);
       });
     }
   }

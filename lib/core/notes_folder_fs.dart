@@ -557,7 +557,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     if (File(oldFilePath).existsSync()) {
       File(note.filePath).renameSync(newFilePath);
     }
-    note.filePath = newFilePath;
+    note.apply(filePath: newFilePath);
 
     _noteRenamed(note, oldFilePath);
   }

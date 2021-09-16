@@ -38,8 +38,10 @@ void main() {
             folder,
             p.join(folder.folderPath, "${random.nextInt(1000)}.md"),
             DateTime.now());
-        note.modified = DateTime(2020, 1, 10 + (i * 2));
-        note.body = "$i\n";
+        note.apply(
+          modified: DateTime(2020, 1, 10 + (i * 2)),
+          body: "$i\n",
+        );
         await NoteStorage().save(note).throwOnError();
       }
       await folder.loadRecursively();
@@ -76,7 +78,7 @@ void main() {
       );
 
       var i = sf.notes.indexWhere((n) => n.body == "1\n");
-      sf.notes[i].modified = DateTime(2020, 2, 1);
+      sf.notes[i].apply(modified: DateTime(2020, 2, 1));
 
       expect(sf.notes[0].body, "1\n");
       expect(sf.notes[1].body, "4\n");
@@ -96,8 +98,10 @@ void main() {
           Note(folder, p.join(folder.folderPath, "new.md"), DateTime.now());
       folder.add(note);
 
-      note.modified = DateTime(2020, 2, 1);
-      note.body = "new\n";
+      note.apply(
+        modified: DateTime(2020, 2, 1),
+        body: "new\n",
+      );
       await NoteStorage().save(note).throwOnError();
 
       expect(sf.notes.length, 6);
@@ -121,8 +125,10 @@ void main() {
           Note(folder, p.join(folder.folderPath, "new.md"), DateTime.now());
       folder.add(note);
 
-      note.modified = DateTime(2020, 1, 1);
-      note.body = "new\n";
+      note.apply(
+        modified: DateTime(2020, 1, 1),
+        body: "new\n",
+      );
       await NoteStorage().save(note).throwOnError();
 
       expect(sf.notes.length, 6);

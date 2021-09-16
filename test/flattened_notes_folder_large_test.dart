@@ -69,8 +69,9 @@ Future<void> _writeRandomNote(
   }
 
   var note = Note(NotesFolderFS(null, dirPath, config), path, DateTime.now());
-  note.modified = DateTime(2014, 1, 1 + (random.nextInt(2000)));
-  note.body = "p1";
-
+  note.apply(
+    modified: DateTime(2014, 1, 1 + (random.nextInt(2000))),
+    body: "p1",
+  );
   await NoteStorage().save(note).throwOnError();
 }

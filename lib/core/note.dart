@@ -96,7 +96,7 @@ class Note {
     Map<String, dynamic> extraProps = const {},
     String fileName = "",
   }) : fileLastModified = DateTime.fromMillisecondsSinceEpoch(0) {
-    created = DateTime.now();
+    _created = DateTime.now();
     _loadState = NoteLoadState.Loaded;
     _fileFormat = NoteFileFormat.Markdown;
     var settings = NoteSerializationSettings.fromConfig(parent.config);
@@ -158,9 +158,72 @@ class Note {
     return _filePath as String;
   }
 
-  set filePath(String newpath) {
-    _filePath = newpath;
-    _notifyModified();
+  void apply({
+    String? filePath,
+    DateTime? created,
+    DateTime? modified,
+    String? body,
+    String? title,
+    NoteType? type,
+    Map<String, dynamic>? extraProps,
+    Set<String>? tags,
+    NoteFileFormat? fileFormat,
+    NoteLoadState? loadState,
+  }) {
+    var changed = false;
+    if (filePath != null) {
+      _filePath = filePath;
+      changed = true;
+    }
+    if (canHaveMetadata) {
+      if (created != null && created != _created) {
+        _created = created;
+        changed = true;
+      }
+      if (modified != null && modified != _modified) {
+        _modified = modified;
+        changed = true;
+      }
+
+      if (type != null && type != _type) {
+        _type = type;
+        changed = true;
+      }
+
+      if (extraProps != null) {
+        _extraProps = extraProps;
+        changed = true;
+      }
+
+      if (tags != null) {
+        _tags = tags;
+        changed = true;
+      }
+    }
+
+    if (body != null && body != _body) {
+      _body = body;
+      changed = true;
+    }
+
+    if (title != null && title != _title) {
+      _title = title;
+      changed = true;
+    }
+
+    if (fileFormat != null && _fileFormat != fileFormat) {
+      _fileFormat = fileFormat;
+      changed = true;
+    }
+
+    if (loadState != null && _loadState != loadState) {
+      _loadState = loadState;
+      changed = true;
+    }
+
+    if (changed) {
+      _notifyModified();
+    }
   }
 
   String get fileName {
@@ -171,86 +234,33 @@ class Note {
     return _created;
   }
 
-  set created(DateTime? dt) {
-    if (!canHaveMetadata) return;
-
-    _created = dt;
-    _notifyModified();
-  }
-
   DateTime? get modified {
     return _modified;
   }
 
-  set modified(DateTime? dt) {
-    if (!canHaveMetadata) return;
-
-    _modified = dt;
-    _notifyModified();
-  }
-
   void updateModified() {
-    modified = DateTime.now();
+    _modified = DateTime.now();
+    _notifyModified();
   }
 
   String get body {
     return _body;
   }
 
-  set body(String newBody) {
-    if (newBody == _body) {
-      return;
-    }
-
-    _body = newBody;
-
-    _notifyModified();
-  }
-
   String get title {
     return _title;
-  }
-
-  set title(String title) {
-    if (title != _title) {
-      _title = title;
-      _notifyModified();
-    }
   }
 
   NoteType get type {
     return _type;
   }
 
-  set type(NoteType type) {
-    if (!canHaveMetadata) return;
-
-    if (type != _type) {
-      _type = type;
-      _notifyModified();
-    }
-  }
-
   Set<String> get tags {
     return _tags;
   }
 
-  set tags(Set<String> tags) {
-    if (!canHaveMetadata) return;
-
-    _tags = tags;
-    _notifyModified();
-  }
-
   Map<String, dynamic> get extraProps {
     return _extraProps;
-  }
-
-  set extraProps(Map<String, dynamic> props) {
-    if (!canHaveMetadata) return;
-
-    _extraProps = props;
-    _notifyModified();
   }
 
   bool get canHaveMetadata {
@@ -275,11 +285,6 @@ class Note {
 
   NoteLoadState get loadState {
     return _loadState;
-  }
-
-  set loadState(NoteLoadState state) {
-    _loadState = state;
-    _notifyModified();
   }
 
   @override
@@ -340,11 +345,6 @@ class Note {
 
   NoteFileFormat? get fileFormat {
     return _fileFormat;
-  }
-
-  set fileFormat(NoteFileFormat? format) {
-    _fileFormat = format;
-    _notifyModified();
   }
 }
 

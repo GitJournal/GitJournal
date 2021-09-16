@@ -134,8 +134,10 @@ class JournalEditorState extends State<JournalEditor>
 
   @override
   Note getNote() {
-    note.body = _textController.text.trim();
-    note.type = NoteType.Journal;
+    note.apply(
+      body: _textController.text.trim(),
+      type: NoteType.Journal,
+    );
     return note;
   }
 
@@ -174,7 +176,7 @@ class JournalEditorState extends State<JournalEditor>
   Future<void> addImage(String filePath) async {
     var note = getNote();
     var image = await core.Image.copyIntoFs(note.parent, filePath);
-    note.body += image.toMarkup(note.fileFormat);
+    note.apply(body: note.body + image.toMarkup(note.fileFormat));
 
     setState(() {
       _textController.text = note.body;

@@ -141,6 +141,7 @@ class NoteSerializer implements NoteSerializerInterface {
   void decode(MdYamlDoc data, Note note) {
     var propsUsed = <String>{};
 
+    DateTime? modified;
     var modifiedKeyOptions = [
       "modified",
       "mod",
@@ -154,10 +155,10 @@ class NoteSerializer implements NoteSerializerInterface {
       var val = data.props[possibleKey];
       if (val != null) {
         if (val is int) {
-          note.modified = parseUnixTimeStamp(val);
+          modified = parseUnixTimeStamp(val);
           settings.modifiedFormat = DateFormat.UnixTimeStamp;
         } else {
-          note.modified = parseDateTime(val.toString());
+          modified = parseDateTime(val.toString());
           settings.modifiedFormat = DateFormat.Iso8601;
         }
         settings.modifiedKey = possibleKey;
@@ -167,8 +168,9 @@ class NoteSerializer implements NoteSerializerInterface {
       }
     }
 
-    note.body = settings.emojify ? emojiParser.emojify(data.body) : data.body;
+    var body = settings.emojify ? emojiParser.emojify(data.body) : data.body;
 
+    DateTime? created;
     var createdKeyOptions = [
       "created",
       "date",
@@ -177,10 +179,10 @@ class NoteSerializer implements NoteSerializerInterface {
       var val = data.props[possibleKey];
       if (val != null) {
         if (val is int) {
-          note.created = parseUnixTimeStamp(val);
+          created = parseUnixTimeStamp(val);
           settings.createdFormat = DateFormat.UnixTimeStamp;
         } else {
-          note.created = parseDateTime(val.toString());
+          created = parseDateTime(val.toString());
           settings.createdFormat = DateFormat.Iso8601;
         }
         settings.createdKey = possibleKey;
@@ -193,15 +195,16 @@ class NoteSerializer implements NoteSerializerInterface {
     //
     // Title parsing
     //
+    String? title;
     if (data.props.containsKey(settings.titleKey)) {
-      var title = data.props[settings.titleKey]?.toString() ?? "";
-      note.title = settings.emojify ? emojiParser.emojify(title) : title;
+      title = data.props[settings.titleKey]?.toString() ?? "";
+      title = settings.emojify ? emojiParser.emojify(title) : title;
 
       propsUsed.add(settings.titleKey);
       settings.titleSettings = SettingsTitle.InYaml;
     } else {
       var startsWithH1 = false;
-      for (var line in LineSplitter.split(note.body)) {
+      for (var line in LineSplitter.split(body)) {
         if (line.trim().isEmpty) {
           continue;
         }
@@ -210,35 +213,36 @@ class NoteSerializer implements NoteSerializerInterface {
       }
 
       if (startsWithH1) {
-        var titleStartIndex = note.body.indexOf('#');
-        var titleEndIndex = note.body.indexOf('\n', titleStartIndex);
-        if (titleEndIndex == -1 || titleEndIndex == note.body.length) {
-          note.title = note.body.substring(titleStartIndex + 1).trim();
-          note.body = "";
+        var titleStartIndex = body.indexOf('#');
+        var titleEndIndex = body.indexOf('\n', titleStartIndex);
+        if (titleEndIndex == -1 || titleEndIndex == body.length) {
+          title = body.substring(titleStartIndex + 1).trim();
+          body = "";
         } else {
-          note.title =
-              note.body.substring(titleStartIndex + 1, titleEndIndex).trim();
-          note.body = note.body.substring(titleEndIndex + 1).trim();
+          title = body.substring(titleStartIndex + 1, titleEndIndex).trim();
+          body = body.substring(titleEndIndex + 1).trim();
         }
       }
     }
 
-    var type = data.props[settings.typeKey];
-    switch (type) {
+    NoteType? type;
+    var typeStr = data.props[settings.typeKey];
+    switch (typeStr) {
       case "Checklist":
-        note.type = NoteType.Checklist;
+        type = NoteType.Checklist;
         break;
       case "Journal":
-        note.type = NoteType.Journal;
+        type = NoteType.Journal;
         break;
       default:
-        note.type = NoteType.Unknown;
+        type = NoteType.Unknown;
         break;
     }
-    if (type != null) {
+    if (typeStr != null) {
       propsUsed.add(settings.typeKey);
     }
 
+    Set<String>? _tags;
     try {
       var tagKeyOptions = [
         "tags",
@@ -249,9 +253,9 @@ class NoteSerializer implements NoteSerializerInterface {
         var tags = data.props[possibleKey];
         if (tags != null) {
           if (tags is YamlList) {
-            note.tags = tags.map((t) => t.toString()).toSet();
+            _tags = tags.map((t) => t.toString()).toSet();
           } else if (tags is List) {
-            note.tags = tags.map((t) => t.toString()).toSet();
+            _tags = tags.map((t) => t.toString()).toSet();
           } else if (tags is String) {
             settings.tagsInString = true;
             var allTags = tags.split(' ');
@@ -261,7 +265,7 @@ class NoteSerializer implements NoteSerializerInterface {
               allTags = allTags.map((e) => e.substring(1)).toList();
             }
 
-            note.tags = allTags.toSet();
+            _tags = allTags.toSet();
           } else {
             Log.e("Note Tags Decoding Failed: $tags");
           }
@@ -276,13 +280,23 @@ class NoteSerializer implements NoteSerializerInterface {
     }
 
     // Extra Props
-    note.extraProps = {};
+    var extraProps = <String, dynamic>{};
     data.props.forEach((key, val) {
       if (propsUsed.contains(key)) {
         return;
       }
 
-      note.extraProps[key] = val;
+      extraProps[key] = val;
     });
+
+    note.apply(
+      created: created,
+      modified: modified,
+      body: body,
+      title: title,
+      type: type,
+      extraProps: extraProps,
+      tags: _tags,
+    );
   }
 }

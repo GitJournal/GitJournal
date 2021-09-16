@@ -47,8 +47,10 @@ void main() {
       for (var i = 0; i < 3; i++) {
         var note = Note(rootFolder, _getRandomFilePath(rootFolder.folderPath),
             DateTime.now());
-        note.modified = DateTime(2020, 1, 10 + (i * 2));
-        note.body = "$i\n";
+        note.apply(
+          modified: DateTime(2020, 1, 10 + (i * 2)),
+          body: "$i\n",
+        );
         await NoteStorage().save(note).throwOnError();
       }
 
@@ -61,8 +63,10 @@ void main() {
       for (var i = 0; i < 2; i++) {
         var note = Note(sub1Folder, _getRandomFilePath(sub1Folder.folderPath),
             DateTime.now());
-        note.modified = DateTime(2020, 1, 10 + (i * 2));
-        note.body = "sub1-$i\n";
+        note.apply(
+          modified: DateTime(2020, 1, 10 + (i * 2)),
+          body: "sub1-$i\n",
+        );
         await NoteStorage().save(note).throwOnError();
       }
 
@@ -71,8 +75,10 @@ void main() {
       for (var i = 0; i < 2; i++) {
         var note = Note(sub2Folder, _getRandomFilePath(sub2Folder.folderPath),
             DateTime.now());
-        note.modified = DateTime(2020, 1, 10 + (i * 2));
-        note.body = "sub2-$i\n";
+        note.apply(
+          modified: DateTime(2020, 1, 10 + (i * 2)),
+          body: "sub2-$i\n",
+        );
         await NoteStorage().save(note).throwOnError();
       }
 
@@ -81,8 +87,10 @@ void main() {
       for (var i = 0; i < 2; i++) {
         var note = Note(
             p1Folder, _getRandomFilePath(p1Folder.folderPath), DateTime.now());
-        note.modified = DateTime(2020, 1, 10 + (i * 2));
-        note.body = "p1-$i\n";
+        note.apply(
+          modified: DateTime(2020, 1, 10 + (i * 2)),
+          body: "p1-$i\n",
+        );
         await NoteStorage().save(note).throwOnError();
       }
 
@@ -120,8 +128,10 @@ void main() {
 
       var p1 = (f.fsFolder as NotesFolderFS).getFolderWithSpec("sub1/p1")!;
       var note = Note(p1, p.join(p1.folderPath, "new.md"), DateTime.now());
-      note.modified = DateTime(2020, 2, 1);
-      note.body = "new\n";
+      note.apply(
+        modified: DateTime(2020, 2, 1),
+        body: "new\n",
+      );
       await NoteStorage().save(note).throwOnError();
 
       p1.add(note);

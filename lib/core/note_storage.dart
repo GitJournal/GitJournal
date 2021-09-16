@@ -56,14 +56,12 @@ class NoteStorage {
       } catch (e, stackTrace) {
         if (e is FileSystemException &&
             e.osError!.errorCode == 2 /* File Not Found */) {
-          note.loadState = NoteLoadState.NotExists;
-          note.parent.noteModified(note);
+          note.apply(loadState: NoteLoadState.NotExists);
           return Result(note.loadState);
         }
 
         logExceptionWarning(e, stackTrace);
-        note.loadState = NoteLoadState.Error;
-        note.parent.noteModified(note);
+        note.apply(loadState: NoteLoadState.Error);
         return Result(note.loadState);
       }
       Log.d("Note modified: $note.filePath");
@@ -78,49 +76,48 @@ class NoteStorage {
       var dataResult = await mdYamlDocLoader.loadDoc(note.filePath);
       if (dataResult.isSuccess) {
         note.data = dataResult.getOrThrow();
-        note.fileFormat = NoteFileFormat.Markdown;
+        note.apply(fileFormat: NoteFileFormat.Markdown);
       } else {
         if (dataResult.error is MdYamlDocNotFoundException) {
-          note.loadState = NoteLoadState.NotExists;
-          note.parent.noteModified(note);
+          note.apply(loadState: NoteLoadState.NotExists);
           return Result(note.loadState);
         }
         if (dataResult.error is MdYamlParsingException) {
-          note.loadState = NoteLoadState.Error;
-          note.parent.noteModified(note);
+          note.apply(loadState: NoteLoadState.Error);
           return Result(note.loadState);
         }
       }
     } else if (isTxt) {
       try {
-        note.body = await File(note.filePath).readAsString();
-        note.fileFormat = NoteFileFormat.Txt;
+        note.apply(
+          body: await File(note.filePath).readAsString(),
+          fileFormat: NoteFileFormat.Txt,
+        );
       } catch (e, stackTrace) {
         logExceptionWarning(e, stackTrace);
 
-        note.loadState = NoteLoadState.Error;
-        note.parent.noteModified(note);
+        note.apply(loadState: NoteLoadState.Error);
         return Result(note.loadState);
       }
     } else if (isOrg) {
       try {
-        note.body = await File(note.filePath).readAsString();
-        note.fileFormat = NoteFileFormat.OrgMode;
+        note.apply(
+          body: await File(note.filePath).readAsString(),
+          fileFormat: NoteFileFormat.OrgMode,
+        );
       } catch (e, stackTrace) {
         logExceptionWarning(e, stackTrace);
 
-        note.loadState = NoteLoadState.Error;
-        note.parent.noteModified(note);
+        note.apply(loadState: NoteLoadState.Error);
         return Result(note.loadState);
       }
     } else {
-      note.loadState = NoteLoadState.Error;
-      note.parent.noteModified(note);
+      note.apply(loadState: NoteLoadState.Error);
       return Result(note.loadState);
     }
 
     note.fileLastModified = file.lastModifiedSync();
-    note.loadState = NoteLoadState.Loaded;
+    note.apply(loadState: NoteLoadState.Loaded);
 
     note.parent.noteModified(note);
     return Result(note.loadState);

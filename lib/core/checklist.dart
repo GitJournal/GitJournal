@@ -102,10 +102,11 @@ class Checklist {
     for (var item in items) {
       _lines[item.lineNo] = item.toString();
     }
-    _note.body = _lines.join('\n');
+    var body = _lines.join('\n');
     if (endsWithNewLine) {
-      _note.body += '\n';
+      body += '\n';
     }
+    _note.apply(body: body);
     return _note;
   }
 
