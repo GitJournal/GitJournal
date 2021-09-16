@@ -4,8 +4,10 @@ Upstream-Contact: Vishesh Handa <me@vhanda.in>
 Source: https://gitjournal.io
 
 Files: macos/Runner/* macos/Runner.xcodeproj/* macos/Runner.xcworkspace/* macos/Flutter/*
-       ios/keys/* ios/Runner.xcodeproj/* ios/Runner/* macos/keys/* android/gradle/* android/app/src/main/res/*
-       scripts/secrets/* *.lock *.iml
+       ios/keys/* ios/Runner.xcodeproj/* ios/Runner/* ios/Runner.xcworkspace/* ios/Runner.xcworkspace/xcshareddata/*
+       ios/Flutter/* linux/flutter/* secrets/*
+       macos/keys/* android/gradle/* android/app/src/main/res/* android/fastlane/metadata/*
+       scripts/secrets/* test/apis/data/* *.lock *.iml *.jks
 Copyright: Vishesh Handa <me@vhanda.in>
 License: CC0-1.0
 
