@@ -66,6 +66,7 @@ class JournalApp extends StatefulWidget {
 
     Hive.init(cacheDir);
     Hive.registerAdapter(LinkAdapter());
+    Hive.registerAdapter(LinksListAdapter());
 
     initSupabase();
 

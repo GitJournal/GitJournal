@@ -30,9 +30,7 @@ class NoteLinksView extends NotesMaterializedView<_LinksList> {
     required String name,
     required NotesViewComputer<_LinksList> computeFn,
     required String repoPath,
-  }) : super(name: name, computeFn: computeFn, repoPath: repoPath) {
-    Hive.registerAdapter(LinksListAdapter(), override: true);
-  }
+  }) : super(name: name, computeFn: computeFn, repoPath: repoPath);
 
   Future<List<Link>> fetchLinks(Note note) async {
     var linksList = await fetch(note);
