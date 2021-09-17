@@ -33,6 +33,9 @@ build_runner:
 test:
 	./flutterw test
 
+version:
+	./scripts/version.sh
+
 # https://stackoverflow.com/a/26339924/147435
 .PHONY: list test
 list:
