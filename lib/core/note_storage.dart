@@ -64,7 +64,7 @@ class NoteStorage {
         note.apply(loadState: NoteLoadState.Error);
         return Result(note.loadState);
       }
-      Log.d("Note modified: $note.filePath");
+      Log.d("Note modified: ${note.filePath}");
     }
 
     var fpLowerCase = note.filePath.toLowerCase();
