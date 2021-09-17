@@ -5,9 +5,11 @@
  */
 
 import 'package:hive/hive.dart';
+import 'package:mutex/mutex.dart';
 import 'package:path/path.dart' as p;
 
-import '../note.dart';
+import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/logger/logger.dart';
 
 typedef NotesViewComputer<T> = Future<T> Function(Note note);
 
@@ -17,6 +19,9 @@ class NotesMaterializedView<T> {
 
   final NotesViewComputer<T> computeFn;
   final String repoPath;
+
+  final _readMutex = ReadWriteMutex();
+  final _writeMutex = Mutex();
 
   NotesMaterializedView({
     required this.name,
@@ -41,17 +46,34 @@ class NotesMaterializedView<T> {
     var keyPrefix = '${path}_';
     var key = keyPrefix + ts.toString();
 
-    storageBox ??= await Hive.openBox<T>(name);
+    // Open the Box
+    await _readMutex.protectRead(() async {
+      if (storageBox != null) return;
+
+      await _writeMutex.protect(() async {
+        if (storageBox != null) return;
+
+        var startTime = DateTime.now();
+        storageBox = await Hive.openBox<T>(name);
+        var endTime = DateTime.now().difference(startTime);
+
+        Log.i("Loading View $name: $endTime");
+      });
+    });
+
     var box = storageBox!;
 
     T? val = box.get(key, defaultValue: null);
     if (val == null) {
       val = await computeFn(note);
-      box.put(key, val);
 
-      // Remove old keys
-      var keys = box.keys.where((k) => k.startsWith(keyPrefix) && k != key);
-      box.deleteAll(keys);
+      if (ts != 0) {
+        box.put(key, val);
+
+        // Remove old keys
+        var keys = box.keys.where((k) => k.startsWith(keyPrefix) && k != key);
+        box.deleteAll(keys);
+      }
     }
 
     return val!;
