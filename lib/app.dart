@@ -244,7 +244,7 @@ class _JournalAppState extends State<JournalApp> {
     // For sharing or opening text coming from outside the app while the app is in the memory
     _intentDataStreamSubscription =
         ReceiveSharingIntent.getTextStream().listen((String value) {
-      Log.d("Received Text Share $value");
+      Log.d("Received Text Share: ${value.length}");
       if (value.startsWith('gitjournal-identity://')) {
         return;
       }
@@ -257,7 +257,7 @@ class _JournalAppState extends State<JournalApp> {
     // For sharing or opening text coming from outside the app while the app is closed
     ReceiveSharingIntent.getInitialText().then((String? value) {
       if (value == null) return;
-      Log.d("Received Share with App (text): $value");
+      Log.d("Received Share with App (text): ${value.length}");
       _sharedText = value;
       WidgetsBinding.instance!.addPostFrameCallback((_) => handleShare());
     });
