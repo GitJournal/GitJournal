@@ -124,7 +124,6 @@ bool openNewNoteEditor(BuildContext context, String noteSpec) {
     fileName = p.basename(noteSpec);
   }
 
-  print('building fade route builder ...');
   var route = newNoteRoute(
     NoteEditor.newNote(
       parentFolder,
