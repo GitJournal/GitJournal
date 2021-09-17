@@ -6,6 +6,8 @@
 
 import 'dart:collection';
 
+import 'package:flutter/foundation.dart';
+
 import 'package:collection/collection.dart';
 
 Function _deepEq = const DeepCollectionEquality().equals;
@@ -39,6 +41,10 @@ class MdYamlDoc {
 
   @override
   String toString() {
-    return 'MdYamlDoc{body: "$body", props: $props}';
+    if (kDebugMode) {
+      return 'MdYamlDoc{body: "$body", props: $props}';
+    } else {
+      return 'MdYamlDoc{body: "<hidden>", props: <hidden>}';
+    }
   }
 }
