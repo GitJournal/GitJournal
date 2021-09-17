@@ -11,6 +11,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:git_bindings/git_bindings.dart';
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/note.dart';
@@ -477,6 +478,7 @@ class _FolderViewState extends State<FolderView> {
       IconButton(
         icon: const Icon(Icons.search),
         onPressed: () {
+          logEvent(Event.SearchButtonPressed);
           showSearch(
             context: context,
             delegate: NoteSearchDelegate(

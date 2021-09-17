@@ -45,6 +45,8 @@ enum Event {
   AppFirstOpen,
   AppUpdate,
 
+  SearchButtonPressed,
+
   // FIXME: Add os_update
 
   /*
