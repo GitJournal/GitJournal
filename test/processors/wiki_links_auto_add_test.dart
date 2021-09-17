@@ -30,4 +30,5 @@ void main() {
   // Add a test to see if processing a Note works
   // FIXME: Make sure the wiki link terms do not have special characters
   // FIXME: WHat about piped links?
+  // FIXME: The wiki links can have a space
 }

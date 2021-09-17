@@ -136,6 +136,14 @@ void main() {
     expect(resolvedNote.filePath, p.join(tempDir.path, 'Goat  Sim.md'));
   });
 
+  test('Normal with extra spaces in the middle resolves correctly', () {
+    var note = rootFolder.notes[0];
+    var linkResolver = LinkResolver(note);
+
+    var resolvedNote = linkResolver.resolve('Goat  Sim')!;
+    expect(resolvedNote.filePath, p.join(tempDir.path, 'Goat  Sim.md'));
+  });
+
   test('Normal relative link', () {
     var note = rootFolder.notes[0];
     var linkResolver = LinkResolver(note);
