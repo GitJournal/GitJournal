@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 # SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
 #
