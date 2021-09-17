@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 app_identifier("io.gitjournal.gitjournal") # The bundle identifier of your app
 apple_id("ios.ci@gitjournal.io") # Your Apple email address
 

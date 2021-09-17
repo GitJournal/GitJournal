@@ -27,4 +27,3 @@ jobs:
           fetch-depth: 0
       - name: REUSE Compliance Check
         uses: fsfe/reuse-action@v1
-        continue-on-error: true

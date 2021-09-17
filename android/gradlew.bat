@@ -1,3 +1,7 @@
+REM SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
+REM
+REM SPDX-License-Identifier: Apache-2.0
+
 @if "%DEBUG%" == "" @echo off
 @rem ##########################################################################
 @rem
