@@ -32,7 +32,9 @@ class NoteStorage {
     return catchAll(() async {
       var file = File(note.filePath);
       await file.writeAsString(contents, flush: true);
-      note.fileLastModified = DateTime.now();
+
+      var stat = file.statSync();
+      note.fileLastModified = stat.modified;
 
       return Result(null);
     });
