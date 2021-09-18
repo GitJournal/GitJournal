@@ -4,7 +4,7 @@
 
 name: gitjournal
 description: A Note Taking App Built on top of Git
-version: 1.80.2+10
+version: 1.80.3+10
 
 environment:
   sdk: ">=2.13.0 <3.0.0"
