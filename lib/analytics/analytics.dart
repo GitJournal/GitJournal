@@ -31,7 +31,7 @@ class Analytics {
   final Func2<String, Map<String, String>, void> analyticsCallback;
   final AnalyticsStorage storage;
   final SharedPreferences pref;
-  final AnalyticsConfig config;
+  final AnalyticsConfig _config;
 
   Analytics._({
     required this.storage,
@@ -39,8 +39,8 @@ class Analytics {
     required this.canBeEnabled,
     required this.pref,
     required this.pseudoId,
-    required this.config,
-  }) {
+    required AnalyticsConfig config,
+  }) : _config = config {
     _sessionId = DateTime.now().millisecondsSinceEpoch ~/ 1000;
   }
 
@@ -80,13 +80,13 @@ class Analytics {
   }
 
   bool get enabled {
-    return canBeEnabled && config.enabled;
+    return canBeEnabled && _config.enabled;
   }
 
   set enabled(bool newVal) {
     if (enabled != newVal) {
-      config.enabled = newVal;
-      config.save();
+      _config.enabled = newVal;
+      _config.save();
 
       logEvent(
         Event.AnalyticsLevelChanged,
@@ -186,19 +186,19 @@ class Analytics {
     Log.i("App Version: $version");
     Log.i("App Build Number: ${info.buildNumber}");
 
-    if (config.appVersion == version) {
+    if (_config.appVersion == version) {
       return;
     }
 
     logEvent(Event.AppUpdate, parameters: {
       "version": version,
-      "previous_app_version": config.appVersion,
+      "previous_app_version": _config.appVersion,
       "app_name": info.appName,
       "package_name": info.packageName,
       "build_number": info.buildNumber,
     });
 
-    config.appVersion = version;
-    config.save();
+    _config.appVersion = version;
+    _config.save();
   }
 }

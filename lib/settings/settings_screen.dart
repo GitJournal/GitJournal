@@ -369,7 +369,7 @@ class SettingsListState extends State<SettingsList> {
       if (Analytics.instance != null)
         SwitchListTile(
           title: Text(tr(LocaleKeys.settings_usageStats)),
-          value: Analytics.instance!.config.enabled,
+          value: Analytics.instance!.enabled,
           onChanged: (bool val) {
             Analytics.instance!.enabled = val;
             setState(() {}); // Remove this once Analytics.instace is not used

@@ -25,7 +25,7 @@ class AnalyticsConfig extends ChangeNotifier with SettingsSharedPref {
   void load(SharedPreferences pref) {
     appVersion = pref.getString("appVersion") ?? "";
 
-    enabled = pref.getBool("collectUsageStatistics") ?? enabled;
+    enabled = getBool("collectUsageStatistics") ?? enabled;
   }
 
   Future<void> save() async {
