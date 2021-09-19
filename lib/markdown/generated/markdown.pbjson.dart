@@ -13,6 +13,24 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+@$core.Deprecated('Use nodeListDescriptor instead')
+const NodeList$json = const {
+  '1': 'NodeList',
+  '2': const [
+    const {
+      '1': 'node',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.gitjournal.Node',
+      '10': 'node'
+    },
+  ],
+};
+
+/// Descriptor for `NodeList`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List nodeListDescriptor = $convert.base64Decode(
+    'CghOb2RlTGlzdBIkCgRub2RlGAEgAygLMhAuZ2l0am91cm5hbC5Ob2RlUgRub2Rl');
 @$core.Deprecated('Use nodeDescriptor instead')
 const Node$json = const {
   '1': 'Node',
@@ -42,12 +60,12 @@ const Element$json = const {
   '2': const [
     const {'1': 'tag', '3': 1, '4': 1, '5': 9, '10': 'tag'},
     const {
-      '1': 'userProperties',
+      '1': 'attributes',
       '3': 2,
       '4': 3,
       '5': 11,
-      '6': '.gitjournal.Element.UserPropertiesEntry',
-      '10': 'userProperties'
+      '6': '.gitjournal.Element.AttributesEntry',
+      '10': 'attributes'
     },
     const {
       '1': 'children',
@@ -57,13 +75,14 @@ const Element$json = const {
       '6': '.gitjournal.Node',
       '10': 'children'
     },
+    const {'1': 'generatedId', '3': 4, '4': 1, '5': 9, '10': 'generatedId'},
   ],
-  '3': const [Element_UserPropertiesEntry$json],
+  '3': const [Element_AttributesEntry$json],
 };
 
 @$core.Deprecated('Use elementDescriptor instead')
-const Element_UserPropertiesEntry$json = const {
-  '1': 'UserPropertiesEntry',
+const Element_AttributesEntry$json = const {
+  '1': 'AttributesEntry',
   '2': const [
     const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
     const {'1': 'value', '3': 2, '4': 1, '5': 9, '10': 'value'},
@@ -73,4 +92,4 @@ const Element_UserPropertiesEntry$json = const {
 
 /// Descriptor for `Element`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List elementDescriptor = $convert.base64Decode(
-    'CgdFbGVtZW50EhAKA3RhZxgBIAEoCVIDdGFnEk8KDnVzZXJQcm9wZXJ0aWVzGAIgAygLMicuZ2l0am91cm5hbC5FbGVtZW50LlVzZXJQcm9wZXJ0aWVzRW50cnlSDnVzZXJQcm9wZXJ0aWVzEiwKCGNoaWxkcmVuGAMgAygLMhAuZ2l0am91cm5hbC5Ob2RlUghjaGlsZHJlbhpBChNVc2VyUHJvcGVydGllc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgJUgV2YWx1ZToCOAE=');
+    'CgdFbGVtZW50EhAKA3RhZxgBIAEoCVIDdGFnEkMKCmF0dHJpYnV0ZXMYAiADKAsyIy5naXRqb3VybmFsLkVsZW1lbnQuQXR0cmlidXRlc0VudHJ5UgphdHRyaWJ1dGVzEiwKCGNoaWxkcmVuGAMgAygLMhAuZ2l0am91cm5hbC5Ob2RlUghjaGlsZHJlbhIgCgtnZW5lcmF0ZWRJZBgEIAEoCVILZ2VuZXJhdGVkSWQaPQoPQXR0cmlidXRlc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgJUgV2YWx1ZToCOAE=');

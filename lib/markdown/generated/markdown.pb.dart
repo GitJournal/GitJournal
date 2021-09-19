@@ -13,6 +13,65 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+class NodeList extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'NodeList',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'gitjournal'),
+      createEmptyInstance: create)
+    ..pc<Node>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'node',
+        $pb.PbFieldType.PM,
+        subBuilder: Node.create)
+    ..hasRequiredFields = false;
+
+  NodeList._() : super();
+  factory NodeList({
+    $core.Iterable<Node>? node,
+  }) {
+    final _result = create();
+    if (node != null) {
+      _result.node.addAll(node);
+    }
+    return _result;
+  }
+  factory NodeList.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory NodeList.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  NodeList clone() => NodeList()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  NodeList copyWith(void Function(NodeList) updates) =>
+      super.copyWith((message) => updates(message as NodeList))
+          as NodeList; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static NodeList create() => NodeList._();
+  NodeList createEmptyInstance() => create();
+  static $pb.PbList<NodeList> createRepeated() => $pb.PbList<NodeList>();
+  @$core.pragma('dart2js:noInline')
+  static NodeList getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<NodeList>(create);
+  static NodeList? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<Node> get node => $_getList(0);
+}
+
 enum Node_Value { element, text, notSet }
 
 class Node extends $pb.GeneratedMessage {
@@ -133,9 +192,8 @@ class Element extends $pb.GeneratedMessage {
         2,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'userProperties',
-        protoName: 'userProperties',
-        entryClassName: 'Element.UserPropertiesEntry',
+            : 'attributes',
+        entryClassName: 'Element.AttributesEntry',
         keyFieldType: $pb.PbFieldType.OS,
         valueFieldType: $pb.PbFieldType.OS,
         packageName: const $pb.PackageName('gitjournal'))
@@ -146,23 +204,33 @@ class Element extends $pb.GeneratedMessage {
             : 'children',
         $pb.PbFieldType.PM,
         subBuilder: Node.create)
+    ..aOS(
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'generatedId',
+        protoName: 'generatedId')
     ..hasRequiredFields = false;
 
   Element._() : super();
   factory Element({
     $core.String? tag,
-    $core.Map<$core.String, $core.String>? userProperties,
+    $core.Map<$core.String, $core.String>? attributes,
     $core.Iterable<Node>? children,
+    $core.String? generatedId,
   }) {
     final _result = create();
     if (tag != null) {
       _result.tag = tag;
     }
-    if (userProperties != null) {
-      _result.userProperties.addAll(userProperties);
+    if (attributes != null) {
+      _result.attributes.addAll(attributes);
     }
     if (children != null) {
       _result.children.addAll(children);
+    }
+    if (generatedId != null) {
+      _result.generatedId = generatedId;
     }
     return _result;
   }
@@ -205,8 +273,20 @@ class Element extends $pb.GeneratedMessage {
   void clearTag() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.Map<$core.String, $core.String> get userProperties => $_getMap(1);
+  $core.Map<$core.String, $core.String> get attributes => $_getMap(1);
 
   @$pb.TagNumber(3)
   $core.List<Node> get children => $_getList(2);
+
+  @$pb.TagNumber(4)
+  $core.String get generatedId => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set generatedId($core.String v) {
+    $_setString(3, v);
+  }
+
+  @$pb.TagNumber(4)
+  $core.bool hasGeneratedId() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearGeneratedId() => clearField(4);
 }
