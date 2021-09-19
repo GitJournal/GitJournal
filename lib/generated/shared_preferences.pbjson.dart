@@ -1,8 +1,6 @@
-/*
- * SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
- *
- * SPDX-License-Identifier: AGPL-3.0-or-later
- */
+// SPDX-FileCopyrightText: 2021 Vishesh Handa <me@vhanda.in>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
 
 ///
 //  Generated code. Do not modify.
@@ -49,90 +47,46 @@ final $typed_data.Uint8List boolMessageDescriptor =
 const OptionalBool$json = const {
   '1': 'OptionalBool',
   '2': const [
-    const {
-      '1': 'value',
-      '3': 1,
-      '4': 1,
-      '5': 8,
-      '9': 0,
-      '10': 'value',
-      '17': true
-    },
-  ],
-  '8': const [
-    const {'1': '_value'},
+    const {'1': 'value', '3': 1, '4': 1, '5': 8, '10': 'value'},
   ],
 };
 
 /// Descriptor for `OptionalBool`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List optionalBoolDescriptor = $convert.base64Decode(
-    'CgxPcHRpb25hbEJvb2wSGQoFdmFsdWUYASABKAhIAFIFdmFsdWWIAQFCCAoGX3ZhbHVl');
+final $typed_data.Uint8List optionalBoolDescriptor =
+    $convert.base64Decode('CgxPcHRpb25hbEJvb2wSFAoFdmFsdWUYASABKAhSBXZhbHVl');
 @$core.Deprecated('Use optionalIntDescriptor instead')
 const OptionalInt$json = const {
   '1': 'OptionalInt',
   '2': const [
-    const {
-      '1': 'value',
-      '3': 1,
-      '4': 1,
-      '5': 3,
-      '9': 0,
-      '10': 'value',
-      '17': true
-    },
-  ],
-  '8': const [
-    const {'1': '_value'},
+    const {'1': 'value', '3': 1, '4': 1, '5': 3, '10': 'value'},
   ],
 };
 
 /// Descriptor for `OptionalInt`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List optionalIntDescriptor = $convert.base64Decode(
-    'CgtPcHRpb25hbEludBIZCgV2YWx1ZRgBIAEoA0gAUgV2YWx1ZYgBAUIICgZfdmFsdWU=');
+final $typed_data.Uint8List optionalIntDescriptor =
+    $convert.base64Decode('CgtPcHRpb25hbEludBIUCgV2YWx1ZRgBIAEoA1IFdmFsdWU=');
 @$core.Deprecated('Use optionalDoubleDescriptor instead')
 const OptionalDouble$json = const {
   '1': 'OptionalDouble',
   '2': const [
-    const {
-      '1': 'value',
-      '3': 1,
-      '4': 1,
-      '5': 1,
-      '9': 0,
-      '10': 'value',
-      '17': true
-    },
-  ],
-  '8': const [
-    const {'1': '_value'},
+    const {'1': 'value', '3': 1, '4': 1, '5': 1, '10': 'value'},
   ],
 };
 
 /// Descriptor for `OptionalDouble`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List optionalDoubleDescriptor = $convert.base64Decode(
-    'Cg5PcHRpb25hbERvdWJsZRIZCgV2YWx1ZRgBIAEoAUgAUgV2YWx1ZYgBAUIICgZfdmFsdWU=');
+final $typed_data.Uint8List optionalDoubleDescriptor = $convert
+    .base64Decode('Cg5PcHRpb25hbERvdWJsZRIUCgV2YWx1ZRgBIAEoAVIFdmFsdWU=');
 @$core.Deprecated('Use optionalStringDescriptor instead')
 const OptionalString$json = const {
   '1': 'OptionalString',
   '2': const [
-    const {
-      '1': 'value',
-      '3': 1,
-      '4': 1,
-      '5': 9,
-      '9': 0,
-      '10': 'value',
-      '17': true
-    },
-  ],
-  '8': const [
-    const {'1': '_value'},
+    const {'1': 'value', '3': 1, '4': 1, '5': 9, '10': 'value'},
   ],
 };
 
 /// Descriptor for `OptionalString`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List optionalStringDescriptor = $convert.base64Decode(
-    'Cg5PcHRpb25hbFN0cmluZxIZCgV2YWx1ZRgBIAEoCUgAUgV2YWx1ZYgBAUIICgZfdmFsdWU=');
+final $typed_data.Uint8List optionalStringDescriptor = $convert
+    .base64Decode('Cg5PcHRpb25hbFN0cmluZxIUCgV2YWx1ZRgBIAEoCVIFdmFsdWU=');
 @$core.Deprecated('Use stringListMessageDescriptor instead')
 const StringListMessage$json = const {
   '1': 'StringListMessage',

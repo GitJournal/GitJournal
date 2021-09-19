@@ -30,10 +30,10 @@ service SharedPreferences {
 message EmptyMessage {}
 message StringMessage { string value = 1; }
 message BoolMessage { bool value = 1; }
-message OptionalBool { optional bool value = 1; }
-message OptionalInt { optional int64 value = 1; }
-message OptionalDouble { optional double value = 1; }
-message OptionalString { optional string value = 1; }
+message OptionalBool { bool value = 1; }
+message OptionalInt { int64 value = 1; }
+message OptionalDouble { double value = 1; }
+message OptionalString { string value = 1; }
 message StringListMessage { repeated string value = 1; }
 
 message SetBoolRequest {
