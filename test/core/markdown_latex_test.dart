@@ -7,7 +7,7 @@
 import 'package:markdown/markdown.dart' as md;
 import 'package:test/test.dart';
 
-import 'package:gitjournal/core/markdown_latex.dart';
+import 'package:gitjournal/markdown/markdown_latex.dart';
 
 void main() {
   test('Should parse both', () async {
