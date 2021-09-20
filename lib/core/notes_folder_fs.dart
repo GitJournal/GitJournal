@@ -561,6 +561,21 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
     _noteRenamed(note, oldFilePath);
   }
+
+  static bool moveNote(Note note, NotesFolderFS destFolder) {
+    var destPath = p.join(destFolder.folderPath, note.fileName);
+    if (File(destPath).existsSync()) {
+      return false;
+    }
+
+    File(note.filePath).renameSync(destPath);
+
+    note.parent.remove(note);
+    note.parent = destFolder;
+    note.parent.add(note);
+
+    return true;
+  }
 }
 
 typedef NoteMatcherAsync = Future<bool> Function(Note n);
@@ -580,19 +595,4 @@ Future<SplayTreeSet<String>> _fetchTags(
   }
 
   return tags;
-}
-
-bool moveNote(Note note, NotesFolderFS destFolder) {
-  var destPath = p.join(destFolder.folderPath, note.fileName);
-  if (File(destPath).existsSync()) {
-    return false;
-  }
-
-  File(note.filePath).renameSync(destPath);
-
-  note.parent.remove(note);
-  note.parent = destFolder;
-  note.parent.add(note);
-
-  return true;
 }
