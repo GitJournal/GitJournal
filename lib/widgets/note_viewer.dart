@@ -7,14 +7,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'package:org_flutter/org_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/core/org_links_handler.dart';
 import 'package:gitjournal/core/views/note_links_view.dart';
 import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/folder_views/common.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/widgets/markdown_renderer.dart';
 import 'package:gitjournal/widgets/notes_backlinks.dart';
 
@@ -29,6 +32,21 @@ class NoteViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (note.fileFormat == NoteFileFormat.OrgMode) {
+      var handler = OrgLinkHandler(context, note);
+
+      return Org(
+        note.body,
+        onLinkTap: handler.launchUrl,
+        onLocalSectionLinkTap: (OrgSection section) {
+          Log.d("local section link: " + section.toString());
+        },
+        onSectionLongPress: (OrgSection section) {
+          Log.d('local section long-press: ' + section.headline.rawTitle!);
+        },
+      );
+    }
+
     final rootFolder = Provider.of<NotesFolderFS>(context);
     var view = EditorScrollView(
       child: Column(
