@@ -22,19 +22,6 @@ class JournalEditor extends StatefulWidget implements Editor {
   final Note note;
   final bool noteModified;
 
-  @override
-  final NoteCallback noteDeletionSelected;
-  @override
-  final NoteCallback noteEditorChooserSelected;
-  @override
-  final NoteCallback exitEditorSelected;
-  @override
-  final NoteCallback renameNoteSelected;
-  @override
-  final NoteCallback editTagsSelected;
-  @override
-  final NoteCallback moveNoteToFolderSelected;
-
   final bool editMode;
   final String? highlightString;
   final ThemeData theme;
@@ -46,12 +33,6 @@ class JournalEditor extends StatefulWidget implements Editor {
     Key? key,
     required this.note,
     required this.noteModified,
-    required this.noteDeletionSelected,
-    required this.noteEditorChooserSelected,
-    required this.exitEditorSelected,
-    required this.renameNoteSelected,
-    required this.editTagsSelected,
-    required this.moveNoteToFolderSelected,
     required this.editMode,
     required this.highlightString,
     required this.theme,

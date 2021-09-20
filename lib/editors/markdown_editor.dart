@@ -29,19 +29,6 @@ class MarkdownEditor extends StatefulWidget implements Editor {
   final bool noteModified;
 
   @override
-  final NoteCallback noteDeletionSelected;
-  @override
-  final NoteCallback noteEditorChooserSelected;
-  @override
-  final NoteCallback exitEditorSelected;
-  @override
-  final NoteCallback renameNoteSelected;
-  @override
-  final NoteCallback editTagsSelected;
-  @override
-  final NoteCallback moveNoteToFolderSelected;
-
-  @override
   final EditorCommon common;
 
   final bool editMode;
@@ -53,12 +40,6 @@ class MarkdownEditor extends StatefulWidget implements Editor {
     required this.note,
     required this.parentFolder,
     required this.noteModified,
-    required this.noteDeletionSelected,
-    required this.noteEditorChooserSelected,
-    required this.exitEditorSelected,
-    required this.renameNoteSelected,
-    required this.editTagsSelected,
-    required this.moveNoteToFolderSelected,
     required this.editMode,
     required this.highlightString,
     required this.theme,

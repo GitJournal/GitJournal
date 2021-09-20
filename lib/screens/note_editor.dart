@@ -92,8 +92,6 @@ class NoteEditor extends StatefulWidget {
       return NoteEditorState.fromNote(note);
     }
   }
-
-  bool get isNewNote => note == null;
 }
 
 class NoteEditorState extends State<NoteEditor>
@@ -228,12 +226,6 @@ class NoteEditorState extends State<NoteEditor>
           note: note,
           parentFolder: widget.parentFolderView,
           noteModified: _noteModified(note),
-          noteDeletionSelected: _noteDeletionSelected,
-          noteEditorChooserSelected: _noteEditorChooserSelected,
-          exitEditorSelected: _exitEditorSelected,
-          renameNoteSelected: _renameNoteSelected,
-          editTagsSelected: _editTagsSelected,
-          moveNoteToFolderSelected: _moveNoteToFolderSelected,
           editMode: widget.editMode,
           highlightString: widget.highlightString,
           theme: Theme.of(context),
@@ -244,12 +236,6 @@ class NoteEditorState extends State<NoteEditor>
           key: _rawEditorKey,
           note: note,
           noteModified: _noteModified(note),
-          noteDeletionSelected: _noteDeletionSelected,
-          noteEditorChooserSelected: _noteEditorChooserSelected,
-          exitEditorSelected: _exitEditorSelected,
-          renameNoteSelected: _renameNoteSelected,
-          editTagsSelected: _editTagsSelected,
-          moveNoteToFolderSelected: _moveNoteToFolderSelected,
           editMode: widget.editMode,
           highlightString: widget.highlightString,
           theme: Theme.of(context),
@@ -260,12 +246,6 @@ class NoteEditorState extends State<NoteEditor>
           key: _checklistEditorKey,
           note: note,
           noteModified: _noteModified(note),
-          noteDeletionSelected: _noteDeletionSelected,
-          noteEditorChooserSelected: _noteEditorChooserSelected,
-          exitEditorSelected: _exitEditorSelected,
-          renameNoteSelected: _renameNoteSelected,
-          editTagsSelected: _editTagsSelected,
-          moveNoteToFolderSelected: _moveNoteToFolderSelected,
           editMode: widget.editMode,
           highlightString: widget.highlightString,
           theme: Theme.of(context),
@@ -276,12 +256,6 @@ class NoteEditorState extends State<NoteEditor>
           key: _journalEditorKey,
           note: note,
           noteModified: _noteModified(note),
-          noteDeletionSelected: _noteDeletionSelected,
-          noteEditorChooserSelected: _noteEditorChooserSelected,
-          exitEditorSelected: _exitEditorSelected,
-          renameNoteSelected: _renameNoteSelected,
-          editTagsSelected: _editTagsSelected,
-          moveNoteToFolderSelected: _moveNoteToFolderSelected,
           editMode: widget.editMode,
           highlightString: widget.highlightString,
           theme: Theme.of(context),
@@ -292,12 +266,6 @@ class NoteEditorState extends State<NoteEditor>
           key: _orgEditorKey,
           note: note,
           noteModified: _noteModified(note),
-          noteDeletionSelected: _noteDeletionSelected,
-          noteEditorChooserSelected: _noteEditorChooserSelected,
-          exitEditorSelected: _exitEditorSelected,
-          renameNoteSelected: _renameNoteSelected,
-          editTagsSelected: _editTagsSelected,
-          moveNoteToFolderSelected: _moveNoteToFolderSelected,
           editMode: widget.editMode,
           highlightString: widget.highlightString,
           theme: Theme.of(context),
@@ -306,7 +274,8 @@ class NoteEditorState extends State<NoteEditor>
     }
   }
 
-  void _noteEditorChooserSelected(Note _note) async {
+  @override
+  void noteEditorChooserSelected(Note _note) async {
     var newEditorType = await showDialog<EditorType>(
       context: context,
       builder: (BuildContext context) {
@@ -322,14 +291,16 @@ class NoteEditorState extends State<NoteEditor>
     }
   }
 
-  void _exitEditorSelected(Note note) async {
+  @override
+  void exitEditorSelected(Note note) async {
     var saved = await _saveNote(note);
     if (saved) {
       Navigator.pop(context);
     }
   }
 
-  void _renameNoteSelected(Note _note) async {
+  @override
+  void renameNote(Note _note) async {
     var note = this.note!;
     var fileName = await showDialog(
       context: context,
@@ -352,7 +323,8 @@ class NoteEditorState extends State<NoteEditor>
     }
   }
 
-  void _noteDeletionSelected(Note note) async {
+  @override
+  void deleteNote(Note note) async {
     if (_isNewNote && !_noteModified(note)) {
       Navigator.pop(context);
       return;
@@ -367,7 +339,10 @@ class NoteEditorState extends State<NoteEditor>
       );
     }
     if (shouldDelete == true) {
-      _deleteNote(note);
+      if (!_isNewNote) {
+        var stateContainer = context.read<GitJournalRepo>();
+        stateContainer.removeNote(note);
+      }
 
       if (_isNewNote) {
         Navigator.pop(context); // Note Editor
@@ -375,15 +350,6 @@ class NoteEditorState extends State<NoteEditor>
         Navigator.pop(context, ShowUndoSnackbar()); // Note Editor
       }
     }
-  }
-
-  void _deleteNote(Note note) {
-    if (_isNewNote) {
-      return;
-    }
-
-    var stateContainer = context.read<GitJournalRepo>();
-    stateContainer.removeNote(note);
   }
 
   bool _noteModified(Note note) {
@@ -451,7 +417,8 @@ class NoteEditorState extends State<NoteEditor>
     }
   }
 
-  void _moveNoteToFolderSelected(Note note) async {
+  @override
+  void moveNoteToFolderSelected(Note note) async {
     var destFolder = await showDialog<NotesFolderFS>(
       context: context,
       builder: (context) => FolderSelectionDialog(),
@@ -469,7 +436,7 @@ class NoteEditorState extends State<NoteEditor>
 
   @override
   Future<void> discardChanges(Note note) async {
-    if (!widget.isNewNote) {
+    if (!_isNewNote) {
       var stateContainer = context.read<GitJournalRepo>();
       stateContainer.discardChanges(note);
     }
@@ -477,7 +444,8 @@ class NoteEditorState extends State<NoteEditor>
     Navigator.pop(context);
   }
 
-  void _editTagsSelected(Note _note) async {
+  @override
+  void editTags(Note _note) async {
     final rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
     var inlineTagsView = InlineTagsProvider.of(context);
     var allTags = await rootFolder.getNoteTagsRecursively(inlineTagsView);

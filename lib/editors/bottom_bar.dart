@@ -109,7 +109,7 @@ class EditorBottomBar extends StatelessWidget {
               ),
               onPressed: () {
                 var note = editorState.getNote();
-                editor.moveNoteToFolderSelected(note);
+                editor.common.moveNoteToFolderSelected(note);
               },
             ),
             if (redoAllowed)
@@ -239,7 +239,7 @@ class BottomMenuSheet extends StatelessWidget {
                   var note = editorState.getNote();
                   Navigator.of(context).pop();
 
-                  editor.editTagsSelected(note);
+                  editor.common.editTags(note);
                 },
               ),
             ),
@@ -250,7 +250,7 @@ class BottomMenuSheet extends StatelessWidget {
               var note = editorState.getNote();
               Navigator.of(context).pop();
 
-              editor.renameNoteSelected(note);
+              editor.common.renameNote(note);
             },
           ),
           ProOverlay(
