@@ -91,6 +91,9 @@ class GitHostSetupAutoConfigurePageState
         } on Exception catch (e, stacktrace) {
           _handleGitHostException(e, stacktrace);
           return;
+        } on Error catch (e, stacktrace) {
+          _handleGitHostException(Exception(e.toString()), stacktrace);
+          return;
         }
         Log.i('Got User Info: $userInfo');
         widget.onDone(gitHost, userInfo);
