@@ -14,6 +14,7 @@ import 'package:http/http.dart' as http;
 import 'package:universal_io/io.dart' show HttpHeaders;
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'githost.dart';
 
@@ -305,15 +306,42 @@ class GitHub implements GitHost {
       return Result.fail(ex);
     }
 
-    Map<String, dynamic>? map = jsonDecode(response.body);
-    if (map == null || map.isEmpty) {
-      Log.d("Github getUserInfo: jsonDecode Failed " +
-          response.statusCode.toString() +
-          ": " +
-          response.body);
+    Map<String, dynamic>? map;
+    try {
+      map = jsonDecode(response.body);
+      if (map == null || map.isEmpty) {
+        Log.d("Github getUserInfo: jsonDecode Failed " +
+            response.statusCode.toString() +
+            ": " +
+            response.body);
 
-      var ex = GitHostException.JsonDecodingFail;
-      return Result.fail(ex);
+        var ex = GitHostException.JsonDecodingFail;
+        return Result.fail(ex);
+      }
+    } on Exception catch (ex, st) {
+      Log.e("GitHub user Info", ex: ex, stacktrace: st);
+      logException(ex, st);
+      return Result.fail(ex, st);
+    }
+
+    if (!map.containsKey('name')) {
+      return Result.fail(Exception('GitHub UserInfo missing name'));
+    }
+    if (!map.containsKey('email')) {
+      return Result.fail(Exception('GitHub UserInfo missing email'));
+    }
+    if (!map.containsKey('login')) {
+      return Result.fail(Exception('GitHub UserInfo missing login'));
+    }
+
+    if (map['name'] is! String) {
+      return Result.fail(Exception('GitHub UserInfo "name is not String"'));
+    }
+    if (map['email'] is! String) {
+      return Result.fail(Exception('GitHub UserInfo "email is not String"'));
+    }
+    if (map['login'] is! String) {
+      return Result.fail(Exception('GitHub UserInfo "login is not String"'));
     }
 
     return Result(UserInfo(
