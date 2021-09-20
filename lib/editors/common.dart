@@ -21,7 +21,12 @@ abstract class Editor {
   NoteCallback get renameNoteSelected;
   NoteCallback get editTagsSelected;
   NoteCallback get moveNoteToFolderSelected;
-  NoteCallback get discardChangesSelected;
+
+  EditorCommon get common;
+}
+
+abstract class EditorCommon {
+  void discardChanges(Note note);
 }
 
 abstract class EditorState with ChangeNotifier {

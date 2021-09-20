@@ -215,7 +215,7 @@ class BottomMenuSheet extends StatelessWidget {
               var note = editorState.getNote();
               Navigator.of(context).pop();
 
-              editor.discardChangesSelected(note);
+              editor.common.discardChanges(note);
             },
             enabled: editorState.noteModified,
           ),

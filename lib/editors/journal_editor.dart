@@ -34,12 +34,13 @@ class JournalEditor extends StatefulWidget implements Editor {
   final NoteCallback editTagsSelected;
   @override
   final NoteCallback moveNoteToFolderSelected;
-  @override
-  final NoteCallback discardChangesSelected;
 
   final bool editMode;
   final String? highlightString;
   final ThemeData theme;
+
+  @override
+  final EditorCommon common;
 
   JournalEditor({
     Key? key,
@@ -51,10 +52,10 @@ class JournalEditor extends StatefulWidget implements Editor {
     required this.renameNoteSelected,
     required this.editTagsSelected,
     required this.moveNoteToFolderSelected,
-    required this.discardChangesSelected,
     required this.editMode,
     required this.highlightString,
     required this.theme,
+    required this.common,
   }) : super(key: key);
 
   @override

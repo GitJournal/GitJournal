@@ -19,6 +19,7 @@ import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/views/inline_tags_view.dart';
 import 'package:gitjournal/editors/checklist_editor.dart';
+import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/editors/journal_editor.dart';
 import 'package:gitjournal/editors/markdown_editor.dart';
@@ -91,9 +92,13 @@ class NoteEditor extends StatefulWidget {
       return NoteEditorState.fromNote(note);
     }
   }
+
+  bool get isNewNote => note == null;
 }
 
-class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
+class NoteEditorState extends State<NoteEditor>
+    with WidgetsBindingObserver
+    implements EditorCommon {
   Note? note;
   EditorType editorType = EditorType.Markdown;
   MdYamlDoc originalNoteData = MdYamlDoc();
@@ -229,10 +234,10 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
           renameNoteSelected: _renameNoteSelected,
           editTagsSelected: _editTagsSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
-          discardChangesSelected: _discardChangesSelected,
           editMode: widget.editMode,
           highlightString: widget.highlightString,
           theme: Theme.of(context),
+          common: this,
         );
       case EditorType.Raw:
         return RawEditor(
@@ -245,10 +250,10 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
           renameNoteSelected: _renameNoteSelected,
           editTagsSelected: _editTagsSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
-          discardChangesSelected: _discardChangesSelected,
           editMode: widget.editMode,
           highlightString: widget.highlightString,
           theme: Theme.of(context),
+          common: this,
         );
       case EditorType.Checklist:
         return ChecklistEditor(
@@ -261,10 +266,10 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
           renameNoteSelected: _renameNoteSelected,
           editTagsSelected: _editTagsSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
-          discardChangesSelected: _discardChangesSelected,
           editMode: widget.editMode,
           highlightString: widget.highlightString,
           theme: Theme.of(context),
+          common: this,
         );
       case EditorType.Journal:
         return JournalEditor(
@@ -277,10 +282,10 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
           renameNoteSelected: _renameNoteSelected,
           editTagsSelected: _editTagsSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
-          discardChangesSelected: _discardChangesSelected,
           editMode: widget.editMode,
           highlightString: widget.highlightString,
           theme: Theme.of(context),
+          common: this,
         );
       case EditorType.Org:
         return OrgEditor(
@@ -293,10 +298,10 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
           renameNoteSelected: _renameNoteSelected,
           editTagsSelected: _editTagsSelected,
           moveNoteToFolderSelected: _moveNoteToFolderSelected,
-          discardChangesSelected: _discardChangesSelected,
           editMode: widget.editMode,
           highlightString: widget.highlightString,
           theme: Theme.of(context),
+          common: this,
         );
     }
   }
@@ -462,9 +467,12 @@ class NoteEditorState extends State<NoteEditor> with WidgetsBindingObserver {
     }
   }
 
-  void _discardChangesSelected(Note note) async {
-    var stateContainer = context.read<GitJournalRepo>();
-    stateContainer.discardChanges(note);
+  @override
+  Future<void> discardChanges(Note note) async {
+    if (!widget.isNewNote) {
+      var stateContainer = context.read<GitJournalRepo>();
+      stateContainer.discardChanges(note);
+    }
 
     Navigator.pop(context);
   }

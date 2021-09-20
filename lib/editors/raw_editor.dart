@@ -41,8 +41,9 @@ class RawEditor extends StatefulWidget implements Editor {
   final NoteCallback editTagsSelected;
   @override
   final NoteCallback moveNoteToFolderSelected;
+
   @override
-  final NoteCallback discardChangesSelected;
+  final EditorCommon common;
 
   final bool editMode;
   final String? highlightString;
@@ -58,10 +59,10 @@ class RawEditor extends StatefulWidget implements Editor {
     required this.renameNoteSelected,
     required this.editTagsSelected,
     required this.moveNoteToFolderSelected,
-    required this.discardChangesSelected,
     required this.editMode,
     required this.highlightString,
     required this.theme,
+    required this.common,
   }) : super(key: key);
 
   @override
