@@ -255,6 +255,7 @@ editors:
     addImage: Add Image from Gallery
     editFileName: Edit File Name
     tags: Edit Tags
+    find: Find in note
     zen:
       enable: Enable Zen Mode
       disable: Disable Zen Mode

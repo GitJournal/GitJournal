@@ -16,6 +16,8 @@ class Features {
       Platform.isLinux ||
       Platform.isMacOS;
 
+  static bool findInNote = false;
+
   static final all = <Feature>[
     Feature.basicSearch,
     Feature.darkMode,

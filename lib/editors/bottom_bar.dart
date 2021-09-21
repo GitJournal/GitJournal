@@ -266,6 +266,17 @@ class BottomMenuSheet extends StatelessWidget {
               },
             ),
           ),
+          if (Features.findInNote)
+            ListTile(
+              leading: const Icon(Icons.search),
+              title: Text(tr(LocaleKeys.editors_common_find)),
+              onTap: () {
+                var note = editorState.getNote();
+                Navigator.of(context).pop();
+
+                editor.common.renameNote(note);
+              },
+            ),
         ],
       ),
     );

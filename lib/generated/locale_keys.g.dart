@@ -380,6 +380,7 @@ abstract class LocaleKeys {
   static const editors_common_addImage = 'editors.common.addImage';
   static const editors_common_editFileName = 'editors.common.editFileName';
   static const editors_common_tags = 'editors.common.tags';
+  static const editors_common_find = 'editors.common.find';
   static const editors_common_zen_enable = 'editors.common.zen.enable';
   static const editors_common_zen_disable = 'editors.common.zen.disable';
   static const editors_common_zen = 'editors.common.zen';

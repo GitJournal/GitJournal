@@ -118,3 +118,50 @@ class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 }
+
+// WIP
+class EditorAppSearchBar extends StatelessWidget
+    implements PreferredSizeWidget {
+  final Editor editor;
+  final EditorState editorState;
+  final IconButton? extraButton;
+  final Func0<void> onEditingModeChange;
+
+  EditorAppSearchBar({
+    Key? key,
+    required this.editor,
+    required this.editorState,
+    required this.onEditingModeChange,
+    this.extraButton,
+  })  : preferredSize = const Size.fromHeight(kToolbarHeight * 2),
+        super(key: key);
+
+  @override
+  final Size preferredSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      leading: IconButton(
+        icon: const Icon(Icons.close),
+        onPressed: () {
+          //editor.common.exitEditorSelected(editorState.getNote());
+        },
+      ),
+      actions: <Widget>[
+        if (extraButton != null) extraButton!,
+        IconButton(
+          icon: const Icon(Icons.navigate_before),
+          onPressed: onEditingModeChange,
+        ),
+        IconButton(
+          icon: const Icon(Icons.navigate_next),
+          onPressed: () {
+            // var note = editorState.getNote();
+            // editor.common.noteEditorChooserSelected(note);
+          },
+        ),
+      ],
+    );
+  }
+}
