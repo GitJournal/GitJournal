@@ -40,7 +40,7 @@ class FolderListView extends StatefulWidget {
 }
 
 class _FolderListViewState extends State<FolderListView> {
-  final _listKey = GlobalKey<AnimatedListState>();
+  final _listKey = GlobalKey<SliverAnimatedListState>();
   var deletedViaDismissed = <String>[];
 
   @override
@@ -78,6 +78,7 @@ class _FolderListViewState extends State<FolderListView> {
   }
 
   void _noteAdded(int index, Note _) {
+    assert(_listKey.currentState != null);
     if (_listKey.currentState == null) {
       return;
     }
@@ -85,6 +86,7 @@ class _FolderListViewState extends State<FolderListView> {
   }
 
   void _noteRemoved(int index, Note note) {
+    assert(_listKey.currentState != null);
     if (_listKey.currentState == null) {
       return;
     }
