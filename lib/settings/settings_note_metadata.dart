@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
@@ -21,6 +20,7 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/features.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_widgets.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';

@@ -15,6 +15,7 @@ import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/exceptions.dart';
 import 'package:git_bindings/git_bindings.dart';
 import 'package:path/path.dart' as p;
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:time/time.dart';
@@ -100,6 +101,13 @@ class GitJournalRepo with ChangeNotifier {
     Log.i("FolderConfig", props: folderConfig.toLoggableMap());
     Log.i("GitConfig", props: gitConfig.toLoggableMap());
     Log.i("Settings", props: settings.toLoggableMap());
+
+    Sentry.configureScope((scope) {
+      scope.setContexts('StorageConfig', storageConfig.toLoggableMap());
+      scope.setContexts('FolderConfig', folderConfig.toLoggableMap());
+      scope.setContexts('GitConfig', gitConfig.toLoggableMap());
+      scope.setContexts('Settings', settings.toLoggableMap());
+    });
 
     var repoPath = await storageConfig.buildRepoPath(gitBaseDir);
     Log.i("Loading Repo at path $repoPath");
