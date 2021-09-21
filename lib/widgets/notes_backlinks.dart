@@ -26,7 +26,7 @@ class NoteBacklinkRenderer extends StatefulWidget {
   final NotesFolder parentFolder;
   final NoteLinksView linksView;
 
-  NoteBacklinkRenderer({
+  const NoteBacklinkRenderer({
     required this.note,
     required this.rootFolder,
     required this.parentFolder,
@@ -48,7 +48,7 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
   }
 
   Future<void> _initStateAsync() async {
-    var predicate = (Note n) async {
+    Future<bool> predicate(Note n) async {
       // Log.d("NoteBacklinkRenderer Predicate", props: {"filePath": n.filePath});
 
       var links = await widget.linksView.fetchLinks(n);
@@ -66,7 +66,7 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
 
       // Log.d("NoteBacklinkRenderer Predicate ${matchedLink != null}");
       return matchedLink != null;
-    };
+    }
 
     var l = await widget.rootFolder.matchNotes(predicate);
     if (!mounted) return;
@@ -124,7 +124,7 @@ class NoteSnippet extends StatelessWidget {
   final Note parentNote;
   final void Function() onTap;
 
-  NoteSnippet({
+  const NoteSnippet({
     required this.note,
     required this.parentNote,
     required this.onTap,
@@ -148,7 +148,7 @@ class NoteSnippet extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: <Widget>[
-              Text('$title', style: textTheme.bodyText1),
+              Text(title, style: textTheme.bodyText1),
               const SizedBox(height: 8.0),
               _buildSummary(context),
             ],

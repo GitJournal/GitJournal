@@ -275,6 +275,8 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
 }
 
 class FormBackButton extends StatelessWidget {
+  const FormBackButton({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -284,11 +286,9 @@ class FormBackButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
-          children: <Widget>[
-            Container(
-              child: const Icon(Icons.keyboard_arrow_left, color: Colors.black),
-            ),
-            const Text(
+          children: const <Widget>[
+            Icon(Icons.keyboard_arrow_left, color: Colors.black),
+            Text(
               'Back',
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
             )

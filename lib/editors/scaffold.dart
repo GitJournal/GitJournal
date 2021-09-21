@@ -35,7 +35,7 @@ class EditorScaffold extends StatefulWidget {
 
   final Widget? extraBottomWidget;
 
-  EditorScaffold({
+  const EditorScaffold({
     required this.editor,
     required this.editorState,
     required this.noteModified,
@@ -196,7 +196,8 @@ class _AnimatedOpacityIgnorePointer extends StatelessWidget {
   final bool visible;
   final Widget child;
 
-  _AnimatedOpacityIgnorePointer({required this.visible, required this.child});
+  const _AnimatedOpacityIgnorePointer(
+      {required this.visible, required this.child});
 
   @override
   Widget build(BuildContext context) {

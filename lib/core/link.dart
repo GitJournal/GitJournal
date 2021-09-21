@@ -156,7 +156,7 @@ class LinkExtractor implements md.NodeVisitor {
 
 /// Parse [[term]]
 class WikiLinkSyntax extends md.InlineSyntax {
-  static final String _pattern = r'\[\[([^\[\]]+)\]\]';
+  static const String _pattern = r'\[\[([^\[\]]+)\]\]';
 
   // In Obsidian style, the link is like [[fileToLinkTo|display text]]
   final bool obsidianStyle;

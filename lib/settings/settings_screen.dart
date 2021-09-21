@@ -229,7 +229,7 @@ class SettingsListState extends State<SettingsList> {
           subtitle: Text(tr(LocaleKeys.settings_tags_subtitle)),
           onTap: () {
             var route = MaterialPageRoute(
-              builder: (context) => SettingsTagsScreen(),
+              builder: (context) => const SettingsTagsScreen(),
               settings: const RouteSettings(name: '/settings/tags'),
             );
             Navigator.of(context).push(route);
@@ -359,7 +359,7 @@ class SettingsListState extends State<SettingsList> {
         title: Text(tr(LocaleKeys.feature_timeline_title)),
         onTap: () {
           var route = MaterialPageRoute(
-            builder: (context) => FeatureTimelineScreen(),
+            builder: (context) => const FeatureTimelineScreen(),
             settings: const RouteSettings(name: '/featureTimeline'),
           );
           Navigator.of(context).push(route);
@@ -389,13 +389,13 @@ class SettingsListState extends State<SettingsList> {
           );
         },
       ),
-      VersionNumberTile(),
+      const VersionNumberTile(),
       ListTile(
         title: Text(tr(LocaleKeys.settings_debug_title)),
         subtitle: Text(tr(LocaleKeys.settings_debug_subtitle)),
         onTap: () {
           var route = MaterialPageRoute(
-            builder: (context) => DebugScreen(),
+            builder: (context) => const DebugScreen(),
             settings: const RouteSettings(name: '/settings/debug'),
           );
           Navigator.of(context).push(route);
@@ -430,7 +430,7 @@ class SettingsListState extends State<SettingsList> {
 
 class SettingsHeader extends StatelessWidget {
   final String text;
-  SettingsHeader(this.text);
+  const SettingsHeader(this.text);
 
   @override
   Widget build(BuildContext context) {
@@ -448,6 +448,8 @@ class SettingsHeader extends StatelessWidget {
 }
 
 class VersionNumberTile extends StatefulWidget {
+  const VersionNumberTile({Key? key}) : super(key: key);
+
   @override
   VersionNumberTileState createState() {
     return VersionNumberTileState();

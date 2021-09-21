@@ -73,19 +73,20 @@ class SettingsDisplayImagesScreenState
               activeColor: theme.colorScheme.secondary,
               inactiveColor: theme.disabledColor,
             )),
-            Container(
-                width: 40,
-                child: settings.maxImageZoom == double.infinity
-                    ? Icon(
-                        Icons.all_inclusive,
-                        color: theme.colorScheme.secondary,
-                      )
-                    : Text(
-                        NumberFormat("##.0").format(settings.maxImageZoom),
-                        style: theme.textTheme.subtitle2!
-                            .copyWith(color: theme.colorScheme.secondary),
-                        textAlign: TextAlign.center,
-                      ))
+            SizedBox(
+              width: 40,
+              child: settings.maxImageZoom == double.infinity
+                  ? Icon(
+                      Icons.all_inclusive,
+                      color: theme.colorScheme.secondary,
+                    )
+                  : Text(
+                      NumberFormat("##.0").format(settings.maxImageZoom),
+                      style: theme.textTheme.subtitle2!
+                          .copyWith(color: theme.colorScheme.secondary),
+                      textAlign: TextAlign.center,
+                    ),
+            )
           ])),
       SwitchListTile(
         title: Text(

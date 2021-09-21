@@ -11,7 +11,7 @@ import 'package:easy_localization/easy_localization.dart';
 class GitHostSetupErrorPage extends StatelessWidget {
   final String errorMessage;
 
-  GitHostSetupErrorPage(this.errorMessage);
+  const GitHostSetupErrorPage(this.errorMessage);
 
   @override
   Widget build(BuildContext context) {

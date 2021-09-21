@@ -12,10 +12,11 @@ class EditorScrollView extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry padding;
 
-  EditorScrollView({
+  const EditorScrollView({
+    Key? key,
     required this.child,
     this.padding = const EdgeInsets.all(16.0),
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

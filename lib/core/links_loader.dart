@@ -17,10 +17,10 @@ import 'package:gitjournal/core/link.dart';
 
 class LinksLoader {
   Isolate? _isolate;
-  ReceivePort _receivePort = ReceivePort();
+  final _receivePort = ReceivePort();
   SendPort? _sendPort;
 
-  var _loadingLock = Lock();
+  final _loadingLock = Lock();
 
   Future<void> _initIsolate() async {
     if (_isolate != null && _sendPort != null) return;

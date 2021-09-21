@@ -27,6 +27,8 @@ import 'package:gitjournal/widgets/future_builder_with_progress.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class TagListingScreen extends StatelessWidget {
+  const TagListingScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var rootFolder = Provider.of<NotesFolderFS>(context);

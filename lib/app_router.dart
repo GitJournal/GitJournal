@@ -131,9 +131,9 @@ class AppRouter {
       case AppRoute.AllFolders:
         return FolderListingScreen();
       case AppRoute.AllTags:
-        return TagListingScreen();
+        return const TagListingScreen();
       case AppRoute.Graph:
-        return GraphViewScreen();
+        return const GraphViewScreen();
       case AppRoute.Settings:
         return SettingsScreen();
       case AppRoute.Login:
@@ -147,7 +147,7 @@ class AppRouter {
           onCompletedFunction: repository.completeGitHostSetup,
         );
       case AppRoute.OnBoarding:
-        return OnBoardingScreen();
+        return const OnBoardingScreen();
       case AppRoute.Purchase:
         return PurchaseScreen();
       case AppRoute.PurchaseThank:

@@ -12,7 +12,7 @@ import 'package:gitjournal/markdown/markdown_latex.dart';
 void main() {
   test('Should parse both', () async {
     var body = """# Hi
-\\[ x = {-b \pm \sqrt{b^2-4ac} \over 2a} \\]""";
+\\[ x = {-b pm sqrt{b^2-4ac} over 2a} \\]""";
 
     var lines = body.split('\n');
 

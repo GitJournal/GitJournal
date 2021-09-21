@@ -30,11 +30,11 @@ void main() {
 
     List<dynamic> list = jsonDecode(jsonString);
     var repos = <GitHostRepo>[];
-    list.forEach((dynamic d) {
+    for (var d in list) {
       var map = Map<String, dynamic>.from(d);
       var repo = GitHub.repoFromJson(map);
       repos.add(repo);
-    });
+    }
 
     expect(repos.length, 2);
   });

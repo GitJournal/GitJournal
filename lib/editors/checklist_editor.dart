@@ -32,7 +32,7 @@ class ChecklistEditor extends StatefulWidget implements Editor {
   final String? highlightString;
   final ThemeData theme;
 
-  ChecklistEditor({
+  const ChecklistEditor({
     Key? key,
     required this.note,
     required this.noteModified,
@@ -328,7 +328,7 @@ class ChecklistItemTile extends StatefulWidget {
   final String? highlightString;
   final ThemeData theme;
 
-  ChecklistItemTile({
+  const ChecklistItemTile({
     Key? key,
     required this.item,
     required this.statusChanged,
@@ -404,10 +404,10 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
       dense: true,
       leading: Row(
         children: <Widget>[
-          Container(
+          const SizedBox(
             height: 24.0,
             width: 24.0,
-            child: const Icon(Icons.drag_handle),
+            child: Icon(Icons.drag_handle),
           ),
           const SizedBox(width: 8.0),
           SizedBox(
@@ -434,7 +434,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
 class AddItemButton extends StatelessWidget {
   final void Function() onPressed;
 
-  AddItemButton({Key? key, required this.onPressed}) : super(key: key);
+  const AddItemButton({Key? key, required this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -444,7 +444,7 @@ class AddItemButton extends StatelessWidget {
       dense: true,
       leading: Row(
         children: <Widget>[
-          Container(height: 24.0, width: 24.0),
+          const SizedBox(height: 24.0, width: 24.0),
           const SizedBox(width: 8.0),
           Container(
             padding: const EdgeInsets.all(0.0),

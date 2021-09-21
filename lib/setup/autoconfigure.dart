@@ -25,10 +25,11 @@ class GitHostSetupAutoConfigurePage extends StatefulWidget {
   final GitHostType gitHostType;
   final Func2<GitHost?, UserInfo?, void> onDone;
 
-  GitHostSetupAutoConfigurePage({
+  const GitHostSetupAutoConfigurePage({
     required this.gitHostType,
     required this.onDone,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   GitHostSetupAutoConfigurePageState createState() {

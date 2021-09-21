@@ -41,7 +41,7 @@ class NoteLinksView extends NotesMaterializedView<_LinksList> {
 class NoteLinksProvider extends SingleChildStatelessWidget {
   final String repoPath;
 
-  NoteLinksProvider({
+  const NoteLinksProvider({
     Key? key,
     Widget? child,
     required this.repoPath,

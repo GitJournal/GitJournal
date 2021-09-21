@@ -19,7 +19,7 @@ class FolderSelectionDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final notesFolder = Provider.of<NotesFolderFS>(context);
 
-    var body = Container(
+    var body = SizedBox(
       width: double.maxFinite,
       child: FolderTreeView(
         rootFolder: notesFolder,
@@ -36,13 +36,13 @@ class FolderSelectionDialog extends StatelessWidget {
   }
 }
 
-typedef void FolderSelectedCallback(NotesFolderFS folder);
+typedef FolderSelectedCallback = void Function(NotesFolderFS folder);
 
 class FolderTreeView extends StatelessWidget {
   final NotesFolderFS rootFolder;
   final FolderSelectedCallback onFolderEntered;
 
-  FolderTreeView({
+  const FolderTreeView({
     Key? key,
     required this.rootFolder,
     required this.onFolderEntered,
@@ -65,7 +65,7 @@ class FolderMiniTile extends StatefulWidget {
   final NotesFolderFS folder;
   final FolderSelectedCallback onTap;
 
-  FolderMiniTile({
+  const FolderMiniTile({
     required this.folder,
     required this.onTap,
   });
@@ -135,12 +135,12 @@ class FolderMiniTileState extends State<FolderMiniTile> {
     if (!_isExpanded) return Container();
 
     var children = <FolderMiniTile>[];
-    widget.folder.subFolders.forEach((folder) {
+    for (var folder in widget.folder.subFolders) {
       children.add(FolderMiniTile(
         folder: folder as NotesFolderFS,
         onTap: widget.onTap,
       ));
-    });
+    }
 
     return Container(
       margin: const EdgeInsets.only(left: 8.0),

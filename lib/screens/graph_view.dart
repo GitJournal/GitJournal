@@ -13,6 +13,8 @@ import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/views/note_links_view.dart';
 
 class GraphViewScreen extends StatefulWidget {
+  const GraphViewScreen({Key? key}) : super(key: key);
+
   @override
   _GraphViewScreenState createState() => _GraphViewScreenState();
 }
@@ -30,7 +32,7 @@ class _GraphViewScreenState extends State<GraphViewScreen> {
         graph = Graph.fromFolder(rootFolder, linksProvider);
         graph!.addListener(_setState);
       });
-      return Container(width: 2500, height: 2500);
+      return const SizedBox(width: 2500, height: 2500);
     }
 
     return SafeArea(child: graph != null ? GraphView(graph!) : Container());
@@ -56,7 +58,7 @@ class _GraphViewScreenState extends State<GraphViewScreen> {
 class GraphView extends StatefulWidget {
   final Graph graph;
 
-  GraphView(this.graph);
+  const GraphView(this.graph);
 
   @override
   _GraphViewState createState() => _GraphViewState();
@@ -195,7 +197,7 @@ class NodeWidget extends StatelessWidget {
   final Node node;
   final double size;
 
-  NodeWidget(this.node, this.size);
+  const NodeWidget(this.node, this.size);
 
   @override
   Widget build(BuildContext context) {

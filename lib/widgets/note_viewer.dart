@@ -105,7 +105,7 @@ class NoteViewer extends StatelessWidget {
 
 class NoteTitleHeader extends StatelessWidget {
   final String header;
-  NoteTitleHeader(this.header);
+  const NoteTitleHeader(this.header);
 
   @override
   Widget build(BuildContext context) {

@@ -67,7 +67,7 @@ class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool allowEdits;
   final Func0<void> onEditingModeChange;
 
-  EditorAppBar({
+  const EditorAppBar({
     Key? key,
     required this.editor,
     required this.editorState,
@@ -127,7 +127,7 @@ class EditorAppSearchBar extends StatelessWidget
   final IconButton? extraButton;
   final Func0<void> onEditingModeChange;
 
-  EditorAppSearchBar({
+  const EditorAppSearchBar({
     Key? key,
     required this.editor,
     required this.editorState,

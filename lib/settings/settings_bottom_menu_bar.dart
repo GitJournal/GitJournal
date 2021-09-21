@@ -71,7 +71,7 @@ class _BottomMenuBarSettingsState extends State<BottomMenuBarSettings> {
       child: Container(
         padding: const EdgeInsets.all(2.0),
         color: theme.colorScheme.secondary.withAlpha(256 ~/ 10),
-        child: Container(
+        child: SizedBox(
           width: mq.size.width,
           height: mq.size.height,
           child: IgnorePointer(child: HomeScreen()),

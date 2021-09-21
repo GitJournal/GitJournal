@@ -16,7 +16,7 @@ import 'package:gitjournal/editors/common_types.dart';
 class NewNoteNavBar extends StatelessWidget {
   final Func1<EditorType, void> onPressed;
 
-  NewNoteNavBar({required this.onPressed});
+  const NewNoteNavBar({required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

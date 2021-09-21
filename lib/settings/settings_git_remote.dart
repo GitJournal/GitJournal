@@ -254,7 +254,7 @@ class Button extends StatelessWidget {
   final String text;
   final void Function() onPressed;
 
-  Button({required this.text, required this.onPressed});
+  const Button({required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -280,7 +280,7 @@ class RedButton extends StatelessWidget {
   final String text;
   final void Function() onPressed;
 
-  RedButton({required this.text, required this.onPressed});
+  const RedButton({required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -304,7 +304,7 @@ class RedButton extends StatelessWidget {
 class IrreversibleActionConfirmationDialog extends StatelessWidget {
   final String title;
 
-  IrreversibleActionConfirmationDialog(this.title);
+  const IrreversibleActionConfirmationDialog(this.title);
 
   @override
   Widget build(BuildContext context) {

@@ -11,7 +11,7 @@ import 'package:gitjournal/core/worker_queue.dart';
 void main() {
   group('WorkerQueue', () {
     test('Simple', () async {
-      var func = (int input) => input + 5;
+      int func(int input) => input + 5;
       var worker = WorkerQueue(func);
 
       expect(await worker.call(2), 7);

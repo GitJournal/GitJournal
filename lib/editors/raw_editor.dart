@@ -36,7 +36,7 @@ class RawEditor extends StatefulWidget implements Editor {
   final String? highlightString;
   final ThemeData theme;
 
-  RawEditor({
+  const RawEditor({
     Key? key,
     required this.note,
     required this.noteModified,
@@ -48,29 +48,28 @@ class RawEditor extends StatefulWidget implements Editor {
 
   @override
   RawEditorState createState() {
-    return RawEditorState(note);
+    return RawEditorState();
   }
 }
 
 class RawEditorState extends State<RawEditor>
     with DisposableChangeNotifier
     implements EditorState {
-  Note note;
+  late Note _note;
   late bool _noteModified;
   late TextEditingController _textController;
   late UndoRedoStack _undoRedoStack;
 
   final serializer = MarkdownYAMLCodec();
 
-  RawEditorState(this.note);
-
   @override
   void initState() {
     super.initState();
+    _note = widget.note;
     _noteModified = widget.noteModified;
 
     _textController = buildController(
-      text: serializer.encode(note.data),
+      text: serializer.encode(_note.data),
       highlightText: widget.highlightString,
       theme: widget.theme,
     );
@@ -110,7 +109,7 @@ class RawEditorState extends State<RawEditor>
       editorState: this,
       noteModified: _noteModified,
       editMode: widget.editMode,
-      parentFolder: note.parent,
+      parentFolder: _note.parent,
       body: editor,
       onUndoSelected: _undo,
       onRedoSelected: _redo,
@@ -121,8 +120,8 @@ class RawEditorState extends State<RawEditor>
 
   @override
   Note getNote() {
-    note.data = serializer.decode(_textController.text);
-    return note;
+    _note.data = serializer.decode(_textController.text);
+    return _note;
   }
 
   void _noteTextChanged() {
@@ -177,7 +176,7 @@ class _NoteEditor extends StatefulWidget {
   final bool autofocus;
   final Function onChanged;
 
-  _NoteEditor({
+  const _NoteEditor({
     required this.textController,
     required this.autofocus,
     required this.onChanged,
@@ -231,8 +230,9 @@ class _NoteEditorState extends State<_NoteEditor> {
     }
 
     final rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
-    var inlineTagsView = InlineTagsProvider.of(context);
-    var futureBuilder = () async {
+    final inlineTagsView = InlineTagsProvider.of(context);
+
+    futureBuilder() async {
       var allTags = await rootFolder.getNoteTagsRecursively(inlineTagsView);
 
       Log.d("Building autocompleter with $allTags");
@@ -244,7 +244,7 @@ class _NoteEditorState extends State<_NoteEditor> {
         child: textField,
         tags: allTags.toList(),
       );
-    };
+    }
 
     return FutureBuilderWithProgress(future: futureBuilder());
   }

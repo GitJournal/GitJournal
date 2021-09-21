@@ -29,4 +29,4 @@ Widget page3() {
   );
 }
 
-Widget all() => OnBoardingScreen();
+Widget all() => const OnBoardingScreen();

@@ -20,7 +20,7 @@ class ImageCaption extends StatelessWidget {
   final String altText;
   final String tooltip;
   final bool overlay;
-  ImageCaption(this.altText, this.tooltip, this.overlay);
+  const ImageCaption(this.altText, this.tooltip, this.overlay);
 
   @override
   Widget build(BuildContext context) {

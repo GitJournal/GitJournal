@@ -66,7 +66,7 @@ class NoteEditor extends StatefulWidget {
         newNoteFileName = null,
         newNoteExtraProps = null;
 
-  NoteEditor.newNote(
+  const NoteEditor.newNote(
     this.notesFolder,
     this.parentFolderView,
     this.defaultEditorType, {

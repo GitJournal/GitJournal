@@ -196,7 +196,7 @@ class GitJournalRepo with ChangeNotifier {
       await _notesCache.buildCache(notesFolder);
 
       var changes = await _gitRepo.numChanges();
-      numChanges = changes != null ? changes : 0;
+      numChanges = changes ?? 0;
       notifyListeners();
     });
   }

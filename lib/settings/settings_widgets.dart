@@ -17,13 +17,14 @@ class ListPreference extends StatelessWidget {
   final Function onChange;
   final bool enabled;
 
-  ListPreference({
+  const ListPreference({
     required this.title,
     required this.currentOption,
     required this.options,
     required this.onChange,
     this.enabled = true,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

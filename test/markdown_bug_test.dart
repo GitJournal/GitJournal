@@ -9,7 +9,7 @@ import 'package:test/test.dart';
 
 /// Parse [[term]]
 class _WikiLinkSyntax extends md.InlineSyntax {
-  static final String _pattern = r'\[\[([^\[\]]+)\]\]';
+  static const String _pattern = r'\[\[([^\[\]]+)\]\]';
 
   _WikiLinkSyntax() : super(_pattern);
 
@@ -36,7 +36,7 @@ class _WikiLinkSyntax extends md.InlineSyntax {
 /// Parse [task list items](https://github.github.com/gfm/#task-list-items-extension-).
 class _TaskListSyntax extends md.InlineSyntax {
   // FIXME: Waiting for dart-lang/markdown#269 to land
-  static final String _pattern = r'^ *\[([ xX])\] +';
+  static const String _pattern = r'^ *\[([ xX])\] +';
 
   _TaskListSyntax() : super(_pattern);
 

@@ -20,7 +20,7 @@ class GridFolderView extends StatelessWidget {
 
   final String searchTerm;
 
-  GridFolderView({
+  const GridFolderView({
     required this.folder,
     required this.noteTapped,
     required this.noteLongPressed,

@@ -13,6 +13,8 @@ import 'package:gitjournal/core/notes_folder_config.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
 
 class SettingsTagsScreen extends StatefulWidget {
+  const SettingsTagsScreen({Key? key}) : super(key: key);
+
   @override
   SettingsTagsScreenState createState() => SettingsTagsScreenState();
 }

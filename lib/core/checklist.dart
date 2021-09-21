@@ -61,7 +61,7 @@ class Checklist {
     multiLine: false,
   );
 
-  Note _note;
+  final Note _note;
   List<ChecklistItem> items = [];
 
   late List<String> _lines;

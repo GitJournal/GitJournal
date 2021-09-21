@@ -30,7 +30,7 @@ class OrgEditor extends StatefulWidget implements Editor {
   final String? highlightString;
   final ThemeData theme;
 
-  OrgEditor({
+  const OrgEditor({
     Key? key,
     required this.note,
     required this.noteModified,
@@ -42,28 +42,27 @@ class OrgEditor extends StatefulWidget implements Editor {
 
   @override
   OrgEditorState createState() {
-    return OrgEditorState(note);
+    return OrgEditorState();
   }
 }
 
 class OrgEditorState extends State<OrgEditor>
     with DisposableChangeNotifier
     implements EditorState {
-  Note note;
+  late Note _note;
   late bool _noteModified;
   late TextEditingController _textController;
   late UndoRedoStack _undoRedoStack;
 
   final serializer = MarkdownYAMLCodec();
 
-  OrgEditorState(this.note);
-
   @override
   void initState() {
     super.initState();
+    _note = widget.note;
     _noteModified = widget.noteModified;
     _textController = buildController(
-      text: serializer.encode(note.data),
+      text: serializer.encode(_note.data),
       highlightText: widget.highlightString,
       theme: widget.theme,
     );
@@ -102,7 +101,7 @@ class OrgEditorState extends State<OrgEditor>
       editorState: this,
       noteModified: _noteModified,
       editMode: widget.editMode,
-      parentFolder: note.parent,
+      parentFolder: _note.parent,
       body: editor,
       onUndoSelected: _undo,
       onRedoSelected: _redo,
@@ -113,8 +112,8 @@ class OrgEditorState extends State<OrgEditor>
 
   @override
   Note getNote() {
-    note.data = serializer.decode(_textController.text);
-    return note;
+    _note.data = serializer.decode(_textController.text);
+    return _note;
   }
 
   void _noteTextChanged() {
@@ -169,7 +168,7 @@ class _NoteEditor extends StatelessWidget {
   final bool autofocus;
   final Function onChanged;
 
-  _NoteEditor({
+  const _NoteEditor({
     required this.textController,
     required this.autofocus,
     required this.onChanged,

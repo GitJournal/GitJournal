@@ -24,7 +24,7 @@ class CardView extends StatelessWidget {
 
   final String searchTerm;
 
-  CardView({
+  const CardView({
     required this.folder,
     required this.noteTapped,
     required this.noteLongPressed,

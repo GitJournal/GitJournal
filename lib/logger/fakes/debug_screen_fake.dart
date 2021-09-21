@@ -32,7 +32,7 @@ class _DebugScreenFakeState extends State<DebugScreenFake> {
 
   @override
   Widget build(BuildContext context) {
-    return DebugScreen();
+    return const DebugScreen();
   }
 }
 

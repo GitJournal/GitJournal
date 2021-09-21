@@ -17,7 +17,7 @@ import 'package:gitjournal/widgets/images/themable_image.dart';
 class ImageDetails extends StatefulWidget {
   final ThemableImage image;
   final String caption;
-  ImageDetails(this.image, this.caption);
+  const ImageDetails(this.image, this.caption);
 
   @override
   _ImageDetailsState createState() => _ImageDetailsState();

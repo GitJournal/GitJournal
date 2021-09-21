@@ -18,7 +18,7 @@ typedef NotesSummaryView = NotesMaterializedView<String>;
 class NoteSummaryProvider extends SingleChildStatelessWidget {
   final String repoPath;
 
-  NoteSummaryProvider({
+  const NoteSummaryProvider({
     Key? key,
     Widget? child,
     required this.repoPath,

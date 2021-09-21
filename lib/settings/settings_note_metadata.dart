@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
@@ -105,7 +106,7 @@ class _NoteMetadataSettingsScreenState
         ),
         ListPreference(
           title: tr("settings.noteMetaData.modified"),
-          options: [
+          options: const [
             "modified",
             "mod",
             "lastmodified",
@@ -123,7 +124,7 @@ class _NoteMetadataSettingsScreenState
         ),
         ListPreference(
           title: tr("settings.noteMetaData.created"),
-          options: [
+          options: const [
             "created",
             "date",
           ],
@@ -138,7 +139,7 @@ class _NoteMetadataSettingsScreenState
         ),
         ListPreference(
           title: tr("settings.noteMetaData.tags"),
-          options: [
+          options: const [
             "tags",
             "categories",
             "keywords",
@@ -197,7 +198,7 @@ class _NoteMetadataSettingsScreenState
 class NoteOutputExample extends StatelessWidget {
   final Note note;
 
-  NoteOutputExample(this.note);
+  const NoteOutputExample(this.note);
 
   @override
   Widget build(BuildContext context) {
@@ -222,7 +223,10 @@ class NoteOutputExample extends StatelessWidget {
             child: Text(noteStr, style: style),
           ),
           _HeaderText(note.fileName, Alignment.topRight),
-          _HeaderText("Output", Alignment.topLeft),
+          _HeaderText(
+            LocaleKeys.settings_noteMetaData_output.tr(),
+            Alignment.topLeft,
+          ),
         ],
       ),
     );
@@ -232,7 +236,7 @@ class NoteOutputExample extends StatelessWidget {
 class NoteInputExample extends StatelessWidget {
   final Note note;
 
-  NoteInputExample(this.note);
+  const NoteInputExample(this.note);
 
   @override
   Widget build(BuildContext context) {
@@ -263,7 +267,10 @@ class NoteInputExample extends StatelessWidget {
               ),
             ),
             _HeaderText(note.fileName, Alignment.topRight),
-            _HeaderText("Input", Alignment.topLeft),
+            _HeaderText(
+              LocaleKeys.settings_noteMetaData_input.tr(),
+              Alignment.topLeft,
+            ),
           ],
         ),
       ),
@@ -275,7 +282,7 @@ class _HeaderText extends StatelessWidget {
   final String text;
   final Alignment alignment;
 
-  _HeaderText(this.text, this.alignment);
+  const _HeaderText(this.text, this.alignment);
 
   @override
   Widget build(BuildContext context) {
@@ -296,7 +303,7 @@ class _HeaderText extends StatelessWidget {
 class _Tag extends StatelessWidget {
   final String text;
 
-  _Tag(this.text);
+  const _Tag(this.text);
 
   @override
   Widget build(BuildContext context) {
@@ -306,8 +313,8 @@ class _Tag extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
         color: theme.scaffoldBackgroundColor,
-        boxShadow: [
-          const BoxShadow(color: Colors.grey, spreadRadius: 1),
+        boxShadow: const [
+          BoxShadow(color: Colors.grey, spreadRadius: 1),
         ],
       ),
       padding: const EdgeInsets.all(8.0),
@@ -319,7 +326,7 @@ class _Tag extends StatelessWidget {
 class TagsWidget extends StatelessWidget {
   final Set<String> tags;
 
-  TagsWidget(this.tags);
+  const TagsWidget(this.tags);
 
   @override
   Widget build(BuildContext context) {
@@ -338,7 +345,7 @@ class CustomMetDataTile extends StatefulWidget {
   final String value;
   final Func1<String, void> onChange;
 
-  CustomMetDataTile({required this.value, required this.onChange});
+  const CustomMetDataTile({required this.value, required this.onChange});
 
   @override
   _CustomMetDataTileState createState() => _CustomMetDataTileState();

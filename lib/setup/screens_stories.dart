@@ -41,7 +41,7 @@ Widget autoConfigure() {
     padding: const EdgeInsets.all(16.0),
     child: GitHostSetupAutoConfigurePage(
       gitHostType: GitHostType.GitHub,
-      onDone: (host, userInfo) => null,
+      onDone: (host, userInfo) {},
     ),
   );
 }
@@ -51,15 +51,15 @@ Widget cloneUrl() {
     padding: const EdgeInsets.all(16.0),
     child: GitCloneUrlPage(
       initialValue: "foo?",
-      doneFunction: (val) => null,
+      doneFunction: (val) {},
     ),
   );
 }
 
 // FIXME: Create widgets for all the errors!
 Widget loadingError() {
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
+  return const Padding(
+    padding: EdgeInsets.all(16.0),
     child: GitHostSetupErrorPage(
       "This is an error message",
     ),
@@ -68,8 +68,8 @@ Widget loadingError() {
 
 // FIXME: Create widgets for all the loading screen messages!
 Widget loading() {
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
+  return const Padding(
+    padding: EdgeInsets.all(16.0),
     child: GitHostSetupLoadingPage(
       "Loading Message",
     ),

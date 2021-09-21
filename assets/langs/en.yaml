@@ -153,6 +153,8 @@ settings:
     customMetaData:
       title: Custom MetaData
       invalid: Invalid YAML
+    output: Output
+    input: Input
   privacy: Privacy Policy
   terms: Terms and Conditions
   experimental:

@@ -105,7 +105,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
           child: Wrap(
             children: [
-              RestorePurchaseButton(),
+              const RestorePurchaseButton(),
               OutlinedButton(
                 child: Text(
                   tr(LocaleKeys.feature_timeline_title),
@@ -113,7 +113,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                 ),
                 onPressed: () {
                   var route = MaterialPageRoute(
-                    builder: (context) => FeatureTimelineScreen(),
+                    builder: (context) => const FeatureTimelineScreen(),
                     settings: const RouteSettings(name: '/featureTimeline'),
                   );
                   Navigator.of(context).push(route);
@@ -219,13 +219,13 @@ class YearlyPurchaseWidget extends StatelessWidget {
 class PurchaseCard extends StatelessWidget {
   final Widget child;
 
-  PurchaseCard({required this.child});
+  const PurchaseCard({required this.child});
 
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
 
-    return Container(
+    return SizedBox(
       width: mediaQuery.size.width * 0.80,
       child: Card(
         shape: RoundedRectangleBorder(
@@ -243,7 +243,7 @@ class PurchaseCard extends StatelessWidget {
 class PurchaseCards extends StatelessWidget {
   final List<Widget> children;
 
-  PurchaseCards({required this.children});
+  const PurchaseCards({required this.children});
 
   @override
   Widget build(BuildContext context) {

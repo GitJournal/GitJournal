@@ -17,7 +17,7 @@ class NoteEditorSelector extends StatelessWidget {
   final EditorType currentEditor;
   final NoteFileFormat fileFormat;
 
-  NoteEditorSelector(this.currentEditor, this.fileFormat);
+  const NoteEditorSelector(this.currentEditor, this.fileFormat);
 
   @override
   Widget build(BuildContext context) {

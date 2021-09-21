@@ -134,7 +134,7 @@ class BlinkingIcon extends StatefulWidget {
   final Widget child;
   final int interval;
 
-  BlinkingIcon({required this.child, this.interval = 500, Key? key})
+  const BlinkingIcon({required this.child, this.interval = 500, Key? key})
       : super(key: key);
 
   @override
@@ -180,7 +180,7 @@ class _BlinkingIconState extends State<BlinkingIcon>
 class GitPendingChangesBadge extends StatelessWidget {
   final Widget child;
 
-  GitPendingChangesBadge({required this.child});
+  const GitPendingChangesBadge({required this.child});
 
   @override
   Widget build(BuildContext context) {

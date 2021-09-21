@@ -20,7 +20,7 @@ import 'package:markdown/markdown.dart' as md;
 // Alternatively, \begin{math} and \end{math} can be used.
 
 class MathJaxInlineSyntax extends md.InlineSyntax {
-  static final String _pattern = r'\\(.*\\)';
+  static const String _pattern = r'\\(.*\\)';
 
   MathJaxInlineSyntax() : super(_pattern);
 

@@ -35,7 +35,7 @@ class MarkdownEditor extends StatefulWidget implements Editor {
   final String? highlightString;
   final ThemeData theme;
 
-  MarkdownEditor({
+  const MarkdownEditor({
     Key? key,
     required this.note,
     required this.parentFolder,
@@ -48,14 +48,14 @@ class MarkdownEditor extends StatefulWidget implements Editor {
 
   @override
   MarkdownEditorState createState() {
-    return MarkdownEditorState(note);
+    return MarkdownEditorState();
   }
 }
 
 class MarkdownEditorState extends State<MarkdownEditor>
     with DisposableChangeNotifier
     implements EditorState {
-  Note note;
+  late Note _note;
   late TextEditingController _textController;
   late TextEditingController _titleTextController;
 
@@ -63,25 +63,24 @@ class MarkdownEditorState extends State<MarkdownEditor>
 
   late bool _noteModified;
 
-  MarkdownEditorState(this.note);
-
   @override
   void initState() {
     super.initState();
+    _note = widget.note;
     _noteModified = widget.noteModified;
 
     _textController = buildController(
-      text: note.body,
+      text: _note.body,
       highlightText: widget.highlightString,
       theme: widget.theme,
     );
     _titleTextController = buildController(
-      text: note.title,
+      text: _note.title,
       highlightText: widget.highlightString,
       theme: widget.theme,
     );
 
-    _heuristics = EditorHeuristics(text: note.body);
+    _heuristics = EditorHeuristics(text: _note.body);
   }
 
   @override
@@ -133,7 +132,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
       editorState: this,
       noteModified: _noteModified,
       editMode: widget.editMode,
-      parentFolder: note.parent,
+      parentFolder: _note.parent,
       body: editor,
       onUndoSelected: _undo,
       onRedoSelected: _redo,
@@ -144,7 +143,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
   }
 
   void _updateNote() {
-    note.apply(
+    _note.apply(
       body: _textController.text.trim(),
       title: _titleTextController.text.trim(),
       type: NoteType.Unknown,
@@ -154,7 +153,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
   @override
   Note getNote() {
     _updateNote();
-    return note;
+    return _note;
   }
 
   void _noteTextChanged() {

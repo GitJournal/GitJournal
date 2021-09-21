@@ -10,7 +10,7 @@ class NoteImage extends Equatable {
   final String url;
   final String alt;
 
-  NoteImage({required this.url, required this.alt});
+  const NoteImage({required this.url, required this.alt});
 
   @override
   List<Object> get props => [url, alt];

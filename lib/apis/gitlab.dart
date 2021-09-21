@@ -24,7 +24,7 @@ class GitLab implements GitHost {
   static const _clientID =
       "faf33c3716faf05bfb701b1b31e36c83a23c3ec2d7161f4ff00fba2275524d09";
 
-  var _platform = const MethodChannel('gitjournal.io/git');
+  final _platform = const MethodChannel('gitjournal.io/git');
   String? _accessCode = "";
   var _stateOAuth = "";
 
@@ -101,11 +101,11 @@ class GitLab implements GitHost {
 
     List<dynamic> list = jsonDecode(response.body);
     var repos = <GitHostRepo>[];
-    list.forEach((dynamic d) {
+    for (var d in list) {
       var map = Map<String, dynamic>.from(d);
       var repo = repoFromJson(map);
       repos.add(repo);
-    });
+    }
 
     // FIXME: Sort these based on some criteria
     return Result(repos);

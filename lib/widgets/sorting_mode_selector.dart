@@ -15,7 +15,7 @@ import 'package:gitjournal/settings/settings_screen.dart';
 class SortingModeSelector extends StatefulWidget {
   final SortingMode selectedMode;
 
-  SortingModeSelector(this.selectedMode);
+  const SortingModeSelector(this.selectedMode);
 
   @override
   _SortingModeSelectorState createState() => _SortingModeSelectorState();

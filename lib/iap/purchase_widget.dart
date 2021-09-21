@@ -28,13 +28,14 @@ class PurchaseButton extends StatelessWidget {
   final Func1<bool, void> purchaseStarted;
   final PurchaseCallback purchaseCompleted;
 
-  PurchaseButton(
+  const PurchaseButton(
     this.product,
     this.timePeriod, {
+    Key? key,
     required this.subscription,
     required this.purchaseStarted,
     required this.purchaseCompleted,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -104,12 +105,13 @@ class PurchaseWidget extends StatefulWidget {
   final String timePeriod;
   final bool isSubscription;
 
-  PurchaseWidget({
+  const PurchaseWidget({
+    Key? key,
     required this.skus,
     required this.defaultSku,
     this.timePeriod = "",
     required this.isSubscription,
-  });
+  }) : super(key: key);
 
   @override
   _PurchaseWidgetState createState() => _PurchaseWidgetState();
@@ -293,7 +295,7 @@ class _PurchaseSliderButton extends StatelessWidget {
   final Widget icon;
   final void Function() onPressed;
 
-  _PurchaseSliderButton({required this.icon, required this.onPressed});
+  const _PurchaseSliderButton({required this.icon, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -309,7 +311,7 @@ class _PurchaseSliderButton extends StatelessWidget {
 class PurchaseFailedDialog extends StatelessWidget {
   final String text;
 
-  PurchaseFailedDialog(this.text);
+  const PurchaseFailedDialog(this.text, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -327,6 +329,8 @@ class PurchaseFailedDialog extends StatelessWidget {
 }
 
 class RestorePurchaseButton extends StatefulWidget {
+  const RestorePurchaseButton({Key? key}) : super(key: key);
+
   @override
   _RestorePurchaseButtonState createState() => _RestorePurchaseButtonState();
 }

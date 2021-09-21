@@ -23,7 +23,7 @@ import 'package:gitjournal/settings/settings.dart';
 class AppDrawerHeader extends StatelessWidget {
   final Func0<void> repoListToggled;
 
-  AppDrawerHeader({
+  const AppDrawerHeader({
     required this.repoListToggled,
   });
 

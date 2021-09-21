@@ -39,20 +39,22 @@ class IgnoredFile {
 class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   final NotesFolderFS? _parent;
   String _folderPath;
-  var _lock = Lock();
+  final _lock = Lock();
 
-  List<Note> _notes = [];
-  List<NotesFolderFS> _folders = [];
+  final _notes = <Note>[];
+  final _folders = <NotesFolderFS>[];
   List<IgnoredFile> _ignoredFiles = [];
 
-  Map<String, dynamic> _entityMap = {};
-  NotesFolderConfig _config;
+  final _entityMap = <String, dynamic>{};
+  final NotesFolderConfig _config;
 
   NotesFolderFS(this._parent, this._folderPath, this._config);
 
   @override
   void dispose() {
-    _folders.forEach((f) => f.removeListener(_entityChanged));
+    for (var f in _folders) {
+      f.removeListener(_entityChanged);
+    }
 
     super.dispose();
   }
@@ -184,7 +186,8 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
     // Remove notes which have errors
     await _lock.synchronized(() {
-      var errFunc = (Note n) => n.loadState == NoteLoadState.Error;
+      errFunc(Note n) => n.loadState == NoteLoadState.Error;
+
       var hasBadNotes = _notes.any(errFunc);
       if (hasBadNotes) {
         while (true) {
@@ -292,7 +295,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     }
 
     Set<String> pathsRemoved = _entityMap.keys.toSet().difference(pathsFound);
-    pathsRemoved.forEach((path) {
+    for (var path in pathsRemoved) {
       var e = _entityMap[path];
       assert(e != null);
 
@@ -316,7 +319,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         _folders.removeAt(i);
         notifyFolderRemoved(i, folder);
       }
-    });
+    }
   }
 
   void add(Note note) {

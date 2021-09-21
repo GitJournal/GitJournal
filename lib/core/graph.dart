@@ -48,7 +48,7 @@ class Graph extends ChangeNotifier {
   List<Node> nodes = [];
   List<Edge> edges = [];
 
-  Map<String?, Set<int?>> _neighbours = {};
+  final Map<String?, Set<int?>> _neighbours = {};
   Map<String?, int>? _nodeIndexes;
 
   late GraphNodeLayout initLayouter;

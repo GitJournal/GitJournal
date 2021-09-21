@@ -26,7 +26,7 @@ class SshKey {
   });
 }
 
-final bool useDartKeyGen = false;
+const bool useDartKeyGen = false;
 
 Future<SshKey?> generateSSHKeys({required String comment}) async {
   if (Platform.isAndroid || Platform.isIOS) {

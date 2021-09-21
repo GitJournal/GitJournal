@@ -22,7 +22,7 @@ class GitHostSetupSshKeyKnownProviderPage extends StatelessWidget {
 
   final Func0<void> openDeployKeyPage;
 
-  GitHostSetupSshKeyKnownProviderPage({
+  const GitHostSetupSshKeyKnownProviderPage({
     required this.doneFunction,
     required this.regenerateFunction,
     required this.copyKeyFunction,
@@ -104,7 +104,7 @@ class GitHostSetupSshKeyUnknownProviderPage extends StatelessWidget {
   final Func1<BuildContext, void> copyKeyFunction;
   final String? publicKey;
 
-  GitHostSetupSshKeyUnknownProviderPage({
+  const GitHostSetupSshKeyUnknownProviderPage({
     required this.doneFunction,
     required this.regenerateFunction,
     required this.copyKeyFunction,
@@ -178,34 +178,32 @@ class GitHostSetupKeyChoicePage extends StatelessWidget {
   final Func0<void> onGenerateKeys;
   final Func0<void> onUserProvidedKeys;
 
-  GitHostSetupKeyChoicePage({
+  const GitHostSetupKeyChoicePage({
     required this.onGenerateKeys,
     required this.onUserProvidedKeys,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Text(
-            tr("setup.sshKeyChoice.title"),
-            style: Theme.of(context).textTheme.headline5,
-          ),
-          const SizedBox(height: 16.0),
-          GitHostSetupButton(
-            text: tr("setup.sshKeyChoice.generate"),
-            onPressed: onGenerateKeys,
-          ),
-          const SizedBox(height: 8.0),
-          GitHostSetupButton(
-            text: tr("setup.sshKeyChoice.custom"),
-            onPressed: onUserProvidedKeys,
-          ),
-        ],
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-      ),
+    return Column(
+      children: <Widget>[
+        Text(
+          tr("setup.sshKeyChoice.title"),
+          style: Theme.of(context).textTheme.headline5,
+        ),
+        const SizedBox(height: 16.0),
+        GitHostSetupButton(
+          text: tr("setup.sshKeyChoice.generate"),
+          onPressed: onGenerateKeys,
+        ),
+        const SizedBox(height: 8.0),
+        GitHostSetupButton(
+          text: tr("setup.sshKeyChoice.custom"),
+          onPressed: onUserProvidedKeys,
+        ),
+      ],
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
     );
   }
 }
@@ -215,7 +213,7 @@ class GitHostUserProvidedKeysPage extends StatefulWidget {
       doneFunction; // public, private, password
   final String saveText;
 
-  GitHostUserProvidedKeysPage({
+  const GitHostUserProvidedKeysPage({
     required this.doneFunction,
     this.saveText = "",
   });
@@ -259,68 +257,65 @@ class _GitHostUserProvidedKeysPageState
 
   @override
   Widget build(BuildContext context) {
-    var body = Container(
-      child: Column(
-        children: <Widget>[
-          Text(
-            tr(LocaleKeys.setup_sshKeyUserProvided_public),
-            style: Theme.of(context).textTheme.headline5,
+    var body = Column(
+      children: <Widget>[
+        Text(
+          tr(LocaleKeys.setup_sshKeyUserProvided_public),
+          style: Theme.of(context).textTheme.headline5,
+        ),
+        const SizedBox(height: 8.0),
+        PublicKeyEditor(_publicFormKey, _publicKeyController),
+        const SizedBox(height: 8.0),
+        Text(
+          tr(LocaleKeys.setup_sshKeyUserProvided_private),
+          style: Theme.of(context).textTheme.headline5,
+        ),
+        const SizedBox(height: 8.0),
+        PrivateKeyEditor(_privateFormKey, _privateKeyController),
+        const SizedBox(height: 8.0),
+        TextField(
+          controller: _passwordController,
+          maxLines: 1,
+          decoration: InputDecoration(
+            helperText: tr(LocaleKeys.setup_sshKeyUserProvided_password),
+            border: const OutlineInputBorder(),
+            isDense: true,
           ),
-          const SizedBox(height: 8.0),
-          PublicKeyEditor(_publicFormKey, _publicKeyController),
-          const SizedBox(height: 8.0),
-          Text(
-            tr(LocaleKeys.setup_sshKeyUserProvided_private),
-            style: Theme.of(context).textTheme.headline5,
-          ),
-          const SizedBox(height: 8.0),
-          PrivateKeyEditor(_privateFormKey, _privateKeyController),
-          const SizedBox(height: 8.0),
-          TextField(
-            controller: _passwordController,
-            maxLines: 1,
-            decoration: InputDecoration(
-              helperText: tr(LocaleKeys.setup_sshKeyUserProvided_password),
-              border: const OutlineInputBorder(),
-              isDense: true,
-            ),
-          ),
-          const SizedBox(height: 16.0),
-          GitHostSetupButton(
-            text: saveText,
-            onPressed: () {
-              if (!mounted) return;
+        ),
+        const SizedBox(height: 16.0),
+        GitHostSetupButton(
+          text: saveText,
+          onPressed: () {
+            if (!mounted) return;
 
-              var publicValid =
-                  _publicFormKey.currentState?.validate() ?? false;
-              var privateValid =
-                  _privateFormKey.currentState?.validate() ?? false;
+            var publicValid = _publicFormKey.currentState?.validate() ?? false;
+            var privateValid =
+                _privateFormKey.currentState?.validate() ?? false;
 
-              if (!publicValid || !privateValid) {
-                return;
-              }
+            if (!publicValid || !privateValid) {
+              return;
+            }
 
-              var publicKey = _publicKeyController.text.trim();
-              if (!publicKey.endsWith('\n')) {
-                publicKey += '\n';
-              }
+            var publicKey = _publicKeyController.text.trim();
+            if (!publicKey.endsWith('\n')) {
+              publicKey += '\n';
+            }
 
-              var privateKey = _privateKeyController.text.trim();
-              if (!privateKey.endsWith('\n')) {
-                privateKey += '\n';
-              }
+            var privateKey = _privateKeyController.text.trim();
+            if (!privateKey.endsWith('\n')) {
+              privateKey += '\n';
+            }
 
-              widget.doneFunction(
-                publicKey,
-                privateKey,
-                _passwordController.text,
-              );
-            },
-          ),
-        ],
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-      ),
+            widget.doneFunction(
+              publicKey,
+              privateKey,
+              _passwordController.text,
+            );
+          },
+        ),
+      ],
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
     );
 
     return SingleChildScrollView(
@@ -335,7 +330,7 @@ class _GitHostUserProvidedKeysPageState
 class PublicKeyWidget extends StatelessWidget {
   final String publicKey;
 
-  PublicKeyWidget(this.publicKey);
+  const PublicKeyWidget(this.publicKey);
   @override
   Widget build(BuildContext context) {
     return Container(

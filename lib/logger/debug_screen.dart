@@ -19,12 +19,14 @@ import 'package:gitjournal/settings/app_settings.dart';
 import 'package:gitjournal/utils/utils.dart';
 
 class DebugScreen extends StatefulWidget {
+  const DebugScreen({Key? key}) : super(key: key);
+
   @override
   _DebugScreenState createState() => _DebugScreenState();
 }
 
 class _DebugScreenState extends State<DebugScreen> {
-  ScrollController _controller = ScrollController();
+  final ScrollController _controller = ScrollController();
 
   late List<LogMessage> _logs;
 
@@ -323,7 +325,12 @@ class FilterListTile extends StatelessWidget {
   final String internalLevel;
   final String currentLevel;
 
-  FilterListTile(this.publicLevel, this.internalLevel, this.currentLevel);
+  const FilterListTile(
+    this.publicLevel,
+    this.internalLevel,
+    this.currentLevel, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

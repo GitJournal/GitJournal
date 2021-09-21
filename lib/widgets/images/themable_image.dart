@@ -23,7 +23,7 @@ class ThemableImage extends StatelessWidget {
   final ColorCondition colorCondition;
   final Color bg;
 
-  ThemableImage.image(
+  const ThemableImage.image(
     this.file, {
     this.width,
     this.height,
@@ -34,7 +34,7 @@ class ThemableImage extends StatelessWidget {
         themingCondition = ThemingCondition.none,
         colorCondition = ColorCondition.all;
 
-  ThemableImage.svg(
+  const ThemableImage.svg(
     this.string, {
     this.width,
     this.height,
@@ -187,7 +187,7 @@ bool _hasBackground(Drawable draw, double width, double height,
 
 Drawable _themeDrawable(
     Drawable draw, Color? Function(Color? color) transformColor) {
-  if (draw is DrawableStyleable && !(draw is DrawableGroup)) {
+  if (draw is DrawableStyleable && draw is! DrawableGroup) {
     final DrawableStyleable drawStylable = draw;
     draw = drawStylable.mergeStyle(DrawableStyle(
         stroke: drawStylable.style!.stroke != null &&

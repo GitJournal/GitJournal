@@ -116,6 +116,7 @@ dev_dependencies:
   dashbook: ^0.1.3
   dart_code_metrics: ^4.1.0
   hive_generator: ^1.1.0
+  flutter_lints: ^1.0.4
 
 flutter:
   uses-material-design: true

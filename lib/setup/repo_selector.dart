@@ -30,11 +30,12 @@ class GitHostSetupRepoSelector extends StatefulWidget {
   final UserInfo userInfo;
   final Func1<GitHostRepo, void> onDone;
 
-  GitHostSetupRepoSelector({
+  const GitHostSetupRepoSelector({
+    Key? key,
     required this.gitHost,
     required this.userInfo,
     required this.onDone,
-  });
+  }) : super(key: key);
 
   @override
   GitHostSetupRepoSelectorState createState() {
@@ -286,7 +287,7 @@ class _RepoTile extends StatelessWidget {
   final void Function() onTap;
   final bool selected;
 
-  _RepoTile({
+  const _RepoTile({
     required this.repo,
     required this.searchText,
     required this.onTap,
@@ -400,7 +401,7 @@ class _SmartDateTime extends StatelessWidget {
   final DateTime? dt;
   final TextStyle? style;
 
-  _SmartDateTime(this.dt, this.style);
+  const _SmartDateTime(this.dt, this.style);
 
   static final _dateFormat = DateFormat('d MMM yyyy');
   static final _dateFormatWithoutYear = DateFormat('d MMM');

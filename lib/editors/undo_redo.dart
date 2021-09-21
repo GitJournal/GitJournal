@@ -18,7 +18,7 @@ import 'package:gitjournal/editors/common.dart';
 //        be just taken from this class
 //
 class UndoRedoStack {
-  var _versions = <TextEditorState>[];
+  final _versions = <TextEditorState>[];
   int _index = -1;
 
   /// Returns if UI should be redrawn

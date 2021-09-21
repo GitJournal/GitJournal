@@ -248,6 +248,8 @@ abstract class LocaleKeys {
       'settings.noteMetaData.customMetaData.invalid';
   static const settings_noteMetaData_customMetaData =
       'settings.noteMetaData.customMetaData';
+  static const settings_noteMetaData_output = 'settings.noteMetaData.output';
+  static const settings_noteMetaData_input = 'settings.noteMetaData.input';
   static const settings_noteMetaData = 'settings.noteMetaData';
   static const settings_privacy = 'settings.privacy';
   static const settings_terms = 'settings.terms';

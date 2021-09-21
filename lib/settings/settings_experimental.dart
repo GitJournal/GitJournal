@@ -141,16 +141,16 @@ class _PasswordForm extends StatelessWidget {
         onChanged: (String value) {
           value = value.trim();
           if (value.isEmpty) {
-            return null;
+            return;
           }
 
-          final salt = 'randomSaltGitJournal';
+          const salt = 'randomSaltGitJournal';
           var sha1Digest = sha1.convert(utf8.encode(value + salt));
           print(sha1Digest);
 
           if (sha1Digest.toString() !=
               '27538d8231e49655fd1c26c7b8495c2c870c741b') {
-            return null;
+            return;
           }
 
           print('Unlocking Pro Mode');

@@ -31,7 +31,7 @@ void main() {
       Hive.init(tempDir.path);
     });
 
-    var _createExampleNote = () async {
+    Future<Note> _createExampleNote() async {
       var content = """---
 bar: Foo
 updated: 1626257689
@@ -47,13 +47,13 @@ Hello
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
       var note = Note(parentFolder, notePath, DateTime.now());
       return note;
-    };
+    }
 
     test('Test', () async {
       var random = Random().nextInt(10000).toString();
-      var compute = (Note note) async {
+      Future<String> compute(Note note) async {
         return random;
-      };
+      }
 
       var view = NotesMaterializedView<String>(
         name: '_test_box',

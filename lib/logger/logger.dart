@@ -144,7 +144,7 @@ class Log {
       t: DateTime.now().millisecondsSinceEpoch,
       l: level,
       msg: msg.replaceAll('\n', ' '),
-      ex: ex != null ? ex.toString().replaceAll('\n', ' ') : null,
+      ex: ex?.toString().replaceAll('\n', ' '),
       props: props,
     );
     if (stackTrace != null) {

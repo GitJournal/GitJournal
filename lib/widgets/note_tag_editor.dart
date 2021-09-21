@@ -15,7 +15,7 @@ class NoteTagEditor extends StatefulWidget {
   final Set<String> selectedTags;
   final Set<String> allTags;
 
-  NoteTagEditor({required this.selectedTags, required this.allTags});
+  const NoteTagEditor({required this.selectedTags, required this.allTags});
 
   @override
   _NoteTagEditorState createState() => _NoteTagEditorState();
@@ -98,7 +98,7 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
 
   Widget _buildTagTile(String tag) {
     var containsTag = _selectedTags.contains(tag);
-    var _onTap = () {
+    void _onTap() {
       setState(() {
         if (containsTag) {
           _selectedTags.remove(tag);
@@ -106,7 +106,8 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
           _selectedTags.add(tag);
         }
       });
-    };
+    }
+
     return ListTile(
       leading: const FaIcon(FontAwesomeIcons.tag),
       title: Text(tag),

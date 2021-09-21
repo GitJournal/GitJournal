@@ -13,7 +13,7 @@ class GitHostSetupLoadingErrorPage extends StatelessWidget {
   final String? errorMessage;
   final String loadingMessage;
 
-  GitHostSetupLoadingErrorPage({
+  const GitHostSetupLoadingErrorPage({
     required this.errorMessage,
     required this.loadingMessage,
   });

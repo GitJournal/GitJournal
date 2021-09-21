@@ -16,8 +16,8 @@ import 'package:gitjournal/utils/datetime.dart';
 import 'md_yaml_doc.dart';
 import 'note_serializer.dart';
 
-typedef void NoteSelectedFunction(Note note);
-typedef bool NoteBoolPropertyFunction(Note note);
+typedef NoteSelectedFunction = void Function(Note note);
+typedef NoteBoolPropertyFunction = bool Function(Note note);
 
 /// Move this to NotesFolderFS
 enum NoteLoadState {

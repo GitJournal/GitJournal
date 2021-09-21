@@ -33,7 +33,7 @@ class MarkdownImage extends StatelessWidget {
   // FIXME: Avoid using dynamic!
   final Future<dynamic> data;
 
-  MarkdownImage._(
+  const MarkdownImage._(
       this.data, this.width, this.height, String? altText, String? tooltip)
       : altText = altText ?? "",
         tooltip = tooltip ?? "";

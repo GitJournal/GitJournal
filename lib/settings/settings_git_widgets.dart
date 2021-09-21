@@ -22,12 +22,12 @@ class GitAuthorEmail extends StatelessWidget {
   Widget build(BuildContext context) {
     var gitConfig = Provider.of<GitConfig>(context);
 
-    var saveGitAuthorEmail = (String? gitAuthorEmail) {
+    void saveGitAuthorEmail(String? gitAuthorEmail) {
       if (gitAuthorEmail == null) return;
 
       gitConfig.gitAuthorEmail = gitAuthorEmail;
       gitConfig.save();
-    };
+    }
 
     return Form(
       child: TextFormField(
@@ -73,11 +73,11 @@ class GitAuthor extends StatelessWidget {
   Widget build(BuildContext context) {
     var gitConfig = Provider.of<GitConfig>(context);
 
-    var saveGitAuthor = (String? gitAuthor) {
+    void saveGitAuthor(String? gitAuthor) {
       if (gitAuthor == null) return;
       gitConfig.gitAuthor = gitAuthor;
       gitConfig.save();
-    };
+    }
 
     return Form(
       child: TextFormField(

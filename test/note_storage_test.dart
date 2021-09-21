@@ -74,7 +74,7 @@ void main() {
         loadedNotes.add(note);
       });
 
-      var sortFn = (Note n1, Note n2) => n1.filePath.compareTo(n2.filePath);
+      sortFn(Note n1, Note n2) => n1.filePath.compareTo(n2.filePath);
       loadedNotes.sort(sortFn);
       notes.sort(sortFn);
 

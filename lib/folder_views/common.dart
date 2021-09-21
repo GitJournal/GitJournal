@@ -131,7 +131,7 @@ bool openNewNoteEditor(BuildContext context, String noteSpec) {
       defaultEditor,
       newNoteFileName: fileName,
       existingText: "",
-      existingImages: [],
+      existingImages: const [],
     ),
     AppRoute.NewNotePrefix + folderConfig.defaultEditor.toInternalString(),
   );

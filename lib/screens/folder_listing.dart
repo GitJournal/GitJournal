@@ -7,6 +7,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:gitjournal/core/notes_folder.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/flattened_notes_folder.dart';
@@ -40,7 +41,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
       key: _folderTreeViewKey,
       rootFolder: notesFolder,
       onFolderEntered: (NotesFolderFS folder) {
-        var destination;
+        late NotesFolder destination;
         if (settings.experimentalSubfolders) {
           destination = FlattenedNotesFolder(folder, title: folder.name);
         } else {
@@ -245,7 +246,7 @@ class _CreateFolderAlertDialogState extends State<CreateFolderAlertDialog> {
 class FolderErrorDialog extends StatelessWidget {
   final String content;
 
-  FolderErrorDialog(this.content);
+  const FolderErrorDialog(this.content);
 
   @override
   Widget build(BuildContext context) {

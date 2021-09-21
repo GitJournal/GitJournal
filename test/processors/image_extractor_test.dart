@@ -19,8 +19,8 @@ void main() {
     var images = p.extract(body);
 
     expect(images, {
-      NoteImage(alt: 'alt', url: '../final.img'),
-      NoteImage(alt: 'alt2', url: '../final2.img'),
+      const NoteImage(alt: 'alt', url: '../final.img'),
+      const NoteImage(alt: 'alt2', url: '../final2.img'),
     });
   });
 }

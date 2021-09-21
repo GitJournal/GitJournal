@@ -23,7 +23,7 @@ typedef PurchaseCallback = void Function(String, SubscriptionStatus?);
 class PurchaseManager {
   late InAppPurchaseConnection con;
   late StreamSubscription<List<PurchaseDetails>> _subscription;
-  List<PurchaseCallback> _callbacks = [];
+  final List<PurchaseCallback> _callbacks = [];
 
   static String? error;
   static PurchaseManager? _instance;

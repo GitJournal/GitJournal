@@ -29,13 +29,14 @@ class SettingsDisplayImagesCaptionScreenState
   @override
   Widget build(BuildContext context) {
     var settings = Provider.of<MarkdownRendererConfig>(context);
-    var saveDoNotCaptionTag = (String? doNotCaptionTags) {
+    void saveDoNotCaptionTag(String? doNotCaptionTags) {
       if (doNotCaptionTags == null) {
         return;
       }
       settings.doNotCaptionTags = parseTags(doNotCaptionTags);
       settings.save();
-    };
+    }
+
     var doNotCaptionTagsForm = Form(
       child: TextFormField(
         key: doNotCaptionTagsKey,

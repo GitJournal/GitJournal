@@ -29,9 +29,9 @@ void main() {
     var body = "Hello *Hi* **How**";
 
     var result = "";
-    var callback = (String content) {
+    void callback(String content) {
       result += content + "-";
-    };
+    }
 
     _visit(body, callback);
     expect(result, "Hello -Hi- -How-");
@@ -41,9 +41,9 @@ void main() {
     var body = "Hello`foo`";
 
     var result = "";
-    var callback = (String content) {
+    void callback(String content) {
       result += content + "-";
-    };
+    }
 
     _visit(body, callback);
     expect(result, "Hello-");
@@ -58,9 +58,9 @@ Done
 """;
 
     var result = "";
-    var callback = (String content) {
+    void callback(String content) {
       result += content + "-";
-    };
+    }
 
     _visit(body, callback);
     expect(result, "Hi-Done-");

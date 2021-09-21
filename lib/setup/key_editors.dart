@@ -16,7 +16,7 @@ class PublicKeyEditor extends StatelessWidget {
   final Key formKey;
   final TextEditingController _controller;
 
-  PublicKeyEditor(this.formKey, this._controller);
+  const PublicKeyEditor(this.formKey, this._controller);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class PrivateKeyEditor extends StatelessWidget {
   final Key formKey;
   final TextEditingController _controller;
 
-  PrivateKeyEditor(this.formKey, this._controller);
+  const PrivateKeyEditor(this.formKey, this._controller);
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class KeyEditor extends StatelessWidget {
   final TextEditingController textEditingController;
   final String? Function(String?) validator;
 
-  KeyEditor(this.formKey, this.textEditingController, this.validator);
+  const KeyEditor(this.formKey, this.textEditingController, this.validator);
 
   @override
   Widget build(BuildContext context) {

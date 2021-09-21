@@ -65,7 +65,7 @@ class _AppDrawerState extends State<AppDrawer>
   }
 
   Widget _buildRepoList() {
-    var divider = Row(children: <Widget>[const Expanded(child: Divider())]);
+    var divider = Row(children: const <Widget>[Expanded(child: Divider())]);
     var repoManager = context.watch<RepositoryManager>();
     var repoIds = repoManager.repoIds;
 
@@ -127,7 +127,7 @@ class _AppDrawerState extends State<AppDrawer>
       );
     }
 
-    var divider = Row(children: <Widget>[const Expanded(child: Divider())]);
+    var divider = Row(children: const <Widget>[Expanded(child: Divider())]);
     var user = Supabase.instance.client.auth.currentUser;
 
     return Drawer(

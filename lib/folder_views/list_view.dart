@@ -17,7 +17,7 @@ import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/icon_dismissable.dart';
 import 'empty_text_sliver.dart';
 
-typedef Widget NoteTileBuilder(BuildContext context, Note note);
+typedef NoteTileBuilder = Widget Function(BuildContext context, Note note);
 
 class FolderListView extends StatefulWidget {
   final NoteTileBuilder noteTileBuilder;
@@ -26,20 +26,21 @@ class FolderListView extends StatefulWidget {
   final String emptyText;
   final String searchTerm;
 
-  FolderListView({
+  const FolderListView({
     required this.folder,
     required this.noteTileBuilder,
     required this.emptyText,
     required this.isNoteSelected,
     required this.searchTerm,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   _FolderListViewState createState() => _FolderListViewState();
 }
 
 class _FolderListViewState extends State<FolderListView> {
-  var _listKey = GlobalKey<AnimatedListState>();
+  final _listKey = GlobalKey<AnimatedListState>();
   var deletedViaDismissed = <String>[];
 
   @override

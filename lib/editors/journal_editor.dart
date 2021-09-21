@@ -29,7 +29,7 @@ class JournalEditor extends StatefulWidget implements Editor {
   @override
   final EditorCommon common;
 
-  JournalEditor({
+  const JournalEditor({
     Key? key,
     required this.note,
     required this.noteModified,
@@ -41,31 +41,31 @@ class JournalEditor extends StatefulWidget implements Editor {
 
   @override
   JournalEditorState createState() {
-    return JournalEditorState(note);
+    return JournalEditorState();
   }
 }
 
 class JournalEditorState extends State<JournalEditor>
     with DisposableChangeNotifier
     implements EditorState {
-  Note note;
+  late Note _note;
   late TextEditingController _textController;
   late bool _noteModified;
 
   late EditorHeuristics _heuristics;
 
-  JournalEditorState(this.note);
   @override
   void initState() {
     super.initState();
+    _note = widget.note;
     _noteModified = widget.noteModified;
     _textController = buildController(
-      text: note.body,
+      text: _note.body,
       highlightText: widget.highlightString,
       theme: widget.theme,
     );
 
-    _heuristics = EditorHeuristics(text: note.body);
+    _heuristics = EditorHeuristics(text: _note.body);
   }
 
   @override
@@ -90,7 +90,7 @@ class JournalEditorState extends State<JournalEditor>
     var editor = EditorScrollView(
       child: Column(
         children: <Widget>[
-          JournalEditorHeader(note),
+          JournalEditorHeader(_note),
           NoteBodyEditor(
             textController: _textController,
             autofocus: widget.editMode,
@@ -105,7 +105,7 @@ class JournalEditorState extends State<JournalEditor>
       editorState: this,
       noteModified: _noteModified,
       editMode: widget.editMode,
-      parentFolder: note.parent,
+      parentFolder: _note.parent,
       body: editor,
       onUndoSelected: _undo,
       onRedoSelected: _redo,
@@ -116,11 +116,11 @@ class JournalEditorState extends State<JournalEditor>
 
   @override
   Note getNote() {
-    note.apply(
+    _note.apply(
       body: _textController.text.trim(),
       type: NoteType.Journal,
     );
-    return note;
+    return _note;
   }
 
   void _noteTextChanged() {

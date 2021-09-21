@@ -45,7 +45,7 @@ class FolderView extends StatefulWidget {
   final NotesFolder notesFolder;
   final Map<String, dynamic> newNoteExtraProps;
 
-  FolderView({
+  const FolderView({
     required this.notesFolder,
     this.newNoteExtraProps = const {},
   });
@@ -250,7 +250,7 @@ class _FolderViewState extends State<FolderView> {
         editorType,
         newNoteExtraProps: extraProps,
         existingText: "",
-        existingImages: [],
+        existingImages: const [],
       ),
       AppRoute.NewNotePrefix + routeType,
     );
@@ -281,7 +281,7 @@ class _FolderViewState extends State<FolderView> {
     await showDialog<SortingMode>(
       context: context,
       builder: (BuildContext context) {
-        var headerTypeChanged = (StandardViewHeader? newHeader) {
+        void headerTypeChanged(StandardViewHeader? newHeader) {
           if (newHeader == null) {
             return;
           }
@@ -292,9 +292,9 @@ class _FolderViewState extends State<FolderView> {
           var folderConfig = sortedNotesFolder.config;
           folderConfig.viewHeader = _headerType;
           folderConfig.save();
-        };
+        }
 
-        var summaryChanged = (bool newVal) {
+        void summaryChanged(bool newVal) {
           setState(() {
             _showSummary = newVal;
           });
@@ -302,7 +302,7 @@ class _FolderViewState extends State<FolderView> {
           var folderConfig = sortedNotesFolder.config;
           folderConfig.showNoteSummary = newVal;
           folderConfig.save();
-        };
+        }
 
         return StatefulBuilder(
           builder: (BuildContext context, Function setState) {
@@ -383,7 +383,7 @@ class _FolderViewState extends State<FolderView> {
   }
 
   void _folderViewChooserSelected() async {
-    var onViewChange = (FolderViewType? vt) => Navigator.of(context).pop(vt);
+    void onViewChange(FolderViewType? vt) => Navigator.of(context).pop(vt);
 
     var newViewType = await showDialog<FolderViewType>(
       context: context,

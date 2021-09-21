@@ -31,10 +31,11 @@ class SettingsDisplayImagesThemingScreenState
   Widget build(BuildContext context) {
     var settings = Provider.of<MarkdownRendererConfig>(context);
 
-    var saveDoNotThemeTag = (String? doNotThemeTags) {
+    void saveDoNotThemeTag(String? doNotThemeTags) {
       settings.doNotThemeTags = parseTags(doNotThemeTags!);
       settings.save();
-    };
+    }
+
     var doNotThemeTagsForm = Form(
       child: TextFormField(
         key: doNotThemeTagsKey,
@@ -70,10 +71,11 @@ class SettingsDisplayImagesThemingScreenState
       },
     );
 
-    var saveDoThemeTag = (String? doThemeTags) {
+    void saveDoThemeTag(String? doThemeTags) {
       settings.doThemeTags = parseTags(doThemeTags!);
       settings.save();
-    };
+    }
+
     var doThemeTagsForm = Form(
       child: TextFormField(
         key: doThemeTagsKey,

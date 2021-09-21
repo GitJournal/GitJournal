@@ -18,7 +18,7 @@ typedef InlineTagsView = NotesMaterializedView<List<String>>;
 class InlineTagsProvider extends SingleChildStatelessWidget {
   final String repoPath;
 
-  InlineTagsProvider({
+  const InlineTagsProvider({
     Key? key,
     Widget? child,
     required this.repoPath,

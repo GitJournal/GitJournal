@@ -104,12 +104,14 @@ class NotesCache {
     SortingMode sortingMode,
   ) {
     var origFn = sortingMode.sortingFunction();
-    var reversedFn = (Note a, Note b) {
+
+    reversedFn(Note a, Note b) {
       var r = origFn(a, b);
       if (r < 0) return 1;
       if (r > 0) return -1;
       return 0;
-    };
+    }
+
     var heap = HeapPriorityQueue<Note>(reversedFn);
 
     for (var note in allNotes) {

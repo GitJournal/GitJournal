@@ -13,7 +13,7 @@ import 'package:gitjournal/core/note.dart';
 class JournalEditorHeader extends StatelessWidget {
   final Note note;
 
-  JournalEditorHeader(this.note);
+  const JournalEditorHeader(this.note);
 
   @override
   Widget build(BuildContext context) {

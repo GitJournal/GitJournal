@@ -15,11 +15,12 @@ class NoteBodyEditor extends StatelessWidget {
   final bool autofocus;
   final Function onChanged;
 
-  NoteBodyEditor({
+  const NoteBodyEditor({
+    Key? key,
     required this.textController,
     required this.autofocus,
     required this.onChanged,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

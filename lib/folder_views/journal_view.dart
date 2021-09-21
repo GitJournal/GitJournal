@@ -114,7 +114,7 @@ class JournalView extends StatelessWidget {
     );
 
     var dc = Theme.of(context).dividerColor;
-    var divider = Container(
+    var divider = SizedBox(
       height: 1.0,
       child: Divider(color: dc.withOpacity(dc.opacity / 3)),
     );

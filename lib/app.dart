@@ -84,25 +84,25 @@ class JournalApp extends StatefulWidget {
         repoManager: repoManager,
         appSettings: appSettings,
         pref: pref,
-        child: JournalApp(),
+        child: const JournalApp(),
       ),
-      supportedLocales: [
+      supportedLocales: const [
         // Arranged Alphabetically
-        const Locale('de'),
-        const Locale('en'),
-        const Locale('es'),
-        const Locale('fr'),
-        const Locale('hu'),
-        const Locale('id'),
-        const Locale('it'),
-        const Locale('ja'),
-        const Locale('ko'),
-        const Locale('pl'),
-        const Locale('pt'),
-        const Locale('ru'),
-        const Locale('sv'),
-        const Locale('vi'),
-        const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'),
+        Locale('de'),
+        Locale('en'),
+        Locale('es'),
+        Locale('fr'),
+        Locale('hu'),
+        Locale('id'),
+        Locale('it'),
+        Locale('ja'),
+        Locale('ko'),
+        Locale('pl'),
+        Locale('pt'),
+        Locale('ru'),
+        Locale('sv'),
+        Locale('vi'),
+        Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'),
       ], // Remember to update Info.plist
       fallbackLocale: const Locale('en'),
       useFallbackTranslations: true,
@@ -138,7 +138,7 @@ class JournalApp extends StatefulWidget {
     );
   }
 
-  JournalApp();
+  const JournalApp({Key? key}) : super(key: key);
 
   @override
   _JournalAppState createState() => _JournalAppState();
@@ -160,7 +160,7 @@ class _JournalAppState extends State<JournalApp> {
       return;
     }
 
-    final QuickActions quickActions = const QuickActions();
+    const quickActions = QuickActions();
     quickActions.initialize((String shortcutType) {
       Log.i("Quick Action Open: $shortcutType");
       if (_navigatorKey.currentState == null) {
@@ -205,22 +205,22 @@ class _JournalAppState extends State<JournalApp> {
     }
   }
 
+  void _handleShare(Duration _) {
+    var noText = _sharedText.isEmpty;
+    var noImages = _sharedImages.isEmpty;
+    if (noText && noImages) {
+      return;
+    }
+
+    var folderConfig = Provider.of<NotesFolderConfig>(context, listen: false);
+    var editor = folderConfig.defaultEditor.toInternalString();
+    _navigatorKey.currentState!.pushNamed(AppRoute.NewNotePrefix + editor);
+  }
+
   void _initShareSubscriptions() {
     if (!Platform.isAndroid && !Platform.isIOS) {
       return;
     }
-
-    var handleShare = () {
-      var noText = _sharedText.isEmpty;
-      var noImages = _sharedImages.isEmpty;
-      if (noText && noImages) {
-        return;
-      }
-
-      var folderConfig = Provider.of<NotesFolderConfig>(context, listen: false);
-      var editor = folderConfig.defaultEditor.toInternalString();
-      _navigatorKey.currentState!.pushNamed(AppRoute.NewNotePrefix + editor);
-    };
 
     // For sharing images coming from outside the app while the app is in the memory
     _intentDataStreamSubscription = ReceiveSharingIntent.getMediaStream()
@@ -228,7 +228,7 @@ class _JournalAppState extends State<JournalApp> {
       Log.d("Received Media Share $value");
 
       _sharedImages = value.map((f) => f.path).toList();
-      WidgetsBinding.instance!.addPostFrameCallback((_) => handleShare());
+      WidgetsBinding.instance!.addPostFrameCallback(_handleShare);
     }, onError: (err) {
       Log.e("getIntentDataStream error: $err");
     });
@@ -238,7 +238,7 @@ class _JournalAppState extends State<JournalApp> {
       Log.d("Received MediaFile Share with App (media): $value");
 
       _sharedImages = value.map((f) => f.path).toList();
-      WidgetsBinding.instance!.addPostFrameCallback((_) => handleShare());
+      WidgetsBinding.instance!.addPostFrameCallback(_handleShare);
     });
 
     // For sharing or opening text coming from outside the app while the app is in the memory
@@ -249,7 +249,7 @@ class _JournalAppState extends State<JournalApp> {
         return;
       }
       _sharedText = value;
-      WidgetsBinding.instance!.addPostFrameCallback((_) => handleShare());
+      WidgetsBinding.instance!.addPostFrameCallback(_handleShare);
     }, onError: (err) {
       Log.e("getLinkStream error: $err");
     });
@@ -259,7 +259,7 @@ class _JournalAppState extends State<JournalApp> {
       if (value == null) return;
       Log.d("Received Share with App (text): ${value.length}");
       _sharedText = value;
-      WidgetsBinding.instance!.addPostFrameCallback((_) => handleShare());
+      WidgetsBinding.instance!.addPostFrameCallback(_handleShare);
     });
   }
 
@@ -344,7 +344,7 @@ class GitJournalChangeNotifiers extends StatelessWidget {
   final SharedPreferences pref;
   final Widget child;
 
-  GitJournalChangeNotifiers({
+  const GitJournalChangeNotifiers({
     required this.repoManager,
     required this.appSettings,
     required this.pref,

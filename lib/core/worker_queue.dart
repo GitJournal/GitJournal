@@ -15,8 +15,8 @@ class WorkerQueue<INPUT, OUTPUT> {
   Isolate? _isolate;
   SendPort? _sendPort;
 
-  var _receivePort = ReceivePort();
-  var _loadingLock = Lock();
+  final _receivePort = ReceivePort();
+  final _loadingLock = Lock();
 
   Func1<INPUT, OUTPUT> func;
 

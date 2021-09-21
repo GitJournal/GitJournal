@@ -15,6 +15,8 @@ import 'package:gitjournal/features.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 
 class FeatureTimelineScreen extends StatelessWidget {
+  const FeatureTimelineScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -50,7 +52,7 @@ class FeatureTimelineScreen extends StatelessWidget {
 class FeatureTile extends StatelessWidget {
   final Feature feature;
 
-  FeatureTile(this.feature);
+  const FeatureTile(this.feature, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +86,7 @@ class _Tile extends StatelessWidget {
   final String iconText;
   final Color iconColor;
 
-  _Tile({
+  const _Tile({
     required this.title,
     required this.subTitle,
     required this.iconText,
@@ -107,7 +109,7 @@ class _Tile extends StatelessWidget {
       ),
       child: Row(
         children: <Widget>[
-          Container(
+          SizedBox(
             width: 56.0,
             child: _Sign(iconText, iconColor),
           ),
@@ -142,7 +144,7 @@ class _Sign extends StatelessWidget {
   final String text;
   final Color? color;
 
-  _Sign(this.text, this.color);
+  const _Sign(this.text, this.color);
 
   @override
   Widget build(BuildContext context) {

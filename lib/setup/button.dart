@@ -16,11 +16,12 @@ class GitHostSetupButton extends StatelessWidget {
   final String text;
   final String? iconUrl;
 
-  GitHostSetupButton({
+  const GitHostSetupButton({
     required this.text,
     required this.onPressed,
     this.iconUrl,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

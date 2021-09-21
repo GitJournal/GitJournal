@@ -20,9 +20,10 @@ import 'package:gitjournal/forks/icon_button_more_gestures.dart' as fork;
 class MarkdownToolBar extends StatelessWidget {
   final TextEditingController textController;
 
-  MarkdownToolBar({
+  const MarkdownToolBar({
+    Key? key,
     required this.textController,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,9 +64,9 @@ class MarkdownToolBar extends StatelessWidget {
             padding: const EdgeInsets.all(0.0),
             onPressed: () => _modifyCurrentLine('- [ ] '),
           ),
-          Container(
+          const SizedBox(
             height: 20,
-            child: const VerticalDivider(),
+            child: VerticalDivider(),
           ),
           fork.IconButton(
             icon: const Icon(Icons.navigate_before),
@@ -135,8 +136,8 @@ final _allowedBlockTags = [
 ];
 
 final _allowedBlockRegExps = [
-  RegExp('- \[[xX ]\] '),
-  RegExp('\d+\. '),
+  RegExp('- [[xX ]] '),
+  RegExp('d+. '),
 ];
 
 TextEditingValue modifyCurrentLine(

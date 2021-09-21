@@ -35,7 +35,8 @@ class EditorBottomBar extends StatelessWidget {
   final Func0<void> onUndoSelected;
   final Func0<void> onRedoSelected;
 
-  EditorBottomBar({
+  const EditorBottomBar({
+    Key? key,
     required this.editor,
     required this.editorState,
     required this.parentFolder,
@@ -47,7 +48,7 @@ class EditorBottomBar extends StatelessWidget {
     required this.onRedoSelected,
     required this.undoAllowed,
     required this.redoAllowed,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -136,52 +137,50 @@ class AddBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ListTile(
-            leading: const Icon(Icons.camera),
-            title: Text(tr(LocaleKeys.editors_common_takePhoto)),
-            onTap: () async {
-              try {
-                var image = await ImagePicker().pickImage(
-                  source: ImageSource.camera,
-                );
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        ListTile(
+          leading: const Icon(Icons.camera),
+          title: Text(tr(LocaleKeys.editors_common_takePhoto)),
+          onTap: () async {
+            try {
+              var image = await ImagePicker().pickImage(
+                source: ImageSource.camera,
+              );
 
-                if (image != null) {
-                  await editorState.addImage(image.path);
-                }
-              } catch (e) {
-                reportError(e, StackTrace.current);
+              if (image != null) {
+                await editorState.addImage(image.path);
               }
-              Navigator.of(context).pop();
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.image),
-            title: Text(tr(LocaleKeys.editors_common_addImage)),
-            onTap: () async {
-              try {
-                var image = await ImagePicker().pickImage(
-                  source: ImageSource.gallery,
-                );
+            } catch (e) {
+              reportError(e, StackTrace.current);
+            }
+            Navigator.of(context).pop();
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.image),
+          title: Text(tr(LocaleKeys.editors_common_addImage)),
+          onTap: () async {
+            try {
+              var image = await ImagePicker().pickImage(
+                source: ImageSource.gallery,
+              );
 
-                if (image != null) {
-                  await editorState.addImage(image.path);
-                }
-              } catch (e) {
-                if (e is PlatformException && e.code == "photo_access_denied") {
-                  Navigator.of(context).pop();
-                  return;
-                }
-                reportError(e, StackTrace.current);
+              if (image != null) {
+                await editorState.addImage(image.path);
               }
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      ),
+            } catch (e) {
+              if (e is PlatformException && e.code == "photo_access_denied") {
+                Navigator.of(context).pop();
+                return;
+              }
+              reportError(e, StackTrace.current);
+            }
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
     );
   }
 }
@@ -204,48 +203,71 @@ class BottomMenuSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ListTile(
-            leading: const Icon(Icons.undo),
-            title: Text(tr(LocaleKeys.editors_common_discard)),
-            onTap: () {
-              var note = editorState.getNote();
-              Navigator.of(context).pop();
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        ListTile(
+          leading: const Icon(Icons.undo),
+          title: Text(tr(LocaleKeys.editors_common_discard)),
+          onTap: () {
+            var note = editorState.getNote();
+            Navigator.of(context).pop();
 
-              editor.common.discardChanges(note);
-            },
-            enabled: editorState.noteModified,
-          ),
-          ListTile(
-            leading: const Icon(Icons.share),
-            title: Text(tr(LocaleKeys.editors_common_share)),
-            onTap: () {
-              var note = editorState.getNote();
-              Navigator.of(context).pop();
+            editor.common.discardChanges(note);
+          },
+          enabled: editorState.noteModified,
+        ),
+        ListTile(
+          leading: const Icon(Icons.share),
+          title: Text(tr(LocaleKeys.editors_common_share)),
+          onTap: () {
+            var note = editorState.getNote();
+            Navigator.of(context).pop();
 
-              shareNote(note);
-            },
-          ),
-          if (metaDataEditable)
-            ProOverlay(
-              feature: Feature.tags,
-              child: ListTile(
-                leading: const FaIcon(FontAwesomeIcons.tag),
-                title: Text(tr(LocaleKeys.editors_common_tags)),
-                onTap: () {
-                  var note = editorState.getNote();
-                  Navigator.of(context).pop();
+            shareNote(note);
+          },
+        ),
+        if (metaDataEditable)
+          ProOverlay(
+            feature: Feature.tags,
+            child: ListTile(
+              leading: const FaIcon(FontAwesomeIcons.tag),
+              title: Text(tr(LocaleKeys.editors_common_tags)),
+              onTap: () {
+                var note = editorState.getNote();
+                Navigator.of(context).pop();
 
-                  editor.common.editTags(note);
-                },
-              ),
+                editor.common.editTags(note);
+              },
             ),
+          ),
+        ListTile(
+          leading: const Icon(Icons.edit),
+          title: Text(tr(LocaleKeys.editors_common_editFileName)),
+          onTap: () {
+            var note = editorState.getNote();
+            Navigator.of(context).pop();
+
+            editor.common.renameNote(note);
+          },
+        ),
+        ProOverlay(
+          feature: Feature.zenMode,
+          child: ListTile(
+            leading: const FaIcon(FontAwesomeIcons.peace),
+            title: Text(tr(zenModeEnabled
+                ? LocaleKeys.editors_common_zen_disable
+                : LocaleKeys.editors_common_zen_enable)),
+            onTap: () {
+              zenModeChanged();
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
+        if (Features.findInNote)
           ListTile(
-            leading: const Icon(Icons.edit),
-            title: Text(tr(LocaleKeys.editors_common_editFileName)),
+            leading: const Icon(Icons.search),
+            title: Text(tr(LocaleKeys.editors_common_find)),
             onTap: () {
               var note = editorState.getNote();
               Navigator.of(context).pop();
@@ -253,32 +275,7 @@ class BottomMenuSheet extends StatelessWidget {
               editor.common.renameNote(note);
             },
           ),
-          ProOverlay(
-            feature: Feature.zenMode,
-            child: ListTile(
-              leading: const FaIcon(FontAwesomeIcons.peace),
-              title: Text(tr(zenModeEnabled
-                  ? LocaleKeys.editors_common_zen_disable
-                  : LocaleKeys.editors_common_zen_enable)),
-              onTap: () {
-                zenModeChanged();
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-          if (Features.findInNote)
-            ListTile(
-              leading: const Icon(Icons.search),
-              title: Text(tr(LocaleKeys.editors_common_find)),
-              onTap: () {
-                var note = editorState.getNote();
-                Navigator.of(context).pop();
-
-                editor.common.renameNote(note);
-              },
-            ),
-        ],
-      ),
+      ],
     );
   }
 }

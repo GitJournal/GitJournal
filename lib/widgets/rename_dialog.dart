@@ -18,7 +18,7 @@ class RenameDialog extends StatefulWidget {
   final String inputDecoration;
   final String dialogTitle;
 
-  RenameDialog({
+  const RenameDialog({
     required this.oldPath,
     required this.inputDecoration,
     required this.dialogTitle,

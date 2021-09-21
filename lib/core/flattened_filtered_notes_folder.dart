@@ -21,8 +21,8 @@ class FlattenedFilteredNotesFolder
 
   final _lock = Lock();
 
-  var _notes = <Note>[];
-  var _folders = <NotesFolder>[];
+  final _notes = <Note>[];
+  final _folders = <NotesFolder>[];
 
   FlattenedFilteredNotesFolder._internal(
       this._parentFolder, this.title, this.filter);

@@ -14,7 +14,7 @@ class NoteTitleEditor extends StatelessWidget {
   final TextEditingController textController;
   final Function onChanged;
 
-  NoteTitleEditor(this.textController, this.onChanged);
+  const NoteTitleEditor(this.textController, this.onChanged);
 
   @override
   Widget build(BuildContext context) {

@@ -19,10 +19,11 @@ class GitCloneUrlPage extends StatefulWidget {
   final Func1<String, void> doneFunction;
   final String initialValue;
 
-  GitCloneUrlPage({
+  const GitCloneUrlPage({
     required this.doneFunction,
     required this.initialValue,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   GitCloneUrlPageState createState() {
@@ -39,7 +40,7 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
 
   @override
   Widget build(BuildContext context) {
-    final formSubmitted = () {
+    void formSubmitted() {
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();
 
@@ -47,7 +48,7 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
         widget.doneFunction(url.trim());
         inputFormFocus.unfocus();
       }
-    };
+    }
 
     var inputForm = Form(
       key: _formKey,
@@ -100,12 +101,13 @@ class GitCloneUrlKnownProviderPage extends StatefulWidget {
   final GitHostType gitHostType;
   final String initialValue;
 
-  GitCloneUrlKnownProviderPage({
+  const GitCloneUrlKnownProviderPage({
     required this.doneFunction,
     required this.launchCreateUrlPage,
     required this.gitHostType,
     required this.initialValue,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   GitCloneUrlKnownProviderPageState createState() {

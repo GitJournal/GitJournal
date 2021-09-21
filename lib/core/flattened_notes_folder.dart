@@ -14,8 +14,8 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   final NotesFolder _parentFolder;
   final String title;
 
-  var _notes = <Note>[];
-  var _folders = <NotesFolder>[];
+  final _notes = <Note>[];
+  final _folders = <NotesFolder>[];
 
   FlattenedNotesFolder(this._parentFolder, {required this.title}) {
     _addFolder(_parentFolder);

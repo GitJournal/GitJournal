@@ -50,11 +50,11 @@ class GitHubFake implements GitHost {
   Future<Result<List<GitHostRepo>>> listRepos() async {
     List<dynamic> list = jsonDecode(data);
     var repos = <GitHostRepo>[];
-    list.forEach((dynamic d) {
+    for (var d in list) {
       var map = Map<String, dynamic>.from(d);
       var repo = GitHub.repoFromJson(map);
       repos.add(repo);
-    });
+    }
 
     return Result(repos);
   }
