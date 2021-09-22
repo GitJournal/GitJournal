@@ -6,6 +6,8 @@
 
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+
 import 'package:collection/collection.dart';
 import 'package:dart_git/utils/result.dart';
 
@@ -36,8 +38,11 @@ class UserInfo {
   });
 
   @override
-  String toString() =>
-      'UserInfo{name: "$name", email: "$email", username: "$username"}';
+  String toString() {
+    return kDebugMode
+        ? 'UserInfo{name: "$name", email: "$email", username: "$username"}'
+        : 'UserInfo{name: ${name.isNotEmpty}, email: ${email.isNotEmpty}, username: ${username.isNotEmpty}}';
+  }
 }
 
 class GitHostRepo {
