@@ -84,6 +84,8 @@ class GitHostSetupAutoConfigurePageState
           var gitConfig = Provider.of<GitConfig>(context, listen: false);
           if (userInfo.name.isNotEmpty) {
             gitConfig.gitAuthor = userInfo.name;
+          } else if (userInfo.username.isNotEmpty) {
+            gitConfig.gitAuthor = userInfo.username;
           }
           if (userInfo.email.isNotEmpty) {
             gitConfig.gitAuthorEmail = userInfo.email;
