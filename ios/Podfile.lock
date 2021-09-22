@@ -35,8 +35,6 @@ PODS:
   - DKPhotoGallery/Resource (0.0.17):
     - SDWebImage
     - SwiftyGif
-  - ext_storage (0.0.1):
-    - Flutter
   - file_picker (0.0.1):
     - DKImagePickerController/PhotoGallery
     - Flutter
@@ -70,13 +68,13 @@ PODS:
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
-  - Sentry (7.2.8):
-    - Sentry/Core (= 7.2.8)
-  - Sentry/Core (7.2.8)
+  - Sentry (7.3.0):
+    - Sentry/Core (= 7.3.0)
+  - Sentry/Core (7.3.0)
   - sentry_flutter (0.0.1):
     - Flutter
     - FlutterMacOS
-    - Sentry (~> 7.2.7)
+    - Sentry (~> 7.3.0)
   - share_plus (0.0.1):
     - Flutter
   - shared_preferences (0.0.1):
@@ -93,7 +91,6 @@ PODS:
 DEPENDENCIES:
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
-  - ext_storage (from `.symlinks/plugins/ext_storage/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Flutter (from `Flutter`)
   - flutter_email_sender (from `.symlinks/plugins/flutter_email_sender/ios`)
@@ -129,8 +126,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/connectivity_plus/ios"
   device_info_plus:
     :path: ".symlinks/plugins/device_info_plus/ios"
-  ext_storage:
-    :path: ".symlinks/plugins/ext_storage/ios"
   file_picker:
     :path: ".symlinks/plugins/file_picker/ios"
   Flutter:
@@ -175,32 +170,31 @@ SPEC CHECKSUMS:
   device_info_plus: e5c5da33f982a436e103237c0c85f9031142abed
   DKImagePickerController: b5eb7f7a388e4643264105d648d01f727110fc3d
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
-  ext_storage: 4eaf3a84d5594106e2ebcc2502248cfde53c8fa1
   file_picker: 3e6c3790de664ccf9b882732d9db5eaf6b8d4eb1
-  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   flutter_email_sender: 02d7443217d8c41483223627972bfdc09f74276b
   flutter_tex_js: 010eab32e3bc329fe1b6d48efd8a3b0c0506bb50
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   icloud_documents_path: 11c858abe03d6900cacce4ef86267f527c89ab7d
-  image_picker: 50e7c7ff960e5f58faa4d1f4af84a771c671bc4a
+  image_picker: 9aa50e1d8cdacdbed739e925b7eea16d014367e6
   in_app_purchase: 3e2155afa9d03d4fa32d9e62d567885080ce97d6
   launch_review: 75d5a956ba8eaa493e9c9d4bf4c05e505e8d5ed0
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
-  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  path_provider: d1e9807085df1f9cc9318206cd649dc0b76be3de
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
-  quick_actions: 6cb2390c4dab0e737c94573c27e18d9666710720
+  quick_actions: cd83314083fa994182e6cd9e7516167a215a4f83
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   receive_sharing_intent: c0d87310754e74c0f9542947e7cbdf3a0335a3b1
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
-  Sentry: f315ca2086f72f825b1b2e0cdebe81b44131cbd2
-  sentry_flutter: 28e1e38fe797d3e5d766c596324834fed599bc0f
+  Sentry: 9a4e621430e2dae4477d791f2f7e905720b6efbf
+  sentry_flutter: 08fadaed464f44e1233d3fbb0c72b10cebd79487
   share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
-  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  shared_preferences: 5033afbb22d372e15aff8ff766df9021b845f273
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
   uni_links: d97da20c7701486ba192624d99bffaaffcfc298a
-  url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
+  url_launcher: b6e016d912f04be9f5bf6e8e82dc599b7ba59649
 
-PODFILE CHECKSUM: 672198cba6c85aab2ccfc74e520a8a44341796f8
+PODFILE CHECKSUM: 8ee05cafca4ecc20e78d977a976ea5b5ceaae290
 
 COCOAPODS: 1.10.1
