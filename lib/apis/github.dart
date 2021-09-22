@@ -334,21 +334,35 @@ class GitHub implements GitHost {
       return Result.fail(Exception('GitHub UserInfo missing login'));
     }
 
+    var name = "";
+    var email = "";
+    var login = "";
+
     if (map['name'] is! String) {
-      return Result.fail(Exception('GitHub UserInfo "name is not String"'));
-    }
-    if (map['email'] is! String) {
-      return Result.fail(Exception('GitHub UserInfo "email is not String"'));
-    }
-    if (map['login'] is! String) {
-      return Result.fail(Exception('GitHub UserInfo "login is not String"'));
+      var type = map['name'].runtimeType;
+      var ex = Exception('GitHub UserInfo "name is not String" is $type');
+      logException(ex, StackTrace.current);
+    } else {
+      name = map['name'];
     }
 
-    return Result(UserInfo(
-      name: map['name'],
-      email: map['email'],
-      username: map['login'],
-    ));
+    if (map['email'] is! String) {
+      var type = map['email'].runtimeType;
+      var ex = Exception('GitHub UserInfo "email is not String" is $type');
+      logException(ex, StackTrace.current);
+    } else {
+      email = map['email'];
+    }
+
+    if (map['login'] is! String) {
+      var type = map['login'].runtimeType;
+      var ex = Exception('GitHub UserInfo "login is not String" is $type');
+      logException(ex, StackTrace.current);
+    } else {
+      login = map['login'];
+    }
+
+    return Result(UserInfo(name: name, email: email, username: login));
   }
 
   String _buildAuthHeader() {
