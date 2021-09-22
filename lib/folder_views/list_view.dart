@@ -78,7 +78,6 @@ class _FolderListViewState extends State<FolderListView> {
   }
 
   void _noteAdded(int index, Note _) {
-    assert(_listKey.currentState != null);
     if (_listKey.currentState == null) {
       return;
     }
@@ -86,7 +85,6 @@ class _FolderListViewState extends State<FolderListView> {
   }
 
   void _noteRemoved(int index, Note note) {
-    assert(_listKey.currentState != null);
     if (_listKey.currentState == null) {
       return;
     }
