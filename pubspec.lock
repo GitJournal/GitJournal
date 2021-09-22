@@ -324,7 +324,7 @@ packages:
       name: dart_style
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "2.1.1"
   dashbook:
     dependency: "direct dev"
     description:
@@ -457,7 +457,7 @@ packages:
       name: file_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.2"
+    version: "4.1.1"
   filesystem_picker:
     dependency: "direct main"
     description:
@@ -637,7 +637,7 @@ packages:
       name: fs_shim
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1+2"
+    version: "2.0.2"
   function_types:
     dependency: "direct main"
     description:
@@ -688,7 +688,7 @@ packages:
       name: graphs
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.1.0"
   grpc:
     dependency: "direct main"
     description:
@@ -781,14 +781,14 @@ packages:
       name: image
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.4"
+    version: "3.0.5"
   image_picker:
     dependency: "direct main"
     description:
       name: image_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.8.4+1"
+    version: "0.8.4+2"
   image_picker_for_web:
     dependency: transitive
     description:
@@ -879,7 +879,7 @@ packages:
       name: logging
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.2"
   markdown:
     dependency: transitive
     description:
@@ -1056,14 +1056,14 @@ packages:
       name: path_provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "2.0.5"
   path_provider_linux:
     dependency: transitive
     description:
       name: path_provider_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.2"
+    version: "2.1.0"
   path_provider_macos:
     dependency: transitive
     description:
@@ -1156,7 +1156,7 @@ packages:
       name: postgrest
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.7"
+    version: "0.1.8"
   process:
     dependency: transitive
     description:
@@ -1184,21 +1184,21 @@ packages:
       name: pub_semver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.1.0"
   pubspec_parse:
     dependency: transitive
     description:
       name: pubspec_parse
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.1.0"
   quick_actions:
     dependency: "direct main"
     description:
       name: quick_actions
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.0+6"
+    version: "0.6.0+7"
   quick_actions_platform_interface:
     dependency: transitive
     description:
@@ -1247,21 +1247,21 @@ packages:
       name: sembast
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.0+2"
+    version: "3.1.1"
   sentry:
     dependency: transitive
     description:
       name: sentry
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.0"
+    version: "6.0.1"
   sentry_flutter:
     dependency: "direct main"
     description:
       name: sentry_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.0"
+    version: "6.0.1"
   share_plus:
     dependency: "direct main"
     description:
@@ -1310,7 +1310,7 @@ packages:
       name: shared_preferences
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.7"
+    version: "2.0.8"
   shared_preferences_linux:
     dependency: transitive
     description:
@@ -1476,14 +1476,14 @@ packages:
       name: supabase
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.5"
+    version: "0.2.6"
   supabase_flutter:
     dependency: "direct main"
     description:
       name: supabase_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.6"
+    version: "0.2.7"
   synchronized:
     dependency: "direct main"
     description:
@@ -1595,7 +1595,7 @@ packages:
       name: url_launcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.10"
+    version: "6.0.11"
   url_launcher_linux:
     dependency: transitive
     description:
@@ -1710,4 +1710,4 @@ packages:
     version: "0.0.11"
 sdks:
   dart: ">=2.14.0 <3.0.0"
-  flutter: ">=2.0.3"
+  flutter: ">=2.5.1"

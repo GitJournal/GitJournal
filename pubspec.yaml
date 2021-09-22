@@ -7,8 +7,8 @@ description: A Note Taking App Built on top of Git
 version: 1.80.4+10
 
 environment:
-  sdk: ">=2.13.0 <3.0.0"
-  flutter: ">=2.0.3"
+  sdk: ">=2.14.0 <3.0.0"
+  flutter: ">=2.5.1"
 
 publish_to: none
 
