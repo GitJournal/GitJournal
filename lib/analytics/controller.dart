@@ -5,11 +5,10 @@
  */
 
 // FIXME: Discard the old analytics, if there are way too many!
-// TODO: Take network connectivity into account
-// TODO: Take connection type (wifi vs mobile) into account
 
 // TODO: Only allow one call of _sendAnalytics at a time
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:function_types/function_types.dart';
 
 import 'storage.dart';
@@ -30,6 +29,15 @@ class AnalyticsController {
       return false;
     }
 
+    if (!(await _onWifi())) {
+      return false;
+    }
+
     return true;
+  }
+
+  Future<bool> _onWifi() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    return connectivityResult == ConnectivityResult.wifi;
   }
 }
