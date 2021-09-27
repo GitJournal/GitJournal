@@ -16,6 +16,7 @@ import 'package:uuid/uuid.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'config.dart';
+import 'controller.dart';
 import 'device_info.dart';
 import 'events.dart';
 import 'generated/analytics.pb.dart' as pb;
@@ -32,6 +33,7 @@ class Analytics {
   final AnalyticsStorage storage;
   final SharedPreferences pref;
   final AnalyticsConfig _config;
+  late final AnalyticsController _controller;
 
   Analytics._({
     required this.storage,
@@ -42,6 +44,11 @@ class Analytics {
     required AnalyticsConfig config,
   }) : _config = config {
     _sessionId = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+
+    _controller = AnalyticsController(
+      storage: storage,
+      isEnabled: () => enabled,
+    );
   }
 
   static Analytics? _global;
@@ -135,22 +142,9 @@ class Analytics {
     );
   }
 
-  Future<bool> _shouldSend() async {
-    if (!enabled) {
-      return false;
-    }
-
-    var oldestEvent = await storage.oldestEvent();
-    if (DateTime.now().difference(oldestEvent) < const Duration(hours: 1)) {
-      return false;
-    }
-
-    return true;
-  }
-
   // FIXME: Send the backlog events when disabled
   Future<void> _sendAnalytics() async {
-    var shouldSend = await _shouldSend();
+    var shouldSend = await _controller.shouldSend();
     if (!shouldSend) {
       return;
     }
