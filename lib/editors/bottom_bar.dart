@@ -272,7 +272,7 @@ class BottomMenuSheet extends StatelessWidget {
               var note = editorState.getNote();
               Navigator.of(context).pop();
 
-              editor.common.renameNote(note);
+              editor.common.findInNote(note);
             },
           ),
       ],

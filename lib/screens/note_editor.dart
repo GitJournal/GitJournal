@@ -300,6 +300,11 @@ class NoteEditorState extends State<NoteEditor>
   }
 
   @override
+  void findInNote(Note note) async {
+    // WTF is going on over here
+  }
+
+  @override
   void renameNote(Note _note) async {
     var note = this.note!;
     var fileName = await showDialog(
