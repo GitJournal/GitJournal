@@ -147,7 +147,7 @@ class _EditorScaffoldState extends State<EditorScaffold> {
         },
         child: Column(
           children: <Widget>[
-            _AnimatedOpacityIgnorePointer(
+            _HideWidget(
               visible: !hideUIElements,
               child: EditorAppBar(
                 editor: widget.editor,
@@ -159,7 +159,7 @@ class _EditorScaffoldState extends State<EditorScaffold> {
               ),
             ),
             Expanded(child: body),
-            _AnimatedOpacityIgnorePointer(
+            _HideWidget(
               visible: !hideUIElements,
               child: EditorBottomBar(
                 editor: widget.editor,
@@ -192,12 +192,11 @@ class _EditorScaffoldState extends State<EditorScaffold> {
   }
 }
 
-class _AnimatedOpacityIgnorePointer extends StatelessWidget {
+class _HideWidget extends StatelessWidget {
   final bool visible;
   final Widget child;
 
-  const _AnimatedOpacityIgnorePointer(
-      {required this.visible, required this.child});
+  const _HideWidget({required this.visible, required this.child});
 
   @override
   Widget build(BuildContext context) {
