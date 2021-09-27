@@ -58,9 +58,6 @@ gj_common
 debugSymbols
 .externalNativeBuild
 
-# Monarch related
-.monarch/
-
 # Legacy Eclipse project files
 .settings/
 .classpath
