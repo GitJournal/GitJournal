@@ -29,6 +29,7 @@ linter:
     use_key_in_widget_constructors: false
     prefer_function_declarations_over_variables: false
     no_logic_in_create_state: false
+    non_constant_identifier_names: false
 
 dart_code_metrics:
   metrics-exclude:

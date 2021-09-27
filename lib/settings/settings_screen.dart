@@ -122,7 +122,7 @@ class SettingsListState extends State<SettingsList> {
             builder: (context) => SettingsDisplayImagesScreen(),
             settings: const RouteSettings(name: '/settings/display_images'),
           );
-          Navigator.of(context).push(route);
+          var _ = Navigator.push(context, route);
         },
       ),
       ProOverlay(
@@ -151,7 +151,7 @@ class SettingsListState extends State<SettingsList> {
               builder: (context) => BottomMenuBarSettings(),
               settings: const RouteSettings(name: '/settings/bottom_menu_bar'),
             );
-            Navigator.of(context).push(route);
+            var _ = Navigator.push(context, route);
           },
         ),
       ),
@@ -182,7 +182,7 @@ class SettingsListState extends State<SettingsList> {
             builder: (context) => GitRemoteSettingsScreen(),
             settings: const RouteSettings(name: '/settings/gitRemote'),
           );
-          Navigator.of(context).push(route);
+          var _ = Navigator.push(context, route);
         },
         enabled: repo.remoteGitRepoConfigured,
       ),
@@ -195,7 +195,7 @@ class SettingsListState extends State<SettingsList> {
             builder: (context) => SettingsEditorsScreen(),
             settings: const RouteSettings(name: '/settings/editors'),
           );
-          Navigator.of(context).push(route);
+          var _ = Navigator.push(context, route);
         },
       ),
       SettingsHeader(tr(LocaleKeys.settings_storage_title)),
@@ -219,7 +219,7 @@ class SettingsListState extends State<SettingsList> {
             builder: (context) => NoteMetadataSettingsScreen(),
             settings: const RouteSettings(name: '/settings/noteMetaData'),
           );
-          Navigator.of(context).push(route);
+          var _ = Navigator.push(context, route);
         },
       ),
       ProOverlay(
@@ -232,7 +232,7 @@ class SettingsListState extends State<SettingsList> {
               builder: (context) => const SettingsTagsScreen(),
               settings: const RouteSettings(name: '/settings/tags'),
             );
-            Navigator.of(context).push(route);
+            var _ = Navigator.push(context, route);
           },
         ),
       ),
@@ -244,7 +244,7 @@ class SettingsListState extends State<SettingsList> {
             builder: (context) => SettingsImagesScreen(),
             settings: const RouteSettings(name: '/settings/images'),
           );
-          Navigator.of(context).push(route);
+          var _ = Navigator.push(context, route);
         },
       ),
       if (Platform.isAndroid)
@@ -331,7 +331,7 @@ class SettingsListState extends State<SettingsList> {
             builder: (context) => SettingsMisc(),
             settings: const RouteSettings(name: '/settings/misc'),
           );
-          Navigator.of(context).push(route);
+          var _ = Navigator.push(context, route);
         },
       ),
       if (repoManager.repoIds.length > 1)
@@ -362,7 +362,7 @@ class SettingsListState extends State<SettingsList> {
             builder: (context) => const FeatureTimelineScreen(),
             settings: const RouteSettings(name: '/featureTimeline'),
           );
-          Navigator.of(context).push(route);
+          var _ = Navigator.push(context, route);
         },
       ),
       const SizedBox(height: 16.0),
@@ -398,7 +398,7 @@ class SettingsListState extends State<SettingsList> {
             builder: (context) => const DebugScreen(),
             settings: const RouteSettings(name: '/settings/debug'),
           );
-          Navigator.of(context).push(route);
+          var _ = Navigator.push(context, route);
         },
       ),
       ListTile(
@@ -409,7 +409,7 @@ class SettingsListState extends State<SettingsList> {
             builder: (context) => ExperimentalSettingsScreen(),
             settings: const RouteSettings(name: '/settings/experimental'),
           );
-          Navigator.of(context).push(route);
+          var _ = Navigator.push(context, route);
         },
       ),
       ListTile(

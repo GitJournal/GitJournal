@@ -136,7 +136,7 @@ bool openNewNoteEditor(BuildContext context, String noteSpec) {
     AppRoute.NewNotePrefix + folderConfig.defaultEditor.toInternalString(),
   );
 
-  var _ = Navigator.of(context).push(route);
+  var _ = Navigator.push(context, route);
   return true;
 }
 

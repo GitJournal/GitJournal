@@ -45,7 +45,7 @@ import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/themes.dart';
 
 class JournalApp extends StatefulWidget {
-  static Future main(SharedPreferences pref) async {
+  static Future<void> main(SharedPreferences pref) async {
     await Log.init();
 
     Log.i("--------------------------------");

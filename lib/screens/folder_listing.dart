@@ -54,7 +54,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
           ),
           settings: const RouteSettings(name: '/folder/'),
         );
-        Navigator.of(context).push(route);
+        var _ = Navigator.push(context, route);
       },
       onFolderSelected: (folder) {
         setState(() {

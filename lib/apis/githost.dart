@@ -17,7 +17,7 @@ typedef OAuthCallback = void Function(GitHostException?);
 
 abstract class GitHost {
   void init(OAuthCallback oAuthCallback);
-  Future launchOAuthScreen();
+  Future<void> launchOAuthScreen();
 
   Future<Result<UserInfo>> getUserInfo();
   Future<Result<List<GitHostRepo>>> listRepos();

@@ -82,7 +82,7 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
     }
     assert(i != -1);
 
-    _notes.removeAt(i);
+    var _ = _notes.removeAt(i);
     notifyNoteRemoved(i, note);
   }
 

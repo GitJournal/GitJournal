@@ -49,9 +49,9 @@ abstract class SettingsSharedPref {
   Future<void> setString(String key, String value, String? defaultValue) async {
     key = id + '_' + key;
     if (value == defaultValue) {
-      await pref.remove(key);
+      var _ = await pref.remove(key);
     } else {
-      await pref.setString(key, value);
+      var _ = await pref.setString(key, value);
     }
   }
 
@@ -59,9 +59,9 @@ abstract class SettingsSharedPref {
   Future<void> setBool(String key, bool value, bool defaultValue) async {
     key = id + '_' + key;
     if (value == defaultValue) {
-      await pref.remove(key);
+      var _ = await pref.remove(key);
     } else {
-      await pref.setBool(key, value);
+      var _ = await pref.setBool(key, value);
     }
   }
 
@@ -69,9 +69,9 @@ abstract class SettingsSharedPref {
   Future<void> setInt(String key, int value, int defaultValue) async {
     key = id + '_' + key;
     if (value == defaultValue) {
-      await pref.remove(key);
+      var _ = await pref.remove(key);
     } else {
-      await pref.setInt(key, value);
+      var _ = await pref.setInt(key, value);
     }
   }
 
@@ -79,9 +79,9 @@ abstract class SettingsSharedPref {
   Future<void> setDouble(String key, double value, double defaultValue) async {
     key = id + '_' + key;
     if (value == defaultValue) {
-      await pref.remove(key);
+      var _ = await pref.remove(key);
     } else {
-      await pref.setDouble(key, value);
+      var _ = await pref.setDouble(key, value);
     }
   }
 
@@ -94,9 +94,9 @@ abstract class SettingsSharedPref {
         const SetEquality().equals;
 
     if (eq(value, defaultValue)) {
-      await pref.remove(key);
+      var _ = await pref.remove(key);
     } else {
-      await pref.setStringList(key, value.toList());
+      var _ = await pref.setStringList(key, value.toList());
     }
   }
 }

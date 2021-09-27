@@ -19,7 +19,8 @@ import 'package:gitjournal/settings/app_settings.dart';
 import 'package:gitjournal/setup/fakes/clone_fake.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  dynamic _;
+  _ = WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
   PathProviderPlatform.instance = await FakePathProviderPlatform.init();
@@ -34,11 +35,11 @@ void main() async {
   var appSettings = AppSettings.instance;
   Log.i("AppSetting ${appSettings.toMap()}");
 
-  dashbook
+  _ = dashbook
       .storiesOf('Settings')
       .add('Debug Screen', (context) => const DebugScreenFake());
 
-  dashbook.storiesOf('Setup').decorator(CenterDecorator()).add(
+  _ = dashbook.storiesOf('Setup').decorator(CenterDecorator()).add(
     'clone',
     (context) {
       return const Padding(

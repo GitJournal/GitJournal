@@ -21,7 +21,7 @@ import 'package:gitjournal/widgets/scroll_view_without_animation.dart';
 Set<String> _generateMonthlySkus() {
   var list = <String>{};
   for (var i = 0; i <= 25; i++) {
-    list.add("sku_monthly_min$i");
+    var _ = list.add("sku_monthly_min$i");
   }
   return list;
 }
@@ -29,7 +29,7 @@ Set<String> _generateMonthlySkus() {
 Set<String> _generateYearlySkus() {
   var list = <String>{};
   for (var i = 0; i <= 20; i++) {
-    list.add("sku_yearly_$i");
+    var _ = list.add("sku_yearly_$i");
   }
   return list;
 }
@@ -116,7 +116,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                     builder: (context) => const FeatureTimelineScreen(),
                     settings: const RouteSettings(name: '/featureTimeline'),
                   );
-                  Navigator.of(context).push(route);
+                  var _ = Navigator.push(context, route);
                 },
               ),
             ],

@@ -25,7 +25,7 @@ class RichTextController extends TextEditingController {
     var regexp = RegExp(RegExp.escape(highlightText), caseSensitive: false);
     var children = <TextSpan>[];
 
-    text.splitMapJoin(
+    var _ = text.splitMapJoin(
       regexp,
       onMatch: (Match m) {
         children.add(TextSpan(

@@ -29,7 +29,7 @@ class Image {
     var absImagePath = Image._buildImagePath(parent, hash.toString() + ext);
 
     // FIXME: Handle errors in copying / reading the file
-    await File(filePath).copy(absImagePath);
+    var _ = await File(filePath).copy(absImagePath);
 
     return Image._(parent, absImagePath, hash);
   }

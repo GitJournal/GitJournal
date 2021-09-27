@@ -19,7 +19,7 @@ class GitHubFake implements GitHost {
   @override
   void init(OAuthCallback oAuthCallback) {}
   @override
-  Future launchOAuthScreen() async {}
+  Future<void> launchOAuthScreen() async {}
 
   @override
   Future<Result<UserInfo>> getUserInfo() async {

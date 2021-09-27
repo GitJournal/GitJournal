@@ -18,7 +18,7 @@ import 'package:gitjournal/settings/app_settings.dart';
 
 void main() async {
   //TestWidgetsFlutterBinding.ensureInitialized();
-  WidgetsFlutterBinding.ensureInitialized();
+  var _ = WidgetsFlutterBinding.ensureInitialized();
 
   final dashbook = Dashbook();
 
@@ -41,8 +41,7 @@ void main() async {
     cacheDir: cacheDir,
     pref: pref,
   );
-  await repoManager.buildActiveRepository();
-  var repo = repoManager.currentRepo;
+  var repo = await repoManager.buildActiveRepository();
   var settings = repo.settings;
   var storageConfig = repo.storageConfig;
   var appRouter = AppRouter(
@@ -51,8 +50,10 @@ void main() async {
       storageConfig: storageConfig);
 
   for (var routeName in AppRoute.all) {
-    dashbook.storiesOf(routeName).decorator(CenterDecorator()).add('all',
-        (context) {
+    var _ = dashbook
+        .storiesOf(routeName)
+        .decorator(CenterDecorator())
+        .add('all', (context) {
       return appRouter.screenForRoute(
           routeName, repo, storageConfig, "", [], () {})!;
     });

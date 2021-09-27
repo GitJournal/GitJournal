@@ -80,7 +80,7 @@ class _AppDrawerState extends State<AppDrawer>
             icon: Icons.add,
             title: tr(LocaleKeys.drawer_addRepo),
             onTap: () {
-              repoManager.addRepo();
+              var _ = repoManager.addRepoAndSwitch();
               Navigator.pop(context);
             },
             selected: false,
@@ -120,7 +120,7 @@ class _AppDrawerState extends State<AppDrawer>
         ),
         onTap: () {
           Navigator.pop(context);
-          Navigator.pushNamed(context, "/setupRemoteGit");
+          var _ = Navigator.pushNamed(context, "/setupRemoteGit");
 
           logEvent(Event.DrawerSetupGitHost);
         },
@@ -138,9 +138,9 @@ class _AppDrawerState extends State<AppDrawer>
           AppDrawerHeader(
             repoListToggled: () {
               if (animController.isCompleted) {
-                animController.reverse(from: 1.0);
+                var _ = animController.reverse(from: 1.0);
               } else {
-                animController.forward(from: 0.0);
+                var _ = animController.forward(from: 0.0);
               }
             },
           ),
@@ -154,7 +154,7 @@ class _AppDrawerState extends State<AppDrawer>
               title: tr(LocaleKeys.drawer_pro),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, "/purchase");
+                var _ = Navigator.pushNamed(context, "/purchase");
 
                 logEvent(
                   Event.PurchaseScreenOpen,
@@ -318,7 +318,7 @@ class _AppDrawerState extends State<AppDrawer>
             title: tr(LocaleKeys.settings_title),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushNamed(context, "/settings");
+              var _ = Navigator.pushNamed(context, "/settings");
 
               logEvent(Event.DrawerSettings);
             },
@@ -418,6 +418,6 @@ void _navTopLevel(BuildContext context, String toRoute) {
     },
   );
   if (!wasParent) {
-    Navigator.pushNamed(context, toRoute);
+    var _ = Navigator.pushNamed(context, toRoute);
   }
 }

@@ -110,7 +110,7 @@ class _ExperimentalSettingsScreenState
               title: const Text('Enter Pro Password'),
               subtitle: Text('Pro: ' + AppSettings.instance.proMode.toString()),
               onTap: () async {
-                await showDialog(
+                var _ = await showDialog(
                   context: context,
                   builder: (context) => _PasswordForm(),
                 );

@@ -7,6 +7,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:function_types/function_types.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 
@@ -14,7 +15,7 @@ class ListPreference extends StatelessWidget {
   final String title;
   final String? currentOption;
   final List<String> options;
-  final Function onChange;
+  final Func1<String, void> onChange;
   final bool enabled;
 
   const ListPreference({
@@ -86,7 +87,7 @@ class _LabeledRadio extends StatelessWidget {
   final String label;
   final String? groupValue;
   final String? value;
-  final void Function(String?) onChanged;
+  final Func1<String?, void> onChanged;
 
   @override
   Widget build(BuildContext context) {

@@ -78,13 +78,13 @@ class GitHub implements GitHost {
   }
 
   @override
-  Future launchOAuthScreen() async {
+  Future<void> launchOAuthScreen() async {
     // FIXME: Add some 'state' over here!
 
     var url = "https://github.com/login/oauth/authorize?client_id=" +
         _clientID +
         "&scope=repo";
-    return launch(url);
+    var _ = await launch(url);
   }
 
   @override

@@ -39,7 +39,7 @@ class _AccountScreenState extends SupabaseAuthRequiredState<AccountScreen> {
   @override
   void onUnauthenticated() {
     if (mounted) {
-      Navigator.of(context).pushReplacementNamed(AppRoute.Login);
+      var _ = Navigator.pushReplacementNamed(context, AppRoute.Login);
     }
   }
 

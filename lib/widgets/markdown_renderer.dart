@@ -103,7 +103,7 @@ class MarkdownRenderer extends StatelessWidget {
 
         // External Link
         try {
-          await launch(link);
+          var _ = await launch(link);
         } catch (e, stackTrace) {
           Log.e('Opening Link', ex: e, stacktrace: stackTrace);
           showSnackbar(

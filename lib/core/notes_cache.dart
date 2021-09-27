@@ -78,14 +78,15 @@ class NotesCache {
         fullFilePath,
         DateTime.fromMillisecondsSinceEpoch(0),
       );
-      storage.load(note);
+
+      var _ = storage.load(note);
       parent.add(note);
     }
   }
 
   Future<void> clear() async {
     if (!enabled) return;
-    await File(filePath).delete();
+    var _ = await File(filePath).delete();
   }
 
   Future<void> buildCache(NotesFolderFS rootFolder) async {
@@ -119,7 +120,7 @@ class NotesCache {
         heap.add(note);
       }
       if (heap.length > CACHE_SIZE) {
-        heap.removeFirst();
+        var _ = heap.removeFirst();
       }
     }
 
@@ -157,7 +158,8 @@ class NotesCache {
     var newFilePath = filePath + ".new";
 
     var file = File(newFilePath);
-    await file.writeAsString(contents);
-    await file.rename(filePath);
+    dynamic _;
+    _ = await file.writeAsString(contents);
+    _ = await file.rename(filePath);
   }
 }

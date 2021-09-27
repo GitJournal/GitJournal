@@ -77,7 +77,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
             currentOption: currentBranch, // FIXME
             options: branches,
             onChange: (String branch) {
-              repo.checkoutBranch(branch);
+              var _ = repo.checkoutBranch(branch);
               setState(() {
                 currentBranch = branch;
               });
@@ -164,7 +164,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
       ),
       settings: const RouteSettings(name: '/settings/gitRemote/customKeys'),
     );
-    Navigator.of(context).push(route);
+    var _ = Navigator.push(context, route);
   }
 
   void _updateKeys(String publicKey, String privateKey, String password) {
@@ -245,7 +245,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
       ),
       settings: const RouteSettings(name: '/setupRemoteGit'),
     );
-    await Navigator.of(context).push(route);
+    var _ = await Navigator.push(context, route);
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 }

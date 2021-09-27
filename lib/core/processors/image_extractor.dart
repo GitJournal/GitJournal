@@ -29,7 +29,7 @@ class ImageExtractor {
       var alt = match.group(1);
       var url = match.group(2);
 
-      images.add(NoteImage(alt: alt ?? "", url: url ?? ""));
+      var _ = images.add(NoteImage(alt: alt ?? "", url: url ?? ""));
     }
 
     return images;

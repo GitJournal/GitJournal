@@ -101,9 +101,9 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
     void _onTap() {
       setState(() {
         if (containsTag) {
-          _selectedTags.remove(tag);
+          var _ = _selectedTags.remove(tag);
         } else {
-          _selectedTags.add(tag);
+          var _ = _selectedTags.add(tag);
         }
       });
     }
@@ -126,8 +126,9 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
 
   void _addTag(String tag) {
     setState(() {
-      _selectedTags.add(tag);
-      _allTags.add(tag);
+      dynamic _;
+      _ = _selectedTags.add(tag);
+      _ = _allTags.add(tag);
       _textController.text = "";
     });
   }

@@ -91,7 +91,7 @@ class TagListingScreen extends StatelessWidget {
           ),
           settings: const RouteSettings(name: AppRoute.AllTags),
         );
-        Navigator.of(context).push(route);
+        var _ = Navigator.push(context, route);
       },
     );
   }

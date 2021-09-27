@@ -47,7 +47,7 @@ class OAuthAppState extends State<OAuthApp> {
           ElevatedButton(
             child: const Text("Open OAuth URL"),
             onPressed: () {
-              githost!.launchOAuthScreen();
+              var _ = githost!.launchOAuthScreen();
             },
           ),
           ElevatedButton(
@@ -78,7 +78,8 @@ class OAuthAppState extends State<OAuthApp> {
             child: const Text("Add Deploy Key"),
             onPressed: () async {
               try {
-                await githost!.addDeployKey(key, "vhanda/journal_test2");
+                var _ =
+                    await githost!.addDeployKey(key, "vhanda/journal_test2");
               } catch (err) {
                 print("Deploy Key: " + err.toString());
               }

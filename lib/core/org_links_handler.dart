@@ -47,7 +47,7 @@ class OrgLinkHandler {
       if (looksLikeUrl(link)) {
         // Remote images
         if (await canLaunch(link)) {
-          await launch(link);
+          var _ = await launch(link);
         } else {
           //throw 'Could not launch $link';
           log('could not launch $link');
@@ -83,7 +83,7 @@ class OrgLinkHandler {
         log('url: ' + link);
 
         if (await canLaunch(link)) {
-          await launch(link);
+          var _ = await launch(link);
         } else {
           Log.w('could not launch $link');
           //Log.e('Opening Link', ex: e, stacktrace: stackTrace);
@@ -101,7 +101,7 @@ class OrgLinkHandler {
   void _showImage(File file) {
     ThemableImage im = ThemableImage.image(file);
 
-    Navigator.push(
+    var _ = Navigator.push(
         context, MaterialPageRoute(builder: (context) => ImageDetails(im, "")));
     // captionText(context, altText, tooltip)
   }

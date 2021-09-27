@@ -173,12 +173,15 @@ class MarkdownImage extends StatelessWidget {
                 return GestureDetector(
                   child: Hero(tag: im, child: im),
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ImageDetails(
-                                im as ThemableImage,
-                                captionText(context, altText, tooltip))));
+                    var _ = Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ImageDetails(
+                          im as ThemableImage,
+                          captionText(context, altText, tooltip),
+                        ),
+                      ),
+                    );
                   },
                 );
               }

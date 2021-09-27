@@ -171,7 +171,7 @@ class InAppPurchases {
         Log.i("Pending Complete Purchase - ${pd.productID}");
 
         try {
-          await iapCon.completePurchase(pd);
+          var _ = await iapCon.completePurchase(pd);
         } catch (e, stackTrace) {
           logException(e, stackTrace);
         }

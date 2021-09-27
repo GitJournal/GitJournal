@@ -166,9 +166,9 @@ class __CurrentRepoState extends State<_CurrentRepo>
 
   void _pressed() {
     if (controller.isCompleted) {
-      controller.reverse(from: 1.0);
+      var _ = controller.reverse(from: 1.0);
     } else {
-      controller.forward(from: 0.0);
+      var _ = controller.forward(from: 0.0);
     }
     widget.repoListToggled();
   }

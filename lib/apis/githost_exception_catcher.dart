@@ -14,7 +14,7 @@ class GitHostExceptionCatcher implements GitHost {
   @override
   void init(OAuthCallback oAuthCallback) => _.init(oAuthCallback);
   @override
-  Future launchOAuthScreen() => _.launchOAuthScreen();
+  Future<void> launchOAuthScreen() => _.launchOAuthScreen();
 
   @override
   Future<Result<UserInfo>> getUserInfo() => catchAll(_.getUserInfo);

@@ -6,6 +6,8 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:function_types/function_types.dart';
+
 import 'package:gitjournal/account/account_screen.dart';
 import 'package:gitjournal/account/login_screen.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
@@ -82,7 +84,7 @@ class AppRouter {
     GitJournalRepo repository,
     String sharedText,
     List<String> sharedImages,
-    Function callbackIfUsedShared,
+    Func0<void> callbackIfUsedShared,
   ) {
     var route = routeSettings.name ?? "";
     if (route == AppRoute.AllFolders ||
@@ -123,7 +125,7 @@ class AppRouter {
     StorageConfig storageConfig,
     String sharedText,
     List<String> sharedImages,
-    Function callbackIfUsedShared,
+    Func0<void> callbackIfUsedShared,
   ) {
     switch (route) {
       case '/':

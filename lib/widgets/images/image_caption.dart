@@ -77,16 +77,20 @@ class ImageCaption extends StatelessWidget {
           padding: const EdgeInsets.all(margin),
           child: GestureDetector(
             onTap: () {
-              Navigator.push(context, HeroDialogRoute(builder: (context) {
-                return Dialog(
+              var _ = Navigator.push(
+                context,
+                HeroDialogRoute(builder: (context) {
+                  return Dialog(
                     backgroundColor: Colors.transparent,
                     child: GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
                       },
                       child: caption,
-                    ));
-              }));
+                    ),
+                  );
+                }),
+              );
             },
             child: caption,
           ),

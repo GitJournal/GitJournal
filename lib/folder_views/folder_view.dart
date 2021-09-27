@@ -254,7 +254,7 @@ class _FolderViewState extends State<FolderView> {
       ),
       AppRoute.NewNotePrefix + routeType,
     );
-    var _ = await Navigator.of(context).push(route);
+    var _ = await Navigator.push(context, route);
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
   }
 
@@ -278,7 +278,7 @@ class _FolderViewState extends State<FolderView> {
   }
 
   void _configureViewButtonPressed() async {
-    await showDialog<SortingMode>(
+    var _ = await showDialog<SortingMode>(
       context: context,
       builder: (BuildContext context) {
         void headerTypeChanged(StandardViewHeader? newHeader) {

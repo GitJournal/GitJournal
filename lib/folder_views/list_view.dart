@@ -93,7 +93,7 @@ class _FolderListViewState extends State<FolderListView> {
       if (i == -1) {
         return _buildNote(note, widget.isNoteSelected(note), animation);
       } else {
-        deletedViaDismissed.removeAt(i);
+        var _ = deletedViaDismissed.removeAt(i);
         return Container();
       }
     });

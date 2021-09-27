@@ -54,7 +54,7 @@ class RepositoryManager with ChangeNotifier {
     return pref.getString(id + "_" + FOLDER_NAME_KEY) ?? "journal";
   }
 
-  Future<String> addRepo() async {
+  Future<String> addRepoAndSwitch() async {
     int i = repoIds.length;
     while (repoIds.contains(i.toString())) {
       i++;

@@ -6,6 +6,8 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:function_types/function_types.dart';
+
 import 'package:gitjournal/core/notes_folder_fs.dart';
 
 typedef FolderSelectedCallback = void Function(NotesFolderFS folder);
@@ -14,7 +16,7 @@ class FolderTreeView extends StatefulWidget {
   final NotesFolderFS rootFolder;
 
   final FolderSelectedCallback onFolderSelected;
-  final Function onFolderUnselected;
+  final Func0<void> onFolderUnselected;
   final FolderSelectedCallback onFolderEntered;
 
   const FolderTreeView({
@@ -22,13 +24,14 @@ class FolderTreeView extends StatefulWidget {
     required this.rootFolder,
     required this.onFolderEntered,
     this.onFolderSelected = _doNothing,
-    this.onFolderUnselected = _doNothing,
+    this.onFolderUnselected = _doNothing2,
   }) : super(key: key);
 
   @override
   FolderTreeViewState createState() => FolderTreeViewState();
 
   static void _doNothing(NotesFolderFS f) {}
+  static void _doNothing2() {}
 }
 
 class FolderTreeViewState extends State<FolderTreeView> {

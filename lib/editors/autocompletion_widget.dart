@@ -146,7 +146,7 @@ class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
     Overlay.of(context)!.insert(overlayEntry!);
 
     // Removes the over lay entry from the Overly after 500 milliseconds
-    await Future.delayed(5000.milliseconds);
+    var _ = await Future.delayed(5000.milliseconds);
     _hideOverlay();
   }
 

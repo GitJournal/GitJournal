@@ -66,12 +66,12 @@ class GitLab implements GitHost {
   }
 
   @override
-  Future launchOAuthScreen() async {
+  Future<void> launchOAuthScreen() async {
     _stateOAuth = _randomString(10);
 
     var url =
         "https://gitlab.com/oauth/authorize?client_id=$_clientID&response_type=token&state=$_stateOAuth&redirect_uri=gitjournal://login.oauth2";
-    return launch(url);
+    var _ = await launch(url);
   }
 
   @override

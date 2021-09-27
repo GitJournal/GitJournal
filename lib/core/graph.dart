@@ -133,12 +133,12 @@ class Graph extends ChangeNotifier {
     var nodes = <int?>{};
     for (var edge in edges) {
       if (edge.a.label == n.label) {
-        nodes.add(_nodeIndexes![edge.b.label]);
+        var _ = nodes.add(_nodeIndexes![edge.b.label]);
         continue;
       }
 
       if (edge.b.label == n.label) {
-        nodes.add(_nodeIndexes![edge.a.label]);
+        var _ = nodes.add(_nodeIndexes![edge.a.label]);
         continue;
       }
     }
@@ -163,7 +163,7 @@ class Graph extends ChangeNotifier {
       var dist = sqrt((dx * dx) + (dy * dy));
       if (dist <= 60) {
         // print('${node.label} and ${n.label} are too close - $dist');
-        _nodes.add(i);
+        var _ = _nodes.add(i);
       }
     }
 
