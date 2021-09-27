@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:function_types/function_types.dart';
 
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/features.dart';
 
 export 'package:gitjournal/editors/scaffold.dart';
 
@@ -83,6 +84,9 @@ class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (Features.findInNote) {
+      return const EditorAppSearchBar();
+    }
     return AppBar(
       leading: IconButton(
         key: const ValueKey("NewEntry"),
@@ -122,18 +126,9 @@ class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
 // WIP
 class EditorAppSearchBar extends StatelessWidget
     implements PreferredSizeWidget {
-  final Editor editor;
-  final EditorState editorState;
-  final IconButton? extraButton;
-  final Func0<void> onEditingModeChange;
-
   const EditorAppSearchBar({
     Key? key,
-    required this.editor,
-    required this.editorState,
-    required this.onEditingModeChange,
-    this.extraButton,
-  })  : preferredSize = const Size.fromHeight(kToolbarHeight * 2),
+  })  : preferredSize = const Size.fromHeight(kToolbarHeight),
         super(key: key);
 
   @override
@@ -141,27 +136,38 @@ class EditorAppSearchBar extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return AppBar(
-      leading: IconButton(
-        icon: const Icon(Icons.close),
-        onPressed: () {
-          //editor.common.exitEditorSelected(editorState.getNote());
-        },
+      automaticallyImplyLeading: false,
+      title: TextField(
+        style: theme.textTheme.subtitle1,
+        decoration: const InputDecoration(
+          hintText: 'Find in Note',
+          border: InputBorder.none,
+        ),
+        maxLines: 1,
       ),
-      actions: <Widget>[
-        if (extraButton != null) extraButton!,
+      actions: [
+        TextButton(
+          child: Text('1/5', style: theme.textTheme.subtitle1),
+          onPressed: () {},
+        ),
+        // Disable these when not possible
         IconButton(
-          icon: const Icon(Icons.navigate_before),
-          onPressed: onEditingModeChange,
+          icon: const Icon(Icons.arrow_upward),
+          onPressed: () {},
         ),
         IconButton(
-          icon: const Icon(Icons.navigate_next),
-          onPressed: () {
-            // var note = editorState.getNote();
-            // editor.common.noteEditorChooserSelected(note);
-          },
+          icon: const Icon(Icons.arrow_downward),
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () {},
         ),
       ],
+      // It would be awesome if the scrollbar could also change
+      // like how it is done in chrome
     );
   }
 }
