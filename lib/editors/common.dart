@@ -24,7 +24,6 @@ abstract class EditorCommon {
   void renameNote(Note note);
   void editTags(Note note);
   void deleteNote(Note note);
-  void findInNote(Note note);
 
   void noteEditorChooserSelected(Note note);
   void moveNoteToFolderSelected(Note note);

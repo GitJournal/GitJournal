@@ -11,9 +11,11 @@ import 'package:flutter/material.dart';
 class EditorScrollView extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry padding;
+  final ScrollController? scrollController;
 
   const EditorScrollView({
     Key? key,
+    this.scrollController,
     required this.child,
     this.padding = const EdgeInsets.all(16.0),
   }) : super(key: key);
@@ -30,6 +32,7 @@ class EditorScrollView extends StatelessWidget {
           return false;
         },
         child: SingleChildScrollView(
+          controller: scrollController,
           padding: padding,
           child: ConstrainedBox(
             constraints: BoxConstraints(

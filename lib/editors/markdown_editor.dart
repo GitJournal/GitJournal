@@ -63,6 +63,10 @@ class MarkdownEditorState extends State<MarkdownEditor>
 
   late bool _noteModified;
 
+  late ScrollController _scrollController;
+
+  final _bodyEditorKey = GlobalKey();
+
   @override
   void initState() {
     super.initState();
@@ -81,6 +85,8 @@ class MarkdownEditorState extends State<MarkdownEditor>
     );
 
     _heuristics = EditorHeuristics(text: _note.body);
+
+    _scrollController = ScrollController(keepScrollOffset: false);
   }
 
   @override
@@ -104,6 +110,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
   @override
   Widget build(BuildContext context) {
     var editor = EditorScrollView(
+      scrollController: _scrollController,
       child: Column(
         children: <Widget>[
           NoteTitleEditor(
@@ -111,6 +118,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
             _noteTitleTextChanged,
           ),
           NoteBodyEditor(
+            key: _bodyEditorKey,
             textController: _textController,
             autofocus: widget.editMode,
             onChanged: _noteTextChanged,
@@ -215,4 +223,48 @@ class MarkdownEditorState extends State<MarkdownEditor>
   Future<void> _undo() async {}
 
   Future<void> _redo() async {}
+
+  SearchInfo search(String text) {
+    return SearchInfo(10, 2.0);
+  }
 }
+
+class SearchInfo {
+  final int numMatches;
+  final double currentMatch;
+  SearchInfo(this.numMatches, this.currentMatch);
+}
+
+double calculateTextHeight({
+  required String text,
+  required TextStyle style,
+  required GlobalKey editorKey,
+}) {
+  var renderBox = editorKey.currentContext!.findRenderObject() as RenderBox;
+  var editorWidth = renderBox.size.width;
+
+  var painter = TextPainter(
+    textDirection: TextDirection.ltr,
+    text: TextSpan(style: style, text: text),
+    maxLines: null,
+  );
+  painter.layout(maxWidth: editorWidth);
+
+  var lines = painter.computeLineMetrics();
+  double height = 0;
+  for (var lm in lines) {
+    height += lm.height;
+  }
+
+  return height;
+}
+
+
+// TODO: For 'Find in Note'
+// * Only show the "Find in Note" when in the edit mode
+// * On clicking on search, the parent NoteEditor goes into SearchMode
+// * We can get a callback in each Editor with the 'search(...)' this should
+//   return how many matches there are, and which match are we closet to
+//   maybe a double to represent if we are between two matches?
+// * Add methods to jumpToMatch(x)
+// *

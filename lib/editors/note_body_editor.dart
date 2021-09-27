@@ -25,13 +25,12 @@ class NoteBodyEditor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    var style = theme.textTheme.subtitle1;
 
     return TextField(
       autofocus: autofocus,
       keyboardType: TextInputType.multiline,
       maxLines: null,
-      style: style,
+      style: textStyle(context),
       decoration: InputDecoration(
         hintText: tr(LocaleKeys.editors_common_defaultBodyHint),
         border: InputBorder.none,
@@ -44,5 +43,10 @@ class NoteBodyEditor extends StatelessWidget {
       scrollPadding: const EdgeInsets.all(0.0),
       onChanged: (_) => onChanged(),
     );
+  }
+
+  static TextStyle textStyle(BuildContext context) {
+    var theme = Theme.of(context);
+    return theme.textTheme.subtitle1!;
   }
 }

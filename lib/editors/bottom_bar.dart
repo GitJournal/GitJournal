@@ -269,10 +269,9 @@ class BottomMenuSheet extends StatelessWidget {
             leading: const Icon(Icons.search),
             title: Text(tr(LocaleKeys.editors_common_find)),
             onTap: () {
-              var note = editorState.getNote();
-              Navigator.of(context).pop();
-
-              editor.common.findInNote(note);
+              // var note = editorState.getNote();
+              // Navigator.of(context).pop();
+              // editor.common.findInNote(note);
             },
           ),
       ],
