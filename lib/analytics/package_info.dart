@@ -16,5 +16,6 @@ Future<pb.PackageInfo> buildPackageInfo() async {
     version: info.version,
     buildNumber: info.buildNumber,
     buildSignature: info.buildSignature,
+    installSource: const String.fromEnvironment('INSTALL_SOURCE'),
   );
 }

@@ -232,12 +232,13 @@ const PackageInfo$json = const {
       '5': 9,
       '10': 'buildSignature'
     },
+    const {'1': 'installSource', '3': 6, '4': 1, '5': 9, '10': 'installSource'},
   ],
 };
 
 /// Descriptor for `PackageInfo`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List packageInfoDescriptor = $convert.base64Decode(
-    'CgtQYWNrYWdlSW5mbxIYCgdhcHBOYW1lGAEgASgJUgdhcHBOYW1lEiAKC3BhY2thZ2VOYW1lGAIgASgJUgtwYWNrYWdlTmFtZRIYCgd2ZXJzaW9uGAMgASgJUgd2ZXJzaW9uEiAKC2J1aWxkTnVtYmVyGAQgASgJUgtidWlsZE51bWJlchImCg5idWlsZFNpZ25hdHVyZRgFIAEoCVIOYnVpbGRTaWduYXR1cmU=');
+    'CgtQYWNrYWdlSW5mbxIYCgdhcHBOYW1lGAEgASgJUgdhcHBOYW1lEiAKC3BhY2thZ2VOYW1lGAIgASgJUgtwYWNrYWdlTmFtZRIYCgd2ZXJzaW9uGAMgASgJUgd2ZXJzaW9uEiAKC2J1aWxkTnVtYmVyGAQgASgJUgtidWlsZE51bWJlchImCg5idWlsZFNpZ25hdHVyZRgFIAEoCVIOYnVpbGRTaWduYXR1cmUSJAoNaW5zdGFsbFNvdXJjZRgGIAEoCVINaW5zdGFsbFNvdXJjZQ==');
 @$core.Deprecated('Use androidBuildVersionDescriptor instead')
 const AndroidBuildVersion$json = const {
   '1': 'AndroidBuildVersion',

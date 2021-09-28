@@ -50,7 +50,7 @@ fi
 
 xcodebuild -version
 
-flutter build ios --release --no-codesign --build-number="$BUILD_NUM" --build-name="$BUILD_NAME"
+flutter build ios --release --no-codesign --build-number="$BUILD_NUM" --build-name="$BUILD_NAME" --dart-define=INSTALL_SOURCE=appstore
 
 cd ios
 

@@ -665,6 +665,12 @@ class PackageInfo extends $pb.GeneratedMessage {
             ? ''
             : 'buildSignature',
         protoName: 'buildSignature')
+    ..aOS(
+        6,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'installSource',
+        protoName: 'installSource')
     ..hasRequiredFields = false;
 
   PackageInfo._() : super();
@@ -674,6 +680,7 @@ class PackageInfo extends $pb.GeneratedMessage {
     $core.String? version,
     $core.String? buildNumber,
     $core.String? buildSignature,
+    $core.String? installSource,
   }) {
     final _result = create();
     if (appName != null) {
@@ -690,6 +697,9 @@ class PackageInfo extends $pb.GeneratedMessage {
     }
     if (buildSignature != null) {
       _result.buildSignature = buildSignature;
+    }
+    if (installSource != null) {
+      _result.installSource = installSource;
     }
     return _result;
   }
@@ -778,6 +788,18 @@ class PackageInfo extends $pb.GeneratedMessage {
   $core.bool hasBuildSignature() => $_has(4);
   @$pb.TagNumber(5)
   void clearBuildSignature() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.String get installSource => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set installSource($core.String v) {
+    $_setString(5, v);
+  }
+
+  @$pb.TagNumber(6)
+  $core.bool hasInstallSource() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearInstallSource() => clearField(6);
 }
 
 class AndroidBuildVersion extends $pb.GeneratedMessage {

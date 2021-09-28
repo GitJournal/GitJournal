@@ -63,6 +63,7 @@ message PackageInfo {
   string version = 3;
   string buildNumber = 4;
   string buildSignature = 5;
+  string installSource = 6;
 }
 
 enum Platform {

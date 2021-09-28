@@ -259,7 +259,6 @@ double calculateTextHeight({
   return height;
 }
 
-
 // TODO: For 'Find in Note'
 // * Only show the "Find in Note" when in the edit mode
 // * On clicking on search, the parent NoteEditor goes into SearchMode
