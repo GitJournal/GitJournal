@@ -45,6 +45,15 @@ class StorageConfig extends ChangeNotifier with SettingsSharedPref {
   }
 
   Map<String, String> toLoggableMap() {
+    if (kReleaseMode) {
+      var isDefault = folderName == StorageConfig(id, pref).folderName;
+      return <String, String>{
+        'folderName': isDefault ? 'default' : 'other',
+        'storeInternally': storeInternally.toString(),
+        'storageLocation': storageLocation,
+      };
+    }
+
     return <String, String>{
       'folderName': folderName.toString(),
       'storeInternally': storeInternally.toString(),

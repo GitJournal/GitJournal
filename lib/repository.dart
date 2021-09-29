@@ -95,8 +95,6 @@ class GitJournalRepo with ChangeNotifier {
     var settings = Settings(id, pref);
     settings.load();
 
-    // logEvent(Event.Settings, parameters: settings.toLoggableMap());
-
     Log.i("StorageConfig", props: storageConfig.toLoggableMap());
     Log.i("FolderConfig", props: folderConfig.toLoggableMap());
     Log.i("GitConfig", props: gitConfig.toLoggableMap());
@@ -108,6 +106,23 @@ class GitJournalRepo with ChangeNotifier {
       scope.setContexts('GitConfig', gitConfig.toLoggableMap());
       scope.setContexts('Settings', settings.toLoggableMap());
     });
+
+    logEvent(
+      Event.StorageConfig,
+      parameters: storageConfig.toLoggableMap()..addAll({'id': id}),
+    );
+    logEvent(
+      Event.FolderConfig,
+      parameters: folderConfig.toLoggableMap()..addAll({'id': id}),
+    );
+    logEvent(
+      Event.GitConfig,
+      parameters: gitConfig.toLoggableMap()..addAll({'id': id}),
+    );
+    logEvent(
+      Event.Settings,
+      parameters: settings.toLoggableMap()..addAll({'id': id}),
+    );
 
     var repoPath = await storageConfig.buildRepoPath(gitBaseDir);
     Log.i("Loading Repo at path $repoPath");

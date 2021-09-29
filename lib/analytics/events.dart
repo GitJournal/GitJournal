@@ -40,6 +40,10 @@ enum Event {
   GitHostSetupButtonClick,
 
   Settings,
+  StorageConfig,
+  FolderConfig,
+  GitConfig,
+
   FeatureTimelineGithubClicked,
 
   AppFirstOpen,
