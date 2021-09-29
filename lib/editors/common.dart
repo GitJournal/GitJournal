@@ -177,16 +177,16 @@ class _EditorAppSearchBarState extends State<EditorAppSearchBar> {
               '${searchInfo.currentMatch.toInt()}/${searchInfo.numMatches}',
               style: theme.textTheme.subtitle1,
             ),
-            onPressed: () {},
+            onPressed: null,
           ),
         // Disable these when not possible
         IconButton(
           icon: const Icon(Icons.arrow_upward),
-          onPressed: () {},
+          onPressed: searchInfo.isNotEmpty ? () {} : null,
         ),
         IconButton(
           icon: const Icon(Icons.arrow_downward),
-          onPressed: () {},
+          onPressed: searchInfo.isNotEmpty ? () {} : null,
         ),
         IconButton(
           icon: const Icon(Icons.close),
