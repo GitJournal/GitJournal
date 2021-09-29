@@ -169,6 +169,11 @@ class RawEditorState extends State<RawEditor>
       // To Redraw the undo/redo button state
     });
   }
+
+  @override
+  SearchInfo search(String? text) {
+    return SearchInfo();
+  }
 }
 
 class _NoteEditor extends StatefulWidget {

@@ -161,6 +161,11 @@ class OrgEditorState extends State<OrgEditor>
       // To Redraw the undo/redo button state
     });
   }
+
+  @override
+  SearchInfo search(String? text) {
+    return SearchInfo();
+  }
 }
 
 class _NoteEditor extends StatelessWidget {

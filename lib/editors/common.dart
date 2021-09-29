@@ -34,6 +34,16 @@ abstract class EditorState with ChangeNotifier {
   Future<void> addImage(String filePath);
 
   bool get noteModified;
+
+  SearchInfo search(String? text);
+}
+
+class SearchInfo {
+  final int numMatches;
+  final double currentMatch;
+  SearchInfo({this.numMatches = 0, this.currentMatch = 0});
+
+  bool get isNotEmpty => numMatches != 0;
 }
 
 class TextEditorState {
@@ -119,9 +129,7 @@ class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
-// WIP
-class EditorAppSearchBar extends StatelessWidget
-    implements PreferredSizeWidget {
+class EditorAppSearchBar extends StatefulWidget implements PreferredSizeWidget {
   final EditorState editorState;
   final Func0<void> onCloseSelected;
 
@@ -136,6 +144,13 @@ class EditorAppSearchBar extends StatelessWidget
   final Size preferredSize;
 
   @override
+  State<EditorAppSearchBar> createState() => _EditorAppSearchBarState();
+}
+
+class _EditorAppSearchBarState extends State<EditorAppSearchBar> {
+  var searchInfo = SearchInfo();
+
+  @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return AppBar(
@@ -148,12 +163,22 @@ class EditorAppSearchBar extends StatelessWidget
         ),
         maxLines: 1,
         autofocus: true,
+        onChanged: (String text) {
+          var info = widget.editorState.search(text);
+          setState(() {
+            searchInfo = info;
+          });
+        },
       ),
       actions: [
-        TextButton(
-          child: Text('1/5', style: theme.textTheme.subtitle1),
-          onPressed: () {},
-        ),
+        if (searchInfo.isNotEmpty)
+          TextButton(
+            child: Text(
+              '${searchInfo.currentMatch.toInt()}/${searchInfo.numMatches}',
+              style: theme.textTheme.subtitle1,
+            ),
+            onPressed: () {},
+          ),
         // Disable these when not possible
         IconButton(
           icon: const Icon(Icons.arrow_upward),
@@ -165,7 +190,7 @@ class EditorAppSearchBar extends StatelessWidget
         ),
         IconButton(
           icon: const Icon(Icons.close),
-          onPressed: onCloseSelected,
+          onPressed: widget.onCloseSelected,
         ),
       ],
       // It would be awesome if the scrollbar could also change

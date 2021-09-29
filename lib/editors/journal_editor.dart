@@ -172,4 +172,9 @@ class JournalEditorState extends State<JournalEditor>
   Future<void> _undo() async {}
 
   Future<void> _redo() async {}
+
+  @override
+  SearchInfo search(String? text) {
+    return SearchInfo();
+  }
 }

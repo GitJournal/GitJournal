@@ -311,6 +311,11 @@ class ChecklistEditorState extends State<ChecklistEditor>
   Future<void> _undo() async {}
 
   Future<void> _redo() async {}
+
+  @override
+  SearchInfo search(String? text) {
+    return SearchInfo();
+  }
 }
 
 typedef TextChangedFunction = void Function(String);

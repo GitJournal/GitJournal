@@ -73,20 +73,24 @@ class MarkdownEditorState extends State<MarkdownEditor>
     _note = widget.note;
     _noteModified = widget.noteModified;
 
-    _textController = buildController(
-      text: _note.body,
-      highlightText: widget.highlightString,
-      theme: widget.theme,
-    );
-    _titleTextController = buildController(
-      text: _note.title,
-      highlightText: widget.highlightString,
-      theme: widget.theme,
-    );
+    _buildTextControllers(widget.highlightString);
 
     _heuristics = EditorHeuristics(text: _note.body);
 
     _scrollController = ScrollController(keepScrollOffset: false);
+  }
+
+  void _buildTextControllers(String? highlightText) {
+    _textController = buildController(
+      text: _note.body,
+      highlightText: highlightText,
+      theme: widget.theme,
+    );
+    _titleTextController = buildController(
+      text: _note.title,
+      highlightText: highlightText,
+      theme: widget.theme,
+    );
   }
 
   @override
@@ -224,15 +228,22 @@ class MarkdownEditorState extends State<MarkdownEditor>
 
   Future<void> _redo() async {}
 
-  SearchInfo search(String text) {
-    return SearchInfo(10, 2.0);
-  }
-}
+  @override
+  SearchInfo search(String? text) {
+    if (text == null) {
+      _buildTextControllers(null);
+      return SearchInfo();
+    }
 
-class SearchInfo {
-  final int numMatches;
-  final double currentMatch;
-  SearchInfo(this.numMatches, this.currentMatch);
+    var body = _textController.text.toLowerCase();
+    var matches = text.toLowerCase().allMatches(body).toList();
+
+    setState(() {
+      _buildTextControllers(text);
+    });
+
+    return SearchInfo(numMatches: matches.length);
+  }
 }
 
 double calculateTextHeight({
@@ -264,4 +275,5 @@ double calculateTextHeight({
 //   return how many matches there are, and which match are we closet to
 //   maybe a double to represent if we are between two matches?
 // * Add methods to jumpToMatch(x)
-// *
+// * Remember the last word which was searched?
+// * When we start typing make sure get out of search mode
