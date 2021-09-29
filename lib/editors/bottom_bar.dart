@@ -35,6 +35,9 @@ class EditorBottomBar extends StatelessWidget {
   final Func0<void> onUndoSelected;
   final Func0<void> onRedoSelected;
 
+  final Func0<void> onFindSelected;
+  final bool findAllowed;
+
   const EditorBottomBar({
     Key? key,
     required this.editor,
@@ -48,6 +51,8 @@ class EditorBottomBar extends StatelessWidget {
     required this.onRedoSelected,
     required this.undoAllowed,
     required this.redoAllowed,
+    required this.onFindSelected,
+    required this.findAllowed,
   }) : super(key: key);
 
   @override
@@ -74,6 +79,8 @@ class EditorBottomBar extends StatelessWidget {
             zenModeEnabled: zenMode,
             zenModeChanged: onZenModeChanged,
             metaDataEditable: metaDataEditable,
+            findAllowed: findAllowed,
+            onFindSelected: onFindSelected,
           ),
           elevation: 0,
         );
@@ -192,6 +199,9 @@ class BottomMenuSheet extends StatelessWidget {
   final Func0<void> zenModeChanged;
   final bool metaDataEditable;
 
+  final bool findAllowed;
+  final Func0<void> onFindSelected;
+
   const BottomMenuSheet({
     Key? key,
     required this.editor,
@@ -199,6 +209,8 @@ class BottomMenuSheet extends StatelessWidget {
     required this.zenModeEnabled,
     required this.zenModeChanged,
     required this.metaDataEditable,
+    required this.onFindSelected,
+    required this.findAllowed,
   }) : super(key: key);
 
   @override
@@ -269,9 +281,8 @@ class BottomMenuSheet extends StatelessWidget {
             leading: const Icon(Icons.search),
             title: Text(tr(LocaleKeys.editors_common_find)),
             onTap: () {
-              // var note = editorState.getNote();
-              // Navigator.of(context).pop();
-              // editor.common.findInNote(note);
+              Navigator.of(context).pop();
+              onFindSelected();
             },
           ),
       ],

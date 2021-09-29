@@ -33,6 +33,8 @@ class EditorScaffold extends StatefulWidget {
   final bool undoAllowed;
   final bool redoAllowed;
 
+  final bool findAllowed;
+
   final Widget? extraBottomWidget;
 
   const EditorScaffold({
@@ -46,6 +48,7 @@ class EditorScaffold extends StatefulWidget {
     required this.onRedoSelected,
     required this.undoAllowed,
     required this.redoAllowed,
+    this.findAllowed = false,
     this.extraBottomWidget,
     this.extraButton,
   });
@@ -57,6 +60,8 @@ class EditorScaffold extends StatefulWidget {
 class _EditorScaffoldState extends State<EditorScaffold> {
   var hideUIElements = false;
   var editingMode = true;
+  var findMode = false;
+
   late Note note;
 
   @override
@@ -147,17 +152,30 @@ class _EditorScaffoldState extends State<EditorScaffold> {
         },
         child: Column(
           children: <Widget>[
-            _HideWidget(
-              visible: !hideUIElements,
-              child: EditorAppBar(
-                editor: widget.editor,
-                editorState: widget.editorState,
-                noteModified: widget.noteModified,
-                extraButton: widget.extraButton,
-                allowEdits: editingMode,
-                onEditingModeChange: _switchMode,
+            if (!findMode)
+              _HideWidget(
+                visible: !hideUIElements,
+                child: EditorAppBar(
+                  editor: widget.editor,
+                  editorState: widget.editorState,
+                  noteModified: widget.noteModified,
+                  extraButton: widget.extraButton,
+                  allowEdits: editingMode,
+                  onEditingModeChange: _switchMode,
+                ),
               ),
-            ),
+            if (findMode)
+              _HideWidget(
+                visible: !hideUIElements,
+                child: EditorAppSearchBar(
+                  editorState: widget.editorState,
+                  onCloseSelected: () {
+                    setState(() {
+                      findMode = false;
+                    });
+                  },
+                ),
+              ),
             Expanded(child: body),
             _HideWidget(
               visible: !hideUIElements,
@@ -182,6 +200,12 @@ class _EditorScaffoldState extends State<EditorScaffold> {
                 onRedoSelected: widget.onRedoSelected,
                 undoAllowed: widget.undoAllowed,
                 redoAllowed: widget.redoAllowed,
+                findAllowed: widget.findAllowed,
+                onFindSelected: () {
+                  setState(() {
+                    findMode = true;
+                  });
+                },
               ),
             ),
             if (widget.extraBottomWidget != null) widget.extraBottomWidget!,

@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:function_types/function_types.dart';
 
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/features.dart';
 
 export 'package:gitjournal/editors/scaffold.dart';
 
@@ -84,9 +83,6 @@ class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (Features.findInNote) {
-      return const EditorAppSearchBar();
-    }
     return AppBar(
       leading: IconButton(
         key: const ValueKey("NewEntry"),
@@ -126,8 +122,13 @@ class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
 // WIP
 class EditorAppSearchBar extends StatelessWidget
     implements PreferredSizeWidget {
+  final EditorState editorState;
+  final Func0<void> onCloseSelected;
+
   const EditorAppSearchBar({
     Key? key,
+    required this.editorState,
+    required this.onCloseSelected,
   })  : preferredSize = const Size.fromHeight(kToolbarHeight),
         super(key: key);
 
@@ -146,6 +147,7 @@ class EditorAppSearchBar extends StatelessWidget
           border: InputBorder.none,
         ),
         maxLines: 1,
+        autofocus: true,
       ),
       actions: [
         TextButton(
@@ -163,7 +165,7 @@ class EditorAppSearchBar extends StatelessWidget
         ),
         IconButton(
           icon: const Icon(Icons.close),
-          onPressed: () {},
+          onPressed: onCloseSelected,
         ),
       ],
       // It would be awesome if the scrollbar could also change

@@ -260,8 +260,6 @@ double calculateTextHeight({
 }
 
 // TODO: For 'Find in Note'
-// * Only show the "Find in Note" when in the edit mode
-// * On clicking on search, the parent NoteEditor goes into SearchMode
 // * We can get a callback in each Editor with the 'search(...)' this should
 //   return how many matches there are, and which match are we closet to
 //   maybe a double to represent if we are between two matches?
