@@ -174,6 +174,7 @@ class _EditorScaffoldState extends State<EditorScaffold> {
                       findMode = false;
                     });
                   },
+                  scrollToResult: widget.editorState.scrollToResult,
                 ),
               ),
             Expanded(child: body),

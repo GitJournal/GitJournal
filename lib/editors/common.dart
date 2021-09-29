@@ -36,6 +36,7 @@ abstract class EditorState with ChangeNotifier {
   bool get noteModified;
 
   SearchInfo search(String? text);
+  void scrollToResult(String text, int num);
 }
 
 class SearchInfo {
@@ -133,10 +134,13 @@ class EditorAppSearchBar extends StatefulWidget implements PreferredSizeWidget {
   final EditorState editorState;
   final Func0<void> onCloseSelected;
 
+  final Func2<String, int, void> scrollToResult;
+
   const EditorAppSearchBar({
     Key? key,
     required this.editorState,
     required this.onCloseSelected,
+    required this.scrollToResult,
   })  : preferredSize = const Size.fromHeight(kToolbarHeight),
         super(key: key);
 
@@ -149,6 +153,7 @@ class EditorAppSearchBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _EditorAppSearchBarState extends State<EditorAppSearchBar> {
   var searchInfo = SearchInfo();
+  var searchText = "";
 
   @override
   Widget build(BuildContext context) {
@@ -167,14 +172,17 @@ class _EditorAppSearchBarState extends State<EditorAppSearchBar> {
           var info = widget.editorState.search(text);
           setState(() {
             searchInfo = info;
+            searchText = text;
           });
+
+          widget.scrollToResult(searchText, searchInfo.currentMatch.round());
         },
       ),
       actions: [
         if (searchInfo.isNotEmpty)
           TextButton(
             child: Text(
-              '${searchInfo.currentMatch.toInt()}/${searchInfo.numMatches}',
+              '${searchInfo.currentMatch.toInt() + 1}/${searchInfo.numMatches}',
               style: theme.textTheme.subtitle1,
             ),
             onPressed: null,
@@ -182,11 +190,41 @@ class _EditorAppSearchBarState extends State<EditorAppSearchBar> {
         // Disable these when not possible
         IconButton(
           icon: const Icon(Icons.arrow_upward),
-          onPressed: searchInfo.isNotEmpty ? () {} : null,
+          onPressed: searchInfo.isNotEmpty
+              ? () {
+                  setState(() {
+                    var num = searchInfo.numMatches;
+                    var prev = searchInfo.currentMatch;
+                    prev = prev == 0 ? num - 1 : prev - 1;
+
+                    searchInfo = SearchInfo(
+                      currentMatch: prev,
+                      numMatches: num,
+                    );
+                    widget.scrollToResult(
+                        searchText, searchInfo.currentMatch.round());
+                  });
+                }
+              : null,
         ),
         IconButton(
           icon: const Icon(Icons.arrow_downward),
-          onPressed: searchInfo.isNotEmpty ? () {} : null,
+          onPressed: searchInfo.isNotEmpty
+              ? () {
+                  setState(() {
+                    var num = searchInfo.numMatches;
+                    var next = searchInfo.currentMatch;
+                    next = next == num - 1 ? 0 : next + 1;
+
+                    searchInfo = SearchInfo(
+                      currentMatch: next,
+                      numMatches: num,
+                    );
+                    widget.scrollToResult(
+                        searchText, searchInfo.currentMatch.round());
+                  });
+                }
+              : null,
         ),
         IconButton(
           icon: const Icon(Icons.close),

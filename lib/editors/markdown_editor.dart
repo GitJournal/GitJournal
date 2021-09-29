@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -73,24 +74,19 @@ class MarkdownEditorState extends State<MarkdownEditor>
     _note = widget.note;
     _noteModified = widget.noteModified;
 
-    _buildTextControllers(widget.highlightString);
-
-    _heuristics = EditorHeuristics(text: _note.body);
-
-    _scrollController = ScrollController(keepScrollOffset: false);
-  }
-
-  void _buildTextControllers(String? highlightText) {
     _textController = buildController(
       text: _note.body,
-      highlightText: highlightText,
+      highlightText: widget.highlightString,
       theme: widget.theme,
     );
     _titleTextController = buildController(
       text: _note.title,
-      highlightText: highlightText,
+      highlightText: widget.highlightString,
       theme: widget.theme,
     );
+    _heuristics = EditorHeuristics(text: _note.body);
+
+    _scrollController = ScrollController(keepScrollOffset: false);
   }
 
   @override
@@ -230,20 +226,56 @@ class MarkdownEditorState extends State<MarkdownEditor>
 
   @override
   SearchInfo search(String? text) {
+    setState(() {
+      _textController = buildController(
+        text: _textController.text,
+        highlightText: text,
+        theme: widget.theme,
+      );
+      _titleTextController = buildController(
+        text: _titleTextController.text,
+        highlightText: text,
+        theme: widget.theme,
+      );
+    });
+
     if (text == null) {
-      _buildTextControllers(null);
       return SearchInfo();
     }
 
     var body = _textController.text.toLowerCase();
     var matches = text.toLowerCase().allMatches(body).toList();
 
-    setState(() {
-      _buildTextControllers(text);
-    });
-
     return SearchInfo(numMatches: matches.length);
   }
+
+  @override
+  void scrollToResult(String text, int num) {
+    var body = _textController.text.toLowerCase();
+    text = text.toLowerCase();
+
+    var index = getSearchResultPosition(body, text, num);
+    var height = calculateTextHeight(
+      text: body.substring(0, index),
+      style: NoteBodyEditor.textStyle(context),
+      editorKey: _bodyEditorKey,
+    );
+
+    _scrollController.animateTo(
+      height,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeOut,
+    );
+  }
+}
+
+int getSearchResultPosition(String body, String text, int pos) {
+  var index = 0;
+  for (var i = 0; i <= pos; i++) {
+    index = body.indexOf(text, index);
+  }
+
+  return index;
 }
 
 double calculateTextHeight({

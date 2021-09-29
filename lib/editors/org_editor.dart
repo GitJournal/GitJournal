@@ -164,7 +164,12 @@ class OrgEditorState extends State<OrgEditor>
 
   @override
   SearchInfo search(String? text) {
-    return SearchInfo();
+    throw UnimplementedError();
+  }
+
+  @override
+  void scrollToResult(String text, int num) {
+    throw UnimplementedError();
   }
 }
 

@@ -276,15 +276,14 @@ class BottomMenuSheet extends StatelessWidget {
             },
           ),
         ),
-        if (Features.findInNote)
-          ListTile(
-            leading: const Icon(Icons.search),
-            title: Text(tr(LocaleKeys.editors_common_find)),
-            onTap: () {
-              Navigator.of(context).pop();
-              onFindSelected();
-            },
-          ),
+        ListTile(
+          leading: const Icon(Icons.search),
+          title: Text(tr(LocaleKeys.editors_common_find)),
+          onTap: () {
+            Navigator.of(context).pop();
+            onFindSelected();
+          },
+        ),
       ],
     );
   }
