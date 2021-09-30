@@ -15,26 +15,12 @@ import 'package:gitjournal/core/virtual_notes_folder.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
-import 'package:gitjournal/themes.dart';
 
 class NoteSearchDelegate extends SearchDelegate<Note?> {
   final List<Note> notes;
   final FolderViewType viewType;
 
   NoteSearchDelegate(this.notes, this.viewType);
-
-  // Workaround because of https://github.com/flutter/flutter/issues/32180
-  @override
-  ThemeData appBarTheme(BuildContext context) {
-    var theme = Theme.of(context);
-    if (theme.brightness == Brightness.light) {
-      return theme;
-    }
-
-    return theme.copyWith(
-      primaryColor: Themes.dark.primaryColor,
-    );
-  }
 
   @override
   List<Widget> buildActions(BuildContext context) {
