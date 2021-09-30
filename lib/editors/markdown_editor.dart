@@ -22,6 +22,7 @@ import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_settings.dart';
 import 'rich_text_controller.dart';
+import 'search.dart';
 
 class MarkdownEditor extends StatefulWidget implements Editor {
   final Note note;
@@ -275,50 +276,3 @@ class MarkdownEditorState extends State<MarkdownEditor>
     );
   }
 }
-
-int getSearchResultPosition(String body, String text, int pos) {
-  var index = 0;
-  while (true) {
-    index = body.indexOf(text, index);
-    pos--;
-    if (pos < 0) {
-      break;
-    }
-    index += text.length;
-  }
-
-  return index;
-}
-
-double calculateTextHeight({
-  required String text,
-  required TextStyle style,
-  required GlobalKey editorKey,
-}) {
-  var renderBox = editorKey.currentContext!.findRenderObject() as RenderBox;
-  var editorWidth = renderBox.size.width;
-
-  var painter = TextPainter(
-    textDirection: TextDirection.ltr,
-    text: TextSpan(style: style, text: text),
-    maxLines: null,
-  );
-  painter.layout(maxWidth: editorWidth);
-
-  var lines = painter.computeLineMetrics();
-  double height = 0;
-  for (var lm in lines) {
-    height += lm.height;
-  }
-  height -= lines.last.height;
-
-  return height;
-}
-
-// TODO: For 'Find in Note'
-// * We can get a callback in each Editor with the 'search(...)' this should
-//   return how many matches there are, and which match are we closet to
-//   maybe a double to represent if we are between two matches?
-// * Add methods to jumpToMatch(x)
-// * Remember the last word which was searched?
-// * When we start typing make sure get out of search mode
