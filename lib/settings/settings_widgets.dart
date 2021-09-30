@@ -61,12 +61,12 @@ class ListPreference extends StatelessWidget {
     }
     return AlertDialog(
       title: Text(title),
+      titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
       content: SizedBox(
         width: double.maxFinite,
         child: ScrollConfiguration(
           behavior: _NoScrollBehavior(),
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
             children: children,
             shrinkWrap: true,
           ),
