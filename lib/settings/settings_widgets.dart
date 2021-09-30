@@ -61,13 +61,15 @@ class ListPreference extends StatelessWidget {
     }
     return AlertDialog(
       title: Text(title),
-      content: SingleChildScrollView(
-        child: Column(
+      content: SizedBox(
+        width: double.maxFinite,
+        child: ListView(
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
           children: children,
-          mainAxisSize: MainAxisSize.min,
+          shrinkWrap: true,
         ),
       ),
-      // contentPadding: EdgeInsets.zero,
+      contentPadding: EdgeInsets.zero,
       actions: <Widget>[
         TextButton(
           child: Text(tr(LocaleKeys.settings_cancel)),
@@ -99,15 +101,18 @@ class _LabeledRadio extends StatelessWidget {
       onTap: () {
         if (value != groupValue) onChanged(value);
       },
-      child: Row(
-        children: <Widget>[
-          Radio<String?>(
-            groupValue: groupValue,
-            value: value,
-            onChanged: onChanged,
-          ),
-          Text(label),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Row(
+          children: <Widget>[
+            Radio<String?>(
+              groupValue: groupValue,
+              value: value,
+              onChanged: onChanged,
+            ),
+            Text(label),
+          ],
+        ),
       ),
     );
   }
