@@ -7,8 +7,7 @@ settings:
   cancel: Cancel
   title: Settings
   author:
-    label: Full Name
-    hint: Who should author the changes?
+    label: Author Name
     validator: Please enter a name
   email:
     label: Email Address

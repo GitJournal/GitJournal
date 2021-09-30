@@ -172,7 +172,7 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
       SettingsHeader(tr(LocaleKeys.settings_gitAuthor)),
-      ListTile(title: GitAuthor()),
+      const GitAuthor(),
       const GitAuthorEmail(),
       ListTile(
         title: Text(tr(LocaleKeys.settings_gitRemote_title)),

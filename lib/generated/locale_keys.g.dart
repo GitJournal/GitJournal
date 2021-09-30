@@ -10,7 +10,6 @@ abstract class LocaleKeys {
   static const settings_cancel = 'settings.cancel';
   static const settings_title = 'settings.title';
   static const settings_author_label = 'settings.author.label';
-  static const settings_author_hint = 'settings.author.hint';
   static const settings_author_validator = 'settings.author.validator';
   static const settings_author = 'settings.author';
   static const settings_email_label = 'settings.email.label';
