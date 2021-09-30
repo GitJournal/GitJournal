@@ -334,26 +334,25 @@ class SettingsListState extends State<SettingsList> {
           var _ = Navigator.push(context, route);
         },
       ),
-      if (repoManager.repoIds.length > 1)
-        RedButton(
-          text: tr(LocaleKeys.settings_deleteRepo),
-          onPressed: () async {
-            var ok = await showDialog(
-              context: context,
-              builder: (_) => IrreversibleActionConfirmationDialog(
-                tr(LocaleKeys.settings_deleteRepo),
-              ),
-            );
-            if (ok == null) {
-              return;
-            }
+      RedButton(
+        text: tr(LocaleKeys.settings_deleteRepo),
+        onPressed: () async {
+          var ok = await showDialog(
+            context: context,
+            builder: (_) => IrreversibleActionConfirmationDialog(
+              tr(LocaleKeys.settings_deleteRepo),
+            ),
+          );
+          if (ok == null) {
+            return;
+          }
 
-            var repoManager = context.read<RepositoryManager>();
-            await repoManager.deleteCurrent();
+          var repoManager = context.read<RepositoryManager>();
+          await repoManager.deleteCurrent();
 
-            Navigator.popUntil(context, (route) => route.isFirst);
-          },
-        ),
+          Navigator.popUntil(context, (route) => route.isFirst);
+        },
+      ),
       const SizedBox(height: 16.0),
       ListTile(
         title: Text(tr(LocaleKeys.feature_timeline_title)),

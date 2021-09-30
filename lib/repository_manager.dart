@@ -94,15 +94,16 @@ class RepositoryManager with ChangeNotifier {
   }
 
   Future<void> deleteCurrent() async {
-    if (repoIds.length == 1) {
-      throw Exception("Last Repo cannot be deleted");
-    }
-
     Log.i("Deleting repo: $currentId");
 
     var i = repoIds.indexOf(currentId);
     await _repo.delete();
     repoIds.removeAt(i);
+
+    if (repoIds.isEmpty) {
+      var _ = await addRepoAndSwitch();
+      return;
+    }
 
     i = i.clamp(0, repoIds.length - 1);
     currentId = repoIds[i];
