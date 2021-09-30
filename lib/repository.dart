@@ -95,11 +95,6 @@ class GitJournalRepo with ChangeNotifier {
     var settings = Settings(id, pref);
     settings.load();
 
-    Log.i("StorageConfig", props: storageConfig.toLoggableMap());
-    Log.i("FolderConfig", props: folderConfig.toLoggableMap());
-    Log.i("GitConfig", props: gitConfig.toLoggableMap());
-    Log.i("Settings", props: settings.toLoggableMap());
-
     Sentry.configureScope((scope) {
       scope.setContexts('StorageConfig', storageConfig.toLoggableMap());
       scope.setContexts('FolderConfig', folderConfig.toLoggableMap());
