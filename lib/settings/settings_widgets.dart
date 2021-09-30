@@ -81,7 +81,7 @@ class ListPreference extends StatelessWidget {
           },
         )
       ],
-      actionsPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+      actionsPadding: const EdgeInsets.fromLTRB(0, 0, 8, 8),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
