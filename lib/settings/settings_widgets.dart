@@ -66,7 +66,7 @@ class ListPreference extends StatelessWidget {
         child: ScrollConfiguration(
           behavior: _NoScrollBehavior(),
           child: ListView(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
             children: children,
             shrinkWrap: true,
           ),
@@ -81,6 +81,10 @@ class ListPreference extends StatelessWidget {
           },
         )
       ],
+      actionsPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+      ),
     );
   }
 }
