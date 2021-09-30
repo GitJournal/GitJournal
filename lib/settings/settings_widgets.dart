@@ -34,44 +34,48 @@ class ListPreference extends StatelessWidget {
       subtitle: Text(currentOption!),
       onTap: () async {
         var option = await showDialog<String>(
-            context: context,
-            builder: (BuildContext context) {
-              var children = <Widget>[];
-              for (var o in options) {
-                var tile = _LabeledRadio(
-                  label: o,
-                  value: o,
-                  groupValue: currentOption,
-                  onChanged: (String? val) {
-                    Navigator.of(context).pop(val);
-                  },
-                );
-                children.add(tile);
-              }
-              return AlertDialog(
-                title: Text(title),
-                content: SingleChildScrollView(
-                  child: Column(
-                    children: children,
-                    mainAxisSize: MainAxisSize.min,
-                  ),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    child: Text(tr(LocaleKeys.settings_cancel)),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              );
-            });
+          context: context,
+          builder: _dialogBuilder,
+        );
 
         if (option != null) {
           onChange(option);
         }
       },
       enabled: enabled,
+    );
+  }
+
+  Widget _dialogBuilder(BuildContext context) {
+    var children = <Widget>[];
+    for (var o in options) {
+      var tile = _LabeledRadio(
+        label: o,
+        value: o,
+        groupValue: currentOption,
+        onChanged: (String? val) {
+          Navigator.of(context).pop(val);
+        },
+      );
+      children.add(tile);
+    }
+    return AlertDialog(
+      title: Text(title),
+      content: SingleChildScrollView(
+        child: Column(
+          children: children,
+          mainAxisSize: MainAxisSize.min,
+        ),
+      ),
+      // contentPadding: EdgeInsets.zero,
+      actions: <Widget>[
+        TextButton(
+          child: Text(tr(LocaleKeys.settings_cancel)),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        )
+      ],
     );
   }
 }
