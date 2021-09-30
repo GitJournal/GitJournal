@@ -63,10 +63,13 @@ class ListPreference extends StatelessWidget {
       title: Text(title),
       content: SizedBox(
         width: double.maxFinite,
-        child: ListView(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          children: children,
-          shrinkWrap: true,
+        child: ScrollConfiguration(
+          behavior: _NoScrollBehavior(),
+          child: ListView(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            children: children,
+            shrinkWrap: true,
+          ),
         ),
       ),
       contentPadding: EdgeInsets.zero,
@@ -115,5 +118,13 @@ class _LabeledRadio extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _NoScrollBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
   }
 }
