@@ -15,6 +15,20 @@ class SearchInfo {
   SearchInfo({this.numMatches = 0, this.currentMatch = 0});
 
   bool get isNotEmpty => numMatches != 0;
+
+  static SearchInfo compute({required String body, required String? text}) {
+    if (text == null) {
+      return SearchInfo();
+    }
+
+    body = body.toLowerCase();
+    text = text.toLowerCase();
+
+    var matches = text.toLowerCase().allMatches(body).toList();
+    return SearchInfo(numMatches: matches.length);
+
+    // FIXME: Give the current match!!
+  }
 }
 
 class EditorAppSearchBar extends StatefulWidget implements PreferredSizeWidget {

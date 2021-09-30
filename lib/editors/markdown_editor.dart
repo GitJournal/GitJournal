@@ -239,15 +239,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
       );
     });
 
-    if (text == null) {
-      return SearchInfo();
-    }
-
-    var body = _textController.text.toLowerCase();
-    var matches = text.toLowerCase().allMatches(body).toList();
-
-    // FIXME: Give the current match!!
-    return SearchInfo(numMatches: matches.length);
+    return SearchInfo.compute(body: _textController.text, text: text);
   }
 
   @override
