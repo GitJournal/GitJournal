@@ -8,12 +8,12 @@ import 'package:flutter/material.dart';
 
 class RichTextController extends TextEditingController {
   final String highlightText;
-  final Color highlightColor;
+  final Color highlightBackgroundColor;
 
   RichTextController({
     required String text,
     required this.highlightText,
-    required this.highlightColor,
+    required this.highlightBackgroundColor,
   }) : super(text: text);
 
   @override
@@ -30,7 +30,7 @@ class RichTextController extends TextEditingController {
       onMatch: (Match m) {
         children.add(TextSpan(
           text: m[0],
-          style: style?.copyWith(color: highlightColor),
+          style: style?.copyWith(backgroundColor: highlightBackgroundColor),
         ));
         return "";
       },
@@ -53,7 +53,7 @@ TextEditingController buildController({
     return RichTextController(
       text: text,
       highlightText: highlightText,
-      highlightColor: theme.textSelectionTheme.selectionColor!,
+      highlightBackgroundColor: theme.textSelectionTheme.selectionColor!,
     );
   } else {
     return TextEditingController(text: text);

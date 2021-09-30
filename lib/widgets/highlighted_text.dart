@@ -40,7 +40,7 @@ class HighlightedText extends StatelessWidget {
 
     var highlightStyle = this.highlightStyle ??
         style.copyWith(
-          backgroundColor: Theme.of(context).highlightColor,
+          backgroundColor: Theme.of(context).textSelectionTheme.selectionColor,
         );
 
     var before = text.substring(0, i);

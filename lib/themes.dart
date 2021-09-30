@@ -19,10 +19,10 @@ class Themes {
     primaryColor: const Color(0xFF66bb6a),
     primaryColorLight: const Color(0xFF98ee99),
     primaryColorDark: const Color(0xFF338a3e),
-    textSelectionTheme: const TextSelectionThemeData(
-      cursorColor: Color(0xFF338a3e),
-      selectionHandleColor: Color(0xFF66bb6a),
-      selectionColor: Color(0xFF338a3e),
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: const Color(0xFF338a3e),
+      selectionHandleColor: const Color(0xFF66bb6a),
+      selectionColor: Colors.grey[400],
     ),
   );
 
