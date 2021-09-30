@@ -106,7 +106,7 @@ class Log {
     }
 
     if (foundation.kDebugMode) {
-      Fimber.log("E", msg,
+      Fimber.log("E", msg + ex.toString() + stacktrace.toString(),
           ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
     }
     _write('e', msg, ex, stacktrace, props);
