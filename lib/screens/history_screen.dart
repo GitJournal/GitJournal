@@ -9,8 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:dart_git/git.dart';
 import 'package:dart_git/plumbing/commit_iterator.dart';
 import 'package:dart_git/plumbing/objects/commit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
+import 'package:synchronized/synchronized.dart';
 
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/widgets/future_builder_with_progress.dart';
 
@@ -22,7 +25,9 @@ class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(LocaleKeys.drawer_history.tr()),
+      ),
       body: const HistoryWidget(),
     );
   }
@@ -39,19 +44,20 @@ class _HistoryWidgetState extends State<HistoryWidget> {
   List<GitCommit> commits = [];
   Stream<Result<GitCommit>>? _stream;
 
+  final _lock = Lock();
+
   @override
   void initState() {
     super.initState();
   }
 
   Future<Stream<Result<GitCommit>>> _initStream() async {
+    print('initializing the stream?');
     var gjRepo = Provider.of<GitJournalRepo>(context);
 
-    var repo = await GitRepository.load(gjRepo.gitBaseDirectory).getOrThrow();
-    return commitPreOrderIterator(
-      objStorage: repo.objStorage,
-      from: await repo.headCommit().getOrThrow(),
-    );
+    var repo = await GitRepository.load(gjRepo.repoPath).getOrThrow();
+    var head = await repo.headCommit().getOrThrow();
+    return commitPreOrderIterator(objStorage: repo.objStorage, from: head);
   }
 
   @override
@@ -60,10 +66,13 @@ class _HistoryWidgetState extends State<HistoryWidget> {
       future: () async {
         _stream = await _initStream();
 
-        return ListView.builder(
-          itemBuilder: (BuildContext context, int i) {
-            return FutureBuilderWithProgress(future: _buildTile(context, i));
-          },
+        return Scrollbar(
+          child: ListView.builder(
+            itemBuilder: (BuildContext context, int i) {
+              print('tile builder $i');
+              return FutureBuilderWithProgress(future: _buildTile(context, i));
+            },
+          ),
         );
       }(),
     );
@@ -72,17 +81,35 @@ class _HistoryWidgetState extends State<HistoryWidget> {
   Future<Widget> _buildTile(BuildContext context, int i) async {
     var stream = _stream!;
 
-    // Put in a lock!
-    if (i >= commits.length) {
-      for (var j = 0; j < (commits.length - i).abs() + 1; j++) {
-        await for (var commit in stream) {
-          commits.add(commit.getOrThrow());
-          break;
+    // This needs to happen in another thread!
+    await _lock.synchronized(() async {
+      if (i >= commits.length) {
+        for (var j = 0; j < (commits.length - i).abs() + 1; j++) {
+          print('about to await for in the stream - $j');
+          try {
+            await for (var commit in stream) {
+              commits.add(commit.getOrThrow());
+            }
+          } catch (e, st) {
+            print(e);
+            print(st);
+          }
+
+          print('done with the stream');
         }
       }
-    }
+    });
 
-    var commit = commits[i];
-    return Text(commit.message);
+    try {
+      var commit = commits[i];
+      return ListTile(
+        title: Text(commit.message),
+        subtitle: Text(commit.author.date.toString()),
+      );
+    } catch (e, st) {
+      print(e);
+      print(st);
+      return const Text('fail');
+    }
   }
 }
