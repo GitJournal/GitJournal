@@ -82,7 +82,6 @@ class SettingsListState extends State<SettingsList> {
     var storageConfig = Provider.of<StorageConfig>(context);
     var appSettings = Provider.of<AppSettings>(context);
     final repo = Provider.of<GitJournalRepo>(context);
-    var repoManager = Provider.of<RepositoryManager>(context);
 
     var defaultNewFolder = settings.defaultNewNoteFolderSpec;
     if (defaultNewFolder.isEmpty) {

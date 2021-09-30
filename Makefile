@@ -30,6 +30,7 @@ fmt:
 	./flutterw pub run import_sorter:main
 
 lint:
+	./flutterw analyze
 	./flutterw pub run dart_code_metrics:metrics lib
 
 build_env:
