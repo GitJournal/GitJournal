@@ -14,53 +14,92 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'git_config.dart';
 
 class GitAuthorEmail extends StatelessWidget {
-  final gitAuthorEmailKey = GlobalKey<FormFieldState<String>>();
-
-  GitAuthorEmail({Key? key}) : super(key: key);
+  const GitAuthorEmail({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var gitConfig = Provider.of<GitConfig>(context);
 
-    void saveGitAuthorEmail(String? gitAuthorEmail) {
-      if (gitAuthorEmail == null) return;
+    return ListTile(
+      title: Text(LocaleKeys.settings_email_label.tr()),
+      subtitle: Text(gitConfig.gitAuthorEmail),
+      onTap: () async {
+        var newEmail = await showDialog(
+          context: context,
+          builder: (context) => const _GitAuthorEmailDialog(),
+        );
 
-      gitConfig.gitAuthorEmail = gitAuthorEmail;
-      gitConfig.save();
-    }
-
-    return Form(
-      child: TextFormField(
-        key: gitAuthorEmailKey,
-        style: Theme.of(context).textTheme.headline6,
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-          icon: const Icon(Icons.email),
-          hintText: tr(LocaleKeys.settings_email_hint),
-          labelText: tr(LocaleKeys.settings_email_label),
-        ),
-        validator: (String? value) {
-          value = value!.trim();
-          if (value.isEmpty) {
-            return tr(LocaleKeys.settings_email_validator_empty);
-          }
-
-          if (!EmailValidator.validate(value)) {
-            return tr(LocaleKeys.settings_email_validator_invalid);
-          }
-          return null;
-        },
-        textInputAction: TextInputAction.done,
-        onFieldSubmitted: saveGitAuthorEmail,
-        onSaved: saveGitAuthorEmail,
-        initialValue: gitConfig.gitAuthorEmail,
-      ),
-      onChanged: () {
-        if (!gitAuthorEmailKey.currentState!.validate()) return;
-        var gitAuthorEmail = gitAuthorEmailKey.currentState!.value;
-        saveGitAuthorEmail(gitAuthorEmail);
+        if (newEmail != null && newEmail != gitConfig.gitAuthorEmail) {
+          gitConfig.gitAuthorEmail = newEmail;
+          gitConfig.save();
+        }
       },
     );
+  }
+}
+
+class _GitAuthorEmailDialog extends StatefulWidget {
+  const _GitAuthorEmailDialog({Key? key}) : super(key: key);
+
+  @override
+  State<_GitAuthorEmailDialog> createState() => _GitAuthorEmailDialogState();
+}
+
+class _GitAuthorEmailDialogState extends State<_GitAuthorEmailDialog> {
+  final gitAuthorEmailKey = GlobalKey<FormFieldState<String>>();
+
+  @override
+  Widget build(BuildContext context) {
+    var gitConfig = Provider.of<GitConfig>(context);
+    var isValidEmail = gitAuthorEmailKey.currentState?.isValid;
+    var email = gitAuthorEmailKey.currentState?.value;
+
+    var form = TextFormField(
+      key: gitAuthorEmailKey,
+      keyboardType: TextInputType.emailAddress,
+      validator: _validate,
+      textInputAction: TextInputAction.done,
+      initialValue: gitConfig.gitAuthorEmail,
+      autovalidateMode: AutovalidateMode.always,
+      onChanged: (_) {
+        setState(() {
+          // To trigger the isValidEmail check
+        });
+      },
+    );
+
+    return AlertDialog(
+      title: Text(LocaleKeys.settings_email_label.tr()),
+      content: form,
+      actions: <Widget>[
+        TextButton(
+          child: Text(tr(LocaleKeys.settings_cancel)),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        TextButton(
+          child: Text(tr(LocaleKeys.settings_ok)),
+          onPressed: isValidEmail == true
+              ? () => Navigator.of(context).pop(email)
+              : null,
+        ),
+      ],
+    );
+  }
+
+  String? _validate(String? value) {
+    if (value == null) {
+      return tr(LocaleKeys.settings_email_validator_empty);
+    }
+
+    value = value.trim();
+    if (value.isEmpty) {
+      return tr(LocaleKeys.settings_email_validator_empty);
+    }
+
+    if (!EmailValidator.validate(value)) {
+      return tr(LocaleKeys.settings_email_validator_invalid);
+    }
+    return null;
   }
 }
 

@@ -11,8 +11,7 @@ settings:
     hint: Who should author the changes?
     validator: Please enter a name
   email:
-    label: Email
-    hint: Email Address
+    label: Email Address
     validator:
       empty: Please enter an email
       invalid: Please enter a valid email

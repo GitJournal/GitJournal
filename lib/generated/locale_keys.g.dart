@@ -14,7 +14,6 @@ abstract class LocaleKeys {
   static const settings_author_validator = 'settings.author.validator';
   static const settings_author = 'settings.author';
   static const settings_email_label = 'settings.email.label';
-  static const settings_email_hint = 'settings.email.hint';
   static const settings_email_validator_empty =
       'settings.email.validator.empty';
   static const settings_email_validator_invalid =
