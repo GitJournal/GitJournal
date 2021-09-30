@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -246,6 +245,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
     var body = _textController.text.toLowerCase();
     var matches = text.toLowerCase().allMatches(body).toList();
 
+    // FIXME: Give the current match!!
     return SearchInfo(numMatches: matches.length);
   }
 
@@ -254,25 +254,37 @@ class MarkdownEditorState extends State<MarkdownEditor>
     var body = _textController.text.toLowerCase();
     text = text.toLowerCase();
 
-    var index = getSearchResultPosition(body, text, num);
-    var height = calculateTextHeight(
-      text: body.substring(0, index),
+    var offset = getSearchResultPosition(body, text, num);
+    var newPosition = calculateTextHeight(
+      text: body.substring(0, offset),
       style: NoteBodyEditor.textStyle(context),
       editorKey: _bodyEditorKey,
     );
 
+    // print('Height: $newPosition');
+    // print('Max: ${_scrollController.position.maxScrollExtent}');
+    // print('Position: ${_scrollController.position}');
+
+    // var viewPort = _scrollController.position.viewportDimension;
+    // var prevPosition = _scrollController.position.
+
     _scrollController.animateTo(
-      height,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeOut,
+      newPosition,
+      duration: const Duration(milliseconds: 300),
+      curve: decelerateEasing,
     );
   }
 }
 
 int getSearchResultPosition(String body, String text, int pos) {
   var index = 0;
-  for (var i = 0; i <= pos; i++) {
+  while (true) {
     index = body.indexOf(text, index);
+    pos--;
+    if (pos < 0) {
+      break;
+    }
+    index += text.length;
   }
 
   return index;
@@ -298,6 +310,7 @@ double calculateTextHeight({
   for (var lm in lines) {
     height += lm.height;
   }
+  height -= lines.last.height;
 
   return height;
 }
