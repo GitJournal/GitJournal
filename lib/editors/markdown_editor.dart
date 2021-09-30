@@ -93,6 +93,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
   void dispose() {
     _textController.dispose();
     _titleTextController.dispose();
+    _scrollController.dispose();
 
     super.disposeListenables();
     super.dispose();
