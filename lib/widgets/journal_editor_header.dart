@@ -10,14 +10,19 @@ import 'package:intl/intl.dart';
 
 import 'package:gitjournal/core/note.dart';
 
-class JournalEditorHeader extends StatelessWidget {
+class JournalEditorHeader extends StatefulWidget {
   final Note note;
 
   const JournalEditorHeader(this.note);
 
   @override
+  State<JournalEditorHeader> createState() => _JournalEditorHeaderState();
+}
+
+class _JournalEditorHeaderState extends State<JournalEditorHeader> {
+  @override
   Widget build(BuildContext context) {
-    var created = note.created;
+    var created = widget.note.created;
     if (created == null) {
       return Container();
     }
@@ -56,7 +61,41 @@ class JournalEditorHeader extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, bottom: 18.0),
-      child: w,
+      child: GestureDetector(
+        onTap: () async {
+          var orig = widget.note.created ?? DateTime.now();
+          var date = await showDatePicker(
+            context: context,
+            initialDate: orig,
+            firstDate: DateTime(1000),
+            lastDate: DateTime(2100),
+          );
+
+          var time = await showTimePicker(
+            context: context,
+            initialTime: TimeOfDay.fromDateTime(orig),
+          );
+
+          if (date == null && time == null) {
+            return;
+          }
+
+          date ??= orig;
+          time ??= TimeOfDay.fromDateTime(orig);
+
+          var dt = DateTime(
+            date.year,
+            date.month,
+            date.day,
+            time.hour,
+            time.minute,
+          );
+          setState(() {
+            widget.note.apply(created: dt);
+          });
+        },
+        child: w,
+      ),
     );
   }
 }
