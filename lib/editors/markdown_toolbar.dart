@@ -310,6 +310,9 @@ int nextWordPos(TextEditingValue textEditingValue) {
   if (cursorPos >= text.length) {
     return text.length;
   }
+  if (cursorPos == -1) {
+    cursorPos = 0;
+  }
 
   var nextSpacePos = text.indexOf(_wordSepRegex, cursorPos);
   if (nextSpacePos == -1) {
