@@ -278,7 +278,8 @@ class GitHub implements GitHost {
       issues: parsedJson['open_issues_count'],
       language: parsedJson['language'] ?? "",
       private: parsedJson['private'],
-      tags: parsedJson['topics'] ?? [],
+      // tags: parsedJson['topics'] ?? [],
+      tags: [],
       license: licenseMap != null ? licenseMap['spdx_id'] : null,
     );
   }
