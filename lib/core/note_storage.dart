@@ -98,7 +98,7 @@ class NoteStorage {
           fileFormat: NoteFileFormat.Txt,
         );
       } catch (e, stackTrace) {
-        logExceptionWarning(e, stackTrace);
+        Log.e("Failed to load ${note.filePath}", ex: e, stacktrace: stackTrace);
 
         note.apply(loadState: NoteLoadState.Error);
         return Result(note.loadState);
