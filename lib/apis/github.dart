@@ -338,27 +338,15 @@ class GitHub implements GitHost {
     var email = "";
     var login = "";
 
-    if (map['name'] is! String) {
-      var type = map['name'].runtimeType;
-      var ex = Exception('GitHub UserInfo "name is not String" is $type');
-      logException(ex, StackTrace.current);
-    } else {
+    if (map['name'] is String) {
       name = map['name'];
     }
 
-    if (map['email'] is! String) {
-      var type = map['email'].runtimeType;
-      var ex = Exception('GitHub UserInfo "email is not String" is $type');
-      logException(ex, StackTrace.current);
-    } else {
+    if (map['email'] is String) {
       email = map['email'];
     }
 
-    if (map['login'] is! String) {
-      var type = map['login'].runtimeType;
-      var ex = Exception('GitHub UserInfo "login is not String" is $type');
-      logException(ex, StackTrace.current);
-    } else {
+    if (map['login'] is String) {
       login = map['login'];
     }
 
