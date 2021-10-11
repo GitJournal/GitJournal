@@ -54,7 +54,15 @@ class NotesMaterializedView<T> {
         if (storageBox != null) return;
 
         var startTime = DateTime.now();
-        storageBox = await Hive.openBox<T>(name);
+        try {
+          storageBox = await Hive.openBox<T>(name);
+        } on HiveError catch (ex, st) {
+          Log.e("HiveError $name", ex: ex, stacktrace: st);
+
+          // Get the file Path
+          await Hive.deleteBoxFromDisk(name);
+          storageBox = await Hive.openBox<T>(name);
+        }
         var endTime = DateTime.now().difference(startTime);
 
         Log.i("Loading View $name: $endTime");
