@@ -95,6 +95,9 @@ Future<void> reportError(Object error, StackTrace stackTrace) async {
   Log.e("Uncaught Exception", ex: error, stacktrace: stackTrace);
 
   if (reportCrashes) {
+    if (error is! Exception) {
+      error = Exception("Error: $error");
+    }
     captureSentryException(error, stackTrace);
   }
 }
