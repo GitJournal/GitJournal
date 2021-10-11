@@ -245,6 +245,15 @@ class MarkdownEditorState extends State<MarkdownEditor>
 
   @override
   void scrollToResult(String text, int num) {
+    setState(() {
+      _textController = buildController(
+        text: _textController.text,
+        highlightText: text,
+        theme: widget.theme,
+        currentPos: num,
+      );
+    });
+
     var body = _textController.text.toLowerCase();
     text = text.toLowerCase();
 
