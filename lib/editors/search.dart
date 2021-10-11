@@ -211,3 +211,32 @@ bool isVisibleInScrollController(
   // Check if this position is 'inside' the current view rect
   return minY < pos && pos < maxY;
 }
+
+void scrollToSearchResult({
+  required ScrollController scrollController,
+  required TextEditingController textController,
+  required GlobalKey textEditorKey,
+  required String searchText,
+  required TextStyle textStyle,
+  required int resultNum,
+}) {
+  var body = textController.text.toLowerCase();
+  searchText = searchText.toLowerCase();
+
+  var offset = getSearchResultPosition(body, searchText, resultNum);
+  var newPosition = calculateTextHeight(
+    text: body.substring(0, offset),
+    style: textStyle,
+    editorKey: textEditorKey,
+  );
+
+  if (isVisibleInScrollController(scrollController, newPosition)) {
+    return;
+  }
+
+  scrollController.animateTo(
+    newPosition,
+    duration: const Duration(milliseconds: 300),
+    curve: decelerateEasing,
+  );
+}

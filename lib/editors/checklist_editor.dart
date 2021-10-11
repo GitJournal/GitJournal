@@ -192,6 +192,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
       onRedoSelected: _redo,
       undoAllowed: false,
       redoAllowed: false,
+      findAllowed: false,
     );
   }
 

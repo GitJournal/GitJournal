@@ -148,6 +148,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
       undoAllowed: false,
       redoAllowed: false,
       extraBottomWidget: markdownToolbar,
+      findAllowed: true,
     );
   }
 
@@ -254,24 +255,13 @@ class MarkdownEditorState extends State<MarkdownEditor>
       );
     });
 
-    var body = _textController.text.toLowerCase();
-    text = text.toLowerCase();
-
-    var offset = getSearchResultPosition(body, text, num);
-    var newPosition = calculateTextHeight(
-      text: body.substring(0, offset),
-      style: NoteBodyEditor.textStyle(context),
-      editorKey: _bodyEditorKey,
-    );
-
-    if (isVisibleInScrollController(_scrollController, newPosition)) {
-      return;
-    }
-
-    _scrollController.animateTo(
-      newPosition,
-      duration: const Duration(milliseconds: 300),
-      curve: decelerateEasing,
+    scrollToSearchResult(
+      scrollController: _scrollController,
+      textController: _textController,
+      textEditorKey: _bodyEditorKey,
+      textStyle: NoteBodyEditor.textStyle(context),
+      searchText: text,
+      resultNum: num,
     );
   }
 }

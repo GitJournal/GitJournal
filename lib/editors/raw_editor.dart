@@ -202,24 +202,13 @@ class RawEditorState extends State<RawEditor>
       );
     });
 
-    var body = _textController.text.toLowerCase();
-    text = text.toLowerCase();
-
-    var offset = getSearchResultPosition(body, text, num);
-    var newPosition = calculateTextHeight(
-      text: body.substring(0, offset),
-      style: _NoteEditor.textStyle(context),
-      editorKey: _editorKey,
-    );
-
-    if (isVisibleInScrollController(_scrollController, newPosition)) {
-      return;
-    }
-
-    _scrollController.animateTo(
-      newPosition,
-      duration: const Duration(milliseconds: 300),
-      curve: decelerateEasing,
+    scrollToSearchResult(
+      scrollController: _scrollController,
+      textController: _textController,
+      textEditorKey: _editorKey,
+      textStyle: _NoteEditor.textStyle(context),
+      searchText: text,
+      resultNum: num,
     );
   }
 }

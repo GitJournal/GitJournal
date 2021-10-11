@@ -56,6 +56,9 @@ class OrgEditorState extends State<OrgEditor>
 
   final serializer = MarkdownYAMLCodec();
 
+  final _editorKey = GlobalKey();
+  late ScrollController _scrollController;
+
   @override
   void initState() {
     super.initState();
@@ -66,11 +69,14 @@ class OrgEditorState extends State<OrgEditor>
       highlightText: widget.highlightString,
       theme: widget.theme,
     );
+
     _undoRedoStack = UndoRedoStack();
+    _scrollController = ScrollController(keepScrollOffset: false);
   }
 
   @override
   void dispose() {
+    _scrollController.dispose();
     _textController.dispose();
 
     super.disposeListenables();
@@ -89,7 +95,9 @@ class OrgEditorState extends State<OrgEditor>
   @override
   Widget build(BuildContext context) {
     var editor = EditorScrollView(
+      scrollController: _scrollController,
       child: _NoteEditor(
+        key: _editorKey,
         textController: _textController,
         autofocus: widget.editMode,
         onChanged: _noteTextChanged,
@@ -107,6 +115,7 @@ class OrgEditorState extends State<OrgEditor>
       onRedoSelected: _redo,
       undoAllowed: _undoRedoStack.undoPossible,
       redoAllowed: _undoRedoStack.redoPossible,
+      findAllowed: true,
     );
   }
 
@@ -164,12 +173,36 @@ class OrgEditorState extends State<OrgEditor>
 
   @override
   SearchInfo search(String? text) {
-    throw UnimplementedError();
+    setState(() {
+      _textController = buildController(
+        text: _textController.text,
+        highlightText: text,
+        theme: widget.theme,
+      );
+    });
+
+    return SearchInfo.compute(body: _textController.text, text: text);
   }
 
   @override
   void scrollToResult(String text, int num) {
-    throw UnimplementedError();
+    setState(() {
+      _textController = buildController(
+        text: _textController.text,
+        highlightText: text,
+        theme: widget.theme,
+        currentPos: num,
+      );
+    });
+
+    scrollToSearchResult(
+      scrollController: _scrollController,
+      textController: _textController,
+      textEditorKey: _editorKey,
+      textStyle: _NoteEditor.textStyle(context),
+      searchText: text,
+      resultNum: num,
+    );
   }
 }
 
@@ -179,21 +212,26 @@ class _NoteEditor extends StatelessWidget {
   final Function onChanged;
 
   const _NoteEditor({
+    Key? key,
     required this.textController,
     required this.autofocus,
     required this.onChanged,
-  });
+  }) : super(key: key);
+
+  static TextStyle textStyle(BuildContext context) {
+    var theme = Theme.of(context);
+    return theme.textTheme.subtitle1!.copyWith(fontFamily: "Roboto Mono");
+  }
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    var style = theme.textTheme.subtitle1!.copyWith(fontFamily: "Roboto Mono");
 
     return TextField(
       autofocus: autofocus,
       keyboardType: TextInputType.multiline,
       maxLines: null,
-      style: style,
+      style: textStyle(context),
       decoration: InputDecoration(
         hintText: tr(LocaleKeys.editors_common_defaultBodyHint),
         border: InputBorder.none,

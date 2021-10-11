@@ -54,6 +54,9 @@ class JournalEditorState extends State<JournalEditor>
 
   late EditorHeuristics _heuristics;
 
+  final _editorKey = GlobalKey();
+  late ScrollController _scrollController;
+
   @override
   void initState() {
     super.initState();
@@ -66,10 +69,12 @@ class JournalEditorState extends State<JournalEditor>
     );
 
     _heuristics = EditorHeuristics(text: _note.body);
+    _scrollController = ScrollController(keepScrollOffset: false);
   }
 
   @override
   void dispose() {
+    _scrollController.dispose();
     _textController.dispose();
 
     super.disposeListenables();
@@ -88,10 +93,12 @@ class JournalEditorState extends State<JournalEditor>
   @override
   Widget build(BuildContext context) {
     var editor = EditorScrollView(
+      scrollController: _scrollController,
       child: Column(
         children: <Widget>[
           JournalEditorHeader(_note),
           NoteBodyEditor(
+            key: _editorKey,
             textController: _textController,
             autofocus: widget.editMode,
             onChanged: _noteTextChanged,
@@ -111,6 +118,7 @@ class JournalEditorState extends State<JournalEditor>
       onRedoSelected: _redo,
       undoAllowed: false,
       redoAllowed: false,
+      findAllowed: true,
     );
   }
 
@@ -175,11 +183,35 @@ class JournalEditorState extends State<JournalEditor>
 
   @override
   SearchInfo search(String? text) {
-    throw UnimplementedError();
+    setState(() {
+      _textController = buildController(
+        text: _textController.text,
+        highlightText: text,
+        theme: widget.theme,
+      );
+    });
+
+    return SearchInfo.compute(body: _textController.text, text: text);
   }
 
   @override
   void scrollToResult(String text, int num) {
-    throw UnimplementedError();
+    setState(() {
+      _textController = buildController(
+        text: _textController.text,
+        highlightText: text,
+        theme: widget.theme,
+        currentPos: num,
+      );
+    });
+
+    scrollToSearchResult(
+      scrollController: _scrollController,
+      textController: _textController,
+      textEditorKey: _editorKey,
+      textStyle: NoteBodyEditor.textStyle(context),
+      searchText: text,
+      resultNum: num,
+    );
   }
 }

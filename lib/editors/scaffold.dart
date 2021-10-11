@@ -48,7 +48,7 @@ class EditorScaffold extends StatefulWidget {
     required this.onRedoSelected,
     required this.undoAllowed,
     required this.redoAllowed,
-    this.findAllowed = false,
+    required this.findAllowed,
     this.extraBottomWidget,
     this.extraButton,
   });
