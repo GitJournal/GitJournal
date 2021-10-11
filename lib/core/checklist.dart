@@ -188,7 +188,7 @@ class Checklist {
       return;
     }
 
-    if (index == items.length) {
+    if (index >= items.length) {
       var prevItem = items.last;
       item.lineNo = prevItem.lineNo + 1;
       items.add(item);
