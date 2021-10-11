@@ -62,6 +62,9 @@ class RawEditorState extends State<RawEditor>
 
   final serializer = MarkdownYAMLCodec();
 
+  final _editorKey = GlobalKey();
+  late ScrollController _scrollController;
+
   @override
   void initState() {
     super.initState();
@@ -75,10 +78,12 @@ class RawEditorState extends State<RawEditor>
     );
 
     _undoRedoStack = UndoRedoStack();
+    _scrollController = ScrollController(keepScrollOffset: false);
   }
 
   @override
   void dispose() {
+    _scrollController.dispose();
     _textController.dispose();
 
     super.disposeListenables();
@@ -97,7 +102,9 @@ class RawEditorState extends State<RawEditor>
   @override
   Widget build(BuildContext context) {
     var editor = EditorScrollView(
+      scrollController: _scrollController,
       child: _NoteEditor(
+        key: _editorKey,
         textController: _textController,
         autofocus: widget.editMode,
         onChanged: _noteTextChanged,
@@ -115,6 +122,7 @@ class RawEditorState extends State<RawEditor>
       onRedoSelected: _redo,
       undoAllowed: _undoRedoStack.undoPossible,
       redoAllowed: _undoRedoStack.redoPossible,
+      findAllowed: true,
     );
   }
 
@@ -172,12 +180,47 @@ class RawEditorState extends State<RawEditor>
 
   @override
   SearchInfo search(String? text) {
-    throw UnimplementedError();
+    setState(() {
+      _textController = buildController(
+        text: _textController.text,
+        highlightText: text,
+        theme: widget.theme,
+      );
+    });
+
+    return SearchInfo.compute(body: _textController.text, text: text);
   }
 
   @override
   void scrollToResult(String text, int num) {
-    throw UnimplementedError();
+    setState(() {
+      _textController = buildController(
+        text: _textController.text,
+        highlightText: text,
+        theme: widget.theme,
+        currentPos: num,
+      );
+    });
+
+    var body = _textController.text.toLowerCase();
+    text = text.toLowerCase();
+
+    var offset = getSearchResultPosition(body, text, num);
+    var newPosition = calculateTextHeight(
+      text: body.substring(0, offset),
+      style: _NoteEditor.textStyle(context),
+      editorKey: _editorKey,
+    );
+
+    if (isVisibleInScrollController(_scrollController, newPosition)) {
+      return;
+    }
+
+    _scrollController.animateTo(
+      newPosition,
+      duration: const Duration(milliseconds: 300),
+      curve: decelerateEasing,
+    );
   }
 }
 
@@ -187,13 +230,19 @@ class _NoteEditor extends StatefulWidget {
   final Function onChanged;
 
   const _NoteEditor({
+    Key? key,
     required this.textController,
     required this.autofocus,
     required this.onChanged,
-  });
+  }) : super(key: key);
 
   @override
   State<_NoteEditor> createState() => _NoteEditorState();
+
+  static TextStyle textStyle(BuildContext context) {
+    var theme = Theme.of(context);
+    return theme.textTheme.subtitle1!.copyWith(fontFamily: "Roboto Mono");
+  }
 }
 
 class _NoteEditorState extends State<_NoteEditor> {
@@ -211,7 +260,6 @@ class _NoteEditorState extends State<_NoteEditor> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    var style = theme.textTheme.subtitle1!.copyWith(fontFamily: "Roboto Mono");
 
     var textField = TextField(
       key: _textFieldKey,
@@ -219,7 +267,7 @@ class _NoteEditorState extends State<_NoteEditor> {
       autofocus: widget.autofocus,
       keyboardType: TextInputType.multiline,
       maxLines: null,
-      style: style,
+      style: _NoteEditor.textStyle(context),
       decoration: InputDecoration(
         hintText: tr(LocaleKeys.editors_common_defaultBodyHint),
         border: InputBorder.none,
@@ -247,7 +295,7 @@ class _NoteEditorState extends State<_NoteEditor> {
 
       Log.d("Building autocompleter with $allTags");
       return AutoCompletionWidget(
-        textFieldStyle: style,
+        textFieldStyle: _NoteEditor.textStyle(context),
         textFieldKey: _textFieldKey,
         textFieldFocusNode: _focusNode,
         textController: widget.textController,

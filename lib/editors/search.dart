@@ -197,3 +197,17 @@ double calculateTextHeight({
 
   return height;
 }
+
+bool isVisibleInScrollController(
+  ScrollController scrollController,
+  double pos,
+) {
+  // FIXME: This '100' is hardcoded as it seems the EditorBottomBar's height
+  //        is being included in the viewPortDimension
+  var height = scrollController.position.viewportDimension - 100;
+  var minY = scrollController.position.pixels;
+  var maxY = minY + height;
+
+  // Check if this position is 'inside' the current view rect
+  return minY < pos && pos < maxY;
+}

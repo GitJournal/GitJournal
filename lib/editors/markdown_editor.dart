@@ -264,23 +264,9 @@ class MarkdownEditorState extends State<MarkdownEditor>
       editorKey: _bodyEditorKey,
     );
 
-    // FIXME: This '100' is hardcoded as it seems the EditorBottomBar's height
-    //        is being included in the viewPortDimension
-    var height = _scrollController.position.viewportDimension - 100;
-    var minY = _scrollController.position.pixels;
-    var maxY = minY + height;
-
-    // Check if this position is 'inside' the current view rect
-    if (minY < newPosition && newPosition < maxY) {
+    if (isVisibleInScrollController(_scrollController, newPosition)) {
       return;
     }
-
-    // print('Height: $newPosition');
-    // print('Max: ${_scrollController.position.maxScrollExtent}');
-    // print('Position: ${_scrollController.position}');
-
-    // var viewPort = _scrollController.position.viewportDimension;
-    // var prevPosition = _scrollController.position.
 
     _scrollController.animateTo(
       newPosition,
