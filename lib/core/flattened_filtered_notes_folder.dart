@@ -95,6 +95,11 @@ class FlattenedFilteredNotesFolder
     }
 
     await _lock.synchronized(() {
+      // The filtering is async so we need to check again
+      if (_notes.contains(note)) {
+        notifyNoteModified(-1, note);
+        return;
+      }
       _notes.add(note);
       notifyNoteAdded(-1, note);
     });

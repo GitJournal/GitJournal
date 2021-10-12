@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/app_router.dart';
+import 'package:gitjournal/core/flattened_filtered_notes_folder.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder.dart';
@@ -61,6 +62,7 @@ class FolderView extends StatefulWidget {
 
 class _FolderViewState extends State<FolderView> {
   late SortedNotesFolder sortedNotesFolder;
+  NotesFolder? pinnedNotesFolder;
   FolderViewType _viewType = FolderViewType.Standard;
 
   var _headerType = StandardViewHeader.TitleGenerated;
@@ -75,7 +77,7 @@ class _FolderViewState extends State<FolderView> {
     _init();
   }
 
-  void _init() {
+  Future<void> _init() async {
     sortedNotesFolder = SortedNotesFolder(
       folder: widget.notesFolder,
       sortingMode: widget.notesFolder.config.sortingMode,
@@ -84,6 +86,25 @@ class _FolderViewState extends State<FolderView> {
     _viewType = widget.notesFolder.config.defaultView.toFolderViewType();
     _showSummary = widget.notesFolder.config.showNoteSummary;
     _headerType = widget.notesFolder.config.viewHeader;
+
+    var pinnedFolder = await FlattenedFilteredNotesFolder.load(
+      sortedNotesFolder,
+      title: LocaleKeys.widgets_FolderView_pinned,
+      filter: (Note note) async {
+        return note.extraProps["pinned"] == true;
+      },
+    );
+    setState(() {
+      pinnedNotesFolder = pinnedFolder;
+    });
+  }
+
+  @override
+  void dispose() {
+    sortedNotesFolder.dispose();
+    pinnedNotesFolder?.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -123,6 +144,32 @@ class _FolderViewState extends State<FolderView> {
       isNoteSelected: (n) => n == selectedNote,
       searchTerm: "",
     );
+
+    Widget pinnedFolderView = const SizedBox();
+    if (pinnedNotesFolder != null) {
+      pinnedFolderView = buildFolderView(
+        viewType: _viewType,
+        folder: pinnedNotesFolder!,
+        emptyText: null,
+        header: _headerType,
+        showSummary: _showSummary,
+        noteTapped: (Note note) {
+          if (!inSelectionMode) {
+            openNoteEditor(context, note, widget.notesFolder);
+          } else {
+            _resetSelection();
+          }
+        },
+        noteLongPressed: (Note note) {
+          setState(() {
+            inSelectionMode = true;
+            selectedNote = note;
+          });
+        },
+        isNoteSelected: (n) => n == selectedNote,
+        searchTerm: "",
+      );
+    }
     // assert(folderView is SliverWithKeepAliveWidget);
 
     var settings = Provider.of<Settings>(context);
@@ -140,6 +187,9 @@ class _FolderViewState extends State<FolderView> {
       icon: const Icon(Icons.arrow_back),
       onPressed: _resetSelection,
     );
+
+    var havePinnedNotes =
+        pinnedNotesFolder != null ? !pinnedNotesFolder!.isEmpty : false;
 
     return NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -162,7 +212,14 @@ class _FolderViewState extends State<FolderView> {
         removeTop: true,
         child: Scrollbar(
           child: Builder(builder: (context) {
-            var view = CustomScrollView(slivers: [folderView]);
+            var view = CustomScrollView(slivers: [
+              if (havePinnedNotes)
+                _SliverHeader(text: LocaleKeys.widgets_FolderView_pinned.tr()),
+              if (havePinnedNotes) pinnedFolderView,
+              if (havePinnedNotes)
+                _SliverHeader(text: LocaleKeys.widgets_FolderView_others.tr()),
+              folderView,
+            ]);
             if (settings.remoteSyncFrequency == RemoteSyncFrequency.Manual) {
               return view;
             }
@@ -571,5 +628,22 @@ class _FolderViewState extends State<FolderView> {
       selectedNote = null;
       inSelectionMode = false;
     });
+  }
+}
+
+class _SliverHeader extends StatelessWidget {
+  final String text;
+  const _SliverHeader({Key? key, required this.text}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme;
+
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+        child: Text(text, style: textTheme.subtitle2),
+      ),
+    );
   }
 }

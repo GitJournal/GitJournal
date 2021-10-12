@@ -517,6 +517,8 @@ abstract class LocaleKeys {
       'widgets.FolderView.viewOptions';
   static const widgets_FolderView_searchFailed =
       'widgets.FolderView.searchFailed';
+  static const widgets_FolderView_pinned = 'widgets.FolderView.pinned';
+  static const widgets_FolderView_others = 'widgets.FolderView.others';
   static const widgets_FolderView_actions_moveToFolder =
       'widgets.FolderView.actions.moveToFolder';
   static const widgets_FolderView_actions = 'widgets.FolderView.actions';

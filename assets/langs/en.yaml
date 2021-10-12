@@ -365,6 +365,8 @@ widgets:
     sortingOptions: Sorting Options
     viewOptions: View Options
     searchFailed: No Search Results Found
+    pinned: Pinned
+    others: Others
     actions:
       moveToFolder: Move To Folder
   NoteDeleteDialog:
