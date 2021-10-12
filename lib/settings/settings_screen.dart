@@ -280,7 +280,7 @@ class SettingsListState extends State<SettingsList> {
               Log.i("Moving repo to $path");
 
               storageConfig.storeInternally = false;
-              storageConfig.storageLocation = p.join(path, "GitJournal");
+              storageConfig.storageLocation = path;
               storageConfig.save();
               setState(() {});
 
