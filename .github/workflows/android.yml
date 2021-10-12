@@ -1,0 +1,39 @@
+# SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
+#
+# SPDX-License-Identifier: Apache-2.0
+
+name: Android
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  AppImage:
+    runs-on: ubuntu-latest
+    container: vhanda/flutter-android:latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Test
+        run: flutter test
+      - name: Unlock Secrets
+        env:
+          GITCRYPT_KEY: ${{ secrets.GITCRYPT_KEY }}
+        run: ./scripts/decrypt_secrets.sh
+      - name: Setup Env
+        run: dart ./scripts/setup_env.dart
+      - run: flutter pub get
+      - name: Build
+        run: ./scripts/build_android.sh
+      - name: "Upload Artifact"
+        uses: actions/upload-artifact@v2
+        with:
+          name: APK
+          path: build/app/outputs/flutter-apk/app-prod-release.apk
+          if-no-files-found: error
+      - name: Publish Alpha
+        run: cd android && fastlane alphaBuild
