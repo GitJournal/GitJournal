@@ -30,6 +30,7 @@ import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
+import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/new_note_nav_bar.dart';
 import 'package:gitjournal/widgets/note_delete_dialog.dart';
 import 'package:gitjournal/widgets/note_search_delegate.dart';
@@ -39,6 +40,10 @@ import 'package:gitjournal/widgets/sync_button.dart';
 enum DropDownChoices {
   SortingOptions,
   ViewOptions,
+}
+
+enum NoteSelectedExtraActions {
+  MoveToFolder,
 }
 
 class FolderView extends StatefulWidget {
@@ -493,6 +498,24 @@ class _FolderViewState extends State<FolderView> {
   }
 
   List<Widget> _buildInSelectionNoteActions() {
+    var extraActions = PopupMenuButton<NoteSelectedExtraActions>(
+      key: const ValueKey("PopupMenu"),
+      onSelected: (NoteSelectedExtraActions choice) {
+        switch (choice) {
+          case NoteSelectedExtraActions.MoveToFolder:
+            _moveNoteToFolder();
+            break;
+        }
+      },
+      itemBuilder: (BuildContext context) =>
+          <PopupMenuEntry<NoteSelectedExtraActions>>[
+        PopupMenuItem<NoteSelectedExtraActions>(
+          value: NoteSelectedExtraActions.MoveToFolder,
+          child: Text(tr(LocaleKeys.widgets_FolderView_actions_moveToFolder)),
+        ),
+      ],
+    );
+
     return <Widget>[
       IconButton(
         icon: const Icon(Icons.share),
@@ -505,6 +528,7 @@ class _FolderViewState extends State<FolderView> {
         icon: const Icon(Icons.delete),
         onPressed: _deleteNote,
       ),
+      extraActions,
     ];
   }
 
@@ -522,6 +546,21 @@ class _FolderViewState extends State<FolderView> {
     if (shouldDelete == true) {
       var stateContainer = context.read<GitJournalRepo>();
       stateContainer.removeNote(note!);
+    }
+
+    _resetSelection();
+  }
+
+  void _moveNoteToFolder() async {
+    var note = selectedNote!;
+
+    var destFolder = await showDialog<NotesFolderFS>(
+      context: context,
+      builder: (context) => FolderSelectionDialog(),
+    );
+    if (destFolder != null) {
+      var repo = context.read<GitJournalRepo>();
+      repo.moveNote(note, destFolder);
     }
 
     _resetSelection();

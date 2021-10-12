@@ -512,6 +512,9 @@ abstract class LocaleKeys {
       'widgets.FolderView.viewOptions';
   static const widgets_FolderView_searchFailed =
       'widgets.FolderView.searchFailed';
+  static const widgets_FolderView_actions_moveToFolder =
+      'widgets.FolderView.actions.moveToFolder';
+  static const widgets_FolderView_actions = 'widgets.FolderView.actions';
   static const widgets_FolderView = 'widgets.FolderView';
   static const widgets_NoteDeleteDialog_title =
       'widgets.NoteDeleteDialog.title';
