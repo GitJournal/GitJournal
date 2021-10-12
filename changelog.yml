@@ -2,6 +2,18 @@
 #
 # SPDX-License-Identifier: CC-BY-4.0
 
+- version: "1.81"
+  date: 2021-10-12
+  improvements:
+    - text: "Allowing searching for text inside a Note"
+    - text: "Experimental support for pinning notes by adding 'pinned: true' to the YAML metadata"
+    - text: "Allow configuring the Note's default file format"
+    - text: "Allow changing the date from the Journal editor #545"
+    - text: "Only send analytics when connected to the wifi"
+  bugs:
+    - text: "Ensure metadata is not stored when disabled #544"
+    - text: "Avoid extra GitJournal folder in external media #449"
+
 - version: "1.80"
   date: 2021-09-15
   improvements:
