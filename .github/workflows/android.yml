@@ -10,7 +10,7 @@ on:
       - master
 
 jobs:
-  AppImage:
+  Build:
     runs-on: ubuntu-latest
     container: vhanda/flutter-android:latest
     steps:

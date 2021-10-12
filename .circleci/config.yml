@@ -4,44 +4,6 @@
 
 version: 2.1
 jobs:
-  build_android:
-    docker:
-      - image: vhanda/flutter-android:latest
-    steps:
-      - checkout
-      - run:
-          name: Unlock Secrets
-          command: ./scripts/decrypt_secrets.sh
-      - run:
-          name: Setup GitJournal Build Env
-          command: /opt/flutter/bin/cache/dart-sdk/bin/dart ./scripts/setup_env.dart
-      - run:
-          name: SSH Problem
-          command: echo 'Host *\n    StrictHostKeyChecking no' > ~/.ssh/config
-      - run:
-          name: Pub get
-          command: flutter pub get
-      - run:
-          name: Test
-          command: flutter test
-          #command: flutter test --coverage --machine | tojunit --output junit.xml
-      #   - store_test_results:
-      #   path: ./
-      - run:
-          name: Build
-          command: ./scripts/build_android.sh
-      - store_artifacts:
-          path: build/app/outputs/bundle/prodRelease/app.aab
-          destination: gitjournal.aab
-      - store_artifacts:
-          path: build/app/outputs/flutter-apk/app-prod-release.apk
-          destination: gitjournal.apk
-      #   - run:
-      #       name: Generate Test Coverage
-      #       command: ./scripts/test_coverage.sh
-      - run:
-          name: Publish Alpha
-          command: cd android && fastlane alphaBuild
   build_ios:
     macos:
       xcode: 12.5.1
@@ -80,5 +42,4 @@ workflows:
   version: 2
   build_all:
     jobs:
-      - build_android
       - build_ios
