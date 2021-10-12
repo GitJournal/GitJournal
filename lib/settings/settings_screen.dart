@@ -237,7 +237,7 @@ class SettingsListState extends State<SettingsList> {
         ),
       ),
       ListTile(
-        title: Text(tr(LocaleKeys.settings_misc_title)),
+        title: Text(tr(LocaleKeys.settings_images_title)),
         subtitle: Text(tr(LocaleKeys.settings_images_subtitle)),
         onTap: () {
           var route = MaterialPageRoute(
