@@ -48,13 +48,13 @@ class NoteEditorSelector extends StatelessWidget {
           tr(LocaleKeys.settings_editors_journalEditor),
           FontAwesomeIcons.book,
         ),
-        // FIXME: Do not show this editor, unless the file is an org file?
-        _buildTile(
-          context,
-          EditorType.Org,
-          tr(LocaleKeys.settings_editors_orgEditor),
-          FontAwesomeIcons.horseHead,
-        )
+        if (fileFormat == NoteFileFormat.OrgMode)
+          _buildTile(
+            context,
+            EditorType.Org,
+            tr(LocaleKeys.settings_editors_orgEditor),
+            FontAwesomeIcons.horseHead,
+          )
       ],
       mainAxisSize: MainAxisSize.min,
     );
