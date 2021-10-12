@@ -17,7 +17,11 @@ import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/icon_dismissable.dart';
 import 'empty_text_sliver.dart';
 
-typedef NoteTileBuilder = Widget Function(BuildContext context, Note note);
+typedef NoteTileBuilder = Widget Function(
+  BuildContext context,
+  Note note,
+  bool isSelected,
+);
 
 class FolderListView extends StatefulWidget {
   final NoteTileBuilder noteTileBuilder;
@@ -137,7 +141,7 @@ class _FolderListViewState extends State<FolderListView> {
     var settings = Provider.of<Settings>(context);
     Widget viewItem = Hero(
       tag: note.filePath,
-      child: widget.noteTileBuilder(context, note),
+      child: widget.noteTileBuilder(context, note, selected),
       flightShuttleBuilder: (BuildContext flightContext,
               Animation<double> animation,
               HeroFlightDirection flightDirection,
@@ -163,16 +167,6 @@ class _FolderListViewState extends State<FolderListView> {
             ..removeCurrentSnackBar()
             ..showSnackBar(snackBar);
         },
-      );
-    }
-
-    if (selected) {
-      var borderColor = Theme.of(context).colorScheme.secondary;
-      viewItem = Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: borderColor, width: selected ? 2.0 : 1.0),
-        ),
-        child: viewItem,
       );
     }
 

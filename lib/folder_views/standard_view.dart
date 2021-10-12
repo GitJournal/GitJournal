@@ -59,19 +59,19 @@ class StandardView extends StatelessWidget {
     );
   }
 
-  Widget _buildRow(BuildContext context, Note note) {
+  Widget _buildRow(BuildContext context, Note note, bool isSelected) {
     var summaryProvider = NoteSummaryProvider.of(context);
 
     return FutureBuilder(
       future: () async {
         var summary = await summaryProvider.fetch(note);
-        return _buildRowWithSummary(context, note, summary);
+        return _buildRowWithSummary(context, note, isSelected, summary);
       }(),
       builder: (context, AsyncSnapshot<Widget> snapshot) {
         if (snapshot.hasData) {
           return snapshot.data as Widget;
         }
-        return _buildRowWithSummary(context, note, "");
+        return _buildRowWithSummary(context, note, isSelected, "");
       },
     );
   }
@@ -79,6 +79,7 @@ class StandardView extends StatelessWidget {
   Widget _buildRowWithSummary(
     BuildContext context,
     Note note,
+    bool isSelected,
     String noteSummary,
   ) {
     String title;
@@ -181,15 +182,35 @@ class StandardView extends StatelessWidget {
       );
     }
 
-    return Column(
-      children: <Widget>[
-        divider,
-        Padding(
-          padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
-          child: tile,
+    if (!isSelected) {
+      return Column(
+        children: <Widget>[
+          divider,
+          Padding(
+            padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+            child: tile,
+          ),
+          divider,
+        ],
+      );
+    } else {
+      var borderColor = Theme.of(context).colorScheme.secondary;
+      var viewItem = Column(
+        children: <Widget>[
+          divider,
+          Padding(
+            padding: const EdgeInsets.only(top: 14.0, bottom: 14.0),
+            child: tile,
+          ),
+          divider,
+        ],
+      );
+      return Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: borderColor, width: 2.0),
         ),
-        divider,
-      ],
-    );
+        child: viewItem,
+      );
+    }
   }
 }
