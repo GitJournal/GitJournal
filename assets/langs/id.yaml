@@ -3,18 +3,15 @@
 # SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
 #
 # SPDX-License-Identifier: CC-BY-4.0
-
 settings:
   ok: Ok
   cancel: Batal
   title: Setelan
   author:
     label: Nama Lengkap
-    hint: Siapa yang menulis perubahan?
     validator: Masukan nama
   email:
     label: Email
-    hint: Alamat Email
     validator:
       empty: Masukan email
       invalid: Masukan email yang valid
@@ -150,6 +147,8 @@ settings:
     customMetaData:
       title: MetaData Kustom
       invalid: YAML Tidak Valid
+    output: Output
+    input: Input
   privacy: Kebijakan Privasi
   terms: Syarat dan Kententuan
   experimental:
@@ -161,6 +160,7 @@ settings:
     includeSubfolders: Sertakan Subfolder
     experimentalGitOps: Implementasi Git khusus Dart
     merge: Implementasi penggabungan hanya Dart
+    autoCompleteTags: Tags Auto Completion
   editors:
     title: Setelan Editor
     subtitle: Setel bagaimana editor bekerja
@@ -173,6 +173,7 @@ settings:
     rawEditor: Editor Raw
     choose: Pilih Editor
     orgEditor: Editor Org
+    defaultNoteFormat: Default Note Format
   sortingField:
     modified: Terakhir Diubah
     created: Dibuat
@@ -242,6 +243,10 @@ settings:
     subtitle: Konfigurasikan penampilan dan perilaku
     enable: Aktifkan Bilah Menu Bawah
   deleteRepo: Hapus Repositori
+  fileFormat:
+    markdown: Markdown
+    txt: Txt
+    orgMode: Org Mode
 editors:
   checklist:
     add: Tambahkan Item
@@ -261,6 +266,7 @@ editors:
       title: Gagal Menyimpan Catatan
       message: Kami minta maaf, sepertinya kami tidak bisa menyimpan Catatan. Catatan telah disalin ke clipboard untuk menghindari kehilangan data.
     defaultFileNameHint: File Name
+    find: Find in note
 pro: Pro
 actions:
   newNote: Catatan Baru
@@ -338,6 +344,10 @@ widgets:
     noteDeleted: Catatan Dihapus
     undo: Undo
     searchFailed: Tidak Ada Hasil Pencarian Ditemukan
+    actions:
+      moveToFolder: Move To Folder
+    pinned: Pinned
+    others: Others
   imageRenderer:
     caption: "{pertama} - {kedua}"
     httpError: "Kode: {status} untuk {url}"

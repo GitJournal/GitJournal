@@ -9,11 +9,9 @@ settings:
   title: Configuración
   author:
     label: Nombre Completo
-    hint: ¿Quién debería ser el autor de los cambios?
     validator: Por favor, ingrese un nombre
   email:
     label: Correo Electrónico
-    hint: Dirección de Correo Electrónico
     validator:
       empty: Por favor, ingrese un correo electrónico
       invalid: Por favor, ingrese un correo electrónico válido
@@ -150,6 +148,8 @@ settings:
     customMetaData:
       title: Metadato Personalizado
       invalid: YAML no válido
+    output: Output
+    input: Input
   privacy: Política de Privacidad
   terms: Términos y Condiciones
   experimental:
@@ -161,6 +161,7 @@ settings:
     includeSubfolders: Include Subfolders
     experimentalGitOps: Dart-only Git implementation
     merge: Dart-only merge implementation
+    autoCompleteTags: Tags Auto Completion
   editors:
     title: Editor de Configuración
     subtitle: Configurar como funcionan distintos editores
@@ -173,6 +174,7 @@ settings:
     rawEditor: Editor Sin Formato
     choose: Seleccionar Editor
     orgEditor: Org Editor
+    defaultNoteFormat: Default Note Format
   sortingField:
     modified: Última Modificación
     created: Creado
@@ -249,6 +251,10 @@ settings:
     subtitle: Configure its appearance and behavior
     enable: Enable Bottom Menu Bar
   deleteRepo: Delete Repository
+  fileFormat:
+    markdown: Markdown
+    txt: Txt
+    orgMode: Org Mode
 editors:
   checklist:
     add: Agregar
@@ -268,6 +274,7 @@ editors:
       title: Error al Guardar la Nota
       message: Lo sentimos, parece que la nota no pudo ser guardada. Ha sido copiada al portapapeles para evitar perder datos.
     defaultFileNameHint: File Name
+    find: Find in note
 pro: Pro
 actions:
   newNote: Nueva Nota
@@ -346,6 +353,10 @@ widgets:
     noteDeleted: Note Deleted
     undo: Undo
     searchFailed: No Search Results Found
+    actions:
+      moveToFolder: Move To Folder
+    pinned: Pinned
+    others: Others
   imageRenderer:
     caption: "{first} - {second}"
     httpError: "Code: {status} for {url}"

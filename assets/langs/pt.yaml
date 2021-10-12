@@ -14,11 +14,9 @@ settings:
   title: Configurações
   author:
     label: Nome Completo
-    hint: Quem deveria criar as mudanças?
     validator: Por favor, insira um nome
   email:
     label: Email
-    hint: Endereço de Email
     validator:
       empty: Por favor, insira um email
       invalid: Por favor, insira um email válido
@@ -154,6 +152,8 @@ settings:
     customMetaData:
       title: Metadada Personalizada
       invalid: YAML Inválido
+    output: Output
+    input: Input
   privacy: Política de Privacidade
   terms: Termos e Condições
   experimental:
@@ -165,6 +165,7 @@ settings:
     includeSubfolders: Include Subfolders
     experimentalGitOps: Dart-only Git implementation
     merge: Dart-only merge implementation
+    autoCompleteTags: Tags Auto Completion
   editors:
     title: Configurações do Editor
     subtitle: Configurar quão diferente os editores trabalham
@@ -177,6 +178,7 @@ settings:
     rawEditor: Raw Editor
     choose: Choose Editor
     orgEditor: Org Editor
+    defaultNoteFormat: Default Note Format
   sortingField:
     modified: Última modificação
     created: Criado
@@ -246,6 +248,10 @@ settings:
     subtitle: Configure its appearance and behavior
     enable: Enable Bottom Menu Bar
   deleteRepo: Delete Repository
+  fileFormat:
+    markdown: Markdown
+    txt: Txt
+    orgMode: Org Mode
 editors:
   checklist:
     add: Adicionar Item
@@ -265,6 +271,7 @@ editors:
       title: Falha ao Salvar Nota
       message: Desculpe, mas não conseguimos salvar a Nota. Ela foi copiada para a Área de Transferencia para evitar perda de dados
     defaultFileNameHint: File Name
+    find: Find in note
 pro: Pro
 actions:
   newNote: Nova Nota
@@ -343,6 +350,10 @@ widgets:
     noteDeleted: Note Deleted
     undo: Undo
     searchFailed: No Search Results Found
+    actions:
+      moveToFolder: Move To Folder
+    pinned: Pinned
+    others: Others
   imageRenderer:
     caption: "{first} - {second}"
     httpError: "Code: {status} for {url}"

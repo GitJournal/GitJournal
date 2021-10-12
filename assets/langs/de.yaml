@@ -1,21 +1,15 @@
-# SPDX-FileCopyrightText: 2019-2021 Chrisrutz <chrisrutz@gmail.com>
-# SPDX-FileCopyrightText: 2019-2021 Lars <lars@seebach.me>
-# SPDX-FileCopyrightText: 2019-2021 Matze <matthias.fruehauf@mailbox.org>
 # SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
 #
 # SPDX-License-Identifier: CC-BY-4.0
-
 settings:
   ok: Ok
   cancel: Abbrechen
   title: Einstellungen
   author:
     label: Name
-    hint: Wer soll die Änderungen verfassen?
     validator: Bitte gebe einen Namen ein
   email:
     label: Email
-    hint: Email Adresse
     validator:
       empty: Bitte gebe eine Email Adresse ein
       invalid: Bitte gebe eine gültige Email Adresse ein
@@ -152,6 +146,8 @@ settings:
     customMetaData:
       title: Custom Metadaten
       invalid: Ungültiges YAML
+    output: Output
+    input: Input
   privacy: Datenschutz Regelung
   terms: Allgemeine Geschäftsbedingungen
   experimental:
@@ -163,6 +159,7 @@ settings:
     includeSubfolders: Unterordner berücksichtigen
     experimentalGitOps: Dart-only Git implementation
     merge: Dart-only merge implementation
+    autoCompleteTags: Tags Auto Completion
   editors:
     title: Editor Einstellungen
     subtitle: Konfiguriere wie verschiedene Editoren arbeiten
@@ -175,6 +172,7 @@ settings:
     rawEditor: Raw Editor
     choose: Wähle Editor
     orgEditor: Org Editor
+    defaultNoteFormat: Default Note Format
   sortingField:
     modified: Zuletzt geändert
     created: Erstellt
@@ -244,6 +242,10 @@ settings:
     subtitle: Configure its appearance and behavior
     enable: Enable Bottom Menu Bar
   deleteRepo: Delete Repository
+  fileFormat:
+    markdown: Markdown
+    txt: Txt
+    orgMode: Org Mode
 editors:
   checklist:
     add: Item hinzufügen
@@ -263,6 +265,7 @@ editors:
       title: Notiz sichern gescheitert
       message: Leider scheint es, daß wir die Notiz nicht sichern konnten. Sie wurde in die Zwischenablage kopiert um Datenverluste zu verhindern.
     defaultFileNameHint: File Name
+    find: Find in note
 pro: Pro
 actions:
   newNote: Neue Notiz
@@ -341,6 +344,10 @@ widgets:
     noteDeleted: Notiz gelöscht
     undo: Rückgängig machen
     searchFailed: Keine Suchtreffer gefunden
+    actions:
+      moveToFolder: Move To Folder
+    pinned: Pinned
+    others: Others
   imageRenderer:
     caption: "{first} - {second}"
     httpError: "Code: {status} for {url}"

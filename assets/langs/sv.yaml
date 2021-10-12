@@ -2,18 +2,15 @@
 # SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
 #
 # SPDX-License-Identifier: CC-BY-4.0
-
 settings:
   ok: Ok
   cancel: Avbryt
   title: inställningar
   author:
     label: Fullständigt namn
-    hint: Vem ska författa ändringarna?
     validator: Ange ett namn
   email:
     label: E-post
-    hint: E-postadress
     validator:
       empty: Ange ett e-postmeddelande
       invalid: Ange ett giltigt e-postmeddelande
@@ -149,6 +146,8 @@ settings:
     customMetaData:
       title: Anpassad metadata
       invalid: Ogiltig YAML
+    output: Output
+    input: Input
   privacy: Integritetspolicy
   terms: Villkor
   experimental:
@@ -160,6 +159,7 @@ settings:
     includeSubfolders: Include Subfolders
     experimentalGitOps: Dart-only Git implementation
     merge: Dart-only merge implementation
+    autoCompleteTags: Tags Auto Completion
   editors:
     title: Editorinställningar
     subtitle: Konfigurera hur olika redaktörer fungerar
@@ -172,6 +172,7 @@ settings:
     rawEditor: Raw Editor
     choose: Välj Editor
     orgEditor: Org Editor
+    defaultNoteFormat: Default Note Format
   sortingField:
     modified: Senast ändrad
     created: Skapad
@@ -241,6 +242,10 @@ settings:
     subtitle: Configure its appearance and behavior
     enable: Enable Bottom Menu Bar
   deleteRepo: Delete Repository
+  fileFormat:
+    markdown: Markdown
+    txt: Txt
+    orgMode: Org Mode
 editors:
   checklist:
     add: Lägg till vara
@@ -260,6 +265,7 @@ editors:
       title: Det gick inte att spara anteckningen
       message: Vi är ledsna, men vi kan inte tycks spara anteckningen. Det har kopierats till Urklipp för att undvika dataförlust.
     defaultFileNameHint: File Name
+    find: Find in note
 pro: Proffs
 actions:
   newNote: Ny anteckning
@@ -338,6 +344,10 @@ widgets:
     noteDeleted: Note Deleted
     undo: Undo
     searchFailed: No Search Results Found
+    actions:
+      moveToFolder: Move To Folder
+    pinned: Pinned
+    others: Others
   imageRenderer:
     caption: "{first} - {second}"
     httpError: "Code: {status} for {url}"

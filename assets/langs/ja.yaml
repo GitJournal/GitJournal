@@ -3,18 +3,15 @@
 # SPDX-FileCopyrightText: 2019-2021 vorotamoroz <vrtmrz@gmail.com>
 #
 # SPDX-License-Identifier: CC-BY-4.0
-
 settings:
   ok: Ok
   cancel: キャンセル
   title: 設定
   author:
     label: フルネーム
-    hint: コミットのAuthor名
     validator: 名前を入力してください
   email:
     label: メールアドレス
-    hint: メールアドレス
     validator:
       empty: メールアドレスを入力してください
       invalid: 不正なメールアドレスです
@@ -150,6 +147,8 @@ settings:
     customMetaData:
       title: カスタムメタデータ
       invalid: 不正なYAMLです
+    output: Output
+    input: Input
   privacy: プライバシーポリシー
   terms: 利用規約
   experimental:
@@ -161,6 +160,7 @@ settings:
     includeSubfolders: サブフォルダを含む
     experimentalGitOps: Dart実装のGitを使用する
     merge: Dart実装のマージを使用する
+    autoCompleteTags: Tags Auto Completion
   editors:
     title: エディタ設定
     subtitle: エディタの動作を設定する
@@ -173,6 +173,7 @@ settings:
     rawEditor: Rawエディタ
     choose: エディタの選択
     orgEditor: Orgエディタ
+    defaultNoteFormat: Default Note Format
   sortingField:
     modified: 更新日
     created: 作成日
@@ -242,6 +243,10 @@ settings:
     subtitle: メニューバーの表示と挙動を設定する
     enable: メニューバーを表示する
   deleteRepo: リポジトリを削除する
+  fileFormat:
+    markdown: Markdown
+    txt: Txt
+    orgMode: Org Mode
 editors:
   checklist:
     add: アイテム追加
@@ -261,6 +266,7 @@ editors:
       title: ノートの保存に失敗しました。
       message: 申し訳ありません。ノートを保存できなかったようです。データを失わないように、クリップボードにコピーしました。
     defaultFileNameHint: File Name
+    find: Find in note
 pro: Pro
 actions:
   newNote: 新規ノート
@@ -338,6 +344,10 @@ widgets:
     noteDeleted: ノートが削除されました
     undo: Undo
     searchFailed: 検索結果が見つかりませんでした
+    actions:
+      moveToFolder: Move To Folder
+    pinned: Pinned
+    others: Others
   imageRenderer:
     caption: "{first} - {second}"
     httpError: "Code: {status} for {url}"

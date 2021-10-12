@@ -1,18 +1,15 @@
 # SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
 #
 # SPDX-License-Identifier: CC-BY-4.0
-
 settings:
   ok: Ok
   cancel: Anuluj
   title: Opcje
   author:
     label: Imię i nazwisko
-    hint: Kto jest autorem zmian?
     validator: Podaj imię
   email:
     label: Email
-    hint: Adres email
     validator:
       empty: Proszę wpisz email
       invalid: Proszę podaj poprawny email
@@ -148,6 +145,8 @@ settings:
     customMetaData:
       title: Konfigurowalne metadane
       invalid: Błędny YAML
+    output: Output
+    input: Input
   privacy: Polityka prywatności
   terms: Reulamin
   experimental:
@@ -159,6 +158,7 @@ settings:
     includeSubfolders: Include Subfolders
     experimentalGitOps: Dart-only Git implementation
     merge: Dart-only merge implementation
+    autoCompleteTags: Tags Auto Completion
   editors:
     title: opcje edytora
     subtitle: Skonfiguruj jak działają poszczególne edytory
@@ -171,6 +171,7 @@ settings:
     rawEditor: Edytor źródłowy
     choose: Wybierz edytor
     orgEditor: Org Editor
+    defaultNoteFormat: Default Note Format
   sortingField:
     modified: Ostatnia modyfikacja
     created: Data utworzenia
@@ -240,6 +241,10 @@ settings:
     subtitle: Skonfiguruj jego wygląd i zachowanie
     enable: Włącz dolny pasek menu
   deleteRepo: Usuń Repozytorium
+  fileFormat:
+    markdown: Markdown
+    txt: Txt
+    orgMode: Org Mode
 editors:
   checklist:
     add: Dodaj element
@@ -259,6 +264,7 @@ editors:
       title: Nie udało się zapisać notatki
       message: Przepraszamy, ale nie możemy zapisać tej notatki. Została ona skopiowana do schowka, aby uniknąć utraty danych.
     defaultFileNameHint: File Name
+    find: Find in note
 pro: Pro
 actions:
   newNote: Nowa notatka
@@ -339,6 +345,10 @@ widgets:
     noteDeleted: Nie wykasowany
     undo: Cofnij
     searchFailed: Nie znaleziono
+    actions:
+      moveToFolder: Move To Folder
+    pinned: Pinned
+    others: Others
   imageRenderer:
     caption: "{first} - {second}"
     httpError: "Code: {status} for {url}"

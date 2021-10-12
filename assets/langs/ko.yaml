@@ -2,18 +2,15 @@
 # SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
 #
 # SPDX-License-Identifier: CC-BY-4.0
-
 settings:
   ok: 확인
   cancel: 취소
   title: 설정
   author:
     label: 성명
-    hint: 변경 내용 작성자를 누구로 할까요?
     validator: 이름을 입력하세요
   email:
     label: 이메일
-    hint: 이메일 주소
     validator:
       empty: 이메일을 입력하세요
       invalid: 유효한 이메일을 입력하세요
@@ -149,6 +146,8 @@ settings:
     customMetaData:
       title: 맞춤 메타 데이터
       invalid: 잘못된 YAML
+    output: Output
+    input: Input
   privacy: 개인 정보 정책
   terms: 이용 약관
   experimental:
@@ -160,6 +159,7 @@ settings:
     includeSubfolders: Include Subfolders
     experimentalGitOps: Dart-only Git implementation
     merge: Dart-only merge implementation
+    autoCompleteTags: Tags Auto Completion
   editors:
     title: 편집기 설정
     subtitle: 다른 편집기 설정
@@ -172,6 +172,7 @@ settings:
     rawEditor: 원시 편집기
     choose: 편집자 선택
     orgEditor: Org Editor
+    defaultNoteFormat: Default Note Format
   sortingField:
     modified: 마지막 수정
     created: 생성됨
@@ -241,6 +242,10 @@ settings:
     subtitle: Configure its appearance and behavior
     enable: Enable Bottom Menu Bar
   deleteRepo: Delete Repository
+  fileFormat:
+    markdown: Markdown
+    txt: Txt
+    orgMode: Org Mode
 editors:
   checklist:
     add: 아이템 추가
@@ -260,6 +265,7 @@ editors:
       title: 노트를 저장하지 못했습니다.
       message: 죄송합니다. 노트를 저장할 수 없습니다. 데이터 손실을 방지하기 위해 클립 보드에 복사되었습니다.
     defaultFileNameHint: File Name
+    find: Find in note
 pro: 프로
 actions:
   newNote: 새로운 노트
@@ -337,6 +343,10 @@ widgets:
     noteDeleted: Note Deleted
     undo: Undo
     searchFailed: No Search Results Found
+    actions:
+      moveToFolder: Move To Folder
+    pinned: Pinned
+    others: Others
   imageRenderer:
     caption: "{first} - {second}"
     httpError: "Code: {status} for {url}"

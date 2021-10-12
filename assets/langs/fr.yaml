@@ -3,18 +3,15 @@
 # SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
 #
 # SPDX-License-Identifier: CC-BY-4.0
-
 settings:
   ok: Ok
   cancel: Annuler
   title: Paramètres
   author:
     label: Nom complet
-    hint: Who should author the changes?
     validator: Entrez un nom s’il vous plaît
   email:
     label: Email
-    hint: Adresse email
     validator:
       empty: Entrez un email s’il vous plaît
       invalid: Veillez entrer un email valide
@@ -150,6 +147,8 @@ settings:
     customMetaData:
       title: Métadonnées personnalisées
       invalid: YAML invalide
+    output: Output
+    input: Input
   privacy: Privacy Policy
   terms: Terms and Conditions
   experimental:
@@ -161,6 +160,7 @@ settings:
     includeSubfolders: Include Subfolders
     experimentalGitOps: Dart-only Git implementation
     merge: Dart-only merge implementation
+    autoCompleteTags: Tags Auto Completion
   editors:
     title: Editor Settings
     subtitle: Configure how different editors work
@@ -173,6 +173,7 @@ settings:
     rawEditor: Raw Editor
     choose: Choose Editor
     orgEditor: Org Editor
+    defaultNoteFormat: Default Note Format
   sortingField:
     modified: Last Modified
     created: Created
@@ -242,6 +243,10 @@ settings:
     subtitle: Configure its appearance and behavior
     enable: Enable Bottom Menu Bar
   deleteRepo: Delete Repository
+  fileFormat:
+    markdown: Markdown
+    txt: Txt
+    orgMode: Org Mode
 editors:
   checklist:
     add: Add Item
@@ -261,6 +266,7 @@ editors:
       title: Failed to Save Note
       message: We're sorry, but we cannot seem to save the Note. It has been copied to the clipboard to avoid data loss.
     defaultFileNameHint: File Name
+    find: Find in note
 pro: Pro
 actions:
   newNote: New Note
@@ -339,6 +345,10 @@ widgets:
     noteDeleted: Note Deleted
     undo: Undo
     searchFailed: No Search Results Found
+    actions:
+      moveToFolder: Move To Folder
+    pinned: Pinned
+    others: Others
   imageRenderer:
     caption: "{first} - {second}"
     httpError: "Code: {status} for {url}"

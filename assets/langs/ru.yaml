@@ -6,7 +6,6 @@
 # SPDX-FileCopyrightText: 2019-2021 Фёдор <geohod@gmail.com>
 #
 # SPDX-License-Identifier: CC-BY-4.0
-
 settings:
   # "Ok" can be translated as "Да", "Подтвердить", or leave "Ok"
   ok: Да
@@ -15,12 +14,10 @@ settings:
   author:
     # Can be translated as "Полное имя" or "Ник" as it is meant nickname.
     label: Имя
-    hint: Кто должен вносить изменения?
     validator: Пожалуйста введите имя
   email:
     # Can leave "e-mail".
     label: Электронная почта
-    hint: Адрес электронной почты
     validator:
       empty: Пожалуйста введите электронную почту
       # Can be translated as "Пожалуйста введите правильную электронную почту"
@@ -163,6 +160,8 @@ settings:
     customMetaData:
       title: Пользовательские метаданные
       invalid: Неправильный формат YAML
+    output: Output
+    input: Input
   privacy: Политика конфиденциальности
   terms: Правила и условия использования
   experimental:
@@ -174,6 +173,7 @@ settings:
     includeSubfolders: Include Subfolders
     experimentalGitOps: Dart-only Git implementation
     merge: Dart-only merge implementation
+    autoCompleteTags: Tags Auto Completion
   editors:
     title: Настройки редактора
     subtitle: Настроить работу разных редакторов
@@ -187,6 +187,7 @@ settings:
     rawEditor: Простой текст (Редактор)
     choose: Выберите редактор
     orgEditor: Org Editor
+    defaultNoteFormat: Default Note Format
   sortingField:
     # If it means "sort by", than "по дате последнего изменения".
     modified: Последнее изменение
@@ -263,6 +264,10 @@ settings:
     subtitle: Configure its appearance and behavior
     enable: Enable Bottom Menu Bar
   deleteRepo: Delete Repository
+  fileFormat:
+    markdown: Markdown
+    txt: Txt
+    orgMode: Org Mode
 editors:
   checklist:
     add: Добавить пункт
@@ -284,6 +289,7 @@ editors:
       title: Не удалось сохранить заметку
       message: Сожалеем, но мы не можем сохранить заметку. Она была скопирована в буфер обмена, чтобы избежать потери данных.
     defaultFileNameHint: File Name
+    find: Find in note
 pro: Про
 actions:
   newNote: Новая заметка
@@ -375,6 +381,10 @@ widgets:
     noteDeleted: Note Deleted
     undo: Undo
     searchFailed: No Search Results Found
+    actions:
+      moveToFolder: Move To Folder
+    pinned: Pinned
+    others: Others
   imageRenderer:
     caption: "{first} - {second}"
     httpError: "Code: {status} for {url}"
