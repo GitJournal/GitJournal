@@ -27,7 +27,7 @@ class StandardView extends StatelessWidget {
   final NoteBoolPropertyFunction isNoteSelected;
 
   final NotesFolder folder;
-  final String emptyText;
+  final String? emptyText;
 
   final StandardViewHeader headerType;
   final bool showSummary;

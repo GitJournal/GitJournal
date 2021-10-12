@@ -28,7 +28,7 @@ export 'common_types.dart';
 Widget buildFolderView({
   required FolderViewType viewType,
   required NotesFolder folder,
-  required String emptyText,
+  required String? emptyText,
   required StandardViewHeader header,
   required bool showSummary,
   required NoteSelectedFunction noteTapped,

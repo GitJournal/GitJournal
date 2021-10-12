@@ -19,7 +19,7 @@ class CardView extends StatelessWidget {
   final NoteBoolPropertyFunction isNoteSelected;
 
   final NotesFolder folder;
-  final String emptyText;
+  final String? emptyText;
   final bool fixedHeight;
 
   final String searchTerm;
@@ -37,7 +37,11 @@ class CardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (folder.isEmpty) {
-      return EmptyTextSliver(emptyText: emptyText);
+      if (emptyText != null) {
+        return EmptyTextSliver(emptyText: emptyText!);
+      } else {
+        return const SliverToBoxAdapter(child: SizedBox());
+      }
     }
 
     StaggeredTile stagTile;

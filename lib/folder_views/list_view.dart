@@ -27,7 +27,7 @@ class FolderListView extends StatefulWidget {
   final NoteTileBuilder noteTileBuilder;
   final NoteBoolPropertyFunction isNoteSelected;
   final NotesFolder folder;
-  final String emptyText;
+  final String? emptyText;
   final String searchTerm;
 
   const FolderListView({
@@ -110,7 +110,11 @@ class _FolderListViewState extends State<FolderListView> {
   @override
   Widget build(BuildContext context) {
     if (widget.folder.isEmpty) {
-      return EmptyTextSliver(emptyText: widget.emptyText);
+      if (widget.emptyText != null) {
+        return EmptyTextSliver(emptyText: widget.emptyText!);
+      } else {
+        return const SliverToBoxAdapter(child: SizedBox());
+      }
     }
 
     return SliverPadding(
