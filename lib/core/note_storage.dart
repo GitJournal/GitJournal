@@ -7,6 +7,7 @@
 import 'package:dart_git/utils/result.dart';
 import 'package:universal_io/io.dart';
 
+import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/md_yaml_doc_loader.dart';
 import 'package:gitjournal/error_reporting.dart';
@@ -17,7 +18,13 @@ class NoteStorage {
   static final _serializer = MarkdownYAMLCodec();
 
   static String serialize(Note note) {
-    var contents = _serializer.encode(note.data);
+    // HACK: This isn't great as the raw editor still shows the note with metadata
+    var data = note.data;
+    if (!note.canHaveMetadata) {
+      data = MdYamlDoc(body: data.body);
+    }
+
+    var contents = _serializer.encode(data);
     // Make sure all docs end with a \n
     if (!contents.endsWith('\n')) {
       contents += '\n';
