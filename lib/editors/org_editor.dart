@@ -17,7 +17,7 @@ import 'package:gitjournal/editors/disposable_change_notifier.dart';
 import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/editors/undo_redo.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
-import 'rich_text_controller.dart';
+import 'org_text_controller.dart';
 
 class OrgEditor extends StatefulWidget implements Editor {
   final Note note;
@@ -64,7 +64,7 @@ class OrgEditorState extends State<OrgEditor>
     super.initState();
     _note = widget.note;
     _noteModified = widget.noteModified;
-    _textController = buildController(
+    _textController = buildOrgTextController(
       text: serializer.encode(_note.data),
       highlightText: widget.highlightString,
       theme: widget.theme,
@@ -174,7 +174,7 @@ class OrgEditorState extends State<OrgEditor>
   @override
   SearchInfo search(String? text) {
     setState(() {
-      _textController = buildController(
+      _textController = buildOrgTextController(
         text: _textController.text,
         highlightText: text,
         theme: widget.theme,
@@ -187,7 +187,7 @@ class OrgEditorState extends State<OrgEditor>
   @override
   void scrollToResult(String text, int num) {
     setState(() {
-      _textController = buildController(
+      _textController = buildOrgTextController(
         text: _textController.text,
         highlightText: text,
         theme: widget.theme,
