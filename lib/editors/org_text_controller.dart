@@ -8,6 +8,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+import 'package:org_flutter/org_flutter.dart';
+
 class OrgTextController extends TextEditingController {
   final String? highlightText;
   final int currentPos;
@@ -59,46 +61,55 @@ class OrgTextController extends TextEditingController {
     return TextSpan(style: style, children: _parseOrgStyle(text, style!));
   }
 
-  final _boldRegExp = RegExp(r'(.*)(\*[^*\n]+\*)(.*)');
-
   List<TextSpan> _parseOrgStyle(String text, TextStyle style) {
     var lines = LineSplitter.split(text);
     var children = <TextSpan>[];
 
     bool firstLine = true;
     for (var line in lines) {
-      var match = _boldRegExp.firstMatch(line);
-      if (match != null) {
-        var pre = match[1];
-        var m = match[2];
-        var post = match[3];
+      if (line.isEmpty) {
+        children.add(TextSpan(text: '\n', style: style));
+        continue;
+      }
 
-        // print('pre $pre');
-        // print('m $m');
-        // print('post $post');
-
-        if (!firstLine) {
-          pre = '\n$pre';
-        } else {
-          firstLine = false;
-        }
-
-        children.add(TextSpan(text: pre, style: style));
-        children.add(
-          TextSpan(
-            text: m,
-            style: style.copyWith(fontWeight: FontWeight.bold),
-          ),
-        );
-        children.add(TextSpan(text: post, style: style));
-      } else {
+      final parser = org;
+      var parsed = parser.parse(line);
+      var document = parsed.value as OrgDocument;
+      if (document.content == null) {
         if (!firstLine) {
           line = '\n$line';
         } else {
           firstLine = false;
         }
         children.add(TextSpan(text: line, style: style));
+        continue;
       }
+
+      if (!firstLine) {
+        children.add(TextSpan(text: '\n', style: style));
+      } else {
+        firstLine = false;
+      }
+
+      document.visit((p) {
+        if (p is OrgMarkup) {
+          var newStyle = style;
+          if (p.style == OrgStyle.bold) {
+            newStyle = style.copyWith(fontWeight: FontWeight.bold);
+            children.add(TextSpan(text: '*${p.content}*', style: newStyle));
+            return true;
+          }
+
+          children.add(TextSpan(text: p.content, style: style));
+          return true;
+        }
+        if (p is OrgPlainText) {
+          children.add(TextSpan(text: p.content, style: style));
+          return true;
+        }
+
+        return true;
+      });
     }
 
     return children;
