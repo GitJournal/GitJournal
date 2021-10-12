@@ -23,32 +23,35 @@ class NoteEditorSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     var list = Column(
       children: <Widget>[
-        if (fileFormat == NoteFileFormat.Markdown)
+        if (editorSupported(fileFormat, EditorType.Markdown))
           _buildTile(
             context,
             EditorType.Markdown,
             tr(LocaleKeys.settings_editors_markdownEditor),
             FontAwesomeIcons.markdown,
           ),
-        _buildTile(
-          context,
-          EditorType.Raw,
-          tr(LocaleKeys.settings_editors_rawEditor),
-          FontAwesomeIcons.dna,
-        ),
-        _buildTile(
-          context,
-          EditorType.Checklist,
-          tr(LocaleKeys.settings_editors_checklistEditor),
-          FontAwesomeIcons.tasks,
-        ),
-        _buildTile(
-          context,
-          EditorType.Journal,
-          tr(LocaleKeys.settings_editors_journalEditor),
-          FontAwesomeIcons.book,
-        ),
-        if (fileFormat == NoteFileFormat.OrgMode)
+        if (editorSupported(fileFormat, EditorType.Raw))
+          _buildTile(
+            context,
+            EditorType.Raw,
+            tr(LocaleKeys.settings_editors_rawEditor),
+            FontAwesomeIcons.dna,
+          ),
+        if (editorSupported(fileFormat, EditorType.Checklist))
+          _buildTile(
+            context,
+            EditorType.Checklist,
+            tr(LocaleKeys.settings_editors_checklistEditor),
+            FontAwesomeIcons.tasks,
+          ),
+        if (editorSupported(fileFormat, EditorType.Journal))
+          _buildTile(
+            context,
+            EditorType.Journal,
+            tr(LocaleKeys.settings_editors_journalEditor),
+            FontAwesomeIcons.book,
+          ),
+        if (editorSupported(fileFormat, EditorType.Org))
           _buildTile(
             context,
             EditorType.Org,
