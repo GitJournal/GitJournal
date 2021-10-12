@@ -1,8 +1,3 @@
-// SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
-// SPDX-FileCopyrightText: 2021 Vishesh Handa <me@vhanda.in>
-//
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
 abstract class LocaleKeys {
@@ -272,6 +267,8 @@ abstract class LocaleKeys {
   static const settings_editors_subtitle = 'settings.editors.subtitle';
   static const settings_editors_defaultEditor =
       'settings.editors.defaultEditor';
+  static const settings_editors_defaultNoteFormat =
+      'settings.editors.defaultNoteFormat';
   static const settings_editors_defaultState = 'settings.editors.defaultState';
   static const settings_editors_markdownEditor =
       'settings.editors.markdownEditor';
@@ -313,6 +310,10 @@ abstract class LocaleKeys {
   static const settings_misc_hardWrap = 'settings.misc.hardWrap';
   static const settings_misc_emoji = 'settings.misc.emoji';
   static const settings_misc = 'settings.misc';
+  static const settings_fileFormat_markdown = 'settings.fileFormat.markdown';
+  static const settings_fileFormat_txt = 'settings.fileFormat.txt';
+  static const settings_fileFormat_orgMode = 'settings.fileFormat.orgMode';
+  static const settings_fileFormat = 'settings.fileFormat';
   static const settings_NoteFileNameFormat_iso8601WithTimeZone =
       'settings.NoteFileNameFormat.iso8601WithTimeZone';
   static const settings_NoteFileNameFormat_iso8601 =

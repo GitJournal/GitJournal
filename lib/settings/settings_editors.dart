@@ -57,6 +57,19 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
           setState(() {});
         },
       ),
+      ListPreference(
+        title: tr(LocaleKeys.settings_editors_defaultNoteFormat),
+        currentOption: folderConfig.defaultFileFormat.toPublicString(),
+        options: SettingsNoteFileFormat.options
+            .map((f) => f.toPublicString())
+            .toList(),
+        onChange: (String publicStr) {
+          var val = SettingsNoteFileFormat.fromPublicString(publicStr);
+          folderConfig.defaultFileFormat = val;
+          folderConfig.save();
+          setState(() {});
+        },
+      ),
       //SettingsHeader(tr("settings.editors.markdownEditor")),
       ListPreference(
         title: tr(LocaleKeys.settings_editors_defaultState),

@@ -11,8 +11,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:gitjournal/core/transformers/base.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/folder_views/common_types.dart';
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'settings_sharedpref.dart';
 
 const DEFAULT_ID = "0";
@@ -356,6 +358,82 @@ class SettingsEditorType {
   @override
   String toString() {
     assert(false, "EditorType toString should never be called");
+    return "";
+  }
+}
+
+class SettingsNoteFileFormat {
+  static const Markdown = SettingsNoteFileFormat(
+      LocaleKeys.settings_fileFormat_markdown, "Markdown");
+  static const Txt =
+      SettingsNoteFileFormat(LocaleKeys.settings_fileFormat_txt, "Txt");
+  static const OrgMode =
+      SettingsNoteFileFormat(LocaleKeys.settings_fileFormat_orgMode, "Org");
+  static const Default = Markdown;
+
+  final String _str;
+  final String _publicString;
+  const SettingsNoteFileFormat(this._publicString, this._str);
+
+  String toInternalString() {
+    return _str;
+  }
+
+  String toPublicString() {
+    return tr(_publicString);
+  }
+
+  NoteFileFormat toFileFormat() {
+    switch (this) {
+      case Markdown:
+        return NoteFileFormat.Markdown;
+      case Txt:
+        return NoteFileFormat.Txt;
+      case OrgMode:
+        return NoteFileFormat.OrgMode;
+      default:
+        return NoteFileFormat.Markdown;
+    }
+  }
+
+  static SettingsNoteFileFormat fromFileFormat(NoteFileFormat format) {
+    switch (format) {
+      case NoteFileFormat.Markdown:
+        return Markdown;
+      case NoteFileFormat.Txt:
+        return Txt;
+      case NoteFileFormat.OrgMode:
+        return OrgMode;
+    }
+  }
+
+  static const options = <SettingsNoteFileFormat>[
+    Markdown,
+    Txt,
+    OrgMode,
+  ];
+
+  static SettingsNoteFileFormat fromInternalString(String? str) {
+    for (var opt in options) {
+      if (opt.toInternalString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  static SettingsNoteFileFormat fromPublicString(String str) {
+    for (var opt in options) {
+      if (opt.toPublicString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  @override
+  String toString() {
+    assert(false, "SettingsNoteFileFormat toString should never be called");
     return "";
   }
 }

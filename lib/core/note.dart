@@ -98,7 +98,7 @@ class Note {
   }) : fileLastModified = DateTime.fromMillisecondsSinceEpoch(0) {
     _created = DateTime.now();
     _loadState = NoteLoadState.Loaded;
-    _fileFormat = NoteFileFormat.Markdown;
+    _fileFormat = parent.config.defaultFileFormat.toFileFormat();
     var settings = NoteSerializationSettings.fromConfig(parent.config);
     noteSerializer = NoteSerializer.fromConfig(settings);
 

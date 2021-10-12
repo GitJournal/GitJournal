@@ -27,6 +27,7 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
 
   var defaultEditor = SettingsEditorType.Default;
   var defaultView = SettingsFolderViewType.Default;
+  var defaultFileFormat = SettingsNoteFileFormat.Default;
 
   var folderViewHeaderType = "TitleGenerated";
   var showNoteSummary = true;
@@ -64,6 +65,9 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
     defaultView =
         SettingsFolderViewType.fromInternalString(getString("defaultView"));
 
+    defaultFileFormat = SettingsNoteFileFormat.fromInternalString(
+        getString("defaultFileFormat"));
+
     showNoteSummary = getBool("showNoteSummary") ?? showNoteSummary;
     folderViewHeaderType =
         getString("folderViewHeaderType") ?? folderViewHeaderType;
@@ -96,6 +100,8 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
         def.defaultEditor.toInternalString());
     await setString("defaultView", defaultView.toInternalString(),
         def.defaultView.toInternalString());
+    await setString("defaultFileFormat", defaultFileFormat.toInternalString(),
+        def.defaultFileFormat.toInternalString());
     await setBool("showNoteSummary", showNoteSummary, def.showNoteSummary);
     await setString(
         "folderViewHeaderType", folderViewHeaderType, def.folderViewHeaderType);
@@ -128,6 +134,7 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
       "yamlHeaderEnabled": yamlHeaderEnabled.toString(),
       "defaultEditor": defaultEditor.toInternalString(),
       "defaultView": defaultView.toInternalString(),
+      'defaultFileFormat': defaultFileFormat.toInternalString(),
       "sortingField": sortingField.toInternalString(),
       "sortingOrder": sortingOrder.toInternalString(),
       "showNoteSummary": showNoteSummary.toString(),

@@ -169,6 +169,7 @@ settings:
     title: Editor Settings
     subtitle: Configure how different editors work
     defaultEditor: Default Editor
+    defaultNoteFormat: Default Note Format
     defaultState: Default State
     markdownEditor: Markdown Editor
     journalEditor: Journal Editor
@@ -203,6 +204,10 @@ settings:
     confirmDelete: Show a Popup to Confirm Deletes
     hardWrap: Enable hardWrap
     emoji: Emojify text
+  fileFormat:
+    markdown: Markdown
+    txt: Txt
+    orgMode: Org Mode
   NoteFileNameFormat:
     iso8601WithTimeZone: ISO8601 With TimeZone
     iso8601: ISO8601
