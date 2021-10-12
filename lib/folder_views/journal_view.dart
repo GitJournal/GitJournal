@@ -13,7 +13,6 @@ import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/core/views/summary_view.dart';
 import 'package:gitjournal/folder_views/list_view.dart';
-import 'package:gitjournal/widgets/future_builder_with_progress.dart';
 import 'package:gitjournal/widgets/highlighted_text.dart';
 
 class JournalView extends StatelessWidget {
@@ -52,10 +51,18 @@ class JournalView extends StatelessWidget {
   Widget _buildRow(BuildContext context, Note note) {
     var summaryProvider = NoteSummaryProvider.of(context);
 
-    return FutureBuilderWithProgress(future: () async {
-      var summary = await summaryProvider.fetch(note);
-      return _buildRowWithSummary(context, note, summary);
-    }());
+    return FutureBuilder(
+      future: () async {
+        var summary = await summaryProvider.fetch(note);
+        return _buildRowWithSummary(context, note, summary);
+      }(),
+      builder: (context, AsyncSnapshot<Widget> snapshot) {
+        if (snapshot.hasData) {
+          return snapshot.data as Widget;
+        }
+        return _buildRowWithSummary(context, note, "");
+      },
+    );
   }
 
   Widget _buildRowWithSummary(
