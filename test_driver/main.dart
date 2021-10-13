@@ -30,7 +30,7 @@ Future<void> populateWithData(SharedPreferences pref) async {
   var repoPath = p.join(dir.path, "journal_local");
   await GitRepository.init(repoPath);
 
-  print("Filling fake data in $repoPath");
+  stderr.writeln("Filling fake data in $repoPath");
 
   // Write Folders
   Directory(p.join(repoPath, "GitJournal")).createSync();

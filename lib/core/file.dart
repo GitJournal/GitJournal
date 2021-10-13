@@ -8,7 +8,6 @@ import 'package:dart_git/blob_ctime_builder.dart';
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/plumbing/git_hash.dart';
 import 'package:dart_git/utils/result.dart';
-
 import 'package:universal_io/io.dart' as io;
 
 class File {

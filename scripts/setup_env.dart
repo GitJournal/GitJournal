@@ -15,15 +15,15 @@ Future<int> main(List<String> args) async {
       (key, value) => MapEntry(key, value.toString()),
     );
   } catch (ex) {
-    print(ex);
+    stderr.writeln(ex);
   }
 
   if (args.isNotEmpty) {
     config = config.map((key, value) => MapEntry(key, null));
   }
 
-  print(config);
-  print('');
+  stderr.writeln(config);
+  stderr.writeln('');
 
   var contents = 'class Env {\n';
   config.forEach((key, value) {
@@ -35,7 +35,7 @@ Future<int> main(List<String> args) async {
   });
   contents += '}\n';
 
-  print(contents);
+  stderr.writeln(contents);
 
   const filename = 'lib/.env.dart';
   await File(filename).writeAsString(contents);

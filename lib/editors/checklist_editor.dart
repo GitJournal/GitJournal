@@ -251,13 +251,11 @@ class ChecklistEditorState extends State<ChecklistEditor>
           if (index >= checklist.items.length - 1) {
             nextIndex = index - 1;
           }
-          print("Next focus index $nextIndex");
 
           FocusNode? fn;
           if (nextIndex >= 0) {
             var nextItemForFocus = checklist.items[nextIndex];
             fn = _getFn(nextItemForFocus);
-            print("Giving focus to $nextItemForFocus");
           }
 
           var k = _getKey(item);
@@ -283,7 +281,6 @@ class ChecklistEditorState extends State<ChecklistEditor>
 
           // FIXME: Make this happen on the next build
           Timer(50.milliseconds, () {
-            print("Asking focus to ${index + 1}");
             FocusScope.of(context).requestFocus();
             FocusScope.of(context).requestFocus(fn);
           });

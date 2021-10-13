@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:time/time.dart';
 
 import 'package:gitjournal/editors/common.dart';
+import 'package:gitjournal/logger/logger.dart';
 
 class AutoCompletionWidget extends StatefulWidget {
   final FocusNode textFieldFocusNode;
@@ -66,9 +67,8 @@ class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
     try {
       var es = TextEditorState(text, selection.baseOffset);
       range = autoCompleter.textChanged(es);
-    } catch (e) {
-      print(e);
-      print("bah");
+    } catch (e, st) {
+      Log.e("AutoCompleter", ex: e, stacktrace: st);
     }
 
     if (range.isEmpty) {
