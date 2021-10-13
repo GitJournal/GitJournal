@@ -224,6 +224,9 @@ void scrollToSearchResult({
   required TextStyle textStyle,
   required int resultNum,
 }) {
+  if (resultNum < 0) {
+    resultNum = 0;
+  }
   var body = textController.text.toLowerCase();
   searchText = searchText.toLowerCase();
 
