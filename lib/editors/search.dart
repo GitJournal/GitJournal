@@ -178,6 +178,10 @@ double calculateTextHeight({
   required TextStyle style,
   required GlobalKey editorKey,
 }) {
+  if (editorKey.currentContext == null) {
+    return -1;
+  }
+
   var renderBox = editorKey.currentContext!.findRenderObject() as RenderBox;
   var editorWidth = renderBox.size.width;
 
