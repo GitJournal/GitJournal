@@ -7,9 +7,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'note.dart';
 import 'notes_folder.dart';
+import 'notes_folder_fs.dart';
 
 typedef FolderNotificationCallback = void Function(
     int index, NotesFolder folder);
@@ -37,66 +37,94 @@ class NotesFolderNotifier implements ChangeNotifier {
       ObserverList<NoteRenamedCallback>();
 
   void addFolderRemovedListener(FolderNotificationCallback listener) {
-    _folderRemovedListeners!.add(listener);
+    if (_folderRemovedListeners != null) {
+      _folderRemovedListeners!.add(listener);
+    }
   }
 
   void removeFolderRemovedListener(FolderNotificationCallback listener) {
-    assert(_folderRemovedListeners!.contains(listener));
-    _folderRemovedListeners!.remove(listener);
+    if (_folderRemovedListeners != null) {
+      assert(_folderRemovedListeners!.contains(listener));
+      _folderRemovedListeners!.remove(listener);
+    }
   }
 
   void addFolderAddedListener(FolderNotificationCallback listener) {
-    _folderAddedListeners!.add(listener);
+    if (_folderAddedListeners != null) {
+      _folderAddedListeners!.add(listener);
+    }
   }
 
   void removeFolderAddedListener(FolderNotificationCallback listener) {
-    assert(_folderAddedListeners!.contains(listener));
-    _folderAddedListeners!.remove(listener);
+    if (_folderAddedListeners != null) {
+      assert(_folderAddedListeners!.contains(listener));
+      _folderAddedListeners!.remove(listener);
+    }
   }
 
   void addThisFolderRenamedListener(FolderRenamedCallback listener) {
-    _thisFolderRenamedListeners!.add(listener);
+    if (_thisFolderRenamedListeners != null) {
+      _thisFolderRenamedListeners!.add(listener);
+    }
   }
 
   void removeThisFolderRenamedListener(FolderRenamedCallback listener) {
-    assert(_thisFolderRenamedListeners!.contains(listener));
-    _thisFolderRenamedListeners!.remove(listener);
+    if (_thisFolderRenamedListeners != null) {
+      assert(_thisFolderRenamedListeners!.contains(listener));
+      _thisFolderRenamedListeners!.remove(listener);
+    }
   }
 
   void addNoteAddedListener(NoteNotificationCallback listener) {
-    _noteAddedListeners!.add(listener);
+    if (_noteAddedListeners != null) {
+      _noteAddedListeners!.add(listener);
+    }
   }
 
   void removeNoteAddedListener(NoteNotificationCallback listener) {
-    assert(_noteAddedListeners!.contains(listener));
-    _noteAddedListeners!.remove(listener);
+    if (_noteAddedListeners != null) {
+      assert(_noteAddedListeners!.contains(listener));
+      _noteAddedListeners!.remove(listener);
+    }
   }
 
   void addNoteRemovedListener(NoteNotificationCallback listener) {
-    _noteRemovedListeners!.add(listener);
+    if (_noteRemovedListeners != null) {
+      _noteRemovedListeners!.add(listener);
+    }
   }
 
   void removeNoteRemovedListener(NoteNotificationCallback listener) {
-    assert(_noteRemovedListeners!.contains(listener));
-    _noteRemovedListeners!.remove(listener);
+    if (_noteRemovedListeners != null) {
+      assert(_noteRemovedListeners!.contains(listener));
+      _noteRemovedListeners!.remove(listener);
+    }
   }
 
   void addNoteModifiedListener(NoteNotificationCallback listener) {
-    _noteModifiedListeners!.add(listener);
+    if (_noteModifiedListeners != null) {
+      _noteModifiedListeners!.add(listener);
+    }
   }
 
   void removeNoteModifiedListener(NoteNotificationCallback listener) {
-    assert(_noteModifiedListeners!.contains(listener));
-    _noteModifiedListeners!.remove(listener);
+    if (_noteModifiedListeners != null) {
+      assert(_noteModifiedListeners!.contains(listener));
+      _noteModifiedListeners!.remove(listener);
+    }
   }
 
   void addNoteRenameListener(NoteRenamedCallback listener) {
-    _noteRenameListeners!.add(listener);
+    if (_noteRenameListeners != null) {
+      _noteRenameListeners!.add(listener);
+    }
   }
 
   void removeNoteRenameListener(NoteRenamedCallback listener) {
-    assert(_noteRenameListeners!.contains(listener));
-    _noteRenameListeners!.remove(listener);
+    if (_noteRenameListeners != null) {
+      assert(_noteRenameListeners!.contains(listener));
+      _noteRenameListeners!.remove(listener);
+    }
   }
 
   @mustCallSuper
