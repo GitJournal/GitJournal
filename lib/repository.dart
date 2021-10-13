@@ -574,7 +574,7 @@ class GitJournalRepo with ChangeNotifier {
     try {
       await repo.checkoutBranch(branchName).getOrThrow();
       _currentBranch = branchName;
-      print("Done checking out $branchName");
+      Log.i("Done checking out $branchName");
 
       await _notesCache.clear();
       notesFolder.reset(repoPath);
@@ -582,9 +582,7 @@ class GitJournalRepo with ChangeNotifier {
 
       _loadNotes();
     } catch (e, st) {
-      print('maya hooo');
-      print(e);
-      print(st);
+      Log.e("Checkout Branch Failed", ex: e, stacktrace: st);
     }
     return branchName;
   }

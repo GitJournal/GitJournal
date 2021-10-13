@@ -73,8 +73,8 @@ Future<Result<void>> _gitCommandViaExecutable({
     },
   );
 
-  print('env GIT_SSH_COMMAND="ssh -i ${temp.path} -o IdentitiesOnly=yes"');
-  print('git $command $remoteName');
+  Log.d('env GIT_SSH_COMMAND="ssh -i ${temp.path} -o IdentitiesOnly=yes"');
+  Log.d('git $command $remoteName');
 
   var exitCode = await process.exitCode;
   await dir.delete(recursive: true);
@@ -124,8 +124,8 @@ Future<Result<String>> gitDefaultBranchViaExecutable({
     },
   );
 
-  print('env GIT_SSH_COMMAND="ssh -i ${temp.path} -o IdentitiesOnly=yes"');
-  print('git remote show $remoteName');
+  Log.d('env GIT_SSH_COMMAND="ssh -i ${temp.path} -o IdentitiesOnly=yes"');
+  Log.d('git remote show $remoteName');
 
   var exitCode = await process.exitCode;
   await dir.delete(recursive: true);

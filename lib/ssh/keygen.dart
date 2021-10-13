@@ -117,12 +117,12 @@ Future<SshKey?> generateSSHKeysKeygen({required String comment}) async {
 }
 
 Future<SshKey> generateSSHEccKeys({required String comment}) async {
-  print("Generating KeyPair ...");
+  Log.d("Generating KeyPair ...");
   var stopwatch = Stopwatch()..start();
   var keyPair = CryptoUtils.generateEcKeyPair(curve: 'secp384r1');
   var publicKey = keyPair.publicKey as ECPublicKey;
   var privateKey = keyPair.privateKey as ECPrivateKey;
-  print("Generating KeyPair took: ${stopwatch.elapsed}");
+  Log.d("Generating KeyPair took: ${stopwatch.elapsed}");
 
   //var publicPem = CryptoUtils.encodeEcPublicKeyToPem(publicKey);
   var privatePem = CryptoUtils.encodeEcPrivateKeyToPem(privateKey);
@@ -139,17 +139,17 @@ Future<SshKey> generateSSHEccKeys({required String comment}) async {
 String publicKeyString(ECPublicKey publicKey, String comment) {
   var publicPem = CryptoUtils.encodeEcPublicKeyToPem(publicKey);
 
-  print('public PEM');
-  print(publicPem);
-  print('\n');
+  // print('public PEM');
+  // print(publicPem);
+  // print('\n');
 
   var publicKeyBytes2 = CryptoUtils.getBytesFromPEMString(publicPem);
 
   var publicKeyBytes = publicKey.Q!.getEncoded(false);
   if (publicKeyBytes != publicKeyBytes2) {
-    print("THE BYTES ARE NOT EQAU~L");
+    // print("THE BYTES ARE NOT EQAU~L");
   }
-  print("HUURAY");
+  // print("HUURAY");
 
   var data = BinaryLengthValue.encode([
     BinaryLengthValue.fromString("ecdsa-sha2-nistp384"),

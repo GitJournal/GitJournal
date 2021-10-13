@@ -86,7 +86,7 @@ class GitLab implements GitHost {
         "https://gitlab.com/api/v4/projects?simple=true&membership=true&order_by=last_activity_at&access_token=$_accessCode");
 
     if (foundation.kDebugMode) {
-      print(toCurlCommand(url, {}));
+      Log.d(toCurlCommand(url, {}));
     }
 
     var response = await http.get(url);

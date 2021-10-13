@@ -101,7 +101,7 @@ class GitHub implements GitHost {
     };
 
     if (foundation.kDebugMode) {
-      print(toCurlCommand(url, headers));
+      Log.d(toCurlCommand(url, headers));
     }
 
     var response = await http.get(url, headers: headers);

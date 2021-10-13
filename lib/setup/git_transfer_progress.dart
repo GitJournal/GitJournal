@@ -6,6 +6,8 @@
 
 import 'package:universal_io/io.dart';
 
+import 'package:gitjournal/logger/logger.dart';
+
 class GitTransferProgress {
   int totalObjects = 0;
   int indexedObjects = 0;
@@ -25,7 +27,7 @@ class GitTransferProgress {
 
   static Future<GitTransferProgress?> parse(String str) async {
     var parts = str.split(' ');
-    print('GitTransferProgress: #$str#');
+    Log.d('GitTransferProgress: #$str#');
 
     if (parts.length < 7) {
       return null;

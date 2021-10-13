@@ -157,7 +157,7 @@ Future<void> captureSentryException(
     var _ = await Sentry.captureEvent(event,
         stackTrace: Trace.from(stackTrace).terse);
     return;
-  } catch (e) {
-    print("Failed to report with Sentry: $e");
+  } catch (e, st) {
+    Log.e("Failed to report with Sentry:", ex: e, stacktrace: st);
   }
 }
