@@ -14,6 +14,7 @@ import 'package:dart_git/plumbing/objects/commit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:synchronized/synchronized.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
@@ -135,8 +136,6 @@ class _CommitTile extends StatelessWidget {
 
   const _CommitTile({Key? key, required this.commit}) : super(key: key);
 
-  static final _dateFormat = DateFormat('dd MMM, yyyy');
-
   @override
   Widget build(BuildContext context) {
     var msgLines = LineSplitter.split(commit.message).toList();
@@ -144,15 +143,15 @@ class _CommitTile extends StatelessWidget {
 
     var textTheme = Theme.of(context).textTheme;
 
+    Locale locale = Localizations.localeOf(context);
+    var when = timeago.format(commit.author.date, locale: locale.languageCode);
+
     var titleRow = Row(
       children: <Widget>[
         Expanded(
           child: Text(title, style: textTheme.subtitle2!),
         ),
-        Text(
-          _dateFormat.format(commit.author.date),
-          style: textTheme.caption,
-        )
+        Text(when, style: textTheme.caption)
       ],
       crossAxisAlignment: CrossAxisAlignment.baseline,
       textBaseline: TextBaseline.alphabetic,
