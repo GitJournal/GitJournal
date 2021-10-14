@@ -12,6 +12,7 @@ import 'package:git_bindings/git_bindings.dart' as gb;
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' show Platform, Directory;
 
+import 'package:gitjournal/core/commit_message_builder.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
@@ -23,14 +24,16 @@ import 'package:gitjournal/utils/git_desktop.dart';
 bool useDartGit = false;
 
 class GitNoteRepository {
-  final String gitDirPath;
+  final String gitRepoPath;
   final gb.GitRepo _gitRepo;
   final GitConfig config;
+  final CommitMessageBuilder messageBuilder;
 
   GitNoteRepository({
-    required this.gitDirPath,
+    required this.gitRepoPath,
     required this.config,
-  }) : _gitRepo = gb.GitRepo(folderPath: gitDirPath) {
+  })  : _gitRepo = gb.GitRepo(folderPath: gitRepoPath),
+        messageBuilder = CommitMessageBuilder() {
     // git-bindings aren't properly implemented in these platforms
     if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
       useDartGit = true;
@@ -39,7 +42,7 @@ class GitNoteRepository {
 
   Future<Result<void>> _add(String pathSpec) async {
     if (useDartGit || AppSettings.instance.experimentalGitOps) {
-      var repo = await GitRepository.load(gitDirPath).getOrThrow();
+      var repo = await GitRepository.load(gitRepoPath).getOrThrow();
       await repo.add(pathSpec).throwOnError();
       return Result(null);
     } else {
@@ -55,7 +58,7 @@ class GitNoteRepository {
 
   Future<Result<void>> _rm(String pathSpec) async {
     if (useDartGit || AppSettings.instance.experimentalGitOps) {
-      var repo = await GitRepository.load(gitDirPath).getOrThrow();
+      var repo = await GitRepository.load(gitRepoPath).getOrThrow();
       return await repo.rm(pathSpec);
     } else {
       try {
@@ -74,7 +77,7 @@ class GitNoteRepository {
     required String authorName,
   }) async {
     if (useDartGit || AppSettings.instance.experimentalGitOps) {
-      var repo = await GitRepository.load(gitDirPath).getOrThrow();
+      var repo = await GitRepository.load(gitRepoPath).getOrThrow();
       var author = GitAuthor(name: authorName, email: authorEmail);
       var r = await repo.commit(message: message, author: author);
       if (r.isFailure) {
@@ -95,11 +98,6 @@ class GitNoteRepository {
     return Result(null);
   }
 
-  // FIXME: Is this actually used?
-  Future<Result<void>> addNote(Note note) async {
-    return _addAllAndCommit("Added Note");
-  }
-
   Future<Result<void>> _addAllAndCommit(String commitMessage) async {
     var r = await _add(".");
     if (r.isFailure) {
@@ -118,37 +116,63 @@ class GitNoteRepository {
     return Result(null);
   }
 
+  Future<Result<void>> addNote(Note note) async {
+    var msg = messageBuilder.addNote(note.pathSpec());
+    return _addAllAndCommit(msg);
+  }
+
   Future<Result<void>> addFolder(NotesFolderFS folder) async {
-    return _addAllAndCommit("Created New Folder");
+    var msg = messageBuilder.addFolder(folder.pathSpec());
+    return _addAllAndCommit(msg);
   }
 
   Future<Result<void>> renameFolder(
     String oldFullPath,
     String newFullPath,
   ) async {
+    var repoPath = gitRepoPath.endsWith('/') ? gitRepoPath : '$gitRepoPath/';
+    var oldSpec = oldFullPath.substring(repoPath.length);
+    var newSpec = newFullPath.substring(repoPath.length);
+    var msg = messageBuilder.renameFolder(oldSpec, newSpec);
+
     // FIXME: This is a hacky way of adding the changes, ideally we should be calling rm + add or something
-    return _addAllAndCommit("Renamed Folder");
+    return _addAllAndCommit(msg);
   }
 
   Future<Result<void>> renameNote(
     String oldFullPath,
     String newFullPath,
   ) async {
-    return _addAllAndCommit("Renamed Note");
+    var repoPath = gitRepoPath.endsWith('/') ? gitRepoPath : '$gitRepoPath/';
+    var oldSpec = oldFullPath.substring(repoPath.length);
+    var newSpec = newFullPath.substring(repoPath.length);
+    var msg = messageBuilder.renameNote(oldSpec, newSpec);
+
+    return _addAllAndCommit(msg);
   }
 
   Future<Result<void>> renameFile(
     String oldFullPath,
     String newFullPath,
   ) async {
-    return _addAllAndCommit("Renamed File");
+    var repoPath = gitRepoPath.endsWith('/') ? gitRepoPath : '$gitRepoPath/';
+    var oldSpec = oldFullPath.substring(repoPath.length);
+    var newSpec = newFullPath.substring(repoPath.length);
+    var msg = messageBuilder.renameFile(oldSpec, newSpec);
+
+    return _addAllAndCommit(msg);
   }
 
   Future<Result<void>> moveNote(
     String oldFullPath,
     String newFullPath,
   ) async {
-    return _addAllAndCommit("Note Moved");
+    var repoPath = gitRepoPath.endsWith('/') ? gitRepoPath : '$gitRepoPath/';
+    var oldSpec = oldFullPath.substring(repoPath.length);
+    var newSpec = newFullPath.substring(repoPath.length);
+    var msg = messageBuilder.moveNote(oldSpec, newSpec);
+
+    return _addAllAndCommit(msg);
   }
 
   Future<Result<void>> removeNote(Note note) async {
@@ -157,7 +181,7 @@ class GitNoteRepository {
       var spec = note.pathSpec();
       await _rm(spec).throwOnError();
       await _commit(
-        message: "Removed Note " + spec,
+        message: messageBuilder.removeNote(spec),
         authorEmail: config.gitAuthorEmail,
         authorName: config.gitAuthor,
       ).throwOnError();
@@ -171,7 +195,7 @@ class GitNoteRepository {
       var spec = folder.pathSpec();
       await _rm(spec).throwOnError();
       await _commit(
-        message: "Removed Folder " + spec,
+        message: messageBuilder.removeFolder(spec),
         authorEmail: config.gitAuthorEmail,
         authorName: config.gitAuthor,
       ).throwOnError();
@@ -183,7 +207,7 @@ class GitNoteRepository {
 
   Future<Result<void>> resetLastCommit() async {
     if (useDartGit || AppSettings.instance.experimentalGitOps) {
-      var repo = await GitRepository.load(gitDirPath).getOrThrow();
+      var repo = await GitRepository.load(gitRepoPath).getOrThrow();
       var headCommitR = await repo.headCommit();
       if (headCommitR.isFailure) {
         return fail(headCommitR);
@@ -205,7 +229,8 @@ class GitNoteRepository {
   }
 
   Future<Result<void>> updateNote(Note note) async {
-    return _addAllAndCommit("Edited Note");
+    var msg = messageBuilder.updateNote(note.pathSpec());
+    return _addAllAndCommit(msg);
   }
 
   Future<Result<void>> fetch() async {
@@ -231,7 +256,7 @@ class GitNoteRepository {
         privateKey: config.sshPrivateKey,
         privateKeyPassword: config.sshPassword,
         remoteName: remoteName,
-        repoPath: gitDirPath,
+        repoPath: gitRepoPath,
       ).throwOnError();
     }
 
@@ -241,7 +266,7 @@ class GitNoteRepository {
   Future<Result<void>> merge() => catchAll(_merge);
 
   Future<Result<void>> _merge() async {
-    var repo = await GitRepository.load(gitDirPath).getOrThrow();
+    var repo = await GitRepository.load(gitRepoPath).getOrThrow();
     var branch = await repo.currentBranch().getOrThrow();
 
     var branchConfig = repo.config.branch(branch);
@@ -285,7 +310,7 @@ class GitNoteRepository {
   Future<void> push() async {
     // Only push if we have something we need to push
     try {
-      var repo = await GitRepository.load(gitDirPath).getOrThrow();
+      var repo = await GitRepository.load(gitRepoPath).getOrThrow();
       var canPush = await repo.canPush().getOrThrow();
       if (!canPush) {
         return;
@@ -318,14 +343,14 @@ class GitNoteRepository {
         privateKey: config.sshPrivateKey,
         privateKeyPassword: config.sshPassword,
         remoteName: remoteName,
-        repoPath: gitDirPath,
+        repoPath: gitRepoPath,
       ).throwOnError();
     }
   }
 
   Future<int?> numChanges() async {
     try {
-      var repo = await GitRepository.load(gitDirPath).getOrThrow();
+      var repo = await GitRepository.load(gitRepoPath).getOrThrow();
       var n = await repo.numChangesToPush().getOrThrow();
       return n;
     } catch (ex, st) {

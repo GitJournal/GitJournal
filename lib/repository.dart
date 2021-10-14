@@ -170,8 +170,8 @@ class GitJournalRepo with ChangeNotifier {
     required this.remoteGitRepoConfigured,
     required String? currentBranch,
   }) {
-    _gitRepo = GitNoteRepository(gitDirPath: repoPath, config: gitConfig);
-    notesFolder = NotesFolderFS(null, _gitRepo.gitDirPath, folderConfig);
+    _gitRepo = GitNoteRepository(gitRepoPath: repoPath, config: gitConfig);
+    notesFolder = NotesFolderFS(null, _gitRepo.gitRepoPath, folderConfig);
     _currentBranch = currentBranch;
 
     Log.i("Branch $_currentBranch");
@@ -185,7 +185,7 @@ class GitJournalRepo with ChangeNotifier {
     var cachePath = p.join(cacheDir, "cache.json");
     _notesCache = NotesCache(
       filePath: cachePath,
-      notesBasePath: _gitRepo.gitDirPath,
+      notesBasePath: _gitRepo.gitRepoPath,
       folderConfig: folderConfig,
     );
 
@@ -485,7 +485,7 @@ class GitJournalRepo with ChangeNotifier {
     repoPath = p.join(gitBaseDirectory, repoFolderName);
     Log.i("repoPath: $repoPath");
 
-    _gitRepo = GitNoteRepository(gitDirPath: repoPath, config: gitConfig);
+    _gitRepo = GitNoteRepository(gitRepoPath: repoPath, config: gitConfig);
 
     await _addFileInRepo(repo: this, config: gitConfig);
 
@@ -522,7 +522,7 @@ class GitJournalRepo with ChangeNotifier {
       await Directory(repoPath).delete(recursive: true);
 
       repoPath = newRepoPath;
-      _gitRepo = GitNoteRepository(gitDirPath: repoPath, config: gitConfig);
+      _gitRepo = GitNoteRepository(gitRepoPath: repoPath, config: gitConfig);
 
       _notesCache.clear();
       notesFolder.reset(repoPath);
