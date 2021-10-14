@@ -19,6 +19,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
+import 'commit_data_widget.dart';
 
 class HistoryScreen extends StatelessWidget {
   static const String routePath = "/history";
@@ -55,6 +56,7 @@ class _HistoryWidgetState extends State<HistoryWidget> {
   final _lock = Lock();
 
   Exception? _exception;
+  GitRepository? _gitRepo;
 
   @override
   void initState() {
@@ -105,9 +107,10 @@ class _HistoryWidgetState extends State<HistoryWidget> {
   Future<Stream<Result<GitCommit>>> _initStream() async {
     print('initializing the stream?');
     try {
-      var repo = await GitRepository.load(widget.repoPath).getOrThrow();
-      var head = await repo.headHash().getOrThrow();
-      return commitPreOrderIterator(objStorage: repo.objStorage, from: head)
+      _gitRepo = await GitRepository.load(widget.repoPath).getOrThrow();
+      var head = await _gitRepo!.headHash().getOrThrow();
+      return commitPreOrderIterator(
+              objStorage: _gitRepo!.objStorage, from: head)
           .asBroadcastStream();
     } on Exception catch (ex) {
       setState(() {
@@ -141,12 +144,17 @@ class _HistoryWidgetState extends State<HistoryWidget> {
     if (i == commits.length - 1) {
       var result = commits[i];
       return result.isSuccess
-          ? _CommitTile(commit: result.getOrThrow(), prevCommit: null)
+          ? _CommitTile(
+              commit: result.getOrThrow(),
+              prevCommit: null,
+              gitRepo: _gitRepo!,
+            )
           : _FailureTile(result: result);
     }
 
     try {
       return _CommitTile(
+        gitRepo: _gitRepo!,
         commit: commits[i].getOrThrow(),
         prevCommit: commits[i + 1].getOrThrow(),
       );
@@ -156,27 +164,37 @@ class _HistoryWidgetState extends State<HistoryWidget> {
   }
 }
 
-class _CommitTile extends StatelessWidget {
+class _CommitTile extends StatefulWidget {
+  final GitRepository gitRepo;
   final GitCommit commit;
   final GitCommit? prevCommit;
 
   const _CommitTile({
     Key? key,
+    required this.gitRepo,
     required this.commit,
     required this.prevCommit,
   }) : super(key: key);
 
   @override
+  State<_CommitTile> createState() => _CommitTileState();
+}
+
+class _CommitTileState extends State<_CommitTile> {
+  bool expanded = false;
+
+  @override
   Widget build(BuildContext context) {
-    var msgLines = LineSplitter.split(commit.message).toList();
+    var msgLines = LineSplitter.split(widget.commit.message).toList();
     var title = msgLines.first;
 
     var textTheme = Theme.of(context).textTheme;
 
     Locale locale = Localizations.localeOf(context);
-    var when = timeago.format(commit.author.date, locale: locale.languageCode);
+    var when =
+        timeago.format(widget.commit.author.date, locale: locale.languageCode);
 
-    var titleRow = Row(
+    Widget body = Row(
       children: <Widget>[
         Expanded(
           child: Text(title, style: textTheme.subtitle2!),
@@ -186,11 +204,32 @@ class _CommitTile extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.baseline,
       textBaseline: TextBaseline.alphabetic,
     );
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: titleRow,
+
+    if (expanded && widget.prevCommit != null) {
+      body = Column(
+        children: [
+          body,
+          CommitDataWidget(
+            gitRepo: widget.gitRepo,
+            commit: widget.commit,
+            prevCommit: widget.prevCommit!,
+          ),
+        ],
+      );
+    }
+
+    return GestureDetector(
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: body,
+        ),
       ),
+      onTap: () {
+        setState(() {
+          expanded = !expanded;
+        });
+      },
     );
   }
 }
