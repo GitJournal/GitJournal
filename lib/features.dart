@@ -16,6 +16,8 @@ class Features {
       Platform.isLinux ||
       Platform.isMacOS;
 
+  static const fancyOrgEditor = false;
+
   static final all = <Feature>[
     Feature.basicSearch,
     Feature.darkMode,

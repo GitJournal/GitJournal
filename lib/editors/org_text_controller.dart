@@ -10,6 +10,9 @@ import 'package:flutter/material.dart';
 
 import 'package:org_flutter/org_flutter.dart';
 
+import 'package:gitjournal/features.dart';
+import 'rich_text_controller.dart';
+
 class OrgTextController extends TextEditingController {
   final String? highlightText;
   final int currentPos;
@@ -134,6 +137,13 @@ TextEditingController buildOrgTextController({
   required ThemeData theme,
   int currentPos = -1,
 }) {
+  if (!Features.fancyOrgEditor) {
+    return buildController(
+      text: text,
+      highlightText: highlightText,
+      theme: theme,
+    );
+  }
   var color = theme.textSelectionTheme.selectionColor!;
   var currentColor = theme.brightness != Brightness.light
       ? color.lighten(0.2)
@@ -146,25 +156,4 @@ TextEditingController buildOrgTextController({
     highlightBackgroundColor: color,
     highlightCurrentBackgroundColor: currentColor,
   );
-}
-
-extension ColorBrightness on Color {
-  Color darken([double amount = .1]) {
-    assert(amount >= 0 && amount <= 1);
-
-    final hsl = HSLColor.fromColor(this);
-    final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
-
-    return hslDark.toColor();
-  }
-
-  Color lighten([double amount = .1]) {
-    assert(amount >= 0 && amount <= 1);
-
-    final hsl = HSLColor.fromColor(this);
-    final hslLight =
-        hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
-
-    return hslLight.toColor();
-  }
 }
