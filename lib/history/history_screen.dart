@@ -54,6 +54,8 @@ class _HistoryWidgetState extends State<HistoryWidget> {
   final _scrollController = ScrollController();
   final _lock = Lock();
 
+  Exception? _exception;
+
   @override
   void initState() {
     super.initState();
@@ -102,14 +104,26 @@ class _HistoryWidgetState extends State<HistoryWidget> {
 
   Future<Stream<Result<GitCommit>>> _initStream() async {
     print('initializing the stream?');
-    var repo = await GitRepository.load(widget.repoPath).getOrThrow();
-    var head = await repo.headHash().getOrThrow();
-    return commitPreOrderIterator(objStorage: repo.objStorage, from: head)
-        .asBroadcastStream();
+    try {
+      var repo = await GitRepository.load(widget.repoPath).getOrThrow();
+      var head = await repo.headHash().getOrThrow();
+      return commitPreOrderIterator(objStorage: repo.objStorage, from: head)
+          .asBroadcastStream();
+    } on Exception catch (ex) {
+      setState(() {
+        _exception = ex;
+      });
+    }
+
+    return const Stream.empty();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_exception != null) {
+      return _FailureTile(result: Result.fail(_exception!));
+    }
+
     return Scrollbar(
       child: ListView.builder(
         controller: _scrollController,
