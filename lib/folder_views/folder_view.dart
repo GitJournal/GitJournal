@@ -68,8 +68,8 @@ class _FolderViewState extends State<FolderView> {
   var _headerType = StandardViewHeader.TitleGenerated;
   bool _showSummary = true;
 
-  bool inSelectionMode = false;
   Note? selectedNote;
+  bool get inSelectionMode => selectedNote != null;
 
   @override
   void initState() {
@@ -137,7 +137,6 @@ class _FolderViewState extends State<FolderView> {
       },
       noteLongPressed: (Note note) {
         setState(() {
-          inSelectionMode = true;
           selectedNote = note;
         });
       },
@@ -162,7 +161,6 @@ class _FolderViewState extends State<FolderView> {
         },
         noteLongPressed: (Note note) {
           setState(() {
-            inSelectionMode = true;
             selectedNote = note;
           });
         },
@@ -626,7 +624,6 @@ class _FolderViewState extends State<FolderView> {
   void _resetSelection() {
     setState(() {
       selectedNote = null;
-      inSelectionMode = false;
     });
   }
 }
