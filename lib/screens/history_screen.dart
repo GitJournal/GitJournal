@@ -124,17 +124,33 @@ class _HistoryWidgetState extends State<HistoryWidget> {
       return const CircularProgressIndicator();
     }
 
-    var result = commits[i];
-    return result.isSuccess
-        ? _CommitTile(commit: result.getOrThrow())
-        : _FailureTile(result: result);
+    if (i == commits.length - 1) {
+      var result = commits[i];
+      return result.isSuccess
+          ? _CommitTile(commit: result.getOrThrow(), prevCommit: null)
+          : _FailureTile(result: result);
+    }
+
+    try {
+      return _CommitTile(
+        commit: commits[i].getOrThrow(),
+        prevCommit: commits[i + 1].getOrThrow(),
+      );
+    } on Exception catch (ex, st) {
+      return _FailureTile(result: Result.fail(ex, st));
+    }
   }
 }
 
 class _CommitTile extends StatelessWidget {
   final GitCommit commit;
+  final GitCommit? prevCommit;
 
-  const _CommitTile({Key? key, required this.commit}) : super(key: key);
+  const _CommitTile({
+    Key? key,
+    required this.commit,
+    required this.prevCommit,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -156,8 +172,11 @@ class _CommitTile extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.baseline,
       textBaseline: TextBaseline.alphabetic,
     );
-    return ListTile(
-      title: titleRow,
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: titleRow,
+      ),
     );
   }
 }
@@ -174,3 +193,24 @@ class _FailureTile<T> extends StatelessWidget {
     return Text(result.error.toString());
   }
 }
+
+// Extra info -
+// * Has this commit been pushed, failed to sync
+// * Title
+// * (rest of the message - optionally)
+// * Time
+// * Author
+// * Files + changes
+
+// class _ExpandedCommitTile extends StatelessWidget {
+//   const _ExpandedCommitTile({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container();
+//   }
+// }
+
+// * Do a diff of files changed
+// * Show added / removed easily
+// * Show modified with a kind of whatever
