@@ -210,9 +210,7 @@ class NoteEditorState extends State<NoteEditor>
         var savedNote = await _saveNote(_getNoteFromEditor());
         return savedNote;
       },
-      child: widget.note != null
-          ? Hero(tag: widget.note!.filePath, child: _getEditor())
-          : _getEditor(),
+      child: _getEditor(),
     );
   }
 

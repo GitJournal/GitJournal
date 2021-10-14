@@ -177,7 +177,9 @@ class _EditorScaffoldState extends State<EditorScaffold> {
                   scrollToResult: widget.editorState.scrollToResult,
                 ),
               ),
-            Expanded(child: body),
+            Expanded(
+              child: Hero(tag: note.filePath, child: body),
+            ),
             _HideWidget(
               visible: !hideUIElements,
               child: EditorBottomBar(

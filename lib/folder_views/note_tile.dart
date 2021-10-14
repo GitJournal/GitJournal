@@ -80,6 +80,12 @@ class NoteTile extends StatelessWidget {
         child: Hero(
           tag: note.filePath,
           child: tileContent,
+          flightShuttleBuilder: (BuildContext flightContext,
+                  Animation<double> animation,
+                  HeroFlightDirection flightDirection,
+                  BuildContext fromHeroContext,
+                  BuildContext toHeroContext) =>
+              Material(child: toHeroContext.widget),
         ),
         borderRadius: borderRadius,
         onTap: () => noteTapped(note),
