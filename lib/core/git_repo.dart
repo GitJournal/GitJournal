@@ -175,6 +175,7 @@ class GitNoteRepository {
         authorEmail: config.gitAuthorEmail,
         authorName: config.gitAuthor,
       ).throwOnError();
+      await Directory(folder.folderPath).delete(recursive: true);
 
       return Result(null);
     });
