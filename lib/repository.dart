@@ -366,8 +366,15 @@ class GitJournalRepo with ChangeNotifier {
     });
   }
 
-  void moveNote(Note note, NotesFolderFS destFolder) async {
-    if (destFolder.folderPath == note.parent.folderPath) {
+  Future<void> moveNote(Note note, NotesFolderFS destFolder) =>
+      moveNotes([note], destFolder);
+
+  Future<void> moveNotes(List<Note> notes, NotesFolderFS destFolder) async {
+    notes = notes
+        .where((n) => n.parent.folderPath != destFolder.folderPath)
+        .toList();
+
+    if (notes.isEmpty) {
       return;
     }
 
@@ -375,10 +382,17 @@ class GitJournalRepo with ChangeNotifier {
     return _opLock.synchronized(() async {
       Log.d("Got moveNote lock");
 
-      var oldNotePath = note.filePath;
-      NotesFolderFS.moveNote(note, destFolder);
+      var oldPaths = <String>[];
+      var newPaths = <String>[];
+      for (var note in notes) {
+        oldPaths.add(note.filePath);
+        NotesFolderFS.moveNote(note, destFolder);
+        newPaths.add(note.filePath);
+      }
 
-      _gitRepo.moveNote(oldNotePath, note.filePath).then((Result<void> _) {
+      _gitRepo
+          .moveNotes(oldPaths, newPaths, destFolder.folderPath)
+          .then((Result<void> _) {
         _syncNotes();
         numChanges += 1;
         notifyListeners();
@@ -421,15 +435,19 @@ class GitJournalRepo with ChangeNotifier {
     });
   }
 
-  void removeNote(Note note) async {
+  void removeNote(Note note) => removeNotes([note]);
+
+  void removeNotes(List<Note> notes) async {
     logEvent(Event.NoteDeleted);
 
     return _opLock.synchronized(() async {
       Log.d("Got removeNote lock");
 
       // FIXME: What if the Note hasn't yet been saved?
-      note.parent.remove(note);
-      _gitRepo.removeNote(note).then((Result<void> _) async {
+      for (var note in notes) {
+        note.parent.remove(note);
+      }
+      _gitRepo.removeNotes(notes).then((Result<void> _) async {
         numChanges += 1;
         notifyListeners();
         // FIXME: Is there a way of figuring this amount dynamically?

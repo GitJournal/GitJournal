@@ -11,18 +11,22 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 
 class NoteDeleteDialog extends StatelessWidget {
+  final int num;
+
+  const NoteDeleteDialog({Key? key, required this.num}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(tr(LocaleKeys.widgets_NoteDeleteDialog_title)),
+      title: Text(LocaleKeys.widgets_NoteDeleteDialog_title.plural(num)),
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(false),
-          child: Text(tr(LocaleKeys.widgets_NoteDeleteDialog_no)),
+          child: Text(LocaleKeys.widgets_NoteDeleteDialog_no.tr()),
         ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(true),
-          child: Text(tr(LocaleKeys.widgets_NoteDeleteDialog_yes)),
+          child: Text(LocaleKeys.widgets_NoteDeleteDialog_yes.tr()),
         ),
       ],
     );

@@ -163,25 +163,32 @@ class GitNoteRepository {
     return _addAllAndCommit(msg);
   }
 
-  Future<Result<void>> moveNote(
-    String oldFullPath,
-    String newFullPath,
+  Future<Result<void>> moveNotes(
+    List<String> oldPaths,
+    List<String> newPaths,
+    String newFolderPath,
   ) async {
     var repoPath = gitRepoPath.endsWith('/') ? gitRepoPath : '$gitRepoPath/';
-    var oldSpec = oldFullPath.substring(repoPath.length);
-    var newSpec = newFullPath.substring(repoPath.length);
-    var msg = messageBuilder.moveNote(oldSpec, newSpec);
+    var oldSpecs = oldPaths.map((p) => p.substring(repoPath.length)).toList();
+    var newSpecs = newPaths.map((p) => p.substring(repoPath.length)).toList();
 
+    var msg = oldPaths.length == 1
+        ? messageBuilder.moveNote(oldSpecs.first, newSpecs.first)
+        : messageBuilder.moveNotes(oldSpecs, newSpecs);
     return _addAllAndCommit(msg);
   }
 
-  Future<Result<void>> removeNote(Note note) async {
+  Future<Result<void>> removeNotes(List<Note> notes) async {
     return catchAll(() async {
       // We are not calling note.remove() as gitRm will also remove the file
-      var spec = note.pathSpec();
-      await _rm(spec).throwOnError();
+      for (var note in notes) {
+        var spec = note.pathSpec();
+        await _rm(spec).throwOnError();
+      }
       await _commit(
-        message: messageBuilder.removeNote(spec),
+        message: notes.length == 1
+            ? messageBuilder.removeNote(notes.first.pathSpec())
+            : messageBuilder.removeNotes(notes.map((n) => n.pathSpec())),
         authorEmail: config.gitAuthorEmail,
         authorName: config.gitAuthor,
       ).throwOnError();

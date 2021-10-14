@@ -68,8 +68,8 @@ class _FolderViewState extends State<FolderView> {
   var _headerType = StandardViewHeader.TitleGenerated;
   bool _showSummary = true;
 
-  Note? selectedNote;
-  bool get inSelectionMode => selectedNote != null;
+  var selectedNotes = <Note>[];
+  bool get inSelectionMode => selectedNotes.isNotEmpty;
 
   @override
   void initState() {
@@ -119,7 +119,7 @@ class _FolderViewState extends State<FolderView> {
   Widget _buildBody(BuildContext context) {
     var title = widget.notesFolder.publicName;
     if (inSelectionMode) {
-      title = NumberFormat.compact().format(1);
+      title = NumberFormat.compact().format(selectedNotes.length);
     }
 
     var folderView = buildFolderView(
@@ -128,20 +128,9 @@ class _FolderViewState extends State<FolderView> {
       emptyText: tr(LocaleKeys.screens_folder_view_empty),
       header: _headerType,
       showSummary: _showSummary,
-      noteTapped: (Note note) {
-        if (!inSelectionMode) {
-          openNoteEditor(context, note, widget.notesFolder);
-        } else {
-          _resetSelection();
-        }
-      },
-      noteLongPressed: (Note note) {
-        setState(() {
-          selectedNote = note;
-        });
-      },
-      isNoteSelected: (n) => n == selectedNote,
-      searchTerm: "",
+      noteTapped: _noteTapped,
+      noteLongPressed: _noteLongPress,
+      isNoteSelected: (n) => selectedNotes.contains(n),
     );
 
     Widget pinnedFolderView = const SizedBox();
@@ -152,23 +141,11 @@ class _FolderViewState extends State<FolderView> {
         emptyText: null,
         header: _headerType,
         showSummary: _showSummary,
-        noteTapped: (Note note) {
-          if (!inSelectionMode) {
-            openNoteEditor(context, note, widget.notesFolder);
-          } else {
-            _resetSelection();
-          }
-        },
-        noteLongPressed: (Note note) {
-          setState(() {
-            selectedNote = note;
-          });
-        },
-        isNoteSelected: (n) => n == selectedNote,
-        searchTerm: "",
+        noteTapped: _noteTapped,
+        noteLongPressed: _noteLongPress,
+        isNoteSelected: (n) => selectedNotes.contains(n),
       );
     }
-    // assert(folderView is SliverWithKeepAliveWidget);
 
     var settings = Provider.of<Settings>(context);
     final showButtomMenuBar = settings.bottomMenuBar;
@@ -229,6 +206,37 @@ class _FolderViewState extends State<FolderView> {
         ),
       ),
     );
+  }
+
+  void _noteLongPress(Note note) {
+    var i = selectedNotes.indexOf(note);
+    if (i != -1) {
+      setState(() {
+        selectedNotes.removeAt(i);
+      });
+    } else {
+      setState(() {
+        selectedNotes.add(note);
+      });
+    }
+  }
+
+  void _noteTapped(Note note) {
+    if (!inSelectionMode) {
+      openNoteEditor(context, note, widget.notesFolder);
+      return;
+    }
+
+    var i = selectedNotes.indexOf(note);
+    if (i != -1) {
+      setState(() {
+        selectedNotes.removeAt(i);
+      });
+    } else {
+      setState(() {
+        selectedNotes.add(note);
+      });
+    }
   }
 
   @override
@@ -558,7 +566,7 @@ class _FolderViewState extends State<FolderView> {
       onSelected: (NoteSelectedExtraActions choice) {
         switch (choice) {
           case NoteSelectedExtraActions.MoveToFolder:
-            _moveNoteToFolder();
+            _moveSelectedNotesToFolder();
             break;
         }
       },
@@ -572,50 +580,48 @@ class _FolderViewState extends State<FolderView> {
     );
 
     return <Widget>[
-      IconButton(
-        icon: const Icon(Icons.share),
-        onPressed: () async {
-          await shareNote(selectedNote!);
-          _resetSelection();
-        },
-      ),
+      if (selectedNotes.length == 1)
+        IconButton(
+          icon: const Icon(Icons.share),
+          onPressed: () async {
+            await shareNote(selectedNotes.first);
+            _resetSelection();
+          },
+        ),
       IconButton(
         icon: const Icon(Icons.delete),
-        onPressed: _deleteNote,
+        onPressed: _deleteSelectedNotes,
       ),
       extraActions,
     ];
   }
 
-  void _deleteNote() async {
-    var note = selectedNote;
-
+  void _deleteSelectedNotes() async {
     var settings = Provider.of<Settings>(context, listen: false);
     var shouldDelete = true;
     if (settings.confirmDelete) {
-      shouldDelete = await showDialog(
-        context: context,
-        builder: (context) => NoteDeleteDialog(),
-      );
+      shouldDelete = (await showDialog(
+            context: context,
+            builder: (context) => NoteDeleteDialog(num: selectedNotes.length),
+          )) ==
+          true;
     }
     if (shouldDelete == true) {
-      var stateContainer = context.read<GitJournalRepo>();
-      stateContainer.removeNote(note!);
+      var repo = context.read<GitJournalRepo>();
+      repo.removeNotes(selectedNotes);
     }
 
     _resetSelection();
   }
 
-  void _moveNoteToFolder() async {
-    var note = selectedNote!;
-
+  void _moveSelectedNotesToFolder() async {
     var destFolder = await showDialog<NotesFolderFS>(
       context: context,
       builder: (context) => FolderSelectionDialog(),
     );
     if (destFolder != null) {
       var repo = context.read<GitJournalRepo>();
-      repo.moveNote(note, destFolder);
+      repo.moveNotes(selectedNotes, destFolder);
     }
 
     _resetSelection();
@@ -623,7 +629,7 @@ class _FolderViewState extends State<FolderView> {
 
   void _resetSelection() {
     setState(() {
-      selectedNote = null;
+      selectedNotes = [];
     });
   }
 }

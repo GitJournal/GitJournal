@@ -335,7 +335,7 @@ class NoteEditorState extends State<NoteEditor>
     if (settings.confirmDelete) {
       shouldDelete = await showDialog(
         context: context,
-        builder: (context) => NoteDeleteDialog(),
+        builder: (context) => const NoteDeleteDialog(num: 1),
       );
     }
     if (shouldDelete == true) {

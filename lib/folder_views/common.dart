@@ -34,7 +34,7 @@ Widget buildFolderView({
   required NoteSelectedFunction noteTapped,
   required NoteSelectedFunction noteLongPressed,
   required NoteBoolPropertyFunction isNoteSelected,
-  required String searchTerm,
+  String searchTerm = "",
 }) {
   switch (viewType) {
     case FolderViewType.Standard:
