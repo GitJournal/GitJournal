@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:dart_git/git.dart';
@@ -14,6 +16,7 @@ import 'package:provider/provider.dart';
 import 'package:synchronized/synchronized.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 
 class HistoryScreen extends StatelessWidget {
@@ -44,7 +47,7 @@ class HistoryWidget extends StatefulWidget {
 }
 
 class _HistoryWidgetState extends State<HistoryWidget> {
-  List<GitCommit> commits = [];
+  List<Result<GitCommit>> commits = [];
   Stream<Result<GitCommit>>? _stream;
 
   final _scrollController = ScrollController();
@@ -83,15 +86,10 @@ class _HistoryWidgetState extends State<HistoryWidget> {
       _stream ??= await _initStream();
       var stream = _stream!;
 
-      var list = <GitCommit>[];
+      var list = <Result<GitCommit>>[];
       for (var j = 0; j < 20; j++) {
-        try {
-          await for (var commit in stream) {
-            list.add(commit.getOrThrow());
-          }
-        } catch (e, st) {
-          print(e);
-          print(st);
+        await for (var commit in stream) {
+          list.add(commit);
         }
       }
 
@@ -105,7 +103,8 @@ class _HistoryWidgetState extends State<HistoryWidget> {
     print('initializing the stream?');
     var repo = await GitRepository.load(widget.repoPath).getOrThrow();
     var head = await repo.headCommit().getOrThrow();
-    return commitPreOrderIterator(objStorage: repo.objStorage, from: head);
+    return commitPreOrderIterator(objStorage: repo.objStorage, from: head)
+        .asBroadcastStream();
   }
 
   @override
@@ -124,16 +123,55 @@ class _HistoryWidgetState extends State<HistoryWidget> {
       return const CircularProgressIndicator();
     }
 
-    try {
-      var commit = commits[i];
-      return ListTile(
-        title: Text(commit.message),
-        subtitle: Text(commit.author.date.toString()),
-      );
-    } catch (e, st) {
-      print(e);
-      print(st);
-      return const Text('fail');
-    }
+    var result = commits[i];
+    return result.isSuccess
+        ? _CommitTile(commit: result.getOrThrow())
+        : _FailureTile(result: result);
+  }
+}
+
+class _CommitTile extends StatelessWidget {
+  final GitCommit commit;
+
+  const _CommitTile({Key? key, required this.commit}) : super(key: key);
+
+  static final _dateFormat = DateFormat('dd MMM, yyyy');
+
+  @override
+  Widget build(BuildContext context) {
+    var msgLines = LineSplitter.split(commit.message).toList();
+    var title = msgLines.first;
+
+    var textTheme = Theme.of(context).textTheme;
+
+    var titleRow = Row(
+      children: <Widget>[
+        Expanded(
+          child: Text(title, style: textTheme.subtitle2!),
+        ),
+        Text(
+          _dateFormat.format(commit.author.date),
+          style: textTheme.caption,
+        )
+      ],
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
+    );
+    return ListTile(
+      title: titleRow,
+    );
+  }
+}
+
+class _FailureTile<T> extends StatelessWidget {
+  final Result<T> result;
+
+  _FailureTile({Key? key, required this.result}) : super(key: key) {
+    Log.e("Failure", ex: result.error, stacktrace: result.stackTrace);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(result.error.toString());
   }
 }
