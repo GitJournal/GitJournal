@@ -103,7 +103,7 @@ class _HistoryWidgetState extends State<HistoryWidget> {
   Future<Stream<Result<GitCommit>>> _initStream() async {
     print('initializing the stream?');
     var repo = await GitRepository.load(widget.repoPath).getOrThrow();
-    var head = await repo.headCommit().getOrThrow();
+    var head = await repo.headHash().getOrThrow();
     return commitPreOrderIterator(objStorage: repo.objStorage, from: head)
         .asBroadcastStream();
   }
