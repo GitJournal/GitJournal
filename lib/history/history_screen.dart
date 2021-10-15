@@ -68,12 +68,8 @@ class _HistoryWidgetState extends State<HistoryWidget> {
         _loadMore();
       }
     });
-    try {
-      _loadMore();
-    } catch (ex, st) {
-      print(ex);
-      print(st);
-    }
+
+    _loadMore();
   }
 
   @override
@@ -94,6 +90,7 @@ class _HistoryWidgetState extends State<HistoryWidget> {
       var list = <Result<GitCommit>>[];
       for (var j = 0; j < 20; j++) {
         await for (var commit in stream) {
+          // FIXME: Does this even work to load it gradually?
           list.add(commit);
         }
       }

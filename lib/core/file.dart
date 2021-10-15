@@ -7,6 +7,7 @@
 import 'package:dart_git/blob_ctime_builder.dart';
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/plumbing/git_hash.dart';
+import 'package:dart_git/plumbing/index.dart';
 import 'package:dart_git/utils/result.dart';
 import 'package:universal_io/io.dart' as io;
 
@@ -38,12 +39,14 @@ class File {
 class FileStorage {
   final String repoPath;
   final GitRepository gitRepo;
+  final GitIndex gitIndex;
   final BlobCTimeBuilder blobCTimeBuilder;
 
   GitHash? head;
 
   FileStorage({
     required this.gitRepo,
+    required this.gitIndex,
     required this.blobCTimeBuilder,
   }) : repoPath = gitRepo.workTree;
 
@@ -58,17 +61,12 @@ class FileStorage {
       return Result.fail(ex);
     }
 
-    var gitIndex = await gitRepo.indexStorage.readIndex().getOrThrow();
     // FIXME: Do a more through check?
     // FIXME: Add an 'entryWhere' helper function
-    var i = gitIndex.entries.indexWhere((e) => e.path == filePath);
+    var entry = gitIndex.entryWhere((e) => e.path == filePath);
+    var oid = entry != null ? entry.hash : GitHash.zero();
 
     // FIXME: Should we be computing the hash in this case?
-    var oid = GitHash.zero();
-    if (i != -1) {
-      var indexEntry = gitIndex.entries[i];
-      oid = indexEntry.hash;
-    }
 
     // FIXME: handle case when oid is zero!
     var modified = blobCTimeBuilder.cTime(oid);
