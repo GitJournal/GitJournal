@@ -129,6 +129,17 @@ settings:
     subtitle: Configure where your notes are synced
     host: Git Host
     branch: Branch
+  fileTypes:
+    title: Note File Types
+    subtitle: Configure what files are considered Notes
+    numFiles:
+      zero: ""
+      one: "{} File"
+      many: "{} Files"
+      two: "{} Files"
+      few: "{} Files"
+      other: "{} Files"
+    noExt: No Extension
   noteMetaData:
     title: Note Metadata Settings
     subtitle: Configure how the Note Metadata is saved

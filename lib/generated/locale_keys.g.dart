@@ -208,6 +208,11 @@ abstract class LocaleKeys {
   static const settings_gitRemote_host = 'settings.gitRemote.host';
   static const settings_gitRemote_branch = 'settings.gitRemote.branch';
   static const settings_gitRemote = 'settings.gitRemote';
+  static const settings_fileTypes_title = 'settings.fileTypes.title';
+  static const settings_fileTypes_subtitle = 'settings.fileTypes.subtitle';
+  static const settings_fileTypes_numFiles = 'settings.fileTypes.numFiles';
+  static const settings_fileTypes_noExt = 'settings.fileTypes.noExt';
+  static const settings_fileTypes = 'settings.fileTypes';
   static const settings_noteMetaData_title = 'settings.noteMetaData.title';
   static const settings_noteMetaData_subtitle =
       'settings.noteMetaData.subtitle';

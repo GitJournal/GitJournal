@@ -591,6 +591,16 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
     return true;
   }
+
+  void visit(void Function(File) visitor) {
+    for (var f in _files) {
+      visitor(f);
+    }
+
+    for (var folder in _folders) {
+      folder.visit(visitor);
+    }
+  }
 }
 
 typedef NoteMatcherAsync = Future<bool> Function(Note n);

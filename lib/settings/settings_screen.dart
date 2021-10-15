@@ -36,6 +36,7 @@ import 'package:gitjournal/settings/settings_bottom_menu_bar.dart';
 import 'package:gitjournal/settings/settings_display_images.dart';
 import 'package:gitjournal/settings/settings_editors.dart';
 import 'package:gitjournal/settings/settings_experimental.dart';
+import 'package:gitjournal/settings/settings_filetypes.dart';
 import 'package:gitjournal/settings/settings_git_remote.dart';
 import 'package:gitjournal/settings/settings_git_widgets.dart';
 import 'package:gitjournal/settings/settings_images.dart';
@@ -218,6 +219,17 @@ class SettingsListState extends State<SettingsList> {
           var route = MaterialPageRoute(
             builder: (context) => NoteMetadataSettingsScreen(),
             settings: const RouteSettings(name: '/settings/noteMetaData'),
+          );
+          var _ = Navigator.push(context, route);
+        },
+      ),
+      ListTile(
+        title: Text(tr(LocaleKeys.settings_fileTypes_title)),
+        subtitle: Text(tr(LocaleKeys.settings_fileTypes_subtitle)),
+        onTap: () {
+          var route = MaterialPageRoute(
+            builder: (context) => const NoteFileTypesSettings(),
+            settings: const RouteSettings(name: '/settings/fileTypes'),
           );
           var _ = Navigator.push(context, route);
         },

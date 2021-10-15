@@ -45,6 +45,7 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
   var imageLocationSpec = "."; // . means the same folder
 
   var emojify = false;
+  var allowedFileFormats = <String>{};
 
   void load() {
     fileNameFormat =
