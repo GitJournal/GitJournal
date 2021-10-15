@@ -137,6 +137,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
     }
 
     return EditorScaffold(
+      startingNote: widget.note,
       editor: widget,
       editorState: this,
       noteModified: _noteModified,

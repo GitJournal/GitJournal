@@ -19,6 +19,7 @@ import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/widgets/note_viewer.dart';
 
 class EditorScaffold extends StatefulWidget {
+  final Note startingNote;
   final Editor editor;
   final EditorState editorState;
   final bool noteModified;
@@ -38,6 +39,7 @@ class EditorScaffold extends StatefulWidget {
   final Widget? extraBottomWidget;
 
   const EditorScaffold({
+    required this.startingNote,
     required this.editor,
     required this.editorState,
     required this.noteModified,
@@ -68,7 +70,7 @@ class _EditorScaffoldState extends State<EditorScaffold> {
   void initState() {
     super.initState();
 
-    note = widget.editorState.getNote();
+    note = widget.startingNote;
 
     SchedulerBinding.instance!
         .addPostFrameCallback((_) => _initStateWithContext());

@@ -105,6 +105,7 @@ class OrgEditorState extends State<OrgEditor>
     );
 
     return EditorScaffold(
+      startingNote: widget.note,
       editor: widget,
       editorState: this,
       noteModified: _noteModified,

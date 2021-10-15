@@ -108,6 +108,7 @@ class JournalEditorState extends State<JournalEditor>
     );
 
     return EditorScaffold(
+      startingNote: widget.note,
       editor: widget,
       editorState: this,
       noteModified: _noteModified,

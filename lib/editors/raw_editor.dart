@@ -112,6 +112,7 @@ class RawEditorState extends State<RawEditor>
     );
 
     return EditorScaffold(
+      startingNote: widget.note,
       editor: widget,
       editorState: this,
       noteModified: _noteModified,

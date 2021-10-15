@@ -177,6 +177,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
     );
 
     return EditorScaffold(
+      startingNote: widget.note,
       editor: widget,
       editorState: this,
       noteModified: _noteModified,
