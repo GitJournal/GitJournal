@@ -12,8 +12,8 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note_storage.dart';
-import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/settings.dart';
 import '../core/note.dart';

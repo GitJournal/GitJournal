@@ -21,8 +21,8 @@ import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
-import 'package:gitjournal/core/notes_folder_config.dart';
-import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/core/folder/notes_folder_config.dart';
+import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/debug_screen.dart';

@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
+import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/folder_views/empty_text_sliver.dart';
 import 'package:gitjournal/folder_views/note_tile.dart';
 

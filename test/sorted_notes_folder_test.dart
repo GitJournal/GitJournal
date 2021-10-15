@@ -12,12 +12,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart';
 
+import 'package:gitjournal/core/folder/notes_folder_config.dart';
+import 'package:gitjournal/core/folder/notes_folder_fs.dart';
+import 'package:gitjournal/core/folder/sorted_notes_folder.dart';
+import 'package:gitjournal/core/folder/sorting_mode.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_storage.dart';
-import 'package:gitjournal/core/notes_folder_config.dart';
-import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/core/sorted_notes_folder.dart';
-import 'package:gitjournal/core/sorting_mode.dart';
 
 void main() {
   group('Sorted Notes Folder Test', () {

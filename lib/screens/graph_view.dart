@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/graph.dart';
-import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/views/note_links_view.dart';
 
 class GraphViewScreen extends StatefulWidget {

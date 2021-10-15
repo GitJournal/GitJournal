@@ -13,13 +13,13 @@ import 'package:provider/provider.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/app_router.dart';
-import 'package:gitjournal/core/flattened_filtered_notes_folder.dart';
+import 'package:gitjournal/core/folder/flattened_filtered_notes_folder.dart';
+import 'package:gitjournal/core/folder/notes_folder.dart';
+import 'package:gitjournal/core/folder/notes_folder_fs.dart';
+import 'package:gitjournal/core/folder/sorted_notes_folder.dart';
+import 'package:gitjournal/core/folder/sorting_mode.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/notes_folder.dart';
-import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/core/sorted_notes_folder.dart';
-import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';

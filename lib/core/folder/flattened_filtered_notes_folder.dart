@@ -6,9 +6,9 @@
 
 import 'package:synchronized/synchronized.dart';
 
+import 'package:gitjournal/core/folder/notes_folder.dart';
+import 'package:gitjournal/core/folder/notes_folder_notifier.dart';
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/notes_folder.dart';
-import 'package:gitjournal/core/notes_folder_notifier.dart';
 
 typedef NotesFilter = Future<bool> Function(Note note);
 

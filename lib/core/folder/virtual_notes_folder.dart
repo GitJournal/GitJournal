@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'note.dart';
+import '../note.dart';
 import 'notes_folder.dart';
 import 'notes_folder_notifier.dart';
 

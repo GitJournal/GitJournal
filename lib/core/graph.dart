@@ -9,8 +9,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/core/views/note_links_view.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
 

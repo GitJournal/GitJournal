@@ -22,12 +22,12 @@ import 'package:time/time.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
+import 'package:gitjournal/core/folder/notes_folder_config.dart';
+import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/git_repo.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/notes_cache.dart';
-import 'package:gitjournal/core/notes_folder_config.dart';
-import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/git_config.dart';

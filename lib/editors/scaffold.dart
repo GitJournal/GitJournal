@@ -11,8 +11,8 @@ import 'package:function_types/function_types.dart';
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
+import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/editors/bottom_bar.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/settings/settings.dart';

@@ -16,7 +16,7 @@ import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/views/inline_tags_view.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'note.dart';
+import '../note.dart';
 import 'notes_folder.dart';
 import 'notes_folder_notifier.dart';
 

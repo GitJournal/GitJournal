@@ -12,11 +12,11 @@ import 'package:collection/collection.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
 
+import 'package:gitjournal/core/folder/notes_folder_config.dart';
+import 'package:gitjournal/core/folder/notes_folder_fs.dart';
+import 'package:gitjournal/core/folder/sorting_mode.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_storage.dart';
-import 'package:gitjournal/core/notes_folder_config.dart';
-import 'package:gitjournal/core/notes_folder_fs.dart';
-import 'package:gitjournal/core/sorting_mode.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 

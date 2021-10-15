@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 import 'package:function_types/function_types.dart';
 
-import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 
 typedef FolderSelectedCallback = void Function(NotesFolderFS folder);
 

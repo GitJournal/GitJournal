@@ -10,9 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:org_flutter/org_flutter.dart';
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/core/folder/notes_folder.dart';
+import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/notes_folder.dart';
-import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/org_links_handler.dart';
 import 'package:gitjournal/core/views/note_links_view.dart';
 import 'package:gitjournal/editors/editor_scroll_view.dart';

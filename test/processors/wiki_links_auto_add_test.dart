@@ -7,8 +7,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 
-import 'package:gitjournal/core/notes_folder_config.dart';
-import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/core/folder/notes_folder_config.dart';
+import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/processors/wiki_links_auto_add.dart';
 
 void main() {

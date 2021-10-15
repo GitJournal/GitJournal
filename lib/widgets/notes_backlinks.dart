@@ -9,10 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+import 'package:gitjournal/core/folder/notes_folder.dart';
+import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/notes_folder.dart';
-import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/views/note_links_view.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/folder_views/common.dart';

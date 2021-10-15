@@ -10,9 +10,9 @@ import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/app_router.dart';
+import 'package:gitjournal/core/folder/notes_folder.dart';
+import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/notes_folder.dart';
-import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/folder_views/card_view.dart';
 import 'package:gitjournal/folder_views/grid_view.dart';
 import 'package:gitjournal/folder_views/journal_view.dart';

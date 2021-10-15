@@ -6,8 +6,8 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/notes_folder.dart';
 import 'package:gitjournal/folder_views/card_view.dart';
 
 class GridFolderView extends StatelessWidget {

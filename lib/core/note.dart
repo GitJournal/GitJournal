@@ -8,7 +8,7 @@ import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:gitjournal/core/notes_folder_fs.dart';
+import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/settings.dart';
@@ -90,6 +90,36 @@ class Note {
     var settings = NoteSerializationSettings.fromConfig(parent.config);
     noteSerializer = NoteSerializer.fromConfig(settings);
   }
+
+  /*
+  Note.build({
+    required this.parent,
+    required String filePath,
+    required String title,
+    required DateTime created,
+    required DateTime modified,
+    required String body,
+    required NoteType noteType,
+    required Set<String> tags,
+    required Map<String, dynamic> extraProps,
+    required NoteFileFormat fileFormat,
+    required this.fileLastModified,
+    required MdYamlDoc doc,
+    required NoteSerializationSettings serializerSettings,
+  }) {
+    _filePath = filePath;
+    _title = title;
+    _created = created;
+    _modified = modified;
+    _body = body;
+    _type = noteType;
+    _tags = tags;
+    _extraProps = extraProps;
+    _fileFormat = fileFormat;
+    _data = doc;
+    noteSerializer = NoteSerializer.fromConfig(serializerSettings);
+  }
+  */
 
   Note.newNote(
     this.parent, {

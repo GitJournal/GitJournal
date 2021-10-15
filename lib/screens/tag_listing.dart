@@ -13,10 +13,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/app_router.dart';
-import 'package:gitjournal/core/flattened_filtered_notes_folder.dart';
+import 'package:gitjournal/core/folder/flattened_filtered_notes_folder.dart';
+import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_serializer.dart';
-import 'package:gitjournal/core/notes_folder_fs.dart';
 import 'package:gitjournal/core/views/inline_tags_view.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/folder_views/folder_view.dart';
