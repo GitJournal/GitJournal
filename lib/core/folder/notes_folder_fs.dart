@@ -10,7 +10,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 import 'package:synchronized/synchronized.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' as io;
 
 import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/views/inline_tags_view.dart';
@@ -214,7 +214,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   // FIXME: This should not reconstruct the Notes or NotesFolders once constructed.
   Future<void> _load() async {
     var ignoreFilePath = p.join(folderPath, ".gjignore");
-    if (File(ignoreFilePath).existsSync()) {
+    if (io.File(ignoreFilePath).existsSync()) {
       Log.i("Ignoring $folderPath as it has .gjignore");
       return;
     }
@@ -222,10 +222,10 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
     _ignoredFiles = <IgnoredFile>[];
 
-    final dir = Directory(folderPath);
+    final dir = io.Directory(folderPath);
     var lister = dir.list(recursive: false, followLinks: false);
     await for (var fsEntity in lister) {
-      if (fsEntity is Link) {
+      if (fsEntity is io.Link) {
         continue;
       }
 
@@ -236,7 +236,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         continue;
       }
 
-      if (fsEntity is Directory) {
+      if (fsEntity is io.Directory) {
         var subFolder = NotesFolderFS(this, fsEntity.path, _config);
         if (subFolder.name.startsWith('.')) {
           // Log.v("Ignoring Folder", props: {
@@ -349,7 +349,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     // Git doesn't track Directories, only files, so we create an empty .gitignore file
     // in the directory instead.
     var gitIgnoreFilePath = p.join(folderPath, ".gitignore");
-    var file = File(gitIgnoreFilePath);
+    var file = io.File(gitIgnoreFilePath);
     if (!file.existsSync()) {
       file.createSync(recursive: true);
     }
@@ -388,7 +388,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
   void rename(String newName) {
     var oldPath = _folderPath;
-    var dir = Directory(_folderPath);
+    var dir = io.Directory(_folderPath);
     _folderPath = p.join(dirname(_folderPath), newName);
     dir.renameSync(_folderPath);
 
@@ -557,8 +557,9 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     var newFilePath = p.join(parentDirName, newName);
 
     // The file will not exist for new notes
-    if (File(oldFilePath).existsSync()) {
-      File(note.filePath).renameSync(newFilePath);
+    var file = io.File(oldFilePath);
+    if (file.existsSync()) {
+      file.renameSync(newFilePath);
     }
     note.apply(filePath: newFilePath);
 
@@ -567,11 +568,11 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
   static bool moveNote(Note note, NotesFolderFS destFolder) {
     var destPath = p.join(destFolder.folderPath, note.fileName);
-    if (File(destPath).existsSync()) {
+    if (io.File(destPath).existsSync()) {
       return false;
     }
 
-    File(note.filePath).renameSync(destPath);
+    io.File(note.filePath).renameSync(destPath);
 
     note.parent.remove(note);
     note.parent = destFolder;
