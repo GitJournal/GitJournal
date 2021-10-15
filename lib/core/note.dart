@@ -5,7 +5,7 @@
  */
 
 import 'package:path/path.dart' as p;
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' as io;
 import 'package:uuid/uuid.dart';
 
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
@@ -13,6 +13,7 @@ import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
+import 'file/file.dart';
 import 'md_yaml_doc.dart';
 import 'note_serializer.dart';
 
@@ -65,7 +66,7 @@ enum NoteFileFormat {
   Txt,
 }
 
-class Note {
+class Note implements File {
   NotesFolderFS parent;
   String? _filePath;
 
@@ -82,7 +83,11 @@ class Note {
   MdYamlDoc _data = MdYamlDoc();
   late NoteSerializer noteSerializer;
 
+  @override
   DateTime fileLastModified;
+
+  @override
+  GitHash get oid => GitHash.zero();
 
   var _loadState = NoteLoadState.None;
 
@@ -151,6 +156,7 @@ class Note {
     }
   }
 
+  @override
   String get filePath {
     if (_filePath == null) {
       var fp = "";
@@ -260,10 +266,12 @@ class Note {
     return p.basename(filePath);
   }
 
+  @override
   DateTime? get created {
     return _created;
   }
 
+  @override
   DateTime? get modified {
     return _modified;
   }
@@ -381,7 +389,7 @@ class Note {
 String ensureFileNameUnique(String parentDir, String name, String ext) {
   var fileName = name + ext;
   var fullPath = p.join(parentDir, fileName);
-  var file = File(fullPath);
+  var file = io.File(fullPath);
   if (!file.existsSync()) {
     return fileName;
   }
@@ -389,7 +397,7 @@ String ensureFileNameUnique(String parentDir, String name, String ext) {
   for (var i = 1;; i++) {
     var fileName = name + "_$i$ext";
     var fullPath = p.join(parentDir, fileName);
-    var file = File(fullPath);
+    var file = io.File(fullPath);
     if (!file.existsSync()) {
       return fileName;
     }
