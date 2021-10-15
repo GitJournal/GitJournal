@@ -206,33 +206,30 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
         const SizedBox(height: 8.0),
         Expanded(child: repoBuilder),
         const SizedBox(height: 8.0),
-        Opacity(
-          opacity: canContinue ? 1.0 : 0.0,
-          child: GitHostSetupButton(
-            text: tr(LocaleKeys.setup_next),
-            onPressed: () async {
-              if (selectedRepo != null) {
-                widget.onDone(selectedRepo!);
-                return;
-              }
+        GitHostSetupButton(
+          text: tr(LocaleKeys.setup_next),
+          enabled: canContinue,
+          onPressed: () async {
+            if (selectedRepo != null) {
+              widget.onDone(selectedRepo!);
+              return;
+            }
 
-              try {
-                var repoName = _textController.text.trim();
-                var repo =
-                    await widget.gitHost.createRepo(repoName).getOrThrow();
-                widget.onDone(repo);
-                return;
-              } catch (e, stacktrace) {
-                _handleGitHostException(e as Exception, stacktrace);
-              }
-            },
-          ),
+            try {
+              var repoName = _textController.text.trim();
+              var repo = await widget.gitHost.createRepo(repoName).getOrThrow();
+              widget.onDone(repo);
+              return;
+            } catch (e, stacktrace) {
+              _handleGitHostException(e as Exception, stacktrace);
+            }
+          },
         ),
         const SizedBox(height: 32.0),
       ],
     );
 
-    return SafeArea(child: Center(child: columns));
+    return Center(child: columns);
   }
 
   Widget _buildCreateRepoTile() {

@@ -399,7 +399,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           ),
         ],
       ),
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
     );
 
     var scaffold = Scaffold(

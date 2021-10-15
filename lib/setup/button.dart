@@ -15,11 +15,13 @@ class GitHostSetupButton extends StatelessWidget {
   final Func0<void> onPressed;
   final String text;
   final String? iconUrl;
+  final bool enabled;
 
   const GitHostSetupButton({
     required this.text,
     required this.onPressed,
     this.iconUrl,
+    this.enabled = true,
     Key? key,
   }) : super(key: key);
 
@@ -36,7 +38,7 @@ class GitHostSetupButton extends StatelessWidget {
           ),
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(
-                Theme.of(context).primaryColor),
+                enabled ? Theme.of(context).primaryColor : Colors.grey),
           ),
           onPressed: _onPressedWithAnalytics,
         ),
