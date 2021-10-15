@@ -6,14 +6,16 @@
 
 import 'package:path/path.dart' as p;
 
+import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/note.dart';
 
 class LinkResolver {
   final Note inputNote;
+  final NotesFolderConfig folderConfig;
 
-  LinkResolver(this.inputNote);
+  LinkResolver(this.inputNote) : folderConfig = inputNote.parent.config;
 
   Note? resolveLink(Link l) {
     if (l.isWikiLink) {
@@ -62,8 +64,8 @@ class LinkResolver {
       var fileName = note.fileName;
       var fileNameLower = fileName.toLowerCase();
 
-      for (var ext in NoteFileFormatInfo.allowedExtensions) {
-        if (fileNameLower.endsWith(ext)) {
+      for (var ext in folderConfig.allowedFileExts) {
+        if (p.extension(fileNameLower) == ext) {
           var termEndsWithSameExt = lowerCaseTerm.endsWith(ext);
           if (termEndsWithSameExt) {
             if (fileName == term) {
@@ -102,7 +104,10 @@ class LinkResolver {
       return linkedNote;
     }
 
-    for (var ext in NoteFileFormatInfo.allowedExtensions) {
+    for (var ext in folderConfig.allowedFileExts) {
+      if (ext.isEmpty) {
+        continue;
+      }
       if (!spec.endsWith(ext)) {
         linkedNote = folder.getNoteWithSpec(spec + ext);
         if (linkedNote != null) {

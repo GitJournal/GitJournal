@@ -14,6 +14,7 @@ import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
 import 'file/file.dart';
+import 'folder/notes_folder_config.dart';
 import 'md_yaml_doc.dart';
 import 'note_serializer.dart';
 
@@ -32,7 +33,8 @@ enum NoteLoadState {
 enum NoteType { Unknown, Checklist, Journal, Org }
 
 class NoteFileFormatInfo {
-  static List<String> allowedExtensions = ['.md', '.org', '.txt'];
+  final NotesFolderConfig config;
+  NoteFileFormatInfo(this.config);
 
   static String defaultExtension(NoteFileFormat format) {
     switch (format) {
@@ -47,10 +49,10 @@ class NoteFileFormatInfo {
     }
   }
 
-  static bool isAllowedFileName(String filePath) {
+  bool isAllowedFileName(String filePath) {
     var noteFilePath = filePath.toLowerCase();
-    for (var ext in allowedExtensions) {
-      if (noteFilePath.endsWith(ext)) {
+    for (var ext in config.allowedFileExts) {
+      if (p.extension(noteFilePath) == ext) {
         return true;
       }
     }
@@ -147,7 +149,8 @@ class Note implements File {
     if (fileName != null) {
       // FIXME: We should ensure a note with this fileName does not already
       //        exist
-      if (!NoteFileFormatInfo.isAllowedFileName(fileName)) {
+      var formatInfo = NoteFileFormatInfo(parent.config);
+      if (!formatInfo.isAllowedFileName(fileName)) {
         fileName +=
             NoteFileFormatInfo.defaultExtension(NoteFileFormat.Markdown);
       }

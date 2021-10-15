@@ -45,7 +45,7 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
   var imageLocationSpec = "."; // . means the same folder
 
   var emojify = false;
-  var allowedFileFormats = <String>{};
+  var allowedFileExts = <String>{'.md', '.txt', '.org'};
 
   void load() {
     fileNameFormat =
@@ -81,6 +81,7 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
     inlineTagPrefixes = getStringSet("inlineTagPrefixes") ?? inlineTagPrefixes;
 
     emojify = getBool("emojify") ?? emojify;
+    allowedFileExts = getStringSet("allowedFileExts") ?? allowedFileExts;
   }
 
   Future<void> save() async {
@@ -122,6 +123,8 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
 
     await setBool("emojify", emojify, def.emojify);
 
+    await setStringSet("allowedFileExts", allowedFileExts, def.allowedFileExts);
+
     notifyListeners();
   }
 
@@ -144,6 +147,7 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
       'titleSettings': titleSettings.toInternalString(),
       'inlineTagPrefixes': inlineTagPrefixes.join(' '),
       'emojify': emojify.toString(),
+      'allowedFileExts': allowedFileExts.join(' '),
     };
   }
 

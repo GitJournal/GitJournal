@@ -263,7 +263,9 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         newEntityMap[filePath] = ignoredFile;
         continue;
       }
-      if (!NoteFileFormatInfo.isAllowedFileName(filePath)) {
+
+      var formatInfo = NoteFileFormatInfo(config);
+      if (!formatInfo.isAllowedFileName(filePath)) {
         var ignoredFile = IgnoredFile(
           filePath: filePath,
           oid: GitHash.zero(),

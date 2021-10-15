@@ -80,8 +80,8 @@ class NoteStorage {
 
     var fpLowerCase = note.filePath.toLowerCase();
     var isMarkdown = fpLowerCase.endsWith('.md');
-    var isTxt = fpLowerCase.endsWith('.txt');
     var isOrg = fpLowerCase.endsWith('.org');
+    var isTxt = !isMarkdown && !isOrg;
 
     if (isMarkdown) {
       var dataResult = await mdYamlDocLoader.loadDoc(note.filePath);

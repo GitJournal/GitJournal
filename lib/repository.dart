@@ -207,6 +207,8 @@ class GitJournalRepo with ChangeNotifier {
     Log.i("Finished loading all the notes - $endTime");
   }
 
+  Future<void> reloadNotes() => _loadNotes();
+
   Future<void> _loadNotes() async {
     // FIXME: We should report the notes that failed to load
     return _loadLock.synchronized(() async {

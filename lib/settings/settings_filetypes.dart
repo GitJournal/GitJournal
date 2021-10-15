@@ -11,8 +11,10 @@ import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/file/file.dart';
+import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/repository.dart';
 
 class NoteFileTypesSettings extends StatefulWidget {
   const NoteFileTypesSettings({Key? key}) : super(key: key);
@@ -24,8 +26,9 @@ class NoteFileTypesSettings extends StatefulWidget {
 class _FileTypeInfo {
   final String ext;
   int count;
+  bool enabled;
 
-  _FileTypeInfo(this.ext, this.count);
+  _FileTypeInfo(this.ext, this.count, this.enabled);
 }
 
 class _NoteFileTypesSettingsState extends State<NoteFileTypesSettings> {
@@ -38,9 +41,15 @@ class _NoteFileTypesSettingsState extends State<NoteFileTypesSettings> {
 
   List<_FileTypeInfo> _loadInfo() {
     var root = Provider.of<NotesFolderFS>(context);
+    var config = Provider.of<NotesFolderConfig>(context);
+
     var types = <String, int>{};
     root.visit((File f) {
-      var ext = p.extension(f.fileName);
+      // Ignore Hidden files
+      if (f.fileName.startsWith('.')) {
+        return;
+      }
+      var ext = p.extension(f.fileName).toLowerCase();
       if (types.containsKey(ext)) {
         types[ext] = types[ext]! + 1;
       } else {
@@ -50,7 +59,8 @@ class _NoteFileTypesSettingsState extends State<NoteFileTypesSettings> {
 
     var finalInfo = <_FileTypeInfo>[];
     types.forEach((key, value) {
-      finalInfo.add(_FileTypeInfo(key, value));
+      var enabled = config.allowedFileExts.contains(key);
+      finalInfo.add(_FileTypeInfo(key, value, enabled));
     });
     finalInfo.sort((a, b) => b.count.compareTo(a.count));
     return finalInfo;
@@ -87,7 +97,7 @@ class _NoteFileTypesSettingsState extends State<NoteFileTypesSettings> {
     }
 
     return CheckboxListTile(
-      value: false,
+      value: info.enabled,
       title: Text(
         title,
         style: textTheme.subtitle1!.copyWith(fontFamily: "Roboto Mono"),
@@ -97,9 +107,25 @@ class _NoteFileTypesSettingsState extends State<NoteFileTypesSettings> {
         style: textTheme.subtitle2,
       ),
       controlAffinity: ListTileControlAffinity.leading,
-      onChanged: (newVal) {},
+      onChanged: (newVal) {
+        setState(() {
+          info.enabled = !info.enabled;
+        });
+
+        var config = context.read<NotesFolderConfig>();
+        if (!info.enabled) {
+          config.allowedFileExts.remove(info.ext);
+        } else {
+          config.allowedFileExts.add(info.ext);
+        }
+        config.save();
+
+        var repo = context.read<GitJournalRepo>();
+        repo.reloadNotes();
+      },
     );
   }
 }
 
 // FIXME: No matching editor found
+// FIXME: Draw a kind of histogram of the number of files
