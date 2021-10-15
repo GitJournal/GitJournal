@@ -42,7 +42,7 @@ if (!keystoreProperties.containsKey('keyAlias')) {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion rootProject.ext.compileSdkVersion
 
     lintOptions {
         disable 'InvalidPackage'
@@ -51,7 +51,7 @@ android {
     defaultConfig {
         applicationId "io.gitjournal.gitjournal"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
