@@ -262,6 +262,7 @@ class Note implements File {
     }
   }
 
+  @override
   String get fileName {
     return p.basename(filePath);
   }

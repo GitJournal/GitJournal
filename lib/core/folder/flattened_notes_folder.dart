@@ -90,8 +90,8 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
     notifyNoteModified(-1, note);
   }
 
-  void _noteRenamed(int i, Note note, String oldPath) {
-    notifyNoteRenamed(i, note, oldPath);
+  void _noteRenamed(int _, Note note, String oldPath) {
+    notifyNoteRenamed(-1, note, oldPath);
   }
 
   @override

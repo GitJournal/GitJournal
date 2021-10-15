@@ -6,6 +6,7 @@
 
 import 'dart:collection';
 
+import 'package:dart_git/plumbing/git_hash.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
@@ -16,36 +17,21 @@ import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/views/inline_tags_view.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
+import '../file/file.dart';
+import '../file/ignored_file.dart';
 import '../note.dart';
 import 'notes_folder.dart';
 import 'notes_folder_notifier.dart';
-
-enum IgnoreReason {
-  HiddenFile,
-  InvalidExtension,
-}
-
-class IgnoredFile {
-  String filePath;
-  IgnoreReason reason;
-
-  IgnoredFile({required this.filePath, required this.reason});
-
-  String get fileName {
-    return p.basename(filePath);
-  }
-}
 
 class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   final NotesFolderFS? _parent;
   String _folderPath;
   final _lock = Lock();
 
-  final _notes = <Note>[];
-  final _folders = <NotesFolderFS>[];
-  List<IgnoredFile> _ignoredFiles = [];
+  var _files = <File>[];
+  var _folders = <NotesFolderFS>[];
+  var _entityMap = <String, dynamic>{};
 
-  final _entityMap = <String, dynamic>{};
   final NotesFolderConfig _config;
 
   NotesFolderFS(this._parent, this._folderPath, this._config);
@@ -95,13 +81,13 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   void reset(String folderPath) {
     _folderPath = folderPath;
 
-    var notesCopy = List<Note>.from(_notes);
-    notesCopy.forEach(remove);
+    var filesCopy = List<File>.from(_files);
+    filesCopy.forEach(_removeFile);
 
     var foldersCopy = List<NotesFolderFS>.from(_folders);
     foldersCopy.forEach(removeFolder);
 
-    assert(_notes.isEmpty);
+    assert(_files.isEmpty);
     assert(_folders.isEmpty);
 
     notifyListeners();
@@ -111,7 +97,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
   @override
   bool get isEmpty {
-    return _notes.isEmpty && _folders.isEmpty;
+    return !hasNotes && _folders.isEmpty;
   }
 
   @override
@@ -123,11 +109,11 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
   @override
   bool get hasNotes {
-    return _notes.isNotEmpty;
+    return _files.indexWhere((n) => n is Note) != -1;
   }
 
   bool get hasNotesRecursive {
-    if (_notes.isNotEmpty) {
+    if (hasNotes) {
       return true;
     }
 
@@ -140,18 +126,19 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   }
 
   int get numberOfNotes {
-    return _notes.length;
+    return notes.length;
   }
 
   @override
   List<Note> get notes {
-    return _notes;
+    return _files.whereType<Note>().toList();
   }
 
   @override
   List<NotesFolder> get subFolders => subFoldersFS;
 
-  List<IgnoredFile> get ignoredFiles => _ignoredFiles;
+  List<IgnoredFile> get ignoredFiles =>
+      _files.whereType<IgnoredFile>().toList();
 
   List<NotesFolderFS> get subFoldersFS {
     // FIXME: This is really not ideal
@@ -169,7 +156,12 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     await load();
 
     var storage = NoteStorage();
-    for (var note in _notes) {
+    for (var file in _files) {
+      if (file is! Note) {
+        continue;
+      }
+      var note = file;
+
       // FIXME: Collected all the Errors, and report them back, along with "WHY", and the contents of the Note
       //        Each of these needs to be reported to sentry, as Note loading should never fail
       var f = storage.load(note);
@@ -186,19 +178,27 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
     // Remove notes which have errors
     await _lock.synchronized(() {
-      errFunc(Note n) => n.loadState == NoteLoadState.Error;
-
-      var hasBadNotes = _notes.any(errFunc);
-      if (hasBadNotes) {
-        while (true) {
-          var i = _notes.indexWhere(errFunc);
-          if (i == -1) {
-            break;
-          }
-          var note = _notes.removeAt(i);
-          notifyNoteRemoved(i, note);
+      _files = _files.map((f) {
+        if (f is! Note) {
+          return f;
         }
-      }
+
+        var note = f;
+        if (note.loadState != NoteLoadState.Error) {
+          return note;
+        }
+
+        notifyNoteRemoved(-1, note);
+
+        return IgnoredFile(
+          oid: note.oid,
+          filePath: note.filePath,
+          created: note.created,
+          modified: note.modified,
+          fileLastModified: note.fileLastModified,
+          reason: IgnoreReason.Custom,
+        );
+      }).toList();
     });
 
     for (var folder in _folders) {
@@ -211,28 +211,21 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
   Future<void> load() => _lock.synchronized(_load);
 
-  // FIXME: This should not reconstruct the Notes or NotesFolders once constructed.
   Future<void> _load() async {
     var ignoreFilePath = p.join(folderPath, ".gjignore");
     if (io.File(ignoreFilePath).existsSync()) {
       Log.i("Ignoring $folderPath as it has .gjignore");
       return;
     }
-    Set<String> pathsFound = {};
 
-    _ignoredFiles = <IgnoredFile>[];
+    var newEntityMap = <String, dynamic>{};
+    var newFiles = <File>[];
+    var newFolders = <NotesFolderFS>[];
 
     final dir = io.Directory(folderPath);
     var lister = dir.list(recursive: false, followLinks: false);
     await for (var fsEntity in lister) {
       if (fsEntity is io.Link) {
-        continue;
-      }
-
-      // If already seen before
-      var existingNoteFSEntity = _entityMap[fsEntity.path];
-      if (existingNoteFSEntity != null) {
-        pathsFound.add(fsEntity.path);
         continue;
       }
 
@@ -246,78 +239,87 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
           continue;
         }
         // Log.v("Found Folder", props: {"path": fsEntity.path});
-        _addFolderListeners(subFolder);
 
-        _folders.add(subFolder);
-        _entityMap[fsEntity.path] = subFolder;
-
-        pathsFound.add(fsEntity.path);
-        notifyFolderAdded(_folders.length - 1, subFolder);
+        newFolders.add(subFolder);
+        newEntityMap[fsEntity.path] = subFolder;
         continue;
       }
 
       var stat = fsEntity.statSync();
-      var note = Note(this, fsEntity.path, stat.modified);
-      if (note.fileName.startsWith('.')) {
-        // FIXME: Why does 'tr' not work over here
+      var filePath = fsEntity.path;
+
+      var fileName = p.basename(filePath);
+      if (fileName.startsWith('.')) {
         var ignoredFile = IgnoredFile(
-          filePath: fsEntity.path,
+          filePath: filePath,
+          oid: GitHash.zero(),
+          created: null,
+          modified: null,
+          fileLastModified: stat.modified,
           reason: IgnoreReason.HiddenFile,
         );
-        _ignoredFiles.add(ignoredFile);
 
-        // Log.v("Ignoring file", props: {
-        //   "path": ignoredFile.filePath,
-        //   "reason": ignoredFile.reason.toString(),
-        // });
+        newFiles.add(ignoredFile);
+        newEntityMap[filePath] = ignoredFile;
         continue;
       }
-      if (!NoteFileFormatInfo.isAllowedFileName(note.filePath)) {
+      if (!NoteFileFormatInfo.isAllowedFileName(filePath)) {
         var ignoredFile = IgnoredFile(
-          filePath: fsEntity.path,
+          filePath: filePath,
+          oid: GitHash.zero(),
+          created: null,
+          modified: null,
+          fileLastModified: stat.modified,
           reason: IgnoreReason.InvalidExtension,
         );
-        _ignoredFiles.add(ignoredFile);
 
-        // Log.v("Ignoring file", props: {
-        //   "path": ignoredFile.filePath,
-        //   "reason": ignoredFile.reason.toString(),
-        // });
+        newFiles.add(ignoredFile);
+        newEntityMap[filePath] = ignoredFile;
         continue;
       }
-      // Log.v("Found file", props: {"path": fsEntity.path});
 
-      _notes.add(note);
-      _entityMap[fsEntity.path] = note;
+      // Log.v("Found file", props: {"path": filePath});
+      var note = Note(this, filePath, stat.modified);
 
-      pathsFound.add(fsEntity.path);
-      notifyNoteAdded(_notes.length - 1, note);
+      newFiles.add(note);
+      newEntityMap[filePath] = note;
     }
 
-    Set<String> pathsRemoved = _entityMap.keys.toSet().difference(pathsFound);
+    var originalPathsList = _entityMap.keys.toSet();
+    var newPathsList = newEntityMap.keys.toSet();
+
+    var origEntityMap = _entityMap;
+    _entityMap = newEntityMap;
+    _files = newFiles;
+    _folders = newFolders;
+
+    var pathsRemoved = originalPathsList.difference(newPathsList);
     for (var path in pathsRemoved) {
-      var e = _entityMap[path];
-      assert(e != null);
+      var e = origEntityMap[path];
+      assert(e is NotesFolder || e is File);
 
-      assert(e is NotesFolder || e is Note);
-      _entityMap.remove(path);
-
-      if (e is Note) {
-        // Log.v("File $path was no longer found");
-        var i = _notes.indexWhere((n) => n.filePath == path);
-        assert(i != -1);
-        var note = _notes[i];
-        _notes.removeAt(i);
-        notifyNoteRemoved(i, note);
+      if (e is File) {
+        if (e is Note) {
+          notifyNoteRemoved(-1, e);
+        }
       } else {
-        // Log.v("Folder $path was no longer found");
         _removeFolderListeners(e);
+        notifyFolderRemoved(-1, e);
+      }
+    }
 
-        var i = _folders.indexWhere((f) => f.folderPath == path);
-        assert(i != -1);
-        var folder = _folders[i];
-        _folders.removeAt(i);
-        notifyFolderRemoved(i, folder);
+    var pathsAdded = newPathsList.difference(originalPathsList);
+    for (var path in pathsAdded) {
+      var e = _entityMap[path];
+      assert(e is NotesFolder || e is File);
+
+      if (e is File) {
+        if (e is Note) {
+          notifyNoteAdded(-1, e);
+        }
+      } else {
+        _addFolderListeners(e);
+        notifyFolderAdded(-1, e);
       }
     }
   }
@@ -325,24 +327,27 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   void add(Note note) {
     assert(note.parent == this);
 
-    _notes.add(note);
+    _files.add(note);
     _entityMap[note.filePath] = note;
 
-    notifyNoteAdded(_notes.length - 1, note);
+    notifyNoteAdded(-1, note);
   }
 
   void remove(Note note) {
     assert(note.parent == this);
+    _removeFile(note);
+  }
 
-    assert(_notes.indexWhere((n) => n.filePath == note.filePath) != -1);
-    assert(_entityMap.containsKey(note.filePath));
+  void _removeFile(File f) {
+    assert(_files.indexWhere((n) => n.filePath == f.filePath) != -1);
+    assert(_entityMap.containsKey(f.filePath));
 
-    var index = _notes.indexWhere((n) => n.filePath == note.filePath);
-    assert(index != -1);
-    _notes.removeAt(index);
-    _entityMap.remove(note.filePath);
+    var index = _files.indexWhere((n) => n.filePath == f.filePath);
+    _files.removeAt(index);
 
-    notifyNoteRemoved(index, note);
+    if (f is Note) {
+      notifyNoteRemoved(index, f);
+    }
   }
 
   void create() {
@@ -367,8 +372,8 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   }
 
   void removeFolder(NotesFolderFS folder) {
-    var notesCopy = List<Note>.from(folder._notes);
-    notesCopy.forEach(folder.remove);
+    var filesCopy = List<File>.from(folder._files);
+    filesCopy.forEach(folder._removeFile);
 
     var foldersCopy = List<NotesFolderFS>.from(folder._folders);
     foldersCopy.forEach(folder.removeFolder);
@@ -423,8 +428,10 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   }
 
   Iterable<Note> getAllNotes() sync* {
-    for (var note in _notes) {
-      yield note;
+    for (var f in _files) {
+      if (f is Note) {
+        yield f;
+      }
     }
 
     for (var folder in _folders) {
@@ -514,7 +521,11 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     List<Note> matchedNotes,
     NoteMatcherAsync pred,
   ) async {
-    for (var note in _notes) {
+    for (var file in _files) {
+      if (file is! Note) {
+        continue;
+      }
+      var note = file;
       var matches = await pred(note);
       if (matches) {
         matchedNotes.add(note);

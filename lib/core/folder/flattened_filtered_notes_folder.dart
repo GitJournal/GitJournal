@@ -118,7 +118,7 @@ class FlattenedFilteredNotesFolder
     });
   }
 
-  Future<void> _noteModified(int i, Note note) async {
+  Future<void> _noteModified(int _, Note note) async {
     return await _lock.synchronized(() async {
       if (_notes.contains(note)) {
         if (await filter(note)) {
@@ -134,8 +134,8 @@ class FlattenedFilteredNotesFolder
     });
   }
 
-  void _noteRenamed(int i, Note note, String oldPath) {
-    notifyNoteRenamed(i, note, oldPath);
+  void _noteRenamed(int _, Note note, String oldPath) {
+    notifyNoteRenamed(-1, note, oldPath);
   }
 
   @override

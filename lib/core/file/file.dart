@@ -5,6 +5,7 @@
  */
 
 import 'package:dart_git/plumbing/git_hash.dart';
+import 'package:path/path.dart' as p;
 
 export 'package:dart_git/plumbing/git_hash.dart';
 
@@ -27,9 +28,9 @@ class File {
     required this.modified,
     required this.created,
     required this.fileLastModified,
-  }) {
-    assert(!filePath.startsWith('/'));
-  }
+  });
+
+  String get fileName => p.basename(filePath);
 
   // Add toString
 }
