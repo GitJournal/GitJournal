@@ -63,8 +63,13 @@ class _HistoryWidgetState extends State<HistoryWidget> {
     super.initState();
 
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
+      var mq = MediaQuery.maybeOf(context);
+      var before = 200.0;
+      if (mq != null) {
+        before = mq.size.height / 1.5;
+      }
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent - before) {
         _loadMore();
       }
     });
@@ -80,19 +85,14 @@ class _HistoryWidgetState extends State<HistoryWidget> {
   }
 
   Future<void> _loadMore() async {
-    print('load more ...');
-
     // This needs to happen in another thread!
     await _lock.synchronized(() async {
       _stream ??= await _initStream();
       var stream = _stream!;
 
       var list = <Result<GitCommit>>[];
-      for (var j = 0; j < 20; j++) {
-        await for (var commit in stream) {
-          // FIXME: Does this even work to load it gradually?
-          list.add(commit);
-        }
+      await for (var commit in stream.take(20)) {
+        list.add(commit);
       }
 
       setState(() {
