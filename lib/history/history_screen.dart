@@ -102,7 +102,6 @@ class _HistoryWidgetState extends State<HistoryWidget> {
   }
 
   Future<Stream<Result<GitCommit>>> _initStream() async {
-    print('initializing the stream?');
     try {
       _gitRepo = await GitRepository.load(widget.repoPath).getOrThrow();
       var head = await _gitRepo!.headHash().getOrThrow();
@@ -124,19 +123,28 @@ class _HistoryWidgetState extends State<HistoryWidget> {
       return _FailureTile(result: Result.fail(_exception!));
     }
 
+    var repo = Provider.of<GitJournalRepo>(context);
+
     return Scrollbar(
       child: ListView.builder(
         controller: _scrollController,
         itemBuilder: _buildTile,
-        itemCount: commits.length,
+        itemCount: commits.length + repo.syncAttempts.length,
       ),
     );
   }
 
   Widget _buildTile(BuildContext context, int i) {
-    if (i >= commits.length) {
+    var repo = Provider.of<GitJournalRepo>(context);
+    if (i >= commits.length + repo.syncAttempts.length) {
       return const CircularProgressIndicator();
     }
+
+    if (i < repo.syncAttempts.length) {
+      var attempt = repo.syncAttempts[i];
+      return _SyncAttemptTile(attempt);
+    }
+    i -= repo.syncAttempts.length;
 
     if (i == commits.length - 1) {
       var result = commits[i];
@@ -158,6 +166,18 @@ class _HistoryWidgetState extends State<HistoryWidget> {
     } on Exception catch (ex, st) {
       return _FailureTile(result: Result.fail(ex, st));
     }
+  }
+}
+
+class _SyncAttemptTile extends StatelessWidget {
+  final SyncAttempt attempt;
+
+  const _SyncAttemptTile(this.attempt, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var lastPart = attempt.parts.last;
+    return Text('${lastPart.status} ${lastPart.when}');
   }
 }
 

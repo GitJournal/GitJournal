@@ -39,8 +39,27 @@ enum SyncStatus {
   Unknown,
   Done,
   Pulling,
+  Merging,
   Pushing,
   Error,
+}
+
+class SyncAttemptPart {
+  final SyncStatus status;
+  final DateTime when;
+  final Exception? exception;
+
+  SyncAttemptPart(this.status, [this.exception]) : when = DateTime.now();
+}
+
+class SyncAttempt {
+  var parts = <SyncAttemptPart>[];
+  void add(SyncStatus status, [Exception? exception]) {
+    var part = SyncAttemptPart(status, exception);
+    parts.add(part);
+  }
+
+  SyncStatus get status => parts.last.status;
 }
 
 class GitJournalRepo with ChangeNotifier {
@@ -63,8 +82,10 @@ class GitJournalRepo with ChangeNotifier {
 
   String repoPath;
 
-  SyncStatus syncStatus = SyncStatus.Unknown;
-  String syncStatusError = "";
+  var syncAttempts = <SyncAttempt>[];
+  SyncStatus get syncStatus =>
+      syncAttempts.isNotEmpty ? syncAttempts.last.status : SyncStatus.Unknown;
+
   int numChanges = 0;
 
   bool get hasJournalEntries {
@@ -228,13 +249,16 @@ class GitJournalRepo with ChangeNotifier {
     }
 
     logEvent(Event.RepoSynced);
-    syncStatus = SyncStatus.Pulling;
+    var attempt = SyncAttempt();
+    attempt.add(SyncStatus.Pulling);
+    syncAttempts.add(attempt);
     notifyListeners();
 
     Future? noteLoadingFuture;
     try {
       await _gitRepo.fetch().throwOnError();
 
+      attempt.add(SyncStatus.Merging);
       var r = await _gitRepo.merge();
       if (r.isFailure) {
         var ex = r.error!;
@@ -244,7 +268,7 @@ class GitJournalRepo with ChangeNotifier {
         }
       }
 
-      syncStatus = SyncStatus.Pushing;
+      attempt.add(SyncStatus.Pushing);
       notifyListeners();
 
       noteLoadingFuture = _loadNotes();
@@ -252,13 +276,12 @@ class GitJournalRepo with ChangeNotifier {
       await _gitRepo.push();
 
       Log.d("Synced!");
-      syncStatus = SyncStatus.Done;
+      attempt.add(SyncStatus.Done);
       numChanges = 0;
       notifyListeners();
-    } catch (e, stacktrace) {
+    } on Exception catch (e, stacktrace) {
       Log.e("Failed to Sync", ex: e, stacktrace: stacktrace);
-      syncStatus = SyncStatus.Error;
-      syncStatusError = e.toString();
+      attempt.add(SyncStatus.Error, e);
       notifyListeners();
       if (e is Exception && shouldLogGitException(e)) {
         await logException(e, stacktrace);
