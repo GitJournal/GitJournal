@@ -96,7 +96,8 @@ class FlattenedFilteredNotesFolder
 
     await _lock.synchronized(() {
       // The filtering is async so we need to check again
-      if (_notes.contains(note)) {
+      var contain = _notes.indexWhere((n) => n.filePath == note.filePath) != -1;
+      if (contain) {
         notifyNoteModified(-1, note);
         return;
       }
@@ -108,19 +109,20 @@ class FlattenedFilteredNotesFolder
   Future<void> _noteRemoved(int _, Note note) async {
     await _lock.synchronized(() {
       var i = _notes.indexWhere((n) => n.filePath == note.filePath);
+      // assert(i != -1);
       if (i == -1) {
         return;
       }
-      assert(i != -1);
 
       var _ = _notes.removeAt(i);
-      notifyNoteRemoved(i, note);
+      notifyNoteRemoved(-1, note);
     });
   }
 
   Future<void> _noteModified(int _, Note note) async {
     return await _lock.synchronized(() async {
-      if (_notes.contains(note)) {
+      var contain = _notes.indexWhere((n) => n.filePath == note.filePath) != -1;
+      if (contain) {
         if (await filter(note)) {
           notifyNoteModified(-1, note);
         } else {
@@ -128,7 +130,8 @@ class FlattenedFilteredNotesFolder
         }
       } else {
         if (await filter(note)) {
-          _noteAdded(-1, note);
+          _notes.add(note);
+          notifyNoteAdded(-1, note);
         }
       }
     });

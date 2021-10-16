@@ -36,6 +36,7 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
     folder.addNoteAddedListener(_noteAddedListener);
     folder.addNoteRemovedListener(_noteRemovedListener);
     folder.addNoteModifiedListener(_noteModifiedListener);
+    folder.addNoteRenameListener(_noteRenamedListener);
   }
 
   @override
@@ -46,6 +47,7 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
     folder.removeNoteAddedListener(_noteAddedListener);
     folder.removeNoteRemovedListener(_noteRemovedListener);
     folder.removeNoteModifiedListener(_noteModifiedListener);
+    folder.removeNoteRenameListener(_noteRenamedListener);
 
     super.dispose();
   }
@@ -88,6 +90,10 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
     _insertInCorrectPos(note);
 
     notifyNoteModified(-1, note);
+  }
+
+  void _noteRenamedListener(int _, Note note, String oldPath) {
+    notifyNoteRenamed(-1, note, oldPath);
   }
 
   int _insertInCorrectPos(Note note) {
