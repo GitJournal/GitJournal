@@ -13,6 +13,7 @@ import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/image.dart' as core;
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/note_serializer.dart';
 import 'package:gitjournal/core/views/inline_tags_view.dart';
 import 'package:gitjournal/editors/autocompletion_widget.dart';
 import 'package:gitjournal/editors/common.dart';
@@ -129,8 +130,13 @@ class RawEditorState extends State<RawEditor>
 
   @override
   Note getNote() {
-    _note.data = serializer.decode(_textController.text);
-    return _note;
+    var doc = serializer.decode(_textController.text);
+    return NoteSerializer.decodeNote(
+      data: doc,
+      parent: _note.parent,
+      file: _note.file,
+      settings: _note.noteSerializer.settings,
+    );
   }
 
   void _noteTextChanged() {

@@ -12,6 +12,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:gitjournal/core/image.dart' as core;
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/note_serializer.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/disposable_change_notifier.dart';
 import 'package:gitjournal/editors/editor_scroll_view.dart';
@@ -122,8 +123,13 @@ class OrgEditorState extends State<OrgEditor>
 
   @override
   Note getNote() {
-    _note.data = serializer.decode(_textController.text);
-    return _note;
+    var doc = serializer.decode(_textController.text);
+    return NoteSerializer.decodeNote(
+      data: doc,
+      parent: _note.parent,
+      file: _note.file,
+      settings: _note.noteSerializer.settings,
+    );
   }
 
   void _noteTextChanged() {

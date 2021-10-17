@@ -10,15 +10,21 @@ import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:yaml/yaml.dart';
 
 import 'package:gitjournal/core/folder/notes_folder.dart';
+import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
+import 'file/file.dart';
 import 'md_yaml_doc.dart';
 import 'note.dart';
 
 abstract class NoteSerializerInterface {
   void encode(Note note, MdYamlDoc data);
-  void decode(MdYamlDoc data, Note note);
+  Note decode({
+    required MdYamlDoc data,
+    required NotesFolderFS parent,
+    required File file,
+  });
 }
 
 var emojiParser = EmojiParser();
@@ -54,8 +60,25 @@ class NoteSerializationSettings {
     // FIXME: modified / created format!
   }
   NoteSerializationSettings();
+
+  NoteSerializationSettings clone() {
+    var s = NoteSerializationSettings();
+    s.createdKey = createdKey;
+    s.createdFormat = createdFormat;
+    s.modifiedKey = modifiedKey;
+    s.modifiedFormat = modifiedFormat;
+    s.titleKey = titleKey;
+    s.typeKey = typeKey;
+    s.tagsKey = tagsKey;
+    s.tagsInString = tagsInString;
+    s.tagsHaveHash = tagsHaveHash;
+    s.titleSettings = titleSettings;
+    s.emojify = emojify;
+    return s;
+  }
 }
 
+// Rename to MarkdownYamlNoteSerializer
 class NoteSerializer implements NoteSerializerInterface {
   var settings = NoteSerializationSettings();
 
@@ -137,8 +160,22 @@ class NoteSerializer implements NoteSerializerInterface {
     });
   }
 
+  static Note decodeNote({
+    required MdYamlDoc data,
+    required NotesFolderFS parent,
+    required File file,
+    required NoteSerializationSettings settings,
+  }) {
+    var serializer = NoteSerializer.fromConfig(settings.clone());
+    return serializer.decode(data: data, parent: parent, file: file);
+  }
+
   @override
-  void decode(MdYamlDoc data, Note note) {
+  Note decode({
+    required MdYamlDoc data,
+    required NotesFolderFS parent,
+    required File file,
+  }) {
     var propsUsed = <String>{};
 
     DateTime? modified;
@@ -289,14 +326,23 @@ class NoteSerializer implements NoteSerializerInterface {
       extraProps[key] = val;
     });
 
-    note.apply(
-      created: created,
-      modified: modified,
+    return Note.build(
+      parent: parent,
+      file: File(
+        created: created ?? file.created,
+        modified: modified ?? file.modified,
+        fileLastModified: file.fileLastModified,
+        filePath: file.filePath,
+        oid: file.oid,
+      ),
       body: body,
-      title: title,
-      type: type,
+      title: title ?? "",
+      noteType: type,
       extraProps: extraProps,
-      tags: _tags,
+      tags: _tags ?? {},
+      doc: data,
+      serializerSettings: settings,
+      fileFormat: NoteFileFormat.Markdown,
     );
   }
 }

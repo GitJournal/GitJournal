@@ -5,13 +5,16 @@
  */
 
 import 'package:dart_git/utils/result.dart';
-import 'package:universal_io/io.dart';
+import 'package:gitjournal/core/note_serializer.dart';
+import 'package:gitjournal/error_reporting.dart';
+import 'package:universal_io/io.dart' as io;
 
 import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/md_yaml_doc_loader.dart';
-import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/logger/logger.dart';
+import 'folder/notes_folder_fs.dart';
 import 'note.dart';
 
 class NoteStorage {
@@ -37,7 +40,7 @@ class NoteStorage {
     var contents = serialize(note);
 
     return catchAll(() async {
-      var file = File(note.filePath);
+      var file = io.File(note.filePath);
       var _ = await file.writeAsString(contents, flush: true);
 
       var stat = file.statSync();
@@ -49,88 +52,92 @@ class NoteStorage {
 
   static final mdYamlDocLoader = MdYamlDocLoader();
 
-  Future<Result<NoteLoadState>> load(Note note) async {
-    assert(note.filePath.isNotEmpty);
+  Future<Result<Note>> load(Note file, NotesFolderFS parentFolder) async {
+    assert(file.filePath.isNotEmpty);
 
-    if (note.loadState == NoteLoadState.Loading) {
-      return Result(note.loadState);
-    }
-
-    final file = File(note.filePath);
-    if (note.loadState == NoteLoadState.Loaded) {
+    if (file.loadState == NoteLoadState.Loaded) {
       try {
-        var fileLastModified = file.lastModifiedSync();
-        if (note.fileLastModified == fileLastModified) {
-          return Result(note.loadState);
+        var fileLastModified = io.File(file.filePath).lastModifiedSync();
+        if (file.fileLastModified == fileLastModified) {
+          return Result(file);
         }
-        note.fileLastModified = fileLastModified;
+        file.fileLastModified = fileLastModified;
+        Log.d("Note modified: ${file.filePath}");
+        return Result(file);
       } catch (e, stackTrace) {
-        if (e is FileSystemException &&
+        if (e is io.FileSystemException &&
             e.osError!.errorCode == 2 /* File Not Found */) {
-          note.apply(loadState: NoteLoadState.NotExists);
-          return Result(note.loadState);
+          file.apply(loadState: NoteLoadState.NotExists);
+          return Result(file);
         }
 
         logExceptionWarning(e, stackTrace);
-        note.apply(loadState: NoteLoadState.Error);
-        return Result(note.loadState);
+        file.apply(loadState: NoteLoadState.Error);
+        return Result(file);
       }
-      Log.d("Note modified: ${note.filePath}");
     }
 
-    var fpLowerCase = note.filePath.toLowerCase();
-    var isMarkdown = fpLowerCase.endsWith('.md');
-    var isOrg = fpLowerCase.endsWith('.org');
-    var isTxt = !isMarkdown && !isOrg;
+    var filePath = file.filePath;
+    var format = NoteFileFormatInfo(parentFolder.config).fromFilePath(filePath);
 
-    if (isMarkdown) {
-      var dataResult = await mdYamlDocLoader.loadDoc(note.filePath);
-      if (dataResult.isSuccess) {
-        note.data = dataResult.getOrThrow();
-        note.apply(fileFormat: NoteFileFormat.Markdown);
-      } else {
-        if (dataResult.error is MdYamlDocNotFoundException) {
-          note.apply(loadState: NoteLoadState.NotExists);
-          return Result(note.loadState);
-        }
-        if (dataResult.error is MdYamlParsingException) {
-          note.apply(loadState: NoteLoadState.Error);
-          return Result(note.loadState);
-        }
+    if (format == NoteFileFormat.Markdown) {
+      var dataResult = await mdYamlDocLoader.loadDoc(file.filePath);
+      if (dataResult.isFailure) {
+        return downcast(dataResult);
       }
-    } else if (isTxt) {
+
+      var data = dataResult.getOrThrow();
+
+      var settings = NoteSerializationSettings.fromConfig(parentFolder.config);
+      var noteSerializer = NoteSerializer.fromConfig(settings);
+      var note = noteSerializer.decode(
+        data: data,
+        parent: parentFolder,
+        file: file,
+      );
+      return Result(note);
+    } else if (format == NoteFileFormat.Txt) {
       try {
-        note.apply(
-          body: await File(note.filePath).readAsString(),
+        var note = Note.build(
+          parent: parentFolder,
+          file: file,
+          title: "",
+          body: await io.File(filePath).readAsString(),
+          noteType: NoteType.Unknown,
+          tags: {},
+          extraProps: {},
           fileFormat: NoteFileFormat.Txt,
+          doc: MdYamlDoc(),
+          serializerSettings:
+              NoteSerializationSettings.fromConfig(parentFolder.config),
         );
-      } catch (e, stackTrace) {
-        Log.e("Failed to load ${note.filePath}", ex: e, stacktrace: stackTrace);
-
-        note.apply(loadState: NoteLoadState.Error);
-        return Result(note.loadState);
+        return Result(note);
+      } on Exception catch (e, stackTrace) {
+        Log.e("Failed to load ${file.filePath}", ex: e, stacktrace: stackTrace);
+        return Result.fail(e, stackTrace);
       }
-    } else if (isOrg) {
+    } else if (format == NoteFileFormat.OrgMode) {
       try {
-        note.apply(
-          body: await File(note.filePath).readAsString(),
+        var note = Note.build(
+          parent: parentFolder,
+          file: file,
+          title: "",
+          body: await io.File(filePath).readAsString(),
+          noteType: NoteType.Unknown,
+          tags: {},
+          extraProps: {},
           fileFormat: NoteFileFormat.OrgMode,
+          doc: MdYamlDoc(),
+          serializerSettings:
+              NoteSerializationSettings.fromConfig(parentFolder.config),
         );
-      } catch (e, stackTrace) {
-        logExceptionWarning(e, stackTrace);
-
-        note.apply(loadState: NoteLoadState.Error);
-        return Result(note.loadState);
+        return Result(note);
+      } on Exception catch (e, stackTrace) {
+        Log.e("Failed to load ${file.filePath}", ex: e, stacktrace: stackTrace);
+        return Result.fail(e, stackTrace);
       }
-    } else {
-      note.apply(loadState: NoteLoadState.Error);
-      return Result(note.loadState);
     }
 
-    note.fileLastModified = file.lastModifiedSync();
-    note.apply(loadState: NoteLoadState.Loaded);
-
-    note.parent.noteModified(note);
-    return Result(note.loadState);
+    return Result.fail(Exception("Unknown Note type. WTF"));
   }
 }

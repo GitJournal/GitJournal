@@ -576,9 +576,13 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   Future<void> discardChanges(Note note) async {
-    var repo = await GitRepository.load(repoPath).getOrThrow();
-    await repo.checkout(note.filePath).throwOnError();
-    await NoteStorage().load(note);
+    // FIXME: Add the checkout method to GJRepo
+    var gitRepo = await GitRepository.load(repoPath).getOrThrow();
+    await gitRepo.checkout(note.filePath).throwOnError();
+
+    // FIXME: Instead of this just reload that specific file
+    // FIXME: I don't think this will work!
+    await reloadNotes();
   }
 
   Future<List<GitRemoteConfig>> remoteConfigs() async {

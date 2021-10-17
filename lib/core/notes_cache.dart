@@ -79,7 +79,7 @@ class NotesCache {
         DateTime.fromMillisecondsSinceEpoch(0),
       );
 
-      var _ = storage.load(note);
+      var _ = storage.load(note, rootFolder);
       parent.add(note);
     }
   }

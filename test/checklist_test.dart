@@ -56,7 +56,7 @@ Booga Wooga
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
       var note = Note(parentFolder, notePath, DateTime.now());
-      await storage.load(note);
+      note = await storage.load(note, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
       var items = checklist.items;
@@ -120,7 +120,7 @@ Booga Wooga
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
       var note = Note(parentFolder, notePath, DateTime.now());
-      await storage.load(note);
+      note = await storage.load(note, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
       var items = checklist.items;
@@ -135,7 +135,7 @@ Booga Wooga
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
       var note = Note(parentFolder, notePath, DateTime.now());
-      await storage.load(note);
+      note = await storage.load(note, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
       var items = checklist.items;
@@ -156,7 +156,7 @@ Booga Wooga
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
       var note = Note(parentFolder, notePath, DateTime.now());
-      await storage.load(note);
+      note = await storage.load(note, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
       var items = checklist.items;
@@ -176,7 +176,7 @@ Booga Wooga
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
       var note = Note(parentFolder, notePath, DateTime.now());
-      await storage.load(note);
+      note = await storage.load(note, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
       var items = checklist.items;
@@ -196,7 +196,7 @@ Booga Wooga
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
       var note = Note(parentFolder, notePath, DateTime.now());
-      await storage.load(note);
+      note = await storage.load(note, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
 
@@ -212,7 +212,7 @@ Booga Wooga
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
       var note = Note(parentFolder, notePath, DateTime.now());
-      await storage.load(note);
+      note = await storage.load(note, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
       checklist.addItem(checklist.buildItem(false, "Five"));
@@ -230,7 +230,7 @@ Booga Wooga
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
       var note = Note(parentFolder, notePath, DateTime.now());
-      await storage.load(note);
+      note = await storage.load(note, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
 
@@ -246,7 +246,7 @@ Booga Wooga
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
       var note = Note(parentFolder, notePath, DateTime.now());
-      await storage.load(note);
+      note = await storage.load(note, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
 
@@ -262,7 +262,7 @@ Booga Wooga
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
       var note = Note(parentFolder, notePath, DateTime.now());
-      await storage.load(note);
+      note = await storage.load(note, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
       checklist.removeAt(0);
@@ -279,7 +279,7 @@ Booga Wooga
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
       var note = Note(parentFolder, notePath, DateTime.now());
-      await storage.load(note);
+      note = await storage.load(note, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
       checklist.removeAt(0);

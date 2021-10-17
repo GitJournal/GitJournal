@@ -16,6 +16,7 @@ import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/note_serializer.dart';
 import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/utils/datetime.dart';
 
@@ -45,7 +46,12 @@ void main() {
       n1.apply(created: dt, body: "test\n");
 
       var n2 = Note(parent, n2Path, DateTime.now());
-      n2.data = MdYamlDoc(body: "test2\n", props: props);
+      n2 = NoteSerializer.decodeNote(
+        data: MdYamlDoc(body: "test2\n", props: props),
+        parent: n2.parent,
+        file: n2.file,
+        settings: n2.noteSerializer.settings,
+      );
 
       notes = [n1, n2];
     });
@@ -68,8 +74,7 @@ void main() {
 
       await Future.forEach(notes, (Note origNote) async {
         var note = Note(parent, origNote.filePath, DateTime.now());
-        var r = await storage.load(note);
-        expect(r.getOrThrow(), NoteLoadState.Loaded);
+        note = await storage.load(note, note.parent).getOrThrow();
 
         loadedNotes.add(note);
       });

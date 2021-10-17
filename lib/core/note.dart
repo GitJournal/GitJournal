@@ -49,6 +49,19 @@ class NoteFileFormatInfo {
     }
   }
 
+  NoteFileFormat fromFilePath(String filePath) {
+    var ext = p.extension(filePath).toLowerCase();
+    switch (ext) {
+      case ".md":
+        return NoteFileFormat.Markdown;
+      case ".org":
+        return NoteFileFormat.OrgMode;
+      case ".txt":
+      default:
+        return NoteFileFormat.Txt;
+    }
+  }
+
   bool isAllowedFileName(String filePath) {
     var noteFilePath = filePath.toLowerCase();
     for (var ext in config.allowedFileExts) {
@@ -93,40 +106,45 @@ class Note implements File {
 
   var _loadState = NoteLoadState.None;
 
-  Note(this.parent, this._filePath, this.fileLastModified) {
+  // FIXME: This can be removed!
+  Note(this.parent, this._filePath, this.fileLastModified)
+      : _fileFormat =
+            NoteFileFormatInfo(parent.config).fromFilePath(_filePath!) {
     var settings = NoteSerializationSettings.fromConfig(parent.config);
     noteSerializer = NoteSerializer.fromConfig(settings);
   }
 
-  /*
+  File get file => File(
+        created: created,
+        modified: modified,
+        fileLastModified: fileLastModified,
+        oid: GitHash.zero(),
+        filePath: filePath,
+      );
+
   Note.build({
     required this.parent,
-    required String filePath,
+    required File file,
     required String title,
-    required DateTime created,
-    required DateTime modified,
     required String body,
     required NoteType noteType,
     required Set<String> tags,
     required Map<String, dynamic> extraProps,
     required NoteFileFormat fileFormat,
-    required this.fileLastModified,
     required MdYamlDoc doc,
     required NoteSerializationSettings serializerSettings,
-  }) {
-    _filePath = filePath;
-    _title = title;
-    _created = created;
-    _modified = modified;
-    _body = body;
-    _type = noteType;
-    _tags = tags;
-    _extraProps = extraProps;
-    _fileFormat = fileFormat;
-    _data = doc;
-    noteSerializer = NoteSerializer.fromConfig(serializerSettings);
-  }
-  */
+  })  : _filePath = file.filePath,
+        _title = title,
+        _created = file.created,
+        _modified = file.modified,
+        _body = body,
+        _type = noteType,
+        _tags = tags,
+        _extraProps = extraProps,
+        _fileFormat = fileFormat,
+        _data = doc,
+        fileLastModified = file.fileLastModified,
+        noteSerializer = NoteSerializer.fromConfig(serializerSettings);
 
   Note.newNote(
     this.parent, {
@@ -143,7 +161,14 @@ class Note implements File {
       extraProps.forEach((key, value) {
         _data.props[key] = value;
       });
-      noteSerializer.decode(_data, this);
+      var newNote =
+          noteSerializer.decode(data: _data, file: file, parent: parent);
+      _body = newNote._body;
+      _created = newNote._created;
+      _modified = newNote._modified;
+      _title = newNote._title;
+      _tags = newNote._tags;
+      _type = newNote._type;
     }
 
     if (fileName != null) {
@@ -265,6 +290,38 @@ class Note implements File {
     }
   }
 
+  Note copyWith({
+    String? filePath,
+    DateTime? created,
+    DateTime? modified,
+    String? body,
+    String? title,
+    NoteType? type,
+    Map<String, dynamic>? extraProps,
+    Set<String>? tags,
+    NoteFileFormat? fileFormat,
+    NoteLoadState? loadState,
+  }) {
+    return Note.build(
+      body: body ?? this.body,
+      parent: parent,
+      doc: data,
+      file: File(
+        created: created ?? this.created,
+        modified: modified ?? this.modified,
+        fileLastModified: fileLastModified,
+        oid: GitHash.zero(),
+        filePath: filePath ?? this.filePath,
+      ),
+      title: title ?? this.title,
+      noteType: type ?? this.type,
+      extraProps: extraProps ?? this.extraProps,
+      tags: tags ?? this.tags,
+      fileFormat: fileFormat ?? this.fileFormat,
+      serializerSettings: noteSerializer.settings.clone(),
+    );
+  }
+
   @override
   String get fileName {
     return p.basename(filePath);
@@ -316,13 +373,6 @@ class Note implements File {
   MdYamlDoc get data {
     noteSerializer.encode(this, _data);
     return _data;
-  }
-
-  set data(MdYamlDoc data) {
-    _data = data;
-    noteSerializer.decode(_data, this);
-
-    _notifyModified();
   }
 
   NoteLoadState get loadState {
@@ -385,8 +435,8 @@ class Note implements File {
     return date.toString();
   }
 
-  NoteFileFormat? get fileFormat {
-    return _fileFormat;
+  NoteFileFormat get fileFormat {
+    return _fileFormat ?? NoteFileFormat.Markdown;
   }
 }
 

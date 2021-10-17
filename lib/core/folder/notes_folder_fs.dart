@@ -156,16 +156,33 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     await load();
 
     var storage = NoteStorage();
-    for (var file in _files) {
+    for (var i = 0; i < _files.length; i++) {
+      var file = _files[i];
       if (file is! Note) {
         continue;
       }
-      var note = file;
+
+      var future = (int index, Note note) async {
+        var result = await storage.load(note, note.parent);
+        if (result.isFailure) {
+          _files[index] = IgnoredFile(
+            oid: file.oid,
+            filePath: file.filePath,
+            modified: file.modified,
+            created: file.created,
+            fileLastModified: file.fileLastModified,
+            reason: IgnoreReason.Custom,
+          );
+          return;
+        }
+
+        _files[index] = result.getOrThrow();
+        notifyNoteModified(index, _files[index] as Note);
+      }(i, file);
 
       // FIXME: Collected all the Errors, and report them back, along with "WHY", and the contents of the Note
       //        Each of these needs to be reported to sentry, as Note loading should never fail
-      var f = storage.load(note);
-      futures.add(f);
+      futures.add(future);
 
       if (futures.length >= maxParallel) {
         await Future.wait(futures);

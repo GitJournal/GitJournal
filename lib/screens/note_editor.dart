@@ -277,7 +277,7 @@ class NoteEditorState extends State<NoteEditor>
     var newEditorType = await showDialog<EditorType>(
       context: context,
       builder: (BuildContext context) {
-        return NoteEditorSelector(editorType, _note.fileFormat!);
+        return NoteEditorSelector(editorType, _note.fileFormat);
       },
     );
 
