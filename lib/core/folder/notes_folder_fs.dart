@@ -341,6 +341,18 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         notifyFolderAdded(-1, e);
       }
     }
+
+    var pathsPossiblyChanged = newPathsList.intersection(originalPathsList);
+    for (var i = 0; i < _files.length; i++) {
+      var filePath = _files[i].filePath;
+      if (!pathsPossiblyChanged.contains(filePath)) {
+        continue;
+      }
+
+      var ent = origEntityMap[filePath];
+      assert(ent is Note);
+      _files[i] = ent;
+    }
   }
 
   void add(Note note) {
