@@ -9,7 +9,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:collection/collection.dart';
-import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' as io;
 

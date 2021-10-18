@@ -124,12 +124,13 @@ class _HistoryWidgetState extends State<HistoryWidget> {
     }
 
     var repo = Provider.of<GitJournalRepo>(context);
+    var extra = _lock.locked ? 1 : 0;
 
     return Scrollbar(
       child: ListView.builder(
         controller: _scrollController,
         itemBuilder: _buildTile,
-        itemCount: commits.length + repo.syncAttempts.length,
+        itemCount: commits.length + repo.syncAttempts.length + extra,
       ),
     );
   }
@@ -137,7 +138,10 @@ class _HistoryWidgetState extends State<HistoryWidget> {
   Widget _buildTile(BuildContext context, int i) {
     var repo = Provider.of<GitJournalRepo>(context);
     if (i >= commits.length + repo.syncAttempts.length) {
-      return const CircularProgressIndicator();
+      return const Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Center(child: CircularProgressIndicator()),
+      );
     }
 
     if (i < repo.syncAttempts.length) {
