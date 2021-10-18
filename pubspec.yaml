@@ -98,6 +98,7 @@ dependencies:
   android_external_storage: ^0.1.0
   background_fetch:
     git: https://github.com/Fishbowler/flutter_background_fetch.git
+  timeline_tile: ^2.0.0
 
 dev_dependencies:
   #flutter_driver:

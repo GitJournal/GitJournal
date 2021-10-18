@@ -15,6 +15,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:timeline_tile/timeline_tile.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
@@ -222,8 +223,8 @@ class _CommitTileState extends State<_CommitTile> {
         ),
         Text(when, style: textTheme.caption)
       ],
-      crossAxisAlignment: CrossAxisAlignment.baseline,
-      textBaseline: TextBaseline.alphabetic,
+      // crossAxisAlignment: CrossAxisAlignment.baseline,
+      // textBaseline: TextBaseline.alphabetic,
     );
 
     if (expanded && widget.prevCommit != null) {
@@ -236,15 +237,24 @@ class _CommitTileState extends State<_CommitTile> {
             prevCommit: widget.prevCommit!,
           ),
         ],
+        mainAxisSize: MainAxisSize.min,
       );
     }
 
     return GestureDetector(
-      child: Card(
-        child: Padding(
+      child: TimelineTile(
+        indicatorStyle: const IndicatorStyle(
+          width: 15,
+          color: Colors.black,
+          padding: EdgeInsets.all(4.0),
+          indicatorXY: 0.0,
+        ),
+        endChild: Card(
+            child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: body,
-        ),
+        )),
+        beforeLineStyle: const LineStyle(color: Colors.black),
       ),
       onTap: () {
         setState(() {
