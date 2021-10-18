@@ -106,14 +106,6 @@ class Note implements File {
 
   var _loadState = NoteLoadState.None;
 
-  // FIXME: This can be removed!
-  Note(this.parent, this._filePath, this.fileLastModified)
-      : _fileFormat =
-            NoteFileFormatInfo(parent.config).fromFilePath(_filePath!) {
-    var settings = NoteSerializationSettings.fromConfig(parent.config);
-    noteSerializer = NoteSerializer.fromConfig(settings);
-  }
-
   File get file => File(
         created: created,
         modified: modified,
@@ -153,7 +145,6 @@ class Note implements File {
   }) : fileLastModified = DateTime.fromMillisecondsSinceEpoch(0) {
     _created = DateTime.now();
     _loadState = NoteLoadState.Loaded;
-    _fileFormat = parent.config.defaultFileFormat.toFileFormat();
     var settings = NoteSerializationSettings.fromConfig(parent.config);
     noteSerializer = NoteSerializer.fromConfig(settings);
 
@@ -436,7 +427,8 @@ class Note implements File {
   }
 
   NoteFileFormat get fileFormat {
-    return _fileFormat ?? NoteFileFormat.Markdown;
+    var formatInfo = NoteFileFormatInfo(parent.config);
+    return _fileFormat ?? formatInfo.fromFilePath(filePath);
   }
 }
 

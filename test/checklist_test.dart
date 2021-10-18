@@ -8,23 +8,23 @@ import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' as io;
 
 import 'package:gitjournal/core/checklist.dart';
+import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
-import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_storage.dart';
 
 void main() {
   group('Note', () {
-    late Directory tempDir;
+    late io.Directory tempDir;
     late NotesFolderConfig config;
 
     final storage = NoteStorage();
 
     setUpAll(() async {
-      tempDir = await Directory.systemTemp.createTemp('__notes_test__');
+      tempDir = await io.Directory.systemTemp.createTemp('__notes_test__');
       SharedPreferences.setMockInitialValues({});
       config = NotesFolderConfig('', await SharedPreferences.getInstance());
     });
@@ -52,11 +52,11 @@ Booga Wooga
 """;
 
       var notePath = p.join(tempDir.path, "note.md");
-      await File(notePath).writeAsString(content);
+      await io.File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath, DateTime.now());
-      note = await storage.load(note, parentFolder).getOrThrow();
+      var file = File.short(notePath);
+      var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
       var items = checklist.items;
@@ -105,7 +105,7 @@ How are you doing?
 Booga Wooga
 """;
 
-      var actualContent = File(notePath).readAsStringSync();
+      var actualContent = io.File(notePath).readAsStringSync();
       expect(actualContent, equals(expectedContent));
     });
 
@@ -116,11 +116,11 @@ Booga Wooga
 - [x] item 3""";
 
       var notePath = p.join(tempDir.path, "note2.md");
-      await File(notePath).writeAsString(content);
+      await io.File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath, DateTime.now());
-      note = await storage.load(note, parentFolder).getOrThrow();
+      var file = File.short(notePath);
+      var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
       var items = checklist.items;
@@ -131,11 +131,11 @@ Booga Wooga
       var content = "Hi.";
 
       var notePath = p.join(tempDir.path, "note3.md");
-      await File(notePath).writeAsString(content);
+      await io.File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath, DateTime.now());
-      note = await storage.load(note, parentFolder).getOrThrow();
+      var file = File.short(notePath);
+      var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
       var items = checklist.items;
@@ -152,11 +152,11 @@ Booga Wooga
       var content = "- [ ] one";
 
       var notePath = p.join(tempDir.path, "note13.md");
-      await File(notePath).writeAsString(content);
+      await io.File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath, DateTime.now());
-      note = await storage.load(note, parentFolder).getOrThrow();
+      var file = File.short(notePath);
+      var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
       var items = checklist.items;
@@ -172,11 +172,11 @@ Booga Wooga
       var content = "Hi.\n- [ ] One\n- Two\n- [ ] Three";
 
       var notePath = p.join(tempDir.path, "note4.md");
-      await File(notePath).writeAsString(content);
+      await io.File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath, DateTime.now());
-      note = await storage.load(note, parentFolder).getOrThrow();
+      var file = File.short(notePath);
+      var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
       var items = checklist.items;
@@ -192,11 +192,11 @@ Booga Wooga
       var content = "Hi.\n- [ ] One\n- Two\n- [ ]  \n- [ ]  ";
 
       var notePath = p.join(tempDir.path, "note4.md");
-      await File(notePath).writeAsString(content);
+      await io.File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath, DateTime.now());
-      note = await storage.load(note, parentFolder).getOrThrow();
+      var file = File.short(notePath);
+      var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
 
@@ -208,11 +208,11 @@ Booga Wooga
       var content = "- [ ] One\n- [ ]Two\n- [ ] Three\n- [ ]Four\n";
 
       var notePath = p.join(tempDir.path, "note449.md");
-      await File(notePath).writeAsString(content);
+      await io.File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath, DateTime.now());
-      note = await storage.load(note, parentFolder).getOrThrow();
+      var file = File.short(notePath);
+      var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
       checklist.addItem(checklist.buildItem(false, "Five"));
@@ -226,11 +226,11 @@ Booga Wooga
       var content = "- [X] One\n- [ ] Two";
 
       var notePath = p.join(tempDir.path, "note448.md");
-      await File(notePath).writeAsString(content);
+      await io.File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath, DateTime.now());
-      note = await storage.load(note, parentFolder).getOrThrow();
+      var file = File.short(notePath);
+      var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
 
@@ -242,11 +242,11 @@ Booga Wooga
       var content = "[X] One\n[ ] Two";
 
       var notePath = p.join(tempDir.path, "note448.md");
-      await File(notePath).writeAsString(content);
+      await io.File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath, DateTime.now());
-      note = await storage.load(note, parentFolder).getOrThrow();
+      var file = File.short(notePath);
+      var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
 
@@ -258,11 +258,11 @@ Booga Wooga
       var content = "[X] One\n";
 
       var notePath = p.join(tempDir.path, "note449.md");
-      await File(notePath).writeAsString(content);
+      await io.File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath, DateTime.now());
-      note = await storage.load(note, parentFolder).getOrThrow();
+      var file = File.short(notePath);
+      var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
       checklist.removeAt(0);
@@ -275,11 +275,11 @@ Booga Wooga
       var content = "#Title\n[X] One\n";
 
       var notePath = p.join(tempDir.path, "note429.md");
-      await File(notePath).writeAsString(content);
+      await io.File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath, DateTime.now());
-      note = await storage.load(note, parentFolder).getOrThrow();
+      var file = File.short(notePath);
+      var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
       checklist.removeAt(0);

@@ -10,7 +10,7 @@ import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' as io;
 
 import 'package:gitjournal/core/folder/flattened_filtered_notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
@@ -24,7 +24,7 @@ void main() {
   String _getRandomFilePath(String basePath) {
     while (true) {
       var filePath = p.join(basePath, "${random.nextInt(1000)}.md");
-      if (File(filePath).existsSync()) {
+      if (io.File(filePath).existsSync()) {
         continue;
       }
 
@@ -33,65 +33,71 @@ void main() {
   }
 
   group('Flattened Notes Folder Test', () {
-    late Directory tempDir;
+    late io.Directory tempDir;
     late NotesFolderFS rootFolder;
     late NotesFolderConfig config;
 
+    final storage = NoteStorage();
+
     setUp(() async {
-      tempDir = await Directory.systemTemp.createTemp('__sorted_folder_test__');
+      tempDir =
+          await io.Directory.systemTemp.createTemp('__sorted_folder_test__');
       SharedPreferences.setMockInitialValues({});
       config = NotesFolderConfig('', await SharedPreferences.getInstance());
 
       rootFolder = NotesFolderFS(null, tempDir.path, config);
 
       for (var i = 0; i < 3; i++) {
-        var note = Note(rootFolder, _getRandomFilePath(rootFolder.folderPath),
-            DateTime.now());
+        var fp = _getRandomFilePath(rootFolder.folderPath);
+        var note = Note.newNote(rootFolder, fileName: p.basename(fp));
         note.apply(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "$i\n",
         );
-        await NoteStorage().save(note).throwOnError();
+        await storage.save(note).throwOnError();
       }
 
-      Directory(p.join(tempDir.path, "sub1")).createSync();
-      Directory(p.join(tempDir.path, "sub1", "p1")).createSync();
-      Directory(p.join(tempDir.path, "sub2")).createSync();
+      io.Directory(p.join(tempDir.path, "sub1")).createSync();
+      io.Directory(p.join(tempDir.path, "sub1", "p1")).createSync();
+      io.Directory(p.join(tempDir.path, "sub2")).createSync();
 
       var sub1Folder =
           NotesFolderFS(rootFolder, p.join(tempDir.path, "sub1"), config);
       for (var i = 0; i < 2; i++) {
-        var note = Note(sub1Folder, _getRandomFilePath(sub1Folder.folderPath),
-            DateTime.now());
+        var fp = _getRandomFilePath(sub1Folder.folderPath);
+        var note = Note.newNote(rootFolder, fileName: p.basename(fp));
+
         note.apply(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "sub1-$i\n",
         );
-        await NoteStorage().save(note).throwOnError();
+        await storage.save(note).throwOnError();
       }
 
       var sub2Folder =
           NotesFolderFS(rootFolder, p.join(tempDir.path, "sub2"), config);
       for (var i = 0; i < 2; i++) {
-        var note = Note(sub2Folder, _getRandomFilePath(sub2Folder.folderPath),
-            DateTime.now());
+        var fp = _getRandomFilePath(sub2Folder.folderPath);
+        var note = Note.newNote(rootFolder, fileName: p.basename(fp));
+
         note.apply(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "sub2-$i\n",
         );
-        await NoteStorage().save(note).throwOnError();
+        await storage.save(note).throwOnError();
       }
 
       var p1Folder =
           NotesFolderFS(sub1Folder, p.join(tempDir.path, "sub1", "p1"), config);
       for (var i = 0; i < 2; i++) {
-        var note = Note(
-            p1Folder, _getRandomFilePath(p1Folder.folderPath), DateTime.now());
+        var fp = _getRandomFilePath(p1Folder.folderPath);
+        var note = Note.newNote(rootFolder, fileName: p.basename(fp));
+
         note.apply(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "p1-$i\n",
         );
-        await NoteStorage().save(note).throwOnError();
+        await storage.save(note).throwOnError();
       }
 
       await rootFolder.loadRecursively();

@@ -7,7 +7,7 @@
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' as io;
 
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
@@ -15,27 +15,44 @@ import 'package:gitjournal/core/notes_cache.dart';
 
 void main() {
   group('Notes Cache', () {
-    late Directory tempDir;
+    late io.Directory tempDir;
     String cacheFilePath;
-    var fileList = [
-      '/base/file.md',
-      '/base/d1/d2/file.md',
-      '/base/d5/file.md',
-      '/base/d1/file.md',
-    ];
+    var fileList = <String>[];
     late NotesCache cache;
     late NotesFolderConfig config;
+    late String rootPath;
 
     setUp(() async {
-      tempDir = await Directory.systemTemp.createTemp('__notes_test__');
+      tempDir = await io.Directory.systemTemp.createTemp('__notes_test__');
       SharedPreferences.setMockInitialValues({});
       config = NotesFolderConfig('', await SharedPreferences.getInstance());
       cacheFilePath = p.join(tempDir.path, "cache.raw");
+
+      rootPath = p.join(tempDir.path, "notes");
+      var d1 = p.join(rootPath, "d1");
+      var d2 = p.join(rootPath, "d1", 'd2');
+      var d5 = p.join(rootPath, "d5");
+
       cache = NotesCache(
         filePath: cacheFilePath,
-        notesBasePath: '/base',
+        notesBasePath: rootPath,
         folderConfig: config,
       );
+
+      await io.Directory(d1).create(recursive: true);
+      await io.Directory(d2).create(recursive: true);
+      await io.Directory(d5).create(recursive: true);
+
+      fileList = [
+        p.join(rootPath, "file.md"),
+        p.join(d2, "file.md"),
+        p.join(d5, "file.md"),
+        p.join(d1, "file.md")
+      ];
+
+      for (var filePath in fileList) {
+        await io.File(filePath).writeAsString("foo");
+      }
     });
 
     tearDown(() async {
@@ -54,7 +71,7 @@ void main() {
 
     test('Should create directory structure accurately', () async {
       await cache.saveToDisk(fileList);
-      var rootFolder = NotesFolderFS(null, '/base', config);
+      var rootFolder = NotesFolderFS(null, rootPath, config);
       await cache.load(rootFolder);
 
       expect(rootFolder.subFolders.length, 2);

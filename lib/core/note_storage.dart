@@ -5,15 +5,15 @@
  */
 
 import 'package:dart_git/utils/result.dart';
-import 'package:gitjournal/core/note_serializer.dart';
-import 'package:gitjournal/error_reporting.dart';
 import 'package:universal_io/io.dart' as io;
 
 import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/md_yaml_doc_loader.dart';
-import 'package:gitjournal/core/file/file.dart';
+import 'package:gitjournal/core/note_serializer.dart';
+import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
+import 'file/file.dart';
 import 'folder/notes_folder_fs.dart';
 import 'note.dart';
 
@@ -52,30 +52,35 @@ class NoteStorage {
 
   static final mdYamlDocLoader = MdYamlDocLoader();
 
-  Future<Result<Note>> load(Note file, NotesFolderFS parentFolder) async {
-    assert(file.filePath.isNotEmpty);
-
-    if (file.loadState == NoteLoadState.Loaded) {
+  Future<Result<Note>> reload(Note note) async {
+    if (note.loadState == NoteLoadState.Loaded) {
       try {
-        var fileLastModified = io.File(file.filePath).lastModifiedSync();
-        if (file.fileLastModified == fileLastModified) {
-          return Result(file);
+        var fileLastModified = io.File(note.filePath).lastModifiedSync();
+        if (note.fileLastModified == fileLastModified) {
+          return Result(note);
         }
-        file.fileLastModified = fileLastModified;
-        Log.d("Note modified: ${file.filePath}");
-        return Result(file);
+        note.fileLastModified = fileLastModified;
+        Log.d("Note modified: ${note.filePath}");
+
+        return load(note, note.parent);
       } catch (e, stackTrace) {
         if (e is io.FileSystemException &&
             e.osError!.errorCode == 2 /* File Not Found */) {
-          file.apply(loadState: NoteLoadState.NotExists);
-          return Result(file);
+          note.apply(loadState: NoteLoadState.NotExists);
+          return Result(note);
         }
 
         logExceptionWarning(e, stackTrace);
-        file.apply(loadState: NoteLoadState.Error);
-        return Result(file);
+        note.apply(loadState: NoteLoadState.Error);
+        return Result(note);
       }
     }
+
+    throw Exception("NoteStorage Reload called on unloaded Note");
+  }
+
+  Future<Result<Note>> load(File file, NotesFolderFS parentFolder) async {
+    assert(file.filePath.isNotEmpty);
 
     var filePath = file.filePath;
     var format = NoteFileFormatInfo(parentFolder.config).fromFilePath(filePath);
@@ -83,7 +88,7 @@ class NoteStorage {
     if (format == NoteFileFormat.Markdown) {
       var dataResult = await mdYamlDocLoader.loadDoc(file.filePath);
       if (dataResult.isFailure) {
-        return downcast(dataResult);
+        return Result.fail(dataResult.error!, dataResult.stackTrace);
       }
 
       var data = dataResult.getOrThrow();

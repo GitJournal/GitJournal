@@ -13,6 +13,7 @@ import 'package:path/path.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:universal_io/io.dart' as io;
 
+import 'package:gitjournal/core/file/unopened_files.dart';
 import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/views/inline_tags_view.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
@@ -147,38 +148,57 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     return _folders;
   }
 
-  // FIXME: This asynchronously loads everything. Maybe it should just list them, and the individual _entities
-  //        should be loaded as required?
-  Future<void> loadRecursively() async {
+  void addFile(File file) {
+    _files.add(file);
+  }
+
+  Future<void> loadNotes() async {
     const maxParallel = 10;
     var futures = <Future>[];
 
-    await load();
-
     var storage = NoteStorage();
     for (var i = 0; i < _files.length; i++) {
+      late Future future;
+
       var file = _files[i];
-      if (file is! Note) {
+      if (file is UnopenedFile) {
+        future = (int index, UnopenedFile file) async {
+          var result = await storage.load(file, file.parent);
+          if (result.isFailure) {
+            _files[index] = IgnoredFile(
+              oid: file.oid,
+              filePath: file.filePath,
+              modified: file.modified,
+              created: file.created,
+              fileLastModified: file.fileLastModified,
+              reason: IgnoreReason.Custom,
+            );
+            return;
+          }
+
+          _files[index] = result.getOrThrow();
+          notifyNoteAdded(index, result.getOrThrow());
+        }(i, file);
+      } else if (file is Note) {
+        future = (int index, Note note) async {
+          var result = await storage.reload(note);
+          if (result.isFailure) {
+            _files[index] = IgnoredFile(
+              oid: file.oid,
+              filePath: file.filePath,
+              modified: file.modified,
+              created: file.created,
+              fileLastModified: file.fileLastModified,
+              reason: IgnoreReason.Custom,
+            );
+            return;
+          }
+          _files[index] = result.getOrThrow();
+          notifyNoteModified(index, result.getOrThrow());
+        }(i, file);
+      } else {
         continue;
       }
-
-      var future = (int index, Note note) async {
-        var result = await storage.load(note, note.parent);
-        if (result.isFailure) {
-          _files[index] = IgnoredFile(
-            oid: file.oid,
-            filePath: file.filePath,
-            modified: file.modified,
-            created: file.created,
-            fileLastModified: file.fileLastModified,
-            reason: IgnoreReason.Custom,
-          );
-          return;
-        }
-
-        _files[index] = result.getOrThrow();
-        notifyNoteModified(index, _files[index] as Note);
-      }(i, file);
 
       // FIXME: Collected all the Errors, and report them back, along with "WHY", and the contents of the Note
       //        Each of these needs to be reported to sentry, as Note loading should never fail
@@ -191,33 +211,13 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     }
 
     await Future.wait(futures);
-    futures = <Future>[];
+  }
 
-    // Remove notes which have errors
-    await _lock.synchronized(() {
-      _files = _files.map((f) {
-        if (f is! Note) {
-          return f;
-        }
+  Future<void> loadRecursively() async {
+    await load();
+    await loadNotes();
 
-        var note = f;
-        if (note.loadState != NoteLoadState.Error) {
-          return note;
-        }
-
-        notifyNoteRemoved(-1, note);
-
-        return IgnoredFile(
-          oid: note.oid,
-          filePath: note.filePath,
-          created: note.created,
-          modified: note.modified,
-          fileLastModified: note.fileLastModified,
-          reason: IgnoreReason.Custom,
-        );
-      }).toList();
-    });
-
+    var futures = <Future>[];
     for (var folder in _folders) {
       var f = folder.loadRecursively();
       futures.add(f);
@@ -298,10 +298,17 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       }
 
       // Log.v("Found file", props: {"path": filePath});
-      var note = Note(this, filePath, stat.modified);
+      var fileToBeProcessed = UnopenedFile(
+        filePath: filePath,
+        oid: GitHash.zero(),
+        created: null,
+        modified: null,
+        fileLastModified: stat.modified,
+        parent: this,
+      );
 
-      newFiles.add(note);
-      newEntityMap[filePath] = note;
+      newFiles.add(fileToBeProcessed);
+      newEntityMap[filePath] = fileToBeProcessed;
     }
 
     var originalPathsList = _entityMap.keys.toSet();

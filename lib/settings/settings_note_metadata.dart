@@ -11,6 +11,7 @@ import 'package:function_types/function_types.dart';
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
+import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/md_yaml_doc.dart';
@@ -50,10 +51,7 @@ class _NoteMetadataSettingsScreenState
     var settings = Provider.of<Settings>(context);
     var folderConfig = Provider.of<NotesFolderConfig>(context);
 
-    var parent = NotesFolderFS(null, '', folderConfig);
-    var note = Note(parent, "fileName.md", DateTime.now());
-
-    Map<String, dynamic>? extraProps;
+    var extraProps = <String, dynamic>{};
     if (settings.customMetaData != "") {
       var customMetaDataMap =
           MarkdownYAMLCodec.parseYamlText(settings.customMetaData);
@@ -62,16 +60,27 @@ class _NoteMetadataSettingsScreenState
       }
     }
 
-    note.apply(
+    var parent = NotesFolderFS(null, '', folderConfig);
+    var note = Note.build(
       title: tr("settings.noteMetaData.exampleTitle"),
       body: tr("settings.noteMetaData.exampleBody"),
-      created: created,
-      modified: modified,
+      parent: parent,
+      fileFormat: NoteFileFormat.Markdown,
+      noteType: NoteType.Unknown,
+      file: File(
+        filePath: '',
+        created: created,
+        modified: modified,
+        oid: GitHash.zero(),
+        fileLastModified: DateTime.now(),
+      ),
       extraProps: extraProps,
       tags: {
         tr("settings.noteMetaData.exampleTag1"),
         tr("settings.noteMetaData.exampleTag2"),
       },
+      doc: MdYamlDoc(),
+      serializerSettings: NoteSerializationSettings.fromConfig(parent.config),
     );
 
     var body = Column(

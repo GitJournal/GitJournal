@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'dart:io';
+import 'dart:io' as io;
 import 'dart:math';
 
 import 'package:hive/hive.dart';
@@ -12,19 +12,21 @@ import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 
+import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/transformers/base.dart';
 import 'package:gitjournal/core/views/notes_materialized_view.dart';
 
 void main() {
   group('ViewTest', () {
-    late Directory tempDir;
+    late io.Directory tempDir;
     late NotesFolderConfig config;
 
     setUpAll(() async {
-      tempDir = await Directory.systemTemp.createTemp('__notes_test__');
+      tempDir = await io.Directory.systemTemp.createTemp('__notes_test__');
       SharedPreferences.setMockInitialValues({});
       config = NotesFolderConfig('', await SharedPreferences.getInstance());
 
@@ -42,11 +44,12 @@ Hello
 """;
 
       var notePath = p.join(tempDir.path, "note.md");
-      await File(notePath).writeAsString(content);
+      await io.File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath, DateTime.now());
-      return note;
+      var noteStorage = NoteStorage();
+      var noteR = await noteStorage.load(File.short(notePath), parentFolder);
+      return noteR.getOrThrow();
     }
 
     test('Test', () async {

@@ -9,10 +9,10 @@ import 'dart:collection';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 
+import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/md_yaml_doc.dart';
-import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_serializer.dart';
 import 'package:gitjournal/settings/settings.dart';
 
@@ -36,8 +36,8 @@ void main() {
       serializer.settings.emojify = true;
       serializer.settings.titleSettings = SettingsTitle.InYaml;
 
-      var note = Note(parent, "file-path-not-important", DateTime.now());
-      note = serializer.decode(data: doc, parent: parent, file: note.file);
+      var file = File.short("file-path-not-important");
+      var note = serializer.decode(data: doc, parent: parent, file: file);
 
       expect(note.body, "I ❤️ you");
       expect(note.title, "Why not ☕?");
@@ -57,8 +57,8 @@ void main() {
       var serializer = NoteSerializer.raw();
       serializer.settings.titleSettings = SettingsTitle.InH1;
 
-      var note = Note(parent, "file-path-not-important", DateTime.now());
-      note = serializer.decode(data: doc, parent: parent, file: note.file);
+      var file = File.short("file-path-not-important");
+      var note = serializer.decode(data: doc, parent: parent, file: file);
 
       expect(note.body, "I heart you");
       expect(note.title, "Why not coffee?");
@@ -77,8 +77,8 @@ void main() {
 
       var serializer = NoteSerializer.raw();
 
-      var note = Note(parent, "file-path-not-important", DateTime.now());
-      note = serializer.decode(data: doc, parent: parent, file: note.file);
+      var file = File.short("file-path-not-important");
+      var note = serializer.decode(data: doc, parent: parent, file: file);
 
       expect(note.body, "I heart you");
       expect(note.title, "Why not coffee?");
@@ -90,8 +90,8 @@ void main() {
 
       var serializer = NoteSerializer.raw();
 
-      var note = Note(parent, "file-path-not-important", DateTime.now());
-      note = serializer.decode(data: doc, parent: parent, file: note.file);
+      var file = File.short("file-path-not-important");
+      var note = serializer.decode(data: doc, parent: parent, file: file);
 
       expect(note.body.length, 0);
       expect(note.title, "Why not coffee?");
@@ -105,8 +105,8 @@ void main() {
       var serializer = NoteSerializer.raw();
       serializer.settings.titleSettings = SettingsTitle.InH1;
 
-      var note = Note(parent, "file-path-not-important", DateTime.now());
-      note = serializer.decode(data: doc, parent: parent, file: note.file);
+      var file = File.short("file-path-not-important");
+      var note = serializer.decode(data: doc, parent: parent, file: file);
 
       expect(note.body, "I heart you");
       expect(note.title, "Why not coffee?");
@@ -127,8 +127,8 @@ void main() {
       var serializer = NoteSerializer.raw();
       serializer.settings.titleSettings = SettingsTitle.InYaml;
 
-      var note = Note(parent, "file-path-not-important", DateTime.now());
-      note = serializer.decode(data: doc, parent: parent, file: note.file);
+      var file = File.short("file-path-not-important");
+      var note = serializer.decode(data: doc, parent: parent, file: file);
 
       expect(note.body, "body");
       expect(note.title, "Why not?");
@@ -152,8 +152,8 @@ void main() {
       var serializer = NoteSerializer.raw();
       serializer.settings.titleSettings = SettingsTitle.InYaml;
 
-      var note = Note(parent, "file-path-not-important", DateTime.now());
-      note = serializer.decode(data: doc, parent: parent, file: note.file);
+      var file = File.short("file-path-not-important");
+      var note = serializer.decode(data: doc, parent: parent, file: file);
 
       expect(note.body, "body");
       expect(note.title, "Why not?");

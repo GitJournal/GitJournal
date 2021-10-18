@@ -10,7 +10,7 @@ import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' as io;
 
 import 'package:gitjournal/core/folder/flattened_notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
@@ -20,12 +20,13 @@ import 'package:gitjournal/core/note_storage.dart';
 
 void main() {
   group('Flattened Notes Folder Large Test', () {
-    late Directory tempDir;
+    late io.Directory tempDir;
     late NotesFolderFS rootFolder;
     late NotesFolderConfig config;
 
     setUp(() async {
-      tempDir = await Directory.systemTemp.createTemp('__flat_folder_test__');
+      tempDir =
+          await io.Directory.systemTemp.createTemp('__flat_folder_test__');
       SharedPreferences.setMockInitialValues({});
       config = NotesFolderConfig('', await SharedPreferences.getInstance());
 
@@ -48,11 +49,12 @@ void main() {
       var f = FlattenedNotesFolder(rootFolder, title: "");
       expect(f.notes.length, 300);
 
-      var tempDir = await Directory.systemTemp.createTemp('_test_');
+      var tempDir = await io.Directory.systemTemp.createTemp('_test_');
       await _writeRandomNote(Random(), tempDir.path, config);
 
       rootFolder.reset(tempDir.path);
       await rootFolder.loadRecursively();
+      expect(rootFolder.notes.length, 1);
       expect(f.notes.length, 1);
     });
   });
@@ -63,12 +65,13 @@ Future<void> _writeRandomNote(
   String path;
   while (true) {
     path = p.join(dirPath, "${random.nextInt(10000)}.md");
-    if (!File(path).existsSync()) {
+    if (!io.File(path).existsSync()) {
       break;
     }
   }
 
-  var note = Note(NotesFolderFS(null, dirPath, config), path, DateTime.now());
+  var parent = NotesFolderFS(null, dirPath, config);
+  var note = Note.newNote(parent, fileName: p.basename(path));
   note.apply(
     modified: DateTime(2014, 1, 1 + (random.nextInt(2000))),
     body: "p1",

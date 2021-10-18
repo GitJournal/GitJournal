@@ -9,14 +9,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:collection/collection.dart';
+import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' as io;
 
+import 'package:gitjournal/core/file/file.dart';
+import 'package:gitjournal/core/file/unopened_files.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/folder/sorting_mode.dart';
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 
@@ -34,8 +36,9 @@ class NotesCache {
     required this.folderConfig,
   });
 
-  Future load(NotesFolderFS rootFolder) async {
+  Future<void> load(NotesFolderFS rootFolder) async {
     if (!enabled) return;
+
     var fileList = await loadFromDisk();
     Log.i("Notes Cache Loaded: ${fileList.length} items");
 
@@ -45,7 +48,7 @@ class NotesCache {
       notesBasePath += sep;
     }
 
-    var storage = NoteStorage();
+    var futures = <Future<void>>[];
 
     for (var fullFilePath in fileList) {
       if (!fullFilePath.startsWith(notesBasePath)) {
@@ -73,20 +76,26 @@ class NotesCache {
         parent = subFolder;
       }
 
-      var note = Note(
-        parent,
-        fullFilePath,
-        DateTime.fromMillisecondsSinceEpoch(0),
+      var file = UnopenedFile(
+        filePath: fullFilePath,
+        fileLastModified: DateTime.fromMillisecondsSinceEpoch(0),
+        created: null,
+        modified: null,
+        oid: GitHash.zero(),
+        parent: parent,
       );
-
-      var _ = storage.load(note, rootFolder);
-      parent.add(note);
+      parent.addFile(file);
+      var f = parent.loadNotes();
+      futures.add(f);
     }
+
+    // Load all the notes recursively
+    await Future.wait(futures);
   }
 
   Future<void> clear() async {
     if (!enabled) return;
-    var _ = await File(filePath).delete();
+    var _ = await io.File(filePath).delete();
   }
 
   Future<void> buildCache(NotesFolderFS rootFolder) async {
@@ -131,8 +140,8 @@ class NotesCache {
   Future<List<String>> loadFromDisk() async {
     String contents = "";
     try {
-      contents = await File(filePath).readAsString();
-    } on FileSystemException catch (ex) {
+      contents = await io.File(filePath).readAsString();
+    } on io.FileSystemException catch (ex) {
       if (ex.osError?.errorCode == 2 /* file not found */) {
         return [];
       }
@@ -157,7 +166,7 @@ class NotesCache {
     var contents = json.encode(files);
     var newFilePath = filePath + ".new";
 
-    var file = File(newFilePath);
+    var file = io.File(newFilePath);
     dynamic _;
     _ = await file.writeAsString(contents);
     _ = await file.rename(filePath);

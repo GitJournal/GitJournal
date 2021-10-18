@@ -30,6 +30,12 @@ class File {
     required this.fileLastModified,
   });
 
+  File.short(this.filePath)
+      : oid = GitHash.zero(),
+        fileLastModified = DateTime.now(),
+        modified = null,
+        created = null;
+
   String get fileName => p.basename(filePath);
 
   // Add toString

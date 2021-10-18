@@ -23,14 +23,17 @@ void main() {
 
     test('Created', () async {
       var folder = NotesFolderFS(null, '/tmp/', config);
-      var n1 = Note(folder, '/tmp/1.md', DateTime.now());
+      var n1 = Note.newNote(folder, fileName: '1.md');
       n1.apply(created: DateTime(2020, 10, 01));
 
-      var n2 = Note(folder, '/tmp/2.md', DateTime.now());
+      var n2 = Note.newNote(folder, fileName: '2.md');
       n2.apply(created: DateTime(2020, 10, 02));
 
-      var n3 = Note(folder, '/tmp/3.md', DateTime.now());
-      var n4 = Note(folder, '/tmp/4.md', DateTime.now());
+      var n3 = Note.newNote(folder, fileName: '3.md');
+      n3.apply(created: DateTime(2020, 9, 04));
+
+      var n4 = Note.newNote(folder, fileName: '4.md');
+      n4.apply(created: DateTime(2020, 9, 03));
 
       var notes = [n1, n2, n3, n4];
       var sortFn = SortingMode(SortingField.Created, SortingOrder.Descending)
@@ -45,14 +48,14 @@ void main() {
 
     test('Modified', () async {
       var folder = NotesFolderFS(null, '/tmp/', config);
-      var n1 = Note(folder, '/tmp/1.md', DateTime.now());
+      var n1 = Note.newNote(folder, fileName: '1.md');
       n1.apply(modified: DateTime(2020, 10, 01));
 
-      var n2 = Note(folder, '/tmp/2.md', DateTime.now());
+      var n2 = Note.newNote(folder, fileName: '2.md');
       n2.apply(modified: DateTime(2020, 10, 02));
 
-      var n3 = Note(folder, '/tmp/3.md', DateTime.now());
-      var n4 = Note(folder, '/tmp/4.md', DateTime.now());
+      var n3 = Note.newNote(folder, fileName: '3.md');
+      var n4 = Note.newNote(folder, fileName: '4.md');
 
       var notes = [n1, n2, n3, n4];
       var sortFn = SortingMode(SortingField.Modified, SortingOrder.Descending)

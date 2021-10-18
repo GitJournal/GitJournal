@@ -10,23 +10,25 @@ import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' as io;
 
+import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/folder/sorted_notes_folder.dart';
 import 'package:gitjournal/core/folder/sorting_mode.dart';
-import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_storage.dart';
 
 void main() {
   group('Sorted Notes Folder Test', () {
-    late Directory tempDir;
+    late io.Directory tempDir;
     late NotesFolderFS folder;
     late NotesFolderConfig config;
+    final storage = NoteStorage();
 
     setUp(() async {
-      tempDir = await Directory.systemTemp.createTemp('__sorted_folder_test__');
+      tempDir =
+          await io.Directory.systemTemp.createTemp('__sorted_folder_test__');
       SharedPreferences.setMockInitialValues({});
       config = NotesFolderConfig('', await SharedPreferences.getInstance());
 
@@ -34,10 +36,8 @@ void main() {
 
       var random = Random();
       for (var i = 0; i < 5; i++) {
-        var note = Note(
-            folder,
-            p.join(folder.folderPath, "${random.nextInt(1000)}.md"),
-            DateTime.now());
+        var path = p.join(folder.folderPath, "${random.nextInt(1000)}.md");
+        var note = await storage.load(File.short(path), folder).getOrThrow();
         note.apply(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "$i\n",
@@ -94,8 +94,8 @@ void main() {
             SortingMode(SortingField.Modified, SortingOrder.Descending),
       );
 
-      var note =
-          Note(folder, p.join(folder.folderPath, "new.md"), DateTime.now());
+      var fNew = File.short('new.md');
+      var note = await storage.load(fNew, folder).getOrThrow();
       folder.add(note);
 
       note.apply(
@@ -121,8 +121,8 @@ void main() {
             SortingMode(SortingField.Modified, SortingOrder.Descending),
       );
 
-      var note =
-          Note(folder, p.join(folder.folderPath, "new.md"), DateTime.now());
+      var fNew = File.short('new.md');
+      var note = await storage.load(fNew, folder).getOrThrow();
       folder.add(note);
 
       note.apply(

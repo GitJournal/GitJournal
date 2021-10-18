@@ -8,8 +8,9 @@ import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' as io;
 
+import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note.dart';
@@ -17,13 +18,13 @@ import 'package:gitjournal/core/note_storage.dart';
 
 void main() {
   group('Note', () {
-    late Directory tempDir;
+    late io.Directory tempDir;
     late NotesFolderConfig config;
 
     final storage = NoteStorage();
 
     setUpAll(() async {
-      tempDir = await Directory.systemTemp.createTemp('__notes_test__');
+      tempDir = await io.Directory.systemTemp.createTemp('__notes_test__');
       SharedPreferences.setMockInitialValues({});
       config = NotesFolderConfig('', await SharedPreferences.getInstance());
     });
@@ -42,11 +43,11 @@ Hello
 """;
 
       var notePath = p.join(tempDir.path, "note.md");
-      await File(notePath).writeAsString(content);
+      await io.File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath, DateTime.now());
-      note = await storage.load(note, note.parent).getOrThrow();
+      var file = File.short(notePath);
+      var note = await storage.load(file, parentFolder).getOrThrow();
       expect(note.canHaveMetadata, true);
 
       note.apply(modified: DateTime.utc(2019, 12, 02, 4, 0, 0));
@@ -61,7 +62,7 @@ modified: 2019-12-02T04:00:00+00:00
 Hello
 """;
 
-      var actualContent = File(notePath).readAsStringSync();
+      var actualContent = io.File(notePath).readAsStringSync();
       expect(actualContent, equals(expectedContent));
     });
 
@@ -75,11 +76,11 @@ Hello
 """;
 
       var notePath = p.join(tempDir.path, "note.md");
-      await File(notePath).writeAsString(content);
+      await io.File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath, DateTime.now());
-      note = await storage.load(note, note.parent).getOrThrow();
+      var file = File.short(notePath);
+      var note = await storage.load(file, parentFolder).getOrThrow();
 
       note.apply(modified: DateTime.utc(2019, 12, 02, 4, 0, 0));
 
@@ -93,7 +94,7 @@ mod: 2019-12-02T04:00:00+00:00
 Hello
 """;
 
-      var actualContent = File(notePath).readAsStringSync();
+      var actualContent = io.File(notePath).readAsStringSync();
       expect(actualContent, equals(expectedContent));
     });
 
@@ -107,11 +108,11 @@ Hello
 """;
 
       var notePath = p.join(tempDir.path, "note5.md");
-      await File(notePath).writeAsString(content);
+      await io.File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath, DateTime.now());
-      note = await storage.load(note, note.parent).getOrThrow();
+      var file = File.short(notePath);
+      var note = await storage.load(file, parentFolder).getOrThrow();
 
       expect(note.tags.contains('A'), true);
       expect(note.tags.contains('B'), true);
@@ -128,7 +129,7 @@ tags: [A, C, D]
 Hello
 """;
 
-      var actualContent = File(notePath).readAsStringSync();
+      var actualContent = io.File(notePath).readAsStringSync();
       expect(actualContent, equals(expectedContent));
     });
 
@@ -143,11 +144,12 @@ bar: Foo
 """;
 
       var notePath = p.join(tempDir.path, "note6.md");
-      await File(notePath).writeAsString(content);
+      await io.File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath, DateTime.now());
-      note = await storage.load(note, note.parent).getOrThrow();
+      var file = File.short(notePath);
+      var note = await storage.load(file, parentFolder).getOrThrow();
+      parentFolder.add(note);
 
       var linksOrNull = []; // await note.fetchLinks();
       var links = linksOrNull;
@@ -164,11 +166,12 @@ bar: Foo
       var content = "[[GitJournal]] needs some [[Wild Fire]]\n";
 
       var notePath = p.join(tempDir.path, "note63.md");
-      await File(notePath).writeAsString(content);
+      await io.File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath, DateTime.now());
-      note = await storage.load(note, note.parent).getOrThrow();
+      var file = File.short(notePath);
+      var note = await storage.load(file, parentFolder).getOrThrow();
+      parentFolder.add(note);
 
       var linksOrNull = []; //await note.fetchLinks();
       var links = linksOrNull;
@@ -190,11 +193,12 @@ Gee
 """;
 
       var notePath = p.join(tempDir.path, "note16.md");
-      await File(notePath).writeAsString(content);
+      await io.File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath, DateTime.now());
-      note = await storage.load(note, note.parent).getOrThrow();
+      var file = File.short(notePath);
+      var note = await storage.load(file, parentFolder).getOrThrow();
+      parentFolder.add(note);
 
       expect(note.fileFormat, NoteFileFormat.Markdown);
 
@@ -202,10 +206,10 @@ Gee
       // Txt files
       //
       var txtNotePath = p.join(tempDir.path, "note16.txt");
-      await File(txtNotePath).writeAsString(content);
+      await io.File(txtNotePath).writeAsString(content);
 
-      var txtNote = Note(parentFolder, txtNotePath, DateTime.now());
-      txtNote = await storage.load(txtNote, txtNote.parent).getOrThrow();
+      var txtFile = File.short(txtNotePath);
+      var txtNote = await storage.load(txtFile, parentFolder).getOrThrow();
 
       expect(txtNote.fileFormat, NoteFileFormat.Txt);
       expect(txtNote.canHaveMetadata, false);
@@ -226,11 +230,11 @@ Gee
 Gee
 """;
       var txtNotePath = p.join(tempDir.path, "note163.txt");
-      await File(txtNotePath).writeAsString(content);
+      await io.File(txtNotePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var txtNote = Note(parentFolder, txtNotePath, DateTime.now());
-      txtNote = await storage.load(txtNote, txtNote.parent).getOrThrow();
+      var txtFile = File.short(txtNotePath);
+      var txtNote = await storage.load(txtFile, parentFolder).getOrThrow();
 
       expect(txtNote.fileFormat, NoteFileFormat.Txt);
       expect(txtNote.canHaveMetadata, false);
@@ -249,11 +253,12 @@ Hello
 """;
 
       var notePath = p.join(tempDir.path, "note.md");
-      await File(notePath).writeAsString(content);
+      await io.File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS(null, tempDir.path, config);
-      var note = Note(parentFolder, notePath, DateTime.now());
-      note = await storage.load(note, note.parent).getOrThrow();
+      var file = File.short(notePath);
+      var note = await storage.load(file, parentFolder).getOrThrow();
+      parentFolder.add(note);
 
       expect(note.modified, DateTime.parse('2021-07-14T10:14:49Z'));
       expect(note.created, DateTime.parse('2021-07-14T10:14:49Z'));
@@ -274,7 +279,7 @@ Hello
 
       await NoteStorage().save(note).throwOnError();
 
-      var actualContent = File(notePath).readAsStringSync();
+      var actualContent = io.File(notePath).readAsStringSync();
       expect(actualContent, equals(expectedContent));
     });
   });
