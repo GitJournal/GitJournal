@@ -11,7 +11,6 @@ import 'package:gitjournal/core/md_yaml_doc.dart';
 import 'package:gitjournal/core/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/md_yaml_doc_loader.dart';
 import 'package:gitjournal/core/note_serializer.dart';
-import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'file/file.dart';
 import 'folder/notes_folder_fs.dart';
@@ -53,30 +52,23 @@ class NoteStorage {
   static final mdYamlDocLoader = MdYamlDocLoader();
 
   Future<Result<Note>> reload(Note note) async {
-    if (note.loadState == NoteLoadState.Loaded) {
-      try {
-        var fileLastModified = io.File(note.filePath).lastModifiedSync();
-        if (note.fileLastModified == fileLastModified) {
-          return Result(note);
-        }
-        note.fileLastModified = fileLastModified;
-        Log.d("Note modified: ${note.filePath}");
-
-        return load(note, note.parent);
-      } catch (e, stackTrace) {
-        if (e is io.FileSystemException &&
-            e.osError!.errorCode == 2 /* File Not Found */) {
-          note.apply(loadState: NoteLoadState.NotExists);
-          return Result(note);
-        }
-
-        logExceptionWarning(e, stackTrace);
-        note.apply(loadState: NoteLoadState.Error);
+    try {
+      var fileLastModified = io.File(note.filePath).lastModifiedSync();
+      if (note.fileLastModified == fileLastModified) {
         return Result(note);
       }
-    }
+      note.fileLastModified = fileLastModified;
+      Log.d("Note modified: ${note.filePath}");
 
-    throw Exception("NoteStorage Reload called on unloaded Note");
+      return load(note, note.parent);
+    } on Exception catch (e, stackTrace) {
+      if (e is io.FileSystemException &&
+          e.osError!.errorCode == 2 /* File Not Found */) {
+        return Result.fail(e, stackTrace);
+      }
+
+      return Result.fail(e, stackTrace);
+    }
   }
 
   Future<Result<Note>> load(File file, NotesFolderFS parentFolder) async {

@@ -41,9 +41,6 @@ class NotesMaterializedView<T> {
   Future<T> fetch(Note note) async {
     assert(note.filePath.startsWith(repoPath));
 
-    if (note.loadState != NoteLoadState.Loaded) {
-      return computeFn(note);
-    }
     var ts = note.fileLastModified.toUtc().millisecondsSinceEpoch ~/ 1000;
     var path = note.filePath.substring(repoPath.length);
     var keyPrefix = '${path}_';

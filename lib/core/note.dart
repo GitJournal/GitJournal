@@ -21,15 +21,6 @@ import 'note_serializer.dart';
 typedef NoteSelectedFunction = void Function(Note note);
 typedef NoteBoolPropertyFunction = bool Function(Note note);
 
-/// Move this to NotesFolderFS
-enum NoteLoadState {
-  None,
-  Loading,
-  Loaded,
-  NotExists,
-  Error,
-}
-
 enum NoteType { Unknown, Checklist, Journal, Org }
 
 class NoteFileFormatInfo {
@@ -104,8 +95,6 @@ class Note implements File {
   @override
   GitHash get oid => GitHash.zero();
 
-  var _loadState = NoteLoadState.None;
-
   File get file => File(
         created: created,
         modified: modified,
@@ -144,7 +133,6 @@ class Note implements File {
     String? fileName,
   }) : fileLastModified = DateTime.fromMillisecondsSinceEpoch(0) {
     _created = DateTime.now();
-    _loadState = NoteLoadState.Loaded;
     var settings = NoteSerializationSettings.fromConfig(parent.config);
     noteSerializer = NoteSerializer.fromConfig(settings);
 
@@ -223,7 +211,6 @@ class Note implements File {
     Map<String, dynamic>? extraProps,
     Set<String>? tags,
     NoteFileFormat? fileFormat,
-    NoteLoadState? loadState,
   }) {
     var changed = false;
     if (filePath != null) {
@@ -271,11 +258,6 @@ class Note implements File {
       changed = true;
     }
 
-    if (loadState != null && _loadState != loadState) {
-      _loadState = loadState;
-      changed = true;
-    }
-
     if (changed) {
       _notifyModified();
     }
@@ -291,7 +273,6 @@ class Note implements File {
     Map<String, dynamic>? extraProps,
     Set<String>? tags,
     NoteFileFormat? fileFormat,
-    NoteLoadState? loadState,
   }) {
     return Note.build(
       body: body ?? this.body,
@@ -366,10 +347,6 @@ class Note implements File {
     return _data;
   }
 
-  NoteLoadState get loadState {
-    return _loadState;
-  }
-
   @override
   int get hashCode => _filePath.hashCode;
 
@@ -383,7 +360,7 @@ class Note implements File {
 
   @override
   String toString() {
-    return 'Note{filePath: $_filePath, created: $created, modified: $modified, data: $_data, loadState: $_loadState}';
+    return 'Note{filePath: $_filePath, created: $created, modified: $modified, data: $_data}';
   }
 
   void _notifyModified() {
