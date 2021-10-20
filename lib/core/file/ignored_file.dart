@@ -15,6 +15,7 @@ enum IgnoreReason {
 
 class IgnoredFile extends File {
   final IgnoreReason reason;
+  final Object? customError;
 
   IgnoredFile({
     required GitHash oid,
@@ -23,6 +24,7 @@ class IgnoredFile extends File {
     required DateTime? created,
     required DateTime fileLastModified,
     required this.reason,
+    this.customError,
   }) : super(
           oid: oid,
           filePath: filePath,

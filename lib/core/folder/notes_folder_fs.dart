@@ -166,6 +166,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
           var result = await storage.load(file, file.parent);
           if (result.isFailure) {
             var reason = IgnoreReason.Custom;
+            var reasonError = result.error;
             if (result.error!
                 .toString()
                 .toLowerCase()
@@ -181,6 +182,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
               created: file.created,
               fileLastModified: file.fileLastModified,
               reason: reason,
+              customError: reasonError,
             );
             return;
           }
