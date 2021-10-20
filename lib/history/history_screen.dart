@@ -168,7 +168,7 @@ class _HistoryWidgetState extends State<HistoryWidget> {
         commit: commits[i].getOrThrow(),
         prevCommit: commits[i + 1].getOrThrow(),
       );
-    } on Exception catch (ex, st) {
+    } catch (ex, st) {
       return _FailureTile(result: Result.fail(ex, st));
     }
   }

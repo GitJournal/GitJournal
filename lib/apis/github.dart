@@ -202,7 +202,7 @@ class GitHub implements GitHost {
     try {
       Map<String, dynamic> map = json.decode(response.body);
       return Result(repoFromJson(map));
-    } on Exception catch (ex, st) {
+    } catch (ex, st) {
       return Result.fail(ex, st);
     }
   }
@@ -319,7 +319,7 @@ class GitHub implements GitHost {
         var ex = GitHostException.JsonDecodingFail;
         return Result.fail(ex);
       }
-    } on Exception catch (ex, st) {
+    } catch (ex, st) {
       Log.e("GitHub user Info", ex: ex, stacktrace: st);
       logException(ex, st);
       return Result.fail(ex, st);

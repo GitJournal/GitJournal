@@ -48,7 +48,7 @@ class GitNoteRepository {
     } else {
       try {
         await _gitRepo.add(pathSpec);
-      } on Exception catch (ex, st) {
+      } catch (ex, st) {
         return Result.fail(ex, st);
       }
     }
@@ -63,7 +63,7 @@ class GitNoteRepository {
     } else {
       try {
         await _gitRepo.rm(pathSpec);
-      } on Exception catch (ex, st) {
+      } catch (ex, st) {
         return Result.fail(ex, st);
       }
     }
@@ -90,7 +90,7 @@ class GitNoteRepository {
           authorEmail: config.gitAuthorEmail,
           authorName: config.gitAuthor,
         );
-      } on Exception catch (ex, st) {
+      } catch (ex, st) {
         return Result.fail(ex, st);
       }
     }
@@ -229,7 +229,7 @@ class GitNoteRepository {
     }
     try {
       await _gitRepo.resetLast();
-    } on Exception catch (e, st) {
+    } catch (e, st) {
       return Result.fail(e, st);
     }
     return Result(null);
@@ -255,7 +255,7 @@ class GitNoteRepository {
       } on gb.GitException catch (ex, stackTrace) {
         Log.e("GitPull Failed", ex: ex, stacktrace: stackTrace);
         return Result.fail(ex, stackTrace);
-      } on Exception catch (ex, stackTrace) {
+      } catch (ex, stackTrace) {
         return Result.fail(ex, stackTrace);
       }
     } else if (Platform.isMacOS || Platform.isLinux) {

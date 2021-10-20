@@ -279,9 +279,15 @@ class GitJournalRepo with ChangeNotifier {
       attempt.add(SyncStatus.Done);
       numChanges = 0;
       notifyListeners();
-    } on Exception catch (e, stacktrace) {
+    } catch (e, stacktrace) {
       Log.e("Failed to Sync", ex: e, stacktrace: stacktrace);
-      attempt.add(SyncStatus.Error, e);
+
+      var ex = e;
+      if (ex is! Exception) {
+        ex = Exception(e.toString());
+      }
+      attempt.add(SyncStatus.Error, ex);
+
       notifyListeners();
       if (e is Exception && shouldLogGitException(e)) {
         await logException(e, stacktrace);

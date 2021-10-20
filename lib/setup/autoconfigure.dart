@@ -111,6 +111,9 @@ class GitHostSetupAutoConfigurePageState
       }
     } on Exception catch (e, stacktrace) {
       _handleGitHostException(e, stacktrace);
+    } on Error catch (e, stacktrace) {
+      _handleGitHostException(Exception(e.toString()), stacktrace);
+      return;
     }
   }
 

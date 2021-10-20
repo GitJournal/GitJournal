@@ -61,7 +61,7 @@ class NoteStorage {
       Log.d("Note modified: ${note.filePath}");
 
       return load(note, note.parent);
-    } on Exception catch (e, stackTrace) {
+    } catch (e, stackTrace) {
       if (e is io.FileSystemException &&
           e.osError!.errorCode == 2 /* File Not Found */) {
         return Result.fail(e, stackTrace);
@@ -109,7 +109,7 @@ class NoteStorage {
               NoteSerializationSettings.fromConfig(parentFolder.config),
         );
         return Result(note);
-      } on Exception catch (e, stackTrace) {
+      } catch (e, stackTrace) {
         Log.e("Failed to load ${file.filePath}", ex: e, stacktrace: stackTrace);
         return Result.fail(e, stackTrace);
       }
@@ -129,7 +129,7 @@ class NoteStorage {
               NoteSerializationSettings.fromConfig(parentFolder.config),
         );
         return Result(note);
-      } on Exception catch (e, stackTrace) {
+      } catch (e, stackTrace) {
         Log.e("Failed to load ${file.filePath}", ex: e, stacktrace: stackTrace);
         return Result.fail(e, stackTrace);
       }

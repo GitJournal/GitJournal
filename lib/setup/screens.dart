@@ -438,7 +438,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       if (repo.config.remote(widget.remoteName) != null) {
         await repo.removeRemote(widget.remoteName).throwOnError();
       }
-    } on Exception catch (e, stacktrace) {
+    } catch (e, stacktrace) {
       Log.e("Failed to remove remote", ex: e, stacktrace: stacktrace);
       logExceptionWarning(e, stacktrace);
     }

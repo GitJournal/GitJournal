@@ -51,7 +51,7 @@ class _CommitDataWidgetState extends State<CommitDataWidget> {
     );
     if (result.isFailure) {
       return setState(() {
-        _exception = result.error;
+        _exception = result.exception;
       });
     }
     setState(() {
@@ -133,7 +133,7 @@ class __BlobLoaderState extends State<_BlobLoader> {
   Future<void> _initStateAsync() async {
     var result = await widget.gitRepo.objStorage.readBlob(widget.blobHash);
     setState(() {
-      _exception = result.error;
+      _exception = result.exception;
       _blob = result.data;
     });
   }

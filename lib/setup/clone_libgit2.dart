@@ -59,7 +59,7 @@ Future<Result<void>> _fetch(
       password: sshPassword,
       statusFile: statusFile,
     );
-  } on Exception catch (e, st) {
+  } catch (e, st) {
     return Result.fail(e, st);
   }
 
@@ -112,7 +112,7 @@ Future<Result<void>> _merge(
       authorName: authorName,
       authorEmail: authorEmail,
     );
-  } on Exception catch (e, st) {
+  } catch (e, st) {
     return Result.fail(e, st);
   }
 

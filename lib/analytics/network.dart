@@ -35,7 +35,7 @@ Future<Result<void>> sendAnalytics(pb.AnalyticsMessage msg) async {
       options: CallOptions(timeout: _timeout),
     );
     var _ = await call;
-  } on Exception catch (e, st) {
+  } catch (e, st) {
     await channel.shutdown();
     return Result.fail(e, st);
   }
