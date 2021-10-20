@@ -407,6 +407,11 @@ class Note implements File {
     var formatInfo = NoteFileFormatInfo(parent.config);
     return _fileFormat ?? formatInfo.fromFilePath(filePath);
   }
+
+  @override
+  Map<String, dynamic> toMap() {
+    throw UnimplementedError();
+  }
 }
 
 String ensureFileNameUnique(String parentDir, String name, String ext) {

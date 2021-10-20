@@ -6,6 +6,9 @@
 
 import 'package:dart_git/plumbing/git_hash.dart';
 import 'package:path/path.dart' as p;
+import 'package:quiver/core.dart';
+
+import 'package:gitjournal/utils/datetime.dart';
 
 export 'package:dart_git/plumbing/git_hash.dart';
 
@@ -38,38 +41,95 @@ class File {
 
   String get fileName => p.basename(filePath);
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is File &&
+          runtimeType == other.runtimeType &&
+          oid.toString() == other.oid.toString() &&
+          filePath == other.filePath &&
+          modified == other.modified &&
+          created == other.created &&
+          fileLastModified == other.fileLastModified;
+
+  @override
+  int get hashCode =>
+      hashObjects([oid, filePath, created, modified, fileLastModified]);
+
+  @override
+  String toString() =>
+      'File{oid: $oid, filePath: $filePath, created: $created, modified: $modified, fileLastModified: $fileLastModified}';
+
   // Add toString
-}
+  Map<String, dynamic> toMap() {
+    return {
+      'oid': oid.toString(),
+      'filePath': filePath,
+      'modified': modified?.toIso8601String(), // FIXME: Does this have the tz?
+      'created': created?.toIso8601String(),
+      'fileLastModified': fileLastModified.toIso8601String(),
+    };
+  }
 
-// TODO: Add a cache for FilePathCTimeBuilder and the blob one
-//       This caches needs to be saved to disk
+  static File fromMap(Map<String, dynamic> map) {
+    // oid
+    var oidV = map['oid'];
+    if (oidV == null) {
+      return throw Exception('Missing oid');
+    }
+    if (oidV is! String) {
+      return throw Exception('Invalid Type oid');
+    }
+    var oid = GitHash(oidV);
 
-//
-// We need to store the top commit it has processed, and add a method to make
-// it process more commits
-//
+    // filePath
+    var filePath = map['filePath'];
+    if (filePath == null) {
+      return throw Exception('Missing filePath');
+    }
+    if (filePath is! String) {
+      return throw Exception('Invalid Type filePath');
+    }
 
-class NewNote {
-  File? file;
-  String? newBody;
+    // modified
+    DateTime? modified;
+    var modifiedV = map['modified'];
+    if (modifiedV != null) {
+      modified = parseDateTime(modifiedV);
+    }
+
+    // created
+    DateTime? created;
+    var createdV = map['created'];
+    if (createdV != null) {
+      created = parseDateTime(createdV);
+    }
+
+    // fileLastModified
+    DateTime? fileLastModified;
+    var fileLastModifiedV = map['fileLastModified'];
+    if (fileLastModifiedV != null) {
+      fileLastModified = parseDateTime(fileLastModifiedV);
+      if (fileLastModified == null) {
+        return throw Exception('Invalid Type fileLastModified');
+      }
+    } else {
+      return throw Exception('Missing fileLastModified');
+    }
+
+    return File(
+      oid: oid,
+      filePath: filePath,
+      modified: modified,
+      created: created,
+      fileLastModified: fileLastModified,
+    );
+  }
 }
 
 // on save - compute hash, and commit, only then should we add it to the parent
 //           dir? -> This can get expensive!
 //
-
-// NotesFolderFS
-// -> Iterate and load all the files from FileStorage
-// -> Load all the Notes
-//    -> The File becomes either a Note or an IgnoredFile
-//    -> NotesFolder interface returns Files (not Notes)
-// -> Each Note contains a 'File' for now
-//    or make a Note inheirt from a 'File' or implement its interface
-//    I prefer the interace option as then .. what ?
-//
-// This is the smallest modification that can be done
-
-// Once this is done, then also modify IgnoredFile to have the same interface
 
 // FolderView -> make it show IgnoredFiles as well
 //            -> When clicking on an IgnoredFile allow it to be opened
@@ -79,8 +139,6 @@ class NewNote {
 
 
 // TextFile can have the (text + encoding) + File
-// -> allText?
-//   Calling the member 'text' doesn't feel right
 //   alternatives -> body / data
 
 
@@ -89,10 +147,7 @@ class NewNote {
 // The NewNote FAB can have more options .. ?
 
 
-// Git modified / created will be fixed
-// I can create specific "Views" for files
-// -> a 'Note' can be a TextFile
-// NO - Remove the 'Note' class completely
+// Remove the 'Note' class entrirely
 
 // With this, we can easily add 'grpc' support for the 'loaders' of each of
 // these 'Files'.

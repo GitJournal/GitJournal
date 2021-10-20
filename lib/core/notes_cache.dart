@@ -22,15 +22,18 @@ import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 
 class NotesCache {
-  final String filePath;
+  final String folderPath;
   final String notesBasePath;
   final bool enabled = true;
   final NotesFolderConfig folderConfig;
 
+  String get filePath => p.join(folderPath, 'notes_cache_$version.json');
+
   static const CACHE_SIZE = 20;
+  static const version = 1;
 
   NotesCache({
-    required this.filePath,
+    required this.folderPath,
     required this.notesBasePath,
     required this.folderConfig,
   });
@@ -49,11 +52,12 @@ class NotesCache {
 
     var futures = <Future<void>>[];
 
-    for (var fullFilePath in fileList) {
-      if (!fullFilePath.startsWith(notesBasePath)) {
+    for (var file in fileList) {
+      if (!file.filePath.startsWith(notesBasePath)) {
         continue;
       }
-      var filePath = fullFilePath.substring(notesBasePath.length);
+
+      var filePath = file.filePath.substring(notesBasePath.length);
       var components = filePath.split(sep);
 
       //
@@ -75,15 +79,15 @@ class NotesCache {
         parent = subFolder;
       }
 
-      var file = UnopenedFile(
-        filePath: fullFilePath,
+      var unopenFile = UnopenedFile(
+        filePath: file.filePath,
         fileLastModified: DateTime.fromMillisecondsSinceEpoch(0),
         created: null,
         modified: null,
         oid: GitHash.zero(),
         parent: parent,
       );
-      parent.addFile(file);
+      parent.addFile(unopenFile);
       var f = parent.loadNotes();
       futures.add(f);
     }
@@ -102,19 +106,18 @@ class NotesCache {
 
     var notes = rootFolder.getAllNotes();
     var sortingMode = rootFolder.config.sortingMode;
-    var fileList =
-        _fetchFirst10(notes, sortingMode).map((f) => f.filePath).toList();
+    var fileList = _fetchFirst10(notes, sortingMode);
 
     return saveToDisk(fileList);
   }
 
-  Iterable<Note> _fetchFirst10(
+  Iterable<File> _fetchFirst10(
     Iterable<Note> allNotes,
     SortingMode sortingMode,
   ) {
     var origFn = sortingMode.sortingFunction();
 
-    reversedFn(Note a, Note b) {
+    reversedFn(File a, File b) {
       var r = origFn(a, b);
       if (r < 0) return 1;
       if (r > 0) return -1;
@@ -136,7 +139,7 @@ class NotesCache {
   }
 
   @visibleForTesting
-  Future<List<String>> loadFromDisk() async {
+  Future<List<File>> loadFromDisk() async {
     String contents = "";
     try {
       contents = await io.File(filePath).readAsString();
@@ -152,7 +155,13 @@ class NotesCache {
     }
 
     try {
-      return json.decode(contents).cast<String>();
+      var mapL = json.decode(contents);
+      if (mapL is! List) {
+        throw Exception("Cache not an array");
+      }
+
+      var files = mapL.map((e) => File.fromMap(e));
+      return files.toList();
     } catch (ex, st) {
       Log.e("Exception - $ex for contents: $contents");
       await logExceptionWarning(ex, st);
@@ -161,13 +170,18 @@ class NotesCache {
   }
 
   @visibleForTesting
-  Future<void> saveToDisk(List<String> files) async {
-    var contents = json.encode(files);
+  Future<void> saveToDisk(Iterable<File> files) async {
+    var contents = json.encode(files.map((e) => e.toMap()).toList());
     var newFilePath = filePath + ".new";
 
-    var file = io.File(newFilePath);
-    dynamic _;
-    _ = await file.writeAsString(contents);
-    _ = await file.rename(filePath);
+    try {
+      var file = io.File(newFilePath);
+      dynamic _;
+      _ = await file.writeAsString(contents);
+      _ = await file.rename(filePath);
+    } catch (ex, st) {
+      // FIXME: Do something in this case!!
+      Log.e("Failed to save Notes Cache", ex: ex, stacktrace: st);
+    }
   }
 }

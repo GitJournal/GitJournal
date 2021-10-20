@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart' as io;
 
+import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/notes_cache.dart';
@@ -16,8 +17,7 @@ import 'package:gitjournal/core/notes_cache.dart';
 void main() {
   group('Notes Cache', () {
     late io.Directory tempDir;
-    String cacheFilePath;
-    var fileList = <String>[];
+    var fileList = <File>[];
     late NotesCache cache;
     late NotesFolderConfig config;
     late String rootPath;
@@ -26,7 +26,6 @@ void main() {
       tempDir = await io.Directory.systemTemp.createTemp('__notes_test__');
       SharedPreferences.setMockInitialValues({});
       config = NotesFolderConfig('', await SharedPreferences.getInstance());
-      cacheFilePath = p.join(tempDir.path, "cache.raw");
 
       rootPath = p.join(tempDir.path, "notes");
       var d1 = p.join(rootPath, "d1");
@@ -34,7 +33,7 @@ void main() {
       var d5 = p.join(rootPath, "d5");
 
       cache = NotesCache(
-        filePath: cacheFilePath,
+        folderPath: tempDir.path,
         notesBasePath: rootPath,
         folderConfig: config,
       );
@@ -44,14 +43,14 @@ void main() {
       await io.Directory(d5).create(recursive: true);
 
       fileList = [
-        p.join(rootPath, "file.md"),
-        p.join(d2, "file.md"),
-        p.join(d5, "file.md"),
-        p.join(d1, "file.md")
+        File.short(p.join(rootPath, "file.md")),
+        File.short(p.join(d2, "file.md")),
+        File.short(p.join(d5, "file.md")),
+        File.short(p.join(d1, "file.md")),
       ];
 
-      for (var filePath in fileList) {
-        await io.File(filePath).writeAsString("foo");
+      for (var file in fileList) {
+        await io.File(file.filePath).writeAsString("foo");
       }
     });
 

@@ -203,9 +203,8 @@ class GitJournalRepo with ChangeNotifier {
       value: remoteGitRepoConfigured.toString(),
     );
 
-    var cachePath = p.join(cacheDir, "cache.json");
     _notesCache = NotesCache(
-      filePath: cachePath,
+      folderPath: cacheDir,
       notesBasePath: _gitRepo.gitRepoPath,
       folderConfig: folderConfig,
     );
