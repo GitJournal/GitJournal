@@ -165,13 +165,22 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         future = (int index, UnopenedFile file) async {
           var result = await storage.load(file, file.parent);
           if (result.isFailure) {
+            var reason = IgnoreReason.Custom;
+            if (result.error!
+                .toString()
+                .toLowerCase()
+                .contains("failed to decode data using encoding 'utf-8'")) {
+              // FIXME: There has got to be an easier way
+              reason = IgnoreReason.InvalidEncoding;
+            }
+
             _files[index] = IgnoredFile(
               oid: file.oid,
               filePath: file.filePath,
               modified: file.modified,
               created: file.created,
               fileLastModified: file.fileLastModified,
-              reason: IgnoreReason.Custom,
+              reason: reason,
             );
             return;
           }

@@ -9,6 +9,7 @@ import '../file/file.dart';
 enum IgnoreReason {
   HiddenFile,
   InvalidExtension,
+  InvalidEncoding,
   Custom,
 }
 
