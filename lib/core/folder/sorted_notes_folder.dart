@@ -16,7 +16,7 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
   final NotesFolder folder;
 
   late SortingMode _sortingMode;
-  late NoteSortingFunction _sortFunc;
+  late SortingFunction _sortFunc;
 
   List<Note> _notes = [];
 

@@ -6,9 +6,9 @@
 
 import 'package:easy_localization/easy_localization.dart';
 
-import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/file/file.dart';
 
-typedef NoteSortingFunction = int Function(Note a, Note b);
+typedef SortingFunction = int Function(File a, File b);
 
 class SortingOrder {
   static const Ascending = SortingOrder("settings.sortingOrder.asc", "asc");
@@ -113,7 +113,7 @@ class SortingMode {
 
   SortingMode(this.field, this.order);
 
-  NoteSortingFunction sortingFunction() {
+  SortingFunction sortingFunction() {
     switch (field) {
       case SortingField.Created:
         return order == SortingOrder.Descending
@@ -142,7 +142,7 @@ class SortingMode {
   int get hashCode => order.hashCode ^ field.hashCode;
 }
 
-int _sortCreatedDesc(Note a, Note b) {
+int _sortCreatedDesc(File a, File b) {
   var aDt = a.created;
   var bDt = b.created;
   if (aDt == null && bDt != null) {
@@ -157,7 +157,7 @@ int _sortCreatedDesc(Note a, Note b) {
   return bDt!.compareTo(aDt!);
 }
 
-int _sortModifiedDesc(Note a, Note b) {
+int _sortModifiedDesc(File a, File b) {
   var aDt = a.modified;
   var bDt = b.modified;
   if (aDt == null && bDt != null) {
@@ -172,14 +172,14 @@ int _sortModifiedDesc(Note a, Note b) {
   return bDt!.compareTo(aDt!);
 }
 
-int _sortFileNameAsc(Note a, Note b) {
+int _sortFileNameAsc(File a, File b) {
   var aFileName = a.fileName.toLowerCase();
   var bFileName = b.fileName.toLowerCase();
   return aFileName.compareTo(bFileName);
 }
 
-NoteSortingFunction _reverse(NoteSortingFunction func) {
-  return (Note a, Note b) {
+SortingFunction _reverse(SortingFunction func) {
+  return (File a, File b) {
     int r = func(a, b);
     if (r == 0) {
       return r;
