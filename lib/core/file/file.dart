@@ -46,7 +46,7 @@ class File {
       identical(this, other) ||
       other is File &&
           runtimeType == other.runtimeType &&
-          oid.toString() == other.oid.toString() &&
+          oid == other.oid &&
           filePath == other.filePath &&
           modified == other.modified &&
           created == other.created &&
