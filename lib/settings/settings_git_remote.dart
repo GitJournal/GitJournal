@@ -209,7 +209,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     var ok = await showDialog(
       context: context,
       builder: (_) => IrreversibleActionConfirmationDialog(
-        tr("settings.gitRemote.changeHost.title"),
+        LocaleKeys.settings_gitRemote_changeHost_title.tr(),
       ),
     );
     if (ok == null) {
@@ -310,14 +310,14 @@ class IrreversibleActionConfirmationDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(title),
-      content: Text(tr("settings.gitRemote.changeHost.subtitle")),
+      content: Text(LocaleKeys.settings_gitRemote_changeHost_subtitle.tr()),
       actions: <Widget>[
         TextButton(
-          child: Text(tr("settings.gitRemote.changeHost.ok")),
+          child: Text(LocaleKeys.settings_gitRemote_changeHost_ok.tr()),
           onPressed: () => Navigator.of(context).pop(true),
         ),
         TextButton(
-          child: Text(tr("settings.gitRemote.changeHost.cancel")),
+          child: Text(LocaleKeys.settings_gitRemote_changeHost_cancel.tr()),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ],
