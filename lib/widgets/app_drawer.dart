@@ -373,7 +373,6 @@ class RepoTile extends StatelessWidget {
     var listTileTheme = ListTileTheme.of(context);
     var repoManager = context.watch<RepositoryManager>();
 
-    // FIXME: Improve marking the selected repo
     var selected = repoManager.currentId == id;
     var textStyle = theme.textTheme.bodyText1!.copyWith(
       color: selected ? theme.colorScheme.secondary : listTileTheme.textColor,
@@ -381,13 +380,18 @@ class RepoTile extends StatelessWidget {
 
     var icon = FaIcon(FontAwesomeIcons.book, color: textStyle.color);
 
-    return ListTile(
+    var tile = ListTile(
       leading: icon,
       title: Text(repoManager.repoFolderName(id)),
       onTap: () {
         repoManager.setCurrentRepo(id);
         Navigator.pop(context);
       },
+    );
+
+    return Container(
+      child: tile,
+      color: selected ? theme.selectedRowColor : theme.scaffoldBackgroundColor,
     );
   }
 }
