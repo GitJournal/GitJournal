@@ -698,6 +698,26 @@ class GitJournalRepo with ChangeNotifier {
       return Result(null);
     });
   }
+
+  Future<Result<bool>> canResetHard() {
+    return catchAll(() async {
+      var repo = await GitRepository.load(_gitRepo.gitRepoPath).getOrThrow();
+      var branchName = await repo.currentBranch().getOrThrow();
+      var branchConfig = repo.config.branch(branchName);
+      if (branchConfig == null) {
+        throw Exception("Branch config for '$branchName' not found");
+      }
+
+      var remoteName = branchConfig.remote;
+      if (remoteName == null) {
+        throw Exception("Branch config for '$branchName' misdsing remote");
+      }
+      var remoteBranch =
+          await repo.remoteBranch(remoteName, branchName).getOrThrow();
+      var headHash = await repo.headHash().getOrThrow();
+      return Result(remoteBranch.hash != headHash);
+    });
+  }
 }
 
 Future<void> _copyDirectory(String source, String destination) async {

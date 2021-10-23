@@ -21,7 +21,7 @@ class FutureBuilderWithProgress<T> extends StatelessWidget {
         if (snapshot.hasData) {
           return snapshot.data as Widget;
         }
-        return const CircularProgressIndicator();
+        return const Center(child: CircularProgressIndicator());
       },
       future: future,
     );

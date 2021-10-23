@@ -24,6 +24,7 @@ import 'package:gitjournal/setup/screens.dart';
 import 'package:gitjournal/setup/sshkey.dart';
 import 'package:gitjournal/ssh/keygen.dart';
 import 'package:gitjournal/utils/utils.dart';
+import 'package:gitjournal/widgets/future_builder_with_progress.dart';
 
 class GitRemoteSettingsScreen extends StatefulWidget {
   @override
@@ -128,10 +129,23 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
           text: tr(LocaleKeys.settings_gitRemote_changeHost_title),
           onPressed: _reconfigureGitHost,
         ),
-        RedButton(
-          text: tr(LocaleKeys.settings_gitRemote_resetHard_title),
-          onPressed: _resetGitHost,
-        ),
+        FutureBuilderWithProgress(future: () async {
+          var repo = context.watch<GitJournalRepo>();
+          var result = await repo.canResetHard();
+          if (result.isFailure) {
+            showSnackbar(context, result.error.toString());
+            return const SizedBox();
+          }
+          var canReset = result.getOrThrow();
+          if (!canReset) {
+            return const SizedBox();
+          }
+
+          return RedButton(
+            text: tr(LocaleKeys.settings_gitRemote_resetHard_title),
+            onPressed: _resetGitHost,
+          );
+        }()),
       ],
       crossAxisAlignment: CrossAxisAlignment.start,
     );
@@ -270,7 +284,10 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     var result = await repo.resetHard();
     if (result.isFailure) {
       showSnackbar(context, result.error.toString());
+      return;
     }
+
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 }
 
