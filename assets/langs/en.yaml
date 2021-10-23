@@ -121,7 +121,7 @@ settings:
     customFolder: Custom Folder
   gitRemote:
     changeHost:
-      title: Reconfigure Git Host?
+      title: Reconfigure Git Host
       subtitle: Notes which have not been synced will be lost
       ok: Ok
       cancel: Cancel
@@ -129,6 +129,10 @@ settings:
     subtitle: Configure where your notes are synced
     host: Git Host
     branch: Branch
+    resetHard:
+      title: Reset Git Host
+      subtitle: This will HARD reset the current branch to its remote
+
   fileTypes:
     title: Note File Types
     subtitle: Configure what files are considered Notes
@@ -237,7 +241,6 @@ settings:
     lastUsed: Last Used
   ssh:
     syncFreq: Sync Frequency
-    reset: Reset Git Host
   note:
     title: Note Settings
     defaultFolder: Default Folder for new notes

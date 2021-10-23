@@ -352,7 +352,8 @@ class SettingsListState extends State<SettingsList> {
           var ok = await showDialog(
             context: context,
             builder: (_) => IrreversibleActionConfirmationDialog(
-              tr(LocaleKeys.settings_deleteRepo),
+              title: LocaleKeys.settings_deleteRepo.tr(),
+              subtitle: LocaleKeys.settings_gitRemote_changeHost_subtitle.tr(),
             ),
           );
           if (ok == null) {

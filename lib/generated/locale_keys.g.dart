@@ -207,6 +207,11 @@ abstract class LocaleKeys {
   static const settings_gitRemote_subtitle = 'settings.gitRemote.subtitle';
   static const settings_gitRemote_host = 'settings.gitRemote.host';
   static const settings_gitRemote_branch = 'settings.gitRemote.branch';
+  static const settings_gitRemote_resetHard_title =
+      'settings.gitRemote.resetHard.title';
+  static const settings_gitRemote_resetHard_subtitle =
+      'settings.gitRemote.resetHard.subtitle';
+  static const settings_gitRemote_resetHard = 'settings.gitRemote.resetHard';
   static const settings_gitRemote = 'settings.gitRemote';
   static const settings_fileTypes_title = 'settings.fileTypes.title';
   static const settings_fileTypes_subtitle = 'settings.fileTypes.subtitle';
@@ -352,7 +357,6 @@ abstract class LocaleKeys {
       'settings.EditorDefaultView.lastUsed';
   static const settings_EditorDefaultView = 'settings.EditorDefaultView';
   static const settings_ssh_syncFreq = 'settings.ssh.syncFreq';
-  static const settings_ssh_reset = 'settings.ssh.reset';
   static const settings_ssh = 'settings.ssh';
   static const settings_note_title = 'settings.note.title';
   static const settings_note_defaultFolder = 'settings.note.defaultFolder';

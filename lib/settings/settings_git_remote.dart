@@ -125,7 +125,11 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
           },
         ),
         RedButton(
-          text: tr(LocaleKeys.settings_ssh_reset),
+          text: tr(LocaleKeys.settings_gitRemote_changeHost_title),
+          onPressed: _reconfigureGitHost,
+        ),
+        RedButton(
+          text: tr(LocaleKeys.settings_gitRemote_resetHard_title),
           onPressed: _resetGitHost,
         ),
       ],
@@ -205,11 +209,12 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     });
   }
 
-  void _resetGitHost() async {
+  void _reconfigureGitHost() async {
     var ok = await showDialog(
       context: context,
       builder: (_) => IrreversibleActionConfirmationDialog(
-        LocaleKeys.settings_gitRemote_changeHost_title.tr(),
+        title: LocaleKeys.settings_gitRemote_changeHost_title.tr(),
+        subtitle: LocaleKeys.settings_gitRemote_changeHost_subtitle.tr(),
       ),
     );
     if (ok == null) {
@@ -247,6 +252,25 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     );
     var _ = await Navigator.push(context, route);
     Navigator.of(context).popUntil((route) => route.isFirst);
+  }
+
+  void _resetGitHost() async {
+    var ok = await showDialog(
+      context: context,
+      builder: (_) => IrreversibleActionConfirmationDialog(
+        title: LocaleKeys.settings_gitRemote_resetHard_title.tr(),
+        subtitle: LocaleKeys.settings_gitRemote_resetHard_subtitle.tr(),
+      ),
+    );
+    if (ok == null) {
+      return;
+    }
+
+    var repo = context.read<GitJournalRepo>();
+    var result = await repo.resetHard();
+    if (result.isFailure) {
+      showSnackbar(context, result.error.toString());
+    }
   }
 }
 
@@ -303,14 +327,16 @@ class RedButton extends StatelessWidget {
 
 class IrreversibleActionConfirmationDialog extends StatelessWidget {
   final String title;
+  final String subtitle;
 
-  const IrreversibleActionConfirmationDialog(this.title);
+  const IrreversibleActionConfirmationDialog(
+      {required this.title, required this.subtitle});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(title),
-      content: Text(LocaleKeys.settings_gitRemote_changeHost_subtitle.tr()),
+      content: Text(subtitle),
       actions: <Widget>[
         TextButton(
           child: Text(LocaleKeys.settings_gitRemote_changeHost_ok.tr()),

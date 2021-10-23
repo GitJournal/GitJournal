@@ -671,6 +671,33 @@ class GitJournalRepo with ChangeNotifier {
     await Directory(repoPath).delete(recursive: true);
     await Directory(cacheDir).delete(recursive: true);
   }
+
+  /// reset --hard the current branch to its remote branch
+  Future<Result<void>> resetHard() {
+    return catchAll(() async {
+      var repo = await GitRepository.load(_gitRepo.gitRepoPath).getOrThrow();
+      var branchName = await repo.currentBranch().getOrThrow();
+      var branchConfig = repo.config.branch(branchName);
+      if (branchConfig == null) {
+        throw Exception("Branch config for '$branchName' not found");
+      }
+
+      var remoteName = branchConfig.remote;
+      if (remoteName == null) {
+        throw Exception("Branch config for '$branchName' misdsing remote");
+      }
+      var remoteBranch =
+          await repo.remoteBranch(remoteName, branchName).getOrThrow();
+      await repo.resetHard(remoteBranch.hash!);
+
+      numChanges = 0;
+      notifyListeners();
+
+      _loadNotes();
+
+      return Result(null);
+    });
+  }
 }
 
 Future<void> _copyDirectory(String source, String destination) async {
