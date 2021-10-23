@@ -234,7 +234,7 @@ class _CommitTileState extends State<_CommitTile> {
           CommitDataWidget(
             gitRepo: widget.gitRepo,
             commit: widget.commit,
-            prevCommit: widget.prevCommit!,
+            parentCommit: widget.prevCommit!,
           ),
         ],
         mainAxisSize: MainAxisSize.min,

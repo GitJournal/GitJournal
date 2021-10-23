@@ -14,15 +14,17 @@ import 'package:dart_git/plumbing/git_hash.dart';
 import 'package:dart_git/plumbing/objects/blob.dart';
 import 'package:dart_git/plumbing/objects/commit.dart';
 
+import 'package:gitjournal/logger/logger.dart';
+
 class CommitDataWidget extends StatefulWidget {
   final GitRepository gitRepo;
   final GitCommit commit;
-  final GitCommit prevCommit;
+  final GitCommit parentCommit;
 
   const CommitDataWidget({
     required this.gitRepo,
     required this.commit,
-    required this.prevCommit,
+    required this.parentCommit,
     Key? key,
   }) : super(key: key);
 
@@ -44,18 +46,20 @@ class _CommitDataWidgetState extends State<CommitDataWidget> {
   Future<void> _initStateAsync() async {
     // FIXME: Run all of this in another worker thread!
 
-    var result = await diffCommits(
-      fromCommit: widget.commit,
-      toCommit: widget.prevCommit,
+    var r = await diffCommits(
+      fromCommit: widget.parentCommit,
+      toCommit: widget.commit,
       objStore: widget.gitRepo.objStorage,
     );
-    if (result.isFailure) {
+    if (r.isFailure) {
+      Log.e("Got exception in diffCommits",
+          ex: r.error, stacktrace: r.stackTrace);
       return setState(() {
-        _exception = result.exception;
+        _exception = r.exception;
       });
     }
     setState(() {
-      _changes = result.getOrThrow();
+      _changes = r.getOrThrow();
     });
   }
 
@@ -74,17 +78,17 @@ class _CommitDataWidgetState extends State<CommitDataWidget> {
   Widget _build() {
     var children = <Widget>[];
     for (var change in _changes!.merged()) {
-      if (change.added) {
+      if (change.add) {
         var hash = change.hash;
         var w = _BlobLoader(
             blobHash: hash, gitRepo: widget.gitRepo, color: Colors.green);
         children.add(w);
-      } else if (change.deleted) {
+      } else if (change.delete) {
         var hash = change.hash;
         var w = _BlobLoader(
             blobHash: hash, gitRepo: widget.gitRepo, color: Colors.red);
         children.add(w);
-      } else if (change.modified) {
+      } else if (change.modify) {
         var hash = change.hash;
         var w = _BlobLoader(
             blobHash: hash, gitRepo: widget.gitRepo, color: Colors.red);
