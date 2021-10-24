@@ -231,6 +231,10 @@ void scrollToSearchResult({
   searchText = searchText.toLowerCase();
 
   var offset = getSearchResultPosition(body, searchText, resultNum);
+  if (offset >= body.length) {
+    // show some kind of error?
+    return;
+  }
   var newPosition = calculateTextHeight(
     text: body.substring(0, offset),
     style: textStyle,
