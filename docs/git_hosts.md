@@ -9,6 +9,7 @@ Git Providers -
 * BeanStalkApp
 * Google Cloud Source Repositories
 * AWS Code Commit
+* Azure Repos
 
 Self Hosting -
 * Plain SSH
