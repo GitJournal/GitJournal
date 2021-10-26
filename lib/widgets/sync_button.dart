@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
+import 'package:gitjournal/sync_attempt.dart';
 import 'package:gitjournal/utils/utils.dart';
 
 class SyncButton extends StatefulWidget {

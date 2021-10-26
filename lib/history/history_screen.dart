@@ -20,6 +20,7 @@ import 'package:timeline_tile/timeline_tile.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
+import 'package:gitjournal/sync_attempt.dart';
 import 'commit_data_widget.dart';
 
 class HistoryScreen extends StatelessWidget {
