@@ -13,6 +13,7 @@ import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' as io;
 
 import 'package:gitjournal/core/file/file.dart';
+import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/file/unopened_files.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
@@ -23,9 +24,10 @@ import 'package:gitjournal/logger/logger.dart';
 
 class NotesCache {
   final String folderPath;
-  final String notesBasePath;
+  final String repoPath;
   final bool enabled = true;
   final NotesFolderConfig folderConfig;
+  final FileStorage fileStorage;
 
   String get filePath => p.join(folderPath, 'notes_cache_$version.json');
 
@@ -34,9 +36,13 @@ class NotesCache {
 
   NotesCache({
     required this.folderPath,
-    required this.notesBasePath,
+    required this.repoPath,
     required this.folderConfig,
-  });
+    required this.fileStorage,
+  }) {
+    assert(repoPath.endsWith(p.separator));
+    assert(folderPath.startsWith(p.separator));
+  }
 
   Future<void> load(NotesFolderFS rootFolder) async {
     if (!enabled) return;
@@ -44,28 +50,19 @@ class NotesCache {
     var fileList = await loadFromDisk();
     Log.i("Notes Cache Loaded: ${fileList.length} items");
 
-    var sep = p.separator;
-    var notesBasePath = this.notesBasePath;
-    if (!notesBasePath.endsWith(sep)) {
-      notesBasePath += sep;
-    }
+    assert(repoPath.endsWith(p.separator));
 
     var futures = <Future<void>>[];
 
     for (var file in fileList) {
-      if (!file.filePath.startsWith(notesBasePath)) {
-        continue;
-      }
-
-      var filePath = file.filePath.substring(notesBasePath.length);
-      var components = filePath.split(sep);
+      var components = file.filePath.split(p.separator);
 
       //
       // Create required folders
       var parent = rootFolder;
       for (var i = 0; i < components.length - 1; i++) {
         var c = components.sublist(0, i + 1);
-        var folderPath = p.join(this.notesBasePath, c.join(sep));
+        var folderPath = c.join(p.separator);
 
         var folders = parent.subFoldersFS;
         var folderIndex = folders.indexWhere((f) => f.folderPath == folderPath);
@@ -74,19 +71,13 @@ class NotesCache {
           continue;
         }
 
-        var subFolder = NotesFolderFS(parent, folderPath, folderConfig);
+        var subFolder =
+            NotesFolderFS(parent, folderPath, folderConfig, fileStorage);
         parent.addFolder(subFolder);
         parent = subFolder;
       }
 
-      var unopenFile = UnopenedFile(
-        filePath: file.filePath,
-        fileLastModified: DateTime.fromMillisecondsSinceEpoch(0),
-        created: null,
-        modified: null,
-        oid: GitHash.zero(),
-        parent: parent,
-      );
+      var unopenFile = UnopenedFile(file: file, parent: parent);
       parent.addFile(unopenFile);
       var f = parent.loadNotes();
       futures.add(f);
@@ -142,6 +133,7 @@ class NotesCache {
   Future<List<File>> loadFromDisk() async {
     String contents = "";
     try {
+      assert(filePath.startsWith(p.separator));
       contents = await io.File(filePath).readAsString();
     } on io.FileSystemException catch (ex) {
       if (ex.osError?.errorCode == 2 /* file not found */) {
@@ -175,6 +167,7 @@ class NotesCache {
     var newFilePath = filePath + ".new";
 
     try {
+      assert(newFilePath.startsWith(p.separator));
       var file = io.File(newFilePath);
       dynamic _;
       _ = await file.writeAsString(contents);

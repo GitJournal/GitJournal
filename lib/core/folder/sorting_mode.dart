@@ -142,35 +142,8 @@ class SortingMode {
   int get hashCode => order.hashCode ^ field.hashCode;
 }
 
-int _sortCreatedDesc(File a, File b) {
-  var aDt = a.created;
-  var bDt = b.created;
-  if (aDt == null && bDt != null) {
-    return 1;
-  }
-  if (aDt != null && bDt == null) {
-    return -1;
-  }
-  if (bDt == null && aDt == null) {
-    return a.fileName.compareTo(b.fileName);
-  }
-  return bDt!.compareTo(aDt!);
-}
-
-int _sortModifiedDesc(File a, File b) {
-  var aDt = a.modified;
-  var bDt = b.modified;
-  if (aDt == null && bDt != null) {
-    return 1;
-  }
-  if (aDt != null && bDt == null) {
-    return -1;
-  }
-  if (bDt == null && aDt == null) {
-    return a.fileLastModified.compareTo(b.fileLastModified);
-  }
-  return bDt!.compareTo(aDt!);
-}
+int _sortCreatedDesc(File a, File b) => b.created.compareTo(a.created);
+int _sortModifiedDesc(File a, File b) => b.modified.compareTo(a.modified);
 
 int _sortFileNameAsc(File a, File b) {
   var aFileName = a.fileName.toLowerCase();
@@ -181,13 +154,8 @@ int _sortFileNameAsc(File a, File b) {
 SortingFunction _reverse(SortingFunction func) {
   return (File a, File b) {
     int r = func(a, b);
-    if (r == 0) {
-      return r;
-    }
-    if (r < 0) {
-      return 1;
-    } else {
-      return -1;
-    }
+
+    if (r == 0) return r;
+    return r < 0 ? 1 : -1;
   };
 }

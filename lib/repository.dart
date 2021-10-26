@@ -10,9 +10,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:collection/collection.dart';
+import 'package:dart_git/blob_ctime_builder.dart';
 import 'package:dart_git/config.dart';
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/exceptions.dart';
+import 'package:dart_git/file_mtime_builder.dart';
 import 'package:git_bindings/git_bindings.dart';
 import 'package:path/path.dart' as p;
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -22,6 +24,7 @@ import 'package:time/time.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
+import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/git_repo.dart';
@@ -68,6 +71,8 @@ class GitJournalRepo with ChangeNotifier {
   final NotesFolderConfig folderConfig;
   final Settings settings;
 
+  final FileStorage fileStorage;
+
   final _opLock = Lock();
   final _loadLock = Lock();
 
@@ -96,12 +101,12 @@ class GitJournalRepo with ChangeNotifier {
 
   bool remoteGitRepoConfigured = false;
 
-  static Future<GitJournalRepo> load({
-    required String gitBaseDir,
-    required String cacheDir,
-    required SharedPreferences pref,
-    required String id,
-  }) async {
+  static Future<GitJournalRepo> load(
+      {required String gitBaseDir,
+      required String cacheDir,
+      required SharedPreferences pref,
+      required String id,
+      required}) async {
     await migrateSettings(id, pref, gitBaseDir);
 
     var storageConfig = StorageConfig(id, pref);
@@ -165,6 +170,27 @@ class GitJournalRepo with ChangeNotifier {
 
     await Directory(cacheDir).create(recursive: true);
 
+    var blobVisitor = BlobCTimeBuilder();
+    var mTimeBuilder = FileMTimeBuilder();
+
+    var headHashR = await repo.headHash();
+    if (headHashR.isSuccess) {
+      var startTime = DateTime.now();
+      await repo.visitTree(
+        fromCommitHash: headHashR.getOrThrow(),
+        visitor: MultiTreeEntryVisitor([blobVisitor, mTimeBuilder]),
+      );
+      var endTime = DateTime.now().difference(startTime);
+
+      Log.i("Built Git Time Cache - $endTime");
+    }
+
+    var fileStorage = FileStorage(
+      gitRepo: repo,
+      blobCTimeBuilder: blobVisitor,
+      fileMTimeBuilder: mTimeBuilder,
+    );
+
     return GitJournalRepo._internal(
       repoPath: repoPath,
       gitBaseDirectory: gitBaseDir,
@@ -175,6 +201,7 @@ class GitJournalRepo with ChangeNotifier {
       folderConfig: folderConfig,
       gitConfig: gitConfig,
       id: id,
+      fileStorage: fileStorage,
       currentBranch: await repo.currentBranch().getOrThrow(),
     );
   }
@@ -189,10 +216,11 @@ class GitJournalRepo with ChangeNotifier {
     required this.settings,
     required this.gitConfig,
     required this.remoteGitRepoConfigured,
+    required this.fileStorage,
     required String? currentBranch,
   }) {
     _gitRepo = GitNoteRepository(gitRepoPath: repoPath, config: gitConfig);
-    notesFolder = NotesFolderFS(null, _gitRepo.gitRepoPath, folderConfig);
+    notesFolder = NotesFolderFS.root(folderConfig, fileStorage);
     _currentBranch = currentBranch;
 
     Log.i("Branch $_currentBranch");
@@ -205,8 +233,9 @@ class GitJournalRepo with ChangeNotifier {
 
     _notesCache = NotesCache(
       folderPath: cacheDir,
-      notesBasePath: _gitRepo.gitRepoPath,
+      repoPath: _gitRepo.gitRepoPath,
       folderConfig: folderConfig,
+      fileStorage: fileStorage,
     );
 
     _loadFromCache();
@@ -311,7 +340,8 @@ class GitJournalRepo with ChangeNotifier {
     return _opLock.synchronized(() async {
       Log.d("Got createFolder lock");
       var newFolderPath = p.join(parent.folderPath, folderName);
-      var newFolder = NotesFolderFS(parent, newFolderPath, folderConfig);
+      var newFolder =
+          NotesFolderFS(parent, newFolderPath, folderConfig, fileStorage);
       newFolder.create();
 
       Log.d("Created New Folder: " + newFolderPath);
@@ -539,7 +569,8 @@ class GitJournalRepo with ChangeNotifier {
 
     _notesCache.clear();
     remoteGitRepoConfigured = true;
-    notesFolder.reset(repoPath);
+
+    notesFolder.reset(fileStorage);
 
     storageConfig.folderName = repoFolderName;
     storageConfig.save();
@@ -573,7 +604,15 @@ class GitJournalRepo with ChangeNotifier {
       _gitRepo = GitNoteRepository(gitRepoPath: repoPath, config: gitConfig);
 
       _notesCache.clear();
-      notesFolder.reset(repoPath);
+
+      var gitRepo = await GitRepository.load(repoPath).getOrThrow();
+      var newFileStorage = FileStorage(
+        gitRepo: gitRepo,
+        blobCTimeBuilder: fileStorage.blobCTimeBuilder,
+        fileMTimeBuilder: fileStorage.fileMTimeBuilder,
+      );
+      notesFolder.reset(newFileStorage);
+
       notifyListeners();
 
       _loadNotes();
@@ -629,7 +668,7 @@ class GitJournalRepo with ChangeNotifier {
       Log.i("Done checking out $branchName");
 
       await _notesCache.clear();
-      notesFolder.reset(repoPath);
+      notesFolder.reset(fileStorage);
       notifyListeners();
 
       _loadNotes();

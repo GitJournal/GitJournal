@@ -11,6 +11,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:time/time.dart';
 
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note_storage.dart';
@@ -94,13 +95,7 @@ Future<void> shareNote(Note note) async {
 Future<Note?> getTodayJournalEntry(NotesFolderFS rootFolder) async {
   var today = DateTime.now();
   var matches = await rootFolder.matchNotes((n) async {
-    var dt = n.created;
-    if (dt == null) {
-      return false;
-    }
-    return dt.year == today.year &&
-        dt.month == today.month &&
-        dt.day == today.day;
+    return n.created.isAtSameDayAs(today);
   });
 
   return matches.isNotEmpty ? matches[0] : null;

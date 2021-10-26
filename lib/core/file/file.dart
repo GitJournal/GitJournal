@@ -14,11 +14,13 @@ export 'package:dart_git/plumbing/git_hash.dart';
 
 class File {
   final GitHash oid;
+  final String repoPath;
   final String filePath;
 
-  // FIXME: These should not be nullable
-  final DateTime? modified;
-  final DateTime? created;
+  String get fullFilePath => p.join(repoPath, filePath);
+
+  final DateTime modified;
+  final DateTime created;
 
   // Maybe attach the entire GitFileIndex?
   final DateTime fileLastModified;
@@ -28,18 +30,57 @@ class File {
   File({
     required this.oid,
     required this.filePath,
+    required this.repoPath,
     required this.modified,
     required this.created,
     required this.fileLastModified,
-  });
+  }) {
+    assert(repoPath.isNotEmpty);
+    assert(filePath.isNotEmpty);
+  }
 
-  File.short(this.filePath)
+  File.short(this.filePath, this.repoPath)
       : oid = GitHash.zero(),
         fileLastModified = DateTime.now(),
-        modified = null,
-        created = null;
+        modified = DateTime.now(),
+        created = DateTime.now() {
+    assert(!filePath.startsWith(p.separator));
+
+    assert(repoPath.startsWith(p.separator));
+    assert(repoPath.endsWith(p.separator));
+  }
+
+  File.empty({required this.repoPath})
+      : filePath = '',
+        oid = GitHash.zero(),
+        fileLastModified = DateTime.now(),
+        modified = DateTime.now(),
+        created = DateTime.now() {
+    assert(repoPath.startsWith(p.separator));
+    assert(repoPath.endsWith(p.separator));
+  }
 
   String get fileName => p.basename(filePath);
+
+  File copyFile({
+    GitHash? oid,
+    String? filePath,
+    DateTime? modified,
+    DateTime? created,
+    DateTime? fileLastModified,
+  }) {
+    assert(repoPath.isNotEmpty);
+    assert(filePath != null ? filePath.isNotEmpty : true);
+
+    return File(
+      oid: oid ?? this.oid,
+      repoPath: repoPath,
+      filePath: filePath ?? this.filePath,
+      modified: modified ?? this.modified,
+      created: created ?? this.created,
+      fileLastModified: fileLastModified ?? this.fileLastModified,
+    );
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -47,14 +88,15 @@ class File {
       other is File &&
           runtimeType == other.runtimeType &&
           oid == other.oid &&
+          repoPath == other.repoPath &&
           filePath == other.filePath &&
           modified == other.modified &&
           created == other.created &&
           fileLastModified == other.fileLastModified;
 
   @override
-  int get hashCode =>
-      hashObjects([oid, filePath, created, modified, fileLastModified]);
+  int get hashCode => hashObjects(
+      [oid, repoPath, filePath, created, modified, fileLastModified]);
 
   @override
   String toString() =>
@@ -64,9 +106,10 @@ class File {
   Map<String, dynamic> toMap() {
     return {
       'oid': oid.toString(),
+      'repoPath': repoPath,
       'filePath': filePath,
-      'modified': modified?.toIso8601String(), // FIXME: Does this have the tz?
-      'created': created?.toIso8601String(),
+      'modified': modified.toIso8601String(),
+      'created': created.toIso8601String(),
       'fileLastModified': fileLastModified.toIso8601String(),
     };
   }
@@ -81,6 +124,15 @@ class File {
       return throw Exception('Invalid Type oid');
     }
     var oid = GitHash(oidV);
+
+    // repoPath
+    var repoPath = map['repoPath'];
+    if (repoPath == null) {
+      return throw Exception('Missing repoPath');
+    }
+    if (repoPath is! String) {
+      return throw Exception('Invalid Type repoPath');
+    }
 
     // filePath
     var filePath = map['filePath'];
@@ -98,11 +150,19 @@ class File {
       modified = parseDateTime(modifiedV);
     }
 
+    if (modified == null) {
+      return throw Exception('Failed to parse modified');
+    }
+
     // created
     DateTime? created;
     var createdV = map['created'];
     if (createdV != null) {
       created = parseDateTime(createdV);
+    }
+
+    if (created == null) {
+      return throw Exception('Failed to parse created');
     }
 
     // fileLastModified
@@ -119,6 +179,7 @@ class File {
 
     return File(
       oid: oid,
+      repoPath: repoPath,
       filePath: filePath,
       modified: modified,
       created: created,

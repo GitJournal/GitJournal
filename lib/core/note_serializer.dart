@@ -32,6 +32,7 @@ var emojiParser = EmojiParser();
 enum DateFormat {
   Iso8601,
   UnixTimeStamp,
+  None,
 }
 
 class NoteSerializationSettings {
@@ -89,30 +90,28 @@ class NoteSerializer implements NoteSerializerInterface {
   void encode(Note note, MdYamlDoc data) {
     data.body = settings.emojify ? emojiParser.unemojify(note.body) : note.body;
 
-    if (note.created != null) {
-      switch (settings.createdFormat) {
-        case DateFormat.Iso8601:
-          data.props[settings.createdKey] =
-              toIso8601WithTimezone(note.created!);
-          break;
-        case DateFormat.UnixTimeStamp:
-          data.props[settings.createdKey] = toUnixTimeStamp(note.created!);
-      }
-    } else {
-      data.props.remove(settings.createdKey);
+    switch (settings.createdFormat) {
+      case DateFormat.Iso8601:
+        data.props[settings.createdKey] = toIso8601WithTimezone(note.created);
+        break;
+      case DateFormat.UnixTimeStamp:
+        data.props[settings.createdKey] = toUnixTimeStamp(note.created);
+        break;
+      case DateFormat.None:
+        data.props.remove(settings.createdKey);
+        break;
     }
 
-    if (note.modified != null) {
-      switch (settings.modifiedFormat) {
-        case DateFormat.Iso8601:
-          data.props[settings.modifiedKey] =
-              toIso8601WithTimezone(note.modified!);
-          break;
-        case DateFormat.UnixTimeStamp:
-          data.props[settings.modifiedKey] = toUnixTimeStamp(note.modified!);
-      }
-    } else {
-      data.props.remove(settings.modifiedKey);
+    switch (settings.modifiedFormat) {
+      case DateFormat.Iso8601:
+        data.props[settings.modifiedKey] = toIso8601WithTimezone(note.modified);
+        break;
+      case DateFormat.UnixTimeStamp:
+        data.props[settings.modifiedKey] = toUnixTimeStamp(note.modified);
+        break;
+      case DateFormat.None:
+        data.props.remove(settings.modifiedKey);
+        break;
     }
 
     if (note.title.isNotEmpty) {
@@ -176,6 +175,8 @@ class NoteSerializer implements NoteSerializerInterface {
     required NotesFolderFS parent,
     required File file,
   }) {
+    assert(file.filePath.isNotEmpty);
+
     var propsUsed = <String>{};
 
     DateTime? modified;
@@ -204,6 +205,9 @@ class NoteSerializer implements NoteSerializerInterface {
         break;
       }
     }
+    if (modified == null) {
+      settings.modifiedFormat = DateFormat.None;
+    }
 
     var body = settings.emojify ? emojiParser.emojify(data.body) : data.body;
 
@@ -227,6 +231,9 @@ class NoteSerializer implements NoteSerializerInterface {
         propsUsed.add(possibleKey);
         break;
       }
+    }
+    if (created == null) {
+      settings.createdFormat = DateFormat.None;
     }
 
     //
@@ -328,13 +335,9 @@ class NoteSerializer implements NoteSerializerInterface {
 
     return Note.build(
       parent: parent,
-      file: File(
-        created: created ?? file.created,
-        modified: modified ?? file.modified,
-        fileLastModified: file.fileLastModified,
-        filePath: file.filePath,
-        oid: file.oid,
-      ),
+      file: file,
+      modified: modified,
+      created: created,
       body: body,
       title: title ?? "",
       noteType: type,

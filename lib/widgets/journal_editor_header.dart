@@ -23,9 +23,6 @@ class _JournalEditorHeaderState extends State<JournalEditorHeader> {
   @override
   Widget build(BuildContext context) {
     var created = widget.note.created;
-    if (created == null) {
-      return Container();
-    }
     var dateStr = DateFormat('MMMM, yyyy').format(created);
     var timeStr = DateFormat('EEEE HH:mm').format(created);
 
@@ -63,7 +60,7 @@ class _JournalEditorHeaderState extends State<JournalEditorHeader> {
       padding: const EdgeInsets.only(top: 8.0, bottom: 18.0),
       child: GestureDetector(
         onTap: () async {
-          var orig = widget.note.created ?? DateTime.now();
+          var orig = widget.note.created;
           var date = await showDatePicker(
             context: context,
             initialDate: orig,

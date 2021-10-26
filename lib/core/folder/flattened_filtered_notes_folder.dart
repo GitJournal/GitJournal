@@ -157,9 +157,6 @@ class FlattenedFilteredNotesFolder
   NotesFolder? get parent => null;
 
   @override
-  String pathSpec() => "";
-
-  @override
   NotesFolder get fsFolder {
     return _parentFolder;
   }

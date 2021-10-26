@@ -89,7 +89,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
         },
         onSelected: (String value) async {
           if (value == "Rename") {
-            if (selectedFolder!.pathSpec().isEmpty) {
+            if (selectedFolder!.folderPath.isEmpty) {
               await showDialog(
                 context: context,
                 builder: (_) => RenameFolderErrorDialog(),

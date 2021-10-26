@@ -39,11 +39,11 @@ class NotesMaterializedView<T> {
   // FIXME: Maybe removing all the old keys after each put is too expensive?
 
   Future<T> fetch(Note note) async {
-    assert(note.filePath.startsWith(repoPath));
+    assert(!note.filePath.startsWith(p.separator));
+    assert(!note.filePath.endsWith(p.separator));
 
     var ts = note.fileLastModified.toUtc().millisecondsSinceEpoch ~/ 1000;
-    var path = note.filePath.substring(repoPath.length);
-    var keyPrefix = '${path}_';
+    var keyPrefix = '${note.filePath}_';
     var key = keyPrefix + ts.toString();
 
     // Open the Box

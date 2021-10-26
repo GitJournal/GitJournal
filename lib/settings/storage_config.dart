@@ -63,7 +63,8 @@ class StorageConfig extends ChangeNotifier with SettingsSharedPref {
 
   Future<String> buildRepoPath(String internalDir) async {
     if (storeInternally) {
-      return p.join(internalDir, folderName);
+      var repoPath = p.join(internalDir, folderName);
+      return repoPath.endsWith(p.separator) ? repoPath : repoPath + p.separator;
     }
     if (Platform.isIOS) {
       //
@@ -78,9 +79,11 @@ class StorageConfig extends ChangeNotifier with SettingsSharedPref {
         return p.join(storageLocation, folderName);
       }
       assert(basePath == storageLocation);
-      return p.join(basePath, folderName);
+      var repoPath = p.join(basePath, folderName);
+      return repoPath.endsWith(p.separator) ? repoPath : repoPath + p.separator;
     }
 
-    return p.join(storageLocation, folderName);
+    var repoPath = p.join(storageLocation, folderName);
+    return repoPath.endsWith(p.separator) ? repoPath : repoPath + p.separator;
   }
 }

@@ -134,7 +134,6 @@ class FolderTileState extends State<FolderTile> {
 
     var publicName = folder.publicName;
     if (folder.parent != null) {
-      publicName = publicName.substring(folder.parent!.pathSpec().length);
       if (publicName.startsWith('/')) {
         publicName = publicName.substring(1);
       }

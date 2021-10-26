@@ -63,7 +63,7 @@ class SettingsImagesScreenState extends State<SettingsImagesScreen> {
             );
 
             folderConfig.imageLocationSpec =
-                destFolder != null ? destFolder.pathSpec() : "";
+                destFolder != null ? destFolder.folderPath : "";
             folderConfig.save();
             setState(() {});
           },

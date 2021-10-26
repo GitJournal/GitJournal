@@ -6,7 +6,9 @@
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
+import 'package:universal_io/io.dart' as io;
 
+import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/processors/wiki_links_auto_add.dart';
@@ -18,7 +20,11 @@ void main() {
 
     SharedPreferences.setMockInitialValues({});
     var config = NotesFolderConfig('', await SharedPreferences.getInstance());
-    var folder = NotesFolderFS(null, '/', config);
+
+    var tempDir = await io.Directory.systemTemp.createTemp();
+    var fileStorage = await FileStorage.fake(tempDir.path);
+
+    var folder = NotesFolderFS.root(config, fileStorage);
     var p = WikiLinksAutoAddProcessor(folder);
     var newBody = p.processBody(body, ['GitJournal', 'Foam', 'Obsidian']);
     var expectedBody =

@@ -171,9 +171,6 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
   NotesFolder? get parent => folder.parent;
 
   @override
-  String pathSpec() => folder.pathSpec();
-
-  @override
   String get name => folder.name;
 
   @override

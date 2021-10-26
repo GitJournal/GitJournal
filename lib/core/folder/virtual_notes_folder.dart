@@ -30,9 +30,6 @@ class VirtualNotesFolder with NotesFolderNotifier implements NotesFolder {
   NotesFolder? get parent => null;
 
   @override
-  String pathSpec() => "";
-
-  @override
   String get name => "";
 
   @override

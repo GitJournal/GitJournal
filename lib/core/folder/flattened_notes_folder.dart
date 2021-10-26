@@ -110,9 +110,6 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   NotesFolder? get parent => null;
 
   @override
-  String pathSpec() => "";
-
-  @override
   NotesFolder get fsFolder {
     return _parentFolder;
   }

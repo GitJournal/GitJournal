@@ -13,6 +13,7 @@ import 'package:test/test.dart';
 import 'package:universal_io/io.dart' as io;
 
 import 'package:gitjournal/core/file/file.dart';
+import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/folder/sorted_notes_folder.dart';
@@ -21,23 +22,30 @@ import 'package:gitjournal/core/note_storage.dart';
 
 void main() {
   group('Sorted Notes Folder Test', () {
+    late String repoPath;
     late io.Directory tempDir;
     late NotesFolderFS folder;
     late NotesFolderConfig config;
+    late FileStorage fileStorage;
+
     final storage = NoteStorage();
 
     setUp(() async {
       tempDir =
           await io.Directory.systemTemp.createTemp('__sorted_folder_test__');
+      repoPath = tempDir.path + p.separator;
+
       SharedPreferences.setMockInitialValues({});
       config = NotesFolderConfig('', await SharedPreferences.getInstance());
+      fileStorage = await FileStorage.fake(repoPath);
 
-      folder = NotesFolderFS(null, tempDir.path, config);
+      folder = NotesFolderFS.root(config, fileStorage);
 
       var random = Random();
       for (var i = 0; i < 5; i++) {
         var path = p.join(folder.folderPath, "${random.nextInt(1000)}.md");
-        var note = await storage.load(File.short(path), folder).getOrThrow();
+        var note =
+            await storage.load(File.short(path, repoPath), folder).getOrThrow();
         note.apply(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "$i\n",
@@ -94,7 +102,7 @@ void main() {
             SortingMode(SortingField.Modified, SortingOrder.Descending),
       );
 
-      var fNew = File.short('new.md');
+      var fNew = File.short('new.md', repoPath);
       var note = await storage.load(fNew, folder).getOrThrow();
       folder.add(note);
 
@@ -121,7 +129,7 @@ void main() {
             SortingMode(SortingField.Modified, SortingOrder.Descending),
       );
 
-      var fNew = File.short('new.md');
+      var fNew = File.short('new.md', repoPath);
       var note = await storage.load(fNew, folder).getOrThrow();
       folder.add(note);
 
@@ -142,7 +150,7 @@ void main() {
     });
 
     test('If still sorted while loading the notes', () async {
-      var folder = NotesFolderFS(null, tempDir.path, config);
+      var folder = NotesFolderFS.root(config, fileStorage);
       var sf = SortedNotesFolder(
         folder: folder,
         sortingMode:

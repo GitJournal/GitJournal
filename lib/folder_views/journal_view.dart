@@ -71,7 +71,6 @@ class JournalView extends StatelessWidget {
     bool isSelected,
     String noteSummary,
   ) {
-    Widget titleWidget = Container();
     var textTheme = Theme.of(context).textTheme;
 
     DateTime? date;
@@ -82,21 +81,19 @@ class JournalView extends StatelessWidget {
       date = note.modified;
     }
 
-    if (date != null) {
-      var dateStr = _dateFormat.format(date);
-      var time = _timeFormat.format(date);
+    var dateStr = _dateFormat.format(date);
+    var time = _timeFormat.format(date);
 
-      var timeColor = textTheme.bodyText2!.color!.withAlpha(100);
+    var timeColor = textTheme.bodyText2!.color!.withAlpha(100);
 
-      titleWidget = Row(
-        children: <Widget>[
-          Text(dateStr, style: textTheme.headline6),
-          Text(time, style: textTheme.bodyText2!.copyWith(color: timeColor)),
-        ],
-        crossAxisAlignment: CrossAxisAlignment.baseline,
-        textBaseline: TextBaseline.alphabetic,
-      );
-    }
+    var titleWidget = Row(
+      children: <Widget>[
+        Text(dateStr, style: textTheme.headline6),
+        Text(time, style: textTheme.bodyText2!.copyWith(color: timeColor)),
+      ],
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
+    );
 
     var children = <Widget>[
       const SizedBox(height: 8.0),

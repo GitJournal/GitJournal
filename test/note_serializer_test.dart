@@ -6,10 +6,13 @@
 
 import 'dart:collection';
 
+import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
+import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/core/file/file.dart';
+import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/md_yaml_doc.dart';
@@ -18,13 +21,20 @@ import 'package:gitjournal/settings/settings.dart';
 
 void main() {
   group('Note Serializer Test', () {
+    late String repoPath;
     late NotesFolderConfig config;
     late NotesFolderFS parent;
+    late FileStorage fileStorage;
 
     setUpAll(() async {
       SharedPreferences.setMockInitialValues({});
       config = NotesFolderConfig('', await SharedPreferences.getInstance());
-      parent = NotesFolderFS(null, '/tmp', config);
+
+      var tempDir = await Directory.systemTemp.createTemp('__link_resolver__');
+      repoPath = tempDir.path + p.separator;
+
+      fileStorage = await FileStorage.fake(repoPath);
+      parent = NotesFolderFS.root(config, fileStorage);
     });
 
     test('Test emojis', () {
@@ -36,7 +46,7 @@ void main() {
       serializer.settings.emojify = true;
       serializer.settings.titleSettings = SettingsTitle.InYaml;
 
-      var file = File.short("file-path-not-important");
+      var file = File.short("file-path-not-important", repoPath);
       var note = serializer.decode(data: doc, parent: parent, file: file);
 
       expect(note.body, "I ❤️ you");
@@ -57,7 +67,7 @@ void main() {
       var serializer = NoteSerializer.raw();
       serializer.settings.titleSettings = SettingsTitle.InH1;
 
-      var file = File.short("file-path-not-important");
+      var file = File.short("file-path-not-important", repoPath);
       var note = serializer.decode(data: doc, parent: parent, file: file);
 
       expect(note.body, "I heart you");
@@ -77,7 +87,7 @@ void main() {
 
       var serializer = NoteSerializer.raw();
 
-      var file = File.short("file-path-not-important");
+      var file = File.short("file-path-not-important", repoPath);
       var note = serializer.decode(data: doc, parent: parent, file: file);
 
       expect(note.body, "I heart you");
@@ -90,7 +100,7 @@ void main() {
 
       var serializer = NoteSerializer.raw();
 
-      var file = File.short("file-path-not-important");
+      var file = File.short("file-path-not-important", repoPath);
       var note = serializer.decode(data: doc, parent: parent, file: file);
 
       expect(note.body.length, 0);
@@ -105,7 +115,7 @@ void main() {
       var serializer = NoteSerializer.raw();
       serializer.settings.titleSettings = SettingsTitle.InH1;
 
-      var file = File.short("file-path-not-important");
+      var file = File.short("file-path-not-important", repoPath);
       var note = serializer.decode(data: doc, parent: parent, file: file);
 
       expect(note.body, "I heart you");
@@ -127,7 +137,7 @@ void main() {
       var serializer = NoteSerializer.raw();
       serializer.settings.titleSettings = SettingsTitle.InYaml;
 
-      var file = File.short("file-path-not-important");
+      var file = File.short("file-path-not-important", repoPath);
       var note = serializer.decode(data: doc, parent: parent, file: file);
 
       expect(note.body, "body");
@@ -152,7 +162,7 @@ void main() {
       var serializer = NoteSerializer.raw();
       serializer.settings.titleSettings = SettingsTitle.InYaml;
 
-      var file = File.short("file-path-not-important");
+      var file = File.short("file-path-not-important", repoPath);
       var note = serializer.decode(data: doc, parent: parent, file: file);
 
       expect(note.body, "body");

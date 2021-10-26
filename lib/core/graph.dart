@@ -29,7 +29,7 @@ class Node {
   Node(this.note);
 
   String? get label {
-    _label ??= note.pathSpec();
+    _label ??= note.filePath;
     return _label;
   }
 

@@ -117,12 +117,12 @@ class GitNoteRepository {
   }
 
   Future<Result<void>> addNote(Note note) async {
-    var msg = messageBuilder.addNote(note.pathSpec());
+    var msg = messageBuilder.addNote(note.filePath);
     return _addAllAndCommit(msg);
   }
 
   Future<Result<void>> addFolder(NotesFolderFS folder) async {
-    var msg = messageBuilder.addFolder(folder.pathSpec());
+    var msg = messageBuilder.addFolder(folder.folderPath);
     return _addAllAndCommit(msg);
   }
 
@@ -182,13 +182,13 @@ class GitNoteRepository {
     return catchAll(() async {
       // We are not calling note.remove() as gitRm will also remove the file
       for (var note in notes) {
-        var spec = note.pathSpec();
+        var spec = note.filePath;
         await _rm(spec).throwOnError();
       }
       await _commit(
         message: notes.length == 1
-            ? messageBuilder.removeNote(notes.first.pathSpec())
-            : messageBuilder.removeNotes(notes.map((n) => n.pathSpec())),
+            ? messageBuilder.removeNote(notes.first.filePath)
+            : messageBuilder.removeNotes(notes.map((n) => n.filePath)),
         authorEmail: config.gitAuthorEmail,
         authorName: config.gitAuthor,
       ).throwOnError();
@@ -199,7 +199,7 @@ class GitNoteRepository {
 
   Future<Result<void>> removeFolder(NotesFolderFS folder) async {
     return catchAll(() async {
-      var spec = folder.pathSpec();
+      var spec = folder.folderPath;
       await _rm(spec).throwOnError();
       await _commit(
         message: messageBuilder.removeFolder(spec),
@@ -236,7 +236,7 @@ class GitNoteRepository {
   }
 
   Future<Result<void>> updateNote(Note note) async {
-    var msg = messageBuilder.updateNote(note.pathSpec());
+    var msg = messageBuilder.updateNote(note.filePath);
     return _addAllAndCommit(msg);
   }
 

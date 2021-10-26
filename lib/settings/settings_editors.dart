@@ -97,7 +97,7 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
             );
 
             settings.journalEditordefaultNewNoteFolderSpec =
-                destFolder != null ? destFolder.pathSpec() : "";
+                destFolder != null ? destFolder.folderPath : "";
             settings.save();
             setState(() {});
           },

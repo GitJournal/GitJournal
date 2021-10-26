@@ -22,16 +22,13 @@ class LinkResolver {
       return resolveWikiLink(l.wikiTerm!);
     }
 
-    var rootFolder = inputNote.parent.rootFolder;
-    if (l.filePath!.startsWith(rootFolder.folderPath)) {
-      var spec = l.filePath!.substring(rootFolder.folderPath.length);
-      if (spec.startsWith('/')) {
-        spec = spec.substring(1);
-      }
-      return _getNoteWithSpec(rootFolder, spec);
+    var spec = l.filePath!;
+    if (spec.startsWith('/')) {
+      spec = spec.substring(1);
     }
 
-    return null;
+    var rootFolder = inputNote.parent.rootFolder;
+    return _getNoteWithSpec(rootFolder, spec);
   }
 
   Note? resolve(String link) {
@@ -87,17 +84,8 @@ class LinkResolver {
   }
 
   Note? _getNoteWithSpec(NotesFolderFS folder, String spec) {
-    var fullPath = p.normalize(p.join(folder.folderPath, spec));
-    if (!fullPath.startsWith(folder.folderPath)) {
-      folder = folder.rootFolder;
-    }
-
-    assert(fullPath.length != folder.folderPath.length);
-    if (fullPath.length == folder.folderPath.length) {
-      // FIXME: Why is this case occurring?
-      return null;
-    }
-    spec = fullPath.substring(folder.folderPath.length + 1);
+    spec = p.normalize(p.join(folder.folderPath, spec));
+    folder = folder.rootFolder;
 
     var linkedNote = folder.getNoteWithSpec(spec);
     if (linkedNote != null) {

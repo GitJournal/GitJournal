@@ -22,6 +22,7 @@ import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_widgets.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
@@ -60,7 +61,8 @@ class _NoteMetadataSettingsScreenState
       }
     }
 
-    var parent = NotesFolderFS(null, '', folderConfig);
+    var repo = context.read<GitJournalRepo>();
+    var parent = NotesFolderFS.root(folderConfig, repo.fileStorage);
     var note = Note.build(
       title: tr("settings.noteMetaData.exampleTitle"),
       body: tr("settings.noteMetaData.exampleBody"),
@@ -69,11 +71,14 @@ class _NoteMetadataSettingsScreenState
       noteType: NoteType.Unknown,
       file: File(
         filePath: '',
+        repoPath: '',
         created: created,
         modified: modified,
         oid: GitHash.zero(),
         fileLastModified: DateTime.now(),
       ),
+      created: created,
+      modified: modified,
       extraProps: extraProps,
       tags: {
         tr("settings.noteMetaData.exampleTag1"),

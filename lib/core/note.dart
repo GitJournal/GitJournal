@@ -89,23 +89,23 @@ class Note implements File {
   MdYamlDoc _data = MdYamlDoc();
   late NoteSerializer noteSerializer;
 
-  @override
-  DateTime fileLastModified;
+  late File file;
 
   @override
-  GitHash get oid => GitHash.zero();
+  DateTime get fileLastModified => file.fileLastModified;
 
-  File get file => File(
-        created: created,
-        modified: modified,
-        fileLastModified: fileLastModified,
-        oid: GitHash.zero(),
-        filePath: filePath,
-      );
+  @override
+  GitHash get oid => file.oid;
+
+  @override
+  String get repoPath => file.repoPath;
+
+  @override
+  String get fullFilePath => p.join(repoPath, filePath);
 
   Note.build({
     required this.parent,
-    required File file,
+    required this.file,
     required String title,
     required String body,
     required NoteType noteType,
@@ -114,24 +114,25 @@ class Note implements File {
     required NoteFileFormat fileFormat,
     required MdYamlDoc doc,
     required NoteSerializationSettings serializerSettings,
+    required DateTime? modified,
+    required DateTime? created,
   })  : _filePath = file.filePath,
         _title = title,
-        _created = file.created,
-        _modified = file.modified,
         _body = body,
         _type = noteType,
         _tags = tags,
         _extraProps = extraProps,
         _fileFormat = fileFormat,
         _data = doc,
-        fileLastModified = file.fileLastModified,
+        _modified = modified,
+        _created = created,
         noteSerializer = NoteSerializer.fromConfig(serializerSettings);
 
   Note.newNote(
     this.parent, {
     Map<String, dynamic> extraProps = const {},
     String? fileName,
-  }) : fileLastModified = DateTime.fromMillisecondsSinceEpoch(0) {
+  }) : file = File.empty(repoPath: parent.repoPath) {
     _created = DateTime.now();
     var settings = NoteSerializationSettings.fromConfig(parent.config);
     noteSerializer = NoteSerializer.fromConfig(settings);
@@ -159,7 +160,15 @@ class Note implements File {
             NoteFileFormatInfo.defaultExtension(NoteFileFormat.Markdown);
       }
       _filePath = p.join(parent.folderPath, fileName);
+
       Log.i("Constructing new note with path $_filePath");
+
+      assert(!fileName.endsWith(p.separator));
+      assert(!parent.folderPath.endsWith(p.separator));
+      assert(!parent.fullFolderPath.endsWith(p.separator));
+      assert(p.dirname(fullFilePath) == parent.fullFolderPath);
+
+      file = file.copyFile(filePath: filePath);
     }
   }
 
@@ -196,6 +205,7 @@ class Note implements File {
       }
 
       _filePath = fp;
+      file = file.copyFile(filePath: _filePath);
     }
 
     return _filePath as String;
@@ -214,7 +224,10 @@ class Note implements File {
   }) {
     var changed = false;
     if (filePath != null) {
+      assert(!filePath.startsWith(p.separator));
+
       _filePath = filePath;
+      file = file.copyFile(filePath: _filePath);
       changed = true;
     }
     if (canHaveMetadata) {
@@ -273,18 +286,15 @@ class Note implements File {
     Map<String, dynamic>? extraProps,
     Set<String>? tags,
     NoteFileFormat? fileFormat,
+    File? file,
   }) {
     return Note.build(
       body: body ?? this.body,
       parent: parent,
       doc: data,
-      file: File(
-        created: created ?? this.created,
-        modified: modified ?? this.modified,
-        fileLastModified: fileLastModified,
-        oid: GitHash.zero(),
-        filePath: filePath ?? this.filePath,
-      ),
+      file: file ?? this.file,
+      created: created,
+      modified: modified,
       title: title ?? this.title,
       noteType: type ?? this.type,
       extraProps: extraProps ?? this.extraProps,
@@ -300,13 +310,13 @@ class Note implements File {
   }
 
   @override
-  DateTime? get created {
-    return _created;
+  DateTime get created {
+    return _created ?? file.created;
   }
 
   @override
-  DateTime? get modified {
-    return _modified;
+  DateTime get modified {
+    return _modified ?? file.modified;
   }
 
   void updateModified() {
@@ -367,13 +377,13 @@ class Note implements File {
     parent.noteModified(this);
   }
 
-  String pathSpec() {
-    return p.join(parent.pathSpec(), fileName);
-  }
-
   String _buildFileName() {
-    var date = created ?? modified ?? fileLastModified;
+    var date = created;
     var isJournal = type == NoteType.Journal;
+    var fileFormat =
+        _fileFormat ?? parent.config.defaultFileFormat.toFileFormat();
+    var ext = NoteFileFormatInfo.defaultExtension(fileFormat);
+
     switch (!isJournal
         ? parent.config.fileNameFormat
         : parent.config.journalFileNameFormat) {
@@ -381,10 +391,10 @@ class Note implements File {
         return toSimpleDateTime(date);
       case NoteFileNameFormat.DateOnly:
         var dateStr = toDateString(date);
-        return ensureFileNameUnique(parent.folderPath, dateStr, ".md");
+        return ensureFileNameUnique(parent.fullFolderPath, dateStr, ext);
       case NoteFileNameFormat.FromTitle:
         if (title.isNotEmpty) {
-          return buildTitleFileName(parent.folderPath, title);
+          return buildTitleFileName(parent.fullFolderPath, title, ext);
         } else {
           return toSimpleDateTime(date);
         }
@@ -410,13 +420,33 @@ class Note implements File {
 
   @override
   Map<String, dynamic> toMap() {
-    throw UnimplementedError();
+    return file.toMap();
+  }
+
+  @override
+  File copyFile({
+    GitHash? oid,
+    String? filePath,
+    DateTime? modified,
+    DateTime? created,
+    DateTime? fileLastModified,
+  }) {
+    return File(
+      oid: oid ?? this.oid,
+      filePath: filePath ?? this.filePath,
+      repoPath: repoPath,
+      modified: modified ?? this.modified,
+      created: created ?? this.created,
+      fileLastModified: fileLastModified ?? this.fileLastModified,
+    );
   }
 }
 
 String ensureFileNameUnique(String parentDir, String name, String ext) {
   var fileName = name + ext;
   var fullPath = p.join(parentDir, fileName);
+  assert(fullPath.startsWith(p.separator));
+
   var file = io.File(fullPath);
   if (!file.existsSync()) {
     return fileName;
@@ -432,9 +462,9 @@ String ensureFileNameUnique(String parentDir, String name, String ext) {
   }
 }
 
-String buildTitleFileName(String parentDir, String title) {
+String buildTitleFileName(String parentDir, String title, String ext) {
   // Sanitize the title - these characters are not allowed in Windows
   title = title.replaceAll(RegExp(r'[/<\>":|?*]'), '_');
 
-  return ensureFileNameUnique(parentDir, title, ".md");
+  return ensureFileNameUnique(parentDir, title, ext);
 }

@@ -42,6 +42,8 @@ class MdYamlDocLoader {
   }
 
   Future<Result<MdYamlDoc>> loadDoc(String filePath) async {
+    assert(filePath.startsWith('/'));
+
     await _initIsolate();
 
     final file = File(filePath);

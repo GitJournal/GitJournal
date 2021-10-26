@@ -22,6 +22,4 @@ abstract class NotesFolder implements NotesFolderNotifier {
   NotesFolder? get fsFolder;
 
   NotesFolderConfig get config;
-
-  String pathSpec();
 }

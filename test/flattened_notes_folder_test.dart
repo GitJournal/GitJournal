@@ -6,12 +6,14 @@
 
 import 'dart:math';
 
+import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart' as io;
 
+import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/folder/flattened_notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
@@ -22,6 +24,7 @@ void main() {
   var random = Random(DateTime.now().millisecondsSinceEpoch);
 
   String _getRandomFilePath(String basePath) {
+    assert(basePath.startsWith(p.separator));
     while (true) {
       var filePath = p.join(basePath, "${random.nextInt(1000)}.md");
       if (io.File(filePath).existsSync()) {
@@ -34,20 +37,25 @@ void main() {
 
   group('Flattened Notes Folder Test', () {
     late io.Directory tempDir;
+    late String repoPath;
     late NotesFolderFS rootFolder;
     late NotesFolderConfig config;
+    late FileStorage fileStorage;
+
     final storage = NoteStorage();
 
     setUp(() async {
-      tempDir =
-          await io.Directory.systemTemp.createTemp('__sorted_folder_test__');
+      tempDir = await io.Directory.systemTemp.createTemp('__fnft__');
+      repoPath = tempDir.path + p.separator;
+
       SharedPreferences.setMockInitialValues({});
       config = NotesFolderConfig('', await SharedPreferences.getInstance());
+      fileStorage = await FileStorage.fake(repoPath);
 
-      rootFolder = NotesFolderFS(null, tempDir.path, config);
+      rootFolder = NotesFolderFS.root(config, fileStorage);
 
       for (var i = 0; i < 3; i++) {
-        var fp = _getRandomFilePath(rootFolder.folderPath);
+        var fp = _getRandomFilePath(rootFolder.fullFolderPath);
         var note = Note.newNote(rootFolder, fileName: p.basename(fp));
         note.apply(
           modified: DateTime(2020, 1, 10 + (i * 2)),
@@ -56,15 +64,14 @@ void main() {
         await storage.save(note).throwOnError();
       }
 
-      io.Directory(p.join(tempDir.path, "sub1")).createSync();
-      io.Directory(p.join(tempDir.path, "sub1", "p1")).createSync();
-      io.Directory(p.join(tempDir.path, "sub2")).createSync();
+      io.Directory(p.join(repoPath, "sub1")).createSync();
+      io.Directory(p.join(repoPath, "sub1", "p1")).createSync();
+      io.Directory(p.join(repoPath, "sub2")).createSync();
 
-      var sub1Folder =
-          NotesFolderFS(rootFolder, p.join(tempDir.path, "sub1"), config);
+      var sub1Folder = NotesFolderFS(rootFolder, "sub1", config, fileStorage);
       for (var i = 0; i < 2; i++) {
-        var fp = _getRandomFilePath(sub1Folder.folderPath);
-        var note = Note.newNote(rootFolder, fileName: p.basename(fp));
+        var fp = _getRandomFilePath(sub1Folder.fullFolderPath);
+        var note = Note.newNote(sub1Folder, fileName: p.basename(fp));
 
         note.apply(
           modified: DateTime(2020, 1, 10 + (i * 2)),
@@ -73,11 +80,10 @@ void main() {
         await storage.save(note).throwOnError();
       }
 
-      var sub2Folder =
-          NotesFolderFS(rootFolder, p.join(tempDir.path, "sub2"), config);
+      var sub2Folder = NotesFolderFS(rootFolder, "sub2", config, fileStorage);
       for (var i = 0; i < 2; i++) {
-        var fp = _getRandomFilePath(sub2Folder.folderPath);
-        var note = Note.newNote(rootFolder, fileName: p.basename(fp));
+        var fp = _getRandomFilePath(sub2Folder.fullFolderPath);
+        var note = Note.newNote(sub2Folder, fileName: p.basename(fp));
 
         note.apply(
           modified: DateTime(2020, 1, 10 + (i * 2)),
@@ -87,10 +93,10 @@ void main() {
       }
 
       var p1Folder =
-          NotesFolderFS(sub1Folder, p.join(tempDir.path, "sub1", "p1"), config);
+          NotesFolderFS(sub1Folder, p.join("sub1", "p1"), config, fileStorage);
       for (var i = 0; i < 2; i++) {
-        var fp = _getRandomFilePath(p1Folder.folderPath);
-        var note = Note.newNote(rootFolder, fileName: p.basename(fp));
+        var fp = _getRandomFilePath(p1Folder.fullFolderPath);
+        var note = Note.newNote(p1Folder, fileName: p.basename(fp));
 
         note.apply(
           modified: DateTime(2020, 1, 10 + (i * 2)),
@@ -99,7 +105,22 @@ void main() {
         await storage.save(note).throwOnError();
       }
 
+      var repo = await GitRepository.load(repoPath).getOrThrow();
+      await repo
+          .commit(
+            message: "Prepare Test Env",
+            author: GitAuthor(name: 'Name', email: "name@example.com"),
+            addAll: true,
+          )
+          .throwOnError();
+
+      await rootFolder.fileStorage.reload().throwOnError();
+
+      expect(fileStorage.blobCTimeBuilder.map, isNotEmpty);
+      expect(fileStorage.fileMTimeBuilder.map, isNotEmpty);
+
       await rootFolder.loadRecursively();
+      expect(rootFolder.notes, isNotEmpty);
     });
 
     tearDown(() async {

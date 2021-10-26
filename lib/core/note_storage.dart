@@ -5,6 +5,7 @@
  */
 
 import 'package:dart_git/utils/result.dart';
+import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' as io;
 
 import 'package:gitjournal/core/md_yaml_doc.dart';
@@ -36,14 +37,22 @@ class NoteStorage {
   }
 
   Future<Result<void>> save(Note note) async {
+    assert(note.filePath.isNotEmpty);
+    assert(note.fileName.isNotEmpty);
+
     var contents = serialize(note);
 
     return catchAll(() async {
-      var file = io.File(note.filePath);
+      assert(note.fullFilePath.startsWith(p.separator));
+
+      var file = io.File(note.fullFilePath);
       var _ = await file.writeAsString(contents, flush: true);
 
       var stat = file.statSync();
-      note.fileLastModified = stat.modified;
+      note.file = note.file.copyFile(
+        fileLastModified: stat.modified,
+        filePath: note.filePath,
+      );
 
       return Result(null);
     });
@@ -53,11 +62,11 @@ class NoteStorage {
 
   Future<Result<Note>> reload(Note note) async {
     try {
-      var fileLastModified = io.File(note.filePath).lastModifiedSync();
+      var fileLastModified = io.File(note.fullFilePath).lastModifiedSync();
       if (note.fileLastModified == fileLastModified) {
         return Result(note);
       }
-      note.fileLastModified = fileLastModified;
+      note.file = note.file.copyFile(fileLastModified: fileLastModified);
       Log.d("Note modified: ${note.filePath}");
 
       return load(note, note.parent);
@@ -73,12 +82,13 @@ class NoteStorage {
 
   Future<Result<Note>> load(File file, NotesFolderFS parentFolder) async {
     assert(file.filePath.isNotEmpty);
+    assert(!file.filePath.startsWith('/'));
 
-    var filePath = file.filePath;
+    var filePath = file.fullFilePath;
     var format = NoteFileFormatInfo(parentFolder.config).fromFilePath(filePath);
 
     if (format == NoteFileFormat.Markdown) {
-      var dataResult = await mdYamlDocLoader.loadDoc(file.filePath);
+      var dataResult = await mdYamlDocLoader.loadDoc(filePath);
       if (dataResult.isFailure) {
         return Result.fail(dataResult.error!, dataResult.stackTrace);
       }
@@ -107,10 +117,12 @@ class NoteStorage {
           doc: MdYamlDoc(),
           serializerSettings:
               NoteSerializationSettings.fromConfig(parentFolder.config),
+          created: null,
+          modified: null,
         );
         return Result(note);
       } catch (e, stackTrace) {
-        Log.e("Failed to load ${file.filePath}", ex: e, stacktrace: stackTrace);
+        Log.e("Failed to load $filePath", ex: e, stacktrace: stackTrace);
         return Result.fail(e, stackTrace);
       }
     } else if (format == NoteFileFormat.OrgMode) {
@@ -127,10 +139,12 @@ class NoteStorage {
           doc: MdYamlDoc(),
           serializerSettings:
               NoteSerializationSettings.fromConfig(parentFolder.config),
+          created: null,
+          modified: null,
         );
         return Result(note);
       } catch (e, stackTrace) {
-        Log.e("Failed to load ${file.filePath}", ex: e, stacktrace: stackTrace);
+        Log.e("Failed to load $filePath", ex: e, stacktrace: stackTrace);
         return Result.fail(e, stackTrace);
       }
     }

@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 
 import 'package:gitjournal/core/file/file.dart';
+import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note.dart';
@@ -22,15 +23,22 @@ import 'package:gitjournal/core/views/notes_materialized_view.dart';
 
 void main() {
   group('ViewTest', () {
+    late String repoPath;
     late io.Directory tempDir;
     late NotesFolderConfig config;
+    late FileStorage fileStorage;
 
     setUpAll(() async {
       tempDir = await io.Directory.systemTemp.createTemp('__notes_test__');
+      repoPath = tempDir.path + p.separator;
+
       SharedPreferences.setMockInitialValues({});
       config = NotesFolderConfig('', await SharedPreferences.getInstance());
 
-      Hive.init(tempDir.path);
+      var cacheDir = await io.Directory.systemTemp.createTemp('cache');
+      Hive.init(cacheDir.path);
+
+      fileStorage = await FileStorage.fake(repoPath);
     });
 
     Future<Note> _createExampleNote() async {
@@ -46,9 +54,10 @@ Hello
       var notePath = p.join(tempDir.path, "note.md");
       await io.File(notePath).writeAsString(content);
 
-      var parentFolder = NotesFolderFS(null, tempDir.path, config);
+      var parentFolder = NotesFolderFS.root(config, fileStorage);
       var noteStorage = NoteStorage();
-      var noteR = await noteStorage.load(File.short(notePath), parentFolder);
+      var file = File.short("note.md", repoPath);
+      var noteR = await noteStorage.load(file, parentFolder);
       return noteR.getOrThrow();
     }
 

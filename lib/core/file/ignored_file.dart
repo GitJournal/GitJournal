@@ -18,18 +18,15 @@ class IgnoredFile extends File {
   final Object? customError;
 
   IgnoredFile({
-    required GitHash oid,
-    required String filePath,
-    required DateTime? modified,
-    required DateTime? created,
-    required DateTime fileLastModified,
+    required File file,
     required this.reason,
     this.customError,
   }) : super(
-          oid: oid,
-          filePath: filePath,
-          modified: modified,
-          created: created,
-          fileLastModified: fileLastModified,
+          oid: file.oid,
+          filePath: file.filePath,
+          repoPath: file.repoPath,
+          modified: file.modified,
+          created: file.created,
+          fileLastModified: file.fileLastModified,
         );
 }

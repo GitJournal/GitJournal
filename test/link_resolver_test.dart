@@ -4,11 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'package:dart_git/dart_git.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart';
 
+import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/link.dart';
@@ -16,28 +18,44 @@ import 'package:gitjournal/utils/link_resolver.dart';
 
 void main() {
   late Directory tempDir;
+  late String repoPath;
+
   late NotesFolderFS rootFolder;
   late NotesFolderConfig config;
+  late FileStorage fileStorage;
 
   setUpAll(() async {
     tempDir = await Directory.systemTemp.createTemp('__link_resolver__');
+    repoPath = tempDir.path;
+
     SharedPreferences.setMockInitialValues({});
     config = NotesFolderConfig('', await SharedPreferences.getInstance());
+    fileStorage = await FileStorage.fake(repoPath);
 
-    rootFolder = NotesFolderFS(null, tempDir.path, config);
+    rootFolder = NotesFolderFS.root(config, fileStorage);
 
-    await generateNote(tempDir.path, "Hello.md");
-    await generateNote(tempDir.path, "Fire.md");
-    await generateNote(tempDir.path, "Kat.md");
-    await generateNote(tempDir.path, "Folder/Water.md");
-    await generateNote(tempDir.path, "Folder/Kat.md");
-    await generateNote(tempDir.path, "Folder/Sodium.md");
-    await generateNote(tempDir.path, "Folder/Boy.md");
-    await generateNote(tempDir.path, "Folder2/Boy.md");
-    await generateNote(tempDir.path, "Air Bender.md");
-    await generateNote(tempDir.path, "zeplin.txt");
-    await generateNote(tempDir.path, "Goat  Sim.md");
+    await generateNote(repoPath, "Hello.md");
+    await generateNote(repoPath, "Fire.md");
+    await generateNote(repoPath, "Kat.md");
+    await generateNote(repoPath, "Folder/Water.md");
+    await generateNote(repoPath, "Folder/Kat.md");
+    await generateNote(repoPath, "Folder/Sodium.md");
+    await generateNote(repoPath, "Folder/Boy.md");
+    await generateNote(repoPath, "Folder2/Boy.md");
+    await generateNote(repoPath, "Air Bender.md");
+    await generateNote(repoPath, "zeplin.txt");
+    await generateNote(repoPath, "Goat  Sim.md");
 
+    var repo = await GitRepository.load(repoPath).getOrThrow();
+    await repo
+        .commit(
+          message: "Prepare Test Env",
+          author: GitAuthor(name: 'Name', email: "name@example.com"),
+          addAll: true,
+        )
+        .throwOnError();
+
+    await rootFolder.fileStorage.reload().throwOnError();
     await rootFolder.loadRecursively();
   });
 
@@ -50,7 +68,7 @@ void main() {
     var linkResolver = LinkResolver(note);
 
     var resolvedNote = linkResolver.resolve('[[Fire]]')!;
-    expect(resolvedNote.filePath, p.join(tempDir.path, 'Fire.md'));
+    expect(resolvedNote.filePath, 'Fire.md');
   });
 
   test('[[Fire.md]] resolves to base folder `Fire.md`', () {
@@ -58,7 +76,7 @@ void main() {
     var linkResolver = LinkResolver(note);
 
     var resolvedNote = linkResolver.resolve('[[Fire.md]]')!;
-    expect(resolvedNote.filePath, p.join(tempDir.path, 'Fire.md'));
+    expect(resolvedNote.filePath, 'Fire.md');
   });
 
   test('[[Water]] resolves to `Folder/Water.md`', () {
@@ -66,7 +84,7 @@ void main() {
     var linkResolver = LinkResolver(note);
 
     var resolvedNote = linkResolver.resolve('[[Water]]')!;
-    expect(resolvedNote.filePath, p.join(tempDir.path, 'Folder/Water.md'));
+    expect(resolvedNote.filePath, 'Folder/Water.md');
   });
 
   test('[[Boy]] resolves to `Folder/Boy.md`', () {
@@ -75,7 +93,7 @@ void main() {
 
     // Make sure if there are 2 Notes with the same name, the first one is resolved
     var resolvedNote = linkResolver.resolve('[[Boy]]')!;
-    expect(resolvedNote.filePath, p.join(tempDir.path, 'Folder/Boy.md'));
+    expect(resolvedNote.filePath, 'Folder/Boy.md');
   }, skip: true);
 
   test('[[Kat]] resolves to `Kat.md`', () {
@@ -85,7 +103,7 @@ void main() {
     // Make sure if there are multiple Notes with the same name, the one is the
     // base directory is preffered
     var resolvedNote = linkResolver.resolve('[[Kat]]')!;
-    expect(resolvedNote.filePath, p.join(tempDir.path, 'Kat.md'));
+    expect(resolvedNote.filePath, 'Kat.md');
   }, skip: true);
 
   test('WikiLinks with spaces resolves correctly', () {
@@ -93,7 +111,7 @@ void main() {
     var linkResolver = LinkResolver(note);
 
     var resolvedNote = linkResolver.resolve('[[Air Bender]]')!;
-    expect(resolvedNote.filePath, p.join(tempDir.path, 'Air Bender.md'));
+    expect(resolvedNote.filePath, 'Air Bender.md');
   });
 
   test('WikiLinks with extra spaces resolves correctly', () {
@@ -101,7 +119,7 @@ void main() {
     var linkResolver = LinkResolver(note);
 
     var resolvedNote = linkResolver.resolve('[[Hello ]]')!;
-    expect(resolvedNote.filePath, p.join(tempDir.path, 'Hello.md'));
+    expect(resolvedNote.filePath, 'Hello.md');
   });
 
   test('Resolves to txt files as well', () {
@@ -109,7 +127,7 @@ void main() {
     var linkResolver = LinkResolver(note);
 
     var resolvedNote = linkResolver.resolve('[[zeplin]]')!;
-    expect(resolvedNote.filePath, p.join(tempDir.path, 'zeplin.txt'));
+    expect(resolvedNote.filePath, 'zeplin.txt');
   });
 
   test('Non base path [[Fire]] should resolve to [[Fire.md]]', () {
@@ -117,7 +135,7 @@ void main() {
     var linkResolver = LinkResolver(note);
 
     var resolvedNote = linkResolver.resolve('[[Fire]]')!;
-    expect(resolvedNote.filePath, p.join(tempDir.path, 'Fire.md'));
+    expect(resolvedNote.filePath, 'Fire.md');
   });
 
   test('Non existing wiki link fails', () {
@@ -133,7 +151,7 @@ void main() {
     var linkResolver = LinkResolver(note);
 
     var resolvedNote = linkResolver.resolve('[[Goat  Sim]]')!;
-    expect(resolvedNote.filePath, p.join(tempDir.path, 'Goat  Sim.md'));
+    expect(resolvedNote.filePath, 'Goat  Sim.md');
   });
 
   test('Normal with extra spaces in the middle resolves correctly', () {
@@ -141,7 +159,7 @@ void main() {
     var linkResolver = LinkResolver(note);
 
     var resolvedNote = linkResolver.resolve('Goat  Sim')!;
-    expect(resolvedNote.filePath, p.join(tempDir.path, 'Goat  Sim.md'));
+    expect(resolvedNote.filePath, 'Goat  Sim.md');
   });
 
   test('Normal relative link', () {
@@ -149,7 +167,7 @@ void main() {
     var linkResolver = LinkResolver(note);
 
     var resolvedNote = linkResolver.resolve('./Hello.md')!;
-    expect(resolvedNote.filePath, p.join(tempDir.path, 'Hello.md'));
+    expect(resolvedNote.filePath, 'Hello.md');
   });
 
   test('Normal relative link inside a subFolder', () {
@@ -157,7 +175,7 @@ void main() {
     var linkResolver = LinkResolver(note);
 
     var resolvedNote = linkResolver.resolve('./Sodium.md')!;
-    expect(resolvedNote.filePath, p.join(tempDir.path, 'Folder/Sodium.md'));
+    expect(resolvedNote.filePath, 'Folder/Sodium.md');
   });
 
   test('Normal relative link without ./', () {
@@ -165,7 +183,7 @@ void main() {
     var linkResolver = LinkResolver(note);
 
     var resolvedNote = linkResolver.resolve('Hello.md')!;
-    expect(resolvedNote.filePath, p.join(tempDir.path, 'Hello.md'));
+    expect(resolvedNote.filePath, 'Hello.md');
   });
 
   test('Non existing relative link fails', () {
@@ -181,7 +199,7 @@ void main() {
     var linkResolver = LinkResolver(note);
 
     var resolvedNote = linkResolver.resolve('./Air Bender/../Goat  Sim.md')!;
-    expect(resolvedNote.filePath, p.join(tempDir.path, 'Goat  Sim.md'));
+    expect(resolvedNote.filePath, 'Goat  Sim.md');
   });
 
   test('Resolve Parent file', () {
@@ -189,7 +207,7 @@ void main() {
     var linkResolver = LinkResolver(note);
 
     var resolvedNote = linkResolver.resolve('../Hello.md')!;
-    expect(resolvedNote.filePath, p.join(tempDir.path, 'Hello.md'));
+    expect(resolvedNote.filePath, 'Hello.md');
   });
 
   test('Should resolve Link object', () {
