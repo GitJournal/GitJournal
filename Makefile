@@ -17,12 +17,15 @@ protos:
 	protoc --dart_out=grpc:lib/analytics/generated -Ilib/analytics/ lib/analytics/analytics.proto
 	protoc --dart_out=grpc:lib/markdown/generated -Ilib/markdown/ lib/markdown/markdown.proto
 	protoc --dart_out=grpc:lib/generated -Iprotos protos/shared_preferences.proto
+	protoc --dart_out=grpc:lib/generated -Iprotos protos/builders.proto
 	./flutterw format lib/
 	./flutterw pub run import_sorter:main
 
 	reuse addheader --license 'AGPL-3.0-or-later' --copyright 'Vishesh Handa <me@vhanda.in>' --year '2021' lib/analytics/generated/*
 	reuse addheader --license 'AGPL-3.0-or-later' --copyright 'Vishesh Handa <me@vhanda.in>' --year '2021' lib/markdown/generated/*
 	reuse addheader --license 'AGPL-3.0-or-later' --copyright 'Vishesh Handa <me@vhanda.in>' --year '2021' lib/generated/*
+
+	git checkout lib/generated/locale_keys.g.dart
 
 unused:
 	./flutterw pub run dart_code_metrics:metrics check-unused-files lib

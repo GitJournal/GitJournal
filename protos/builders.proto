@@ -1,0 +1,35 @@
+/*
+ * SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
+syntax = "proto3";
+
+package gitjournal;
+
+message BlobCTimeBuilderData {
+    repeated bytes commitHashes = 1;
+    repeated bytes treeHashes = 2;
+    map<string, TzDateTime> map = 3;
+}
+
+message FileMTimeBuilderData {
+    repeated bytes commitHashes = 1;
+    repeated bytes treeHashes = 2;
+    map<string, FileMTimeInfo> map = 3;
+}
+
+message TzDateTime {
+    /// in seconds
+    uint64 timestamp = 1;
+
+    /// offset in seconds east of GMT
+    int32 offset = 2;
+}
+
+message FileMTimeInfo {
+    string filePath = 1;
+    bytes hash = 2;
+    TzDateTime dt = 3;
+}
