@@ -3,6 +3,20 @@
 # SPDX-License-Identifier: CC-BY-4.0
 
 settings:
+  list:
+    userInterface:
+      title: User Interface
+      subtitle: Theme, Language, Home, Bottom Bar, Rendering
+    git:
+      title: Git
+      subtitle: Git Author, Remote, Sync Frequency
+    editor:
+      title: Editor
+      subtitle: Default Editor, Default View
+    storage:
+      title: Storage
+      subtitle: Storage, Serialization, Metadata, File Format
+
   ok: Ok
   cancel: Cancel
   title: Settings

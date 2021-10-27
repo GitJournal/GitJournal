@@ -5,6 +5,22 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
 abstract class LocaleKeys {
+  static const settings_list_userInterface_title =
+      'settings.list.userInterface.title';
+  static const settings_list_userInterface_subtitle =
+      'settings.list.userInterface.subtitle';
+  static const settings_list_userInterface = 'settings.list.userInterface';
+  static const settings_list_git_title = 'settings.list.git.title';
+  static const settings_list_git_subtitle = 'settings.list.git.subtitle';
+  static const settings_list_git = 'settings.list.git';
+  static const settings_list_editor_title = 'settings.list.editor.title';
+  static const settings_list_editor_subtitle = 'settings.list.editor.subtitle';
+  static const settings_list_editor = 'settings.list.editor';
+  static const settings_list_storage_title = 'settings.list.storage.title';
+  static const settings_list_storage_subtitle =
+      'settings.list.storage.subtitle';
+  static const settings_list_storage = 'settings.list.storage';
+  static const settings_list = 'settings.list';
   static const settings_ok = 'settings.ok';
   static const settings_cancel = 'settings.cancel';
   static const settings_title = 'settings.title';
