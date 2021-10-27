@@ -15,7 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gitjournal/logger/fakes/debug_screen_fake.dart';
 import 'package:gitjournal/logger/fakes/fake_path_provider.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/setup/fakes/clone_fake.dart';
 
 void main() async {
@@ -30,10 +30,10 @@ void main() async {
 
   var pref = await SharedPreferences.getInstance();
 
-  AppSettings.instance.load(pref);
+  AppConfig.instance.load(pref);
 
-  var appSettings = AppSettings.instance;
-  Log.i("AppSetting ${appSettings.toMap()}");
+  var appConfig = AppConfig.instance;
+  Log.i("AppConfig ${appConfig.toMap()}");
 
   _ = dashbook
       .storiesOf('Settings')
@@ -50,7 +50,7 @@ void main() async {
   );
 
   var app = ChangeNotifierProvider.value(
-    value: appSettings,
+    value: appConfig,
     child: dashbook,
   );
 

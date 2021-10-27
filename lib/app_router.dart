@@ -22,7 +22,7 @@ import 'package:gitjournal/screens/home_screen.dart';
 import 'package:gitjournal/screens/note_editor.dart';
 import 'package:gitjournal/screens/onboarding_screens.dart';
 import 'package:gitjournal/screens/tag_listing.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/settings/storage_config.dart';
@@ -58,19 +58,19 @@ class AppRoute {
 }
 
 class AppRouter {
-  final AppSettings appSettings;
+  final AppConfig appConfig;
   final Settings settings;
   final StorageConfig storageConfig;
 
   AppRouter({
-    required this.appSettings,
+    required this.appConfig,
     required this.settings,
     required this.storageConfig,
   });
 
   String initialRoute() {
     var route = '/';
-    if (!appSettings.onBoardingCompleted) {
+    if (!appConfig.onBoardingCompleted) {
       route = AppRoute.OnBoarding;
     }
     if (settings.homeScreen == SettingsHomeScreen.AllFolders) {

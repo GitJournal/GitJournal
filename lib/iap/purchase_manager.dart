@@ -14,7 +14,7 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/iap/iap.dart';
 import 'package:gitjournal/iap/purchase_slider.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 
 // ignore_for_file: cancel_subscriptions
 
@@ -118,10 +118,10 @@ class PurchaseManager {
   }
 
   void _deliverProduct(SubscriptionStatus status) {
-    var appSettings = AppSettings.instance;
-    appSettings.proMode = status.isPro;
-    appSettings.proExpirationDate = status.expiryDate.toIso8601String();
-    appSettings.save();
+    var appConfig = AppConfig.instance;
+    appConfig.proMode = status.isPro;
+    appConfig.proExpirationDate = status.expiryDate.toIso8601String();
+    appConfig.save();
 
     Log.i("Calling Purchase Completed Callbacks: ${_callbacks.length}");
     for (var callback in _callbacks) {

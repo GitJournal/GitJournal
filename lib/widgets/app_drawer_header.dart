@@ -17,7 +17,7 @@ import 'package:time/time.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 
 class AppDrawerHeader extends StatelessWidget {
@@ -29,7 +29,7 @@ class AppDrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var appSettings = Provider.of<AppSettings>(context);
+    var appConfig = Provider.of<AppConfig>(context);
 
     var top = Row(
       children: <Widget>[
@@ -70,7 +70,7 @@ class AppDrawerHeader extends StatelessWidget {
       ),
     );
 
-    if (!appSettings.proMode) {
+    if (!appConfig.proMode) {
       return header;
     }
 

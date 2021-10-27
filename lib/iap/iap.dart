@@ -16,24 +16,24 @@ import 'package:universal_io/io.dart' show Platform;
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 
 class InAppPurchases {
   static Future<void> confirmProPurchaseBoot() async {
     clearTransactionsIos();
     confirmPendingPurchases();
 
-    if (Features.alwaysPro || !AppSettings.instance.validateProMode) {
+    if (Features.alwaysPro || !AppConfig.instance.validateProMode) {
       return;
     }
 
-    if (AppSettings.instance.proMode == false) {
+    if (AppConfig.instance.proMode == false) {
       Log.i("confirmProPurchaseBoot: Pro Mode is false");
       return;
     }
 
     var currentDt = DateTime.now().toUtc().toIso8601String();
-    var exp = AppSettings.instance.proExpirationDate;
+    var exp = AppConfig.instance.proExpirationDate;
 
     Log.i("Checking if ProMode should be enabled. Exp: $exp");
     if (exp.isNotEmpty && exp.compareTo(currentDt) > 0) {
@@ -59,9 +59,9 @@ class InAppPurchases {
       Log.e("Failed to get subscription status", ex: e, stacktrace: stackTrace);
       Log.i("Disabling Pro mode as it has probably expired");
 
-      AppSettings.instance.proMode = false;
-      AppSettings.instance.proExpirationDate = "";
-      AppSettings.instance.save();
+      AppConfig.instance.proMode = false;
+      AppConfig.instance.proExpirationDate = "";
+      AppConfig.instance.save();
 
       return;
     }
@@ -72,14 +72,14 @@ class InAppPurchases {
     var expiryDate = sub.expiryDate.toIso8601String();
     Log.i("Pro ExpiryDate: $expiryDate");
 
-    if (AppSettings.instance.proMode != isPro) {
+    if (AppConfig.instance.proMode != isPro) {
       Log.i("Pro mode changed to $isPro");
-      AppSettings.instance.proMode = isPro;
-      AppSettings.instance.proExpirationDate = expiryDate;
-      AppSettings.instance.save();
+      AppConfig.instance.proMode = isPro;
+      AppConfig.instance.proExpirationDate = expiryDate;
+      AppConfig.instance.save();
     } else {
-      AppSettings.instance.proExpirationDate = expiryDate;
-      AppSettings.instance.save();
+      AppConfig.instance.proExpirationDate = expiryDate;
+      AppConfig.instance.save();
     }
   }
 

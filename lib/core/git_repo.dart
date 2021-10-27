@@ -17,7 +17,7 @@ import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/utils/git_desktop.dart';
 
@@ -41,7 +41,7 @@ class GitNoteRepository {
   }
 
   Future<Result<void>> _add(String pathSpec) async {
-    if (useDartGit || AppSettings.instance.experimentalGitOps) {
+    if (useDartGit || AppConfig.instance.experimentalGitOps) {
       var repo = await GitRepository.load(gitRepoPath).getOrThrow();
       await repo.add(pathSpec).throwOnError();
       return Result(null);
@@ -57,7 +57,7 @@ class GitNoteRepository {
   }
 
   Future<Result<void>> _rm(String pathSpec) async {
-    if (useDartGit || AppSettings.instance.experimentalGitOps) {
+    if (useDartGit || AppConfig.instance.experimentalGitOps) {
       var repo = await GitRepository.load(gitRepoPath).getOrThrow();
       return await repo.rm(pathSpec);
     } else {
@@ -76,7 +76,7 @@ class GitNoteRepository {
     required String authorEmail,
     required String authorName,
   }) async {
-    if (useDartGit || AppSettings.instance.experimentalGitOps) {
+    if (useDartGit || AppConfig.instance.experimentalGitOps) {
       var repo = await GitRepository.load(gitRepoPath).getOrThrow();
       var author = GitAuthor(name: authorName, email: authorEmail);
       var r = await repo.commit(message: message, author: author);
@@ -213,7 +213,7 @@ class GitNoteRepository {
   }
 
   Future<Result<void>> resetLastCommit() async {
-    if (useDartGit || AppSettings.instance.experimentalGitOps) {
+    if (useDartGit || AppConfig.instance.experimentalGitOps) {
       var repo = await GitRepository.load(gitRepoPath).getOrThrow();
       var headCommitR = await repo.headCommit();
       if (headCommitR.isFailure) {
@@ -292,7 +292,7 @@ class GitNoteRepository {
       return fail(r);
     }
 
-    if (useDartGit || AppSettings.instance.experimentalGitMerge) {
+    if (useDartGit || AppConfig.instance.experimentalGitMerge) {
       var author = GitAuthor(
         email: config.gitAuthorEmail,
         name: config.gitAuthor,

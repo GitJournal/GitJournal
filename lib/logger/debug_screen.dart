@@ -15,7 +15,7 @@ import 'package:time/time.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/utils/utils.dart';
 
 class DebugScreen extends StatefulWidget {
@@ -103,8 +103,8 @@ class _DebugScreenState extends State<DebugScreen> {
   }
 
   bool _shouldDisplay(LogMessage msg) {
-    var appSettings = Provider.of<AppSettings>(context);
-    var filterLevel = appSettings.debugLogLevel;
+    var appConfig = Provider.of<AppConfig>(context);
+    var filterLevel = appConfig.debugLogLevel;
 
     if (filterLevel.isEmpty) {
       return true;
@@ -291,8 +291,8 @@ class _DebugScreenState extends State<DebugScreen> {
   }
 
   void _showFilterSelection() async {
-    var appSettings = Provider.of<AppSettings>(context);
-    var filterLevel = appSettings.debugLogLevel;
+    var appConfig = Provider.of<AppConfig>(context);
+    var filterLevel = appConfig.debugLogLevel;
 
     var dialog = AlertDialog(
       title: Text(tr(LocaleKeys.settings_debug_levels_title)),
@@ -314,8 +314,8 @@ class _DebugScreenState extends State<DebugScreen> {
     );
     var l = await showDialog(context: context, builder: (context) => dialog);
     if (l != null) {
-      appSettings.debugLogLevel = l;
-      appSettings.save();
+      appConfig.debugLogLevel = l;
+      appConfig.save();
     }
   }
 }

@@ -10,14 +10,14 @@ import 'package:time/time.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/app.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/utils/datetime.dart';
 
 void main() async {
   // enableFlutterDriverExtension();
 
   var pref = await SharedPreferences.getInstance();
-  AppSettings.instance.load(pref);
+  AppConfig.instance.load(pref);
 
   await populateWithData(pref);
   await JournalApp.main(pref);

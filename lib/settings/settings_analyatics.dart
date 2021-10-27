@@ -11,23 +11,23 @@ import 'package:provider/provider.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 
 class SettingsAnalytics extends StatelessWidget {
   const SettingsAnalytics({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var appSettings = context.watch<AppSettings>();
+    var appConfig = context.watch<AppConfig>();
     var list = ListView(
       children: [
         const _AnalyticsSwitchListTile(),
         SwitchListTile(
           title: Text(tr(LocaleKeys.settings_crashReports)),
-          value: appSettings.collectCrashReports,
+          value: appConfig.collectCrashReports,
           onChanged: (bool val) {
-            appSettings.collectCrashReports = val;
-            appSettings.save();
+            appConfig.collectCrashReports = val;
+            appConfig.save();
 
             logEvent(
               Event.CrashReportingLevelChanged,

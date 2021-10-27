@@ -19,7 +19,7 @@ import 'package:gitjournal/iap/iap.dart';
 import 'package:gitjournal/iap/purchase_manager.dart';
 import 'package:gitjournal/iap/purchase_slider.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 
 class PurchaseButton extends StatelessWidget {
   final ProductDetails? product;
@@ -353,7 +353,7 @@ class _RestorePurchaseButtonState extends State<RestorePurchaseButton> {
         });
         Log.i("Restoring Purchases");
         await InAppPurchases.confirmProPurchase();
-        if (AppSettings.instance.proMode) {
+        if (AppConfig.instance.proMode) {
           Navigator.of(context).pop();
         }
       },

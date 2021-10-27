@@ -20,7 +20,7 @@ import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 import 'rich_text_controller.dart';
 import 'search.dart';
 
@@ -128,7 +128,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
       ),
     );
 
-    var settings = Provider.of<AppSettings>(context);
+    var settings = Provider.of<AppConfig>(context);
     Widget? markdownToolbar;
     if (settings.experimentalMarkdownToolbar) {
       markdownToolbar = MarkdownToolBar(

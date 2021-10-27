@@ -15,7 +15,7 @@ import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/folder_views/folder_view.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/folder_tree_view.dart';
@@ -35,7 +35,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
     final notesFolder = Provider.of<NotesFolderFS>(context);
 
     // Load experimental setting
-    var settings = Provider.of<AppSettings>(context);
+    var settings = Provider.of<AppConfig>(context);
 
     var treeView = FolderTreeView(
       key: _folderTreeViewKey,

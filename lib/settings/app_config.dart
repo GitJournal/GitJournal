@@ -10,12 +10,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/features.dart';
 
-class AppSettings extends ChangeNotifier {
+class AppConfig extends ChangeNotifier {
   // singleton
-  static final AppSettings _singleton = AppSettings._internal();
-  factory AppSettings() => _singleton;
-  AppSettings._internal();
-  static AppSettings get instance => _singleton;
+  static final AppConfig _singleton = AppConfig._internal();
+  factory AppConfig() => _singleton;
+  AppConfig._internal();
+  static AppConfig get instance => _singleton;
 
   //
   // Properties
@@ -75,7 +75,7 @@ class AppSettings extends ChangeNotifier {
 
   Future<void> save() async {
     var pref = await SharedPreferences.getInstance();
-    var defaultSet = AppSettings._internal();
+    var defaultSet = AppConfig._internal();
 
     dynamic _;
     _ = pref.setBool("onBoardingCompleted", onBoardingCompleted);

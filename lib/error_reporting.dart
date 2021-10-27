@@ -18,7 +18,7 @@ import 'package:universal_io/io.dart' show Platform;
 
 import 'package:gitjournal/.env.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 
 Future<void> initSentry() async {
   if (Sentry.isEnabled) {
@@ -87,7 +87,7 @@ void flutterOnErrorHandler(FlutterErrorDetails details) {
 bool get reportCrashes => _reportCrashes ??= _initReportCrashes();
 bool? _reportCrashes;
 bool _initReportCrashes() {
-  return !foundation.kDebugMode && AppSettings.instance.collectCrashReports;
+  return !foundation.kDebugMode && AppConfig.instance.collectCrashReports;
 }
 
 Future<void> reportError(Object error, StackTrace stackTrace) async {

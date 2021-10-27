@@ -37,7 +37,7 @@ import 'package:gitjournal/iap/iap.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/settings/markdown_renderer_config.dart';
 import 'package:gitjournal/settings/settings.dart';
@@ -56,10 +56,10 @@ class JournalApp extends StatefulWidget {
     Log.i("--------------------------------");
     Log.i("--------------------------------");
 
-    var appSettings = AppSettings.instance;
-    Log.i("AppSetting", props: appSettings.toMap());
+    var appConfig = AppConfig.instance;
+    Log.i("AppConfig", props: appConfig.toMap());
 
-    _enableAnalyticsIfPossible(appSettings, pref);
+    _enableAnalyticsIfPossible(appConfig, pref);
 
     final gitBaseDirectory = (await getApplicationDocumentsDirectory()).path;
     final cacheDir = (await getApplicationSupportDirectory()).path;
@@ -82,7 +82,7 @@ class JournalApp extends StatefulWidget {
     runApp(EasyLocalization(
       child: GitJournalChangeNotifiers(
         repoManager: repoManager,
-        appSettings: appSettings,
+        appConfig: appConfig,
         pref: pref,
         child: const JournalApp(),
       ),
@@ -114,7 +114,7 @@ class JournalApp extends StatefulWidget {
 
   // TODO: All this logic should go inside the analytics package
   static Future<void> _enableAnalyticsIfPossible(
-    AppSettings appSettings,
+    AppConfig appConfig,
     SharedPreferences pref,
   ) async {
     var supportDir = await getApplicationSupportDirectory();
@@ -129,12 +129,12 @@ class JournalApp extends StatefulWidget {
 
     analytics.setUserProperty(
       name: 'proMode',
-      value: appSettings.proMode.toString(),
+      value: appConfig.proMode.toString(),
     );
 
     analytics.setUserProperty(
       name: 'proExpirationDate',
-      value: appSettings.proExpirationDate.toString(),
+      value: appConfig.proExpirationDate.toString(),
     );
   }
 
@@ -273,11 +273,11 @@ class _JournalAppState extends State<JournalApp> {
   Widget build(BuildContext context) {
     var stateContainer = Provider.of<GitJournalRepo>(context);
     var settings = Provider.of<Settings>(context);
-    var appSettings = Provider.of<AppSettings>(context);
+    var appConfig = Provider.of<AppConfig>(context);
     var storageConfig = Provider.of<StorageConfig>(context);
     var router = AppRouter(
       settings: settings,
-      appSettings: appSettings,
+      appConfig: appConfig,
       storageConfig: storageConfig,
     );
 
@@ -340,13 +340,13 @@ class _JournalAppState extends State<JournalApp> {
 
 class GitJournalChangeNotifiers extends StatelessWidget {
   final RepositoryManager repoManager;
-  final AppSettings appSettings;
+  final AppConfig appConfig;
   final SharedPreferences pref;
   final Widget child;
 
   const GitJournalChangeNotifiers({
     required this.repoManager,
-    required this.appSettings,
+    required this.appConfig,
     required this.pref,
     required this.child,
     Key? key,
@@ -369,7 +369,7 @@ class GitJournalChangeNotifiers extends StatelessWidget {
     );
 
     return ChangeNotifierProvider.value(
-      value: appSettings,
+      value: appConfig,
       child: app,
     );
   }

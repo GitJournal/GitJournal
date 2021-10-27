@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen();
@@ -139,9 +139,9 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   void _finish() {
-    var appSettings = Provider.of<AppSettings>(context, listen: false);
-    appSettings.onBoardingCompleted = true;
-    appSettings.save();
+    var appConfig = Provider.of<AppConfig>(context, listen: false);
+    appConfig.onBoardingCompleted = true;
+    appConfig.save();
 
     Navigator.pop(context);
     Navigator.pushNamed(context, "/");

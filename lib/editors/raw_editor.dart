@@ -22,7 +22,7 @@ import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/editors/undo_redo.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/widgets/future_builder_with_progress.dart';
 import 'rich_text_controller.dart';
 
@@ -278,8 +278,8 @@ class _NoteEditorState extends State<_NoteEditor> {
       onChanged: (_) => widget.onChanged(),
     );
 
-    var appSettings = Provider.of<AppSettings>(context);
-    if (!appSettings.experimentalTagAutoCompletion) {
+    var appConfig = Provider.of<AppConfig>(context);
+    if (!appConfig.experimentalTagAutoCompletion) {
       return textField;
     }
 

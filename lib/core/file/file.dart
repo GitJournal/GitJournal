@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'package:flutter/foundation.dart';
+
 import 'package:dart_git/plumbing/git_hash.dart';
 import 'package:path/path.dart' as p;
 import 'package:quiver/core.dart';
@@ -39,6 +41,7 @@ class File {
     assert(filePath.isNotEmpty);
   }
 
+  @visibleForTesting
   File.short(this.filePath, this.repoPath)
       : oid = GitHash.zero(),
         fileLastModified = DateTime.now(),

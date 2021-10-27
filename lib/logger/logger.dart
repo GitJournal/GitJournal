@@ -15,6 +15,8 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:time/time.dart';
 import 'package:universal_io/io.dart';
 
+import 'package:gitjournal/apis/githost.dart';
+
 // FIXME: Only catch Exception? type. Something else needs to be done with Errors
 class Log {
   static late String logFolderPath;
@@ -100,7 +102,13 @@ class Log {
     dynamic ex,
     StackTrace? stacktrace,
     Map<String, dynamic>? props,
+    Result? result,
   }) {
+    if (result != null) {
+      ex ??= result.error;
+      stacktrace ??= result.stackTrace;
+    }
+
     if (stacktrace != null) {
       stacktrace = Trace.from(stacktrace).terse;
     }

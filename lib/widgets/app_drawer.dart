@@ -21,7 +21,7 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/bug_report.dart';
 import 'package:gitjournal/widgets/app_drawer_header.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
@@ -104,7 +104,7 @@ class _AppDrawerState extends State<AppDrawer>
   Widget build(BuildContext context) {
     Widget? setupGitButton;
     var repo = Provider.of<GitJournalRepo>(context);
-    var appSettings = Provider.of<AppSettings>(context);
+    var appConfig = Provider.of<AppConfig>(context);
     var textStyle = Theme.of(context).textTheme.bodyText1;
     var currentRoute = ModalRoute.of(context)!.settings.name;
 
@@ -145,7 +145,7 @@ class _AppDrawerState extends State<AppDrawer>
           // If they are multiple show the current one which a tick mark
           _buildRepoList(),
           if (setupGitButton != null) ...[setupGitButton, divider],
-          if (!appSettings.proMode)
+          if (!appConfig.proMode)
             _buildDrawerTile(
               context,
               icon: Icons.power,
@@ -160,7 +160,7 @@ class _AppDrawerState extends State<AppDrawer>
                 );
               },
             ),
-          if (appSettings.experimentalAccounts && user == null)
+          if (appConfig.experimentalAccounts && user == null)
             _buildDrawerTile(
               context,
               icon: Icons.account_circle,
@@ -168,7 +168,7 @@ class _AppDrawerState extends State<AppDrawer>
               onTap: () => _navTopLevel(context, '/login'),
               selected: currentRoute == '/login',
             ),
-          if (!appSettings.proMode) divider,
+          if (!appConfig.proMode) divider,
           _buildDrawerTile(
             context,
             icon: Icons.note,
@@ -183,7 +183,7 @@ class _AppDrawerState extends State<AppDrawer>
             onTap: () => _navTopLevel(context, '/folders'),
             selected: currentRoute == "/folders",
           ),
-          if (appSettings.experimentalGraphView)
+          if (appConfig.experimentalGraphView)
             _buildDrawerTile(
               context,
               icon: FontAwesomeIcons.projectDiagram,
@@ -192,7 +192,7 @@ class _AppDrawerState extends State<AppDrawer>
               onTap: () => _navTopLevel(context, '/graph'),
               selected: currentRoute == "/graph",
             ),
-          if (appSettings.experimentalHistory)
+          if (appConfig.experimentalHistory)
             _buildDrawerTile(
               context,
               icon: Icons.history,

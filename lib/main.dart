@@ -16,7 +16,7 @@ import 'package:stack_trace/stack_trace.dart';
 
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 
 void main() async {
   var _ = WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +27,7 @@ void main() async {
   ];
 
   var pref = await SharedPreferences.getInstance();
-  AppSettings.instance.load(pref);
+  AppConfig.instance.load(pref);
 
   FlutterError.onError = flutterOnErrorHandler;
 

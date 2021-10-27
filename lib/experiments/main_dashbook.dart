@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository_manager.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 
 void main() async {
   //TestWidgetsFlutterBinding.ensureInitialized();
@@ -28,10 +28,10 @@ void main() async {
 
   var pref = await SharedPreferences.getInstance();
 
-  AppSettings.instance.load(pref);
+  AppConfig.instance.load(pref);
 
-  var appSettings = AppSettings.instance;
-  Log.i("AppSetting ${appSettings.toMap()}");
+  var appConfig = AppConfig.instance;
+  Log.i("AppConfig ${appConfig.toMap()}");
 
   final gitBaseDirectory = (await getTemporaryDirectory()).path;
   final cacheDir = (await getTemporaryDirectory()).path;
@@ -45,9 +45,7 @@ void main() async {
   var settings = repo.settings;
   var storageConfig = repo.storageConfig;
   var appRouter = AppRouter(
-      settings: settings,
-      appSettings: appSettings,
-      storageConfig: storageConfig);
+      settings: settings, appConfig: appConfig, storageConfig: storageConfig);
 
   for (var routeName in AppRoute.all) {
     var _ = dashbook

@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 
 class ExperimentalSettingsScreen extends StatefulWidget {
   @override
@@ -26,7 +26,7 @@ class _ExperimentalSettingsScreenState
     extends State<ExperimentalSettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    var appSettings = Provider.of<AppSettings>(context);
+    var appConfig = Provider.of<AppConfig>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -44,81 +44,81 @@ class _ExperimentalSettingsScreenState
             SwitchListTile(
               title:
                   Text(tr(LocaleKeys.settings_experimental_includeSubfolders)),
-              value: appSettings.experimentalSubfolders,
+              value: appConfig.experimentalSubfolders,
               onChanged: (bool newVal) {
-                appSettings.experimentalSubfolders = newVal;
-                appSettings.save();
+                appConfig.experimentalSubfolders = newVal;
+                appConfig.save();
                 setState(() {});
               },
             ),
             SwitchListTile(
               title: Text(tr(LocaleKeys.settings_experimental_graphView)),
-              value: appSettings.experimentalGraphView,
+              value: appConfig.experimentalGraphView,
               onChanged: (bool newVal) {
-                appSettings.experimentalGraphView = newVal;
-                appSettings.save();
+                appConfig.experimentalGraphView = newVal;
+                appConfig.save();
                 setState(() {});
               },
             ),
             SwitchListTile(
               title: Text(tr(LocaleKeys.settings_experimental_markdownToolbar)),
-              value: appSettings.experimentalMarkdownToolbar,
+              value: appConfig.experimentalMarkdownToolbar,
               onChanged: (bool newVal) {
-                appSettings.experimentalMarkdownToolbar = newVal;
-                appSettings.save();
+                appConfig.experimentalMarkdownToolbar = newVal;
+                appConfig.save();
                 setState(() {});
               },
             ),
             SwitchListTile(
               title: Text(tr(LocaleKeys.settings_experimental_accounts)),
-              value: appSettings.experimentalAccounts,
+              value: appConfig.experimentalAccounts,
               onChanged: (bool newVal) {
-                appSettings.experimentalAccounts = newVal;
-                appSettings.save();
+                appConfig.experimentalAccounts = newVal;
+                appConfig.save();
                 setState(() {});
               },
             ),
             SwitchListTile(
               title: Text(tr(LocaleKeys.settings_experimental_merge)),
-              value: appSettings.experimentalGitMerge,
+              value: appConfig.experimentalGitMerge,
               onChanged: (bool newVal) {
-                appSettings.experimentalGitMerge = newVal;
-                appSettings.save();
+                appConfig.experimentalGitMerge = newVal;
+                appConfig.save();
                 setState(() {});
               },
             ),
             SwitchListTile(
               title:
                   Text(tr(LocaleKeys.settings_experimental_experimentalGitOps)),
-              value: appSettings.experimentalGitOps,
+              value: appConfig.experimentalGitOps,
               onChanged: (bool newVal) {
-                appSettings.experimentalGitOps = newVal;
-                appSettings.save();
+                appConfig.experimentalGitOps = newVal;
+                appConfig.save();
                 setState(() {});
               },
             ),
             SwitchListTile(
               title:
                   Text(tr(LocaleKeys.settings_experimental_autoCompleteTags)),
-              value: appSettings.experimentalTagAutoCompletion,
+              value: appConfig.experimentalTagAutoCompletion,
               onChanged: (bool newVal) {
-                appSettings.experimentalTagAutoCompletion = newVal;
-                appSettings.save();
+                appConfig.experimentalTagAutoCompletion = newVal;
+                appConfig.save();
                 setState(() {});
               },
             ),
             SwitchListTile(
               title: Text(tr(LocaleKeys.settings_experimental_history)),
-              value: appSettings.experimentalHistory,
+              value: appConfig.experimentalHistory,
               onChanged: (bool newVal) {
-                appSettings.experimentalHistory = newVal;
-                appSettings.save();
+                appConfig.experimentalHistory = newVal;
+                appConfig.save();
                 setState(() {});
               },
             ),
             ListTile(
               title: const Text('Enter Pro Password'),
-              subtitle: Text('Pro: ' + AppSettings.instance.proMode.toString()),
+              subtitle: Text('Pro: ' + AppConfig.instance.proMode.toString()),
               onTap: () async {
                 var _ = await showDialog(
                   context: context,
@@ -164,11 +164,11 @@ class _PasswordForm extends StatelessWidget {
 
           Log.i('Unlocking Pro Mode');
 
-          var appSettings = AppSettings.instance;
-          appSettings.proMode = true;
-          appSettings.validateProMode = false;
-          appSettings.proExpirationDate = '2050-01-01';
-          appSettings.save();
+          var appConfig = AppConfig.instance;
+          appConfig.proMode = true;
+          appConfig.validateProMode = false;
+          appConfig.proExpirationDate = '2050-01-01';
+          appConfig.save();
         },
       ),
       actions: <Widget>[

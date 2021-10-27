@@ -31,7 +31,7 @@ import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/screens/feature_timeline_screen.dart';
-import 'package:gitjournal/settings/app_settings.dart';
+import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_bottom_menu_bar.dart';
 import 'package:gitjournal/settings/settings_display_images.dart';
@@ -83,7 +83,7 @@ class SettingsListState extends State<SettingsList> {
   Widget build(BuildContext context) {
     var settings = Provider.of<Settings>(context);
     var storageConfig = Provider.of<StorageConfig>(context);
-    var appSettings = Provider.of<AppSettings>(context);
+    var appConfig = Provider.of<AppConfig>(context);
     final repo = Provider.of<GitJournalRepo>(context);
 
     var defaultNewFolder = settings.defaultNewNoteFolderSpec;
@@ -390,10 +390,10 @@ class SettingsListState extends State<SettingsList> {
         ),
       SwitchListTile(
         title: Text(tr(LocaleKeys.settings_crashReports)),
-        value: appSettings.collectCrashReports,
+        value: appConfig.collectCrashReports,
         onChanged: (bool val) {
-          appSettings.collectCrashReports = val;
-          appSettings.save();
+          appConfig.collectCrashReports = val;
+          appConfig.save();
           setState(() {});
 
           logEvent(
