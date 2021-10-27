@@ -15,6 +15,7 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/debug_screen.dart';
 import 'package:gitjournal/settings/bug_report.dart';
 import 'package:gitjournal/settings/settings_about.dart';
+import 'package:gitjournal/settings/settings_analyatics.dart';
 import 'package:gitjournal/settings/settings_experimental.dart';
 
 class SettingsScreen2 extends StatelessWidget {
@@ -46,6 +47,13 @@ class SettingsScreen2 extends StatelessWidget {
           iconData: FontAwesomeIcons.chartArea,
           title: LocaleKeys.settings_list_analytics_title.tr(),
           subtitle: LocaleKeys.settings_list_analytics_subtitle.tr(),
+          onTap: () {
+            var route = MaterialPageRoute(
+              builder: (context) => const SettingsAnalytics(),
+              settings: const RouteSettings(name: '/settings/analytics'),
+            );
+            var _ = Navigator.push(context, route);
+          },
         ),
         SettingsTile(
           iconData: FontAwesomeIcons.wrench,
