@@ -198,6 +198,9 @@ settings:
     input: Input
   privacy: Privacy Policy
   terms: Terms and Conditions
+  license:
+    title: Licenses
+    subtitle: GitJoural uses other great software
   experimental:
     title: Experimental Features
     subtitle: Try out features in Development

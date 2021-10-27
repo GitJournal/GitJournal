@@ -293,6 +293,9 @@ abstract class LocaleKeys {
   static const settings_noteMetaData = 'settings.noteMetaData';
   static const settings_privacy = 'settings.privacy';
   static const settings_terms = 'settings.terms';
+  static const settings_license_title = 'settings.license.title';
+  static const settings_license_subtitle = 'settings.license.subtitle';
+  static const settings_license = 'settings.license';
   static const settings_experimental_title = 'settings.experimental.title';
   static const settings_experimental_subtitle =
       'settings.experimental.subtitle';

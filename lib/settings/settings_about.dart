@@ -24,11 +24,13 @@ class SettingsAboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var list = ListView(
       children: [
+        const _AboutPageHeader(),
+        const Divider(),
         const VersionNumberTile(),
         SettingsTile(
           iconData: FontAwesomeIcons.userShield,
           title: LocaleKeys.settings_privacy.tr(),
-          subtitle: _privacyUrl,
+          subtitle: _privacyUrl.replaceAll('https://', ''),
           onTap: () {
             launch(_privacyUrl);
           },
@@ -36,9 +38,20 @@ class SettingsAboutPage extends StatelessWidget {
         SettingsTile(
           iconData: FontAwesomeIcons.fileContract,
           title: LocaleKeys.settings_terms.tr(),
-          subtitle: _termsUrl,
+          subtitle: _termsUrl.replaceAll('https://', ''),
           onTap: () {
             launch(_termsUrl);
+          },
+        ),
+        SettingsTile(
+          iconData: FontAwesomeIcons.infoCircle,
+          title: LocaleKeys.settings_license_title.tr(),
+          subtitle: LocaleKeys.settings_license_subtitle.tr(),
+          onTap: () {
+            showLicensePage(
+              context: context,
+              applicationIcon: const GitJournalLogo(height: 32, width: 32),
+            );
           },
         ),
       ],
@@ -54,6 +67,41 @@ class SettingsAboutPage extends StatelessWidget {
         ),
       ),
       body: list,
+    );
+  }
+}
+
+class _AboutPageHeader extends StatelessWidget {
+  const _AboutPageHeader({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const GitJournalLogo(width: 64 * 2, height: 64 * 2);
+  }
+}
+
+class GitJournalLogo extends StatelessWidget {
+  final int width;
+  final int height;
+
+  const GitJournalLogo({
+    Key? key,
+    required this.width,
+    required this.height,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.all(32.0),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/icon/icon.png'),
+          ),
+        ),
+        child: SizedBox(width: 64 * 2, height: 64 * 2),
+      ),
     );
   }
 }
