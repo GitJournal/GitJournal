@@ -476,7 +476,7 @@ class VersionNumberTileState extends State<VersionNumberTile> {
     super.initState();
 
     () async {
-      var str = await getVersionString();
+      var str = await getVersionString(includeAppName: false);
       if (!mounted) return;
       setState(() {
         versionText = str;
@@ -490,12 +490,8 @@ class VersionNumberTileState extends State<VersionNumberTile> {
     return ListTile(
       title:
           Text(tr(LocaleKeys.settings_versionInfo), style: textTheme.subtitle1),
-      subtitle: Text(
-        versionText,
-        style: textTheme.bodyText2,
-        textAlign: TextAlign.left,
-      ),
-      onLongPress: () {
+      subtitle: Text(versionText, textAlign: TextAlign.left),
+      onTap: () {
         Clipboard.setData(ClipboardData(text: versionText));
         showSnackbar(context, tr(LocaleKeys.settings_versionCopied));
       },

@@ -22,10 +22,13 @@ import '../editors/common_types.dart';
 import '../logger/logger.dart';
 import '../repository.dart';
 
-Future<String> getVersionString() async {
+Future<String> getVersionString({bool includeAppName = true}) async {
   var info = await PackageInfo.fromPlatform();
   var versionText = "";
-  versionText = info.appName + " " + info.version + "+" + info.buildNumber;
+  if (includeAppName) {
+    versionText += info.appName + " ";
+  }
+  versionText += info.version + "+" + info.buildNumber;
 
   if (foundation.kDebugMode) {
     versionText += " (Debug)";

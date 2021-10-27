@@ -111,8 +111,8 @@ settings:
     dark: Dark
     default: System Default
   gitAuthor: Git Author Settings
-  versionInfo: Version Info
-  versionCopied: Version Number Copied
+  versionInfo: GitJournal Version
+  versionCopied: Copied version to clipboard
   analytics: Analytics
   crashReports: Collect Anonymous Crash Reports
   usageStats: Collect Anonymous Usage Statistics
