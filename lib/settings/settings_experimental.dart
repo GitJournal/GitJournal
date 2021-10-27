@@ -107,6 +107,15 @@ class _ExperimentalSettingsScreenState
                 setState(() {});
               },
             ),
+            SwitchListTile(
+              title: Text(tr(LocaleKeys.settings_experimental_history)),
+              value: appSettings.experimentalHistory,
+              onChanged: (bool newVal) {
+                appSettings.experimentalHistory = newVal;
+                appSettings.save();
+                setState(() {});
+              },
+            ),
             ListTile(
               title: const Text('Enter Pro Password'),
               subtitle: Text('Pro: ' + AppSettings.instance.proMode.toString()),

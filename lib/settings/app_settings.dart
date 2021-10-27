@@ -69,6 +69,8 @@ class AppSettings extends ChangeNotifier {
     experimentalTagAutoCompletion =
         pref.getBool("experimentalTagAutoCompletion") ??
             experimentalTagAutoCompletion;
+    experimentalHistory =
+        pref.getBool("experimentalHistory") ?? experimentalHistory;
   }
 
   Future<void> save() async {
@@ -104,6 +106,8 @@ class AppSettings extends ChangeNotifier {
         "experimentalTagAutoCompletion",
         experimentalTagAutoCompletion,
         defaultSet.experimentalTagAutoCompletion);
+    _setBool(pref, "experimentalHistory", experimentalHistory,
+        defaultSet.experimentalHistory);
 
     _ = pref.setInt("appSettingsVersion", version);
 
@@ -125,6 +129,7 @@ class AppSettings extends ChangeNotifier {
       'experimentalGitMerge': experimentalGitMerge.toString(),
       'experimentalGitOps': experimentalGitOps.toString(),
       'experimentalTagAutoCompletion': experimentalTagAutoCompletion.toString(),
+      'experimentalHistory': experimentalHistory.toString(),
     };
   }
 

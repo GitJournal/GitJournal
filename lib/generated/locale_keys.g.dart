@@ -312,6 +312,7 @@ abstract class LocaleKeys {
   static const settings_experimental_merge = 'settings.experimental.merge';
   static const settings_experimental_autoCompleteTags =
       'settings.experimental.autoCompleteTags';
+  static const settings_experimental_history = 'settings.experimental.history';
   static const settings_experimental = 'settings.experimental';
   static const settings_editors_title = 'settings.editors.title';
   static const settings_editors_subtitle = 'settings.editors.subtitle';
