@@ -20,7 +20,24 @@ abstract class LocaleKeys {
   static const settings_list_storage_subtitle =
       'settings.list.storage.subtitle';
   static const settings_list_storage = 'settings.list.storage';
+  static const settings_list_analytics_title = 'settings.list.analytics.title';
+  static const settings_list_analytics_subtitle =
+      'settings.list.analytics.subtitle';
+  static const settings_list_analytics = 'settings.list.analytics';
+  static const settings_list_debug_title = 'settings.list.debug.title';
+  static const settings_list_debug_subtitle = 'settings.list.debug.subtitle';
+  static const settings_list_debug = 'settings.list.debug';
+  static const settings_list_experiments_title =
+      'settings.list.experiments.title';
+  static const settings_list_experiments_subtitle =
+      'settings.list.experiments.subtitle';
+  static const settings_list_experiments = 'settings.list.experiments';
   static const settings_list = 'settings.list';
+  static const settings_project_header = 'settings.project.header';
+  static const settings_project_docs = 'settings.project.docs';
+  static const settings_project_contribute = 'settings.project.contribute';
+  static const settings_project_about = 'settings.project.about';
+  static const settings_project = 'settings.project';
   static const settings_ok = 'settings.ok';
   static const settings_cancel = 'settings.cancel';
   static const settings_title = 'settings.title';

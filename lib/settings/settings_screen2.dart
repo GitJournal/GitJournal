@@ -4,72 +4,99 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:function_types/function_types.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/logger/debug_screen.dart';
+import 'package:gitjournal/settings/settings_about.dart';
+import 'package:gitjournal/settings/settings_experimental.dart';
 
 class SettingsScreen2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var list = ListView(
       children: [
-        _SettingsSearchBar(),
-        _SettingsTile(
+        SettingsTile(
           iconData: FontAwesomeIcons.paintBrush,
           title: LocaleKeys.settings_list_userInterface_title.tr(),
           subtitle: LocaleKeys.settings_list_userInterface_subtitle.tr(),
         ),
-        _SettingsTile(
+        SettingsTile(
           iconData: FontAwesomeIcons.git,
           title: LocaleKeys.settings_list_git_title.tr(),
           subtitle: LocaleKeys.settings_list_git_subtitle.tr(),
         ),
-        _SettingsTile(
+        SettingsTile(
           iconData: FontAwesomeIcons.edit,
           title: LocaleKeys.settings_list_editor_title.tr(),
           subtitle: LocaleKeys.settings_list_editor_subtitle.tr(),
         ),
-        _SettingsTile(
+        SettingsTile(
           iconData: FontAwesomeIcons.sdCard,
           title: LocaleKeys.settings_list_storage_title.tr(),
           subtitle: LocaleKeys.settings_list_storage_subtitle.tr(),
         ),
-        _SettingsTile(
+        SettingsTile(
           iconData: FontAwesomeIcons.chartArea,
-          title: "Analytics",
-          subtitle: "Configure what Analytics are collected and when",
+          title: LocaleKeys.settings_list_analytics_title.tr(),
+          subtitle: LocaleKeys.settings_list_analytics_subtitle.tr(),
         ),
-        _SettingsTile(
+        SettingsTile(
           iconData: FontAwesomeIcons.wrench,
-          title: "Debug",
-          subtitle: "Peek inside the inner working of GitJournal",
+          title: LocaleKeys.settings_list_debug_title.tr(),
+          subtitle: LocaleKeys.settings_list_debug_subtitle.tr(),
+          onTap: () {
+            var route = MaterialPageRoute(
+              builder: (context) => const DebugScreen(),
+              settings: const RouteSettings(name: '/settings/debug'),
+            );
+            var _ = Navigator.push(context, route);
+          },
+        ),
+        SettingsTile(
+          iconData: FontAwesomeIcons.flask,
+          title: LocaleKeys.settings_list_experiments_title.tr(),
+          subtitle: LocaleKeys.settings_list_experiments_subtitle.tr(),
+          onTap: () {
+            var route = MaterialPageRoute(
+              builder: (context) => ExperimentalSettingsScreen(),
+              settings: const RouteSettings(name: '/settings/experimental'),
+            );
+            var _ = Navigator.push(context, route);
+          },
         ),
         const Divider(),
-        _SettingsHeader("Project"),
-        _SettingsTile(
+        _SettingsHeader(LocaleKeys.settings_project_header.tr()),
+        SettingsTile(
           iconData: Icons.question_answer_outlined,
-          title: "Documentation & Support",
+          title: LocaleKeys.settings_project_docs.tr(),
         ),
-        _SettingsTile(
+        SettingsTile(
           iconData: Icons.bug_report,
           title: LocaleKeys.drawer_bug.tr(),
         ),
-        _SettingsTile(
+        SettingsTile(
           iconData: Icons.feedback,
           title: LocaleKeys.drawer_feedback.tr(),
         ),
-        _SettingsTile(
+        SettingsTile(
           iconData: FontAwesomeIcons.solidHeart,
-          title: "Contribute",
+          title: LocaleKeys.settings_project_contribute.tr(),
         ),
-        _SettingsTile(
+        SettingsTile(
           iconData: Icons.info_outline,
-          title: "About",
+          title: LocaleKeys.settings_project_about.tr(),
+          onTap: () {
+            var route = MaterialPageRoute(
+              builder: (context) => const SettingsAboutPage(),
+              settings: const RouteSettings(name: '/settings/about'),
+            );
+            var _ = Navigator.push(context, route);
+          },
         ),
       ],
       padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -90,6 +117,7 @@ class SettingsScreen2 extends StatelessWidget {
   }
 }
 
+// ignore: unused_element
 class _SettingsSearchBar extends StatelessWidget {
   const _SettingsSearchBar({
     Key? key,
@@ -111,9 +139,9 @@ class _SettingsSearchBar extends StatelessWidget {
             filled: true,
             hintText: "Search",
             fillColor: Colors.white70,
-            prefixIcon: Icon(Icons.search),
+            prefixIcon: const Icon(Icons.search),
             // This content padding has no effect if 'prefixIcon' is set!!
-            contentPadding: EdgeInsets.fromLTRB(205.0, 15.0, 20.0, 15.0),
+            contentPadding: const EdgeInsets.fromLTRB(205.0, 15.0, 20.0, 15.0),
           ),
         ),
       ),
@@ -121,16 +149,18 @@ class _SettingsSearchBar extends StatelessWidget {
   }
 }
 
-class _SettingsTile extends StatelessWidget {
+class SettingsTile extends StatelessWidget {
   final IconData iconData;
   final String title;
   final String? subtitle;
+  final Func0<void>? onTap;
 
-  const _SettingsTile({
+  const SettingsTile({
     Key? key,
     required this.iconData,
     required this.title,
     this.subtitle,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -150,6 +180,7 @@ class _SettingsTile extends StatelessWidget {
       leading: icon,
       title: Text(title, style: textStyle),
       subtitle: subtitle != null ? Text(subtitle!) : null,
+      onTap: onTap ?? onTap,
     );
   }
 }

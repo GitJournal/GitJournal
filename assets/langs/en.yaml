@@ -16,6 +16,20 @@ settings:
     storage:
       title: Storage
       subtitle: Storage, Serialization, Metadata, File Format
+    analytics:
+      title: Analytics
+      subtitle: It's important that you feel comfortable
+    debug:
+      title: Debug
+      subtitle: Peek inside the inner workings of GitJournal
+    experiments:
+      title: Experiments
+      subtitle: Play around with experimental features
+  project:
+    header: Project
+    docs: Documentation & Support
+    contribute: Contribute
+    about: About
 
   ok: Ok
   cancel: Cancel

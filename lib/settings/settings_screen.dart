@@ -12,6 +12,7 @@ import 'package:android_external_storage/android_external_storage.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:icloud_documents_path/icloud_documents_path.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -488,9 +489,13 @@ class VersionNumberTileState extends State<VersionNumberTile> {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     return ListTile(
+      leading: FaIcon(
+        FontAwesomeIcons.stamp,
+        color: textTheme.subtitle1!.color,
+      ),
       title:
           Text(tr(LocaleKeys.settings_versionInfo), style: textTheme.subtitle1),
-      subtitle: Text(versionText, textAlign: TextAlign.left),
+      subtitle: Text(versionText),
       onTap: () {
         Clipboard.setData(ClipboardData(text: versionText));
         showSnackbar(context, tr(LocaleKeys.settings_versionCopied));
