@@ -9,9 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:function_types/function_types.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/debug_screen.dart';
+import 'package:gitjournal/settings/bug_report.dart';
 import 'package:gitjournal/settings/settings_about.dart';
 import 'package:gitjournal/settings/settings_experimental.dart';
 
@@ -74,14 +76,19 @@ class SettingsScreen2 extends StatelessWidget {
         SettingsTile(
           iconData: Icons.question_answer_outlined,
           title: LocaleKeys.settings_project_docs.tr(),
+          onTap: () {
+            launch('https://gitjournal.io/docs');
+          },
         ),
         SettingsTile(
           iconData: Icons.bug_report,
           title: LocaleKeys.drawer_bug.tr(),
+          onTap: () => createBugReport(context),
         ),
         SettingsTile(
           iconData: Icons.feedback,
           title: LocaleKeys.drawer_feedback.tr(),
+          onTap: () => createFeedback(context),
         ),
         SettingsTile(
           iconData: FontAwesomeIcons.solidHeart,

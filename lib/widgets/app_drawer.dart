@@ -7,7 +7,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:provider/provider.dart';
@@ -17,14 +16,13 @@ import 'package:time/time.dart';
 import 'package:universal_io/io.dart' show Platform;
 
 import 'package:gitjournal/analytics/analytics.dart';
-import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/app_settings.dart';
-import 'package:gitjournal/utils/utils.dart';
+import 'package:gitjournal/settings/bug_report.dart';
 import 'package:gitjournal/widgets/app_drawer_header.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
@@ -243,36 +241,8 @@ class _AppDrawerState extends State<AppDrawer>
             icon: Icons.rate_review,
             title: tr(LocaleKeys.drawer_feedback),
             onTap: () async {
-              var platform = Platform.operatingSystem;
-              var versionText = await getVersionString();
-              var isPro = AppSettings.instance.proMode;
-
-              var body =
-                  "Hey!\n\nHere are some ways to improve GitJournal - \n \n\n";
-              body += "Version: $versionText\n";
-              body += "Platform: $platform\n";
-              body += "isPro: $isPro\n";
-
-              var exp = AppSettings.instance.proExpirationDate;
-              if (exp.isNotEmpty) {
-                body += "expiryDate: $exp";
-              }
-
-              final Email email = Email(
-                body: body,
-                subject: 'GitJournal Feedback',
-                recipients: ['feedback@gitjournal.io'],
-              );
-
-              try {
-                await FlutterEmailSender.send(email);
-              } catch (ex, st) {
-                logException(ex, st);
-                showSnackbar(context, ex.toString());
-              }
-
+              await createFeedback(context);
               Navigator.pop(context);
-              logEvent(Event.DrawerFeedback);
             },
           ),
           _buildDrawerTile(
@@ -280,36 +250,8 @@ class _AppDrawerState extends State<AppDrawer>
             icon: Icons.bug_report,
             title: tr(LocaleKeys.drawer_bug),
             onTap: () async {
-              var platform = Platform.operatingSystem;
-              var versionText = await getVersionString();
-              var isPro = AppSettings.instance.proMode;
-
-              var body = "Hey!\n\nI found a bug in GitJournal - \n \n\n";
-              body += "Version: $versionText\n";
-              body += "Platform: $platform\n";
-              body += "isPro: $isPro\n";
-
-              var exp = AppSettings.instance.proExpirationDate;
-              if (exp.isNotEmpty) {
-                body += "expiryDate: $exp";
-              }
-
-              final Email email = Email(
-                body: body,
-                subject: 'GitJournal Bug',
-                recipients: ['bugs@gitjournal.io'],
-                attachmentPaths: Log.filePathsForDates(2),
-              );
-
-              try {
-                await FlutterEmailSender.send(email);
-              } catch (ex, st) {
-                logException(ex, st);
-                showSnackbar(context, ex.toString());
-              }
-
+              await createBugReport(context);
               Navigator.pop(context);
-              logEvent(Event.DrawerBugReport);
             },
           ),
           _buildDrawerTile(
