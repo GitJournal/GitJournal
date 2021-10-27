@@ -9,7 +9,7 @@ import 'dart:typed_data';
 import 'package:dart_git/blob_ctime_builder.dart';
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/file_mtime_builder.dart';
-import 'package:dart_git/utils/date_time_tz_offset.dart';
+import 'package:dart_git/utils/date_time.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' as io;
@@ -157,9 +157,9 @@ class FileStorageCache {
   }
 }
 
-DateTimeWithTzOffset _fromProto(pb.TzDateTime dt) {
+GDateTime _fromProto(pb.TzDateTime dt) {
   var offset = Duration(seconds: dt.offset);
   print(offset);
   print(dt.timestamp.toInt());
-  return DateTimeWithTzOffset.fromTimeStamp(offset, dt.timestamp.toInt());
+  return GDateTime.fromTimeStamp(offset, dt.timestamp.toInt());
 }

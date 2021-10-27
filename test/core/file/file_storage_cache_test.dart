@@ -8,7 +8,7 @@ import 'package:collection/collection.dart';
 import 'package:dart_git/blob_ctime_builder.dart';
 import 'package:dart_git/file_mtime_builder.dart';
 import 'package:dart_git/git.dart';
-import 'package:dart_git/utils/date_time_tz_offset.dart';
+import 'package:dart_git/utils/date_time.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart' as io;
 
@@ -31,9 +31,9 @@ void main() {
     };
 
     const offset = Duration(hours: -8);
-    final dt = DateTimeWithTzOffset(offset, 2010, 1, 2, 3, 4, 5); // no msecs
+    final dt = GDateTime(offset, 2010, 1, 2, 3, 4, 5); // no msecs
 
-    var cMap = <GitHash, DateTimeWithTzOffset>{
+    var cMap = <GitHash, GDateTime>{
       GitHash("9a54971363328d210043eb0bea337e5742816194"): dt,
     };
 
