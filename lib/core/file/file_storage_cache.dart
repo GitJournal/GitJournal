@@ -111,10 +111,8 @@ class FileStorageCache {
     var map = builder.map.map((hash, dt) {
       var pbDt = pb.TzDateTime(
         offset: dt.offset.inSeconds,
-        timestamp: Int64(dt.millisecondsSinceEpoch ~/ 1000),
+        timestamp: Int64(dt.secondsSinceEpoch),
       );
-      print(pbDt.offset);
-      print(pbDt.timestamp);
       return MapEntry(hash.toString(), pbDt);
     });
 
@@ -134,7 +132,7 @@ class FileStorageCache {
     var map = builder.map.map((filePath, data) {
       var pbDt = pb.TzDateTime(
         offset: data.dt.offset.inSeconds,
-        timestamp: Int64(data.dt.millisecondsSinceEpoch ~/ 1000),
+        timestamp: Int64(data.dt.secondsSinceEpoch),
       );
 
       var info = pb.FileMTimeInfo(
@@ -159,7 +157,5 @@ class FileStorageCache {
 
 GDateTime _fromProto(pb.TzDateTime dt) {
   var offset = Duration(seconds: dt.offset);
-  print(offset);
-  print(dt.timestamp.toInt());
   return GDateTime.fromTimeStamp(offset, dt.timestamp.toInt());
 }

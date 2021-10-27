@@ -78,8 +78,6 @@ void main() {
     expect(
         deepEq(fileStorage2.blobCTimeBuilder.processedCommits, commits), true);
     expect(deepEq(fileStorage2.blobCTimeBuilder.processedTrees, trees), true);
-    print(fileStorage2.blobCTimeBuilder.map);
-    print(cMap);
     expect(deepEq(fileStorage2.blobCTimeBuilder.map, cMap), true);
 
     expect(
