@@ -14,6 +14,9 @@
   </br>
   <a href="https://api.reuse.software/info/github.com/GitJournal/GitJournal"><img alt="REUSE status" src="https://api.reuse.software/badge/github.com/GitJournal/GitJournal"></a>
   <a href="https://github.com/sponsors/vHanda"><img alt="Donate via GitHub" src="https://img.shields.io/badge/Sponsor-Github-%235a353"></a>
+  </br>
+  <a href="https://en.cryptobadges.io/donate/bc1qe97tgx5sndlk6ynz0e7na0hseevwy5uydk369r"><img alt="Donate via Bitcoin" src="https://en.cryptobadges.io/badge/micro/bc1qe97tgx5sndlk6ynz0e7na0hseevwy5uydk369r"></a>
+  <a href="https://en.cryptobadges.io/donate/0xD4964e0E9A8Ca8A0be8db717690D888Aa5e92DcD"><img alt="Donate via Bitcoin" src="https://en.cryptobadges.io/badge/micro/0xD4964e0E9A8Ca8A0be8db717690D888Aa5e92DcD"></a>
 </p>
 
 # Summary
