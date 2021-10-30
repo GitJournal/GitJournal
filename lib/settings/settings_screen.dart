@@ -21,6 +21,7 @@ import 'package:gitjournal/settings/settings_experimental.dart';
 import 'package:gitjournal/settings/settings_git.dart';
 import 'package:gitjournal/settings/settings_storage.dart';
 import 'package:gitjournal/settings/settings_ui.dart';
+import 'package:gitjournal/settings/widgets/settings_header.dart';
 
 class SettingsScreen extends StatelessWidget {
   static const routePath = '/settings';
@@ -124,7 +125,7 @@ class SettingsScreen extends StatelessWidget {
           },
         ),
         const Divider(),
-        _SettingsHeader(LocaleKeys.settings_project_header.tr()),
+        SettingsHeader(LocaleKeys.settings_project_header.tr()),
         SettingsTile(
           iconData: Icons.question_answer_outlined,
           title: LocaleKeys.settings_project_docs.tr(),
@@ -240,25 +241,6 @@ class SettingsTile extends StatelessWidget {
       title: Text(title, style: textStyle),
       subtitle: subtitle != null ? Text(subtitle!) : null,
       onTap: onTap ?? onTap,
-    );
-  }
-}
-
-class _SettingsHeader extends StatelessWidget {
-  final String text;
-  const _SettingsHeader(this.text);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16.0, bottom: 8.0, top: 20.0),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.secondary,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
     );
   }
 }
