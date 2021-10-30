@@ -15,6 +15,8 @@ import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
 
 class SettingsMisc extends StatefulWidget {
+  static const routePath = '/settings/misc';
+
   @override
   _SettingsMiscState createState() => _SettingsMiscState();
 }

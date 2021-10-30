@@ -17,7 +17,6 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_git_remote.dart';
-import 'package:gitjournal/settings/settings_misc.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 
@@ -84,17 +83,6 @@ class SettingsListState extends State<SettingsList> {
             settings.save();
             setState(() {});
           }
-        },
-      ),
-      const SizedBox(height: 16.0),
-      ListTile(
-        title: Text(tr(LocaleKeys.settings_misc_title)),
-        onTap: () {
-          var route = MaterialPageRoute(
-            builder: (context) => SettingsMisc(),
-            settings: const RouteSettings(name: '/settings/misc'),
-          );
-          var _ = Navigator.push(context, route);
         },
       ),
       RedButton(

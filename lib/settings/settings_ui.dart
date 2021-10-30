@@ -14,6 +14,7 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_bottom_menu_bar.dart';
 import 'package:gitjournal/settings/settings_display_images.dart';
+import 'package:gitjournal/settings/settings_misc.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/settings/settings_widgets.dart';
 import 'package:gitjournal/settings/widgets/language_selector.dart';
@@ -85,6 +86,16 @@ class SettingsUIScreen extends StatelessWidget {
               var _ = Navigator.push(context, route);
             },
           ),
+        ),
+        ListTile(
+          title: Text(tr(LocaleKeys.settings_misc_title)),
+          onTap: () {
+            var route = MaterialPageRoute(
+              builder: (context) => SettingsMisc(),
+              settings: const RouteSettings(name: SettingsMisc.routePath),
+            );
+            var _ = Navigator.push(context, route);
+          },
         ),
       ],
     );
