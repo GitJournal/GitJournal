@@ -18,6 +18,8 @@ import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_config.dart';
 
 class ExperimentalSettingsScreen extends StatefulWidget {
+  static const routePath = '/settings/experimental';
+
   @override
   _ExperimentalSettingsScreenState createState() =>
       _ExperimentalSettingsScreenState();

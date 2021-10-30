@@ -16,6 +16,7 @@ import 'package:gitjournal/logger/debug_screen.dart';
 import 'package:gitjournal/settings/bug_report.dart';
 import 'package:gitjournal/settings/settings_about.dart';
 import 'package:gitjournal/settings/settings_analyatics.dart';
+import 'package:gitjournal/settings/settings_editors.dart';
 import 'package:gitjournal/settings/settings_experimental.dart';
 
 class SettingsScreen2 extends StatelessWidget {
@@ -39,6 +40,15 @@ class SettingsScreen2 extends StatelessWidget {
           iconData: FontAwesomeIcons.edit,
           title: LocaleKeys.settings_list_editor_title.tr(),
           subtitle: LocaleKeys.settings_list_editor_subtitle.tr(),
+          onTap: () {
+            var route = MaterialPageRoute(
+              builder: (context) => SettingsEditorsScreen(),
+              settings: const RouteSettings(
+                name: SettingsEditorsScreen.routePath,
+              ),
+            );
+            var _ = Navigator.push(context, route);
+          },
         ),
         SettingsTile(
           iconData: FontAwesomeIcons.hdd,
@@ -52,7 +62,7 @@ class SettingsScreen2 extends StatelessWidget {
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => const SettingsAnalytics(),
-              settings: const RouteSettings(name: '/settings/analytics'),
+              settings: const RouteSettings(name: SettingsAnalytics.routePath),
             );
             var _ = Navigator.push(context, route);
           },
@@ -64,7 +74,7 @@ class SettingsScreen2 extends StatelessWidget {
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => const DebugScreen(),
-              settings: const RouteSettings(name: '/settings/debug'),
+              settings: const RouteSettings(name: DebugScreen.routePath),
             );
             var _ = Navigator.push(context, route);
           },
@@ -76,7 +86,9 @@ class SettingsScreen2 extends StatelessWidget {
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => ExperimentalSettingsScreen(),
-              settings: const RouteSettings(name: '/settings/experimental'),
+              settings: const RouteSettings(
+                name: ExperimentalSettingsScreen.routePath,
+              ),
             );
             var _ = Navigator.push(context, route);
           },
@@ -110,7 +122,7 @@ class SettingsScreen2 extends StatelessWidget {
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => const SettingsAboutPage(),
-              settings: const RouteSettings(name: '/settings/about'),
+              settings: const RouteSettings(name: SettingsAboutPage.routePath),
             );
             var _ = Navigator.push(context, route);
           },

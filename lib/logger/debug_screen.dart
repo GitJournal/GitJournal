@@ -19,6 +19,8 @@ import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/utils/utils.dart';
 
 class DebugScreen extends StatefulWidget {
+  static const routePath = '/settings/debug';
+
   const DebugScreen({Key? key}) : super(key: key);
 
   @override

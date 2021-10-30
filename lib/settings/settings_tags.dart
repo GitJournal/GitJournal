@@ -13,6 +13,8 @@ import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
 
 class SettingsTagsScreen extends StatefulWidget {
+  static const routePath = '/settings/tags';
+
   const SettingsTagsScreen({Key? key}) : super(key: key);
 
   @override

@@ -197,7 +197,9 @@ class SettingsListState extends State<SettingsList> {
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) => SettingsEditorsScreen(),
-            settings: const RouteSettings(name: '/settings/editors'),
+            settings: const RouteSettings(
+              name: SettingsEditorsScreen.routePath,
+            ),
           );
           var _ = Navigator.push(context, route);
         },
@@ -245,7 +247,7 @@ class SettingsListState extends State<SettingsList> {
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => const SettingsTagsScreen(),
-              settings: const RouteSettings(name: '/settings/tags'),
+              settings: const RouteSettings(name: SettingsTagsScreen.routePath),
             );
             var _ = Navigator.push(context, route);
           },
@@ -422,7 +424,9 @@ class SettingsListState extends State<SettingsList> {
         onTap: () {
           var route = MaterialPageRoute(
             builder: (context) => ExperimentalSettingsScreen(),
-            settings: const RouteSettings(name: '/settings/experimental'),
+            settings: const RouteSettings(
+              name: ExperimentalSettingsScreen.routePath,
+            ),
           );
           var _ = Navigator.push(context, route);
         },

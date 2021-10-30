@@ -15,6 +15,8 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/app_config.dart';
 
 class SettingsAnalytics extends StatelessWidget {
+  static const routePath = '/settings/analytics';
+
   const SettingsAnalytics({Key? key}) : super(key: key);
 
   @override

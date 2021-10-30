@@ -18,6 +18,8 @@ const _privacyUrl = "https://gitjournal.io/privacy";
 const _termsUrl = "https://gitjournal.io/terms";
 
 class SettingsAboutPage extends StatelessWidget {
+  static const routePath = '/settings/about';
+
   const SettingsAboutPage({Key? key}) : super(key: key);
 
   @override

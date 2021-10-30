@@ -21,6 +21,8 @@ import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class SettingsEditorsScreen extends StatefulWidget {
+  static const routePath = '/settings/editors';
+
   @override
   SettingsEditorsScreenState createState() => SettingsEditorsScreenState();
 }
