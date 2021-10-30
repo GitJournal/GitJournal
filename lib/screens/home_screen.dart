@@ -17,6 +17,8 @@ import 'package:gitjournal/folder_views/folder_view.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 
 class HomeScreen extends StatefulWidget {
+  static const routePath = '/';
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }

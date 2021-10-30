@@ -18,6 +18,8 @@ import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/settings/app_config.dart';
 
 class OnBoardingScreen extends StatefulWidget {
+  static const routePath = "/onBoarding";
+
   const OnBoardingScreen();
 
   @override

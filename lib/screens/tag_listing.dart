@@ -12,7 +12,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/core/folder/flattened_filtered_notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note.dart';
@@ -27,6 +26,8 @@ import 'package:gitjournal/widgets/future_builder_with_progress.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class TagListingScreen extends StatelessWidget {
+  static const routePath = '/tags';
+
   const TagListingScreen({Key? key}) : super(key: key);
 
   @override
@@ -89,7 +90,7 @@ class TagListingScreen extends StatelessWidget {
           builder: (context) => FutureBuilderWithProgress(
             future: _tagFolderView(context, tag),
           ),
-          settings: const RouteSettings(name: AppRoute.AllTags),
+          settings: const RouteSettings(name: TagListingScreen.routePath),
         );
         var _ = Navigator.push(context, route);
       },

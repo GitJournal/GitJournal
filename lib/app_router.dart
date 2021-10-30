@@ -30,29 +30,19 @@ import 'package:gitjournal/setup/screens.dart';
 import 'package:gitjournal/utils/utils.dart';
 
 class AppRoute {
-  static const OnBoarding = '/onBoarding';
-  static const AllFolders = '/folders';
-  static const AllTags = '/tags';
-  static const Graph = '/graph';
-  static const Settings = '/settings';
-  static const Login = '/login';
-  static const Account = '/account';
-  static const SetupRemoteGit = '/setupRemoteGit';
-  static const Purchase = '/purchase';
-  static const PurchaseThank = '/purchase_thank_you';
   static const NewNotePrefix = '/newNote/';
 
   static const all = [
-    OnBoarding,
-    AllFolders,
-    AllTags,
-    Graph,
-    Settings,
-    Login,
-    Account,
-    SetupRemoteGit,
-    Purchase,
-    PurchaseThank,
+    OnBoardingScreen.routePath,
+    FolderListingScreen.routePath,
+    TagListingScreen.routePath,
+    GraphViewScreen.routePath,
+    SettingsScreen.routePath,
+    LoginPage.routePath,
+    AccountScreen.routePath,
+    GitHostSetupScreen.routePath,
+    PurchaseScreen.routePath,
+    PurchaseThankYouScreen.routePath,
     HistoryScreen.routePath,
   ];
 }
@@ -71,10 +61,10 @@ class AppRouter {
   String initialRoute() {
     var route = '/';
     if (!appConfig.onBoardingCompleted) {
-      route = AppRoute.OnBoarding;
+      route = OnBoardingScreen.routePath;
     }
     if (settings.homeScreen == SettingsHomeScreen.AllFolders) {
-      route = AppRoute.AllFolders;
+      route = FolderListingScreen.routePath;
     }
     return route;
   }
@@ -87,8 +77,8 @@ class AppRouter {
     Func0<void> callbackIfUsedShared,
   ) {
     var route = routeSettings.name ?? "";
-    if (route == AppRoute.AllFolders ||
-        route == AppRoute.AllTags ||
+    if (route == FolderListingScreen.routePath ||
+        route == TagListingScreen.routePath ||
         route.startsWith(AppRoute.NewNotePrefix)) {
       return PageRouteBuilder(
         settings: routeSettings,
@@ -128,31 +118,31 @@ class AppRouter {
     Func0<void> callbackIfUsedShared,
   ) {
     switch (route) {
-      case '/':
+      case HomeScreen.routePath:
         return HomeScreen();
-      case AppRoute.AllFolders:
+      case FolderListingScreen.routePath:
         return FolderListingScreen();
-      case AppRoute.AllTags:
+      case TagListingScreen.routePath:
         return const TagListingScreen();
-      case AppRoute.Graph:
+      case GraphViewScreen.routePath:
         return const GraphViewScreen();
-      case AppRoute.Settings:
+      case SettingsScreen.routePath:
         return SettingsScreen();
-      case AppRoute.Login:
+      case LoginPage.routePath:
         return const LoginPage();
-      case AppRoute.Account:
+      case AccountScreen.routePath:
         return const AccountScreen();
-      case AppRoute.SetupRemoteGit:
+      case GitHostSetupScreen.routePath:
         return GitHostSetupScreen(
           repoFolderName: storageConfig.folderName,
           remoteName: "origin",
           onCompletedFunction: repository.completeGitHostSetup,
         );
-      case AppRoute.OnBoarding:
+      case OnBoardingScreen.routePath:
         return const OnBoardingScreen();
-      case AppRoute.Purchase:
+      case PurchaseScreen.routePath:
         return PurchaseScreen();
-      case AppRoute.PurchaseThank:
+      case PurchaseThankYouScreen.routePath:
         return PurchaseThankYouScreen();
       case HistoryScreen.routePath:
         return const HistoryScreen();

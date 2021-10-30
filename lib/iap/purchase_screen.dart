@@ -35,6 +35,8 @@ Set<String> _generateYearlySkus() {
 }
 
 class PurchaseScreen extends StatefulWidget {
+  static const routePath = '/purchase';
+
   @override
   _PurchaseScreenState createState() => _PurchaseScreenState();
 }

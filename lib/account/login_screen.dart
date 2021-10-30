@@ -12,11 +12,12 @@ import 'package:gotrue/gotrue.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:gitjournal/account/account_screen.dart';
-import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 
 class LoginPage extends StatefulWidget {
+  static const routePath = '/login';
+
   const LoginPage({Key? key, this.title}) : super(key: key);
 
   final String? title;
@@ -318,7 +319,7 @@ class _FadePageRoute<T> extends MaterialPageRoute<T> {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
-    if (settings.name == AppRoute.Login) {
+    if (settings.name == LoginPage.routePath) {
       return child;
     }
 

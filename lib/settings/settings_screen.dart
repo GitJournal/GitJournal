@@ -52,6 +52,8 @@ import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class SettingsScreen extends StatelessWidget {
+  static const routePath = '/settings';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

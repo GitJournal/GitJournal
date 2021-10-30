@@ -19,6 +19,8 @@ import 'package:gitjournal/settings/settings_analyatics.dart';
 import 'package:gitjournal/settings/settings_experimental.dart';
 
 class SettingsScreen2 extends StatelessWidget {
+  static const routePath = '/settings';
+
   @override
   Widget build(BuildContext context) {
     var list = ListView(

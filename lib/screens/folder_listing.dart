@@ -22,6 +22,8 @@ import 'package:gitjournal/widgets/folder_tree_view.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
 
 class FolderListingScreen extends StatefulWidget {
+  static const routePath = '/folders';
+
   @override
   _FolderListingScreenState createState() => _FolderListingScreenState();
 }

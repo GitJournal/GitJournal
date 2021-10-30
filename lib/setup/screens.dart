@@ -39,6 +39,8 @@ import 'package:gitjournal/utils/utils.dart';
 import 'git_transfer_progress.dart';
 
 class GitHostSetupScreen extends StatefulWidget {
+  static const routePath = '/setupRemoteGit';
+
   final String repoFolderName;
   final String remoteName;
   final Func2<String, String, Future<void>> onCompletedFunction;

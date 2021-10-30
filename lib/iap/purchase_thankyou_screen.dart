@@ -11,6 +11,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 
 class PurchaseThankYouScreen extends StatelessWidget {
+  static const routePath = '/purchase_thank_you';
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);

@@ -8,9 +8,11 @@ import 'package:flutter/material.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:gitjournal/app_router.dart';
+import 'package:gitjournal/account/login_screen.dart';
 
 class AccountScreen extends StatefulWidget {
+  static const routePath = '/account';
+
   const AccountScreen({Key? key}) : super(key: key);
 
   @override
@@ -39,7 +41,7 @@ class _AccountScreenState extends SupabaseAuthRequiredState<AccountScreen> {
   @override
   void onUnauthenticated() {
     if (mounted) {
-      var _ = Navigator.pushReplacementNamed(context, AppRoute.Login);
+      var _ = Navigator.pushReplacementNamed(context, LoginPage.routePath);
     }
   }
 

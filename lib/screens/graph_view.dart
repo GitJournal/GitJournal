@@ -13,6 +13,8 @@ import 'package:gitjournal/core/graph.dart';
 import 'package:gitjournal/core/views/note_links_view.dart';
 
 class GraphViewScreen extends StatefulWidget {
+  static const routePath = '/graph';
+
   const GraphViewScreen({Key? key}) : super(key: key);
 
   @override
