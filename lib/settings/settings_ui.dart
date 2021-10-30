@@ -15,9 +15,9 @@ import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_bottom_menu_bar.dart';
 import 'package:gitjournal/settings/settings_display_images.dart';
 import 'package:gitjournal/settings/settings_misc.dart';
-import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/settings/settings_widgets.dart';
 import 'package:gitjournal/settings/widgets/language_selector.dart';
+import 'package:gitjournal/settings/widgets/settings_header.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class SettingsUIScreen extends StatelessWidget {

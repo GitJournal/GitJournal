@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/settings.dart';
-import 'package:gitjournal/settings/settings_screen.dart';
+import 'package:gitjournal/settings/widgets/settings_header.dart';
 
 class SettingsMisc extends StatefulWidget {
   static const routePath = '/settings/misc';

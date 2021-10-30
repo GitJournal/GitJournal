@@ -13,7 +13,7 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/settings_git_remote.dart';
 import 'package:gitjournal/settings/settings_git_widgets.dart';
-import 'package:gitjournal/settings/settings_screen.dart';
+import 'package:gitjournal/settings/widgets/settings_header.dart';
 
 class SettingsGit extends StatelessWidget {
   static const routePath = '/settings/git';

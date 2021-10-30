@@ -26,10 +26,10 @@ import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_filetypes.dart';
 import 'package:gitjournal/settings/settings_images.dart';
 import 'package:gitjournal/settings/settings_note_metadata.dart';
-import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/settings/settings_tags.dart';
 import 'package:gitjournal/settings/settings_widgets.dart';
 import 'package:gitjournal/settings/storage_config.dart';
+import 'package:gitjournal/settings/widgets/settings_header.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 

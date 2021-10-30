@@ -10,7 +10,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 import 'package:gitjournal/core/folder/sorting_mode.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
-import 'package:gitjournal/settings/settings_screen.dart';
+import 'package:gitjournal/settings/widgets/settings_header.dart';
 
 class SortingModeSelector extends StatefulWidget {
   final SortingMode selectedMode;

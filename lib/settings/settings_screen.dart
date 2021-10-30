@@ -15,6 +15,7 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_git_remote.dart';
+import 'package:gitjournal/settings/widgets/settings_header.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 
@@ -104,24 +105,5 @@ class SettingsListState extends State<SettingsList> {
         },
       ),
     ]);
-  }
-}
-
-class SettingsHeader extends StatelessWidget {
-  final String text;
-  const SettingsHeader(this.text);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16.0, bottom: 0.0, top: 20.0),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.secondary,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
   }
 }

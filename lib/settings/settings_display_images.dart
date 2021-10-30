@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:gitjournal/settings/markdown_renderer_config.dart';
 import 'package:gitjournal/settings/settings_display_images_caption.dart';
 import 'package:gitjournal/settings/settings_display_images_theming.dart';
-import 'package:gitjournal/settings/settings_screen.dart';
+import 'package:gitjournal/settings/widgets/settings_header.dart';
 
 class SettingsDisplayImagesScreen extends StatefulWidget {
   static const routePath = '/settings/display_images';

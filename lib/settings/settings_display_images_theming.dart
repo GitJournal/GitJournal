@@ -13,8 +13,8 @@ import 'package:provider/provider.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/markdown_renderer_config.dart';
 import 'package:gitjournal/settings/settings.dart';
-import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/settings/settings_widgets.dart';
+import 'package:gitjournal/settings/widgets/settings_header.dart';
 
 class SettingsDisplayImagesThemingScreen extends StatefulWidget {
   @override
