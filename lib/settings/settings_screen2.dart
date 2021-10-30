@@ -41,7 +41,7 @@ class SettingsScreen2 extends StatelessWidget {
           subtitle: LocaleKeys.settings_list_editor_subtitle.tr(),
         ),
         SettingsTile(
-          iconData: FontAwesomeIcons.sdCard,
+          iconData: FontAwesomeIcons.hdd,
           title: LocaleKeys.settings_list_storage_title.tr(),
           subtitle: LocaleKeys.settings_list_storage_subtitle.tr(),
         ),

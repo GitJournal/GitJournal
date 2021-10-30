@@ -14,7 +14,7 @@ settings:
       title: Editor
       subtitle: Default Editor, Default View
     storage:
-      title: Storage
+      title: Storage & File Formats
       subtitle: Storage, Serialization, Metadata, File Formats
     analytics:
       title: Analytics
