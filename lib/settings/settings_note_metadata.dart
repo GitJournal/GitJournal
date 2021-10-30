@@ -28,6 +28,8 @@ import 'package:gitjournal/settings/settings_widgets.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class NoteMetadataSettingsScreen extends StatefulWidget {
+  static const routePath = '/settings/noteMetaData';
+
   @override
   _NoteMetadataSettingsScreenState createState() =>
       _NoteMetadataSettingsScreenState();

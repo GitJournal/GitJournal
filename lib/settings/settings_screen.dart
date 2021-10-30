@@ -8,44 +8,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:android_external_storage/android_external_storage.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:icloud_documents_path/icloud_documents_path.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:universal_io/io.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-import 'package:gitjournal/analytics/analytics.dart';
-import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
-import 'package:gitjournal/logger/debug_screen.dart';
-import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
-import 'package:gitjournal/screens/feature_timeline_screen.dart';
-import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_bottom_menu_bar.dart';
 import 'package:gitjournal/settings/settings_display_images.dart';
-import 'package:gitjournal/settings/settings_editors.dart';
-import 'package:gitjournal/settings/settings_experimental.dart';
-import 'package:gitjournal/settings/settings_filetypes.dart';
 import 'package:gitjournal/settings/settings_git_remote.dart';
 import 'package:gitjournal/settings/settings_git_widgets.dart';
-import 'package:gitjournal/settings/settings_images.dart';
 import 'package:gitjournal/settings/settings_misc.dart';
-import 'package:gitjournal/settings/settings_note_metadata.dart';
-import 'package:gitjournal/settings/settings_tags.dart';
 import 'package:gitjournal/settings/settings_widgets.dart';
-import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/settings/widgets/language_selector.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
@@ -84,8 +62,6 @@ class SettingsListState extends State<SettingsList> {
   @override
   Widget build(BuildContext context) {
     var settings = Provider.of<Settings>(context);
-    var storageConfig = Provider.of<StorageConfig>(context);
-    var appConfig = Provider.of<AppConfig>(context);
     final repo = Provider.of<GitJournalRepo>(context);
 
     var defaultNewFolder = settings.defaultNewNoteFolderSpec;
@@ -101,8 +77,6 @@ class SettingsListState extends State<SettingsList> {
         });
       }
     }
-
-    var folderConfig = Provider.of<NotesFolderConfig>(context);
 
     return ListView(children: [
       SettingsHeader(tr(LocaleKeys.settings_display_title)),
@@ -192,156 +166,6 @@ class SettingsListState extends State<SettingsList> {
       ),
       const SizedBox(height: 16.0),
       ListTile(
-        title: Text(tr(LocaleKeys.settings_editors_title)),
-        subtitle: Text(tr(LocaleKeys.settings_editors_subtitle)),
-        onTap: () {
-          var route = MaterialPageRoute(
-            builder: (context) => SettingsEditorsScreen(),
-            settings: const RouteSettings(
-              name: SettingsEditorsScreen.routePath,
-            ),
-          );
-          var _ = Navigator.push(context, route);
-        },
-      ),
-      SettingsHeader(tr(LocaleKeys.settings_storage_title)),
-      ListPreference(
-        title: tr(LocaleKeys.settings_note_newNoteFileName),
-        currentOption: folderConfig.fileNameFormat.toPublicString(),
-        options:
-            NoteFileNameFormat.options.map((f) => f.toPublicString()).toList(),
-        onChange: (String publicStr) {
-          var format = NoteFileNameFormat.fromPublicString(publicStr);
-          folderConfig.fileNameFormat = format;
-          folderConfig.save();
-          setState(() {});
-        },
-      ),
-      ListTile(
-        title: Text(tr(LocaleKeys.settings_noteMetaData_title)),
-        subtitle: Text(tr(LocaleKeys.settings_noteMetaData_subtitle)),
-        onTap: () {
-          var route = MaterialPageRoute(
-            builder: (context) => NoteMetadataSettingsScreen(),
-            settings: const RouteSettings(name: '/settings/noteMetaData'),
-          );
-          var _ = Navigator.push(context, route);
-        },
-      ),
-      ListTile(
-        title: Text(tr(LocaleKeys.settings_fileTypes_title)),
-        subtitle: Text(tr(LocaleKeys.settings_fileTypes_subtitle)),
-        onTap: () {
-          var route = MaterialPageRoute(
-            builder: (context) => const NoteFileTypesSettings(),
-            settings: const RouteSettings(name: '/settings/fileTypes'),
-          );
-          var _ = Navigator.push(context, route);
-        },
-      ),
-      ProOverlay(
-        feature: Feature.inlineTags,
-        child: ListTile(
-          title: Text(tr(LocaleKeys.settings_tags_title)),
-          subtitle: Text(tr(LocaleKeys.settings_tags_subtitle)),
-          onTap: () {
-            var route = MaterialPageRoute(
-              builder: (context) => const SettingsTagsScreen(),
-              settings: const RouteSettings(name: SettingsTagsScreen.routePath),
-            );
-            var _ = Navigator.push(context, route);
-          },
-        ),
-      ),
-      ListTile(
-        title: Text(tr(LocaleKeys.settings_images_title)),
-        subtitle: Text(tr(LocaleKeys.settings_images_subtitle)),
-        onTap: () {
-          var route = MaterialPageRoute(
-            builder: (context) => SettingsImagesScreen(),
-            settings: const RouteSettings(name: '/settings/images'),
-          );
-          var _ = Navigator.push(context, route);
-        },
-      ),
-      if (Platform.isAndroid)
-        SwitchListTile(
-          title: Text(tr(LocaleKeys.settings_storage_external)),
-          value: !storageConfig.storeInternally,
-          onChanged: (bool newVal) async {
-            Future<void> moveBackToInternal(bool showError) async {
-              storageConfig.storeInternally = true;
-              storageConfig.storageLocation = "";
-
-              storageConfig.save();
-              setState(() {});
-              await repo.moveRepoToPath();
-
-              if (showError) {
-                showSnackbar(
-                  context,
-                  LocaleKeys.settings_storage_failedExternal,
-                );
-              }
-            }
-
-            if (newVal == false) {
-              await moveBackToInternal(false);
-            } else {
-              var path = await _getExternalDir(context);
-              if (path.isEmpty) {
-                await moveBackToInternal(true);
-                return;
-              }
-
-              Log.i("Moving repo to $path");
-
-              storageConfig.storeInternally = false;
-              storageConfig.storageLocation = path;
-              storageConfig.save();
-              setState(() {});
-
-              try {
-                await repo.moveRepoToPath();
-              } catch (ex, st) {
-                Log.e("Moving Repo to External Storage",
-                    ex: ex, stacktrace: st);
-                await moveBackToInternal(true);
-                return;
-              }
-              return;
-            }
-          },
-        ),
-      if (Platform.isAndroid)
-        ListTile(
-          title: Text(tr(LocaleKeys.settings_storage_repoLocation)),
-          subtitle: Text(
-              p.join(storageConfig.storageLocation, storageConfig.folderName)),
-          enabled: !storageConfig.storeInternally,
-        ),
-      if (Platform.isIOS)
-        SwitchListTile(
-          title: Text(tr(LocaleKeys.settings_storage_icloud)),
-          value: !storageConfig.storeInternally,
-          onChanged: (bool newVal) async {
-            if (newVal == false) {
-              storageConfig.storeInternally = true;
-              storageConfig.storageLocation = "";
-            } else {
-              storageConfig.storageLocation =
-                  (await ICloudDocumentsPath.documentsPath)!;
-              if (storageConfig.storageLocation.isNotEmpty) {
-                storageConfig.storeInternally = false;
-              }
-            }
-            settings.save();
-            repo.moveRepoToPath();
-
-            setState(() {});
-          },
-        ),
-      ListTile(
         title: Text(tr(LocaleKeys.settings_misc_title)),
         onTap: () {
           var route = MaterialPageRoute(
@@ -369,78 +193,6 @@ class SettingsListState extends State<SettingsList> {
           await repoManager.deleteCurrent();
 
           Navigator.popUntil(context, (route) => route.isFirst);
-        },
-      ),
-      const SizedBox(height: 16.0),
-      ListTile(
-        title: Text(tr(LocaleKeys.feature_timeline_title)),
-        onTap: () {
-          var route = MaterialPageRoute(
-            builder: (context) => const FeatureTimelineScreen(),
-            settings: const RouteSettings(name: '/featureTimeline'),
-          );
-          var _ = Navigator.push(context, route);
-        },
-      ),
-      const SizedBox(height: 16.0),
-      if (Analytics.instance != null)
-        SwitchListTile(
-          title: Text(tr(LocaleKeys.settings_usageStats)),
-          value: Analytics.instance!.enabled,
-          onChanged: (bool val) {
-            Analytics.instance!.enabled = val;
-            setState(() {}); // Remove this once Analytics.instace is not used
-          },
-        ),
-      SwitchListTile(
-        title: Text(tr(LocaleKeys.settings_crashReports)),
-        value: appConfig.collectCrashReports,
-        onChanged: (bool val) {
-          appConfig.collectCrashReports = val;
-          appConfig.save();
-          setState(() {});
-
-          logEvent(
-            Event.CrashReportingLevelChanged,
-            parameters: {"state": val.toString()},
-          );
-        },
-      ),
-      const VersionNumberTile(),
-      ListTile(
-        title: Text(tr(LocaleKeys.settings_debug_title)),
-        subtitle: Text(tr(LocaleKeys.settings_debug_subtitle)),
-        onTap: () {
-          var route = MaterialPageRoute(
-            builder: (context) => const DebugScreen(),
-            settings: const RouteSettings(name: '/settings/debug'),
-          );
-          var _ = Navigator.push(context, route);
-        },
-      ),
-      ListTile(
-        title: Text(tr(LocaleKeys.settings_experimental_title)),
-        subtitle: Text(tr(LocaleKeys.settings_experimental_subtitle)),
-        onTap: () {
-          var route = MaterialPageRoute(
-            builder: (context) => ExperimentalSettingsScreen(),
-            settings: const RouteSettings(
-              name: ExperimentalSettingsScreen.routePath,
-            ),
-          );
-          var _ = Navigator.push(context, route);
-        },
-      ),
-      ListTile(
-        title: Text(tr(LocaleKeys.settings_privacy)),
-        onTap: () {
-          launch("https://gitjournal.io/privacy");
-        },
-      ),
-      ListTile(
-        title: Text(tr(LocaleKeys.settings_terms)),
-        onTap: () {
-          launch("https://gitjournal.io/terms");
         },
       ),
     ]);
@@ -508,71 +260,4 @@ class VersionNumberTileState extends State<VersionNumberTile> {
       },
     );
   }
-}
-
-Future<bool> _isDirWritable(String path) async {
-  var fileName = DateTime.now().millisecondsSinceEpoch.toString();
-  var file = File(p.join(path, fileName));
-
-  try {
-    await file.writeAsString("test");
-    await file.delete();
-  } catch (_) {
-    return false;
-  }
-
-  return true;
-}
-
-Future<String> _getExternalDir(BuildContext context) async {
-  var androidInfo = await DeviceInfoPlugin().androidInfo;
-  var version = androidInfo.version.release ?? "11";
-
-  var permission = version.startsWith("11")
-      ? Permission.manageExternalStorage
-      : Permission.storage;
-
-  if (!await permission.request().isGranted) {
-    return "";
-  }
-
-  var dir = await FilePicker.platform.getDirectoryPath();
-  if (dir != null && dir.isNotEmpty) {
-    if (await _isDirWritable(dir)) {
-      return dir;
-    } else {
-      Log.e("FilePicker: Got $dir but it is not writable");
-      showSnackbar(
-        context,
-        tr(LocaleKeys.settings_storage_notWritable, args: [dir]),
-      );
-    }
-  }
-
-  var req = await Permission.storage.request();
-  if (req.isDenied) {
-    return "";
-  }
-
-  var path = await AndroidExternalStorage.getExternalStorageDirectory();
-  if (path != null) {
-    if (await _isDirWritable(path)) {
-      return path;
-    } else {
-      Log.e("ExtStorage: Got $path but it is not writable");
-    }
-  }
-
-  var extDir = await getExternalStorageDirectory();
-  if (extDir != null) {
-    path = extDir.path;
-
-    if (await _isDirWritable(path)) {
-      return path;
-    } else {
-      Log.e("ExternalStorageDirectory: Got $path but it is not writable");
-    }
-  }
-
-  return "";
 }

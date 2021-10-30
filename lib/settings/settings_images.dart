@@ -16,6 +16,8 @@ import 'package:gitjournal/settings/settings_widgets.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 
 class SettingsImagesScreen extends StatefulWidget {
+  static const routePath = '/settings/images';
+
   @override
   SettingsImagesScreenState createState() => SettingsImagesScreenState();
 }

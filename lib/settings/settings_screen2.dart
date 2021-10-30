@@ -18,6 +18,7 @@ import 'package:gitjournal/settings/settings_about.dart';
 import 'package:gitjournal/settings/settings_analyatics.dart';
 import 'package:gitjournal/settings/settings_editors.dart';
 import 'package:gitjournal/settings/settings_experimental.dart';
+import 'package:gitjournal/settings/settings_storage.dart';
 
 class SettingsScreen2 extends StatelessWidget {
   static const routePath = '/settings';
@@ -54,6 +55,15 @@ class SettingsScreen2 extends StatelessWidget {
           iconData: FontAwesomeIcons.hdd,
           title: LocaleKeys.settings_list_storage_title.tr(),
           subtitle: LocaleKeys.settings_list_storage_subtitle.tr(),
+          onTap: () {
+            var route = MaterialPageRoute(
+              builder: (context) => const SettingsStorageScreen(),
+              settings: const RouteSettings(
+                name: SettingsStorageScreen.routePath,
+              ),
+            );
+            var _ = Navigator.push(context, route);
+          },
         ),
         SettingsTile(
           iconData: FontAwesomeIcons.chartArea,
