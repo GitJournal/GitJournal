@@ -113,17 +113,17 @@ class SettingsScreen2 extends StatelessWidget {
           },
         ),
         SettingsTile(
-          iconData: Icons.bug_report,
+          iconData: FontAwesomeIcons.bug,
           title: LocaleKeys.drawer_bug.tr(),
           onTap: () => createBugReport(context),
         ),
         SettingsTile(
-          iconData: Icons.feedback,
+          iconData: FontAwesomeIcons.commentAlt,
           title: LocaleKeys.drawer_feedback.tr(),
           onTap: () => createFeedback(context),
         ),
         SettingsTile(
-          iconData: FontAwesomeIcons.solidHeart,
+          iconData: FontAwesomeIcons.heart,
           title: LocaleKeys.settings_project_contribute.tr(),
         ),
         SettingsTile(
