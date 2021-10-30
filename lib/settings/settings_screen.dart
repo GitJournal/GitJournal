@@ -62,7 +62,6 @@ class SettingsListState extends State<SettingsList> {
   @override
   Widget build(BuildContext context) {
     var settings = Provider.of<Settings>(context);
-    final repo = Provider.of<GitJournalRepo>(context);
 
     var defaultNewFolder = settings.defaultNewNoteFolderSpec;
     if (defaultNewFolder.isEmpty) {
@@ -148,21 +147,6 @@ class SettingsListState extends State<SettingsList> {
             setState(() {});
           }
         },
-      ),
-      SettingsHeader(tr(LocaleKeys.settings_gitAuthor)),
-      const GitAuthor(),
-      const GitAuthorEmail(),
-      ListTile(
-        title: Text(tr(LocaleKeys.settings_gitRemote_title)),
-        subtitle: Text(tr(LocaleKeys.settings_gitRemote_subtitle)),
-        onTap: () {
-          var route = MaterialPageRoute(
-            builder: (context) => GitRemoteSettingsScreen(),
-            settings: const RouteSettings(name: '/settings/gitRemote'),
-          );
-          var _ = Navigator.push(context, route);
-        },
-        enabled: repo.remoteGitRepoConfigured,
       ),
       const SizedBox(height: 16.0),
       ListTile(

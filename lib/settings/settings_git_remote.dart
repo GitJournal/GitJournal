@@ -27,6 +27,8 @@ import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/future_builder_with_progress.dart';
 
 class GitRemoteSettingsScreen extends StatefulWidget {
+  static const routePath = '/settings/gitRemote';
+
   @override
   _GitRemoteSettingsScreenState createState() =>
       _GitRemoteSettingsScreenState();

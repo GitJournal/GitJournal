@@ -191,7 +191,7 @@ class SettingsStorageScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(LocaleKeys.settings_list_analytics_title.tr()),
+        title: Text(LocaleKeys.settings_list_storage_title.tr()),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

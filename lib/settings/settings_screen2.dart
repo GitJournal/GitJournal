@@ -18,6 +18,7 @@ import 'package:gitjournal/settings/settings_about.dart';
 import 'package:gitjournal/settings/settings_analyatics.dart';
 import 'package:gitjournal/settings/settings_editors.dart';
 import 'package:gitjournal/settings/settings_experimental.dart';
+import 'package:gitjournal/settings/settings_git.dart';
 import 'package:gitjournal/settings/settings_storage.dart';
 
 class SettingsScreen2 extends StatelessWidget {
@@ -36,6 +37,15 @@ class SettingsScreen2 extends StatelessWidget {
           iconData: FontAwesomeIcons.git,
           title: LocaleKeys.settings_list_git_title.tr(),
           subtitle: LocaleKeys.settings_list_git_subtitle.tr(),
+          onTap: () {
+            var route = MaterialPageRoute(
+              builder: (context) => const SettingsGit(),
+              settings: const RouteSettings(
+                name: SettingsGit.routePath,
+              ),
+            );
+            var _ = Navigator.push(context, route);
+          },
         ),
         SettingsTile(
           iconData: FontAwesomeIcons.edit,
