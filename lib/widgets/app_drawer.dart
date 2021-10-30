@@ -15,12 +15,19 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:time/time.dart';
 import 'package:universal_io/io.dart' show Platform;
 
+import 'package:gitjournal/account/login_screen.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/history/history_screen.dart';
+import 'package:gitjournal/iap/purchase_screen.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
+import 'package:gitjournal/screens/folder_listing.dart';
+import 'package:gitjournal/screens/graph_view.dart';
+import 'package:gitjournal/screens/home_screen.dart';
+import 'package:gitjournal/screens/tag_listing.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/bug_report.dart';
 import 'package:gitjournal/widgets/app_drawer_header.dart';
@@ -152,7 +159,7 @@ class _AppDrawerState extends State<AppDrawer>
               title: tr(LocaleKeys.drawer_pro),
               onTap: () {
                 Navigator.pop(context);
-                var _ = Navigator.pushNamed(context, "/purchase");
+                var _ = Navigator.pushNamed(context, PurchaseScreen.routePath);
 
                 logEvent(
                   Event.PurchaseScreenOpen,
@@ -165,23 +172,23 @@ class _AppDrawerState extends State<AppDrawer>
               context,
               icon: Icons.account_circle,
               title: tr(LocaleKeys.drawer_login),
-              onTap: () => _navTopLevel(context, '/login'),
-              selected: currentRoute == '/login',
+              onTap: () => _navTopLevel(context, LoginPage.routePath),
+              selected: currentRoute == LoginPage.routePath,
             ),
           if (!appConfig.proMode) divider,
           _buildDrawerTile(
             context,
             icon: Icons.note,
             title: tr(LocaleKeys.drawer_all),
-            onTap: () => _navTopLevel(context, '/'),
-            selected: currentRoute == '/',
+            onTap: () => _navTopLevel(context, HomeScreen.routePath),
+            selected: currentRoute == HomeScreen.routePath,
           ),
           _buildDrawerTile(
             context,
             icon: Icons.folder,
             title: tr(LocaleKeys.drawer_folders),
-            onTap: () => _navTopLevel(context, '/folders'),
-            selected: currentRoute == "/folders",
+            onTap: () => _navTopLevel(context, FolderListingScreen.routePath),
+            selected: currentRoute == FolderListingScreen.routePath,
           ),
           if (appConfig.experimentalGraphView)
             _buildDrawerTile(
@@ -189,8 +196,8 @@ class _AppDrawerState extends State<AppDrawer>
               icon: FontAwesomeIcons.projectDiagram,
               isFontAwesome: true,
               title: tr(LocaleKeys.drawer_graph),
-              onTap: () => _navTopLevel(context, '/graph'),
-              selected: currentRoute == "/graph",
+              onTap: () => _navTopLevel(context, GraphViewScreen.routePath),
+              selected: currentRoute == GraphViewScreen.routePath,
             ),
           if (appConfig.experimentalHistory)
             _buildDrawerTile(
@@ -198,16 +205,16 @@ class _AppDrawerState extends State<AppDrawer>
               icon: Icons.history,
               isFontAwesome: true,
               title: tr(LocaleKeys.drawer_history),
-              onTap: () => _navTopLevel(context, '/history'),
-              selected: currentRoute == "/history",
+              onTap: () => _navTopLevel(context, HistoryScreen.routePath),
+              selected: currentRoute == HistoryScreen.routePath,
             ),
           _buildDrawerTile(
             context,
             icon: FontAwesomeIcons.tag,
             isFontAwesome: true,
             title: tr(LocaleKeys.drawer_tags),
-            onTap: () => _navTopLevel(context, '/tags'),
-            selected: currentRoute == "/tags",
+            onTap: () => _navTopLevel(context, TagListingScreen.routePath),
+            selected: currentRoute == TagListingScreen.routePath,
           ),
           divider,
           _buildDrawerTile(
