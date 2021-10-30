@@ -13,21 +13,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
-import 'package:gitjournal/features.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
-import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/settings.dart';
-import 'package:gitjournal/settings/settings_bottom_menu_bar.dart';
-import 'package:gitjournal/settings/settings_display_images.dart';
 import 'package:gitjournal/settings/settings_git_remote.dart';
-import 'package:gitjournal/settings/settings_git_widgets.dart';
 import 'package:gitjournal/settings/settings_misc.dart';
-import 'package:gitjournal/settings/settings_widgets.dart';
-import 'package:gitjournal/settings/widgets/language_selector.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
-import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class SettingsScreen extends StatelessWidget {
   static const routePath = '/settings';
@@ -78,60 +70,6 @@ class SettingsListState extends State<SettingsList> {
     }
 
     return ListView(children: [
-      SettingsHeader(tr(LocaleKeys.settings_display_title)),
-      ListPreference(
-        title: tr(LocaleKeys.settings_display_theme),
-        currentOption: settings.theme.toPublicString(),
-        options: SettingsTheme.options.map((f) => f.toPublicString()).toList(),
-        onChange: (String publicStr) {
-          var s = SettingsTheme.fromPublicString(publicStr);
-          settings.theme = s;
-          settings.save();
-          setState(() {});
-        },
-      ),
-      const LanguageSelector(),
-      ListTile(
-        title: Text(tr(LocaleKeys.settings_display_images_title)),
-        subtitle: Text(tr(LocaleKeys.settings_display_images_subtitle)),
-        onTap: () {
-          var route = MaterialPageRoute(
-            builder: (context) => SettingsDisplayImagesScreen(),
-            settings: const RouteSettings(name: '/settings/display_images'),
-          );
-          var _ = Navigator.push(context, route);
-        },
-      ),
-      ProOverlay(
-        feature: Feature.customizeHomeScreen,
-        child: ListPreference(
-          title: tr(LocaleKeys.settings_display_homeScreen),
-          currentOption: settings.homeScreen.toPublicString(),
-          options: SettingsHomeScreen.options
-              .map((f) => f.toPublicString())
-              .toList(),
-          onChange: (String publicStr) {
-            var s = SettingsHomeScreen.fromPublicString(publicStr);
-            settings.homeScreen = s;
-            settings.save();
-            setState(() {});
-          },
-        ),
-      ),
-      ProOverlay(
-        feature: Feature.configureBottomMenuBar,
-        child: ListTile(
-          title: Text(tr(LocaleKeys.settings_bottomMenuBar_title)),
-          subtitle: Text(tr(LocaleKeys.settings_bottomMenuBar_subtitle)),
-          onTap: () {
-            var route = MaterialPageRoute(
-              builder: (context) => BottomMenuBarSettings(),
-              settings: const RouteSettings(name: '/settings/bottom_menu_bar'),
-            );
-            var _ = Navigator.push(context, route);
-          },
-        ),
-      ),
       SettingsHeader(tr(LocaleKeys.settings_note_title)),
       ListTile(
         title: Text(tr(LocaleKeys.settings_note_defaultFolder)),

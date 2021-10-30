@@ -13,6 +13,8 @@ import 'package:gitjournal/screens/home_screen.dart';
 import 'package:gitjournal/settings/settings.dart';
 
 class BottomMenuBarSettings extends StatefulWidget {
+  static const routePath = '/settings/bottom_menu_bar';
+
   @override
   _BottomMenuBarSettingsState createState() => _BottomMenuBarSettingsState();
 }

@@ -18,6 +18,8 @@ import 'package:gitjournal/settings/settings_display_images_theming.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
 
 class SettingsDisplayImagesScreen extends StatefulWidget {
+  static const routePath = '/settings/display_images';
+
   @override
   SettingsDisplayImagesScreenState createState() =>
       SettingsDisplayImagesScreenState();
