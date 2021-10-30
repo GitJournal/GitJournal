@@ -7,6 +7,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
@@ -21,6 +22,10 @@ class SettingsAnalytics extends StatelessWidget {
     var appConfig = context.watch<AppConfig>();
     var list = ListView(
       children: [
+        const Center(
+          child: FaIcon(FontAwesomeIcons.chartArea, size: 64.0 * 2),
+        ),
+        const Divider(),
         const _AnalyticsSwitchListTile(),
         SwitchListTile(
           title: Text(tr(LocaleKeys.settings_crashReports)),

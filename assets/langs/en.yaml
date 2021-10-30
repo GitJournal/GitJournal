@@ -15,7 +15,7 @@ settings:
       subtitle: Default Editor, Default View
     storage:
       title: Storage
-      subtitle: Storage, Serialization, Metadata, File Format
+      subtitle: Storage, Serialization, Metadata, File Formats
     analytics:
       title: Analytics
       subtitle: It's important that you feel comfortable

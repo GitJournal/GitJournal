@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 
 import 'package:crypto/crypto.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
@@ -41,6 +42,10 @@ class _ExperimentalSettingsScreenState
       body: Scrollbar(
         child: ListView(
           children: <Widget>[
+            const Center(
+              child: FaIcon(FontAwesomeIcons.flask, size: 64.0 * 2),
+            ),
+            const Divider(),
             SwitchListTile(
               title:
                   Text(tr(LocaleKeys.settings_experimental_includeSubfolders)),
