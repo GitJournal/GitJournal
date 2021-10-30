@@ -24,7 +24,7 @@ import 'package:gitjournal/screens/onboarding_screens.dart';
 import 'package:gitjournal/screens/tag_listing.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/settings.dart';
-import 'package:gitjournal/settings/settings_screen2.dart';
+import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/setup/screens.dart';
 import 'package:gitjournal/utils/utils.dart';
