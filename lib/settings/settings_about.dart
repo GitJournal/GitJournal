@@ -11,8 +11,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
-import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/settings/settings_screen2.dart';
+import 'package:gitjournal/settings/widgets/version_number_widgit.dart';
 
 const _privacyUrl = "https://gitjournal.io/privacy";
 const _termsUrl = "https://gitjournal.io/terms";
