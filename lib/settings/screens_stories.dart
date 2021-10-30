@@ -6,7 +6,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:gitjournal/settings/settings_screen.dart';
+import 'package:gitjournal/settings/settings_screen2.dart';
 
 // Need - Settings, AppConfig, Repo, RepoManager
 //        It won't work otherwise!

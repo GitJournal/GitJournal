@@ -18,6 +18,7 @@ import 'package:provider/provider.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
+import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
@@ -31,6 +32,7 @@ import 'package:gitjournal/settings/settings_widgets.dart';
 import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/settings/widgets/settings_header.dart';
 import 'package:gitjournal/utils/utils.dart';
+import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class SettingsStorageScreen extends StatelessWidget {
@@ -58,6 +60,7 @@ class SettingsStorageScreen extends StatelessWidget {
             folderConfig.save();
           },
         ),
+        const DefaultNoteFolderTile(),
         ListTile(
           title: Text(tr(LocaleKeys.settings_noteMetaData_title)),
           subtitle: Text(tr(LocaleKeys.settings_noteMetaData_subtitle)),
@@ -269,4 +272,41 @@ Future<String> _getExternalDir(BuildContext context) async {
   }
 
   return "";
+}
+
+class DefaultNoteFolderTile extends StatelessWidget {
+  const DefaultNoteFolderTile({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var settings = Provider.of<Settings>(context);
+
+    var defaultNewFolder = settings.defaultNewNoteFolderSpec;
+    if (defaultNewFolder.isEmpty) {
+      defaultNewFolder = tr(LocaleKeys.rootFolder);
+    } else {
+      // Reset the settings in case the folder no longer exists
+      if (!folderWithSpecExists(context, defaultNewFolder)) {
+        defaultNewFolder = tr(LocaleKeys.rootFolder);
+
+        settings.defaultNewNoteFolderSpec = "";
+        settings.save();
+      }
+    }
+
+    return ListTile(
+      title: Text(tr(LocaleKeys.settings_note_defaultFolder)),
+      subtitle: Text(defaultNewFolder),
+      onTap: () async {
+        var destFolder = await showDialog<NotesFolderFS>(
+          context: context,
+          builder: (context) => FolderSelectionDialog(),
+        );
+        if (destFolder != null) {
+          settings.defaultNewNoteFolderSpec = destFolder.folderPath;
+          settings.save();
+        }
+      },
+    );
+  }
 }

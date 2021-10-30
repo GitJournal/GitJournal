@@ -22,7 +22,7 @@ import 'package:gitjournal/settings/settings_git.dart';
 import 'package:gitjournal/settings/settings_storage.dart';
 import 'package:gitjournal/settings/settings_ui.dart';
 
-class SettingsScreen2 extends StatelessWidget {
+class SettingsScreen extends StatelessWidget {
   static const routePath = '/settings';
 
   @override

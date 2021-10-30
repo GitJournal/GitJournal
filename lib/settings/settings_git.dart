@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
+import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/settings_git_remote.dart';
 import 'package:gitjournal/settings/settings_git_widgets.dart';
 import 'package:gitjournal/settings/widgets/settings_header.dart';
@@ -42,6 +43,27 @@ class SettingsGit extends StatelessWidget {
             var _ = Navigator.push(context, route);
           },
           enabled: repo.remoteGitRepoConfigured,
+        ),
+        RedButton(
+          text: tr(LocaleKeys.settings_deleteRepo),
+          onPressed: () async {
+            var ok = await showDialog(
+              context: context,
+              builder: (_) => IrreversibleActionConfirmationDialog(
+                title: LocaleKeys.settings_deleteRepo.tr(),
+                subtitle:
+                    LocaleKeys.settings_gitRemote_changeHost_subtitle.tr(),
+              ),
+            );
+            if (ok == null) {
+              return;
+            }
+
+            var repoManager = context.read<RepositoryManager>();
+            await repoManager.deleteCurrent();
+
+            Navigator.popUntil(context, (route) => route.isFirst);
+          },
         ),
       ],
     );
