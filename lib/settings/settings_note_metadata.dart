@@ -81,8 +81,8 @@ class _NoteMetadataSettingsScreenState
       modified: modified,
       extraProps: extraProps,
       tags: {
-        tr("settings.noteMetaData.exampleTag1"),
-        tr("settings.noteMetaData.exampleTag2"),
+        LocaleKeys.settings_noteMetaData_exampleTag1.tr(),
+        LocaleKeys.settings_noteMetaData_exampleTag2.tr(),
       },
       doc: MdYamlDoc(),
       serializerSettings: NoteSerializationSettings.fromConfig(parent.config),
@@ -93,7 +93,7 @@ class _NoteMetadataSettingsScreenState
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            tr("settings.noteMetaData.text"),
+            LocaleKeys.settings_noteMetaData_text.tr(),
             style: textTheme.bodyText1,
           ),
         ),
@@ -119,7 +119,7 @@ class _NoteMetadataSettingsScreenState
           },
         ),
         ListPreference(
-          title: tr("settings.noteMetaData.modified"),
+          title: LocaleKeys.settings_noteMetaData_modified.tr(),
           options: const [
             "modified",
             "mod",
@@ -137,7 +137,7 @@ class _NoteMetadataSettingsScreenState
           enabled: folderConfig.yamlHeaderEnabled,
         ),
         ListPreference(
-          title: tr("settings.noteMetaData.created"),
+          title: LocaleKeys.settings_noteMetaData_created.tr(),
           options: const [
             "created",
             "date",
@@ -152,7 +152,7 @@ class _NoteMetadataSettingsScreenState
           enabled: folderConfig.yamlHeaderEnabled,
         ),
         ListPreference(
-          title: tr("settings.noteMetaData.tags"),
+          title: LocaleKeys.settings_noteMetaData_tags.tr(),
           options: const [
             "tags",
             "categories",
@@ -428,7 +428,7 @@ class _CustomMetDataTileState extends State<CustomMetDataTile> {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(widget.value),
-          child: Text(tr("settings.cancel")),
+          child: Text(LocaleKeys.settings_cancel.tr()),
         ),
         TextButton(
           onPressed: () {
@@ -440,7 +440,7 @@ class _CustomMetDataTileState extends State<CustomMetDataTile> {
 
             return Navigator.of(context).pop(text);
           },
-          child: Text(tr("settings.ok")),
+          child: Text(LocaleKeys.settings_ok.tr()),
         ),
       ],
       content: form,
