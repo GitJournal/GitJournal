@@ -97,12 +97,15 @@ class NotesCache {
 
     var notes = rootFolder.getAllNotes();
     var sortingMode = rootFolder.config.sortingMode;
-    var fileList = _fetchFirst10(notes, sortingMode);
+
+    var topNotes = _fetchTop(notes, sortingMode);
+    var pinned = _fetchPinned(notes);
+    var fileList = pinned.followedBy(topNotes);
 
     return saveToDisk(fileList);
   }
 
-  Iterable<File> _fetchFirst10(
+  Iterable<File> _fetchTop(
     Iterable<Note> allNotes,
     SortingMode sortingMode,
   ) {
@@ -127,6 +130,14 @@ class NotesCache {
     }
 
     return heap.toList().reversed;
+  }
+
+  Iterable<File> _fetchPinned(Iterable<Note> allNotes) sync* {
+    for (var note in allNotes) {
+      if (note.pinned) {
+        yield note;
+      }
+    }
   }
 
   @visibleForTesting

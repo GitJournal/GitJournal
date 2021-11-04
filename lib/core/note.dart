@@ -357,6 +357,8 @@ class Note implements File {
     return _data;
   }
 
+  bool get pinned => extraProps["pinned"] == true;
+
   @override
   int get hashCode => _filePath.hashCode;
 

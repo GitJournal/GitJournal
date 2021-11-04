@@ -86,9 +86,7 @@ class _FolderViewState extends State<FolderView> {
       folder: await FlattenedFilteredNotesFolder.load(
         widget.notesFolder,
         title: LocaleKeys.widgets_FolderView_pinned,
-        filter: (Note note) async {
-          return note.extraProps["pinned"] != true;
-        },
+        filter: (Note note) async => note.pinned,
       ),
       sortingMode: widget.notesFolder.config.sortingMode,
     );
@@ -97,9 +95,7 @@ class _FolderViewState extends State<FolderView> {
       folder: await FlattenedFilteredNotesFolder.load(
         widget.notesFolder,
         title: LocaleKeys.widgets_FolderView_pinned,
-        filter: (Note note) async {
-          return note.extraProps["pinned"] == true;
-        },
+        filter: (Note note) async => note.pinned,
       ),
       sortingMode: widget.notesFolder.config.sortingMode,
     );
