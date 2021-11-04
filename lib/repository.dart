@@ -10,11 +10,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:collection/collection.dart';
-import 'package:dart_git/blob_ctime_builder.dart';
 import 'package:dart_git/config.dart';
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/exceptions.dart';
-import 'package:dart_git/file_mtime_builder.dart';
 import 'package:git_bindings/git_bindings.dart';
 import 'package:path/path.dart' as p;
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -25,6 +23,7 @@ import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/core/file/file_storage.dart';
+import 'package:gitjournal/core/file/file_storage_cache.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/git_repo.dart';
@@ -46,10 +45,12 @@ class GitJournalRepo with ChangeNotifier {
   final Settings settings;
 
   final FileStorage fileStorage;
+  final FileStorageCache fileStorageCache;
 
   final _opLock = Lock();
   final _loadLock = Lock();
 
+  /// The private directory where the 'git repo' is stored.
   final String gitBaseDirectory;
   final String cacheDir;
   final String id;
@@ -144,26 +145,8 @@ class GitJournalRepo with ChangeNotifier {
 
     await Directory(cacheDir).create(recursive: true);
 
-    var blobVisitor = BlobCTimeBuilder();
-    var mTimeBuilder = FileMTimeBuilder();
-
-    var headHashR = await repo.headHash();
-    if (headHashR.isSuccess) {
-      var startTime = DateTime.now();
-      await repo.visitTree(
-        fromCommitHash: headHashR.getOrThrow(),
-        visitor: MultiTreeEntryVisitor([blobVisitor, mTimeBuilder]),
-      );
-      var endTime = DateTime.now().difference(startTime);
-
-      Log.i("Built Git Time Cache - $endTime");
-    }
-
-    var fileStorage = FileStorage(
-      gitRepo: repo,
-      blobCTimeBuilder: blobVisitor,
-      fileMTimeBuilder: mTimeBuilder,
-    );
+    var fileStorageCache = FileStorageCache(cacheDir);
+    var fileStorage = await fileStorageCache.load(repo);
 
     return GitJournalRepo._internal(
       repoPath: repoPath,
@@ -176,6 +159,7 @@ class GitJournalRepo with ChangeNotifier {
       gitConfig: gitConfig,
       id: id,
       fileStorage: fileStorage,
+      fileStorageCache: fileStorageCache,
       currentBranch: await repo.currentBranch().getOrThrow(),
     );
   }
@@ -191,6 +175,7 @@ class GitJournalRepo with ChangeNotifier {
     required this.gitConfig,
     required this.remoteGitRepoConfigured,
     required this.fileStorage,
+    required this.fileStorageCache,
     required String? currentBranch,
   }) {
     _gitRepo = GitNoteRepository(gitRepoPath: repoPath, config: gitConfig);
@@ -204,6 +189,8 @@ class GitJournalRepo with ChangeNotifier {
       name: 'onboarded',
       value: remoteGitRepoConfigured.toString(),
     );
+
+    Log.i("Cache Directory: $cacheDir");
 
     _notesCache = NotesCache(
       folderPath: cacheDir,
@@ -235,6 +222,7 @@ class GitJournalRepo with ChangeNotifier {
   Future<void> _loadNotes() async {
     // FIXME: We should report the notes that failed to load
     return _loadLock.synchronized(() async {
+      await _fillFileStorageCache();
       await notesFolder.loadRecursively();
       await _notesCache.buildCache(notesFolder);
 
@@ -242,6 +230,32 @@ class GitJournalRepo with ChangeNotifier {
       numChanges = changes ?? 0;
       notifyListeners();
     });
+  }
+
+  Future<void> _fillFileStorageCache() async {
+    var gitRepo = await GitRepository.load(repoPath).getOrThrow();
+    var headR = await gitRepo.headHash();
+    if (headR.isFailure) {
+      return;
+    }
+    var head = headR.getOrThrow();
+
+    var startTime = DateTime.now();
+    var result = await gitRepo.visitTree(
+      fromCommitHash: head,
+      visitor: fileStorage.visitor,
+    );
+    var endTime = DateTime.now().difference(startTime);
+
+    Log.i("Built Git Time Cache - $endTime");
+    if (result.isFailure) {
+      Log.e("Failed to build FileStorage cache", result: result);
+
+      // What to do now? Show some kind of error message?
+      throw Exception("WTF!!");
+    }
+
+    await fileStorageCache.save(fileStorage);
   }
 
   Future<void> syncNotes({bool doNotThrow = false}) async {
@@ -301,6 +315,8 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   Future<void> _syncNotes() async {
+    await _fillFileStorageCache();
+
     var freq = settings.remoteSyncFrequency;
     if (freq != RemoteSyncFrequency.Automatic) {
       return;
@@ -542,6 +558,8 @@ class GitJournalRepo with ChangeNotifier {
     await _addFileInRepo(repo: this, config: gitConfig);
 
     _notesCache.clear();
+    fileStorageCache.clear();
+
     remoteGitRepoConfigured = true;
 
     notesFolder.reset(fileStorage);

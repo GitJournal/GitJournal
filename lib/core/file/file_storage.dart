@@ -20,6 +20,11 @@ class FileStorage {
   final BlobCTimeBuilder blobCTimeBuilder;
   final FileMTimeBuilder fileMTimeBuilder;
 
+  MultiTreeEntryVisitor get visitor => MultiTreeEntryVisitor([
+        blobCTimeBuilder,
+        fileMTimeBuilder,
+      ]);
+
   FileStorage({
     required this.gitRepo,
     required this.blobCTimeBuilder,

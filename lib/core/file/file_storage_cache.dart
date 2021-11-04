@@ -25,6 +25,11 @@ class FileStorageCache {
     assert(cacheFolderPath.startsWith(p.separator));
   }
 
+  Future<void> clear() async {
+    await io.File(_cTimeFilePath).delete(recursive: true);
+    await io.File(_mTimeFilePath).delete(recursive: true);
+  }
+
   Future<FileStorage> load(GitRepository gitRepo) async {
     var blobVisitor = await _buildCTimeBuilder();
     var mTimeBuilder = await _buildMTimeBuilder();
