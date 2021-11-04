@@ -24,6 +24,13 @@ class Themes {
       selectionHandleColor: const Color(0xFF66bb6a),
       selectionColor: Colors.grey[400],
     ),
+    pageTransitionsTheme: const PageTransitionsTheme(builders: {
+      TargetPlatform.android: ZoomPageTransitionsBuilder(),
+      TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+      TargetPlatform.linux: ZoomPageTransitionsBuilder(),
+      TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+      TargetPlatform.windows: ZoomPageTransitionsBuilder(),
+    }),
   );
 
   static final dark = ThemeData(
@@ -42,5 +49,12 @@ class Themes {
       selectionHandleColor: Color(0xFF66bb6a),
       selectionColor: Color(0xff689f38),
     ),
+    pageTransitionsTheme: const PageTransitionsTheme(builders: {
+      TargetPlatform.android: ZoomPageTransitionsBuilder(),
+      TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+      TargetPlatform.linux: ZoomPageTransitionsBuilder(),
+      TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+      TargetPlatform.windows: ZoomPageTransitionsBuilder(),
+    }),
   );
 }

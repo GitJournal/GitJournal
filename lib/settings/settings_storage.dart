@@ -7,7 +7,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:android_external_storage/android_external_storage.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:icloud_documents_path/icloud_documents_path.dart';
@@ -222,14 +221,7 @@ Future<bool> _isDirWritable(String path) async {
 }
 
 Future<String> _getExternalDir(BuildContext context) async {
-  var androidInfo = await DeviceInfoPlugin().androidInfo;
-  var version = androidInfo.version.release ?? "11";
-
-  var permission = version.startsWith("11")
-      ? Permission.manageExternalStorage
-      : Permission.storage;
-
-  if (!await permission.request().isGranted) {
+  if (!await Permission.storage.request().isGranted) {
     return "";
   }
 
