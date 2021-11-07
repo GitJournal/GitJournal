@@ -127,7 +127,7 @@ class GitJournalRepo with ChangeNotifier {
 
     if (!repoDir.existsSync()) {
       Log.i("Calling GitInit for ${storageConfig.folderName} at: $repoPath");
-      await GitRepository.init(repoPath);
+      await GitRepository.init(repoPath, defaultBranch: 'main');
 
       storageConfig.save();
     }

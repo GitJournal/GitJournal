@@ -434,7 +434,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
     try {
       if (!await GitRepository.isValidRepo(repoPath)) {
-        await GitRepository.init(repoPath);
+        await GitRepository.init(repoPath, defaultBranch: 'main');
       }
       var repo = await GitRepository.load(repoPath).getOrThrow();
       if (repo.config.remote(widget.remoteName) != null) {
