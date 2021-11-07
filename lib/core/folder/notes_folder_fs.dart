@@ -76,7 +76,6 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
   void _noteRenamed(Note note, String oldPath) {
     assert(!oldPath.startsWith(p.separator));
-    assert(oldPath.startsWith(repoPath));
 
     _lock.synchronized(() {
       assert(_entityMap.containsKey(oldPath));
@@ -89,7 +88,6 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
   void _subFolderRenamed(NotesFolderFS folder, String oldPath) {
     assert(!oldPath.startsWith(p.separator));
-    assert(oldPath.startsWith(repoPath));
 
     _lock.synchronized(() {
       assert(_entityMap.containsKey(oldPath));
@@ -615,6 +613,8 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   /// Do not let the user rename it to a different file-type.
   ///
   void renameNote(Note note, String newName) {
+    assert(!newName.contains(p.separator));
+
     switch (note.fileFormat) {
       case NoteFileFormat.OrgMode:
         if (!newName.toLowerCase().endsWith('.org')) {
@@ -636,7 +636,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         break;
     }
 
-    var oldFilePath = note.fullFilePath;
+    var oldFilePath = note.filePath;
     var parentDirName = p.dirname(oldFilePath);
     var newFilePath = p.join(parentDirName, newName);
 

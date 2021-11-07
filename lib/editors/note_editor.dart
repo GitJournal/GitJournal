@@ -310,9 +310,10 @@ class NoteEditorState extends State<NoteEditor>
     );
     if (fileName is String) {
       if (_isNewNote) {
+        note.parent.renameNote(note, fileName);
+
         setState(() {
           this.note = _note;
-          note.parent.rename(fileName);
         });
         return;
       }

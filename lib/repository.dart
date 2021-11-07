@@ -382,6 +382,8 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   void renameNote(Note note, String newFileName) async {
+    assert(newFileName != repoPath);
+
     logEvent(Event.NoteRenamed);
 
     var oldNotePath = note.filePath;
