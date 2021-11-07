@@ -62,9 +62,10 @@ class GitJournalRepo with ChangeNotifier {
 
   String repoPath;
 
+  /// Sorted in newest -> oldest
   var syncAttempts = <SyncAttempt>[];
   SyncStatus get syncStatus =>
-      syncAttempts.isNotEmpty ? syncAttempts.last.status : SyncStatus.Unknown;
+      syncAttempts.isNotEmpty ? syncAttempts.first.status : SyncStatus.Unknown;
 
   int numChanges = 0;
 
@@ -267,7 +268,7 @@ class GitJournalRepo with ChangeNotifier {
     logEvent(Event.RepoSynced);
     var attempt = SyncAttempt();
     attempt.add(SyncStatus.Pulling);
-    syncAttempts.add(attempt);
+    syncAttempts.insert(0, attempt);
     notifyListeners();
 
     Future? noteLoadingFuture;
