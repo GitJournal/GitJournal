@@ -267,7 +267,19 @@ class _SyncAttemptTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var lastPart = attempt.parts.last;
-    return Text('${lastPart.status} ${lastPart.when}');
+    return TimelineTile(
+      indicatorStyle: const IndicatorStyle(
+        width: 15,
+        color: Colors.green,
+        padding: EdgeInsets.all(4.0),
+        indicatorXY: 0.0,
+      ),
+      endChild: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text('${lastPart.status} ${lastPart.when}'),
+      ),
+      beforeLineStyle: const LineStyle(color: Colors.green),
+    );
   }
 }
 
