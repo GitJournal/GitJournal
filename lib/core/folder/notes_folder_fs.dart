@@ -531,6 +531,33 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     return null;
   }
 
+  NotesFolderFS getOrBuildFolderWithSpec(String spec) {
+    assert(!spec.startsWith(p.separator));
+    if (spec == '.') {
+      return this;
+    }
+
+    var components = spec.split(p.separator);
+    var folder = this;
+    for (var i = 0; i < components.length; i++) {
+      var c = components.sublist(0, i + 1);
+      var folderPath = c.join(p.separator);
+
+      var folders = folder.subFoldersFS;
+      var folderIndex = folders.indexWhere((f) => f.folderPath == folderPath);
+      if (folderIndex != -1) {
+        folder = folders[folderIndex];
+        continue;
+      }
+
+      var subFolder = NotesFolderFS(folder, folderPath, _config, fileStorage);
+      folder.addFolder(subFolder);
+      folder = subFolder;
+    }
+
+    return folder;
+  }
+
   NotesFolderFS get rootFolder {
     var folder = this;
     while (folder.parent != null) {

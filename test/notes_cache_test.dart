@@ -40,7 +40,6 @@ void main() {
       cache = NotesCache(
         folderPath: tempDir.path,
         repoPath: repoPath,
-        folderConfig: config,
         fileStorage: fileStorage,
       );
 

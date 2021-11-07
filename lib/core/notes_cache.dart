@@ -15,7 +15,6 @@ import 'package:universal_io/io.dart' as io;
 import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/file/unopened_files.dart';
-import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/folder/sorting_mode.dart';
 import 'package:gitjournal/core/note.dart';
@@ -26,7 +25,6 @@ class NotesCache {
   final String folderPath;
   final String repoPath;
   final bool enabled = true;
-  final NotesFolderConfig folderConfig;
   final FileStorage fileStorage;
 
   String get filePath => p.join(folderPath, 'notes_cache_$version.json');
@@ -37,7 +35,6 @@ class NotesCache {
   NotesCache({
     required this.folderPath,
     required this.repoPath,
-    required this.folderConfig,
     required this.fileStorage,
   }) {
     assert(repoPath.endsWith(p.separator));
@@ -55,27 +52,8 @@ class NotesCache {
     var futures = <Future<void>>[];
 
     for (var file in fileList) {
-      var components = file.filePath.split(p.separator);
-
-      //
-      // Create required folders
-      var parent = rootFolder;
-      for (var i = 0; i < components.length - 1; i++) {
-        var c = components.sublist(0, i + 1);
-        var folderPath = c.join(p.separator);
-
-        var folders = parent.subFoldersFS;
-        var folderIndex = folders.indexWhere((f) => f.folderPath == folderPath);
-        if (folderIndex != -1) {
-          parent = folders[folderIndex];
-          continue;
-        }
-
-        var subFolder =
-            NotesFolderFS(parent, folderPath, folderConfig, fileStorage);
-        parent.addFolder(subFolder);
-        parent = subFolder;
-      }
+      var parentFolderPath = p.dirname(file.filePath);
+      var parent = rootFolder.getOrBuildFolderWithSpec(parentFolderPath);
 
       var unopenFile = UnopenedFile(file: file, parent: parent);
       parent.addFile(unopenFile);

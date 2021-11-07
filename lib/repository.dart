@@ -196,7 +196,6 @@ class GitJournalRepo with ChangeNotifier {
     _notesCache = NotesCache(
       folderPath: cacheDir,
       repoPath: _gitRepo.gitRepoPath,
-      folderConfig: folderConfig,
       fileStorage: fileStorage,
     );
 
