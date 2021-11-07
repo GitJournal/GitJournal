@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -25,7 +23,6 @@ import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/editors/journal_editor.dart';
 import 'package:gitjournal/editors/markdown_editor.dart';
-import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/editors/note_editor_selector.dart';
 import 'package:gitjournal/editors/org_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
@@ -206,40 +203,14 @@ class NoteEditorState extends State<NoteEditor>
     }
   }
 
-  Size _textSize(String text, TextStyle style) {
-    final TextPainter textPainter = TextPainter(
-        text: TextSpan(text: text, style: style),
-        maxLines: 1,
-        textDirection: ui.TextDirection.ltr)
-      ..layout(minWidth: 0, maxWidth: double.infinity);
-    return textPainter.size;
-  }
-
   @override
   Widget build(BuildContext context) {
-    var responsiveEditor = LayoutBuilder(builder: (context, constraints) {
-      var ch = _textSize('0', NoteBodyEditor.textStyle(context));
-      var maxWidth = ch.width * 65;
-
-      var editor = _getEditor();
-      if (constraints.maxWidth > maxWidth) {
-        return Container(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          child: Center(
-            child: SizedBox(width: maxWidth, child: editor),
-          ),
-        );
-      }
-
-      return editor;
-    });
-
     return WillPopScope(
       onWillPop: () async {
         var savedNote = await _saveNote(_getNoteFromEditor());
         return savedNote;
       },
-      child: responsiveEditor,
+      child: _getEditor(),
     );
   }
 

@@ -15,6 +15,7 @@ import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/bottom_bar.dart';
 import 'package:gitjournal/editors/common.dart';
+import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/widgets/note_viewer.dart';
 
@@ -138,9 +139,27 @@ class _EditorScaffoldState extends State<EditorScaffold> {
   @override
   Widget build(BuildContext context) {
     var settings = Provider.of<Settings>(context);
-    var body = editingMode
-        ? widget.body
-        : NoteViewer(note: note, parentFolder: widget.parentFolder);
+
+    var responsiveBody = LayoutBuilder(builder: (context, constraints) {
+      // FIXME: This shouldn't depend on the font
+      var ch = textSize('0', NoteBodyEditor.textStyle(context));
+      var maxWidth = ch.width * 65;
+
+      var body = editingMode
+          ? widget.body
+          : NoteViewer(note: note, parentFolder: widget.parentFolder);
+
+      if (constraints.maxWidth <= maxWidth) {
+        return body;
+      }
+
+      return Container(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: Center(
+          child: SizedBox(width: maxWidth, child: body),
+        ),
+      );
+    });
 
     return Scaffold(
       body: GestureDetector(
@@ -180,7 +199,7 @@ class _EditorScaffoldState extends State<EditorScaffold> {
                 ),
               ),
             Expanded(
-              child: Hero(tag: note.filePath, child: body),
+              child: Hero(tag: note.filePath, child: responsiveBody),
             ),
             _HideWidget(
               visible: !hideUIElements,
