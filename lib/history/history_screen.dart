@@ -12,6 +12,7 @@ import 'package:dart_git/git.dart';
 import 'package:dart_git/plumbing/commit_iterator.dart';
 import 'package:dart_git/plumbing/objects/commit.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:git_bindings/git_bindings.dart';
 import 'package:provider/provider.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -21,6 +22,7 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/sync_attempt.dart';
+import 'package:gitjournal/utils/utils.dart';
 import 'commit_data_widget.dart';
 
 class HistoryScreen extends StatelessWidget {
@@ -129,12 +131,30 @@ class _HistoryWidgetState extends State<HistoryWidget> {
     var extra = _lock.locked ? 1 : 0;
 
     return Scrollbar(
-      child: ListView.builder(
-        controller: _scrollController,
-        itemBuilder: _buildTile,
-        itemCount: commits.length + repo.syncAttempts.length + extra,
+      child: RefreshIndicator(
+        child: ListView.builder(
+          controller: _scrollController,
+          itemBuilder: _buildTile,
+          itemCount: commits.length + repo.syncAttempts.length + extra,
+        ),
+        onRefresh: () => _syncRepo(context),
       ),
     );
+  }
+
+  // FIXME: This is duplicated!
+  Future<void> _syncRepo(BuildContext context) async {
+    try {
+      var container = context.read<GitJournalRepo>();
+      await container.syncNotes();
+    } on GitException catch (e) {
+      showSnackbar(
+        context,
+        tr(LocaleKeys.widgets_FolderView_syncError, args: [e.cause]),
+      );
+    } catch (e) {
+      showSnackbar(context, e.toString());
+    }
   }
 
   Widget _buildTile(BuildContext context, int i) {
