@@ -38,15 +38,17 @@ class HistoryScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(LocaleKeys.drawer_history.tr()),
       ),
-      body: HistoryWidget(repoPath: gjRepo.repoPath),
+      body: HistoryWidget(gjRepo: gjRepo),
     );
   }
 }
 
 class HistoryWidget extends StatefulWidget {
-  final String repoPath;
+  final GitJournalRepo gjRepo;
 
-  const HistoryWidget({Key? key, required this.repoPath}) : super(key: key);
+  String get repoPath => gjRepo.repoPath;
+
+  const HistoryWidget({Key? key, required this.gjRepo}) : super(key: key);
 
   @override
   _HistoryWidgetState createState() => _HistoryWidgetState();
@@ -54,6 +56,8 @@ class HistoryWidget extends StatefulWidget {
 
 class _HistoryWidgetState extends State<HistoryWidget> {
   List<Result<GitCommit>> commits = [];
+  List<dynamic> commitsAndSyncAttempts = [];
+
   Stream<Result<GitCommit>>? _stream;
 
   final _scrollController = ScrollController();
@@ -79,13 +83,22 @@ class _HistoryWidgetState extends State<HistoryWidget> {
     });
 
     _loadMore();
+
+    widget.gjRepo.addListener(_rebuild);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    widget.gjRepo.removeListener(_rebuild);
 
     super.dispose();
+  }
+
+  void _rebuild() {
+    setState(() {
+      _rebuildCombined();
+    });
   }
 
   Future<void> _loadMore() async {
@@ -101,6 +114,7 @@ class _HistoryWidgetState extends State<HistoryWidget> {
 
       setState(() {
         commits.addAll(list);
+        _rebuildCombined();
       });
     });
   }
@@ -121,21 +135,54 @@ class _HistoryWidgetState extends State<HistoryWidget> {
     return const Stream.empty();
   }
 
+  void _rebuildCombined() {
+    commitsAndSyncAttempts = [];
+    commitsAndSyncAttempts.addAll(widget.gjRepo.syncAttempts);
+    commitsAndSyncAttempts.addAll(commits);
+    commitsAndSyncAttempts.sort((a, b) {
+      late DateTime aDt;
+      if (a is SyncAttempt) {
+        aDt = a.when;
+      } else if (a is Result<GitCommit>) {
+        if (a.isSuccess) {
+          aDt = a.getOrThrow().author.date;
+        } else {
+          aDt = DateTime.now(); // WTF, am I supposed to do in this case?
+        }
+      } else {
+        assert(false, "Something else is stored in History - ${a.runtimeType}");
+      }
+
+      late DateTime bDt;
+      if (b is SyncAttempt) {
+        bDt = b.when;
+      } else if (b is Result<GitCommit>) {
+        if (b.isSuccess) {
+          bDt = b.getOrThrow().author.date;
+        } else {
+          bDt = DateTime.now(); // WTF, am I supposed to do in this case?
+        }
+      } else {
+        assert(false, "Something else is stored in History - ${b.runtimeType}");
+      }
+
+      return bDt.compareTo(aDt);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_exception != null) {
       return _FailureTile(result: Result.fail(_exception!));
     }
 
-    var repo = Provider.of<GitJournalRepo>(context);
     var extra = _lock.locked ? 1 : 0;
-
     return Scrollbar(
       child: RefreshIndicator(
         child: ListView.builder(
           controller: _scrollController,
           itemBuilder: _buildTile,
-          itemCount: commits.length + repo.syncAttempts.length + extra,
+          itemCount: commitsAndSyncAttempts.length + extra,
         ),
         onRefresh: () => _syncRepo(context),
       ),
@@ -158,36 +205,53 @@ class _HistoryWidgetState extends State<HistoryWidget> {
   }
 
   Widget _buildTile(BuildContext context, int i) {
-    var repo = Provider.of<GitJournalRepo>(context);
-    if (i >= commits.length + repo.syncAttempts.length) {
+    if (i >= commitsAndSyncAttempts.length) {
       return const Padding(
         padding: EdgeInsets.all(16.0),
         child: Center(child: CircularProgressIndicator()),
       );
     }
 
-    if (i < repo.syncAttempts.length) {
-      var attempt = repo.syncAttempts[i];
-      return _SyncAttemptTile(attempt);
+    var d = commitsAndSyncAttempts[i];
+    if (d is SyncAttempt) {
+      return _SyncAttemptTile(d);
     }
-    i -= repo.syncAttempts.length;
 
-    if (i == commits.length - 1) {
-      var result = commits[i];
-      return result.isSuccess
+    assert(d is Result<GitCommit>);
+
+    var commitR = d as Result<GitCommit>;
+    Result<GitCommit>? parentCommitR;
+    for (var j = i + 1; j < commitsAndSyncAttempts.length; j++) {
+      var dd = commitsAndSyncAttempts[j];
+      if (dd is Result<GitCommit>) {
+        parentCommitR = dd;
+        break;
+      }
+    }
+
+    return _buildCommitTile(context, commitR, parentCommitR);
+  }
+
+  Widget _buildCommitTile(
+    BuildContext context,
+    Result<GitCommit> commitR,
+    Result<GitCommit>? parentCommitR,
+  ) {
+    if (parentCommitR == null) {
+      return commitR.isSuccess
           ? _CommitTile(
-              commit: result.getOrThrow(),
+              commit: commitR.getOrThrow(),
               prevCommit: null,
               gitRepo: _gitRepo!,
             )
-          : _FailureTile(result: result);
+          : _FailureTile(result: commitR);
     }
 
     try {
       return _CommitTile(
         gitRepo: _gitRepo!,
-        commit: commits[i].getOrThrow(),
-        prevCommit: commits[i + 1].getOrThrow(),
+        commit: commitR.getOrThrow(),
+        prevCommit: parentCommitR.getOrThrow(),
       );
     } catch (ex, st) {
       return _FailureTile(result: Result.fail(ex, st));

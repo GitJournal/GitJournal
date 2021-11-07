@@ -29,4 +29,5 @@ class SyncAttempt {
   }
 
   SyncStatus get status => parts.last.status;
+  DateTime get when => parts.last.when;
 }
