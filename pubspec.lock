@@ -78,15 +78,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0-nullsafety.0"
-  background_fetch:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "724a13feeead45dcc491a9d52f867bf6f9c86d50"
-      url: "https://github.com/Fishbowler/flutter_background_fetch.git"
-    source: git
-    version: "1.0.1"
   badges:
     dependency: "direct main"
     description:
