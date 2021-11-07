@@ -49,19 +49,18 @@ class NotesCache {
 
     assert(repoPath.endsWith(p.separator));
 
-    var futures = <Future<void>>[];
-
+    var selectFolders = <NotesFolderFS>{};
     for (var file in fileList) {
       var parentFolderPath = p.dirname(file.filePath);
       var parent = rootFolder.getOrBuildFolderWithSpec(parentFolderPath);
 
       var unopenFile = UnopenedFile(file: file, parent: parent);
       parent.addFile(unopenFile);
-      var f = parent.loadNotes();
-      futures.add(f);
+      selectFolders.add(parent);
     }
 
     // Load all the notes recursively
+    var futures = selectFolders.map((f) => f.loadNotes()).toList();
     await Future.wait(futures);
   }
 
