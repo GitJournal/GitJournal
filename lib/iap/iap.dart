@@ -8,6 +8,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart' as foundation;
 
+import 'package:google_api_availability/google_api_availability.dart';
 import 'package:http/http.dart' as http;
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase/store_kit_wrappers.dart';
@@ -159,6 +160,13 @@ class InAppPurchases {
   static void confirmPendingPurchases() async {
     // On iOS this results in a "Sign in with Apple ID" dialog
     if (!Platform.isAndroid) {
+      return;
+    }
+
+    var availability = await GoogleApiAvailability.instance
+        .checkGooglePlayServicesAvailability();
+    if (availability != GooglePlayServicesAvailability.success) {
+      Log.e("Google Play Services Not Available");
       return;
     }
 
