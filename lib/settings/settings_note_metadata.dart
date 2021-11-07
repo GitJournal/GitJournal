@@ -24,7 +24,7 @@ import 'package:gitjournal/features.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/settings.dart';
-import 'package:gitjournal/settings/settings_widgets.dart';
+import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
 class NoteMetadataSettingsScreen extends StatefulWidget {
