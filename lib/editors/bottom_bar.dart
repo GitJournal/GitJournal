@@ -96,7 +96,8 @@ class EditorBottomBar extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Visibility(
-              child: addIcon,
+              // Remove Material when https://github.com/flutter/flutter/issues/30658 is fixed
+              child: Material(child: addIcon),
               visible: allowEdits,
               maintainSize: true,
               maintainAnimation: true,
@@ -126,7 +127,8 @@ class EditorBottomBar extends StatelessWidget {
                 onPressed: redoAllowed ? onRedoSelected : null,
               ),
             const Spacer(),
-            menuIcon,
+            // Remove Material when https://github.com/flutter/flutter/issues/30658 is fixed
+            Material(child: menuIcon),
           ],
           mainAxisAlignment: MainAxisAlignment.center,
         ),

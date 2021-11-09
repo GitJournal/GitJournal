@@ -34,32 +34,32 @@ class MarkdownToolBar extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          IconButton(
+          fork.IconButton(
             icon: Text('H1', style: style),
             padding: const EdgeInsets.all(0.0),
             onPressed: () => _modifyCurrentLine('# '),
           ),
-          IconButton(
+          fork.IconButton(
             icon: Text('I', style: style),
             padding: const EdgeInsets.all(0.0),
             onPressed: () => _modifyCurrentWord('*'),
           ),
-          IconButton(
+          fork.IconButton(
             icon: Text('B', style: style),
             padding: const EdgeInsets.all(0.0),
             onPressed: () => _modifyCurrentWord('**'),
           ),
-          IconButton(
+          fork.IconButton(
             icon: const FaIcon(FontAwesomeIcons.listUl),
             padding: const EdgeInsets.all(0.0),
             onPressed: () => _modifyCurrentLine('- '),
           ),
-          IconButton(
+          fork.IconButton(
             icon: const FaIcon(FontAwesomeIcons.listOl),
             padding: const EdgeInsets.all(0.0),
             onPressed: () => _modifyCurrentLine('1. '),
           ),
-          IconButton(
+          fork.IconButton(
             icon: const FaIcon(FontAwesomeIcons.tasks),
             padding: const EdgeInsets.all(0.0),
             onPressed: () => _modifyCurrentLine('- [ ] '),

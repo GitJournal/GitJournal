@@ -21,6 +21,9 @@ const double _kMinButtonSize = kMinInteractiveDimension;
 
 /// A material design icon button.
 ///
+///   The FORK adds onLongPressed and wraps it in Material because of
+///   https://github.com/flutter/flutter/issues/30658
+///
 /// An icon button is a picture printed on a [Material] widget that reacts to
 /// touches by filling with color (ink).
 ///
@@ -374,7 +377,7 @@ class IconButton extends StatelessWidget {
       );
     }
 
-    return Semantics(
+    var sem = Semantics(
       button: true,
       enabled: onPressed != null,
       child: InkResponse(
@@ -398,6 +401,7 @@ class IconButton extends StatelessWidget {
             ),
       ),
     );
+    return Material(child: sem);
   }
 
   @override
