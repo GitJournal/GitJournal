@@ -11,6 +11,8 @@ import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
+import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/settings.dart';
@@ -48,18 +50,7 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
     }
 
     var body = ListView(children: <Widget>[
-      ListPreference(
-        title: tr(LocaleKeys.settings_editors_defaultEditor),
-        currentOption: folderConfig.defaultEditor.toPublicString(),
-        options:
-            SettingsEditorType.options.map((f) => f.toPublicString()).toList(),
-        onChange: (String publicStr) {
-          var val = SettingsEditorType.fromPublicString(publicStr);
-          folderConfig.defaultEditor = val;
-          folderConfig.save();
-          setState(() {});
-        },
-      ),
+      const DefaultEditorTile(),
       const DefaultFileFormatTile(),
       //SettingsHeader(tr("settings.editors.markdownEditor")),
       ListPreference(
@@ -135,6 +126,37 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
         ),
       ),
       body: body,
+    );
+  }
+}
+
+class DefaultEditorTile extends StatelessWidget {
+  const DefaultEditorTile({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var folderConfig = Provider.of<NotesFolderConfig>(context);
+    var fileFormat = folderConfig.defaultFileFormat.toFileFormat();
+
+    var options = SettingsEditorType.options
+        .where((e) => editorSupported(fileFormat, e.toEditorType()))
+        .toList();
+
+    var defaultEditor = folderConfig.defaultEditor;
+    if (!editorSupported(fileFormat, defaultEditor.toEditorType())) {
+      var editor = NoteFileFormatInfo.defaultEditor(fileFormat);
+      defaultEditor = SettingsEditorType.fromEditorType(editor);
+    }
+
+    return ListPreference(
+      title: tr(LocaleKeys.settings_editors_defaultEditor),
+      currentOption: defaultEditor.toPublicString(),
+      options: options.map((f) => f.toPublicString()).toList(),
+      onChange: (String publicStr) {
+        var val = SettingsEditorType.fromPublicString(publicStr);
+        folderConfig.defaultEditor = val;
+        folderConfig.save();
+      },
     );
   }
 }

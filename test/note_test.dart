@@ -225,7 +225,8 @@ Gee
 
     test('New Notes have a file extension', () async {
       var parentFolder = NotesFolderFS.root(config, fileStorage);
-      var note = Note.newNote(parentFolder);
+      var note =
+          Note.newNote(parentFolder, fileFormat: NoteFileFormat.Markdown);
       var path = note.filePath;
       expect(path.endsWith('.md'), true);
     });

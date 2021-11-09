@@ -9,6 +9,7 @@ import 'package:universal_io/io.dart' as io;
 import 'package:uuid/uuid.dart';
 
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
+import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/settings.dart';
@@ -35,8 +36,17 @@ class NoteFileFormatInfo {
         return '.org';
       case NoteFileFormat.Txt:
         return ".txt";
-      default:
-        return ".md";
+    }
+  }
+
+  static EditorType defaultEditor(NoteFileFormat format) {
+    switch (format) {
+      case NoteFileFormat.Markdown:
+        return EditorType.Markdown;
+      case NoteFileFormat.Txt:
+        return EditorType.Raw;
+      case NoteFileFormat.OrgMode:
+        return EditorType.Org;
     }
   }
 
@@ -84,7 +94,7 @@ class Note implements File {
   Set<String> _tags = {};
   Map<String, dynamic> _extraProps = {};
 
-  NoteFileFormat? _fileFormat;
+  NoteFileFormat _fileFormat;
 
   MdYamlDoc _data = MdYamlDoc();
   late NoteSerializer noteSerializer;
@@ -130,9 +140,11 @@ class Note implements File {
 
   Note.newNote(
     this.parent, {
+    required NoteFileFormat fileFormat,
     Map<String, dynamic> extraProps = const {},
     String? fileName,
-  }) : file = File.empty(repoPath: parent.repoPath) {
+  })  : file = File.empty(repoPath: parent.repoPath),
+        _fileFormat = fileFormat {
     _created = DateTime.now();
     var settings = NoteSerializationSettings.fromConfig(parent.config);
     noteSerializer = NoteSerializer.fromConfig(settings);
@@ -156,8 +168,7 @@ class Note implements File {
       //        exist
       var formatInfo = NoteFileFormatInfo(parent.config);
       if (!formatInfo.isAllowedFileName(fileName)) {
-        fileName +=
-            NoteFileFormatInfo.defaultExtension(NoteFileFormat.Markdown);
+        fileName += NoteFileFormatInfo.defaultExtension(_fileFormat);
       }
       _filePath = p.join(parent.folderPath, fileName);
 
@@ -382,9 +393,7 @@ class Note implements File {
   String _buildFileName() {
     var date = created;
     var isJournal = type == NoteType.Journal;
-    var fileFormat =
-        _fileFormat ?? parent.config.defaultFileFormat.toFileFormat();
-    var ext = NoteFileFormatInfo.defaultExtension(fileFormat);
+    var ext = NoteFileFormatInfo.defaultExtension(_fileFormat);
 
     switch (!isJournal
         ? parent.config.fileNameFormat
@@ -415,10 +424,7 @@ class Note implements File {
     return date.toString();
   }
 
-  NoteFileFormat get fileFormat {
-    var formatInfo = NoteFileFormatInfo(parent.config);
-    return _fileFormat ?? formatInfo.fromFilePath(filePath);
-  }
+  NoteFileFormat get fileFormat => _fileFormat;
 
   @override
   Map<String, dynamic> toMap() {

@@ -56,7 +56,8 @@ void main() {
 
       for (var i = 0; i < 3; i++) {
         var fp = _getRandomFilePath(rootFolder.fullFolderPath);
-        var note = Note.newNote(rootFolder, fileName: p.basename(fp));
+        var note = Note.newNote(rootFolder,
+            fileName: p.basename(fp), fileFormat: NoteFileFormat.Markdown);
         note.apply(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "$i\n",
@@ -71,7 +72,8 @@ void main() {
       var sub1Folder = NotesFolderFS(rootFolder, "sub1", config, fileStorage);
       for (var i = 0; i < 2; i++) {
         var fp = _getRandomFilePath(sub1Folder.fullFolderPath);
-        var note = Note.newNote(sub1Folder, fileName: p.basename(fp));
+        var note = Note.newNote(sub1Folder,
+            fileName: p.basename(fp), fileFormat: NoteFileFormat.Markdown);
 
         note.apply(
           modified: DateTime(2020, 1, 10 + (i * 2)),
@@ -83,7 +85,8 @@ void main() {
       var sub2Folder = NotesFolderFS(rootFolder, "sub2", config, fileStorage);
       for (var i = 0; i < 2; i++) {
         var fp = _getRandomFilePath(sub2Folder.fullFolderPath);
-        var note = Note.newNote(sub2Folder, fileName: p.basename(fp));
+        var note = Note.newNote(sub2Folder,
+            fileName: p.basename(fp), fileFormat: NoteFileFormat.Markdown);
 
         note.apply(
           modified: DateTime(2020, 1, 10 + (i * 2)),
@@ -96,7 +99,8 @@ void main() {
           NotesFolderFS(sub1Folder, p.join("sub1", "p1"), config, fileStorage);
       for (var i = 0; i < 2; i++) {
         var fp = _getRandomFilePath(p1Folder.fullFolderPath);
-        var note = Note.newNote(p1Folder, fileName: p.basename(fp));
+        var note = Note.newNote(p1Folder,
+            fileName: p.basename(fp), fileFormat: NoteFileFormat.Markdown);
 
         note.apply(
           modified: DateTime(2020, 1, 10 + (i * 2)),
@@ -154,7 +158,8 @@ void main() {
 
       var p1 = (f.fsFolder as NotesFolderFS).getFolderWithSpec("sub1/p1")!;
       var fp = p.join(p1.folderPath, "new.md");
-      var note = Note.newNote(p1, fileName: p.basename(fp));
+      var note = Note.newNote(p1,
+          fileName: p.basename(fp), fileFormat: NoteFileFormat.Markdown);
       note.apply(
         modified: DateTime(2020, 2, 1),
         body: "new\n",

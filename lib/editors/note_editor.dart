@@ -39,11 +39,19 @@ import 'package:gitjournal/widgets/rename_dialog.dart';
 
 class ShowUndoSnackbar {}
 
+/// Certain Editors only support certain file formats. We can create an
+///   editor either by -
+
+///   * Giving it a Note, and letting it choose an editor based on the
+///     default or note metadata
+///   * New Note with a file type
+///   * New Note with a editor type + possible file type
 class NoteEditor extends StatefulWidget {
   final Note? note;
   final NotesFolderFS notesFolder;
   final NotesFolder parentFolderView;
   final EditorType? defaultEditorType;
+  final NoteFileFormat? defaultFileFormat;
 
   final String? existingText;
   final List<String>? existingImages;
@@ -61,6 +69,7 @@ class NoteEditor extends StatefulWidget {
     this.highlightString,
   })  : notesFolder = note!.parent,
         defaultEditorType = null,
+        defaultFileFormat = null,
         existingText = null,
         existingImages = null,
         newNoteFileName = null,
@@ -74,6 +83,7 @@ class NoteEditor extends StatefulWidget {
     required List<String> this.existingImages,
     this.newNoteExtraProps = const {},
     this.newNoteFileName,
+    this.defaultFileFormat,
   })  : note = null,
         editMode = true,
         highlightString = null;
@@ -81,12 +91,23 @@ class NoteEditor extends StatefulWidget {
   @override
   NoteEditorState createState() {
     if (note == null) {
+      var fileFormat = defaultFileFormat ??
+          notesFolder.config.defaultFileFormat.toFileFormat();
+
+      if (defaultEditorType != null) {
+        var editor = defaultEditorType!;
+        if (!editorSupported(fileFormat, editor)) {
+          fileFormat = defaultFormat(editor);
+        }
+      }
+
       return NoteEditorState.newNote(
         notesFolder,
         existingText!,
         existingImages!,
         newNoteExtraProps!,
         newNoteFileName,
+        fileFormat,
       );
     } else {
       return NoteEditorState.fromNote(note);
@@ -98,7 +119,7 @@ class NoteEditorState extends State<NoteEditor>
     with WidgetsBindingObserver
     implements EditorCommon {
   Note? note;
-  EditorType editorType = EditorType.Markdown;
+  late EditorType editorType;
   MdYamlDoc originalNoteData = MdYamlDoc();
 
   final _rawEditorKey = GlobalKey<RawEditorState>();
@@ -117,8 +138,14 @@ class NoteEditorState extends State<NoteEditor>
     List<String> existingImages,
     Map<String, dynamic> extraProps,
     String? fileName,
+    NoteFileFormat fileFormat,
   ) {
-    note = Note.newNote(folder, extraProps: extraProps, fileName: fileName);
+    note = Note.newNote(
+      folder,
+      extraProps: extraProps,
+      fileName: fileName,
+      fileFormat: fileFormat,
+    );
     if (existingText.isNotEmpty) {
       note!.apply(body: existingText);
     }
@@ -147,8 +174,11 @@ class NoteEditorState extends State<NoteEditor>
     WidgetsBinding.instance!.addObserver(this);
     var note = this.note!;
 
+    // Select the editor
     if (widget.defaultEditorType != null) {
       editorType = widget.defaultEditorType!;
+    } else if (widget.defaultFileFormat != null) {
+      editorType = NoteFileFormatInfo.defaultEditor(widget.defaultFileFormat!);
     } else {
       switch (note.type) {
         case NoteType.Journal:
@@ -164,18 +194,6 @@ class NoteEditorState extends State<NoteEditor>
           editorType = widget.notesFolder.config.defaultEditor.toEditorType();
           break;
       }
-    }
-
-    // Org files
-    if (note.fileFormat == NoteFileFormat.OrgMode &&
-        editorType == EditorType.Markdown) {
-      editorType = EditorType.Org;
-    }
-
-    // Txt files
-    if (note.fileFormat == NoteFileFormat.Txt &&
-        editorType == EditorType.Markdown) {
-      editorType = EditorType.Raw;
     }
   }
 

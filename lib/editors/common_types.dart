@@ -26,3 +26,22 @@ bool editorSupported(NoteFileFormat format, EditorType type) {
       return format == NoteFileFormat.OrgMode;
   }
 }
+
+NoteFileFormat defaultFormat(EditorType type) {
+  switch (type) {
+    case EditorType.Markdown:
+      return NoteFileFormat.Markdown;
+
+    case EditorType.Journal:
+      return NoteFileFormat.Markdown;
+
+    case EditorType.Checklist:
+      return NoteFileFormat.Markdown;
+
+    case EditorType.Raw:
+      return NoteFileFormat.Markdown;
+
+    case EditorType.Org:
+      return NoteFileFormat.OrgMode;
+  }
+}

@@ -29,16 +29,20 @@ void main() {
 
     test('Created', () async {
       var folder = NotesFolderFS.root(config, fileStorage);
-      var n1 = Note.newNote(folder, fileName: '1.md');
+      var n1 = Note.newNote(folder,
+          fileName: '1.md', fileFormat: NoteFileFormat.Markdown);
       n1.apply(created: DateTime(2020, 10, 01));
 
-      var n2 = Note.newNote(folder, fileName: '2.md');
+      var n2 = Note.newNote(folder,
+          fileName: '2.md', fileFormat: NoteFileFormat.Markdown);
       n2.apply(created: DateTime(2020, 10, 02));
 
-      var n3 = Note.newNote(folder, fileName: '3.md');
+      var n3 = Note.newNote(folder,
+          fileName: '3.md', fileFormat: NoteFileFormat.Markdown);
       n3.apply(created: DateTime(2020, 9, 04));
 
-      var n4 = Note.newNote(folder, fileName: '4.md');
+      var n4 = Note.newNote(folder,
+          fileName: '4.md', fileFormat: NoteFileFormat.Markdown);
       n4.apply(created: DateTime(2020, 9, 03));
 
       var notes = [n1, n2, n3, n4];
@@ -54,16 +58,20 @@ void main() {
 
     test('Modified', () async {
       var folder = NotesFolderFS.root(config, fileStorage);
-      var n1 = Note.newNote(folder, fileName: '1.md');
+      var n1 = Note.newNote(folder,
+          fileName: '1.md', fileFormat: NoteFileFormat.Markdown);
       n1.apply(modified: DateTime(2020, 10, 01));
 
-      var n2 = Note.newNote(folder, fileName: '2.md');
+      var n2 = Note.newNote(folder,
+          fileName: '2.md', fileFormat: NoteFileFormat.Markdown);
       n2.apply(modified: DateTime(2020, 10, 02));
 
-      var n3 = Note.newNote(folder, fileName: '3.md');
+      var n3 = Note.newNote(folder,
+          fileName: '3.md', fileFormat: NoteFileFormat.Markdown);
       n3.apply(modified: DateTime(2020, 9, 04));
 
-      var n4 = Note.newNote(folder, fileName: '4.md');
+      var n4 = Note.newNote(folder,
+          fileName: '4.md', fileFormat: NoteFileFormat.Markdown);
       n4.apply(modified: DateTime(2020, 9, 03));
 
       var notes = [n1, n2, n3, n4];

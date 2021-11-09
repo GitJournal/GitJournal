@@ -52,10 +52,12 @@ void main() {
 
       var parent = NotesFolderFS.root(config, fileStorage);
 
-      var n1 = Note.newNote(parent, fileName: "1.md");
+      var n1 = Note.newNote(parent,
+          fileName: "1.md", fileFormat: NoteFileFormat.Markdown);
       n1.apply(created: dt, body: "test\n");
 
-      var n2 = Note.newNote(parent, fileName: "2.md");
+      var n2 = Note.newNote(parent,
+          fileName: "2.md", fileFormat: NoteFileFormat.Markdown);
       n2 = NoteSerializer.decodeNote(
         data: MdYamlDoc(body: "test2\n", props: props),
         parent: n2.parent,

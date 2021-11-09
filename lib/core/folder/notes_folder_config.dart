@@ -9,6 +9,8 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/core/folder/sorting_mode.dart';
+import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_sharedpref.dart';
@@ -25,9 +27,10 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
   var sortingField = SortingField.Default;
   var sortingOrder = SortingOrder.Default;
 
-  var defaultEditor = SettingsEditorType.Default;
-  var defaultView = SettingsFolderViewType.Default;
+  late SettingsEditorType _defaultEditor;
   var defaultFileFormat = SettingsNoteFileFormat.Default;
+
+  var defaultView = SettingsFolderViewType.Default;
 
   var folderViewHeaderType = "TitleGenerated";
   var showNoteSummary = true;
@@ -61,7 +64,7 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
 
     sortingField = SortingField.fromInternalString(getString("sortingField"));
     sortingOrder = SortingOrder.fromInternalString(getString("sortingOrder"));
-    defaultEditor =
+    _defaultEditor =
         SettingsEditorType.fromInternalString(getString("defaultEditor"));
     defaultView =
         SettingsFolderViewType.fromInternalString(getString("defaultView"));
@@ -98,8 +101,8 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
         def.sortingField.toInternalString());
     await setString("sortingOrder", sortingOrder.toInternalString(),
         def.sortingOrder.toInternalString());
-    await setString("defaultEditor", defaultEditor.toInternalString(),
-        def.defaultEditor.toInternalString());
+    await setString("defaultEditor", _defaultEditor.toInternalString(),
+        def._defaultEditor.toInternalString());
     await setString("defaultView", defaultView.toInternalString(),
         def.defaultView.toInternalString());
     await setString("defaultFileFormat", defaultFileFormat.toInternalString(),
@@ -136,7 +139,7 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
       "yamlCreatedKey": yamlCreatedKey,
       "yamlTagsKey": yamlTagsKey,
       "yamlHeaderEnabled": yamlHeaderEnabled.toString(),
-      "defaultEditor": defaultEditor.toInternalString(),
+      "defaultEditor": _defaultEditor.toInternalString(),
       "defaultView": defaultView.toInternalString(),
       'defaultFileFormat': defaultFileFormat.toInternalString(),
       "sortingField": sortingField.toInternalString(),
@@ -179,5 +182,28 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
 
   SortingMode get sortingMode {
     return SortingMode(sortingField, sortingOrder);
+  }
+
+  SettingsEditorType get defaultEditor {
+    var format = defaultFileFormat.toFileFormat();
+
+    if (editorSupported(format, _defaultEditor.toEditorType())) {
+      return _defaultEditor;
+    }
+
+    var editor = NoteFileFormatInfo.defaultEditor(format);
+    return SettingsEditorType.fromEditorType(editor);
+  }
+
+  set defaultEditor(SettingsEditorType editorType) {
+    var format = defaultFileFormat.toFileFormat();
+
+    if (editorSupported(format, editorType.toEditorType())) {
+      _defaultEditor = editorType;
+      return;
+    }
+
+    assert(false, "Why is the default editor incompatible with the file type");
+    _defaultEditor = defaultEditor;
   }
 }

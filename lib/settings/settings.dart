@@ -309,7 +309,10 @@ class SettingsEditorType {
         return EditorType.Journal;
       case Checklist:
         return EditorType.Checklist;
+      case Org:
+        return EditorType.Org;
       default:
+        assert(false, "Editor Type mismatch");
         return EditorType.Markdown;
     }
   }
