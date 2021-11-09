@@ -14,6 +14,7 @@ import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/settings_storage.dart';
 import 'package:gitjournal/settings/widgets/settings_header.dart';
 import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
 import 'package:gitjournal/utils/utils.dart';
@@ -59,19 +60,7 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
           setState(() {});
         },
       ),
-      ListPreference(
-        title: tr(LocaleKeys.settings_editors_defaultNoteFormat),
-        currentOption: folderConfig.defaultFileFormat.toPublicString(),
-        options: SettingsNoteFileFormat.options
-            .map((f) => f.toPublicString())
-            .toList(),
-        onChange: (String publicStr) {
-          var val = SettingsNoteFileFormat.fromPublicString(publicStr);
-          folderConfig.defaultFileFormat = val;
-          folderConfig.save();
-          setState(() {});
-        },
-      ),
+      const DefaultFileFormatTile(),
       //SettingsHeader(tr("settings.editors.markdownEditor")),
       ListPreference(
         title: tr(LocaleKeys.settings_editors_defaultState),

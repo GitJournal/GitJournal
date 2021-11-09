@@ -59,6 +59,7 @@ class SettingsStorageScreen extends StatelessWidget {
             folderConfig.save();
           },
         ),
+        const DefaultFileFormatTile(),
         const DefaultNoteFolderTile(),
         ListTile(
           title: Text(tr(LocaleKeys.settings_noteMetaData_title)),
@@ -298,6 +299,28 @@ class DefaultNoteFolderTile extends StatelessWidget {
           settings.defaultNewNoteFolderSpec = destFolder.folderPath;
           settings.save();
         }
+      },
+    );
+  }
+}
+
+class DefaultFileFormatTile extends StatelessWidget {
+  const DefaultFileFormatTile({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var folderConfig = Provider.of<NotesFolderConfig>(context);
+
+    return ListPreference(
+      title: tr(LocaleKeys.settings_editors_defaultNoteFormat),
+      currentOption: folderConfig.defaultFileFormat.toPublicString(),
+      options: SettingsNoteFileFormat.options
+          .map((f) => f.toPublicString())
+          .toList(),
+      onChange: (String publicStr) {
+        var val = SettingsNoteFileFormat.fromPublicString(publicStr);
+        folderConfig.defaultFileFormat = val;
+        folderConfig.save();
       },
     );
   }
