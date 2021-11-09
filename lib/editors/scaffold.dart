@@ -149,6 +149,8 @@ class _EditorScaffoldState extends State<EditorScaffold> {
           ? widget.body
           : NoteViewer(note: note, parentFolder: widget.parentFolder);
 
+      body = Scrollbar(child: body);
+
       if (constraints.maxWidth <= maxWidth) {
         return body;
       }
