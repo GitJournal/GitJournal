@@ -37,7 +37,7 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
     var folderConfig = Provider.of<NotesFolderConfig>(context);
     var defaultNewFolder = settings.journalEditordefaultNewNoteFolderSpec;
     if (defaultNewFolder.isEmpty) {
-      defaultNewFolder = tr(LocaleKeys.rootFolder);
+      defaultNewFolder = LocaleKeys.none.tr();
     } else {
       if (!folderWithSpecExists(context, defaultNewFolder)) {
         setState(() {

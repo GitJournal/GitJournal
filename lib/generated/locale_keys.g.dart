@@ -327,6 +327,8 @@ abstract class LocaleKeys {
       'settings.editors.journalEditor';
   static const settings_editors_defaultFolder =
       'settings.editors.defaultFolder';
+  static const settings_editors_journalDefaultFolderSelect =
+      'settings.editors.journalDefaultFolderSelect';
   static const settings_editors_checklistEditor =
       'settings.editors.checklistEditor';
   static const settings_editors_orgEditor = 'settings.editors.orgEditor';
@@ -444,6 +446,7 @@ abstract class LocaleKeys {
   static const editors = 'editors';
   static const pro = 'pro';
   static const beta = 'beta';
+  static const none = 'none';
   static const actions_newNote = 'actions.newNote';
   static const actions_newJournal = 'actions.newJournal';
   static const actions_newChecklist = 'actions.newChecklist';

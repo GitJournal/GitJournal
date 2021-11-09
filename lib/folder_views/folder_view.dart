@@ -288,29 +288,44 @@ class _FolderViewState extends State<FolderView> {
   }
 
   void _newPost(EditorType editorType) async {
+    var settings = Provider.of<Settings>(context, listen: false);
+    var rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
+
     var folder = widget.notesFolder;
     var fsFolder = folder.fsFolder as NotesFolderFS;
     var isVirtualFolder = folder.name != folder.fsFolder!.name;
-    if (isVirtualFolder) {
-      var rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
-      var settings = Provider.of<Settings>(context, listen: false);
 
+    if (isVirtualFolder) {
       fsFolder = getFolderForEditor(settings, rootFolder, editorType);
     }
 
-    var settings = Provider.of<Settings>(context, listen: false);
+    if (editorType == EditorType.Journal) {
+      if (settings.journalEditordefaultNewNoteFolderSpec.isNotEmpty) {
+        var spec = settings.journalEditordefaultNewNoteFolderSpec;
+        fsFolder = rootFolder.getFolderWithSpec(spec) ?? rootFolder;
 
-    if (editorType == EditorType.Journal && settings.journalEditorSingleNote) {
-      var note = await getTodayJournalEntry(fsFolder.rootFolder);
-      if (note != null) {
-        return openNoteEditor(
-          context,
-          note,
-          widget.notesFolder,
-          editMode: true,
-        );
+        if (!isVirtualFolder) {
+          showSnackbar(
+            context,
+            LocaleKeys.settings_editors_journalDefaultFolderSelect
+                .tr(args: [spec]),
+          );
+        }
+      }
+
+      if (settings.journalEditorSingleNote) {
+        var note = await getTodayJournalEntry(fsFolder.rootFolder);
+        if (note != null) {
+          return openNoteEditor(
+            context,
+            note,
+            fsFolder,
+            editMode: true,
+          );
+        }
       }
     }
+
     var routeType =
         SettingsEditorType.fromEditorType(editorType).toInternalString();
 

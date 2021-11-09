@@ -221,6 +221,7 @@ settings:
     markdownEditor: Markdown Editor
     journalEditor: Journal Editor
     defaultFolder: Default Folder
+    journalDefaultFolderSelect: Creating a Note in '{}'
     checklistEditor: Checklist Editor
     orgEditor: Org Editor
     rawEditor: Raw Editor
@@ -315,6 +316,7 @@ editors:
       message: We're sorry, but we cannot seem to save the Note. It has been copied to the clipboard to avoid data loss.
 pro: Pro
 beta: BETA
+none: None
 actions:
   newNote: New Note
   newJournal: New Journal Entry
