@@ -4,14 +4,23 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'package:path/path.dart' as p;
+
 class CommitMessageBuilder {
   String addNote(String spec) => "Added Note $spec";
   String addFolder(String spec) => "Added Folder $spec";
 
   String renameFolder(String oldSpec, String newSpec) =>
       "Renamed Folder $oldSpec -> $newSpec";
-  String renameNote(String oldSpec, String newSpec) =>
-      "Renamed Note $oldSpec -> $newSpec";
+
+  String renameNote(String oldSpec, String newSpec) {
+    if (p.basenameWithoutExtension(oldSpec) ==
+        p.basenameWithoutExtension(newSpec)) {
+      return "Renamed Note $oldSpec -> ${p.extension(newSpec)}";
+    }
+    return "Renamed Note $oldSpec -> $newSpec";
+  }
+
   String renameFile(String oldSpec, String newSpec) =>
       "Renamed File $oldSpec -> $newSpec";
 
