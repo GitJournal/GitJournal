@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'package:dart_git/plumbing/git_hash.dart';
+
 enum SyncStatus {
   Unknown,
   Done,
@@ -18,13 +20,17 @@ class SyncAttemptPart {
   final DateTime when;
   final Exception? exception;
 
-  SyncAttemptPart(this.status, [this.exception]) : when = DateTime.now();
+  /// The headHash before the SyncStatus was started
+  final GitHash? headHash;
+
+  SyncAttemptPart(this.status, this.headHash, [this.exception])
+      : when = DateTime.now();
 }
 
 class SyncAttempt {
   var parts = <SyncAttemptPart>[];
   void add(SyncStatus status, [Exception? exception]) {
-    var part = SyncAttemptPart(status, exception);
+    var part = SyncAttemptPart(status, GitHash.zero(), exception);
     parts.add(part);
   }
 
