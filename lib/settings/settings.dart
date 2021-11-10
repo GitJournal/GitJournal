@@ -96,11 +96,6 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
     var pref = await SharedPreferences.getInstance();
     var def = Settings(id, pref);
 
-    assert(journalEditordefaultNewNoteFolderSpec != ".");
-    if (journalEditorSingleNote) {
-      assert(journalEditordefaultNewNoteFolderSpec.isEmpty);
-    }
-
     await setString("defaultNewNoteFolderSpec", defaultNewNoteFolderSpec,
         def.defaultNewNoteFolderSpec);
     await setString(
