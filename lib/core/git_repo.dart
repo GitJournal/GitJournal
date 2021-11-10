@@ -126,42 +126,36 @@ class GitNoteRepository {
     return _addAllAndCommit(msg);
   }
 
-  Future<Result<void>> renameFolder(
-    String oldFullPath,
-    String newFullPath,
-  ) async {
-    var repoPath = gitRepoPath.endsWith('/') ? gitRepoPath : '$gitRepoPath/';
-    var oldSpec = oldFullPath.substring(repoPath.length);
-    var newSpec = newFullPath.substring(repoPath.length);
-    var msg = messageBuilder.renameFolder(oldSpec, newSpec);
+  Future<Result<void>> renameFolder(String oldPath, String newPath) async {
+    var msg = messageBuilder.renameFolder(oldPath, newPath);
 
-    // FIXME: This is a hacky way of adding the changes, ideally we should be calling rm + add or something
+    // FIXME: This is a hacky way of adding the changes, ideally we should be
+    //        calling rm + add or something
     return _addAllAndCommit(msg);
   }
 
-  Future<Result<void>> renameNote(
-    String oldFullPath,
-    String newFullPath,
-  ) async {
-    var repoPath = gitRepoPath.endsWith('/') ? gitRepoPath : '$gitRepoPath/';
-    var oldSpec = oldFullPath.substring(repoPath.length);
-    var newSpec = newFullPath.substring(repoPath.length);
-    var msg = messageBuilder.renameNote(oldSpec, newSpec);
+  Future<Result<void>> renameNote(String oldPath, String newPath) async {
+    assert(!oldPath.startsWith(p.separator));
+    assert(!newPath.startsWith(p.separator));
 
+    assert(!oldPath.startsWith(gitRepoPath));
+    assert(!newPath.startsWith(gitRepoPath));
+
+    var msg = messageBuilder.renameNote(oldPath, newPath);
     return _addAllAndCommit(msg);
   }
 
-  Future<Result<void>> renameFile(
-    String oldFullPath,
-    String newFullPath,
-  ) async {
-    var repoPath = gitRepoPath.endsWith('/') ? gitRepoPath : '$gitRepoPath/';
-    var oldSpec = oldFullPath.substring(repoPath.length);
-    var newSpec = newFullPath.substring(repoPath.length);
-    var msg = messageBuilder.renameFile(oldSpec, newSpec);
+  // Future<Result<void>> renameFile(
+  //   String oldFullPath,
+  //   String newFullPath,
+  // ) async {
+  //   var repoPath = gitRepoPath.endsWith('/') ? gitRepoPath : '$gitRepoPath/';
+  //   var oldSpec = oldFullPath.substring(repoPath.length);
+  //   var newSpec = newFullPath.substring(repoPath.length);
+  //   var msg = messageBuilder.renameFile(oldSpec, newSpec);
 
-    return _addAllAndCommit(msg);
-  }
+  //   return _addAllAndCommit(msg);
+  // }
 
   Future<Result<void>> moveNotes(
     List<String> oldPaths,

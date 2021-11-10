@@ -50,7 +50,7 @@ class NoteFileFormatInfo {
     }
   }
 
-  NoteFileFormat fromFilePath(String filePath) {
+  static NoteFileFormat fromFilePath(String filePath) {
     var ext = p.extension(filePath).toLowerCase();
     switch (ext) {
       case ".md":
@@ -222,8 +222,28 @@ class Note implements File {
     return _filePath as String;
   }
 
+  void applyFilePath(String filePath) {
+    assert(!filePath.startsWith(p.separator));
+    bool changed = false;
+
+    var newFormat = NoteFileFormatInfo.fromFilePath(filePath);
+    if (_filePath != filePath || newFormat != _fileFormat) {
+      _filePath = filePath;
+      _fileFormat = newFormat;
+
+      print(_fileFormat);
+      print(_filePath);
+
+      file = file.copyFile(filePath: _filePath);
+      changed = true;
+    }
+
+    if (changed) {
+      _notifyModified();
+    }
+  }
+
   void apply({
-    String? filePath,
     DateTime? created,
     DateTime? modified,
     String? body,
@@ -231,16 +251,9 @@ class Note implements File {
     NoteType? type,
     Map<String, dynamic>? extraProps,
     Set<String>? tags,
-    NoteFileFormat? fileFormat,
   }) {
     var changed = false;
-    if (filePath != null) {
-      assert(!filePath.startsWith(p.separator));
 
-      _filePath = filePath;
-      file = file.copyFile(filePath: _filePath);
-      changed = true;
-    }
     if (canHaveMetadata) {
       if (created != null && created != _created) {
         _created = created;
@@ -274,11 +287,6 @@ class Note implements File {
 
     if (title != null && title != _title) {
       _title = title;
-      changed = true;
-    }
-
-    if (fileFormat != null && _fileFormat != fileFormat) {
-      _fileFormat = fileFormat;
       changed = true;
     }
 

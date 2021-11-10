@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/folder/notes_folder.dart';
@@ -317,26 +318,60 @@ class NoteEditorState extends State<NoteEditor>
 
   @override
   void renameNote(Note _note) async {
-    var note = this.note!;
+    var prevNote = note!;
     var fileName = await showDialog(
       context: context,
       builder: (_) => RenameDialog(
-        oldPath: note.filePath,
+        oldPath: prevNote.filePath,
         inputDecoration: tr(LocaleKeys.widgets_NoteEditor_fileName),
         dialogTitle: tr(LocaleKeys.widgets_NoteEditor_renameFile),
       ),
     );
-    if (fileName is String) {
-      if (_isNewNote) {
-        note.parent.renameNote(note, fileName);
+    if (fileName == null) {
+      return;
+    }
 
-        setState(() {
-          this.note = _note;
-        });
-        return;
-      }
+    var prevName = prevNote.fileName;
+
+    if (_isNewNote) {
+      _note.parent.renameNote(_note, fileName);
+
+      setState(() {
+        note = _note;
+      });
+    } else {
       var container = context.read<GitJournalRepo>();
-      container.renameNote(note, fileName);
+      container.renameNote(_note, fileName);
+    }
+
+    var newExt = p.extension(fileName).toLowerCase();
+    var oldExt = p.extension(prevName).toLowerCase();
+    if (oldExt != newExt) {
+      // Change the editor
+      var format = NoteFileFormatInfo.fromFilePath(fileName);
+      var newEditorType = NoteFileFormatInfo.defaultEditor(format);
+
+      if (newEditorType != editorType) {
+        setState(() {
+          note = _note;
+          editorType = newEditorType;
+        });
+      }
+
+      // Make sure this type is supported
+      var config = _note.parent.config;
+      if (!config.allowedFileExts.contains(newExt)) {
+        config.allowedFileExts.add(newExt);
+        config.save();
+
+        var ext = newExt.isNotEmpty
+            ? newExt
+            : LocaleKeys.settings_fileTypes_noExt.tr();
+        showSnackbar(
+          context,
+          LocaleKeys.widgets_NoteEditor_addType.tr(args: [ext]),
+        );
+      }
     }
   }
 

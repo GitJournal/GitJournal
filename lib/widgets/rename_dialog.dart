@@ -5,6 +5,7 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:path/path.dart' as p;
@@ -32,10 +33,24 @@ class _RenameDialogState extends State<RenameDialog> {
   late TextEditingController _textController;
   final _formKey = GlobalKey<FormState>();
 
+  bool noExtension = false;
+  bool changeExtension = false;
+
+  var oldExt = "";
+  var newExt = "";
+
   @override
   void initState() {
     super.initState();
     _textController = TextEditingController(text: basename(widget.oldPath));
+
+    oldExt = p.extension(widget.oldPath);
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
   }
 
   @override
@@ -44,7 +59,14 @@ class _RenameDialogState extends State<RenameDialog> {
       key: _formKey,
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          if (noExtension)
+            _DialogWarningText(LocaleKeys.widgets_rename_noExt.tr()),
+          if (changeExtension && !noExtension)
+            _DialogWarningText(
+              LocaleKeys.widgets_rename_changeExt.tr(args: [oldExt, newExt]),
+            ),
           TextFormField(
             decoration: InputDecoration(labelText: widget.inputDecoration),
             validator: (value) {
@@ -56,11 +78,20 @@ class _RenameDialogState extends State<RenameDialog> {
                 return tr(LocaleKeys.widgets_rename_validator_contains);
               }
 
+              WidgetsBinding.instance!.addPostFrameCallback((_) {
+                setState(() {
+                  newExt = p.extension(value).toLowerCase();
+                  noExtension = newExt.isEmpty && oldExt.isNotEmpty;
+                  changeExtension = oldExt != newExt;
+                });
+              });
+
               var newPath = join(dirname(widget.oldPath), value);
               if (FileSystemEntity.typeSync(newPath) !=
                   FileSystemEntityType.notFound) {
                 return tr(LocaleKeys.widgets_rename_validator_exists);
               }
+
               return null;
             },
             autofocus: true,
@@ -76,7 +107,7 @@ class _RenameDialogState extends State<RenameDialog> {
       title: Text(widget.dialogTitle),
       actions: <Widget>[
         TextButton(
-          onPressed: () => Navigator.of(context).pop(false),
+          onPressed: () => Navigator.of(context).pop(),
           child: Text(tr(LocaleKeys.widgets_rename_no)),
         ),
         TextButton(
@@ -92,10 +123,17 @@ class _RenameDialogState extends State<RenameDialog> {
       content: form,
     );
   }
+}
+
+class _DialogWarningText extends StatelessWidget {
+  final String text;
+
+  const _DialogWarningText(this.text, {Key? key}) : super(key: key);
 
   @override
-  void dispose() {
-    _textController.dispose();
-    super.dispose();
+  Widget build(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme;
+
+    return Text(text, style: textTheme.subtitle2);
   }
 }

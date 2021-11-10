@@ -362,11 +362,11 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   void renameFolder(NotesFolderFS folder, String newFolderName) async {
+    assert(!newFolderName.contains(p.separator));
+
     logEvent(Event.FolderRenamed);
 
     return _opLock.synchronized(() async {
-      Log.d("Got renameFolder lock");
-
       var oldFolderPath = folder.folderPath;
       Log.d("Renaming Folder from $oldFolderPath -> $newFolderName");
       folder.rename(newFolderName);
@@ -382,17 +382,15 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   void renameNote(Note note, String newFileName) async {
-    assert(newFileName != repoPath);
+    assert(!newFileName.contains(p.separator));
 
     logEvent(Event.NoteRenamed);
 
-    var oldNotePath = note.filePath;
+    var oldPath = note.filePath;
     note.parent.renameNote(note, newFileName);
 
     return _opLock.synchronized(() async {
-      Log.d("Got renameNote lock");
-
-      _gitRepo.renameNote(oldNotePath, note.filePath).then((Result<void> _) {
+      _gitRepo.renameNote(oldPath, note.filePath).then((Result<void> _) {
         _syncNotes();
         numChanges += 1;
         notifyListeners();
@@ -400,23 +398,23 @@ class GitJournalRepo with ChangeNotifier {
     });
   }
 
-  void renameFile(String oldPath, String newFileName) async {
-    logEvent(Event.NoteRenamed);
+  // void renameFile(String oldPath, String newFileName) async {
+  //   assert(!newFileName.contains(p.separator));
 
-    return _opLock.synchronized(() async {
-      Log.d("Got renameNote lock");
+  //   logEvent(Event.NoteRenamed);
 
-      var newPath = p.join(p.dirname(oldPath), newFileName);
-      await File(oldPath).rename(newPath);
-      notifyListeners();
+  //   return _opLock.synchronized(() async {
+  //     var newPath = p.join(p.dirname(oldPath), newFileName);
+  //     await File(p.join(repoPath, oldPath)).rename(p.join(repoPath, newPath));
+  //     notifyListeners();
 
-      _gitRepo.renameFile(oldPath, newPath).then((Result<void> _) {
-        _syncNotes();
-        numChanges += 1;
-        notifyListeners();
-      });
-    });
-  }
+  //     _gitRepo.renameFile(oldPath, newPath).then((Result<void> _) {
+  //       _syncNotes();
+  //       numChanges += 1;
+  //       notifyListeners();
+  //     });
+  //   });
+  // }
 
   Future<void> moveNote(Note note, NotesFolderFS destFolder) =>
       moveNotes([note], destFolder);

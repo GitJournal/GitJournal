@@ -48,6 +48,9 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
   var imageLocationSpec = "."; // . means the same folder
 
   var emojify = false;
+
+  /// The extensions with the dot. Eg - '.md'
+  /// Case insensitive
   var allowedFileExts = <String>{'.md', '.txt', '.org'};
 
   void load() {

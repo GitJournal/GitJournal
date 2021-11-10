@@ -85,7 +85,7 @@ class NoteStorage {
     assert(!file.filePath.startsWith('/'));
 
     var filePath = file.fullFilePath;
-    var format = NoteFileFormatInfo(parentFolder.config).fromFilePath(filePath);
+    var format = NoteFileFormatInfo.fromFilePath(filePath);
 
     if (format == NoteFileFormat.Markdown) {
       var dataResult = await mdYamlDocLoader.loadDoc(filePath);

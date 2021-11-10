@@ -642,27 +642,6 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   void renameNote(Note note, String newName) {
     assert(!newName.contains(p.separator));
 
-    switch (note.fileFormat) {
-      case NoteFileFormat.OrgMode:
-        if (!newName.toLowerCase().endsWith('.org')) {
-          newName += '.org';
-        }
-        break;
-
-      case NoteFileFormat.Txt:
-        if (!newName.toLowerCase().endsWith('.txt')) {
-          newName += '.txt';
-        }
-        break;
-
-      case NoteFileFormat.Markdown:
-      default:
-        if (!newName.toLowerCase().endsWith('.md')) {
-          newName += '.md';
-        }
-        break;
-    }
-
     var oldFilePath = note.filePath;
     var parentDirName = p.dirname(oldFilePath);
     var newFilePath = p.join(parentDirName, newName);
@@ -672,7 +651,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     if (file.existsSync()) {
       file.renameSync(newFilePath);
     }
-    note.apply(filePath: newFilePath);
+    note.applyFilePath(newFilePath);
 
     _noteRenamed(note, oldFilePath);
   }

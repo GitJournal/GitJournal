@@ -375,6 +375,8 @@ widgets:
       empty: Please enter a name
       exists: Already Exists
       contains: Cannot contain /
+    noExt: "Warning: Extension missing. Will treat file as plain text"
+    changeExt: "Warning: Changing file type from '{}' to '{}'"
   backlinks:
     title:
       zero: ""
@@ -429,6 +431,7 @@ widgets:
   NoteEditor:
     renameFile: Rename File
     fileName: Filename
+    addType: Adding '{}' to supported file types
   SyncButton:
     error: Sync Error {}
   PurchaseWidget:

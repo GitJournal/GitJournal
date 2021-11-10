@@ -516,6 +516,8 @@ abstract class LocaleKeys {
   static const widgets_rename_validator_contains =
       'widgets.rename.validator.contains';
   static const widgets_rename_validator = 'widgets.rename.validator';
+  static const widgets_rename_noExt = 'widgets.rename.noExt';
+  static const widgets_rename_changeExt = 'widgets.rename.changeExt';
   static const widgets_rename = 'widgets.rename';
   static const widgets_backlinks_title = 'widgets.backlinks.title';
   static const widgets_backlinks = 'widgets.backlinks';
@@ -579,6 +581,7 @@ abstract class LocaleKeys {
   static const widgets_NoteDeleteDialog = 'widgets.NoteDeleteDialog';
   static const widgets_NoteEditor_renameFile = 'widgets.NoteEditor.renameFile';
   static const widgets_NoteEditor_fileName = 'widgets.NoteEditor.fileName';
+  static const widgets_NoteEditor_addType = 'widgets.NoteEditor.addType';
   static const widgets_NoteEditor = 'widgets.NoteEditor';
   static const widgets_SyncButton_error = 'widgets.SyncButton.error';
   static const widgets_SyncButton = 'widgets.SyncButton';
