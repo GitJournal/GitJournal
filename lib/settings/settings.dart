@@ -631,10 +631,10 @@ String generateRandomId() {
 }
 
 class SettingsTheme {
-  static const Dark = SettingsTheme("settings.theme.dark", "dark");
-  static const Light = SettingsTheme("settings.theme.light", "light");
+  static const Dark = SettingsTheme(LocaleKeys.settings_theme_dark, "dark");
+  static const Light = SettingsTheme(LocaleKeys.settings_theme_light, "light");
   static const SystemDefault =
-      SettingsTheme("settings.theme.default", "default");
+      SettingsTheme(LocaleKeys.settings_theme_default, "default");
   static const Default = SystemDefault;
 
   final String _str;
