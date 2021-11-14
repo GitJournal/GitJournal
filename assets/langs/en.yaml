@@ -411,6 +411,7 @@ widgets:
       journal: Journal View
       grid: Grid View
       card: Card View
+      calendar: Calendar View
       select: Select View
     sortingOptions: Sorting Options
     viewOptions: View Options

@@ -157,9 +157,7 @@ class FlattenedFilteredNotesFolder
   NotesFolder? get parent => null;
 
   @override
-  NotesFolder get fsFolder {
-    return _parentFolder;
-  }
+  NotesFolder? get fsFolder => _parentFolder.fsFolder;
 
   @override
   String get name => title;

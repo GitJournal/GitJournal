@@ -102,6 +102,7 @@ dependencies:
   community_material_icon: ^5.9.55
   google_api_availability: ^3.0.1
   carousel_slider: ^4.0.0
+  table_calendar: ^3.0.3
 
 dev_dependencies:
   #flutter_driver:

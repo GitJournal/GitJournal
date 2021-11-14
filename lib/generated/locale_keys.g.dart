@@ -559,6 +559,8 @@ abstract class LocaleKeys {
       'widgets.FolderView.views.journal';
   static const widgets_FolderView_views_grid = 'widgets.FolderView.views.grid';
   static const widgets_FolderView_views_card = 'widgets.FolderView.views.card';
+  static const widgets_FolderView_views_calendar =
+      'widgets.FolderView.views.calendar';
   static const widgets_FolderView_views_select =
       'widgets.FolderView.views.select';
   static const widgets_FolderView_views = 'widgets.FolderView.views';

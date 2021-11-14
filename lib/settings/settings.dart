@@ -442,14 +442,16 @@ class SettingsNoteFileFormat {
 }
 
 class SettingsFolderViewType {
-  static const Standard =
-      SettingsFolderViewType('widgets.FolderView.views.standard', "Standard");
-  static const Journal =
-      SettingsFolderViewType('widgets.FolderView.views.journal', "Journal");
+  static const Standard = SettingsFolderViewType(
+      LocaleKeys.widgets_FolderView_views_standard, "Standard");
+  static const Journal = SettingsFolderViewType(
+      LocaleKeys.widgets_FolderView_views_journal, "Journal");
   static const Card =
-      SettingsFolderViewType('widgets.FolderView.views.card', "Card");
+      SettingsFolderViewType(LocaleKeys.widgets_FolderView_views_card, "Card");
   static const Grid =
-      SettingsFolderViewType('widgets.FolderView.views.grid', "Grid");
+      SettingsFolderViewType(LocaleKeys.widgets_FolderView_views_grid, "Grid");
+  static const Calendar = SettingsFolderViewType(
+      LocaleKeys.widgets_FolderView_views_calendar, "Calendar");
   static const Default = Standard;
 
   final String _str;
@@ -469,6 +471,7 @@ class SettingsFolderViewType {
     Journal,
     Card,
     Grid,
+    // Calendar,
   ];
 
   static SettingsFolderViewType fromInternalString(String? str) {
@@ -505,6 +508,8 @@ class SettingsFolderViewType {
         return FolderViewType.Card;
       case Grid:
         return FolderViewType.Grid;
+      case Calendar:
+        return FolderViewType.Calendar;
     }
 
     return FolderViewType.Standard;
@@ -520,6 +525,8 @@ class SettingsFolderViewType {
         return SettingsFolderViewType.Card;
       case FolderViewType.Grid:
         return SettingsFolderViewType.Grid;
+      case FolderViewType.Calendar:
+        return SettingsFolderViewType.Calendar;
     }
   }
 }

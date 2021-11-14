@@ -9,4 +9,5 @@ enum FolderViewType {
   Journal,
   Card,
   Grid,
+  Calendar,
 }

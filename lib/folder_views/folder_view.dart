@@ -509,6 +509,12 @@ class _FolderViewState extends State<FolderView> {
             groupValue: _viewType,
             onChanged: onViewChange,
           ),
+          // RadioListTile<FolderViewType>(
+          //   title: Text(tr(LocaleKeys.widgets_FolderView_views_calendar)),
+          //   value: FolderViewType.Calendar,
+          //   groupValue: _viewType,
+          //   onChanged: onViewChange,
+          // ),
         ];
 
         return AlertDialog(
