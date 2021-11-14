@@ -27,7 +27,7 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
   var sortingField = SortingField.Default;
   var sortingOrder = SortingOrder.Default;
 
-  late SettingsEditorType _defaultEditor;
+  var _defaultEditor = SettingsEditorType.Default;
   var defaultFileFormat = SettingsNoteFileFormat.Default;
 
   var defaultView = SettingsFolderViewType.Default;
