@@ -18,6 +18,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
@@ -50,7 +51,9 @@ class MarkdownRenderer extends StatelessWidget {
     var isDark = theme.brightness == Brightness.dark;
 
     // Copied from MarkdownStyleSheet except Grey is replaced with Highlight color
+    // p is changed
     var markdownStyleSheet = MarkdownStyleSheet.fromTheme(theme).copyWith(
+      p: NoteBodyEditor.textStyle(context),
       code: theme.textTheme.bodyText2!.copyWith(
         backgroundColor: theme.dialogBackgroundColor,
         fontFamily: 'monospace',
