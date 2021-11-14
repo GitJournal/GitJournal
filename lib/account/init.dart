@@ -12,9 +12,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> initSupabase() async {
   await Supabase.initialize(
-    url: 'https://kokulrmhlfxdwuvcmblj.supabase.co',
+    url: 'https://api.gitjournal.io',
     anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzMTM3NDY4OSwiZXhwIjoxOTQ2OTUwNjg5fQ.LvaFM84Q00RKkRTyIDjzZAnkzba30bnRhQZQldj1AfU',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpYXQiOiAxNjM2MzI2MDAwLAogICAgImV4cCI6IDE3OTQwOTI0MDAKfQ.7t9lpqjJj8E4Xbvn6NvjjDNk316_ETcgf5zYCnKN-iA',
     authCallbackUrlHostname: 'register-callback',
     localStorage: const _HiveLocalStorage(),
   );
