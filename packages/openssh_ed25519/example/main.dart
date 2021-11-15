@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2021 Vishesh Handa <me@vhanda.in>
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import 'dart:io';
 import 'dart:typed_data';
 
