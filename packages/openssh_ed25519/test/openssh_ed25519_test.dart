@@ -6,8 +6,9 @@
 
 import 'dart:convert';
 
-import 'package:gitjournal/ssh/ed25519.dart';
 import 'package:test/test.dart';
+
+import 'package:openssh_ed25519/openssh_ed25519.dart';
 
 void main() {
   test('Writing', () async {
@@ -26,13 +27,12 @@ void main() {
     var expectedPublic = utf8.decode(base64.decode(openSshPublic64));
     var expectedPrivate = utf8.decode(base64.decode(openSshPrivate64));
 
-    var actualPublic = marshallPublic(publicBytes);
-    var actualPrivateData = marshallPrivate(
-      privateBytes,
-      publicBytes,
+    var actualPublic = encodeEd25519Public(publicBytes);
+    var actualPrivate = encodeEd25519Private(
+      privateBytes: privateBytes,
+      publicBytes: publicBytes,
       nonce: 2596996162,
     );
-    var actualPrivate = encodePem("OPENSSH PRIVATE KEY", actualPrivateData);
 
     expect(actualPublic, expectedPublic);
     expect(actualPrivate, expectedPrivate);
