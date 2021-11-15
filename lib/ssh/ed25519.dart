@@ -10,6 +10,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:math' as math;
 
+/*
 import 'package:cryptography/cryptography.dart';
 
 Future<void> main() async {
@@ -36,21 +37,24 @@ Future<void> main() async {
   var privStr = encodePem("OPENSSH PRIVATE KEY", priv);
   print(privStr);
 }
+*/
 
 // I need a freaking test for this!!
 // How do I do that?
 // -> Read the files via golang
 //    and print the public and private bytes encoded in base64
 
-var keyName = 'ssh-ed25519';
+var _keyName = 'ssh-ed25519';
 
 String marshallPublic(List<int> bytes) {
+  assert(bytes.length == 32);
+
   var buf = StringBuffer();
-  buf.write(keyName);
+  buf.write(_keyName);
   buf.write(' ');
 
   var key = <int>[];
-  key.addAll(encodeString(keyName));
+  key.addAll(encodeString(_keyName));
   key.addAll(encodeBytes(bytes));
 
   buf.write('' + base64.encode(key));
@@ -85,10 +89,16 @@ Uint8List encodeUInt32(int n) {
 // Private part
 // -> https://github.com/TerminalStudio/dartssh2/blob/67ea524c157afaf271696e599878c760ce65170e/lib/src/pem.dart#L359
 
-List<int> marshallPrivate(List<int> privateBytes, List<int> publicBytes) {
+List<int> marshallPrivate(List<int> privateBytes, List<int> publicBytes,
+    {int? nonce}) {
+  assert(privateBytes.length == 32);
+  assert(publicBytes.length == 32);
+
   var fullPrivate = <int>[];
   fullPrivate.addAll(privateBytes);
   fullPrivate.addAll(publicBytes);
+
+  assert(fullPrivate.length == 64);
 
   // pk1
 
@@ -100,12 +110,12 @@ List<int> marshallPrivate(List<int> privateBytes, List<int> publicBytes) {
   // Comment string
   // Pad     []byte `ssh:"rest"`
 
-  var check = math.Random().nextInt(1 << 32);
+  var check = nonce ?? math.Random().nextInt(1 << 32);
 
   var pk1 = <int>[];
   pk1.addAll(encodeUInt32(check));
   pk1.addAll(encodeUInt32(check));
-  pk1.addAll(encodeString(keyName));
+  pk1.addAll(encodeString(_keyName));
   pk1.addAll(encodeBytes(publicBytes));
   pk1.addAll(encodeBytes(fullPrivate));
   pk1.addAll(encodeBytes([])); // empty comment
@@ -136,7 +146,7 @@ List<int> marshallPrivate(List<int> privateBytes, List<int> publicBytes) {
   // Generate the pubkey prefix "\0\0\0\nssh-ed25519\0\0\0 "
   var prefix = <int>[];
   prefix.addAll([0x0, 0x0, 0x0, 0x0b]);
-  prefix.addAll(utf8.encode(keyName));
+  prefix.addAll(utf8.encode(_keyName));
   prefix.addAll([0x0, 0x0, 0x0, 0x20]);
 
   assert(prefix.length == 19);
