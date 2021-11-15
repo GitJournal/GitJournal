@@ -28,26 +28,29 @@ class CommitMessageBuilder {
       "Moved Note $oldSpec -> $newSpec";
 
   String moveNotes(List<String> oldSpecs, List<String> newSpecs) {
-    var msg = "Moved ${oldSpecs.length} Notes\n\n";
+    var sb = StringBuffer();
+    sb.write("Moved ${oldSpecs.length} Notes\n\n");
 
     for (var i = 0; i < oldSpecs.length; i++) {
       var oldSpec = oldSpecs[i];
       var newSpec = newSpecs[i];
 
-      msg += '* $oldSpec -> $newSpec';
+      sb.write('* $oldSpec -> $newSpec\n');
     }
-    return msg;
+    return sb.toString();
   }
 
   String removeNote(String spec) => "Removed Note $spec";
   String removeFolder(String spec) => "Removed Folder $spec";
   String removeNotes(Iterable<String> specs) {
+    var sb = StringBuffer();
+
     var list = specs.toList();
-    var msg = "Removed ${list.length} Notes\n\n";
+    sb.write("Removed ${list.length} Notes\n\n");
     for (var spec in list) {
-      msg += '- $spec';
+      sb.write('- $spec\n');
     }
-    return msg;
+    return sb.toString();
   }
 
   String updateNote(String spec) => "Updated Note $spec";
