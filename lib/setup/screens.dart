@@ -634,7 +634,9 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       Log.i("Adding as a deploy key");
       _autoConfigureMessage = tr(LocaleKeys.setup_sshKey_addDeploy);
 
-      await _gitHost!.addDeployKey(publicKey, _gitHostRepo.fullName);
+      await _gitHost!
+          .addDeployKey(publicKey, _gitHostRepo.fullName)
+          .throwOnError();
     } on Exception catch (e, stacktrace) {
       _handleGitHostException(e, stacktrace);
       return;

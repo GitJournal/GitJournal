@@ -85,13 +85,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-  basic_utils:
-    dependency: "direct main"
-    description:
-      name: basic_utils
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.6.1"
   benchmark_harness:
     dependency: "direct dev"
     description:
@@ -971,6 +964,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  openssh_ed25519:
+    dependency: "direct main"
+    description:
+      path: "packages/openssh_ed25519"
+      relative: true
+    source: path
+    version: "1.0.0"
   org_flutter:
     dependency: "direct main"
     description:
@@ -1150,13 +1150,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"
-  pointycastle:
-    dependency: transitive
-    description:
-      name: pointycastle
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.3.4"
   pool:
     dependency: transitive
     description:

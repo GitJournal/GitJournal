@@ -15,7 +15,7 @@ import 'ssh.dart';
 
 var _keyName = 'ssh-ed25519';
 
-String encodeEd25519Public(List<int> bytes) {
+String encodeEd25519Public(List<int> bytes, [String comment = ""]) {
   assert(bytes.length == 32);
 
   var buf = StringBuffer();
@@ -27,10 +27,16 @@ String encodeEd25519Public(List<int> bytes) {
   key.addAll(SshFormat.encodeBytes(bytes));
 
   buf.write('' + base64.encode(key));
+  if (comment.isNotEmpty) {
+    buf.write(" ");
+    buf.write(comment);
+  }
   buf.write('\n');
 
   var r = buf.toString();
-  assert(r.length == 81);
+  if (comment.isEmpty) {
+    assert(r.length == 81);
+  }
   return r;
 }
 

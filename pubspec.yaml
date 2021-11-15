@@ -23,7 +23,6 @@ dependencies:
     git: https://github.com/GitJournal/icloud_documents_path.git
   auto_size_text: ^3.0.0-nullsafety.0
   badges: ^2.0.1
-  basic_utils: ^3.4.0
   connectivity_plus: ^1.0.6
   cryptography: ^2.0.5
   cryptography_flutter: ^2.0.2
@@ -99,6 +98,8 @@ dependencies:
   google_api_availability: ^3.0.1
   carousel_slider: ^4.0.0
   table_calendar: ^3.0.3
+  openssh_ed25519:
+    path: packages/openssh_ed25519
 
 dev_dependencies:
   #flutter_driver:

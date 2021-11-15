@@ -492,7 +492,7 @@ setup:
   next: Next
   fail: Failed
   keyEditors:
-    public: Invalid Public Key - Doesn't start with ssh-rsa
+    public: Invalid Public Key - Doesn't start with ssh-rsa or ssh-ed25519
     private: Invalid Private Key
     load: Load from File
   sshKey:

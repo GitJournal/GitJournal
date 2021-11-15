@@ -29,7 +29,7 @@ class PublicKeyEditor extends StatelessWidget {
     }
 
     val = val.trim();
-    if (!val.startsWith("ssh-") && !val.startsWith("ecdsa-")) {
+    if (!val.startsWith("ssh-")) {
       return tr("setup.keyEditors.public");
     }
     return null;
