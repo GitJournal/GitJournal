@@ -970,7 +970,7 @@ packages:
       path: "packages/openssh_ed25519"
       relative: true
     source: path
-    version: "1.0.0"
+    version: "1.1.0"
   org_flutter:
     dependency: "direct main"
     description:
