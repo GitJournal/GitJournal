@@ -222,7 +222,7 @@ class _FolderViewState extends State<FolderView> {
     var i = selectedNotes.indexOf(note);
     if (i != -1) {
       setState(() {
-        selectedNotes.removeAt(i);
+        var _ = selectedNotes.removeAt(i);
       });
     } else {
       setState(() {
@@ -240,7 +240,7 @@ class _FolderViewState extends State<FolderView> {
     var i = selectedNotes.indexOf(note);
     if (i != -1) {
       setState(() {
-        selectedNotes.removeAt(i);
+        var _ = selectedNotes.removeAt(i);
       });
     } else {
       setState(() {
@@ -401,7 +401,7 @@ class _FolderViewState extends State<FolderView> {
         }
 
         return StatefulBuilder(
-          builder: (BuildContext context, Function setState) {
+          builder: (BuildContext context, setState) {
             var children = <Widget>[
               SettingsHeader(
                   tr(LocaleKeys.widgets_FolderView_headerOptions_heading)),
@@ -581,7 +581,7 @@ class _FolderViewState extends State<FolderView> {
         icon: const Icon(Icons.search),
         onPressed: () {
           logEvent(Event.SearchButtonPressed);
-          showSearch(
+          var _ = showSearch(
             context: context,
             delegate: NoteSearchDelegate(
               sortedNotesFolder!.notes,

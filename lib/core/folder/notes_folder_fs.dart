@@ -79,7 +79,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
     _lock.synchronized(() {
       assert(_entityMap.containsKey(oldPath));
-      _entityMap.remove(oldPath);
+      var _ = _entityMap.remove(oldPath);
       _entityMap[note.filePath] = note;
 
       notifyNoteRenamed(-1, note, oldPath);
@@ -91,7 +91,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
     _lock.synchronized(() {
       assert(_entityMap.containsKey(oldPath));
-      _entityMap.remove(oldPath);
+      var _ = _entityMap.remove(oldPath);
       _entityMap[folder.folderPath] = folder;
     });
   }
@@ -239,12 +239,12 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       futures.add(future);
 
       if (futures.length >= maxParallel) {
-        await Future.wait(futures);
+        var _ = await Future.wait(futures);
         futures = <Future>[];
       }
     }
 
-    await Future.wait(futures);
+    var _ = await Future.wait(futures);
   }
 
   Future<void> loadRecursively() async {
@@ -257,7 +257,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       futures.add(f);
     }
 
-    await Future.wait(futures);
+    var _ = await Future.wait(futures);
   }
 
   Future<void> load() => _lock.synchronized(_load);
@@ -416,7 +416,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     assert(_entityMap.containsKey(f.filePath));
 
     var index = _files.indexWhere((n) => n.filePath == f.filePath);
-    _files.removeAt(index);
+    var _ = _files.removeAt(index);
 
     if (f is Note) {
       notifyNoteRemoved(index, f);
@@ -458,8 +458,9 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
     var index = _folders.indexWhere((f) => f.folderPath == folder.folderPath);
     assert(index != -1);
-    _folders.removeAt(index);
-    _entityMap.remove(folder.folderPath);
+    dynamic _;
+    _ = _folders.removeAt(index);
+    _ = _entityMap.remove(folder.folderPath);
 
     notifyFolderRemoved(index, folder);
   }
@@ -473,7 +474,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     if (io.Directory(fullFolderPath).existsSync()) {
       throw Exception("Directory already exists");
     }
-    dir.renameSync(fullFolderPath);
+    var _ = dir.renameSync(fullFolderPath);
 
     notifyThisFolderRenamed(this, oldPath);
   }
@@ -587,7 +588,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       if (!foundFolder) {
         return null;
       }
-      parts.removeAt(0);
+      var _ = parts.removeAt(0);
     }
 
     var fileName = parts[0];
@@ -615,7 +616,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     return matchedNotes;
   }
 
-  Future<List<Note>> _matchNotes(
+  Future<void> _matchNotes(
     List<Note> matchedNotes,
     NoteMatcherAsync pred,
   ) async {
@@ -631,9 +632,8 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     }
 
     for (var folder in _folders) {
-      await folder._matchNotes(matchedNotes, pred);
+      var _ = await folder._matchNotes(matchedNotes, pred);
     }
-    return matchedNotes;
   }
 
   ///
@@ -649,7 +649,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     // The file will not exist for new notes
     var file = io.File(oldFilePath);
     if (file.existsSync()) {
-      file.renameSync(newFilePath);
+      var _ = file.renameSync(newFilePath);
     }
     note.applyFilePath(newFilePath);
 
@@ -662,7 +662,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       return false;
     }
 
-    io.File(note.fullFilePath).renameSync(destPath);
+    var _ = io.File(note.fullFilePath).renameSync(destPath);
 
     note.parent.remove(note);
     note.parent = destFolder;

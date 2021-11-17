@@ -434,7 +434,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
     try {
       if (!await GitRepository.isValidRepo(repoPath)) {
-        await GitRepository.init(repoPath, defaultBranch: 'main');
+        var r = await GitRepository.init(repoPath, defaultBranch: 'main');
+        showResultError(context, r);
       }
       var repo = await GitRepository.load(repoPath).getOrThrow();
       if (repo.config.remote(widget.remoteName) != null) {
@@ -599,7 +600,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
       var repoPath = p.join(basePath, widget.repoFolderName);
       Log.i("Renaming $repoPath --> $newRepoPath");
-      await Directory(repoPath).rename(newRepoPath);
+      var _ = await Directory(repoPath).rename(newRepoPath);
       storageConfig.folderName = p.basename(newRepoPath);
     }
 

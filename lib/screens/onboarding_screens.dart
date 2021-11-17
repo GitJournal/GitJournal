@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
+import 'package:gitjournal/screens/home_screen.dart';
 import 'package:gitjournal/settings/app_config.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -145,8 +146,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     appConfig.onBoardingCompleted = true;
     appConfig.save();
 
-    Navigator.pop(context);
-    Navigator.pushNamed(context, "/");
+    var _ = Navigator.popAndPushNamed(context, HomeScreen.routePath);
   }
 
   void _nextPage() {

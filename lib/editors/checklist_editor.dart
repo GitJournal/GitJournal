@@ -203,7 +203,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
     while (checklist.items.isNotEmpty) {
       var last = checklist.items.last;
       if (last.checked == false && last.text.trim().isEmpty) {
-        checklist.removeAt(checklist.items.length - 1);
+        var _ = checklist.removeAt(checklist.items.length - 1);
       } else {
         break;
       }
@@ -260,8 +260,9 @@ class ChecklistEditorState extends State<ChecklistEditor>
           }
 
           var k = _getKey(item);
-          focusNodes.remove(k);
-          keys.remove(k);
+          dynamic _;
+          _ = focusNodes.remove(k);
+          _ = keys.remove(k);
           checklist.removeItem(item);
 
           // FIXME: Make this happen on the next build

@@ -137,15 +137,16 @@ class Checklist {
       return;
     }
 
-    removeAt(i);
+    var _ = removeAt(i);
   }
 
   ChecklistItem removeAt(int index) {
     assert(index >= 0 && index <= items.length);
+    dynamic _;
 
     var item = items[index];
-    items.removeAt(index);
-    _lines.removeAt(item.lineNo);
+    _ = items.removeAt(index);
+    _ = _lines.removeAt(item.lineNo);
     for (var j = index; j < items.length; j++) {
       items[j].lineNo -= 1;
     }

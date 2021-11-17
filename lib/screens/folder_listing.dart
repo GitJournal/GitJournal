@@ -92,7 +92,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
         onSelected: (String value) async {
           if (value == "Rename") {
             if (selectedFolder!.folderPath.isEmpty) {
-              await showDialog(
+              var _ = await showDialog(
                 context: context,
                 builder: (_) => RenameFolderErrorDialog(),
               );
@@ -122,7 +122,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
             }
           } else if (value == "Delete") {
             if (selectedFolder!.hasNotesRecursive) {
-              await showDialog(
+              var _ = await showDialog(
                 context: context,
                 builder: (_) => DeleteFolderErrorDialog(),
               );

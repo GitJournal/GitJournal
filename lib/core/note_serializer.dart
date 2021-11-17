@@ -89,6 +89,7 @@ class NoteSerializer implements NoteSerializerInterface {
   @override
   void encode(Note note, MdYamlDoc data) {
     data.body = settings.emojify ? emojiParser.unemojify(note.body) : note.body;
+    dynamic _;
 
     switch (settings.createdFormat) {
       case DateFormat.Iso8601:
@@ -98,7 +99,7 @@ class NoteSerializer implements NoteSerializerInterface {
         data.props[settings.createdKey] = toUnixTimeStamp(note.created);
         break;
       case DateFormat.None:
-        data.props.remove(settings.createdKey);
+        _ = data.props.remove(settings.createdKey);
         break;
     }
 
@@ -110,7 +111,7 @@ class NoteSerializer implements NoteSerializerInterface {
         data.props[settings.modifiedKey] = toUnixTimeStamp(note.modified);
         break;
       case DateFormat.None:
-        data.props.remove(settings.modifiedKey);
+        _ = data.props.remove(settings.modifiedKey);
         break;
     }
 
@@ -121,28 +122,28 @@ class NoteSerializer implements NoteSerializerInterface {
       if (settings.titleSettings == SettingsTitle.InH1) {
         if (title.isNotEmpty) {
           data.body = '# $title\n\n${data.body}';
-          data.props.remove(settings.titleKey);
+          _ = data.props.remove(settings.titleKey);
         }
       } else {
         if (title.isNotEmpty) {
           data.props[settings.titleKey] = title;
         } else {
-          data.props.remove(settings.titleKey);
+          _ = data.props.remove(settings.titleKey);
         }
       }
     } else {
-      data.props.remove(settings.titleKey);
+      _ = data.props.remove(settings.titleKey);
     }
 
     if (note.type != NoteType.Unknown) {
       var type = note.type.toString().substring(9); // Remove "NoteType."
       data.props[settings.typeKey] = type;
     } else {
-      data.props.remove(settings.typeKey);
+      _ = data.props.remove(settings.typeKey);
     }
 
     if (note.tags.isEmpty) {
-      data.props.remove(settings.tagsKey);
+      _ = data.props.remove(settings.tagsKey);
     } else {
       data.props[settings.tagsKey] = note.tags.toList();
       if (settings.tagsInString) {
@@ -201,7 +202,7 @@ class NoteSerializer implements NoteSerializerInterface {
         }
         settings.modifiedKey = possibleKey;
 
-        propsUsed.add(possibleKey);
+        var _ = propsUsed.add(possibleKey);
         break;
       }
     }
@@ -228,7 +229,7 @@ class NoteSerializer implements NoteSerializerInterface {
         }
         settings.createdKey = possibleKey;
 
-        propsUsed.add(possibleKey);
+        var _ = propsUsed.add(possibleKey);
         break;
       }
     }
@@ -244,7 +245,7 @@ class NoteSerializer implements NoteSerializerInterface {
       title = data.props[settings.titleKey]?.toString() ?? "";
       title = settings.emojify ? emojiParser.emojify(title) : title;
 
-      propsUsed.add(settings.titleKey);
+      var _ = propsUsed.add(settings.titleKey);
       settings.titleSettings = SettingsTitle.InYaml;
     } else {
       var startsWithH1 = false;
@@ -283,7 +284,7 @@ class NoteSerializer implements NoteSerializerInterface {
         break;
     }
     if (typeStr != null) {
-      propsUsed.add(settings.typeKey);
+      var _ = propsUsed.add(settings.typeKey);
     }
 
     Set<String>? _tags;
@@ -315,7 +316,7 @@ class NoteSerializer implements NoteSerializerInterface {
           }
 
           settings.tagsKey = possibleKey;
-          propsUsed.add(settings.tagsKey);
+          var _ = propsUsed.add(settings.tagsKey);
           break;
         }
       }

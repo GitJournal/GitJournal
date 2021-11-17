@@ -18,6 +18,7 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/iap/iap.dart';
 import 'package:gitjournal/iap/purchase_manager.dart';
 import 'package:gitjournal/iap/purchase_slider.dart';
+import 'package:gitjournal/iap/purchase_thankyou_screen.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_config.dart';
 
@@ -93,8 +94,10 @@ class PurchaseButton extends StatelessWidget {
         "widgets.PurchaseButton.failPurchase",
         args: [err.toString()],
       );
-      var dialog = PurchaseFailedDialog(errStr);
-      await showDialog(context: context, builder: (context) => dialog);
+      var _ = await showDialog(
+        context: context,
+        builder: (context) => PurchaseFailedDialog(errStr),
+      );
     }
   }
 }
@@ -275,7 +278,8 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
     if (err.isEmpty) {
       Log.i("Purchase Completed: $subStatus");
       logEvent(Event.PurchaseScreenThankYou);
-      Navigator.of(context).popAndPushNamed('/purchase_thank_you');
+      var _ = Navigator.of(context)
+          .popAndPushNamed(PurchaseThankYouScreen.routePath);
       return;
     }
 
@@ -286,8 +290,10 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
       Log.e(err);
       return;
     }
-    var dialog = PurchaseFailedDialog(err);
-    showDialog(context: context, builder: (context) => dialog);
+    var _ = showDialog(
+      context: context,
+      builder: (context) => PurchaseFailedDialog(err),
+    );
   }
 }
 
