@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:org_flutter/org_flutter.dart';
 
 import 'package:gitjournal/features.dart';
-import 'rich_text_controller.dart';
+import 'controllers/rich_text_controller.dart';
 
 class OrgTextController extends TextEditingController {
   final String? highlightText;

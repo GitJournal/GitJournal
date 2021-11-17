@@ -9,14 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/core/image.dart' as core;
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
-import 'package:gitjournal/editors/disposable_change_notifier.dart';
 import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/editors/heuristics.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
+import 'package:gitjournal/editors/utils/disposable_change_notifier.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/widgets/journal_editor_header.dart';
-import 'rich_text_controller.dart';
+import 'controllers/rich_text_controller.dart';
 
 class JournalEditor extends StatefulWidget implements Editor {
   final Note note;

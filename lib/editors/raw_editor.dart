@@ -17,14 +17,14 @@ import 'package:gitjournal/core/note_serializer.dart';
 import 'package:gitjournal/core/views/inline_tags_view.dart';
 import 'package:gitjournal/editors/autocompletion_widget.dart';
 import 'package:gitjournal/editors/common.dart';
-import 'package:gitjournal/editors/disposable_change_notifier.dart';
 import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/editors/undo_redo.dart';
+import 'package:gitjournal/editors/utils/disposable_change_notifier.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/widgets/future_builder_with_progress.dart';
-import 'rich_text_controller.dart';
+import 'controllers/rich_text_controller.dart';
 
 class RawEditor extends StatefulWidget implements Editor {
   final Note note;
