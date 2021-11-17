@@ -48,7 +48,7 @@ class ShowUndoSnackbar {}
 ///   * New Note with a file type
 ///   * New Note with a editor type + possible file type
 class NoteEditor extends StatefulWidget {
-  final Note? note;
+  final Note? existingNote;
   final NotesFolderFS notesFolder;
   final NotesFolder parentFolderView;
   final EditorType? defaultEditorType;
@@ -64,11 +64,12 @@ class NoteEditor extends StatefulWidget {
   final String? highlightString;
 
   NoteEditor.fromNote(
-    this.note,
+    Note note,
     this.parentFolderView, {
     this.editMode = false,
     this.highlightString,
-  })  : notesFolder = note!.parent,
+  })  : existingNote = note,
+        notesFolder = note.parent,
         defaultEditorType = null,
         defaultFileFormat = null,
         existingText = null,
@@ -85,13 +86,13 @@ class NoteEditor extends StatefulWidget {
     this.newNoteExtraProps = const {},
     this.newNoteFileName,
     this.defaultFileFormat,
-  })  : note = null,
+  })  : existingNote = null,
         editMode = true,
         highlightString = null;
 
   @override
   NoteEditorState createState() {
-    if (note == null) {
+    if (existingNote == null) {
       var fileFormat = defaultFileFormat ??
           notesFolder.config.defaultFileFormat.toFileFormat();
 
@@ -111,7 +112,7 @@ class NoteEditor extends StatefulWidget {
         fileFormat,
       );
     } else {
-      return NoteEditorState.fromNote(note);
+      return NoteEditorState.fromNote();
     }
   }
 }
@@ -119,7 +120,7 @@ class NoteEditor extends StatefulWidget {
 class NoteEditorState extends State<NoteEditor>
     with WidgetsBindingObserver
     implements EditorCommon {
-  Note? note;
+  Note? newNote;
   late EditorType editorType;
   MdYamlDoc originalNoteData = MdYamlDoc();
 
@@ -129,10 +130,12 @@ class NoteEditorState extends State<NoteEditor>
   final _journalEditorKey = GlobalKey<JournalEditorState>();
   final _orgEditorKey = GlobalKey<OrgEditorState>();
 
-  bool get _isNewNote {
-    return widget.note == null;
-  }
+  bool get _isNewNote => newNote != null;
 
+  // FIXME: It would be much easier if the Note always existed and there is no concept
+  //        of a new note or existing note.
+  //        On discarding, the note can be deleted if it doesn't exst
+  //        A new note can be denoted by not having a GitHash
   NoteEditorState.newNote(
     NotesFolderFS folder,
     String existingText,
@@ -141,22 +144,23 @@ class NoteEditorState extends State<NoteEditor>
     String? fileName,
     NoteFileFormat fileFormat,
   ) {
-    note = Note.newNote(
+    newNote = Note.newNote(
       folder,
       extraProps: extraProps,
       fileName: fileName,
       fileFormat: fileFormat,
     );
     if (existingText.isNotEmpty) {
-      note!.apply(body: existingText);
+      newNote!.apply(body: existingText);
     }
 
     if (existingImages.isNotEmpty) {
       for (var imagePath in existingImages) {
         () async {
           try {
-            var image = await core.Image.copyIntoFs(note!.parent, imagePath);
-            note!.apply(body: note!.body + image.toMarkup(note!.fileFormat));
+            var image = await core.Image.copyIntoFs(newNote!.parent, imagePath);
+            newNote!.apply(
+                body: newNote!.body + image.toMarkup(newNote!.fileFormat));
           } catch (e, st) {
             Log.e("New Note Existing Image", ex: e, stacktrace: st);
           }
@@ -165,15 +169,18 @@ class NoteEditorState extends State<NoteEditor>
     }
   }
 
-  NoteEditorState.fromNote(this.note) {
-    originalNoteData = MdYamlDoc.from(note!.data);
-  }
+  NoteEditorState.fromNote();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addObserver(this);
-    var note = this.note!;
+
+    if (widget.existingNote != null) {
+      originalNoteData = MdYamlDoc.from(widget.existingNote!.data);
+    }
+
+    var note = (newNote ?? widget.existingNote)!;
 
     // Select the editor
     if (widget.defaultEditorType != null) {
@@ -210,6 +217,7 @@ class NoteEditorState extends State<NoteEditor>
 
     if (state != AppLifecycleState.resumed) {
       var note = _getNoteFromEditor();
+      if (note == null) return;
       if (!_noteModified(note)) return;
 
       Log.d("App Lost Focus - saving note");
@@ -226,7 +234,9 @@ class NoteEditorState extends State<NoteEditor>
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        var savedNote = await _saveNote(_getNoteFromEditor());
+        var note = _getNoteFromEditor();
+        if (note == null) return true;
+        var savedNote = await _saveNote(note);
         return savedNote;
       },
       child: _getEditor(),
@@ -234,7 +244,7 @@ class NoteEditorState extends State<NoteEditor>
   }
 
   Widget _getEditor() {
-    var note = this.note!;
+    var note = (newNote ?? widget.existingNote)!;
 
     switch (editorType) {
       case EditorType.Markdown:
@@ -292,24 +302,23 @@ class NoteEditorState extends State<NoteEditor>
   }
 
   @override
-  void noteEditorChooserSelected(Note _note) async {
+  Future<void> noteEditorChooserSelected(Note note) async {
     var newEditorType = await showDialog<EditorType>(
       context: context,
       builder: (BuildContext context) {
-        return NoteEditorSelector(editorType, _note.fileFormat);
+        return NoteEditorSelector(editorType, note.fileFormat);
       },
     );
 
     if (newEditorType != null) {
       setState(() {
-        note = _note;
         editorType = newEditorType;
       });
     }
   }
 
   @override
-  void exitEditorSelected(Note note) async {
+  Future<void> exitEditorSelected(Note note) async {
     var saved = await _saveNote(note);
     if (saved) {
       Navigator.pop(context);
@@ -317,49 +326,46 @@ class NoteEditorState extends State<NoteEditor>
   }
 
   @override
-  void renameNote(Note _note) async {
-    var prevNote = note!;
-    var fileName = await showDialog(
+  Future<void> renameNote(Note note) async {
+    // FIXME: What if the note is being renamed twice?
+    //        newNote or widget.note might not be the latest version of the note
+    var prevNote = (widget.existingNote ?? newNote)!;
+    var prevNotePath = prevNote.filePath;
+
+    var newFileName = await showDialog(
       context: context,
       builder: (_) => RenameDialog(
-        oldPath: prevNote.filePath,
+        oldPath: prevNotePath,
         inputDecoration: tr(LocaleKeys.widgets_NoteEditor_fileName),
         dialogTitle: tr(LocaleKeys.widgets_NoteEditor_renameFile),
       ),
     );
-    if (fileName == null) {
+    if (newFileName == null) {
       return;
     }
 
-    var prevName = prevNote.fileName;
-
     if (_isNewNote) {
-      _note.parent.renameNote(_note, fileName);
-
-      setState(() {
-        note = _note;
-      });
+      note.parent.renameNote(note, newFileName);
     } else {
       var container = context.read<GitJournalRepo>();
-      container.renameNote(_note, fileName);
+      container.renameNote(note, newFileName);
     }
 
-    var newExt = p.extension(fileName).toLowerCase();
-    var oldExt = p.extension(prevName).toLowerCase();
+    var newExt = p.extension(newFileName).toLowerCase();
+    var oldExt = p.extension(prevNotePath).toLowerCase();
     if (oldExt != newExt) {
       // Change the editor
-      var format = NoteFileFormatInfo.fromFilePath(fileName);
+      var format = NoteFileFormatInfo.fromFilePath(newFileName);
       var newEditorType = NoteFileFormatInfo.defaultEditor(format);
 
       if (newEditorType != editorType) {
         setState(() {
-          note = _note;
           editorType = newEditorType;
         });
       }
 
-      // Make sure this type is supported
-      var config = _note.parent.config;
+      // Make sure this file type is supported
+      var config = note.parent.config;
       if (!config.allowedFileExts.contains(newExt)) {
         config.allowedFileExts.add(newExt);
         config.save();
@@ -376,13 +382,13 @@ class NoteEditorState extends State<NoteEditor>
   }
 
   @override
-  void deleteNote(Note note) async {
+  Future<void> deleteNote(Note note) async {
     if (_isNewNote && !_noteModified(note)) {
-      Navigator.pop(context);
+      Navigator.pop(context); // Note Editor
       return;
     }
 
-    var settings = Provider.of<Settings>(context, listen: false);
+    var settings = context.read<Settings>();
     bool shouldDelete = true;
     if (settings.confirmDelete) {
       shouldDelete = await showDialog(
@@ -454,23 +460,23 @@ class NoteEditorState extends State<NoteEditor>
     return true;
   }
 
-  Note _getNoteFromEditor() {
+  Note? _getNoteFromEditor() {
     switch (editorType) {
       case EditorType.Markdown:
-        return _markdownEditorKey.currentState!.getNote();
+        return _markdownEditorKey.currentState?.getNote();
       case EditorType.Raw:
-        return _rawEditorKey.currentState!.getNote();
+        return _rawEditorKey.currentState?.getNote();
       case EditorType.Checklist:
-        return _checklistEditorKey.currentState!.getNote();
+        return _checklistEditorKey.currentState?.getNote();
       case EditorType.Journal:
-        return _journalEditorKey.currentState!.getNote();
+        return _journalEditorKey.currentState?.getNote();
       case EditorType.Org:
-        return _orgEditorKey.currentState!.getNote();
+        return _orgEditorKey.currentState?.getNote();
     }
   }
 
   @override
-  void moveNoteToFolderSelected(Note note) async {
+  Future<void> moveNoteToFolderSelected(Note note) async {
     var destFolder = await showDialog<NotesFolderFS>(
       context: context,
       builder: (context) => FolderSelectionDialog(),
@@ -497,14 +503,14 @@ class NoteEditorState extends State<NoteEditor>
   }
 
   @override
-  void editTags(Note _note) async {
+  Future<void> editTags(Note note) async {
     final rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
     var inlineTagsView = InlineTagsProvider.of(context);
     var allTags = await rootFolder.getNoteTagsRecursively(inlineTagsView);
 
     var route = MaterialPageRoute(
       builder: (context) => NoteTagEditor(
-        selectedTags: note!.tags,
+        selectedTags: note.tags,
         allTags: allTags,
       ),
       settings: const RouteSettings(name: '/editTags/'),
@@ -512,11 +518,11 @@ class NoteEditorState extends State<NoteEditor>
     var newTags = await Navigator.of(context).push(route);
     assert(newTags != null);
 
-    Function eq = const SetEquality().equals;
-    if (!eq(note!.tags, newTags)) {
+    var eq = const SetEquality().equals;
+    if (!eq(note.tags, newTags)) {
       setState(() {
         Log.i("Settings tags to: $newTags");
-        note!.apply(tags: newTags);
+        note.apply(tags: newTags);
       });
     }
   }
