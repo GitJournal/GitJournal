@@ -34,9 +34,9 @@ class SettingsTagsScreenState extends State<SettingsTagsScreen> {
         onChanged: (bool newVal) {
           setState(() {
             if (newVal) {
-              folderConfig.inlineTagPrefixes.add('#');
+              var _ = folderConfig.inlineTagPrefixes.add('#');
             } else {
-              folderConfig.inlineTagPrefixes.remove('#');
+              var _ = folderConfig.inlineTagPrefixes.remove('#');
             }
             folderConfig.save();
           });
@@ -48,9 +48,9 @@ class SettingsTagsScreenState extends State<SettingsTagsScreen> {
         onChanged: (bool newVal) {
           setState(() {
             if (newVal) {
-              folderConfig.inlineTagPrefixes.add('@');
+              var _ = folderConfig.inlineTagPrefixes.add('@');
             } else {
-              folderConfig.inlineTagPrefixes.remove('@');
+              var _ = folderConfig.inlineTagPrefixes.remove('@');
             }
             folderConfig.save();
           });
@@ -62,9 +62,9 @@ class SettingsTagsScreenState extends State<SettingsTagsScreen> {
         onChanged: (bool newVal) {
           setState(() {
             if (newVal) {
-              folderConfig.inlineTagPrefixes.add('+');
+              var _ = folderConfig.inlineTagPrefixes.add('+');
             } else {
-              folderConfig.inlineTagPrefixes.remove('+');
+              var _ = folderConfig.inlineTagPrefixes.remove('+');
             }
             folderConfig.save();
           });

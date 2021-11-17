@@ -56,12 +56,12 @@ class NotesCache {
 
       var unopenFile = UnopenedFile(file: file, parent: parent);
       parent.addFile(unopenFile);
-      selectFolders.add(parent);
+      var _ = selectFolders.add(parent);
     }
 
     // Load all the notes recursively
     var futures = selectFolders.map((f) => f.loadNotes()).toList();
-    await Future.wait(futures);
+    var _ = await Future.wait(futures);
   }
 
   Future<void> clear() async {

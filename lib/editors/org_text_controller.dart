@@ -94,7 +94,7 @@ class OrgTextController extends TextEditingController {
         firstLine = false;
       }
 
-      document.visit((p) {
+      var _ = document.visit((p) {
         if (p is OrgMarkup) {
           var newStyle = style;
           if (p.style == OrgStyle.bold) {

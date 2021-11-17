@@ -246,7 +246,8 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     while (true) {
       var repoFolderPath = p.join(gitDir, "$repoFolderName$num");
       if (!Directory(repoFolderPath).existsSync()) {
-        await GitRepository.init(repoFolderPath, defaultBranch: 'main');
+        var r = await GitRepository.init(repoFolderPath, defaultBranch: 'main');
+        showResultError(context, r);
         break;
       }
       num++;

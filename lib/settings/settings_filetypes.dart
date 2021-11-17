@@ -116,9 +116,9 @@ class _NoteFileTypesSettingsState extends State<NoteFileTypesSettings> {
 
         var config = context.read<NotesFolderConfig>();
         if (!info.enabled) {
-          config.allowedFileExts.remove(info.ext);
+          var _ = config.allowedFileExts.remove(info.ext);
         } else {
-          config.allowedFileExts.add(info.ext);
+          var _ = config.allowedFileExts.add(info.ext);
         }
         config.save();
 

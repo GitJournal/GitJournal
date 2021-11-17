@@ -212,8 +212,9 @@ Future<bool> _isDirWritable(String path) async {
   var file = File(p.join(path, fileName));
 
   try {
-    await file.writeAsString("test");
-    await file.delete();
+    dynamic _;
+    _ = await file.writeAsString("test");
+    _ = await file.delete();
   } catch (_) {
     return false;
   }

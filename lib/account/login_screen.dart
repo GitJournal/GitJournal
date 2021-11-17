@@ -55,7 +55,7 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
   void initState() {
     super.initState();
 
-    recoverSupabaseSession();
+    var _ = recoverSupabaseSession();
   }
 
   @override
@@ -187,8 +187,7 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
       onLogin: _login,
       onSignup: _signup,
       onSubmitAnimationCompleted: () {
-        // Navigator.of(context).pushReplacementNamed(AppRoute.Account);
-        Navigator.of(context).pushReplacement(_FadePageRoute(
+        var _ = Navigator.of(context).pushReplacement(_FadePageRoute(
           builder: (context) => const AccountScreen(),
         ));
       },

@@ -207,7 +207,7 @@ class NoteEditorState extends State<NoteEditor>
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    var _ = WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
 
@@ -367,7 +367,7 @@ class NoteEditorState extends State<NoteEditor>
       // Make sure this file type is supported
       var config = note.parent.config;
       if (!config.allowedFileExts.contains(newExt)) {
-        config.allowedFileExts.add(newExt);
+        var _ = config.allowedFileExts.add(newExt);
         config.save();
 
         var ext = newExt.isNotEmpty
@@ -416,12 +416,15 @@ class NoteEditorState extends State<NoteEditor>
     }
 
     if (note.data != originalNoteData) {
+      dynamic _;
+      final modifiedKey = note.noteSerializer.settings.modifiedKey;
+
       var newSimplified = MdYamlDoc.from(note.data);
-      newSimplified.props.remove(note.noteSerializer.settings.modifiedKey);
+      _ = newSimplified.props.remove(modifiedKey);
       newSimplified.body = newSimplified.body.trim();
 
       var originalSimplified = MdYamlDoc.from(originalNoteData);
-      originalSimplified.props.remove(note.noteSerializer.settings.modifiedKey);
+      _ = originalSimplified.props.remove(modifiedKey);
       originalSimplified.body = originalSimplified.body.trim();
 
       bool hasBeenModified = newSimplified != originalSimplified;

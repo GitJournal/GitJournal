@@ -26,8 +26,9 @@ class FileStorageCache {
   }
 
   Future<void> clear() async {
-    await io.File(_cTimeFilePath).delete(recursive: true);
-    await io.File(_mTimeFilePath).delete(recursive: true);
+    dynamic _;
+    _ = await io.File(_cTimeFilePath).delete(recursive: true);
+    _ = await io.File(_mTimeFilePath).delete(recursive: true);
   }
 
   Future<FileStorage> load(GitRepository gitRepo) async {
@@ -128,7 +129,7 @@ class FileStorageCache {
     );
 
     var file = io.File(_cTimeFilePath);
-    await file.writeAsBytes(data.writeToBuffer());
+    var _ = await file.writeAsBytes(data.writeToBuffer());
   }
 
   Future<void> _saveMTime(FileMTimeBuilder builder) async {
@@ -156,7 +157,7 @@ class FileStorageCache {
     );
 
     var file = io.File(_mTimeFilePath);
-    await file.writeAsBytes(data.writeToBuffer());
+    var _ = await file.writeAsBytes(data.writeToBuffer());
   }
 }
 
