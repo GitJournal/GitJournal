@@ -157,7 +157,7 @@ class InAppPurchases {
     }
   }
 
-  static void confirmPendingPurchases() async {
+  static Future<void> confirmPendingPurchases() async {
     // On iOS this results in a "Sign in with Apple ID" dialog
     if (!Platform.isAndroid) {
       return;

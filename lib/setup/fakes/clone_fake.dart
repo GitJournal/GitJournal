@@ -39,7 +39,7 @@ class FakeTransferProgressState extends State<FakeTransferProgress> {
     super.dispose();
   }
 
-  void updateProgress() async {
+  Future<void> updateProgress() async {
     var str = lines[line];
     var progress = await GitTransferProgress.parse(str);
     if (progress != null) {

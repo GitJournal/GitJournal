@@ -103,7 +103,7 @@ class _SyncButtonState extends State<SyncButton> {
     );
   }
 
-  void _syncRepo() async {
+  Future<void> _syncRepo() async {
     try {
       final repo = Provider.of<GitJournalRepo>(context, listen: false);
       await repo.syncNotes();

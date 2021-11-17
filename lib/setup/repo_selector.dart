@@ -84,7 +84,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
     _initStateAysnc();
   }
 
-  void _initStateAysnc() async {
+  Future<void> _initStateAysnc() async {
     Log.d("Starting RepoSelector");
 
     try {

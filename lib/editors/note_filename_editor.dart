@@ -59,7 +59,7 @@ class _NoteFileNameEditorState extends State<NoteFileNameEditor> {
     );
   }
 
-  void _onChanged(String name) async {
+  Future<void> _onChanged(String name) async {
     //var newPath = p.join(widget.dirName, name);
 
     // Check if the path exists

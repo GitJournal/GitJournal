@@ -490,7 +490,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     showSnackbar(context, tr(LocaleKeys.setup_sshKey_copied));
   }
 
-  void _launchDeployKeyPage() async {
+  Future<void> _launchDeployKeyPage() async {
     var canLaunch = _gitCloneUrl.startsWith("git@github.com:") ||
         _gitCloneUrl.startsWith("git@gitlab.com:");
     if (!canLaunch) {
@@ -524,7 +524,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     }
   }
 
-  void _launchCreateRepoPage() async {
+  Future<void> _launchCreateRepoPage() async {
     assert(_gitHostType != GitHostType.Unknown);
 
     try {
@@ -540,7 +540,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     }
   }
 
-  void _startGitClone(BuildContext context) async {
+  Future<void> _startGitClone(BuildContext context) async {
     if (gitCloneErrorMessage!.isNotEmpty) {
       return;
     }

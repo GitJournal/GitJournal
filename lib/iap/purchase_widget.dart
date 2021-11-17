@@ -83,7 +83,7 @@ class PurchaseButton extends StatelessWidget {
     */
   }
 
-  void _reportExceptions(BuildContext context) async {
+  Future<void> _reportExceptions(BuildContext context) async {
     try {
       await _initPurchase(context);
     } catch (err, stackTrace) {

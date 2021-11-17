@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
     initializeDateFormatting();
   }
 
-  void _initFolder() async {
+  Future<void> _initFolder() async {
     if (!mounted) return;
 
     var root = Provider.of<NotesFolderFS>(context);

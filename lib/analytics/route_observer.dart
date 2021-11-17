@@ -10,7 +10,7 @@ import 'package:gitjournal/logger/logger.dart';
 import 'analytics.dart';
 
 class AnalyticsRouteObserver extends RouteObserver<PageRoute<dynamic>> {
-  void _sendScreenView(PageRoute<dynamic> route) async {
+  Future<void> _sendScreenView(PageRoute<dynamic> route) async {
     var screenName = route.settings.name;
     if (route.runtimeType.toString().startsWith("_SearchPageRoute")) {
       screenName = "/search";

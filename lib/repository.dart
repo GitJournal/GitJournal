@@ -203,7 +203,7 @@ class GitJournalRepo with ChangeNotifier {
     _syncNotes();
   }
 
-  void _loadFromCache() async {
+  Future<void> _loadFromCache() async {
     var startTime = DateTime.now();
     await _notesCache.load(notesFolder);
     var endTime = DateTime.now().difference(startTime);
@@ -324,7 +324,7 @@ class GitJournalRepo with ChangeNotifier {
     return syncNotes(doNotThrow: true);
   }
 
-  void createFolder(NotesFolderFS parent, String folderName) async {
+  Future<void> createFolder(NotesFolderFS parent, String folderName) async {
     logEvent(Event.FolderAdded);
 
     return _opLock.synchronized(() async {
@@ -345,7 +345,7 @@ class GitJournalRepo with ChangeNotifier {
     });
   }
 
-  void removeFolder(NotesFolderFS folder) async {
+  Future<void> removeFolder(NotesFolderFS folder) async {
     logEvent(Event.FolderDeleted);
 
     return _opLock.synchronized(() async {
@@ -361,7 +361,7 @@ class GitJournalRepo with ChangeNotifier {
     });
   }
 
-  void renameFolder(NotesFolderFS folder, String newFolderName) async {
+  Future<void> renameFolder(NotesFolderFS folder, String newFolderName) async {
     assert(!newFolderName.contains(p.separator));
 
     logEvent(Event.FolderRenamed);
@@ -381,7 +381,7 @@ class GitJournalRepo with ChangeNotifier {
     });
   }
 
-  void renameNote(Note note, String newFileName) async {
+  Future<void> renameNote(Note note, String newFileName) async {
     assert(!newFileName.contains(p.separator));
 
     logEvent(Event.NoteRenamed);
@@ -487,7 +487,7 @@ class GitJournalRepo with ChangeNotifier {
 
   void removeNote(Note note) => removeNotes([note]);
 
-  void removeNotes(List<Note> notes) async {
+  Future<void> removeNotes(List<Note> notes) async {
     logEvent(Event.NoteDeleted);
 
     return _opLock.synchronized(() async {
@@ -510,7 +510,7 @@ class GitJournalRepo with ChangeNotifier {
     });
   }
 
-  void undoRemoveNote(Note note) async {
+  Future<void> undoRemoveNote(Note note) async {
     logEvent(Event.NoteUndoDeleted);
 
     return _opLock.synchronized(() async {

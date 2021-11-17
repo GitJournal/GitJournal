@@ -57,7 +57,8 @@ class PurchaseManager {
     _instance!._subscription.cancel();
   }
 
-  void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetails) async {
+  Future<void> _listenToPurchaseUpdated(
+      List<PurchaseDetails> purchaseDetails) async {
     for (var pd in purchaseDetails) {
       await _handlePurchaseUpdate(pd);
     }

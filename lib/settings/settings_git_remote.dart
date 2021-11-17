@@ -225,7 +225,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     });
   }
 
-  void _reconfigureGitHost() async {
+  Future<void> _reconfigureGitHost() async {
     var ok = await showDialog(
       context: context,
       builder: (_) => IrreversibleActionConfirmationDialog(
@@ -270,7 +270,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
-  void _resetGitHost() async {
+  Future<void> _resetGitHost() async {
     var ok = await showDialog(
       context: context,
       builder: (_) => IrreversibleActionConfirmationDialog(

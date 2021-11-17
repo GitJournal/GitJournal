@@ -114,7 +114,7 @@ class KeyEditor extends StatelessWidget {
     );
   }
 
-  void _pickAndLoadFile() async {
+  Future<void> _pickAndLoadFile() async {
     var result = await FilePicker.platform.pickFiles();
 
     if (result != null &&

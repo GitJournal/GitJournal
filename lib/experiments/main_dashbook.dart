@@ -16,7 +16,7 @@ import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/app_config.dart';
 
-void main() async {
+Future<void> main() async {
   //TestWidgetsFlutterBinding.ensureInitialized();
   var _ = WidgetsFlutterBinding.ensureInitialized();
 

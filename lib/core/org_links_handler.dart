@@ -36,7 +36,7 @@ class OrgLinkHandler {
 
   OrgLinkHandler(this.context, this.note) : super();
 
-  void launchUrl(String link) async {
+  Future<void> launchUrl(String link) async {
     // handle =file:= prefix
     if (link.startsWith('file:')) {
       link = link.replaceFirst('file:', '');

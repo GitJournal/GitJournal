@@ -29,7 +29,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
-  void _initAsync() async {
+  Future<void> _initAsync() async {
     final channel = ClientChannel(
       'localhost',
       port: 50052,

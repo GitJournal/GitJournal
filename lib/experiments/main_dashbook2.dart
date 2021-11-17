@@ -18,7 +18,7 @@ import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/setup/fakes/clone_fake.dart';
 
-void main() async {
+Future<void> main() async {
   dynamic _;
   _ = WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();

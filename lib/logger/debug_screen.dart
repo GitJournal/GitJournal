@@ -149,7 +149,7 @@ class _DebugScreenState extends State<DebugScreen> {
     }
   }
 
-  void _copyToClipboard() async {
+  Future<void> _copyToClipboard() async {
     var messages = <String>[];
     for (var logMsg in _logs) {
       var msg = json.encode(logMsg.toMap());
@@ -292,7 +292,7 @@ class _DebugScreenState extends State<DebugScreen> {
     );
   }
 
-  void _showFilterSelection() async {
+  Future<void> _showFilterSelection() async {
     var appConfig = Provider.of<AppConfig>(context);
     var filterLevel = appConfig.debugLogLevel;
 

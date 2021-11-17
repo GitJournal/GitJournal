@@ -13,7 +13,7 @@ import 'package:gitjournal/app.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/utils/datetime.dart';
 
-void main() async {
+Future<void> main() async {
   // enableFlutterDriverExtension();
 
   var pref = await SharedPreferences.getInstance();

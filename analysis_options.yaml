@@ -31,6 +31,8 @@ linter:
     no_logic_in_create_state: false
     non_constant_identifier_names: false
     use_string_buffers: true
+    avoid_void_async: true
+    # unawaited_futures: true
 
 dart_code_metrics:
   metrics-exclude:

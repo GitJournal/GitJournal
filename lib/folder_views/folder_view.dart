@@ -287,7 +287,7 @@ class _FolderViewState extends State<FolderView> {
     }
   }
 
-  void _newPost(EditorType editorType) async {
+  Future<void> _newPost(EditorType editorType) async {
     var settings = Provider.of<Settings>(context, listen: false);
     var rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
 
@@ -351,7 +351,7 @@ class _FolderViewState extends State<FolderView> {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
   }
 
-  void _sortButtonPressed() async {
+  Future<void> _sortButtonPressed() async {
     if (sortedNotesFolder == null) {
       return;
     }
@@ -373,7 +373,7 @@ class _FolderViewState extends State<FolderView> {
     }
   }
 
-  void _configureViewButtonPressed() async {
+  Future<void> _configureViewButtonPressed() async {
     var _ = await showDialog<SortingMode>(
       context: context,
       builder: (BuildContext context) {
@@ -478,7 +478,7 @@ class _FolderViewState extends State<FolderView> {
     setState(() {});
   }
 
-  void _folderViewChooserSelected() async {
+  Future<void> _folderViewChooserSelected() async {
     void onViewChange(FolderViewType? vt) => Navigator.of(context).pop(vt);
 
     var newViewType = await showDialog<FolderViewType>(
@@ -630,7 +630,7 @@ class _FolderViewState extends State<FolderView> {
     ];
   }
 
-  void _deleteSelectedNotes() async {
+  Future<void> _deleteSelectedNotes() async {
     var settings = Provider.of<Settings>(context, listen: false);
     var shouldDelete = true;
     if (settings.confirmDelete) {
@@ -648,7 +648,7 @@ class _FolderViewState extends State<FolderView> {
     _resetSelection();
   }
 
-  void _moveSelectedNotesToFolder() async {
+  Future<void> _moveSelectedNotesToFolder() async {
     var destFolder = await showDialog<NotesFolderFS>(
       context: context,
       builder: (context) => FolderSelectionDialog(),

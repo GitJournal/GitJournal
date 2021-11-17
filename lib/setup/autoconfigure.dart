@@ -45,7 +45,7 @@ class GitHostSetupAutoConfigurePageState
   bool _configuringStarted = false;
   String _message = tr(LocaleKeys.setup_autoconfigure_waitPerm);
 
-  void _startAutoConfigure() async {
+  Future<void> _startAutoConfigure() async {
     Log.d("Starting autoconfigure");
     setState(() {
       _configuringStarted = true;

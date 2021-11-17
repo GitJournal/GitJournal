@@ -85,7 +85,7 @@ class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
   }
 
   /// newText is used to calculate where to put the completion box
-  void _showOverlayTag(BuildContext context, String newText) async {
+  Future<void> _showOverlayTag(BuildContext context, String newText) async {
     // Code reference for overlay logic from MTECHVIRAL's video
     // https://www.youtube.com/watch?v=KuXKwjv2gTY
 

@@ -110,7 +110,7 @@ class _MyAppState extends State<MyApp> {
     _initAsync();
   }
 
-  void _initAsync() async {
+  Future<void> _initAsync() async {
     var pref = await SharedPreferences.getInstance();
     final server = Server(
       [SharedPreferencesService(pref)],

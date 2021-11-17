@@ -173,7 +173,7 @@ class __CurrentRepoState extends State<_CurrentRepo>
     widget.repoListToggled();
   }
 
-  void _fetchRepoInfo() async {
+  Future<void> _fetchRepoInfo() async {
     if (_repoFolderName.isNotEmpty) {
       return;
     }

@@ -50,7 +50,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     super.initState();
   }
 
-  void _fillMinYearPurchase() async {
+  Future<void> _fillMinYearPurchase() async {
     var pm = await PurchaseManager.init();
     if (pm == null) return;
 

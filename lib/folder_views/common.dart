@@ -88,7 +88,7 @@ Widget buildFolderView({
   }
 }
 
-void openNoteEditor(
+Future<void> openNoteEditor(
   BuildContext context,
   Note note,
   NotesFolder parentFolder, {

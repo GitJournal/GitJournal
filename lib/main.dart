@@ -18,7 +18,7 @@ import 'package:gitjournal/app.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/settings/app_config.dart';
 
-void main() async {
+Future<void> main() async {
   var _ = WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   EasyLocalization.logger.enableLevels = [
