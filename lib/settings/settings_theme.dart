@@ -90,3 +90,11 @@ class _SettingsThemeState extends State<SettingsThemeScreen> {
     );
   }
 }
+
+// 1. Improve the carrosuel
+// 2. Add a name of it
+// 3. Show Telegram type animation when changing the theme
+// 4. Make the 'home screen' view bigger
+// 5. Hook it up so the theme is actually saved
+//
+// Have a class called GitJournalTheme
