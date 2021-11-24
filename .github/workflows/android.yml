@@ -33,7 +33,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: APK
-          path: build/app/outputs/flutter-apk/app-prod-release.apk
+          path: "*.apk"
           if-no-files-found: error
       - name: Publish Alpha
         run: cd android && fastlane alphaBuild

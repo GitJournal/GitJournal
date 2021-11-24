@@ -13,3 +13,6 @@ flutter build appbundle --flavor prod --build-number="$BUILD_NUM" --dart-define=
 
 # Also building the apk, as it's useful for non Google Play users
 flutter build apk --flavor prod --build-number="$BUILD_NUM" --dart-define=INSTALL_SOURCE=fdroid --verbose
+
+BUILD_ID=$(make version | tail -n 1 | awk '{ print $4 }')
+cp build/app/outputs/flutter-apk/app-prod-release.apk gitjournal-$BUILD_ID.apk
