@@ -26,7 +26,6 @@ jobs:
         run: ./scripts/decrypt_secrets.sh
       - name: Setup Env
         run: dart ./scripts/setup_env.dart
-      - run: flutter pub get
       - name: Build
         run: ./scripts/build_android.sh
       - name: "Upload Artifact"
@@ -35,5 +34,5 @@ jobs:
           name: APK
           path: "*.apk"
           if-no-files-found: error
-      - name: Publish Alpha
-        run: cd android && fastlane alphaBuild
+      # - name: Publish Alpha
+      #   run: cd android && fastlane alphaBuild
