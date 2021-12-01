@@ -5,7 +5,6 @@
  */
 
 import 'package:cryptography/cryptography.dart';
-import 'package:cryptography_flutter/cryptography_flutter.dart';
 import 'package:openssh_ed25519/openssh_ed25519.dart';
 
 class SshKey {
@@ -20,14 +19,7 @@ class SshKey {
   });
 }
 
-var _enabled = false;
-
 Future<SshKey?> generateSSHKeys({required String comment}) async {
-  if (_enabled) {
-    FlutterCryptography.enable();
-    _enabled = true;
-  }
-
   final keyPair = await Ed25519().newKeyPair();
 
   var privateBytes = await keyPair.extractPrivateKeyBytes();

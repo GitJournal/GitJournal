@@ -25,7 +25,6 @@ dependencies:
   badges: ^2.0.1
   connectivity_plus: ^1.0.6
   cryptography: ^2.0.5
-  cryptography_flutter: ^2.0.2
   device_info_plus: ^2.1.0
   dots_indicator: ^2.0.0
   easy_localization: ^3.0.0
