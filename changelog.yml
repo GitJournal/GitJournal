@@ -2,6 +2,9 @@
 #
 # SPDX-License-Identifier: CC-BY-4.0
 
+- version: "1.82"
+  draft: true
+
 - version: "1.81"
   date: 2021-10-12
   improvements:
