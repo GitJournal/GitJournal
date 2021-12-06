@@ -1,7 +1,5 @@
-# SPDX-FileCopyrightText: 2019-2021 1094553181xxcc <1094553181xxcc@gmail.com>
 # SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
-# SPDX-FileCopyrightText: 2019-2021 grey <grey030@foxmail.com>
-#
+# 
 # SPDX-License-Identifier: CC-BY-4.0
 settings:
   ok: 好的
@@ -11,33 +9,33 @@ settings:
     label: 全名
     validator: 请输入名字
   email:
-    label: E-mail
+    label: 邮箱地址
     validator:
-      empty: 请输入E-mail地址
-      invalid: 请输入有效的E-mail地址
+      empty: 请输入邮箱地址
+      invalid: 请输入有效的邮箱地址
   display:
     title: 显示设置
     homeScreen: 主页显示
-    theme: Theme
+    theme: 主题
     images:
-      title: Image Settings
-      subtitle: Configure how images are displayed
+      title: 图片设置
+      subtitle: 配置图片显示效果
       imageTextType:
         alt: Alt Text
         altAndTooltip: Alt Text and Tooltip
         tooltip: Tooltip
         none: None
       captions:
-        title: Image Captions
-        subtitle: Configure the image captions
-        useAsCaption: Use as caption
-        overlayCaption: Draw caption on top of large enough images
-        transparentCaption: Overlay captions have a semitransparent background
-        blurBehindCaption: Blur Image behind caption
+        title: 图片说明
+        subtitle: 配置图片说明
+        useAsCaption: 图片说明显示方式
+        overlayCaption: 在足够大的图片上方显示说明
+        transparentCaption: 图片说明使用半透明背景
+        blurBehindCaption: 使说明后的图片模糊
         tooltipFirst:
-          title: Show tooltip before alt text
-          tooltip: Current order is “<tooltip> - <altText>”
-          altText: Current order is “<altText> - <tooltip>”
+          title: 在 tooltip 前显示 alt text
+          tooltip: 目前的顺序：「<tooltip> - <altText>」
+          altText: 目前的顺序：「<altText> - <tooltip>」
         captionOverrides: Caption Overrides
         tagDescription: Put these tags in “![altText](... "tooltip")” to override the behavior for it.
         doNotCaptionTags:
@@ -90,30 +88,30 @@ settings:
           filter: Using Color Filter
           'off': false
           'on': true
-        vectorGraphics: Vector Graphics (.svg)
+        vectorGraphics: 矢量图 (.svg)
         vectorGraphicsAdjustColors: Colors to Adjust
-    lang: Language
-  gitAuthor: Git 权限设置
+    lang: 语言
+  gitAuthor: Git Author 设置
   versionInfo: 版本信息
-  analytics: 分析
+  analytics: 数据共享
   crashReports: 收集匿名崩溃报告
   usageStats: 收集匿名使用数据
   debug:
-    title: 调试程序
+    title: 调试应用
     subtitle: 在列表预览
     levels:
-      title: Select Level
+      title: 选择等级
       error: Error
       warning: warning
       info: Info
       debug: Debug
       verbose: Verbose
-    copy: Debug Logs Copied
+    copy: 调试日志已复制
   images:
-    title: 图像设置
+    title: 图片设置
     subtitle: 图片存储方式
     imageLocation: 图片地址
-    currentFolder: 文件夹与笔记同名
+    currentFolder: 与笔记相同目录
     customFolder: 自定义文件夹
   gitRemote:
     changeHost:
@@ -121,85 +119,90 @@ settings:
       subtitle: 未同步的笔记将会丢失
       ok: 好的
       cancel: 取消
-    title: Git 远程仓库设置
+    title: Git 远程库设置
     subtitle: 设置您的笔记的同步位置
     host: Git Host
-    branch: Branch
+    branch: 分支
+    resetHard:
+      title: 重设 Git Host
+      subtitle: 这将会强制将现有分支同其远程版本同步
   noteMetaData:
-    title: 笔记元信息设置
-    subtitle: 配置如何保存笔记的元信息
-    text: "每条笔记都有一些元数据，这些元数据被存储在YAML格式数据头中，如下所示 "
-    enableHeader: 启用 YAML 头文件
-    modified: 被修改的
-    created: 新增的
+    title: 笔记元数据设置
+    subtitle: 配置如何保存笔记的元数据
+    text: "每条笔记都有一些元数据，这些元数据被存储在YAML格式的数据头中，如下所示 "
+    enableHeader: 启用 YAML 头
+    modified: 修改时间
+    created: 创建时间
     tags: 标签部分
     example:
       title: 示例标题
     titleMetaData:
       title: 标题
-      fromH1: Text Header 1
-      fromYaml: From YAML 'title'
-      filename: FileName
+      fromH1: 标题 1
+      fromYaml: 从 YAML 的 'title' 获取
+      filename: 文件名
     exampleTitle: Pigeons
     exampleBody: I think they might be evil. Even more evil than penguins.
     exampleTag1: Birds
     exampleTag2: Evil
     customMetaData:
-      title: Custom MetaData
-      invalid: Invalid YAML
-    output: Output
-    input: Input
-  privacy: Privacy Policy
-  terms: Terms and Conditions
+      title: 自定义元数据
+      invalid: YAML 不正确
+    output: 输出
+    input: 输入
+  privacy: 隐私政策
+  terms: 使用条款
   experimental:
-    title: Experimental Features
-    subtitle: Try out features in Development
-    markdownToolbar: Show Markdown Toolbar in Editor
-    graphView: Graph View
-    accounts: Platform Independent Accounts
-    includeSubfolders: Include Subfolders
-    experimentalGitOps: Dart-only Git implementation
-    merge: Dart-only merge implementation
-    autoCompleteTags: Tags Auto Completion
+    title: 实验功能
+    subtitle: 体验正在开发的功能
+    markdownToolbar: 在编辑器中显示 Markdown 工具栏
+    graphView: 图谱视图
+    accounts: 平台独立的帐号
+    includeSubfolders: 包括子目录
+    experimentalGitOps: Dart-only Git
+    merge: Dart-only merge
+    autoCompleteTags: 自动补全标签
+    history: 历史视图
   editors:
-    title: Editor Settings
-    subtitle: Configure how different editors work
-    defaultEditor: Default Editor
-    defaultState: Default State
-    markdownEditor: Markdown Editor
-    journalEditor: Journal Editor
-    defaultFolder: Default Folder
-    checklistEditor: Checklist Editor
-    rawEditor: Raw Editor
-    choose: Choose Editor
-    orgEditor: Org Editor
-    defaultNoteFormat: Default Note Format
+    title: 编辑器设置
+    subtitle: 配置不同的编辑器
+    defaultEditor: 默认编辑器
+    defaultState: 默认视图
+    markdownEditor: Markdown 编辑器
+    journalEditor: 日志编辑器
+    defaultFolder: 默认目录
+    checklistEditor: 清单编辑器
+    rawEditor: Raw 编辑器
+    choose: 选择编辑器
+    orgEditor: Org 编辑器
+    defaultNoteFormat: 默认笔记格式
+    journalDefaultFolderSelect: 在 '{}' 新建笔记
   sortingField:
-    modified: Last Modified
-    created: Created
-    filename: File Name
-    title: Title
+    modified: 编辑时间
+    created: 创建时间
+    filename: 文件名
+    title: 标题
   sortingOrder:
-    asc: Ascending
-    desc: Descending
+    asc: 升序
+    desc: 降序
   sortingMode:
-    field: Field
-    order: Order
+    field: 规则
+    order: 排序
   remoteSync:
-    auto: Automatic
-    manual: Manual
+    auto: 自动
+    manual: 手动
   tags:
-    title: Tags Settings
-    subtitle: Configure how inline tags are parsed
-    enable: Parse Inline Tags
-    prefixes: Inline Tags Prefixes
+    title: 标签设置
+    subtitle: 配置标签解析方式
+    enable: 解析行内标签
+    prefixes: 行内标签前缀
   misc:
-    title: Misc Settings
-    swipe: Swipe to Delete Note
-    listView: List View
-    confirmDelete: Show a Popup to Confirm Deletes
-    hardWrap: Enable hardWrap
-    emoji: Emojify text
+    title: 其他设置
+    swipe: 滑动以删除笔记
+    listView: 列表视图
+    confirmDelete: 删除笔记前确认
+    hardWrap: 启用 hardWrap
+    emoji: Emojify Text
   NoteFileNameFormat:
     iso8601WithTimeZone: ISO8601 With TimeZone
     iso8601: ISO8601
@@ -210,320 +213,363 @@ settings:
     simple: yyyy-mm-dd-hh-mm-ss
     dateOnly: yyyy-mm-dd
   HomeScreen:
-    allNotes: All Notes
-    allFolders: All Folders
+    allNotes: 全部笔记
+    allFolders: 所有目录
   EditorDefaultView:
-    edit: Edit
-    view: View
-    lastUsed: Last Used
+    edit: 编辑
+    view: 预览
+    lastUsed: 上一次使用
   theme:
-    light: Light
-    dark: Dark
-    default: System Default
-  versionCopied: Version Number Copied
+    light: 浅色模式
+    dark: 深色模式
+    default: 跟随系统
+  versionCopied: 已复制版本信息到剪贴板
   ssh:
-    syncFreq: Sync Frequency
-    reset: Reset Git Host
+    syncFreq: 同步频率
   note:
-    title: Note Settings
-    defaultFolder: Default Folder for new notes
-    newNoteFileName: New Note Filename
+    title: 笔记设置
+    defaultFolder: 新笔记存储位置
+    newNoteFileName: 新笔记的文件名
   storage:
-    title: Storage
-    fileName: filename
-    external: Store Repo Externally
-    icloud: Store in iCloud
-    repoLocation: Repo Location
-    notWritable: "{} is not writable"
-    failedExternal: Unable to get External Storage Directory
+    title: 存储
+    fileName: 文件名
+    external: 在外部存储笔记库
+    icloud: 在 iCloud 中存储笔记库
+    repoLocation: 笔记库位置
+    notWritable: "{} 不可写"
+    failedExternal: 无法获取外部存储与目录信息
   drawer:
-    title: Sidebar Settings
+    title: 侧边栏设置
   bottomMenuBar:
-    title: Bottom Menu Bar
-    subtitle: Configure its appearance and behavior
-    enable: Enable Bottom Menu Bar
-  deleteRepo: Delete Repository
+    title: 底栏设置
+    subtitle: 配置底栏
+    enable: 显示底栏
+  deleteRepo: 删除库
   fileFormat:
     markdown: Markdown
     txt: Txt
     orgMode: Org Mode
+  fileTypes:
+    title: 笔记文件类型
+    subtitle: 配置什么类型的文件被当作笔记
+    numFiles:
+      other: "{} 文件"
+    noExt: 无后缀
+  list:
+    userInterface:
+      title: 用户界面
+      subtitle: 主题，语言，主页，底栏，渲染
+    git:
+      title: Git
+      subtitle: Git Author，远程库，同步频率
+    editor:
+      title: 编辑器
+      subtitle: 默认编辑器，默认视图
+    storage:
+      title: 存储和文件格式
+      subtitle: 存储，序列化，元数据，文件格式
+    analytics:
+      title: 数据共享
+      subtitle: 在征得你同意的情况下收集有限的统计数据
+    debug:
+      title: 调试
+      subtitle: 查看 GitJournal 运行情况
+    experiments:
+      title: 实验功能
+      subtitle: 体验尚在测试中的功能
+  project:
+    header: 项目
+    docs: 文档与帮助
+    contribute: 贡献
+    about: 关于
+  license:
+    title: 许可证
+    subtitle: GitJournal 使用了其他优秀的软件
 editors:
   checklist:
-    add: Add Item
+    add: 添加项目
   common:
-    defaultBodyHint: Write here
-    defaultTitleHint: Title
-    discard: Discard Changes
-    share: Share Note
-    takePhoto: Take Photo
-    addImage: Add Image from Gallery
-    editFileName: Edit File Name
-    tags: Edit Tags
+    defaultBodyHint: 在此处键入
+    defaultTitleHint: 标题
+    discard: 放弃更改
+    share: 分享笔记
+    takePhoto: 拍照
+    addImage: 相册
+    editFileName: 编辑文件名
+    tags: 编辑标签
     zen:
-      enable: Enable Zen Mode
-      disable: Disable Zen Mode
+      enable: 进入禅模式
+      disable: 退出禅模式
     saveNoteFailed:
-      title: Failed to Save Note
-      message: We're sorry, but we cannot seem to save the Note. It has been copied to the clipboard to avoid data loss.
-    defaultFileNameHint: File Name
-    find: Find in note
+      title: 保存笔记失败
+      message: 抱歉，在保存笔记时出现了一些问题。为了防止数据丢失，笔记内容已复制到剪贴板。
+    defaultFileNameHint: 文件名
+    find: 在笔记内查找
 pro: Pro
 actions:
-  newNote: New Note
-  newJournal: New Journal Entry
-  newChecklist: New Checklist
+  newNote: 新笔记
+  newJournal: 新日志
+  newChecklist: 新清单
 screens:
   folders:
-    title: Folders
-    selected: Folder Selected
+    title: 目录
+    selected: 选中目录
     dialog:
-      title: Create new Folder
-      create: Create
-      discard: Discard
+      title: 新建目录
+      create: 新建
+      discard: 取消
     errorDialog:
-      title: Error
-      deleteContent: Cannot delete a Folder which contains notes
-      renameContent: Cannot rename Root Folder
-      ok: Ok
+      title: 错误
+      deleteContent: 目录中含有笔记，无法删除
+      renameContent: 无法重命名根目录
+      ok: 好的
     actions:
-      rename: Rename Folder
-      subFolder: Create Sub-Folder
-      delete: Delete Folder
-      decoration: Folder Name
-      empty: Please enter a name
+      rename: 重命名目录
+      subFolder: 新建子目录
+      delete: 删除目录
+      decoration: 目录名
+      empty: 请输入目录名
   tags:
-    title: Tags
-    empty: No Tags Found
+    title: 标签
+    empty: 未找到标签
   filesystem:
     ignoredFile:
-      title: File Ignored
-      ok: Ok
-      rename: Rename
+      title: 已忽略的文件
+      ok: 好的
+      rename: 重命名
     rename:
-      decoration: File Name
-      title: Rename
+      decoration: 文件名称
+      title: 重命名
   folder_view:
-    empty: Let's add some notes?
+    empty: 创建一些笔记吧！
   home:
-    allNotes: All Notes
+    allNotes: 全部笔记
+  cacheLoading:
+    text: Reading Git History ...
 widgets:
   rename:
-    'yes': Rename
-    'no': Cancel
+    'yes': 重命名
+    'no': 取消
     validator:
-      empty: Please enter a name
-      exists: Already Exists
-      contains: Cannot contain /
+      empty: 请输入名称
+      exists: 已存在同名笔记
+      contains: 名称不可包含 /
+    noExt: "警告：无后缀。将会当作文本处理"
+    changeExt: "警告：修改文件类型，从 '{}' 改为 '{}'"
   backlinks:
     title:
-      other: "{} Note links to this Note"
+      other: " {} 个笔记同此笔记链接"
   SortingOrderSelector:
-    title: Sorting Criteria
+    title: 排序
   PurchaseButton:
-    text: Purchase for {price}
-    fail: Failed to Load
-    failSend: Failed to send purchase request
-    failPurchase: Failed to Purchase - {}
+    text: 以 {price} 购买
+    fail: 加载失败
+    failSend: 发送购买请求失败
+    failPurchase: 购买失败 - {}
   FolderView:
-    syncError: Sync Error {}
+    syncError: 同步错误 {}
     headerOptions:
-      heading: Header Options
-      auto: Auto Generated Title
-      titleFileName: Title or FileName
-      fileName: FileName
-      summary: Show Summary
-      customize: Customize View
+      heading: 标题选项
+      auto: 自动生成的标题
+      titleFileName: 标题或者文件名
+      fileName: 文件名
+      summary: 展示笔记概览
+      customize: 自定义视图
     views:
-      standard: Standard View
-      journal: Journal View
-      grid: Grid View
-      card: Card View
-      select: Select View
-    sortingOptions: Sorting Options
-    viewOptions: View Options
-    noteDeleted: Note Deleted
-    undo: Undo
-    searchFailed: No Search Results Found
+      standard: 标准视图
+      journal: 日志视图
+      grid: 网格视图
+      card: 卡片视图
+      select: 选择视图
+      calendar: 日历视图
+    sortingOptions: 排序选项
+    viewOptions: 视图设置
+    noteDeleted: 已删除的笔记
+    undo: 撤销
+    searchFailed: 没有找到结果
     actions:
-      moveToFolder: Move To Folder
-    pinned: Pinned
-    others: Others
+      moveToFolder: 移动到
+    pinned: 固定
+    others: 其他
   imageRenderer:
     caption: "{first} - {second}"
     httpError: "Code: {status} for {url}"
   NoteDeleteDialog:
-    title: Do you want to delete this note?
-    'yes': true
-    'no': false
+    title:
+      other: 是否删除该笔记？
+    'yes': 是
+    'no': 否
   NoteEditor:
-    renameFile: Rename File
-    fileName: Filename
+    renameFile: 重命名
+    fileName: 文件名
+    addType: 将 '{}' 添加进受支持的文件类型
   SyncButton:
-    error: Sync Error {}
+    error: 同步错误 {}
   PurchaseWidget:
-    failed: Purchase Failed
+    failed: 购买失败
   NoteViewer:
-    linkNotFound: Link '{}' not found
-    linkInvalid: Link '{}' is invalid.
+    linkNotFound: 链接 '{}' 未找到
+    linkInvalid: 链接 '{}' 不存在
   FolderSelectionDialog:
-    title: Select a Folder
-rootFolder: Root Folder
+    title: 选择一个目录
+rootFolder: 根目录
 ignoredFiles:
-  dot: Starts with a .
-  ext: Doesn't end with one of the following -
+  dot: 以 . 开始
+  ext: 不以以下字符结束 -
 drawer:
-  setup: Setup Git Host
-  pro: Unlock Pro Version
-  all: All Notes
-  folders: Folders
-  fs: File System
-  tags: Tags
-  share: Share App
-  rate: Rate Us
-  feedback: Feedback
-  bug: Bug Report
-  graph: Graph View
-  remote: No Git Host
-  addRepo: Add Repository
-  login: Login
-  history: History
+  setup: 设置 Git Host
+  pro: 解锁 Pro 版
+  all: 全部笔记
+  folders: 目录
+  fs: 文件系统
+  tags: 标签
+  share: 分享应用
+  rate: 评分
+  feedback: 反馈
+  bug: 报告 Bug
+  graph: 图谱
+  remote: 无 Git Host
+  addRepo: 新建库
+  login: 登录
+  history: 历史
 setup:
   autoConfigure:
-    title: How do you want to do this?
-    automatic: Setup Automatically
-    manual: Let me do it manually
+    title: 你希望以什么方式配置？
+    automatic: 自动配置
+    manual: 手动配置
   autoconfigure:
-    step1: 1. List your existing repos or create a new repo
-    step2: 2. Generate an SSH Key on this device
-    step3: 3. Add the key as a deploy key with write access to the repository
-    warning: This will require granting GitJournal access to all private and public repos. If you're not comfortable with that please go back and chose the manual setup option.
-    authorize: Authorize GitJournal
-    waitPerm: Waiting for Permissions ...
-    readUser: Reading User Info
+    step1: 1. 列出已存在的库与新建库
+    step2: 2. 在此设置生成 SSH 密钥
+    step3: 3. 部署密钥，以获取库的读写权限
+    warning: 这将会授予 GitJournal 所有私有及公有库的访问权限。如果你不放心，请返回，并选择「手动配置」选项。
+    authorize: 授权 GitJournal
+    waitPerm: 等待授权 ……
+    readUser: 读取用户信息
   repoSelector:
-    title: Select or Create a Repository
-    hint: Type to Search or Create a Repo
-    create: Create Private Repo {}
-    loading: Loading
+    title: 选择或者新建一个库
+    hint: 键入以搜索，或者新建库
+    create: 新建私有库 {}
+    loading: 加载中
   cloneUrl:
-    enter: Enter the Git Clone URL
+    enter: 输入 Git Clone URL
     validator:
-      empty: Please enter some text
-      invalid: Invalid Input
-      onlySsh: Only SSH urls are currently accepted
+      empty: 请输入链接
+      invalid: 链接输入不正确
+      onlySsh: 目前仅接受 SSH 链接
     manual:
-      title: Please create a new git repository -
-      step1: 1. Go to the website, create a repo and copy its git clone URL
-      step2: 2. Enter the Git clone URL
-      button: Open Create New Repo Webpage
-  next: Next
-  fail: Failed
+      title: 请新建一个 Git 库：
+      step1: 1. 打开网页，新建库，然后复制库的 Clone URL。
+      step2: 2. 输入 Git clone URL
+      button: 打开网页以新建库
+  next: 下一步
+  fail: 失败
   keyEditors:
-    public: Invalid Public Key - Doesn't start with ssh-rsa
-    private: Invalid Private Key
-    load: Load from File
+    public: 不正确的 Public Key：不以 ssh-rsa 或 ssh-ed25519 开头
+    private: 不正确的 Private Key
+    load: 从文件加载
   sshKey:
-    generate: Generating SSH Key
-    title: In order to access this repository, this public key must be copied as a deploy key
-    step1: 1. Copy the key
-    step2a: 2. Open webpage, and paste the deploy key. Make sure it is given Write Access.
-    step2b: 2. Give this SSH Key access to the git repo. (You need to figure it out yourself)
-    step3: 3. Try Cloning ..
-    copy: Copy Key
-    copied: Public Key copied to Clipboard
-    regenerate: Regenerate Key
-    openDeploy: Open Deploy Key Webpage
-    clone: Clone Repo
-    addDeploy: Adding as a Deploy Key
-    save: Save
+    generate: 生成 SSH Key
+    title: 为了访问库，必须复制 public key，用于库的 deploy key
+    step1: 1. 复制 Key
+    step2a: 2. 打开网页，将 public key 复制进 deploy key。确认给予其 Write 权限.
+    step2b: 2. 给予此 SSH Key 访问 git 库的权限。 (你必须自己搞定)
+    step3: 3. 正在尝试 Clone ……
+    copy: 复制 Key
+    copied: 已将 Public Key 复制进剪贴板
+    regenerate: 重新生成 Key
+    openDeploy: 打开 Deploy Key 网页
+    clone: Clone 库
+    addDeploy: 添加为 Deploy Key
+    save: 保存
   sshKeyChoice:
-    title: We need SSH keys to authenticate -
-    generate: Generate new keys
-    custom: Provide Custom SSH Keys
+    title: 授权需要 SSH
+    generate: 生成新的 Key
+    custom: 使用自己的 SSH Keys
   sshKeyUserProvided:
     public: Public Key -
     private: Private Key -
-    password: Private Key Password
-  cloning: Cloning ...
+    password: Private Key 密码
+  cloning: 正在尝试 Clone ……
   host:
-    title: Select a Git Hosting Provider -
-    custom: Custom
+    title: 选择一个 Git 托管服务商：
+    custom: 自定义
 feature:
-  darkMode: Dark Mode
-  rawEditor: Raw Editor
-  folderSupport: Folder Support
-  fileNameCustomize: Customize Note FileName
+  darkMode: 深色模式
+  rawEditor: Raw 编辑器
+  folderSupport: 支持目录
+  fileNameCustomize: 自定义文件名
   noteMetaDataCustomize:
-    title: Customize Note Metadata
-    subtitle: Allows GitJournal to be used with static website generators
-  autoMergeConflicts: Automation Merge Conflict Resolution
-  noteSorting: Configurable Note Sorting
-  gitPushFreq: Configurable Git Sync Frequency
-  checklistEditor: Checklist Editor
-  journalEditor: Journal Editor
-  diffViews: Different Folder Views - Journal, Grid, Standard
-  imageSupport: Image Support
-  tags: Note Tags
+    title: 自定义笔记元数据
+    subtitle: 使 GitJournal 能够与静态网页生成工具一同使用
+  autoMergeConflicts: 自动解决 Merge 冲突
+  noteSorting: 自定义笔记排序
+  gitPushFreq: 自定义笔记同步频率
+  checklistEditor: 清单编辑器
+  journalEditor: 日志编辑器
+  diffViews: 不同的视图 - 日志，网格，标准
+  imageSupport: 支持图片
+  tags: 笔记标签
   appShortcuts: App Shortcuts
-  createRepo: Create Custom Repos from within App
-  backlinks: Note Backlinks Support
-  txtFiles: Txt File Support
-  wikiLinks: Wiki Style Links Support
-  metaDataTitle: Customize Title MetaData
-  journalEditorDefaultFolder: Customize Default Folder for Journal Editor
-  yamlModifiedKey: Customize the YAML modified key
-  yamlCreatedKey: Customize the YAML created key
-  yamlTagsKey: Customize the YAML tags key
-  disableYamlHeader: Disable YAML Metadata Header
-  customizeHomeScreen: Customize Home Screen
-  zenMode: Zen Writing Mode
+  createRepo: 应用内新建库
+  backlinks: 笔记支持反链
+  txtFiles: 支持文本文件
+  wikiLinks: 支持 Wiki 链接
+  metaDataTitle: 自定义标题元数据
+  journalEditorDefaultFolder: 自定义日志编辑器的默认文件夹
+  yamlModifiedKey: 自定义 YAML modified 栏
+  yamlCreatedKey: 自定义 YAML created 栏
+  yamlTagsKey: 自定义 YAML tags 栏
+  disableYamlHeader: 禁用 YAML 元数据头
+  customizeHomeScreen: 自定义主屏
+  zenMode: 禅模式
   emojiSupport:
-    title: Emoji Support
-    subtitle: "Convert :heart: to ❤️"
-  allNotesView: Add a screen to show "All Notes"
-  basicSearch: Basic Search
-  customSSHKeys: Provide your own SSH Keys
-  customMetaData: Add Custom Metadata to new Notes
-  graphVisualization: Graph Visualization
-  mutliRepos: Multiple Git Repos
-  customThemes: Custom Themes
-  gitLog: View and Search through Git History
-  latex: Latex Support
-  mermaid: Mermaid Diagram Support
-  encryptedHosting: Encrypted Git Hosting
-  desktop: Desktop App
-  markdownToolbar: Markdown Toolbar
+    title: 支持 Emoji
+    subtitle: "将 :heart: 转化为 ❤️"
+  allNotesView: 新增 "全部笔记" 界面
+  basicSearch: 基本搜索
+  customSSHKeys: 支持提供自己的 SSH Keys
+  customMetaData: 添加自定义元数据到新笔记中
+  graphVisualization: 可视化图谱
+  mutliRepos: 多 Git 库
+  customThemes: 自定义主题
+  gitLog: 查看和检索 Git 历史
+  latex: Latex 支持
+  mermaid: 支持 Mermaid 图表
+  encryptedHosting: Git Hosting 加密
+  desktop: 桌面应用
+  markdownToolbar: Markdown 工具栏
   localization:
-    title: Localization
-    subtitle: Allow GitJournal to be translated
-  inlineTags: Inline Tags
-  singleJournalEntry: Single Journal Entry File per day
-  configureBottomMenuBar: Configure the Bottom Menu Bar
-  customFileNamePerEditor: Custom FileName per Editor
-  branchSelection: Git Branch Selection
+    title: 本地化
+    subtitle: 让 GitJournal 能够被翻译
+  inlineTags: 行内标签
+  singleJournalEntry: 每天仅允许创建一篇日志
+  configureBottomMenuBar: 配置底栏
+  customFileNamePerEditor: 自定义每个编辑器的文件名
+  branchSelection: Git 分支选择
 feature_timeline:
-  title: Feature Timeline
-  progress: In Progress
-  plan: Planned
-  issues: GitJournal's development is tracked on Github. Please consider voting on the issues you consider important.
+  title: 功能时间轴
+  progress: 开发中
+  plan: 计划内
+  issues: GitJournal 的开发进度可在 GitHub 中跟进，请为你觉得重要的 issues 投票。
 purchase_screen:
-  title: Pro Version
-  desc: 'GitJournal is completely open source and is the result of significant development work. It has no venture capital or corporation backing and it never will. Your support directly sustains development.   GitJournal operates on a "pay what you want model (with a minimum)".'
-  restore: Restore Purchase
+  title: Pro 版本
+  desc: 'GitJournal 完全开源，是大量的开发工作的成果。它没有来自风险投资亦或企业的支持，也永远不会有。你的支持直接维系着开发工作。    GitJournal 采用「随你付，随心付（有最小额）」的收费方式。'
+  restore: 恢复购买
   oneTime:
-    title: One Time Purchase
-    desc: Permanently enables all Pro features currently in GitJournal and new features added in the following 12 months.
+    title: 一次性付费
+    desc: 永远解锁现版本所有 Pro 功能，获得接下来 12 个月的新增功能。
   monthly:
-    title: Monthly Installments
-    desc: Enables all Pro Features. After 12 months or after paying {minYearlyPurchase}, you will get all the benefits of the 'One Time Purchase'
+    title: 按月付费
+    desc: 解锁所有的 Pro 功能。在 12 个月或者支付 {minYearlyPurchase} 后，你将获得所有 「一次性付费」的权益。
   thanks:
-    title: Thank You
-    subtitle: You're awesome for supporting GitJournal
+    title: 感谢
+    subtitle: 谢谢你对 GitJournal 的支持
 OnBoarding:
-  Skip: Skip
-  Next: Next
-  getStarted: Get Started
-  subtitle: 'An Open Source Note Taking App built on top of Git'
-  page2: 'Your Notes are stored in a standard Markdown + YAML Header format'
-  page3: 'Sync your Local Git Repo with any provider'
+  Skip: 跳过
+  Next: 下一步
+  getStarted: 开始
+  subtitle: '支持 Git 同步的开源笔记应用'
+  page2: '你的笔记以标准的 Markdown 加 YAML 头的格式存储'
+  page3: '同任何 Git 托管服务商同步你的笔记'
 beta: BETA
+none: None

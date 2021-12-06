@@ -1,7 +1,5 @@
-# SPDX-FileCopyrightText: 2019-2021 PADAone <ankiyorihajimeyo@gmail.com>
 # SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
-# SPDX-FileCopyrightText: 2019-2021 vorotamoroz <vrtmrz@gmail.com>
-#
+# 
 # SPDX-License-Identifier: CC-BY-4.0
 settings:
   ok: Ok
@@ -125,6 +123,9 @@ settings:
     subtitle: ノートの同期先を設定する
     host: Gitのホスト
     branch: ブランチ
+    resetHard:
+      title: Reset Git Host
+      subtitle: This will HARD reset the current branch to its remote
   noteMetaData:
     title: メタデータ設定
     subtitle: ノートのメタデータの保存方法を設定する
@@ -161,6 +162,7 @@ settings:
     experimentalGitOps: Dart実装のGitを使用する
     merge: Dart実装のマージを使用する
     autoCompleteTags: Tags Auto Completion
+    history: History View
   editors:
     title: エディタ設定
     subtitle: エディタの動作を設定する
@@ -174,6 +176,7 @@ settings:
     choose: エディタの選択
     orgEditor: Orgエディタ
     defaultNoteFormat: Default Note Format
+    journalDefaultFolderSelect: Creating a Note in '{}'
   sortingField:
     modified: 更新日
     created: 作成日
@@ -223,7 +226,6 @@ settings:
   versionCopied: バージョン情報がコピーされました
   ssh:
     syncFreq: 同期の周期
-    reset: Gitのホストをリセットする
   note:
     title: ノート設定
     defaultFolder: 新規ノートの保存フォルダ
@@ -247,6 +249,42 @@ settings:
     markdown: Markdown
     txt: Txt
     orgMode: Org Mode
+  fileTypes:
+    title: Note File Types
+    subtitle: Configure what files are considered Notes
+    numFiles:
+      other: "{} File"
+    noExt: No Extension
+  list:
+    userInterface:
+      title: User Interface
+      subtitle: Theme, Language, Home, Bottom Bar, Rendering
+    git:
+      title: Git
+      subtitle: Git Author, Remote, Sync Frequency
+    editor:
+      title: Editor
+      subtitle: Default Editor, Default View
+    storage:
+      title: Storage & File Formats
+      subtitle: Storage, Serialization, Metadata, File Formats
+    analytics:
+      title: Analytics
+      subtitle: It's important that you feel comfortable
+    debug:
+      title: Debug
+      subtitle: Peek inside the inner workings of GitJournal
+    experiments:
+      title: Experiments
+      subtitle: Play around with experimental features
+  project:
+    header: Project
+    docs: Documentation & Support
+    contribute: Contribute
+    about: About
+  license:
+    title: Licenses
+    subtitle: GitJoural uses other great software
 editors:
   checklist:
     add: アイテム追加
@@ -306,6 +344,8 @@ screens:
     empty: ノートを追加してみません？
   home:
     allNotes: 全てのノート
+  cacheLoading:
+    text: Reading Git History ...
 widgets:
   rename:
     'yes': リネームする
@@ -314,6 +354,8 @@ widgets:
       empty: 名称を入力してください
       exists: 既に存在します
       contains: /を含むことはできません
+    noExt: "Warning: Extension missing. Will treat file as plain text"
+    changeExt: "Warning: Changing file type from '{}' to '{}'"
   backlinks:
     title:
       other: "{} 件のノートがこのノートを参照しています"
@@ -339,6 +381,7 @@ widgets:
       grid: Gridビュー
       card: Carビュー
       select: ビューを選択してください
+      calendar: Calendar View
     sortingOptions: ソートオプション
     viewOptions: 表示オプション
     noteDeleted: ノートが削除されました
@@ -352,12 +395,14 @@ widgets:
     caption: "{first} - {second}"
     httpError: "Code: {status} for {url}"
   NoteDeleteDialog:
-    title: 削除してもよろしいですか？
+    title:
+      other: 削除してもよろしいですか？
     'yes': はい
     'no': いいえ
   NoteEditor:
     renameFile: ファイルをリネームする
     fileName: ファイル名
+    addType: Adding '{}' to supported file types
   SyncButton:
     error: 同期エラー {}
   PurchaseWidget:
@@ -527,3 +572,4 @@ OnBoarding:
   page2: 'ノートはYAMLヘッダー付きの標準的なMarkdownとして保存されます'
   page3: 'ローカルのGitリポジトリをお好みのリモートと同期できます'
 beta: BETA
+none: None

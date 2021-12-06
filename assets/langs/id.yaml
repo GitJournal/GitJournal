@@ -1,7 +1,5 @@
-# SPDX-FileCopyrightText: 2019-2021 Joky Satria Pamungkas <jokysatria@gmail.com>
-# SPDX-FileCopyrightText: 2019-2021 Rgibran234 <rgibran234@gmail.com>
 # SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
-#
+# 
 # SPDX-License-Identifier: CC-BY-4.0
 settings:
   ok: Ok
@@ -125,6 +123,9 @@ settings:
     subtitle: Setel di mana catatan Anda disinkronkan
     host: Git Host
     branch: Branch
+    resetHard:
+      title: Reset Git Host
+      subtitle: This will HARD reset the current branch to its remote
   noteMetaData:
     title: Setelan Metadata Catatan
     subtitle: Setel bagaimana Metadata Catatan disimpan
@@ -161,6 +162,7 @@ settings:
     experimentalGitOps: Implementasi Git khusus Dart
     merge: Implementasi penggabungan hanya Dart
     autoCompleteTags: Tags Auto Completion
+    history: History View
   editors:
     title: Setelan Editor
     subtitle: Setel bagaimana editor bekerja
@@ -174,6 +176,7 @@ settings:
     choose: Pilih Editor
     orgEditor: Editor Org
     defaultNoteFormat: Default Note Format
+    journalDefaultFolderSelect: Creating a Note in '{}'
   sortingField:
     modified: Terakhir Diubah
     created: Dibuat
@@ -223,7 +226,6 @@ settings:
   versionCopied: Nomor Versi Disalin
   ssh:
     syncFreq: "Frekuensi Sinkronisasi\n"
-    reset: Setel Ulang Git Host
   note:
     title: Pengaturan Catatan
     defaultFolder: Folder Default untuk catatan baru
@@ -247,6 +249,42 @@ settings:
     markdown: Markdown
     txt: Txt
     orgMode: Org Mode
+  fileTypes:
+    title: Note File Types
+    subtitle: Configure what files are considered Notes
+    numFiles:
+      other: "{} File"
+    noExt: No Extension
+  list:
+    userInterface:
+      title: User Interface
+      subtitle: Theme, Language, Home, Bottom Bar, Rendering
+    git:
+      title: Git
+      subtitle: Git Author, Remote, Sync Frequency
+    editor:
+      title: Editor
+      subtitle: Default Editor, Default View
+    storage:
+      title: Storage & File Formats
+      subtitle: Storage, Serialization, Metadata, File Formats
+    analytics:
+      title: Analytics
+      subtitle: It's important that you feel comfortable
+    debug:
+      title: Debug
+      subtitle: Peek inside the inner workings of GitJournal
+    experiments:
+      title: Experiments
+      subtitle: Play around with experimental features
+  project:
+    header: Project
+    docs: Documentation & Support
+    contribute: Contribute
+    about: About
+  license:
+    title: Licenses
+    subtitle: GitJoural uses other great software
 editors:
   checklist:
     add: Tambahkan Item
@@ -306,6 +344,8 @@ screens:
     empty: Mari tambahkan catatan?
   home:
     allNotes: Semua Catatan
+  cacheLoading:
+    text: Reading Git History ...
 widgets:
   rename:
     'yes': Namai Ulang
@@ -314,6 +354,8 @@ widgets:
       empty: Masukan Nama
       exists: Sudah Ada
       contains: Tidak dapat berisi /
+    noExt: "Warning: Extension missing. Will treat file as plain text"
+    changeExt: "Warning: Changing file type from '{}' to '{}'"
   backlinks:
     title:
       other: "{} Catatan menghubung ke cacatan ini"
@@ -339,6 +381,7 @@ widgets:
       grid: Tampilan Kisi
       card: Tampilan Kartu
       select: Pilih Tampilan
+      calendar: Calendar View
     sortingOptions: Opsi Pengurutan
     viewOptions: Opsi Tampilan
     noteDeleted: Catatan Dihapus
@@ -352,12 +395,14 @@ widgets:
     caption: "{pertama} - {kedua}"
     httpError: "Kode: {status} untuk {url}"
   NoteDeleteDialog:
-    title: Apakah Anda ingin menghapus catatan ini?
+    title:
+      other: Apakah Anda ingin menghapus catatan ini?
     'yes': Iya
     'no': Tidak
   NoteEditor:
     renameFile: Ganti Nama File
     fileName: Nama file
+    addType: Adding '{}' to supported file types
   SyncButton:
     error: Kesalahan Sinkronisasi {}
   PurchaseWidget:
@@ -527,3 +572,4 @@ OnBoarding:
   page2: 'Catatan Anda disimpan dalam format Markdown + YAML Header standar'
   page3: 'Sinkronkan Repo Git Lokal Anda dengan penyedia mana pun'
 beta: BETA
+none: None

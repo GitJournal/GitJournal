@@ -1,6 +1,5 @@
-# SPDX-FileCopyrightText: 2019-2021 Ajin <hi@ajin.im>
 # SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
-#
+# 
 # SPDX-License-Identifier: CC-BY-4.0
 settings:
   ok: 확인
@@ -124,6 +123,9 @@ settings:
     subtitle: 노트 동기화 장소 설정
     host: Git Host
     branch: Branch
+    resetHard:
+      title: Reset Git Host
+      subtitle: This will HARD reset the current branch to its remote
   noteMetaData:
     title: 노트 메타 데이터 설정
     subtitle: 노트 메타 데이터 저장 방법 구성
@@ -160,6 +162,7 @@ settings:
     experimentalGitOps: Dart-only Git implementation
     merge: Dart-only merge implementation
     autoCompleteTags: Tags Auto Completion
+    history: History View
   editors:
     title: 편집기 설정
     subtitle: 다른 편집기 설정
@@ -173,6 +176,7 @@ settings:
     choose: 편집자 선택
     orgEditor: Org Editor
     defaultNoteFormat: Default Note Format
+    journalDefaultFolderSelect: Creating a Note in '{}'
   sortingField:
     modified: 마지막 수정
     created: 생성됨
@@ -219,10 +223,9 @@ settings:
     light: Light
     dark: Dark
     default: System Default
-  versionCopied: Version Number Copied
+  versionCopied: Copied version to clipboard
   ssh:
     syncFreq: Sync Frequency
-    reset: Reset Git Host
   note:
     title: Note Settings
     defaultFolder: Default Folder for new notes
@@ -246,6 +249,42 @@ settings:
     markdown: Markdown
     txt: Txt
     orgMode: Org Mode
+  fileTypes:
+    title: Note File Types
+    subtitle: Configure what files are considered Notes
+    numFiles:
+      other: "{} File"
+    noExt: No Extension
+  list:
+    userInterface:
+      title: User Interface
+      subtitle: Theme, Language, Home, Bottom Bar, Rendering
+    git:
+      title: Git
+      subtitle: Git Author, Remote, Sync Frequency
+    editor:
+      title: Editor
+      subtitle: Default Editor, Default View
+    storage:
+      title: Storage & File Formats
+      subtitle: Storage, Serialization, Metadata, File Formats
+    analytics:
+      title: Analytics
+      subtitle: It's important that you feel comfortable
+    debug:
+      title: Debug
+      subtitle: Peek inside the inner workings of GitJournal
+    experiments:
+      title: Experiments
+      subtitle: Play around with experimental features
+  project:
+    header: Project
+    docs: Documentation & Support
+    contribute: Contribute
+    about: About
+  license:
+    title: Licenses
+    subtitle: GitJoural uses other great software
 editors:
   checklist:
     add: 아이템 추가
@@ -305,6 +344,8 @@ screens:
     empty: 노트를 추가해 볼까요?
   home:
     allNotes: All Notes
+  cacheLoading:
+    text: Reading Git History ...
 widgets:
   rename:
     'yes': 이름 바꾸기
@@ -313,6 +354,8 @@ widgets:
       empty: 이름을 입력하세요
       exists: 이미 존재 함
       contains: /를 포함 할 수 없습니다.
+    noExt: "Warning: Extension missing. Will treat file as plain text"
+    changeExt: "Warning: Changing file type from '{}' to '{}'"
   backlinks:
     title:
       other: "{}이 노트에 대한 노트 링크"
@@ -338,6 +381,7 @@ widgets:
       grid: 그리드보기
       card: 카드보기
       select: 보기 선택
+      calendar: Calendar View
     sortingOptions: 정렬 옵션
     viewOptions: 보기 옵션
     noteDeleted: Note Deleted
@@ -351,12 +395,14 @@ widgets:
     caption: "{first} - {second}"
     httpError: "Code: {status} for {url}"
   NoteDeleteDialog:
-    title: Do you want to delete this note?
+    title:
+      other: Do you want to delete this note?
     'yes': true
     'no': false
   NoteEditor:
     renameFile: Rename File
     fileName: Filename
+    addType: Adding '{}' to supported file types
   SyncButton:
     error: Sync Error {}
   PurchaseWidget:
@@ -526,3 +572,4 @@ OnBoarding:
   page2: 'Your Notes are stored in a standard Markdown + YAML Header format'
   page3: 'Sync your Local Git Repo with any provider'
 beta: BETA
+none: None

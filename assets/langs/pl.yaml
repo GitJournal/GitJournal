@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
-#
+# 
 # SPDX-License-Identifier: CC-BY-4.0
 settings:
   ok: Ok
@@ -123,6 +123,9 @@ settings:
     subtitle: Skonfiguruj, gdzie są synchronizowane Twoje notatki
     host: Git Host
     branch: Branch
+    resetHard:
+      title: Reset Git Host
+      subtitle: This will HARD reset the current branch to its remote
   noteMetaData:
     title: Opcje metadanych notatek
     subtitle: Skonfiguruj jak przechowywane są metadane notatek
@@ -159,6 +162,7 @@ settings:
     experimentalGitOps: Dart-only Git implementation
     merge: Dart-only merge implementation
     autoCompleteTags: Tags Auto Completion
+    history: History View
   editors:
     title: opcje edytora
     subtitle: Skonfiguruj jak działają poszczególne edytory
@@ -172,6 +176,7 @@ settings:
     choose: Wybierz edytor
     orgEditor: Org Editor
     defaultNoteFormat: Default Note Format
+    journalDefaultFolderSelect: Creating a Note in '{}'
   sortingField:
     modified: Ostatnia modyfikacja
     created: Data utworzenia
@@ -218,10 +223,9 @@ settings:
     light: Jasny
     dark: Ciemny
     default: Ustawienia systemu
-  versionCopied: Version Number Copied
+  versionCopied: Copied version to clipboard
   ssh:
     syncFreq: Częstotliwość odświeżania
-    reset: Reset Git Host
   note:
     title: Ustawienia notatek
     defaultFolder: Katalod domyślny dla nowych notatek
@@ -245,6 +249,45 @@ settings:
     markdown: Markdown
     txt: Txt
     orgMode: Org Mode
+  fileTypes:
+    title: Note File Types
+    subtitle: Configure what files are considered Notes
+    numFiles:
+      one: "{} File"
+      few: ""
+      many: ""
+      other: ""
+    noExt: No Extension
+  list:
+    userInterface:
+      title: User Interface
+      subtitle: Theme, Language, Home, Bottom Bar, Rendering
+    git:
+      title: Git
+      subtitle: Git Author, Remote, Sync Frequency
+    editor:
+      title: Editor
+      subtitle: Default Editor, Default View
+    storage:
+      title: Storage & File Formats
+      subtitle: Storage, Serialization, Metadata, File Formats
+    analytics:
+      title: Analytics
+      subtitle: It's important that you feel comfortable
+    debug:
+      title: Debug
+      subtitle: Peek inside the inner workings of GitJournal
+    experiments:
+      title: Experiments
+      subtitle: Play around with experimental features
+  project:
+    header: Project
+    docs: Documentation & Support
+    contribute: Contribute
+    about: About
+  license:
+    title: Licenses
+    subtitle: GitJoural uses other great software
 editors:
   checklist:
     add: Dodaj element
@@ -304,6 +347,8 @@ screens:
     empty: Dodajmy jakieś notatki?
   home:
     allNotes: Wszystkie notatki
+  cacheLoading:
+    text: Reading Git History ...
 widgets:
   rename:
     'yes': Zmień nazwę
@@ -312,6 +357,8 @@ widgets:
       empty: Proszę podaj nazwę
       exists: Już istnieje
       contains: Nie może zawierać /
+    noExt: "Warning: Extension missing. Will treat file as plain text"
+    changeExt: "Warning: Changing file type from '{}' to '{}'"
   backlinks:
     title:
       one: "{} odnośnik w notatce do tej notatki"
@@ -340,6 +387,7 @@ widgets:
       grid: Widok siatki
       card: Widok kart
       select: Wybierz widok
+      calendar: Calendar View
     sortingOptions: Opcje sortowania
     viewOptions: Opcje widoku
     noteDeleted: Nie wykasowany
@@ -353,12 +401,17 @@ widgets:
     caption: "{first} - {second}"
     httpError: "Code: {status} for {url}"
   NoteDeleteDialog:
-    title: Chcesz wykasować tę notatkę?
+    title:
+      one: Chcesz wykasować tę notatkę?
+      few: ""
+      many: ""
+      other: ""
     'yes': Tak
     'no': Nie
   NoteEditor:
     renameFile: Zmień nazwę pliku
     fileName: Nazwa pliku
+    addType: Adding '{}' to supported file types
   SyncButton:
     error: Błąd synchronizacji {}
   PurchaseWidget:
@@ -528,3 +581,4 @@ OnBoarding:
   page2: 'Twoje notatki są przechowywane w plikach markdown z nagłówkami YAML'
   page3: 'Synchronizuj swoje repozytorium git z dowolnym usługodawcą'
 beta: BETA
+none: None

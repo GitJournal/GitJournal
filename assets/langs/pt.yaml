@@ -1,13 +1,6 @@
-# SPDX-FileCopyrightText: 2019-2021 Afonso. carlos. braga <afonso.carlos.braga@gmail.com>
-# SPDX-FileCopyrightText: 2019-2021 Ivyl2007 <ivyl2007@gmail.com>
-# SPDX-FileCopyrightText: 2019-2021 Myreli <myreli@pm.me>
-# SPDX-FileCopyrightText: 2019-2021 Myreli Borba <borbamyreli@gmail.com>
-# SPDX-FileCopyrightText: 2019-2021 Ocimar <ocimarmota13@gmail.com>
 # SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
-#
+# 
 # SPDX-License-Identifier: CC-BY-4.0
-
-# Polish translation  by Witold Firlej (grizz) https://grizz.pl https://github.com/grizz-pl
 settings:
   ok: Ok
   cancel: Cancelar
@@ -130,6 +123,9 @@ settings:
     subtitle: Configurar onde suas notas são sincronizadas
     host: Git Host
     branch: Branch
+    resetHard:
+      title: Reset Git Host
+      subtitle: This will HARD reset the current branch to its remote
   noteMetaData:
     title: Configurações de Metadados da Nota
     subtitle: Configurar como os Metadados da Nota são salvos
@@ -166,6 +162,7 @@ settings:
     experimentalGitOps: Dart-only Git implementation
     merge: Dart-only merge implementation
     autoCompleteTags: Tags Auto Completion
+    history: History View
   editors:
     title: Configurações do Editor
     subtitle: Configurar quão diferente os editores trabalham
@@ -179,6 +176,7 @@ settings:
     choose: Choose Editor
     orgEditor: Org Editor
     defaultNoteFormat: Default Note Format
+    journalDefaultFolderSelect: Creating a Note in '{}'
   sortingField:
     modified: Última modificação
     created: Criado
@@ -225,10 +223,9 @@ settings:
     light: Light
     dark: Dark
     default: System Default
-  versionCopied: Version Number Copied
+  versionCopied: Copied version to clipboard
   ssh:
     syncFreq: Sync Frequency
-    reset: Reset Git Host
   note:
     title: Note Settings
     defaultFolder: Default Folder for new notes
@@ -252,6 +249,43 @@ settings:
     markdown: Markdown
     txt: Txt
     orgMode: Org Mode
+  fileTypes:
+    title: Note File Types
+    subtitle: Configure what files are considered Notes
+    numFiles:
+      one: "{} File"
+      other: ""
+    noExt: No Extension
+  list:
+    userInterface:
+      title: User Interface
+      subtitle: Theme, Language, Home, Bottom Bar, Rendering
+    git:
+      title: Git
+      subtitle: Git Author, Remote, Sync Frequency
+    editor:
+      title: Editor
+      subtitle: Default Editor, Default View
+    storage:
+      title: Storage & File Formats
+      subtitle: Storage, Serialization, Metadata, File Formats
+    analytics:
+      title: Analytics
+      subtitle: It's important that you feel comfortable
+    debug:
+      title: Debug
+      subtitle: Peek inside the inner workings of GitJournal
+    experiments:
+      title: Experiments
+      subtitle: Play around with experimental features
+  project:
+    header: Project
+    docs: Documentation & Support
+    contribute: Contribute
+    about: About
+  license:
+    title: Licenses
+    subtitle: GitJoural uses other great software
 editors:
   checklist:
     add: Adicionar Item
@@ -311,6 +345,8 @@ screens:
     empty: Vamos adicionar algumas notas
   home:
     allNotes: All Notes
+  cacheLoading:
+    text: Reading Git History ...
 widgets:
   rename:
     'yes': Renomear
@@ -319,6 +355,8 @@ widgets:
       empty: Por favor, insira um nome
       exists: Já Existe
       contains: Não pode conter /
+    noExt: "Warning: Extension missing. Will treat file as plain text"
+    changeExt: "Warning: Changing file type from '{}' to '{}'"
   backlinks:
     title:
       one: "{} Note links to this Note"
@@ -345,6 +383,7 @@ widgets:
       grid: Grid View
       card: Card View
       select: Select View
+      calendar: Calendar View
     sortingOptions: Sorting Options
     viewOptions: View Options
     noteDeleted: Note Deleted
@@ -358,12 +397,15 @@ widgets:
     caption: "{first} - {second}"
     httpError: "Code: {status} for {url}"
   NoteDeleteDialog:
-    title: Do you want to delete this note?
+    title:
+      one: Do you want to delete this note?
+      other: ""
     'yes': true
     'no': false
   NoteEditor:
     renameFile: Rename File
     fileName: Filename
+    addType: Adding '{}' to supported file types
   SyncButton:
     error: Sync Error {}
   PurchaseWidget:
@@ -533,3 +575,4 @@ OnBoarding:
   page2: 'Your Notes are stored in a standard Markdown + YAML Header format'
   page3: 'Sync your Local Git Repo with any provider'
 beta: BETA
+none: None

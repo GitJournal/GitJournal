@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
-#
+# 
 # SPDX-License-Identifier: CC-BY-4.0
 settings:
   ok: Ok
@@ -124,6 +124,9 @@ settings:
     subtitle: Konfiguriere wohin Deine Notizen gesynct werden
     host: Git Host
     branch: Branch
+    resetHard:
+      title: Reset Git Host
+      subtitle: This will HARD reset the current branch to its remote
   noteMetaData:
     title: Notiz Metadaten Einstellungen
     subtitle: Konfiguriere wie Notiz Metadaten gespeichert werden
@@ -160,6 +163,7 @@ settings:
     experimentalGitOps: Dart-only Git implementation
     merge: Dart-only merge implementation
     autoCompleteTags: Tags Auto Completion
+    history: History View
   editors:
     title: Editor Einstellungen
     subtitle: Konfiguriere wie verschiedene Editoren arbeiten
@@ -173,6 +177,7 @@ settings:
     choose: Wähle Editor
     orgEditor: Org Editor
     defaultNoteFormat: Default Note Format
+    journalDefaultFolderSelect: Creating a Note in '{}'
   sortingField:
     modified: Zuletzt geändert
     created: Erstellt
@@ -222,7 +227,6 @@ settings:
   versionCopied: Versionsnummer kopiert
   ssh:
     syncFreq: Häufigkeit der Synchronization
-    reset: Reset Git Host
   note:
     title: Notiz-Einstellungen
     defaultFolder: Standard-Verzeichnis für neue Notizen
@@ -246,6 +250,43 @@ settings:
     markdown: Markdown
     txt: Txt
     orgMode: Org Mode
+  fileTypes:
+    title: Note File Types
+    subtitle: Configure what files are considered Notes
+    numFiles:
+      one: "{} File"
+      other: ""
+    noExt: No Extension
+  list:
+    userInterface:
+      title: User Interface
+      subtitle: Theme, Language, Home, Bottom Bar, Rendering
+    git:
+      title: Git
+      subtitle: Git Author, Remote, Sync Frequency
+    editor:
+      title: Editor
+      subtitle: Default Editor, Default View
+    storage:
+      title: Storage & File Formats
+      subtitle: Storage, Serialization, Metadata, File Formats
+    analytics:
+      title: Analytics
+      subtitle: It's important that you feel comfortable
+    debug:
+      title: Debug
+      subtitle: Peek inside the inner workings of GitJournal
+    experiments:
+      title: Experiments
+      subtitle: Play around with experimental features
+  project:
+    header: Project
+    docs: Documentation & Support
+    contribute: Contribute
+    about: About
+  license:
+    title: Licenses
+    subtitle: GitJoural uses other great software
 editors:
   checklist:
     add: Item hinzufügen
@@ -305,6 +346,8 @@ screens:
     empty: Einige Notizen hinzufügen?
   home:
     allNotes: Alle Notizen
+  cacheLoading:
+    text: Reading Git History ...
 widgets:
   rename:
     'yes': Umbennen
@@ -313,6 +356,8 @@ widgets:
       empty: Bitte geben Sie einen Namen ein
       exists: Bereits vorhanden
       contains: Kann kein / enthalten
+    noExt: "Warning: Extension missing. Will treat file as plain text"
+    changeExt: "Warning: Changing file type from '{}' to '{}'"
   backlinks:
     title:
       one: "Notiz verlinkt zu dieser Notiz"
@@ -339,6 +384,7 @@ widgets:
       grid: Grid Ansicht
       card: Karten Ansicht
       select: Wähle Ansicht
+      calendar: Calendar View
     sortingOptions: Sortier Optionen
     viewOptions: Ansicht Optionen
     noteDeleted: Notiz gelöscht
@@ -352,12 +398,15 @@ widgets:
     caption: "{first} - {second}"
     httpError: "Code: {status} for {url}"
   NoteDeleteDialog:
-    title: Möchtest Du diese Notiz löschen?
+    title:
+      one: Möchtest Du diese Notiz löschen?
+      other: ""
     'yes': wahr
     'no': falsch
   NoteEditor:
     renameFile: Datei umbenennen
     fileName: Dateiname
+    addType: Adding '{}' to supported file types
   SyncButton:
     error: Sync Error {}
   PurchaseWidget:
@@ -527,3 +576,4 @@ OnBoarding:
   page2: 'Deine Notizen werden im Markdown + YAML Header Format bespeichert'
   page3: 'Sync your Local Git Repo with any provider'
 beta: BETA
+none: None
