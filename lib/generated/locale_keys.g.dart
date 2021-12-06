@@ -499,6 +499,8 @@ abstract class LocaleKeys {
   static const screens_filesystem = 'screens.filesystem';
   static const screens_folder_view_empty = 'screens.folder_view.empty';
   static const screens_folder_view = 'screens.folder_view';
+  static const screens_cacheLoading_text = 'screens.cacheLoading.text';
+  static const screens_cacheLoading = 'screens.cacheLoading';
   static const screens = 'screens';
   static const OnBoarding_Skip = 'OnBoarding.Skip';
   static const OnBoarding_Next = 'OnBoarding.Next';

@@ -17,6 +17,7 @@ import 'package:universal_io/io.dart' as io;
 import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/generated/builders.pb.dart' as pb;
+import 'package:gitjournal/logger/logger.dart';
 
 class FileStorageCache {
   final String cacheFolderPath;
@@ -26,16 +27,23 @@ class FileStorageCache {
   }
 
   Future<void> clear() async {
-    dynamic _;
-    _ = await io.File(_cTimeFilePath).delete(recursive: true);
-    _ = await io.File(_mTimeFilePath).delete(recursive: true);
+    try {
+      dynamic _;
+      _ = await io.File(_cTimeFilePath).delete(recursive: true);
+      _ = await io.File(_mTimeFilePath).delete(recursive: true);
+    } on io.OSError catch (err, st) {
+      if (err.errorCode == 2 /* File Not Found */) {
+        return;
+      }
+      Log.e("Failed to clear FileStorageCache", ex: err, stacktrace: st);
+    } catch (err, st) {
+      Log.e("Failed to clear FileStorageCache", ex: err, stacktrace: st);
+    }
   }
 
   Future<FileStorage> load(GitRepository gitRepo) async {
     var blobVisitor = await _buildCTimeBuilder();
     var mTimeBuilder = await _buildMTimeBuilder();
-
-    // FIXME: Handle FS errors!
 
     return FileStorage(
       gitRepo: gitRepo,
@@ -44,9 +52,12 @@ class FileStorageCache {
     );
   }
 
-  Future<void> save(FileStorage fileStorage) async {
-    await _saveCTime(fileStorage.blobCTimeBuilder);
-    await _saveMTime(fileStorage.fileMTimeBuilder);
+  Future<Result<void>> save(FileStorage fileStorage) async {
+    return catchAll(() async {
+      await _saveCTime(fileStorage.blobCTimeBuilder);
+      await _saveMTime(fileStorage.fileMTimeBuilder);
+      return Result(null);
+    });
   }
 
   String get _cTimeFilePath => p.join(cacheFolderPath, 'blob_ctime_v1');

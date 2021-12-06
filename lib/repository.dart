@@ -76,6 +76,7 @@ class GitJournalRepo with ChangeNotifier {
   late NotesFolderFS notesFolder;
 
   bool remoteGitRepoConfigured = false;
+  bool fileStorageCacheReady = false;
 
   static Future<GitJournalRepo> load(
       {required String gitBaseDir,
@@ -236,6 +237,13 @@ class GitJournalRepo with ChangeNotifier {
     var gitRepo = await GitRepository.load(repoPath).getOrThrow();
     var headR = await gitRepo.headHash();
     if (headR.isFailure) {
+      if (headR.error is GitRefNotFound) {
+        // No commits
+        fileStorageCacheReady = true;
+        notifyListeners();
+        return;
+      }
+      Log.e("Failed to fetch HEAD", result: headR);
       return;
     }
     var head = headR.getOrThrow();
@@ -255,7 +263,14 @@ class GitJournalRepo with ChangeNotifier {
       throw Exception("WTF!!");
     }
 
-    await fileStorageCache.save(fileStorage);
+    var r = await fileStorageCache.save(fileStorage);
+    if (r.isFailure) {
+      Log.e("Failed to save FileStorageCache", result: r);
+    }
+
+    // Notify that the cache is ready
+    fileStorageCacheReady = true;
+    notifyListeners();
   }
 
   Future<void> syncNotes({bool doNotThrow = false}) async {

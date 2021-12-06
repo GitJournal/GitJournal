@@ -355,6 +355,8 @@ screens:
       title: Rename
   folder_view:
     empty: Let's add some notes?
+  cacheLoading:
+    text: Reading Git History ...
 
 OnBoarding:
   Skip: Skip

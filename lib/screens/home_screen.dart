@@ -15,6 +15,8 @@ import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/folder_views/folder_view.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/repository.dart';
+import 'package:gitjournal/screens/cache_loading_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routePath = '/';
@@ -51,6 +53,11 @@ class _HomeScreenState extends State<HomeScreen> {
     _initFolder();
     if (notesFolder == null) {
       return Container();
+    }
+
+    var repo = context.watch<GitJournalRepo>();
+    if (!repo.fileStorageCacheReady) {
+      return const CacheLoadingScreen();
     }
 
     return FolderView(notesFolder: notesFolder!);
