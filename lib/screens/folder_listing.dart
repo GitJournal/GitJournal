@@ -76,15 +76,15 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
         itemBuilder: (context) {
           return [
             PopupMenuItem<String>(
-              child: Text(tr("screens.folders.actions.rename")),
+              child: Text(LocaleKeys.screens_folders_actions_rename.tr()),
               value: "Rename",
             ),
             PopupMenuItem<String>(
-              child: Text(tr("screens.folders.actions.subFolder")),
+              child: Text(LocaleKeys.screens_folders_actions_subFolder.tr()),
               value: "Create",
             ),
             PopupMenuItem<String>(
-              child: Text(tr("screens.folders.actions.delete")),
+              child: Text(LocaleKeys.screens_folders_actions_delete.tr()),
               value: "Delete",
             ),
           ];
@@ -103,8 +103,9 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
               context: context,
               builder: (_) => RenameDialog(
                 oldPath: selectedFolder!.folderPath,
-                inputDecoration: tr("screens.folders.actions.decoration"),
-                dialogTitle: tr("screens.folders.actions.rename"),
+                inputDecoration:
+                    LocaleKeys.screens_folders_actions_decoration.tr(),
+                dialogTitle: LocaleKeys.screens_folders_actions_rename.tr(),
               ),
             );
             if (folderName is String) {
@@ -146,7 +147,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
 
     var title = Text(tr(LocaleKeys.screens_folders_title));
     if (selectedFolder != null) {
-      title = Text(tr("screens.folders.selected"));
+      title = Text(LocaleKeys.screens_folders_selected.tr());
     }
 
     return Scaffold(
@@ -204,10 +205,12 @@ class _CreateFolderAlertDialogState extends State<CreateFolderAlertDialog> {
         children: <Widget>[
           TextFormField(
             decoration: InputDecoration(
-              labelText: tr("screens.folders.actions.decoration"),
+              labelText: LocaleKeys.screens_folders_actions_decoration.tr(),
             ),
             validator: (value) {
-              if (value!.isEmpty) return tr("screens.folders.actions.empty");
+              if (value!.isEmpty) {
+                return LocaleKeys.screens_folders_actions_empty.tr();
+              }
               return "";
             },
             autofocus: true,
@@ -220,18 +223,20 @@ class _CreateFolderAlertDialogState extends State<CreateFolderAlertDialog> {
     );
 
     return AlertDialog(
-      title: Text(tr("screens.folders.dialog.title")),
+      title: Text(LocaleKeys.screens_folders_dialog_title.tr()),
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(false),
-          child: Text(tr("screens.folders.dialog.discard")),
+          child: Text(
+            LocaleKeys.screens_folders_dialog_discard.tr(),
+          ),
         ),
         TextButton(
           onPressed: () {
             var newFolderName = _textController.text;
             return Navigator.of(context).pop(newFolderName);
           },
-          child: Text(tr("screens.folders.dialog.create")),
+          child: Text(LocaleKeys.screens_folders_dialog_create.tr()),
         ),
       ],
       content: form,
@@ -253,11 +258,11 @@ class FolderErrorDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(tr("screens.folders.errorDialog.title")),
+      title: Text(LocaleKeys.screens_folders_errorDialog_title.tr()),
       content: Text(content),
       actions: <Widget>[
         TextButton(
-          child: Text(tr("screens.folders.errorDialog.ok")),
+          child: Text(LocaleKeys.screens_folders_errorDialog_ok.tr()),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ],
@@ -268,13 +273,15 @@ class FolderErrorDialog extends StatelessWidget {
 class DeleteFolderErrorDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FolderErrorDialog(tr("screens.folders.errorDialog.deleteContent"));
+    var text = LocaleKeys.screens_folders_errorDialog_deleteContent.tr();
+    return FolderErrorDialog(text);
   }
 }
 
 class RenameFolderErrorDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FolderErrorDialog(tr("screens.folders.errorDialog.renameContent"));
+    var text = LocaleKeys.screens_folders_errorDialog_renameContent.tr();
+    return FolderErrorDialog(text);
   }
 }
