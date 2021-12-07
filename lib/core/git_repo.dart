@@ -308,13 +308,13 @@ class GitNoteRepository {
     return Result(null);
   }
 
-  Future<void> push() async {
+  Future<Result<void>> push() async {
     // Only push if we have something we need to push
     try {
       var repo = await GitRepository.load(gitRepoPath).getOrThrow();
       var canPush = await repo.canPush().getOrThrow();
       if (!canPush) {
-        return;
+        return Result(null);
       }
     } catch (ex, st) {
       Log.e("Can Push", ex: ex, stacktrace: st);
@@ -330,23 +330,27 @@ class GitNoteRepository {
           password: config.sshPassword,
           statusFile: p.join(Directory.systemTemp.path, 'gj'),
         );
-      } on gb.GitException catch (ex, stackTrace) {
-        if (ex.cause == 'cannot push non-fastforwardable reference') {
-          await fetch();
-          await merge();
-          return push();
+      } catch (ex, stackTrace) {
+        if (ex is gb.GitException) {
+          if (ex.cause == 'cannot push non-fastforwardable reference') {
+            await fetch();
+            await merge();
+            return push();
+          }
         }
         Log.e("GitPush Failed", ex: ex, stacktrace: stackTrace);
-        rethrow;
+        return Result.fail(ex, stackTrace);
       }
     } else if (Platform.isMacOS || Platform.isLinux) {
-      await gitPushViaExecutable(
+      return await gitPushViaExecutable(
         privateKey: config.sshPrivateKey,
         privateKeyPassword: config.sshPassword,
         remoteName: remoteName,
         repoPath: gitRepoPath,
-      ).throwOnError();
+      );
     }
+
+    return Result(null);
   }
 
   Future<int?> numChanges() async {

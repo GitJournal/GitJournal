@@ -49,6 +49,8 @@ class GitJournalRepo with ChangeNotifier {
 
   final _opLock = Lock();
   final _loadLock = Lock();
+  final _networkLock = Lock();
+  final _cacheBuildingLock = Lock();
 
   /// The private directory where the 'git repo' is stored.
   final String gitBaseDirectory;
@@ -221,9 +223,10 @@ class GitJournalRepo with ChangeNotifier {
   Future<void> reloadNotes() => _loadNotes();
 
   Future<void> _loadNotes() async {
+    await _fillFileStorageCache();
+
     // FIXME: We should report the notes that failed to load
     return _loadLock.synchronized(() async {
-      await _fillFileStorageCache();
       await notesFolder.loadRecursively();
       await _notesCache.buildCache(notesFolder);
 
@@ -233,7 +236,11 @@ class GitJournalRepo with ChangeNotifier {
     });
   }
 
-  Future<void> _fillFileStorageCache() async {
+  Future<void> _fillFileStorageCache() {
+    return _cacheBuildingLock.synchronized(__fillFileStorageCache);
+  }
+
+  Future<void> __fillFileStorageCache() async {
     var gitRepo = await GitRepository.load(repoPath).getOrThrow();
     var headR = await gitRepo.headHash();
     if (headR.isFailure) {
@@ -247,6 +254,7 @@ class GitJournalRepo with ChangeNotifier {
       return;
     }
     var head = headR.getOrThrow();
+    Log.d("Got HEAD: $head");
 
     var startTime = DateTime.now();
     var result = await gitRepo.visitTree(
@@ -258,17 +266,17 @@ class GitJournalRepo with ChangeNotifier {
     Log.i("Built Git Time Cache - $endTime");
     if (result.isFailure) {
       Log.e("Failed to build FileStorage cache", result: result);
-
-      // What to do now? Show some kind of error message?
-      throw Exception("WTF!!");
+      logException(result.exception!, result.stackTrace!);
     }
 
     var r = await fileStorageCache.save(fileStorage);
     if (r.isFailure) {
       Log.e("Failed to save FileStorageCache", result: r);
+      logException(r.exception!, r.stackTrace!);
     }
 
     // Notify that the cache is ready
+    Log.i("Done building the FileStorageCache");
     fileStorageCacheReady = true;
     notifyListeners();
   }
@@ -287,24 +295,32 @@ class GitJournalRepo with ChangeNotifier {
 
     Future? noteLoadingFuture;
     try {
-      await _gitRepo.fetch().throwOnError();
+      await _networkLock.synchronized(() async {
+        await _gitRepo.fetch().throwOnError();
+      });
 
       attempt.add(SyncStatus.Merging);
-      var r = await _gitRepo.merge();
-      if (r.isFailure) {
-        var ex = r.error!;
-        // When there is nothing to merge into
-        if (ex is! GitRefNotFound) {
-          throw ex;
+
+      await _opLock.synchronized(() async {
+        var r = await _gitRepo.merge();
+        if (r.isFailure) {
+          var ex = r.error!;
+          // When there is nothing to merge into
+          if (ex is! GitRefNotFound) {
+            throw ex;
+            // FIXME: Do not throw this exception, try to solve it somehow!!
+          }
         }
-      }
+      });
 
       attempt.add(SyncStatus.Pushing);
       notifyListeners();
 
       noteLoadingFuture = _loadNotes();
 
-      await _gitRepo.push();
+      await _networkLock.synchronized(() async {
+        await _gitRepo.push().throwOnError();
+      });
 
       Log.d("Synced!");
       attempt.add(SyncStatus.Done);
@@ -330,8 +346,6 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   Future<void> _syncNotes() async {
-    await _fillFileStorageCache();
-
     var freq = settings.remoteSyncFrequency;
     if (freq != RemoteSyncFrequency.Automatic) {
       return;
