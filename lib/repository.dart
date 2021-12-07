@@ -47,7 +47,7 @@ class GitJournalRepo with ChangeNotifier {
   final FileStorage fileStorage;
   final FileStorageCache fileStorageCache;
 
-  final _opLock = Lock();
+  final _gitOpLock = Lock();
   final _loadLock = Lock();
   final _networkLock = Lock();
   final _cacheBuildingLock = Lock();
@@ -301,7 +301,7 @@ class GitJournalRepo with ChangeNotifier {
 
       attempt.add(SyncStatus.Merging);
 
-      await _opLock.synchronized(() async {
+      await _gitOpLock.synchronized(() async {
         var r = await _gitRepo.merge();
         if (r.isFailure) {
           var ex = r.error!;
@@ -356,8 +356,7 @@ class GitJournalRepo with ChangeNotifier {
   Future<void> createFolder(NotesFolderFS parent, String folderName) async {
     logEvent(Event.FolderAdded);
 
-    return _opLock.synchronized(() async {
-      Log.d("Got createFolder lock");
+    await _gitOpLock.synchronized(() async {
       var newFolderPath = p.join(parent.folderPath, folderName);
       var newFolder =
           NotesFolderFS(parent, newFolderPath, folderConfig, fileStorage);
@@ -366,28 +365,38 @@ class GitJournalRepo with ChangeNotifier {
       Log.d("Created New Folder: " + newFolderPath);
       parent.addFolder(newFolder);
 
-      _gitRepo.addFolder(newFolder).then((Result<void> _) {
-        _syncNotes();
-        numChanges += 1;
-        notifyListeners();
-      });
+      var result = await _gitRepo.addFolder(newFolder);
+      if (result.isFailure) {
+        Log.e("createFolder", result: result);
+        return;
+      }
+
+      numChanges += 1;
+      notifyListeners();
     });
+
+    unawaited(_syncNotes());
   }
 
   Future<void> removeFolder(NotesFolderFS folder) async {
     logEvent(Event.FolderDeleted);
 
-    return _opLock.synchronized(() async {
+    await _gitOpLock.synchronized(() async {
       Log.d("Got removeFolder lock");
       Log.d("Removing Folder: " + folder.folderPath);
 
       folder.parentFS!.removeFolder(folder);
-      _gitRepo.removeFolder(folder).then((Result<void> _) {
-        _syncNotes();
-        numChanges += 1;
-        notifyListeners();
-      });
+      var result = await _gitRepo.removeFolder(folder);
+      if (result.isFailure) {
+        Log.e("removeFolder", result: result);
+        return;
+      }
+
+      numChanges += 1;
+      notifyListeners();
     });
+
+    unawaited(_syncNotes());
   }
 
   Future<void> renameFolder(NotesFolderFS folder, String newFolderName) async {
@@ -395,19 +404,25 @@ class GitJournalRepo with ChangeNotifier {
 
     logEvent(Event.FolderRenamed);
 
-    return _opLock.synchronized(() async {
+    await _gitOpLock.synchronized(() async {
       var oldFolderPath = folder.folderPath;
       Log.d("Renaming Folder from $oldFolderPath -> $newFolderName");
       folder.rename(newFolderName);
 
-      _gitRepo
-          .renameFolder(oldFolderPath, folder.folderPath)
-          .then((Result<void> _) {
-        _syncNotes();
-        numChanges += 1;
-        notifyListeners();
-      });
+      var result = await _gitRepo.renameFolder(
+        oldFolderPath,
+        folder.folderPath,
+      );
+      if (result.isFailure) {
+        Log.e("renameFolder", result: result);
+        return;
+      }
+
+      numChanges += 1;
+      notifyListeners();
     });
+
+    unawaited(_syncNotes());
   }
 
   Future<void> renameNote(Note note, String newFileName) async {
@@ -418,13 +433,18 @@ class GitJournalRepo with ChangeNotifier {
     var oldPath = note.filePath;
     note.parent.renameNote(note, newFileName);
 
-    return _opLock.synchronized(() async {
-      _gitRepo.renameNote(oldPath, note.filePath).then((Result<void> _) {
-        _syncNotes();
-        numChanges += 1;
-        notifyListeners();
-      });
+    await _gitOpLock.synchronized(() async {
+      var result = await _gitRepo.renameNote(oldPath, note.filePath);
+      if (result.isFailure) {
+        Log.e("renameNote", result: result);
+        return;
+      }
+
+      numChanges += 1;
+      notifyListeners();
     });
+
+    unawaited(_syncNotes());
   }
 
   // void renameFile(String oldPath, String newFileName) async {
@@ -458,7 +478,7 @@ class GitJournalRepo with ChangeNotifier {
     }
 
     logEvent(Event.NoteMoved);
-    return _opLock.synchronized(() async {
+    await _gitOpLock.synchronized(() async {
       Log.d("Got moveNote lock");
 
       var oldPaths = <String>[];
@@ -469,14 +489,18 @@ class GitJournalRepo with ChangeNotifier {
         newPaths.add(note.filePath);
       }
 
-      _gitRepo
-          .moveNotes(oldPaths, newPaths, destFolder.folderPath)
-          .then((Result<void> _) {
-        _syncNotes();
-        numChanges += 1;
-        notifyListeners();
-      });
+      var result =
+          await _gitRepo.moveNotes(oldPaths, newPaths, destFolder.folderPath);
+      if (result.isFailure) {
+        Log.e("moveNotes", result: result);
+        return;
+      }
+
+      numChanges += 1;
+      notifyListeners();
     });
+
+    unawaited(_syncNotes());
   }
 
   Future<Result<void>> saveNoteToDisk(Note note) async {
@@ -503,15 +527,20 @@ class GitJournalRepo with ChangeNotifier {
 
     note.parent.add(note);
 
-    return _opLock.synchronized(() async {
+    await _gitOpLock.synchronized(() async {
       Log.d("Got addNote lock");
 
-      _gitRepo.addNote(note).then((Result<void> _) {
-        _syncNotes();
-        numChanges += 1;
-        notifyListeners();
-      });
+      var result = await _gitRepo.addNote(note);
+      if (result.isFailure) {
+        Log.e("addNote", result: result);
+        return;
+      }
+
+      numChanges += 1;
+      notifyListeners();
     });
+
+    unawaited(_syncNotes());
   }
 
   void removeNote(Note note) => removeNotes([note]);
@@ -519,39 +548,50 @@ class GitJournalRepo with ChangeNotifier {
   Future<void> removeNotes(List<Note> notes) async {
     logEvent(Event.NoteDeleted);
 
-    return _opLock.synchronized(() async {
+    await _gitOpLock.synchronized(() async {
       Log.d("Got removeNote lock");
 
       // FIXME: What if the Note hasn't yet been saved?
       for (var note in notes) {
         note.parent.remove(note);
       }
-      _gitRepo.removeNotes(notes).then((Result<void> _) async {
-        numChanges += 1;
-        notifyListeners();
-        // FIXME: Is there a way of figuring this amount dynamically?
-        // The '4 seconds' is taken from snack_bar.dart -> _kSnackBarDisplayDuration
-        // We wait an aritfical amount of time, so that the user has a change to undo
-        // their delete operation, and that commit is not synced with the server, till then.
-        await Future.delayed(4.seconds);
-        _syncNotes();
-      });
+      var result = await _gitRepo.removeNotes(notes);
+      if (result.isFailure) {
+        Log.e("removeNotes", result: result);
+        return;
+      }
+
+      numChanges += 1;
+      notifyListeners();
+
+      // FIXME: Is there a way of figuring this amount dynamically?
+      // The '4 seconds' is taken from snack_bar.dart -> _kSnackBarDisplayDuration
+      // We wait an aritfical amount of time, so that the user has a chance to undo
+      // their delete operation, and that commit is not synced with the server, till then.
+      await Future.delayed(4.seconds);
     });
+
+    unawaited(_syncNotes());
   }
 
   Future<void> undoRemoveNote(Note note) async {
     logEvent(Event.NoteUndoDeleted);
 
-    return _opLock.synchronized(() async {
+    await _gitOpLock.synchronized(() async {
       Log.d("Got undoRemoveNote lock");
 
       note.parent.add(note);
-      _gitRepo.resetLastCommit().then((Result<void> _) {
-        _syncNotes();
-        numChanges -= 1;
-        notifyListeners();
-      });
+      var result = await _gitRepo.resetLastCommit();
+      if (result.isFailure) {
+        Log.e("undoRemoveNote", result: result);
+        return;
+      }
+
+      numChanges -= 1;
+      notifyListeners();
     });
+
+    unawaited(_syncNotes());
   }
 
   Future<void> updateNote(Note note) async {
@@ -566,15 +606,20 @@ class GitJournalRepo with ChangeNotifier {
       // FIXME: Shouldn't we signal the error?
     }
 
-    return _opLock.synchronized(() async {
+    await _gitOpLock.synchronized(() async {
       Log.d("Got updateNote lock");
 
-      _gitRepo.updateNote(note).then((Result<void> _) {
-        _syncNotes();
-        numChanges += 1;
-        notifyListeners();
-      });
+      var result = await _gitRepo.updateNote(note);
+      if (result.isFailure) {
+        Log.e("updateNote", result: result);
+        return;
+      }
+
+      numChanges += 1;
+      notifyListeners();
     });
+
+    unawaited(_syncNotes());
   }
 
   Future<void> completeGitHostSetup(
