@@ -65,9 +65,14 @@ class FileStorageCache {
 
   Future<BlobCTimeBuilder> _buildCTimeBuilder() async {
     var file = io.File(_cTimeFilePath);
-    if (!file.existsSync()) {
+
+    var stat = file.statSync();
+    if (stat.type == io.FileSystemEntityType.notFound) {
       return BlobCTimeBuilder();
     }
+
+    var size = (stat.size / 1024).toStringAsFixed(2);
+    Log.d("BlobCTimeBuilder Cache Size: $size Kb");
 
     var buffer = await file.readAsBytes();
     var data = pb.BlobCTimeBuilderData.fromBuffer(buffer);
@@ -92,9 +97,14 @@ class FileStorageCache {
 
   Future<FileMTimeBuilder> _buildMTimeBuilder() async {
     var file = io.File(_mTimeFilePath);
-    if (!file.existsSync()) {
+
+    var stat = file.statSync();
+    if (stat.type == io.FileSystemEntityType.notFound) {
       return FileMTimeBuilder();
     }
+
+    var size = (stat.size / 1024).toStringAsFixed(2);
+    Log.d("FileMTimeBuilder Cache Size: $size Kb");
 
     var buffer = await file.readAsBytes();
     var data = pb.FileMTimeBuilderData.fromBuffer(buffer);

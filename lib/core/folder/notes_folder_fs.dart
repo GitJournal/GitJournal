@@ -303,9 +303,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
       var fileR = await fileStorage.load(filePath);
       if (fileR.isFailure) {
-        print(fileR.error);
-        Log.e("NotesFolderFS FileStorage Failure",
-            ex: fileR.error, stacktrace: fileR.stackTrace);
+        Log.e("NotesFolderFS FileStorage Failure", result: fileR);
         assert(fileR.isFailure == false);
         continue;
       }
