@@ -11,24 +11,18 @@ buildscript {
     }
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.4'
+        classpath 'com.android.tools.build:gradle:4.1.0'
     }
 }
 
 allprojects {
     repositories {
         google()
-        jcenter()
-
-        maven {
-            url 'https://maven.google.com/'
-            // [required] background_fetch
-            // url "${project(':background_fetch').projectDir}/libs"
-        }
+        mavenCentral()
     }
 }
 
