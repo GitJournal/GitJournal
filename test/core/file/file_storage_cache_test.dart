@@ -52,7 +52,6 @@ void main() {
     );
     var mTimeBuilder = FileMTimeBuilder(
       processedCommits: commits,
-      processedTrees: trees,
       map: mMap,
     );
 
@@ -82,7 +81,6 @@ void main() {
 
     expect(
         deepEq(fileStorage2.fileMTimeBuilder.processedCommits, commits), true);
-    expect(deepEq(fileStorage2.fileMTimeBuilder.processedTrees, trees), true);
     expect(deepEq(fileStorage2.fileMTimeBuilder.map, mMap), true);
   });
 }

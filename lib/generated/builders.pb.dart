@@ -123,13 +123,6 @@ class FileMTimeBuilderData extends $pb.GeneratedMessage {
             : 'commitHashes',
         $pb.PbFieldType.PY,
         protoName: 'commitHashes')
-    ..p<$core.List<$core.int>>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'treeHashes',
-        $pb.PbFieldType.PY,
-        protoName: 'treeHashes')
     ..m<$core.String, FileMTimeInfo>(
         3,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -145,15 +138,11 @@ class FileMTimeBuilderData extends $pb.GeneratedMessage {
   FileMTimeBuilderData._() : super();
   factory FileMTimeBuilderData({
     $core.Iterable<$core.List<$core.int>>? commitHashes,
-    $core.Iterable<$core.List<$core.int>>? treeHashes,
     $core.Map<$core.String, FileMTimeInfo>? map,
   }) {
     final _result = create();
     if (commitHashes != null) {
       _result.commitHashes.addAll(commitHashes);
-    }
-    if (treeHashes != null) {
-      _result.treeHashes.addAll(treeHashes);
     }
     if (map != null) {
       _result.map.addAll(map);
@@ -191,11 +180,8 @@ class FileMTimeBuilderData extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.List<$core.List<$core.int>> get commitHashes => $_getList(0);
 
-  @$pb.TagNumber(2)
-  $core.List<$core.List<$core.int>> get treeHashes => $_getList(1);
-
   @$pb.TagNumber(3)
-  $core.Map<$core.String, FileMTimeInfo> get map => $_getMap(2);
+  $core.Map<$core.String, FileMTimeInfo> get map => $_getMap(1);
 }
 
 class TzDateTime extends $pb.GeneratedMessage {

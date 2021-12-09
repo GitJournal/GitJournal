@@ -113,10 +113,6 @@ class FileStorageCache {
         .map((bytes) => GitHash.fromBytes(Uint8List.fromList(bytes)))
         .toSet();
 
-    var treeHashes = data.treeHashes
-        .map((bytes) => GitHash.fromBytes(Uint8List.fromList(bytes)))
-        .toSet();
-
     var map = data.map.map((filePath, pbInfo) {
       var hash = GitHash.fromBytes(Uint8List.fromList(pbInfo.hash));
       var dt = _fromProto(pbInfo.dt);
@@ -125,11 +121,7 @@ class FileStorageCache {
       return MapEntry(filePath, info);
     });
 
-    return FileMTimeBuilder(
-      processedCommits: commitHashes,
-      processedTrees: treeHashes,
-      map: map,
-    );
+    return FileMTimeBuilder(processedCommits: commitHashes, map: map);
   }
 
   Future<void> _saveCTime(BlobCTimeBuilder builder) async {
@@ -155,7 +147,6 @@ class FileStorageCache {
 
   Future<void> _saveMTime(FileMTimeBuilder builder) async {
     var commitHashes = builder.processedCommits.map((bytes) => bytes.bytes);
-    var treeHashes = builder.processedTrees.map((bytes) => bytes.bytes);
     var map = builder.map.map((filePath, data) {
       var pbDt = pb.TzDateTime(
         offset: data.dt.offset.inSeconds,
@@ -171,11 +162,7 @@ class FileStorageCache {
       return MapEntry(filePath, info);
     });
 
-    var data = pb.FileMTimeBuilderData(
-      commitHashes: commitHashes,
-      treeHashes: treeHashes,
-      map: map,
-    );
+    var data = pb.FileMTimeBuilderData(commitHashes: commitHashes, map: map);
 
     var file = io.File(_mTimeFilePath);
     var _ = await file.writeAsBytes(data.writeToBuffer());

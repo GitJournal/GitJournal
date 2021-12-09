@@ -56,7 +56,6 @@ const FileMTimeBuilderData$json = const {
   '1': 'FileMTimeBuilderData',
   '2': const [
     const {'1': 'commitHashes', '3': 1, '4': 3, '5': 12, '10': 'commitHashes'},
-    const {'1': 'treeHashes', '3': 2, '4': 3, '5': 12, '10': 'treeHashes'},
     const {
       '1': 'map',
       '3': 3,
@@ -88,7 +87,7 @@ const FileMTimeBuilderData_MapEntry$json = const {
 
 /// Descriptor for `FileMTimeBuilderData`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List fileMTimeBuilderDataDescriptor = $convert.base64Decode(
-    'ChRGaWxlTVRpbWVCdWlsZGVyRGF0YRIiCgxjb21taXRIYXNoZXMYASADKAxSDGNvbW1pdEhhc2hlcxIeCgp0cmVlSGFzaGVzGAIgAygMUgp0cmVlSGFzaGVzEjsKA21hcBgDIAMoCzIpLmdpdGpvdXJuYWwuRmlsZU1UaW1lQnVpbGRlckRhdGEuTWFwRW50cnlSA21hcBpRCghNYXBFbnRyeRIQCgNrZXkYASABKAlSA2tleRIvCgV2YWx1ZRgCIAEoCzIZLmdpdGpvdXJuYWwuRmlsZU1UaW1lSW5mb1IFdmFsdWU6AjgB');
+    'ChRGaWxlTVRpbWVCdWlsZGVyRGF0YRIiCgxjb21taXRIYXNoZXMYASADKAxSDGNvbW1pdEhhc2hlcxI7CgNtYXAYAyADKAsyKS5naXRqb3VybmFsLkZpbGVNVGltZUJ1aWxkZXJEYXRhLk1hcEVudHJ5UgNtYXAaUQoITWFwRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSLwoFdmFsdWUYAiABKAsyGS5naXRqb3VybmFsLkZpbGVNVGltZUluZm9SBXZhbHVlOgI4AQ==');
 @$core.Deprecated('Use tzDateTimeDescriptor instead')
 const TzDateTime$json = const {
   '1': 'TzDateTime',
