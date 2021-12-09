@@ -18,6 +18,7 @@ protos:
 	protoc --dart_out=grpc:lib/markdown/generated -Ilib/markdown/ lib/markdown/markdown.proto
 	protoc --dart_out=grpc:lib/generated -Iprotos protos/shared_preferences.proto
 	protoc --dart_out=grpc:lib/generated -Iprotos protos/builders.proto
+	protoc --dart_out=grpc:lib/generated -Iprotos protos/core.proto
 	./flutterw format lib/
 	./flutterw pub run import_sorter:main
 

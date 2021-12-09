@@ -5,12 +5,14 @@
  */
 
 import 'package:path/path.dart' as p;
+import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:universal_io/io.dart' as io;
 import 'package:uuid/uuid.dart';
 
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/generated/core.pb.dart' as pb;
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
@@ -435,11 +437,6 @@ class Note implements File {
   NoteFileFormat get fileFormat => _fileFormat;
 
   @override
-  Map<String, dynamic> toMap() {
-    return file.toMap();
-  }
-
-  @override
   File copyFile({
     GitHash? oid,
     String? filePath,
@@ -456,6 +453,93 @@ class Note implements File {
       fileLastModified: fileLastModified ?? this.fileLastModified,
     );
   }
+
+  @override
+  $pb.GeneratedMessage toProtoBuf() {
+    return pb.Note(
+      file: file.toProtoBuf() as pb.File,
+      title: title,
+      body: body,
+      type: _typeToProto(type),
+      tags: tags,
+      extraProps: mapToProtoBuf(extraProps),
+      fileFormat: _formatToProto(fileFormat),
+      doc: _data.toProtoBuf(),
+      modified: _modified?.toProtoBuf(),
+      created: _created?.toProtoBuf(),
+      serializerSettings: noteSerializer.settings.toProtoBuf(),
+    );
+  }
+
+  static Note fromProtoBuf(NotesFolderFS parent, pb.Note n) {
+    return Note.build(
+      parent: parent,
+      file: File.fromProtoBuf(n.file),
+      title: n.title,
+      body: n.body,
+      noteType: _typeFromProto(n.type),
+      tags: n.tags.toSet(),
+      extraProps: mapFromProtoBuf(n.extraProps),
+      fileFormat: _formatFromProto(n.fileFormat),
+      doc: MdYamlDoc.fromProtoBuf(n.doc),
+      serializerSettings:
+          NoteSerializationSettings.fromProtoBuf(n.serializerSettings),
+      modified: n.hasModified() ? n.modified.toDateTime() : null,
+      created: n.hasCreated() ? n.created.toDateTime() : null,
+    );
+  }
+}
+
+pb.NoteType _typeToProto(NoteType type) {
+  switch (type) {
+    case NoteType.Unknown:
+      return pb.NoteType.Unknown;
+    case NoteType.Checklist:
+      return pb.NoteType.Checklist;
+    case NoteType.Journal:
+      return pb.NoteType.Journal;
+    case NoteType.Org:
+      return pb.NoteType.Org;
+  }
+}
+
+NoteType _typeFromProto(pb.NoteType type) {
+  switch (type) {
+    case pb.NoteType.Unknown:
+      return NoteType.Unknown;
+    case pb.NoteType.Checklist:
+      return NoteType.Checklist;
+    case pb.NoteType.Journal:
+      return NoteType.Journal;
+    case pb.NoteType.Org:
+      return NoteType.Org;
+  }
+
+  return NoteType.Unknown;
+}
+
+pb.NoteFileFormat _formatToProto(NoteFileFormat fmt) {
+  switch (fmt) {
+    case NoteFileFormat.Markdown:
+      return pb.NoteFileFormat.Markdown;
+    case NoteFileFormat.Txt:
+      return pb.NoteFileFormat.Txt;
+    case NoteFileFormat.OrgMode:
+      return pb.NoteFileFormat.OrgMode;
+  }
+}
+
+NoteFileFormat _formatFromProto(pb.NoteFileFormat fmt) {
+  switch (fmt) {
+    case pb.NoteFileFormat.Markdown:
+      return NoteFileFormat.Markdown;
+    case pb.NoteFileFormat.Txt:
+      return NoteFileFormat.Txt;
+    case pb.NoteFileFormat.OrgMode:
+      return NoteFileFormat.OrgMode;
+  }
+
+  return NoteFileFormat.Markdown;
 }
 
 String ensureFileNameUnique(String parentDir, String name, String ext) {

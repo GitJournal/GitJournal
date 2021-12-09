@@ -11,6 +11,7 @@ import 'package:yaml/yaml.dart';
 
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
+import 'package:gitjournal/generated/core.pb.dart' as pb;
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
@@ -76,6 +77,64 @@ class NoteSerializationSettings {
     s.titleSettings = titleSettings;
     s.emojify = emojify;
     return s;
+  }
+
+  pb.NoteSerializationSettings toProtoBuf() {
+    return pb.NoteSerializationSettings(
+      modifiedKey: modifiedKey,
+      createdKey: createdKey,
+      titleKey: titleKey,
+      typeKey: typeKey,
+      tagsKey: tagsKey,
+      tagsInString: tagsInString,
+      tagsHaveHash: tagsHaveHash,
+      emojify: emojify,
+      createdFormat: _protoDateFormat(createdFormat),
+      modifiedFormat: _protoDateFormat(modifiedFormat),
+      titleSettings: titleSettings.toInternalString(),
+    );
+  }
+
+  static NoteSerializationSettings fromProtoBuf(
+      pb.NoteSerializationSettings p) {
+    var s = NoteSerializationSettings();
+    s.createdKey = p.createdKey;
+    s.createdFormat = _fromProtoDateFormat(p.createdFormat);
+    s.modifiedKey = p.modifiedKey;
+    s.modifiedFormat = _fromProtoDateFormat(p.modifiedFormat);
+    s.titleKey = p.titleKey;
+    s.typeKey = p.typeKey;
+    s.tagsKey = p.tagsKey;
+    s.tagsInString = p.tagsInString;
+    s.tagsHaveHash = p.tagsHaveHash;
+    s.emojify = p.emojify;
+    s.titleSettings = SettingsTitle.fromInternalString(p.titleSettings);
+
+    return s;
+  }
+
+  static pb.DateFormat _protoDateFormat(DateFormat fmt) {
+    switch (fmt) {
+      case DateFormat.None:
+        return pb.DateFormat.None;
+      case DateFormat.Iso8601:
+        return pb.DateFormat.Iso8601;
+      case DateFormat.UnixTimeStamp:
+        return pb.DateFormat.UnixTimeStamp;
+    }
+  }
+
+  static DateFormat _fromProtoDateFormat(pb.DateFormat fmt) {
+    switch (fmt) {
+      case pb.DateFormat.None:
+        return DateFormat.None;
+      case pb.DateFormat.Iso8601:
+        return DateFormat.Iso8601;
+      case pb.DateFormat.UnixTimeStamp:
+        return DateFormat.UnixTimeStamp;
+    }
+
+    return DateFormat.None;
   }
 }
 

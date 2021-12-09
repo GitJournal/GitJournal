@@ -4,12 +4,16 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'dart:typed_data';
+
 import 'package:flutter/foundation.dart';
 
 import 'package:dart_git/plumbing/git_hash.dart';
 import 'package:path/path.dart' as p;
+import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:quiver/core.dart';
 
+import 'package:gitjournal/generated/core.pb.dart' as pb;
 import 'package:gitjournal/utils/datetime.dart';
 
 export 'package:dart_git/plumbing/git_hash.dart';
@@ -105,88 +109,25 @@ class File {
   String toString() =>
       'File{oid: $oid, filePath: $filePath, created: $created, modified: $modified, fileLastModified: $fileLastModified}';
 
-  // Add toString
-  Map<String, dynamic> toMap() {
-    return {
-      'oid': oid.toString(),
-      'repoPath': repoPath,
-      'filePath': filePath,
-      'modified': modified.toIso8601String(),
-      'created': created.toIso8601String(),
-      'fileLastModified': fileLastModified.toIso8601String(),
-    };
+  $pb.GeneratedMessage toProtoBuf() {
+    return pb.File(
+      repoPath: repoPath,
+      hash: oid.bytes,
+      filePath: filePath,
+      modified: modified.toProtoBuf(),
+      created: created.toProtoBuf(),
+      fileLastModified: fileLastModified.toProtoBuf(),
+    );
   }
 
-  static File fromMap(Map<String, dynamic> map) {
-    // oid
-    var oidV = map['oid'];
-    if (oidV == null) {
-      return throw Exception('Missing oid');
-    }
-    if (oidV is! String) {
-      return throw Exception('Invalid Type oid');
-    }
-    var oid = GitHash(oidV);
-
-    // repoPath
-    var repoPath = map['repoPath'];
-    if (repoPath == null) {
-      return throw Exception('Missing repoPath');
-    }
-    if (repoPath is! String) {
-      return throw Exception('Invalid Type repoPath');
-    }
-
-    // filePath
-    var filePath = map['filePath'];
-    if (filePath == null) {
-      return throw Exception('Missing filePath');
-    }
-    if (filePath is! String) {
-      return throw Exception('Invalid Type filePath');
-    }
-
-    // modified
-    DateTime? modified;
-    var modifiedV = map['modified'];
-    if (modifiedV != null) {
-      modified = parseDateTime(modifiedV);
-    }
-
-    if (modified == null) {
-      return throw Exception('Failed to parse modified');
-    }
-
-    // created
-    DateTime? created;
-    var createdV = map['created'];
-    if (createdV != null) {
-      created = parseDateTime(createdV);
-    }
-
-    if (created == null) {
-      return throw Exception('Failed to parse created');
-    }
-
-    // fileLastModified
-    DateTime? fileLastModified;
-    var fileLastModifiedV = map['fileLastModified'];
-    if (fileLastModifiedV != null) {
-      fileLastModified = parseDateTime(fileLastModifiedV);
-      if (fileLastModified == null) {
-        return throw Exception('Invalid Type fileLastModified');
-      }
-    } else {
-      return throw Exception('Missing fileLastModified');
-    }
-
+  static File fromProtoBuf(pb.File pbFile) {
     return File(
-      oid: oid,
-      repoPath: repoPath,
-      filePath: filePath,
-      modified: modified,
-      created: created,
-      fileLastModified: fileLastModified,
+      repoPath: pbFile.repoPath,
+      oid: GitHash.fromBytes(Uint8List.fromList(pbFile.hash)),
+      filePath: pbFile.filePath,
+      created: pbFile.created.toDateTime(),
+      modified: pbFile.modified.toDateTime(),
+      fileLastModified: pbFile.fileLastModified.toDateTime(),
     );
   }
 }
