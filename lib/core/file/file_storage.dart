@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'package:flutter/foundation.dart';
+
 import 'package:dart_git/blob_ctime_builder.dart';
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/file_mtime_builder.dart';
@@ -13,17 +15,28 @@ import 'package:universal_io/io.dart' as io;
 
 import 'file.dart';
 
-class FileStorage {
+class FileStorage with ChangeNotifier {
   final String repoPath;
   final GitRepository gitRepo;
 
   final BlobCTimeBuilder blobCTimeBuilder;
   final FileMTimeBuilder fileMTimeBuilder;
 
-  MultiTreeEntryVisitor get visitor => MultiTreeEntryVisitor([
+  var _dateTime = DateTime.now();
+  DateTime get dateTime => _dateTime;
+
+  TreeEntryVisitor get visitor {
+    return MultiTreeEntryVisitor(
+      [
         blobCTimeBuilder,
         fileMTimeBuilder,
-      ]);
+      ],
+      afterCommitCallback: (commit) {
+        _dateTime = commit.author.date;
+        notifyListeners();
+      },
+    );
+  }
 
   FileStorage({
     required this.gitRepo,

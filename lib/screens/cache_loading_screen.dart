@@ -7,19 +7,53 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:provider/provider.dart';
 
+import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/repository.dart';
 
-class CacheLoadingScreen extends StatefulWidget {
+class CacheLoadingScreen extends StatelessWidget {
   const CacheLoadingScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var fileStorage = context.read<GitJournalRepo>().fileStorage;
+    return _CacheLoadingScreen(fileStorage);
+  }
+}
+
+class _CacheLoadingScreen extends StatefulWidget {
+  final FileStorage fileStorage;
+
+  const _CacheLoadingScreen(this.fileStorage, {Key? key}) : super(key: key);
 
   @override
   _CacheLoadingScreenState createState() => _CacheLoadingScreenState();
 }
 
-class _CacheLoadingScreenState extends State<CacheLoadingScreen> {
+class _CacheLoadingScreenState extends State<_CacheLoadingScreen> {
+  @override
+  void initState() {
+    super.initState();
+    widget.fileStorage.addListener(_rebuild);
+  }
+
+  @override
+  void dispose() {
+    widget.fileStorage.removeListener(_rebuild);
+    super.dispose();
+  }
+
+  void _rebuild() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    var date = widget.fileStorage.dateTime;
+    var dateText = date.toIso8601String().substring(0, 10);
+
     var text = LocaleKeys.screens_cacheLoading_text.tr();
     var children = <Widget>[
       Padding(
@@ -28,6 +62,14 @@ class _CacheLoadingScreenState extends State<CacheLoadingScreen> {
           text,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headline4,
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Text(
+          dateText,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.subtitle1,
         ),
       ),
       const SizedBox(height: 8.0),
