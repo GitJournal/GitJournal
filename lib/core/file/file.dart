@@ -201,15 +201,12 @@ class File {
 
 // RawEditor(File file) -> add supports(File file)
 
-
 // TextFile can have the (text + encoding) + File
 //   alternatives -> body / data
-
 
 // Image should also be a file
 
 // The NewNote FAB can have more options .. ?
-
 
 // Remove the 'Note' class entrirely
 
