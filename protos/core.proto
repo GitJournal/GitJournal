@@ -1,0 +1,100 @@
+/*
+ * SPDX-FileCopyrightText: 2021 Vishesh Handa <me@vhanda.in>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
+syntax = "proto3";
+
+package gitjournal;
+
+message File {
+    string repoPath = 1;
+    bytes hash = 2;
+    string filePath = 3;
+    DateTimeAnyTz modified = 4;
+    DateTimeAnyTz created = 5;
+    DateTimeAnyTz fileLastModified = 6;
+}
+
+enum NoteFileFormat {
+    Markdown = 0;
+    OrgMode = 1;
+    Txt = 2;
+}
+
+enum NoteType {
+    Unknown = 0;
+    Checklist = 1;
+    Journal = 2;
+    Org = 3;
+}
+
+message Note {
+    File file = 1;
+
+    string title = 2;
+    string body = 3;
+    NoteType type = 4;
+    repeated string tags = 5;
+    map<string, Union> extraProps = 6;
+    NoteFileFormat fileFormat = 7;
+    MdYamlDoc doc = 8;
+
+    DateTimeAnyTz modified = 10;
+    DateTimeAnyTz created = 11;
+
+    NoteSerializationSettings serializerSettings = 12;
+}
+
+message NoteList {
+    repeated Note notes = 1;
+}
+
+message MdYamlDoc {
+    string body = 1;
+    map<string, Union> map = 2;
+}
+
+message Union {
+    oneof UnionOneof {
+        bool booleanValue = 1;
+        string stringValue = 2;
+        DateTimeAnyTz dateValue = 3;
+        int64 intValue = 4;
+    }
+}
+
+
+message DateTimeAnyTz {
+    /// in seconds
+    uint64 timestamp = 1;
+
+    /// offset in seconds east of GMT
+    int32 offset = 2;
+}
+
+
+enum DateFormat {
+    Iso8601 = 0;
+    UnixTimeStamp = 1;
+    None = 2;
+}
+
+message NoteSerializationSettings {
+    string modifiedKey = 1;
+    string createdKey = 2;
+    string titleKey = 3;
+    string typeKey = 4;
+    string tagsKey = 5;
+
+    bool tagsInString = 6;
+    bool tagsHaveHash = 7;
+
+    bool emojify = 8;
+
+    DateFormat modifiedFormat = 9;
+    DateFormat createdFormat = 10;
+
+    string titleSettings = 11;
+}
