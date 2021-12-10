@@ -643,6 +643,7 @@ class GitJournalRepo with ChangeNotifier {
     fileStorageCache.clear();
 
     remoteGitRepoConfigured = true;
+    fileStorageCacheReady = false;
 
     notesFolder.reset(fileStorage);
 
