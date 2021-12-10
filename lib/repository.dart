@@ -33,6 +33,7 @@ import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/notes_cache.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
+import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_migrations.dart';
@@ -40,12 +41,13 @@ import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/sync_attempt.dart';
 
 class GitJournalRepo with ChangeNotifier {
+  final RepositoryManager repoManager;
   final StorageConfig storageConfig;
   final GitConfig gitConfig;
   final NotesFolderConfig folderConfig;
   final Settings settings;
 
-  FileStorage fileStorage;
+  final FileStorage fileStorage;
   final FileStorageCache fileStorageCache;
 
   final _gitOpLock = Lock();
@@ -58,12 +60,17 @@ class GitJournalRepo with ChangeNotifier {
   final String cacheDir;
   final String id;
 
+  final String repoPath;
+
+  late final GitNoteRepository _gitRepo;
+  late final NotesCache _notesCache;
+  late final NotesFolderFS notesFolder;
+
+  //
+  // Mutable stuff
+  //
+
   String? _currentBranch;
-
-  late GitNoteRepository _gitRepo;
-  late NotesCache _notesCache;
-
-  String repoPath;
 
   /// Sorted in newest -> oldest
   var syncAttempts = <SyncAttempt>[];
@@ -72,21 +79,16 @@ class GitJournalRepo with ChangeNotifier {
 
   int numChanges = 0;
 
-  bool get hasJournalEntries {
-    return notesFolder.hasNotes;
-  }
-
-  late NotesFolderFS notesFolder;
-
   bool remoteGitRepoConfigured = false;
   late bool fileStorageCacheReady;
 
-  static Future<GitJournalRepo> load(
-      {required String gitBaseDir,
-      required String cacheDir,
-      required SharedPreferences pref,
-      required String id,
-      required}) async {
+  static Future<GitJournalRepo> load({
+    required String gitBaseDir,
+    required String cacheDir,
+    required SharedPreferences pref,
+    required String id,
+    required RepositoryManager repoManager,
+  }) async {
     await migrateSettings(id, pref, gitBaseDir);
 
     var storageConfig = StorageConfig(id, pref);
@@ -157,6 +159,7 @@ class GitJournalRepo with ChangeNotifier {
     var head = headR.isFailure ? GitHash.zero() : headR.getOrThrow();
 
     return GitJournalRepo._internal(
+      repoManager: repoManager,
       repoPath: repoPath,
       gitBaseDirectory: gitBaseDir,
       cacheDir: cacheDir,
@@ -176,6 +179,7 @@ class GitJournalRepo with ChangeNotifier {
   GitJournalRepo._internal({
     required this.id,
     required this.repoPath,
+    required this.repoManager,
     required this.gitBaseDirectory,
     required this.cacheDir,
     required this.storageConfig,
@@ -637,28 +641,26 @@ class GitJournalRepo with ChangeNotifier {
 
   Future<void> completeGitHostSetup(
       String repoFolderName, String remoteName) async {
-    repoPath = p.join(gitBaseDirectory, repoFolderName);
+    storageConfig.folderName = repoFolderName;
+    storageConfig.save();
+    await _persistConfig();
+
+    var newRepoPath = p.join(gitBaseDirectory, repoFolderName);
+    await _ensureOneCommitInRepo(repoPath: newRepoPath, config: gitConfig);
+
+    if (newRepoPath != repoPath) {
+      Log.i("Old Path: $repoPath");
+      Log.i("New Path: $newRepoPath");
+
+      repoManager.rebuildRepo();
+      return;
+    }
+
     Log.i("repoPath: $repoPath");
-
-    _gitRepo = GitNoteRepository(gitRepoPath: repoPath, config: gitConfig);
-
-    await _addFileInRepo(repo: this, config: gitConfig);
-
-    _notesCache.clear();
-    fileStorageCache.clear();
-
-    var repo = await GitRepository.load(repoPath).getOrThrow();
-    fileStorage = await fileStorageCache.load(repo);
 
     remoteGitRepoConfigured = true;
     fileStorageCacheReady = false;
 
-    notesFolder.reset(fileStorage);
-
-    storageConfig.folderName = repoFolderName;
-    storageConfig.save();
-
-    await _persistConfig();
     _loadNotes();
     _syncNotes();
 
@@ -683,23 +685,7 @@ class GitJournalRepo with ChangeNotifier {
       await _copyDirectory(repoPath, newRepoPath);
       await Directory(repoPath).delete(recursive: true);
 
-      repoPath = newRepoPath;
-      _gitRepo = GitNoteRepository(gitRepoPath: repoPath, config: gitConfig);
-
-      _notesCache.clear();
-
-      var gitRepo = await GitRepository.load(repoPath).getOrThrow();
-      var newFileStorage = FileStorage(
-        gitRepo: gitRepo,
-        blobCTimeBuilder: fileStorage.blobCTimeBuilder,
-        fileMTimeBuilder: fileStorage.fileMTimeBuilder,
-      );
-      fileStorage = newFileStorage;
-      notesFolder.reset(newFileStorage);
-
-      notifyListeners();
-
-      _loadNotes();
+      repoManager.rebuildRepo();
     }
   }
 
@@ -752,7 +738,6 @@ class GitJournalRepo with ChangeNotifier {
       Log.i("Done checking out $branchName");
 
       await _notesCache.clear();
-      notesFolder.reset(fileStorage);
       notifyListeners();
 
       _loadNotes();
@@ -858,27 +843,30 @@ Future<void> _copyDirectory(String source, String destination) async {
 
 /// Add a GitIgnore file if no file is present. This way we always at least have
 /// one commit. It makes doing a git pull and push easier
-Future<void> _addFileInRepo({
-  required GitJournalRepo repo,
+Future<void> _ensureOneCommitInRepo({
+  required String repoPath,
   required GitConfig config,
 }) async {
-  var repoPath = repo.repoPath;
-  var dirList = await Directory(repoPath).list().toList();
-  var anyFileInRepo = dirList.firstWhereOrNull(
-    (fs) => fs.statSync().type == FileSystemEntityType.file,
-  );
-  if (anyFileInRepo == null) {
-    Log.i("Adding .ignore file");
-    var ignoreFile = File(p.join(repoPath, ".gitignore"));
-    ignoreFile.createSync();
-
-    var repo = GitRepo(folderPath: repoPath);
-    await repo.add('.gitignore');
-
-    await repo.commit(
-      message: "Add gitignore file",
-      authorEmail: config.gitAuthorEmail,
-      authorName: config.gitAuthor,
+  try {
+    var dirList = await Directory(repoPath).list().toList();
+    var anyFileInRepo = dirList.firstWhereOrNull(
+      (fs) => fs.statSync().type == FileSystemEntityType.file,
     );
+    if (anyFileInRepo == null) {
+      Log.i("Adding .ignore file");
+      var ignoreFile = File(p.join(repoPath, ".gitignore"));
+      ignoreFile.createSync();
+
+      var repo = GitRepo(folderPath: repoPath);
+      await repo.add('.gitignore');
+
+      await repo.commit(
+        message: "Add gitignore file",
+        authorEmail: config.gitAuthorEmail,
+        authorName: config.gitAuthor,
+      );
+    }
+  } catch (ex, st) {
+    Log.e("_ensureOneCommitInRepo", ex: ex, stacktrace: st);
   }
 }

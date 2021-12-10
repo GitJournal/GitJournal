@@ -36,10 +36,13 @@ class RepositoryManager with ChangeNotifier {
 
   GitJournalRepo get currentRepo => _repo;
 
+  Future<void> rebuildRepo() => buildActiveRepository();
+
   Future<GitJournalRepo> buildActiveRepository() async {
     var repoCacheDir = p.join(cacheDir, currentId);
 
     _repo = await GitJournalRepo.load(
+      repoManager: this,
       gitBaseDir: gitBaseDir,
       cacheDir: repoCacheDir,
       pref: pref,

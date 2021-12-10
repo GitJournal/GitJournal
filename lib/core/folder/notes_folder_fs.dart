@@ -34,7 +34,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   var _entityMap = <String, dynamic>{};
 
   final NotesFolderConfig _config;
-  late FileStorage fileStorage;
+  late final FileStorage fileStorage;
 
   NotesFolderFS(
       NotesFolderFS parent, this._folderPath, this._config, this.fileStorage)
@@ -94,26 +94,6 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       var _ = _entityMap.remove(oldPath);
       _entityMap[folder.folderPath] = folder;
     });
-  }
-
-  void reset(FileStorage newFileStorage) {
-    fileStorage = newFileStorage;
-
-    assert(folderPath.isEmpty);
-    if (folderPath.isNotEmpty) {
-      throw Exception('Reset can only be called from the rootFolder');
-    }
-
-    var filesCopy = List<File>.from(_files);
-    filesCopy.forEach(_removeFile);
-
-    var foldersCopy = List<NotesFolderFS>.from(_folders);
-    foldersCopy.forEach(removeFolder);
-
-    assert(_files.isEmpty);
-    assert(_folders.isEmpty);
-
-    notifyListeners();
   }
 
   /// Will never end with '/'
@@ -464,6 +444,10 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   }
 
   void rename(String newName) {
+    if (parent == null) {
+      throw Exception("Cannot rename root directory");
+    }
+
     var oldPath = folderPath;
     var dir = io.Directory(fullFolderPath);
     _folderPath = p.join(dirname(oldPath), newName);

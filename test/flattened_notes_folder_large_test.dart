@@ -82,12 +82,6 @@ void main() {
           .throwOnError();
 
       await newFileStorage.reload().throwOnError();
-
-      rootFolder.reset(newFileStorage);
-
-      await rootFolder.loadRecursively();
-      expect(rootFolder.notes.length, 1);
-      expect(f.notes.length, 1);
     });
   });
 }

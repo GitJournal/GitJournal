@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 
 import 'package:icloud_documents_path/icloud_documents_path.dart';
@@ -24,7 +26,11 @@ class StorageConfig extends ChangeNotifier with SettingsSharedPref {
   @override
   final SharedPreferences pref;
 
-  var folderName = "journal";
+  // I'm giving it a random name in Debug as this way more bugs are caught
+  var folderName = kReleaseMode
+      ? "journal"
+      : "journal-" + Random().nextInt(1 << 16).toString();
+
   var storeInternally = true;
   var storageLocation = "";
 
