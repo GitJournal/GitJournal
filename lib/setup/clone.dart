@@ -85,6 +85,7 @@ Future<Result<void>> cloneRemotePluggable({
   var skipCheckout = false;
 
   var branches = await repo.branches().getOrThrow();
+  Log.i("Repo has the following branches: $branches");
   if (branches.isEmpty) {
     Log.i("Completing - no local branch");
     var remoteBranchR = await repo.remoteBranch(remoteName, remoteBranchName);
@@ -97,9 +98,12 @@ Future<Result<void>> cloneRemotePluggable({
       skipCheckout = true;
     } else {
       // remote branch exists
+      Log.i("Remote branch exists $remoteName/$remoteBranchName");
       var remoteBranch = remoteBranchR.getOrThrow();
-      await repo.createBranch(remoteBranchName, hash: remoteBranch.hash);
-      await repo.checkoutBranch(remoteBranchName);
+      await repo
+          .createBranch(remoteBranchName, hash: remoteBranch.hash)
+          .throwOnError();
+      await repo.checkoutBranch(remoteBranchName).throwOnError();
     }
 
     // FIXME: This will fail if the currentBranch doesn't exist!!
@@ -113,10 +117,14 @@ Future<Result<void>> cloneRemotePluggable({
 
       var currentBranch = await repo.currentBranch().getOrThrow();
       if (currentBranch != branch) {
+        Log.i("Current branch is not the only branch");
+        Log.d("Current Branch: $currentBranch");
+        Log.d("Branch: $branch");
+
         // Shit happens sometimes
         // There is only one local branch, and that branch is not the current
         // branch, wtf?
-        await repo.checkoutBranch(branch);
+        await repo.checkoutBranch(branch).throwOnError();
       }
 
       await repo.setUpstreamTo(remote, remoteBranchName).getOrThrow();
