@@ -13,6 +13,7 @@ import 'package:collection/collection.dart';
 import 'package:dart_git/config.dart';
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/exceptions.dart';
+import 'package:dart_git/plumbing/git_hash.dart';
 import 'package:git_bindings/git_bindings.dart';
 import 'package:path/path.dart' as p;
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -78,7 +79,7 @@ class GitJournalRepo with ChangeNotifier {
   late NotesFolderFS notesFolder;
 
   bool remoteGitRepoConfigured = false;
-  bool fileStorageCacheReady = false;
+  late bool fileStorageCacheReady;
 
   static Future<GitJournalRepo> load(
       {required String gitBaseDir,
@@ -152,6 +153,9 @@ class GitJournalRepo with ChangeNotifier {
     var fileStorageCache = FileStorageCache(cacheDir);
     var fileStorage = await fileStorageCache.load(repo);
 
+    var headR = await repo.headHash();
+    var head = headR.isFailure ? GitHash.zero() : headR.getOrThrow();
+
     return GitJournalRepo._internal(
       repoPath: repoPath,
       gitBaseDirectory: gitBaseDir,
@@ -165,6 +169,7 @@ class GitJournalRepo with ChangeNotifier {
       fileStorage: fileStorage,
       fileStorageCache: fileStorageCache,
       currentBranch: await repo.currentBranch().getOrThrow(),
+      headHash: head,
     );
   }
 
@@ -181,6 +186,7 @@ class GitJournalRepo with ChangeNotifier {
     required this.fileStorage,
     required this.fileStorageCache,
     required String? currentBranch,
+    required GitHash headHash,
   }) {
     _gitRepo = GitNoteRepository(gitRepoPath: repoPath, config: gitConfig);
     notesFolder = NotesFolderFS.root(folderConfig, fileStorage);
@@ -201,6 +207,8 @@ class GitJournalRepo with ChangeNotifier {
       repoPath: _gitRepo.gitRepoPath,
       fileStorage: fileStorage,
     );
+
+    fileStorageCacheReady = headHash == fileStorageCache.lastProcessedHead;
 
     _loadFromCache();
     _syncNotes();
@@ -277,7 +285,7 @@ class GitJournalRepo with ChangeNotifier {
 
     // Notify that the cache is ready
     Log.i("Done building the FileStorageCache");
-    fileStorageCacheReady = true;
+    fileStorageCacheReady = fileStorageCache.lastProcessedHead == head;
     notifyListeners();
   }
 

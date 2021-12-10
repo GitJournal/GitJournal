@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'dart:typed_data';
-
 import 'package:flutter/foundation.dart';
 
 import 'package:dart_git/plumbing/git_hash.dart';
@@ -123,7 +121,7 @@ class File {
   static File fromProtoBuf(pb.File pbFile) {
     return File(
       repoPath: pbFile.repoPath,
-      oid: GitHash.fromBytes(Uint8List.fromList(pbFile.hash)),
+      oid: GitHash.fromBytes(pbFile.hash),
       filePath: pbFile.filePath,
       created: pbFile.created.toDateTime(),
       modified: pbFile.modified.toDateTime(),

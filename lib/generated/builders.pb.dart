@@ -48,6 +48,13 @@ class BlobCTimeBuilderData extends $pb.GeneratedMessage {
         valueFieldType: $pb.PbFieldType.OM,
         valueCreator: TzDateTime.create,
         packageName: const $pb.PackageName('gitjournal'))
+    ..a<$core.List<$core.int>>(
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'headHash',
+        $pb.PbFieldType.OY,
+        protoName: 'headHash')
     ..hasRequiredFields = false;
 
   BlobCTimeBuilderData._() : super();
@@ -55,6 +62,7 @@ class BlobCTimeBuilderData extends $pb.GeneratedMessage {
     $core.Iterable<$core.List<$core.int>>? commitHashes,
     $core.Iterable<$core.List<$core.int>>? treeHashes,
     $core.Map<$core.String, TzDateTime>? map,
+    $core.List<$core.int>? headHash,
   }) {
     final _result = create();
     if (commitHashes != null) {
@@ -65,6 +73,9 @@ class BlobCTimeBuilderData extends $pb.GeneratedMessage {
     }
     if (map != null) {
       _result.map.addAll(map);
+    }
+    if (headHash != null) {
+      _result.headHash = headHash;
     }
     return _result;
   }
@@ -104,6 +115,18 @@ class BlobCTimeBuilderData extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(3)
   $core.Map<$core.String, TzDateTime> get map => $_getMap(2);
+
+  @$pb.TagNumber(4)
+  $core.List<$core.int> get headHash => $_getN(3);
+  @$pb.TagNumber(4)
+  set headHash($core.List<$core.int> v) {
+    $_setBytes(3, v);
+  }
+
+  @$pb.TagNumber(4)
+  $core.bool hasHeadHash() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearHeadHash() => clearField(4);
 }
 
 class FileMTimeBuilderData extends $pb.GeneratedMessage {
@@ -133,12 +156,20 @@ class FileMTimeBuilderData extends $pb.GeneratedMessage {
         valueFieldType: $pb.PbFieldType.OM,
         valueCreator: FileMTimeInfo.create,
         packageName: const $pb.PackageName('gitjournal'))
+    ..a<$core.List<$core.int>>(
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'headHash',
+        $pb.PbFieldType.OY,
+        protoName: 'headHash')
     ..hasRequiredFields = false;
 
   FileMTimeBuilderData._() : super();
   factory FileMTimeBuilderData({
     $core.Iterable<$core.List<$core.int>>? commitHashes,
     $core.Map<$core.String, FileMTimeInfo>? map,
+    $core.List<$core.int>? headHash,
   }) {
     final _result = create();
     if (commitHashes != null) {
@@ -146,6 +177,9 @@ class FileMTimeBuilderData extends $pb.GeneratedMessage {
     }
     if (map != null) {
       _result.map.addAll(map);
+    }
+    if (headHash != null) {
+      _result.headHash = headHash;
     }
     return _result;
   }
@@ -182,6 +216,18 @@ class FileMTimeBuilderData extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(3)
   $core.Map<$core.String, FileMTimeInfo> get map => $_getMap(1);
+
+  @$pb.TagNumber(4)
+  $core.List<$core.int> get headHash => $_getN(2);
+  @$pb.TagNumber(4)
+  set headHash($core.List<$core.int> v) {
+    $_setBytes(2, v);
+  }
+
+  @$pb.TagNumber(4)
+  $core.bool hasHeadHash() => $_has(2);
+  @$pb.TagNumber(4)
+  void clearHeadHash() => clearField(4);
 }
 
 class TzDateTime extends $pb.GeneratedMessage {

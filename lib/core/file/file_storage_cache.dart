@@ -4,14 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'dart:typed_data';
-
 import 'package:dart_git/blob_ctime_builder.dart';
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/file_mtime_builder.dart';
 import 'package:dart_git/utils/date_time.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:path/path.dart' as p;
+import 'package:tuple/tuple.dart';
 import 'package:universal_io/io.dart' as io;
 
 import 'package:gitjournal/core/file/file.dart';
@@ -21,6 +20,7 @@ import 'package:gitjournal/logger/logger.dart';
 
 class FileStorageCache {
   final String cacheFolderPath;
+  var lastProcessedHead = GitHash.zero();
 
   FileStorageCache(this.cacheFolderPath) {
     assert(cacheFolderPath.startsWith(p.separator));
@@ -42,18 +42,26 @@ class FileStorageCache {
   }
 
   Future<FileStorage> load(GitRepository gitRepo) async {
-    var blobVisitor = await _buildCTimeBuilder();
-    var mTimeBuilder = await _buildMTimeBuilder();
+    var blobVisitorTuple = await _buildCTimeBuilder();
+    var mTimeBuilderTuple = await _buildMTimeBuilder();
+
+    lastProcessedHead = blobVisitorTuple.item2;
+    if (mTimeBuilderTuple.item2 != lastProcessedHead) {
+      lastProcessedHead = GitHash.zero();
+    }
 
     return FileStorage(
       gitRepo: gitRepo,
-      blobCTimeBuilder: blobVisitor,
-      fileMTimeBuilder: mTimeBuilder,
+      blobCTimeBuilder: blobVisitorTuple.item1,
+      fileMTimeBuilder: mTimeBuilderTuple.item1,
     );
   }
 
   Future<Result<void>> save(FileStorage fileStorage) async {
     return catchAll(() async {
+      var headR = await fileStorage.gitRepo.headHash();
+      lastProcessedHead = headR.isFailure ? GitHash.zero() : headR.getOrThrow();
+
       await _saveCTime(fileStorage.blobCTimeBuilder);
       await _saveMTime(fileStorage.fileMTimeBuilder);
       return Result(null);
@@ -63,12 +71,12 @@ class FileStorageCache {
   String get _cTimeFilePath => p.join(cacheFolderPath, 'blob_ctime_v1');
   String get _mTimeFilePath => p.join(cacheFolderPath, 'file_mtime_v1');
 
-  Future<BlobCTimeBuilder> _buildCTimeBuilder() async {
+  Future<Tuple2<BlobCTimeBuilder, GitHash>> _buildCTimeBuilder() async {
     var file = io.File(_cTimeFilePath);
 
     var stat = file.statSync();
     if (stat.type == io.FileSystemEntityType.notFound) {
-      return BlobCTimeBuilder();
+      return Tuple2(BlobCTimeBuilder(), GitHash.zero());
     }
 
     var size = (stat.size / 1024).toStringAsFixed(2);
@@ -77,30 +85,29 @@ class FileStorageCache {
     var buffer = await file.readAsBytes();
     var data = pb.BlobCTimeBuilderData.fromBuffer(buffer);
 
-    var commitHashes = data.commitHashes
-        .map((bytes) => GitHash.fromBytes(Uint8List.fromList(bytes)))
-        .toSet();
+    var commitHashes =
+        data.commitHashes.map((bytes) => GitHash.fromBytes(bytes)).toSet();
 
-    var treeHashes = data.treeHashes
-        .map((bytes) => GitHash.fromBytes(Uint8List.fromList(bytes)))
-        .toSet();
+    var treeHashes =
+        data.treeHashes.map((bytes) => GitHash.fromBytes(bytes)).toSet();
 
     var map = data.map
         .map((hashStr, pbDt) => MapEntry(GitHash(hashStr), _fromProto(pbDt)));
 
-    return BlobCTimeBuilder(
+    var builder = BlobCTimeBuilder(
       processedCommits: commitHashes,
       processedTrees: treeHashes,
       map: map,
     );
+    return Tuple2(builder, GitHash.fromBytes(data.headHash));
   }
 
-  Future<FileMTimeBuilder> _buildMTimeBuilder() async {
+  Future<Tuple2<FileMTimeBuilder, GitHash>> _buildMTimeBuilder() async {
     var file = io.File(_mTimeFilePath);
 
     var stat = file.statSync();
     if (stat.type == io.FileSystemEntityType.notFound) {
-      return FileMTimeBuilder();
+      return Tuple2(FileMTimeBuilder(), GitHash.zero());
     }
 
     var size = (stat.size / 1024).toStringAsFixed(2);
@@ -109,19 +116,19 @@ class FileStorageCache {
     var buffer = await file.readAsBytes();
     var data = pb.FileMTimeBuilderData.fromBuffer(buffer);
 
-    var commitHashes = data.commitHashes
-        .map((bytes) => GitHash.fromBytes(Uint8List.fromList(bytes)))
-        .toSet();
+    var commitHashes =
+        data.commitHashes.map((bytes) => GitHash.fromBytes(bytes)).toSet();
 
     var map = data.map.map((filePath, pbInfo) {
-      var hash = GitHash.fromBytes(Uint8List.fromList(pbInfo.hash));
+      var hash = GitHash.fromBytes(pbInfo.hash);
       var dt = _fromProto(pbInfo.dt);
       var info = FileMTimeInfo(pbInfo.filePath, hash, dt);
 
       return MapEntry(filePath, info);
     });
 
-    return FileMTimeBuilder(processedCommits: commitHashes, map: map);
+    var builder = FileMTimeBuilder(processedCommits: commitHashes, map: map);
+    return Tuple2(builder, GitHash.fromBytes(data.headHash));
   }
 
   Future<void> _saveCTime(BlobCTimeBuilder builder) async {
@@ -136,6 +143,7 @@ class FileStorageCache {
     });
 
     var data = pb.BlobCTimeBuilderData(
+      headHash: lastProcessedHead.bytes,
       commitHashes: commitHashes,
       treeHashes: treeHashes,
       map: map,
@@ -162,7 +170,11 @@ class FileStorageCache {
       return MapEntry(filePath, info);
     });
 
-    var data = pb.FileMTimeBuilderData(commitHashes: commitHashes, map: map);
+    var data = pb.FileMTimeBuilderData(
+      headHash: lastProcessedHead.bytes,
+      commitHashes: commitHashes,
+      map: map,
+    );
 
     var file = io.File(_mTimeFilePath);
     var _ = await file.writeAsBytes(data.writeToBuffer());

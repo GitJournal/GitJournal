@@ -27,6 +27,7 @@ const BlobCTimeBuilderData$json = const {
       '6': '.gitjournal.BlobCTimeBuilderData.MapEntry',
       '10': 'map'
     },
+    const {'1': 'headHash', '3': 4, '4': 1, '5': 12, '10': 'headHash'},
   ],
   '3': const [BlobCTimeBuilderData_MapEntry$json],
 };
@@ -50,7 +51,7 @@ const BlobCTimeBuilderData_MapEntry$json = const {
 
 /// Descriptor for `BlobCTimeBuilderData`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List blobCTimeBuilderDataDescriptor = $convert.base64Decode(
-    'ChRCbG9iQ1RpbWVCdWlsZGVyRGF0YRIiCgxjb21taXRIYXNoZXMYASADKAxSDGNvbW1pdEhhc2hlcxIeCgp0cmVlSGFzaGVzGAIgAygMUgp0cmVlSGFzaGVzEjsKA21hcBgDIAMoCzIpLmdpdGpvdXJuYWwuQmxvYkNUaW1lQnVpbGRlckRhdGEuTWFwRW50cnlSA21hcBpOCghNYXBFbnRyeRIQCgNrZXkYASABKAlSA2tleRIsCgV2YWx1ZRgCIAEoCzIWLmdpdGpvdXJuYWwuVHpEYXRlVGltZVIFdmFsdWU6AjgB');
+    'ChRCbG9iQ1RpbWVCdWlsZGVyRGF0YRIiCgxjb21taXRIYXNoZXMYASADKAxSDGNvbW1pdEhhc2hlcxIeCgp0cmVlSGFzaGVzGAIgAygMUgp0cmVlSGFzaGVzEjsKA21hcBgDIAMoCzIpLmdpdGpvdXJuYWwuQmxvYkNUaW1lQnVpbGRlckRhdGEuTWFwRW50cnlSA21hcBIaCghoZWFkSGFzaBgEIAEoDFIIaGVhZEhhc2gaTgoITWFwRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSLAoFdmFsdWUYAiABKAsyFi5naXRqb3VybmFsLlR6RGF0ZVRpbWVSBXZhbHVlOgI4AQ==');
 @$core.Deprecated('Use fileMTimeBuilderDataDescriptor instead')
 const FileMTimeBuilderData$json = const {
   '1': 'FileMTimeBuilderData',
@@ -64,6 +65,7 @@ const FileMTimeBuilderData$json = const {
       '6': '.gitjournal.FileMTimeBuilderData.MapEntry',
       '10': 'map'
     },
+    const {'1': 'headHash', '3': 4, '4': 1, '5': 12, '10': 'headHash'},
   ],
   '3': const [FileMTimeBuilderData_MapEntry$json],
 };
@@ -87,7 +89,7 @@ const FileMTimeBuilderData_MapEntry$json = const {
 
 /// Descriptor for `FileMTimeBuilderData`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List fileMTimeBuilderDataDescriptor = $convert.base64Decode(
-    'ChRGaWxlTVRpbWVCdWlsZGVyRGF0YRIiCgxjb21taXRIYXNoZXMYASADKAxSDGNvbW1pdEhhc2hlcxI7CgNtYXAYAyADKAsyKS5naXRqb3VybmFsLkZpbGVNVGltZUJ1aWxkZXJEYXRhLk1hcEVudHJ5UgNtYXAaUQoITWFwRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSLwoFdmFsdWUYAiABKAsyGS5naXRqb3VybmFsLkZpbGVNVGltZUluZm9SBXZhbHVlOgI4AQ==');
+    'ChRGaWxlTVRpbWVCdWlsZGVyRGF0YRIiCgxjb21taXRIYXNoZXMYASADKAxSDGNvbW1pdEhhc2hlcxI7CgNtYXAYAyADKAsyKS5naXRqb3VybmFsLkZpbGVNVGltZUJ1aWxkZXJEYXRhLk1hcEVudHJ5UgNtYXASGgoIaGVhZEhhc2gYBCABKAxSCGhlYWRIYXNoGlEKCE1hcEVudHJ5EhAKA2tleRgBIAEoCVIDa2V5Ei8KBXZhbHVlGAIgASgLMhkuZ2l0am91cm5hbC5GaWxlTVRpbWVJbmZvUgV2YWx1ZToCOAE=');
 @$core.Deprecated('Use tzDateTimeDescriptor instead')
 const TzDateTime$json = const {
   '1': 'TzDateTime',

@@ -12,11 +12,15 @@ message BlobCTimeBuilderData {
     repeated bytes commitHashes = 1;
     repeated bytes treeHashes = 2;
     map<string, TzDateTime> map = 3;
+
+    bytes headHash = 4;
 }
 
 message FileMTimeBuilderData {
     repeated bytes commitHashes = 1;
     map<string, FileMTimeInfo> map = 3;
+
+    bytes headHash = 4;
 }
 
 message TzDateTime {
