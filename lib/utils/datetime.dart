@@ -34,12 +34,11 @@ String toZettleDateTime(DateTime dt) {
   return _zettleDateFormat.format(dt);
 }
 
-String toIso8601WithTimezone(DateTime dt, [Duration? offset]) {
+String toIso8601WithTimezone(DateTime dt) {
   var result = _iso8601DateFormat.format(dt);
 
-  offset = offset ?? dt.timeZoneOffset;
-  int minutes = (offset.inMinutes % 60);
-  int hours = offset.inHours.toInt();
+  int minutes = (dt.timeZoneOffset.inMinutes % 60);
+  int hours = dt.timeZoneOffset.inHours.toInt();
 
   String sign = '+';
   if (hours < 0) {
@@ -66,28 +65,11 @@ String toIso8601WithTimezone(DateTime dt, [Duration? offset]) {
 }
 
 DateTime? parseDateTime(String str) {
-  DateTime? dt;
   try {
-    dt = DateTime.parse(str).toLocal();
+    return GDateTime.parse(str);
   } catch (ex) {
-    // Ignore it
+    Log.e("parseDateTime", ex: ex);
   }
-
-  if (dt == null) {
-    var regex = RegExp(
-        r"(\d{4})-(\d{2})-(\d{2})T(\d{2})\:(\d{2})\:(\d{2})\+(\d{2})\:(\d{2})");
-    if (regex.hasMatch(str)) {
-      // FIXME: Handle the timezone!
-      str = str.substring(0, 19);
-      try {
-        dt = DateTime.parse(str);
-      } catch (ex) {
-        Log.d("Note Date Parsing Failed: $ex");
-      }
-    }
-  }
-
-  return dt;
 }
 
 DateTime parseUnixTimeStamp(int val) {

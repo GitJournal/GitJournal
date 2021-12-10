@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'package:dart_git/utils/date_time.dart';
 import 'package:test/test.dart';
 import 'package:time/time.dart';
 
@@ -26,29 +27,29 @@ void main() {
     });
 
     test('Test with positive offset', () {
-      var dateTime = DateTime.utc(2011, 6, 6, 5, 5, 3);
-      var str = toIso8601WithTimezone(dateTime, 2.hours);
+      var dateTime = GDateTime(2.hours, 2011, 6, 6, 5, 5, 3);
+      var str = toIso8601WithTimezone(dateTime);
 
       expect(str, "2011-06-06T05:05:03+02:00");
     });
 
     test('Test with positive offset and minutes', () {
-      var dateTime = DateTime.utc(2011, 6, 6, 5, 5, 3);
-      var str = toIso8601WithTimezone(dateTime, 10.hours);
+      var dateTime = GDateTime(10.hours, 2011, 6, 6, 5, 5, 3);
+      var str = toIso8601WithTimezone(dateTime);
 
       expect(str, "2011-06-06T05:05:03+10:00");
     });
 
     test('Test with negative offset', () {
-      var dateTime = DateTime.utc(2011, 6, 6, 5, 5, 3);
-      var str = toIso8601WithTimezone(dateTime, -5.hours);
+      var dateTime = GDateTime(-5.hours, 2011, 6, 6, 5, 5, 3);
+      var str = toIso8601WithTimezone(dateTime);
 
       expect(str, "2011-06-06T05:05:03-05:00");
     });
 
     test('Test with negative offset and minutes', () {
-      var dateTime = DateTime.utc(2011, 6, 6, 5, 5, 3);
-      var str = toIso8601WithTimezone(dateTime, -11.hours - 30.minutes);
+      var dateTime = GDateTime(-11.hours - 30.minutes, 2011, 6, 6, 5, 5, 3);
+      var str = toIso8601WithTimezone(dateTime);
 
       expect(str, "2011-06-06T05:05:03-11:30");
     });
