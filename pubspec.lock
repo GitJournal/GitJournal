@@ -328,7 +328,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "6d4b7f26bc2c7b8c83ec7f608fe05eec561d6757"
+      resolved-ref: "470036092bd5f7859f8211a2478bdf1ebaab446f"
       url: "https://github.com/GitJournal/dart-git.git"
     source: git
     version: "0.0.2"
@@ -978,6 +978,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.0"
+  os:
+    dependency: transitive
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "43464348ffdd7b00983caa62133c89b1b3045735"
+      url: "https://github.com/GitJournal/os.git"
+    source: git
+    version: "0.1.2"
   package_config:
     dependency: transitive
     description:
@@ -1141,13 +1150,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.5.0"
-  posix:
-    dependency: transitive
-    description:
-      name: posix
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.3"
   postgrest:
     dependency: transitive
     description:
