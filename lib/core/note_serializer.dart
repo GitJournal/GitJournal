@@ -148,6 +148,12 @@ class NoteSerializer implements NoteSerializerInterface {
   @override
   void encode(Note note, MdYamlDoc data) {
     data.body = settings.emojify ? emojiParser.unemojify(note.body) : note.body;
+
+    // HACKish support for Txt and OrgFiles
+    if (!note.canHaveMetadata) {
+      return;
+    }
+
     dynamic _;
 
     switch (settings.createdFormat) {

@@ -393,7 +393,7 @@ class Note implements File {
 
   @override
   String toString() {
-    return 'Note{filePath: $_filePath, created: $created, modified: $modified, data: $_data}';
+    return 'Note{filePath: $_filePath, created: $created, modified: $modified, data: $_data, fileFormat: $fileFormat}';
   }
 
   void _notifyModified() {
