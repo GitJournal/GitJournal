@@ -45,7 +45,7 @@ class GitJournalRepo with ChangeNotifier {
   final NotesFolderConfig folderConfig;
   final Settings settings;
 
-  final FileStorage fileStorage;
+  FileStorage fileStorage;
   final FileStorageCache fileStorageCache;
 
   final _gitOpLock = Lock();
@@ -283,9 +283,14 @@ class GitJournalRepo with ChangeNotifier {
       logException(r.exception!, r.stackTrace!);
     }
 
+    if (fileStorageCache.lastProcessedHead != head) {
+      Log.e(
+          "FileStorageCache Head different ${fileStorageCache.lastProcessedHead}");
+    }
+
     // Notify that the cache is ready
-    Log.i("Done building the FileStorageCache");
-    fileStorageCacheReady = fileStorageCache.lastProcessedHead == head;
+    fileStorageCacheReady = true;
+    Log.i("Done building the FileStorageCache: $fileStorageCacheReady");
     notifyListeners();
   }
 
@@ -642,6 +647,9 @@ class GitJournalRepo with ChangeNotifier {
     _notesCache.clear();
     fileStorageCache.clear();
 
+    var repo = await GitRepository.load(repoPath).getOrThrow();
+    fileStorage = await fileStorageCache.load(repo);
+
     remoteGitRepoConfigured = true;
     fileStorageCacheReady = false;
 
@@ -686,6 +694,7 @@ class GitJournalRepo with ChangeNotifier {
         blobCTimeBuilder: fileStorage.blobCTimeBuilder,
         fileMTimeBuilder: fileStorage.fileMTimeBuilder,
       );
+      fileStorage = newFileStorage;
       notesFolder.reset(newFileStorage);
 
       notifyListeners();
