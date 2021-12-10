@@ -31,8 +31,8 @@ class FileStorageCache {
       dynamic _;
       _ = await io.File(_cTimeFilePath).delete(recursive: true);
       _ = await io.File(_mTimeFilePath).delete(recursive: true);
-    } on io.OSError catch (err, st) {
-      if (err.errorCode == 2 /* File Not Found */) {
+    } on io.FileSystemException catch (err, st) {
+      if (err.osError?.errorCode == 2 /* File Not Found */) {
         return;
       }
       Log.e("Failed to clear FileStorageCache osError",
