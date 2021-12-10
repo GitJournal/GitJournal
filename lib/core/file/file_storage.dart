@@ -48,8 +48,8 @@ class FileStorage with ChangeNotifier {
     assert(!filePath.startsWith(p.separator));
     var fullFilePath = p.join(repoPath, filePath);
 
-    assert(fileMTimeBuilder.map.isNotEmpty);
-    assert(blobCTimeBuilder.map.isNotEmpty);
+    assert(fileMTimeBuilder.map.isNotEmpty, "Trying to load $filePath");
+    assert(blobCTimeBuilder.map.isNotEmpty, "Trying to load $filePath");
 
     var ioFile = io.File(fullFilePath);
     var stat = ioFile.statSync();
