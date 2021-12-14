@@ -41,7 +41,7 @@ void main() {
       var newText = origText + '\n';
 
       var result = autoAddBulletList(origText, newText, newText.length)!;
-      expect(result.text, "Hello\n1. One\n1. ");
+      expect(result.text, "Hello\n1. One\n2. ");
       expect(result.cursorPos, result.text.length);
     });
 
@@ -85,7 +85,7 @@ void main() {
       var newText = origText + '\n';
 
       var result = autoAddBulletList(origText, newText, newText.length)!;
-      expect(result.text, "1. Hello\n1. ");
+      expect(result.text, "1. Hello\n2. ");
       expect(result.cursorPos, result.text.length);
     });
 

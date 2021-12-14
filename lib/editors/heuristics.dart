@@ -49,6 +49,14 @@ TextEditorState? autoAddBulletList(
   var remainingText =
       curText.length > cursorPos ? curText.substring(cursorPos) : "";
 
+  // Of the form `num.`, so lets increment the number
+  if (bulletType.endsWith('.') && bulletType.length > 1) {
+    var num = int.tryParse(bulletType.substring(0, bulletType.length - 1));
+    if (num != null) {
+      bulletType = "${num + 1}.";
+    }
+  }
+
   /*
   if (remainingText.isNotEmpty) {
     print("At cursor: #${curText[cursorPos]}#");
