@@ -57,7 +57,7 @@ class NoteTile extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: textTheme.headline6!
-                  .copyWith(fontSize: textTheme.headline6!.fontSize! * 0.80),
+                  .copyWith(fontSize: textTheme.headline6!.fontSize! * 0.8),
               highlightText: searchTerm,
               highlightTextLowerCase: searchTermLowerCase,
             ),
@@ -131,7 +131,7 @@ class NoteTile extends StatelessWidget {
       highlightText: searchTerm,
       highlightTextLowerCase: searchTermLowerCase,
       style: textTheme.subtitle1!
-          .copyWith(fontSize: textTheme.subtitle1!.fontSize! * 0.90),
+          .copyWith(fontSize: textTheme.subtitle1!.fontSize! * 0.9),
       overflow: TextOverflow.ellipsis,
       maxLines: _maxLines - 1,
     );

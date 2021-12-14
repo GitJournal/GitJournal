@@ -44,9 +44,9 @@ class IconDismissable extends Dismissible {
             ),
           ),
           dismissThresholds: {
-            DismissDirection.horizontal: 0.60,
-            DismissDirection.endToStart: 0.60,
-            DismissDirection.startToEnd: 0.60,
+            DismissDirection.horizontal: 0.6,
+            DismissDirection.endToStart: 0.6,
+            DismissDirection.startToEnd: 0.6,
           },
         );
 }

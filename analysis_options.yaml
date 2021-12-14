@@ -48,6 +48,7 @@ dart_code_metrics:
     number-of-methods: 100
   rules:
     - avoid-ignoring-return-values
+    - double-literal-format
     # - avoid-unused-parameters
     # - double-literal-format
     # - no-boolean-literal-compare

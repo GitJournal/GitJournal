@@ -228,7 +228,7 @@ class PurchaseCard extends StatelessWidget {
     var mediaQuery = MediaQuery.of(context);
 
     return SizedBox(
-      width: mediaQuery.size.width * 0.80,
+      width: mediaQuery.size.width * 0.8,
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),

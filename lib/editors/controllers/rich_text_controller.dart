@@ -79,7 +79,7 @@ TextEditingController buildController({
 }
 
 extension ColorBrightness on Color {
-  Color darken([double amount = .1]) {
+  Color darken([double amount = 0.1]) {
     assert(amount >= 0 && amount <= 1);
 
     final hsl = HSLColor.fromColor(this);
@@ -88,7 +88,7 @@ extension ColorBrightness on Color {
     return hslDark.toColor();
   }
 
-  Color lighten([double amount = .1]) {
+  Color lighten([double amount = 0.1]) {
     assert(amount >= 0 && amount <= 1);
 
     final hsl = HSLColor.fromColor(this);
