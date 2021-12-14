@@ -10,8 +10,8 @@ import 'package:dart_git/utils/result.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:universal_io/io.dart';
 
-import 'package:gitjournal/core/markdown/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/markdown/md_yaml_doc.dart';
+import 'package:gitjournal/core/markdown/md_yaml_doc_codec.dart';
 
 class MdYamlDocLoader {
   Isolate? _isolate;
