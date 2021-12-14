@@ -6,6 +6,7 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:dart_git/utils/result.dart';
 import 'package:dashbook/dashbook.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:path_provider/path_provider.dart';
@@ -41,7 +42,8 @@ Future<void> main() async {
     cacheDir: cacheDir,
     pref: pref,
   );
-  var repo = await repoManager.buildActiveRepository();
+  await repoManager.buildActiveRepository().getOrThrow();
+  var repo = repoManager.currentRepo;
   var settings = repo.settings;
   var storageConfig = repo.storageConfig;
   var appRouter = AppRouter(

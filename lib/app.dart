@@ -8,6 +8,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import 'package:dart_git/utils/result.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:hive/hive.dart';
@@ -75,7 +76,7 @@ class JournalApp extends StatefulWidget {
       cacheDir: cacheDir,
       pref: pref,
     );
-    var _ = await repoManager.buildActiveRepository();
+    await repoManager.buildActiveRepository().throwOnError();
 
     InAppPurchases.confirmProPurchaseBoot();
 

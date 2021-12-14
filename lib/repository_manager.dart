@@ -37,21 +37,24 @@ class RepositoryManager with ChangeNotifier {
 
   GitJournalRepo get currentRepo => _repo;
 
-  Future<void> rebuildRepo() => buildActiveRepository();
-
-  Future<GitJournalRepo> buildActiveRepository() async {
+  Future<Result<void>> buildActiveRepository() async {
     var repoCacheDir = p.join(cacheDir, currentId);
 
-    _repo = await GitJournalRepo.load(
+    var r = await GitJournalRepo.load(
       repoManager: this,
       gitBaseDir: gitBaseDir,
       cacheDir: repoCacheDir,
       pref: pref,
       id: currentId,
-    ).getOrThrow();
+    );
+    if (r.isFailure) {
+      return fail(r);
+    }
+
+    _repo = r.getOrThrow();
 
     notifyListeners();
-    return _repo;
+    return Result(null);
   }
 
   String repoFolderName(String id) {
@@ -75,7 +78,7 @@ class RepositoryManager with ChangeNotifier {
     _ = await pref.setString(id + "_" + FOLDER_NAME_KEY, "repo_$id");
     Log.i("Creating new repo with id: $id and folder: repo_$id");
 
-    _ = await buildActiveRepository();
+    await buildActiveRepository().throwOnError();
 
     return id;
   }
@@ -97,7 +100,7 @@ class RepositoryManager with ChangeNotifier {
     await _save();
 
     Log.i("Switching to repo with id: $id");
-    var _ = await buildActiveRepository();
+    await buildActiveRepository().throwOnError();
   }
 
   Future<void> deleteCurrent() async {
@@ -117,6 +120,8 @@ class RepositoryManager with ChangeNotifier {
     currentId = repoIds[i];
 
     await _save();
-    _ = await buildActiveRepository();
+    await buildActiveRepository().throwOnError();
   }
 }
+
+// FIXME: Handle the results over here!
