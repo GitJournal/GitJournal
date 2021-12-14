@@ -6,6 +6,7 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -47,7 +48,7 @@ class RepositoryManager with ChangeNotifier {
       cacheDir: repoCacheDir,
       pref: pref,
       id: currentId,
-    );
+    ).getOrThrow();
 
     notifyListeners();
     return _repo;

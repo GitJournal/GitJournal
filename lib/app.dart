@@ -75,7 +75,7 @@ class JournalApp extends StatefulWidget {
       cacheDir: cacheDir,
       pref: pref,
     );
-    await repoManager.buildActiveRepository();
+    var _ = await repoManager.buildActiveRepository();
 
     InAppPurchases.confirmProPurchaseBoot();
 
@@ -119,7 +119,7 @@ class JournalApp extends StatefulWidget {
   ) async {
     var supportDir = await getApplicationSupportDirectory();
     var analyticsStorage = p.join(supportDir.path, 'analytics');
-    await Directory(analyticsStorage).create(recursive: true);
+    var _ = await Directory(analyticsStorage).create(recursive: true);
 
     var analytics = await Analytics.init(
       pref: pref,
@@ -172,7 +172,7 @@ class _JournalAppState extends State<JournalApp> {
         });
         return;
       }
-      _navigatorKey.currentState!
+      var _ = _navigatorKey.currentState!
           .pushNamed(AppRoute.NewNotePrefix + shortcutType);
 
       quickActions.setShortcutItems(<ShortcutItem>[
@@ -200,7 +200,7 @@ class _JournalAppState extends State<JournalApp> {
   void _afterBuild(BuildContext context) {
     if (_pendingShortcut != null) {
       var routeName = AppRoute.NewNotePrefix + _pendingShortcut!;
-      _navigatorKey.currentState!.pushNamed(routeName);
+      var _ = _navigatorKey.currentState!.pushNamed(routeName);
       _pendingShortcut = null;
     }
   }
@@ -214,7 +214,8 @@ class _JournalAppState extends State<JournalApp> {
 
     var folderConfig = Provider.of<NotesFolderConfig>(context, listen: false);
     var editor = folderConfig.defaultEditor.toInternalString();
-    _navigatorKey.currentState!.pushNamed(AppRoute.NewNotePrefix + editor);
+    var _ =
+        _navigatorKey.currentState!.pushNamed(AppRoute.NewNotePrefix + editor);
   }
 
   void _initShareSubscriptions() {

@@ -82,7 +82,7 @@ class GitJournalRepo with ChangeNotifier {
   bool remoteGitRepoConfigured = false;
   late bool fileStorageCacheReady;
 
-  static Future<GitJournalRepo> load({
+  static Future<Result<GitJournalRepo>> load({
     required String gitBaseDir,
     required String cacheDir,
     required SharedPreferences pref,
@@ -134,7 +134,11 @@ class GitJournalRepo with ChangeNotifier {
 
     if (!repoDir.existsSync()) {
       Log.i("Calling GitInit for ${storageConfig.folderName} at: $repoPath");
-      await GitRepository.init(repoPath, defaultBranch: 'main');
+      var r = await GitRepository.init(repoPath, defaultBranch: 'main');
+      if (r.isFailure) {
+        Log.e("GitInit Failed", result: r);
+        return fail(r);
+      }
 
       storageConfig.save();
     }
@@ -147,10 +151,14 @@ class GitJournalRepo with ChangeNotifier {
       // -> https://sentry.io/share/issue/bafc5c417bdb4fd196cead1d28432f12/
     }
 
-    var repo = await GitRepository.load(repoPath).getOrThrow();
+    var repoR = await GitRepository.load(repoPath);
+    if (repoR.isFailure) {
+      return fail(repoR);
+    }
+    var repo = repoR.getOrThrow();
     var remoteConfigured = repo.config.remotes.isNotEmpty;
 
-    await Directory(cacheDir).create(recursive: true);
+    var _ = await Directory(cacheDir).create(recursive: true);
 
     var fileStorageCache = FileStorageCache(cacheDir);
     var fileStorage = await fileStorageCache.load(repo);
@@ -158,7 +166,7 @@ class GitJournalRepo with ChangeNotifier {
     var headR = await repo.headHash();
     var head = headR.isFailure ? GitHash.zero() : headR.getOrThrow();
 
-    return GitJournalRepo._internal(
+    var gjRepo = GitJournalRepo._internal(
       repoManager: repoManager,
       repoPath: repoPath,
       gitBaseDirectory: gitBaseDir,
@@ -174,6 +182,7 @@ class GitJournalRepo with ChangeNotifier {
       currentBranch: await repo.currentBranch().getOrThrow(),
       headHash: head,
     );
+    return Result(gjRepo);
   }
 
   GitJournalRepo._internal({
@@ -310,7 +319,7 @@ class GitJournalRepo with ChangeNotifier {
     syncAttempts.insert(0, attempt);
     notifyListeners();
 
-    Future? noteLoadingFuture;
+    Future<void>? noteLoadingFuture;
     try {
       await _networkLock.synchronized(() async {
         await _gitRepo.fetch().throwOnError();
@@ -502,7 +511,10 @@ class GitJournalRepo with ChangeNotifier {
       var newPaths = <String>[];
       for (var note in notes) {
         oldPaths.add(note.filePath);
-        NotesFolderFS.moveNote(note, destFolder);
+        var r = NotesFolderFS.moveNote(note, destFolder);
+        if (!r) {
+          Log.e("Failed to move note to $destFolder");
+        }
         newPaths.add(note.filePath);
       }
 
@@ -585,7 +597,7 @@ class GitJournalRepo with ChangeNotifier {
       // The '4 seconds' is taken from snack_bar.dart -> _kSnackBarDisplayDuration
       // We wait an aritfical amount of time, so that the user has a chance to undo
       // their delete operation, and that commit is not synced with the server, till then.
-      await Future.delayed(4.seconds);
+      var _ = await Future.delayed(4.seconds);
     });
 
     unawaited(_syncNotes());
@@ -667,7 +679,7 @@ class GitJournalRepo with ChangeNotifier {
     notifyListeners();
   }
 
-  Future _persistConfig() async {
+  Future<void> _persistConfig() async {
     await storageConfig.save();
     await folderConfig.save();
     await gitConfig.save();
@@ -681,9 +693,10 @@ class GitJournalRepo with ChangeNotifier {
       Log.i("Old Path: $repoPath");
       Log.i("New Path: $newRepoPath");
 
-      await Directory(newRepoPath).create(recursive: true);
+      dynamic _;
+      _ = await Directory(newRepoPath).create(recursive: true);
       await _copyDirectory(repoPath, newRepoPath);
-      await Directory(repoPath).delete(recursive: true);
+      _ = await Directory(repoPath).delete(recursive: true);
 
       repoManager.rebuildRepo();
     }
@@ -733,7 +746,7 @@ class GitJournalRepo with ChangeNotifier {
     }
 
     try {
-      await repo.checkoutBranch(branchName).getOrThrow();
+      await repo.checkoutBranch(branchName).throwOnError();
       _currentBranch = branchName;
       Log.i("Done checking out $branchName");
 
@@ -776,8 +789,9 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   Future<void> delete() async {
-    await Directory(repoPath).delete(recursive: true);
-    await Directory(cacheDir).delete(recursive: true);
+    dynamic _;
+    _ = await Directory(repoPath).delete(recursive: true);
+    _ = await Directory(cacheDir).delete(recursive: true);
   }
 
   /// reset --hard the current branch to its remote branch
@@ -796,7 +810,7 @@ class GitJournalRepo with ChangeNotifier {
       }
       var remoteBranch =
           await repo.remoteBranch(remoteName, branchName).getOrThrow();
-      await repo.resetHard(remoteBranch.hash!);
+      await repo.resetHard(remoteBranch.hash!).throwOnError();
 
       numChanges = 0;
       notifyListeners();
@@ -830,13 +844,14 @@ class GitJournalRepo with ChangeNotifier {
 
 Future<void> _copyDirectory(String source, String destination) async {
   await for (var entity in Directory(source).list(recursive: false)) {
+    dynamic _;
     if (entity is Directory) {
       var newDirectory = Directory(p.join(
           Directory(destination).absolute.path, p.basename(entity.path)));
-      await newDirectory.create();
+      _ = await newDirectory.create();
       await _copyDirectory(entity.absolute.path, newDirectory.path);
     } else if (entity is File) {
-      await entity.copy(p.join(destination, p.basename(entity.path)));
+      _ = await entity.copy(p.join(destination, p.basename(entity.path)));
     }
   }
 }
