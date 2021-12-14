@@ -68,18 +68,21 @@ class RepositoryManager with ChangeNotifier {
     currentId = id;
     await _save();
 
+    dynamic _;
+
     // Generate a default folder name!
-    await pref.setString(id + "_" + FOLDER_NAME_KEY, "repo_$id");
+    _ = await pref.setString(id + "_" + FOLDER_NAME_KEY, "repo_$id");
     Log.i("Creating new repo with id: $id and folder: repo_$id");
 
-    await buildActiveRepository();
+    _ = await buildActiveRepository();
 
     return id;
   }
 
   Future<void> _save() async {
-    await pref.setString("activeRepo", currentId);
-    await pref.setStringList("gitRepos", repoIds);
+    dynamic _;
+    _ = await pref.setString("activeRepo", currentId);
+    _ = await pref.setStringList("gitRepos", repoIds);
   }
 
   void _load() {
@@ -93,18 +96,19 @@ class RepositoryManager with ChangeNotifier {
     await _save();
 
     Log.i("Switching to repo with id: $id");
-    await buildActiveRepository();
+    var _ = await buildActiveRepository();
   }
 
   Future<void> deleteCurrent() async {
     Log.i("Deleting repo: $currentId");
+    dynamic _;
 
     var i = repoIds.indexOf(currentId);
     await _repo.delete();
-    repoIds.removeAt(i);
+    _ = repoIds.removeAt(i);
 
     if (repoIds.isEmpty) {
-      var _ = await addRepoAndSwitch();
+      _ = await addRepoAndSwitch();
       return;
     }
 
@@ -112,6 +116,6 @@ class RepositoryManager with ChangeNotifier {
     currentId = repoIds[i];
 
     await _save();
-    await buildActiveRepository();
+    _ = await buildActiveRepository();
   }
 }
