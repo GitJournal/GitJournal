@@ -18,7 +18,7 @@ import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/folder/sorted_notes_folder.dart';
 import 'package:gitjournal/core/folder/sorting_mode.dart';
-import 'package:gitjournal/core/md_yaml_doc_codec.dart';
+import 'package:gitjournal/core/markdown/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/editors/note_editor.dart';

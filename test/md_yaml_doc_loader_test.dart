@@ -9,7 +9,7 @@ import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart';
 
-import 'package:gitjournal/core/md_yaml_doc_loader.dart';
+import 'package:gitjournal/core/markdown/md_yaml_doc_loader.dart';
 
 void main() {
   group('MdYamlDocLoader', () {

@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/image.dart' as core;
-import 'package:gitjournal/core/md_yaml_doc.dart';
+import 'package:gitjournal/core/markdown/md_yaml_doc.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/views/inline_tags_view.dart';

@@ -18,8 +18,8 @@ import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
 import 'file/file.dart';
 import 'folder/notes_folder_config.dart';
-import 'md_yaml_doc.dart';
-import 'note_serializer.dart';
+import 'markdown/md_yaml_note_serializer.dart';
+import 'markdown/md_yaml_doc.dart';
 
 typedef NoteSelectedFunction = void Function(Note note);
 typedef NoteBoolPropertyFunction = bool Function(Note note);

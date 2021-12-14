@@ -17,9 +17,9 @@ import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
-import 'package:gitjournal/core/md_yaml_doc.dart';
+import 'package:gitjournal/core/markdown/md_yaml_note_serializer.dart';
+import 'package:gitjournal/core/markdown/md_yaml_doc.dart';
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/core/note_serializer.dart';
 import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/utils/datetime.dart';
 

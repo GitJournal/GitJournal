@@ -15,9 +15,9 @@ import 'package:gitjournal/generated/core.pb.dart' as pb;
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
-import 'file/file.dart';
+import '../file/file.dart';
 import 'md_yaml_doc.dart';
-import 'note.dart';
+import '../note.dart';
 
 abstract class NoteSerializerInterface {
   void encode(Note note, MdYamlDoc data);

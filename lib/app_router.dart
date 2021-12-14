@@ -10,7 +10,7 @@ import 'package:function_types/function_types.dart';
 
 import 'package:gitjournal/account/account_screen.dart';
 import 'package:gitjournal/account/login_screen.dart';
-import 'package:gitjournal/core/md_yaml_doc_codec.dart';
+import 'package:gitjournal/core/markdown/md_yaml_doc_codec.dart';
 import 'package:gitjournal/editors/note_editor.dart';
 import 'package:gitjournal/history/history_screen.dart';
 import 'package:gitjournal/iap/purchase_screen.dart';
