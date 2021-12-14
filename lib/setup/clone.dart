@@ -107,7 +107,7 @@ Future<Result<void>> cloneRemotePluggable({
     }
 
     // FIXME: This will fail if the currentBranch doesn't exist!!
-    await repo.setUpstreamTo(remote, remoteBranchName).getOrThrow();
+    await repo.setUpstreamTo(remote, remoteBranchName).throwOnError();
   } else {
     Log.i("Local branches $branches");
     var branch = branches[0];
@@ -127,7 +127,7 @@ Future<Result<void>> cloneRemotePluggable({
         await repo.checkoutBranch(branch).throwOnError();
       }
 
-      await repo.setUpstreamTo(remote, remoteBranchName).getOrThrow();
+      await repo.setUpstreamTo(remote, remoteBranchName).throwOnError();
       var remoteBranchR = await repo.remoteBranch(remoteName, remoteBranchName);
       if (remoteBranchR.isSuccess) {
         Log.i("Merging '$remoteName/$remoteBranchName'");
@@ -139,11 +139,11 @@ Future<Result<void>> cloneRemotePluggable({
       }
     } else {
       Log.i("Completing - localBranch diff remote: $branch $remoteBranchName");
-      await repo.createBranch(remoteBranchName).getOrThrow();
-      await repo.checkoutBranch(remoteBranchName).getOrThrow();
+      await repo.createBranch(remoteBranchName).throwOnError();
+      await repo.checkoutBranch(remoteBranchName).throwOnError();
 
-      await repo.deleteBranch(branch).getOrThrow();
-      await repo.setUpstreamTo(remote, remoteBranchName).getOrThrow();
+      await repo.deleteBranch(branch).throwOnError();
+      await repo.setUpstreamTo(remote, remoteBranchName).throwOnError();
 
       Log.i("Merging '$remoteName/$remoteBranchName'");
       var r = await gitMergeFn(

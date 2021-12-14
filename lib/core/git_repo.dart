@@ -200,7 +200,7 @@ class GitNoteRepository {
         authorEmail: config.gitAuthorEmail,
         authorName: config.gitAuthor,
       ).throwOnError();
-      await Directory(folder.folderPath).delete(recursive: true);
+      var _ = await Directory(folder.folderPath).delete(recursive: true);
 
       return Result(null);
     });
@@ -333,9 +333,14 @@ class GitNoteRepository {
       } catch (ex, stackTrace) {
         if (ex is gb.GitException) {
           if (ex.cause == 'cannot push non-fastforwardable reference') {
-            await fetch();
-            await merge();
-            return push();
+            try {
+              await fetch().throwOnError();
+              await merge().throwOnError();
+              await push().throwOnError();
+              return Result(null);
+            } catch (ex, st) {
+              return Result.fail(ex, st);
+            }
           }
         }
         Log.e("GitPush Failed", ex: ex, stacktrace: stackTrace);

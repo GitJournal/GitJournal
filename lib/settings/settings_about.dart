@@ -34,7 +34,7 @@ class SettingsAboutPage extends StatelessWidget {
           title: LocaleKeys.settings_privacy.tr(),
           subtitle: _privacyUrl.replaceAll('https://', ''),
           onTap: () {
-            launch(_privacyUrl);
+            var _ = launch(_privacyUrl);
           },
         ),
         SettingsTile(
@@ -42,7 +42,7 @@ class SettingsAboutPage extends StatelessWidget {
           title: LocaleKeys.settings_terms.tr(),
           subtitle: _termsUrl.replaceAll('https://', ''),
           onTap: () {
-            launch(_termsUrl);
+            var _ = launch(_termsUrl);
           },
         ),
         SettingsTile(

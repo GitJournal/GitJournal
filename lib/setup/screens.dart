@@ -514,10 +514,10 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     try {
       if (_gitCloneUrl.startsWith("git@github.com:")) {
         Log.i("Launching $gitHubUrl");
-        await launch(gitHubUrl);
+        var _ = await launch(gitHubUrl);
       } else if (_gitCloneUrl.startsWith("git@gitlab.com:")) {
         Log.i("Launching $gitLabUrl");
-        await launch(gitLabUrl);
+        var _ = await launch(gitLabUrl);
       }
     } catch (err, stack) {
       Log.d('_launchDeployKeyPage: ' + err.toString());
@@ -530,9 +530,9 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
     try {
       if (_gitHostType == GitHostType.GitHub) {
-        await launch("https://github.com/new");
+        var _ = await launch("https://github.com/new");
       } else if (_gitHostType == GitHostType.GitLab) {
-        await launch("https://gitlab.com/projects/new");
+        var _ = await launch("https://gitlab.com/projects/new");
       }
     } catch (err, stack) {
       // FIXME: Error handling?

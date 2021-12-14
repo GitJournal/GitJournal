@@ -55,9 +55,11 @@ Future<Result<void>> _gitCommandViaExecutable({
     return Result.fail(ex);
   }
 
+  dynamic _;
+
   var dir = Directory.systemTemp.createTempSync();
   var temp = File("${dir.path}/key");
-  await temp.writeAsString(privateKey);
+  _ = await temp.writeAsString(privateKey);
   await temp.chmod(int.parse('0600', radix: 8));
 
   Log.i("Running git $command $remoteName");
@@ -77,7 +79,7 @@ Future<Result<void>> _gitCommandViaExecutable({
   Log.d('git $command $remoteName');
 
   var exitCode = await process.exitCode;
-  await dir.delete(recursive: true);
+  _ = await dir.delete(recursive: true);
 
   var stdoutB = <int>[];
   await for (var d in process.stdout) {
@@ -106,9 +108,11 @@ Future<Result<String>> gitDefaultBranchViaExecutable({
     return Result.fail(ex);
   }
 
+  dynamic _;
+
   var dir = Directory.systemTemp.createTempSync();
   var temp = File("${dir.path}/key");
-  await temp.writeAsString(privateKey);
+  _ = await temp.writeAsString(privateKey);
   await temp.chmod(int.parse('0600', radix: 8));
 
   var process = await Process.start(
@@ -128,7 +132,7 @@ Future<Result<String>> gitDefaultBranchViaExecutable({
   Log.d('git remote show $remoteName');
 
   var exitCode = await process.exitCode;
-  await dir.delete(recursive: true);
+  _ = await dir.delete(recursive: true);
 
   if (exitCode != 0) {
     var ex = Exception("Failed to fetch default branch, exitCode: $exitCode");
