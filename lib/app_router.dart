@@ -17,6 +17,7 @@ import 'package:gitjournal/iap/purchase_screen.dart';
 import 'package:gitjournal/iap/purchase_thankyou_screen.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
+import 'package:gitjournal/screens/error_screen.dart';
 import 'package:gitjournal/screens/folder_listing.dart';
 import 'package:gitjournal/screens/graph_view.dart';
 import 'package:gitjournal/screens/home_screen.dart';
@@ -44,6 +45,7 @@ class AppRoute {
     PurchaseScreen.routePath,
     PurchaseThankYouScreen.routePath,
     HistoryScreen.routePath,
+    ErrorScreen.routePath,
   ];
 }
 
@@ -146,6 +148,8 @@ class AppRouter {
         return PurchaseThankYouScreen();
       case HistoryScreen.routePath:
         return const HistoryScreen();
+      case ErrorScreen.routePath:
+        return const ErrorScreen();
     }
 
     if (route.startsWith(AppRoute.NewNotePrefix)) {

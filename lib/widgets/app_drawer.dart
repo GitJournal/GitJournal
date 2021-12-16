@@ -22,14 +22,15 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/history/history_screen.dart';
 import 'package:gitjournal/iap/purchase_screen.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
+import 'package:gitjournal/screens/error_screen.dart';
 import 'package:gitjournal/screens/folder_listing.dart';
 import 'package:gitjournal/screens/graph_view.dart';
 import 'package:gitjournal/screens/home_screen.dart';
 import 'package:gitjournal/screens/tag_listing.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/bug_report.dart';
+import 'package:gitjournal/setup/screens.dart';
 import 'package:gitjournal/widgets/app_drawer_header.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
 
@@ -110,12 +111,13 @@ class _AppDrawerState extends State<AppDrawer>
   @override
   Widget build(BuildContext context) {
     Widget? setupGitButton;
-    var repo = Provider.of<GitJournalRepo>(context);
+    var repoManager = Provider.of<RepositoryManager>(context);
+    var repo = repoManager.currentRepo;
     var appConfig = Provider.of<AppConfig>(context);
     var textStyle = Theme.of(context).textTheme.bodyText1;
     var currentRoute = ModalRoute.of(context)!.settings.name;
 
-    if (!repo.remoteGitRepoConfigured) {
+    if (repo?.remoteGitRepoConfigured == false) {
       setupGitButton = ListTile(
         leading: Icon(Icons.sync, color: textStyle!.color),
         title: Text(tr(LocaleKeys.drawer_setup), style: textStyle),
@@ -125,7 +127,7 @@ class _AppDrawerState extends State<AppDrawer>
         ),
         onTap: () {
           Navigator.pop(context);
-          var _ = Navigator.pushNamed(context, "/setupRemoteGit");
+          var _ = Navigator.pushNamed(context, GitHostSetupScreen.routePath);
 
           logEvent(Event.DrawerSetupGitHost);
         },
@@ -176,21 +178,23 @@ class _AppDrawerState extends State<AppDrawer>
               selected: currentRoute == LoginPage.routePath,
             ),
           if (!appConfig.proMode) divider,
-          _buildDrawerTile(
-            context,
-            icon: Icons.note,
-            title: tr(LocaleKeys.drawer_all),
-            onTap: () => _navTopLevel(context, HomeScreen.routePath),
-            selected: currentRoute == HomeScreen.routePath,
-          ),
-          _buildDrawerTile(
-            context,
-            icon: Icons.folder,
-            title: tr(LocaleKeys.drawer_folders),
-            onTap: () => _navTopLevel(context, FolderListingScreen.routePath),
-            selected: currentRoute == FolderListingScreen.routePath,
-          ),
-          if (appConfig.experimentalGraphView)
+          if (repo != null)
+            _buildDrawerTile(
+              context,
+              icon: Icons.note,
+              title: tr(LocaleKeys.drawer_all),
+              onTap: () => _navTopLevel(context, HomeScreen.routePath),
+              selected: currentRoute == HomeScreen.routePath,
+            ),
+          if (repo != null)
+            _buildDrawerTile(
+              context,
+              icon: Icons.folder,
+              title: tr(LocaleKeys.drawer_folders),
+              onTap: () => _navTopLevel(context, FolderListingScreen.routePath),
+              selected: currentRoute == FolderListingScreen.routePath,
+            ),
+          if (appConfig.experimentalGraphView && repo != null)
             _buildDrawerTile(
               context,
               icon: FontAwesomeIcons.projectDiagram,
@@ -199,7 +203,7 @@ class _AppDrawerState extends State<AppDrawer>
               onTap: () => _navTopLevel(context, GraphViewScreen.routePath),
               selected: currentRoute == GraphViewScreen.routePath,
             ),
-          if (appConfig.experimentalHistory)
+          if (appConfig.experimentalHistory && repo != null)
             _buildDrawerTile(
               context,
               icon: Icons.history,
@@ -208,14 +212,15 @@ class _AppDrawerState extends State<AppDrawer>
               onTap: () => _navTopLevel(context, HistoryScreen.routePath),
               selected: currentRoute == HistoryScreen.routePath,
             ),
-          _buildDrawerTile(
-            context,
-            icon: FontAwesomeIcons.tag,
-            isFontAwesome: true,
-            title: tr(LocaleKeys.drawer_tags),
-            onTap: () => _navTopLevel(context, TagListingScreen.routePath),
-            selected: currentRoute == TagListingScreen.routePath,
-          ),
+          if (repo != null)
+            _buildDrawerTile(
+              context,
+              icon: FontAwesomeIcons.tag,
+              isFontAwesome: true,
+              title: tr(LocaleKeys.drawer_tags),
+              onTap: () => _navTopLevel(context, TagListingScreen.routePath),
+              selected: currentRoute == TagListingScreen.routePath,
+            ),
           divider,
           _buildDrawerTile(
             context,
@@ -261,17 +266,18 @@ class _AppDrawerState extends State<AppDrawer>
               Navigator.pop(context);
             },
           ),
-          _buildDrawerTile(
-            context,
-            icon: Icons.settings,
-            title: tr(LocaleKeys.settings_title),
-            onTap: () {
-              Navigator.pop(context);
-              var _ = Navigator.pushNamed(context, "/settings");
+          if (repo != null)
+            _buildDrawerTile(
+              context,
+              icon: Icons.settings,
+              title: tr(LocaleKeys.settings_title),
+              onTap: () {
+                Navigator.pop(context);
+                var _ = Navigator.pushNamed(context, "/settings");
 
-              logEvent(Event.DrawerSettings);
-            },
-          ),
+                logEvent(Event.DrawerSettings);
+              },
+            ),
         ],
       ),
     );
@@ -332,9 +338,15 @@ class RepoTile extends StatelessWidget {
     var tile = ListTile(
       leading: icon,
       title: Text(repoManager.repoFolderName(id)),
-      onTap: () {
-        repoManager.setCurrentRepo(id);
+      onTap: () async {
         Navigator.pop(context);
+
+        var r = await repoManager.setCurrentRepo(id);
+        var route = r.isFailure ? ErrorScreen.routePath : HomeScreen.routePath;
+        var _ = Navigator.of(context).pushNamedAndRemoveUntil(
+          route,
+          (r) => true,
+        );
       },
     );
 

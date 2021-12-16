@@ -451,6 +451,9 @@ abstract class LocaleKeys {
   static const actions_newJournal = 'actions.newJournal';
   static const actions_newChecklist = 'actions.newChecklist';
   static const actions = 'actions';
+  static const screens_error_title = 'screens.error.title';
+  static const screens_error_message = 'screens.error.message';
+  static const screens_error = 'screens.error';
   static const screens_home_allNotes = 'screens.home.allNotes';
   static const screens_home = 'screens.home';
   static const screens_folders_title = 'screens.folders.title';

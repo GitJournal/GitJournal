@@ -322,6 +322,9 @@ actions:
   newJournal: New Journal Entry
   newChecklist: New Checklist
 screens:
+  error:
+    title: Error
+    message: The repo couldn't be opened. Please file a bug and recreate the repo.
   home:
     allNotes: All Notes
   folders:

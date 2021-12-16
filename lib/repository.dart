@@ -149,6 +149,8 @@ class GitJournalRepo with ChangeNotifier {
       // has disappeared?
       // FIXME: What if the '.config' file is not accessible?
       // -> https://sentry.io/share/issue/bafc5c417bdb4fd196cead1d28432f12/
+      var ex = Exception('Folder is no longer a valid Git Repo');
+      return Result.fail(ex);
     }
 
     var repoR = await GitRepository.load(repoPath);

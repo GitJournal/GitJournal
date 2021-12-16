@@ -19,7 +19,8 @@ class RepositoryManager with ChangeNotifier {
   var repoIds = <String>[];
   var currentId = DEFAULT_ID;
 
-  late GitJournalRepo _repo;
+  GitJournalRepo? _repo;
+  Object? _repoError;
 
   final String gitBaseDir;
   final String cacheDir;
@@ -35,10 +36,14 @@ class RepositoryManager with ChangeNotifier {
     Log.i("Current Id $currentId");
   }
 
-  GitJournalRepo get currentRepo => _repo;
+  GitJournalRepo? get currentRepo => _repo;
+  Object? get currentRepoError => _repoError;
 
   Future<Result<void>> buildActiveRepository() async {
     var repoCacheDir = p.join(cacheDir, currentId);
+
+    _repo = null;
+    _repoError = null;
 
     var r = await GitJournalRepo.load(
       repoManager: this,
@@ -48,6 +53,8 @@ class RepositoryManager with ChangeNotifier {
       id: currentId,
     );
     if (r.isFailure) {
+      Log.e("buildActiveRepo", result: r);
+      _repoError = r.error;
       return fail(r);
     }
 
@@ -78,7 +85,7 @@ class RepositoryManager with ChangeNotifier {
     _ = await pref.setString(id + "_" + FOLDER_NAME_KEY, "repo_$id");
     Log.i("Creating new repo with id: $id and folder: repo_$id");
 
-    await buildActiveRepository().throwOnError();
+    _ = await buildActiveRepository();
 
     return id;
   }
@@ -94,13 +101,13 @@ class RepositoryManager with ChangeNotifier {
     repoIds = pref.getStringList("gitRepos") ?? [DEFAULT_ID];
   }
 
-  Future<void> setCurrentRepo(String id) async {
+  Future<Result<void>> setCurrentRepo(String id) async {
     assert(repoIds.contains(id));
     currentId = id;
     await _save();
 
     Log.i("Switching to repo with id: $id");
-    await buildActiveRepository().throwOnError();
+    return buildActiveRepository();
   }
 
   Future<void> deleteCurrent() async {
@@ -108,7 +115,7 @@ class RepositoryManager with ChangeNotifier {
     dynamic _;
 
     var i = repoIds.indexOf(currentId);
-    await _repo.delete();
+    await _repo?.delete();
     _ = repoIds.removeAt(i);
 
     if (repoIds.isEmpty) {
@@ -120,8 +127,6 @@ class RepositoryManager with ChangeNotifier {
     currentId = repoIds[i];
 
     await _save();
-    await buildActiveRepository().throwOnError();
+    _ = await buildActiveRepository();
   }
 }
-
-// FIXME: Handle the results over here!

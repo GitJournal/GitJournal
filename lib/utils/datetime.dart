@@ -68,7 +68,7 @@ DateTime? parseDateTime(String str) {
   try {
     return GDateTime.parse(str);
   } catch (ex) {
-    Log.e("parseDateTime", ex: ex);
+    Log.e("parseDateTime - '$str'", ex: ex);
   }
 }
 

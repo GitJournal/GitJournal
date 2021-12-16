@@ -43,7 +43,7 @@ Future<void> main() async {
     pref: pref,
   );
   await repoManager.buildActiveRepository().getOrThrow();
-  var repo = repoManager.currentRepo;
+  var repo = repoManager.currentRepo!;
   var settings = repo.settings;
   var storageConfig = repo.storageConfig;
   var appRouter = AppRouter(

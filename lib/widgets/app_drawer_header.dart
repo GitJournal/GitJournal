@@ -11,12 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:function_types/function_types.dart';
-import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
+import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 
@@ -178,11 +178,15 @@ class __CurrentRepoState extends State<_CurrentRepo>
       return;
     }
 
-    var repo = context.watch<GitJournalRepo>();
-    var repoPath =
-        await repo.storageConfig.buildRepoPath(repo.gitBaseDirectory);
-    _repoFolderName = p.basename(repoPath);
+    var repoManager = context.watch<RepositoryManager>();
+    _repoFolderName = repoManager.repoFolderName(repoManager.currentId);
 
+    if (repoManager.currentRepoError != null) {
+      _gitRemoteUrl = "Error";
+      return;
+    }
+
+    var repo = context.watch<GitJournalRepo>();
     var remoteConfigs = await repo.remoteConfigs();
     if (!mounted) return;
 

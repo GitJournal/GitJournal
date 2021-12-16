@@ -8,7 +8,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'package:dart_git/utils/result.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:hive/hive.dart';
@@ -38,6 +37,7 @@ import 'package:gitjournal/iap/iap.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
+import 'package:gitjournal/screens/error_screen.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/settings/markdown_renderer_config.dart';
@@ -76,7 +76,9 @@ class JournalApp extends StatefulWidget {
       cacheDir: cacheDir,
       pref: pref,
     );
-    await repoManager.buildActiveRepository().throwOnError();
+
+    // Ignore the error, the router will show an error screen
+    var _ = await repoManager.buildActiveRepository();
 
     InAppPurchases.confirmProPurchaseBoot();
 
@@ -85,7 +87,7 @@ class JournalApp extends StatefulWidget {
         repoManager: repoManager,
         appConfig: appConfig,
         pref: pref,
-        child: const JournalApp(),
+        child: JournalApp(repoManager: repoManager),
       ),
       supportedLocales: const [
         // Arranged Alphabetically
@@ -139,7 +141,9 @@ class JournalApp extends StatefulWidget {
     );
   }
 
-  const JournalApp({Key? key}) : super(key: key);
+  final RepositoryManager repoManager;
+
+  const JournalApp({Key? key, required this.repoManager}) : super(key: key);
 
   @override
   _JournalAppState createState() => _JournalAppState();
@@ -273,15 +277,26 @@ class _JournalAppState extends State<JournalApp> {
 
   @override
   Widget build(BuildContext context) {
-    var stateContainer = Provider.of<GitJournalRepo>(context);
-    var settings = Provider.of<Settings>(context);
-    var appConfig = Provider.of<AppConfig>(context);
-    var storageConfig = Provider.of<StorageConfig>(context);
-    var router = AppRouter(
-      settings: settings,
-      appConfig: appConfig,
-      storageConfig: storageConfig,
-    );
+    var repo = widget.repoManager.currentRepo;
+
+    AppRouter? router;
+    var themeMode = ThemeMode.system;
+
+    if (repo != null) {
+      var settings = Provider.of<Settings>(context);
+      var appConfig = Provider.of<AppConfig>(context);
+      var storageConfig = Provider.of<StorageConfig>(context);
+
+      router = AppRouter(
+        settings: settings,
+        appConfig: appConfig,
+        storageConfig: storageConfig,
+      );
+
+      themeMode = settings.theme.toThemeMode();
+    }
+    var initialRoute =
+        router != null ? router.initialRoute() : ErrorScreen.routePath;
 
     /*
 
@@ -318,18 +333,23 @@ class _JournalAppState extends State<JournalApp> {
 
       theme: Themes.light,
       darkTheme: Themes.dark,
-      themeMode: settings.theme.toThemeMode(),
-
+      themeMode: themeMode,
       navigatorObservers: <NavigatorObserver>[
         AnalyticsRouteObserver(),
         SentryNavigatorObserver(),
       ],
-      initialRoute: router.initialRoute(),
+      initialRoute: initialRoute,
       debugShowCheckedModeBanner: false,
       //debugShowMaterialGrid: true,
       onGenerateRoute: (rs) {
-        var r = router
-            .generateRoute(rs, stateContainer, _sharedText, _sharedImages, () {
+        if (router == null || repo == null) {
+          return MaterialPageRoute(
+            settings: rs,
+            builder: (context) => const ErrorScreen(),
+          );
+        }
+
+        var r = router.generateRoute(rs, repo, _sharedText, _sharedImages, () {
           _sharedText = "";
           _sharedImages = [];
         });
@@ -360,19 +380,26 @@ class GitJournalChangeNotifiers extends StatelessWidget {
       value: repoManager,
       child: Consumer<RepositoryManager>(
         builder: (_, repoManager, __) => _buildMarkdownSettings(
-          child: ChangeNotifierProvider.value(
-            value: repoManager.currentRepo,
-            child: Consumer<GitJournalRepo>(
-              builder: (_, repo, __) => _buildRepoDependentProviders(repo),
-            ),
-          ),
-        ),
+            child: buildForRepo(repoManager.currentRepo)),
       ),
     );
 
     return ChangeNotifierProvider.value(
       value: appConfig,
       child: app,
+    );
+  }
+
+  Widget buildForRepo(GitJournalRepo? repo) {
+    if (repo == null) {
+      return child;
+    }
+
+    return ChangeNotifierProvider.value(
+      value: repoManager.currentRepo!,
+      child: Consumer<GitJournalRepo>(
+        builder: (_, repo, __) => _buildRepoDependentProviders(repo),
+      ),
     );
   }
 
