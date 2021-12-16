@@ -345,25 +345,11 @@ class Note implements File {
     _notifyModified();
   }
 
-  String get body {
-    return _body;
-  }
-
-  String get title {
-    return _title;
-  }
-
-  NoteType get type {
-    return _type;
-  }
-
-  Set<String> get tags {
-    return _tags;
-  }
-
-  Map<String, dynamic> get extraProps {
-    return _extraProps;
-  }
+  String get body => _body;
+  String get title => _title;
+  NoteType get type => _type;
+  Set<String> get tags => _tags;
+  Map<String, dynamic> get extraProps => _extraProps;
 
   bool get canHaveMetadata {
     if (_fileFormat == NoteFileFormat.Txt ||
@@ -381,7 +367,7 @@ class Note implements File {
   bool get pinned => extraProps["pinned"] == true;
 
   @override
-  int get hashCode => _filePath.hashCode;
+  int get hashCode => _filePath.hashCode ^ file.oid.hashCode;
 
   @override
   bool operator ==(Object other) =>
