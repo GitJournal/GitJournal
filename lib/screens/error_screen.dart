@@ -13,6 +13,7 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/settings_git_remote.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
+import 'home_screen.dart';
 
 class ErrorScreen extends StatelessWidget {
   static const routePath = '/error';
@@ -50,6 +51,25 @@ class ErrorScreen extends StatelessWidget {
           repoManager.currentRepoError.toString(),
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.subtitle2,
+        ),
+      ),
+      const SizedBox(height: 64),
+      SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          child: Text(LocaleKeys.drawer_addRepo.tr()),
+          onPressed: () async {
+            var r = await repoManager.addRepoAndSwitch();
+            Navigator.pop(context);
+
+            var route =
+                r.isFailure ? ErrorScreen.routePath : HomeScreen.routePath;
+
+            var _ = Navigator.of(context).pushNamedAndRemoveUntil(
+              route,
+              (r) => true,
+            );
+          },
         ),
       ),
       RedButton(

@@ -30,6 +30,7 @@ import 'package:gitjournal/screens/home_screen.dart';
 import 'package:gitjournal/screens/tag_listing.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/bug_report.dart';
+import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/setup/screens.dart';
 import 'package:gitjournal/widgets/app_drawer_header.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
@@ -273,7 +274,7 @@ class _AppDrawerState extends State<AppDrawer>
               title: tr(LocaleKeys.settings_title),
               onTap: () {
                 Navigator.pop(context);
-                var _ = Navigator.pushNamed(context, "/settings");
+                var _ = Navigator.pushNamed(context, SettingsScreen.routePath);
 
                 logEvent(Event.DrawerSettings);
               },

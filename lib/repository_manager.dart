@@ -68,7 +68,7 @@ class RepositoryManager with ChangeNotifier {
     return pref.getString(id + "_" + FOLDER_NAME_KEY) ?? "journal";
   }
 
-  Future<String> addRepoAndSwitch() async {
+  Future<Result<String>> addRepoAndSwitch() async {
     int i = repoIds.length;
     while (repoIds.contains(i.toString())) {
       i++;
@@ -85,9 +85,12 @@ class RepositoryManager with ChangeNotifier {
     _ = await pref.setString(id + "_" + FOLDER_NAME_KEY, "repo_$id");
     Log.i("Creating new repo with id: $id and folder: repo_$id");
 
-    _ = await buildActiveRepository();
+    var r = await buildActiveRepository();
+    if (r.isFailure) {
+      return fail(r);
+    }
 
-    return id;
+    return Result(id);
   }
 
   Future<void> _save() async {
