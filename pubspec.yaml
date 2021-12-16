@@ -99,6 +99,8 @@ dependencies:
   table_calendar: ^3.0.3
   openssh_ed25519:
     path: packages/openssh_ed25519
+  d3_force_flutter:
+    git: https://github.com/MathGaps/d3-force-flutter.git
 
 dev_dependencies:
   #flutter_driver:

@@ -316,6 +316,24 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.0.0"
+  d3_force_flutter:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "58c69a2943002a7a52a2b298c1f16b1e767f5b28"
+      url: "https://github.com/MathGaps/d3-force-flutter.git"
+    source: git
+    version: "0.0.2"
+  d3_quadtree_flutter:
+    dependency: transitive
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: e756b73567d15bf46721d68f1b876580fbcb8901
+      url: "https://github.com/MathGaps/d3-quadtree-flutter.git"
+    source: git
+    version: "0.0.3"
   dart_code_metrics:
     dependency: "direct dev"
     description:
