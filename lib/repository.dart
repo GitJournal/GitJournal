@@ -666,7 +666,7 @@ class GitJournalRepo with ChangeNotifier {
       Log.i("Old Path: $repoPath");
       Log.i("New Path: $newRepoPath");
 
-      repoManager.buildActiveRepository();
+      var _ = repoManager.buildActiveRepository();
       return;
     }
 
@@ -700,7 +700,7 @@ class GitJournalRepo with ChangeNotifier {
       await _copyDirectory(repoPath, newRepoPath);
       _ = await Directory(repoPath).delete(recursive: true);
 
-      repoManager.buildActiveRepository();
+      _ = repoManager.buildActiveRepository();
     }
   }
 
