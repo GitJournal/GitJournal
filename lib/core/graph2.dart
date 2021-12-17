@@ -23,19 +23,18 @@ Future<Graph> buildGraph(
   NotesFolderFS rootFolder,
   NoteLinksView linksView,
 ) async {
-  var nodes = <NoteNode>[];
+  var nodes = <String, NoteNode>{};
   var edges = <d3f.Edge<NoteNode>>[];
 
-  // FIXME: Make this faster?
   NoteNode _getNode(Note note) {
-    var i = nodes.indexWhere((n) => n.note.filePath == note.filePath);
-    if (i == -1) {
-      var node = NoteNode(note);
-      nodes.add(node);
+    var node = nodes[note.filePath];
+    if (node == null) {
+      node = NoteNode(note);
+      nodes[note.filePath] = node;
       return node;
     }
 
-    return nodes[i];
+    return node;
   }
 
   Future<void> _addNote(Note note) async {
@@ -67,5 +66,5 @@ Future<Graph> buildGraph(
 
   await _addFolder(rootFolder);
 
-  return Graph(nodes, edges);
+  return Graph(nodes.values.toList(), edges);
 }
