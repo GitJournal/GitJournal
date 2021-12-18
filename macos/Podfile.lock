@@ -1,8 +1,6 @@
 PODS:
   - connectivity_plus_macos (0.0.1):
     - FlutterMacOS
-  - cryptography_flutter (0.1.0):
-    - FlutterMacOS
   - device_info_plus_macos (0.0.1):
     - FlutterMacOS
   - FlutterMacOS (1.0.0)
@@ -32,7 +30,6 @@ PODS:
 
 DEPENDENCIES:
   - connectivity_plus_macos (from `Flutter/ephemeral/.symlinks/plugins/connectivity_plus_macos/macos`)
-  - cryptography_flutter (from `Flutter/ephemeral/.symlinks/plugins/cryptography_flutter/macos`)
   - device_info_plus_macos (from `Flutter/ephemeral/.symlinks/plugins/device_info_plus_macos/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
   - package_info_plus_macos (from `Flutter/ephemeral/.symlinks/plugins/package_info_plus_macos/macos`)
@@ -51,8 +48,6 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   connectivity_plus_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/connectivity_plus_macos/macos
-  cryptography_flutter:
-    :path: Flutter/ephemeral/.symlinks/plugins/cryptography_flutter/macos
   device_info_plus_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/device_info_plus_macos/macos
   FlutterMacOS:
@@ -74,7 +69,6 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   connectivity_plus_macos: 5bcc124e146fbe6796412cdcd29cc97830622bca
-  cryptography_flutter: d9ae6f7e4c477449ee409c08f9ce45760ab179be
   device_info_plus_macos: 1ad388a1ef433505c4038e7dd9605aadd1e2e9c7
   FlutterMacOS: 57701585bf7de1b3fc2bb61f6378d73bbdea8424
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
