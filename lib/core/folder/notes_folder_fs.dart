@@ -159,10 +159,6 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     return _folders;
   }
 
-  void addFile(File file) {
-    _files.add(file);
-  }
-
   Future<void> loadNotes() async {
     const maxParallel = 10;
     var futures = <Future>[];

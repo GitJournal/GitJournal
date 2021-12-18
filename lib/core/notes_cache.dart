@@ -55,13 +55,9 @@ class NotesCache {
       var parent = rootFolder.getOrBuildFolderWithSpec(parentFolderPath);
 
       var note = Note.fromProtoBuf(parent, pbNote);
-      parent.addFile(note);
+      parent.add(note);
       var _ = selectFolders.add(parent);
     }
-
-    // FIXME: Avoid having to call loadNotes,
-    //        we can cache everything required from these notes
-    //        Maybe use protobuf?
 
     // Load all the notes recursively
     // var futures = selectFolders.map((f) => f.loadNotes()).toList();
