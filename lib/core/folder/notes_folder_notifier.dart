@@ -147,7 +147,7 @@ class NotesFolderNotifier implements ChangeNotifier {
     int index,
     NotesFolder folder,
   ) {
-    if (_listeners == null) {
+    if (_listeners == null || _listeners.isEmpty) {
       return;
     }
     final localListeners = List<FolderNotificationCallback>.from(_listeners);
@@ -185,6 +185,11 @@ class NotesFolderNotifier implements ChangeNotifier {
   }
 
   void notifyThisFolderRenamed(NotesFolderFS folder, String oldPath) {
+    if (_thisFolderRenamedListeners == null ||
+        _thisFolderRenamedListeners!.isEmpty) {
+      return;
+    }
+
     final localListeners =
         List<FolderRenamedCallback>.from(_thisFolderRenamedListeners!);
     for (var listener in localListeners) {
@@ -217,7 +222,7 @@ class NotesFolderNotifier implements ChangeNotifier {
     int index,
     Note note,
   ) {
-    if (_listeners == null) {
+    if (_listeners == null || _listeners.isEmpty) {
       return;
     }
     final localListeners = List<NoteNotificationCallback>.from(_listeners);
@@ -259,6 +264,10 @@ class NotesFolderNotifier implements ChangeNotifier {
   }
 
   void notifyNoteRenamed(int index, Note note, String oldPath) {
+    if (_noteRenameListeners == null || _noteRenameListeners!.isEmpty) {
+      return;
+    }
+
     final localListeners =
         List<NoteRenamedCallback>.from(_noteRenameListeners!);
     for (var listener in localListeners) {
