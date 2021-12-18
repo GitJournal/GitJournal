@@ -187,10 +187,13 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
               reason: reason,
               customError: reasonError,
             );
+            _entityMap[file.filePath] = _files[index];
             return;
           }
 
           _files[index] = result.getOrThrow();
+          _entityMap[file.filePath] = _files[index];
+
           notifyNoteAdded(index, result.getOrThrow());
         }(i, file);
       } else if (file is Note) {
@@ -204,11 +207,13 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
               file: file,
               reason: IgnoreReason.Custom,
             );
+            _entityMap[file.filePath] = _files[index];
             return;
           }
 
           note = result.getOrThrow();
           _files[index] = note;
+          _entityMap[file.filePath] = _files[index];
 
           notifyNoteModified(index, note);
         }(i, file);
@@ -397,7 +402,10 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     assert(_entityMap.containsKey(f.filePath));
 
     var index = _files.indexWhere((n) => n.filePath == f.filePath);
-    var _ = _files.removeAt(index);
+
+    dynamic _;
+    _ = _files.removeAt(index);
+    _ = _entityMap.remove(f.filePath);
 
     if (f is Note) {
       notifyNoteRemoved(index, f);
