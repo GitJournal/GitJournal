@@ -197,14 +197,20 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         future = (int index, Note note) async {
           var result = await storage.reload(note);
           if (result.isFailure) {
+            if (result.error is NoteReloadNotRequired) {
+              return;
+            }
             _files[index] = IgnoredFile(
               file: file,
               reason: IgnoreReason.Custom,
             );
             return;
           }
-          _files[index] = result.getOrThrow();
-          notifyNoteModified(index, result.getOrThrow());
+
+          note = result.getOrThrow();
+          _files[index] = note;
+
+          notifyNoteModified(index, note);
         }(i, file);
       } else {
         continue;

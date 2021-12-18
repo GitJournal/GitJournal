@@ -60,11 +60,12 @@ class NoteStorage {
 
   static final mdYamlDocLoader = MdYamlDocLoader();
 
+  /// Fails with 'NoteReloadNotRequired' if the note doesn't need to be reloaded
   Future<Result<Note>> reload(Note note) async {
     try {
       var fileLastModified = io.File(note.fullFilePath).lastModifiedSync();
       if (note.fileLastModified == fileLastModified) {
-        return Result(note);
+        return Result.fail(NoteReloadNotRequired());
       }
       note.file = note.file.copyFile(fileLastModified: fileLastModified);
       Log.d("Note modified: ${note.filePath}");
@@ -152,3 +153,5 @@ class NoteStorage {
     return Result.fail(Exception("Unknown Note type. WTF"));
   }
 }
+
+class NoteReloadNotRequired {}
