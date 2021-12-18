@@ -159,7 +159,7 @@ class AppRouter {
       Log.i("New Note - $route");
       Log.i("EditorType: $et");
 
-      var rootFolder = repository.notesFolder;
+      var rootFolder = repository.rootFolder;
 
       var extraProps = <String, dynamic>{};
       if (settings.customMetaData.isNotEmpty) {

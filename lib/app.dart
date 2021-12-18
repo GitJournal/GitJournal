@@ -416,7 +416,7 @@ class GitJournalChangeNotifiers extends StatelessWidget {
       child: _buildNoteMaterializedViews(
         repo,
         ChangeNotifierProvider<NotesFolderFS>.value(
-          value: repo.notesFolder,
+          value: repo.rootFolder,
           child: child,
         ),
       ),

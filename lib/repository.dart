@@ -64,7 +64,7 @@ class GitJournalRepo with ChangeNotifier {
 
   late final GitNoteRepository _gitRepo;
   late final NotesCache _notesCache;
-  late final NotesFolderFS notesFolder;
+  late final NotesFolderFS rootFolder;
 
   //
   // Mutable stuff
@@ -204,7 +204,7 @@ class GitJournalRepo with ChangeNotifier {
     required GitHash headHash,
   }) {
     _gitRepo = GitNoteRepository(gitRepoPath: repoPath, config: gitConfig);
-    notesFolder = NotesFolderFS.root(folderConfig, fileStorage);
+    rootFolder = NotesFolderFS.root(folderConfig, fileStorage);
     _currentBranch = currentBranch;
 
     Log.i("Branch $_currentBranch");
@@ -231,7 +231,7 @@ class GitJournalRepo with ChangeNotifier {
 
   Future<void> _loadFromCache() async {
     var startTime = DateTime.now();
-    await _notesCache.load(notesFolder);
+    await _notesCache.load(rootFolder);
     var endTime = DateTime.now().difference(startTime);
 
     Log.i("Finished loading the notes cache - $endTime");
@@ -250,8 +250,8 @@ class GitJournalRepo with ChangeNotifier {
 
     // FIXME: We should report the notes that failed to load
     return _loadLock.synchronized(() async {
-      await notesFolder.loadRecursively();
-      await _notesCache.buildCache(notesFolder);
+      await rootFolder.loadRecursively();
+      await _notesCache.buildCache(rootFolder);
 
       var changes = await _gitRepo.numChanges();
       numChanges = changes ?? 0;
