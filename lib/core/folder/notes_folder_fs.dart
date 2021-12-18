@@ -373,6 +373,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       var ent = origEntityMap[filePath];
       if (ent is Note) {
         _files[i] = ent;
+        _entityMap[ent.filePath] = ent;
       }
     }
   }
