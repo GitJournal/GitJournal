@@ -15,6 +15,7 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   final String title;
 
   final _notes = <Note>[];
+  final _notesPaths = <String, int>{};
   final _folders = <NotesFolder>[];
 
   FlattenedNotesFolder(this._parentFolder, {required this.title}) {
@@ -71,27 +72,41 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   }
 
   void _noteAdded(int _, Note note) {
-    _notes.add(note);
-    notifyNoteAdded(_notes.length - 1, note);
+    if (!_notesPaths.containsKey(note.filePath)) {
+      _notes.add(note);
+      _notesPaths[note.filePath] = _notes.length - 1;
+      notifyNoteAdded(_notes.length - 1, note);
+    } else {
+      notifyNoteModified(_notesPaths[note.filePath]!, note);
+    }
   }
 
   void _noteRemoved(int _, Note note) {
-    var i = _notes.indexWhere((n) => n.filePath == note.filePath);
-    if (i == -1) {
+    var i = _notesPaths[note.filePath];
+    assert(i != null);
+    if (i == null) {
       return;
     }
-    assert(i != -1);
 
-    var _ = _notes.removeAt(i);
+    var removedNote = _notes.removeAt(i);
+    assert(removedNote.filePath == note.filePath);
     notifyNoteRemoved(i, note);
   }
 
   Future<void> _noteModified(int _, Note note) async {
-    notifyNoteModified(-1, note);
+    var i = _notesPaths[note.filePath];
+    assert(i != null);
+    i ??= -1;
+
+    notifyNoteModified(i, note);
   }
 
   void _noteRenamed(int _, Note note, String oldPath) {
-    notifyNoteRenamed(-1, note, oldPath);
+    var i = _notesPaths[note.filePath];
+    assert(i != null);
+    i ??= -1;
+
+    notifyNoteRenamed(i, note, oldPath);
   }
 
   @override
