@@ -142,8 +142,19 @@ class SortingMode {
   int get hashCode => order.hashCode ^ field.hashCode;
 }
 
-int _sortCreatedDesc(File a, File b) => b.created.compareTo(a.created);
-int _sortModifiedDesc(File a, File b) => b.modified.compareTo(a.modified);
+int _sortCreatedDesc(File a, File b) {
+  if (b.created == a.created) {
+    return a.filePath.compareTo(b.filePath);
+  }
+  return b.created.compareTo(a.created);
+}
+
+int _sortModifiedDesc(File a, File b) {
+  if (b.modified == a.modified) {
+    return a.filePath.compareTo(b.filePath);
+  }
+  return b.modified.compareTo(a.modified);
+}
 
 int _sortFileNameAsc(File a, File b) {
   var aFileName = a.fileName.toLowerCase();
