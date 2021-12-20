@@ -77,7 +77,8 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
       _notesPaths[note.filePath] = _notes.length - 1;
       notifyNoteAdded(_notes.length - 1, note);
     } else {
-      assert(false, '_noteAdded called on a note already added');
+      assert(
+          false, '_noteAdded called on a note already added ${note.filePath}');
       notifyNoteModified(_notesPaths[note.filePath]!, note);
     }
   }

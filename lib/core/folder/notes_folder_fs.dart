@@ -192,10 +192,11 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
             return;
           }
 
-          _files[index] = result.getOrThrow();
-          _entityMap[file.filePath] = _files[index];
+          var note = result.getOrThrow();
+          _files[index] = note;
+          _entityMap[file.filePath] = note;
 
-          notifyNoteAdded(index, result.getOrThrow());
+          notifyNoteAdded(index, note);
         }(i, file);
       } else if (file is Note) {
         future = (int index, Note note) async {
