@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2021 Vishesh Handa <me@vhanda.in>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
 import 'package:d3_force_flutter/d3_force_flutter.dart' as d3f;
 
 import 'package:gitjournal/core/folder/notes_folder.dart';
