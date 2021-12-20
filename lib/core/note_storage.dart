@@ -154,4 +154,6 @@ class NoteStorage {
   }
 }
 
-class NoteReloadNotRequired {}
+class NoteReloadNotRequired implements Exception {
+  NoteReloadNotRequired();
+}
