@@ -360,9 +360,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       assert(e is NotesFolder || e is File);
 
       if (e is File) {
-        if (e is Note) {
-          notifyNoteAdded(-1, e);
-        }
+        assert(e is! Note);
       } else {
         _addFolderListeners(e);
         notifyFolderAdded(-1, e);
