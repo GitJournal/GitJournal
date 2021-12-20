@@ -12,6 +12,7 @@ import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/editors/heuristics.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
+import 'package:gitjournal/editors/undo_redo.dart';
 import 'package:gitjournal/editors/utils/disposable_change_notifier.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
@@ -50,6 +51,7 @@ class JournalEditorState extends State<JournalEditor>
     implements EditorState {
   late Note _note;
   late TextEditingController _textController;
+  late UndoRedoStack _undoRedoStack;
   late bool _noteModified;
 
   late EditorHeuristics _heuristics;
@@ -70,6 +72,7 @@ class JournalEditorState extends State<JournalEditor>
 
     _heuristics = EditorHeuristics(text: _note.body);
     _scrollController = ScrollController(keepScrollOffset: false);
+    _undoRedoStack = UndoRedoStack();
   }
 
   @override
@@ -117,8 +120,8 @@ class JournalEditorState extends State<JournalEditor>
       body: editor,
       onUndoSelected: _undo,
       onRedoSelected: _redo,
-      undoAllowed: false,
-      redoAllowed: false,
+      undoAllowed: _undoRedoStack.undoPossible,
+      redoAllowed: _undoRedoStack.redoPossible,
       findAllowed: true,
     );
   }
@@ -161,6 +164,11 @@ class JournalEditorState extends State<JournalEditor>
     if (es != null) {
       _textController.value = es.toValue();
     }
+
+    var redraw = _undoRedoStack.textChanged(editState);
+    if (redraw) {
+      setState(() {});
+    }
   }
 
   @override
@@ -178,9 +186,19 @@ class JournalEditorState extends State<JournalEditor>
   @override
   bool get noteModified => _noteModified;
 
-  Future<void> _undo() async {}
+  Future<void> _undo() async {
+    var es = _undoRedoStack.undo();
+    setState(() {
+      _textController.value = es.toValue();
+    });
+  }
 
-  Future<void> _redo() async {}
+  Future<void> _redo() async {
+    var es = _undoRedoStack.redo();
+    setState(() {
+      _textController.value = es.toValue();
+    });
+  }
 
   @override
   SearchInfo search(String? text) {

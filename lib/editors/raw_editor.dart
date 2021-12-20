@@ -171,17 +171,15 @@ class RawEditorState extends State<RawEditor>
 
   Future<void> _undo() async {
     var es = _undoRedoStack.undo();
-    _textController.value = es.toValue();
     setState(() {
-      // To Redraw the undo/redo button state
+      _textController.value = es.toValue();
     });
   }
 
   Future<void> _redo() async {
     var es = _undoRedoStack.redo();
-    _textController.value = es.toValue();
     setState(() {
-      // To Redraw the undo/redo button state
+      _textController.value = es.toValue();
     });
   }
 
