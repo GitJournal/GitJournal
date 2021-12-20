@@ -177,14 +177,20 @@ class NotesFolderNotifier implements ChangeNotifier {
   }
 
   void notifyFolderAdded(int index, NotesFolder folder) {
+    assert(folder is NotesFolderFS);
+
+    if (this is NotesFolderFS) assert(folder.parent == this);
     _notifyFolderCallback(_folderAddedListeners, index, folder);
   }
 
   void notifyFolderRemoved(int index, NotesFolder folder) {
+    if (this is NotesFolderFS) assert(folder.parent == this);
     _notifyFolderCallback(_folderRemovedListeners, index, folder);
   }
 
   void notifyThisFolderRenamed(NotesFolderFS folder, String oldPath) {
+    if (this is NotesFolderFS) assert(folder == this);
+
     if (_thisFolderRenamedListeners == null ||
         _thisFolderRenamedListeners!.isEmpty) {
       return;
@@ -252,18 +258,26 @@ class NotesFolderNotifier implements ChangeNotifier {
   }
 
   void notifyNoteAdded(int index, Note note) {
+    if (this is NotesFolderFS) assert(note.parent == this);
+
     _notifyNoteCallback(_noteAddedListeners, index, note);
   }
 
   void notifyNoteRemoved(int index, Note note) {
+    if (this is NotesFolderFS) assert(note.parent == this);
+
     _notifyNoteCallback(_noteRemovedListeners, index, note);
   }
 
   void notifyNoteModified(int index, Note note) {
+    if (this is NotesFolderFS) assert(note.parent == this);
+
     _notifyNoteCallback(_noteModifiedListeners, index, note);
   }
 
   void notifyNoteRenamed(int index, Note note, String oldPath) {
+    if (this is NotesFolderFS) assert(note.parent == this);
+
     if (_noteRenameListeners == null || _noteRenameListeners!.isEmpty) {
       return;
     }
