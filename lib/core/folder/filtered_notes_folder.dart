@@ -21,15 +21,29 @@ class FilteredNotesFolder with NotesFolderNotifier implements NotesFolder {
 
   final _notes = <Note>[];
 
-  FilteredNotesFolder(
-    this.folder, {
-    required this.title,
-    required this.filter,
-  }) {
+  FilteredNotesFolder._internal(this.folder, this.title, this.filter);
+
+  static Future<FilteredNotesFolder> load(
+    NotesFolder parentFolder, {
+    required String title,
+    required NotesFilter filter,
+  }) async {
+    var folder = FilteredNotesFolder._internal(parentFolder, title, filter);
+    await folder._addFolder(parentFolder);
+
+    return folder;
+  }
+
+  Future<void> _addFolder(NotesFolder folder) async {
     folder.addNoteAddedListener(_noteAdded);
     folder.addNoteRemovedListener(_noteRemoved);
     folder.addNoteModifiedListener(_noteModified);
     folder.addNoteRenameListener(_noteRenamed);
+
+    // Add Individual Notes
+    for (var note in folder.notes) {
+      await _noteAdded(-1, note);
+    }
   }
 
   Future<void> _noteAdded(int _, Note note) async {
