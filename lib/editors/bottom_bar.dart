@@ -95,21 +95,18 @@ class EditorBottomBar extends StatelessWidget {
         top: false,
         child: Row(
           children: <Widget>[
-            Visibility(
-              // Remove Material when https://github.com/flutter/flutter/issues/30658 is fixed
-              child: Material(child: addIcon),
+            _Visibility(
+              child: addIcon,
               visible: allowEdits,
-              maintainSize: true,
-              maintainAnimation: true,
-              maintainState: true,
-              maintainInteractivity: false,
             ),
             const Spacer(),
-            if (undoAllowed)
-              IconButton(
+            _Visibility(
+              child: IconButton(
                 icon: const Icon(Icons.undo),
                 onPressed: undoAllowed ? onUndoSelected : null,
               ),
+              visible: undoAllowed,
+            ),
             TextButton.icon(
               icon: const Icon(Icons.folder),
               label: Text(
@@ -121,11 +118,13 @@ class EditorBottomBar extends StatelessWidget {
                 editor.common.moveNoteToFolderSelected(note);
               },
             ),
-            if (redoAllowed)
-              IconButton(
+            _Visibility(
+              child: IconButton(
                 icon: const Icon(Icons.redo),
                 onPressed: redoAllowed ? onRedoSelected : null,
               ),
+              visible: redoAllowed,
+            ),
             const Spacer(),
             // Remove Material when https://github.com/flutter/flutter/issues/30658 is fixed
             Material(child: menuIcon),
@@ -288,6 +287,30 @@ class BottomMenuSheet extends StatelessWidget {
             },
           ),
       ],
+    );
+  }
+}
+
+class _Visibility extends StatelessWidget {
+  final Widget child;
+  final bool visible;
+
+  const _Visibility({
+    required this.child,
+    required this.visible,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      // Remove Material when https://github.com/flutter/flutter/issues/30658 is fixed
+      child: Material(child: child),
+      visible: visible,
+      maintainSize: true,
+      maintainAnimation: true,
+      maintainState: true,
+      maintainInteractivity: false,
     );
   }
 }
