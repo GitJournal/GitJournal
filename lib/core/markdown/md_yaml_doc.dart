@@ -84,7 +84,8 @@ pb.Union _toUnion(dynamic val) {
     return pb.Union(dateValue: val.toProtoBuf());
   }
 
-  throw Exception("Type cannot be converted to Protobuf Union");
+  throw Exception(
+      "Type cannot be converted to Protobuf Union - ${val.runtimeType}");
 }
 
 dynamic _fromUnion(pb.Union u) {
