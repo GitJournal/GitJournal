@@ -1,9 +1,9 @@
 import 'package:d3_force_flutter/d3_force_flutter.dart' as d3f;
+
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/views/note_links_view.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
-
 import 'note.dart';
 
 class NoteNode extends d3f.Node {

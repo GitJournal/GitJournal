@@ -4,19 +4,18 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
-import 'package:gitjournal/widgets/app_drawer.dart';
 
+import 'package:d3_force_flutter/d3_force_flutter.dart' as f;
+import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/graph2.dart';
 import 'package:gitjournal/core/views/note_links_view.dart';
-
-import 'package:d3_force_flutter/d3_force_flutter.dart' as f;
+import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/widgets/app_drawer.dart';
 
 class GraphViewScreen extends StatelessWidget {
   static const routePath = '/graph';
