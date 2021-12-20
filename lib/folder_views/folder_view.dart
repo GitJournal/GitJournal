@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/app_router.dart';
-import 'package:gitjournal/core/folder/flattened_filtered_notes_folder.dart';
+import 'package:gitjournal/core/folder/filtered_notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/folder/sorted_notes_folder.dart';
@@ -61,8 +61,8 @@ class FolderView extends StatefulWidget {
 }
 
 class _FolderViewState extends State<FolderView> {
-  SortedNotesFolder? sortedNotesFolder;
-  SortedNotesFolder? pinnedNotesFolder;
+  late SortedNotesFolder sortedNotesFolder;
+  late SortedNotesFolder pinnedNotesFolder;
   FolderViewType _viewType = FolderViewType.Standard;
 
   var _headerType = StandardViewHeader.TitleGenerated;
@@ -77,13 +77,13 @@ class _FolderViewState extends State<FolderView> {
     _init();
   }
 
-  Future<void> _init() async {
+  void _init() {
     _viewType = widget.notesFolder.config.defaultView.toFolderViewType();
     _showSummary = widget.notesFolder.config.showNoteSummary;
     _headerType = widget.notesFolder.config.viewHeader;
 
-    var otherNotesFolder = SortedNotesFolder(
-      folder: await FlattenedFilteredNotesFolder.load(
+    sortedNotesFolder = SortedNotesFolder(
+      folder: FilteredNotesFolder(
         widget.notesFolder,
         title: LocaleKeys.widgets_FolderView_pinned,
         filter: (Note note) async => !note.pinned,
@@ -91,25 +91,20 @@ class _FolderViewState extends State<FolderView> {
       sortingMode: widget.notesFolder.config.sortingMode,
     );
 
-    var pinnedFolder = SortedNotesFolder(
-      folder: await FlattenedFilteredNotesFolder.load(
+    pinnedNotesFolder = SortedNotesFolder(
+      folder: FilteredNotesFolder(
         widget.notesFolder,
         title: LocaleKeys.widgets_FolderView_pinned,
         filter: (Note note) async => note.pinned,
       ),
       sortingMode: widget.notesFolder.config.sortingMode,
     );
-
-    setState(() {
-      sortedNotesFolder = otherNotesFolder;
-      pinnedNotesFolder = pinnedFolder;
-    });
   }
 
   @override
   void dispose() {
-    sortedNotesFolder?.dispose();
-    pinnedNotesFolder?.dispose();
+    sortedNotesFolder.dispose();
+    pinnedNotesFolder.dispose();
 
     super.dispose();
   }
@@ -124,9 +119,6 @@ class _FolderViewState extends State<FolderView> {
   }
 
   Widget _buildBody(BuildContext context) {
-    if (sortedNotesFolder == null) {
-      return Container();
-    }
     var title = widget.notesFolder.publicName;
     if (inSelectionMode) {
       title = NumberFormat.compact().format(selectedNotes.length);
@@ -134,7 +126,7 @@ class _FolderViewState extends State<FolderView> {
 
     var folderView = buildFolderView(
       viewType: _viewType,
-      folder: sortedNotesFolder!,
+      folder: sortedNotesFolder,
       emptyText: tr(LocaleKeys.screens_folder_view_empty),
       header: _headerType,
       showSummary: _showSummary,
@@ -143,19 +135,16 @@ class _FolderViewState extends State<FolderView> {
       isNoteSelected: (n) => selectedNotes.contains(n),
     );
 
-    Widget pinnedFolderView = const SizedBox();
-    if (pinnedNotesFolder != null) {
-      pinnedFolderView = buildFolderView(
-        viewType: _viewType,
-        folder: pinnedNotesFolder!,
-        emptyText: null,
-        header: _headerType,
-        showSummary: _showSummary,
-        noteTapped: _noteTapped,
-        noteLongPressed: _noteLongPress,
-        isNoteSelected: (n) => selectedNotes.contains(n),
-      );
-    }
+    var pinnedFolderView = buildFolderView(
+      viewType: _viewType,
+      folder: pinnedNotesFolder,
+      emptyText: null,
+      header: _headerType,
+      showSummary: _showSummary,
+      noteTapped: _noteTapped,
+      noteLongPressed: _noteLongPress,
+      isNoteSelected: (n) => selectedNotes.contains(n),
+    );
 
     var settings = Provider.of<Settings>(context);
     final showButtomMenuBar = settings.bottomMenuBar;
@@ -173,8 +162,7 @@ class _FolderViewState extends State<FolderView> {
       onPressed: _resetSelection,
     );
 
-    var havePinnedNotes =
-        pinnedNotesFolder != null ? !pinnedNotesFolder!.isEmpty : false;
+    var havePinnedNotes = !pinnedNotesFolder.isEmpty;
 
     return NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -352,23 +340,20 @@ class _FolderViewState extends State<FolderView> {
   }
 
   Future<void> _sortButtonPressed() async {
-    if (sortedNotesFolder == null) {
-      return;
-    }
     var newSortingMode = await showDialog<SortingMode>(
       context: context,
       builder: (BuildContext context) =>
-          SortingModeSelector(sortedNotesFolder!.sortingMode),
+          SortingModeSelector(sortedNotesFolder.sortingMode),
     );
 
     if (newSortingMode != null) {
-      var folderConfig = sortedNotesFolder!.config;
+      var folderConfig = sortedNotesFolder.config;
       folderConfig.sortingField = newSortingMode.field;
       folderConfig.sortingOrder = newSortingMode.order;
       folderConfig.save();
 
       setState(() {
-        sortedNotesFolder!.changeSortingMode(newSortingMode);
+        sortedNotesFolder.changeSortingMode(newSortingMode);
       });
     }
   }
@@ -385,7 +370,7 @@ class _FolderViewState extends State<FolderView> {
             _headerType = newHeader;
           });
 
-          var folderConfig = sortedNotesFolder!.config;
+          var folderConfig = sortedNotesFolder.config;
           folderConfig.viewHeader = _headerType;
           folderConfig.save();
         }
@@ -395,7 +380,7 @@ class _FolderViewState extends State<FolderView> {
             _showSummary = newVal;
           });
 
-          var folderConfig = sortedNotesFolder!.config;
+          var folderConfig = sortedNotesFolder.config;
           folderConfig.showNoteSummary = newVal;
           folderConfig.save();
         }
@@ -583,10 +568,7 @@ class _FolderViewState extends State<FolderView> {
           logEvent(Event.SearchButtonPressed);
           var _ = showSearch(
             context: context,
-            delegate: NoteSearchDelegate(
-              sortedNotesFolder!.notes,
-              _viewType,
-            ),
+            delegate: NoteSearchDelegate(sortedNotesFolder.notes, _viewType),
           );
         },
       ),
