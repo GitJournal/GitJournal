@@ -41,6 +41,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       : _parent = parent {
     assert(!_folderPath.startsWith(p.separator));
     assert(!_folderPath.endsWith(p.separator));
+    assert(_folderPath.isNotEmpty);
   }
 
   NotesFolderFS.root(this._config, this.fileStorage)
@@ -376,9 +377,24 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       }
 
       var ent = origEntityMap[filePath];
+      assert(ent is File);
       if (ent is Note) {
         _files[i] = ent;
         _entityMap[ent.filePath] = ent;
+      }
+    }
+
+    for (var i = 0; i < _folders.length; i++) {
+      var folderPath = _folders[i].folderPath;
+      if (!pathsPossiblyChanged.contains(folderPath)) {
+        continue;
+      }
+
+      var ent = origEntityMap[folderPath];
+      assert(ent is NotesFolderFS);
+      if (ent is NotesFolderFS) {
+        _folders[i] = ent;
+        _entityMap[ent.folderPath] = ent;
       }
     }
   }
