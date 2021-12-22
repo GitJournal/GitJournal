@@ -26,30 +26,30 @@ class Image {
   static Future<Image> copyIntoFs(NotesFolderFS parent, String filePath) async {
     var hash = await _md5Hash(filePath);
     var ext = p.extension(filePath);
-    var absImagePath = Image._buildImagePath(parent, hash.toString() + ext);
+    var imagePath = Image._buildImagePath(parent, hash.toString() + ext);
 
     // FIXME: Handle errors in copying / reading the file
-    var _ = await File(filePath).copy(absImagePath);
+    var _ = await File(filePath).copy(p.join(parent.repoPath, imagePath));
 
-    return Image._(parent, absImagePath, hash);
+    return Image._(parent, imagePath, hash);
   }
 
   static String _buildImagePath(NotesFolderFS parent, String imageFileName) {
-    String baseFolder;
+    String folderPath;
 
     var imageSpec = parent.config.imageLocationSpec;
     if (imageSpec == '.') {
-      baseFolder = parent.folderPath;
+      folderPath = parent.folderPath;
     } else {
       var folder = parent.rootFolder.getFolderWithSpec(imageSpec);
       if (folder != null) {
-        baseFolder = folder.folderPath;
+        folderPath = folder.folderPath;
       } else {
-        baseFolder = parent.folderPath;
+        folderPath = parent.folderPath;
       }
     }
 
-    return p.join(baseFolder, imageFileName);
+    return p.join(folderPath, imageFileName);
   }
 
   String toMarkup(NoteFileFormat? fileFormat) {

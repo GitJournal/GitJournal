@@ -116,7 +116,7 @@ class MarkdownRenderer extends StatelessWidget {
         }
       },
       imageBuilder: (url, title, alt) => MarkdownImage(
-          url, note.parent.folderPath + p.separator,
+          url, p.join(note.repoPath, note.parent.folderPath),
           titel: title, altText: alt),
       extensionSet: markdownExtensions(hardWrapEnabled: settings.hardWrap),
     );

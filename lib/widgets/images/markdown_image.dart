@@ -14,6 +14,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import 'package:universal_io/io.dart';
 
@@ -42,8 +43,8 @@ class MarkdownImage extends StatelessWidget {
       {double? width, double? height, String? altText, String? titel}) {
     final file = ((uri.isScheme("http") || uri.isScheme("https"))
         ? DefaultCacheManager().getSingleFile(uri.toString())
-        : Future.sync(
-            () => File.fromUri(Uri.parse(imageDirectory + uri.toString()))));
+        : Future.sync(() =>
+            File.fromUri(Uri.parse(p.join(imageDirectory, uri.toString())))));
 
     final data = file.then(
         (value) => value.path.endsWith(".svg") ? value.readAsString() : file);
@@ -171,7 +172,7 @@ class MarkdownImage extends StatelessWidget {
                 }
 
                 return GestureDetector(
-                  child: Hero(tag: im, child: im),
+                  child: im,
                   onTap: () {
                     var _ = Navigator.push(
                       context,
