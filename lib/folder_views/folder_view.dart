@@ -9,11 +9,11 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:git_bindings/git_bindings.dart';
-import 'package:gitjournal/core/folder/filtered_notes_folder.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/app_router.dart';
+import 'package:gitjournal/core/folder/filtered_notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/folder/sorted_notes_folder.dart';
