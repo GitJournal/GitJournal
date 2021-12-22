@@ -104,7 +104,7 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   }
 
   void _noteRenamed(int _, Note note, String oldPath) {
-    var i = _notesPaths[note.filePath];
+    var i = _notesPaths[oldPath];
     assert(i != null);
     i ??= -1;
 
