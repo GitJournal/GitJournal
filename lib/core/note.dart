@@ -442,8 +442,14 @@ class Note implements File {
 
   @override
   $pb.GeneratedMessage toProtoBuf() {
+    // Not sure why this is happening
+    dynamic pbFile = file.toProtoBuf();
+    if (pbFile is pb.Note) {
+      pbFile = pbFile.file;
+    }
+
     return pb.Note(
-      file: file.toProtoBuf() as pb.File,
+      file: pbFile,
       title: title,
       body: body,
       type: _typeToProto(type),
