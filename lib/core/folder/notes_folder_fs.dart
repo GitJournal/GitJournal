@@ -656,12 +656,16 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
     // The file will not exist for new notes
     var file = io.File(oldFilePath);
-    if (file.existsSync()) {
+    var fileExists = file.existsSync();
+    if (fileExists) {
+      assert(_files.contains(note));
       var _ = file.renameSync(newFilePath);
     }
     note.applyFilePath(newFilePath);
 
-    _noteRenamed(note, oldFilePath);
+    if (fileExists) {
+      _noteRenamed(note, oldFilePath);
+    }
   }
 
   static bool moveNote(Note note, NotesFolderFS destFolder) {
