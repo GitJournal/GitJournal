@@ -678,6 +678,25 @@ class Union extends $pb.GeneratedMessage {
             ? ''
             : 'intValue',
         protoName: 'intValue')
+    ..pc<Union>(
+        5,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'listValue',
+        $pb.PbFieldType.PM,
+        protoName: 'listValue',
+        subBuilder: Union.create)
+    ..m<$core.String, Union>(
+        6,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'mapValue',
+        protoName: 'mapValue',
+        entryClassName: 'Union.MapValueEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OM,
+        valueCreator: Union.create,
+        packageName: const $pb.PackageName('gitjournal'))
     ..hasRequiredFields = false;
 
   Union._() : super();
@@ -686,6 +705,8 @@ class Union extends $pb.GeneratedMessage {
     $core.String? stringValue,
     DateTimeAnyTz? dateValue,
     $fixnum.Int64? intValue,
+    $core.Iterable<Union>? listValue,
+    $core.Map<$core.String, Union>? mapValue,
   }) {
     final _result = create();
     if (booleanValue != null) {
@@ -699,6 +720,12 @@ class Union extends $pb.GeneratedMessage {
     }
     if (intValue != null) {
       _result.intValue = intValue;
+    }
+    if (listValue != null) {
+      _result.listValue.addAll(listValue);
+    }
+    if (mapValue != null) {
+      _result.mapValue.addAll(mapValue);
     }
     return _result;
   }
@@ -781,6 +808,12 @@ class Union extends $pb.GeneratedMessage {
   $core.bool hasIntValue() => $_has(3);
   @$pb.TagNumber(4)
   void clearIntValue() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.List<Union> get listValue => $_getList(4);
+
+  @$pb.TagNumber(6)
+  $core.Map<$core.String, Union> get mapValue => $_getMap(5);
 }
 
 class DateTimeAnyTz extends $pb.GeneratedMessage {

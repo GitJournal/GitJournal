@@ -63,6 +63,9 @@ message Union {
         DateTimeAnyTz dateValue = 3;
         int64 intValue = 4;
     }
+
+    repeated Union listValue = 5;
+    map<string, Union> mapValue = 6;
 }
 
 

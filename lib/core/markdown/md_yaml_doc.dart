@@ -10,6 +10,7 @@ import 'package:flutter/foundation.dart';
 
 import 'package:collection/collection.dart';
 import 'package:fixnum/fixnum.dart' as fixnum;
+import 'package:yaml/yaml.dart';
 
 import 'package:gitjournal/generated/core.pb.dart' as pb;
 import 'package:gitjournal/utils/datetime.dart';
@@ -84,6 +85,24 @@ pb.Union _toUnion(dynamic val) {
     return pb.Union(dateValue: val.toProtoBuf());
   }
 
+  if (val is YamlList || val is List) {
+    var list = <pb.Union>[];
+    for (var v in val) {
+      list.add(_toUnion(v));
+    }
+
+    return pb.Union(listValue: list);
+  }
+
+  if (val is Map) {
+    var map = <String, pb.Union>{};
+    for (var e in val.entries) {
+      map[e.key.toString()] = _toUnion(e.value);
+    }
+
+    return pb.Union(mapValue: map);
+  }
+
   throw Exception(
       "Type cannot be converted to Protobuf Union - ${val.runtimeType}");
 }
@@ -97,6 +116,18 @@ dynamic _fromUnion(pb.Union u) {
     return u.booleanValue;
   } else if (u.hasDateValue()) {
     return u.dateValue.toDateTime();
+  } else if (u.listValue.isNotEmpty) {
+    var list = <dynamic>[];
+    for (var v in u.listValue) {
+      list.add(_fromUnion(v));
+    }
+    return list;
+  } else if (u.mapValue.isNotEmpty) {
+    var map = <String, dynamic>{};
+    for (var e in u.mapValue.entries) {
+      map[e.key] = _fromUnion(e.value);
+    }
+    return map;
   }
 
   throw Exception("Type cannot be converted from Protobuf Union");

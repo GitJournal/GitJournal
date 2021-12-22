@@ -270,15 +270,49 @@ const Union$json = const {
       '10': 'dateValue'
     },
     const {'1': 'intValue', '3': 4, '4': 1, '5': 3, '9': 0, '10': 'intValue'},
+    const {
+      '1': 'listValue',
+      '3': 5,
+      '4': 3,
+      '5': 11,
+      '6': '.gitjournal.Union',
+      '10': 'listValue'
+    },
+    const {
+      '1': 'mapValue',
+      '3': 6,
+      '4': 3,
+      '5': 11,
+      '6': '.gitjournal.Union.MapValueEntry',
+      '10': 'mapValue'
+    },
   ],
+  '3': const [Union_MapValueEntry$json],
   '8': const [
     const {'1': 'UnionOneof'},
   ],
 };
 
+@$core.Deprecated('Use unionDescriptor instead')
+const Union_MapValueEntry$json = const {
+  '1': 'MapValueEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {
+      '1': 'value',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.gitjournal.Union',
+      '10': 'value'
+    },
+  ],
+  '7': const {'7': true},
+};
+
 /// Descriptor for `Union`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List unionDescriptor = $convert.base64Decode(
-    'CgVVbmlvbhIkCgxib29sZWFuVmFsdWUYASABKAhIAFIMYm9vbGVhblZhbHVlEiIKC3N0cmluZ1ZhbHVlGAIgASgJSABSC3N0cmluZ1ZhbHVlEjkKCWRhdGVWYWx1ZRgDIAEoCzIZLmdpdGpvdXJuYWwuRGF0ZVRpbWVBbnlUekgAUglkYXRlVmFsdWUSHAoIaW50VmFsdWUYBCABKANIAFIIaW50VmFsdWVCDAoKVW5pb25PbmVvZg==');
+    'CgVVbmlvbhIkCgxib29sZWFuVmFsdWUYASABKAhIAFIMYm9vbGVhblZhbHVlEiIKC3N0cmluZ1ZhbHVlGAIgASgJSABSC3N0cmluZ1ZhbHVlEjkKCWRhdGVWYWx1ZRgDIAEoCzIZLmdpdGpvdXJuYWwuRGF0ZVRpbWVBbnlUekgAUglkYXRlVmFsdWUSHAoIaW50VmFsdWUYBCABKANIAFIIaW50VmFsdWUSLwoJbGlzdFZhbHVlGAUgAygLMhEuZ2l0am91cm5hbC5VbmlvblIJbGlzdFZhbHVlEjsKCG1hcFZhbHVlGAYgAygLMh8uZ2l0am91cm5hbC5Vbmlvbi5NYXBWYWx1ZUVudHJ5UghtYXBWYWx1ZRpOCg1NYXBWYWx1ZUVudHJ5EhAKA2tleRgBIAEoCVIDa2V5EicKBXZhbHVlGAIgASgLMhEuZ2l0am91cm5hbC5VbmlvblIFdmFsdWU6AjgBQgwKClVuaW9uT25lb2Y=');
 @$core.Deprecated('Use dateTimeAnyTzDescriptor instead')
 const DateTimeAnyTz$json = const {
   '1': 'DateTimeAnyTz',
