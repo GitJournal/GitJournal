@@ -12,6 +12,7 @@ import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/sorting_mode.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/views/summary_view.dart';
+import 'package:gitjournal/folder_views/journal_view.dart';
 import 'package:gitjournal/folder_views/list_view.dart';
 import 'package:gitjournal/widgets/highlighted_text.dart';
 
@@ -63,6 +64,17 @@ class StandardView extends StatelessWidget {
     return FutureBuilder(
       future: () async {
         var summary = await summaryProvider.fetch(note);
+        if (note.type == NoteType.Journal) {
+          return JournalNoteListTile(
+            searchTerm: searchTerm,
+            searchTermLowerCase: searchTermLowerCase,
+            noteTapped: noteTapped,
+            noteLongPressed: noteLongPressed,
+            note: note,
+            isSelected: isSelected,
+            noteSummary: summary,
+          );
+        }
         return StandardNoteListTile(
           headerType: headerType,
           searchTerm: searchTerm,
@@ -78,6 +90,17 @@ class StandardView extends StatelessWidget {
       builder: (context, AsyncSnapshot<Widget> snapshot) {
         if (snapshot.hasData) {
           return snapshot.data as Widget;
+        }
+        if (note.type == NoteType.Journal) {
+          return JournalNoteListTile(
+            searchTerm: searchTerm,
+            searchTermLowerCase: searchTermLowerCase,
+            noteTapped: noteTapped,
+            noteLongPressed: noteLongPressed,
+            note: note,
+            isSelected: isSelected,
+            noteSummary: "",
+          );
         }
         return StandardNoteListTile(
           headerType: headerType,
