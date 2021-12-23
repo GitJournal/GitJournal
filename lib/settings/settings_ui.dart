@@ -62,6 +62,20 @@ class SettingsUIScreen extends StatelessWidget {
               var _ = Navigator.push(context, route);
             },
           ),
+        if (feature_themes)
+          SettingsTile(
+            title: LocaleKeys.settings_theme_dark.tr(),
+            iconData: FontAwesomeIcons.solidMoon,
+            onTap: () {
+              var route = MaterialPageRoute(
+                builder: (context) =>
+                    const SettingsThemeScreen(Brightness.dark),
+                settings:
+                    const RouteSettings(name: SettingsThemeScreen.routePath),
+              );
+              var _ = Navigator.push(context, route);
+            },
+          ),
         const LanguageSelector(),
         ListTile(
           title: Text(tr(LocaleKeys.settings_display_images_title)),

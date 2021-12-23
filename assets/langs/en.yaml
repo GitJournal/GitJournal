@@ -121,8 +121,8 @@ settings:
         vectorGraphics: Vector Graphics (.svg)
         vectorGraphicsAdjustColors: Colors to Adjust
   theme:
-    light: Light
-    dark: Dark
+    light: Light Theme
+    dark: Dark Theme
     default: System Default
   gitAuthor: Git Author Settings
   versionInfo: GitJournal Version

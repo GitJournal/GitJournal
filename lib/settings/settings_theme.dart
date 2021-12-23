@@ -12,6 +12,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/screens/home_screen.dart';
+import 'package:gitjournal/themes.dart';
 
 class SettingsThemeScreen extends StatefulWidget {
   static const routePath = '/settings/ui/theme';
@@ -27,9 +28,16 @@ class SettingsThemeScreen extends StatefulWidget {
 class _SettingsThemeState extends State<SettingsThemeScreen> {
   @override
   Widget build(BuildContext context) {
+    var mq = MediaQuery.of(context);
+
     var body = CarouselSlider(
-      options: CarouselOptions(height: 400.0),
-      items: [0, 1, 2, 3, 4, 5].map((i) {
+      options: CarouselOptions(
+        height: mq.size.height * 0.75,
+        enlargeCenterPage: true,
+        viewportFraction: 0.55,
+        enableInfiniteScroll: false,
+      ),
+      items: [0, 1, 2, 3].map((i) {
         return Builder(
           builder: (BuildContext context) {
             return Container(
@@ -43,58 +51,110 @@ class _SettingsThemeState extends State<SettingsThemeScreen> {
       }).toList(),
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        // FIXME: Change this title
-        title: Text(tr(LocaleKeys.settings_fileTypes_title)),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+    var title = widget.brightness == Brightness.light
+        ? LocaleKeys.settings_theme_light.tr()
+        : LocaleKeys.settings_theme_dark.tr();
+
+    return Theme(
+      data: widget.brightness == Brightness.light ? Themes.light : Themes.dark,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(title),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
         ),
+        body: body,
       ),
-      body: body,
     );
   }
 
   Widget homeScreen(int i) {
     var themes = [
-      FlexScheme.mandyRed,
-      FlexScheme.blue,
-      FlexScheme.bigStone,
-      FlexScheme.brandBlue,
-      FlexScheme.amber,
-      FlexScheme.greyLaw,
+      GitJournalTheme.fromFlexLight(
+        name: "Mandy Red",
+        flexScheme: FlexScheme.mandyRed,
+      ),
+      GitJournalTheme.fromFlexLight(
+        name: "Blue",
+        flexScheme: FlexScheme.blue,
+      ),
+      GitJournalTheme.fromFlexLight(
+        name: "Big Stone",
+        flexScheme: FlexScheme.bigStone,
+      ),
+      GitJournalTheme.fromFlexLight(
+        name: "Amber",
+        flexScheme: FlexScheme.amber,
+      ),
     ];
-    var theme = Theme.of(context);
+
+    return _GitJournalThemeView(gjTheme: themes[i]);
+  }
+}
+
+class _GitJournalThemeView extends StatelessWidget {
+  final GitJournalTheme gjTheme;
+
+  const _GitJournalThemeView({required this.gjTheme, Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     var mq = MediaQuery.of(context);
 
-    var homeScreen = Transform.scale(
-      scale: 0.85,
-      child: Container(
-        padding: const EdgeInsets.all(2.0),
-        color: theme.colorScheme.secondary.withAlpha(256 ~/ 10),
-        child: SizedBox(
-          width: mq.size.width,
-          height: mq.size.height,
-          child: IgnorePointer(child: HomeScreen()),
-        ),
+    var homeScreen = Theme(
+      data: gjTheme.themeData,
+      child: SizedBox(
+        width: mq.size.width,
+        height: mq.size.height,
+        child: IgnorePointer(child: HomeScreen()),
       ),
-      alignment: Alignment.bottomCenter,
     );
 
-    return Theme(
-      data: FlexColorScheme.light(scheme: themes[i]).toTheme,
-      child: homeScreen,
+    var theme = Theme.of(context);
+
+    return FittedBox(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Container(
+              child: homeScreen,
+              decoration: BoxDecoration(
+                border: Border.all(color: theme.dividerColor),
+              ),
+            ),
+            const SizedBox(height: 32),
+            Text(
+              gjTheme.name,
+              style: Theme.of(context).textTheme.headline3!.copyWith(
+                    fontWeight: FontWeight.w400,
+                  ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
 
 // 1. Improve the carrosuel
-// 2. Add a name of it
 // 3. Show Telegram type animation when changing the theme
-// 4. Make the 'home screen' view bigger
 // 5. Hook it up so the theme is actually saved
 //
-// Have a class called GitJournalTheme
+
+class GitJournalTheme {
+  final ThemeData themeData;
+  final String name;
+
+  GitJournalTheme({required this.name, required this.themeData});
+
+  GitJournalTheme.fromFlexLight({
+    required this.name,
+    required FlexScheme flexScheme,
+  }) : themeData = FlexColorScheme.light(scheme: flexScheme).toTheme;
+}
