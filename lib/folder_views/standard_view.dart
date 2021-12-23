@@ -35,8 +35,6 @@ class StandardView extends StatelessWidget {
   final String searchTerm;
   final String searchTermLowerCase;
 
-  static final _dateFormat = DateFormat('dd MMM, yyyy');
-
   StandardView({
     required this.folder,
     required this.noteTapped,
@@ -65,23 +63,66 @@ class StandardView extends StatelessWidget {
     return FutureBuilder(
       future: () async {
         var summary = await summaryProvider.fetch(note);
-        return _buildRowWithSummary(context, note, isSelected, summary);
+        return StandardNoteListTile(
+          headerType: headerType,
+          searchTerm: searchTerm,
+          searchTermLowerCase: searchTermLowerCase,
+          showSummary: showSummary,
+          noteTapped: noteTapped,
+          noteLongPressed: noteLongPressed,
+          note: note,
+          isSelected: isSelected,
+          noteSummary: summary,
+        );
       }(),
       builder: (context, AsyncSnapshot<Widget> snapshot) {
         if (snapshot.hasData) {
           return snapshot.data as Widget;
         }
-        return _buildRowWithSummary(context, note, isSelected, "");
+        return StandardNoteListTile(
+          headerType: headerType,
+          searchTerm: searchTerm,
+          searchTermLowerCase: searchTermLowerCase,
+          showSummary: showSummary,
+          noteTapped: noteTapped,
+          noteLongPressed: noteLongPressed,
+          note: note,
+          isSelected: isSelected,
+          noteSummary: "",
+        );
       },
     );
   }
+}
 
-  Widget _buildRowWithSummary(
-    BuildContext context,
-    Note note,
-    bool isSelected,
-    String noteSummary,
-  ) {
+class StandardNoteListTile extends StatelessWidget {
+  const StandardNoteListTile({
+    Key? key,
+    required this.headerType,
+    required this.searchTerm,
+    required this.searchTermLowerCase,
+    required this.showSummary,
+    required this.noteTapped,
+    required this.noteLongPressed,
+    required this.note,
+    required this.isSelected,
+    required this.noteSummary,
+  }) : super(key: key);
+
+  static final _dateFormat = DateFormat('dd MMM, yyyy');
+
+  final StandardViewHeader headerType;
+  final String searchTerm;
+  final String searchTermLowerCase;
+  final bool showSummary;
+  final NoteSelectedFunction noteTapped;
+  final NoteSelectedFunction noteLongPressed;
+  final Note note;
+  final bool isSelected;
+  final String noteSummary;
+
+  @override
+  Widget build(BuildContext context) {
     String title;
     switch (headerType) {
       case StandardViewHeader.TitleOrFileName:
@@ -114,7 +155,7 @@ class StandardView extends StatelessWidget {
     Widget trailing = Container();
 
     DateTime? date;
-    var sortingField = folder.config.sortingMode.field;
+    var sortingField = note.parent.config.sortingMode.field;
     if (sortingField == SortingField.Modified) {
       date = note.modified;
     } else if (sortingField == SortingField.Created) {

@@ -25,9 +25,6 @@ class JournalView extends StatelessWidget {
   final String searchTerm;
   final String searchTermLowerCase;
 
-  static final _dateFormat = DateFormat('dd MMM, yyyy  ');
-  static final _timeFormat = DateFormat('Hm');
-
   JournalView({
     required this.folder,
     required this.noteTapped,
@@ -54,27 +51,63 @@ class JournalView extends StatelessWidget {
     return FutureBuilder(
       future: () async {
         var summary = await summaryProvider.fetch(note);
-        return _buildRowWithSummary(context, note, isSelected, summary);
+        return JournalNoteListTile(
+          searchTerm: searchTerm,
+          searchTermLowerCase: searchTermLowerCase,
+          noteTapped: noteTapped,
+          noteLongPressed: noteLongPressed,
+          note: note,
+          isSelected: isSelected,
+          noteSummary: summary,
+        );
       }(),
-      builder: (context, AsyncSnapshot<Widget> snapshot) {
+      builder: (context, AsyncSnapshot<JournalNoteListTile> snapshot) {
         if (snapshot.hasData) {
-          return snapshot.data as Widget;
+          return snapshot.data as JournalNoteListTile;
         }
-        return _buildRowWithSummary(context, note, isSelected, "");
+        return JournalNoteListTile(
+          searchTerm: searchTerm,
+          searchTermLowerCase: searchTermLowerCase,
+          noteTapped: noteTapped,
+          noteLongPressed: noteLongPressed,
+          note: note,
+          isSelected: isSelected,
+          noteSummary: "",
+        );
       },
     );
   }
+}
 
-  Widget _buildRowWithSummary(
-    BuildContext context,
-    Note note,
-    bool isSelected,
-    String noteSummary,
-  ) {
+class JournalNoteListTile extends StatelessWidget {
+  static final _dateFormat = DateFormat('dd MMM, yyyy  ');
+  static final _timeFormat = DateFormat('Hm');
+
+  const JournalNoteListTile({
+    Key? key,
+    required this.searchTerm,
+    required this.searchTermLowerCase,
+    required this.noteTapped,
+    required this.noteLongPressed,
+    required this.note,
+    required this.isSelected,
+    required this.noteSummary,
+  }) : super(key: key);
+
+  final String searchTerm;
+  final String searchTermLowerCase;
+  final NoteSelectedFunction noteTapped;
+  final NoteSelectedFunction noteLongPressed;
+  final Note note;
+  final bool isSelected;
+  final String noteSummary;
+
+  @override
+  Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
 
     DateTime? date;
-    var sortingField = folder.config.sortingMode.field;
+    var sortingField = note.parent.config.sortingMode.field;
     if (sortingField == SortingField.Created) {
       date = note.created;
     } else {
