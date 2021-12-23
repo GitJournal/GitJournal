@@ -20,6 +20,9 @@ import 'settings_sharedpref.dart';
 const DEFAULT_ID = "0";
 const SETTINGS_VERSION = 3;
 
+const DEFAULT_LIGHT_THEME_NAME = "LightDefault";
+const DEFAULT_DARK_THEME_NAME = "DarkDefault";
+
 class Settings extends ChangeNotifier with SettingsSharedPref {
   Settings(this.id, this.pref);
 
@@ -41,6 +44,8 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
 
   SettingsHomeScreen homeScreen = SettingsHomeScreen.Default;
   SettingsTheme theme = SettingsTheme.Default;
+  String lightTheme = DEFAULT_LIGHT_THEME_NAME;
+  String darkTheme = DEFAULT_DARK_THEME_NAME;
 
   SettingsMarkdownDefaultView markdownDefaultView =
       SettingsMarkdownDefaultView.Default;
@@ -81,6 +86,8 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
 
     homeScreen = SettingsHomeScreen.fromInternalString(getString("homeScreen"));
     theme = SettingsTheme.fromInternalString(getString("theme"));
+    lightTheme = getString("lightTheme") ?? lightTheme;
+    darkTheme = getString("darkTheme") ?? darkTheme;
 
     zenMode = getBool("zenMode") ?? zenMode;
     swipeToDelete = getBool("swipeToDelete") ?? swipeToDelete;
@@ -121,6 +128,8 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
         def.homeScreen.toInternalString());
     await setString(
         "theme", theme.toInternalString(), def.theme.toInternalString());
+    await setString("lightTheme", lightTheme, def.lightTheme);
+    await setString("darkTheme", darkTheme, def.darkTheme);
 
     await setBool("zenMode", zenMode, def.zenMode);
     await setBool("swipeToDelete", swipeToDelete, def.swipeToDelete);
@@ -148,6 +157,8 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
       'markdownLastUsedView': markdownLastUsedView.toInternalString(),
       'homeScreen': homeScreen.toInternalString(),
       'theme': theme.toInternalString(),
+      'lightTheme': lightTheme,
+      'darkTheme': darkTheme,
       'zenMode': zenMode.toString(),
       'swipeToDelete': swipeToDelete.toString(),
       'emojiParser': emojiParser.toString(),

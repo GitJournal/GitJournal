@@ -6,8 +6,10 @@
 
 import 'package:flutter/material.dart';
 
+import 'settings/settings.dart';
+
 class Themes {
-  static final light = ThemeData(
+  static final _light = ThemeData(
     colorScheme: ColorScheme.fromSwatch(
       primarySwatch: Colors.green,
     ).copyWith(
@@ -33,7 +35,7 @@ class Themes {
     }),
   );
 
-  static final dark = ThemeData(
+  static final _dark = ThemeData(
     colorScheme: ColorScheme.fromSwatch(
       primarySwatch: Colors.grey,
       brightness: Brightness.dark,
@@ -57,4 +59,15 @@ class Themes {
       TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
     }),
   );
+
+  static ThemeData fromName(String name) {
+    switch (name) {
+      case DEFAULT_LIGHT_THEME_NAME:
+        return _light;
+      case DEFAULT_DARK_THEME_NAME:
+        return _dark;
+      default:
+        throw Exception("Theme not found - " + name);
+    }
+  }
 }

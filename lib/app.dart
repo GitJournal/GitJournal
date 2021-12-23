@@ -277,13 +277,13 @@ class _JournalAppState extends State<JournalApp> {
 
   @override
   Widget build(BuildContext context) {
+    var settings = Provider.of<Settings>(context);
     var repo = widget.repoManager.currentRepo;
 
     AppRouter? router;
     var themeMode = ThemeMode.system;
 
     if (repo != null) {
-      var settings = Provider.of<Settings>(context);
       var appConfig = Provider.of<AppConfig>(context);
       var storageConfig = Provider.of<StorageConfig>(context);
 
@@ -331,8 +331,8 @@ class _JournalAppState extends State<JournalApp> {
       supportedLocales: EasyLocalization.of(context)!.supportedLocales,
       locale: EasyLocalization.of(context)!.locale,
 
-      theme: Themes.light,
-      darkTheme: Themes.dark,
+      theme: Themes.fromName(settings.lightTheme),
+      darkTheme: Themes.fromName(settings.darkTheme),
       themeMode: themeMode,
       navigatorObservers: <NavigatorObserver>[
         AnalyticsRouteObserver(),

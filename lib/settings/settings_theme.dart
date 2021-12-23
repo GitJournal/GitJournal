@@ -9,9 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:provider/provider.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/screens/home_screen.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/themes.dart';
 
 class SettingsThemeScreen extends StatefulWidget {
@@ -55,8 +57,13 @@ class _SettingsThemeState extends State<SettingsThemeScreen> {
         ? LocaleKeys.settings_theme_light.tr()
         : LocaleKeys.settings_theme_dark.tr();
 
+    var settings = Provider.of<Settings>(context);
+    var themeName = widget.brightness == Brightness.light
+        ? settings.lightTheme
+        : settings.darkTheme;
+
     return Theme(
-      data: widget.brightness == Brightness.light ? Themes.light : Themes.dark,
+      data: Themes.fromName(themeName),
       child: Scaffold(
         appBar: AppBar(
           title: Text(title),
@@ -111,7 +118,10 @@ class _GitJournalThemeView extends StatelessWidget {
       child: SizedBox(
         width: mq.size.width,
         height: mq.size.height,
-        child: IgnorePointer(child: HomeScreen()),
+        child: IgnorePointer(
+          child: HomeScreen(),
+          ignoringSemantics: true,
+        ),
       ),
     );
 
