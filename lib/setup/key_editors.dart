@@ -73,8 +73,9 @@ class KeyEditor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var inputField = Builder(builder: (context) {
-      return TextFormField(
+    var inputField = Form(
+      key: formKey,
+      child: TextFormField(
         textAlign: TextAlign.left,
         maxLines: null,
         style: Theme.of(context).textTheme.bodyText2,
@@ -85,8 +86,9 @@ class KeyEditor extends StatelessWidget {
           border: OutlineInputBorder(),
           isDense: true,
         ),
-      );
-    });
+      ),
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+    );
 
     var screenSize = MediaQuery.of(context).size;
 
