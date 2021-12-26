@@ -17,7 +17,7 @@ dependencies:
     git: https://github.com/GitJournal/dart-git.git
     # path: ../gitjournal/dart-git
   git_bindings:
-    #path: /Users/vishesh/src/gitjournal/git_bindings
+    # path: ../gitjournal/git_bindings
     git: https://github.com/GitJournal/git_bindings.git
   icloud_documents_path:
     git: https://github.com/GitJournal/icloud_documents_path.git
