@@ -251,7 +251,7 @@ bool handleError(FlutterResult result, int err) {
             return;
         }
 
-        int err = gj_git_fetch([folderPath UTF8String], [remote UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String], true, [statusFile UTF8String]);
+        int err = gj_git_fetch([folderPath UTF8String], [remote UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String], false, [statusFile UTF8String]);
         if (!handleError(result, err)) {
             result(@YES);
             return;
@@ -330,7 +330,7 @@ bool handleError(FlutterResult result, int err) {
             return;
         }
 
-        int err = gj_git_push([folderPath UTF8String], [remote UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String], true, [statusFile UTF8String]);
+        int err = gj_git_push([folderPath UTF8String], [remote UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String], false, [statusFile UTF8String]);
         if (!handleError(result, err)) {
             result(@YES);
             return;
@@ -371,7 +371,7 @@ bool handleError(FlutterResult result, int err) {
         }
 
         char branch_name[1024];
-        int err = gj_git_default_branch([folderPath UTF8String], [remote UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String], true, branch_name);
+        int err = gj_git_default_branch([folderPath UTF8String], [remote UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String], false, branch_name);
         if (err == 0)
         {
             result(@(branch_name));
