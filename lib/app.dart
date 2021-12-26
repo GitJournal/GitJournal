@@ -424,12 +424,12 @@ class GitJournalChangeNotifiers extends StatelessWidget {
   }
 
   Widget _buildNoteMaterializedViews(GitJournalRepo repo, Widget child) {
-    var repoPath = repo.repoPath;
+    var repoId = repo.id;
     return Nested(
       children: [
-        NoteSummaryProvider(repoPath: repoPath),
-        InlineTagsProvider(repoPath: repoPath),
-        NoteLinksProvider(repoPath: repoPath),
+        NoteSummaryProvider(repoId: repoId),
+        InlineTagsProvider(repoId: repoId),
+        NoteLinksProvider(repoId: repoId),
       ],
       child: child,
     );

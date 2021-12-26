@@ -16,12 +16,12 @@ import 'notes_materialized_view.dart';
 typedef NotesSummaryView = NotesMaterializedView<String>;
 
 class NoteSummaryProvider extends SingleChildStatelessWidget {
-  final String repoPath;
+  final String repoId;
 
   const NoteSummaryProvider({
     Key? key,
     Widget? child,
-    required this.repoPath,
+    required this.repoId,
   }) : super(key: key, child: child);
 
   @override
@@ -30,7 +30,7 @@ class NoteSummaryProvider extends SingleChildStatelessWidget {
       create: (_) {
         return NotesMaterializedView<String>(
           name: 'summary',
-          repoPath: repoPath,
+          repoId: repoId,
           computeFn: _compute,
         );
       },

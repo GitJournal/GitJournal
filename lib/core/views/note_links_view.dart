@@ -29,8 +29,8 @@ class NoteLinksView extends NotesMaterializedView<_LinksList> {
   NoteLinksView({
     required String name,
     required NotesViewComputer<_LinksList> computeFn,
-    required String repoPath,
-  }) : super(name: name, computeFn: computeFn, repoPath: repoPath);
+    required String repoId,
+  }) : super(name: name, computeFn: computeFn, repoId: repoId);
 
   Future<List<Link>> fetchLinks(Note note) async {
     var linksList = await fetch(note);
@@ -39,12 +39,12 @@ class NoteLinksView extends NotesMaterializedView<_LinksList> {
 }
 
 class NoteLinksProvider extends SingleChildStatelessWidget {
-  final String repoPath;
+  final String repoId;
 
   const NoteLinksProvider({
     Key? key,
     Widget? child,
-    required this.repoPath,
+    required this.repoId,
   }) : super(key: key, child: child);
 
   @override
@@ -53,7 +53,7 @@ class NoteLinksProvider extends SingleChildStatelessWidget {
       create: (_) {
         return NoteLinksView(
           name: 'note_links',
-          repoPath: repoPath,
+          repoId: repoId,
           computeFn: _compute,
         );
       },

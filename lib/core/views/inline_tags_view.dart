@@ -16,12 +16,12 @@ import 'notes_materialized_view.dart';
 typedef InlineTagsView = NotesMaterializedView<List<String>>;
 
 class InlineTagsProvider extends SingleChildStatelessWidget {
-  final String repoPath;
+  final String repoId;
 
   const InlineTagsProvider({
     Key? key,
     Widget? child,
-    required this.repoPath,
+    required this.repoId,
   }) : super(key: key, child: child);
 
   @override
@@ -30,7 +30,7 @@ class InlineTagsProvider extends SingleChildStatelessWidget {
       create: (_) {
         return NotesMaterializedView<List<String>>(
           name: 'inline_tags',
-          repoPath: repoPath,
+          repoId: repoId,
           computeFn: _compute,
         );
       },

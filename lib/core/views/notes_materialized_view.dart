@@ -15,23 +15,19 @@ typedef NotesViewComputer<T> = Future<T> Function(Note note);
 
 class NotesMaterializedView<T> {
   Box? storageBox;
-  final String name;
+  late final String name;
 
   final NotesViewComputer<T> computeFn;
-  final String repoPath;
 
   final _readMutex = ReadWriteMutex();
   final _writeMutex = Mutex();
 
   NotesMaterializedView({
-    required this.name,
+    required String name,
     required this.computeFn,
-    required this.repoPath,
+    required String repoId,
   }) {
-    var path = repoPath;
-    if (!path.endsWith(p.separator)) {
-      path += p.separator;
-    }
+    this.name = "${repoId}_$name";
   }
 
   // FIXME: The return value doesn't need to be optional

@@ -70,7 +70,7 @@ Hello
       var view = NotesMaterializedView<String>(
         name: '_test_box',
         computeFn: compute,
-        repoPath: tempDir.path,
+        repoId: "test_id",
       );
       var note = await _createExampleNote();
 
