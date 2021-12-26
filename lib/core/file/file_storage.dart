@@ -32,7 +32,10 @@ class FileStorage with ChangeNotifier {
         fileMTimeBuilder,
       ],
       afterCommitCallback: (commit) {
-        _dateTime = commit.author.date;
+        var commitDt = commit.author.date;
+        if (commitDt.isBefore(_dateTime)) {
+          _dateTime = commitDt;
+        }
         notifyListeners();
       },
     );
