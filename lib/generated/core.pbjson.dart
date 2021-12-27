@@ -270,6 +270,7 @@ const Union$json = const {
       '10': 'dateValue'
     },
     const {'1': 'intValue', '3': 4, '4': 1, '5': 3, '9': 0, '10': 'intValue'},
+    const {'1': 'isNull', '3': 7, '4': 1, '5': 8, '9': 0, '10': 'isNull'},
     const {
       '1': 'listValue',
       '3': 5,
@@ -312,7 +313,7 @@ const Union_MapValueEntry$json = const {
 
 /// Descriptor for `Union`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List unionDescriptor = $convert.base64Decode(
-    'CgVVbmlvbhIkCgxib29sZWFuVmFsdWUYASABKAhIAFIMYm9vbGVhblZhbHVlEiIKC3N0cmluZ1ZhbHVlGAIgASgJSABSC3N0cmluZ1ZhbHVlEjkKCWRhdGVWYWx1ZRgDIAEoCzIZLmdpdGpvdXJuYWwuRGF0ZVRpbWVBbnlUekgAUglkYXRlVmFsdWUSHAoIaW50VmFsdWUYBCABKANIAFIIaW50VmFsdWUSLwoJbGlzdFZhbHVlGAUgAygLMhEuZ2l0am91cm5hbC5VbmlvblIJbGlzdFZhbHVlEjsKCG1hcFZhbHVlGAYgAygLMh8uZ2l0am91cm5hbC5Vbmlvbi5NYXBWYWx1ZUVudHJ5UghtYXBWYWx1ZRpOCg1NYXBWYWx1ZUVudHJ5EhAKA2tleRgBIAEoCVIDa2V5EicKBXZhbHVlGAIgASgLMhEuZ2l0am91cm5hbC5VbmlvblIFdmFsdWU6AjgBQgwKClVuaW9uT25lb2Y=');
+    'CgVVbmlvbhIkCgxib29sZWFuVmFsdWUYASABKAhIAFIMYm9vbGVhblZhbHVlEiIKC3N0cmluZ1ZhbHVlGAIgASgJSABSC3N0cmluZ1ZhbHVlEjkKCWRhdGVWYWx1ZRgDIAEoCzIZLmdpdGpvdXJuYWwuRGF0ZVRpbWVBbnlUekgAUglkYXRlVmFsdWUSHAoIaW50VmFsdWUYBCABKANIAFIIaW50VmFsdWUSGAoGaXNOdWxsGAcgASgISABSBmlzTnVsbBIvCglsaXN0VmFsdWUYBSADKAsyES5naXRqb3VybmFsLlVuaW9uUglsaXN0VmFsdWUSOwoIbWFwVmFsdWUYBiADKAsyHy5naXRqb3VybmFsLlVuaW9uLk1hcFZhbHVlRW50cnlSCG1hcFZhbHVlGk4KDU1hcFZhbHVlRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSJwoFdmFsdWUYAiABKAsyES5naXRqb3VybmFsLlVuaW9uUgV2YWx1ZToCOAFCDAoKVW5pb25PbmVvZg==');
 @$core.Deprecated('Use dateTimeAnyTzDescriptor instead')
 const DateTimeAnyTz$json = const {
   '1': 'DateTimeAnyTz',

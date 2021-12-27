@@ -62,6 +62,7 @@ message Union {
         string stringValue = 2;
         DateTimeAnyTz dateValue = 3;
         int64 intValue = 4;
+        bool isNull = 7;
     }
 
     repeated Union listValue = 5;

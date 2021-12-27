@@ -83,6 +83,8 @@ pb.Union _toUnion(dynamic val) {
     return pb.Union(booleanValue: val);
   } else if (val is DateTime) {
     return pb.Union(dateValue: val.toProtoBuf());
+  } else if (val == null) {
+    return pb.Union(isNull: true);
   }
 
   if (val is YamlList || val is List) {
@@ -128,6 +130,8 @@ dynamic _fromUnion(pb.Union u) {
       map[e.key] = _fromUnion(e.value);
     }
     return map;
+  } else if (u.isNull) {
+    return null;
   }
 
   throw Exception("Type cannot be converted from Protobuf Union");

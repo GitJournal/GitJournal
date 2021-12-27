@@ -633,7 +633,14 @@ class MdYamlDoc extends $pb.GeneratedMessage {
   $core.Map<$core.String, Union> get map => $_getMap(1);
 }
 
-enum Union_UnionOneof { booleanValue, stringValue, dateValue, intValue, notSet }
+enum Union_UnionOneof {
+  booleanValue,
+  stringValue,
+  dateValue,
+  intValue,
+  isNull,
+  notSet
+}
 
 class Union extends $pb.GeneratedMessage {
   static const $core.Map<$core.int, Union_UnionOneof> _Union_UnionOneofByTag = {
@@ -641,6 +648,7 @@ class Union extends $pb.GeneratedMessage {
     2: Union_UnionOneof.stringValue,
     3: Union_UnionOneof.dateValue,
     4: Union_UnionOneof.intValue,
+    7: Union_UnionOneof.isNull,
     0: Union_UnionOneof.notSet
   };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
@@ -652,7 +660,7 @@ class Union extends $pb.GeneratedMessage {
               ? ''
               : 'gitjournal'),
       createEmptyInstance: create)
-    ..oo(0, [1, 2, 3, 4])
+    ..oo(0, [1, 2, 3, 4, 7])
     ..aOB(
         1,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -697,6 +705,12 @@ class Union extends $pb.GeneratedMessage {
         valueFieldType: $pb.PbFieldType.OM,
         valueCreator: Union.create,
         packageName: const $pb.PackageName('gitjournal'))
+    ..aOB(
+        7,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'isNull',
+        protoName: 'isNull')
     ..hasRequiredFields = false;
 
   Union._() : super();
@@ -707,6 +721,7 @@ class Union extends $pb.GeneratedMessage {
     $fixnum.Int64? intValue,
     $core.Iterable<Union>? listValue,
     $core.Map<$core.String, Union>? mapValue,
+    $core.bool? isNull,
   }) {
     final _result = create();
     if (booleanValue != null) {
@@ -726,6 +741,9 @@ class Union extends $pb.GeneratedMessage {
     }
     if (mapValue != null) {
       _result.mapValue.addAll(mapValue);
+    }
+    if (isNull != null) {
+      _result.isNull = isNull;
     }
     return _result;
   }
@@ -814,6 +832,18 @@ class Union extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(6)
   $core.Map<$core.String, Union> get mapValue => $_getMap(5);
+
+  @$pb.TagNumber(7)
+  $core.bool get isNull => $_getBF(6);
+  @$pb.TagNumber(7)
+  set isNull($core.bool v) {
+    $_setBool(6, v);
+  }
+
+  @$pb.TagNumber(7)
+  $core.bool hasIsNull() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearIsNull() => clearField(7);
 }
 
 class DateTimeAnyTz extends $pb.GeneratedMessage {
