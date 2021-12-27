@@ -3,7 +3,18 @@
 # SPDX-License-Identifier: CC-BY-4.0
 
 - version: "1.82"
-  draft: true
+  draft: 2021-12-04
+  improvements:
+    - text: "Fetch a note's modified and created time from the git log - #78"
+    - text: "Use ed25519 keys by default instead of RSA. Only on Android so far"
+    - text: "Add Undo/Redo capabilities - #242"
+    - text: "Experimental History View"
+    - text: "New Settings screen"
+    - text: "Allow any file to be considered a note"
+    - text: "Support Multi Note selection - #90"
+  bugs:
+    - text: "EditorHeuristics: Increment the number for numbered lists"
+    - text: "Never hang on Loading, and instead show the Error to the user"
 
 - version: "1.81"
   date: 2021-10-12
