@@ -54,7 +54,7 @@ dependencies:
   org_flutter: ^1.4.0
   package_info_plus: ^1.0.4
   path: ^1.8.0
-  permission_handler: ^6.1.1
+  permission_handler: ^8.3.0
   photo_view:
     git:
       url: https://github.com/karvulf/photo_view.git
