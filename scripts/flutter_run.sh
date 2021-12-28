@@ -4,14 +4,14 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-set -eu
-
 cd "$(dirname "$0")"
 cd ..
 
 FILTER="$1"
 
-DEVICE=$(./flutterw devices --device-timeout=1 --machine | jq -r '.[].name' | fzf -1 -q "$FILTER")
+set -eu
+
+DEVICE=$(./flutterw devices --device-timeout=1 --machine | jq -r '.[] | .nn=.id+" "+.name | .nn' | fzf -1 -q "$FILTER")
 DEVICE_INFO=$(./flutterw devices --machine | jq -r ".[] | select(.name==\"$DEVICE\")")
 DEVICE_ID=$(echo "$DEVICE_INFO" | jq -r .id)
 DEVICE_TARGET=$(echo "$DEVICE_INFO" | jq -r .targetPlatform)
