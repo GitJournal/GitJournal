@@ -12,7 +12,7 @@ FILTER="$1"
 set -eu
 
 DEVICE=$(./flutterw devices --device-timeout=1 --machine | jq -r '.[] | .nn=.id+" "+.name | .nn' | fzf -1 -q "$FILTER")
-DEVICE_INFO=$(./flutterw devices --machine | jq -r ".[] | select(.name==\"$DEVICE\")")
+DEVICE_INFO=$(./flutterw devices --machine | jq -r ".[] | .nn=.id+\" \"+.name | select(.nn==\"$DEVICE\")")
 DEVICE_ID=$(echo "$DEVICE_INFO" | jq -r .id)
 DEVICE_TARGET=$(echo "$DEVICE_INFO" | jq -r .targetPlatform)
 
