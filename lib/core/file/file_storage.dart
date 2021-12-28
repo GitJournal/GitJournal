@@ -16,8 +16,7 @@ import 'package:universal_io/io.dart' as io;
 import 'file.dart';
 
 class FileStorage with ChangeNotifier {
-  final String repoPath;
-  final GitRepository gitRepo;
+  late final String repoPath;
 
   final BlobCTimeBuilder blobCTimeBuilder;
   final FileMTimeBuilder fileMTimeBuilder;
@@ -42,10 +41,13 @@ class FileStorage with ChangeNotifier {
   }
 
   FileStorage({
-    required this.gitRepo,
+    required String repoPath,
     required this.blobCTimeBuilder,
     required this.fileMTimeBuilder,
-  }) : repoPath = gitRepo.workTree;
+  }) {
+    this.repoPath =
+        repoPath.endsWith(p.separator) ? repoPath : repoPath + p.separator;
+  }
 
   Future<Result<File>> load(String filePath) async {
     assert(!filePath.startsWith(p.separator));
@@ -111,8 +113,12 @@ class FileStorage with ChangeNotifier {
     }
     // assert(!headHashR.isFailure, "Failed to get head hash");
 
+    var repoPath = rootFolder.endsWith(p.separator)
+        ? rootFolder
+        : rootFolder + p.separator;
+
     return FileStorage(
-      gitRepo: repo,
+      repoPath: repoPath,
       blobCTimeBuilder: blobVisitor,
       fileMTimeBuilder: mTimeBuilder,
     );
@@ -120,6 +126,7 @@ class FileStorage with ChangeNotifier {
 
   @visibleForTesting
   Future<Result<void>> reload() async {
+    var gitRepo = await GitRepository.load(repoPath).getOrThrow();
     var result = await gitRepo.headHash();
     if (result.isFailure) {
       return fail(result);

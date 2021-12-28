@@ -42,7 +42,7 @@ class FileStorageCache {
     }
   }
 
-  Future<FileStorage> load(GitRepository gitRepo) async {
+  Future<FileStorage> load(String repoPath) async {
     var blobVisitorTuple = await _buildCTimeBuilder();
     var mTimeBuilderTuple = await _buildMTimeBuilder();
 
@@ -52,7 +52,7 @@ class FileStorageCache {
     }
 
     return FileStorage(
-      gitRepo: gitRepo,
+      repoPath: repoPath,
       blobCTimeBuilder: blobVisitorTuple.item1,
       fileMTimeBuilder: mTimeBuilderTuple.item1,
     );
@@ -60,7 +60,8 @@ class FileStorageCache {
 
   Future<Result<void>> save(FileStorage fileStorage) async {
     return catchAll(() async {
-      var headR = await fileStorage.gitRepo.headHash();
+      var repo = await GitRepository.load(fileStorage.repoPath).getOrThrow();
+      var headR = await repo.headHash();
       lastProcessedHead = headR.isFailure ? GitHash.zero() : headR.getOrThrow();
 
       await _saveCTime(fileStorage.blobCTimeBuilder);

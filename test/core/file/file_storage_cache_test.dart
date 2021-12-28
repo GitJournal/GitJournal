@@ -59,10 +59,9 @@ void main() {
     var repoPath = tempDir.path;
 
     await GitRepository.init(repoPath).throwOnError();
-    var repo = await GitRepository.load(repoPath).getOrThrow();
 
     var fileStorage = FileStorage(
-      gitRepo: repo,
+      repoPath: repoPath,
       blobCTimeBuilder: cTimeBuilder,
       fileMTimeBuilder: mTimeBuilder,
     );
@@ -71,7 +70,7 @@ void main() {
 
     var cache = FileStorageCache(cacheDir.path);
     await cache.save(fileStorage);
-    var fileStorage2 = await cache.load(repo);
+    var fileStorage2 = await cache.load(repoPath);
 
     var deepEq = const DeepCollectionEquality().equals;
     expect(

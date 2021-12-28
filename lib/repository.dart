@@ -163,7 +163,7 @@ class GitJournalRepo with ChangeNotifier {
     var _ = await Directory(cacheDir).create(recursive: true);
 
     var fileStorageCache = FileStorageCache(cacheDir);
-    var fileStorage = await fileStorageCache.load(repo);
+    var fileStorage = await fileStorageCache.load(repoPath);
 
     var headR = await repo.headHash();
     var head = headR.isFailure ? GitHash.zero() : headR.getOrThrow();
