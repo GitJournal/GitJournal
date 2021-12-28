@@ -37,6 +37,7 @@ class NoteBodyEditor extends StatelessWidget {
         fillColor: theme.scaffoldBackgroundColor,
         hoverColor: theme.scaffoldBackgroundColor,
         contentPadding: const EdgeInsets.all(0.0),
+        isDense: true,
       ),
       controller: textController,
       textCapitalization: TextCapitalization.sentences,
