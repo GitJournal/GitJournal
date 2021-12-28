@@ -409,6 +409,8 @@ abstract class LocaleKeys {
   static const settings_storage_notWritable = 'settings.storage.notWritable';
   static const settings_storage_failedExternal =
       'settings.storage.failedExternal';
+  static const settings_storage_permissionFailed =
+      'settings.storage.permissionFailed';
   static const settings_storage = 'settings.storage';
   static const settings_drawer_title = 'settings.drawer.title';
   static const settings_drawer = 'settings.drawer';

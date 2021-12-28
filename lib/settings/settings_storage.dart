@@ -131,7 +131,7 @@ class SettingsStorageScreen extends StatelessWidget {
                 if (showError) {
                   showSnackbar(
                     context,
-                    LocaleKeys.settings_storage_failedExternal,
+                    LocaleKeys.settings_storage_failedExternal.tr(),
                   );
                 }
               }
@@ -141,7 +141,7 @@ class SettingsStorageScreen extends StatelessWidget {
               } else {
                 var path = await _getExternalDir(context);
                 if (path.isEmpty) {
-                  await moveBackToInternal(true);
+                  await moveBackToInternal(false);
                   return;
                 }
 
@@ -224,6 +224,8 @@ Future<bool> _isDirWritable(String path) async {
 
 Future<String> _getExternalDir(BuildContext context) async {
   if (!await Permission.storage.request().isGranted) {
+    Log.e("Storage Permission Denied");
+    showSnackbar(context, LocaleKeys.settings_storage_permissionFailed.tr());
     return "";
   }
 
@@ -238,11 +240,6 @@ Future<String> _getExternalDir(BuildContext context) async {
         tr(LocaleKeys.settings_storage_notWritable, args: [dir]),
       );
     }
-  }
-
-  var req = await Permission.storage.request();
-  if (req.isDenied) {
-    return "";
   }
 
   var path = await AndroidExternalStorage.getExternalStorageDirectory();

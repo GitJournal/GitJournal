@@ -286,6 +286,7 @@ settings:
     repoLocation: Repo Location
     notWritable: "{} is not writable"
     failedExternal: Unable to get External Storage Directory
+    permissionFailed: External Storage Permission Failed
   drawer:
     title: Sidebar Settings
   bottomMenuBar:
