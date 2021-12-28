@@ -27,6 +27,7 @@ import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/images/markdown_image.dart';
+import 'markdown/html_entities_syntax.dart';
 
 class MarkdownRenderer extends StatelessWidget {
   final Note note;
@@ -145,38 +146,6 @@ class MarkdownRenderer extends StatelessWidget {
             ],
     );
     return markdownExtensions;
-  }
-}
-
-class HtmlEntitiesSyntax extends md.InlineSyntax {
-  HtmlEntitiesSyntax() : super(r'(&le;)|(&ge;)|(&gt;)|(&lt;)');
-
-  @override
-  bool onMatch(md.InlineParser parser, Match match) {
-    var ent = match[0]!;
-    assert(ent.startsWith('&') && ent.endsWith(';'));
-    ent = ent.substring(1, ent.length - 1);
-
-    var output = "";
-    switch (ent) {
-      case 'lt':
-        output = '<';
-        break;
-      case 'le':
-        output = '<=';
-        break;
-      case 'gt':
-        output = '>';
-        break;
-      case 'ge':
-        output = '>=';
-        break;
-      default:
-        output = ent;
-    }
-    parser.addNode(md.Text(output));
-
-    return true;
   }
 }
 
