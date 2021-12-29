@@ -86,13 +86,13 @@ Future<Result<String>> _defaultBranch(
       return Result(branch);
     }
   } catch (ex) {
-    Log.w("Could not fetch git main branch", ex: ex);
+    Log.w("Could not fetch git Default Branch", ex: ex);
   }
 
   var repo = await GitRepository.load(repoPath).getOrThrow();
   var remoteBranch = await repo.guessRemoteHead(remoteName);
   if (remoteBranch == null) {
-    return Result('master');
+    return Result(null);
   }
   var branch = remoteBranch.target!.branchName()!;
   return Result(branch);

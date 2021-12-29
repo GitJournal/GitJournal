@@ -15,6 +15,8 @@ import 'package:universal_io/io.dart' show Directory;
 import 'package:gitjournal/logger/logger.dart';
 import 'git_transfer_progress.dart';
 
+const DefaultBranchName = 'main';
+
 typedef GitFetchFunction = Future<Result<void>> Function(
   String repoPath,
   String remoteName,
@@ -24,7 +26,7 @@ typedef GitFetchFunction = Future<Result<void>> Function(
   String statusFile,
 );
 
-typedef GitDefaultBranchFunction = Future<Result<String>> Function(
+typedef GitDefaultBranchFunction = Future<Result<String?>> Function(
   String repoPath,
   String remoteName,
   String sshPublicKey,
@@ -80,6 +82,14 @@ Future<Result<void>> cloneRemotePluggable({
     return fail(branchNameR);
   }
   var remoteBranchName = branchNameR.getOrThrow();
+  if (remoteBranchName == null) {
+    var r = await repo.currentBranch();
+    if (r.isSuccess) {
+      remoteBranchName = r.getOrThrow();
+    } else {
+      remoteBranchName = DefaultBranchName;
+    }
+  }
 
   Log.i("Using remote branch: $remoteBranchName");
   var skipCheckout = false;
