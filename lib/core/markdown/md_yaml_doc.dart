@@ -79,6 +79,8 @@ pb.Union _toUnion(dynamic val) {
     return pb.Union(stringValue: val);
   } else if (val is int) {
     return pb.Union(intValue: fixnum.Int64(val));
+  } else if (val is fixnum.Int64) {
+    return pb.Union(intValue: val);
   } else if (val is bool) {
     return pb.Union(booleanValue: val);
   } else if (val is DateTime) {
@@ -113,7 +115,7 @@ dynamic _fromUnion(pb.Union u) {
   if (u.hasStringValue()) {
     return u.stringValue;
   } else if (u.hasIntValue()) {
-    return u.intValue;
+    return u.intValue.toInt();
   } else if (u.hasBooleanValue()) {
     return u.booleanValue;
   } else if (u.hasDateValue()) {
