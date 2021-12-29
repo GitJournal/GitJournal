@@ -96,7 +96,16 @@ class FileStorageCache {
     Log.d("BlobCTimeBuilder Cache Size: $size Kb");
 
     var buffer = await file.readAsBytes();
-    var data = pb.BlobCTimeBuilderData.fromBuffer(buffer);
+
+    late pb.BlobCTimeBuilderData data;
+    try {
+      data = pb.BlobCTimeBuilderData.fromBuffer(buffer);
+    } catch (ex, st) {
+      Log.e("_buildCTimeBuilder", ex: ex, stacktrace: st);
+      await clear();
+
+      return Tuple2(BlobCTimeBuilder(), GitHash.zero());
+    }
 
     var commitHashes =
         data.commitHashes.map((bytes) => GitHash.fromBytes(bytes)).toSet();
@@ -127,7 +136,16 @@ class FileStorageCache {
     Log.d("FileMTimeBuilder Cache Size: $size Kb");
 
     var buffer = await file.readAsBytes();
-    var data = pb.FileMTimeBuilderData.fromBuffer(buffer);
+
+    late pb.FileMTimeBuilderData data;
+    try {
+      data = pb.FileMTimeBuilderData.fromBuffer(buffer);
+    } catch (ex, st) {
+      Log.e("_buildMTimeBuilder", ex: ex, stacktrace: st);
+      await clear();
+
+      return Tuple2(FileMTimeBuilder(), GitHash.zero());
+    }
 
     var commitHashes =
         data.commitHashes.map((bytes) => GitHash.fromBytes(bytes)).toSet();
