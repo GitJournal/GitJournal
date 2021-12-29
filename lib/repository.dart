@@ -23,6 +23,7 @@ import 'package:time/time.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
+import 'package:gitjournal/core/commit_message_builder.dart';
 import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/file/file_storage_cache.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
@@ -169,7 +170,7 @@ class GitJournalRepo with ChangeNotifier {
     }
 
     var commitR = await repo.commit(
-      message: "AutoCommit",
+      message: CommitMessageBuilder().autoCommit(),
       author: GitAuthor(
         name: gitConfig.gitAuthor,
         email: gitConfig.gitAuthorEmail,
