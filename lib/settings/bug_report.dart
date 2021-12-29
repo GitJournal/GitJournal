@@ -10,7 +10,6 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
-import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/utils/utils.dart';
@@ -40,7 +39,7 @@ Future<void> createBugReport(BuildContext context) async {
   try {
     await FlutterEmailSender.send(email);
   } catch (ex, st) {
-    logException(ex, st);
+    Log.e("createBugReport", ex: ex, stacktrace: st);
     showSnackbar(context, ex.toString());
   }
 
@@ -71,7 +70,7 @@ Future<void> createFeedback(BuildContext context) async {
   try {
     await FlutterEmailSender.send(email);
   } catch (ex, st) {
-    logException(ex, st);
+    Log.e("createFeedback", ex: ex, stacktrace: st);
     showSnackbar(context, ex.toString());
   }
 
