@@ -177,7 +177,7 @@ class GitJournalRepo with ChangeNotifier {
       ),
     );
     if (commitR.isFailure) {
-      if (commitR.error! is GitEmptyCommit) {
+      if (commitR.error is! GitEmptyCommit) {
         return fail(commitR);
       }
     }
