@@ -7,6 +7,7 @@
 import 'dart:async';
 
 import 'package:dart_git/dart_git.dart';
+import 'package:dart_git/exceptions.dart';
 import 'package:dart_git/utils/result.dart';
 import 'package:git_bindings/git_bindings.dart' as gb;
 import 'package:path/path.dart' as p;
@@ -282,6 +283,10 @@ class GitNoteRepository {
       branchConfig.trackingBranch()!,
     );
     if (r.isFailure) {
+      if (r.error is GitRefNotFound) {
+        Log.d("No remote branch to merge");
+        return Result(null);
+      }
       Log.e("Failed to get remote refs", ex: r.error, stacktrace: r.stackTrace);
       return fail(r);
     }
@@ -361,8 +366,14 @@ class GitNoteRepository {
   Future<int?> numChanges() async {
     try {
       var repo = await GitRepository.load(gitRepoPath).getOrThrow();
-      var n = await repo.numChangesToPush().getOrThrow();
-      return n;
+      var nResult = await repo.numChangesToPush();
+      if (nResult.isSuccess) {
+        return nResult.getOrThrow();
+      }
+
+      if (nResult.isFailure && nResult.error is! GitRefNotFound) {
+        Log.e("NumChanges", result: nResult);
+      }
     } catch (ex, st) {
       Log.e("numChanges", ex: ex, stacktrace: st);
     }
