@@ -277,8 +277,19 @@ class _JournalAppState extends State<JournalApp> {
 
   @override
   Widget build(BuildContext context) {
-    var settings = Provider.of<Settings>(context);
     var repo = widget.repoManager.currentRepo;
+
+    // Repository.load can be quite slow, especially because of the 'git commit'
+    // on booting
+    // FIXME: Make Settings not depend on Repository
+    late Settings settings;
+    try {
+      settings = Provider.of<Settings>(context);
+    } catch (_) {
+      return const SizedBox();
+    }
+
+    // FIXME: Settings can be null in this case!
 
     AppRouter? router;
     var themeMode = ThemeMode.system;

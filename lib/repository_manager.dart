@@ -44,6 +44,7 @@ class RepositoryManager with ChangeNotifier {
 
     _repo = null;
     _repoError = null;
+    notifyListeners();
 
     var r = await GitJournalRepo.load(
       repoManager: this,

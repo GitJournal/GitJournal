@@ -161,9 +161,11 @@ class GitJournalRepo with ChangeNotifier {
     var repo = repoR.getOrThrow();
     var remoteConfigured = repo.config.remotes.isNotEmpty;
 
-    var r = await _commitUnTrackedChanges(repo, gitConfig);
-    if (r.isFailure) {
-      return fail(r);
+    if (!storageConfig.storeInternally) {
+      var r = await _commitUnTrackedChanges(repo, gitConfig);
+      if (r.isFailure) {
+        return fail(r);
+      }
     }
 
     var _ = await Directory(cacheDir).create(recursive: true);
@@ -266,7 +268,9 @@ class GitJournalRepo with ChangeNotifier {
       var r = await rootFolder.loadRecursively();
       if (r.isFailure) {
         if (r.error is FileStorageCacheIncomplete) {
-          _resetFileStorage();
+          var repo = await GitRepository.load(repoPath).getOrThrow();
+          await _commitUnTrackedChanges(repo, gitConfig);
+          await _resetFileStorage();
           return;
         }
       }
@@ -329,13 +333,16 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   Future<void> syncNotes({bool doNotThrow = false}) async {
-    var repoR = await GitRepository.load(repoPath);
-    if (repoR.isFailure) {
-      Log.e("SyncNotes Failed to Load Repo", result: repoR);
-      return;
+    // This is extremely slow with dart-git, can take over a second!
+    if (!storageConfig.storeInternally) {
+      var repoR = await GitRepository.load(repoPath);
+      if (repoR.isFailure) {
+        Log.e("SyncNotes Failed to Load Repo", result: repoR);
+        return;
+      }
+      var repo = repoR.getOrThrow();
+      _commitUnTrackedChanges(repo, gitConfig);
     }
-    var repo = repoR.getOrThrow();
-    _commitUnTrackedChanges(repo, gitConfig);
 
     if (!remoteGitRepoConfigured) {
       Log.d("Not syncing because RemoteRepo not configured");
@@ -917,6 +924,7 @@ Future<void> _ensureOneCommitInRepo({
 
 Future<Result<void>> _commitUnTrackedChanges(
     GitRepository repo, GitConfig gitConfig) async {
+  var timer = Stopwatch()..start();
   //
   // Check for un-committed files and save them
   //
@@ -934,9 +942,11 @@ Future<Result<void>> _commitUnTrackedChanges(
   );
   if (commitR.isFailure) {
     if (commitR.error is! GitEmptyCommit) {
+      Log.i('_commitUntracked NoCommit: ${timer.elapsed}');
       return fail(commitR);
     }
   }
 
+  Log.i('_commitUntracked: ${timer.elapsed}');
   return Result(null);
 }
