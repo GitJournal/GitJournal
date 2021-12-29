@@ -98,7 +98,7 @@ Future<void> reportError(Object error, StackTrace stackTrace) async {
     if (error is! Exception) {
       error = Exception("Error: $error");
     }
-    captureSentryException(error, stackTrace);
+    _captureSentryException(error, stackTrace);
   }
 }
 
@@ -112,7 +112,7 @@ Future<void> logException(Object e, StackTrace stackTrace) async {
     return;
   }
 
-  await captureSentryException(e, stackTrace);
+  await _captureSentryException(e, stackTrace);
 }
 
 Future<void> logExceptionWarning(Object e, StackTrace stackTrace) async {
@@ -123,7 +123,7 @@ Future<void> logExceptionWarning(Object e, StackTrace stackTrace) async {
     return;
   }
 
-  await captureSentryException(e, stackTrace, level: SentryLevel.warning);
+  await _captureSentryException(e, stackTrace, level: SentryLevel.warning);
 }
 
 List<Breadcrumb> breadcrumbs = [];
@@ -141,11 +141,14 @@ void captureErrorBreadcrumb(String name, Map<String, String> parameters) {
   breadcrumbs.add(b);
 }
 
-Future<void> captureSentryException(
+Future<void> _captureSentryException(
   dynamic exception,
   StackTrace stackTrace, {
   SentryLevel level = SentryLevel.error,
 }) async {
+  if (exception == null) {
+    return;
+  }
   try {
     await initSentry();
     final event = (await _environmentEvent).copyWith(
