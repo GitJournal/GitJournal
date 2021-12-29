@@ -243,6 +243,13 @@ class GitJournalRepo with ChangeNotifier {
     Log.i("Finished loading all the notes - $endTime");
   }
 
+  Future<void> _resetFileStorage() async {
+    await fileStorageCache.clear();
+
+    // This will discard this Repository and build a new one
+    repoManager.buildActiveRepository();
+  }
+
   Future<void> reloadNotes() => _loadNotes();
 
   Future<void> _loadNotes() async {
@@ -250,7 +257,13 @@ class GitJournalRepo with ChangeNotifier {
 
     // FIXME: We should report the notes that failed to load
     return _loadLock.synchronized(() async {
-      await rootFolder.loadRecursively();
+      var r = await rootFolder.loadRecursively();
+      if (r.isFailure) {
+        if (r.error is FileStorageCacheIncomplete) {
+          _resetFileStorage();
+          return;
+        }
+      }
       await _notesCache.buildCache(rootFolder);
 
       var changes = await _gitRepo.numChanges();

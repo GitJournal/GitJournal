@@ -13,6 +13,7 @@ import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' as io;
 
+import 'package:gitjournal/logger/logger.dart';
 import 'file.dart';
 
 class FileStorage with ChangeNotifier {
@@ -71,7 +72,8 @@ class FileStorage with ChangeNotifier {
 
     var mTimeInfo = fileMTimeBuilder.info(filePath);
     if (mTimeInfo == null) {
-      var ex = Exception('fileMTimeBuilder failed to find path');
+      Log.e("Failed to build path: $filePath");
+      var ex = FileStorageCacheIncomplete(filePath);
       return Result.fail(ex);
     }
 
@@ -139,4 +141,9 @@ class FileStorage with ChangeNotifier {
         .throwOnError();
     return Result(null);
   }
+}
+
+class FileStorageCacheIncomplete implements Exception {
+  final String path;
+  FileStorageCacheIncomplete(this.path);
 }

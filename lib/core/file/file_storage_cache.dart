@@ -51,10 +51,15 @@ class FileStorageCache {
       lastProcessedHead = GitHash.zero();
     }
 
+    var mTimeBuilder = mTimeBuilderTuple.item1;
+    var blobCTimeBuilder = blobVisitorTuple.item1;
+    Log.d("Loading MTimeCache: ${mTimeBuilder.map.length} items");
+    Log.d("Loading CTimeCache: ${blobCTimeBuilder.map.length} items");
+
     return FileStorage(
       repoPath: repoPath,
-      blobCTimeBuilder: blobVisitorTuple.item1,
-      fileMTimeBuilder: mTimeBuilderTuple.item1,
+      blobCTimeBuilder: blobCTimeBuilder,
+      fileMTimeBuilder: mTimeBuilder,
     );
   }
 
@@ -64,8 +69,14 @@ class FileStorageCache {
       var headR = await repo.headHash();
       lastProcessedHead = headR.isFailure ? GitHash.zero() : headR.getOrThrow();
 
-      await _saveCTime(fileStorage.blobCTimeBuilder);
-      await _saveMTime(fileStorage.fileMTimeBuilder);
+      var blobCTimeBuilder = fileStorage.blobCTimeBuilder;
+      var fileMTimeBUilder = fileStorage.fileMTimeBuilder;
+
+      Log.d("Saving MTimeCache: ${fileMTimeBUilder.map.length} items");
+      Log.d("Saving CTimeCache: ${blobCTimeBuilder.map.length} items");
+
+      await _saveCTime(blobCTimeBuilder);
+      await _saveMTime(fileMTimeBUilder);
       return Result(null);
     });
   }

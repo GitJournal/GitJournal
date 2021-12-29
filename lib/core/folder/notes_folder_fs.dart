@@ -6,6 +6,7 @@
 
 import 'dart:collection';
 
+import 'package:dart_git/utils/result.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
@@ -236,8 +237,10 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     var _ = await Future.wait(futures);
   }
 
-  Future<void> loadRecursively() async {
-    await load();
+  Future<Result<void>> loadRecursively() async {
+    var r = await load();
+    if (r.isFailure) return r;
+
     await loadNotes();
 
     var futures = <Future>[];
@@ -247,15 +250,16 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     }
 
     var _ = await Future.wait(futures);
+    return Result(null);
   }
 
-  Future<void> load() => _lock.synchronized(_load);
+  Future<Result<void>> load() => _lock.synchronized(_load);
 
-  Future<void> _load() async {
+  Future<Result<void>> _load() async {
     var ignoreFilePath = p.join(fullFolderPath, ".gjignore");
     if (io.File(ignoreFilePath).existsSync()) {
       Log.i("Ignoring $folderPath as it has .gjignore");
-      return;
+      return Result(null);
     }
 
     var newEntityMap = <String, dynamic>{};
@@ -293,6 +297,9 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       var fileR = await fileStorage.load(filePath);
       if (fileR.isFailure) {
         Log.e("NotesFolderFS FileStorage Failure", result: fileR);
+        if (fileR.error is FileStorageCacheIncomplete) {
+          return fileR;
+        }
         assert(fileR.isFailure == false);
         continue;
       }
@@ -396,6 +403,8 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         _entityMap[ent.folderPath] = ent;
       }
     }
+
+    return Result(null);
   }
 
   void add(Note note) {
