@@ -180,8 +180,10 @@ class FileStorageCache {
       map: map,
     );
 
-    var file = io.File(_cTimeFilePath);
+    var tempPath = _cTimeFilePath + '.new';
+    var file = io.File(tempPath);
     var _ = await file.writeAsBytes(data.writeToBuffer());
+    file = file.renameSync(_cTimeFilePath);
   }
 
   Future<void> _saveMTime(FileMTimeBuilder builder) async {
@@ -207,8 +209,10 @@ class FileStorageCache {
       map: map,
     );
 
-    var file = io.File(_mTimeFilePath);
+    var tempPath = _mTimeFilePath + '.new';
+    var file = io.File(tempPath);
     var _ = await file.writeAsBytes(data.writeToBuffer());
+    file = file.renameSync(_mTimeFilePath);
   }
 }
 
