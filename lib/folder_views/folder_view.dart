@@ -209,7 +209,7 @@ class _FolderViewState extends State<FolderView> {
               return view;
             }
             return RefreshIndicator(
-              onRefresh: () => _syncRepo(context),
+              onRefresh: () => syncRepo(context),
               child: view,
             );
           }),
@@ -271,20 +271,6 @@ class _FolderViewState extends State<FolderView> {
       bottomNavigationBar:
           showButtomMenuBar ? NewNoteNavBar(onPressed: _newPost) : null,
     );
-  }
-
-  Future<void> _syncRepo(BuildContext context) async {
-    try {
-      var container = context.read<GitJournalRepo>();
-      await container.syncNotes();
-    } on GitException catch (e) {
-      showSnackbar(
-        context,
-        tr(LocaleKeys.widgets_FolderView_syncError, args: [e.cause]),
-      );
-    } catch (e) {
-      showSnackbar(context, e.toString());
-    }
   }
 
   Future<void> _newPost(EditorType editorType) async {
@@ -682,5 +668,19 @@ class _SliverHeader extends StatelessWidget {
         child: Text(text, style: textTheme.subtitle2),
       ),
     );
+  }
+}
+
+Future<void> syncRepo(BuildContext context) async {
+  try {
+    var container = context.read<GitJournalRepo>();
+    await container.syncNotes();
+  } on GitException catch (e) {
+    showSnackbar(
+      context,
+      tr(LocaleKeys.widgets_FolderView_syncError, args: [e.cause]),
+    );
+  } catch (e) {
+    showSnackbar(context, e.toString());
   }
 }

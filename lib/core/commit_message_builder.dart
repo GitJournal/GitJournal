@@ -55,5 +55,5 @@ class CommitMessageBuilder {
 
   String updateNote(String spec) => "Updated Note $spec";
 
-  String autoCommit() => "Auto Commit on Boot";
+  String autoCommit() => "Auto Commit";
 }

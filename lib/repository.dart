@@ -161,25 +161,9 @@ class GitJournalRepo with ChangeNotifier {
     var repo = repoR.getOrThrow();
     var remoteConfigured = repo.config.remotes.isNotEmpty;
 
-    //
-    // Check for un-committed files and save them
-    //
-    var addR = await repo.add('.');
-    if (addR.isFailure) {
-      return fail(addR);
-    }
-
-    var commitR = await repo.commit(
-      message: CommitMessageBuilder().autoCommit(),
-      author: GitAuthor(
-        name: gitConfig.gitAuthor,
-        email: gitConfig.gitAuthorEmail,
-      ),
-    );
-    if (commitR.isFailure) {
-      if (commitR.error is! GitEmptyCommit) {
-        return fail(commitR);
-      }
+    var r = await _commitUnTrackedChanges(repo, gitConfig);
+    if (r.isFailure) {
+      return fail(r);
     }
 
     var _ = await Directory(cacheDir).create(recursive: true);
@@ -345,6 +329,14 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   Future<void> syncNotes({bool doNotThrow = false}) async {
+    var repoR = await GitRepository.load(repoPath);
+    if (repoR.isFailure) {
+      Log.e("SyncNotes Failed to Load Repo", result: repoR);
+      return;
+    }
+    var repo = repoR.getOrThrow();
+    _commitUnTrackedChanges(repo, gitConfig);
+
     if (!remoteGitRepoConfigured) {
       Log.d("Not syncing because RemoteRepo not configured");
       return;
@@ -921,4 +913,30 @@ Future<void> _ensureOneCommitInRepo({
   } catch (ex, st) {
     Log.e("_ensureOneCommitInRepo", ex: ex, stacktrace: st);
   }
+}
+
+Future<Result<void>> _commitUnTrackedChanges(
+    GitRepository repo, GitConfig gitConfig) async {
+  //
+  // Check for un-committed files and save them
+  //
+  var addR = await repo.add('.');
+  if (addR.isFailure) {
+    return fail(addR);
+  }
+
+  var commitR = await repo.commit(
+    message: CommitMessageBuilder().autoCommit(),
+    author: GitAuthor(
+      name: gitConfig.gitAuthor,
+      email: gitConfig.gitAuthorEmail,
+    ),
+  );
+  if (commitR.isFailure) {
+    if (commitR.error is! GitEmptyCommit) {
+      return fail(commitR);
+    }
+  }
+
+  return Result(null);
 }
