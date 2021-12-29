@@ -17,6 +17,7 @@ import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/generated/builders.pb.dart' as pb;
 import 'package:gitjournal/logger/logger.dart';
+import 'package:gitjournal/utils/file.dart';
 
 class FileStorageCache {
   final String cacheFolderPath;
@@ -180,10 +181,10 @@ class FileStorageCache {
       map: map,
     );
 
-    var tempPath = _cTimeFilePath + '.new';
-    var file = io.File(tempPath);
-    var _ = await file.writeAsBytes(data.writeToBuffer());
-    file = file.renameSync(_cTimeFilePath);
+    var r = await saveFileSafely(_cTimeFilePath, data.writeToBuffer());
+    if (r.isFailure) {
+      Log.e("_saveCTime", result: r);
+    }
   }
 
   Future<void> _saveMTime(FileMTimeBuilder builder) async {
@@ -209,10 +210,10 @@ class FileStorageCache {
       map: map,
     );
 
-    var tempPath = _mTimeFilePath + '.new';
-    var file = io.File(tempPath);
-    var _ = await file.writeAsBytes(data.writeToBuffer());
-    file = file.renameSync(_mTimeFilePath);
+    var r = await saveFileSafely(_mTimeFilePath, data.writeToBuffer());
+    if (r.isFailure) {
+      Log.e("_saveMTime", result: r);
+    }
   }
 }
 

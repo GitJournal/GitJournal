@@ -53,10 +53,15 @@ class AnalyticsStorage {
     builder.add(intData.buffer.asUint8List());
     builder.add(eventData);
 
-    var _ = await File(filePath).writeAsBytes(
-      builder.toBytes(),
-      mode: FileMode.append,
-    );
+    try {
+      var _ = await File(filePath).writeAsBytes(
+        builder.toBytes(),
+        mode: FileMode.append,
+      );
+    } catch (ex, st) {
+      Log.e("Failed to save Event:", ex: ex, stacktrace: st);
+    }
+
     numEventsThisSession++;
   }
 

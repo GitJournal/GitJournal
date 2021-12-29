@@ -19,6 +19,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/generated/core.pb.dart' as pb;
 import 'package:gitjournal/logger/logger.dart';
+import 'package:gitjournal/utils/file.dart';
 
 class NotesCache {
   final String folderPath;
@@ -148,17 +149,10 @@ class NotesCache {
     var contents = pb.NoteList(
       notes: notes.map((n) => n.toProtoBuf() as pb.Note),
     ).writeToBuffer();
-    var newFilePath = filePath + ".new";
 
-    try {
-      assert(newFilePath.startsWith(p.separator));
-      var file = io.File(newFilePath);
-      dynamic _;
-      _ = await file.writeAsBytes(contents);
-      _ = await file.rename(filePath);
-    } catch (ex, st) {
-      // FIXME: Do something in this case!!
-      Log.e("Failed to save Notes Cache", ex: ex, stacktrace: st);
+    var r = await saveFileSafely(filePath, contents);
+    if (r.isFailure) {
+      Log.e("Notes Cache saveToDisk", result: r);
     }
   }
 }
