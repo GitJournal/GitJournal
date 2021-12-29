@@ -160,6 +160,27 @@ class GitJournalRepo with ChangeNotifier {
     var repo = repoR.getOrThrow();
     var remoteConfigured = repo.config.remotes.isNotEmpty;
 
+    //
+    // Check for un-committed files and save them
+    //
+    var addR = await repo.add('.');
+    if (addR.isFailure) {
+      return fail(addR);
+    }
+
+    var commitR = await repo.commit(
+      message: "AutoCommit",
+      author: GitAuthor(
+        name: gitConfig.gitAuthor,
+        email: gitConfig.gitAuthorEmail,
+      ),
+    );
+    if (commitR.isFailure) {
+      if (commitR.error! is GitEmptyCommit) {
+        return fail(commitR);
+      }
+    }
+
     var _ = await Directory(cacheDir).create(recursive: true);
 
     var fileStorageCache = FileStorageCache(cacheDir);
