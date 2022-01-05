@@ -15,7 +15,6 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   final String title;
 
   final _notes = <Note>[];
-  final _notesPaths = <String, int>{};
   final _folders = <NotesFolder>[];
 
   FlattenedNotesFolder(this._parentFolder, {required this.title}) {
@@ -72,43 +71,41 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   }
 
   void _noteAdded(int _, Note note) {
-    if (!_notesPaths.containsKey(note.filePath)) {
-      _notes.add(note);
-      _notesPaths[note.filePath] = _notes.length - 1;
-      notifyNoteAdded(_notes.length - 1, note);
-    } else {
+    var i = _notes.indexWhere((n) => n.filePath == note.filePath);
+    if (i != -1) {
       assert(
           false, '_noteAdded called on a note already added ${note.filePath}');
-      notifyNoteModified(_notesPaths[note.filePath]!, note);
+      notifyNoteModified(-1, note);
+      return;
     }
+    _notes.add(note);
+    notifyNoteAdded(_notes.length - 1, note);
   }
 
   void _noteRemoved(int _, Note note) {
-    var i = _notesPaths[note.filePath];
-    assert(i != null);
-    if (i == null) {
+    var i = _notes.indexWhere((n) => n.filePath == note.filePath);
+    assert(i != -1);
+    if (i == -1) {
       return;
     }
 
-    var removedNote = _notes.removeAt(i);
-    assert(removedNote.filePath == note.filePath);
-    notifyNoteRemoved(i, note);
+    var _ = _notes.removeAt(i);
+    notifyNoteRemoved(-1, note);
   }
 
   Future<void> _noteModified(int _, Note note) async {
-    var i = _notesPaths[note.filePath];
-    assert(i != null);
-    i ??= -1;
-
-    notifyNoteModified(i, note);
+    var i = _notes.indexWhere((n) => n.filePath == note.filePath);
+    if (i != -1) {
+      notifyNoteModified(i, note);
+    } else {
+      assert(
+          false, '_noteModified called on a note NOT added ${note.filePath}');
+      _noteAdded(_, note);
+    }
   }
 
   void _noteRenamed(int _, Note note, String oldPath) {
-    var i = _notesPaths[oldPath];
-    assert(i != null);
-    i ??= -1;
-
-    notifyNoteRenamed(i, note, oldPath);
+    notifyNoteRenamed(-1, note, oldPath);
   }
 
   @override
