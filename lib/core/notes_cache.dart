@@ -50,6 +50,9 @@ class NotesCache {
 
     assert(repoPath.endsWith(p.separator));
 
+    // Ensure there are no duplicates
+    assert(pbNotes.toSet().length == pbNotes.length);
+
     var selectFolders = <NotesFolderFS>{};
     for (var pbNote in pbNotes) {
       var parentFolderPath = p.dirname(pbNote.file.filePath);
@@ -59,10 +62,6 @@ class NotesCache {
       parent.add(note);
       var _ = selectFolders.add(parent);
     }
-
-    // Load all the notes recursively
-    // var futures = selectFolders.map((f) => f.loadNotes()).toList();
-    // var _ = await Future.wait(futures);
   }
 
   Future<void> clear() async {
@@ -99,6 +98,9 @@ class NotesCache {
     var heap = HeapPriorityQueue<Note>(reversedFn);
 
     for (var note in allNotes) {
+      if (note.pinned) {
+        continue;
+      }
       if (!heap.contains(note)) {
         heap.add(note);
       }
