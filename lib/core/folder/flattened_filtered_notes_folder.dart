@@ -109,7 +109,7 @@ class FlattenedFilteredNotesFolder
   Future<void> _noteRemoved(int _, Note note) async {
     await _lock.synchronized(() {
       var i = _notes.indexWhere((n) => n.filePath == note.filePath);
-      // assert(i != -1);
+      assert(i != -1);
       if (i == -1) {
         return;
       }
