@@ -14,7 +14,7 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   final NotesFolder _parentFolder;
   final String title;
 
-  final _notes = <Note>[];
+  final _notes = <String, Note>{};
   final _folders = <NotesFolder>[];
 
   FlattenedNotesFolder(this._parentFolder, {required this.title}) {
@@ -71,45 +71,50 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
   }
 
   void _noteAdded(int _, Note note) {
-    var i = _notes.indexWhere((n) => n.filePath == note.filePath);
-    if (i != -1) {
+    if (_notes.containsKey(note.filePath)) {
       assert(
           false, '_noteAdded called on a note already added ${note.filePath}');
+      _notes[note.filePath] = note;
       notifyNoteModified(-1, note);
       return;
     }
-    _notes.add(note);
+    _notes[note.filePath] = note;
     notifyNoteAdded(_notes.length - 1, note);
   }
 
   void _noteRemoved(int _, Note note) {
-    var i = _notes.indexWhere((n) => n.filePath == note.filePath);
-    assert(i != -1);
-    if (i == -1) {
+    var n = _notes.remove(note.filePath);
+
+    if (n == null) {
+      assert(false, "_noteRemoved called on untracked note ${note.filePath}");
       return;
     }
-
-    var _ = _notes.removeAt(i);
     notifyNoteRemoved(-1, note);
   }
 
   Future<void> _noteModified(int _, Note note) async {
-    var i = _notes.indexWhere((n) => n.filePath == note.filePath);
-    if (i != -1) {
-      notifyNoteModified(i, note);
-    } else {
+    if (!_notes.containsKey(note.filePath)) {
       assert(
           false, '_noteModified called on a note NOT added ${note.filePath}');
       _noteAdded(_, note);
+      return;
     }
+
+    notifyNoteModified(-1, note);
   }
 
   void _noteRenamed(int _, Note note, String oldPath) {
+    var oldNote = _notes.remove(oldPath);
+    if (oldNote == null) {
+      assert(false, '_noteRenamed called on a note NOT added ${note.filePath}');
+    }
+
+    _notes[note.filePath] = note;
     notifyNoteRenamed(-1, note, oldPath);
   }
 
   @override
-  List<Note> get notes => _notes;
+  List<Note> get notes => _notes.values.toList();
 
   @override
   List<NotesFolder> get subFolders => [];
