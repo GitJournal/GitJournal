@@ -80,7 +80,7 @@ class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
     if (prefix == "\n") {
       // Pressed Enter
     } else {
-      _showOverlayTag(context, text.substring(0, range.start - 1));
+      _showOverlayTag(context, text.substring(0, range.end));
     }
   }
 
