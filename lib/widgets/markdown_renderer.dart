@@ -23,11 +23,11 @@ import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/markdown/hardwrap.dart';
+import 'package:gitjournal/markdown/html_entities_syntax.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/images/markdown_image.dart';
-import 'markdown/html_entities_syntax.dart';
 
 class MarkdownRenderer extends StatelessWidget {
   final Note note;
