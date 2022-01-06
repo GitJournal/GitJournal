@@ -106,11 +106,8 @@ class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
     painter.layout(maxWidth: renderBox.size.width);
 
     List<LineMetrics> lines = painter.computeLineMetrics();
-    double height = 0;
-    for (var lm in lines) {
-      height += lm.height;
-    }
-    double width = lines.last.width;
+    var height = lines.map((e) => e.height).reduce((a, b) => a + b);
+    var width = lines.last.width;
 
     //print("Focus Node Offset dx: ${_focusNode.offset.dx}");
     //print("Focus Node Offset dy: ${_focusNode.offset.dy}");
