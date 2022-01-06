@@ -127,23 +127,18 @@ class MarkdownRenderer extends StatelessWidget {
 
   static md.ExtensionSet markdownExtensions({bool hardWrapEnabled = false}) {
     // It's important to add both these inline syntaxes before the other
-    // syntaxes as the LinkSyntax intefers with both of these
+    // syntaxes as the LinkSyntax intefers with WikiLinks and TaskLists
+    var inline = [
+      HtmlEntitiesSyntax(),
+      if (hardWrapEnabled) HardWrapSyntax(),
+      WikiLinkSyntax(),
+      TaskListSyntax(),
+      ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes,
+    ];
+
     var markdownExtensions = md.ExtensionSet(
       md.ExtensionSet.gitHubFlavored.blockSyntaxes,
-      hardWrapEnabled
-          ? [
-              HtmlEntitiesSyntax(),
-              HardWrapSyntax(),
-              WikiLinkSyntax(),
-              TaskListSyntax(),
-              ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes,
-            ]
-          : [
-              HtmlEntitiesSyntax(),
-              WikiLinkSyntax(),
-              TaskListSyntax(),
-              ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes,
-            ],
+      inline,
     );
     return markdownExtensions;
   }
