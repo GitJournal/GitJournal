@@ -332,9 +332,16 @@ class GitJournalRepo with ChangeNotifier {
     notifyListeners();
   }
 
+  bool _shouldCheckForChanges() {
+    if (Platform.isAndroid || Platform.isIOS) {
+      return !storageConfig.storeInternally;
+    }
+    return true;
+  }
+
   Future<void> syncNotes({bool doNotThrow = false}) async {
     // This is extremely slow with dart-git, can take over a second!
-    if (!storageConfig.storeInternally) {
+    if (_shouldCheckForChanges()) {
       var repoR = await GitRepository.load(repoPath);
       if (repoR.isFailure) {
         Log.e("SyncNotes Failed to Load Repo", result: repoR);
