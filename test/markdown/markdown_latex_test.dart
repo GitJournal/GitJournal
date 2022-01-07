@@ -7,7 +7,7 @@
 import 'package:markdown/markdown.dart' as md;
 import 'package:test/test.dart';
 
-import 'package:gitjournal/markdown/markdown_latex.dart';
+import 'package:gitjournal/markdown/parsers/katex.dart';
 
 void main() {
   test('Inline', () async {

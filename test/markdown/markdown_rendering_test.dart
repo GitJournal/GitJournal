@@ -7,7 +7,7 @@
 import 'package:markdown/markdown.dart' as md;
 import 'package:test/test.dart';
 
-import 'package:gitjournal/widgets/markdown_renderer.dart';
+import 'package:gitjournal/markdown/markdown_renderer.dart';
 
 void main() {
   test('Parses Wiki Lnks and task items', () {

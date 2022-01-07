@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:flutter_tex_js/flutter_tex_js.dart';
 import 'package:function_types/function_types.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:path/path.dart' as p;
@@ -23,13 +22,13 @@ import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/markdown/hardwrap.dart';
-import 'package:gitjournal/markdown/html_entities_syntax.dart';
-import 'package:gitjournal/markdown/markdown_latex.dart';
+import 'package:gitjournal/markdown/parsers/hardwrap.dart';
+import 'package:gitjournal/markdown/parsers/html_entities_syntax.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/images/markdown_image.dart';
+import 'builders/katex_builder.dart';
 
 class MarkdownRenderer extends StatelessWidget {
   final Note note;
@@ -123,7 +122,7 @@ class MarkdownRenderer extends StatelessWidget {
           titel: title, altText: alt),
       extensionSet: markdownExtensions(hardWrapEnabled: settings.hardWrap),
       builders: {
-        'katex': KatexBuilder(),
+        KatexBuilder.tag: KatexBuilder(),
       },
     );
 
@@ -133,13 +132,13 @@ class MarkdownRenderer extends StatelessWidget {
   static md.ExtensionSet markdownExtensions({bool hardWrapEnabled = false}) {
     // It's important to add both these inline syntaxes before the other
     // syntaxes as the LinkSyntax intefers with WikiLinks and TaskLists
-    var inline = [
+    var inline = <md.InlineSyntax>[
       HtmlEntitiesSyntax(),
       if (hardWrapEnabled) HardWrapSyntax(),
       WikiLinkSyntax(),
       TaskListSyntax(),
       ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes,
-      KatexInlineSyntax(),
+      KatexBuilder.inlineParser,
     ];
 
     var markdownExtensions = md.ExtensionSet(
@@ -200,11 +199,3 @@ class HighlightTermBuilder extends MarkdownElementBuilder {
 }
 
 */
-
-class KatexBuilder extends MarkdownElementBuilder {
-  @override
-  Widget? visitElementAfter(md.Element element, TextStyle? style) {
-    var text = element.textContent;
-    return TexImage(text, color: style?.color, fontSize: style?.fontSize);
-  }
-}

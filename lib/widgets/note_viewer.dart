@@ -18,7 +18,7 @@ import 'package:gitjournal/core/views/note_links_view.dart';
 import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/widgets/markdown_renderer.dart';
+import 'package:gitjournal/markdown/markdown_renderer.dart';
 import 'package:gitjournal/widgets/notes_backlinks.dart';
 
 class NoteViewer extends StatelessWidget {
