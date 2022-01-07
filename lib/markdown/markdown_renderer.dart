@@ -141,11 +141,12 @@ class MarkdownRenderer extends StatelessWidget {
       KatexBuilder.inlineParser,
     ];
 
-    var markdownExtensions = md.ExtensionSet(
-      md.ExtensionSet.gitHubFlavored.blockSyntaxes,
-      inline,
-    );
-    return markdownExtensions;
+    var block = <md.BlockSyntax>[
+      ...md.ExtensionSet.gitHubFlavored.blockSyntaxes,
+      // KatexBuilder.blockParser,
+    ];
+
+    return md.ExtensionSet(block, inline);
   }
 }
 

@@ -36,13 +36,12 @@ $$\begin{array}{c}
 
 \end{array}$$""";
 
-    var expectedHtml = r"""<h1>Hi</h1>
-<p><katex>\begin{array}{c}
+    var expectedHtml = r"""<h1>Hi</h1><katex>\begin{array}{c}
 
-\end{array}</katex></p>""";
+\end{array}</katex>""";
 
     expect(_convert(body), expectedHtml);
-  }, skip: true);
+  });
 }
 
 String _convert(String body) {

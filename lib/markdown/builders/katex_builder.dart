@@ -15,6 +15,7 @@ import '../parsers/katex.dart';
 class KatexBuilder extends MarkdownElementBuilder {
   static const tag = 'katex';
   static late final inlineParser = KatexInlineSyntax();
+  static const blockParser = KatexBlockSyntax();
 
   @override
   Widget? visitElementAfter(md.Element element, TextStyle? style) {
