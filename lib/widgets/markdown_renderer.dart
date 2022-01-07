@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_tex_js/flutter_tex_js.dart';
 import 'package:function_types/function_types.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:path/path.dart' as p;
@@ -24,6 +25,7 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/markdown/hardwrap.dart';
 import 'package:gitjournal/markdown/html_entities_syntax.dart';
+import 'package:gitjournal/markdown/markdown_latex.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
 import 'package:gitjournal/utils/utils.dart';
@@ -120,6 +122,9 @@ class MarkdownRenderer extends StatelessWidget {
           url, p.join(note.repoPath, note.parent.folderPath),
           titel: title, altText: alt),
       extensionSet: markdownExtensions(hardWrapEnabled: settings.hardWrap),
+      builders: {
+        'katex': KatexBuilder(),
+      },
     );
 
     return view;
@@ -134,6 +139,7 @@ class MarkdownRenderer extends StatelessWidget {
       WikiLinkSyntax(),
       TaskListSyntax(),
       ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes,
+      KatexInlineSyntax(),
     ];
 
     var markdownExtensions = md.ExtensionSet(
@@ -194,3 +200,11 @@ class HighlightTermBuilder extends MarkdownElementBuilder {
 }
 
 */
+
+class KatexBuilder extends MarkdownElementBuilder {
+  @override
+  Widget? visitElementAfter(md.Element element, TextStyle? style) {
+    var text = element.textContent;
+    return TexImage(text, color: style?.color, fontSize: style?.fontSize);
+  }
+}

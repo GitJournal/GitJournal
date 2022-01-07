@@ -101,6 +101,7 @@ dependencies:
     path: packages/openssh_ed25519
   d3_force_flutter:
     git: https://github.com/MathGaps/d3-force-flutter.git
+  flutter_tex_js: ^1.2.15
 
 dev_dependencies:
   #flutter_driver:

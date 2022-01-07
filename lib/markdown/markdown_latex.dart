@@ -19,15 +19,13 @@ class KatexInlineSyntax extends InlineSyntax {
       return false;
     }
 
-    var el = Element.text('span', text);
-    el.attributes['type'] = 'katex';
+    print('elem $text');
+    var el = Element.text('katex', text);
 
     parser.addNode(el);
     return true;
   }
 }
-
-// https://pub.dev/packages/flutter_tex_js
 
 final _pattern = RegExp(r'^\$\$([\S\s]*[^$][^$])\$\$$', multiLine: true);
 

@@ -15,7 +15,7 @@ void main() {
 $\\sqrt{3x-1}+(1+x)^2$""";
 
     var expectedHtml = r"""<h1>Hi</h1>
-<p><span type="katex">\\sqrt{3x-1}+(1+x)^2</span></p>""";
+<p><katex>\\sqrt{3x-1}+(1+x)^2</katex></p>""";
 
     expect(_convert(body), expectedHtml);
   });
@@ -37,9 +37,9 @@ $$\begin{array}{c}
 \end{array}$$""";
 
     var expectedHtml = r"""<h1>Hi</h1>
-<p><span type="katex">\begin{array}{c}
+<p><katex>\begin{array}{c}
 
-\end{array}</span></p>""";
+\end{array}</katex></p>""";
 
     expect(_convert(body), expectedHtml);
   }, skip: true);
