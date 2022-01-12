@@ -585,6 +585,7 @@ feature:
   configureBottomMenuBar: Configure the Bottom Menu Bar
   customFileNamePerEditor: Custom FileName per Editor
   branchSelection: Git Branch Selection
+  inlineLatex: Inline Katex Support in Markdown
 
 feature_timeline:
   title: Feature Timeline

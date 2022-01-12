@@ -57,6 +57,7 @@ class Features {
     Feature.customFileNamePerEditor,
     Feature.multiRepos,
     Feature.branchSelection,
+    Feature.inlineLatex,
   ];
 
   static final inProgress = <String>[
@@ -385,6 +386,14 @@ class Feature {
     tr("feature.branchSelection"),
     "",
     false,
+  );
+
+  static final inlineLatex = Feature(
+    "inlineLatex",
+    DateTime(2022, 01, 1),
+    tr("feature.inlineLatex"),
+    "",
+    true,
   );
 }
 
