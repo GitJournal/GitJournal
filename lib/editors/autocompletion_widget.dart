@@ -269,6 +269,13 @@ class TextRange {
 
 class TagsAutoCompleter {
   TextRange textChanged(TextEditorState es) {
+    // - Get current line
+    // - Remove everything to the right of the cursor
+    // - Check if a character has been entered
+    // - Abort if the cursor position has changed but nothing has been enterred
+    // - Check if entering a tag (starts with #)
+    // - Place the autocompletion popup under the cursor
+
     // print("${es.text} ${es.cursorPos}");
     var start = es.text.lastIndexOf(RegExp(r'^|[ .?!:;\n]'), es.cursorPos);
     if (start <= 0) {
