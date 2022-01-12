@@ -30,6 +30,13 @@ $$""";
     expect(_convert(body), expectedHtml);
   });
 
+  test('Inline Edge case', () async {
+    var body = r"Hi 200$ is not the same as 400$";
+    var expectedHtml = r"<p>Hi 200$ is not the same as 400$</p>";
+
+    expect(_convert(body), expectedHtml);
+  });
+
   test('Block', () async {
     var body = r"""# Hi
 $$\begin{array}{c}

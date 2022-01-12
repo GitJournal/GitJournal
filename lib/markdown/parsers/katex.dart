@@ -8,7 +8,7 @@ import 'package:markdown/markdown.dart';
 
 // Surrounded by $
 class KatexInlineSyntax extends InlineSyntax {
-  static const String _pattern = r'\$([^$\n]+)\$';
+  static const String _pattern = r'\$([^$\s][^$\n]*[^$\s])\$';
 
   KatexInlineSyntax() : super(_pattern);
 
