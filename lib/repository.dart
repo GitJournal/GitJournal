@@ -274,6 +274,7 @@ class GitJournalRepo with ChangeNotifier {
           var repo = await GitAsyncRepository.load(repoPath).getOrThrow();
           await _commitUnTrackedChanges(repo, gitConfig);
           await _resetFileStorage();
+          repo.close();
           return;
         }
       }
@@ -327,6 +328,7 @@ class GitJournalRepo with ChangeNotifier {
       }
       var repo = repoR.getOrThrow();
       _commitUnTrackedChanges(repo, gitConfig);
+      repo.close();
     }
 
     if (!remoteGitRepoConfigured) {
@@ -727,6 +729,7 @@ class GitJournalRepo with ChangeNotifier {
     // FIXME: Add the checkout method to GJRepo
     var gitRepo = await GitAsyncRepository.load(repoPath).getOrThrow();
     await gitRepo.checkout(note.filePath).throwOnError();
+    gitRepo.close();
 
     // FIXME: Instead of this just reload that specific file
     // FIXME: I don't think this will work!
@@ -735,7 +738,9 @@ class GitJournalRepo with ChangeNotifier {
 
   Future<List<GitRemoteConfig>> remoteConfigs() async {
     var repo = await GitAsyncRepository.load(repoPath).getOrThrow();
-    return repo.config.remotes;
+    var config = repo.config.remotes;
+    repo.close();
+    return config;
   }
 
   Future<List<String>> branches() async {
@@ -748,6 +753,7 @@ class GitJournalRepo with ChangeNotifier {
         return e.name.branchName()!;
       }));
     }
+    repo.close();
     return branches.toList()..sort();
   }
 
@@ -837,6 +843,7 @@ class GitJournalRepo with ChangeNotifier {
       var remoteBranch =
           await repo.remoteBranch(remoteName, branchName).getOrThrow();
       await repo.resetHard(remoteBranch.hash!).throwOnError();
+      repo.close();
 
       numChanges = 0;
       notifyListeners();
@@ -854,16 +861,19 @@ class GitJournalRepo with ChangeNotifier {
       var branchName = await repo.currentBranch().getOrThrow();
       var branchConfig = repo.config.branch(branchName);
       if (branchConfig == null) {
+        repo.close();
         throw Exception("Branch config for '$branchName' not found");
       }
 
       var remoteName = branchConfig.remote;
       if (remoteName == null) {
+        repo.close();
         throw Exception("Branch config for '$branchName' misdsing remote");
       }
       var remoteBranch =
           await repo.remoteBranch(remoteName, branchName).getOrThrow();
       var headHash = await repo.headHash().getOrThrow();
+      repo.close();
       return Result(remoteBranch.hash != headHash);
     });
   }
