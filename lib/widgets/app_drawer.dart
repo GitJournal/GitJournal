@@ -112,9 +112,9 @@ class _AppDrawerState extends State<AppDrawer>
   @override
   Widget build(BuildContext context) {
     Widget? setupGitButton;
-    var repoManager = Provider.of<RepositoryManager>(context);
+    var repoManager = context.watch<RepositoryManager>();
     var repo = repoManager.currentRepo;
-    var appConfig = Provider.of<AppConfig>(context);
+    var appConfig = context.watch<AppConfig>();
     var textStyle = Theme.of(context).textTheme.bodyText1;
     var currentRoute = ModalRoute.of(context)!.settings.name;
 
