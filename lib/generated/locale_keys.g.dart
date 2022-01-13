@@ -604,6 +604,9 @@ abstract class LocaleKeys {
   static const widgets_FolderSelectionDialog_title =
       'widgets.FolderSelectionDialog.title';
   static const widgets_FolderSelectionDialog = 'widgets.FolderSelectionDialog';
+  static const widgets_FolderTreeView_notesCount =
+      'widgets.FolderTreeView.notesCount';
+  static const widgets_FolderTreeView = 'widgets.FolderTreeView';
   static const widgets = 'widgets';
   static const rootFolder = 'rootFolder';
   static const ignoredFiles_dot = 'ignoredFiles.dot';
@@ -750,6 +753,7 @@ abstract class LocaleKeys {
   static const feature_customFileNamePerEditor =
       'feature.customFileNamePerEditor';
   static const feature_branchSelection = 'feature.branchSelection';
+  static const feature_inlineLatex = 'feature.inlineLatex';
   static const feature = 'feature';
   static const feature_timeline_title = 'feature_timeline.title';
   static const feature_timeline_progress = 'feature_timeline.progress';

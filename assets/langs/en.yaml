@@ -448,6 +448,8 @@ widgets:
     linkInvalid: Link '{}' is invalid.
   FolderSelectionDialog:
     title: Select a Folder
+  FolderTreeView:
+    notesCount: "{} Notes"
 
 rootFolder: Root Folder
 ignoredFiles:
