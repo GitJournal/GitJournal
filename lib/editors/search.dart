@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 

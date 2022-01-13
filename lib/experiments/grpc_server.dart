@@ -5,13 +5,11 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:fixnum/fixnum.dart';
 import 'package:grpc/grpc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:gitjournal/generated/shared_preferences.pb.dart';
 import 'package:gitjournal/generated/shared_preferences.pbgrpc.dart';
 
 class SharedPreferencesService extends SharedPreferencesServiceBase {

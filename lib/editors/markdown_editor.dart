@@ -23,7 +23,6 @@ import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'controllers/rich_text_controller.dart';
-import 'search.dart';
 
 class MarkdownEditor extends StatefulWidget implements Editor {
   final Note note;

@@ -5,7 +5,6 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:dart_git/git_url_parse.dart';
 import 'package:easy_localization/easy_localization.dart';

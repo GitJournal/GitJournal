@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/plumbing/commit_iterator.dart';
-import 'package:dart_git/plumbing/objects/commit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:synchronized/synchronized.dart';

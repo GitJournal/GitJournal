@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
-import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
 import 'package:time/time.dart';
 import 'package:timeago/timeago.dart' as timeago;

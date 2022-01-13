@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:gotrue/gotrue.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:gitjournal/account/account_screen.dart';

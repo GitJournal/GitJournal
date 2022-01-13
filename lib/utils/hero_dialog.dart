@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class HeroDialogRoute<T> extends PageRoute<T> {

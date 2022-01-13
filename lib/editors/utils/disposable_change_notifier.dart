@@ -7,7 +7,6 @@
 import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
 /// A duplicate of the ChangeNotifier class which has the dispose method
 /// renamed to disposeListenables. This is done so that it can be used

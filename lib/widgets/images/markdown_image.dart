@@ -5,12 +5,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';

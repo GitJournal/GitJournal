@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 
 import 'package:grpc/grpc.dart';
 
-import 'package:gitjournal/generated/shared_preferences.pb.dart';
 import 'package:gitjournal/generated/shared_preferences.pbgrpc.dart';
 
 Future<void> main(List<String> args) async {

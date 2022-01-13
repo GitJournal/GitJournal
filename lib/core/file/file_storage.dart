@@ -12,7 +12,6 @@ import 'package:dart_git/blob_ctime_builder.dart';
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/exceptions.dart';
 import 'package:dart_git/file_mtime_builder.dart';
-import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:tuple/tuple.dart';
 import 'package:universal_io/io.dart' as io;

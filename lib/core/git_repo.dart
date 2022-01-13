@@ -8,7 +8,6 @@ import 'dart:async';
 
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/exceptions.dart';
-import 'package:dart_git/utils/result.dart';
 import 'package:git_bindings/git_bindings.dart' as gb;
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' show Platform, Directory;

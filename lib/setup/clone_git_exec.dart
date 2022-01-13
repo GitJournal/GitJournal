@@ -5,7 +5,6 @@
  */
 
 import 'package:dart_git/dart_git.dart';
-import 'package:dart_git/utils/result.dart';
 import 'package:function_types/function_types.dart';
 
 import 'package:gitjournal/utils/git_desktop.dart';

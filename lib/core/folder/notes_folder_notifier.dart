@@ -5,7 +5,6 @@
  */
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
 import '../note.dart';
 import 'notes_folder.dart';

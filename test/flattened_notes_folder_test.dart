@@ -7,7 +7,6 @@
 import 'dart:math';
 
 import 'package:dart_git/dart_git.dart';
-import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
