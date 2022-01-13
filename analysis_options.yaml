@@ -12,6 +12,7 @@ analyzer:
     missing_return: error
     todo: ignore
     fixme: ignore
+    hack: ignore
     directives_ordering: ignore
   exclude:
     - "bin/cache/**"
