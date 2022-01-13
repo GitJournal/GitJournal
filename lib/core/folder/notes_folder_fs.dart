@@ -100,6 +100,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
   /// Will never end with '/'
   String get folderPath => _folderPath;
+  String get folderName => p.basename(_folderPath);
 
   /// Will never end with '/'
   String get fullFolderPath {
