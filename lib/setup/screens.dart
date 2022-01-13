@@ -24,6 +24,7 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/git_config.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/setup/autoconfigure.dart';
 import 'package:gitjournal/setup/button.dart';
@@ -428,23 +429,14 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
   void _removeRemote() {
     var repo = context.read<GitJournalRepo>();
-    var basePath = repo.gitBaseDirectory;
+    var repoPath = repo.repoPath;
 
-    var repoPath = p.join(basePath, widget.repoFolderName);
-
-    try {
-      if (!GitRepository.isValidRepo(repoPath)) {
-        var r = GitRepository.init(repoPath, defaultBranch: 'main');
-        showResultError(context, r);
-      }
-      var repo = GitRepository.load(repoPath).getOrThrow();
-      if (repo.config.remote(widget.remoteName) != null) {
-        repo.removeRemote(widget.remoteName).throwOnError();
-      }
-    } catch (e, stacktrace) {
-      Log.e("Failed to remove remote", ex: e, stacktrace: stacktrace);
-      logExceptionWarning(e, stacktrace);
+    if (!GitRepository.isValidRepo(repoPath)) {
+      var r = GitRepository.init(repoPath, defaultBranch: DEFAULT_BRANCH);
+      showResultError(context, r);
     }
+
+    var _ = repo.removeRemote(widget.remoteName);
   }
 
   Future<void> _previousPage() {

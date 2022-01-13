@@ -877,6 +877,18 @@ class GitJournalRepo with ChangeNotifier {
       return Result(remoteBranch.hash != headHash);
     });
   }
+
+  Future<Result<void>> removeRemote(String remoteName) async {
+    var repo = GitRepository.load(repoPath).getOrThrow();
+    if (repo.config.remote(remoteName) != null) {
+      var r = repo.removeRemote(remoteName);
+      if (r.isFailure) {
+        return fail(r);
+      }
+    }
+
+    return Result(null);
+  }
 }
 
 Future<void> _copyDirectory(String source, String destination) async {
