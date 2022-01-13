@@ -889,6 +889,17 @@ class GitJournalRepo with ChangeNotifier {
 
     return Result(null);
   }
+
+  Future<Result<void>> ensureValidRepo() async {
+    if (!GitRepository.isValidRepo(repoPath)) {
+      var r = GitRepository.init(repoPath, defaultBranch: DEFAULT_BRANCH);
+      if (r.isFailure) {
+        return fail(r);
+      }
+    }
+
+    return Result(null);
+  }
 }
 
 Future<void> _copyDirectory(String source, String destination) async {

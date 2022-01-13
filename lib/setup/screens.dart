@@ -7,7 +7,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:dart_git/dart_git.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
@@ -24,7 +23,6 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/git_config.dart';
-import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/setup/autoconfigure.dart';
 import 'package:gitjournal/setup/button.dart';
@@ -427,16 +425,18 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     );
   }
 
-  void _removeRemote() {
+  Future<void> _removeRemote() async {
     var repo = context.read<GitJournalRepo>();
-    var repoPath = repo.repoPath;
 
-    if (!GitRepository.isValidRepo(repoPath)) {
-      var r = GitRepository.init(repoPath, defaultBranch: DEFAULT_BRANCH);
-      showResultError(context, r);
+    var r1 = await repo.ensureValidRepo();
+    if (r1.isFailure) {
+      showResultError(context, r1);
     }
 
-    var _ = repo.removeRemote(widget.remoteName);
+    var r2 = await repo.removeRemote(widget.remoteName);
+    if (r2.isFailure) {
+      showResultError(context, r2);
+    }
   }
 
   Future<void> _previousPage() {
