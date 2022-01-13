@@ -170,7 +170,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
     // Remove Overflow animation
     repoBuilder = NotificationListener<OverscrollIndicatorNotification>(
       onNotification: (OverscrollIndicatorNotification overScroll) {
-        overScroll.disallowGlow();
+        overScroll.disallowIndicator();
         return false;
       },
       child: repoBuilder,
