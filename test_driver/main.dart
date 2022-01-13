@@ -28,7 +28,7 @@ Future<void> populateWithData(SharedPreferences pref) async {
   var dir = await getApplicationDocumentsDirectory();
 
   var repoPath = p.join(dir.path, "journal_local");
-  await GitRepository.init(repoPath);
+  GitRepository.init(repoPath);
 
   stderr.writeln("Filling fake data in $repoPath");
 

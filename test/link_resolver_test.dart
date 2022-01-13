@@ -46,8 +46,8 @@ void main() {
     await generateNote(repoPath, "zeplin.txt");
     await generateNote(repoPath, "Goat  Sim.md");
 
-    var repo = await GitRepository.load(repoPath).getOrThrow();
-    await repo
+    var repo = GitRepository.load(repoPath).getOrThrow();
+    repo
         .commit(
           message: "Prepare Test Env",
           author: GitAuthor(name: 'Name', email: "name@example.com"),

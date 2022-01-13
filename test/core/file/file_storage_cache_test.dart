@@ -58,7 +58,7 @@ void main() {
     var tempDir = await io.Directory.systemTemp.createTemp('__fnft__');
     var repoPath = tempDir.path;
 
-    await GitRepository.init(repoPath).throwOnError();
+    GitRepository.init(repoPath).throwOnError();
 
     var fileStorage = FileStorage(
       repoPath: repoPath,
@@ -74,12 +74,19 @@ void main() {
 
     var deepEq = const DeepCollectionEquality().equals;
     expect(
-        deepEq(fileStorage2.blobCTimeBuilder.processedCommits, commits), true);
-    expect(deepEq(fileStorage2.blobCTimeBuilder.processedTrees, trees), true);
+      deepEq(fileStorage2.blobCTimeBuilder.processedCommits.set, commits),
+      true,
+    );
+    expect(
+      deepEq(fileStorage2.blobCTimeBuilder.processedTrees.set, trees),
+      true,
+    );
     expect(deepEq(fileStorage2.blobCTimeBuilder.map, cMap), true);
 
     expect(
-        deepEq(fileStorage2.fileMTimeBuilder.processedCommits, commits), true);
+      deepEq(fileStorage2.fileMTimeBuilder.processedCommits.set, commits),
+      true,
+    );
     expect(deepEq(fileStorage2.fileMTimeBuilder.map, mMap), true);
   });
 }

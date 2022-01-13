@@ -13,6 +13,7 @@ import 'package:dart_git/utils/result.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/logger/logger.dart';
+import 'package:gitjournal/settings/settings.dart';
 
 Future<Result<void>> gitFetchViaExecutable({
   required String repoPath,
@@ -60,7 +61,7 @@ Future<Result<void>> _gitCommandViaExecutable({
   var dir = Directory.systemTemp.createTempSync();
   var temp = File("${dir.path}/key");
   _ = await temp.writeAsString(privateKey);
-  await temp.chmod(int.parse('0600', radix: 8));
+  temp.chmodSync(int.parse('0600', radix: 8));
 
   Log.i("Running git $command $remoteName");
   var process = await Process.start(
@@ -113,7 +114,7 @@ Future<Result<String>> gitDefaultBranchViaExecutable({
   var dir = Directory.systemTemp.createTempSync();
   var temp = File("${dir.path}/key");
   _ = await temp.writeAsString(privateKey);
-  await temp.chmod(int.parse('0600', radix: 8));
+  temp.chmodSync(int.parse('0600', radix: 8));
 
   var process = await Process.start(
     'git',
@@ -147,9 +148,8 @@ Future<Result<String>> gitDefaultBranchViaExecutable({
   for (var line in LineSplitter.split(stdout)) {
     if (line.contains('HEAD branch:')) {
       var branch = line.split(':')[1].trim();
-      // Everyone seems to default to 'main' these days
       if (branch == '(unknown)') {
-        return Result('main');
+        return Result(DEFAULT_BRANCH);
       }
       return Result(branch);
     }

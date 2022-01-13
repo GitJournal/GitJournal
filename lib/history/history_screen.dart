@@ -8,7 +8,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import 'package:dart_git/git.dart';
+import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/plumbing/commit_iterator.dart';
 import 'package:dart_git/plumbing/objects/commit.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -59,7 +59,7 @@ class _HistoryWidgetState extends State<HistoryWidget> {
   List<Result<GitCommit>> commits = [];
   List<dynamic> commitsAndSyncAttempts = [];
 
-  Stream<Result<GitCommit>>? _stream;
+  Iterable<Result<GitCommit>>? _stream;
 
   final _scrollController = ScrollController();
   final _lock = Lock();
@@ -109,7 +109,7 @@ class _HistoryWidgetState extends State<HistoryWidget> {
       var stream = _stream!;
 
       var list = <Result<GitCommit>>[];
-      await for (var commit in stream.take(20)) {
+      for (var commit in stream.take(20)) {
         list.add(commit);
       }
 
@@ -120,20 +120,19 @@ class _HistoryWidgetState extends State<HistoryWidget> {
     });
   }
 
-  Future<Stream<Result<GitCommit>>> _initStream() async {
+  Future<Iterable<Result<GitCommit>>> _initStream() async {
     try {
-      _gitRepo = await GitRepository.load(widget.repoPath).getOrThrow();
-      var head = await _gitRepo!.headHash().getOrThrow();
+      _gitRepo = GitRepository.load(widget.repoPath).getOrThrow();
+      var head = _gitRepo!.headHash().getOrThrow();
       return commitPreOrderIterator(
-              objStorage: _gitRepo!.objStorage, from: head)
-          .asBroadcastStream();
+          objStorage: _gitRepo!.objStorage, from: head);
     } on Exception catch (ex) {
       setState(() {
         _exception = ex;
       });
     }
 
-    return const Stream.empty();
+    return [];
   }
 
   void _rebuildCombined() {

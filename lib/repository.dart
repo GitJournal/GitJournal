@@ -135,7 +135,7 @@ class GitJournalRepo with ChangeNotifier {
 
     if (!repoDir.existsSync()) {
       Log.i("Calling GitInit for ${storageConfig.folderName} at: $repoPath");
-      var r = await GitRepository.init(repoPath, defaultBranch: 'main');
+      var r = GitRepository.init(repoPath, defaultBranch: DEFAULT_BRANCH);
       if (r.isFailure) {
         Log.e("GitInit Failed", result: r);
         return fail(r);
@@ -144,7 +144,7 @@ class GitJournalRepo with ChangeNotifier {
       storageConfig.save();
     }
 
-    var valid = await GitRepository.isValidRepo(repoPath);
+    var valid = GitRepository.isValidRepo(repoPath);
     if (!valid) {
       // What happened that the directory still exists but the .git folder
       // has disappeared?
@@ -154,7 +154,7 @@ class GitJournalRepo with ChangeNotifier {
       return Result.fail(ex);
     }
 
-    var repoR = await GitRepository.load(repoPath);
+    var repoR = await GitAsyncRepository.load(repoPath);
     if (repoR.isFailure) {
       return fail(repoR);
     }
@@ -164,6 +164,7 @@ class GitJournalRepo with ChangeNotifier {
     if (!storageConfig.storeInternally) {
       var r = await _commitUnTrackedChanges(repo, gitConfig);
       if (r.isFailure) {
+        repo.close();
         return fail(r);
       }
     }
@@ -192,6 +193,8 @@ class GitJournalRepo with ChangeNotifier {
       currentBranch: await repo.currentBranch().getOrThrow(),
       headHash: head,
     );
+
+    repo.close();
     return Result(gjRepo);
   }
 
@@ -268,7 +271,7 @@ class GitJournalRepo with ChangeNotifier {
       var r = await rootFolder.loadRecursively();
       if (r.isFailure) {
         if (r.error is FileStorageCacheIncomplete) {
-          var repo = await GitRepository.load(repoPath).getOrThrow();
+          var repo = await GitAsyncRepository.load(repoPath).getOrThrow();
           await _commitUnTrackedChanges(repo, gitConfig);
           await _resetFileStorage();
           return;
@@ -287,33 +290,11 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   Future<void> __fillFileStorageCache() async {
-    var gitRepo = await GitRepository.load(repoPath).getOrThrow();
-    var headR = await gitRepo.headHash();
-    if (headR.isFailure) {
-      if (headR.error is GitRefNotFound) {
-        // No commits
-        fileStorageCacheReady = true;
-        notifyListeners();
-        return;
-      }
-      Log.e("Failed to fetch HEAD", result: headR);
-      return;
-    }
-    var head = headR.getOrThrow();
-    Log.d("Got HEAD: $head");
-
     var startTime = DateTime.now();
-    var result = await gitRepo.visitTree(
-      fromCommitHash: head,
-      visitor: fileStorage.visitor,
-    );
+    await fileStorage.fill();
     var endTime = DateTime.now().difference(startTime);
 
     Log.i("Built Git Time Cache - $endTime");
-    if (result.isFailure) {
-      Log.e("Failed to build FileStorage cache", result: result);
-      logException(result.exception!, result.stackTrace!);
-    }
 
     var r = await fileStorageCache.save(fileStorage);
     if (r.isFailure) {
@@ -321,10 +302,7 @@ class GitJournalRepo with ChangeNotifier {
       logException(r.exception!, r.stackTrace!);
     }
 
-    if (fileStorageCache.lastProcessedHead != head) {
-      Log.e(
-          "FileStorageCache Head different ${fileStorageCache.lastProcessedHead}");
-    }
+    assert(fileStorageCache.lastProcessedHead == fileStorage.head);
 
     // Notify that the cache is ready
     fileStorageCacheReady = true;
@@ -342,7 +320,7 @@ class GitJournalRepo with ChangeNotifier {
   Future<void> syncNotes({bool doNotThrow = false}) async {
     // This is extremely slow with dart-git, can take over a second!
     if (_shouldCheckForChanges()) {
-      var repoR = await GitRepository.load(repoPath);
+      var repoR = await GitAsyncRepository.load(repoPath);
       if (repoR.isFailure) {
         Log.e("SyncNotes Failed to Load Repo", result: repoR);
         return;
@@ -747,7 +725,7 @@ class GitJournalRepo with ChangeNotifier {
 
   Future<void> discardChanges(Note note) async {
     // FIXME: Add the checkout method to GJRepo
-    var gitRepo = await GitRepository.load(repoPath).getOrThrow();
+    var gitRepo = await GitAsyncRepository.load(repoPath).getOrThrow();
     await gitRepo.checkout(note.filePath).throwOnError();
 
     // FIXME: Instead of this just reload that specific file
@@ -756,12 +734,12 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   Future<List<GitRemoteConfig>> remoteConfigs() async {
-    var repo = await GitRepository.load(repoPath).getOrThrow();
+    var repo = await GitAsyncRepository.load(repoPath).getOrThrow();
     return repo.config.remotes;
   }
 
   Future<List<String>> branches() async {
-    var repo = await GitRepository.load(repoPath).getOrThrow();
+    var repo = await GitAsyncRepository.load(repoPath).getOrThrow();
     var branches = Set<String>.from(await repo.branches().getOrThrow());
     if (repo.config.remotes.isNotEmpty) {
       var remoteName = repo.config.remotes.first.name;
@@ -777,11 +755,12 @@ class GitJournalRepo with ChangeNotifier {
 
   Future<String> checkoutBranch(String branchName) async {
     Log.i("Changing branch to $branchName");
-    var repo = await GitRepository.load(repoPath).getOrThrow();
+    var repo = await GitAsyncRepository.load(repoPath).getOrThrow();
 
     try {
       var created = await createBranchIfRequired(repo, branchName);
       if (created.isEmpty) {
+        repo.close();
         return "";
       }
     } catch (ex, st) {
@@ -800,12 +779,15 @@ class GitJournalRepo with ChangeNotifier {
     } catch (e, st) {
       Log.e("Checkout Branch Failed", ex: e, stacktrace: st);
     }
+
+    repo.close();
     return branchName;
   }
 
   // FIXME: Why does this need to return a string?
   /// throws exceptions
-  Future<String> createBranchIfRequired(GitRepository repo, String name) async {
+  Future<String> createBranchIfRequired(
+      GitAsyncRepository repo, String name) async {
     var localBranches = await repo.branches().getOrThrow();
     if (localBranches.contains(name)) {
       return name;
@@ -824,8 +806,8 @@ class GitJournalRepo with ChangeNotifier {
       return "";
     }
 
-    await repo.createBranch(name, hash: remoteBranchRef.hash).throwOnError();
-    await repo.setBranchUpstreamTo(name, remoteConfig, name).throwOnError();
+    repo.createBranch(name, hash: remoteBranchRef.hash).throwOnError();
+    repo.setBranchUpstreamTo(name, remoteConfig, name).throwOnError();
 
     Log.i("Created branch $name");
     return name;
@@ -840,7 +822,8 @@ class GitJournalRepo with ChangeNotifier {
   /// reset --hard the current branch to its remote branch
   Future<Result<void>> resetHard() {
     return catchAll(() async {
-      var repo = await GitRepository.load(_gitRepo.gitRepoPath).getOrThrow();
+      var repo =
+          await GitAsyncRepository.load(_gitRepo.gitRepoPath).getOrThrow();
       var branchName = await repo.currentBranch().getOrThrow();
       var branchConfig = repo.config.branch(branchName);
       if (branchConfig == null) {
@@ -866,7 +849,8 @@ class GitJournalRepo with ChangeNotifier {
 
   Future<Result<bool>> canResetHard() {
     return catchAll(() async {
-      var repo = await GitRepository.load(_gitRepo.gitRepoPath).getOrThrow();
+      var repo =
+          await GitAsyncRepository.load(_gitRepo.gitRepoPath).getOrThrow();
       var branchName = await repo.currentBranch().getOrThrow();
       var branchConfig = repo.config.branch(branchName);
       if (branchConfig == null) {
@@ -930,7 +914,7 @@ Future<void> _ensureOneCommitInRepo({
 }
 
 Future<Result<void>> _commitUnTrackedChanges(
-    GitRepository repo, GitConfig gitConfig) async {
+    GitAsyncRepository repo, GitConfig gitConfig) async {
   var timer = Stopwatch()..start();
   //
   // Check for un-committed files and save them

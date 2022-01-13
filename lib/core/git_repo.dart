@@ -24,6 +24,9 @@ import 'package:gitjournal/utils/git_desktop.dart';
 
 bool useDartGit = false;
 
+// FIXME: Remember to close all the opened repos!!
+// FIXME: Micro optimization? Avoid re-creating the GitAsyncRepository!
+
 class GitNoteRepository {
   final String gitRepoPath;
   final gb.GitRepo _gitRepo;
@@ -43,7 +46,7 @@ class GitNoteRepository {
 
   Future<Result<void>> _add(String pathSpec) async {
     if (useDartGit || AppConfig.instance.experimentalGitOps) {
-      var repo = await GitRepository.load(gitRepoPath).getOrThrow();
+      var repo = await GitAsyncRepository.load(gitRepoPath).getOrThrow();
       await repo.add(pathSpec).throwOnError();
       return Result(null);
     } else {
@@ -59,7 +62,7 @@ class GitNoteRepository {
 
   Future<Result<void>> _rm(String pathSpec) async {
     if (useDartGit || AppConfig.instance.experimentalGitOps) {
-      var repo = await GitRepository.load(gitRepoPath).getOrThrow();
+      var repo = await GitAsyncRepository.load(gitRepoPath).getOrThrow();
       return await repo.rm(pathSpec);
     } else {
       try {
@@ -78,7 +81,7 @@ class GitNoteRepository {
     required String authorName,
   }) async {
     if (useDartGit || AppConfig.instance.experimentalGitOps) {
-      var repo = await GitRepository.load(gitRepoPath).getOrThrow();
+      var repo = await GitAsyncRepository.load(gitRepoPath).getOrThrow();
       var author = GitAuthor(name: authorName, email: authorEmail);
       var r = await repo.commit(message: message, author: author);
       if (r.isFailure) {
@@ -209,7 +212,7 @@ class GitNoteRepository {
 
   Future<Result<void>> resetLastCommit() async {
     if (useDartGit || AppConfig.instance.experimentalGitOps) {
-      var repo = await GitRepository.load(gitRepoPath).getOrThrow();
+      var repo = await GitAsyncRepository.load(gitRepoPath).getOrThrow();
       var headCommitR = await repo.headCommit();
       if (headCommitR.isFailure) {
         return fail(headCommitR);
@@ -268,7 +271,7 @@ class GitNoteRepository {
   Future<Result<void>> merge() => catchAll(_merge);
 
   Future<Result<void>> _merge() async {
-    var repo = await GitRepository.load(gitRepoPath).getOrThrow();
+    var repo = await GitAsyncRepository.load(gitRepoPath).getOrThrow();
     var branch = await repo.currentBranch().getOrThrow();
 
     var branchConfig = repo.config.branch(branch);
@@ -316,7 +319,7 @@ class GitNoteRepository {
   Future<Result<void>> push() async {
     // Only push if we have something we need to push
     try {
-      var repo = await GitRepository.load(gitRepoPath).getOrThrow();
+      var repo = await GitAsyncRepository.load(gitRepoPath).getOrThrow();
       var canPush = await repo.canPush().getOrThrow();
       if (!canPush) {
         return Result(null);
@@ -365,7 +368,7 @@ class GitNoteRepository {
 
   Future<int?> numChanges() async {
     try {
-      var repo = await GitRepository.load(gitRepoPath).getOrThrow();
+      var repo = await GitAsyncRepository.load(gitRepoPath).getOrThrow();
       var nResult = await repo.numChangesToPush();
       if (nResult.isSuccess) {
         return nResult.getOrThrow();

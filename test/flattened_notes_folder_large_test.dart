@@ -42,8 +42,8 @@ void main() {
         await _writeRandomNote(random, repoPath, config, fileStorage);
       }
 
-      var repo = await GitRepository.load(repoPath).getOrThrow();
-      await repo
+      var repo = GitRepository.load(repoPath).getOrThrow();
+      repo
           .commit(
             message: "Prepare Test Env",
             author: GitAuthor(name: 'Name', email: "name@example.com"),
@@ -72,8 +72,8 @@ void main() {
       var newFileStorage = await FileStorage.fake(newRepoPath);
       await _writeRandomNote(Random(), newRepoPath, config, newFileStorage);
 
-      var repo = await GitRepository.load(newRepoPath).getOrThrow();
-      await repo
+      var repo = GitRepository.load(newRepoPath).getOrThrow();
+      repo
           .commit(
             message: "Prepare Test Env",
             author: GitAuthor(name: 'Name', email: "name@example.com"),

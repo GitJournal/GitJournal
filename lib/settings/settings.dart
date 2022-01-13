@@ -23,6 +23,8 @@ const SETTINGS_VERSION = 3;
 const DEFAULT_LIGHT_THEME_NAME = "LightDefault";
 const DEFAULT_DARK_THEME_NAME = "DarkDefault";
 
+const DEFAULT_BRANCH = 'main';
+
 class Settings extends ChangeNotifier with SettingsSharedPref {
   Settings(this.id, this.pref);
 

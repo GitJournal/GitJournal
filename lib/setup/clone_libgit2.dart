@@ -89,8 +89,8 @@ Future<Result<String>> _defaultBranch(
     Log.w("Could not fetch git Default Branch", ex: ex);
   }
 
-  var repo = await GitRepository.load(repoPath).getOrThrow();
-  var remoteBranch = await repo.guessRemoteHead(remoteName);
+  var repo = GitRepository.load(repoPath).getOrThrow();
+  var remoteBranch = repo.guessRemoteHead(remoteName);
   if (remoteBranch == null) {
     return Result(null);
   }

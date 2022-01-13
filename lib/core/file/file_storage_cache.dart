@@ -66,9 +66,7 @@ class FileStorageCache {
 
   Future<Result<void>> save(FileStorage fileStorage) async {
     return catchAll(() async {
-      var repo = await GitRepository.load(fileStorage.repoPath).getOrThrow();
-      var headR = await repo.headHash();
-      lastProcessedHead = headR.isFailure ? GitHash.zero() : headR.getOrThrow();
+      lastProcessedHead = fileStorage.head;
 
       var blobCTimeBuilder = fileStorage.blobCTimeBuilder;
       var fileMTimeBUilder = fileStorage.fileMTimeBuilder;
@@ -83,7 +81,7 @@ class FileStorageCache {
   }
 
   String get _cTimeFilePath => p.join(cacheFolderPath, 'blob_ctime_v1');
-  String get _mTimeFilePath => p.join(cacheFolderPath, 'file_mtime_v1');
+  String get _mTimeFilePath => p.join(cacheFolderPath, 'file_mtime_v2');
 
   Future<Tuple2<BlobCTimeBuilder, GitHash>> _buildCTimeBuilder() async {
     var file = io.File(_cTimeFilePath);

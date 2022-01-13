@@ -7,6 +7,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/diff_commit.dart';
@@ -43,10 +44,10 @@ class _CommitDataWidgetState extends State<CommitDataWidget> {
     _initStateAsync();
   }
 
-  Future<void> _initStateAsync() async {
+  void _initStateAsync() {
     // FIXME: Run all of this in another worker thread!
 
-    var r = await diffCommits(
+    var r = diffCommits(
       fromCommit: widget.parentCommit,
       toCommit: widget.commit,
       objStore: widget.gitRepo.objStorage,
@@ -54,7 +55,7 @@ class _CommitDataWidgetState extends State<CommitDataWidget> {
     if (r.isFailure) {
       Log.e("Got exception in diffCommits",
           ex: r.error, stacktrace: r.stackTrace);
-      return setState(() {
+      setState(() {
         _exception = r.exception;
       });
     }
@@ -131,11 +132,11 @@ class __BlobLoaderState extends State<_BlobLoader> {
   void initState() {
     super.initState();
 
-    _initStateAsync();
+    SchedulerBinding.instance!.addPostFrameCallback((_) => _initStateAsync);
   }
 
-  Future<void> _initStateAsync() async {
-    var result = await widget.gitRepo.objStorage.readBlob(widget.blobHash);
+  void _initStateAsync() {
+    var result = widget.gitRepo.objStorage.readBlob(widget.blobHash);
     setState(() {
       _exception = result.exception;
       _blob = result.data;

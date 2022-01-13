@@ -7,7 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:dart_git/git.dart';
+import 'package:dart_git/dart_git.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
@@ -426,20 +426,20 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     );
   }
 
-  Future<void> _removeRemote() async {
+  void _removeRemote() {
     var repo = context.read<GitJournalRepo>();
     var basePath = repo.gitBaseDirectory;
 
     var repoPath = p.join(basePath, widget.repoFolderName);
 
     try {
-      if (!await GitRepository.isValidRepo(repoPath)) {
-        var r = await GitRepository.init(repoPath, defaultBranch: 'main');
+      if (!GitRepository.isValidRepo(repoPath)) {
+        var r = GitRepository.init(repoPath, defaultBranch: 'main');
         showResultError(context, r);
       }
-      var repo = await GitRepository.load(repoPath).getOrThrow();
+      var repo = GitRepository.load(repoPath).getOrThrow();
       if (repo.config.remote(widget.remoteName) != null) {
-        await repo.removeRemote(widget.remoteName).throwOnError();
+        repo.removeRemote(widget.remoteName).throwOnError();
       }
     } catch (e, stacktrace) {
       Log.e("Failed to remove remote", ex: e, stacktrace: stacktrace);
@@ -571,7 +571,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     if (cloneR.isFailure) {
       Log.e("Failed to clone", ex: cloneR.error, stacktrace: cloneR.stackTrace);
       var error = cloneR.error.toString();
-      await _removeRemote();
+      _removeRemote();
 
       setState(() {
         logEvent(Event.GitHostSetupGitCloneError, parameters: {

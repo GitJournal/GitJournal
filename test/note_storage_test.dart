@@ -67,8 +67,8 @@ void main() {
 
       notes = [n1, n2];
 
-      var repo = await GitRepository.load(tempDir.path).getOrThrow();
-      await repo
+      var repo = GitRepository.load(tempDir.path).getOrThrow();
+      repo
           .commit(
             message: "Prepare Test Env",
             author: GitAuthor(name: 'Name', email: "name@example.com"),

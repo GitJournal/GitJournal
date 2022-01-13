@@ -81,9 +81,9 @@ Future<Result<void>> _merge(
   String authorEmail,
 ) {
   return catchAll(() async {
-    var repo = await GitRepository.load(repoPath).getOrThrow();
+    var repo = GitRepository.load(repoPath).getOrThrow();
     var author = GitAuthor(name: authorName, email: authorEmail);
-    await repo.mergeCurrentTrackingBranch(author: author).throwOnError();
+    repo.mergeCurrentTrackingBranch(author: author).throwOnError();
     return Result(null);
   });
 }
