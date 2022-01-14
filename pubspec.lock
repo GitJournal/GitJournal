@@ -341,6 +341,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.9.0"
+  dart_date:
+    dependency: "direct main"
+    description:
+      name: dart_date
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.1"
   dart_git:
     dependency: "direct main"
     description:

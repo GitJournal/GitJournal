@@ -49,7 +49,7 @@ class NotesMaterializedView<T> {
       await _writeMutex.protect(() async {
         if (storageBox != null) return;
 
-        var startTime = DateTime.now();
+        var stopwatch = Stopwatch()..start();
         try {
           storageBox = await Hive.openBox<T>(name);
         } on HiveError catch (ex, st) {
@@ -59,9 +59,8 @@ class NotesMaterializedView<T> {
           await Hive.deleteBoxFromDisk(name);
           storageBox = await Hive.openBox<T>(name);
         }
-        var endTime = DateTime.now().difference(startTime);
 
-        Log.i("Loading View $name: $endTime");
+        Log.i("Loading View $name: ${stopwatch.elapsed}");
       });
     });
 

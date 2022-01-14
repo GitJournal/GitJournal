@@ -20,7 +20,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_storage.dart';
 
 void main() {
-  var random = Random(DateTime.now().millisecondsSinceEpoch);
+  var random = Random();
 
   String _getRandomFilePath(String basePath) {
     assert(basePath.startsWith(p.separator));

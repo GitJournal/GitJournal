@@ -136,6 +136,17 @@ class NoteSerializationSettings {
 
     return DateFormat.None;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      other is NoteSerializationSettings &&
+      runtimeType == other.runtimeType &&
+      toProtoBuf().toString() == other.toProtoBuf().toString();
+
+  @override
+  int get hashCode {
+    throw UnimplementedError();
+  }
 }
 
 // Rename to MarkdownYamlNoteSerializer
@@ -414,5 +425,15 @@ class NoteSerializer implements NoteSerializerInterface {
       serializerSettings: settings,
       fileFormat: NoteFileFormat.Markdown,
     );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    throw UnimplementedError();
+  }
+
+  @override
+  int get hashCode {
+    throw UnimplementedError();
   }
 }

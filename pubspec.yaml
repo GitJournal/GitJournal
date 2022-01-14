@@ -102,6 +102,7 @@ dependencies:
   d3_force_flutter:
     git: https://github.com/MathGaps/d3-force-flutter.git
   flutter_tex_js: ^1.2.15
+  dart_date: ^1.1.1
 
 dev_dependencies:
   #flutter_driver:

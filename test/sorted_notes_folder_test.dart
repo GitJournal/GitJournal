@@ -29,6 +29,7 @@ void main() {
     late FileStorage fileStorage;
 
     final storage = NoteStorage();
+    final gitDt = DateTime.now();
 
     setUp(() async {
       tempDir =
@@ -44,8 +45,9 @@ void main() {
       var random = Random();
       for (var i = 0; i < 5; i++) {
         var path = p.join(folder.folderPath, "${random.nextInt(1000)}.md");
-        var note =
-            await storage.load(File.short(path, repoPath), folder).getOrThrow();
+        var note = await storage
+            .load(File.short(path, repoPath, gitDt), folder)
+            .getOrThrow();
         note.apply(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "$i\n",
@@ -102,7 +104,7 @@ void main() {
             SortingMode(SortingField.Modified, SortingOrder.Descending),
       );
 
-      var fNew = File.short('new.md', repoPath);
+      var fNew = File.short('new.md', repoPath, gitDt);
       var note = await storage.load(fNew, folder).getOrThrow();
       folder.add(note);
 
@@ -129,7 +131,7 @@ void main() {
             SortingMode(SortingField.Modified, SortingOrder.Descending),
       );
 
-      var fNew = File.short('new.md', repoPath);
+      var fNew = File.short('new.md', repoPath, gitDt);
       var note = await storage.load(fNew, folder).getOrThrow();
       folder.add(note);
 

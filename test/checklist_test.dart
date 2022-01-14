@@ -26,6 +26,7 @@ void main() {
     late FileStorage fileStorage;
 
     final storage = NoteStorage();
+    final gitDt = DateTime.now();
 
     setUpAll(() async {
       tempDir = await io.Directory.systemTemp.createTemp('__notes_test__');
@@ -62,7 +63,7 @@ Booga Wooga
       await io.File(noteFullPath).writeAsString(content);
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
-      var file = File.short("note.md", repoPath);
+      var file = File.short("note.md", repoPath, gitDt);
       var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
@@ -126,7 +127,7 @@ Booga Wooga
       await io.File(noteFullPath).writeAsString(content);
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
-      var file = File.short("note2.md", repoPath);
+      var file = File.short("note2.md", repoPath, gitDt);
       var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
@@ -141,7 +142,7 @@ Booga Wooga
       await io.File(noteFullPath).writeAsString(content);
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
-      var file = File.short("note3.md", repoPath);
+      var file = File.short("note3.md", repoPath, gitDt);
       var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
@@ -162,7 +163,7 @@ Booga Wooga
       await io.File(noteFullPath).writeAsString(content);
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
-      var file = File.short("note13.md", repoPath);
+      var file = File.short("note13.md", repoPath, gitDt);
       var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
@@ -182,7 +183,7 @@ Booga Wooga
       await io.File(noteFullPath).writeAsString(content);
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
-      var file = File.short("note4.md", repoPath);
+      var file = File.short("note4.md", repoPath, gitDt);
       var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
@@ -202,7 +203,7 @@ Booga Wooga
       await io.File(noteFullPath).writeAsString(content);
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
-      var file = File.short("note4.md", repoPath);
+      var file = File.short("note4.md", repoPath, gitDt);
       var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
@@ -218,7 +219,7 @@ Booga Wooga
       await io.File(noteFullPath).writeAsString(content);
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
-      var file = File.short("note449.md", repoPath);
+      var file = File.short("note449.md", repoPath, gitDt);
       var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
@@ -236,7 +237,7 @@ Booga Wooga
       await io.File(noteFullPath).writeAsString(content);
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
-      var file = File.short("note448.md", repoPath);
+      var file = File.short("note448.md", repoPath, gitDt);
       var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
@@ -252,7 +253,7 @@ Booga Wooga
       await io.File(noteFullPath).writeAsString(content);
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
-      var file = File.short("note448.md", repoPath);
+      var file = File.short("note448.md", repoPath, gitDt);
       var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
@@ -268,7 +269,7 @@ Booga Wooga
       await io.File(noteFullPath).writeAsString(content);
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
-      var file = File.short("note449.md", repoPath);
+      var file = File.short("note449.md", repoPath, gitDt);
       var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);
@@ -285,7 +286,7 @@ Booga Wooga
       await io.File(noteFullPath).writeAsString(content);
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
-      var file = File.short("note429.md", repoPath);
+      var file = File.short("note429.md", repoPath, gitDt);
       var note = await storage.load(file, parentFolder).getOrThrow();
 
       var checklist = Checklist(note);

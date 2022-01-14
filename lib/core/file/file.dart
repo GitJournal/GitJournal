@@ -44,23 +44,23 @@ class File {
   }
 
   @visibleForTesting
-  File.short(this.filePath, this.repoPath)
+  File.short(this.filePath, this.repoPath, DateTime dt)
       : oid = GitHash.zero(),
-        fileLastModified = DateTime.now(),
-        modified = DateTime.now(),
-        created = DateTime.now() {
+        fileLastModified = dt,
+        modified = dt,
+        created = dt {
     assert(!filePath.startsWith(p.separator));
 
     assert(repoPath.startsWith(p.separator));
     assert(repoPath.endsWith(p.separator));
   }
 
-  File.empty({required this.repoPath})
+  File.empty({required this.repoPath, required DateTime dt})
       : filePath = '',
         oid = GitHash.zero(),
-        fileLastModified = DateTime.now(),
-        modified = DateTime.now(),
-        created = DateTime.now() {
+        fileLastModified = dt,
+        modified = dt,
+        created = dt {
     assert(repoPath.startsWith(p.separator));
     assert(repoPath.endsWith(p.separator));
   }

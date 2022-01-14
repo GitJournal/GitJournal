@@ -28,6 +28,8 @@ void main() {
     late NotesFolderConfig config;
     late FileStorage fileStorage;
 
+    final gitDt = DateTime.now();
+
     setUpAll(() async {
       tempDir = await io.Directory.systemTemp.createTemp('__notes_test__');
       repoPath = tempDir.path + p.separator;
@@ -56,7 +58,7 @@ Hello
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
       var noteStorage = NoteStorage();
-      var file = File.short("note.md", repoPath);
+      var file = File.short("note.md", repoPath, gitDt);
       var noteR = await noteStorage.load(file, parentFolder);
       return noteR.getOrThrow();
     }

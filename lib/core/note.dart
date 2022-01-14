@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import 'package:collection/collection.dart';
+import 'package:dart_date/dart_date.dart';
 import 'package:path/path.dart' as p;
 import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:universal_io/io.dart' as io;
@@ -86,7 +88,6 @@ enum NoteFileFormat {
 
 class Note implements File {
   NotesFolderFS parent;
-  String? _filePath;
 
   String? _title;
   DateTime? _created;
@@ -96,7 +97,7 @@ class Note implements File {
   Set<String> _tags = {};
   Map<String, dynamic> _extraProps = {};
 
-  NoteFileFormat _fileFormat;
+  final NoteFileFormat _fileFormat;
 
   MdYamlDoc _data = MdYamlDoc();
   late NoteSerializer noteSerializer;
@@ -111,6 +112,9 @@ class Note implements File {
 
   @override
   String get repoPath => file.repoPath;
+
+  @override
+  String get filePath => file.filePath;
 
   @override
   String get fullFilePath => p.join(repoPath, filePath);
@@ -128,8 +132,7 @@ class Note implements File {
     required NoteSerializationSettings serializerSettings,
     required DateTime? modified,
     required DateTime? created,
-  })  : _filePath = file.filePath,
-        _title = title,
+  })  : _title = title,
         _body = body,
         _type = noteType,
         _tags = tags,
@@ -145,7 +148,10 @@ class Note implements File {
     required NoteFileFormat fileFormat,
     Map<String, dynamic> extraProps = const {},
     String? fileName,
-  })  : file = File.empty(repoPath: parent.repoPath),
+  })  : file = File.empty(
+          repoPath: parent.repoPath,
+          dt: DateTime.now().setMicrosecond(0).setMillisecond(0),
+        ),
         _fileFormat = fileFormat {
     _created = DateTime.now();
     var settings = NoteSerializationSettings.fromConfig(parent.config);
@@ -165,84 +171,121 @@ class Note implements File {
       _type = newNote._type;
     }
 
+    // FIXME: Ensure this fileName doesn't exist
+    var filePath = buildFilePath(
+      parent: parent,
+      fileFormat: fileFormat,
+      created: created,
+      type: type,
+      fileName: fileName,
+      title: title,
+    );
+
+    file = file.copyFile(filePath: filePath);
+    assert(p.dirname(fullFilePath) == parent.fullFolderPath);
+  }
+
+  static String buildFilePath({
+    required NotesFolderFS parent,
+    required NoteFileFormat fileFormat,
+    required DateTime created,
+    required NoteType type,
+    required String? fileName,
+    required String? title,
+  }) {
+    // The fileName is not null when following a wikiLink
     if (fileName != null) {
-      // FIXME: We should ensure a note with this fileName does not already
-      //        exist
-      var formatInfo = NoteFileFormatInfo(parent.config);
-      if (!formatInfo.isAllowedFileName(fileName)) {
-        fileName += NoteFileFormatInfo.defaultExtension(_fileFormat);
-      }
-      _filePath = p.join(parent.folderPath, fileName);
-
-      Log.i("Constructing new note with path $_filePath");
-
       assert(!fileName.endsWith(p.separator));
       assert(!parent.folderPath.endsWith(p.separator));
       assert(!parent.fullFolderPath.endsWith(p.separator));
-      assert(p.dirname(fullFilePath) == parent.fullFolderPath);
 
-      file = file.copyFile(filePath: filePath);
-    }
-  }
-
-  @override
-  String get filePath {
-    if (_filePath == null) {
-      var fp = "";
-      try {
-        fp = p.join(parent.folderPath, _buildFileName());
-      } catch (e, stackTrace) {
-        Log.e("_buildFileName: $e");
-        logExceptionWarning(e, stackTrace);
-        fp = p.join(parent.folderPath, const Uuid().v4());
-      }
-      switch (_fileFormat) {
-        case NoteFileFormat.OrgMode:
-          if (!fp.toLowerCase().endsWith('.org')) {
-            fp += '.org';
-          }
-          break;
-
-        case NoteFileFormat.Txt:
-          if (!fp.toLowerCase().endsWith('.txt')) {
-            fp += '.txt';
-          }
-          break;
-
-        case NoteFileFormat.Markdown:
-        default:
-          if (!fp.toLowerCase().endsWith('.md')) {
-            fp += '.md';
-          }
-          break;
+      var formatInfo = NoteFileFormatInfo(parent.config);
+      if (!formatInfo.isAllowedFileName(fileName)) {
+        fileName += NoteFileFormatInfo.defaultExtension(fileFormat);
       }
 
-      _filePath = fp;
-      file = file.copyFile(filePath: _filePath);
+      var fp = p.join(parent.folderPath, fileName);
+      Log.i("Constructing new note with path $fp");
+
+      return fp;
     }
 
-    return _filePath as String;
+    var fp = "";
+    try {
+      var fileName = _buildFileName(
+        parent: parent,
+        fileFormat: fileFormat,
+        created: created,
+        type: type,
+        title: title,
+      );
+      fp = p.join(parent.folderPath, fileName);
+    } catch (e, stackTrace) {
+      Log.e("_buildFileName: $e");
+      logExceptionWarning(e, stackTrace);
+      fp = p.join(parent.folderPath, const Uuid().v4());
+    }
+    switch (fileFormat) {
+      case NoteFileFormat.OrgMode:
+        if (!fp.toLowerCase().endsWith('.org')) {
+          fp += '.org';
+        }
+        break;
+
+      case NoteFileFormat.Txt:
+        if (!fp.toLowerCase().endsWith('.txt')) {
+          fp += '.txt';
+        }
+        break;
+
+      case NoteFileFormat.Markdown:
+      default:
+        if (!fp.toLowerCase().endsWith('.md')) {
+          fp += '.md';
+        }
+        break;
+    }
+    return fp;
   }
 
-  void applyFilePath(String filePath) {
-    assert(!filePath.startsWith(p.separator));
-    bool changed = false;
+  static String _buildFileName({
+    required DateTime created,
+    required NoteType type,
+    required NoteFileFormat fileFormat,
+    required NotesFolderFS parent,
+    required String? title,
+  }) {
+    var date = created;
+    var isJournal = type == NoteType.Journal;
+    var ext = NoteFileFormatInfo.defaultExtension(fileFormat);
 
-    var newFormat = NoteFileFormatInfo.fromFilePath(filePath);
-    if (_filePath != filePath || newFormat != _fileFormat) {
-      _filePath = filePath;
-      _fileFormat = newFormat;
-
-      print(_fileFormat);
-      print(_filePath);
-
-      file = file.copyFile(filePath: _filePath);
-      changed = true;
+    switch (!isJournal
+        ? parent.config.fileNameFormat
+        : parent.config.journalFileNameFormat) {
+      case NoteFileNameFormat.SimpleDate:
+        return toSimpleDateTime(date);
+      case NoteFileNameFormat.DateOnly:
+        var dateStr = toDateString(date);
+        return ensureFileNameUnique(parent.fullFolderPath, dateStr, ext);
+      case NoteFileNameFormat.FromTitle:
+        if (title != null) {
+          return buildTitleFileName(parent.fullFolderPath, title, ext);
+        } else {
+          return toSimpleDateTime(date);
+        }
+      case NoteFileNameFormat.Iso8601:
+        return toIso8601(date);
+      case NoteFileNameFormat.Iso8601WithTimeZone:
+        return toIso8601WithTimezone(date);
+      case NoteFileNameFormat.Iso8601WithTimeZoneWithoutColon:
+        return toIso8601WithTimezone(date).replaceAll(":", "_");
+      case NoteFileNameFormat.UuidV4:
+        return const Uuid().v4();
+      case NoteFileNameFormat.Zettelkasten:
+        return toZettleDateTime(date);
     }
 
-    if (changed) {
-      _notifyModified();
-    }
+    return date.toString();
   }
 
   void apply({
@@ -313,7 +356,7 @@ class Note implements File {
       body: body ?? this.body,
       parent: parent,
       doc: data,
-      file: file ?? this.file,
+      file: file ?? this.file.copyFile(filePath: filePath),
       created: created,
       modified: modified,
       title: title ?? this.title,
@@ -367,57 +410,40 @@ class Note implements File {
   bool get pinned => extraProps["pinned"] == true;
 
   @override
-  int get hashCode => _filePath.hashCode ^ file.oid.hashCode;
+  int get hashCode => file.hashCode ^ _data.hashCode;
+
+  static final _mapEq = const MapEquality().equals;
+  static final _setEq = const SetEquality().equals;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Note &&
           runtimeType == other.runtimeType &&
-          _filePath == other._filePath &&
-          _data == other._data;
+          parent.folderPath == other.parent.folderPath &&
+          _title == other._title &&
+          // _created == other._created &&
+          // _modified == other._modified &&
+          _body == other._body &&
+          _type == other._type &&
+          _setEq(_tags, other._tags) &&
+          _mapEq(_extraProps, other._extraProps) &&
+          _fileFormat == other._fileFormat &&
+          _data == other._data &&
+          noteSerializer.settings == other.noteSerializer.settings &&
+          file.oid == other.file.oid &&
+          file.filePath == other.file.filePath;
+
+  // FIXME: operator== should compare the full file?
 
   @override
   String toString() {
-    return 'Note{filePath: $_filePath, created: $created, modified: $modified, data: $_data, fileFormat: $fileFormat}';
+    var pb = toProtoBuf().toProto3Json().toString();
+    return 'Note{filePath: ${file.filePath}, pb: $pb}';
   }
 
   void _notifyModified() {
     parent.noteModified(this);
-  }
-
-  String _buildFileName() {
-    var date = created;
-    var isJournal = type == NoteType.Journal;
-    var ext = NoteFileFormatInfo.defaultExtension(_fileFormat);
-
-    switch (!isJournal
-        ? parent.config.fileNameFormat
-        : parent.config.journalFileNameFormat) {
-      case NoteFileNameFormat.SimpleDate:
-        return toSimpleDateTime(date);
-      case NoteFileNameFormat.DateOnly:
-        var dateStr = toDateString(date);
-        return ensureFileNameUnique(parent.fullFolderPath, dateStr, ext);
-      case NoteFileNameFormat.FromTitle:
-        if (_title != null) {
-          return buildTitleFileName(parent.fullFolderPath, _title!, ext);
-        } else {
-          return toSimpleDateTime(date);
-        }
-      case NoteFileNameFormat.Iso8601:
-        return toIso8601(date);
-      case NoteFileNameFormat.Iso8601WithTimeZone:
-        return toIso8601WithTimezone(date);
-      case NoteFileNameFormat.Iso8601WithTimeZoneWithoutColon:
-        return toIso8601WithTimezone(date).replaceAll(":", "_");
-      case NoteFileNameFormat.UuidV4:
-        return const Uuid().v4();
-      case NoteFileNameFormat.Zettelkasten:
-        return toZettleDateTime(date);
-    }
-
-    return date.toString();
   }
 
   NoteFileFormat get fileFormat => _fileFormat;

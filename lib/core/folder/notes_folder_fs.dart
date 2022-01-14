@@ -671,10 +671,15 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       assert(_files.contains(note));
       var _ = file.renameSync(newFilePath);
     }
-    note.applyFilePath(newFilePath);
+
+    assert(!newFilePath.startsWith(p.separator));
+    var newFormat = NoteFileFormatInfo.fromFilePath(newFilePath);
+
+    note = note.copyWith(filePath: newFilePath, fileFormat: newFormat);
 
     if (fileExists) {
       _noteRenamed(note, oldFilePath);
+      noteModified(note);
     }
   }
 

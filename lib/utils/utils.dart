@@ -7,6 +7,7 @@
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 
+import 'package:dart_date/dart_date.dart';
 import 'package:dart_git/utils/result.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -103,7 +104,7 @@ Future<void> shareNote(Note note) async {
 }
 
 Future<Note?> getTodayJournalEntry(NotesFolderFS rootFolder) async {
-  var today = DateTime.now();
+  var today = Date.today;
   var matches = await rootFolder.matchNotes((n) async {
     return n.created.isAtSameDayAs(today);
   });

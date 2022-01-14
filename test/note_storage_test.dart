@@ -6,7 +6,9 @@
 
 import 'dart:collection';
 
+import 'package:dart_date/dart_date.dart';
 import 'package:dart_git/dart_git.dart';
+import 'package:dart_git/utils/date_time.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
@@ -32,6 +34,8 @@ void main() {
     late NotesFolderConfig config;
     late FileStorage fileStorage;
 
+    final gitDt = Date.startOfToday;
+
     setUpAll(() async {
       tempDir = await io.Directory.systemTemp.createTemp('__storage_test__');
       repoPath = tempDir.path + p.separator;
@@ -41,7 +45,7 @@ void main() {
 
       fileStorage = await FileStorage.fake(repoPath);
 
-      var dt = DateTime(2019, 12, 2, 5, 4, 2);
+      var dt = GDateTime.utc(2019, 12, 2, 5, 4, 2);
       // ignore: prefer_collection_literals
       var props = LinkedHashMap<String, dynamic>();
       props['created'] = toIso8601WithTimezone(dt);
@@ -100,7 +104,7 @@ void main() {
       var storage = NoteStorage();
 
       for (var origNote in notes) {
-        var file = File.short(origNote.filePath, repoPath);
+        var file = File.short(origNote.filePath, repoPath, gitDt);
         var note = await storage.load(file, parent).getOrThrow();
 
         loadedNotes.add(note);
@@ -110,6 +114,13 @@ void main() {
       loadedNotes.sort(sortFn);
       notes.sort(sortFn);
 
+      expect(loadedNotes[0].title, notes[0].title);
+      expect(loadedNotes[0].body, notes[0].body);
+      expect(loadedNotes[0].filePath, notes[0].filePath);
+      expect(loadedNotes[0].parent.folderPath, notes[0].parent.folderPath);
+      expect(loadedNotes[0], notes[0]);
+
+      expect(loadedNotes[1], notes[1]);
       expect(loadedNotes, notes);
 
       for (var note in notes) {
