@@ -41,7 +41,6 @@ class File {
   }) {
     assert(repoPath.isNotEmpty);
     assert(filePath.isNotEmpty);
-    assert(fileLastModified.isAfter(modified) || fileLastModified == modified);
   }
 
   @visibleForTesting
