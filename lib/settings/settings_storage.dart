@@ -189,6 +189,12 @@ class SettingsStorageScreen extends StatelessWidget {
               repo.moveRepoToPath();
             },
           ),
+        if (Platform.isLinux || Platform.isMacOS)
+          ListTile(
+            title: Text(tr(LocaleKeys.settings_storage_repoLocation)),
+            subtitle: Text(repo.repoPath),
+            enabled: !storageConfig.storeInternally,
+          ),
       ],
     );
 
