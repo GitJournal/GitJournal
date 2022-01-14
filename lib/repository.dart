@@ -83,6 +83,18 @@ class GitJournalRepo with ChangeNotifier {
   bool remoteGitRepoConfigured = false;
   late bool fileStorageCacheReady;
 
+  static Future<bool> exists({
+    required String gitBaseDir,
+    required SharedPreferences pref,
+    required String id,
+  }) async {
+    var storageConfig = StorageConfig(id, pref);
+    storageConfig.load();
+
+    var repoPath = await storageConfig.buildRepoPath(gitBaseDir);
+    return GitRepository.isValidRepo(repoPath);
+  }
+
   static Future<Result<GitJournalRepo>> load({
     required String gitBaseDir,
     required String cacheDir,

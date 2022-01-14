@@ -133,4 +133,20 @@ class RepositoryManager with ChangeNotifier {
     await _save();
     _ = await buildActiveRepository();
   }
+
+  // Not sure when to call this!
+  Future<void> cleanupInvalidRepos() async {
+    var invalidIds = <String>[];
+    for (var id in repoIds) {
+      var exists = await GitJournalRepo.exists(
+          gitBaseDir: gitBaseDir, pref: pref, id: id);
+      if (!exists) {
+        invalidIds.add(id);
+      }
+    }
+
+    repoIds.removeWhere((id) => invalidIds.contains(id));
+    notifyListeners();
+    return _save();
+  }
 }
