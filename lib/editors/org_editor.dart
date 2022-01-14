@@ -76,6 +76,14 @@ class OrgEditorState extends State<OrgEditor>
   }
 
   @override
+  void apply(Note note) {
+    setState(() {
+      _note = note;
+      _textController.text = serializer.encode(_note.data);
+    });
+  }
+
+  @override
   void dispose() {
     _scrollController.dispose();
     _textController.dispose();

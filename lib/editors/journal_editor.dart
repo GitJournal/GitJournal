@@ -76,6 +76,14 @@ class JournalEditorState extends State<JournalEditor>
   }
 
   @override
+  void apply(Note note) {
+    setState(() {
+      _note = note;
+      _textController.text = _note.body;
+    });
+  }
+
+  @override
   void dispose() {
     _scrollController.dispose();
     _textController.dispose();

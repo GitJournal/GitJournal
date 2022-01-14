@@ -80,6 +80,7 @@ class _RenameDialogState extends State<RenameDialog> {
               WidgetsBinding.instance!.addPostFrameCallback((_) {
                 setState(() {
                   newExt = p.extension(value).toLowerCase();
+                  if (newExt == '.') newExt = "";
                   noExtension = newExt.isEmpty && oldExt.isNotEmpty;
                   changeExtension = oldExt != newExt;
                 });

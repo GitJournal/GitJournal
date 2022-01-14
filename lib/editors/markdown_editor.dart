@@ -92,6 +92,15 @@ class MarkdownEditorState extends State<MarkdownEditor>
   }
 
   @override
+  void apply(Note note) {
+    setState(() {
+      _note = note;
+      _textController.text = _note.body;
+      _titleTextController.text = _note.title ?? "";
+    });
+  }
+
+  @override
   void dispose() {
     _textController.dispose();
     _titleTextController.dispose();

@@ -312,5 +312,13 @@ Hello
       var actualContent = io.File(noteFullPath).readAsStringSync();
       expect(actualContent, equals(expectedContent));
     });
+
+    test('Note title should be saved as File Name', () async {
+      var parentFolder = NotesFolderFS.root(config, fileStorage);
+      var n = Note.newNote(parentFolder, fileFormat: NoteFileFormat.Markdown);
+      n.apply(title: "Hello");
+
+      expect(n.rebuildFileName(), "Hello.md");
+    });
   });
 }

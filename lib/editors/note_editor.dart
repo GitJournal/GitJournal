@@ -120,7 +120,10 @@ class NoteEditor extends StatefulWidget {
 class NoteEditorState extends State<NoteEditor>
     with WidgetsBindingObserver
     implements EditorCommon {
-  Note? newNote;
+  late Note _note;
+  late final bool _isNewNote;
+
+  bool _newNoteRenamed = false;
   late EditorType editorType;
   MdYamlDoc originalNoteData = MdYamlDoc();
 
@@ -130,12 +133,6 @@ class NoteEditorState extends State<NoteEditor>
   final _journalEditorKey = GlobalKey<JournalEditorState>();
   final _orgEditorKey = GlobalKey<OrgEditorState>();
 
-  bool get _isNewNote => newNote != null;
-
-  // FIXME: It would be much easier if the Note always existed and there is no concept
-  //        of a new note or existing note.
-  //        On discarding, the note can be deleted if it doesn't exst
-  //        A new note can be denoted by not having a GitHash
   NoteEditorState.newNote(
     NotesFolderFS folder,
     String existingText,
@@ -144,23 +141,24 @@ class NoteEditorState extends State<NoteEditor>
     String? fileName,
     NoteFileFormat fileFormat,
   ) {
-    newNote = Note.newNote(
+    _isNewNote = true;
+    _note = Note.newNote(
       folder,
       extraProps: extraProps,
       fileName: fileName,
       fileFormat: fileFormat,
     );
+
     if (existingText.isNotEmpty) {
-      newNote!.apply(body: existingText);
+      _note.apply(body: existingText);
     }
 
     if (existingImages.isNotEmpty) {
       for (var imagePath in existingImages) {
         () async {
           try {
-            var image = await core.Image.copyIntoFs(newNote!.parent, imagePath);
-            newNote!.apply(
-                body: newNote!.body + image.toMarkup(newNote!.fileFormat));
+            var image = await core.Image.copyIntoFs(_note.parent, imagePath);
+            _note.apply(body: _note.body + image.toMarkup(_note.fileFormat));
           } catch (e, st) {
             Log.e("New Note Existing Image", ex: e, stacktrace: st);
           }
@@ -177,10 +175,11 @@ class NoteEditorState extends State<NoteEditor>
     WidgetsBinding.instance!.addObserver(this);
 
     if (widget.existingNote != null) {
-      originalNoteData = MdYamlDoc.from(widget.existingNote!.data);
-    }
+      _note = widget.existingNote!;
+      originalNoteData = MdYamlDoc.from(_note.data);
 
-    var note = (newNote ?? widget.existingNote)!;
+      _isNewNote = false;
+    }
 
     // Select the editor
     if (widget.defaultEditorType != null) {
@@ -188,7 +187,7 @@ class NoteEditorState extends State<NoteEditor>
     } else if (widget.defaultFileFormat != null) {
       editorType = NoteFileFormatInfo.defaultEditor(widget.defaultFileFormat!);
     } else {
-      switch (note.type) {
+      switch (_note.type) {
         case NoteType.Journal:
           editorType = EditorType.Journal;
           break;
@@ -244,7 +243,7 @@ class NoteEditorState extends State<NoteEditor>
   }
 
   Widget _getEditor() {
-    var note = (newNote ?? widget.existingNote)!;
+    var note = _note;
 
     switch (editorType) {
       case EditorType.Markdown:
@@ -312,6 +311,7 @@ class NoteEditorState extends State<NoteEditor>
 
     if (newEditorType != null) {
       setState(() {
+        _note = note;
         editorType = newEditorType;
       });
     }
@@ -327,35 +327,46 @@ class NoteEditorState extends State<NoteEditor>
 
   @override
   Future<void> renameNote(Note note) async {
-    // FIXME: What if the note is being renamed twice?
-    //        newNote or widget.note might not be the latest version of the note
-    var prevNote = (widget.existingNote ?? newNote)!;
-    var prevNotePath = prevNote.filePath;
+    if (_isNewNote && !_newNoteRenamed) {
+      if (note.shouldRebuildPath) {
+        Log.d("Rebuilding Note's FileName");
+        var newName = note.rebuildFileName();
+        note.apply(fileName: newName);
+      }
+    }
 
-    var newFileName = await showDialog(
+    var dialogResponse = await showDialog(
       context: context,
       builder: (_) => RenameDialog(
-        oldPath: prevNotePath,
+        oldPath: note.fileName,
         inputDecoration: tr(LocaleKeys.widgets_NoteEditor_fileName),
         dialogTitle: tr(LocaleKeys.widgets_NoteEditor_renameFile),
       ),
     );
-    if (newFileName == null) {
+    if (dialogResponse is! String) {
       return;
     }
+    var newFileName = dialogResponse;
 
     if (_isNewNote) {
-      note.parent.renameNote(note, newFileName);
+      note.apply(fileName: newFileName);
+      print(note.fileFormat);
+
+      setState(() {
+        _newNoteRenamed = true;
+      });
     } else {
       var container = context.read<GitJournalRepo>();
       container.renameNote(note, newFileName);
     }
 
+    _getEditorState()!.apply(note);
+
     var newExt = p.extension(newFileName).toLowerCase();
-    var oldExt = p.extension(prevNotePath).toLowerCase();
-    if (oldExt != newExt) {
-      // Change the editor
-      var format = NoteFileFormatInfo.fromFilePath(newFileName);
+
+    // Change the editor
+    var format = NoteFileFormatInfo.fromFilePath(newFileName);
+    if (!editorSupported(format, editorType)) {
       var newEditorType = NoteFileFormatInfo.defaultEditor(format);
 
       if (newEditorType != editorType) {
@@ -444,10 +455,17 @@ class NoteEditorState extends State<NoteEditor>
 
     Log.d("Note modified - saving");
     try {
-      var stateContainer = context.read<GitJournalRepo>();
-      _isNewNote
-          ? await stateContainer.addNote(note)
-          : await stateContainer.updateNote(note);
+      var repo = context.read<GitJournalRepo>();
+      if (_isNewNote && !_newNoteRenamed) {
+        if (note.shouldRebuildPath) {
+          Log.d("Rebuilding Note's FileName");
+          var newName = note.rebuildFileName();
+          note.apply(fileName: newName);
+        }
+        await repo.addNote(note);
+      } else {
+        await repo.updateNote(note);
+      }
     } catch (e, stackTrace) {
       logException(e, stackTrace);
       Clipboard.setData(ClipboardData(text: NoteStorage.serialize(note)));
@@ -463,20 +481,22 @@ class NoteEditorState extends State<NoteEditor>
     return true;
   }
 
-  Note? _getNoteFromEditor() {
+  EditorState? _getEditorState() {
     switch (editorType) {
       case EditorType.Markdown:
-        return _markdownEditorKey.currentState?.getNote();
+        return _markdownEditorKey.currentState;
       case EditorType.Raw:
-        return _rawEditorKey.currentState?.getNote();
+        return _rawEditorKey.currentState;
       case EditorType.Checklist:
-        return _checklistEditorKey.currentState?.getNote();
+        return _checklistEditorKey.currentState;
       case EditorType.Journal:
-        return _journalEditorKey.currentState?.getNote();
+        return _journalEditorKey.currentState;
       case EditorType.Org:
-        return _orgEditorKey.currentState?.getNote();
+        return _orgEditorKey.currentState;
     }
   }
+
+  Note? _getNoteFromEditor() => _getEditorState()?.getNote();
 
   @override
   Future<void> moveNoteToFolderSelected(Note note) async {

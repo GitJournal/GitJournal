@@ -97,7 +97,7 @@ class Note implements File {
   Set<String> _tags = {};
   Map<String, dynamic> _extraProps = {};
 
-  final NoteFileFormat _fileFormat;
+  NoteFileFormat _fileFormat;
 
   MdYamlDoc _data = MdYamlDoc();
   late NoteSerializer noteSerializer;
@@ -185,6 +185,21 @@ class Note implements File {
 
     file = file.copyFile(filePath: filePath);
     assert(p.dirname(fullFilePath) == parent.fullFolderPath);
+
+    assert(_title != null ? _title!.isNotEmpty : true);
+  }
+
+  /// This doesn't modify the Note class
+  String rebuildFileName() {
+    var newPath = buildFilePath(
+      parent: parent,
+      fileFormat: fileFormat,
+      created: created,
+      type: type,
+      fileName: null,
+      title: title,
+    );
+    return p.basename(newPath);
   }
 
   static String buildFilePath({
@@ -260,10 +275,10 @@ class Note implements File {
     var date = created;
     var isJournal = type == NoteType.Journal;
     var ext = NoteFileFormatInfo.defaultExtension(fileFormat);
-
-    switch (!isJournal
+    var format = !isJournal
         ? parent.config.fileNameFormat
-        : parent.config.journalFileNameFormat) {
+        : parent.config.journalFileNameFormat;
+    switch (format) {
       case NoteFileNameFormat.SimpleDate:
         return toSimpleDateTime(date);
       case NoteFileNameFormat.DateOnly:
@@ -298,11 +313,8 @@ class Note implements File {
     NoteType? type,
     Map<String, dynamic>? extraProps,
     Set<String>? tags,
+    String? fileName,
   }) {
-    if (title != null && title.isEmpty) {
-      title = null;
-    }
-
     var changed = false;
 
     if (canHaveMetadata) {
@@ -336,8 +348,22 @@ class Note implements File {
       changed = true;
     }
 
-    if (title != null && title != _title) {
-      _title = title;
+    if (title != null) {
+      title = title.isEmpty ? null : title;
+      if (title != _title) {
+        _title = title;
+        changed = true;
+      }
+    }
+
+    if (fileName != null && fileName != this.fileName) {
+      var filePath = p.join(p.dirname(this.filePath), fileName);
+      if (filePath.startsWith('./')) {
+        filePath = filePath.substring(2);
+      }
+      file = file.copyFile(filePath: filePath);
+
+      _fileFormat = NoteFileFormatInfo.fromFilePath(filePath);
       changed = true;
     }
 
@@ -358,6 +384,10 @@ class Note implements File {
     NoteFileFormat? fileFormat,
     File? file,
   }) {
+    if (filePath != null && filePath.startsWith('./')) {
+      filePath = filePath.substring(2);
+    }
+
     return Note.build(
       body: body ?? this.body,
       parent: parent,
@@ -392,6 +422,12 @@ class Note implements File {
   void updateModified() {
     _modified = DateTime.now();
     _notifyModified();
+  }
+
+  bool get shouldRebuildPath {
+    if (fileFormat != NoteFileFormat.Markdown) return false;
+
+    return parent.config.fileNameFormat == NoteFileNameFormat.FromTitle;
   }
 
   String get body => _body;

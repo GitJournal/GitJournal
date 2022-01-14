@@ -657,30 +657,25 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   ///
   /// Do not let the user rename it to a different file-type.
   ///
-  void renameNote(Note note, String newName) {
+  Note renameNote(Note note, String newName) {
     assert(!newName.contains(p.separator));
 
     var oldFilePath = note.filePath;
     var parentDirName = p.dirname(oldFilePath);
     var newFilePath = p.join(parentDirName, newName);
 
-    // The file will not exist for new notes
-    var file = io.File(oldFilePath);
-    var fileExists = file.existsSync();
-    if (fileExists) {
-      assert(_files.contains(note));
-      var _ = file.renameSync(newFilePath);
-    }
+    assert(_files.contains(note));
+    var _ = io.File(oldFilePath).renameSync(newFilePath);
 
     assert(!newFilePath.startsWith(p.separator));
     var newFormat = NoteFileFormatInfo.fromFilePath(newFilePath);
 
     note = note.copyWith(filePath: newFilePath, fileFormat: newFormat);
+    assert(note.fileName == newName);
 
-    if (fileExists) {
-      _noteRenamed(note, oldFilePath);
-      noteModified(note);
-    }
+    _noteRenamed(note, oldFilePath);
+    noteModified(note);
+    return note;
   }
 
   static bool moveNote(Note note, NotesFolderFS destFolder) {

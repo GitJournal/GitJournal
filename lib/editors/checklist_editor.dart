@@ -60,11 +60,10 @@ class ChecklistEditorState extends State<ChecklistEditor>
   @override
   void initState() {
     super.initState();
-    _init();
+    _init(widget.note);
   }
 
-  void _init() {
-    var note = widget.note;
+  void _init(Note note) {
     _titleTextController = buildController(
       text: note.title ?? "",
       highlightText: widget.highlightString,
@@ -86,12 +85,19 @@ class ChecklistEditorState extends State<ChecklistEditor>
   }
 
   @override
+  void apply(Note note) {
+    setState(() {
+      _init(note);
+    });
+  }
+
+  @override
   void didUpdateWidget(ChecklistEditor oldWidget) {
     if (oldWidget.noteModified != widget.noteModified) {
       _noteModified = widget.noteModified;
     }
     if (oldWidget.note != widget.note) {
-      _init();
+      _init(widget.note);
     }
     super.didUpdateWidget(oldWidget);
   }
