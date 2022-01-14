@@ -6,23 +6,18 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:function_types/function_types.dart';
 import 'package:intl/intl.dart';
 
-import 'package:gitjournal/core/note.dart';
+class JournalEditorHeader extends StatelessWidget {
+  final DateTime dt;
+  final Func1<DateTime, void> onChange;
 
-class JournalEditorHeader extends StatefulWidget {
-  final Note note;
+  const JournalEditorHeader(this.dt, {required this.onChange});
 
-  const JournalEditorHeader(this.note);
-
-  @override
-  State<JournalEditorHeader> createState() => _JournalEditorHeaderState();
-}
-
-class _JournalEditorHeaderState extends State<JournalEditorHeader> {
   @override
   Widget build(BuildContext context) {
-    var created = widget.note.created;
+    var created = dt;
     var dateStr = DateFormat('MMMM, yyyy').format(created);
     var timeStr = DateFormat('EEEE HH:mm').format(created);
 
@@ -60,7 +55,7 @@ class _JournalEditorHeaderState extends State<JournalEditorHeader> {
       padding: const EdgeInsets.only(top: 8.0, bottom: 18.0),
       child: GestureDetector(
         onTap: () async {
-          var orig = widget.note.created;
+          var orig = dt;
           var date = await showDatePicker(
             context: context,
             initialDate: orig,
@@ -80,16 +75,14 @@ class _JournalEditorHeaderState extends State<JournalEditorHeader> {
           date ??= orig;
           time ??= TimeOfDay.fromDateTime(orig);
 
-          var dt = DateTime(
+          var d = DateTime(
             date.year,
             date.month,
             date.day,
             time.hour,
             time.minute,
           );
-          setState(() {
-            widget.note.apply(created: dt);
-          });
+          onChange(d);
         },
         child: w,
       ),

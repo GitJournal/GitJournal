@@ -102,7 +102,14 @@ class JournalEditorState extends State<JournalEditor>
       scrollController: _scrollController,
       child: Column(
         children: <Widget>[
-          JournalEditorHeader(_note),
+          JournalEditorHeader(
+            _note.created,
+            onChange: (dt) {
+              setState(() {
+                _note.apply(created: dt);
+              });
+            },
+          ),
           NoteBodyEditor(
             key: _editorKey,
             textController: _textController,

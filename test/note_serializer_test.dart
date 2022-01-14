@@ -6,7 +6,6 @@
 
 import 'dart:collection';
 
-import 'package:gitjournal/core/note.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
@@ -18,6 +17,7 @@ import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/markdown/md_yaml_doc.dart';
 import 'package:gitjournal/core/markdown/md_yaml_note_serializer.dart';
+import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/settings/settings.dart';
 
 void main() {
