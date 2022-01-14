@@ -88,7 +88,7 @@ class Note implements File {
   NotesFolderFS parent;
   String? _filePath;
 
-  String _title = "";
+  String? _title;
   DateTime? _created;
   DateTime? _modified;
   String _body = "";
@@ -118,7 +118,7 @@ class Note implements File {
   Note.build({
     required this.parent,
     required this.file,
-    required String title,
+    required String? title,
     required String body,
     required NoteType noteType,
     required Set<String> tags,
@@ -346,7 +346,7 @@ class Note implements File {
   }
 
   String get body => _body;
-  String get title => _title;
+  String? get title => _title;
   NoteType get type => _type;
   Set<String> get tags => _tags;
   Map<String, dynamic> get extraProps => _extraProps;
@@ -400,8 +400,8 @@ class Note implements File {
         var dateStr = toDateString(date);
         return ensureFileNameUnique(parent.fullFolderPath, dateStr, ext);
       case NoteFileNameFormat.FromTitle:
-        if (title.isNotEmpty) {
-          return buildTitleFileName(parent.fullFolderPath, title, ext);
+        if (_title != null) {
+          return buildTitleFileName(parent.fullFolderPath, _title!, ext);
         } else {
           return toSimpleDateTime(date);
         }
@@ -467,7 +467,7 @@ class Note implements File {
     return Note.build(
       parent: parent,
       file: File.fromProtoBuf(n.file),
-      title: n.title,
+      title: n.hasTitle() ? n.title : null,
       body: n.body,
       noteType: _typeFromProto(n.type),
       tags: n.tags.toSet(),

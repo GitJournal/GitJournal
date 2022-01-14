@@ -412,7 +412,7 @@ class NoteEditorState extends State<NoteEditor>
 
   bool _noteModified(Note note) {
     if (_isNewNote) {
-      return note.title.isNotEmpty || note.body.isNotEmpty;
+      return note.title != null || note.body.isNotEmpty;
     }
 
     if (note.data != originalNoteData) {

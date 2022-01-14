@@ -219,7 +219,7 @@ Gee
 
       expect(txtNote.fileFormat, NoteFileFormat.Txt);
       expect(txtNote.canHaveMetadata, false);
-      expect(txtNote.title.isEmpty, true);
+      expect(txtNote.title, null);
       expect(txtNote.body, content);
     });
 
@@ -245,7 +245,7 @@ Gee
 
       expect(txtNote.fileFormat, NoteFileFormat.Txt);
       expect(txtNote.canHaveMetadata, false);
-      expect(txtNote.title.isEmpty, true);
+      expect(txtNote.title, null);
       expect(txtNote.body, content);
     });
 

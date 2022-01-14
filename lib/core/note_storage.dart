@@ -109,7 +109,7 @@ class NoteStorage {
         var note = Note.build(
           parent: parentFolder,
           file: file,
-          title: "",
+          title: null,
           body: await io.File(filePath).readAsString(),
           noteType: NoteType.Unknown,
           tags: {},
@@ -131,7 +131,7 @@ class NoteStorage {
         var note = Note.build(
           parent: parentFolder,
           file: file,
-          title: "",
+          title: null,
           body: await io.File(filePath).readAsString(),
           noteType: NoteType.Unknown,
           tags: {},

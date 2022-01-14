@@ -66,7 +66,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
   void _init() {
     var note = widget.note;
     _titleTextController = buildController(
-      text: note.title,
+      text: note.title ?? "",
       highlightText: widget.highlightString,
       theme: widget.theme,
     );

@@ -149,10 +149,7 @@ class StandardNoteListTile extends StatelessWidget {
     String title;
     switch (headerType) {
       case StandardViewHeader.TitleOrFileName:
-        title = note.title;
-        if (title.isEmpty) {
-          title = note.fileName;
-        }
+        title = note.title ?? note.fileName;
         break;
 
       case StandardViewHeader.FileName:
@@ -160,10 +157,7 @@ class StandardNoteListTile extends StatelessWidget {
         break;
 
       case StandardViewHeader.TitleGenerated:
-        title = note.title;
-        if (title.isEmpty) {
-          title = noteSummary;
-        }
+        title = note.title ?? noteSummary;
         break;
     }
 

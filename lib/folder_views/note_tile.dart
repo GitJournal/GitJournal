@@ -51,9 +51,9 @@ class NoteTile extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: <Widget>[
-          if (note.title.isNotEmpty)
+          if (note.title != null)
             HighlightedText(
-              text: note.title,
+              text: note.title!,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: textTheme.headline6!
@@ -61,7 +61,7 @@ class NoteTile extends StatelessWidget {
               highlightText: searchTerm,
               highlightTextLowerCase: searchTermLowerCase,
             ),
-          if (note.title.isNotEmpty) const SizedBox(height: 8.0),
+          if (note.title != null) const SizedBox(height: 8.0),
           Flexible(
             flex: 1,
             child: _buildBody(context, body),

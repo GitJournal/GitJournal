@@ -180,10 +180,11 @@ class NoteSerializer implements NoteSerializerInterface {
         break;
     }
 
-    if (note.title.isNotEmpty) {
-      var title = settings.emojify
-          ? emojiParser.unemojify(note.title.trim())
-          : note.title.trim();
+    var noteTitle = note.title;
+    if (noteTitle != null) {
+      noteTitle = noteTitle.trim();
+      var title =
+          settings.emojify ? emojiParser.unemojify(noteTitle) : noteTitle;
       if (settings.titleSettings == SettingsTitle.InH1) {
         if (title.isNotEmpty) {
           data.body = '# $title\n\n${data.body}';
@@ -405,7 +406,7 @@ class NoteSerializer implements NoteSerializerInterface {
       modified: modified,
       created: created,
       body: body,
-      title: title ?? "",
+      title: title,
       noteType: type,
       extraProps: extraProps,
       tags: _tags ?? {},

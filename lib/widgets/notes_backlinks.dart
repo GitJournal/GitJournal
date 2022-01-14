@@ -134,10 +134,7 @@ class NoteSnippet extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     var textTheme = theme.textTheme;
-    var title = note.title;
-    if (title.isEmpty) {
-      title = note.fileName;
-    }
+    var title = note.title ?? note.fileName;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),

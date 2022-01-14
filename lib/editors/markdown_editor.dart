@@ -81,7 +81,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
       theme: widget.theme,
     );
     _titleTextController = buildController(
-      text: _note.title,
+      text: _note.title ?? "",
       highlightText: widget.highlightString,
       theme: widget.theme,
     );
