@@ -66,6 +66,7 @@ void main() {
         parent: n2.parent,
         file: n2.file,
         settings: n2.noteSerializer.settings,
+        fileFormat: NoteFileFormat.Markdown,
       );
 
       notes = [n1, n2];

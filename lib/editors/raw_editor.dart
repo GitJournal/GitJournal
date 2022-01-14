@@ -83,14 +83,6 @@ class RawEditorState extends State<RawEditor>
   }
 
   @override
-  void apply(Note note) {
-    setState(() {
-      _note = note;
-      _textController.text = serializer.encode(_note.data);
-    });
-  }
-
-  @override
   void dispose() {
     _scrollController.dispose();
     _textController.dispose();
@@ -105,6 +97,10 @@ class RawEditorState extends State<RawEditor>
 
     if (oldWidget.noteModified != widget.noteModified) {
       _noteModified = widget.noteModified;
+    }
+    if (oldWidget.note != widget.note) {
+      _note = widget.note;
+      _textController.text = _note.body;
     }
   }
 
@@ -144,6 +140,7 @@ class RawEditorState extends State<RawEditor>
       parent: _note.parent,
       file: _note.file,
       settings: _note.noteSerializer.settings,
+      fileFormat: _note.fileFormat,
     );
   }
 

@@ -102,6 +102,7 @@ class NoteStorage {
         data: data,
         parent: parentFolder,
         file: file,
+        fileFormat: format,
       );
       return Result(note);
     } else if (format == NoteFileFormat.Txt) {

@@ -76,11 +76,15 @@ class JournalEditorState extends State<JournalEditor>
   }
 
   @override
-  void apply(Note note) {
-    setState(() {
-      _note = note;
+  void didUpdateWidget(JournalEditor oldWidget) {
+    if (oldWidget.noteModified != widget.noteModified) {
+      _noteModified = widget.noteModified;
+    }
+    if (oldWidget.note != widget.note) {
+      _note = widget.note;
       _textController.text = _note.body;
-    });
+    }
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -90,15 +94,6 @@ class JournalEditorState extends State<JournalEditor>
 
     super.disposeListenables();
     super.dispose();
-  }
-
-  @override
-  void didUpdateWidget(JournalEditor oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.noteModified != widget.noteModified) {
-      _noteModified = widget.noteModified;
-    }
   }
 
   @override

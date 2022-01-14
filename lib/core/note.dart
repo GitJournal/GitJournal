@@ -163,8 +163,12 @@ class Note implements File {
       extraProps.forEach((key, value) {
         _data.props[key] = value;
       });
-      var newNote =
-          noteSerializer.decode(data: _data, file: file, parent: parent);
+      var newNote = noteSerializer.decode(
+        data: _data,
+        file: file,
+        parent: parent,
+        fileFormat: _fileFormat,
+      );
       _body = newNote._body;
       _created = newNote._created;
       _modified = newNote._modified;

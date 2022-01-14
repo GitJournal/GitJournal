@@ -349,18 +349,18 @@ class NoteEditorState extends State<NoteEditor>
     var newFileName = dialogResponse;
 
     if (_isNewNote) {
-      note.apply(fileName: newFileName);
-      print(note.fileFormat);
-
       setState(() {
+        note.apply(fileName: newFileName);
         _newNoteRenamed = true;
       });
     } else {
       var container = context.read<GitJournalRepo>();
-      container.renameNote(note, newFileName);
-    }
 
-    _getEditorState()!.apply(note);
+      container.renameNote(note, newFileName);
+      setState(() {
+        note.apply(fileName: newFileName);
+      });
+    }
 
     var newExt = p.extension(newFileName).toLowerCase();
 

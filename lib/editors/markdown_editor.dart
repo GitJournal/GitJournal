@@ -92,15 +92,6 @@ class MarkdownEditorState extends State<MarkdownEditor>
   }
 
   @override
-  void apply(Note note) {
-    setState(() {
-      _note = note;
-      _textController.text = _note.body;
-      _titleTextController.text = _note.title ?? "";
-    });
-  }
-
-  @override
   void dispose() {
     _textController.dispose();
     _titleTextController.dispose();
@@ -116,6 +107,11 @@ class MarkdownEditorState extends State<MarkdownEditor>
 
     if (oldWidget.noteModified != widget.noteModified) {
       _noteModified = widget.noteModified;
+    }
+    if (oldWidget.note != widget.note) {
+      _note = widget.note;
+      _textController.text = _note.body;
+      _titleTextController.text = _note.title ?? "";
     }
   }
 

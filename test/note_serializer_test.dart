@@ -6,6 +6,7 @@
 
 import 'dart:collection';
 
+import 'package:gitjournal/core/note.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
@@ -49,7 +50,12 @@ void main() {
       serializer.settings.titleSettings = SettingsTitle.InYaml;
 
       var file = File.short("file-path-not-important", repoPath, gitDt);
-      var note = serializer.decode(data: doc, parent: parent, file: file);
+      var note = serializer.decode(
+        data: doc,
+        parent: parent,
+        file: file,
+        fileFormat: NoteFileFormat.Markdown,
+      );
 
       expect(note.body, "I ❤️ you");
       expect(note.title, "Why not ☕?");
@@ -70,7 +76,12 @@ void main() {
       serializer.settings.titleSettings = SettingsTitle.InH1;
 
       var file = File.short("file-path-not-important", repoPath, gitDt);
-      var note = serializer.decode(data: doc, parent: parent, file: file);
+      var note = serializer.decode(
+        data: doc,
+        parent: parent,
+        file: file,
+        fileFormat: NoteFileFormat.Markdown,
+      );
 
       expect(note.body, "I heart you");
       expect(note.title, "Why not coffee?");
@@ -90,7 +101,12 @@ void main() {
       var serializer = NoteSerializer.raw();
 
       var file = File.short("file-path-not-important", repoPath, gitDt);
-      var note = serializer.decode(data: doc, parent: parent, file: file);
+      var note = serializer.decode(
+        data: doc,
+        parent: parent,
+        file: file,
+        fileFormat: NoteFileFormat.Markdown,
+      );
 
       expect(note.body, "I heart you");
       expect(note.title, "Why not coffee?");
@@ -103,7 +119,12 @@ void main() {
       var serializer = NoteSerializer.raw();
 
       var file = File.short("file-path-not-important", repoPath, gitDt);
-      var note = serializer.decode(data: doc, parent: parent, file: file);
+      var note = serializer.decode(
+        data: doc,
+        parent: parent,
+        file: file,
+        fileFormat: NoteFileFormat.Markdown,
+      );
 
       expect(note.body.length, 0);
       expect(note.title, "Why not coffee?");
@@ -118,7 +139,12 @@ void main() {
       serializer.settings.titleSettings = SettingsTitle.InH1;
 
       var file = File.short("file-path-not-important", repoPath, gitDt);
-      var note = serializer.decode(data: doc, parent: parent, file: file);
+      var note = serializer.decode(
+        data: doc,
+        parent: parent,
+        file: file,
+        fileFormat: NoteFileFormat.Markdown,
+      );
 
       expect(note.body, "I heart you");
       expect(note.title, "Why not coffee?");
@@ -140,7 +166,12 @@ void main() {
       serializer.settings.titleSettings = SettingsTitle.InYaml;
 
       var file = File.short("file-path-not-important", repoPath, gitDt);
-      var note = serializer.decode(data: doc, parent: parent, file: file);
+      var note = serializer.decode(
+        data: doc,
+        parent: parent,
+        file: file,
+        fileFormat: NoteFileFormat.Markdown,
+      );
 
       expect(note.body, "body");
       expect(note.title, "Why not?");
@@ -165,7 +196,12 @@ void main() {
       serializer.settings.titleSettings = SettingsTitle.InYaml;
 
       var file = File.short("file-path-not-important", repoPath, gitDt);
-      var note = serializer.decode(data: doc, parent: parent, file: file);
+      var note = serializer.decode(
+        data: doc,
+        parent: parent,
+        file: file,
+        fileFormat: NoteFileFormat.Markdown,
+      );
 
       expect(note.body, "body");
       expect(note.title, "Why not?");

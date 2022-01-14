@@ -25,6 +25,7 @@ abstract class NoteSerializerInterface {
     required MdYamlDoc data,
     required NotesFolderFS parent,
     required File file,
+    required NoteFileFormat fileFormat,
   });
 }
 
@@ -242,9 +243,15 @@ class NoteSerializer implements NoteSerializerInterface {
     required NotesFolderFS parent,
     required File file,
     required NoteSerializationSettings settings,
+    required NoteFileFormat fileFormat,
   }) {
     var serializer = NoteSerializer.fromConfig(settings.clone());
-    return serializer.decode(data: data, parent: parent, file: file);
+    return serializer.decode(
+      data: data,
+      parent: parent,
+      file: file,
+      fileFormat: fileFormat,
+    );
   }
 
   @override
@@ -252,6 +259,7 @@ class NoteSerializer implements NoteSerializerInterface {
     required MdYamlDoc data,
     required NotesFolderFS parent,
     required File file,
+    required NoteFileFormat fileFormat,
   }) {
     assert(file.filePath.isNotEmpty);
 
@@ -426,7 +434,7 @@ class NoteSerializer implements NoteSerializerInterface {
       tags: _tags ?? {},
       doc: data,
       serializerSettings: settings,
-      fileFormat: NoteFileFormat.Markdown,
+      fileFormat: fileFormat,
     );
   }
 

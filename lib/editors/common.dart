@@ -41,8 +41,6 @@ abstract class EditorState with ChangeNotifier {
 
   SearchInfo search(String? text);
   void scrollToResult(String text, int num);
-
-  void apply(Note note);
 }
 
 class TextEditorState {

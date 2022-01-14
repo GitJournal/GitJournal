@@ -85,29 +85,23 @@ class ChecklistEditorState extends State<ChecklistEditor>
   }
 
   @override
-  void apply(Note note) {
-    setState(() {
-      _init(note);
-    });
+  void dispose() {
+    _titleTextController.dispose();
+
+    super.disposeListenables();
+    super.dispose();
   }
 
   @override
   void didUpdateWidget(ChecklistEditor oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
     if (oldWidget.noteModified != widget.noteModified) {
       _noteModified = widget.noteModified;
     }
     if (oldWidget.note != widget.note) {
       _init(widget.note);
     }
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  void dispose() {
-    _titleTextController.dispose();
-
-    super.disposeListenables();
-    super.dispose();
   }
 
   UniqueKey _getKey(ChecklistItem item) {
