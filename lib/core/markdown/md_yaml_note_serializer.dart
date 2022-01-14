@@ -346,6 +346,9 @@ class NoteSerializer implements NoteSerializerInterface {
         }
       }
     }
+    if (title != null && title.isEmpty) {
+      title = null;
+    }
 
     NoteType? type;
     var typeStr = data.props[settings.typeKey];

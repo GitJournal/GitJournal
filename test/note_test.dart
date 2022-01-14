@@ -252,6 +252,26 @@ Gee
       expect(txtNote.body, content);
     });
 
+    test('Ensure title is null', () async {
+      var content = """---
+created: 2019-11-29T01:37:26+01:00
+pinned: true
+modified: 2021-10-16T12:15:35+02:00
+---
+
+Isn't it time you write;
+""";
+
+      var noteFullPath = p.join(repoPath, "note.md");
+      await io.File(noteFullPath).writeAsString(content);
+
+      var parentFolder = NotesFolderFS.root(config, fileStorage);
+      var file = File.short("note.md", repoPath, gitDt);
+      var note = await storage.load(file, parentFolder).getOrThrow();
+
+      expect(note.title, null);
+    });
+
     test('Dendron FrontMatter', () async {
       var content = """---
 bar: Foo

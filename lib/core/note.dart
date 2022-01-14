@@ -141,7 +141,9 @@ class Note implements File {
         _data = doc,
         _modified = modified,
         _created = created,
-        noteSerializer = NoteSerializer.fromConfig(serializerSettings);
+        noteSerializer = NoteSerializer.fromConfig(serializerSettings) {
+    assert(_title != null ? _title!.isNotEmpty : true);
+  }
 
   Note.newNote(
     this.parent, {
@@ -297,6 +299,10 @@ class Note implements File {
     Map<String, dynamic>? extraProps,
     Set<String>? tags,
   }) {
+    if (title != null && title.isEmpty) {
+      title = null;
+    }
+
     var changed = false;
 
     if (canHaveMetadata) {
@@ -389,7 +395,11 @@ class Note implements File {
   }
 
   String get body => _body;
-  String? get title => _title;
+  String? get title {
+    assert(_title != null ? _title!.isNotEmpty : true);
+    return _title;
+  }
+
   NoteType get type => _type;
   Set<String> get tags => _tags;
   Map<String, dynamic> get extraProps => _extraProps;
@@ -490,10 +500,15 @@ class Note implements File {
   }
 
   static Note fromProtoBuf(NotesFolderFS parent, pb.Note n) {
+    var title = n.hasTitle() ? n.title : null;
+    if (title != null && title.isEmpty) {
+      title = null;
+    }
+
     return Note.build(
       parent: parent,
       file: File.fromProtoBuf(n.file),
-      title: n.hasTitle() ? n.title : null,
+      title: title,
       body: n.body,
       noteType: _typeFromProto(n.type),
       tags: n.tags.toSet(),
