@@ -761,6 +761,8 @@ abstract class LocaleKeys {
   static const feature_timeline_issues = 'feature_timeline.issues';
   static const feature_timeline = 'feature_timeline';
   static const purchase_screen_title = 'purchase_screen.title';
+  static const purchase_screen_expired = 'purchase_screen.expired';
+  static const purchase_screen_unknown = 'purchase_screen.unknown';
   static const purchase_screen_desc = 'purchase_screen.desc';
   static const purchase_screen_restore = 'purchase_screen.restore';
   static const purchase_screen_oneTime_title = 'purchase_screen.oneTime.title';

@@ -20,7 +20,7 @@ import 'package:gitjournal/iap/purchase_manager.dart';
 import 'package:gitjournal/iap/purchase_slider.dart';
 import 'package:gitjournal/iap/purchase_thankyou_screen.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/settings/app_config.dart';
+import 'package:gitjournal/utils/utils.dart';
 
 class PurchaseButton extends StatelessWidget {
   final ProductDetails? product;
@@ -358,9 +358,31 @@ class _RestorePurchaseButtonState extends State<RestorePurchaseButton> {
           computing = true;
         });
         Log.i("Restoring Purchases");
-        await InAppPurchases.confirmProPurchase();
-        if (AppConfig.instance.proMode) {
+        var result = await InAppPurchases.confirmProPurchase();
+        if (result.isFailure) {
+          Log.e("confirmProPurchase", result: result);
+          var err = result.error ?? Exception("Unknown Error");
+          showSnackbar(context, err.toString());
+
+          setState(() {
+            computing = false;
+          });
+          return;
+        }
+
+        var sub = result.getOrThrow();
+        if (sub.isActive) {
           Navigator.of(context).pop();
+        } else {
+          var expDate = sub.expiryDate != null
+              ? sub.expiryDate!.toIso8601String().substring(0, 10)
+              : LocaleKeys.purchase_screen_unknown;
+          var meesage = LocaleKeys.purchase_screen_expired.tr(args: [expDate]);
+          showSnackbar(context, meesage);
+
+          setState(() {
+            computing = false;
+          });
         }
       },
     );

@@ -8,6 +8,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart' as foundation;
 
+import 'package:dart_git/utils/result.dart';
 import 'package:google_api_availability/google_api_availability.dart';
 import 'package:http/http.dart' as http;
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -24,21 +25,21 @@ class InAppPurchases {
     clearTransactionsIos();
     confirmPendingPurchases();
 
-    if (Features.alwaysPro || !AppConfig.instance.validateProMode) {
+    var appConfig = AppConfig.instance;
+    if (Features.alwaysPro || !appConfig.validateProMode) {
       return;
     }
 
-    if (AppConfig.instance.proMode == false) {
+    if (appConfig.proMode == false) {
       Log.i("confirmProPurchaseBoot: Pro Mode is false");
       return;
     }
 
-    var now = DateTime.now();
-    var exp = AppConfig.instance.proExpirationDate;
+    var exp = appConfig.proExpirationDate;
 
     Log.i("Checking if ProMode should be enabled. Exp: $exp");
-    if (exp != null && exp.isAfter(now)) {
-      Log.i("Not checking PurchaseInfo as exp = $exp and cur = $now");
+    if (exp != null && exp.isAfter(DateTime.now())) {
+      Log.i("Not checking PurchaseInfo as exp = $exp");
       return;
     }
 
@@ -47,10 +48,11 @@ class InAppPurchases {
       return;
     }
 
-    return confirmProPurchase();
+    var _ = confirmProPurchase();
+    return;
   }
 
-  static Future<void> confirmProPurchase() async {
+  static Future<Result<SubscriptionStatus>> confirmProPurchase() async {
     SubscriptionStatus sub;
 
     Log.i("Trying to confirmProPurchase");
@@ -63,23 +65,21 @@ class InAppPurchases {
       AppConfig.instance.proExpirationDate = null;
       AppConfig.instance.save();
 
-      return;
+      return Result.fail(e, stackTrace);
     }
 
     Log.i("SubscriptionState: $sub");
 
-    var isPro = sub.isPro;
     var expiryDate = sub.expiryDate;
     Log.i("Pro ExpiryDate: $expiryDate");
 
-    if (AppConfig.instance.proMode != isPro) {
-      Log.i("Pro mode changed to $isPro");
-      AppConfig.instance.proExpirationDate = expiryDate;
-      AppConfig.instance.save();
-    } else {
-      AppConfig.instance.proExpirationDate = expiryDate;
-      AppConfig.instance.save();
+    var appConfig = AppConfig.instance;
+    if (appConfig.proExpirationDate != expiryDate) {
+      appConfig.proExpirationDate = expiryDate;
+      appConfig.save();
     }
+
+    return Result(sub);
   }
 
   static Future<SubscriptionStatus> _subscriptionStatus() async {
@@ -115,7 +115,7 @@ class InAppPurchases {
     var dtMin = DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
     var sub = SubscriptionStatus.basic();
     for (var s in subs) {
-      if (s.isPro == false) continue;
+      if (s.isActive == false) continue;
 
       var dt = sub.expiryDate ?? dtMin;
       if (s.expiryDate!.isAfter(dt)) {
@@ -246,14 +246,14 @@ class SubscriptionStatus {
   SubscriptionStatus.pro(DateTime expDt)
       : _expiryDate = expDt.millisecondsSinceEpoch > 0 ? expDt : null;
 
-  bool get isPro {
+  bool get isActive {
     if (expiryDate == null) return false;
     return DateTime.now().isBefore(expiryDate!);
   }
 
   @override
   String toString() =>
-      "SubscriptionStatus{isPro: $isPro, expiryDate: $expiryDate}";
+      "SubscriptionStatus{isActive: $isActive, expiryDate: $expiryDate}";
 }
 
 Future<SubscriptionStatus> verifyPurchase(PurchaseDetails purchase) async {

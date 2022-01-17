@@ -80,7 +80,7 @@ class PurchaseManager {
       Log.i("Verifying purchase sub");
       try {
         var subStatus = await verifyPurchase(purchaseDetails);
-        if (subStatus.isPro) {
+        if (subStatus.isActive) {
           _deliverProduct(subStatus);
         } else {
           _handleError(tr(LocaleKeys.widgets_PurchaseWidget_failed));
