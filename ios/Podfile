@@ -46,8 +46,7 @@ post_install do |installer|
     # https://stackoverflow.com/questions/69306519/flutter-error-xcodebuild-warning-using-the-first-of-multiple-matching-destina
     # Why is ios development so mysterious?
     target.build_configurations.each do |build_configuration|
-      build_configuration.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm
-64 i386'
+      build_configuration.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64 i386'
     end
 
     target.build_configurations.each do |config|
