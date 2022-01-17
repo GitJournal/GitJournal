@@ -26,7 +26,7 @@ class ProOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     var appConfig = Provider.of<AppConfig>(context);
 
-    if (appConfig.proMode) {
+    if (appConfig.paidForFeature(feature)) {
       return child;
     }
 

@@ -33,12 +33,12 @@ class InAppPurchases {
       return;
     }
 
-    var currentDt = DateTime.now().toUtc().toIso8601String();
+    var now = DateTime.now();
     var exp = AppConfig.instance.proExpirationDate;
 
     Log.i("Checking if ProMode should be enabled. Exp: $exp");
-    if (exp.isNotEmpty && exp.compareTo(currentDt) > 0) {
-      Log.i("Not checking PurchaseInfo as exp = $exp and cur = $currentDt");
+    if (exp != null && exp.isAfter(now)) {
+      Log.i("Not checking PurchaseInfo as exp = $exp and cur = $now");
       return;
     }
 
@@ -60,8 +60,7 @@ class InAppPurchases {
       Log.e("Failed to get subscription status", ex: e, stacktrace: stackTrace);
       Log.i("Disabling Pro mode as it has probably expired");
 
-      AppConfig.instance.proMode = false;
-      AppConfig.instance.proExpirationDate = "";
+      AppConfig.instance.proExpirationDate = null;
       AppConfig.instance.save();
 
       return;
@@ -70,12 +69,11 @@ class InAppPurchases {
     Log.i("SubscriptionState: $sub");
 
     var isPro = sub.isPro;
-    var expiryDate = sub.expiryDate.toIso8601String();
+    var expiryDate = sub.expiryDate;
     Log.i("Pro ExpiryDate: $expiryDate");
 
     if (AppConfig.instance.proMode != isPro) {
       Log.i("Pro mode changed to $isPro");
-      AppConfig.instance.proMode = isPro;
       AppConfig.instance.proExpirationDate = expiryDate;
       AppConfig.instance.save();
     } else {
@@ -108,15 +106,19 @@ class InAppPurchases {
         continue;
       }
 
-      var sub = SubscriptionStatus(true, dt);
+      var sub = SubscriptionStatus.pro(dt);
       Log.i("--> $sub");
       subs.add(sub);
     }
     Log.i("Number of SubscriptionStatus: ${subs.length}");
 
-    var sub = SubscriptionStatus(false, dtNow);
+    var dtMin = DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
+    var sub = SubscriptionStatus.basic();
     for (var s in subs) {
-      if (s.expiryDate.isAfter(sub.expiryDate)) {
+      if (s.isPro == false) continue;
+
+      var dt = sub.expiryDate ?? dtMin;
+      if (s.expiryDate!.isAfter(dt)) {
         sub = s;
       }
     }
@@ -236,10 +238,18 @@ Future<DateTime?> getExpiryDate(
 }
 
 class SubscriptionStatus {
-  final bool isPro;
-  final DateTime expiryDate;
+  final DateTime? _expiryDate;
 
-  SubscriptionStatus(this.isPro, this.expiryDate);
+  DateTime? get expiryDate => _expiryDate;
+
+  SubscriptionStatus.basic() : _expiryDate = null;
+  SubscriptionStatus.pro(DateTime expDt)
+      : _expiryDate = expDt.millisecondsSinceEpoch > 0 ? expDt : null;
+
+  bool get isPro {
+    if (expiryDate == null) return false;
+    return DateTime.now().isBefore(expiryDate!);
+  }
 
   @override
   String toString() =>
@@ -253,9 +263,9 @@ Future<SubscriptionStatus> verifyPurchase(PurchaseDetails purchase) async {
     _isPurchase(purchase),
   );
   if (dt == null || !dt.isAfter(DateTime.now())) {
-    return SubscriptionStatus(false, dt!);
+    return SubscriptionStatus.basic();
   }
-  return SubscriptionStatus(true, dt);
+  return SubscriptionStatus.pro(dt);
 }
 
 // Checks if it is a subscription or a purchase

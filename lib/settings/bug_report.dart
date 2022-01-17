@@ -25,7 +25,7 @@ Future<void> createBugReport(BuildContext context) async {
   body += "isPro: $isPro\n";
 
   var exp = AppConfig.instance.proExpirationDate;
-  if (exp.isNotEmpty) {
+  if (exp != null) {
     body += "expiryDate: $exp";
   }
 
@@ -57,7 +57,7 @@ Future<void> createFeedback(BuildContext context) async {
   body += "isPro: $isPro\n";
 
   var exp = AppConfig.instance.proExpirationDate;
-  if (exp.isNotEmpty) {
+  if (exp != null) {
     body += "expiryDate: $exp";
   }
 

@@ -25,8 +25,12 @@ class AppConfig extends ChangeNotifier {
 
   int version = 0;
 
-  var proMode = Features.alwaysPro;
-  var proExpirationDate = "";
+  DateTime? proExpirationDate;
+  bool get proMode {
+    if (proExpirationDate == null) return false;
+    return DateTime.now().isBefore(proExpirationDate!);
+  }
+
   var validateProMode = true;
 
   var debugLogLevel = 'v';
@@ -41,6 +45,12 @@ class AppConfig extends ChangeNotifier {
 
   var experimentalHistory = false;
 
+  bool paidForFeature(Feature feature) {
+    if (Features.alwaysPro) return true;
+    if (proExpirationDate == null) return false;
+    return feature.date.isBefore(proExpirationDate!);
+  }
+
   void load(SharedPreferences pref) {
     onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
 
@@ -48,9 +58,8 @@ class AppConfig extends ChangeNotifier {
         pref.getBool("collectCrashReports") ?? collectCrashReports;
 
     version = pref.getInt("appSettingsVersion") ?? version;
-    proMode = pref.getBool("proMode") ?? proMode;
     proExpirationDate =
-        pref.getString("proExpirationDate") ?? proExpirationDate;
+        pref.getDateTime("proExpirationDate") ?? proExpirationDate;
     validateProMode = pref.getBool("validateProMode") ?? validateProMode;
 
     debugLogLevel = pref.getString("debugLogLevel") ?? debugLogLevel;
@@ -83,9 +92,8 @@ class AppConfig extends ChangeNotifier {
     _setBool(pref, "collectCrashReports", collectCrashReports,
         defaultSet.collectCrashReports);
 
-    _setString(pref, "proExpirationDate", proExpirationDate,
+    _setDateTime(pref, "proExpirationDate", proExpirationDate,
         defaultSet.proExpirationDate);
-    _setBool(pref, "proMode", proMode, defaultSet.proMode);
     _setBool(
         pref, "validateProMode", validateProMode, defaultSet.validateProMode);
     _setString(pref, "debugLogLevel", debugLogLevel, defaultSet.debugLogLevel);
@@ -119,9 +127,8 @@ class AppConfig extends ChangeNotifier {
       "onBoardingCompleted": onBoardingCompleted.toString(),
       "collectCrashReports": collectCrashReports.toString(),
       "version": version.toString(),
-      "proMode": proMode.toString(),
       'validateProMode': validateProMode.toString(),
-      'proExpirationDate': proExpirationDate,
+      'proExpirationDate': proExpirationDate.toString(),
       'debugLogLevel': debugLogLevel,
       'experimentalMarkdownToolbar': experimentalMarkdownToolbar.toString(),
       'experimentalGraphView': experimentalGraphView.toString(),
@@ -157,5 +164,28 @@ class AppConfig extends ChangeNotifier {
     } else {
       var _ = await pref.setBool(key, value);
     }
+  }
+
+  Future<void> _setDateTime(
+    SharedPreferences pref,
+    String key,
+    DateTime? value,
+    DateTime? defaultValue,
+  ) async {
+    dynamic _;
+    if (value == null || value == defaultValue) {
+      _ = await pref.remove(key);
+      return;
+    }
+
+    _ = await pref.setInt(key, value.millisecondsSinceEpoch ~/ 1000);
+  }
+}
+
+extension Date on SharedPreferences {
+  DateTime? getDateTime(String key) {
+    var v = getInt(key);
+    if (v == null) return null;
+    return DateTime.fromMillisecondsSinceEpoch(v * 1000);
   }
 }

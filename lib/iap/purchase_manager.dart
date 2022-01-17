@@ -120,8 +120,7 @@ class PurchaseManager {
 
   void _deliverProduct(SubscriptionStatus status) {
     var appConfig = AppConfig.instance;
-    appConfig.proMode = status.isPro;
-    appConfig.proExpirationDate = status.expiryDate.toIso8601String();
+    appConfig.proExpirationDate = status.expiryDate;
     appConfig.save();
 
     Log.i("Calling Purchase Completed Callbacks: ${_callbacks.length}");

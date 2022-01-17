@@ -172,9 +172,8 @@ class _PasswordForm extends StatelessWidget {
           Log.i('Unlocking Pro Mode');
 
           var appConfig = AppConfig.instance;
-          appConfig.proMode = true;
           appConfig.validateProMode = false;
-          appConfig.proExpirationDate = '2050-01-01';
+          appConfig.proExpirationDate = DateTime(2050, 01, 01);
           appConfig.save();
         },
       ),
