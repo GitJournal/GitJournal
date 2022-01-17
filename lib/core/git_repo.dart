@@ -47,7 +47,6 @@ class GitNoteRepository {
     if (useDartGit || AppConfig.instance.experimentalGitOps) {
       var repo = await GitAsyncRepository.load(gitRepoPath).getOrThrow();
       await repo.add(pathSpec).throwOnError();
-      repo.close();
       return Result(null);
     } else {
       try {
@@ -64,7 +63,6 @@ class GitNoteRepository {
     if (useDartGit || AppConfig.instance.experimentalGitOps) {
       var repo = await GitAsyncRepository.load(gitRepoPath).getOrThrow();
       await repo.rm(pathSpec);
-      repo.close();
       return Result(null);
     } else {
       try {
@@ -86,7 +84,6 @@ class GitNoteRepository {
       var repo = await GitAsyncRepository.load(gitRepoPath).getOrThrow();
       var author = GitAuthor(name: authorName, email: authorEmail);
       var r = await repo.commit(message: message, author: author);
-      repo.close();
       if (r.isFailure) {
         return fail(r);
       }
@@ -218,17 +215,14 @@ class GitNoteRepository {
       var repo = await GitAsyncRepository.load(gitRepoPath).getOrThrow();
       var headCommitR = await repo.headCommit();
       if (headCommitR.isFailure) {
-        repo.close();
         return fail(headCommitR);
       }
       var headCommit = headCommitR.getOrThrow();
       var result = await repo.resetHard(headCommit.parents[0]);
       if (result.isFailure) {
-        repo.close();
         return fail(result);
       }
 
-      repo.close();
       return Result(null);
     }
     try {
@@ -327,7 +321,6 @@ class GitNoteRepository {
     try {
       var repo = await GitAsyncRepository.load(gitRepoPath).getOrThrow();
       var canPush = await repo.canPush().getOrThrow();
-      repo.close();
 
       if (!canPush) {
         return Result(null);
@@ -378,7 +371,6 @@ class GitNoteRepository {
     try {
       var repo = await GitAsyncRepository.load(gitRepoPath).getOrThrow();
       var nResult = await repo.numChangesToPush();
-      repo.close();
       if (nResult.isSuccess) {
         return nResult.getOrThrow();
       }

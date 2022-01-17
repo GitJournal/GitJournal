@@ -74,14 +74,12 @@ Future<Result<void>> cloneRemotePluggable({
   timer.cancel();
   if (fetchR.isFailure) {
     // FIXME: Give a better error?
-    repo.close();
     return fail(fetchR);
   }
 
   var branchNameR = await defaultBranchFn(
       repoPath, remoteName, sshPublicKey, sshPrivateKey, sshPassword);
   if (branchNameR.isFailure) {
-    repo.close();
     return fail(branchNameR);
   }
   var remoteBranchName = branchNameR.getOrThrow();
@@ -104,7 +102,6 @@ Future<Result<void>> cloneRemotePluggable({
     var remoteBranchR = await repo.remoteBranch(remoteName, remoteBranchName);
     if (remoteBranchR.isFailure) {
       if (remoteBranchR.error is! GitNotFound) {
-        repo.close();
         return fail(remoteBranchR);
       }
 
@@ -148,7 +145,6 @@ Future<Result<void>> cloneRemotePluggable({
         var r = await gitMergeFn(
             repoPath, remoteName, remoteBranchName, authorName, authorEmail);
         if (r.isFailure) {
-          repo.close();
           return fail(r);
         }
       }
@@ -164,7 +160,6 @@ Future<Result<void>> cloneRemotePluggable({
       var r = await gitMergeFn(
           repoPath, remoteName, remoteBranchName, authorName, authorEmail);
       if (r.isFailure) {
-        repo.close();
         return fail(r);
       }
     }
@@ -179,12 +174,10 @@ Future<Result<void>> cloneRemotePluggable({
   if (!skipCheckout) {
     var r = await repo.checkout(".");
     if (r.isFailure) {
-      repo.close();
       return fail(r);
     }
   }
 
-  repo.close();
   return Result(null);
 }
 
