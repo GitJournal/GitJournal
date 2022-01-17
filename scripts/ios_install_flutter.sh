@@ -6,7 +6,7 @@
 
 set -eux
 
-wget -O flutter.zip https://storage.googleapis.com/flutter_infra_release/releases/stable/macos/flutter_macos_2.5.2-stable.zip
+wget -O flutter.zip https://storage.googleapis.com/flutter_infra_release/releases/stable/macos/flutter_macos_2.8.1-stable.zip
 unzip flutter.zip
 export PATH="$PATH:$(pwd)/flutter/bin"
 
