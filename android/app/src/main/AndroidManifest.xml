@@ -63,7 +63,8 @@ SPDX-License-Identifier: Apache-2.0
 
         <activity
             android:name=".UriReceiverActivity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:exported="false">
             <intent-filter>
                 <!-- Used for "Automatic Git Setup" -->
                 <action android:name="android.intent.action.VIEW" />
