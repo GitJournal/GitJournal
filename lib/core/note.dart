@@ -87,19 +87,19 @@ enum NoteFileFormat {
 }
 
 class Note implements File {
-  NotesFolderFS parent;
+  final NotesFolderFS parent;
 
-  String? _title;
-  DateTime? _created;
-  DateTime? _modified;
-  String _body = "";
-  NoteType _type = NoteType.Unknown;
-  Set<String> _tags = {};
-  Map<String, dynamic> _extraProps = {};
+  final String? _title;
+  final DateTime? _created;
+  final DateTime? _modified;
+  final String _body;
+  final NoteType _type;
+  final Set<String> _tags;
+  final Map<String, dynamic> _extraProps;
 
-  NoteFileFormat _fileFormat;
+  final NoteFileFormat _fileFormat;
 
-  MdYamlDoc _data = MdYamlDoc();
+  final MdYamlDoc _data;
   late NoteSerializer noteSerializer;
 
   late File file;
@@ -145,52 +145,74 @@ class Note implements File {
     assert(_title != null ? _title!.isNotEmpty : true);
   }
 
-  Note.newNote(
-    this.parent, {
+  static Note newNote(
+    NotesFolderFS parent, {
     required NoteFileFormat fileFormat,
     Map<String, dynamic> extraProps = const {},
     String? fileName,
-  })  : file = File.empty(
-          repoPath: parent.repoPath,
-          dt: DateTime.now().setMicrosecond(0).setMillisecond(0),
-        ),
-        _fileFormat = fileFormat {
-    _created = DateTime.now();
+  }) {
+    var file = File.empty(
+      repoPath: parent.repoPath,
+      dt: DateTime.now().setMicrosecond(0).setMillisecond(0),
+    );
+
+    DateTime? created;
+    DateTime? modified;
     var settings = NoteSerializationSettings.fromConfig(parent.config);
-    noteSerializer = NoteSerializer.fromConfig(settings);
+    var noteSerializer = NoteSerializer.fromConfig(settings);
+    var data = MdYamlDoc();
+    var body = "";
+    String? title;
+    Set<String> tags = {};
+    NoteType type = NoteType.Unknown;
 
     if (extraProps.isNotEmpty) {
       extraProps.forEach((key, value) {
-        _data.props[key] = value;
+        data.props[key] = value;
       });
       var newNote = noteSerializer.decode(
-        data: _data,
+        data: data,
         file: file,
         parent: parent,
-        fileFormat: _fileFormat,
+        fileFormat: fileFormat,
       );
-      _body = newNote._body;
-      _created = newNote._created;
-      _modified = newNote._modified;
-      _title = newNote._title;
-      _tags = newNote._tags;
-      _type = newNote._type;
+
+      body = newNote._body;
+      created = newNote._created;
+      modified = newNote._modified;
+      title = newNote._title;
+      tags = newNote._tags;
+      type = newNote._type;
     }
 
     // FIXME: Ensure this fileName doesn't exist
     var filePath = buildFilePath(
       parent: parent,
       fileFormat: fileFormat,
-      created: created,
+      created: created ?? DateTime.now(),
       type: type,
       fileName: fileName,
       title: title,
     );
 
     file = file.copyFile(filePath: filePath);
-    assert(p.dirname(fullFilePath) == parent.fullFolderPath);
+    // assert(p.dirname(fullFilePath) == parent.fullFolderPath);
+    assert(title != null ? title.isNotEmpty : true);
 
-    assert(_title != null ? _title!.isNotEmpty : true);
+    return Note.build(
+      parent: parent,
+      file: file,
+      title: title,
+      body: body,
+      noteType: type,
+      tags: tags,
+      extraProps: extraProps,
+      fileFormat: fileFormat,
+      doc: data,
+      serializerSettings: settings,
+      modified: modified,
+      created: created,
+    );
   }
 
   /// This doesn't modify the Note class
@@ -309,74 +331,37 @@ class Note implements File {
     return date.toString();
   }
 
-  void apply({
-    DateTime? created,
-    DateTime? modified,
-    String? body,
-    String? title,
-    NoteType? type,
-    Map<String, dynamic>? extraProps,
-    Set<String>? tags,
-    String? fileName,
-  }) {
-    var changed = false;
+  Note copyWithFileName(fileName) {
+    var fileFormat = this.fileFormat;
+    var file = this.file;
 
-    if (canHaveMetadata) {
-      if (created != null && created != _created) {
-        _created = created;
-        changed = true;
-      }
-      if (modified != null && modified != _modified) {
-        _modified = modified;
-        changed = true;
-      }
-
-      if (type != null && type != _type) {
-        _type = type;
-        changed = true;
-      }
-
-      if (extraProps != null) {
-        _extraProps = extraProps;
-        changed = true;
-      }
-
-      if (tags != null) {
-        _tags = tags;
-        changed = true;
-      }
-    }
-
-    if (body != null && body != _body) {
-      _body = body;
-      changed = true;
-    }
-
-    if (title != null) {
-      title = title.isEmpty ? null : title;
-      if (title != _title) {
-        _title = title;
-        changed = true;
-      }
-    }
-
-    if (fileName != null && fileName != this.fileName) {
+    if (fileName != this.fileName) {
       var filePath = p.join(p.dirname(this.filePath), fileName);
       if (filePath.startsWith('./')) {
         filePath = filePath.substring(2);
       }
-      file = file.copyFile(filePath: filePath);
-
-      _fileFormat = NoteFileFormatInfo.fromFilePath(filePath);
-      changed = true;
+      file = this.file.copyFile(filePath: filePath);
+      fileFormat = NoteFileFormatInfo.fromFilePath(filePath);
     }
 
-    if (changed) {
-      _notifyModified();
-    }
+    return Note.build(
+      body: body,
+      parent: parent,
+      doc: data,
+      file: file,
+      created: created,
+      modified: modified,
+      title: title,
+      noteType: type,
+      extraProps: extraProps,
+      tags: tags,
+      fileFormat: fileFormat,
+      serializerSettings: noteSerializer.settings.clone(),
+    );
   }
 
   Note copyWith({
+    NotesFolderFS? parent,
     String? filePath,
     DateTime? created,
     DateTime? modified,
@@ -394,7 +379,7 @@ class Note implements File {
 
     return Note.build(
       body: body ?? this.body,
-      parent: parent,
+      parent: parent ?? this.parent,
       doc: data,
       file: file ?? this.file.copyFile(filePath: filePath),
       created: created,
@@ -423,10 +408,7 @@ class Note implements File {
     return _modified ?? file.modified;
   }
 
-  void updateModified() {
-    _modified = DateTime.now();
-    _notifyModified();
-  }
+  Note updateModified() => copyWith(modified: DateTime.now());
 
   bool get shouldRebuildPath {
     if (fileFormat != NoteFileFormat.Markdown) return false;
@@ -490,10 +472,6 @@ class Note implements File {
   String toString() {
     var pb = toProtoBuf().toProto3Json().toString();
     return 'Note{filePath: ${file.filePath}, pb: $pb}';
-  }
-
-  void _notifyModified() {
-    parent.noteModified(this);
   }
 
   NoteFileFormat get fileFormat => _fileFormat;

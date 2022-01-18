@@ -268,7 +268,7 @@ class GitJournalRepo with ChangeNotifier {
     await fileStorageCache.clear();
 
     // This will discard this Repository and build a new one
-    repoManager.buildActiveRepository();
+    var _ = repoManager.buildActiveRepository();
   }
 
   Future<void> reloadNotes() => _loadNotes();
@@ -282,7 +282,7 @@ class GitJournalRepo with ChangeNotifier {
       if (r.isFailure) {
         if (r.error is FileStorageCacheIncomplete) {
           var repo = await GitAsyncRepository.load(repoPath).getOrThrow();
-          await _commitUnTrackedChanges(repo, gitConfig);
+          await _commitUnTrackedChanges(repo, gitConfig).throwOnError();
           await _resetFileStorage();
           return;
         }
@@ -336,7 +336,7 @@ class GitJournalRepo with ChangeNotifier {
         return;
       }
       var repo = repoR.getOrThrow();
-      _commitUnTrackedChanges(repo, gitConfig);
+      await _commitUnTrackedChanges(repo, gitConfig).throwOnError();
     }
 
     if (!remoteGitRepoConfigured) {
@@ -482,16 +482,16 @@ class GitJournalRepo with ChangeNotifier {
     unawaited(_syncNotes());
   }
 
-  Future<void> renameNote(Note note, String newFileName) async {
+  Future<Note> renameNote(Note note, String newFileName) async {
     assert(!newFileName.contains(p.separator));
 
     logEvent(Event.NoteRenamed);
 
     var oldPath = note.filePath;
-    note = note.parent.renameNote(note, newFileName);
+    var newNote = note.parent.renameNote(note, newFileName);
 
     await _gitOpLock.synchronized(() async {
-      var result = await _gitRepo.renameNote(oldPath, note.filePath);
+      var result = await _gitRepo.renameNote(oldPath, newNote.filePath);
       if (result.isFailure) {
         Log.e("renameNote", result: result);
         return;
@@ -502,6 +502,7 @@ class GitJournalRepo with ChangeNotifier {
     });
 
     unawaited(_syncNotes());
+    return newNote;
   }
 
   // void renameFile(String oldPath, String newFileName) async {
@@ -541,12 +542,13 @@ class GitJournalRepo with ChangeNotifier {
       var oldPaths = <String>[];
       var newPaths = <String>[];
       for (var note in notes) {
-        oldPaths.add(note.filePath);
-        var r = NotesFolderFS.moveNote(note, destFolder);
-        if (!r) {
+        var newNote = NotesFolderFS.moveNote(note, destFolder);
+        if (newNote == null) {
           Log.e("Failed to move note to $destFolder");
+          continue;
         }
-        newPaths.add(note.filePath);
+        oldPaths.add(note.filePath);
+        newPaths.add(newNote.filePath);
       }
 
       var result =
@@ -576,7 +578,7 @@ class GitJournalRepo with ChangeNotifier {
   Future<void> addNote(Note note) async {
     logEvent(Event.NoteAdded);
 
-    note.updateModified();
+    note = note.updateModified();
 
     var noteStorage = NoteStorage();
     var r = await noteStorage.save(note);
@@ -654,22 +656,27 @@ class GitJournalRepo with ChangeNotifier {
     unawaited(_syncNotes());
   }
 
-  Future<void> updateNote(Note note) async {
+  Future<Note> updateNote(Note oldNote, Note newNote) async {
     logEvent(Event.NoteUpdated);
 
-    note.updateModified();
+    assert(oldNote.filePath == newNote.filePath);
+    assert(oldNote.parent == newNote.parent);
+
+    newNote = newNote.updateModified();
 
     var noteStorage = NoteStorage();
-    var r = await noteStorage.save(note);
+    var r = await noteStorage.save(newNote);
     if (r.isFailure) {
       Log.e("Note saving failed", ex: r.error, stacktrace: r.stackTrace);
       // FIXME: Shouldn't we signal the error?
     }
 
+    newNote.parent.updateNote(newNote);
+
     await _gitOpLock.synchronized(() async {
       Log.d("Got updateNote lock");
 
-      var result = await _gitRepo.updateNote(note);
+      var result = await _gitRepo.updateNote(newNote);
       if (result.isFailure) {
         Log.e("updateNote", result: result);
         return;
@@ -680,6 +687,7 @@ class GitJournalRepo with ChangeNotifier {
     });
 
     unawaited(_syncNotes());
+    return newNote;
   }
 
   Future<void> completeGitHostSetup(

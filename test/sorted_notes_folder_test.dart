@@ -48,7 +48,7 @@ void main() {
         var note = await storage
             .load(File.short(path, repoPath, gitDt), folder)
             .getOrThrow();
-        note.apply(
+        note = note.copyWith(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "$i\n",
         );
@@ -88,7 +88,7 @@ void main() {
       );
 
       var i = sf.notes.indexWhere((n) => n.body == "1\n");
-      sf.notes[i].apply(modified: DateTime(2020, 2, 1));
+      sf.notes[i] = sf.notes[i].copyWith(modified: DateTime(2020, 2, 1));
 
       expect(sf.notes[0].body, "1\n");
       expect(sf.notes[1].body, "4\n");
@@ -108,7 +108,7 @@ void main() {
       var note = await storage.load(fNew, folder).getOrThrow();
       folder.add(note);
 
-      note.apply(
+      note = note.copyWith(
         modified: DateTime(2020, 2, 1),
         body: "new\n",
       );
@@ -135,7 +135,7 @@ void main() {
       var note = await storage.load(fNew, folder).getOrThrow();
       folder.add(note);
 
-      note.apply(
+      note = note.copyWith(
         modified: DateTime(2020, 1, 1),
         body: "new\n",
       );

@@ -208,12 +208,10 @@ class ChecklistEditorState extends State<ChecklistEditor>
       }
     }
 
-    var note = checklist.note;
-    note.apply(
+    return checklist.note.copyWith(
       title: _titleTextController.text.trim(),
       type: NoteType.Checklist,
     );
-    return note;
   }
 
   void _noteTextChanged() {
@@ -296,7 +294,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
   Future<void> addImage(String filePath) async {
     var note = getNote();
     var image = await core.Image.copyIntoFs(note.parent, filePath);
-    note.apply(body: note.body + image.toMarkup(note.fileFormat));
+    note = note.copyWith(body: note.body + image.toMarkup(note.fileFormat));
 
     setState(() {
       checklist = Checklist(note);

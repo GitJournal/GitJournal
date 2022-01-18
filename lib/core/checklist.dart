@@ -106,8 +106,7 @@ class Checklist {
     if (endsWithNewLine) {
       body += '\n';
     }
-    _note.apply(body: body);
-    return _note;
+    return _note.copyWith(body: body);
   }
 
   @override

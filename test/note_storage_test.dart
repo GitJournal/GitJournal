@@ -57,7 +57,7 @@ void main() {
 
       var n1 = Note.newNote(parent,
           fileName: "1.md", fileFormat: NoteFileFormat.Markdown);
-      n1.apply(created: dt, body: "test\n");
+      n1 = n1.copyWith(created: dt, body: "test\n");
 
       var n2 = Note.newNote(parent,
           fileName: "2.md", fileFormat: NoteFileFormat.Markdown);

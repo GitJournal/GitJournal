@@ -60,7 +60,7 @@ void main() {
       expect(note.body, "I ❤️ you");
       expect(note.title, "Why not ☕?");
 
-      note.apply(body: "Why not ☕?", title: "I ❤️ you");
+      note = note.copyWith(body: "Why not ☕?", title: "I ❤️ you");
 
       serializer.encode(note, doc);
       expect(doc.body, "Why not :coffee:?");
@@ -86,7 +86,7 @@ void main() {
       expect(note.body, "I heart you");
       expect(note.title, "Why not coffee?");
 
-      note.apply(body: "Why not coffee?", title: "I heart you");
+      note = note.copyWith(body: "Why not coffee?", title: "I heart you");
 
       serializer.encode(note, doc);
       expect(doc.body, "# I heart you\n\nWhy not coffee?");

@@ -57,7 +57,7 @@ Hello
       var note = await storage.load(file, parentFolder).getOrThrow();
       expect(note.canHaveMetadata, true);
 
-      note.apply(modified: DateTime.utc(2019, 12, 02, 4, 0, 0));
+      note = note.copyWith(modified: DateTime.utc(2019, 12, 02, 4, 0, 0));
 
       await NoteStorage().save(note).throwOnError();
 
@@ -89,7 +89,7 @@ Hello
       var file = File.short("note.md", repoPath, gitDt);
       var note = await storage.load(file, parentFolder).getOrThrow();
 
-      note.apply(modified: DateTime.utc(2019, 12, 02, 4, 0, 0));
+      note = note.copyWith(modified: DateTime.utc(2019, 12, 02, 4, 0, 0));
 
       await NoteStorage().save(note).throwOnError();
 
@@ -125,7 +125,7 @@ Hello
       expect(note.tags.contains('B'), true);
       expect(note.tags.length, 2);
 
-      note.apply(tags: {'A', 'C', 'D'});
+      note = note.copyWith(tags: {'A', 'C', 'D'});
       await NoteStorage().save(note).throwOnError();
 
       var expectedContent = """---
@@ -293,7 +293,7 @@ Hello
       expect(note.modified, DateTime.parse('2021-07-14T10:14:49Z'));
       expect(note.created, DateTime.parse('2021-07-14T10:14:49Z'));
 
-      note.apply(
+      note = note.copyWith(
         created: DateTime.parse('2020-06-13T10:14:49Z'),
         modified: DateTime.parse('2020-07-14T10:14:49Z'),
       );
@@ -316,7 +316,7 @@ Hello
     test('Note title should be saved as File Name', () async {
       var parentFolder = NotesFolderFS.root(config, fileStorage);
       var n = Note.newNote(parentFolder, fileFormat: NoteFileFormat.Markdown);
-      n.apply(title: "Hello");
+      n = n.copyWith(title: "Hello");
 
       expect(n.rebuildFileName(), "Hello.md");
     });

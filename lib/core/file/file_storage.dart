@@ -88,7 +88,7 @@ class FileStorage with ChangeNotifier {
 
   Future<void> fill() async {
     var rp = ReceivePort();
-    rp.listen((d) {
+    var _ = rp.listen((d) {
       if (d is DateTime) {
         _dateTime = d;
         notifyListeners();

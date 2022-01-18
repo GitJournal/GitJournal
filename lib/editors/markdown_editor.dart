@@ -160,18 +160,13 @@ class MarkdownEditorState extends State<MarkdownEditor>
     );
   }
 
-  void _updateNote() {
-    _note.apply(
+  @override
+  Note getNote() {
+    return _note.copyWith(
       body: _textController.text.trim(),
       title: _titleTextController.text.trim(),
       type: NoteType.Unknown,
     );
-  }
-
-  @override
-  Note getNote() {
-    _updateNote();
-    return _note;
   }
 
   void _noteTextChanged() {
@@ -224,7 +219,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
   Future<void> addImage(String filePath) async {
     var note = getNote();
     var image = await core.Image.copyIntoFs(note.parent, filePath);
-    note.apply(body: note.body + image.toMarkup(note.fileFormat));
+    note = note.copyWith(body: note.body + image.toMarkup(note.fileFormat));
 
     setState(() {
       _textController.text = note.body;

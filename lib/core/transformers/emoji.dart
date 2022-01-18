@@ -15,21 +15,19 @@ class EmojiTransformer implements NoteReadTransformer, NoteWriteTransformer {
   Future<Note> onRead(Note note) async {
     var title = note.title;
 
-    note.apply(
+    return note.copyWith(
       body: _emojiParser.emojify(note.body),
       title: title != null ? _emojiParser.emojify(title) : null,
     );
-    return note;
   }
 
   @override
   Future<Note> onWrite(Note note) async {
     var title = note.title;
 
-    note.apply(
+    return note.copyWith(
       body: _emojiParser.unemojify(note.body),
       title: title != null ? _emojiParser.unemojify(title) : null,
     );
-    return note;
   }
 }

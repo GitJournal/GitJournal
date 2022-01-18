@@ -98,7 +98,7 @@ Future<void> _writeRandomNote(Random random, String dirPath,
   var parent = NotesFolderFS.root(config, fileStorage);
   var note = Note.newNote(parent,
       fileName: p.basename(path), fileFormat: NoteFileFormat.Markdown);
-  note.apply(
+  note = note.copyWith(
     modified: DateTime(2014, 1, 1 + (random.nextInt(2000))),
     body: "p1",
   );

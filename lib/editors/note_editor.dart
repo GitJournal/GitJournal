@@ -150,7 +150,7 @@ class NoteEditorState extends State<NoteEditor>
     );
 
     if (existingText.isNotEmpty) {
-      _note.apply(body: existingText);
+      _note = _note.copyWith(body: existingText);
     }
 
     if (existingImages.isNotEmpty) {
@@ -158,7 +158,8 @@ class NoteEditorState extends State<NoteEditor>
         () async {
           try {
             var image = await core.Image.copyIntoFs(_note.parent, imagePath);
-            _note.apply(body: _note.body + image.toMarkup(_note.fileFormat));
+            _note = _note.copyWith(
+                body: _note.body + image.toMarkup(_note.fileFormat));
           } catch (e, st) {
             Log.e("New Note Existing Image", ex: e, stacktrace: st);
           }
@@ -331,7 +332,7 @@ class NoteEditorState extends State<NoteEditor>
       if (note.shouldRebuildPath) {
         Log.d("Rebuilding Note's FileName");
         var newName = note.rebuildFileName();
-        note.apply(fileName: newName);
+        note = note.copyWithFileName(newName);
       }
     }
 
@@ -350,15 +351,15 @@ class NoteEditorState extends State<NoteEditor>
 
     if (_isNewNote) {
       setState(() {
-        note.apply(fileName: newFileName);
+        note = note.copyWithFileName(newFileName);
         _newNoteRenamed = true;
       });
     } else {
       var container = context.read<GitJournalRepo>();
 
-      container.renameNote(note, newFileName);
+      var newNote = await container.renameNote(note, newFileName);
       setState(() {
-        note.apply(fileName: newFileName);
+        note = newNote;
       });
     }
 
@@ -460,11 +461,16 @@ class NoteEditorState extends State<NoteEditor>
         if (note.shouldRebuildPath) {
           Log.d("Rebuilding Note's FileName");
           var newName = note.rebuildFileName();
-          note.apply(fileName: newName);
+          setState(() {
+            _note = note.copyWithFileName(newName);
+          });
         }
         await repo.addNote(note);
       } else {
-        await repo.updateNote(note);
+        var modifiedNote = await repo.updateNote(_note, note);
+        setState(() {
+          _note = modifiedNote;
+        });
       }
     } catch (e, stackTrace) {
       logException(e, stackTrace);
@@ -506,8 +512,9 @@ class NoteEditorState extends State<NoteEditor>
     );
     if (destFolder != null) {
       if (_isNewNote) {
-        note.parent = destFolder;
-        setState(() {});
+        setState(() {
+          note = note.copyWith(parent: destFolder);
+        });
       } else {
         var stateContainer = context.read<GitJournalRepo>();
         stateContainer.moveNote(note, destFolder);
@@ -545,7 +552,7 @@ class NoteEditorState extends State<NoteEditor>
     if (!eq(note.tags, newTags)) {
       setState(() {
         Log.i("Settings tags to: $newTags");
-        note.apply(tags: newTags);
+        note = note.copyWith(tags: newTags);
       });
     }
   }

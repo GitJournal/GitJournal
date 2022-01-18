@@ -23,9 +23,6 @@ import 'package:gitjournal/utils/git_desktop.dart';
 
 bool useDartGit = false;
 
-// FIXME: Remember to close all the opened repos!!
-// FIXME: Micro optimization? Avoid re-creating the GitAsyncRepository!
-
 class GitNoteRepository {
   final String gitRepoPath;
   final gb.GitRepo _gitRepo;
@@ -62,7 +59,10 @@ class GitNoteRepository {
   Future<Result<void>> _rm(String pathSpec) async {
     if (useDartGit || AppConfig.instance.experimentalGitOps) {
       var repo = await GitAsyncRepository.load(gitRepoPath).getOrThrow();
-      await repo.rm(pathSpec);
+      var r = await repo.rm(pathSpec);
+      if (r.isFailure) {
+        return fail(r);
+      }
       return Result(null);
     } else {
       try {

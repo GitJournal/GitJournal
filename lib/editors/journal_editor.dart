@@ -106,7 +106,7 @@ class JournalEditorState extends State<JournalEditor>
             _note.created,
             onChange: (dt) {
               setState(() {
-                _note.apply(created: dt);
+                _note = _note.copyWith(created: dt);
               });
             },
           ),
@@ -138,11 +138,10 @@ class JournalEditorState extends State<JournalEditor>
 
   @override
   Note getNote() {
-    _note.apply(
+    return _note.copyWith(
       body: _textController.text.trim(),
       type: NoteType.Journal,
     );
-    return _note;
   }
 
   void _noteTextChanged() {
@@ -185,7 +184,7 @@ class JournalEditorState extends State<JournalEditor>
   Future<void> addImage(String filePath) async {
     var note = getNote();
     var image = await core.Image.copyIntoFs(note.parent, filePath);
-    note.apply(body: note.body + image.toMarkup(note.fileFormat));
+    note = note.copyWith(body: note.body + image.toMarkup(note.fileFormat));
 
     setState(() {
       _textController.text = note.body;

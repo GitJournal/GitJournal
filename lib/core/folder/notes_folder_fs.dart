@@ -70,12 +70,6 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     notifyListeners();
   }
 
-  void noteModified(Note note) {
-    if (_entityMap.containsKey(note.filePath)) {
-      notifyNoteModified(-1, note);
-    }
-  }
-
   void _noteRenamed(Note note, String oldPath) {
     assert(!oldPath.startsWith(p.separator));
 
@@ -497,6 +491,14 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     notifyThisFolderRenamed(this, oldPath);
   }
 
+  void updateNote(Note note) {
+    var i = _files.indexWhere((e) => e.filePath == note.filePath);
+    _files[i] = note;
+    _entityMap[note.filePath] = note;
+
+    notifyNoteModified(i, note);
+  }
+
   void _addFolderListeners(NotesFolderFS folder) {
     folder.addListener(_entityChanged);
     folder.addThisFolderRenamedListener(_subFolderRenamed);
@@ -674,23 +676,24 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     assert(note.fileName == newName);
 
     _noteRenamed(note, oldFilePath);
-    noteModified(note);
+    notifyNoteModified(-1, note);
     return note;
   }
 
-  static bool moveNote(Note note, NotesFolderFS destFolder) {
+  static Note? moveNote(Note note, NotesFolderFS destFolder) {
     var destPath = p.join(destFolder.fullFolderPath, note.fileName);
     if (io.File(destPath).existsSync()) {
-      return false;
+      // FIXME: Shouldn't this give an error?
+      return null;
     }
 
     var _ = io.File(note.fullFilePath).renameSync(destPath);
 
     note.parent.remove(note);
-    note.parent = destFolder;
+    note = note.copyWith(parent: destFolder);
     note.parent.add(note);
 
-    return true;
+    return note;
   }
 
   void visit(void Function(File) visitor) {

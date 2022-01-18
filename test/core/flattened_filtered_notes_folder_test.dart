@@ -56,7 +56,7 @@ void main() {
         var fp = _getRandomFilePath(rootFolder.fullFolderPath);
         var note = Note.newNote(rootFolder,
             fileName: p.basename(fp), fileFormat: NoteFileFormat.Markdown);
-        note.apply(
+        note = note.copyWith(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "$i\n",
         );
@@ -73,7 +73,7 @@ void main() {
         var note = Note.newNote(sub1Folder,
             fileName: p.basename(fp), fileFormat: NoteFileFormat.Markdown);
 
-        note.apply(
+        note = note.copyWith(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "sub1-$i\n",
         );
@@ -86,7 +86,7 @@ void main() {
         var note = Note.newNote(sub2Folder,
             fileName: p.basename(fp), fileFormat: NoteFileFormat.Markdown);
 
-        note.apply(
+        note = note.copyWith(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "sub2-$i\n",
         );
@@ -100,7 +100,7 @@ void main() {
         var note = Note.newNote(p1Folder,
             fileName: p.basename(fp), fileFormat: NoteFileFormat.Markdown);
 
-        note.apply(
+        note = note.copyWith(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "p1-$i\n",
         );
