@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=GitJournal
+Comment=Mobile First Notes integrated with Git
+Exec=gitjournal
+Icon=${SNAP}/meta/gui/gitjournal.png
+Terminal=false
+Type=Application
+Categories=Utilities;
+Keywords=GitJournal;Notes;Git

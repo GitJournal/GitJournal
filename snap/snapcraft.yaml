@@ -1,0 +1,29 @@
+name: gitjournal
+version: 1.83.0
+summary: Note taking integrated with Git
+description: Note taking integrated with Git
+
+confinement: strict
+base: core18
+grade: stable
+
+slots:
+  dbus-gitjournal:
+    interface: dbus
+    bus: session
+    name: io.gitjournal.gitjournal
+
+apps:
+  gitjournal:
+    command: gitjournal
+    extensions: [flutter-stable]
+    plugs:
+    - network
+    slots:
+      - dbus-gitjournal
+parts:
+  gitjournal:
+    source: .
+    plugin: flutter
+    flutter-target: lib/main.dart
+
