@@ -565,14 +565,9 @@ class GitJournalRepo with ChangeNotifier {
     unawaited(_syncNotes());
   }
 
-  Future<Result<void>> saveNoteToDisk(Note note) async {
+  Future<Result<Note>> saveNoteToDisk(Note note) async {
     var noteStorage = NoteStorage();
-    var r = await noteStorage.save(note);
-    if (r.isFailure) {
-      return fail(r);
-    }
-
-    return Result(null);
+    return noteStorage.save(note);
   }
 
   Future<void> addNote(Note note) async {
@@ -664,8 +659,7 @@ class GitJournalRepo with ChangeNotifier {
 
     newNote = newNote.updateModified();
 
-    var noteStorage = NoteStorage();
-    var r = await noteStorage.save(newNote);
+    var r = await NoteStorage().save(newNote);
     if (r.isFailure) {
       Log.e("Note saving failed", ex: r.error, stacktrace: r.stackTrace);
       // FIXME: Shouldn't we signal the error?

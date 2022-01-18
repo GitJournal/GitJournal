@@ -16,6 +16,7 @@ import 'package:gitjournal/utils/datetime.dart';
 
 export 'package:dart_git/plumbing/git_hash.dart';
 
+@immutable
 class File {
   final GitHash oid;
   final String repoPath;

@@ -6,6 +6,7 @@
 
 import 'package:collection/collection.dart';
 import 'package:dart_date/dart_date.dart';
+import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:universal_io/io.dart' as io;
@@ -86,6 +87,7 @@ enum NoteFileFormat {
   Txt,
 }
 
+@immutable
 class Note implements File {
   final NotesFolderFS parent;
 
@@ -100,9 +102,9 @@ class Note implements File {
   final NoteFileFormat _fileFormat;
 
   final MdYamlDoc _data;
-  late NoteSerializer noteSerializer;
+  final NoteSerializer noteSerializer;
 
-  late File file;
+  final File file;
 
   @override
   DateTime get fileLastModified => file.fileLastModified;

@@ -36,25 +36,27 @@ class NoteStorage {
     return contents;
   }
 
-  Future<Result<void>> save(Note note) async {
+  Future<Result<Note>> save(Note note) async {
     assert(note.filePath.isNotEmpty);
     assert(note.fileName.isNotEmpty);
 
     var contents = serialize(note);
 
-    return catchAll(() async {
+    return catchAll<Note>(() async {
       assert(note.fullFilePath.startsWith(p.separator));
 
       var file = io.File(note.fullFilePath);
       var _ = await file.writeAsString(contents, flush: true);
 
       var stat = file.statSync();
-      note.file = note.file.copyFile(
-        fileLastModified: stat.modified,
-        filePath: note.filePath,
+      note = note.copyWith(
+        file: note.file.copyFile(
+          fileLastModified: stat.modified,
+          filePath: note.filePath,
+        ),
       );
 
-      return Result(null);
+      return Result(note);
     });
   }
 
@@ -67,7 +69,9 @@ class NoteStorage {
       if (note.fileLastModified == fileLastModified) {
         return Result.fail(NoteReloadNotRequired());
       }
-      note.file = note.file.copyFile(fileLastModified: fileLastModified);
+      note = note.copyWith(
+        file: note.file.copyFile(fileLastModified: fileLastModified),
+      );
       Log.d("Note modified: ${note.filePath}");
 
       return load(note, note.parent);
@@ -113,8 +117,8 @@ class NoteStorage {
           title: null,
           body: await io.File(filePath).readAsString(),
           noteType: NoteType.Unknown,
-          tags: {},
-          extraProps: {},
+          tags: const {},
+          extraProps: const {},
           fileFormat: NoteFileFormat.Txt,
           doc: MdYamlDoc(),
           serializerSettings:
@@ -135,8 +139,8 @@ class NoteStorage {
           title: null,
           body: await io.File(filePath).readAsString(),
           noteType: NoteType.Unknown,
-          tags: {},
-          extraProps: {},
+          tags: const {},
+          extraProps: const {},
           fileFormat: NoteFileFormat.OrgMode,
           doc: MdYamlDoc(),
           serializerSettings:

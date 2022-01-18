@@ -152,10 +152,10 @@ class NoteSerializationSettings {
 
 // Rename to MarkdownYamlNoteSerializer
 class NoteSerializer implements NoteSerializerInterface {
-  var settings = NoteSerializationSettings();
+  final NoteSerializationSettings settings;
 
   NoteSerializer.fromConfig(this.settings);
-  NoteSerializer.raw();
+  NoteSerializer.raw() : settings = NoteSerializationSettings();
 
   @override
   void encode(Note note, MdYamlDoc data) {
