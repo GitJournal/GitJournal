@@ -149,7 +149,7 @@ class NotesCache {
   @visibleForTesting
   Future<void> saveToDisk(Iterable<Note> notes) async {
     var contents = pb.NoteList(
-      notes: notes.map((n) => n.toProtoBuf() as pb.Note),
+      notes: notes.map((n) => n.toProtoBuf()),
     ).writeToBuffer();
 
     var r = await saveFileSafely(filePath, contents);

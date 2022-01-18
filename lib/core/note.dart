@@ -8,7 +8,6 @@ import 'package:collection/collection.dart';
 import 'package:dart_date/dart_date.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
-import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:universal_io/io.dart' as io;
 import 'package:uuid/uuid.dart';
 
@@ -497,7 +496,7 @@ class Note implements File {
   }
 
   @override
-  $pb.GeneratedMessage toProtoBuf() {
+  pb.Note toProtoBuf() {
     // Not sure why this is happening
     dynamic pbFile = file.toProtoBuf();
     if (pbFile is pb.Note) {
