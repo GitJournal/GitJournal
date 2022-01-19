@@ -26,4 +26,10 @@ parts:
     source: .
     plugin: flutter
     flutter-target: lib/main.dart
-
+    override-pull: |
+      set -eux
+      rm -rf $SNAPCRAFT_PROJECT_DIR/build
+      snapcraftctl pull
+    stage-packages:
+      - git
+      - ssh
