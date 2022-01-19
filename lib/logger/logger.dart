@@ -77,11 +77,12 @@ class Log {
   }
 
   static void i(
-    String msg, {
+    dynamic msg, {
     dynamic ex,
     StackTrace? stacktrace,
     Map<String, dynamic>? props,
   }) {
+    msg = msg.toString();
     if (stacktrace != null) {
       stacktrace = Trace.from(stacktrace).terse;
     }

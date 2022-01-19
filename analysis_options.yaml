@@ -18,6 +18,7 @@ analyzer:
     - "bin/cache/**"
     - "lib/generated_plugin_registrant.dart"
     - lib/account/init.dart
+    - lib/experiments/**
   enable-experiment:
     - nonfunction-type-aliases
   # plugins:
@@ -25,7 +26,6 @@ analyzer:
 
 linter:
   rules:
-    avoid_print: false
     constant_identifier_names: false
     avoid_renaming_method_parameters: false
     use_key_in_widget_constructors: false

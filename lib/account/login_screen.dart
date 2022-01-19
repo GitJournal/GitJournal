@@ -28,12 +28,12 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends SupabaseAuthState<LoginPage> {
   @override
   void onUnauthenticated() {
-    print('onUnauthenticated');
+    Log.i('onUnauthenticated');
   }
 
   @override
   void onAuthenticated(Session session) {
-    print('onAuthenticated');
+    Log.i('onAuthenticated');
   }
 
   @override
@@ -191,8 +191,8 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
         ));
       },
       onRecoverPassword: (name) {
-        print('Recover password info');
-        print('Name: $name');
+        Log.i('Recover password info');
+        Log.i('Name: $name');
         // return _recoverPassword(name);
         // Show new password dialog
       },
@@ -210,9 +210,9 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
   }
 
   Future<String?> _signup(SignupData signupData) async {
-    print('Signup info');
-    print('Name: ${signupData.name}');
-    print('Password: ${signupData.password}');
+    Log.i('Signup info');
+    Log.i('Name: ${signupData.name}');
+    Log.i('Password: ${signupData.password}');
 
     var email = signupData.name;
     var password = signupData.password;
@@ -229,22 +229,22 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
       ),
     );
 
-    print('Result: $result');
+    Log.i('Result: $result');
 
     if (result.error != null) {
       // Show the error
-      print('Error ${result.error}');
+      Log.i('Error ${result.error}');
       return result.error!.message;
     }
     if (result.data == null && result.error == null) {
       // Email Validation
-      print('Email verification required');
+      Log.i('Email verification required');
     }
 
-    print('Terms of serveice');
-    print(signupData.termsOfService);
+    Log.i('Terms of serveice');
+    Log.i(signupData.termsOfService);
     if (signupData.termsOfService.isNotEmpty) {
-      print(signupData.termsOfService[0].accepted);
+      Log.i(signupData.termsOfService[0].accepted);
     }
   }
 
@@ -252,9 +252,9 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
     var email = loginData.name;
     var password = loginData.password;
 
-    print('Login info');
-    print('Name: ${loginData.name}');
-    print('Password: ${loginData.password}');
+    Log.i('Login info');
+    Log.i('Name: ${loginData.name}');
+    Log.i('Password: ${loginData.password}');
 
     // For testing
     email = 'test@gitjournal.io';

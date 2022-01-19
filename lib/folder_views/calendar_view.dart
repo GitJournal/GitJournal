@@ -59,7 +59,6 @@ class _CalendarFolderViewState extends State<CalendarFolderView> {
     folder.visit((f) {
       if (f is! Note) return;
       var c = f.created;
-      print(c);
       if (c.isBefore(_firstDay)) _firstDay = c;
       if (c.isAfter(_lastDay)) _lastDay = c;
 
@@ -96,7 +95,6 @@ class _CalendarFolderViewState extends State<CalendarFolderView> {
           if (notes.isEmpty) {
             return const SizedBox();
           }
-          print('huh $datetime');
           return Text('${notes.length}');
         }),
       ),

@@ -15,6 +15,7 @@ import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/graph2.dart';
 import 'package:gitjournal/core/views/note_links_view.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 
 class GraphViewScreen extends StatelessWidget {
@@ -57,10 +58,10 @@ class _GraphViewScreenState extends State<_GraphViewScreen> {
 
     () async {
       graph = await buildGraph(widget.rootFolder, widget.linksView);
-      print("Finished building the graph ...");
+      Log.i("Finished building the graph ...");
 
-      print('nodes: ${graph!.nodes.length}');
-      print('edges: ${graph!.edges.length}');
+      Log.i('nodes: ${graph!.nodes.length}');
+      Log.i('edges: ${graph!.edges.length}');
     }();
   }
 
