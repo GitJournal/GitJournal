@@ -15,9 +15,7 @@ buildscript {
     }
 
     dependencies {
-        // The version should be in sync with `gradle-wrapper.properties`
-        // https://github.com/flutter/flutter/issues/87464#issuecomment-1008096480
-        classpath 'com.android.tools.build:gradle:7.0.0'
+        classpath 'com.android.tools.build:gradle:4.1.0'
     }
 }
 
