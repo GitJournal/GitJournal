@@ -303,6 +303,8 @@ class NoteEditorState extends State<NoteEditor>
 
   @override
   Future<void> noteEditorChooserSelected(Note note) async {
+    assert(note.oid.isEmpty);
+
     var newEditorType = await showDialog<EditorType>(
       context: context,
       builder: (BuildContext context) {
@@ -320,6 +322,8 @@ class NoteEditorState extends State<NoteEditor>
 
   @override
   Future<void> exitEditorSelected(Note note) async {
+    assert(note.oid.isEmpty);
+
     var saved = await _saveNote(note);
     if (saved) {
       Navigator.pop(context);
@@ -328,6 +332,8 @@ class NoteEditorState extends State<NoteEditor>
 
   @override
   Future<void> renameNote(Note note) async {
+    assert(note.oid.isEmpty);
+
     if (_isNewNote && !_newNoteRenamed) {
       if (note.shouldRebuildPath) {
         Log.d("Rebuilding Note's FileName");
@@ -395,6 +401,8 @@ class NoteEditorState extends State<NoteEditor>
 
   @override
   Future<void> deleteNote(Note note) async {
+    assert(note.oid.isEmpty);
+
     if (_isNewNote && !_noteModified(note)) {
       Navigator.pop(context); // Note Editor
       return;
@@ -452,6 +460,8 @@ class NoteEditorState extends State<NoteEditor>
 
   // Returns bool indicating if the note was successfully saved
   Future<bool> _saveNote(Note note) async {
+    assert(note.oid.isEmpty);
+
     if (!_noteModified(note)) return true;
 
     Log.d("Note modified - saving");
@@ -506,6 +516,8 @@ class NoteEditorState extends State<NoteEditor>
 
   @override
   Future<void> moveNoteToFolderSelected(Note note) async {
+    assert(note.oid.isEmpty);
+
     var destFolder = await showDialog<NotesFolderFS>(
       context: context,
       builder: (context) => FolderSelectionDialog(),
@@ -524,6 +536,8 @@ class NoteEditorState extends State<NoteEditor>
 
   @override
   Future<void> discardChanges(Note note) async {
+    assert(note.oid.isEmpty);
+
     if (!_isNewNote) {
       var stateContainer = context.read<GitJournalRepo>();
       stateContainer.discardChanges(note);
@@ -534,6 +548,8 @@ class NoteEditorState extends State<NoteEditor>
 
   @override
   Future<void> editTags(Note note) async {
+    assert(note.oid.isEmpty);
+
     final rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
     var inlineTagsView = InlineTagsProvider.of(context);
     var allTags = await rootFolder.getNoteTagsRecursively(inlineTagsView);

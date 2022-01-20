@@ -571,6 +571,7 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   Future<void> addNote(Note note) async {
+    assert(note.oid.isEmpty);
     logEvent(Event.NoteAdded);
 
     note = note.updateModified();
@@ -652,6 +653,9 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   Future<Note> updateNote(Note oldNote, Note newNote) async {
+    assert(oldNote.oid.isNotEmpty);
+    assert(newNote.oid.isEmpty);
+
     logEvent(Event.NoteUpdated);
 
     assert(oldNote.filePath == newNote.filePath);

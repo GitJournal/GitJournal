@@ -12,6 +12,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:time/time.dart';
 
 import 'package:gitjournal/core/checklist.dart';
+import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/image.dart' as core;
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
@@ -211,6 +212,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
     return checklist.note.copyWith(
       title: _titleTextController.text.trim(),
       type: NoteType.Checklist,
+      file: checklist.note.file.copyFile(oid: GitHash.zero()),
     );
   }
 

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/image.dart' as core;
 import 'package:gitjournal/core/note.dart';
@@ -166,6 +167,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
       body: _textController.text.trim(),
       title: _titleTextController.text.trim(),
       type: NoteType.Unknown,
+      file: _note.file.copyFile(oid: GitHash.zero()),
     );
   }
 

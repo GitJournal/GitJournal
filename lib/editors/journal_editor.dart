@@ -6,6 +6,7 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/image.dart' as core;
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
@@ -141,6 +142,7 @@ class JournalEditorState extends State<JournalEditor>
     return _note.copyWith(
       body: _textController.text.trim(),
       type: NoteType.Journal,
+      file: _note.file.copyFile(oid: GitHash.zero()),
     );
   }
 
