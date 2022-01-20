@@ -379,8 +379,8 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
       var ent = origEntityMap[filePath];
       assert(ent is File);
+
       if (ent is Note) {
-        assert(ent.oid.isNotEmpty);
         _files[i] = ent;
         _entityMap[ent.filePath] = ent;
       }
