@@ -382,6 +382,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       assert(ent is File);
 
       if (ent is Note) {
+        assert(ent.oid.isNotEmpty);
         _files[i] = ent;
         _entityMap[ent.filePath] = ent;
       }
@@ -406,6 +407,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
   void add(Note note) {
     assert(note.parent == this);
+    assert(note.oid.isNotEmpty);
 
     _files.add(note);
     _entityMap[note.filePath] = note;
@@ -415,6 +417,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
   void remove(Note note) {
     assert(note.parent == this);
+    assert(note.oid.isNotEmpty);
     _removeFile(note);
   }
 
@@ -494,6 +497,8 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   }
 
   void updateNote(Note note) {
+    assert(note.oid.isNotEmpty);
+
     var i = _files.indexWhere((e) => e.filePath == note.filePath);
     _files[i] = note;
     _entityMap[note.filePath] = note;

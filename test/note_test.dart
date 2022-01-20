@@ -56,9 +56,11 @@ Hello
       var note = await NoteStorage.load(file, parentFolder).getOrThrow();
       expect(note.canHaveMetadata, true);
 
-      note = note.copyWith(modified: DateTime.utc(2019, 12, 02, 4, 0, 0));
-
-      await NoteStorage.save(note).throwOnError();
+      note = note.copyWith(
+        modified: DateTime.utc(2019, 12, 02, 4, 0, 0),
+        file: note.file.copyFile(oid: GitHash.zero()),
+      );
+      note = await NoteStorage.save(note).getOrThrow();
 
       var expectedContent = """---
 bar: Foo
@@ -88,7 +90,10 @@ Hello
       var file = File.short("note.md", repoPath, gitDt);
       var note = await NoteStorage.load(file, parentFolder).getOrThrow();
 
-      note = note.copyWith(modified: DateTime.utc(2019, 12, 02, 4, 0, 0));
+      note = note.copyWith(
+        modified: DateTime.utc(2019, 12, 02, 4, 0, 0),
+        file: note.file.copyFile(oid: GitHash.zero()),
+      );
 
       await NoteStorage.save(note).throwOnError();
 
@@ -124,7 +129,10 @@ Hello
       expect(note.tags.contains('B'), true);
       expect(note.tags.length, 2);
 
-      note = note.copyWith(tags: {'A', 'C', 'D'});
+      note = note.copyWith(
+        tags: {'A', 'C', 'D'},
+        file: note.file.copyFile(oid: GitHash.zero()),
+      );
       await NoteStorage.save(note).throwOnError();
 
       var expectedContent = """---
@@ -295,6 +303,7 @@ Hello
       note = note.copyWith(
         created: DateTime.parse('2020-06-13T10:14:49Z'),
         modified: DateTime.parse('2020-07-14T10:14:49Z'),
+        file: note.file.copyFile(oid: GitHash.zero()),
       );
 
       var expectedContent = """---

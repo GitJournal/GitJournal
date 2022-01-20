@@ -42,8 +42,6 @@ void main() {
     late NotesFolderConfig config;
     late FileStorage fileStorage;
 
-    final gitDt = Date.startOfToday;
-
     setUp(() async {
       tempDir = await io.Directory.systemTemp.createTemp('__fnft__');
       repoPath = tempDir.path + p.separator;
@@ -61,9 +59,8 @@ void main() {
         note = note.copyWith(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "$i\n",
-          file: File.short(note.filePath, repoPath, gitDt),
         );
-        await NoteStorage.save(note).throwOnError();
+        note = await NoteStorage.save(note).getOrThrow();
       }
 
       io.Directory(p.join(repoPath, "sub1")).createSync();
@@ -79,9 +76,8 @@ void main() {
         note = note.copyWith(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "sub1-$i\n",
-          file: File.short(note.filePath, repoPath, gitDt),
         );
-        await NoteStorage.save(note).throwOnError();
+        note = await NoteStorage.save(note).getOrThrow();
       }
 
       var sub2Folder = NotesFolderFS(rootFolder, "sub2", config, fileStorage);
@@ -93,9 +89,8 @@ void main() {
         note = note.copyWith(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "sub2-$i\n",
-          file: File.short(note.filePath, repoPath, gitDt),
         );
-        await NoteStorage.save(note).throwOnError();
+        note = await NoteStorage.save(note).getOrThrow();
       }
 
       var p1Folder =
@@ -108,9 +103,8 @@ void main() {
         note = note.copyWith(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "p1-$i\n",
-          file: File.short(note.filePath, repoPath, gitDt),
         );
-        await NoteStorage.save(note).throwOnError();
+        note = await NoteStorage.save(note).getOrThrow();
       }
 
       var repo = GitRepository.load(repoPath).getOrThrow();

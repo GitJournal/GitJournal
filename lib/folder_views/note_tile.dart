@@ -6,7 +6,6 @@
 
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
@@ -44,8 +43,7 @@ class NoteTile extends StatelessWidget {
       borderColor = theme.colorScheme.secondary;
     }
 
-    // Just for debugging
-    var highlight = kDebugMode && note.file.oid.isEmpty;
+    assert(note.oid.isNotEmpty);
 
     var tileContent = Container(
       decoration: BoxDecoration(
@@ -74,7 +72,6 @@ class NoteTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
       ),
-      color: highlight ? Colors.red : null,
     );
 
     const borderRadius = BorderRadius.all(Radius.circular(8));

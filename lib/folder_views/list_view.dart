@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -156,11 +155,7 @@ class _FolderListViewState extends State<FolderListView> {
           Material(child: toHeroContext.widget),
     );
 
-    // Just for debugging
-    var highlight = kDebugMode && note.file.oid.isEmpty;
-    if (highlight) {
-      viewItem = Container(child: viewItem, color: Colors.red);
-    }
+    assert(note.file.oid.isNotEmpty);
 
     if (settings.swipeToDelete) {
       viewItem = IconDismissable(

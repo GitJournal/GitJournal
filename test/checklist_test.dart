@@ -93,7 +93,9 @@ Booga Wooga
 
       checklist.removeItem(checklist.items[4]);
 
-      await NoteStorage.save(checklist.note).throwOnError();
+      var cn = checklist.note
+          .copyWith(file: checklist.note.file.copyFile(oid: GitHash.zero()));
+      await NoteStorage.save(cn).throwOnError();
 
       var expectedContent = """---
 bar: Foo

@@ -42,7 +42,7 @@ class NoteStorage {
   static Future<Result<Note>> save(Note note) async {
     assert(note.filePath.isNotEmpty);
     assert(note.fileName.isNotEmpty);
-    assert(note.oid.isNotEmpty);
+    assert(note.oid.isEmpty);
 
     var contents = utf8.encode(serialize(note));
 

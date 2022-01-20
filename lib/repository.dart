@@ -568,6 +568,7 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   Future<Result<Note>> saveNoteToDisk(Note note) async {
+    assert(note.oid.isEmpty);
     return NoteStorage.save(note);
   }
 
@@ -669,6 +670,7 @@ class GitJournalRepo with ChangeNotifier {
       Log.e("Note saving failed", ex: r.error, stacktrace: r.stackTrace);
       // FIXME: Shouldn't we signal the error?
     }
+    newNote = r.getOrThrow();
 
     newNote.parent.updateNote(newNote);
 

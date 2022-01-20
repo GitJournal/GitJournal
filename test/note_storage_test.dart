@@ -5,6 +5,7 @@
  */
 
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:dart_date/dart_date.dart';
 import 'package:dart_git/dart_git.dart';
@@ -23,6 +24,8 @@ import 'package:gitjournal/core/markdown/md_yaml_note_serializer.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/utils/datetime.dart';
+
+GitHash _compute(String s) => GitHash.compute(utf8.encode(s));
 
 void main() {
   group('NoteStorage', () {
@@ -62,10 +65,12 @@ void main() {
         body: "test\n",
         file: File.short(n1.filePath, repoPath, gitDt),
       );
+      n1 = n1.copyWith(file: n1.file.copyFile(oid: _compute(n1.body)));
 
       var n2 = Note.newNote(parent,
           fileName: "2.md", fileFormat: NoteFileFormat.Markdown);
       n2 = n2.copyWith(file: File.short(n2.filePath, repoPath, gitDt));
+      n2 = n2.copyWith(file: n2.file.copyFile(oid: _compute(n2.body)));
       n2 = NoteSerializer.decodeNote(
         data: MdYamlDoc(body: "test2\n", props: props),
         parent: n2.parent,
@@ -94,6 +99,7 @@ void main() {
 
     test('Should persist and load Notes from disk', () async {
       for (var note in notes) {
+        note = note.copyWith(file: note.file.copyFile(oid: GitHash.zero()));
         await NoteStorage.save(note).throwOnError();
       }
 
