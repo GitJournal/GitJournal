@@ -328,5 +328,32 @@ Hello
 
       expect(n.rebuildFileName(), "Hello.md");
     });
+
+    test('Rename', () {
+      var parentFolder = NotesFolderFS.root(config, fileStorage);
+      var n = Note.newNote(
+        parentFolder,
+        fileFormat: NoteFileFormat.Markdown,
+        fileName: "poo",
+      );
+      var n2 = n.copyWithFileName('doo.md');
+      expect(n.filePath, "poo.md");
+      expect(n2.filePath, "doo.md");
+
+      var subDir = NotesFolderFS(
+          parentFolder, "folder", parentFolder.config, fileStorage);
+      var n3 = Note.newNote(
+        subDir,
+        fileFormat: NoteFileFormat.Markdown,
+        fileName: "goo.md",
+      );
+      var n4 = n3.copyWithFileName('roo.md');
+      expect(n3.filePath, "folder/goo.md");
+      expect(n4.filePath, "folder/roo.md");
+
+      var n5 = n4.copyWithFileName('file.txt');
+      expect(n5.filePath, "folder/file.txt");
+      expect(n5.fileFormat, NoteFileFormat.Txt);
+    });
   });
 }
