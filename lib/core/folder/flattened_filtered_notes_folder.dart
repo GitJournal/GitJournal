@@ -121,9 +121,10 @@ class FlattenedFilteredNotesFolder
 
   Future<void> _noteModified(int _, Note note) async {
     return await _lock.synchronized(() async {
-      var contain = _notes.indexWhere((n) => n.filePath == note.filePath) != -1;
-      if (contain) {
+      var i = _notes.indexWhere((n) => n.filePath == note.filePath);
+      if (i != -1) {
         if (await filter(note)) {
+          _notes[i] = note;
           notifyNoteModified(-1, note);
         } else {
           _noteRemoved(-1, note);

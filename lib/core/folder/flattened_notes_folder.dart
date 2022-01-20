@@ -100,6 +100,7 @@ class FlattenedNotesFolder with NotesFolderNotifier implements NotesFolder {
       return;
     }
 
+    _notes[note.filePath] = note;
     notifyNoteModified(-1, note);
   }
 
