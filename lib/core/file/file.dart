@@ -4,6 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 
 import 'package:dart_git/plumbing/git_hash.dart';
@@ -46,7 +49,7 @@ class File {
 
   @visibleForTesting
   File.short(this.filePath, this.repoPath, DateTime dt)
-      : oid = GitHash.zero(),
+      : oid = GitHash.compute(ascii.encode(Random().nextDouble().toString())),
         fileLastModified = dt,
         modified = dt,
         created = dt {

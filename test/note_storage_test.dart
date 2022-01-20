@@ -57,10 +57,15 @@ void main() {
 
       var n1 = Note.newNote(parent,
           fileName: "1.md", fileFormat: NoteFileFormat.Markdown);
-      n1 = n1.copyWith(created: dt, body: "test\n");
+      n1 = n1.copyWith(
+        created: dt,
+        body: "test\n",
+        file: File.short(n1.filePath, repoPath, gitDt),
+      );
 
       var n2 = Note.newNote(parent,
           fileName: "2.md", fileFormat: NoteFileFormat.Markdown);
+      n2 = n2.copyWith(file: File.short(n2.filePath, repoPath, gitDt));
       n2 = NoteSerializer.decodeNote(
         data: MdYamlDoc(body: "test2\n", props: props),
         parent: n2.parent,
@@ -105,9 +110,7 @@ void main() {
       var storage = NoteStorage();
 
       for (var origNote in notes) {
-        var file = File.short(origNote.filePath, repoPath, gitDt);
-        var note = await storage.load(file, parent).getOrThrow();
-
+        var note = await storage.load(origNote.file, parent).getOrThrow();
         loadedNotes.add(note);
       }
 
@@ -119,6 +122,7 @@ void main() {
       expect(loadedNotes[0].body, notes[0].body);
       expect(loadedNotes[0].filePath, notes[0].filePath);
       expect(loadedNotes[0].parent.folderPath, notes[0].parent.folderPath);
+      expect(loadedNotes[0].file, notes[0].file);
       expect(loadedNotes[0], notes[0]);
 
       expect(loadedNotes[1], notes[1]);
