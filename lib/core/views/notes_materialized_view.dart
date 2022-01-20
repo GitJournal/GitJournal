@@ -27,7 +27,7 @@ class NotesMaterializedView<T> {
     required this.computeFn,
     required String repoId,
   }) {
-    this.name = "${repoId}_$name";
+    this.name = "${repoId}_${name}_v2";
   }
 
   // FIXME: The return value doesn't need to be optional
@@ -38,9 +38,10 @@ class NotesMaterializedView<T> {
     assert(!note.filePath.startsWith(p.separator));
     assert(!note.filePath.endsWith(p.separator));
 
-    var ts = note.fileLastModified.toUtc().millisecondsSinceEpoch ~/ 1000;
-    var keyPrefix = '${note.filePath}_';
-    var key = keyPrefix + ts.toString();
+    if (note.oid.isEmpty) {
+      return computeFn(note);
+    }
+    var key = note.oid.toString();
 
     // Open the Box
     await _readMutex.protectRead(() async {
@@ -69,14 +70,7 @@ class NotesMaterializedView<T> {
     T? val = box.get(key, defaultValue: null);
     if (val == null) {
       val = await computeFn(note);
-
-      if (ts != 0) {
-        box.put(key, val);
-
-        // Remove old keys
-        var keys = box.keys.where((k) => k.startsWith(keyPrefix) && k != key);
-        box.deleteAll(keys);
-      }
+      box.put(key, val);
     }
 
     return val!;
