@@ -341,6 +341,7 @@ class GitJournalRepo with ChangeNotifier {
 
     if (!remoteGitRepoConfigured) {
       Log.d("Not syncing because RemoteRepo not configured");
+      await _loadNotes();
       return;
     }
 
@@ -405,6 +406,7 @@ class GitJournalRepo with ChangeNotifier {
   Future<void> _syncNotes() async {
     var freq = settings.remoteSyncFrequency;
     if (freq != RemoteSyncFrequency.Automatic) {
+      await _loadNotes();
       return;
     }
     return syncNotes(doNotThrow: true);
