@@ -154,6 +154,7 @@ class FileStorageCache {
       var dt = _fromProto(pbInfo.dt);
       var info = FileMTimeInfo(pbInfo.filePath, hash, dt);
 
+      assert(info.hash.isNotEmpty);
       return MapEntry(filePath, info);
     });
 
@@ -193,6 +194,7 @@ class FileStorageCache {
         timestamp: Int64(data.dt.secondsSinceEpoch),
       );
 
+      assert(data.hash.isNotEmpty);
       var info = pb.FileMTimeInfo(
         dt: pbDt,
         hash: data.hash.bytes,

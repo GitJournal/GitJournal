@@ -70,6 +70,8 @@ class FileStorage with ChangeNotifier {
     var oid = mTimeInfo.hash;
     var modified = mTimeInfo.dt;
 
+    assert(oid.isNotEmpty);
+
     var created = blobCTimeBuilder.cTime(oid);
     if (created == null) {
       var ex = Exception('when can this happen?');
