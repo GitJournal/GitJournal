@@ -6,7 +6,9 @@
 
 import 'dart:math';
 
+import 'package:dart_date/dart_date.dart';
 import 'package:dart_git/dart_git.dart';
+import 'package:gitjournal/core/file/file.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
@@ -95,12 +97,15 @@ Future<void> _writeRandomNote(Random random, String dirPath,
     }
   }
 
+  final gitDt = Date.startOfToday;
+
   var parent = NotesFolderFS.root(config, fileStorage);
   var note = Note.newNote(parent,
       fileName: p.basename(path), fileFormat: NoteFileFormat.Markdown);
   note = note.copyWith(
     modified: DateTime(2014, 1, 1 + (random.nextInt(2000))),
     body: "p1",
+    file: File.short(note.filePath, dirPath, gitDt),
   );
-  await NoteStorage().save(note).throwOnError();
+  await NoteStorage.save(note).throwOnError();
 }

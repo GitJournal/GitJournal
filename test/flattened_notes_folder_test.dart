@@ -6,12 +6,14 @@
 
 import 'dart:math';
 
+import 'package:dart_date/dart_date.dart';
 import 'package:dart_git/dart_git.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart' as io;
 
+import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/folder/flattened_notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
@@ -41,7 +43,7 @@ void main() {
     late NotesFolderConfig config;
     late FileStorage fileStorage;
 
-    final storage = NoteStorage();
+    final gitDt = Date.startOfToday;
 
     setUp(() async {
       tempDir = await io.Directory.systemTemp.createTemp('__fnft__');
@@ -60,8 +62,9 @@ void main() {
         note = note.copyWith(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "$i\n",
+          file: File.short(note.filePath, repoPath, gitDt),
         );
-        await storage.save(note).throwOnError();
+        await NoteStorage.save(note).throwOnError();
       }
 
       io.Directory(p.join(repoPath, "sub1")).createSync();
@@ -77,8 +80,9 @@ void main() {
         note = note.copyWith(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "sub1-$i\n",
+          file: File.short(note.filePath, repoPath, gitDt),
         );
-        await storage.save(note).throwOnError();
+        await NoteStorage.save(note).throwOnError();
       }
 
       var sub2Folder = NotesFolderFS(rootFolder, "sub2", config, fileStorage);
@@ -90,8 +94,9 @@ void main() {
         note = note.copyWith(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "sub2-$i\n",
+          file: File.short(note.filePath, repoPath, gitDt),
         );
-        await storage.save(note).throwOnError();
+        await NoteStorage.save(note).throwOnError();
       }
 
       var p1Folder =
@@ -104,8 +109,9 @@ void main() {
         note = note.copyWith(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "p1-$i\n",
+          file: File.short(note.filePath, repoPath, gitDt),
         );
-        await storage.save(note).throwOnError();
+        await NoteStorage.save(note).throwOnError();
       }
 
       var repo = GitRepository.load(repoPath).getOrThrow();
@@ -162,8 +168,9 @@ void main() {
       note = note.copyWith(
         modified: DateTime(2020, 2, 1),
         body: "new\n",
+        file: File.short(note.filePath, repoPath, gitDt),
       );
-      await storage.save(note).throwOnError();
+      await NoteStorage.save(note).throwOnError();
 
       p1.add(note);
 

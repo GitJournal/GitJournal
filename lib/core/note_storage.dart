@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'dart:convert';
+
 import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' as io;
@@ -37,23 +39,24 @@ class NoteStorage {
     return contents;
   }
 
-  Future<Result<Note>> save(Note note) async {
+  static Future<Result<Note>> save(Note note) async {
     assert(note.filePath.isNotEmpty);
     assert(note.fileName.isNotEmpty);
+    assert(note.oid.isNotEmpty);
 
-    var contents = serialize(note);
+    var contents = utf8.encode(serialize(note));
 
     return catchAll<Note>(() async {
       assert(note.fullFilePath.startsWith(p.separator));
 
       var file = io.File(note.fullFilePath);
-      var _ = await file.writeAsString(contents, flush: true);
+      var _ = await file.writeAsBytes(contents, flush: true);
 
       var stat = file.statSync();
       note = note.copyWith(
         file: note.file.copyFile(
           fileLastModified: stat.modified,
-          filePath: note.filePath,
+          oid: GitHash.compute(contents),
         ),
       );
 
@@ -64,7 +67,7 @@ class NoteStorage {
   static final mdYamlDocLoader = MdYamlDocLoader();
 
   /// Fails with 'NoteReloadNotRequired' if the note doesn't need to be reloaded
-  Future<Result<Note>> reload(Note note, FileStorage fileStorage) async {
+  static Future<Result<Note>> reload(Note note, FileStorage fileStorage) async {
     try {
       var fileLastModified = io.File(note.fullFilePath).lastModifiedSync();
       if (note.fileLastModified == fileLastModified) {
@@ -88,7 +91,8 @@ class NoteStorage {
     }
   }
 
-  Future<Result<Note>> load(File file, NotesFolderFS parentFolder) async {
+  static Future<Result<Note>> load(
+      File file, NotesFolderFS parentFolder) async {
     assert(file.filePath.isNotEmpty);
     assert(!file.filePath.startsWith('/'));
     assert(file.oid.isNotEmpty);

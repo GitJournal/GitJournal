@@ -94,7 +94,7 @@ void main() {
 
     test('Should persist and load Notes from disk', () async {
       for (var note in notes) {
-        await NoteStorage().save(note).throwOnError();
+        await NoteStorage.save(note).throwOnError();
       }
 
       var fileList = tempDir
@@ -107,10 +107,9 @@ void main() {
 
       var loadedNotes = <Note>[];
       var parent = NotesFolderFS.root(config, fileStorage);
-      var storage = NoteStorage();
 
       for (var origNote in notes) {
-        var note = await storage.load(origNote.file, parent).getOrThrow();
+        var note = await NoteStorage.load(origNote.file, parent).getOrThrow();
         loadedNotes.add(note);
       }
 

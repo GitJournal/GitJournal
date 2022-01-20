@@ -57,9 +57,8 @@ Hello
       await io.File(notePath).writeAsString(content);
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
-      var noteStorage = NoteStorage();
       var file = File.short("note.md", repoPath, gitDt);
-      var noteR = await noteStorage.load(file, parentFolder);
+      var noteR = await NoteStorage.load(file, parentFolder);
       return noteR.getOrThrow();
     }
 

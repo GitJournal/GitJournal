@@ -160,14 +160,13 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     const maxParallel = 10;
     var futures = <Future>[];
 
-    var storage = NoteStorage();
     for (var i = 0; i < _files.length; i++) {
       late Future future;
 
       var file = _files[i];
       if (file is UnopenedFile) {
         future = (int index, UnopenedFile file) async {
-          var result = await storage.load(file, file.parent);
+          var result = await NoteStorage.load(file, file.parent);
           if (result.isFailure) {
             var reason = IgnoreReason.Custom;
             var reasonError = result.error;
@@ -197,7 +196,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         }(i, file);
       } else if (file is Note) {
         future = (int index, Note note) async {
-          var result = await storage.reload(note, fileStorage);
+          var result = await NoteStorage.reload(note, fileStorage);
           if (result.isFailure) {
             if (result.error is NoteReloadNotRequired) {
               return;

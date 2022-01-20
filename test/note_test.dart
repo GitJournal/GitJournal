@@ -24,7 +24,6 @@ void main() {
     late NotesFolderConfig config;
     late FileStorage fileStorage;
 
-    final storage = NoteStorage();
     final gitDt = DateTime.now();
 
     setUpAll(() async {
@@ -54,12 +53,12 @@ Hello
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
       var file = File.short("note.md", repoPath, gitDt);
-      var note = await storage.load(file, parentFolder).getOrThrow();
+      var note = await NoteStorage.load(file, parentFolder).getOrThrow();
       expect(note.canHaveMetadata, true);
 
       note = note.copyWith(modified: DateTime.utc(2019, 12, 02, 4, 0, 0));
 
-      await NoteStorage().save(note).throwOnError();
+      await NoteStorage.save(note).throwOnError();
 
       var expectedContent = """---
 bar: Foo
@@ -87,11 +86,11 @@ Hello
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
       var file = File.short("note.md", repoPath, gitDt);
-      var note = await storage.load(file, parentFolder).getOrThrow();
+      var note = await NoteStorage.load(file, parentFolder).getOrThrow();
 
       note = note.copyWith(modified: DateTime.utc(2019, 12, 02, 4, 0, 0));
 
-      await NoteStorage().save(note).throwOnError();
+      await NoteStorage.save(note).throwOnError();
 
       var expectedContent = """---
 bar: Foo
@@ -119,14 +118,14 @@ Hello
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
       var file = File.short("note5.md", repoPath, gitDt);
-      var note = await storage.load(file, parentFolder).getOrThrow();
+      var note = await NoteStorage.load(file, parentFolder).getOrThrow();
 
       expect(note.tags.contains('A'), true);
       expect(note.tags.contains('B'), true);
       expect(note.tags.length, 2);
 
       note = note.copyWith(tags: {'A', 'C', 'D'});
-      await NoteStorage().save(note).throwOnError();
+      await NoteStorage.save(note).throwOnError();
 
       var expectedContent = """---
 bar: Foo
@@ -155,7 +154,7 @@ bar: Foo
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
       var file = File.short("note6.md", repoPath, gitDt);
-      var note = await storage.load(file, parentFolder).getOrThrow();
+      var note = await NoteStorage.load(file, parentFolder).getOrThrow();
       parentFolder.add(note);
 
       var linksOrNull = []; // await note.fetchLinks();
@@ -177,7 +176,7 @@ bar: Foo
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
       var file = File.short("note63.md", repoPath, gitDt);
-      var note = await storage.load(file, parentFolder).getOrThrow();
+      var note = await NoteStorage.load(file, parentFolder).getOrThrow();
       parentFolder.add(note);
 
       var linksOrNull = []; //await note.fetchLinks();
@@ -204,7 +203,7 @@ Gee
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
       var file = File.short("note16.md", repoPath, gitDt);
-      var note = await storage.load(file, parentFolder).getOrThrow();
+      var note = await NoteStorage.load(file, parentFolder).getOrThrow();
       parentFolder.add(note);
 
       expect(note.fileFormat, NoteFileFormat.Markdown);
@@ -216,7 +215,7 @@ Gee
       await io.File(txtNotePath).writeAsString(content);
 
       var txtFile = File.short("note16.txt", repoPath, gitDt);
-      var txtNote = await storage.load(txtFile, parentFolder).getOrThrow();
+      var txtNote = await NoteStorage.load(txtFile, parentFolder).getOrThrow();
 
       expect(txtNote.fileFormat, NoteFileFormat.Txt);
       expect(txtNote.canHaveMetadata, false);
@@ -244,7 +243,7 @@ Gee
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
       var txtFile = File.short("note163.txt", repoPath, gitDt);
-      var txtNote = await storage.load(txtFile, parentFolder).getOrThrow();
+      var txtNote = await NoteStorage.load(txtFile, parentFolder).getOrThrow();
 
       expect(txtNote.fileFormat, NoteFileFormat.Txt);
       expect(txtNote.canHaveMetadata, false);
@@ -267,7 +266,7 @@ Isn't it time you write;
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
       var file = File.short("note.md", repoPath, gitDt);
-      var note = await storage.load(file, parentFolder).getOrThrow();
+      var note = await NoteStorage.load(file, parentFolder).getOrThrow();
 
       expect(note.title, null);
     });
@@ -287,7 +286,7 @@ Hello
 
       var parentFolder = NotesFolderFS.root(config, fileStorage);
       var file = File.short("note.md", repoPath, gitDt);
-      var note = await storage.load(file, parentFolder).getOrThrow();
+      var note = await NoteStorage.load(file, parentFolder).getOrThrow();
       parentFolder.add(note);
 
       expect(note.modified, DateTime.parse('2021-07-14T10:14:49Z'));
@@ -307,7 +306,7 @@ created: 1592043289
 Hello
 """;
 
-      await NoteStorage().save(note).throwOnError();
+      await NoteStorage.save(note).throwOnError();
 
       var actualContent = io.File(noteFullPath).readAsStringSync();
       expect(actualContent, equals(expectedContent));

@@ -568,8 +568,7 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   Future<Result<Note>> saveNoteToDisk(Note note) async {
-    var noteStorage = NoteStorage();
-    return noteStorage.save(note);
+    return NoteStorage.save(note);
   }
 
   Future<void> addNote(Note note) async {
@@ -578,12 +577,12 @@ class GitJournalRepo with ChangeNotifier {
 
     note = note.updateModified();
 
-    var noteStorage = NoteStorage();
-    var r = await noteStorage.save(note);
+    var r = await NoteStorage.save(note);
     if (r.isFailure) {
       Log.e("Note saving failed", ex: r.error, stacktrace: r.stackTrace);
       // FIXME: Shouldn't we signal the error?
     }
+    note = r.getOrThrow();
 
     note.parent.add(note);
 
@@ -665,7 +664,7 @@ class GitJournalRepo with ChangeNotifier {
 
     newNote = newNote.updateModified();
 
-    var r = await NoteStorage().save(newNote);
+    var r = await NoteStorage.save(newNote);
     if (r.isFailure) {
       Log.e("Note saving failed", ex: r.error, stacktrace: r.stackTrace);
       // FIXME: Shouldn't we signal the error?

@@ -28,7 +28,6 @@ void main() {
     late NotesFolderConfig config;
     late FileStorage fileStorage;
 
-    final storage = NoteStorage();
     final gitDt = DateTime.now();
 
     setUp(() async {
@@ -45,14 +44,14 @@ void main() {
       var random = Random();
       for (var i = 0; i < 5; i++) {
         var path = p.join(folder.folderPath, "${random.nextInt(1000)}.md");
-        var note = await storage
-            .load(File.short(path, repoPath, gitDt), folder)
-            .getOrThrow();
+        var note =
+            await NoteStorage.load(File.short(path, repoPath, gitDt), folder)
+                .getOrThrow();
         note = note.copyWith(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "$i\n",
         );
-        await NoteStorage().save(note).throwOnError();
+        await NoteStorage.save(note).throwOnError();
       }
       await folder.loadRecursively();
     });
@@ -105,14 +104,14 @@ void main() {
       );
 
       var fNew = File.short('new.md', repoPath, gitDt);
-      var note = await storage.load(fNew, folder).getOrThrow();
+      var note = await NoteStorage.load(fNew, folder).getOrThrow();
       folder.add(note);
 
       note = note.copyWith(
         modified: DateTime(2020, 2, 1),
         body: "new\n",
       );
-      await NoteStorage().save(note).throwOnError();
+      await NoteStorage.save(note).throwOnError();
 
       expect(sf.notes.length, 6);
 
@@ -132,14 +131,14 @@ void main() {
       );
 
       var fNew = File.short('new.md', repoPath, gitDt);
-      var note = await storage.load(fNew, folder).getOrThrow();
+      var note = await NoteStorage.load(fNew, folder).getOrThrow();
       folder.add(note);
 
       note = note.copyWith(
         modified: DateTime(2020, 1, 1),
         body: "new\n",
       );
-      await NoteStorage().save(note).throwOnError();
+      await NoteStorage.save(note).throwOnError();
 
       expect(sf.notes.length, 6);
 
