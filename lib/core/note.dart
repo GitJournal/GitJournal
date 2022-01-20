@@ -133,7 +133,7 @@ class Note implements File {
     required NoteSerializationSettings serializerSettings,
     required DateTime? modified,
     required DateTime? created,
-  })  : _title = title,
+  })  : _title = title != null ? (title.isEmpty ? null : title) : null,
         _body = body,
         _type = noteType,
         _tags = tags,
@@ -142,9 +142,7 @@ class Note implements File {
         _data = doc,
         _modified = modified,
         _created = created,
-        noteSerializer = NoteSerializer.fromConfig(serializerSettings) {
-    assert(_title != null ? _title!.isNotEmpty : true);
-  }
+        noteSerializer = NoteSerializer.fromConfig(serializerSettings);
 
   static Note newNote(
     NotesFolderFS parent, {
