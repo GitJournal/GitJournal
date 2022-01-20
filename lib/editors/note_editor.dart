@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:collection/collection.dart';
+import 'package:dart_git/plumbing/git_hash.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
@@ -75,7 +76,9 @@ class NoteEditor extends StatefulWidget {
         existingText = null,
         existingImages = null,
         newNoteFileName = null,
-        newNoteExtraProps = null;
+        newNoteExtraProps = null {
+    assert(note.file.oid.isNotEmpty);
+  }
 
   const NoteEditor.newNote(
     this.notesFolder,
@@ -176,7 +179,10 @@ class NoteEditorState extends State<NoteEditor>
     WidgetsBinding.instance!.addObserver(this);
 
     if (widget.existingNote != null) {
-      _note = widget.existingNote!;
+      var existingNote = widget.existingNote!;
+      _note = existingNote.copyWith(
+        file: existingNote.file.copyFile(oid: GitHash.zero()),
+      );
       originalNoteData = MdYamlDoc.from(_note.data);
 
       _isNewNote = false;
@@ -477,7 +483,8 @@ class NoteEditorState extends State<NoteEditor>
         }
         await repo.addNote(note);
       } else {
-        var modifiedNote = await repo.updateNote(_note, note);
+        var originalNote = widget.existingNote!;
+        var modifiedNote = await repo.updateNote(originalNote, note);
         setState(() {
           _note = modifiedNote;
         });

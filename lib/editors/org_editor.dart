@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 
-import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/image.dart' as core;
 import 'package:gitjournal/core/markdown/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/markdown/md_yaml_note_serializer.dart';
@@ -132,7 +131,7 @@ class OrgEditorState extends State<OrgEditor>
     return NoteSerializer.decodeNote(
       data: doc,
       parent: _note.parent,
-      file: _note.file.copyFile(oid: GitHash.zero()),
+      file: _note.file,
       settings: _note.noteSerializer.settings,
       fileFormat: _note.fileFormat,
     );

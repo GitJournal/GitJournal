@@ -6,7 +6,6 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:dart_git/plumbing/git_hash.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
@@ -139,7 +138,7 @@ class RawEditorState extends State<RawEditor>
     return NoteSerializer.decodeNote(
       data: doc,
       parent: _note.parent,
-      file: _note.file.copyFile(oid: GitHash.zero()),
+      file: _note.file,
       settings: _note.noteSerializer.settings,
       fileFormat: _note.fileFormat,
     );
