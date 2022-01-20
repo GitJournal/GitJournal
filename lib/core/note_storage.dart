@@ -57,6 +57,7 @@ class NoteStorage {
         file: note.file.copyFile(
           fileLastModified: stat.modified,
           oid: GitHash.compute(contents),
+          modified: DateTime.now(),
         ),
       );
 
