@@ -422,8 +422,8 @@ class Note implements File {
   }
 
   NoteType get type => _type;
-  Set<String> get tags => _tags;
-  Map<String, dynamic> get extraProps => _extraProps;
+  Set<String> get tags => UnmodifiableSetView(_tags);
+  Map<String, dynamic> get extraProps => UnmodifiableMapView(_extraProps);
 
   bool get canHaveMetadata {
     if (_fileFormat == NoteFileFormat.Txt ||
