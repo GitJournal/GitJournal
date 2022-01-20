@@ -6,14 +6,12 @@
 
 import 'dart:math';
 
-import 'package:dart_date/dart_date.dart';
 import 'package:dart_git/dart_git.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart' as io;
 
-import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/folder/flattened_filtered_notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';

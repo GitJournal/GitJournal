@@ -37,10 +37,8 @@ class NotesMaterializedView<T> {
   Future<T> fetch(Note note) async {
     assert(!note.filePath.startsWith(p.separator));
     assert(!note.filePath.endsWith(p.separator));
+    assert(note.oid.isNotEmpty);
 
-    if (note.oid.isEmpty) {
-      return computeFn(note);
-    }
     var key = note.oid.toString();
 
     // Open the Box

@@ -69,18 +69,18 @@ class NoteStorage {
   /// Fails with 'NoteReloadNotRequired' if the note doesn't need to be reloaded
   static Future<Result<Note>> reload(Note note, FileStorage fileStorage) async {
     try {
-      var fileLastModified = io.File(note.fullFilePath).lastModifiedSync();
-      if (note.fileLastModified == fileLastModified) {
-        return Result.fail(NoteReloadNotRequired());
-      }
-
       var r = await fileStorage.load(note.filePath);
       if (r.isFailure) {
         return fail(r);
       }
+      var newFile = r.getOrThrow();
+
+      if (note.file == newFile) {
+        return Result.fail(NoteReloadNotRequired());
+      }
       Log.d("Note modified: ${note.filePath}");
 
-      return load(r.getOrThrow(), note.parent);
+      return load(newFile, note.parent);
     } catch (e, stackTrace) {
       if (e is io.FileSystemException &&
           e.osError!.errorCode == 2 /* File Not Found */) {
