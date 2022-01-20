@@ -192,11 +192,12 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
           _files[index] = note;
           _entityMap[file.filePath] = note;
 
+          assert(note.oid.isNotEmpty);
           notifyNoteAdded(index, note);
         }(i, file);
       } else if (file is Note) {
         future = (int index, Note note) async {
-          var result = await storage.reload(note);
+          var result = await storage.reload(note, fileStorage);
           if (result.isFailure) {
             if (result.error is NoteReloadNotRequired) {
               return;
@@ -211,8 +212,9 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
           note = result.getOrThrow();
           _files[index] = note;
-          _entityMap[file.filePath] = _files[index];
+          _entityMap[file.filePath] = note;
 
+          assert(note.oid.isNotEmpty);
           notifyNoteModified(index, note);
         }(i, file);
       } else {

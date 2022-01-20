@@ -59,6 +59,7 @@ class NotesCache {
       var parent = rootFolder.getOrBuildFolderWithSpec(parentFolderPath);
 
       var note = Note.fromProtoBuf(parent, pbNote);
+      assert(note.oid.isNotEmpty);
       parent.add(note);
       var _ = selectFolders.add(parent);
     }
@@ -149,7 +150,10 @@ class NotesCache {
   @visibleForTesting
   Future<void> saveToDisk(Iterable<Note> notes) async {
     var contents = pb.NoteList(
-      notes: notes.map((n) => n.toProtoBuf()),
+      notes: notes.map((n) {
+        assert(n.oid.isNotEmpty);
+        return n.toProtoBuf();
+      }),
     ).writeToBuffer();
 
     var r = await saveFileSafely(filePath, contents);

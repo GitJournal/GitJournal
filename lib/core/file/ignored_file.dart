@@ -28,5 +28,7 @@ class IgnoredFile extends File {
           modified: file.modified,
           created: file.created,
           fileLastModified: file.fileLastModified,
-        );
+        ) {
+    assert(file.oid.isNotEmpty);
+  }
 }

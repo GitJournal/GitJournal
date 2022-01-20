@@ -8,6 +8,7 @@ import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' as io;
 
+import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/markdown/md_yaml_doc.dart';
 import 'package:gitjournal/core/markdown/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/markdown/md_yaml_doc_loader.dart';
@@ -63,18 +64,20 @@ class NoteStorage {
   static final mdYamlDocLoader = MdYamlDocLoader();
 
   /// Fails with 'NoteReloadNotRequired' if the note doesn't need to be reloaded
-  Future<Result<Note>> reload(Note note) async {
+  Future<Result<Note>> reload(Note note, FileStorage fileStorage) async {
     try {
       var fileLastModified = io.File(note.fullFilePath).lastModifiedSync();
       if (note.fileLastModified == fileLastModified) {
         return Result.fail(NoteReloadNotRequired());
       }
-      note = note.copyWith(
-        file: note.file.copyFile(fileLastModified: fileLastModified),
-      );
+
+      var r = await fileStorage.load(note.filePath);
+      if (r.isFailure) {
+        return fail(r);
+      }
       Log.d("Note modified: ${note.filePath}");
 
-      return load(note, note.parent);
+      return load(r.getOrThrow(), note.parent);
     } catch (e, stackTrace) {
       if (e is io.FileSystemException &&
           e.osError!.errorCode == 2 /* File Not Found */) {
@@ -88,6 +91,7 @@ class NoteStorage {
   Future<Result<Note>> load(File file, NotesFolderFS parentFolder) async {
     assert(file.filePath.isNotEmpty);
     assert(!file.filePath.startsWith('/'));
+    assert(file.oid.isNotEmpty);
 
     var filePath = file.fullFilePath;
     var format = NoteFileFormatInfo.fromFilePath(filePath);
