@@ -20,7 +20,8 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:time/time.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' as io;
+import 'package:universal_io/io.dart' show Platform;
 
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/core/commit_message_builder.dart';
@@ -145,7 +146,7 @@ class GitJournalRepo with ChangeNotifier {
     var repoPath = await storageConfig.buildRepoPath(gitBaseDir);
     Log.i("Loading Repo at path $repoPath");
 
-    var repoDir = Directory(repoPath);
+    var repoDir = io.Directory(repoPath);
 
     if (!repoDir.existsSync()) {
       Log.i("Calling GitInit for ${storageConfig.folderName} at: $repoPath");
@@ -182,7 +183,7 @@ class GitJournalRepo with ChangeNotifier {
       }
     }
 
-    var _ = await Directory(cacheDir).create(recursive: true);
+    var _ = await io.Directory(cacheDir).create(recursive: true);
 
     var fileStorageCache = FileStorageCache(cacheDir);
     var fileStorage = await fileStorageCache.load(repoPath);
@@ -745,9 +746,9 @@ class GitJournalRepo with ChangeNotifier {
       Log.i("New Path: $newRepoPath");
 
       dynamic _;
-      _ = await Directory(newRepoPath).create(recursive: true);
+      _ = await io.Directory(newRepoPath).create(recursive: true);
       await _copyDirectory(repoPath, newRepoPath);
-      _ = await Directory(repoPath).delete(recursive: true);
+      _ = await io.Directory(repoPath).delete(recursive: true);
 
       _ = repoManager.buildActiveRepository();
     }
@@ -844,8 +845,8 @@ class GitJournalRepo with ChangeNotifier {
 
   Future<void> delete() async {
     dynamic _;
-    _ = await Directory(repoPath).delete(recursive: true);
-    _ = await Directory(cacheDir).delete(recursive: true);
+    _ = await io.Directory(repoPath).delete(recursive: true);
+    _ = await io.Directory(cacheDir).delete(recursive: true);
   }
 
   /// reset --hard the current branch to its remote branch
@@ -922,14 +923,14 @@ class GitJournalRepo with ChangeNotifier {
 }
 
 Future<void> _copyDirectory(String source, String destination) async {
-  await for (var entity in Directory(source).list(recursive: false)) {
+  await for (var entity in io.Directory(source).list(recursive: false)) {
     dynamic _;
-    if (entity is Directory) {
-      var newDirectory = Directory(p.join(
-          Directory(destination).absolute.path, p.basename(entity.path)));
+    if (entity is io.Directory) {
+      var newDirectory = io.Directory(p.join(
+          io.Directory(destination).absolute.path, p.basename(entity.path)));
       _ = await newDirectory.create();
       await _copyDirectory(entity.absolute.path, newDirectory.path);
-    } else if (entity is File) {
+    } else if (entity is io.File) {
       _ = await entity.copy(p.join(destination, p.basename(entity.path)));
     }
   }
@@ -942,13 +943,13 @@ Future<void> _ensureOneCommitInRepo({
   required GitConfig config,
 }) async {
   try {
-    var dirList = await Directory(repoPath).list().toList();
+    var dirList = await io.Directory(repoPath).list().toList();
     var anyFileInRepo = dirList.firstWhereOrNull(
-      (fs) => fs.statSync().type == FileSystemEntityType.file,
+      (fs) => fs.statSync().type == io.FileSystemEntityType.file,
     );
     if (anyFileInRepo == null) {
       Log.i("Adding .ignore file");
-      var ignoreFile = File(p.join(repoPath, ".gitignore"));
+      var ignoreFile = io.File(p.join(repoPath, ".gitignore"));
       ignoreFile.createSync();
 
       var repo = GitRepo(folderPath: repoPath);
