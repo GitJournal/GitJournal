@@ -39,7 +39,7 @@ class RepositoryManager with ChangeNotifier {
   GitJournalRepo? get currentRepo => _repo;
   Object? get currentRepoError => _repoError;
 
-  Future<Result<void>> buildActiveRepository() async {
+  Future<Result<GitJournalRepo>> buildActiveRepository() async {
     var repoCacheDir = p.join(cacheDir, currentId);
 
     _repo = null;
@@ -62,7 +62,7 @@ class RepositoryManager with ChangeNotifier {
     _repo = r.getOrThrow();
 
     notifyListeners();
-    return Result(null);
+    return Result(_repo);
   }
 
   String repoFolderName(String id) {

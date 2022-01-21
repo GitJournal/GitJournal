@@ -366,7 +366,8 @@ class NoteEditorState extends State<NoteEditor>
     } else {
       var container = context.read<GitJournalRepo>();
 
-      var newNote = await container.renameNote(note, newFileName);
+      var originalNote = widget.existingNote!;
+      var newNote = await container.renameNote(originalNote, newFileName);
       setState(() {
         note = newNote;
       });

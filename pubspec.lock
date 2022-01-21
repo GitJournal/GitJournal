@@ -353,7 +353,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "70b343ec7998fc46c021aa3459d16b6482134bd8"
+      resolved-ref: e00cbf3303d52109a2b0bc83865aa4b17cc5a745
       url: "https://github.com/GitJournal/dart-git.git"
     source: git
     version: "0.0.2"
@@ -1210,6 +1210,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.4"
+  process_run:
+    dependency: "direct dev"
+    description:
+      name: process_run
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.12.3+2"
   protobuf:
     dependency: "direct main"
     description:

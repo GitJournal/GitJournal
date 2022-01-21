@@ -22,7 +22,10 @@ class Log {
   static late String logFolderPath;
   static RandomAccessFile? logFile;
 
-  static Future<void> init({bool ignoreFimber = false}) async {
+  static Future<void> init({
+    bool ignoreFimber = false,
+    String? cacheDir,
+  }) async {
     if (foundation.kDebugMode && !ignoreFimber) {
       Fimber.plantTree(CustomFormatTree(
         logFormat:
@@ -31,8 +34,8 @@ class Log {
       ));
     }
 
-    var cacheDir = await getTemporaryDirectory();
-    logFolderPath = p.join(cacheDir.path, "logs");
+    logFolderPath =
+        p.join(cacheDir ?? (await getTemporaryDirectory()).path, "logs");
     try {
       Directory(logFolderPath).createSync();
     } catch (e) {
