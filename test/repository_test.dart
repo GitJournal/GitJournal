@@ -59,7 +59,12 @@ Future<void> main() async {
     var repoId = DEFAULT_ID;
     await pref.setString("${repoId}_$FOLDER_NAME_KEY", 'test_data');
 
-    repo = await repoManager.buildActiveRepository().getOrThrow();
+    repo = await repoManager
+        .buildActiveRepository(
+          loadFromCache: false,
+          syncOnBoot: false,
+        )
+        .getOrThrow();
     await repo.reloadNotes();
   });
 

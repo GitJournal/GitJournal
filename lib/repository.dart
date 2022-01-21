@@ -101,6 +101,8 @@ class GitJournalRepo with ChangeNotifier {
     required SharedPreferences pref,
     required String id,
     required RepositoryManager repoManager,
+    bool loadFromCache = true,
+    bool syncOnBoot = true,
   }) async {
     await migrateSettings(id, pref, gitBaseDir);
 
@@ -203,6 +205,8 @@ class GitJournalRepo with ChangeNotifier {
       fileStorageCache: fileStorageCache,
       currentBranch: await repo.currentBranch().getOrThrow(),
       headHash: head,
+      loadFromCache: loadFromCache,
+      syncOnBoot: syncOnBoot,
     );
 
     return Result(gjRepo);
@@ -223,6 +227,8 @@ class GitJournalRepo with ChangeNotifier {
     required this.fileStorageCache,
     required String? currentBranch,
     required GitHash headHash,
+    required bool loadFromCache,
+    required bool syncOnBoot,
   }) {
     _gitRepo = GitNoteRepository(gitRepoPath: repoPath, config: gitConfig);
     rootFolder = NotesFolderFS.root(folderConfig, fileStorage);
@@ -246,8 +252,8 @@ class GitJournalRepo with ChangeNotifier {
 
     fileStorageCacheReady = headHash == fileStorageCache.lastProcessedHead;
 
-    _loadFromCache();
-    _syncNotes();
+    if (loadFromCache) _loadFromCache();
+    if (syncOnBoot) _syncNotes();
   }
 
   Future<void> _loadFromCache() async {

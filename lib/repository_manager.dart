@@ -39,7 +39,10 @@ class RepositoryManager with ChangeNotifier {
   GitJournalRepo? get currentRepo => _repo;
   Object? get currentRepoError => _repoError;
 
-  Future<Result<GitJournalRepo>> buildActiveRepository() async {
+  Future<Result<GitJournalRepo>> buildActiveRepository({
+    bool loadFromCache = true,
+    bool syncOnBoot = true,
+  }) async {
     var repoCacheDir = p.join(cacheDir, currentId);
 
     _repo = null;
@@ -52,6 +55,8 @@ class RepositoryManager with ChangeNotifier {
       cacheDir: repoCacheDir,
       pref: pref,
       id: currentId,
+      loadFromCache: loadFromCache,
+      syncOnBoot: syncOnBoot,
     );
     if (r.isFailure) {
       Log.e("buildActiveRepo", result: r);
