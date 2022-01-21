@@ -6,22 +6,21 @@
 
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/plumbing/git_hash.dart';
-import 'package:gitjournal/repository.dart';
 import 'package:path/path.dart' as p;
 import 'package:process_run/process_run.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart' as io;
 
+import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/logger/logger.dart';
+import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/storage_config.dart';
 
 Future<void> main() async {
-  final baseDir = await io.Directory.systemTemp.createTemp();
-  final cacheDir = await io.Directory(p.join(baseDir.path, 'cache')).create();
-  final gitBaseDir = await io.Directory(p.join(baseDir.path, 'repos')).create();
+  late io.Directory baseDir;
   late String repoPath;
   late SharedPreferences pref;
 
@@ -30,6 +29,10 @@ Future<void> main() async {
   late final GitJournalRepo repo;
 
   setUp(() async {
+    baseDir = await io.Directory.systemTemp.createTemp();
+    var cacheDir = await io.Directory(p.join(baseDir.path, 'cache')).create();
+    var gitBaseDir = await io.Directory(p.join(baseDir.path, 'repos')).create();
+
     await runExecutableArguments(
       'git',
       ["clone", "https://github.com/GitJournal/test_data"],
@@ -60,6 +63,10 @@ Future<void> main() async {
     await repo.reloadNotes();
   });
 
+  tearDown(() {
+    baseDir.deleteSync(recursive: true);
+  });
+
   test('Rename - Same Folder', () async {
     var note = repo.rootFolder.notes.firstWhere((n) => n.fileName == '1.md');
 
@@ -67,6 +74,7 @@ Future<void> main() async {
     var newNote = await repo.renameNote(note, newPath);
 
     expect(newNote.filePath, newPath);
+    expect(newNote.fileFormat, NoteFileFormat.Markdown);
     expect(repo.rootFolder.getAllNotes().length, 3);
 
     var gitRepo = GitRepository.load(repoPath).getOrThrow();
@@ -76,6 +84,17 @@ Future<void> main() async {
     expect(headCommit.parents.length, 1);
     expect(headCommit.parents[0], headHash);
   });
+
+  // test('Rename - Change File Type', () async {
+  //   var note = repo.rootFolder.notes.firstWhere((n) => n.fileName == '1.md');
+
+  //   var newPath = "1_new.txt";
+  //   var newNote = await repo.renameNote(note, newPath);
+
+  //   expect(newNote.filePath, newPath);
+  //   expect(newNote.fileFormat, NoteFileFormat.Txt);
+  //   expect(repo.rootFolder.getAllNotes().length, 3);
+  // });
 }
 
 // Renames
