@@ -171,7 +171,7 @@ Future<void> main() async {
     expect(headCommit.parents[0], headHash);
 
     var contents = io.File(note.fullFilePath).readAsStringSync();
-    expect(contents, '7\n');
+    expect(contents.contains('7\n'), true);
   });
 
   test('addNote - Fails', () async {
