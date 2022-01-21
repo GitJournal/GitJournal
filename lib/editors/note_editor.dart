@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:collection/collection.dart';
+import 'package:dart_git/utils/result.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
@@ -367,8 +368,16 @@ class NoteEditorState extends State<NoteEditor>
       var container = context.read<GitJournalRepo>();
 
       var originalNote = widget.existingNote!;
-      var newNote =
-          await container.renameNote(originalNote, newFileName).getOrThrow();
+      var renameResult = await container.renameNote(originalNote, newFileName);
+      if (renameResult.isFailure) {
+        await showAlertDialog(
+          context,
+          tr(LocaleKeys.editors_common_saveNoteFailed_title),
+          tr(LocaleKeys.editors_common_saveNoteFailed_message),
+        );
+      }
+
+      var newNote = renameResult.getOrThrow();
       // FIXME: Handle rename failing!
       setState(() {
         note = newNote;
