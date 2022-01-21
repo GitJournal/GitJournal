@@ -65,7 +65,9 @@ class FileStorageCache {
   }
 
   Future<Result<void>> save(FileStorage fileStorage) async {
-    if (lastProcessedHead == fileStorage.head) return Result(null);
+    if (lastProcessedHead == fileStorage.head && lastProcessedHead.isNotEmpty) {
+      return Result(null);
+    }
 
     return catchAll(() async {
       lastProcessedHead = fileStorage.head;
