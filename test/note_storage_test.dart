@@ -99,7 +99,7 @@ void main() {
 
     test('Should persist and load Notes from disk', () async {
       for (var note in notes) {
-        note = note.copyWith(file: note.file.copyFile(oid: GitHash.zero()));
+        note = note.resetOid();
         await NoteStorage.save(note).throwOnError();
       }
 

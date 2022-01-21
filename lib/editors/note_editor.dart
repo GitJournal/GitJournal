@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:collection/collection.dart';
-import 'package:dart_git/plumbing/git_hash.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
@@ -180,9 +179,7 @@ class NoteEditorState extends State<NoteEditor>
 
     if (widget.existingNote != null) {
       var existingNote = widget.existingNote!;
-      _note = existingNote.copyWith(
-        file: existingNote.file.copyFile(oid: GitHash.zero()),
-      );
+      _note = existingNote.resetOid();
       originalNoteData = MdYamlDoc.from(_note.data);
 
       _isNewNote = false;

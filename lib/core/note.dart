@@ -359,6 +359,8 @@ class Note implements File {
     );
   }
 
+  Note resetOid() => copyWith(file: file.copyFile(oid: GitHash.zero()));
+
   Note copyWith({
     NotesFolderFS? parent,
     String? filePath,
