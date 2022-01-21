@@ -81,14 +81,14 @@ Future<void> main() async {
     var note = repo.rootFolder.notes.firstWhere((n) => n.fileName == '1.md');
 
     var newPath = "1_new.md";
-    var newNote = await repo.renameNote(note, newPath);
+    var newNote = await repo.renameNote(note, newPath).getOrThrow();
 
     expect(newNote.filePath, newPath);
     expect(newNote.fileFormat, NoteFileFormat.Markdown);
     expect(repo.rootFolder.getAllNotes().length, 3);
 
     var gitRepo = GitRepository.load(repoPath).getOrThrow();
-    expect(gitRepo.headHash(), isNot(headHash));
+    expect(gitRepo.headHash().getOrThrow(), isNot(headHash));
 
     var headCommit = gitRepo.headCommit().getOrThrow();
     expect(headCommit.parents.length, 1);
@@ -99,20 +99,29 @@ Future<void> main() async {
     var note = repo.rootFolder.notes.firstWhere((n) => n.fileName == '1.md');
 
     var newPath = "1_new.txt";
-    var newNote = await repo.renameNote(note, newPath);
+    var newNote = await repo.renameNote(note, newPath).getOrThrow();
 
     expect(newNote.filePath, newPath);
     expect(newNote.fileFormat, NoteFileFormat.Txt);
     expect(repo.rootFolder.getAllNotes().length, 3);
   });
+
+  test('Rename - Destination Exists', () async {
+    var note = repo.rootFolder.notes.firstWhere((n) => n.fileName == '1.md');
+
+    var newPath = "2.md";
+    var result = await repo.renameNote(note, newPath);
+    expect(result.isFailure, true);
+    expect(result.error, isA<Exception>());
+
+    var gitRepo = GitRepository.load(repoPath).getOrThrow();
+    expect(gitRepo.headHash().getOrThrow(), headHash);
+  });
 }
 
 // Renames
-// * Note - folder doesn't exist
-// * Note - different folder
-// * Note - another note exists with same path
 // * Note - change content + rename
-// * Note - change file type
+// * Note - saveNote fails because of 'x'
 
 Future<void> _run(String args, String repoPath) async {
   await runExecutableArguments('git', args.split(' '),

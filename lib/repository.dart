@@ -495,20 +495,31 @@ class GitJournalRepo with ChangeNotifier {
     unawaited(_syncNotes());
   }
 
-  Future<Note> renameNote(Note note, String newFileName) async {
+  Future<Result<Note>> renameNote(Note fromNote, String newFileName) async {
     assert(!newFileName.contains(p.separator));
-    assert(note.oid.isNotEmpty);
+    assert(fromNote.oid.isNotEmpty);
 
     logEvent(Event.NoteRenamed);
 
-    var oldPath = note.filePath;
-    var newNote = note.parent.renameNote(note, newFileName);
+    var toNote = fromNote.copyWithFileName(newFileName);
+    if (io.File(toNote.fullFilePath).existsSync()) {
+      var ex = Exception('Destination Note exists');
+      return Result.fail(ex);
+    }
+
+    var renameR = fromNote.parent.renameNote(fromNote, toNote);
+    if (renameR.isFailure) {
+      return fail(renameR);
+    }
 
     await _gitOpLock.synchronized(() async {
-      var result = await _gitRepo.renameNote(oldPath, newNote.filePath);
+      var result = await _gitRepo.renameNote(
+        fromNote.filePath,
+        toNote.filePath,
+      );
       if (result.isFailure) {
         Log.e("renameNote", result: result);
-        return;
+        return fail(result);
       }
 
       numChanges += 1;
@@ -516,26 +527,8 @@ class GitJournalRepo with ChangeNotifier {
     });
 
     unawaited(_syncNotes());
-    return newNote;
+    return Result(toNote);
   }
-
-  // void renameFile(String oldPath, String newFileName) async {
-  //   assert(!newFileName.contains(p.separator));
-
-  //   logEvent(Event.NoteRenamed);
-
-  //   return _opLock.synchronized(() async {
-  //     var newPath = p.join(p.dirname(oldPath), newFileName);
-  //     await File(p.join(repoPath, oldPath)).rename(p.join(repoPath, newPath));
-  //     notifyListeners();
-
-  //     _gitRepo.renameFile(oldPath, newPath).then((Result<void> _) {
-  //       _syncNotes();
-  //       numChanges += 1;
-  //       notifyListeners();
-  //     });
-  //   });
-  // }
 
   Future<void> moveNote(Note note, NotesFolderFS destFolder) =>
       moveNotes([note], destFolder);
