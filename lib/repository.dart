@@ -659,7 +659,7 @@ class GitJournalRepo with ChangeNotifier {
     unawaited(_syncNotes());
   }
 
-  Future<Note> updateNote(Note oldNote, Note newNote) async {
+  Future<Result<Note>> updateNote(Note oldNote, Note newNote) async {
     assert(oldNote.oid.isNotEmpty);
     assert(newNote.oid.isEmpty);
 
@@ -673,7 +673,7 @@ class GitJournalRepo with ChangeNotifier {
     var r = await NoteStorage.save(newNote);
     if (r.isFailure) {
       Log.e("Note saving failed", ex: r.error, stacktrace: r.stackTrace);
-      // FIXME: Shouldn't we signal the error?
+      return fail(r);
     }
     newNote = r.getOrThrow();
 
@@ -693,7 +693,7 @@ class GitJournalRepo with ChangeNotifier {
     });
 
     unawaited(_syncNotes());
-    return newNote;
+    return Result(newNote);
   }
 
   Future<void> completeGitHostSetup(

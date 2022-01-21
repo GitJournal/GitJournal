@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'dart:io' as io;
+
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/plumbing/git_hash.dart';
 import 'package:path/path.dart' as p;
@@ -111,6 +113,39 @@ Future<void> main() async {
 
     var newPath = "2.md";
     var result = await repo.renameNote(note, newPath);
+    expect(result.isFailure, true);
+    expect(result.error, isA<Exception>());
+
+    var gitRepo = GitRepository.load(repoPath).getOrThrow();
+    expect(gitRepo.headHash().getOrThrow(), headHash);
+  });
+
+  test('updateNote - Basic', () async {
+    var note = repo.rootFolder.notes.firstWhere((n) => n.fileName == '1.md');
+
+    var toNote = note.resetOid();
+    toNote = toNote.copyWith(body: '11');
+    toNote = await repo.updateNote(note, toNote).getOrThrow();
+
+    var gitRepo = GitRepository.load(repoPath).getOrThrow();
+    expect(gitRepo.headHash().getOrThrow(), isNot(headHash));
+
+    var headCommit = gitRepo.headCommit().getOrThrow();
+    expect(headCommit.parents.length, 1);
+    expect(headCommit.parents[0], headHash);
+
+    var contents = io.File(toNote.fullFilePath).readAsStringSync();
+    expect(contents, '11\n');
+  });
+
+  test('updateNote - Fails', () async {
+    var note = repo.rootFolder.getNoteWithSpec('f1/3.md')!;
+
+    var toNote = note.resetOid();
+    toNote = toNote.copyWith(body: "doesn't matter");
+    io.Directory(note.parent.fullFolderPath).deleteSync(recursive: true);
+
+    var result = await repo.updateNote(note, toNote);
     expect(result.isFailure, true);
     expect(result.error, isA<Exception>());
 

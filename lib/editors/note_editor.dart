@@ -493,7 +493,8 @@ class NoteEditorState extends State<NoteEditor>
         await repo.addNote(note);
       } else {
         var originalNote = widget.existingNote!;
-        var modifiedNote = await repo.updateNote(originalNote, note);
+        var modifiedNote =
+            await repo.updateNote(originalNote, note).getOrThrow();
         setState(() {
           _note = modifiedNote;
         });
