@@ -95,7 +95,6 @@ class File {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is File &&
-          runtimeType == other.runtimeType &&
           oid == other.oid &&
           repoPath == other.repoPath &&
           filePath == other.filePath &&
