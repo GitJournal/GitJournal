@@ -152,6 +152,43 @@ Future<void> main() async {
     var gitRepo = GitRepository.load(repoPath).getOrThrow();
     expect(gitRepo.headHash().getOrThrow(), headHash);
   });
+
+  test('addNote - Basic', () async {
+    var note = Note.newNote(
+      repo.rootFolder,
+      fileFormat: NoteFileFormat.Markdown,
+    );
+
+    note = note.copyWith(body: '7');
+    note = note.copyWithFileName('7.md');
+    note = await repo.addNote(note).getOrThrow();
+
+    var gitRepo = GitRepository.load(repoPath).getOrThrow();
+    expect(gitRepo.headHash().getOrThrow(), isNot(headHash));
+
+    var headCommit = gitRepo.headCommit().getOrThrow();
+    expect(headCommit.parents.length, 1);
+    expect(headCommit.parents[0], headHash);
+
+    var contents = io.File(note.fullFilePath).readAsStringSync();
+    expect(contents, '7\n');
+  });
+
+  test('addNote - Fails', () async {
+    var folder = repo.rootFolder.getFolderWithSpec('f1')!;
+    var note = Note.newNote(folder, fileFormat: NoteFileFormat.Markdown);
+
+    note = note.copyWith(body: '7');
+    note = note.copyWithFileName('7.md');
+
+    io.Directory(folder.fullFolderPath).deleteSync(recursive: true);
+    var result = await repo.addNote(note);
+    expect(result.isFailure, true);
+    expect(result.error, isA<Exception>());
+
+    var gitRepo = GitRepository.load(repoPath).getOrThrow();
+    expect(gitRepo.headHash().getOrThrow(), headHash);
+  });
 }
 
 // Renames

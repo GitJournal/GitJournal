@@ -490,7 +490,7 @@ class NoteEditorState extends State<NoteEditor>
             _note = note.copyWithFileName(newName);
           });
         }
-        await repo.addNote(note);
+        await repo.addNote(note).throwOnError();
       } else {
         var originalNote = widget.existingNote!;
         var modifiedNote =

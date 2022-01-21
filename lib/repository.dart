@@ -512,7 +512,7 @@ class GitJournalRepo with ChangeNotifier {
       return fail(renameR);
     }
 
-    await _gitOpLock.synchronized(() async {
+    var _ = await _gitOpLock.synchronized(() async {
       var result = await _gitRepo.renameNote(
         fromNote.filePath,
         toNote.filePath,
@@ -577,7 +577,7 @@ class GitJournalRepo with ChangeNotifier {
     return NoteStorage.save(note);
   }
 
-  Future<void> addNote(Note note) async {
+  Future<Result<Note>> addNote(Note note) async {
     assert(note.oid.isEmpty);
     logEvent(Event.NoteAdded);
 
@@ -586,7 +586,7 @@ class GitJournalRepo with ChangeNotifier {
     var r = await NoteStorage.save(note);
     if (r.isFailure) {
       Log.e("Note saving failed", ex: r.error, stacktrace: r.stackTrace);
-      // FIXME: Shouldn't we signal the error?
+      return fail(r);
     }
     note = r.getOrThrow();
 
@@ -606,6 +606,7 @@ class GitJournalRepo with ChangeNotifier {
     });
 
     unawaited(_syncNotes());
+    return Result(note);
   }
 
   void removeNote(Note note) => removeNotes([note]);
