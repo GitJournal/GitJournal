@@ -26,7 +26,13 @@ Future<void> main() async {
 
   final headHash = GitHash('c8a879a4a9c27abcc27a4d2ee2b2ba0aad5fc940');
 
-  late final GitJournalRepo repo;
+  late GitJournalRepo repo;
+
+  setUpAll(() async {
+    // Logging
+    var logsCacheDir = await io.Directory.systemTemp.createTemp();
+    await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
+  });
 
   setUp(() async {
     baseDir = await io.Directory.systemTemp.createTemp();
@@ -48,8 +54,6 @@ Future<void> main() async {
     SharedPreferences.setMockInitialValues({});
     pref = await SharedPreferences.getInstance();
 
-    await Log.init(cacheDir: cacheDir.path, ignoreFimber: false);
-
     var repoManager = RepositoryManager(
       gitBaseDir: gitBaseDir.path,
       cacheDir: cacheDir.path,
@@ -69,7 +73,8 @@ Future<void> main() async {
   });
 
   tearDown(() {
-    baseDir.deleteSync(recursive: true);
+    // Most of repo's methods call an unawaited task to sync + reload
+    // baseDir.deleteSync(recursive: true);
   });
 
   test('Rename - Same Folder', () async {
@@ -90,16 +95,16 @@ Future<void> main() async {
     expect(headCommit.parents[0], headHash);
   });
 
-  // test('Rename - Change File Type', () async {
-  //   var note = repo.rootFolder.notes.firstWhere((n) => n.fileName == '1.md');
+  test('Rename - Change File Type', () async {
+    var note = repo.rootFolder.notes.firstWhere((n) => n.fileName == '1.md');
 
-  //   var newPath = "1_new.txt";
-  //   var newNote = await repo.renameNote(note, newPath);
+    var newPath = "1_new.txt";
+    var newNote = await repo.renameNote(note, newPath);
 
-  //   expect(newNote.filePath, newPath);
-  //   expect(newNote.fileFormat, NoteFileFormat.Txt);
-  //   expect(repo.rootFolder.getAllNotes().length, 3);
-  // });
+    expect(newNote.filePath, newPath);
+    expect(newNote.fileFormat, NoteFileFormat.Txt);
+    expect(repo.rootFolder.getAllNotes().length, 3);
+  });
 }
 
 // Renames
