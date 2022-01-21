@@ -39,7 +39,8 @@ class NotesMaterializedView<T> {
     assert(!note.filePath.endsWith(p.separator));
     assert(note.oid.isNotEmpty);
 
-    var key = note.oid.toString();
+    var ts = note.fileLastModified.toUtc().millisecondsSinceEpoch ~/ 1000;
+    var key = '${note.oid}_$ts';
 
     // Open the Box
     await _readMutex.protectRead(() async {
