@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/features.dart';
+import 'package:gitjournal/logger/logger.dart';
 
 class AppConfig extends ChangeNotifier {
   // singleton
@@ -184,8 +185,13 @@ class AppConfig extends ChangeNotifier {
 
 extension Date on SharedPreferences {
   DateTime? getDateTime(String key) {
-    var v = getInt(key);
-    if (v == null) return null;
-    return DateTime.fromMillisecondsSinceEpoch(v * 1000);
+    try {
+      var v = getInt(key);
+      if (v == null) return null;
+      return DateTime.fromMillisecondsSinceEpoch(v * 1000);
+    } catch (e, st) {
+      Log.e("getDataTime", ex: e, stacktrace: st);
+      return null;
+    }
   }
 }
