@@ -4,18 +4,19 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/repository_manager.dart';
-import 'package:gitjournal/settings/settings.dart';
-import 'package:gitjournal/settings/storage_config.dart';
+import 'package:dart_git/dart_git.dart';
+import 'package:dart_git/plumbing/git_hash.dart';
+import 'package:gitjournal/repository.dart';
 import 'package:path/path.dart' as p;
+import 'package:process_run/process_run.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart' as io;
 
-import 'package:dart_git/utils/result.dart';
-
-import 'package:process_run/process_run.dart';
+import 'package:gitjournal/logger/logger.dart';
+import 'package:gitjournal/repository_manager.dart';
+import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/storage_config.dart';
 
 Future<void> main() async {
   final baseDir = await io.Directory.systemTemp.createTemp();
@@ -23,6 +24,10 @@ Future<void> main() async {
   final gitBaseDir = await io.Directory(p.join(baseDir.path, 'repos')).create();
   late String repoPath;
   late SharedPreferences pref;
+
+  final headHash = GitHash('c8a879a4a9c27abcc27a4d2ee2b2ba0aad5fc940');
+
+  late final GitJournalRepo repo;
 
   setUp(() async {
     await runExecutableArguments(
@@ -33,7 +38,7 @@ Future<void> main() async {
 
     repoPath = p.join(gitBaseDir.path, "test_data");
 
-    await _run('checkout c8a879a4a9c27abcc27a4d2ee2b2ba0aad5fc940', repoPath);
+    await _run('checkout $headHash', repoPath);
     await _run('switch -c main', repoPath);
     await _run('remote rm origin', repoPath);
 
@@ -41,9 +46,7 @@ Future<void> main() async {
     pref = await SharedPreferences.getInstance();
 
     await Log.init(cacheDir: cacheDir.path, ignoreFimber: false);
-  });
 
-  test('Rename - simple', () async {
     var repoManager = RepositoryManager(
       gitBaseDir: gitBaseDir.path,
       cacheDir: cacheDir.path,
@@ -53,9 +56,11 @@ Future<void> main() async {
     var repoId = DEFAULT_ID;
     await pref.setString("${repoId}_$FOLDER_NAME_KEY", 'test_data');
 
-    var repo = await repoManager.buildActiveRepository().getOrThrow();
+    repo = await repoManager.buildActiveRepository().getOrThrow();
     await repo.reloadNotes();
+  });
 
+  test('Rename - Same Folder', () async {
     var note = repo.rootFolder.notes.firstWhere((n) => n.fileName == '1.md');
 
     var newPath = "1_new.md";
@@ -63,6 +68,13 @@ Future<void> main() async {
 
     expect(newNote.filePath, newPath);
     expect(repo.rootFolder.getAllNotes().length, 3);
+
+    var gitRepo = GitRepository.load(repoPath).getOrThrow();
+    expect(gitRepo.headHash(), isNot(headHash));
+
+    var headCommit = gitRepo.headCommit().getOrThrow();
+    expect(headCommit.parents.length, 1);
+    expect(headCommit.parents[0], headHash);
   });
 }
 
