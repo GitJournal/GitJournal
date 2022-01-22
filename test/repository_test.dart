@@ -31,29 +31,31 @@ Future<void> main() async {
   late GitJournalRepo repo;
 
   setUpAll(() async {
-    // var logsCacheDir = await io.Directory.systemTemp.createTemp();
-    // await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
+    var logsCacheDir = await io.Directory.systemTemp.createTemp();
+    await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
     Log.v("Logging initiated");
   });
 
-  setUp(() async {
-    baseDir = await io.Directory.systemTemp.createTemp();
-    var cacheDir = await io.Directory(p.join(baseDir.path, 'cache')).create();
-    var gitBaseDir = await io.Directory(p.join(baseDir.path, 'repos')).create();
-
+  Future<void> _setupFixture(String repoPath, GitHash hash) async {
     await runExecutableArguments(
       'git',
-      ["clone", "https://github.com/GitJournal/test_data"],
-      workingDirectory: gitBaseDir.path,
+      ["clone", "https://github.com/GitJournal/test_data", repoPath],
     );
-
-    repoPath = p.join(gitBaseDir.path, "test_data");
 
     await _run('checkout $headHash', repoPath);
     await _run('switch -c main', repoPath);
     await _run('remote rm origin', repoPath);
+  }
 
-    SharedPreferences.setMockInitialValues({});
+  Future<void> _setup({Map<String, Object> sharedPrefValues = const {}}) async {
+    baseDir = await io.Directory.systemTemp.createTemp();
+    var cacheDir = await io.Directory(p.join(baseDir.path, 'cache')).create();
+    var gitBaseDir = await io.Directory(p.join(baseDir.path, 'repos')).create();
+
+    repoPath = p.join(gitBaseDir.path, "test_data");
+    await _setupFixture(repoPath, headHash);
+
+    SharedPreferences.setMockInitialValues(sharedPrefValues);
     pref = await SharedPreferences.getInstance();
 
     var repoManager = RepositoryManager(
@@ -72,7 +74,7 @@ Future<void> main() async {
         )
         .getOrThrow();
     await repo.reloadNotes();
-  });
+  }
 
   tearDown(() {
     // Most of repo's methods call an unawaited task to sync + reload
@@ -80,6 +82,7 @@ Future<void> main() async {
   });
 
   test('Rename - Same Folder', () async {
+    await _setup();
     var note = repo.rootFolder.notes.firstWhere((n) => n.fileName == '1.md');
 
     var newPath = "1_new.md";
@@ -98,6 +101,7 @@ Future<void> main() async {
   });
 
   test('Rename - Change File Type', () async {
+    await _setup();
     var note = repo.rootFolder.notes.firstWhere((n) => n.fileName == '1.md');
 
     var newPath = "1_new.txt";
@@ -109,6 +113,7 @@ Future<void> main() async {
   });
 
   test('Rename - Destination Exists', () async {
+    await _setup();
     var note = repo.rootFolder.notes.firstWhere((n) => n.fileName == '1.md');
 
     var newPath = "2.md";
@@ -121,6 +126,7 @@ Future<void> main() async {
   });
 
   test('updateNote - Basic', () async {
+    await _setup();
     var note = repo.rootFolder.notes.firstWhere((n) => n.fileName == '1.md');
 
     var toNote = note.resetOid();
@@ -139,6 +145,7 @@ Future<void> main() async {
   });
 
   test('updateNote - Fails', () async {
+    await _setup();
     var note = repo.rootFolder.getNoteWithSpec('f1/3.md')!;
 
     var toNote = note.resetOid();
@@ -154,6 +161,7 @@ Future<void> main() async {
   });
 
   test('addNote - Basic', () async {
+    await _setup();
     var note = Note.newNote(
       repo.rootFolder,
       fileFormat: NoteFileFormat.Markdown,
@@ -175,6 +183,7 @@ Future<void> main() async {
   });
 
   test('addNote - Fails', () async {
+    await _setup();
     var folder = repo.rootFolder.getFolderWithSpec('f1')!;
     var note = Note.newNote(folder, fileFormat: NoteFileFormat.Markdown);
 
@@ -188,6 +197,40 @@ Future<void> main() async {
 
     var gitRepo = GitRepository.load(repoPath).getOrThrow();
     expect(gitRepo.headHash().getOrThrow(), headHash);
+  });
+
+  test('Outside Changes', () async {
+    var extDir = await io.Directory.systemTemp.createTemp();
+    var pref = <String, Object>{
+      "${DEFAULT_ID}_storeInternally": false,
+      "${DEFAULT_ID}_storageLocation": extDir.path,
+    };
+
+    await _setupFixture(p.join(extDir.path, "test_data"), headHash);
+    await _setup(sharedPrefValues: pref);
+
+    var note = repo.rootFolder.getNoteWithSpec('1.md')!;
+    io.File(note.fullFilePath).writeAsStringSync('foo');
+
+    var repoManager = repo.repoManager;
+    var newRepo = await repoManager
+        .buildActiveRepository(loadFromCache: false, syncOnBoot: false)
+        .getOrThrow();
+    await newRepo.reloadNotes();
+
+    var repoPath = newRepo.repoPath;
+    var newNote = newRepo.rootFolder.getNoteWithSpec('1.md')!;
+    expect(newNote.oid, isNot(note.oid));
+    // expect(newNote.created, note.created);
+    expect(newNote.body, 'foo');
+    expect(newNote, isNot(note));
+
+    var gitRepo = GitRepository.load(repoPath).getOrThrow();
+    expect(gitRepo.headHash().getOrThrow(), isNot(headHash));
+
+    var headCommit = gitRepo.headCommit().getOrThrow();
+    expect(headCommit.parents.length, 1);
+    expect(headCommit.parents[0], headHash);
   });
 }
 
