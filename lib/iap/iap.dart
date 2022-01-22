@@ -8,7 +8,6 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart' as foundation;
 
-import 'package:dart_git/utils/result.dart';
 import 'package:google_api_availability/google_api_availability.dart';
 import 'package:http/http.dart' as http;
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -19,6 +18,7 @@ import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_config.dart';
+import 'package:gitjournal/utils/result.dart';
 
 class InAppPurchases {
   static Future<void> confirmProPurchaseBoot() async {

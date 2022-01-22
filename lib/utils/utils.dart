@@ -8,7 +8,6 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 
 import 'package:dart_date/dart_date.dart';
-import 'package:dart_git/utils/result.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +18,7 @@ import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/utils/result.dart';
 import '../core/note.dart';
 import '../editors/common_types.dart';
 import '../logger/logger.dart';

@@ -6,7 +6,6 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:dart_git/utils/result.dart';
 import 'package:dashbook/dashbook.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:path_provider/path_provider.dart';
@@ -16,6 +15,7 @@ import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/app_config.dart';
+import 'package:gitjournal/utils/result.dart';
 
 Future<void> main() async {
   //TestWidgetsFlutterBinding.ensureInitialized();

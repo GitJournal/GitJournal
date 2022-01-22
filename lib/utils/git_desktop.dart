@@ -9,11 +9,11 @@
 import 'dart:convert';
 
 import 'package:dart_git/utils/file_extensions.dart';
-import 'package:dart_git/utils/result.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/utils/result.dart';
 
 Future<Result<void>> gitFetchViaExecutable({
   required String repoPath,

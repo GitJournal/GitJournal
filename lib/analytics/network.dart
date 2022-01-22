@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:dart_git/utils/result.dart';
 import 'package:grpc/grpc.dart';
 
 import 'package:gitjournal/.env.dart';
 import 'package:gitjournal/analytics/generated/analytics.pbgrpc.dart';
+import 'package:gitjournal/utils/result.dart';
 import 'generated/analytics.pb.dart' as pb;
 
 const _port = 443;

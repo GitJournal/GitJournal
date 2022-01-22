@@ -6,7 +6,6 @@
 
 import 'dart:collection';
 
-import 'package:dart_git/utils/result.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
@@ -19,6 +18,7 @@ import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/views/inline_tags_view.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
+import 'package:gitjournal/utils/result.dart';
 import '../file/file.dart';
 import '../file/ignored_file.dart';
 import '../note.dart';

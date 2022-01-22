@@ -9,9 +9,10 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 
 import 'package:collection/collection.dart';
-import 'package:dart_git/utils/result.dart';
 
-export 'package:dart_git/utils/result.dart';
+import 'package:gitjournal/utils/result.dart';
+
+export 'package:gitjournal/utils/result.dart';
 
 typedef OAuthCallback = void Function(GitHostException?);
 

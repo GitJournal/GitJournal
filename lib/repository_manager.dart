@@ -6,7 +6,6 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,6 +13,7 @@ import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/storage_config.dart';
+import 'package:gitjournal/utils/result.dart';
 
 class RepositoryManager with ChangeNotifier {
   var repoIds = <String>[];

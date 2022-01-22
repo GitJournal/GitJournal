@@ -6,7 +6,6 @@
 
 import 'dart:convert';
 
-import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' as io;
 
@@ -16,6 +15,7 @@ import 'package:gitjournal/core/markdown/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/markdown/md_yaml_doc_loader.dart';
 import 'package:gitjournal/core/markdown/md_yaml_note_serializer.dart';
 import 'package:gitjournal/logger/logger.dart';
+import 'package:gitjournal/utils/result.dart';
 import 'file/file.dart';
 import 'folder/notes_folder_fs.dart';
 import 'note.dart';
