@@ -90,8 +90,7 @@ dependencies:
       url: https://github.com/NearHuscarl/flutter_login.git
       ref: develop
   android_external_storage: ^0.1.0
-  # background_fetch:
-  #   git: https://github.com/Fishbowler/flutter_background_fetch.git
+  background_fetch: ^1.0.3
   timeline_tile: ^2.0.0
   community_material_icon: ^5.9.55
   google_api_availability: ^3.0.1
