@@ -122,13 +122,7 @@ class _NoteMetadataSettingsScreenState
         ),
         ListPreference(
           title: LocaleKeys.settings_noteMetaData_modified.tr(),
-          options: const [
-            "modified",
-            "mod",
-            "lastmodified",
-            "lastmod",
-            "updated",
-          ],
+          options: NoteSerializer.modifiedKeyOptions,
           currentOption: folderConfig.yamlModifiedKey,
           onChange: (String newVal) {
             setState(() {
@@ -140,10 +134,7 @@ class _NoteMetadataSettingsScreenState
         ),
         ListPreference(
           title: LocaleKeys.settings_noteMetaData_created.tr(),
-          options: const [
-            "created",
-            "date",
-          ],
+          options: NoteSerializer.createdKeyOptions,
           currentOption: folderConfig.yamlCreatedKey,
           onChange: (String newVal) {
             setState(() {
@@ -155,11 +146,7 @@ class _NoteMetadataSettingsScreenState
         ),
         ListPreference(
           title: LocaleKeys.settings_noteMetaData_tags.tr(),
-          options: const [
-            "tags",
-            "categories",
-            "keywords",
-          ],
+          options: NoteSerializer.tagKeyOptions,
           currentOption: folderConfig.yamlTagsKey,
           onChange: (String newVal) {
             setState(() {
@@ -171,10 +158,7 @@ class _NoteMetadataSettingsScreenState
         ),
         ListPreference(
           title: LocaleKeys.settings_noteMetaData_editorType.tr(),
-          options: const [
-            "type",
-            "editorType",
-          ],
+          options: NoteSerializer.editorTypeKeyOptions,
           currentOption: folderConfig.yamlEditorTypeKey,
           onChange: (String newVal) {
             setState(() {

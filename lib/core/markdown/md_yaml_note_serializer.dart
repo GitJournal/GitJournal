@@ -158,6 +158,19 @@ class NoteSerializer implements NoteSerializerInterface {
   NoteSerializer.fromConfig(this.settings);
   NoteSerializer.raw() : settings = NoteSerializationSettings();
 
+  static final createdKeyOptions = ["created", "date"];
+  static final modifiedKeyOptions = [
+    "modified",
+    "mod",
+    "lastModified",
+    "lastMod",
+    "lastmodified",
+    "lastmod",
+    "updated",
+  ];
+  static final editorTypeKeyOptions = ["type", "editorType"];
+  static final tagKeyOptions = ["tags", "categories", "keywords"];
+
   @override
   void encode(Note note, MdYamlDoc data) {
     data.body = settings.emojify ? emojiParser.unemojify(note.body) : note.body;
@@ -267,15 +280,6 @@ class NoteSerializer implements NoteSerializerInterface {
     var propsUsed = <String>{};
 
     DateTime? modified;
-    var modifiedKeyOptions = [
-      "modified",
-      "mod",
-      "lastModified",
-      "lastMod",
-      "lastmodified",
-      "lastmod",
-      "updated",
-    ];
     for (var possibleKey in modifiedKeyOptions) {
       var val = data.props[possibleKey];
       if (val != null) {
@@ -299,10 +303,6 @@ class NoteSerializer implements NoteSerializerInterface {
     var body = settings.emojify ? emojiParser.emojify(data.body) : data.body;
 
     DateTime? created;
-    var createdKeyOptions = [
-      "created",
-      "date",
-    ];
     for (var possibleKey in createdKeyOptions) {
       var val = data.props[possibleKey];
       if (val != null) {
@@ -359,10 +359,6 @@ class NoteSerializer implements NoteSerializerInterface {
       title = null;
     }
 
-    var editorTypeKeyOptions = [
-      "type",
-      "editorType",
-    ];
     var type = NoteType.Unknown;
     for (var possibleKey in editorTypeKeyOptions) {
       var typeStr = data.props[possibleKey];
@@ -385,11 +381,6 @@ class NoteSerializer implements NoteSerializerInterface {
 
     Set<String>? _tags;
     try {
-      var tagKeyOptions = [
-        "tags",
-        "categories",
-        "keywords",
-      ];
       for (var possibleKey in tagKeyOptions) {
         var tags = data.props[possibleKey];
         if (tags != null) {
