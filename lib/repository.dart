@@ -921,6 +921,10 @@ class GitJournalRepo with ChangeNotifier {
       return Result(type != io.FileSystemEntityType.notFound);
     });
   }
+
+  Future<Result<void>> init(String repoPath) async {
+    return GitRepository.init(repoPath, defaultBranch: DEFAULT_BRANCH);
+  }
 }
 
 Future<void> _copyDirectory(String source, String destination) async {
