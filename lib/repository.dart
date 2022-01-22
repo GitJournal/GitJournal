@@ -914,6 +914,13 @@ class GitJournalRepo with ChangeNotifier {
 
     return Result(null);
   }
+
+  Result<bool> fileExists(String path) {
+    return catchAllSync(() {
+      var type = io.FileSystemEntity.typeSync(path);
+      return Result(type != io.FileSystemEntityType.notFound);
+    });
+  }
 }
 
 Future<void> _copyDirectory(String source, String destination) async {

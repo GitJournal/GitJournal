@@ -9,9 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
-import 'package:universal_io/io.dart';
+import 'package:provider/provider.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/repository.dart';
 
 class RenameDialog extends StatefulWidget {
   final String oldPath;
@@ -87,8 +88,14 @@ class _RenameDialogState extends State<RenameDialog> {
               });
 
               var newPath = join(dirname(widget.oldPath), value);
-              if (FileSystemEntity.typeSync(newPath) !=
-                  FileSystemEntityType.notFound) {
+              var repo = context.read<GitJournalRepo>();
+              var r = repo.fileExists(newPath);
+              if (r.isFailure) {
+                return r.error.toString();
+              }
+              var exists = r.getOrThrow();
+
+              if (exists) {
                 return tr(LocaleKeys.widgets_rename_validator_exists);
               }
 
