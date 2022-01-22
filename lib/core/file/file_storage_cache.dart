@@ -17,7 +17,7 @@ import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/generated/builders.pb.dart' as pb;
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/utils/file.dart';
+import 'package:gitjournal/utils/file_utils.dart';
 
 class FileStorageCache {
   final String cacheFolderPath;

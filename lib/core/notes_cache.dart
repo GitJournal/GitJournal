@@ -19,7 +19,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/generated/core.pb.dart' as pb;
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/utils/file.dart';
+import 'package:gitjournal/utils/file_utils.dart';
 
 class NotesCache {
   final String folderPath;
