@@ -31,9 +31,9 @@ Future<void> main() async {
   late GitJournalRepo repo;
 
   setUpAll(() async {
-    // Logging
-    var logsCacheDir = await io.Directory.systemTemp.createTemp();
-    await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
+    // var logsCacheDir = await io.Directory.systemTemp.createTemp();
+    // await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
+    Log.v("Logging initiated");
   });
 
   setUp(() async {
