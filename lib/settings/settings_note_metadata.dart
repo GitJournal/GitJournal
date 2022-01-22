@@ -170,6 +170,21 @@ class _NoteMetadataSettingsScreenState
           enabled: folderConfig.yamlHeaderEnabled,
         ),
         ListPreference(
+          title: LocaleKeys.settings_noteMetaData_editorType.tr(),
+          options: const [
+            "type",
+            "editorType",
+          ],
+          currentOption: folderConfig.yamlEditorTypeKey,
+          onChange: (String newVal) {
+            setState(() {
+              folderConfig.yamlEditorTypeKey = newVal;
+              folderConfig.save();
+            });
+          },
+          enabled: folderConfig.yamlHeaderEnabled,
+        ),
+        ListPreference(
           title: tr("settings.noteMetaData.titleMetaData.title"),
           options:
               SettingsTitle.options.map((f) => f.toPublicString()).toList(),

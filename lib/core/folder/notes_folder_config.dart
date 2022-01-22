@@ -42,6 +42,7 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
   var yamlModifiedKey = "modified";
   var yamlCreatedKey = "created";
   var yamlTagsKey = "tags";
+  var yamlEditorTypeKey = "type";
   var titleSettings = SettingsTitle.Default;
 
   var inlineTagPrefixes = {'#'};
@@ -62,6 +63,7 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
     yamlModifiedKey = getString("yamlModifiedKey") ?? yamlModifiedKey;
     yamlCreatedKey = getString("yamlCreatedKey") ?? yamlCreatedKey;
     yamlTagsKey = getString("yamlTagsKey") ?? yamlTagsKey;
+    yamlEditorTypeKey = getString("yamlEditorTypeKey") ?? yamlEditorTypeKey;
 
     yamlHeaderEnabled = getBool("yamlHeaderEnabled") ?? yamlHeaderEnabled;
 
@@ -119,6 +121,8 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
     await setString("yamlModifiedKey", yamlModifiedKey, def.yamlModifiedKey);
     await setString("yamlCreatedKey", yamlCreatedKey, def.yamlCreatedKey);
     await setString("yamlTagsKey", yamlTagsKey, def.yamlTagsKey);
+    await setString(
+        "yamlEditorTypeKey", yamlEditorTypeKey, def.yamlEditorTypeKey);
     await setString("titleSettings", titleSettings.toInternalString(),
         def.titleSettings.toInternalString());
 
@@ -141,6 +145,7 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
       "yamlModifiedKey": yamlModifiedKey,
       "yamlCreatedKey": yamlCreatedKey,
       "yamlTagsKey": yamlTagsKey,
+      "yamlEditorTypeKey": yamlEditorTypeKey,
       "yamlHeaderEnabled": yamlHeaderEnabled.toString(),
       "defaultEditor": _defaultEditor.toInternalString(),
       "defaultView": defaultView.toInternalString(),

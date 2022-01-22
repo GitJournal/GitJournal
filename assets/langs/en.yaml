@@ -180,6 +180,7 @@ settings:
     modified: Modified Field
     created: Created Field
     tags: Tags Field
+    editorType: Editor Type Field
     example:
       title: Example Title
     titleMetaData:

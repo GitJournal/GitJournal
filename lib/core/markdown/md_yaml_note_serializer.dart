@@ -41,7 +41,7 @@ class NoteSerializationSettings {
   String modifiedKey = "modified";
   String createdKey = "created";
   String titleKey = "title";
-  String typeKey = "type";
+  String editorTypeKey = "type";
   String tagsKey = "tags";
 
   bool tagsInString = false;
@@ -58,6 +58,7 @@ class NoteSerializationSettings {
     modifiedKey = config.yamlModifiedKey;
     createdKey = config.yamlCreatedKey;
     tagsKey = config.yamlTagsKey;
+    editorTypeKey = config.yamlEditorTypeKey;
     titleSettings = config.titleSettings;
 
     // FIXME: modified / created format!
@@ -71,7 +72,7 @@ class NoteSerializationSettings {
     s.modifiedKey = modifiedKey;
     s.modifiedFormat = modifiedFormat;
     s.titleKey = titleKey;
-    s.typeKey = typeKey;
+    s.editorTypeKey = editorTypeKey;
     s.tagsKey = tagsKey;
     s.tagsInString = tagsInString;
     s.tagsHaveHash = tagsHaveHash;
@@ -85,7 +86,7 @@ class NoteSerializationSettings {
       modifiedKey: modifiedKey,
       createdKey: createdKey,
       titleKey: titleKey,
-      typeKey: typeKey,
+      typeKey: editorTypeKey,
       tagsKey: tagsKey,
       tagsInString: tagsInString,
       tagsHaveHash: tagsHaveHash,
@@ -104,7 +105,7 @@ class NoteSerializationSettings {
     s.modifiedKey = p.modifiedKey;
     s.modifiedFormat = _fromProtoDateFormat(p.modifiedFormat);
     s.titleKey = p.titleKey;
-    s.typeKey = p.typeKey;
+    s.editorTypeKey = p.typeKey;
     s.tagsKey = p.tagsKey;
     s.tagsInString = p.tagsInString;
     s.tagsHaveHash = p.tagsHaveHash;
@@ -215,9 +216,9 @@ class NoteSerializer implements NoteSerializerInterface {
 
     if (note.type != NoteType.Unknown) {
       var type = note.type.toString().substring(9); // Remove "NoteType."
-      data.props[settings.typeKey] = type;
+      data.props[settings.editorTypeKey] = type;
     } else {
-      _ = data.props.remove(settings.typeKey);
+      _ = data.props.remove(settings.editorTypeKey);
     }
 
     if (note.tags.isEmpty) {
@@ -358,21 +359,28 @@ class NoteSerializer implements NoteSerializerInterface {
       title = null;
     }
 
-    NoteType? type;
-    var typeStr = data.props[settings.typeKey];
-    switch (typeStr) {
-      case "Checklist":
-        type = NoteType.Checklist;
+    var editorTypeKeyOptions = [
+      "type",
+      "editorType",
+    ];
+    var type = NoteType.Unknown;
+    for (var possibleKey in editorTypeKeyOptions) {
+      var typeStr = data.props[possibleKey];
+      switch (typeStr) {
+        case "Checklist":
+          type = NoteType.Checklist;
+          break;
+        case "Journal":
+          type = NoteType.Journal;
+          break;
+        default:
+          type = NoteType.Unknown;
+          break;
+      }
+      if (typeStr != null) {
+        var _ = propsUsed.add(settings.editorTypeKey);
         break;
-      case "Journal":
-        type = NoteType.Journal;
-        break;
-      default:
-        type = NoteType.Unknown;
-        break;
-    }
-    if (typeStr != null) {
-      var _ = propsUsed.add(settings.typeKey);
+      }
     }
 
     Set<String>? _tags;

@@ -261,6 +261,8 @@ abstract class LocaleKeys {
       'settings.noteMetaData.modified';
   static const settings_noteMetaData_created = 'settings.noteMetaData.created';
   static const settings_noteMetaData_tags = 'settings.noteMetaData.tags';
+  static const settings_noteMetaData_editorType =
+      'settings.noteMetaData.editorType';
   static const settings_noteMetaData_example_title =
       'settings.noteMetaData.example.title';
   static const settings_noteMetaData_example = 'settings.noteMetaData.example';
