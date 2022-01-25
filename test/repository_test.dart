@@ -25,15 +25,14 @@ Future<void> main() async {
   late io.Directory baseDir;
   late String repoPath;
   late SharedPreferences pref;
+  final logsCacheDir = await io.Directory.systemTemp.createTemp();
 
   final headHash = GitHash('c8a879a4a9c27abcc27a4d2ee2b2ba0aad5fc940');
-
   late GitJournalRepo repo;
 
   setUpAll(() async {
-    var logsCacheDir = await io.Directory.systemTemp.createTemp();
-    await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
-    Log.v("Logging initiated");
+    // await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
+    Log.v("Logging initiated $logsCacheDir");
   });
 
   Future<void> _setupFixture(String repoPath, GitHash hash) async {
@@ -42,18 +41,21 @@ Future<void> main() async {
       ["clone", "https://github.com/GitJournal/test_data", repoPath],
     );
 
-    await _run('checkout $headHash', repoPath);
+    await _run('checkout $hash', repoPath);
     await _run('switch -c main', repoPath);
     await _run('remote rm origin', repoPath);
   }
 
-  Future<void> _setup({Map<String, Object> sharedPrefValues = const {}}) async {
+  Future<void> _setup({
+    GitHash? head,
+    Map<String, Object> sharedPrefValues = const {},
+  }) async {
     baseDir = await io.Directory.systemTemp.createTemp();
     var cacheDir = await io.Directory(p.join(baseDir.path, 'cache')).create();
     var gitBaseDir = await io.Directory(p.join(baseDir.path, 'repos')).create();
 
     repoPath = p.join(gitBaseDir.path, "test_data");
-    await _setupFixture(repoPath, headHash);
+    await _setupFixture(repoPath, head ?? headHash);
 
     SharedPreferences.setMockInitialValues(sharedPrefValues);
     pref = await SharedPreferences.getInstance();
@@ -232,6 +234,27 @@ Future<void> main() async {
     expect(headCommit.parents.length, 1);
     expect(headCommit.parents[0], headHash);
   });
+
+  test('updateNote - created metadata stays the same', () async {
+    var headHash = GitHash('38e8c9150c0c004c9f72221ac7c19cf770575545');
+    await _setup(head: headHash);
+
+    var note = repo.rootFolder.getNoteWithSpec('doc.md')!;
+    var toNote = note.resetOid();
+
+    expect(toNote.created, note.created);
+    toNote = await repo.updateNote(note, toNote).getOrThrow();
+
+    var gitRepo = GitRepository.load(repoPath).getOrThrow();
+    expect(gitRepo.headHash().getOrThrow(), isNot(headHash));
+
+    var headCommit = gitRepo.headCommit().getOrThrow();
+    expect(headCommit.parents.length, 1);
+    expect(headCommit.parents[0], headHash);
+
+    expect(toNote.created, note.created);
+    expect(toNote.modified.isAfter(note.modified), true);
+  });
 }
 
 // Renames
@@ -239,6 +262,11 @@ Future<void> main() async {
 // * Note - saveNote fails because of 'x'
 
 Future<void> _run(String args, String repoPath) async {
-  await runExecutableArguments('git', args.split(' '),
+  Log.d('test> git $args');
+  var result = await runExecutableArguments('git', args.split(' '),
       workingDirectory: repoPath);
+
+  if (result.exitCode != 0) {
+    throw Exception("Command Failed: `git $args`");
+  }
 }
