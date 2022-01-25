@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'package:sprintf/sprintf.dart';
 import 'package:universal_io/io.dart';
 
 class GitTransferProgress {
@@ -39,5 +40,27 @@ class GitTransferProgress {
     tp.indexedDeltas = int.parse(parts[5]);
     tp.receivedBytes = int.parse(parts[6]);
     return tp;
+  }
+
+  String get networkText {
+    var fetchPercent = (100 * receivedObjects) / totalObjects;
+    var kbytes = receivedBytes ~/ 1024;
+
+    return sprintf("network %0.3f%% (%4d kb, %5d/%5d)", [
+      fetchPercent,
+      kbytes,
+      receivedObjects,
+      totalObjects,
+    ]);
+  }
+
+  String get indexText {
+    var indexPercent = (100 * indexedObjects) / totalObjects;
+
+    return sprintf('index %0.3f%% (%5d/%5d)', [
+      indexPercent,
+      indexedObjects,
+      totalObjects,
+    ]);
   }
 }
