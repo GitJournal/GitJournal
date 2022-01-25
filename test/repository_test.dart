@@ -9,7 +9,6 @@ import 'dart:io' as io;
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/plumbing/git_hash.dart';
 import 'package:path/path.dart' as p;
-import 'package:process_run/process_run.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart' as io;
@@ -20,6 +19,7 @@ import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/storage_config.dart';
+import 'lib.dart';
 
 Future<void> main() async {
   late io.Directory baseDir;
@@ -35,17 +35,6 @@ Future<void> main() async {
     Log.v("Logging initiated $logsCacheDir");
   });
 
-  Future<void> _setupFixture(String repoPath, GitHash hash) async {
-    await runExecutableArguments(
-      'git',
-      ["clone", "https://github.com/GitJournal/test_data", repoPath],
-    );
-
-    await _run('checkout $hash', repoPath);
-    await _run('switch -c main', repoPath);
-    await _run('remote rm origin', repoPath);
-  }
-
   Future<void> _setup({
     GitHash? head,
     Map<String, Object> sharedPrefValues = const {},
@@ -55,7 +44,7 @@ Future<void> main() async {
     var gitBaseDir = await io.Directory(p.join(baseDir.path, 'repos')).create();
 
     repoPath = p.join(gitBaseDir.path, "test_data");
-    await _setupFixture(repoPath, head ?? headHash);
+    await setupFixture(repoPath, head ?? headHash);
 
     SharedPreferences.setMockInitialValues(sharedPrefValues);
     pref = await SharedPreferences.getInstance();
@@ -208,7 +197,7 @@ Future<void> main() async {
       "${DEFAULT_ID}_storageLocation": extDir.path,
     };
 
-    await _setupFixture(p.join(extDir.path, "test_data"), headHash);
+    await setupFixture(p.join(extDir.path, "test_data"), headHash);
     await _setup(sharedPrefValues: pref);
 
     var note = repo.rootFolder.getNoteWithSpec('1.md')!;
@@ -260,13 +249,3 @@ Future<void> main() async {
 // Renames
 // * Note - change content + rename
 // * Note - saveNote fails because of 'x'
-
-Future<void> _run(String args, String repoPath) async {
-  Log.d('test> git $args');
-  var result = await runExecutableArguments('git', args.split(' '),
-      workingDirectory: repoPath);
-
-  if (result.exitCode != 0) {
-    throw Exception("Command Failed: `git $args`");
-  }
-}
