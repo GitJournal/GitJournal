@@ -18,6 +18,8 @@ import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/editors/utils/disposable_change_notifier.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/logger/logger.dart';
+import 'package:gitjournal/utils/utils.dart';
 import 'controllers/rich_text_controller.dart';
 
 class ChecklistEditor extends StatefulWidget implements Editor {
@@ -292,8 +294,15 @@ class ChecklistEditorState extends State<ChecklistEditor>
 
   @override
   Future<void> addImage(String filePath) async {
+    // FIXME: This should be handled in a better way!
     var note = getNote();
-    var image = await core.Image.copyIntoFs(note.parent, filePath);
+    var imageR = await core.Image.copyIntoFs(note.parent, filePath);
+    if (imageR.isFailure) {
+      Log.e("addImage", result: imageR);
+      showSnackbar(context, imageR.error.toString());
+    }
+    var image = imageR.getOrThrow();
+
     note = note.copyWith(body: note.body + image.toMarkup(note.fileFormat));
 
     setState(() {

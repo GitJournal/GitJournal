@@ -160,7 +160,8 @@ class NoteEditorState extends State<NoteEditor>
       for (var imagePath in existingImages) {
         () async {
           try {
-            var image = await core.Image.copyIntoFs(_note.parent, imagePath);
+            var image = await core.Image.copyIntoFs(_note.parent, imagePath)
+                .getOrThrow();
             _note = _note.copyWith(
                 body: _note.body + image.toMarkup(_note.fileFormat));
           } catch (e, st) {

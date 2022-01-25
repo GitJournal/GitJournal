@@ -6,6 +6,7 @@
 
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
+import 'package:dart_git/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
 
@@ -19,16 +20,20 @@ class Image {
 
   Image._(this.parent, this.filePath);
 
-  // FIXME: Handle errors!
-  static Future<Image> copyIntoFs(NotesFolderFS parent, String filePath) async {
+  static Future<Result<Image>> copyIntoFs(
+      NotesFolderFS parent, String filePath) async {
     var hash = await _md5Hash(filePath);
     var ext = p.extension(filePath);
     var imagePath = Image._buildImagePath(parent, hash.toString() + ext);
 
-    // FIXME: Handle errors in copying / reading the file
-    var _ = await File(filePath).copy(p.join(parent.repoPath, imagePath));
+    try {
+      var _ = await File(filePath).copy(p.join(parent.repoPath, imagePath));
+    } catch (ex, st) {
+      return Result.fail(ex, st);
+    }
 
-    return Image._(parent, imagePath);
+    var img = Image._(parent, imagePath);
+    return Result(img);
   }
 
   static String _buildImagePath(NotesFolderFS parent, String imageFileName) {

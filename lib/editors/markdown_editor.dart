@@ -23,6 +23,7 @@ import 'package:gitjournal/editors/utils/disposable_change_notifier.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_config.dart';
+import 'package:gitjournal/utils/utils.dart';
 import 'controllers/rich_text_controller.dart';
 
 class MarkdownEditor extends StatefulWidget implements Editor {
@@ -218,9 +219,15 @@ class MarkdownEditorState extends State<MarkdownEditor>
 
   @override
   Future<void> addImage(String filePath) async {
+    var imageR = await core.Image.copyIntoFs(_note.parent, filePath);
+    if (imageR.isFailure) {
+      Log.e("addImage", result: imageR);
+      showSnackbar(context, imageR.error.toString());
+    }
+
     var ts = insertImage(
       TextEditorState.fromValue(_textController.value),
-      await core.Image.copyIntoFs(_note.parent, filePath),
+      imageR.getOrThrow(),
       _note.fileFormat,
     );
 
