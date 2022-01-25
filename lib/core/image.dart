@@ -11,18 +11,15 @@ import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/transformers/base.dart';
+import 'package:gitjournal/editors/common.dart';
 
 class Image {
   final NotesFolderFS parent;
   final String filePath;
-  final Digest md5Hash;
 
-  static Future<Image> load(NotesFolderFS parent, String filePath) async {
-    return Image._(parent, filePath, await _md5Hash(filePath));
-  }
+  Image._(this.parent, this.filePath);
 
-  Image._(this.parent, this.filePath, this.md5Hash);
-
+  // FIXME: Handle errors!
   static Future<Image> copyIntoFs(NotesFolderFS parent, String filePath) async {
     var hash = await _md5Hash(filePath);
     var ext = p.extension(filePath);
@@ -31,7 +28,7 @@ class Image {
     // FIXME: Handle errors in copying / reading the file
     var _ = await File(filePath).copy(p.join(parent.repoPath, imagePath));
 
-    return Image._(parent, imagePath, hash);
+    return Image._(parent, imagePath);
   }
 
   static String _buildImagePath(NotesFolderFS parent, String imageFileName) {
@@ -59,10 +56,10 @@ class Image {
     }
 
     if (fileFormat == NoteFileFormat.OrgMode) {
-      return "[[$relativeImagePath]]\n";
+      return "[[$relativeImagePath]] ";
     }
 
-    return "![Image]($relativeImagePath)\n";
+    return "![Image]($relativeImagePath) ";
   }
 }
 
@@ -79,6 +76,33 @@ Future<Digest> _md5Hash(String filePath) async {
   var digest = output.events.single;
   return digest;
 }
+
+TextEditorState insertImage(
+  TextEditorState ts,
+  Image image,
+  NoteFileFormat fileFormat,
+) {
+  var b = ts.text;
+  var markup = image.toMarkup(fileFormat);
+
+  if (ts.cursorPos > ts.text.length) {
+    ts.cursorPos = ts.text.length;
+  }
+  var prevChar =
+      ts.text.isEmpty || ts.cursorPos == 0 ? " " : ts.text[ts.cursorPos - 1];
+  if (prevChar.contains(RegExp(r'[\S]'))) {
+    markup = ' $markup';
+  }
+
+  if (ts.cursorPos < b.length) {
+    b = b.substring(0, ts.cursorPos) + markup + b.substring(ts.cursorPos);
+  } else {
+    b += markup;
+  }
+
+  return TextEditorState(b, ts.cursorPos + markup.length);
+}
+
 
 //
 // TextDocument

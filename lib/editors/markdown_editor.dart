@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/image.dart' as core;
+import 'package:gitjournal/core/image.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/editor_scroll_view.dart';
@@ -217,12 +218,14 @@ class MarkdownEditorState extends State<MarkdownEditor>
 
   @override
   Future<void> addImage(String filePath) async {
-    var note = getNote();
-    var image = await core.Image.copyIntoFs(note.parent, filePath);
-    note = note.copyWith(body: note.body + image.toMarkup(note.fileFormat));
+    var ts = insertImage(
+      TextEditorState.fromValue(_textController.value),
+      await core.Image.copyIntoFs(_note.parent, filePath),
+      _note.fileFormat,
+    );
 
     setState(() {
-      _textController.text = note.body;
+      _textController.value = ts.toValue();
       _noteModified = true;
     });
   }

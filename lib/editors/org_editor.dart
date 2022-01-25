@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:gitjournal/core/image.dart' as core;
+import 'package:gitjournal/core/image.dart';
 import 'package:gitjournal/core/markdown/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/markdown/md_yaml_note_serializer.dart';
 import 'package:gitjournal/core/note.dart';
@@ -154,12 +155,14 @@ class OrgEditorState extends State<OrgEditor>
 
   @override
   Future<void> addImage(String filePath) async {
-    var note = getNote();
-    var image = await core.Image.copyIntoFs(note.parent, filePath);
-    note = note.copyWith(body: note.body + image.toMarkup(note.fileFormat));
+    var ts = insertImage(
+      TextEditorState.fromValue(_textController.value),
+      await core.Image.copyIntoFs(_note.parent, filePath),
+      _note.fileFormat,
+    );
 
     setState(() {
-      _textController.text = note.body;
+      _textController.value = ts.toValue();
       _noteModified = true;
     });
   }

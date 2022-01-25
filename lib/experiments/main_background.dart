@@ -7,8 +7,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
+
+import 'package:background_fetch/background_fetch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// SharedPreferences data key.
