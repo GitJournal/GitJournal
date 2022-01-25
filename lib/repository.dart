@@ -896,6 +896,7 @@ class GitJournalRepo with ChangeNotifier {
     var repo = GitRepository.load(repoPath).getOrThrow();
     if (repo.config.remote(remoteName) != null) {
       var r = repo.removeRemote(remoteName);
+      var _ = repo.close();
       if (r.isFailure) {
         return fail(r);
       }

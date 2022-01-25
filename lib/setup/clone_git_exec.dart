@@ -83,6 +83,7 @@ Future<Result<void>> _merge(
     var repo = GitRepository.load(repoPath).getOrThrow();
     var author = GitAuthor(name: authorName, email: authorEmail);
     repo.mergeCurrentTrackingBranch(author: author).throwOnError();
+    repo.close().throwOnError();
     return Result(null);
   });
 }
