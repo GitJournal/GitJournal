@@ -24,7 +24,7 @@ class GitTransferProgress {
     return parse(str);
   }
 
-  static Future<GitTransferProgress?> parse(String str) async {
+  static GitTransferProgress? parse(String str) {
     var parts = str.split(' ');
 
     if (parts.length < 7) {
@@ -46,7 +46,7 @@ class GitTransferProgress {
     var fetchPercent = (100 * receivedObjects) / totalObjects;
     var kbytes = receivedBytes ~/ 1024;
 
-    return sprintf("network %0.3f%% (%4d kb, %5d/%5d)", [
+    return sprintf("network %0.2f%% (%d kb, %d/%d)", [
       fetchPercent,
       kbytes,
       receivedObjects,
@@ -57,7 +57,7 @@ class GitTransferProgress {
   String get indexText {
     var indexPercent = (100 * indexedObjects) / totalObjects;
 
-    return sprintf('index %0.3f%% (%5d/%5d)', [
+    return sprintf('index %0.2f%% (%d/%d)', [
       indexPercent,
       indexedObjects,
       totalObjects,

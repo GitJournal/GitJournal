@@ -41,7 +41,7 @@ class FakeTransferProgressState extends State<FakeTransferProgress> {
 
   Future<void> updateProgress() async {
     var str = lines[line];
-    var progress = await GitTransferProgress.parse(str);
+    var progress = GitTransferProgress.parse(str);
     if (progress != null) {
       setState(() {
         this.progress = progress;
