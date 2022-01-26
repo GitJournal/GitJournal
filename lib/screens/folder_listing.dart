@@ -16,6 +16,7 @@ import 'package:gitjournal/folder_views/folder_view.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/app_config.dart';
+import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/folder_tree_view.dart';
@@ -118,8 +119,11 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
               builder: (_) => CreateFolderAlertDialog(),
             );
             if (folderName is String) {
-              var container = context.read<GitJournalRepo>();
-              container.createFolder(selectedFolder!, folderName);
+              var repo = context.read<GitJournalRepo>();
+              var r = await repo.createFolder(selectedFolder!, folderName);
+              if (r.isFailure) {
+                showSnackbar(context, r.error.toString());
+              }
             }
           } else if (value == "Delete") {
             if (selectedFolder!.hasNotesRecursive) {
@@ -176,11 +180,14 @@ class CreateFolderButton extends StatelessWidget {
           builder: (_) => CreateFolderAlertDialog(),
         );
         if (folderName is String) {
-          var container = context.read<GitJournalRepo>();
+          var repo = context.read<GitJournalRepo>();
           final notesFolder =
               Provider.of<NotesFolderFS>(context, listen: false);
 
-          container.createFolder(notesFolder, folderName);
+          var r = await repo.createFolder(notesFolder, folderName);
+          if (r.isFailure) {
+            showSnackbar(context, r.error.toString());
+          }
         }
       },
       child: const Icon(Icons.add),

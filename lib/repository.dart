@@ -423,13 +423,18 @@ class GitJournalRepo with ChangeNotifier {
     return syncNotes(doNotThrow: true);
   }
 
-  Future<void> createFolder(NotesFolderFS parent, String folderName) async {
+  Future<Result<void>> createFolder(
+      NotesFolderFS parent, String folderName) async {
     logEvent(Event.FolderAdded);
 
-    await _gitOpLock.synchronized(() async {
+    var r = await _gitOpLock.synchronized(() async {
       var newFolderPath = p.join(parent.folderPath, folderName);
       var newFolder = NotesFolderFS(parent, newFolderPath, folderConfig);
-      newFolder.create();
+      var r = newFolder.create();
+      if (r.isFailure) {
+        Log.e("createFolder", result: r);
+        return fail(r);
+      }
 
       Log.d("Created New Folder: " + newFolderPath);
       parent.addFolder(newFolder);
@@ -437,14 +442,17 @@ class GitJournalRepo with ChangeNotifier {
       var result = await _gitRepo.addFolder(newFolder);
       if (result.isFailure) {
         Log.e("createFolder", result: result);
-        return;
+        return fail(result);
       }
 
       numChanges += 1;
       notifyListeners();
+      return Result(null);
     });
+    if (r.isFailure) return fail(r);
 
     unawaited(_syncNotes());
+    return Result(null);
   }
 
   Future<void> removeFolder(NotesFolderFS folder) async {
