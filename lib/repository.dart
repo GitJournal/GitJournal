@@ -533,8 +533,9 @@ class GitJournalRepo with ChangeNotifier {
     var r = await moveNotes([note], destFolder);
     if (r.isFailure) return fail(r);
 
-    var newNote = r.getOrThrow().first;
-    return Result(newNote);
+    var newNotes = r.getOrThrow();
+    assert(newNotes.length == 1);
+    return Result(newNotes.first);
   }
 
   Future<Result<List<Note>>> moveNotes(
@@ -553,7 +554,7 @@ class GitJournalRepo with ChangeNotifier {
     var newNotes = <Note>[];
 
     logEvent(Event.NoteMoved);
-    await _gitOpLock.synchronized(() async {
+    var r = await _gitOpLock.synchronized(() async {
       Log.d("Got moveNote lock");
 
       var oldPaths = <String>[];
@@ -581,7 +582,9 @@ class GitJournalRepo with ChangeNotifier {
 
       numChanges += 1;
       notifyListeners();
+      return Result(null);
     });
+    if (r.isFailure) return fail(r);
 
     unawaited(_syncNotes());
     return Result(newNotes);
