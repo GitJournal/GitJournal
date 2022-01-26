@@ -22,18 +22,17 @@ class Image {
 
   static Future<Result<Image>> copyIntoFs(
       NotesFolderFS parent, String filePath) async {
-    var hash = await _md5Hash(filePath);
-    var ext = p.extension(filePath);
-    var imagePath = Image._buildImagePath(parent, hash.toString() + ext);
-
     try {
+      var hash = await _md5Hash(filePath);
+      var ext = p.extension(filePath);
+      var imagePath = Image._buildImagePath(parent, hash.toString() + ext);
+
       var _ = await File(filePath).copy(p.join(parent.repoPath, imagePath));
+      var img = Image._(parent, imagePath);
+      return Result(img);
     } catch (ex, st) {
       return Result.fail(ex, st);
     }
-
-    var img = Image._(parent, imagePath);
-    return Result(img);
   }
 
   static String _buildImagePath(NotesFolderFS parent, String imageFileName) {
@@ -107,22 +106,3 @@ TextEditorState insertImage(
 
   return TextEditorState(b, ts.cursorPos + markup.length);
 }
-
-
-//
-// TextDocument
-// OrgDocument
-// MarkdownDocument
-// MarkdownYamlDocument
-//
-// The last 2 share common settings
-// All inherit from File
-//
-// Folder class
-// -> just list a Files
-// -> another list of Folders
-//   That's it
-// I can always filter by type
-//
-// When NoteEditor is called, it should create a new document and copy the parameters
-//
