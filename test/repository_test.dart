@@ -244,6 +244,33 @@ Future<void> main() async {
     expect(toNote.created, note.created);
     expect(toNote.modified.isAfter(note.modified), true);
   });
+
+  test('Move - Note from root to Folder', () async {
+    await _setup();
+    var note = repo.rootFolder.getNoteWithSpec('1.md')!;
+    var folder = repo.rootFolder.getFolderWithSpec('f1')!;
+
+    var r = await repo.moveNote(note, folder);
+    expect(r.isSuccess, true);
+    expect(r.isFailure, false);
+
+    var gitRepo = GitRepository.load(repoPath).getOrThrow();
+    expect(gitRepo.headHash().getOrThrow(), isNot(headHash));
+
+    var headCommit = gitRepo.headCommit().getOrThrow();
+    expect(headCommit.parents.length, 1);
+    expect(headCommit.parents[0], headHash);
+
+    var root = repo.rootFolder;
+    expect(root.getNoteWithSpec('1.md'), null);
+    expect(root.getNoteWithSpec('f1/1.md'), isNotNull);
+  });
+
+  // move - from folder to root
+  // move - two notes in different folders to one folder
+  // move - ensure that destination cannot exist (and the git repo is in a good state after that)
+  // move - moving fails cause of FS error
+  // move - a test for each exception!
 }
 
 // Renames

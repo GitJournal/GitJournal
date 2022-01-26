@@ -164,15 +164,16 @@ class GitNoteRepository {
   Future<Result<void>> moveNotes(
     List<String> oldPaths,
     List<String> newPaths,
-    String newFolderPath,
   ) async {
-    var repoPath = gitRepoPath.endsWith('/') ? gitRepoPath : '$gitRepoPath/';
-    var oldSpecs = oldPaths.map((p) => p.substring(repoPath.length)).toList();
-    var newSpecs = newPaths.map((p) => p.substring(repoPath.length)).toList();
+    assert(oldPaths.isNotEmpty);
+    assert(newPaths.isNotEmpty);
+    assert(oldPaths.length == newPaths.length);
+    assert(oldPaths.every((e) => !e.startsWith('/')));
+    assert(newPaths.every((e) => !e.startsWith('/')));
 
     var msg = oldPaths.length == 1
-        ? messageBuilder.moveNote(oldSpecs.first, newSpecs.first)
-        : messageBuilder.moveNotes(oldSpecs, newSpecs);
+        ? messageBuilder.moveNote(oldPaths.first, newPaths.first)
+        : messageBuilder.moveNotes(oldPaths, newPaths);
     return _addAllAndCommit(msg);
   }
 

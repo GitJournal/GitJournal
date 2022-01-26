@@ -547,7 +547,15 @@ class NoteEditorState extends State<NoteEditor>
         });
       } else {
         var stateContainer = context.read<GitJournalRepo>();
-        stateContainer.moveNote(note, destFolder);
+        var r = await stateContainer.moveNote(note, destFolder);
+        if (r.isFailure) {
+          showSnackbar(context, r.error.toString());
+          return;
+        }
+
+        setState(() {
+          _note = r.getOrThrow();
+        });
       }
     }
   }

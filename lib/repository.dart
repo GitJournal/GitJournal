@@ -530,17 +530,28 @@ class GitJournalRepo with ChangeNotifier {
     return Result(toNote);
   }
 
-  Future<void> moveNote(Note note, NotesFolderFS destFolder) =>
-      moveNotes([note], destFolder);
+  Future<Result<Note>> moveNote(Note note, NotesFolderFS destFolder) async {
+    var r = await moveNotes([note], destFolder);
+    if (r.isFailure) return fail(r);
 
-  Future<void> moveNotes(List<Note> notes, NotesFolderFS destFolder) async {
+    var newNote = r.getOrThrow().first;
+    return Result(newNote);
+  }
+
+  Future<Result<List<Note>>> moveNotes(
+      List<Note> notes, NotesFolderFS destFolder) async {
     notes = notes
         .where((n) => n.parent.folderPath != destFolder.folderPath)
         .toList();
 
     if (notes.isEmpty) {
-      return;
+      var ex = Exception(
+        "All selected notes are already in `${destFolder.folderPath}`",
+      );
+      return Result.fail(ex);
     }
+
+    var newNotes = <Note>[];
 
     logEvent(Event.NoteMoved);
     await _gitOpLock.synchronized(() async {
@@ -549,20 +560,24 @@ class GitJournalRepo with ChangeNotifier {
       var oldPaths = <String>[];
       var newPaths = <String>[];
       for (var note in notes) {
-        var newNote = NotesFolderFS.moveNote(note, destFolder);
-        if (newNote == null) {
-          Log.e("Failed to move note to $destFolder");
-          continue;
+        var result = NotesFolderFS.moveNote(note, destFolder);
+        // FIXME: We need to validate that this wont cause any problems!
+        //        Transaction needs to be reverted
+        if (result.isFailure) {
+          Log.e("moveNotes", result: result);
+          return fail(result);
         }
+        var newNote = result.getOrThrow();
         oldPaths.add(note.filePath);
         newPaths.add(newNote.filePath);
+
+        newNotes.add(newNote);
       }
 
-      var result =
-          await _gitRepo.moveNotes(oldPaths, newPaths, destFolder.folderPath);
+      var result = await _gitRepo.moveNotes(oldPaths, newPaths);
       if (result.isFailure) {
         Log.e("moveNotes", result: result);
-        return;
+        return fail(result);
       }
 
       numChanges += 1;
@@ -570,6 +585,7 @@ class GitJournalRepo with ChangeNotifier {
     });
 
     unawaited(_syncNotes());
+    return Result(newNotes);
   }
 
   Future<Result<Note>> saveNoteToDisk(Note note) async {

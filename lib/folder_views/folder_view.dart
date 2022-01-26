@@ -641,7 +641,10 @@ class _FolderViewState extends State<FolderView> {
     );
     if (destFolder != null) {
       var repo = context.read<GitJournalRepo>();
-      repo.moveNotes(selectedNotes, destFolder);
+      var r = await repo.moveNotes(selectedNotes, destFolder);
+      if (r.isFailure) {
+        showSnackbar(context, r.error.toString());
+      }
     }
 
     _resetSelection();

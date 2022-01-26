@@ -682,20 +682,24 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     return Result(null);
   }
 
-  static Note? moveNote(Note note, NotesFolderFS destFolder) {
+  static Result<Note> moveNote(Note note, NotesFolderFS destFolder) {
     var destPath = p.join(destFolder.fullFolderPath, note.fileName);
     if (io.File(destPath).existsSync()) {
-      // FIXME: Shouldn't this give an error?
-      return null;
+      var ex = Exception('Note Destination Exists');
+      return Result.fail(ex);
     }
 
-    var _ = io.File(note.fullFilePath).renameSync(destPath);
+    try {
+      var _ = io.File(note.fullFilePath).renameSync(destPath);
+    } catch (ex, st) {
+      return Result.fail(ex, st);
+    }
 
     note.parent.remove(note);
     note = note.copyWith(parent: destFolder);
     note.parent.add(note);
 
-    return note;
+    return Result(note);
   }
 
   void visit(void Function(File) visitor) {
