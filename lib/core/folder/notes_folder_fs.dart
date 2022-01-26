@@ -37,9 +37,9 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   final NotesFolderConfig _config;
   late final FileStorage fileStorage;
 
-  NotesFolderFS(
-      NotesFolderFS parent, this._folderPath, this._config, this.fileStorage)
-      : _parent = parent {
+  NotesFolderFS(NotesFolderFS parent, this._folderPath, this._config)
+      : _parent = parent,
+        fileStorage = parent.fileStorage {
     assert(!_folderPath.startsWith(p.separator));
     assert(!_folderPath.endsWith(p.separator));
     assert(_folderPath.isNotEmpty);
@@ -273,7 +273,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       var filePath = fsEntity.path.substring(repoPath.length);
 
       if (fsEntity is io.Directory) {
-        var subFolder = NotesFolderFS(this, filePath, _config, fileStorage);
+        var subFolder = NotesFolderFS(this, filePath, _config);
         if (subFolder.name.startsWith('.')) {
           // Log.v("Ignoring Folder", props: {
           //   "path": filePath,
@@ -578,7 +578,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         continue;
       }
 
-      var subFolder = NotesFolderFS(folder, folderPath, _config, fileStorage);
+      var subFolder = NotesFolderFS(folder, folderPath, _config);
       folder.addFolder(subFolder);
       folder = subFolder;
     }

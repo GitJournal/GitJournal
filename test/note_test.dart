@@ -338,8 +338,7 @@ Hello
     expect(n.filePath, "poo.md");
     expect(n2.filePath, "doo.md");
 
-    var subDir =
-        NotesFolderFS(parentFolder, "folder", parentFolder.config, fileStorage);
+    var subDir = NotesFolderFS(parentFolder, "folder", parentFolder.config);
     var n3 = Note.newNote(
       subDir,
       fileFormat: NoteFileFormat.Markdown,

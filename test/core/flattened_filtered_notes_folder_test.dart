@@ -65,7 +65,7 @@ void main() {
       io.Directory(p.join(repoPath, "sub1", "p1")).createSync();
       io.Directory(p.join(repoPath, "sub2")).createSync();
 
-      var sub1Folder = NotesFolderFS(rootFolder, "sub1", config, fileStorage);
+      var sub1Folder = NotesFolderFS(rootFolder, "sub1", config);
       for (var i = 0; i < 2; i++) {
         var fp = _getRandomFilePath(sub1Folder.fullFolderPath);
         var note = Note.newNote(sub1Folder,
@@ -78,7 +78,7 @@ void main() {
         note = await NoteStorage.save(note).getOrThrow();
       }
 
-      var sub2Folder = NotesFolderFS(rootFolder, "sub2", config, fileStorage);
+      var sub2Folder = NotesFolderFS(rootFolder, "sub2", config);
       for (var i = 0; i < 2; i++) {
         var fp = _getRandomFilePath(sub2Folder.fullFolderPath);
         var note = Note.newNote(sub2Folder,
@@ -91,8 +91,7 @@ void main() {
         note = await NoteStorage.save(note).getOrThrow();
       }
 
-      var p1Folder =
-          NotesFolderFS(sub1Folder, p.join("sub1", "p1"), config, fileStorage);
+      var p1Folder = NotesFolderFS(sub1Folder, p.join("sub1", "p1"), config);
       for (var i = 0; i < 2; i++) {
         var fp = _getRandomFilePath(p1Folder.fullFolderPath);
         var note = Note.newNote(p1Folder,

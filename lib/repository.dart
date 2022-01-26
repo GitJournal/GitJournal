@@ -428,8 +428,7 @@ class GitJournalRepo with ChangeNotifier {
 
     await _gitOpLock.synchronized(() async {
       var newFolderPath = p.join(parent.folderPath, folderName);
-      var newFolder =
-          NotesFolderFS(parent, newFolderPath, folderConfig, fileStorage);
+      var newFolder = NotesFolderFS(parent, newFolderPath, folderConfig);
       newFolder.create();
 
       Log.d("Created New Folder: " + newFolderPath);
