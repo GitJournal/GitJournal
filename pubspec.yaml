@@ -23,7 +23,7 @@ dependencies:
     git: https://github.com/GitJournal/icloud_documents_path.git
   auto_size_text: ^3.0.0-nullsafety.0
   badges: ^2.0.1
-  connectivity_plus: ^1.0.6
+  connectivity_plus: ^2.2.0
   cryptography: ^2.0.5
   device_info_plus: ^2.1.0
   dots_indicator: ^2.0.0
@@ -36,11 +36,10 @@ dependencies:
   fimber: ^0.6.1
   flutter_cache_manager: ^3.0.1
   flutter_email_sender: ^5.0.2
-  flutter_emoji:
-    git: https://github.com/cek-cek/flutter-emoji
+  flutter_emoji: ^2.4.0
   flutter_markdown: ^0.6.1
   flutter_runtime_env: ^0.0.4
-  flutter_staggered_grid_view: ^0.4.0
+  flutter_staggered_grid_view: ^0.6.1
   flutter_svg: ^0.21.0+1
   font_awesome_flutter: ^9.0.0
   function_types: ^0.1.0
@@ -75,7 +74,7 @@ dependencies:
   yaml: ^3.1.0
   yaml_serializer: ^0.0.11
   collection: ^1.15.0-nullsafety.4
-  flex_color_scheme: ^2.1.1
+  flex_color_scheme: ^4.2.0
   fs_shim: ^2.0.1+2
   grpc: ^3.0.0
   protobuf: ^2.0.0

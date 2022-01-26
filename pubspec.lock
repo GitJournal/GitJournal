@@ -238,7 +238,7 @@ packages:
       name: connectivity_plus
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.0"
+    version: "2.2.0"
   connectivity_plus_linux:
     dependency: transitive
     description:
@@ -531,7 +531,7 @@ packages:
       name: flex_color_scheme
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "4.2.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -561,11 +561,9 @@ packages:
   flutter_emoji:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "2e2da41abf6a928206f44707fdf4d6149f049463"
-      url: "https://github.com/cek-cek/flutter-emoji"
-    source: git
+      name: flutter_emoji
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "2.4.0"
   flutter_highlight:
     dependency: transitive
@@ -638,7 +636,7 @@ packages:
       name: flutter_staggered_grid_view
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.1"
+    version: "0.6.1"
   flutter_svg:
     dependency: "direct main"
     description:
