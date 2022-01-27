@@ -206,7 +206,7 @@ void main() {
       expect(note.body, "body");
       expect(note.title, "Why not?");
       expect(note.extraProps, <String, dynamic>{"draft": true});
-      expect(note.tags.asSet(), <String>{"foo", "bar-do"});
+      expect(note.tags, <String>{"foo", "bar-do"});
 
       serializer.encode(note, doc);
       expect(doc.body, "body");

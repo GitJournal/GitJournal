@@ -7,14 +7,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kt_dart/collection.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 
 class NoteTagEditor extends StatefulWidget {
-  final KtSet<String> selectedTags;
-  final KtSet<String> allTags;
+  final ISet<String> selectedTags;
+  final ISet<String> allTags;
 
   const NoteTagEditor({required this.selectedTags, required this.allTags});
 
@@ -26,8 +26,8 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
   late TextEditingController _textController;
   late FocusNode _focusNode;
 
-  late KtSet<String> _selectedTags;
-  late KtSet<String> _allTags;
+  late ISet<String> _selectedTags;
+  late ISet<String> _allTags;
 
   @override
   void initState() {
@@ -90,7 +90,7 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
     return ListView(
       children: <Widget>[
         if (query.isNotEmpty && !_allTags.contains(query)) _buildAddTag(query),
-        for (var tag in _allTags.iter)
+        for (var tag in _allTags)
           if (tag.toLowerCase().contains(q)) _buildTagTile(tag),
       ],
       padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
@@ -102,9 +102,9 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
     void _onTap() {
       setState(() {
         if (containsTag) {
-          _selectedTags = _selectedTags.minusElement(tag);
+          _selectedTags = _selectedTags.remove(tag);
         } else {
-          _selectedTags = _selectedTags.plusElement(tag);
+          _selectedTags = _selectedTags.add(tag);
         }
       });
     }
@@ -128,8 +128,8 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
   void _addTag(String tag) {
     setState(() {
       dynamic _;
-      _selectedTags = _selectedTags.plusElement(tag);
-      _allTags = _allTags.plusElement(tag);
+      _selectedTags = _selectedTags.add(tag);
+      _allTags = _allTags.add(tag);
       _textController.text = "";
     });
   }

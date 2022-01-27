@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kt_dart/collection.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 
@@ -588,9 +588,9 @@ class NoteEditorState extends State<NoteEditor>
       settings: const RouteSettings(name: '/editTags/'),
     );
 
-    var newTags = await Navigator.of(context).push(route);
-    assert(newTags != null);
-    newTags = newTags as KtSet<String>;
+    var resp = await Navigator.of(context).push(route);
+    assert(resp != null);
+    var newTags = resp as ISet<String>;
 
     if (note.tags != newTags) {
       setState(() {

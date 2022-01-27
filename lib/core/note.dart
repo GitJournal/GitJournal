@@ -6,7 +6,7 @@
 
 import 'package:collection/collection.dart';
 import 'package:dart_date/dart_date.dart';
-import 'package:kt_dart/kt.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' as io;
@@ -96,7 +96,7 @@ class Note implements File {
   final DateTime? _modified;
   final String _body;
   final NoteType _type;
-  final KtSet<String> _tags;
+  final ISet<String> _tags;
   final Map<String, dynamic> _extraProps;
 
   final NoteFileFormat _fileFormat;
@@ -127,7 +127,7 @@ class Note implements File {
     required String? title,
     required String body,
     required NoteType noteType,
-    required KtSet<String> tags,
+    required ISet<String> tags,
     required Map<String, dynamic> extraProps,
     required NoteFileFormat fileFormat,
     required MdYamlDoc doc,
@@ -163,7 +163,7 @@ class Note implements File {
     var data = MdYamlDoc();
     var body = "";
     String? title;
-    KtSet<String> tags = const KtSet.empty();
+    ISet<String> tags = ISet();
     NoteType type = NoteType.Unknown;
 
     if (extraProps.isNotEmpty) {
@@ -371,7 +371,7 @@ class Note implements File {
     String? title,
     NoteType? type,
     Map<String, dynamic>? extraProps,
-    KtSet<String>? tags,
+    ISet<String>? tags,
     NoteFileFormat? fileFormat,
     File? file,
   }) {
@@ -394,8 +394,6 @@ class Note implements File {
       serializerSettings: noteSerializer.settings.clone(),
     );
   }
-
-  Note copyWithTag(String tag) => copyWith(tags: tags.plusElement(tag));
 
   @override
   String get fileName {
@@ -427,7 +425,7 @@ class Note implements File {
   }
 
   NoteType get type => _type;
-  KtSet<String> get tags => _tags;
+  ISet<String> get tags => _tags;
   Map<String, dynamic> get extraProps => UnmodifiableMapView(_extraProps);
 
   bool get canHaveMetadata {
@@ -510,7 +508,7 @@ class Note implements File {
       title: title,
       body: body,
       type: _typeToProto(type),
-      tags: tags.iter,
+      tags: tags,
       extraProps: mapToProtoBuf(extraProps),
       fileFormat: _formatToProto(fileFormat),
       doc: _data.toProtoBuf(),
@@ -532,7 +530,7 @@ class Note implements File {
       title: title,
       body: n.body,
       noteType: _typeFromProto(n.type),
-      tags: KtSet.from(n.tags),
+      tags: ISet(n.tags),
       extraProps: mapFromProtoBuf(n.extraProps),
       fileFormat: _formatFromProto(n.fileFormat),
       doc: MdYamlDoc.fromProtoBuf(n.doc),

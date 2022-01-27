@@ -7,8 +7,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kt_dart/collection.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/folder/flattened_filtered_notes_folder.dart';
@@ -40,12 +40,12 @@ class TagListingScreen extends StatelessWidget {
     }());
   }
 
-  Widget _buildWithTags(BuildContext context, KtSet<String> allTags) {
+  Widget _buildWithTags(BuildContext context, ISet<String> allTags) {
     Widget body;
-    if (allTags.isNotEmpty()) {
+    if (allTags.isNotEmpty) {
       body = ListView(
         children: <Widget>[
-          for (var tag in allTags.iter) _buildTagTile(context, tag),
+          for (var tag in allTags) _buildTagTile(context, tag),
         ],
       );
     } else {

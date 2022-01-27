@@ -483,6 +483,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+  fast_immutable_collections:
+    dependency: "direct main"
+    description:
+      name: fast_immutable_collections
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.1.2"
   ffi:
     dependency: transitive
     description:
@@ -910,13 +917,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.1"
-  kt_dart:
-    dependency: "direct main"
-    description:
-      name: kt_dart
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.10.0"
   language_picker:
     dependency: "direct main"
     description:

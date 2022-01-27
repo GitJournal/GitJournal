@@ -8,6 +8,7 @@ import 'dart:io' as io;
 
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/plumbing/git_hash.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
@@ -353,14 +354,14 @@ Future<void> main() async {
 
     var note = repo.rootFolder.getNoteWithSpec('doc.md')!;
     var updatedNote = note.resetOid();
-    updatedNote = updatedNote.copyWithTag("Foo");
+    updatedNote = updatedNote.copyWith(tags: {"Foo"}.lock);
 
     var r = await repo.updateNote(note, updatedNote);
     expect(r.isSuccess, true);
     expect(r.isFailure, false);
 
     var note2 = r.getOrThrow();
-    expect(note2.tags.asSet(), {"Foo"});
+    expect(note2.tags, {"Foo"});
     expect(note2.data.props.containsKey("tags"), true);
 
     var gitRepo = GitRepository.load(repoPath).getOrThrow();
