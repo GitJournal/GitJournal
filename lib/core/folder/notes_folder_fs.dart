@@ -4,9 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'dart:collection';
-
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kt_dart/collection.dart';
 import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 import 'package:synchronized/synchronized.dart';
@@ -636,10 +635,10 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   @override
   NotesFolderConfig get config => _config;
 
-  Future<SplayTreeSet<String>> getNoteTagsRecursively(
+  Future<KtSet<String>> getNoteTagsRecursively(
     InlineTagsView inlineTagsView,
   ) async {
-    return _fetchTags(this, inlineTagsView, SplayTreeSet<String>());
+    return _fetchTags(this, inlineTagsView, const KtSet.empty());
   }
 
   Future<List<Note>> matchNotes(NoteMatcherAsync pred) async {
@@ -720,14 +719,14 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
 typedef NoteMatcherAsync = Future<bool> Function(Note n);
 
-Future<SplayTreeSet<String>> _fetchTags(
+Future<KtSet<String>> _fetchTags(
   NotesFolder folder,
   InlineTagsView inlineTagsView,
-  SplayTreeSet<String> tags,
+  KtSet<String> tags,
 ) async {
   for (var note in folder.notes) {
-    tags.addAll(note.tags);
-    tags.addAll(await inlineTagsView.fetch(note));
+    tags = tags.plus(note.tags);
+    tags = tags.plus(KtSet.from(await inlineTagsView.fetch(note)));
   }
 
   for (var folder in folder.subFolders) {

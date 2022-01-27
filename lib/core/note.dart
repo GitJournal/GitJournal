@@ -6,6 +6,7 @@
 
 import 'package:collection/collection.dart';
 import 'package:dart_date/dart_date.dart';
+import 'package:kt_dart/kt.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' as io;
@@ -95,7 +96,7 @@ class Note implements File {
   final DateTime? _modified;
   final String _body;
   final NoteType _type;
-  final Set<String> _tags;
+  final KtSet<String> _tags;
   final Map<String, dynamic> _extraProps;
 
   final NoteFileFormat _fileFormat;
@@ -126,7 +127,7 @@ class Note implements File {
     required String? title,
     required String body,
     required NoteType noteType,
-    required Set<String> tags,
+    required KtSet<String> tags,
     required Map<String, dynamic> extraProps,
     required NoteFileFormat fileFormat,
     required MdYamlDoc doc,
@@ -162,7 +163,7 @@ class Note implements File {
     var data = MdYamlDoc();
     var body = "";
     String? title;
-    Set<String> tags = {};
+    KtSet<String> tags = const KtSet.empty();
     NoteType type = NoteType.Unknown;
 
     if (extraProps.isNotEmpty) {
@@ -370,7 +371,7 @@ class Note implements File {
     String? title,
     NoteType? type,
     Map<String, dynamic>? extraProps,
-    Set<String>? tags,
+    KtSet<String>? tags,
     NoteFileFormat? fileFormat,
     File? file,
   }) {
@@ -393,6 +394,8 @@ class Note implements File {
       serializerSettings: noteSerializer.settings.clone(),
     );
   }
+
+  Note copyWithTag(String tag) => copyWith(tags: tags.plusElement(tag));
 
   @override
   String get fileName {
@@ -424,7 +427,7 @@ class Note implements File {
   }
 
   NoteType get type => _type;
-  Set<String> get tags => UnmodifiableSetView(_tags);
+  KtSet<String> get tags => _tags;
   Map<String, dynamic> get extraProps => UnmodifiableMapView(_extraProps);
 
   bool get canHaveMetadata {
@@ -446,7 +449,6 @@ class Note implements File {
   int get hashCode => file.hashCode ^ _data.hashCode;
 
   static final _mapEq = const MapEquality().equals;
-  static final _setEq = const SetEquality().equals;
 
   @override
   bool operator ==(Object other) =>
@@ -459,7 +461,7 @@ class Note implements File {
           // _modified == other._modified &&
           _body == other._body &&
           _type == other._type &&
-          _setEq(_tags, other._tags) &&
+          _tags == other._tags &&
           _mapEq(_extraProps, other._extraProps) &&
           _fileFormat == other._fileFormat &&
           _data == other._data &&
@@ -508,7 +510,7 @@ class Note implements File {
       title: title,
       body: body,
       type: _typeToProto(type),
-      tags: tags,
+      tags: tags.iter,
       extraProps: mapToProtoBuf(extraProps),
       fileFormat: _formatToProto(fileFormat),
       doc: _data.toProtoBuf(),
@@ -530,7 +532,7 @@ class Note implements File {
       title: title,
       body: n.body,
       noteType: _typeFromProto(n.type),
-      tags: n.tags.toSet(),
+      tags: KtSet.from(n.tags),
       extraProps: mapFromProtoBuf(n.extraProps),
       fileFormat: _formatFromProto(n.fileFormat),
       doc: MdYamlDoc.fromProtoBuf(n.doc),

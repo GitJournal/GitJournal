@@ -8,12 +8,13 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:kt_dart/collection.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 
 class NoteTagEditor extends StatefulWidget {
-  final Set<String> selectedTags;
-  final Set<String> allTags;
+  final KtSet<String> selectedTags;
+  final KtSet<String> allTags;
 
   const NoteTagEditor({required this.selectedTags, required this.allTags});
 
@@ -25,15 +26,15 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
   late TextEditingController _textController;
   late FocusNode _focusNode;
 
-  late Set<String> _selectedTags;
-  late Set<String> _allTags;
+  late KtSet<String> _selectedTags;
+  late KtSet<String> _allTags;
 
   @override
   void initState() {
     super.initState();
 
-    _selectedTags = Set<String>.from(widget.selectedTags);
-    _allTags = Set<String>.from(widget.allTags);
+    _selectedTags = widget.selectedTags;
+    _allTags = widget.allTags;
     _focusNode = FocusNode();
     _textController = TextEditingController();
     _textController.addListener(() {
@@ -89,7 +90,7 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
     return ListView(
       children: <Widget>[
         if (query.isNotEmpty && !_allTags.contains(query)) _buildAddTag(query),
-        for (var tag in _allTags)
+        for (var tag in _allTags.iter)
           if (tag.toLowerCase().contains(q)) _buildTagTile(tag),
       ],
       padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
@@ -101,9 +102,9 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
     void _onTap() {
       setState(() {
         if (containsTag) {
-          var _ = _selectedTags.remove(tag);
+          _selectedTags = _selectedTags.minusElement(tag);
         } else {
-          var _ = _selectedTags.add(tag);
+          _selectedTags = _selectedTags.plusElement(tag);
         }
       });
     }
@@ -127,8 +128,8 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
   void _addTag(String tag) {
     setState(() {
       dynamic _;
-      _ = _selectedTags.add(tag);
-      _ = _allTags.add(tag);
+      _selectedTags = _selectedTags.plusElement(tag);
+      _allTags = _allTags.plusElement(tag);
       _textController.text = "";
     });
   }

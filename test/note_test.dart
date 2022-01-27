@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'package:kt_dart/collection.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
@@ -126,10 +127,10 @@ Hello
 
     expect(note.tags.contains('A'), true);
     expect(note.tags.contains('B'), true);
-    expect(note.tags.length, 2);
+    expect(note.tags.size, 2);
 
     note = note.copyWith(
-      tags: {'A', 'C', 'D'},
+      tags: KtSet.of('A', 'C', 'D'),
       file: note.file.copyFile(oid: GitHash.zero()),
     );
     await NoteStorage.save(note).throwOnError();

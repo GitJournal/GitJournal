@@ -347,9 +347,32 @@ Future<void> main() async {
     expect(root.getNoteWithSpec('f2/3.md'), isNotNull);
   });
 
-  // move - ensure that destination cannot exist (and the git repo is in a good state after that)
+  test('Add a tag', () async {
+    var headHash = GitHash('7fc65b59170bdc91013eb56cdc65fa3307f2e7de');
+    await _setup(head: headHash);
+
+    var note = repo.rootFolder.getNoteWithSpec('doc.md')!;
+    var updatedNote = note.resetOid();
+    updatedNote = updatedNote.copyWithTag("Foo");
+
+    var r = await repo.updateNote(note, updatedNote);
+    expect(r.isSuccess, true);
+    expect(r.isFailure, false);
+
+    var note2 = r.getOrThrow();
+    expect(note2.tags.asSet(), {"Foo"});
+    expect(note2.data.props.containsKey("tags"), true);
+
+    var gitRepo = GitRepository.load(repoPath).getOrThrow();
+    expect(gitRepo.headHash().getOrThrow(), isNot(headHash));
+
+    var headCommit = gitRepo.headCommit().getOrThrow();
+    expect(headCommit.parents.length, 1);
+    expect(headCommit.parents[0], headHash);
+  });
 }
 
 // Renames
 // * Note - change content + rename
 // * Note - saveNote fails because of 'x'
+// move - ensure that destination cannot exist (and the git repo is in a good state after that)

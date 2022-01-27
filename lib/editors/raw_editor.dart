@@ -310,7 +310,7 @@ class _NoteEditorState extends State<_NoteEditor> {
         textFieldFocusNode: _focusNode,
         textController: widget.textController,
         child: textField,
-        tags: allTags.toList(),
+        tags: allTags.asSet().toList(),
       );
     }
 

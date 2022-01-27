@@ -6,6 +6,7 @@
 
 import 'dart:convert';
 
+import 'package:kt_dart/collection.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' as io;
 
@@ -126,7 +127,7 @@ class NoteStorage {
           title: null,
           body: await io.File(filePath).readAsString(),
           noteType: NoteType.Unknown,
-          tags: const {},
+          tags: const KtSet.empty(),
           extraProps: const {},
           fileFormat: NoteFileFormat.Txt,
           doc: MdYamlDoc(),
@@ -148,7 +149,7 @@ class NoteStorage {
           title: null,
           body: await io.File(filePath).readAsString(),
           noteType: NoteType.Unknown,
-          tags: const {},
+          tags: const KtSet.empty(),
           extraProps: const {},
           fileFormat: NoteFileFormat.OrgMode,
           doc: MdYamlDoc(),

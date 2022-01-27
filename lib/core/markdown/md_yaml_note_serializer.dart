@@ -7,6 +7,7 @@
 import 'dart:convert';
 
 import 'package:flutter_emoji/flutter_emoji.dart';
+import 'package:kt_dart/collection.dart';
 import 'package:yaml/yaml.dart';
 
 import 'package:gitjournal/core/folder/notes_folder.dart';
@@ -234,12 +235,12 @@ class NoteSerializer implements NoteSerializerInterface {
       _ = data.props.remove(settings.editorTypeKey);
     }
 
-    if (note.tags.isEmpty) {
+    if (note.tags.isEmpty()) {
       _ = data.props.remove(settings.tagsKey);
     } else {
-      data.props[settings.tagsKey] = note.tags.toList();
+      data.props[settings.tagsKey] = note.tags.asSet().toList();
       if (settings.tagsInString) {
-        var tags = note.tags;
+        var tags = note.tags.asSet();
         if (settings.tagsHaveHash) {
           tags = tags.map((e) => '#$e').toSet();
         }
@@ -430,7 +431,7 @@ class NoteSerializer implements NoteSerializerInterface {
       title: title,
       noteType: type,
       extraProps: extraProps,
-      tags: _tags ?? {},
+      tags: KtSet.from(_tags ?? {}),
       doc: data,
       serializerSettings: settings,
       fileFormat: fileFormat,

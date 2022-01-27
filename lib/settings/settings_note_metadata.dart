@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
+import 'package:kt_dart/collection.dart';
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 
@@ -82,10 +83,10 @@ class _NoteMetadataSettingsScreenState
       created: created,
       modified: modified,
       extraProps: extraProps,
-      tags: {
+      tags: KtSet<String>.of(
         LocaleKeys.settings_noteMetaData_exampleTag1.tr(),
         LocaleKeys.settings_noteMetaData_exampleTag2.tr(),
-      },
+      ),
       doc: MdYamlDoc(),
       serializerSettings: NoteSerializationSettings.fromConfig(parent.config),
     );
@@ -276,7 +277,7 @@ class NoteInputExample extends StatelessWidget {
                     onChanged: () {},
                   ),
                   Container(height: 8.0),
-                  TagsWidget(note.tags),
+                  TagsWidget(note.tags.asSet()),
                 ],
                 crossAxisAlignment: CrossAxisAlignment.start,
               ),
