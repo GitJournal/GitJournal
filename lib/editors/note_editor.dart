@@ -549,7 +549,7 @@ class NoteEditorState extends State<NoteEditor>
         var stateContainer = context.read<GitJournalRepo>();
         var r = await stateContainer.moveNote(note, destFolder);
         if (r.isFailure) {
-          showSnackbar(context, r.error.toString());
+          showResultError(context, r);
           return;
         }
 

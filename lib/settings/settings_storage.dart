@@ -129,7 +129,7 @@ class SettingsStorageScreen extends StatelessWidget {
                 await repo.moveRepoToPath();
 
                 if (showError) {
-                  showSnackbar(
+                  showErrorMessageSnackbar(
                     context,
                     LocaleKeys.settings_storage_failedExternal.tr(),
                   );
@@ -231,7 +231,10 @@ Future<bool> _isDirWritable(String path) async {
 Future<String> _getExternalDir(BuildContext context) async {
   if (!await Permission.storage.request().isGranted) {
     Log.e("Storage Permission Denied");
-    showSnackbar(context, LocaleKeys.settings_storage_permissionFailed.tr());
+    showErrorMessageSnackbar(
+      context,
+      LocaleKeys.settings_storage_permissionFailed.tr(),
+    );
     return "";
   }
 
@@ -241,7 +244,7 @@ Future<String> _getExternalDir(BuildContext context) async {
       return dir;
     } else {
       Log.e("FilePicker: Got $dir but it is not writable");
-      showSnackbar(
+      showErrorMessageSnackbar(
         context,
         tr(LocaleKeys.settings_storage_notWritable, args: [dir]),
       );

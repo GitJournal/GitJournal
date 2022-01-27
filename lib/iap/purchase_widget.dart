@@ -362,7 +362,7 @@ class _RestorePurchaseButtonState extends State<RestorePurchaseButton> {
         if (result.isFailure) {
           Log.e("confirmProPurchase", result: result);
           var err = result.error ?? Exception("Unknown Error");
-          showSnackbar(context, err.toString());
+          showErrorMessageSnackbar(context, err.toString());
 
           setState(() {
             computing = false;

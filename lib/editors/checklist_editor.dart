@@ -299,7 +299,8 @@ class ChecklistEditorState extends State<ChecklistEditor>
     var imageR = await core.Image.copyIntoFs(note.parent, filePath);
     if (imageR.isFailure) {
       Log.e("addImage", result: imageR);
-      showSnackbar(context, imageR.error.toString());
+      showResultError(context, imageR);
+      return;
     }
     var image = imageR.getOrThrow();
 

@@ -121,9 +121,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
             if (folderName is String) {
               var repo = context.read<GitJournalRepo>();
               var r = await repo.createFolder(selectedFolder!, folderName);
-              if (r.isFailure) {
-                showSnackbar(context, r.error.toString());
-              }
+              showResultError(context, r);
             }
           } else if (value == "Delete") {
             if (selectedFolder!.hasNotesRecursive) {
@@ -185,9 +183,7 @@ class CreateFolderButton extends StatelessWidget {
               Provider.of<NotesFolderFS>(context, listen: false);
 
           var r = await repo.createFolder(notesFolder, folderName);
-          if (r.isFailure) {
-            showSnackbar(context, r.error.toString());
-          }
+          showResultError(context, r);
         }
       },
       child: const Icon(Icons.add),

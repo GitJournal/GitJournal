@@ -40,7 +40,7 @@ Future<void> createBugReport(BuildContext context) async {
     await FlutterEmailSender.send(email);
   } catch (ex, st) {
     Log.e("createBugReport", ex: ex, stacktrace: st);
-    showSnackbar(context, ex.toString());
+    showErrorSnackbar(context, ex);
   }
 
   logEvent(Event.DrawerBugReport);
@@ -71,7 +71,7 @@ Future<void> createFeedback(BuildContext context) async {
     await FlutterEmailSender.send(email);
   } catch (ex, st) {
     Log.e("createFeedback", ex: ex, stacktrace: st);
-    showSnackbar(context, ex.toString());
+    showErrorSnackbar(context, ex);
   }
 
   logEvent(Event.DrawerFeedback);

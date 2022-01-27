@@ -134,7 +134,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
           var repo = context.watch<GitJournalRepo>();
           var result = await repo.canResetHard();
           if (result.isFailure) {
-            showSnackbar(context, result.error.toString());
+            showResultError(context, result);
             return const SizedBox();
           }
           var canReset = result.getOrThrow();
@@ -284,10 +284,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
 
     var repo = context.read<GitJournalRepo>();
     var result = await repo.resetHard();
-    if (result.isFailure) {
-      showSnackbar(context, result.error.toString());
-      return;
-    }
+    showResultError(context, result);
 
     Navigator.of(context).popUntil((route) => route.isFirst);
   }

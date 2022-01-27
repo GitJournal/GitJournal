@@ -642,9 +642,7 @@ class _FolderViewState extends State<FolderView> {
     if (destFolder != null) {
       var repo = context.read<GitJournalRepo>();
       var r = await repo.moveNotes(selectedNotes, destFolder);
-      if (r.isFailure) {
-        showSnackbar(context, r.error.toString());
-      }
+      showResultError(context, r);
     }
 
     _resetSelection();
@@ -679,11 +677,11 @@ Future<void> syncRepo(BuildContext context) async {
     var container = context.read<GitJournalRepo>();
     await container.syncNotes();
   } on GitException catch (e) {
-    showSnackbar(
+    showErrorMessageSnackbar(
       context,
       tr(LocaleKeys.widgets_FolderView_syncError, args: [e.cause]),
     );
   } catch (e) {
-    showSnackbar(context, e.toString());
+    showErrorSnackbar(context, e);
   }
 }

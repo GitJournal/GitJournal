@@ -108,12 +108,12 @@ class _SyncButtonState extends State<SyncButton> {
       final repo = Provider.of<GitJournalRepo>(context, listen: false);
       await repo.syncNotes();
     } on GitException catch (e) {
-      showSnackbar(
+      showErrorMessageSnackbar(
         context,
         tr(LocaleKeys.widgets_SyncButton_error, args: [e.cause]),
       );
     } catch (e) {
-      showSnackbar(context, e.toString());
+      showErrorSnackbar(context, e.toString());
     }
   }
 

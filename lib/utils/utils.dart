@@ -60,9 +60,22 @@ void showSnackbar(BuildContext context, String message) {
     ..showSnackBar(snackBar);
 }
 
+void showErrorMessageSnackbar(BuildContext context, String message) {
+  var snackBar = SnackBar(content: Text(message));
+  ScaffoldMessenger.of(context)
+    ..removeCurrentSnackBar()
+    ..showSnackBar(snackBar);
+}
+
+void showErrorSnackbar(BuildContext context, Object error) {
+  assert(error is Error || error is Exception);
+  var message = error.toString();
+  showErrorMessageSnackbar(context, message);
+}
+
 void showResultError<T>(BuildContext context, Result<T> result) {
   if (result.isFailure) {
-    showSnackbar(context, result.toString());
+    showErrorMessageSnackbar(context, result.error.toString());
   }
 }
 

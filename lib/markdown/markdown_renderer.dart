@@ -97,7 +97,7 @@ class MarkdownRenderer extends StatelessWidget {
           var opened =
               openNewNoteEditor(context, LinkResolver.stripWikiSyntax(link));
           if (!opened) {
-            showSnackbar(
+            showErrorMessageSnackbar(
               context,
               tr(LocaleKeys.widgets_NoteViewer_linkInvalid, args: [link]),
             );
@@ -110,7 +110,7 @@ class MarkdownRenderer extends StatelessWidget {
           var _ = await launch(link);
         } catch (e, stackTrace) {
           Log.e('Opening Link', ex: e, stacktrace: stackTrace);
-          showSnackbar(
+          showErrorMessageSnackbar(
             context,
             tr(LocaleKeys.widgets_NoteViewer_linkNotFound, args: [link]),
           );

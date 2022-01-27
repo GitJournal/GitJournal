@@ -166,7 +166,8 @@ class RawEditorState extends State<RawEditor>
     var imageR = await core.Image.copyIntoFs(_note.parent, filePath);
     if (imageR.isFailure) {
       Log.e("addImage", result: imageR);
-      showSnackbar(context, imageR.error.toString());
+      showResultError(context, imageR);
+      return;
     }
 
     var ts = insertImage(

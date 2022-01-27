@@ -85,7 +85,7 @@ class OrgLinkHandler {
         } else {
           Log.w('could not launch $link');
           //Log.e('Opening Link', ex: e, stacktrace: stackTrace);
-          showSnackbar(
+          showErrorMessageSnackbar(
             context,
             tr(LocaleKeys.widgets_NoteViewer_linkInvalid, args: [link]),
           );
