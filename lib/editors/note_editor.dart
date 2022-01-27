@@ -127,8 +127,8 @@ class NoteEditorState extends State<NoteEditor>
   late final bool _isNewNote;
 
   bool _newNoteRenamed = false;
-  late EditorType editorType;
-  MdYamlDoc originalNoteData = MdYamlDoc();
+  late EditorType _editorType;
+  MdYamlDoc _originalNoteData = MdYamlDoc();
 
   final _rawEditorKey = GlobalKey<RawEditorState>();
   final _markdownEditorKey = GlobalKey<MarkdownEditorState>();
@@ -182,29 +182,29 @@ class NoteEditorState extends State<NoteEditor>
     if (widget.existingNote != null) {
       var existingNote = widget.existingNote!;
       _note = existingNote.resetOid();
-      originalNoteData = MdYamlDoc.from(_note.data);
+      _originalNoteData = MdYamlDoc.from(_note.data);
 
       _isNewNote = false;
     }
 
     // Select the editor
     if (widget.defaultEditorType != null) {
-      editorType = widget.defaultEditorType!;
+      _editorType = widget.defaultEditorType!;
     } else if (widget.defaultFileFormat != null) {
-      editorType = NoteFileFormatInfo.defaultEditor(widget.defaultFileFormat!);
+      _editorType = NoteFileFormatInfo.defaultEditor(widget.defaultFileFormat!);
     } else {
       switch (_note.type) {
         case NoteType.Journal:
-          editorType = EditorType.Journal;
+          _editorType = EditorType.Journal;
           break;
         case NoteType.Checklist:
-          editorType = EditorType.Checklist;
+          _editorType = EditorType.Checklist;
           break;
         case NoteType.Org:
-          editorType = EditorType.Org;
+          _editorType = EditorType.Org;
           break;
         case NoteType.Unknown:
-          editorType = widget.notesFolder.config.defaultEditor.toEditorType();
+          _editorType = widget.notesFolder.config.defaultEditor.toEditorType();
           break;
       }
     }
@@ -251,7 +251,7 @@ class NoteEditorState extends State<NoteEditor>
   Widget _getEditor() {
     var note = _note;
 
-    switch (editorType) {
+    switch (_editorType) {
       case EditorType.Markdown:
         return MarkdownEditor(
           key: _markdownEditorKey,
@@ -313,14 +313,14 @@ class NoteEditorState extends State<NoteEditor>
     var newEditorType = await showDialog<EditorType>(
       context: context,
       builder: (BuildContext context) {
-        return NoteEditorSelector(editorType, note.fileFormat);
+        return NoteEditorSelector(_editorType, note.fileFormat);
       },
     );
 
     if (newEditorType != null) {
       setState(() {
         _note = note;
-        editorType = newEditorType;
+        _editorType = newEditorType;
       });
     }
   }
@@ -362,7 +362,7 @@ class NoteEditorState extends State<NoteEditor>
 
     if (_isNewNote) {
       setState(() {
-        note = note.copyWithFileName(newFileName);
+        _note = note.copyWithFileName(newFileName);
         _newNoteRenamed = true;
       });
     } else {
@@ -381,7 +381,7 @@ class NoteEditorState extends State<NoteEditor>
       var newNote = renameResult.getOrThrow();
       // FIXME: Handle rename failing!
       setState(() {
-        note = newNote;
+        _note = newNote;
       });
     }
 
@@ -389,12 +389,12 @@ class NoteEditorState extends State<NoteEditor>
 
     // Change the editor
     var format = NoteFileFormatInfo.fromFilePath(newFileName);
-    if (!editorSupported(format, editorType)) {
+    if (!editorSupported(format, _editorType)) {
       var newEditorType = NoteFileFormatInfo.defaultEditor(format);
 
-      if (newEditorType != editorType) {
+      if (newEditorType != _editorType) {
         setState(() {
-          editorType = newEditorType;
+          _editorType = newEditorType;
         });
       }
 
@@ -451,7 +451,7 @@ class NoteEditorState extends State<NoteEditor>
       return note.title != null || note.body.isNotEmpty;
     }
 
-    if (note.data != originalNoteData) {
+    if (note.data != _originalNoteData) {
       dynamic _;
       final modifiedKey = note.noteSerializer.settings.modifiedKey;
 
@@ -459,7 +459,7 @@ class NoteEditorState extends State<NoteEditor>
       _ = newSimplified.props.remove(modifiedKey);
       newSimplified.body = newSimplified.body.trim();
 
-      var originalSimplified = MdYamlDoc.from(originalNoteData);
+      var originalSimplified = MdYamlDoc.from(_originalNoteData);
       _ = originalSimplified.props.remove(modifiedKey);
       originalSimplified.body = originalSimplified.body.trim();
 
@@ -516,7 +516,7 @@ class NoteEditorState extends State<NoteEditor>
   }
 
   EditorState? _getEditorState() {
-    switch (editorType) {
+    switch (_editorType) {
       case EditorType.Markdown:
         return _markdownEditorKey.currentState;
       case EditorType.Raw:
@@ -543,7 +543,7 @@ class NoteEditorState extends State<NoteEditor>
     if (destFolder != null) {
       if (_isNewNote) {
         setState(() {
-          note = note.copyWith(parent: destFolder);
+          _note = note.copyWith(parent: destFolder);
         });
       } else {
         var stateContainer = context.read<GitJournalRepo>();
@@ -577,7 +577,7 @@ class NoteEditorState extends State<NoteEditor>
     assert(note.oid.isEmpty);
 
     final rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
-    var inlineTagsView = InlineTagsProvider.of(context);
+    var inlineTagsView = InlineTagsProvider.of(context, listen: false);
     var allTags = await rootFolder.getNoteTagsRecursively(inlineTagsView);
 
     var route = MaterialPageRoute(
@@ -595,7 +595,7 @@ class NoteEditorState extends State<NoteEditor>
     if (note.tags != newTags) {
       setState(() {
         Log.i("Settings tags to: $newTags");
-        note = note.copyWith(tags: newTags);
+        _note = note.copyWith(tags: newTags);
       });
     }
   }

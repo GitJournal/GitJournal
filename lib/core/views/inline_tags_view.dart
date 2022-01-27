@@ -38,8 +38,8 @@ class InlineTagsProvider extends SingleChildStatelessWidget {
     );
   }
 
-  static InlineTagsView of(BuildContext context) {
-    return Provider.of<InlineTagsView>(context);
+  static InlineTagsView of(BuildContext context, {bool listen = true}) {
+    return Provider.of<InlineTagsView>(context, listen: listen);
   }
 }
 
