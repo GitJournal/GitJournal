@@ -57,8 +57,8 @@ class EditorAppSearchBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _EditorAppSearchBarState extends State<EditorAppSearchBar> {
-  var searchInfo = SearchInfo();
-  var searchText = "";
+  var _searchInfo = SearchInfo();
+  var _searchText = "";
 
   late FocusNode _focusNode;
 
@@ -88,18 +88,18 @@ class _EditorAppSearchBarState extends State<EditorAppSearchBar> {
         onChanged: (String text) {
           var info = widget.editorState.search(text);
           setState(() {
-            searchInfo = info;
-            searchText = text;
+            _searchInfo = info;
+            _searchText = text;
           });
 
-          widget.scrollToResult(searchText, searchInfo.currentMatch.round());
+          widget.scrollToResult(_searchText, _searchInfo.currentMatch.round());
         },
       ),
       actions: [
-        if (searchInfo.isNotEmpty)
+        if (_searchInfo.isNotEmpty)
           TextButton(
             child: Text(
-              '${searchInfo.currentMatch.toInt() + 1}/${searchInfo.numMatches}',
+              '${_searchInfo.currentMatch.toInt() + 1}/${_searchInfo.numMatches}',
               style: theme.textTheme.subtitle1,
             ),
             onPressed: null,
@@ -107,38 +107,38 @@ class _EditorAppSearchBarState extends State<EditorAppSearchBar> {
         // Disable these when not possible
         IconButton(
           icon: const Icon(Icons.arrow_upward),
-          onPressed: searchInfo.isNotEmpty
+          onPressed: _searchInfo.isNotEmpty
               ? () {
                   setState(() {
-                    var num = searchInfo.numMatches;
-                    var prev = searchInfo.currentMatch;
+                    var num = _searchInfo.numMatches;
+                    var prev = _searchInfo.currentMatch;
                     prev = prev == 0 ? num - 1 : prev - 1;
 
-                    searchInfo = SearchInfo(
+                    _searchInfo = SearchInfo(
                       currentMatch: prev,
                       numMatches: num,
                     );
                     widget.scrollToResult(
-                        searchText, searchInfo.currentMatch.round());
+                        _searchText, _searchInfo.currentMatch.round());
                   });
                 }
               : null,
         ),
         IconButton(
           icon: const Icon(Icons.arrow_downward),
-          onPressed: searchInfo.isNotEmpty
+          onPressed: _searchInfo.isNotEmpty
               ? () {
                   setState(() {
-                    var num = searchInfo.numMatches;
-                    var next = searchInfo.currentMatch;
+                    var num = _searchInfo.numMatches;
+                    var next = _searchInfo.currentMatch;
                     next = next == num - 1 ? 0 : next + 1;
 
-                    searchInfo = SearchInfo(
+                    _searchInfo = SearchInfo(
                       currentMatch: next,
                       numMatches: num,
                     );
                     widget.scrollToResult(
-                        searchText, searchInfo.currentMatch.round());
+                        _searchText, _searchInfo.currentMatch.round());
                   });
                 }
               : null,

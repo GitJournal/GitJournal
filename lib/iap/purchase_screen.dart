@@ -42,7 +42,7 @@ class PurchaseScreen extends StatefulWidget {
 }
 
 class _PurchaseScreenState extends State<PurchaseScreen> {
-  String minYearlyPurchase = "";
+  String _minYearlyPurchase = "";
 
   @override
   void initState() {
@@ -65,7 +65,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     if (response.productDetails.isEmpty) return;
 
     setState(() {
-      minYearlyPurchase = response.productDetails.first.price;
+      _minYearlyPurchase = response.productDetails.first.price;
     });
   }
 
@@ -98,7 +98,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
             const SizedBox(width: 16.0),
             const YearlyPurchaseWidget(),
             const SizedBox(width: 16.0),
-            MonthlyRentalWidget(minYearlyPurchase: minYearlyPurchase),
+            MonthlyRentalWidget(minYearlyPurchase: _minYearlyPurchase),
             const SizedBox(width: 16.0),
           ],
         ),

@@ -38,7 +38,7 @@ class NoteBacklinkRenderer extends StatefulWidget {
 }
 
 class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
-  List<Note> linkedNotes = [];
+  List<Note> _linkedNotes = [];
 
   @override
   void initState() {
@@ -71,17 +71,17 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
     var l = await widget.rootFolder.matchNotes(predicate);
     if (!mounted) return;
     setState(() {
-      linkedNotes = l;
+      _linkedNotes = l;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (linkedNotes.isEmpty) {
+    if (_linkedNotes.isEmpty) {
       return Container();
     }
 
-    var num = linkedNotes.length;
+    var num = _linkedNotes.length;
     var textTheme = Theme.of(context).textTheme;
     var c = Column(
       children: <Widget>[
@@ -90,7 +90,7 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
           style: textTheme.headline6,
         ),
         const SizedBox(height: 8.0),
-        for (var note in linkedNotes)
+        for (var note in _linkedNotes)
           NoteSnippet(
             note: note,
             parentNote: widget.note,

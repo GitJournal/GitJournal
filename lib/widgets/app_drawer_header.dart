@@ -99,7 +99,7 @@ class _CurrentRepo extends StatefulWidget {
 class __CurrentRepoState extends State<_CurrentRepo>
     with SingleTickerProviderStateMixin {
   late Animation _animation;
-  late AnimationController controller;
+  late AnimationController _controller;
 
   var _gitRemoteUrl = "";
   var _repoFolderName = "";
@@ -108,16 +108,16 @@ class __CurrentRepoState extends State<_CurrentRepo>
   void initState() {
     super.initState();
 
-    controller = AnimationController(duration: 250.milliseconds, vsync: this);
+    _controller = AnimationController(duration: 250.milliseconds, vsync: this);
     _animation = Tween(begin: 0.0, end: 0.5).animate(CurvedAnimation(
-      parent: controller,
+      parent: _controller,
       curve: Curves.linear,
     ));
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -165,10 +165,10 @@ class __CurrentRepoState extends State<_CurrentRepo>
   }
 
   void _pressed() {
-    if (controller.isCompleted) {
-      var _ = controller.reverse(from: 1.0);
+    if (_controller.isCompleted) {
+      var _ = _controller.reverse(from: 1.0);
     } else {
-      var _ = controller.forward(from: 0.0);
+      var _ = _controller.forward(from: 0.0);
     }
     widget.repoListToggled();
   }

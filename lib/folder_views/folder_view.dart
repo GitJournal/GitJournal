@@ -61,15 +61,15 @@ class FolderView extends StatefulWidget {
 }
 
 class _FolderViewState extends State<FolderView> {
-  SortedNotesFolder? sortedNotesFolder;
-  SortedNotesFolder? pinnedNotesFolder;
+  SortedNotesFolder? _sortedNotesFolder;
+  SortedNotesFolder? _pinnedNotesFolder;
   FolderViewType _viewType = FolderViewType.Standard;
 
   var _headerType = StandardViewHeader.TitleGenerated;
   bool _showSummary = true;
 
-  var selectedNotes = <Note>[];
-  bool get inSelectionMode => selectedNotes.isNotEmpty;
+  var _selectedNotes = <Note>[];
+  bool get inSelectionMode => _selectedNotes.isNotEmpty;
 
   @override
   void initState() {
@@ -101,15 +101,15 @@ class _FolderViewState extends State<FolderView> {
     );
 
     setState(() {
-      sortedNotesFolder = otherNotesFolder;
-      pinnedNotesFolder = pinnedFolder;
+      _sortedNotesFolder = otherNotesFolder;
+      _pinnedNotesFolder = pinnedFolder;
     });
   }
 
   @override
   void dispose() {
-    sortedNotesFolder?.dispose();
-    pinnedNotesFolder?.dispose();
+    _sortedNotesFolder?.dispose();
+    _pinnedNotesFolder?.dispose();
 
     super.dispose();
   }
@@ -124,36 +124,36 @@ class _FolderViewState extends State<FolderView> {
   }
 
   Widget _buildBody(BuildContext context) {
-    if (sortedNotesFolder == null) {
+    if (_sortedNotesFolder == null) {
       return Container();
     }
     var title = widget.notesFolder.publicName;
     if (inSelectionMode) {
-      title = NumberFormat.compact().format(selectedNotes.length);
+      title = NumberFormat.compact().format(_selectedNotes.length);
     }
 
     var folderView = buildFolderView(
       viewType: _viewType,
-      folder: sortedNotesFolder!,
+      folder: _sortedNotesFolder!,
       emptyText: tr(LocaleKeys.screens_folder_view_empty),
       header: _headerType,
       showSummary: _showSummary,
       noteTapped: _noteTapped,
       noteLongPressed: _noteLongPress,
-      isNoteSelected: (n) => selectedNotes.contains(n),
+      isNoteSelected: (n) => _selectedNotes.contains(n),
     );
 
     Widget pinnedFolderView = const SizedBox();
-    if (pinnedNotesFolder != null) {
+    if (_pinnedNotesFolder != null) {
       pinnedFolderView = buildFolderView(
         viewType: _viewType,
-        folder: pinnedNotesFolder!,
+        folder: _pinnedNotesFolder!,
         emptyText: null,
         header: _headerType,
         showSummary: _showSummary,
         noteTapped: _noteTapped,
         noteLongPressed: _noteLongPress,
-        isNoteSelected: (n) => selectedNotes.contains(n),
+        isNoteSelected: (n) => _selectedNotes.contains(n),
       );
     }
 
@@ -174,7 +174,7 @@ class _FolderViewState extends State<FolderView> {
     );
 
     var havePinnedNotes =
-        pinnedNotesFolder != null ? !pinnedNotesFolder!.isEmpty : false;
+        _pinnedNotesFolder != null ? !_pinnedNotesFolder!.isEmpty : false;
 
     return NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -219,14 +219,14 @@ class _FolderViewState extends State<FolderView> {
   }
 
   void _noteLongPress(Note note) {
-    var i = selectedNotes.indexOf(note);
+    var i = _selectedNotes.indexOf(note);
     if (i != -1) {
       setState(() {
-        var _ = selectedNotes.removeAt(i);
+        var _ = _selectedNotes.removeAt(i);
       });
     } else {
       setState(() {
-        selectedNotes.add(note);
+        _selectedNotes.add(note);
       });
     }
   }
@@ -237,14 +237,14 @@ class _FolderViewState extends State<FolderView> {
       return;
     }
 
-    var i = selectedNotes.indexOf(note);
+    var i = _selectedNotes.indexOf(note);
     if (i != -1) {
       setState(() {
-        var _ = selectedNotes.removeAt(i);
+        var _ = _selectedNotes.removeAt(i);
       });
     } else {
       setState(() {
-        selectedNotes.add(note);
+        _selectedNotes.add(note);
       });
     }
   }
@@ -338,23 +338,23 @@ class _FolderViewState extends State<FolderView> {
   }
 
   Future<void> _sortButtonPressed() async {
-    if (sortedNotesFolder == null) {
+    if (_sortedNotesFolder == null) {
       return;
     }
     var newSortingMode = await showDialog<SortingMode>(
       context: context,
       builder: (BuildContext context) =>
-          SortingModeSelector(sortedNotesFolder!.sortingMode),
+          SortingModeSelector(_sortedNotesFolder!.sortingMode),
     );
 
     if (newSortingMode != null) {
-      var folderConfig = sortedNotesFolder!.config;
+      var folderConfig = _sortedNotesFolder!.config;
       folderConfig.sortingField = newSortingMode.field;
       folderConfig.sortingOrder = newSortingMode.order;
       folderConfig.save();
 
       setState(() {
-        sortedNotesFolder!.changeSortingMode(newSortingMode);
+        _sortedNotesFolder!.changeSortingMode(newSortingMode);
       });
     }
   }
@@ -371,7 +371,7 @@ class _FolderViewState extends State<FolderView> {
             _headerType = newHeader;
           });
 
-          var folderConfig = sortedNotesFolder!.config;
+          var folderConfig = _sortedNotesFolder!.config;
           folderConfig.viewHeader = _headerType;
           folderConfig.save();
         }
@@ -381,7 +381,7 @@ class _FolderViewState extends State<FolderView> {
             _showSummary = newVal;
           });
 
-          var folderConfig = sortedNotesFolder!.config;
+          var folderConfig = _sortedNotesFolder!.config;
           folderConfig.showNoteSummary = newVal;
           folderConfig.save();
         }
@@ -570,7 +570,7 @@ class _FolderViewState extends State<FolderView> {
           var _ = showSearch(
             context: context,
             delegate: NoteSearchDelegate(
-              sortedNotesFolder!.notes,
+              _sortedNotesFolder!.notes,
               _viewType,
             ),
           );
@@ -600,11 +600,11 @@ class _FolderViewState extends State<FolderView> {
     );
 
     return <Widget>[
-      if (selectedNotes.length == 1)
+      if (_selectedNotes.length == 1)
         IconButton(
           icon: const Icon(Icons.share),
           onPressed: () async {
-            await shareNote(selectedNotes.first);
+            await shareNote(_selectedNotes.first);
             _resetSelection();
           },
         ),
@@ -622,13 +622,13 @@ class _FolderViewState extends State<FolderView> {
     if (settings.confirmDelete) {
       shouldDelete = (await showDialog(
             context: context,
-            builder: (context) => NoteDeleteDialog(num: selectedNotes.length),
+            builder: (context) => NoteDeleteDialog(num: _selectedNotes.length),
           )) ==
           true;
     }
     if (shouldDelete == true) {
       var repo = context.read<GitJournalRepo>();
-      repo.removeNotes(selectedNotes);
+      repo.removeNotes(_selectedNotes);
     }
 
     _resetSelection();
@@ -641,7 +641,7 @@ class _FolderViewState extends State<FolderView> {
     );
     if (destFolder != null) {
       var repo = context.read<GitJournalRepo>();
-      var r = await repo.moveNotes(selectedNotes, destFolder);
+      var r = await repo.moveNotes(_selectedNotes, destFolder);
       showResultError(context, r);
     }
 
@@ -650,7 +650,7 @@ class _FolderViewState extends State<FolderView> {
 
   void _resetSelection() {
     setState(() {
-      selectedNotes = [];
+      _selectedNotes = [];
     });
   }
 }

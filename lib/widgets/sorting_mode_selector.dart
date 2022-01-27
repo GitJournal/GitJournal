@@ -22,14 +22,14 @@ class SortingModeSelector extends StatefulWidget {
 }
 
 class _SortingModeSelectorState extends State<SortingModeSelector> {
-  late SortingField field;
-  late SortingOrder order;
+  late SortingField _field;
+  late SortingOrder _order;
 
   @override
   void initState() {
     super.initState();
-    field = widget.selectedMode.field;
-    order = widget.selectedMode.order;
+    _field = widget.selectedMode.field;
+    _order = widget.selectedMode.order;
   }
 
   @override
@@ -69,7 +69,7 @@ class _SortingModeSelectorState extends State<SortingModeSelector> {
             style: Theme.of(context).textTheme.bodyText2,
           ),
           onPressed: () {
-            Navigator.of(context).pop(SortingMode(field, order));
+            Navigator.of(context).pop(SortingMode(_field, _order));
           },
         ),
       ],
@@ -80,10 +80,10 @@ class _SortingModeSelectorState extends State<SortingModeSelector> {
     return RadioListTile<SortingField>(
       title: Text(sf.toPublicString()),
       value: sf,
-      groupValue: field,
+      groupValue: _field,
       onChanged: (SortingField? sf) {
         setState(() {
-          field = sf!;
+          _field = sf!;
         });
       },
     );
@@ -93,10 +93,10 @@ class _SortingModeSelectorState extends State<SortingModeSelector> {
     return RadioListTile<SortingOrder>(
       title: Text(so.toPublicString()),
       value: so,
-      groupValue: order,
+      groupValue: _order,
       onChanged: (SortingOrder? so) {
         setState(() {
-          order = so!;
+          _order = so!;
         });
       },
     );

@@ -31,7 +31,7 @@ class FolderListingScreen extends StatefulWidget {
 
 class _FolderListingScreenState extends State<FolderListingScreen> {
   final _folderTreeViewKey = GlobalKey<FolderTreeViewState>();
-  NotesFolderFS? selectedFolder;
+  NotesFolderFS? _selectedFolder;
 
   @override
   Widget build(BuildContext context) {
@@ -61,18 +61,18 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
       },
       onFolderSelected: (folder) {
         setState(() {
-          selectedFolder = folder;
+          _selectedFolder = folder;
         });
       },
       onFolderUnselected: () {
         setState(() {
-          selectedFolder = null;
+          _selectedFolder = null;
         });
       },
     );
 
     Widget? action;
-    if (selectedFolder != null) {
+    if (_selectedFolder != null) {
       action = PopupMenuButton(
         itemBuilder: (context) {
           return [
@@ -92,7 +92,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
         },
         onSelected: (String value) async {
           if (value == "Rename") {
-            if (selectedFolder!.folderPath.isEmpty) {
+            if (_selectedFolder!.folderPath.isEmpty) {
               var _ = await showDialog(
                 context: context,
                 builder: (_) => RenameFolderErrorDialog(),
@@ -103,7 +103,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
             var folderName = await showDialog(
               context: context,
               builder: (_) => RenameDialog(
-                oldPath: selectedFolder!.folderPath,
+                oldPath: _selectedFolder!.folderPath,
                 inputDecoration:
                     LocaleKeys.screens_folders_actions_decoration.tr(),
                 dialogTitle: LocaleKeys.screens_folders_actions_rename.tr(),
@@ -111,7 +111,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
             );
             if (folderName is String) {
               var container = context.read<GitJournalRepo>();
-              container.renameFolder(selectedFolder!, folderName);
+              container.renameFolder(_selectedFolder!, folderName);
             }
           } else if (value == "Create") {
             var folderName = await showDialog(
@@ -120,18 +120,18 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
             );
             if (folderName is String) {
               var repo = context.read<GitJournalRepo>();
-              var r = await repo.createFolder(selectedFolder!, folderName);
+              var r = await repo.createFolder(_selectedFolder!, folderName);
               showResultError(context, r);
             }
           } else if (value == "Delete") {
-            if (selectedFolder!.hasNotesRecursive) {
+            if (_selectedFolder!.hasNotesRecursive) {
               var _ = await showDialog(
                 context: context,
                 builder: (_) => DeleteFolderErrorDialog(),
               );
             } else {
               var container = context.read<GitJournalRepo>();
-              container.removeFolder(selectedFolder!);
+              container.removeFolder(_selectedFolder!);
             }
           }
 
@@ -148,16 +148,16 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
     );
 
     var title = Text(tr(LocaleKeys.screens_folders_title));
-    if (selectedFolder != null) {
+    if (_selectedFolder != null) {
       title = Text(LocaleKeys.screens_folders_selected.tr());
     }
 
     return Scaffold(
       appBar: AppBar(
         title: title,
-        leading: selectedFolder == null ? GJAppBarMenuButton() : backButton,
+        leading: _selectedFolder == null ? GJAppBarMenuButton() : backButton,
         actions: <Widget>[
-          if (selectedFolder != null) action!,
+          if (_selectedFolder != null) action!,
         ],
       ),
       body: Scrollbar(child: treeView),

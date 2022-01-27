@@ -61,9 +61,9 @@ class EditorScaffold extends StatefulWidget {
 }
 
 class _EditorScaffoldState extends State<EditorScaffold> {
-  var hideUIElements = false;
-  var editingMode = true;
-  var findMode = false;
+  var _hideUIElements = false;
+  var _editingMode = true;
+  var _findMode = false;
 
   late Note note;
 
@@ -83,20 +83,20 @@ class _EditorScaffoldState extends State<EditorScaffold> {
     var settings = Provider.of<Settings>(context, listen: false);
 
     setState(() {
-      hideUIElements = settings.zenMode;
+      _hideUIElements = settings.zenMode;
       widget.editorState.addListener(_editorChanged);
 
       if (settings.markdownDefaultView ==
           SettingsMarkdownDefaultView.LastUsed) {
-        editingMode =
+        _editingMode =
             settings.markdownLastUsedView == SettingsMarkdownDefaultView.Edit;
       } else {
-        editingMode =
+        _editingMode =
             settings.markdownDefaultView == SettingsMarkdownDefaultView.Edit;
       }
 
       if (widget.editMode) {
-        editingMode = true;
+        _editingMode = true;
       }
     });
   }
@@ -111,9 +111,9 @@ class _EditorScaffoldState extends State<EditorScaffold> {
   void _editorChanged() {
     var settings = Provider.of<Settings>(context, listen: false);
 
-    if (settings.zenMode && !hideUIElements) {
+    if (settings.zenMode && !_hideUIElements) {
       setState(() {
-        hideUIElements = true;
+        _hideUIElements = true;
       });
     }
   }
@@ -122,8 +122,8 @@ class _EditorScaffoldState extends State<EditorScaffold> {
     var settings = Provider.of<Settings>(context, listen: false);
 
     setState(() {
-      editingMode = !editingMode;
-      switch (editingMode) {
+      _editingMode = !_editingMode;
+      switch (_editingMode) {
         case true:
           settings.markdownLastUsedView = SettingsMarkdownDefaultView.Edit;
           break;
@@ -145,7 +145,7 @@ class _EditorScaffoldState extends State<EditorScaffold> {
       var ch = textSize('0', NoteBodyEditor.textStyle(context));
       var maxWidth = ch.width * 65;
 
-      var body = editingMode
+      var body = _editingMode
           ? widget.body
           : NoteViewer(note: note, parentFolder: widget.parentFolder);
 
@@ -169,32 +169,32 @@ class _EditorScaffoldState extends State<EditorScaffold> {
         onTap: () {
           if (settings.zenMode) {
             setState(() {
-              hideUIElements = false;
+              _hideUIElements = false;
             });
           }
         },
         child: Column(
           children: <Widget>[
-            if (!findMode)
+            if (!_findMode)
               _HideWidget(
-                visible: !hideUIElements,
+                visible: !_hideUIElements,
                 child: EditorAppBar(
                   editor: widget.editor,
                   editorState: widget.editorState,
                   noteModified: widget.noteModified,
                   extraButton: widget.extraButton,
-                  allowEdits: editingMode,
+                  allowEdits: _editingMode,
                   onEditingModeChange: _switchMode,
                 ),
               ),
-            if (findMode)
+            if (_findMode)
               _HideWidget(
-                visible: !hideUIElements,
+                visible: !_hideUIElements,
                 child: EditorAppSearchBar(
                   editorState: widget.editorState,
                   onCloseSelected: () {
                     setState(() {
-                      findMode = false;
+                      _findMode = false;
                     });
                   },
                   scrollToResult: widget.editorState.scrollToResult,
@@ -204,12 +204,12 @@ class _EditorScaffoldState extends State<EditorScaffold> {
               child: Hero(tag: note.filePath, child: responsiveBody),
             ),
             _HideWidget(
-              visible: !hideUIElements,
+              visible: !_hideUIElements,
               child: EditorBottomBar(
                 editor: widget.editor,
                 editorState: widget.editorState,
                 parentFolder: widget.parentFolder,
-                allowEdits: editingMode,
+                allowEdits: _editingMode,
                 zenMode: settings.zenMode,
                 onZenModeChanged: () {
                   setState(() {
@@ -217,7 +217,7 @@ class _EditorScaffoldState extends State<EditorScaffold> {
                     settings.save();
 
                     if (settings.zenMode) {
-                      hideUIElements = true;
+                      _hideUIElements = true;
                     }
                   });
                 },
@@ -229,7 +229,7 @@ class _EditorScaffoldState extends State<EditorScaffold> {
                 findAllowed: widget.findAllowed,
                 onFindSelected: () {
                   setState(() {
-                    findMode = true;
+                    _findMode = true;
                   });
                 },
               ),

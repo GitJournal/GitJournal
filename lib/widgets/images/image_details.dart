@@ -24,8 +24,9 @@ class ImageDetails extends StatefulWidget {
 }
 
 class _ImageDetailsState extends State<ImageDetails> {
-  int rotation = 0;
-  bool showUI = true;
+  int _rotation = 0;
+  bool _showUI = true;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -39,16 +40,16 @@ class _ImageDetailsState extends State<ImageDetails> {
         PhotoView.customChild(
           backgroundDecoration: BoxDecoration(color: bg),
           child: RotatedBox(
-              quarterTurns: rotation,
+              quarterTurns: _rotation,
               child: ThemableImage.from(widget.image, bg: bg)),
           minScale: 1.0,
           maxScale: settings.maxImageZoom,
           heroAttributes: PhotoViewHeroAttributes(tag: widget.image),
           onTapUp: (context, details, controllerValue) =>
-              setState(() => showUI = !showUI),
+              setState(() => _showUI = !_showUI),
           enableRotation: settings.rotateImageGestures,
         ),
-        if (showUI)
+        if (_showUI)
           Positioned(
               top: MediaQuery.of(context).padding.top,
               left: 0,
@@ -68,12 +69,12 @@ class _ImageDetailsState extends State<ImageDetails> {
                           IconButton(
                               splashRadius: 20,
                               icon: const Icon(Icons.rotate_90_degrees_ccw),
-                              onPressed: () => setState(() => rotation--))
+                              onPressed: () => setState(() => _rotation--))
                         ],
                       )))),
         // TODO use a DraggableScrollableSheet, when they can be dynamically
         // height restricted https://github.com/flutter/flutter/issues/41599
-        if (showUI && widget.caption.isNotEmpty)
+        if (_showUI && widget.caption.isNotEmpty)
           Positioned(
               bottom: 0,
               left: 0,

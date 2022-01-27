@@ -63,7 +63,7 @@ class RawEditorState extends State<RawEditor>
   late TextEditingController _textController;
   late UndoRedoStack _undoRedoStack;
 
-  final serializer = MarkdownYAMLCodec();
+  final _serializer = MarkdownYAMLCodec();
 
   final _editorKey = GlobalKey();
   late ScrollController _scrollController;
@@ -75,7 +75,7 @@ class RawEditorState extends State<RawEditor>
     _noteModified = widget.noteModified;
 
     _textController = buildController(
-      text: serializer.encode(_note.data),
+      text: _serializer.encode(_note.data),
       highlightText: widget.highlightString,
       theme: widget.theme,
     );
@@ -136,7 +136,7 @@ class RawEditorState extends State<RawEditor>
 
   @override
   Note getNote() {
-    var doc = serializer.decode(_textController.text);
+    var doc = _serializer.decode(_textController.text);
     return NoteSerializer.decodeNote(
       data: doc,
       parent: _note.parent,

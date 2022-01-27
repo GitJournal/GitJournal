@@ -44,7 +44,7 @@ class FolderListView extends StatefulWidget {
 
 class _FolderListViewState extends State<FolderListView> {
   final _listKey = GlobalKey<SliverAnimatedListState>();
-  var deletedViaDismissed = <String>[];
+  final _deletedViaDismissed = <String>[];
 
   @override
   void initState() {
@@ -94,11 +94,11 @@ class _FolderListViewState extends State<FolderListView> {
       return;
     }
     _listKey.currentState!.removeItem(index, (context, animation) {
-      var i = deletedViaDismissed.indexWhere((path) => path == note.filePath);
+      var i = _deletedViaDismissed.indexWhere((path) => path == note.filePath);
       if (i == -1) {
         return _buildNote(note, widget.isNoteSelected(note), animation);
       } else {
-        var _ = deletedViaDismissed.removeAt(i);
+        var _ = _deletedViaDismissed.removeAt(i);
         return Container();
       }
     });
@@ -164,7 +164,7 @@ class _FolderListViewState extends State<FolderListView> {
         backgroundColor: Colors.red[800]!,
         iconData: Icons.delete,
         onDismissed: (direction) {
-          deletedViaDismissed.add(note.filePath);
+          _deletedViaDismissed.add(note.filePath);
 
           var stateContainer = context.read<GitJournalRepo>();
           stateContainer.removeNote(note);

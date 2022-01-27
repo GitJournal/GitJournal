@@ -55,8 +55,8 @@ class HistoryWidget extends StatefulWidget {
 }
 
 class _HistoryWidgetState extends State<HistoryWidget> {
-  List<Result<GitCommit>> commits = [];
-  List<dynamic> commitsAndSyncAttempts = [];
+  final List<Result<GitCommit>> _commits = [];
+  List<dynamic> _commitsAndSyncAttempts = [];
 
   Iterable<Result<GitCommit>>? _stream;
 
@@ -113,7 +113,7 @@ class _HistoryWidgetState extends State<HistoryWidget> {
       }
 
       setState(() {
-        commits.addAll(list);
+        _commits.addAll(list);
         _rebuildCombined();
       });
     });
@@ -135,10 +135,10 @@ class _HistoryWidgetState extends State<HistoryWidget> {
   }
 
   void _rebuildCombined() {
-    commitsAndSyncAttempts = [];
-    commitsAndSyncAttempts.addAll(widget.gjRepo.syncAttempts);
-    commitsAndSyncAttempts.addAll(commits);
-    commitsAndSyncAttempts.sort((a, b) {
+    _commitsAndSyncAttempts = [];
+    _commitsAndSyncAttempts.addAll(widget.gjRepo.syncAttempts);
+    _commitsAndSyncAttempts.addAll(_commits);
+    _commitsAndSyncAttempts.sort((a, b) {
       late DateTime aDt;
       if (a is SyncAttempt) {
         aDt = a.when;
@@ -181,7 +181,7 @@ class _HistoryWidgetState extends State<HistoryWidget> {
         child: ListView.builder(
           controller: _scrollController,
           itemBuilder: _buildTile,
-          itemCount: commitsAndSyncAttempts.length + extra,
+          itemCount: _commitsAndSyncAttempts.length + extra,
         ),
         onRefresh: () => syncRepo(context),
       ),
@@ -189,14 +189,14 @@ class _HistoryWidgetState extends State<HistoryWidget> {
   }
 
   Widget _buildTile(BuildContext context, int i) {
-    if (i >= commitsAndSyncAttempts.length) {
+    if (i >= _commitsAndSyncAttempts.length) {
       return const Padding(
         padding: EdgeInsets.all(16.0),
         child: Center(child: CircularProgressIndicator()),
       );
     }
 
-    var d = commitsAndSyncAttempts[i];
+    var d = _commitsAndSyncAttempts[i];
     if (d is SyncAttempt) {
       return _SyncAttemptTile(d);
     }
@@ -205,8 +205,8 @@ class _HistoryWidgetState extends State<HistoryWidget> {
 
     var commitR = d as Result<GitCommit>;
     Result<GitCommit>? parentCommitR;
-    for (var j = i + 1; j < commitsAndSyncAttempts.length; j++) {
-      var dd = commitsAndSyncAttempts[j];
+    for (var j = i + 1; j < _commitsAndSyncAttempts.length; j++) {
+      var dd = _commitsAndSyncAttempts[j];
       if (dd is Result<GitCommit>) {
         parentCommitR = dd;
         break;

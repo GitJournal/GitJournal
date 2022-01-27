@@ -77,10 +77,10 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
   var _gitCloneUrl = "";
   var _cloneProgress = GitTransferProgress();
-  String? gitCloneErrorMessage = "";
-  var publicKey = "";
+  String? _gitCloneErrorMessage = "";
+  var _publicKey = "";
 
-  var pageController = PageController();
+  final _pageController = PageController();
   int _currentPageIndex = 0;
 
   UserInfo? _userInfo;
@@ -93,7 +93,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         onKnownGitHost: (GitHostType gitHostType) {
           setState(() {
             _gitHostType = gitHostType;
-            gitCloneErrorMessage = "";
+            _gitCloneErrorMessage = "";
             _autoConfigureErrorMessage = "";
             _autoConfigureMessage = "";
 
@@ -218,17 +218,17 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
                 _pageCount = pos + 2;
                 _nextPage();
 
-                gitCloneErrorMessage = "";
+                _gitCloneErrorMessage = "";
                 _startGitClone(context);
               });
             },
             regenerateFunction: () {
               setState(() {
-                publicKey = "";
+                _publicKey = "";
               });
               _generateSshKey(context);
             },
-            publicKey: publicKey,
+            publicKey: _publicKey,
             copyKeyFunction: _copyKeyToClipboard,
           );
         } else if (_keyGenerationChoice == KeyGenerationChoice.UserProvided) {
@@ -242,11 +242,11 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
               gitConfig.save();
 
               setState(() {
-                this.publicKey = publicKey;
+                _publicKey = publicKey;
                 _pageCount = pos + 2;
                 _nextPage();
 
-                gitCloneErrorMessage = "";
+                _gitCloneErrorMessage = "";
                 _startGitClone(context);
               });
             },
@@ -300,7 +300,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     if (pos == 4) {
       if (_pageChoice[0] == PageChoice0.CustomProvider) {
         return GitHostCloningPage(
-          errorMessage: gitCloneErrorMessage,
+          errorMessage: _gitCloneErrorMessage,
           cloneProgress: _cloneProgress,
         );
       }
@@ -315,17 +315,17 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
                 _nextPage();
 
-                gitCloneErrorMessage = "";
+                _gitCloneErrorMessage = "";
                 _startGitClone(context);
               });
             },
             regenerateFunction: () {
               setState(() {
-                publicKey = "";
+                _publicKey = "";
               });
               _generateSshKey(context);
             },
-            publicKey: publicKey,
+            publicKey: _publicKey,
             copyKeyFunction: _copyKeyToClipboard,
             openDeployKeyPage: _launchDeployKeyPage,
           );
@@ -339,11 +339,11 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
               gitConfig.save();
 
               setState(() {
-                this.publicKey = publicKey;
+                _publicKey = publicKey;
                 _pageCount = pos + 2;
                 _nextPage();
 
-                gitCloneErrorMessage = "";
+                _gitCloneErrorMessage = "";
                 _startGitClone(context);
               });
             },
@@ -360,7 +360,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     if (pos == 5) {
       return GitHostSetupLoadingErrorPage(
         loadingMessage: tr(LocaleKeys.setup_cloning),
-        errorMessage: gitCloneErrorMessage,
+        errorMessage: _gitCloneErrorMessage,
       );
     }
 
@@ -373,7 +373,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   @override
   Widget build(BuildContext context) {
     var pageView = PageView.builder(
-      controller: pageController,
+      controller: _pageController,
       itemBuilder: _buildPage,
       itemCount: _pageCount,
       onPageChanged: (int pageNum) {
@@ -440,21 +440,21 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   }
 
   Future<void> _previousPage() {
-    return pageController.previousPage(
+    return _pageController.previousPage(
       duration: 200.milliseconds,
       curve: Curves.easeIn,
     );
   }
 
   Future<void> _nextPage() {
-    return pageController.nextPage(
+    return _pageController.nextPage(
       duration: 200.milliseconds,
       curve: Curves.easeIn,
     );
   }
 
   void _generateSshKey(BuildContext context) {
-    if (publicKey.isNotEmpty) {
+    if (_publicKey.isNotEmpty) {
       return;
     }
 
@@ -471,15 +471,15 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       gitConfig.save();
 
       setState(() {
-        publicKey = sshKey.publicKey;
-        Log.d("PublicKey: " + publicKey);
+        _publicKey = sshKey.publicKey;
+        Log.d("PublicKey: " + _publicKey);
         _copyKeyToClipboard(context);
       });
     });
   }
 
   void _copyKeyToClipboard(BuildContext context) {
-    Clipboard.setData(ClipboardData(text: publicKey));
+    Clipboard.setData(ClipboardData(text: _publicKey));
     showSnackbar(context, tr(LocaleKeys.setup_sshKey_copied));
   }
 
@@ -534,7 +534,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   }
 
   Future<void> _startGitClone(BuildContext context) async {
-    if (gitCloneErrorMessage!.isNotEmpty) {
+    if (_gitCloneErrorMessage!.isNotEmpty) {
       return;
     }
 
@@ -569,7 +569,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         logEvent(Event.GitHostSetupGitCloneError, parameters: {
           'error': error,
         });
-        gitCloneErrorMessage = error;
+        _gitCloneErrorMessage = error;
       });
       return;
     }
@@ -621,14 +621,14 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       gitConfig.save();
 
       setState(() {
-        publicKey = sshKey.publicKey;
+        _publicKey = sshKey.publicKey;
       });
 
       Log.i("Adding as a deploy key");
       _autoConfigureMessage = tr(LocaleKeys.setup_sshKey_addDeploy);
 
       await _gitHost!
-          .addDeployKey(publicKey, _gitHostRepo.fullName)
+          .addDeployKey(_publicKey, _gitHostRepo.fullName)
           .throwOnError();
     } on Exception catch (e, stacktrace) {
       _handleGitHostException(e, stacktrace);
@@ -641,7 +641,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
       _nextPage();
 
-      gitCloneErrorMessage = "";
+      _gitCloneErrorMessage = "";
       _startGitClone(context);
     });
   }

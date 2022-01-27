@@ -33,18 +33,18 @@ class _RenameDialogState extends State<RenameDialog> {
   late TextEditingController _textController;
   final _formKey = GlobalKey<FormState>();
 
-  bool noExtension = false;
-  bool changeExtension = false;
+  bool _noExtension = false;
+  bool _changeExtension = false;
 
-  var oldExt = "";
-  var newExt = "";
+  var _oldExt = "";
+  var _newExt = "";
 
   @override
   void initState() {
     super.initState();
     _textController = TextEditingController(text: basename(widget.oldPath));
 
-    oldExt = p.extension(widget.oldPath);
+    _oldExt = p.extension(widget.oldPath);
   }
 
   @override
@@ -61,11 +61,11 @@ class _RenameDialogState extends State<RenameDialog> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          if (noExtension)
+          if (_noExtension)
             _DialogWarningText(LocaleKeys.widgets_rename_noExt.tr()),
-          if (changeExtension && !noExtension)
+          if (_changeExtension && !_noExtension)
             _DialogWarningText(
-              LocaleKeys.widgets_rename_changeExt.tr(args: [oldExt, newExt]),
+              LocaleKeys.widgets_rename_changeExt.tr(args: [_oldExt, _newExt]),
             ),
           TextFormField(
             decoration: InputDecoration(labelText: widget.inputDecoration),
@@ -80,10 +80,10 @@ class _RenameDialogState extends State<RenameDialog> {
 
               WidgetsBinding.instance!.addPostFrameCallback((_) {
                 setState(() {
-                  newExt = p.extension(value).toLowerCase();
-                  if (newExt == '.') newExt = "";
-                  noExtension = newExt.isEmpty && oldExt.isNotEmpty;
-                  changeExtension = oldExt != newExt;
+                  _newExt = p.extension(value).toLowerCase();
+                  if (_newExt == '.') _newExt = "";
+                  _noExtension = _newExt.isEmpty && _oldExt.isNotEmpty;
+                  _changeExtension = _oldExt != _newExt;
                 });
               });
 

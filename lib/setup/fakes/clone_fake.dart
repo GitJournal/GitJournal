@@ -20,14 +20,14 @@ class FakeTransferProgress extends StatefulWidget {
 }
 
 class FakeTransferProgressState extends State<FakeTransferProgress> {
-  var progress = GitTransferProgress();
-  var lines = LineSplitter.split(_cloneProgress).toList();
-  var line = 0;
-  late Timer timer;
+  var _progress = GitTransferProgress();
+  final _lines = LineSplitter.split(_cloneProgress).toList();
+  var _line = 0;
+  late Timer _timer;
 
   @override
   void initState() {
-    timer = Timer.periodic(const Duration(milliseconds: 300), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 300), (timer) {
       updateProgress();
     });
     super.initState();
@@ -35,28 +35,28 @@ class FakeTransferProgressState extends State<FakeTransferProgress> {
 
   @override
   void dispose() {
-    timer.cancel();
+    _timer.cancel();
     super.dispose();
   }
 
   Future<void> updateProgress() async {
-    var str = lines[line];
+    var str = _lines[_line];
     var progress = GitTransferProgress.parse(str);
     if (progress != null) {
       setState(() {
-        this.progress = progress;
+        _progress = progress;
       });
     }
-    line++;
-    if (line >= lines.length) {
-      line = 0;
+    _line++;
+    if (_line >= _lines.length) {
+      _line = 0;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return GitHostCloningPage(
-      cloneProgress: progress,
+      cloneProgress: _progress,
       errorMessage: null,
     );
   }

@@ -30,7 +30,7 @@ class OnBoardingScreen extends StatefulWidget {
 }
 
 class OnBoardingScreenState extends State<OnBoardingScreen> {
-  var pageController = PageController();
+  final _pageController = PageController();
   int _currentPageIndex = 0;
 
   final _bottomBarHeight = 50.0;
@@ -59,7 +59,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       OnBoardingPage3(),
     ];
     var pageView = PageView(
-      controller: pageController,
+      controller: _pageController,
       children: pages,
       onPageChanged: (int pageNum) {
         setState(() {
@@ -150,7 +150,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   void _nextPage() {
-    pageController.nextPage(
+    _pageController.nextPage(
       duration: 200.milliseconds,
       curve: Curves.easeIn,
     );

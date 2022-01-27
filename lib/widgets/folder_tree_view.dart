@@ -37,32 +37,32 @@ class FolderTreeView extends StatefulWidget {
 }
 
 class FolderTreeViewState extends State<FolderTreeView> {
-  bool inSelectionMode = false;
-  NotesFolderFS? selectedFolder;
+  bool _inSelectionMode = false;
+  NotesFolderFS? _selectedFolder;
 
   @override
   Widget build(BuildContext context) {
     var tile = FolderTile(
       folder: widget.rootFolder,
       onTap: (NotesFolderFS folder) {
-        if (!inSelectionMode) {
+        if (!_inSelectionMode) {
           widget.onFolderEntered(folder);
         } else {
           setState(() {
-            inSelectionMode = false;
-            selectedFolder = null;
+            _inSelectionMode = false;
+            _selectedFolder = null;
           });
           widget.onFolderUnselected();
         }
       },
       onLongPress: (folder) {
         setState(() {
-          inSelectionMode = true;
-          selectedFolder = folder;
+          _inSelectionMode = true;
+          _selectedFolder = folder;
         });
         widget.onFolderSelected(folder);
       },
-      selectedFolder: selectedFolder,
+      selectedFolder: _selectedFolder,
     );
 
     return ListView(
@@ -72,7 +72,7 @@ class FolderTreeViewState extends State<FolderTreeView> {
 
   void resetSelection() {
     setState(() {
-      selectedFolder = null;
+      _selectedFolder = null;
     });
     widget.onFolderUnselected();
   }
