@@ -97,11 +97,12 @@ class Note implements File {
   final String _body;
   final NoteType _type;
   final ISet<String> _tags;
+
   final Map<String, dynamic> _extraProps;
+  final IList<String> _propsList;
 
   final NoteFileFormat _fileFormat;
 
-  final MdYamlDoc _data;
   final NoteSerializer noteSerializer;
 
   final File file;
@@ -130,7 +131,7 @@ class Note implements File {
     required ISet<String> tags,
     required Map<String, dynamic> extraProps,
     required NoteFileFormat fileFormat,
-    required MdYamlDoc doc,
+    required IList<String> propsList,
     required NoteSerializationSettings serializerSettings,
     required DateTime? modified,
     required DateTime? created,
@@ -140,7 +141,7 @@ class Note implements File {
         _tags = tags,
         _extraProps = extraProps,
         _fileFormat = fileFormat,
-        _data = doc,
+        _propsList = propsList,
         _modified = modified,
         _created = created,
         noteSerializer = NoteSerializer.fromConfig(serializerSettings);
@@ -160,13 +161,14 @@ class Note implements File {
     DateTime? modified;
     var settings = NoteSerializationSettings.fromConfig(parent.config);
     var noteSerializer = NoteSerializer.fromConfig(settings);
-    var data = MdYamlDoc();
     var body = "";
     String? title;
     ISet<String> tags = ISet();
+    IList<String> propsList = IList();
     NoteType type = NoteType.Unknown;
 
     if (extraProps.isNotEmpty) {
+      var data = MdYamlDoc();
       extraProps.forEach((key, value) {
         data.props[key] = value;
       });
@@ -183,6 +185,8 @@ class Note implements File {
       title = newNote._title;
       tags = newNote._tags;
       type = newNote._type;
+
+      propsList = data.props.keys.toIList();
     }
 
     // FIXME: Ensure this fileName doesn't exist
@@ -208,7 +212,7 @@ class Note implements File {
       tags: tags,
       extraProps: extraProps,
       fileFormat: fileFormat,
-      doc: data,
+      propsList: propsList,
       serializerSettings: settings,
       modified: modified,
       created: created,
@@ -347,7 +351,7 @@ class Note implements File {
     return Note.build(
       body: body,
       parent: parent,
-      doc: data,
+      propsList: _propsList,
       file: file,
       created: created,
       modified: modified,
@@ -382,7 +386,7 @@ class Note implements File {
     return Note.build(
       body: body ?? this.body,
       parent: parent ?? this.parent,
-      doc: data,
+      propsList: _propsList,
       file: file ?? this.file.copyFile(filePath: filePath),
       created: created ?? _created,
       modified: modified ?? _modified,
@@ -427,6 +431,7 @@ class Note implements File {
   NoteType get type => _type;
   ISet<String> get tags => _tags;
   Map<String, dynamic> get extraProps => UnmodifiableMapView(_extraProps);
+  IList<String> get propsList => _propsList;
 
   bool get canHaveMetadata {
     if (_fileFormat == NoteFileFormat.Txt ||
@@ -436,15 +441,12 @@ class Note implements File {
     return parent.config.yamlHeaderEnabled;
   }
 
-  MdYamlDoc get data {
-    noteSerializer.encode(this, _data);
-    return _data;
-  }
+  MdYamlDoc get data => noteSerializer.encode(this);
 
   bool get pinned => extraProps["pinned"] == true;
 
   @override
-  int get hashCode => file.hashCode ^ _data.hashCode;
+  int get hashCode => file.hashCode ^ _body.hashCode;
 
   static final _mapEq = const MapEquality().equals;
 
@@ -462,7 +464,6 @@ class Note implements File {
           _tags == other._tags &&
           _mapEq(_extraProps, other._extraProps) &&
           _fileFormat == other._fileFormat &&
-          _data == other._data &&
           noteSerializer.settings == other.noteSerializer.settings &&
           file.oid == other.file.oid &&
           file.filePath == other.file.filePath;
@@ -511,7 +512,7 @@ class Note implements File {
       tags: tags,
       extraProps: mapToProtoBuf(extraProps),
       fileFormat: _formatToProto(fileFormat),
-      doc: _data.toProtoBuf(),
+      propsList: _propsList,
       modified: _modified?.toProtoBuf(),
       created: _created?.toProtoBuf(),
       serializerSettings: noteSerializer.settings.toProtoBuf(),
@@ -533,7 +534,7 @@ class Note implements File {
       tags: ISet(n.tags),
       extraProps: mapFromProtoBuf(n.extraProps),
       fileFormat: _formatFromProto(n.fileFormat),
-      doc: MdYamlDoc.fromProtoBuf(n.doc),
+      propsList: n.propsList.lock,
       serializerSettings:
           NoteSerializationSettings.fromProtoBuf(n.serializerSettings),
       modified: n.hasModified() ? n.modified.toDateTime() : null,

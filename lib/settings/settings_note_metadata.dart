@@ -15,7 +15,6 @@ import 'package:time/time.dart';
 import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
-import 'package:gitjournal/core/markdown/md_yaml_doc.dart';
 import 'package:gitjournal/core/markdown/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/markdown/md_yaml_note_serializer.dart';
 import 'package:gitjournal/core/note.dart';
@@ -87,7 +86,7 @@ class _NoteMetadataSettingsScreenState
         LocaleKeys.settings_noteMetaData_exampleTag1.tr(),
         LocaleKeys.settings_noteMetaData_exampleTag2.tr(),
       }),
-      doc: MdYamlDoc(),
+      propsList: extraProps.keys.toIList(),
       serializerSettings: NoteSerializationSettings.fromConfig(parent.config),
     );
 
@@ -222,10 +221,9 @@ class NoteOutputExample extends StatelessWidget {
     var style = theme.textTheme.subtitle1!;
     style = style.copyWith(fontFamily: "Roboto Mono");
 
-    var doc = MdYamlDoc();
     var folderConfig = Provider.of<NotesFolderConfig>(context);
     var serialSettings = NoteSerializationSettings.fromConfig(folderConfig);
-    NoteSerializer.fromConfig(serialSettings).encode(note, doc);
+    var doc = NoteSerializer.fromConfig(serialSettings).encode(note);
 
     var codec = MarkdownYAMLCodec();
     var noteStr = codec.encode(doc);

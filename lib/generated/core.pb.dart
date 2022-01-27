@@ -263,12 +263,6 @@ class Note extends $pb.GeneratedMessage {
         defaultOrMaker: NoteFileFormat.Markdown,
         valueOf: NoteFileFormat.valueOf,
         enumValues: NoteFileFormat.values)
-    ..aOM<MdYamlDoc>(
-        8,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'doc',
-        subBuilder: MdYamlDoc.create)
     ..aOM<DateTimeAnyTz>(
         10,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -288,6 +282,12 @@ class Note extends $pb.GeneratedMessage {
             : 'serializerSettings',
         protoName: 'serializerSettings',
         subBuilder: NoteSerializationSettings.create)
+    ..pPS(
+        13,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'propsList',
+        protoName: 'propsList')
     ..hasRequiredFields = false;
 
   Note._() : super();
@@ -299,10 +299,10 @@ class Note extends $pb.GeneratedMessage {
     $core.Iterable<$core.String>? tags,
     $core.Map<$core.String, Union>? extraProps,
     NoteFileFormat? fileFormat,
-    MdYamlDoc? doc,
     DateTimeAnyTz? modified,
     DateTimeAnyTz? created,
     NoteSerializationSettings? serializerSettings,
+    $core.Iterable<$core.String>? propsList,
   }) {
     final _result = create();
     if (file != null) {
@@ -326,9 +326,6 @@ class Note extends $pb.GeneratedMessage {
     if (fileFormat != null) {
       _result.fileFormat = fileFormat;
     }
-    if (doc != null) {
-      _result.doc = doc;
-    }
     if (modified != null) {
       _result.modified = modified;
     }
@@ -337,6 +334,9 @@ class Note extends $pb.GeneratedMessage {
     }
     if (serializerSettings != null) {
       _result.serializerSettings = serializerSettings;
+    }
+    if (propsList != null) {
+      _result.propsList.addAll(propsList);
     }
     return _result;
   }
@@ -434,61 +434,50 @@ class Note extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   void clearFileFormat() => clearField(7);
 
-  @$pb.TagNumber(8)
-  MdYamlDoc get doc => $_getN(7);
-  @$pb.TagNumber(8)
-  set doc(MdYamlDoc v) {
-    setField(8, v);
-  }
-
-  @$pb.TagNumber(8)
-  $core.bool hasDoc() => $_has(7);
-  @$pb.TagNumber(8)
-  void clearDoc() => clearField(8);
-  @$pb.TagNumber(8)
-  MdYamlDoc ensureDoc() => $_ensure(7);
-
   @$pb.TagNumber(10)
-  DateTimeAnyTz get modified => $_getN(8);
+  DateTimeAnyTz get modified => $_getN(7);
   @$pb.TagNumber(10)
   set modified(DateTimeAnyTz v) {
     setField(10, v);
   }
 
   @$pb.TagNumber(10)
-  $core.bool hasModified() => $_has(8);
+  $core.bool hasModified() => $_has(7);
   @$pb.TagNumber(10)
   void clearModified() => clearField(10);
   @$pb.TagNumber(10)
-  DateTimeAnyTz ensureModified() => $_ensure(8);
+  DateTimeAnyTz ensureModified() => $_ensure(7);
 
   @$pb.TagNumber(11)
-  DateTimeAnyTz get created => $_getN(9);
+  DateTimeAnyTz get created => $_getN(8);
   @$pb.TagNumber(11)
   set created(DateTimeAnyTz v) {
     setField(11, v);
   }
 
   @$pb.TagNumber(11)
-  $core.bool hasCreated() => $_has(9);
+  $core.bool hasCreated() => $_has(8);
   @$pb.TagNumber(11)
   void clearCreated() => clearField(11);
   @$pb.TagNumber(11)
-  DateTimeAnyTz ensureCreated() => $_ensure(9);
+  DateTimeAnyTz ensureCreated() => $_ensure(8);
 
   @$pb.TagNumber(12)
-  NoteSerializationSettings get serializerSettings => $_getN(10);
+  NoteSerializationSettings get serializerSettings => $_getN(9);
   @$pb.TagNumber(12)
   set serializerSettings(NoteSerializationSettings v) {
     setField(12, v);
   }
 
   @$pb.TagNumber(12)
-  $core.bool hasSerializerSettings() => $_has(10);
+  $core.bool hasSerializerSettings() => $_has(9);
   @$pb.TagNumber(12)
   void clearSerializerSettings() => clearField(12);
   @$pb.TagNumber(12)
-  NoteSerializationSettings ensureSerializerSettings() => $_ensure(10);
+  NoteSerializationSettings ensureSerializerSettings() => $_ensure(9);
+
+  @$pb.TagNumber(13)
+  $core.List<$core.String> get propsList => $_getList(10);
 }
 
 class NoteList extends $pb.GeneratedMessage {

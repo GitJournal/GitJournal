@@ -4,11 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'dart:collection';
-
 import 'package:flutter/foundation.dart';
 
 import 'package:collection/collection.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:fixnum/fixnum.dart' as fixnum;
 import 'package:yaml/yaml.dart';
 
@@ -18,19 +17,21 @@ import 'package:gitjournal/utils/datetime.dart';
 Function _deepEq = const DeepCollectionEquality().equals;
 
 class MdYamlDoc {
-  String body;
-  late LinkedHashMap<String, dynamic> props;
+  final String body;
+  late final ListMap<String, dynamic> props;
 
   MdYamlDoc({
     this.body = "",
-    LinkedHashMap<String, dynamic>? props,
+    ListMap<String, dynamic>? props,
   }) {
-    // ignore: prefer_collection_literals
-    this.props = props ?? LinkedHashMap<String, dynamic>();
+    this.props = props ?? ListMap.empty();
   }
 
-  MdYamlDoc.from(MdYamlDoc other) : body = other.body {
-    props = LinkedHashMap<String, dynamic>.from(other.props);
+  MdYamlDoc copyWith({String? body, ListMap<String, dynamic>? props}) {
+    return MdYamlDoc(
+      body: body ?? this.body,
+      props: props ?? this.props,
+    );
   }
 
   @override
@@ -47,7 +48,13 @@ class MdYamlDoc {
   @override
   String toString() {
     if (kDebugMode) {
-      return 'MdYamlDoc{body: "$body", props: $props}';
+      var buffer = StringBuffer();
+      buffer.write("{");
+      for (var e in props.entries) {
+        buffer.write('${e.key}: ${e.value}, ');
+      }
+      buffer.write('}');
+      return 'MdYamlDoc{body: "$body", props: ${buffer.toString()}}';
     } else {
       return 'MdYamlDoc{body: "<hidden>", props: <hidden>}';
     }
@@ -63,7 +70,7 @@ class MdYamlDoc {
   static MdYamlDoc fromProtoBuf(pb.MdYamlDoc p) {
     return MdYamlDoc(
       body: p.body,
-      props: LinkedHashMap.from(mapFromProtoBuf(p.map)),
+      props: ListMap.of(mapFromProtoBuf(p.map)),
     );
   }
 }

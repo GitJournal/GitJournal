@@ -6,6 +6,7 @@
 
 import 'dart:collection';
 
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:yaml/yaml.dart';
 import 'package:yaml_serializer/yaml_serializer.dart';
 
@@ -39,7 +40,7 @@ class MarkdownYAMLCodec {
           var yamlText =
               str.substring(4, str.length - endYamlStrWithoutLineEding.length);
           var map = parseYamlText(yamlText);
-          return MdYamlDoc(props: map);
+          return MdYamlDoc(props: ListMap.of(map));
         }
 
         return MdYamlDoc(body: str);
@@ -59,7 +60,7 @@ class MarkdownYAMLCodec {
         }
       }
 
-      return MdYamlDoc(body: body, props: map);
+      return MdYamlDoc(body: body, props: ListMap.of(map));
     }
 
     return MdYamlDoc(body: str);
@@ -96,7 +97,7 @@ class MarkdownYAMLCodec {
     return str;
   }
 
-  static String toYamlHeader(Map<String, dynamic> data) {
+  static String toYamlHeader(ListMap<String, dynamic> data) {
     var yaml = toYAML(data);
     return "---\n" + yaml + "---\n";
   }

@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'dart:collection';
-
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
 
@@ -22,16 +21,16 @@ void main() {
   group('Serializers', () {
     test('Markdown Serializer', () {
       var created = toIso8601WithTimezone(nowWithoutMicro());
-      var note = MdYamlDoc(
+      var doc = MdYamlDoc(
         body: "This is the body",
-        props: LinkedHashMap.from({"created": created}),
+        props: ListMap.of({"created": created}),
       );
 
       var serializer = MarkdownYAMLCodec();
-      var str = serializer.encode(note);
-      var note2 = serializer.decode(str);
+      var str = serializer.encode(doc);
+      var doc2 = serializer.decode(str);
 
-      expect(note2, note);
+      expect(doc2, doc);
     });
 
     test('Markdown Serializer with invalid YAML', () {
@@ -42,10 +41,10 @@ type
 Alright.""";
 
       var serializer = MarkdownYAMLCodec();
-      var note = serializer.decode(inputNoteStr);
+      var doc = serializer.decode(inputNoteStr);
       var actualStr = "Alright.";
 
-      expect(actualStr, note.body);
+      expect(actualStr, doc.body);
     });
 
     test('Markdown Serializer with empty YAML', () {
@@ -55,10 +54,10 @@ Alright.""";
 Alright.""";
 
       var serializer = MarkdownYAMLCodec();
-      var note = serializer.decode(inputNoteStr);
+      var doc = serializer.decode(inputNoteStr);
       var actualStr = "Alright.";
 
-      expect(actualStr, note.body);
+      expect(actualStr, doc.body);
     });
 
     test('Markdown Serializer with empty YAML and no \\n after body', () {
@@ -67,10 +66,10 @@ Alright.""";
 Alright.""";
 
       var serializer = MarkdownYAMLCodec();
-      var note = serializer.decode(inputNoteStr);
+      var doc = serializer.decode(inputNoteStr);
       var actualStr = "Alright.";
 
-      expect(actualStr, note.body);
+      expect(actualStr, doc.body);
     });
 
     test('Markdown Serializer with empty YAML and doesn"t end with \\n', () {
@@ -78,10 +77,10 @@ Alright.""";
 ---""";
 
       var serializer = MarkdownYAMLCodec();
-      var note = serializer.decode(inputNoteStr);
+      var doc = serializer.decode(inputNoteStr);
 
-      expect("", note.body);
-      expect(0, note.props.length);
+      expect("", doc.body);
+      expect(0, doc.props.length);
     });
 
     test('Markdown Serializer YAML Order', () {
@@ -94,8 +93,8 @@ foo: bar
 Alright.""";
 
       var serializer = MarkdownYAMLCodec();
-      var note = serializer.decode(str);
-      var actualStr = serializer.encode(note);
+      var doc = serializer.decode(str);
+      var actualStr = serializer.encode(doc);
 
       expect(actualStr, str);
     });
@@ -108,8 +107,8 @@ foo: [bar, gar]
 Alright.""";
 
       var serializer = MarkdownYAMLCodec();
-      var note = serializer.decode(str);
-      var actualStr = serializer.encode(note);
+      var doc = serializer.decode(str);
+      var actualStr = serializer.encode(doc);
 
       expect(actualStr, str);
     });
@@ -120,8 +119,8 @@ Alright.""";
 Alright.""";
 
       var serializer = MarkdownYAMLCodec();
-      var note = serializer.decode(str);
-      var actualStr = serializer.encode(note);
+      var doc = serializer.decode(str);
+      var actualStr = serializer.encode(doc);
 
       expect(actualStr, str);
     });
@@ -130,8 +129,8 @@ Alright.""";
       var str = """Alright.""";
 
       var serializer = MarkdownYAMLCodec();
-      var note = serializer.decode(str);
-      var actualStr = serializer.encode(note);
+      var doc = serializer.decode(str);
+      var actualStr = serializer.encode(doc);
 
       expect(actualStr, str);
     });
@@ -144,8 +143,8 @@ foo: [bar, gar]
 Alright. ---\n Good boy --- Howdy""";
 
       var serializer = MarkdownYAMLCodec();
-      var note = serializer.decode(str);
-      var actualStr = serializer.encode(note);
+      var doc = serializer.decode(str);
+      var actualStr = serializer.encode(doc);
 
       expect(actualStr, str);
     });
@@ -157,10 +156,10 @@ foo: [bar, gar]
 Alright.""";
 
       var serializer = MarkdownYAMLCodec();
-      var note = serializer.decode(str);
+      var doc = serializer.decode(str);
       var actualStr = "Alright.";
 
-      expect(actualStr, note.body);
+      expect(actualStr, doc.body);
     });
 
     test('Only YAML Header without \\n at end', () {
@@ -169,12 +168,12 @@ foo: bar
 ---""";
 
       var serializer = MarkdownYAMLCodec();
-      var note = serializer.decode(str);
+      var doc = serializer.decode(str);
 
-      expect("", note.body);
-      expect({"foo": "bar"}, note.props);
+      expect("", doc.body);
+      expect({"foo": "bar"}, doc.props);
 
-      var actualStr = serializer.encode(note);
+      var actualStr = serializer.encode(doc);
       expect(actualStr, str + '\n\n');
     });
 
@@ -185,12 +184,12 @@ foo: bar
 """;
 
       var serializer = MarkdownYAMLCodec();
-      var note = serializer.decode(str);
+      var doc = serializer.decode(str);
 
-      expect("", note.body);
-      expect({"foo": "bar"}, note.props);
+      expect("", doc.body);
+      expect({"foo": "bar"}, doc.props);
 
-      var actualStr = serializer.encode(note);
+      var actualStr = serializer.encode(doc);
       expect(actualStr, str + '\n');
     });
 

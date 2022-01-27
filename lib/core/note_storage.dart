@@ -130,7 +130,7 @@ class NoteStorage {
           tags: ISet(),
           extraProps: const {},
           fileFormat: NoteFileFormat.Txt,
-          doc: MdYamlDoc(),
+          propsList: IList(),
           serializerSettings:
               NoteSerializationSettings.fromConfig(parentFolder.config),
           created: null,
@@ -152,7 +152,7 @@ class NoteStorage {
           tags: ISet(),
           extraProps: const {},
           fileFormat: NoteFileFormat.OrgMode,
-          doc: MdYamlDoc(),
+          propsList: IList(),
           serializerSettings:
               NoteSerializationSettings.fromConfig(parentFolder.config),
           created: null,

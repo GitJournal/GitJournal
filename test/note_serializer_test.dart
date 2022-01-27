@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'dart:collection';
-
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
@@ -41,7 +40,7 @@ void main() {
     });
 
     test('Test emojis', () {
-      var props = LinkedHashMap<String, dynamic>.from(
+      var props = ListMap<String, dynamic>.of(
           <String, dynamic>{"title": "Why not :coffee:?"});
       var doc = MdYamlDoc(body: "I :heart: you", props: props);
 
@@ -62,13 +61,13 @@ void main() {
 
       note = note.copyWith(body: "Why not ☕?", title: "I ❤️ you");
 
-      serializer.encode(note, doc);
+      doc = serializer.encode(note);
       expect(doc.body, "Why not :coffee:?");
       expect(doc.props['title'].toString(), "I :heart: you");
     });
 
     test('Test Title Serialization', () {
-      var props = LinkedHashMap<String, dynamic>.from({});
+      var props = ListMap<String, dynamic>.of({});
       var doc =
           MdYamlDoc(body: "# Why not coffee?\n\nI heart you", props: props);
 
@@ -88,13 +87,13 @@ void main() {
 
       note = note.copyWith(body: "Why not coffee?", title: "I heart you");
 
-      serializer.encode(note, doc);
+      doc = serializer.encode(note);
       expect(doc.body, "# I heart you\n\nWhy not coffee?");
       expect(doc.props.length, 0);
     });
 
     test('Test Title Reading with blank lines', () {
-      var props = LinkedHashMap<String, dynamic>.from({});
+      var props = ListMap<String, dynamic>.of({});
       var doc =
           MdYamlDoc(body: "\n# Why not coffee?\n\nI heart you", props: props);
 
@@ -113,7 +112,7 @@ void main() {
     });
 
     test('Test Title Reading with blank lines and no body', () {
-      var props = LinkedHashMap<String, dynamic>.from({});
+      var props = ListMap<String, dynamic>.of({});
       var doc = MdYamlDoc(body: "\n# Why not coffee?", props: props);
 
       var serializer = NoteSerializer.raw();
@@ -131,7 +130,7 @@ void main() {
     });
 
     test('Test Old Title Serialization', () {
-      var props = LinkedHashMap<String, dynamic>.from(
+      var props = ListMap<String, dynamic>.of(
           <String, dynamic>{"title": "Why not coffee?"});
       var doc = MdYamlDoc(body: "I heart you", props: props);
 
@@ -149,14 +148,14 @@ void main() {
       expect(note.body, "I heart you");
       expect(note.title, "Why not coffee?");
 
-      serializer.encode(note, doc);
-      expect(note.body, "I heart you");
-      expect(note.title, "Why not coffee?");
+      doc = serializer.encode(note);
+      expect(doc.body, "I heart you");
+      expect(doc.props["title"], "Why not coffee?");
       expect(doc.props.length, 1);
     });
 
     test('Test Note ExtraProps', () {
-      var props = LinkedHashMap<String, dynamic>.from(<String, dynamic>{
+      var props = ListMap<String, dynamic>.of(<String, dynamic>{
         "title": "Why not?",
         "draft": true,
       });
@@ -177,7 +176,7 @@ void main() {
       expect(note.title, "Why not?");
       expect(note.extraProps, <String, dynamic>{"draft": true});
 
-      serializer.encode(note, doc);
+      doc = serializer.encode(note);
       expect(doc.body, "body");
       expect(doc.props.length, 2);
       expect(doc.props['title'], 'Why not?');
@@ -185,7 +184,7 @@ void main() {
     });
 
     test('Test string tag with #', () {
-      var props = LinkedHashMap<String, dynamic>.from(<String, dynamic>{
+      var props = ListMap<String, dynamic>.of(<String, dynamic>{
         "title": "Why not?",
         "draft": true,
         "tags": "#foo #bar-do",
@@ -208,7 +207,7 @@ void main() {
       expect(note.extraProps, <String, dynamic>{"draft": true});
       expect(note.tags, <String>{"foo", "bar-do"});
 
-      serializer.encode(note, doc);
+      doc = serializer.encode(note);
       expect(doc.body, "body");
       expect(doc.props['title'], 'Why not?');
       expect(doc.props['draft'], true);

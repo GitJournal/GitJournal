@@ -129,14 +129,7 @@ const Note$json = const {
       '6': '.gitjournal.NoteFileFormat',
       '10': 'fileFormat'
     },
-    const {
-      '1': 'doc',
-      '3': 8,
-      '4': 1,
-      '5': 11,
-      '6': '.gitjournal.MdYamlDoc',
-      '10': 'doc'
-    },
+    const {'1': 'propsList', '3': 13, '4': 3, '5': 9, '10': 'propsList'},
     const {
       '1': 'modified',
       '3': 10,
@@ -184,7 +177,7 @@ const Note_ExtraPropsEntry$json = const {
 
 /// Descriptor for `Note`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List noteDescriptor = $convert.base64Decode(
-    'CgROb3RlEiQKBGZpbGUYASABKAsyEC5naXRqb3VybmFsLkZpbGVSBGZpbGUSFAoFdGl0bGUYAiABKAlSBXRpdGxlEhIKBGJvZHkYAyABKAlSBGJvZHkSKAoEdHlwZRgEIAEoDjIULmdpdGpvdXJuYWwuTm90ZVR5cGVSBHR5cGUSEgoEdGFncxgFIAMoCVIEdGFncxJACgpleHRyYVByb3BzGAYgAygLMiAuZ2l0am91cm5hbC5Ob3RlLkV4dHJhUHJvcHNFbnRyeVIKZXh0cmFQcm9wcxI6CgpmaWxlRm9ybWF0GAcgASgOMhouZ2l0am91cm5hbC5Ob3RlRmlsZUZvcm1hdFIKZmlsZUZvcm1hdBInCgNkb2MYCCABKAsyFS5naXRqb3VybmFsLk1kWWFtbERvY1IDZG9jEjUKCG1vZGlmaWVkGAogASgLMhkuZ2l0am91cm5hbC5EYXRlVGltZUFueVR6Ughtb2RpZmllZBIzCgdjcmVhdGVkGAsgASgLMhkuZ2l0am91cm5hbC5EYXRlVGltZUFueVR6UgdjcmVhdGVkElUKEnNlcmlhbGl6ZXJTZXR0aW5ncxgMIAEoCzIlLmdpdGpvdXJuYWwuTm90ZVNlcmlhbGl6YXRpb25TZXR0aW5nc1ISc2VyaWFsaXplclNldHRpbmdzGlAKD0V4dHJhUHJvcHNFbnRyeRIQCgNrZXkYASABKAlSA2tleRInCgV2YWx1ZRgCIAEoCzIRLmdpdGpvdXJuYWwuVW5pb25SBXZhbHVlOgI4AQ==');
+    'CgROb3RlEiQKBGZpbGUYASABKAsyEC5naXRqb3VybmFsLkZpbGVSBGZpbGUSFAoFdGl0bGUYAiABKAlSBXRpdGxlEhIKBGJvZHkYAyABKAlSBGJvZHkSKAoEdHlwZRgEIAEoDjIULmdpdGpvdXJuYWwuTm90ZVR5cGVSBHR5cGUSEgoEdGFncxgFIAMoCVIEdGFncxJACgpleHRyYVByb3BzGAYgAygLMiAuZ2l0am91cm5hbC5Ob3RlLkV4dHJhUHJvcHNFbnRyeVIKZXh0cmFQcm9wcxI6CgpmaWxlRm9ybWF0GAcgASgOMhouZ2l0am91cm5hbC5Ob3RlRmlsZUZvcm1hdFIKZmlsZUZvcm1hdBIcCglwcm9wc0xpc3QYDSADKAlSCXByb3BzTGlzdBI1Cghtb2RpZmllZBgKIAEoCzIZLmdpdGpvdXJuYWwuRGF0ZVRpbWVBbnlUelIIbW9kaWZpZWQSMwoHY3JlYXRlZBgLIAEoCzIZLmdpdGpvdXJuYWwuRGF0ZVRpbWVBbnlUelIHY3JlYXRlZBJVChJzZXJpYWxpemVyU2V0dGluZ3MYDCABKAsyJS5naXRqb3VybmFsLk5vdGVTZXJpYWxpemF0aW9uU2V0dGluZ3NSEnNlcmlhbGl6ZXJTZXR0aW5ncxpQCg9FeHRyYVByb3BzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSJwoFdmFsdWUYAiABKAsyES5naXRqb3VybmFsLlVuaW9uUgV2YWx1ZToCOAE=');
 @$core.Deprecated('Use noteListDescriptor instead')
 const NoteList$json = const {
   '1': 'NoteList',

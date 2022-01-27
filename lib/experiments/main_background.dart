@@ -261,6 +261,5 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-
 // Stuff to be saved -
 // (gitRepo, remoteName, lastSyncedWhen, lastError)

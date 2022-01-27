@@ -182,7 +182,7 @@ class NoteEditorState extends State<NoteEditor>
     if (widget.existingNote != null) {
       var existingNote = widget.existingNote!;
       _note = existingNote.resetOid();
-      _originalNoteData = MdYamlDoc.from(_note.data);
+      _originalNoteData = _note.data;
 
       _isNewNote = false;
     }
@@ -452,16 +452,16 @@ class NoteEditorState extends State<NoteEditor>
     }
 
     if (note.data != _originalNoteData) {
-      dynamic _;
       final modifiedKey = note.noteSerializer.settings.modifiedKey;
 
-      var newSimplified = MdYamlDoc.from(note.data);
-      _ = newSimplified.props.remove(modifiedKey);
-      newSimplified.body = newSimplified.body.trim();
-
-      var originalSimplified = MdYamlDoc.from(_originalNoteData);
-      _ = originalSimplified.props.remove(modifiedKey);
-      originalSimplified.body = originalSimplified.body.trim();
+      var newSimplified = note.data.copyWith(
+        props: note.data.props.remove(modifiedKey),
+        body: note.body.trim(),
+      );
+      var originalSimplified = _originalNoteData.copyWith(
+        props: _originalNoteData.props.remove(modifiedKey),
+        body: _originalNoteData.body.trim(),
+      );
 
       bool hasBeenModified = newSimplified != originalSimplified;
       if (hasBeenModified) {

@@ -39,7 +39,7 @@ message Note {
     repeated string tags = 5;
     map<string, Union> extraProps = 6;
     NoteFileFormat fileFormat = 7;
-    MdYamlDoc doc = 8;
+    repeated string propsList = 13;
 
     DateTimeAnyTz modified = 10;
     DateTimeAnyTz created = 11;

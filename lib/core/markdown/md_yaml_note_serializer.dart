@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
@@ -21,7 +22,7 @@ import '../note.dart';
 import 'md_yaml_doc.dart';
 
 abstract class NoteSerializerInterface {
-  void encode(Note note, MdYamlDoc data);
+  MdYamlDoc encode(Note note);
   Note decode({
     required MdYamlDoc data,
     required NotesFolderFS parent,
@@ -173,37 +174,38 @@ class NoteSerializer implements NoteSerializerInterface {
   static final tagKeyOptions = ["tags", "categories", "keywords"];
 
   @override
-  void encode(Note note, MdYamlDoc data) {
-    data.body = settings.emojify ? emojiParser.unemojify(note.body) : note.body;
+  MdYamlDoc encode(Note note) {
+    var body = settings.emojify ? emojiParser.unemojify(note.body) : note.body;
 
     // HACKish support for Txt and OrgFiles
     if (!note.canHaveMetadata) {
-      return;
+      return MdYamlDoc(body: body);
     }
 
+    var props = <String, dynamic>{};
     dynamic _;
 
     switch (settings.createdFormat) {
       case DateFormat.Iso8601:
-        data.props[settings.createdKey] = toIso8601WithTimezone(note.created);
+        props[settings.createdKey] = toIso8601WithTimezone(note.created);
         break;
       case DateFormat.UnixTimeStamp:
-        data.props[settings.createdKey] = toUnixTimeStamp(note.created);
+        props[settings.createdKey] = toUnixTimeStamp(note.created);
         break;
       case DateFormat.None:
-        _ = data.props.remove(settings.createdKey);
+        _ = props.remove(settings.createdKey);
         break;
     }
 
     switch (settings.modifiedFormat) {
       case DateFormat.Iso8601:
-        data.props[settings.modifiedKey] = toIso8601WithTimezone(note.modified);
+        props[settings.modifiedKey] = toIso8601WithTimezone(note.modified);
         break;
       case DateFormat.UnixTimeStamp:
-        data.props[settings.modifiedKey] = toUnixTimeStamp(note.modified);
+        props[settings.modifiedKey] = toUnixTimeStamp(note.modified);
         break;
       case DateFormat.None:
-        _ = data.props.remove(settings.modifiedKey);
+        _ = props.remove(settings.modifiedKey);
         break;
     }
 
@@ -214,43 +216,58 @@ class NoteSerializer implements NoteSerializerInterface {
           settings.emojify ? emojiParser.unemojify(noteTitle) : noteTitle;
       if (settings.titleSettings == SettingsTitle.InH1) {
         if (title.isNotEmpty) {
-          data.body = '# $title\n\n${data.body}';
-          _ = data.props.remove(settings.titleKey);
+          body = '# $title\n\n$body';
+          _ = props.remove(settings.titleKey);
         }
       } else {
         if (title.isNotEmpty) {
-          data.props[settings.titleKey] = title;
+          props[settings.titleKey] = title;
         } else {
-          _ = data.props.remove(settings.titleKey);
+          _ = props.remove(settings.titleKey);
         }
       }
     } else {
-      _ = data.props.remove(settings.titleKey);
+      _ = props.remove(settings.titleKey);
     }
 
     if (note.type != NoteType.Unknown) {
       var type = note.type.toString().substring(9); // Remove "NoteType."
-      data.props[settings.editorTypeKey] = type;
+      props[settings.editorTypeKey] = type;
     } else {
-      _ = data.props.remove(settings.editorTypeKey);
+      _ = props.remove(settings.editorTypeKey);
     }
 
     if (note.tags.isEmpty) {
-      _ = data.props.remove(settings.tagsKey);
+      _ = props.remove(settings.tagsKey);
     } else {
-      data.props[settings.tagsKey] = note.tags.toList();
+      props[settings.tagsKey] = note.tags.toList();
       if (settings.tagsInString) {
         var tags = note.tags;
         if (settings.tagsHaveHash) {
           tags = tags.map((e) => '#$e').toSet().lock;
         }
-        data.props[settings.tagsKey] = tags.join(' ');
+        props[settings.tagsKey] = tags.join(' ');
       }
     }
 
     note.extraProps.forEach((key, value) {
-      data.props[key] = value;
+      props[key] = value;
     });
+
+    LinkedHashMap<String, dynamic> sortedProps = LinkedHashMap();
+    for (var key in note.propsList) {
+      var v = props[key];
+      if (v != null) {
+        sortedProps[key] = v;
+        props.remove(key);
+      }
+    }
+
+    for (var e in props.entries) {
+      sortedProps[e.key] = e.value;
+    }
+
+    return MdYamlDoc(body: body, props: ListMap.of(sortedProps));
   }
 
   static Note decodeNote({
@@ -432,7 +449,7 @@ class NoteSerializer implements NoteSerializerInterface {
       noteType: type,
       extraProps: extraProps,
       tags: ISet(_tags),
-      doc: data,
+      propsList: data.props.keys.toIList(),
       serializerSettings: settings,
       fileFormat: fileFormat,
     );

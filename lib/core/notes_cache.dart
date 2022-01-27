@@ -31,7 +31,7 @@ class NotesCache {
   String get filePath => p.join(folderPath, 'notes_cache_v$version');
 
   static const CACHE_SIZE = 20;
-  static const version = 1;
+  static const version = 2;
 
   NotesCache({
     required this.folderPath,

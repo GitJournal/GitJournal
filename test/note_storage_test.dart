@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'dart:collection';
 import 'dart:convert';
 
 import 'package:dart_date/dart_date.dart';
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/utils/date_time.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
@@ -49,9 +49,9 @@ void main() {
       fileStorage = await FileStorage.fake(repoPath);
 
       var dt = GDateTime.utc(2019, 12, 2, 5, 4, 2);
-      // ignore: prefer_collection_literals
-      var props = LinkedHashMap<String, dynamic>();
-      props['created'] = toIso8601WithTimezone(dt);
+      var props = ListMap<String, dynamic>.of({
+        'created': toIso8601WithTimezone(dt),
+      });
 
       n1Path = p.join(repoPath, "1.md");
       n2Path = p.join(repoPath, "2.md");

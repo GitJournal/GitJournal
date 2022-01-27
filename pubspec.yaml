@@ -72,7 +72,7 @@ dependencies:
   url_launcher: ^6.0.3
   uuid: ^3.0.4
   yaml: ^3.1.0
-  yaml_serializer: ^0.0.11
+  yaml_serializer: ^0.0.12
   collection: ^1.15.0-nullsafety.4
   flex_color_scheme: ^4.2.0
   fs_shim: ^2.0.1+2
