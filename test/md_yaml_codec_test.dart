@@ -23,7 +23,7 @@ void main() {
       var created = toIso8601WithTimezone(nowWithoutMicro());
       var doc = MdYamlDoc(
         body: "This is the body",
-        props: ListMap.of({"created": created}),
+        props: IMap({"created": created}),
       );
 
       var serializer = MarkdownYAMLCodec();
@@ -171,7 +171,7 @@ foo: bar
       var doc = serializer.decode(str);
 
       expect("", doc.body);
-      expect({"foo": "bar"}, doc.props);
+      expect({"foo": "bar"}.lock, doc.props);
 
       var actualStr = serializer.encode(doc);
       expect(actualStr, str + '\n\n');
@@ -187,7 +187,7 @@ foo: bar
       var doc = serializer.decode(str);
 
       expect("", doc.body);
-      expect({"foo": "bar"}, doc.props);
+      expect({"foo": "bar"}.lock, doc.props);
 
       var actualStr = serializer.encode(doc);
       expect(actualStr, str + '\n');

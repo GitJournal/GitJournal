@@ -168,10 +168,7 @@ class Note implements File {
     NoteType type = NoteType.Unknown;
 
     if (extraProps.isNotEmpty) {
-      var data = MdYamlDoc();
-      extraProps.forEach((key, value) {
-        data.props[key] = value;
-      });
+      var data = MdYamlDoc(props: extraProps.lock);
       var newNote = noteSerializer.decode(
         data: data,
         file: file,

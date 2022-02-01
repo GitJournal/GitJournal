@@ -40,8 +40,8 @@ void main() {
     });
 
     test('Test emojis', () {
-      var props = ListMap<String, dynamic>.of(
-          <String, dynamic>{"title": "Why not :coffee:?"});
+      var props = IMap<String, dynamic>(
+          const <String, dynamic>{"title": "Why not :coffee:?"});
       var doc = MdYamlDoc(body: "I :heart: you", props: props);
 
       var serializer = NoteSerializer.raw();
@@ -67,7 +67,7 @@ void main() {
     });
 
     test('Test Title Serialization', () {
-      var props = ListMap<String, dynamic>.of({});
+      var props = IMap<String, dynamic>(const {});
       var doc =
           MdYamlDoc(body: "# Why not coffee?\n\nI heart you", props: props);
 
@@ -93,7 +93,7 @@ void main() {
     });
 
     test('Test Title Reading with blank lines', () {
-      var props = ListMap<String, dynamic>.of({});
+      var props = IMap<String, dynamic>(const {});
       var doc =
           MdYamlDoc(body: "\n# Why not coffee?\n\nI heart you", props: props);
 
@@ -112,7 +112,7 @@ void main() {
     });
 
     test('Test Title Reading with blank lines and no body', () {
-      var props = ListMap<String, dynamic>.of({});
+      var props = IMap<String, dynamic>(const {});
       var doc = MdYamlDoc(body: "\n# Why not coffee?", props: props);
 
       var serializer = NoteSerializer.raw();
@@ -130,8 +130,8 @@ void main() {
     });
 
     test('Test Old Title Serialization', () {
-      var props = ListMap<String, dynamic>.of(
-          <String, dynamic>{"title": "Why not coffee?"});
+      var props = IMap<String, dynamic>(
+          const <String, dynamic>{"title": "Why not coffee?"});
       var doc = MdYamlDoc(body: "I heart you", props: props);
 
       var serializer = NoteSerializer.raw();
@@ -155,7 +155,7 @@ void main() {
     });
 
     test('Test Note ExtraProps', () {
-      var props = ListMap<String, dynamic>.of(<String, dynamic>{
+      var props = IMap<String, dynamic>(const <String, dynamic>{
         "title": "Why not?",
         "draft": true,
       });
@@ -184,7 +184,7 @@ void main() {
     });
 
     test('Test string tag with #', () {
-      var props = ListMap<String, dynamic>.of(<String, dynamic>{
+      var props = IMap<String, dynamic>(const <String, dynamic>{
         "title": "Why not?",
         "draft": true,
         "tags": "#foo #bar-do",

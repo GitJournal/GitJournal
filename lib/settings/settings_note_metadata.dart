@@ -59,7 +59,7 @@ class _NoteMetadataSettingsScreenState
       var customMetaDataMap =
           MarkdownYAMLCodec.parseYamlText(settings.customMetaData);
       if (customMetaDataMap.isNotEmpty) {
-        extraProps = customMetaDataMap;
+        extraProps = customMetaDataMap.unlock;
       }
     }
 

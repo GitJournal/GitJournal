@@ -49,7 +49,7 @@ void main() {
       fileStorage = await FileStorage.fake(repoPath);
 
       var dt = GDateTime.utc(2019, 12, 2, 5, 4, 2);
-      var props = ListMap<String, dynamic>.of({
+      var props = IMap<String, dynamic>({
         'created': toIso8601WithTimezone(dt),
       });
 

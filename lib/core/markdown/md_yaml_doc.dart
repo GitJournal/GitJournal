@@ -18,16 +18,16 @@ Function _deepEq = const DeepCollectionEquality().equals;
 
 class MdYamlDoc {
   final String body;
-  late final ListMap<String, dynamic> props;
+  late final IMap<String, dynamic> props;
 
   MdYamlDoc({
     this.body = "",
-    ListMap<String, dynamic>? props,
+    IMap<String, dynamic>? props,
   }) {
-    this.props = props ?? ListMap.empty();
+    this.props = props ?? IMap();
   }
 
-  MdYamlDoc copyWith({String? body, ListMap<String, dynamic>? props}) {
+  MdYamlDoc copyWith({String? body, IMap<String, dynamic>? props}) {
     return MdYamlDoc(
       body: body ?? this.body,
       props: props ?? this.props,
@@ -63,14 +63,14 @@ class MdYamlDoc {
   pb.MdYamlDoc toProtoBuf() {
     return pb.MdYamlDoc(
       body: body,
-      map: mapToProtoBuf(props),
+      map: mapToProtoBuf(props.unlock),
     );
   }
 
   static MdYamlDoc fromProtoBuf(pb.MdYamlDoc p) {
     return MdYamlDoc(
       body: p.body,
-      props: ListMap.of(mapFromProtoBuf(p.map)),
+      props: IMap(mapFromProtoBuf(p.map)),
     );
   }
 }
@@ -96,7 +96,7 @@ pb.Union _toUnion(dynamic val) {
     return pb.Union(isNull: true);
   }
 
-  if (val is YamlList || val is List) {
+  if (val is YamlList || val is List || val is IList) {
     var list = <pb.Union>[];
     for (var v in val) {
       list.add(_toUnion(v));
@@ -105,7 +105,7 @@ pb.Union _toUnion(dynamic val) {
     return pb.Union(listValue: list);
   }
 
-  if (val is Map) {
+  if (val is Map || val is IMap) {
     var map = <String, pb.Union>{};
     for (var e in val.entries) {
       map[e.key.toString()] = _toUnion(e.value);
@@ -132,13 +132,13 @@ dynamic _fromUnion(pb.Union u) {
     for (var v in u.listValue) {
       list.add(_fromUnion(v));
     }
-    return list;
+    return list.lock;
   } else if (u.mapValue.isNotEmpty) {
     var map = <String, dynamic>{};
     for (var e in u.mapValue.entries) {
       map[e.key] = _fromUnion(e.value);
     }
-    return map;
+    return map.lock;
   } else if (u.isNull) {
     return null;
   }

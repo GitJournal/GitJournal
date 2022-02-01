@@ -40,7 +40,7 @@ class MarkdownYAMLCodec {
           var yamlText =
               str.substring(4, str.length - endYamlStrWithoutLineEding.length);
           var map = parseYamlText(yamlText);
-          return MdYamlDoc(props: ListMap.of(map));
+          return MdYamlDoc(props: map);
         }
 
         return MdYamlDoc(body: str);
@@ -60,29 +60,29 @@ class MarkdownYAMLCodec {
         }
       }
 
-      return MdYamlDoc(body: body, props: ListMap.of(map));
+      return MdYamlDoc(body: body, props: map);
     }
 
     return MdYamlDoc(body: str);
   }
 
-  static LinkedHashMap<String, dynamic> parseYamlText(String yamlText) {
+  static IMap<String, dynamic> parseYamlText(String yamlText) {
     LinkedHashMap<String, dynamic> map = LinkedHashMap<String, dynamic>();
     if (yamlText.isEmpty) {
-      return map;
+      return map.lock;
     }
 
     try {
       var yamlMap = loadYaml(yamlText);
       if (yamlMap is! Map) {
-        return map;
+        return map.lock;
       }
-      map = _convertMap(yamlMap as YamlMap);
+      return _convertMap(yamlMap as YamlMap);
     } catch (err) {
       Log.d('MarkdownYAMLSerializer::decode("$yamlText") -> ${err.toString()}');
     }
 
-    return map;
+    return map.lock;
   }
 
   String encode(MdYamlDoc note) {
@@ -97,13 +97,13 @@ class MarkdownYAMLCodec {
     return str;
   }
 
-  static String toYamlHeader(ListMap<String, dynamic> data) {
-    var yaml = toYAML(data);
+  static String toYamlHeader(IMap<String, dynamic> data) {
+    var yaml = toYAML(data.unlock);
     return "---\n" + yaml + "---\n";
   }
 }
 
-LinkedHashMap<String, dynamic> _convertMap(YamlMap yamlMap) {
+IMap<String, dynamic> _convertMap(YamlMap yamlMap) {
   LinkedHashMap<String, dynamic> map = LinkedHashMap<String, dynamic>();
 
   yamlMap.forEach((key, value) {
@@ -113,5 +113,5 @@ LinkedHashMap<String, dynamic> _convertMap(YamlMap yamlMap) {
     map[key] = value;
   });
 
-  return map;
+  return map.lock;
 }

@@ -267,7 +267,7 @@ class NoteSerializer implements NoteSerializerInterface {
       sortedProps[e.key] = e.value;
     }
 
-    return MdYamlDoc(body: body, props: ListMap.of(sortedProps));
+    return MdYamlDoc(body: body, props: sortedProps.lock);
   }
 
   static Note decodeNote({

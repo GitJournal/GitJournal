@@ -14,19 +14,19 @@ void main() {
   test('Equality', () {
     var now = GDateTime(const Duration(hours: 1), 2010, 1, 2, 3, 4, 5);
 
-    var aProps = ListMap<String, dynamic>.of({
+    var aProps = IMap<String, dynamic>({
       'a': 1,
       'title': 'Foo',
-      'list': ["Foo", "Bar", 1],
-      'map': <String, dynamic>{'a': 5},
+      'list': const <dynamic>["Foo", "Bar", 1].lock,
+      'map': const <String, dynamic>{'a': 5}.lock,
       'date': now,
     });
 
-    var bProps = ListMap<String, dynamic>.of({
+    var bProps = IMap<String, dynamic>({
       'a': 1,
       'title': 'Foo',
-      'list': ["Foo", "Bar", 1],
-      'map': <String, dynamic>{'a': 5},
+      'list': const <dynamic>["Foo", "Bar", 1].lock,
+      'map': const <String, dynamic>{'a': 5}.lock,
       'date': now,
     });
 
@@ -34,6 +34,15 @@ void main() {
     var b = MdYamlDoc(body: "a", props: bProps);
     expect(a, b);
 
+    expect(
+      a.props['list'],
+      MdYamlDoc.fromProtoBuf(a.toProtoBuf()).props['list'],
+    );
+    expect(
+      a.props['map'],
+      MdYamlDoc.fromProtoBuf(a.toProtoBuf()).props['map'],
+    );
+    expect(a.props, MdYamlDoc.fromProtoBuf(a.toProtoBuf()).props);
     expect(a, MdYamlDoc.fromProtoBuf(a.toProtoBuf()));
   });
 }
