@@ -14,6 +14,7 @@ import 'package:universal_io/io.dart' show Directory;
 
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/utils/result.dart';
 import 'git_transfer_progress.dart';
 
 const DefaultBranchName = DEFAULT_BRANCH;
@@ -73,14 +74,15 @@ Future<Result<void>> cloneRemotePluggable({
       sshPrivateKey, sshPassword, statusFile);
   timer.cancel();
   if (fetchR.isFailure) {
-    // FIXME: Give a better error?
-    return fail(fetchR);
+    var ex = WrappedException(fetchR, "`git fetch` failed");
+    return Result.fail(ex);
   }
 
   var branchNameR = await defaultBranchFn(
       repoPath, remoteName, sshPublicKey, sshPrivateKey, sshPassword);
   if (branchNameR.isFailure) {
-    return fail(branchNameR);
+    var ex = WrappedException(branchNameR, "`git fetch default branch` failed");
+    return Result.fail(ex);
   }
   var remoteBranchName = branchNameR.getOrThrow();
   if (remoteBranchName == null) {
