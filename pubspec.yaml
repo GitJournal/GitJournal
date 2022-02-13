@@ -119,7 +119,7 @@ dev_dependencies:
   test: ^1.16.5
   build_runner: ^2.1.2
   dashbook: ^0.1.3
-  dart_code_metrics: ^4.3.3
+  dart_code_metrics: ^4.10.1
   hive_generator: ^1.1.0
   flutter_lints: ^1.0.4
   process_run: ^0.12.3+2

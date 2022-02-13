@@ -30,6 +30,7 @@ protos:
 
 unused:
 	./flutterw pub run dart_code_metrics:metrics check-unused-files lib
+	./flutterw pub run dart_code_metrics:metrics check-unused-code lib
 
 fmt:
 	./flutterw pub run import_sorter:main
