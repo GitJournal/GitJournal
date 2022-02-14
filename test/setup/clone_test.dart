@@ -17,6 +17,10 @@ import 'package:gitjournal/setup/clone_git_exec.dart';
 
 const emptyRepoHttp = "https://github.com/GitJournal/empty_repo.git";
 
+/// has a commit in the 'master' branch
+const sinlgeCommitRepoHttp =
+    "https://github.com/GitJournal/test_clone_repo.git";
+
 void main() {
   Log.d("unused");
 
@@ -77,6 +81,7 @@ void main() {
     var repo = GitRepository.load(repoPath).getOrThrow();
     var c = repo.headCommit().getOrThrow();
     expect(c.message, "First Commit");
+    expect(c.parents, []);
 
     var branch = repo.currentBranch().getOrThrow();
     expect(branch, 'main');
@@ -99,16 +104,120 @@ void main() {
     var repo = GitRepository.load(repoPath).getOrThrow();
     var c = repo.headCommit().getOrThrow();
     expect(c.message, "First Commit");
+    expect(c.parents, []);
 
     var branch = repo.currentBranch().getOrThrow();
     expect(branch, 'main');
 
     repo.close().throwOnError();
   });
-}
 
-// test with a single commit in 'remote'
-// test with a single commit in both
+  test('Empty Repo - Default Main - Non Empty Remote', () async {
+    // final logsCacheDir = await Directory.systemTemp.createTemp();
+    // await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
+
+    var tempDir = await Directory.systemTemp.createTemp();
+    var repoPath = tempDir.path;
+
+    GitRepository.init(repoPath, defaultBranch: 'main').throwOnError();
+    await clone(repoPath, sinlgeCommitRepoHttp);
+
+    var repo = GitRepository.load(repoPath).getOrThrow();
+    var remoteConfig = repo.config.remote('origin')!;
+    expect(remoteConfig.url, sinlgeCommitRepoHttp);
+
+    var branchConfig = repo.config.branch('master')!;
+    expect(branchConfig.remote, 'origin');
+    expect(branchConfig.merge!.value, 'refs/heads/master');
+
+    var c = repo.headCommit().getOrThrow();
+    expect(c.message, "Initial commit");
+    expect(c.parents, []);
+
+    repo.close().throwOnError();
+  });
+
+  test('Empty Repo - Default Master - Non Empty Remote', () async {
+    // final logsCacheDir = await Directory.systemTemp.createTemp();
+    // await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
+
+    var tempDir = await Directory.systemTemp.createTemp();
+    var repoPath = tempDir.path;
+
+    GitRepository.init(repoPath, defaultBranch: 'master').throwOnError();
+    await clone(repoPath, sinlgeCommitRepoHttp);
+
+    var repo = GitRepository.load(repoPath).getOrThrow();
+    var remoteConfig = repo.config.remote('origin')!;
+    expect(remoteConfig.url, sinlgeCommitRepoHttp);
+
+    var branchConfig = repo.config.branch('master')!;
+    expect(branchConfig.remote, 'origin');
+    expect(branchConfig.merge!.value, 'refs/heads/master');
+
+    var c = repo.headCommit().getOrThrow();
+    expect(c.message, "Initial commit");
+    expect(c.parents, []);
+
+    repo.close().throwOnError();
+  });
+
+  test('Single Commit Both - Default Master', () async {
+    // final logsCacheDir = await Directory.systemTemp.createTemp();
+    // await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
+
+    var tempDir = await Directory.systemTemp.createTemp();
+    var repoPath = tempDir.path;
+
+    GitRepository.init(repoPath, defaultBranch: 'master').throwOnError();
+    addOneCommit(repoPath);
+
+    await clone(repoPath, sinlgeCommitRepoHttp);
+
+    var repo = GitRepository.load(repoPath).getOrThrow();
+    var c = repo.headCommit().getOrThrow();
+    expect(c.message, "Merge origin/master");
+    expect(c.parents.isNotEmpty, true);
+
+    var tree = repo.objStorage.readTree(c.treeHash).getOrThrow();
+    expect(tree.entries.length, 2);
+    expect(tree.entries[0].name, '1.md');
+    expect(tree.entries[1].name, 'README.md');
+
+    var branch = repo.currentBranch().getOrThrow();
+    expect(branch, 'master');
+
+    repo.close().throwOnError();
+  });
+
+  test('Single Commit Both - Default main', () async {
+    // final logsCacheDir = await Directory.systemTemp.createTemp();
+    // await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
+
+    var tempDir = await Directory.systemTemp.createTemp();
+    var repoPath = tempDir.path;
+
+    GitRepository.init(repoPath, defaultBranch: 'main').throwOnError();
+    addOneCommit(repoPath);
+
+    await clone(repoPath, sinlgeCommitRepoHttp);
+
+    var repo = GitRepository.load(repoPath).getOrThrow();
+    var c = repo.headCommit().getOrThrow();
+    expect(c.message, "Merge origin/master");
+    expect(c.parents.isNotEmpty, true);
+
+    var tree = repo.objStorage.readTree(c.treeHash).getOrThrow();
+    expect(tree.entries.length, 2);
+    expect(tree.entries[0].name, '1.md');
+    expect(tree.entries[1].name, 'README.md');
+
+    var branch = repo.currentBranch().getOrThrow();
+    expect(branch, 'master');
+
+    repo.close().throwOnError();
+  });
+}
 
 Future<void> clone(String repoPath, String url) async {
   await cloneRemote(
