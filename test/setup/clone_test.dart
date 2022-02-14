@@ -21,6 +21,8 @@ const emptyRepoHttp = "https://github.com/GitJournal/empty_repo.git";
 const sinlgeCommitRepoHttp =
     "https://github.com/GitJournal/test_clone_repo.git";
 
+const sinlgeCommitRepoGit = "git@github.com:GitJournal/test_clone_repo.git";
+
 void main() {
   Log.d("unused");
 
@@ -217,6 +219,42 @@ void main() {
 
     repo.close().throwOnError();
   });
+
+  // This is being skipped as it's using keys from my osx machine
+  test('Clone Repo with SSH', () async {
+    final logsCacheDir = await Directory.systemTemp.createTemp();
+    await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
+
+    var tempDir = await Directory.systemTemp.createTemp();
+    var repoPath = tempDir.path;
+
+    GitRepository.init(repoPath, defaultBranch: 'main').throwOnError();
+
+    var public = File("/Users/vishesh/.ssh/id_ed25519.pub").readAsStringSync();
+    var private = File("/Users/vishesh/.ssh/id_ed25519").readAsStringSync();
+
+    await cloneRemote(
+      repoPath: repoPath,
+      cloneUrl: sinlgeCommitRepoGit,
+      remoteName: "origin",
+      sshPublicKey: public,
+      sshPrivateKey: private,
+      sshPassword: "",
+      authorName: "Author",
+      authorEmail: "email@example.com",
+      progressUpdate: (_) {},
+    ).throwOnError();
+
+    var repo = GitRepository.load(repoPath).getOrThrow();
+    var remoteConfig = repo.config.remote('origin')!;
+    expect(remoteConfig.url, sinlgeCommitRepoGit);
+
+    var branchConfig = repo.config.branch('master')!;
+    expect(branchConfig.remote, 'origin');
+    expect(branchConfig.merge!.value, 'refs/heads/master');
+
+    repo.close().throwOnError();
+  }, skip: true);
 }
 
 Future<void> clone(String repoPath, String url) async {
