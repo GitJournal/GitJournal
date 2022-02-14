@@ -15,6 +15,7 @@ import 'package:gitjournal/setup/clone_git_exec.dart';
 
 // import 'package:gitjournal/setup/clone_libgit2.dart';
 
+const emptyRepoHttp = "https://github.com/GitJournal/empty_repo.git";
 
 void main() {
   Log.d("unused");
@@ -27,24 +28,11 @@ void main() {
     var repoPath = tempDir.path;
 
     GitRepository.init(repoPath, defaultBranch: 'main').throwOnError();
-
-    var cloneUrl = "https://github.com/GitJournal/empty_repo.git";
-
-    await cloneRemote(
-      repoPath: repoPath,
-      cloneUrl: cloneUrl,
-      remoteName: "origin",
-      sshPublicKey: "",
-      sshPrivateKey: "",
-      sshPassword: "",
-      authorName: "Author",
-      authorEmail: "email@example.com",
-      progressUpdate: (_) {},
-    ).throwOnError();
+    await clone(repoPath, emptyRepoHttp);
 
     var repo = GitRepository.load(repoPath).getOrThrow();
     var remoteConfig = repo.config.remote('origin')!;
-    expect(remoteConfig.url, cloneUrl);
+    expect(remoteConfig.url, emptyRepoHttp);
 
     var branchConfig = repo.config.branch('main')!;
     expect(branchConfig.remote, 'origin');
@@ -61,24 +49,11 @@ void main() {
     var repoPath = tempDir.path;
 
     GitRepository.init(repoPath, defaultBranch: 'master').throwOnError();
-
-    var cloneUrl = "https://github.com/GitJournal/empty_repo.git";
-
-    await cloneRemote(
-      repoPath: repoPath,
-      cloneUrl: cloneUrl,
-      remoteName: "origin",
-      sshPublicKey: "",
-      sshPrivateKey: "",
-      sshPassword: "",
-      authorName: "Author",
-      authorEmail: "email@example.com",
-      progressUpdate: (_) {},
-    ).throwOnError();
+    await clone(repoPath, emptyRepoHttp);
 
     var repo = GitRepository.load(repoPath).getOrThrow();
     var remoteConfig = repo.config.remote('origin')!;
-    expect(remoteConfig.url, cloneUrl);
+    expect(remoteConfig.url, emptyRepoHttp);
 
     var branchConfig = repo.config.branch('master')!;
     expect(branchConfig.remote, 'origin');
@@ -97,19 +72,7 @@ void main() {
     GitRepository.init(repoPath, defaultBranch: 'main').throwOnError();
     addOneCommit(repoPath);
 
-    var cloneUrl = "https://github.com/GitJournal/empty_repo.git";
-
-    await cloneRemote(
-      repoPath: repoPath,
-      cloneUrl: cloneUrl,
-      remoteName: "origin",
-      sshPublicKey: "",
-      sshPrivateKey: "",
-      sshPassword: "",
-      authorName: "Author",
-      authorEmail: "email@example.com",
-      progressUpdate: (_) {},
-    ).throwOnError();
+    await clone(repoPath, emptyRepoHttp);
 
     var repo = GitRepository.load(repoPath).getOrThrow();
     var c = repo.headCommit().getOrThrow();
@@ -131,19 +94,7 @@ void main() {
     GitRepository.init(repoPath, defaultBranch: 'master').throwOnError();
     addOneCommit(repoPath);
 
-    var cloneUrl = "https://github.com/GitJournal/empty_repo.git";
-
-    await cloneRemote(
-      repoPath: repoPath,
-      cloneUrl: cloneUrl,
-      remoteName: "origin",
-      sshPublicKey: "",
-      sshPrivateKey: "",
-      sshPassword: "",
-      authorName: "Author",
-      authorEmail: "email@example.com",
-      progressUpdate: (_) {},
-    ).throwOnError();
+    await clone(repoPath, emptyRepoHttp);
 
     var repo = GitRepository.load(repoPath).getOrThrow();
     var c = repo.headCommit().getOrThrow();
@@ -158,6 +109,20 @@ void main() {
 
 // test with a single commit in 'remote'
 // test with a single commit in both
+
+Future<void> clone(String repoPath, String url) async {
+  await cloneRemote(
+    repoPath: repoPath,
+    cloneUrl: url,
+    remoteName: "origin",
+    sshPublicKey: "",
+    sshPrivateKey: "",
+    sshPassword: "",
+    authorName: "Author",
+    authorEmail: "email@example.com",
+    progressUpdate: (_) {},
+  ).throwOnError();
+}
 
 void addOneCommit(String repoPath) {
   var repo = GitRepository.load(repoPath).getOrThrow();
