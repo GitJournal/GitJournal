@@ -247,24 +247,8 @@ Booga Wooga
       expect(note.body, content);
     });
 
-    test('Migrate from old checklist format', () async {
-      var content = "[X] One\n[ ] Two";
-
-      var noteFullPath = p.join(repoPath, "note448.md");
-      await io.File(noteFullPath).writeAsString(content);
-
-      var parentFolder = NotesFolderFS.root(config, fileStorage);
-      var file = File.short("note448.md", repoPath, gitDt);
-      var note = await NoteStorage.load(file, parentFolder).getOrThrow();
-
-      var checklist = Checklist(note);
-
-      note = checklist.note;
-      expect(note.body, "- [X] One\n- [ ] Two");
-    });
-
     test('Empty Checklist', () async {
-      var content = "[X] One\n";
+      var content = "- [X] One\n";
 
       var noteFullPath = p.join(repoPath, "note449.md");
       await io.File(noteFullPath).writeAsString(content);
@@ -281,7 +265,7 @@ Booga Wooga
     });
 
     test('Checklist Header only', () async {
-      var content = "#Title\n[X] One\n";
+      var content = "#Title\n- [X] One\n";
 
       var noteFullPath = p.join(repoPath, "note429.md");
       await io.File(noteFullPath).writeAsString(content);
