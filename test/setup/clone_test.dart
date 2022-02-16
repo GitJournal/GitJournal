@@ -27,8 +27,8 @@ void main() {
   Log.d("unused");
 
   test('Empty Repo - Default Main', () async {
-    // final logsCacheDir = await Directory.systemTemp.createTemp();
-    // await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
+    final logsCacheDir = await Directory.systemTemp.createTemp();
+    await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
 
     var tempDir = await Directory.systemTemp.createTemp();
     var repoPath = tempDir.path;
