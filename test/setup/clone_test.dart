@@ -92,16 +92,19 @@ void main() {
   });
 
   test('Single Commit Repo - Default Master', () async {
-    // final logsCacheDir = await Directory.systemTemp.createTemp();
-    // await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
+    final logsCacheDir = await Directory.systemTemp.createTemp();
+    await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
 
     var tempDir = await Directory.systemTemp.createTemp();
     var repoPath = tempDir.path;
+    Log.i('repoPath: $repoPath');
 
     GitRepository.init(repoPath, defaultBranch: 'master').throwOnError();
     addOneCommit(repoPath);
+    Log.i('Conf: ${File(p.join(repoPath, '.git/config')).readAsStringSync()}');
 
     await clone(repoPath, emptyRepoHttp);
+    Log.i('Conf: ${File(p.join(repoPath, '.git/config')).readAsStringSync()}');
 
     var repo = GitRepository.load(repoPath).getOrThrow();
     var c = repo.headCommit().getOrThrow();
