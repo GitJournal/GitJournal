@@ -54,10 +54,7 @@ dependencies:
   package_info_plus: ^1.0.4
   path: ^1.8.0
   permission_handler: ^8.3.0
-  photo_view:
-    git:
-      url: https://github.com/karvulf/photo_view.git
-      ref: bugfix/flutter-2.5-update
+  photo_view: ^0.13.0
   provider: ^6.0.1
   quick_actions: ^0.6.0+3
   receive_sharing_intent: ^1.4.5
