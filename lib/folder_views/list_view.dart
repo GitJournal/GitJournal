@@ -129,7 +129,6 @@ class _FolderListViewState extends State<FolderListView> {
   }
 
   Widget _buildItem(BuildContext context, int i, Animation<double> animation) {
-    // vHanda FIXME: Why does this method get called with i >= length ?
     if (i >= widget.folder.notes.length) {
       return Container();
     }
