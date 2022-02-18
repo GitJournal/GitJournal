@@ -19,24 +19,24 @@ settings:
     theme: Theme
     images:
       title: Image Settings
-      subtitle: Configure how images are displayed
+      subtitle: paramétrer comment les images sont affiché
       imageTextType:
-        alt: Alt Text
-        altAndTooltip: Alt Text and Tooltip
-        tooltip: Tooltip
-        none: None
+        alt: texte alt
+        altAndTooltip: texte alt et infobulle
+        tooltip: Infobulle
+        none: Aucun
       captions:
-        title: Image Captions
-        subtitle: Configure the image captions
-        useAsCaption: Use as caption
-        overlayCaption: Draw caption on top of large enough images
-        transparentCaption: Overlay captions have a semitransparent background
-        blurBehindCaption: Blur Image behind caption
+        title: Légendes des images
+        subtitle: Configurer la légende des images
+        useAsCaption: Utilisé en tant que légende
+        overlayCaption: Dessinez une légende en haut des images suffisamment grandes
+        transparentCaption: Les légendes ont un arrière-plan semi-transparent.
+        blurBehindCaption: Floutter les images derriéres les légendes
         tooltipFirst:
-          title: Show tooltip before alt text
-          tooltip: Current order is “<tooltip> - <altText>”
-          altText: Current order is “<altText> - <tooltip>”
-        captionOverrides: Caption Overrides
+          title: afficher infobulle avent alt texte
+          tooltip: L ordre actuelle “<tooltip> - <altText>”
+          altText: L ordre actuelle “<altText> - <tooltip>”
+        captionOverrides: Remplacement des légendes
         tagDescription: Put these tags in “![altText](... "tooltip")” to override the behavior for it.
         doNotCaptionTags:
           hint: DoNotCaption-Tags
@@ -52,29 +52,29 @@ settings:
             same: Tag cannot be identical to a “DoNotCaption-Tag”.
       detailsView:
         header: Detail View
-        maxZoom: Maximal zoom level
+        maxZoom: Niveau de zoom maximal
         rotateGestures:
-          title: Rotate Image with gestures
-          subtitle: Rotate by moving two fingers in a circle
+          title: Rotation de l'image avec des gestes
+          subtitle: Faire une rotation en déplaçant deux doigts dans un cercle
       theming:
         title: Image Theming
-        subtitle: Configure how images are themed
+        subtitle: Configurer la façon dont les images sont thématisées
         adjustColors:
           all: All
-          blackAndWhite: Only black and white
-          grays: Only grays
+          blackAndWhite: Seulement blanc et noir
+          grays: Seulement gris
         doNotThemeTags:
           hint: DoNotTheme-Tags
           label: Never theme images with tags
           validator:
-            empty: Tags cannot be empty.
-            same: Tag cannot be identical to a “DoTheme-Tag”.
+            empty: Les tags ne peuvent être vide.
+            same: Les tags ne peuvent être identique à “DoTheme-Tag”.
         doThemeTags:
           hint: DoTheme-Tag
           label: Always theme images with tags
           validator:
-            empty: Tags cannot be empty.
-            same: Tag cannot be identical to a “DoNotTheme-Tag”.
+            empty: Les tags ne peuvent être vide.
+            same: Les tags ne peuvent être identique à “DoNotTheme-Tag”.
         matchCanvasColor:
           title: Match Background Color
           subtitle: Replaces white/black parts of vector graphics with the canvas color
@@ -130,7 +130,7 @@ settings:
     title: Paramètres de métadonnées des notes
     subtitle: Configure how the Note Metadata is saved
     text: Every note has some metadata which is stored in a YAML Header as follows -
-    enableHeader: Enable YAML Header
+    enableHeader: Activer les en-tête YAML
     modified: Champ modifié
     created: Champ créé
     tags: Champ d’étiquette
