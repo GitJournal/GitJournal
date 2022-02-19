@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dart_git/dart_git.dart';
