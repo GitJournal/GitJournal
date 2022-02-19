@@ -199,9 +199,6 @@ void main() {
 
   // This is being skipped as it's using keys from my osx machine
   test('Clone Repo with SSH', () async {
-    final logsCacheDir = await Directory.systemTemp.createTemp();
-    await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
-
     var tempDir = await Directory.systemTemp.createTemp();
     var repoPath = tempDir.path;
 
