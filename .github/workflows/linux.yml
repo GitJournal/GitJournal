@@ -19,7 +19,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Test
-        run: flutter test
+        run: ./scripts/test.sh
       - name: Unlock Secrets
         env:
           GITCRYPT_KEY: ${{ secrets.GITCRYPT_KEY }}
