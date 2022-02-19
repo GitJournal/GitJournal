@@ -7,3 +7,4 @@
 set -eux pipefail
 
 flutter test --machine >test-results.json
+cat test-results.json
