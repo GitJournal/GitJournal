@@ -18,8 +18,11 @@ import 'package:gitjournal/core/markdown/md_yaml_doc.dart';
 import 'package:gitjournal/core/markdown/md_yaml_note_serializer.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/settings/settings.dart';
+import 'lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   group('Note Serializer Test', () {
     late String repoPath;
     late NotesFolderConfig config;

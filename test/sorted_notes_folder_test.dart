@@ -19,8 +19,11 @@ import 'package:gitjournal/core/folder/sorted_notes_folder.dart';
 import 'package:gitjournal/core/folder/sorting_mode.dart';
 import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/utils/result.dart';
+import 'lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   group('Sorted Notes Folder Test', () {
     late String repoPath;
     late io.Directory tempDir;

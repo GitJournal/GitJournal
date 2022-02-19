@@ -7,8 +7,11 @@
 import 'package:test/test.dart';
 
 import 'package:gitjournal/core/links_loader.dart';
+import 'lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   group('LinksLoader', () {
     var contents = """[[GitJournal]]
 

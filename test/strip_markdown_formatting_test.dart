@@ -7,8 +7,11 @@
 import 'package:test/test.dart';
 
 import 'package:gitjournal/utils/markdown.dart';
+import 'lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   group('Markdown Remove Formatting', () {
     test('Test Headers', () {
       var input = '# Hello\nHow are you?';

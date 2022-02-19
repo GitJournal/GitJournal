@@ -17,8 +17,11 @@ import 'package:gitjournal/core/image.dart' as core;
 import 'package:gitjournal/core/image.dart';
 import 'package:gitjournal/core/transformers/base.dart';
 import 'package:gitjournal/editors/common.dart';
+import '../lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   late NotesFolderFS rootFolder;
   late core.Image image;
   var hash = "8e9bec0ec76d06092355a34a79d3eea5";

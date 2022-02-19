@@ -9,8 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:gitjournal/editors/controllers/highlighting_text_controller.dart';
+import '../lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   test('Simple', () {
     var con = HighlightingTextController(
       highlightText: "wor",

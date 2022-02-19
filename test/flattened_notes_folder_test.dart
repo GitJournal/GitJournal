@@ -18,8 +18,11 @@ import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_storage.dart';
+import 'lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   var random = Random();
 
   String _getRandomFilePath(String basePath) {

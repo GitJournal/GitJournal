@@ -7,8 +7,11 @@
 import 'package:test/test.dart';
 
 import 'package:gitjournal/core/processors/image_extractor.dart';
+import '../lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   test('Should parse simple tags', () {
     var body = """#hello Hi
 ![alt](../final.img)

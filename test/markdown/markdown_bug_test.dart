@@ -7,6 +7,8 @@
 import 'package:markdown/markdown.dart' as md;
 import 'package:test/test.dart';
 
+import '../lib.dart';
+
 /// Parse [[term]]
 class _WikiLinkSyntax extends md.InlineSyntax {
   static const String _pattern = r'\[\[([^\[\]]+)\]\]';
@@ -52,6 +54,8 @@ class _TaskListSyntax extends md.InlineSyntax {
 }
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   //
   // https://github.com/dart-lang/markdown/issues/293
   //

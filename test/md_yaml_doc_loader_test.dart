@@ -10,8 +10,11 @@ import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/core/markdown/md_yaml_doc_loader.dart';
 import 'package:gitjournal/utils/result.dart';
+import 'lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   group('MdYamlDocLoader', () {
     late Directory tempDir;
     late String filePath;

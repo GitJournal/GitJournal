@@ -12,8 +12,11 @@ import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/apis/github.dart';
+import '../lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   test('Parse json', () async {
     var testDataPath = '';
 

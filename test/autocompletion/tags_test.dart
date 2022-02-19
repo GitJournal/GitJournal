@@ -8,8 +8,11 @@ import 'package:test/test.dart';
 
 import 'package:gitjournal/editors/autocompletion_widget.dart';
 import 'package:gitjournal/editors/common.dart';
+import '../lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   var c = TagsAutoCompleter();
 
   test('Extract first word', () {

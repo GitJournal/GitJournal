@@ -24,10 +24,13 @@ import 'package:gitjournal/core/markdown/md_yaml_note_serializer.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/utils/datetime.dart';
+import 'lib.dart';
 
 GitHash _compute(String s) => GitHash.compute(utf8.encode(s));
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   group('NoteStorage', () {
     var notes = <Note>[];
     late String n1Path;

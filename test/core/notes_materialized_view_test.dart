@@ -20,8 +20,11 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/transformers/base.dart';
 import 'package:gitjournal/core/views/notes_materialized_view.dart';
+import '../lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   group('ViewTest', () {
     late String repoPath;
     late io.Directory tempDir;

@@ -7,8 +7,11 @@
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:gitjournal/setup/git_transfer_progress.dart';
+import '../lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   test('Simple', () {
     var p = GitTransferProgress.parse('6793 1993 2071 0 0 0 434727')!;
 

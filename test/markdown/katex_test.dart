@@ -8,8 +8,11 @@ import 'package:markdown/markdown.dart' as md;
 import 'package:test/test.dart';
 
 import 'package:gitjournal/markdown/parsers/katex.dart';
+import '../lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   test('Inline', () async {
     var body = r"""# Hi
 $\\sqrt{3x-1}+(1+x)^2$""";

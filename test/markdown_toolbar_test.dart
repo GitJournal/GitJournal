@@ -9,8 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:test/test.dart';
 
 import 'package:gitjournal/editors/markdown_toolbar.dart';
+import 'lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   void _testLine({
     required String before,
     required int beforeOffset,

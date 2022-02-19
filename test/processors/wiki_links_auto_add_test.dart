@@ -12,8 +12,11 @@ import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/processors/wiki_links_auto_add.dart';
+import '../lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   test('Should process body', () async {
     var body =
         "GitJournal is the best? And it works quite well with Foam, Foam and Obsidian.";

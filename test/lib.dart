@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'dart:io';
+
 import 'package:dart_git/plumbing/git_hash.dart';
 import 'package:process_run/process_run.dart';
 
@@ -26,4 +28,13 @@ Future<void> setupFixture(String repoPath, GitHash hash) async {
   await runGit('checkout $hash', repoPath);
   await runGit('switch -c main', repoPath);
   await runGit('remote rm origin', repoPath);
+}
+
+Future<void> gjSetupAllTests() async {
+  if (!Platform.environment.containsKey("CI")) {
+    return;
+  }
+
+  final logsCacheDir = await Directory.systemTemp.createTemp();
+  await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
 }

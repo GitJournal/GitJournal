@@ -11,8 +11,11 @@ import 'package:markdown/markdown.dart' as md;
 import 'package:test/test.dart';
 
 import 'package:gitjournal/core/processors/text_visitor.dart';
+import '../lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   void _visit(String body, fn.Func1<String, void> textCallback) {
     final doc = md.Document(
       encodeHtml: false,

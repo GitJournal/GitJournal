@@ -17,6 +17,7 @@ import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/utils/result.dart';
+import 'lib.dart';
 
 void main() {
   late String repoPath;
@@ -33,6 +34,8 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     config = NotesFolderConfig('', await SharedPreferences.getInstance());
     fileStorage = await FileStorage.fake(repoPath);
+
+    await gjSetupAllTests();
   });
 
   tearDownAll(() async {

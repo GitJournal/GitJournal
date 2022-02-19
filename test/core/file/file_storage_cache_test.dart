@@ -15,8 +15,11 @@ import 'package:universal_io/io.dart' as io;
 import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/file/file_storage_cache.dart';
+import '../../lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   test('Cache', () async {
     var commits = {
       GitHash("9a54971363328d210043eb0bea337e5742816194"),

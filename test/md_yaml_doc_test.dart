@@ -9,8 +9,11 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:test/test.dart';
 
 import 'package:gitjournal/core/markdown/md_yaml_doc.dart';
+import 'lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   test('Equality', () {
     var now = GDateTime(const Duration(hours: 1), 2010, 1, 2, 3, 4, 5);
 

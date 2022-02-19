@@ -7,8 +7,11 @@
 import 'package:test/test.dart';
 
 import 'package:gitjournal/utils/merge_conflict_resolver.dart';
+import 'lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   test("Body only conflict", () {
     String input = '''---
 title: Foo

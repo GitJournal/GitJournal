@@ -7,8 +7,11 @@
 import 'package:test/test.dart';
 
 import 'package:gitjournal/core/worker_queue.dart';
+import '../lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   group('WorkerQueue', () {
     test('Simple', () async {
       int func(int input) => input + 5;

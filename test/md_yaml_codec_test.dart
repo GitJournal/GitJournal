@@ -11,6 +11,7 @@ import 'package:yaml/yaml.dart';
 import 'package:gitjournal/core/markdown/md_yaml_doc.dart';
 import 'package:gitjournal/core/markdown/md_yaml_doc_codec.dart';
 import 'package:gitjournal/utils/datetime.dart';
+import 'lib.dart';
 
 DateTime nowWithoutMicro() {
   var dt = DateTime.now();
@@ -18,6 +19,8 @@ DateTime nowWithoutMicro() {
 }
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   group('Serializers', () {
     test('Markdown Serializer', () {
       var created = toIso8601WithTimezone(nowWithoutMicro());

@@ -13,8 +13,11 @@ import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/analytics/generated/analytics.pb.dart' as pb;
 import 'package:gitjournal/analytics/storage.dart';
+import '../lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   test('Read and write', () async {
     var ev1 = _randomEvent(1);
     var ev2 = _randomEvent(2);

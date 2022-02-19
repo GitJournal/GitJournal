@@ -15,7 +15,6 @@ import 'package:test/test.dart';
 import 'package:universal_io/io.dart' as io;
 
 import 'package:gitjournal/core/note.dart';
-import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/settings.dart';
@@ -26,15 +25,11 @@ Future<void> main() async {
   late io.Directory baseDir;
   late String repoPath;
   late SharedPreferences pref;
-  final logsCacheDir = await io.Directory.systemTemp.createTemp();
 
   final headHash = GitHash('c8a879a4a9c27abcc27a4d2ee2b2ba0aad5fc940');
   late GitJournalRepo repo;
 
-  setUpAll(() async {
-    // await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
-    Log.v("Logging initiated $logsCacheDir");
-  });
+  setUpAll(gjSetupAllTests);
 
   Future<void> _setup({
     GitHash? head,

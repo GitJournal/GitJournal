@@ -4,14 +4,15 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dart_git/dart_git.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
-import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/setup/clone_git_exec.dart';
+import '../lib.dart';
 
 // import 'package:gitjournal/setup/clone_libgit2.dart';
 
@@ -24,12 +25,9 @@ const sinlgeCommitRepoHttp =
 const sinlgeCommitRepoGit = "git@github.com:GitJournal/test_clone_repo.git";
 
 void main() {
-  Log.d("unused");
+  setUpAll(gjSetupAllTests);
 
   test('Empty Repo - Default Main', () async {
-    final logsCacheDir = await Directory.systemTemp.createTemp();
-    await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
-
     var tempDir = await Directory.systemTemp.createTemp();
     var repoPath = tempDir.path;
 
@@ -48,9 +46,6 @@ void main() {
   });
 
   test('Empty Repo - Default Master', () async {
-    // final logsCacheDir = await Directory.systemTemp.createTemp();
-    // await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
-
     var tempDir = await Directory.systemTemp.createTemp();
     var repoPath = tempDir.path;
 
@@ -69,9 +64,6 @@ void main() {
   });
 
   test('Single Commit Repo - Default Main', () async {
-    // final logsCacheDir = await Directory.systemTemp.createTemp();
-    // await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
-
     var tempDir = await Directory.systemTemp.createTemp();
     var repoPath = tempDir.path;
 
@@ -92,19 +84,13 @@ void main() {
   });
 
   test('Single Commit Repo - Default Master', () async {
-    final logsCacheDir = await Directory.systemTemp.createTemp();
-    await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
-
     var tempDir = await Directory.systemTemp.createTemp();
     var repoPath = tempDir.path;
-    Log.i('repoPath: $repoPath');
 
     GitRepository.init(repoPath, defaultBranch: 'master').throwOnError();
     addOneCommit(repoPath);
-    Log.i('Conf: ${File(p.join(repoPath, '.git/config')).readAsStringSync()}');
 
     await clone(repoPath, emptyRepoHttp);
-    Log.i('Conf: ${File(p.join(repoPath, '.git/config')).readAsStringSync()}');
 
     var repo = GitRepository.load(repoPath).getOrThrow();
     var c = repo.headCommit().getOrThrow();
@@ -118,9 +104,6 @@ void main() {
   });
 
   test('Empty Repo - Default Main - Non Empty Remote', () async {
-    // final logsCacheDir = await Directory.systemTemp.createTemp();
-    // await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
-
     var tempDir = await Directory.systemTemp.createTemp();
     var repoPath = tempDir.path;
 
@@ -143,9 +126,6 @@ void main() {
   });
 
   test('Empty Repo - Default Master - Non Empty Remote', () async {
-    // final logsCacheDir = await Directory.systemTemp.createTemp();
-    // await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
-
     var tempDir = await Directory.systemTemp.createTemp();
     var repoPath = tempDir.path;
 
@@ -168,9 +148,6 @@ void main() {
   });
 
   test('Single Commit Both - Default Master', () async {
-    // final logsCacheDir = await Directory.systemTemp.createTemp();
-    // await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
-
     var tempDir = await Directory.systemTemp.createTemp();
     var repoPath = tempDir.path;
 
@@ -196,9 +173,6 @@ void main() {
   });
 
   test('Single Commit Both - Default main', () async {
-    // final logsCacheDir = await Directory.systemTemp.createTemp();
-    // await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
-
     var tempDir = await Directory.systemTemp.createTemp();
     var repoPath = tempDir.path;
 

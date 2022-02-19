@@ -11,8 +11,11 @@ import 'package:markdown/markdown.dart' as md;
 import 'package:test/test.dart';
 
 import 'package:gitjournal/markdown/markdown_codec.dart';
+import '../lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   test('Should encode and decode', () {
     var lines = File('test/testdata/example.md').readAsLinesSync();
 

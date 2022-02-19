@@ -8,8 +8,11 @@ import 'package:markdown/markdown.dart' as md;
 import 'package:test/test.dart';
 
 import 'package:gitjournal/markdown/markdown_renderer.dart';
+import '../lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   test('Parses Wiki Lnks and task items', () {
     var body = "[[GitJournal]] should match.\n- [ ] task item";
     var lines = body.split('\n');

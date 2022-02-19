@@ -7,8 +7,11 @@
 import 'package:test/test.dart';
 
 import 'package:gitjournal/editors/heuristics.dart';
+import 'lib.dart';
 
 void main() {
+  setUpAll(gjSetupAllTests);
+
   group('Editor Heuristic Tests', () {
     test('Does not modify test on newline', () {
       var origText = "Hello";
