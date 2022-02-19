@@ -20,6 +20,13 @@ jobs:
           fetch-depth: 0
       - name: Test
         run: ./scripts/test.sh
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Unit Tests ${{ matrix.os }} ${{ matrix.sdk }}
+          path: test-results.json
+          reporter: flutter-json
       - name: Unlock Secrets
         env:
           GITCRYPT_KEY: ${{ secrets.GITCRYPT_KEY }}
