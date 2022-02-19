@@ -88,7 +88,9 @@ Future<Result<void>> _merge(
     var r = repo.mergeCurrentTrackingBranch(author: author);
     if (r.isFailure) {
       var ex = r.error;
-      if (ex is ResultException) ex = ex.exception;
+      while (ex is ResultException) {
+        ex = ex.exception;
+      }
       if (ex is GitRefNotFound) {
         var refName = ReferenceName.remote(remoteName, remoteBranchName);
         if (ex.refName == refName) {
