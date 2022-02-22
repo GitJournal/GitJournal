@@ -51,6 +51,9 @@ test:
 version:
 	./scripts/version.sh
 
+bump_dart_git:
+	./flutterw packages upgrade dart_git
+
 # https://stackoverflow.com/a/26339924/147435
 .PHONY: list test protos
 list:

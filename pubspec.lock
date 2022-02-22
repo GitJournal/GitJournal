@@ -360,7 +360,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "3c30ecf32a9a098edc6f10bd79b340a82c2857b9"
+      resolved-ref: d13233aafcf8d06e6fe6e1d0f1b6609e85a8ebaf
       url: "https://github.com/GitJournal/dart-git.git"
     source: git
     version: "0.0.2"
@@ -489,7 +489,7 @@ packages:
       name: fast_immutable_collections
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.1.2"
+    version: "7.2.0"
   ffi:
     dependency: transitive
     description:
