@@ -84,6 +84,8 @@ void main() {
 
       notes = [n1, n2];
 
+      io.File(p.join(repoPath, '.gitignore')).writeAsStringSync('');
+
       var repo = GitRepository.load(tempDir.path).getOrThrow();
       repo
           .commit(
