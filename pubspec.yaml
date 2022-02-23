@@ -120,6 +120,7 @@ dev_dependencies:
   hive_generator: ^1.1.0
   flutter_lints: ^1.0.4
   process_run: ^0.12.3+2
+  junitreport: ^2.0.2
 
 flutter:
   uses-material-design: true

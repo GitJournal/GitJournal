@@ -910,6 +910,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.4.0"
+  junitreport:
+    dependency: "direct dev"
+    description:
+      name: junitreport
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
   jwt_decode:
     dependency: transitive
     description:
@@ -1624,6 +1631,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.2"
+  testreport:
+    dependency: transitive
+    description:
+      name: testreport
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   time:
     dependency: "direct main"
     description:

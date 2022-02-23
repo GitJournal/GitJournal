@@ -6,7 +6,5 @@
 
 set -eux pipefail
 
-flutter pub global activate junitreport
-
 flutter test --machine | tee test-results.json
-cat test-results.json | tojunit --output test-results.xml
+cat test-results.json | dart run junitreport:tojunit --output test-results.xml
