@@ -28,7 +28,7 @@ typedef GitFetchFunction = Future<Result<void>> Function(
   String statusFile,
 );
 
-typedef GitDefaultBranchFunction = Future<Result<String?>> Function(
+typedef GitDefaultBranchFunction = Future<Result<String>> Function(
   String repoPath,
   String remoteName,
   String sshPublicKey,
@@ -85,7 +85,7 @@ Future<Result<void>> cloneRemotePluggable({
     return Result.fail(ex);
   }
   var remoteBranchName = branchNameR.getOrThrow();
-  if (remoteBranchName == null) {
+  if (remoteBranchName.isEmpty) {
     var r = await repo.currentBranch();
     if (r.isSuccess) {
       remoteBranchName = r.getOrThrow();

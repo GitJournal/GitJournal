@@ -67,7 +67,7 @@ class RepositoryManager with ChangeNotifier {
     _repo = r.getOrThrow();
 
     notifyListeners();
-    return Result(_repo);
+    return Result(_repo!);
   }
 
   String repoFolderName(String id) {

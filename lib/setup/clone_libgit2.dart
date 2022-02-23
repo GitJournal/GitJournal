@@ -92,7 +92,7 @@ Future<Result<String>> _defaultBranch(
   var remoteBranch = repo.guessRemoteHead(remoteName);
   var _ = repo.close();
   if (remoteBranch == null) {
-    return Result(null);
+    return Result("");
   }
   var branch = remoteBranch.target!.branchName()!;
   return Result(branch);
