@@ -22,13 +22,13 @@ jobs:
           flutter-version: "2.8.1"
       - name: Test
         run: ./scripts/test.sh
-      - name: Test Report
-        uses: dorny/test-reporter@v1
-        if: success() || failure()
-        with:
-          name: Unit Tests ${{ matrix.os }} ${{ matrix.sdk }}
-          path: test-results.xml
-          reporter: jest-junit
+      # - name: Test Report
+      #   uses: dorny/test-reporter@v1
+      #   if: success() || failure()
+      #   with:
+      #     name: Unit Tests ${{ matrix.os }} ${{ matrix.sdk }}
+      #     path: test-results.xml
+      #     reporter: jest-junit
       - name: Unlock Secrets
         env:
           GITCRYPT_KEY: ${{ secrets.GITCRYPT_KEY }}

@@ -6,5 +6,6 @@
 
 set -eux pipefail
 
-flutter test --machine | tee test-results.json
-cat test-results.json | dart run junitreport:tojunit --output test-results.xml
+flutter test
+# --machine | tee test-results.json
+# cat test-results.json | dart run junitreport:tojunit --output test-results.xml
