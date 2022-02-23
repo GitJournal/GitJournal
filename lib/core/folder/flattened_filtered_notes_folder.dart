@@ -127,7 +127,7 @@ class FlattenedFilteredNotesFolder
           _notes[i] = note;
           notifyNoteModified(-1, note);
         } else {
-          _noteRemoved(-1, note);
+          await _noteRemoved(-1, note);
         }
       } else {
         if (await filter(note)) {

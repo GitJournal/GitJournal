@@ -40,7 +40,7 @@ Future<void> main() async {
     await reportError(isolateError.first, isolateError.last);
   }).sendPort);
 
-  runZonedGuarded(() async {
+  await runZonedGuarded(() async {
     await Chain.capture(() async {
       await JournalApp.main(pref);
     });

@@ -856,8 +856,8 @@ class GitJournalRepo with ChangeNotifier {
       return "";
     }
 
-    repo.createBranch(name, hash: remoteBranchRef.hash).throwOnError();
-    repo.setBranchUpstreamTo(name, remoteConfig, name).throwOnError();
+    await repo.createBranch(name, hash: remoteBranchRef.hash).throwOnError();
+    await repo.setBranchUpstreamTo(name, remoteConfig, name).throwOnError();
 
     Log.i("Created branch $name");
     return name;

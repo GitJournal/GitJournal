@@ -55,7 +55,7 @@ class _SyncButtonState extends State<SyncButton> {
         child: IconButton(
           icon: const Icon(Icons.signal_wifi_off),
           onPressed: () async {
-            _syncRepo();
+            unawaited(_syncRepo());
           },
         ),
       );
@@ -87,7 +87,7 @@ class _SyncButtonState extends State<SyncButton> {
         child: IconButton(
           icon: const Icon(Icons.cloud_off),
           onPressed: () async {
-            _syncRepo();
+            unawaited(_syncRepo());
           },
         ),
       );
@@ -97,7 +97,7 @@ class _SyncButtonState extends State<SyncButton> {
       child: IconButton(
         icon: Icon(_syncStatusIcon()),
         onPressed: () async {
-          _syncRepo();
+          unawaited(_syncRepo());
         },
       ),
     );

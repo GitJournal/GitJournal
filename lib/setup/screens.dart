@@ -239,7 +239,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
               gitConfig.sshPublicKey = publicKey;
               gitConfig.sshPrivateKey = privateKey;
               gitConfig.sshPassword = password;
-              gitConfig.save();
+              await gitConfig.save();
 
               setState(() {
                 _publicKey = publicKey;
@@ -336,7 +336,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
               gitConfig.sshPublicKey = publicKey;
               gitConfig.sshPrivateKey = privateKey;
               gitConfig.sshPassword = password;
-              gitConfig.save();
+              await gitConfig.save();
 
               setState(() {
                 _publicKey = publicKey;
@@ -618,7 +618,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       gitConfig.sshPublicKey = sshKey.publicKey;
       gitConfig.sshPrivateKey = sshKey.privateKey;
       gitConfig.sshPassword = sshKey.password;
-      gitConfig.save();
+      await gitConfig.save();
 
       setState(() {
         _publicKey = sshKey.publicKey;

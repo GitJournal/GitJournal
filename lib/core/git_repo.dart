@@ -278,7 +278,7 @@ class GitNoteRepository {
     var branchConfig = repo.config.branch(branch);
     if (branchConfig == null) {
       var ex = Exception("Branch '$branch' not in config");
-      logExceptionWarning(ex, StackTrace.current);
+      unawaited(logExceptionWarning(ex, StackTrace.current));
       return Result.fail(ex);
     }
 

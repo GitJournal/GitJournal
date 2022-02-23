@@ -90,7 +90,7 @@ class GitHostSetupAutoConfigurePageState
           if (userInfo.email.isNotEmpty) {
             gitConfig.gitAuthorEmail = userInfo.email;
           }
-          gitConfig.save();
+          await gitConfig.save();
         } on Exception catch (e, stacktrace) {
           _handleGitHostException(e, stacktrace);
           return;

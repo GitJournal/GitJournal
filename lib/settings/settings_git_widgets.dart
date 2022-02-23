@@ -31,7 +31,7 @@ class GitAuthorEmail extends StatelessWidget {
 
         if (newEmail != null && newEmail != gitConfig.gitAuthorEmail) {
           gitConfig.gitAuthorEmail = newEmail;
-          gitConfig.save();
+          await gitConfig.save();
         }
       },
     );
@@ -121,7 +121,7 @@ class GitAuthor extends StatelessWidget {
 
         if (newName != null && newName != gitConfig.gitAuthor) {
           gitConfig.gitAuthor = newName;
-          gitConfig.save();
+          await gitConfig.save();
         }
       },
     );
