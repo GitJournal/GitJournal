@@ -5,11 +5,8 @@
  */
 
 import 'package:dart_git/dart_git.dart';
-import 'package:dart_git/exceptions.dart';
-import 'package:dart_git/plumbing/reference.dart';
 import 'package:function_types/function_types.dart';
 
-import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/utils/git_desktop.dart';
 import 'clone.dart';
 import 'git_transfer_progress.dart';
@@ -38,7 +35,6 @@ Future<Result<void>> cloneRemote({
       progressUpdate: progressUpdate,
       gitFetchFn: _fetch,
       defaultBranchFn: _defaultBranch,
-      gitMergeFn: _merge,
     ),
   );
 }
@@ -73,35 +69,4 @@ Future<Result<String>> _defaultBranch(
     privateKeyPassword: sshPassword,
     remoteName: remoteName,
   );
-}
-
-Future<Result<void>> _merge(
-  String repoPath,
-  String remoteName,
-  String remoteBranchName,
-  String authorName,
-  String authorEmail,
-) {
-  return catchAll(() async {
-    var repo = GitRepository.load(repoPath).getOrThrow();
-    var author = GitAuthor(name: authorName, email: authorEmail);
-    var r = repo.mergeCurrentTrackingBranch(author: author);
-    if (r.isFailure) {
-      var ex = r.error;
-      while (ex is ResultException) {
-        ex = ex.exception;
-      }
-      if (ex is GitRefNotFound) {
-        var refName = ReferenceName.remote(remoteName, remoteBranchName);
-        if (ex.refName == refName) {
-          Log.d("Remote Repo is empty");
-          return Result(null);
-        }
-      }
-
-      r.throwOnError();
-    }
-    repo.close().throwOnError();
-    return Result(null);
-  });
 }

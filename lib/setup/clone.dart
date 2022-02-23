@@ -8,6 +8,7 @@ import 'dart:async';
 
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/exceptions.dart';
+import 'package:dart_git/plumbing/reference.dart';
 import 'package:function_types/function_types.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' show Directory;
@@ -36,14 +37,6 @@ typedef GitDefaultBranchFunction = Future<Result<String>> Function(
   String sshPassword,
 );
 
-typedef GitMergeFn = Future<Result<void>> Function(
-  String repoPath,
-  String remoteName,
-  String remoteBranchName,
-  String authorName,
-  String authorEmail,
-);
-
 Future<Result<void>> cloneRemotePluggable({
   required String repoPath,
   required String cloneUrl,
@@ -56,7 +49,6 @@ Future<Result<void>> cloneRemotePluggable({
   required Func1<GitTransferProgress, void> progressUpdate,
   required GitFetchFunction gitFetchFn,
   required GitDefaultBranchFunction defaultBranchFn,
-  required GitMergeFn gitMergeFn,
 }) async {
   var repo = await GitAsyncRepository.load(repoPath).getOrThrow();
   var remote = await repo.addOrUpdateRemote(remoteName, cloneUrl).getOrThrow();
@@ -144,7 +136,7 @@ Future<Result<void>> cloneRemotePluggable({
       var remoteBranchR = await repo.remoteBranch(remoteName, remoteBranchName);
       if (remoteBranchR.isSuccess) {
         Log.i("Merging '$remoteName/$remoteBranchName'");
-        var r = await gitMergeFn(
+        var r = await _merge(
             repoPath, remoteName, remoteBranchName, authorName, authorEmail);
         if (r.isFailure) {
           return fail(r);
@@ -159,7 +151,7 @@ Future<Result<void>> cloneRemotePluggable({
       await repo.setUpstreamTo(remote, remoteBranchName).throwOnError();
 
       Log.i("Merging '$remoteName/$remoteBranchName'");
-      var r = await gitMergeFn(
+      var r = await _merge(
           repoPath, remoteName, remoteBranchName, authorName, authorEmail);
       if (r.isFailure) {
         return fail(r);
@@ -191,9 +183,33 @@ String folderNameFromCloneUrl(String cloneUrl) {
   return name;
 }
 
-// Test Cases -
-// * New Repo, No Local Changes
-// * New Repo, Existing Changes
-// * Existing Repo (master default), No Local Changes
-// * Existing Repo (master default), Local changes in 'master' branch
-// * Existing Repo (main default), Local changes in 'master' branch
+Future<Result<void>> _merge(
+  String repoPath,
+  String remoteName,
+  String remoteBranchName,
+  String authorName,
+  String authorEmail,
+) {
+  return catchAll(() async {
+    var repo = GitRepository.load(repoPath).getOrThrow();
+    var author = GitAuthor(name: authorName, email: authorEmail);
+    var r = repo.mergeCurrentTrackingBranch(author: author);
+    if (r.isFailure) {
+      var ex = r.error;
+      while (ex is ResultException) {
+        ex = ex.exception;
+      }
+      if (ex is GitRefNotFound) {
+        var refName = ReferenceName.remote(remoteName, remoteBranchName);
+        if (ex.refName == refName) {
+          Log.d("Remote Repo is empty");
+          return Result(null);
+        }
+      }
+
+      r.throwOnError();
+    }
+    repo.close().throwOnError();
+    return Result(null);
+  });
+}

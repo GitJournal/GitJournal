@@ -36,7 +36,6 @@ Future<Result<void>> cloneRemote({
       progressUpdate: progressUpdate,
       gitFetchFn: _fetch,
       defaultBranchFn: _defaultBranch,
-      gitMergeFn: _merge,
     ),
   );
 }
@@ -96,25 +95,4 @@ Future<Result<String>> _defaultBranch(
   }
   var branch = remoteBranch.target!.branchName()!;
   return Result(branch);
-}
-
-Future<Result<void>> _merge(
-  String repoPath,
-  String remoteName,
-  String remoteBranchName,
-  String authorName,
-  String authorEmail,
-) async {
-  try {
-    var gitRepo = git_bindings.GitRepo(folderPath: repoPath);
-    await gitRepo.merge(
-      branch: '$remoteName/$remoteBranchName',
-      authorName: authorName,
-      authorEmail: authorEmail,
-    );
-  } catch (e, st) {
-    return Result.fail(e, st);
-  }
-
-  return Result(null);
 }
