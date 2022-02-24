@@ -10,21 +10,16 @@ import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/plumbing/git_hash.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:path/path.dart' as p;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart' as io;
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/repository.dart';
-import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/settings.dart';
-import 'package:gitjournal/settings/storage_config.dart';
 import 'lib.dart';
 
 Future<void> main() async {
-  late io.Directory baseDir;
   late String repoPath;
-  late SharedPreferences pref;
 
   final headHash = GitHash('c8a879a4a9c27abcc27a4d2ee2b2ba0aad5fc940');
   late GitJournalRepo repo;
@@ -35,32 +30,13 @@ Future<void> main() async {
     GitHash? head,
     Map<String, Object> sharedPrefValues = const {},
   }) async {
-    baseDir = await io.Directory.systemTemp.createTemp();
-    var cacheDir = await io.Directory(p.join(baseDir.path, 'cache')).create();
-    var gitBaseDir = await io.Directory(p.join(baseDir.path, 'repos')).create();
-
-    repoPath = p.join(gitBaseDir.path, "test_data");
-    await setupFixture(repoPath, head ?? headHash);
-
-    SharedPreferences.setMockInitialValues(sharedPrefValues);
-    pref = await SharedPreferences.getInstance();
-
-    var repoManager = RepositoryManager(
-      gitBaseDir: gitBaseDir.path,
-      cacheDir: cacheDir.path,
-      pref: pref,
+    var td = await TestData.load(
+      headHash: head ?? headHash,
+      sharedPrefValues: sharedPrefValues,
     );
 
-    var repoId = DEFAULT_ID;
-    await pref.setString("${repoId}_$FOLDER_NAME_KEY", 'test_data');
-
-    repo = await repoManager
-        .buildActiveRepository(
-          loadFromCache: false,
-          syncOnBoot: false,
-        )
-        .getOrThrow();
-    await repo.reloadNotes();
+    repoPath = td.repoPath;
+    repo = td.repo;
   }
 
   tearDown(() {
