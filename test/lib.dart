@@ -18,10 +18,11 @@ import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/storage_config.dart';
 
+final inCI = Platform.environment.containsKey("CI");
+
 Future<void> runGit(String args, [String? repoPath]) async {
-  Log.d('test> git $args');
   var result = await runExecutableArguments('git', args.split(' '),
-      workingDirectory: repoPath);
+      workingDirectory: repoPath, verbose: inCI);
 
   if (result.exitCode != 0) {
     throw Exception("Command Failed: `git $args`");
@@ -38,7 +39,7 @@ Future<void> setupFixture(String repoPath, GitHash hash) async {
 }
 
 Future<void> gjSetupAllTests() async {
-  if (!Platform.environment.containsKey("CI")) {
+  if (!inCI) {
     return;
   }
 
@@ -51,8 +52,10 @@ class TestData {
   final String repoPath;
   final SharedPreferences pref;
   final GitJournalRepo repo;
+  final RepositoryManager repoManager;
 
-  TestData._(this.baseDir, this.repoPath, this.pref, this.repo);
+  TestData._(
+      this.baseDir, this.repoPath, this.pref, this.repo, this.repoManager);
 
   static Future<TestData> load({
     required GitHash headHash,
@@ -85,6 +88,6 @@ class TestData {
         .getOrThrow();
     await repo.reloadNotes();
 
-    return TestData._(baseDir, repoPath, pref, repo);
+    return TestData._(baseDir, repoPath, pref, repo, repoManager);
   }
 }

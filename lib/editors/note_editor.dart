@@ -486,9 +486,9 @@ class NoteEditorState extends State<NoteEditor>
       if (_isNewNote && !_newNoteRenamed) {
         if (note.shouldRebuildPath) {
           Log.d("Rebuilding Note's FileName");
-          var newName = note.rebuildFileName();
+          note = note.copyWithFileName(note.rebuildFileName());
           setState(() {
-            _note = note.copyWithFileName(newName);
+            _note = note;
           });
         }
         await repo.addNote(note).throwOnError();
