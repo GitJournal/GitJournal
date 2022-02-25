@@ -23,7 +23,7 @@ import 'package:gitjournal/settings/app_config.dart';
 import '../lib.dart';
 
 void main() {
-  final headHash = GitHash('c8a879a4a9c27abcc27a4d2ee2b2ba0aad5fc940');
+  final headHash = GitHash('7fc65b59170bdc91013eb56cdc65fa3307f2e7de');
   late GitJournalRepo repo;
   late RepositoryManager repoManager;
   late SharedPreferences pref;
@@ -46,27 +46,31 @@ void main() {
     repoPath = td.repoPath;
   }
 
+  Widget _buildApp(Widget widget) {
+    return GitJournalChangeNotifiers(
+      appConfig: AppConfig(),
+      repoManager: repoManager,
+      pref: pref,
+      child: MaterialApp(
+        home: widget,
+      ),
+    );
+  }
+
   setUp(() async {
     await _setup();
   });
 
   testWidgets('New Note Title as FileName', (tester) async {
-    var rootFolder = repo.rootFolder;
-
-    var widget = GitJournalChangeNotifiers(
-      appConfig: AppConfig(),
-      repoManager: repoManager,
-      pref: pref,
-      child: NoteEditor.newNote(
-        rootFolder,
-        rootFolder,
-        EditorType.Markdown,
-        existingText: "",
-        existingImages: const [],
-      ),
+    var widget = NoteEditor.newNote(
+      repo.rootFolder,
+      repo.rootFolder,
+      EditorType.Markdown,
+      existingText: "",
+      existingImages: const [],
     );
 
-    await tester.pumpWidget(MaterialApp(home: widget));
+    await tester.pumpWidget(_buildApp(widget));
     await tester.pumpAndSettle();
 
     var titleFinder = find.byType(NoteTitleEditor);
@@ -84,5 +88,58 @@ void main() {
 
     var file = File(p.join(repoPath, 'Fake-Title.md'));
     expect(file.existsSync(), true);
+  });
+
+  testWidgets('Existing Note Rename and Exit', (tester) async {
+    // FIXME: Use a proper size of a mobile, also set the DPI
+    tester.binding.window.physicalSizeTestValue = const Size(10800, 23400);
+    await tester.pumpAndSettle();
+
+    var note = repo.rootFolder.getNoteWithSpec('doc.md')!;
+    var widget = NoteEditor.fromNote(note, repo.rootFolder);
+
+    await tester.pumpWidget(_buildApp(widget));
+    await tester.pumpAndSettle();
+
+    // Rename the note
+    var menuButton = find.byIcon(Icons.more_vert);
+    expect(menuButton, findsOneWidget);
+    await tester.tap(menuButton);
+    await tester.pumpAndSettle();
+
+    var editFileNameButton = find.byKey(const ValueKey('EditFileNameButton'));
+    expect(editFileNameButton, findsOneWidget);
+    await tester.tap(editFileNameButton);
+    await tester.pumpAndSettle();
+
+    var dialog = find.byType(AlertDialog);
+    expect(dialog, findsOneWidget);
+
+    await tester.showKeyboard(dialog);
+    tester.testTextInput.updateEditingValue(
+      const TextEditingValue(text: 'bugs.md'),
+    );
+
+    var renameButton = find.byKey(const ValueKey('RenameYes'));
+    expect(renameButton, findsOneWidget);
+    await tester.tap(renameButton);
+    await tester.pumpAndSettle();
+
+    // Exit the editor
+    var saveButtonFinder = find.byKey(const ValueKey('NewEntry'));
+    expect(saveButtonFinder, findsOneWidget);
+    await tester.tap(saveButtonFinder);
+    await tester.pumpAndSettle();
+
+    // Check the FileSystem
+    expect(File(p.join(repoPath, 'doc.md')).existsSync(), false);
+    expect(File(p.join(repoPath, 'bugs.md')).existsSync(), true);
+
+    // Check the rootFolder
+    expect(repo.rootFolder.getNoteWithSpec('doc.md'), null);
+    expect(repo.rootFolder.getNoteWithSpec('bugs.md'), isNotNull);
+    expect(repo.rootFolder.getAllNotes().length, 5);
+
+    // Check the view
   });
 }

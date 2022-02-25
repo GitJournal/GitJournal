@@ -255,6 +255,7 @@ class BottomMenuSheet extends StatelessWidget {
             ),
           ),
         ListTile(
+          key: const ValueKey('EditFileNameButton'),
           leading: const Icon(Icons.edit),
           title: Text(tr(LocaleKeys.editors_common_editFileName)),
           onTap: () {

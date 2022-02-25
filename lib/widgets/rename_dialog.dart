@@ -118,6 +118,7 @@ class _RenameDialogState extends State<RenameDialog> {
           child: Text(tr(LocaleKeys.widgets_rename_no)),
         ),
         TextButton(
+          key: const ValueKey('RenameYes'),
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               var newName = _textController.text;
