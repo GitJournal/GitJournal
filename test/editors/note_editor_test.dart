@@ -139,7 +139,5 @@ void main() {
     expect(repo.rootFolder.getNoteWithSpec('doc.md'), null);
     expect(repo.rootFolder.getNoteWithSpec('bugs.md'), isNotNull);
     expect(repo.rootFolder.getAllNotes().length, 5);
-
-    // Check the view
   });
 }

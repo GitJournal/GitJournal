@@ -74,8 +74,13 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
     _lock.synchronized(() {
       assert(_entityMap.containsKey(oldPath));
-      var _ = _entityMap.remove(oldPath);
+      dynamic _;
+
+      _ = _entityMap.remove(oldPath);
       _entityMap[note.filePath] = note;
+
+      var index = _files.indexWhere((n) => n.filePath == oldPath);
+      _files[index] = note;
 
       notifyNoteRenamed(-1, note, oldPath);
     });
@@ -88,6 +93,9 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       assert(_entityMap.containsKey(oldPath));
       var _ = _entityMap.remove(oldPath);
       _entityMap[folder.folderPath] = folder;
+
+      var index = _folders.indexWhere((n) => n.folderPath == oldPath);
+      _folders[index] = folder;
     });
   }
 
