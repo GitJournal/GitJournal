@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/editors/common_types.dart';
+import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/editors/note_editor.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/repository.dart';
@@ -23,7 +24,6 @@ import 'package:gitjournal/settings/app_config.dart';
 import '../lib.dart';
 
 void main() {
-  final headHash = GitHash('7fc65b59170bdc91013eb56cdc65fa3307f2e7de');
   late GitJournalRepo repo;
   late RepositoryManager repoManager;
   late SharedPreferences pref;
@@ -31,12 +31,12 @@ void main() {
 
   setUpAll(gjSetupAllTests);
 
-  Future<void> _setup({
-    GitHash? head,
+  Future<void> _setup(
+    String head, {
     Map<String, Object> sharedPrefValues = const {},
   }) async {
     var td = await TestData.load(
-      headHash: head ?? headHash,
+      headHash: GitHash(head),
       sharedPrefValues: sharedPrefValues,
     );
 
@@ -57,11 +57,11 @@ void main() {
     );
   }
 
-  setUp(() async {
-    await _setup();
-  });
-
   testWidgets('New Note Title as FileName', (tester) async {
+    await tester.runAsync(
+      () async => await _setup('7fc65b59170bdc91013eb56cdc65fa3307f2e7de'),
+    );
+
     var widget = NoteEditor.newNote(
       repo.rootFolder,
       repo.rootFolder,
@@ -91,6 +91,10 @@ void main() {
   });
 
   testWidgets('Existing Note Rename and Exit', (tester) async {
+    await tester.runAsync(
+      () async => await _setup('7fc65b59170bdc91013eb56cdc65fa3307f2e7de'),
+    );
+
     // FIXME: Use a proper size of a mobile, also set the DPI
     tester.binding.window.physicalSizeTestValue = const Size(10800, 23400);
     await tester.pumpAndSettle();
@@ -126,10 +130,14 @@ void main() {
     await tester.pumpAndSettle();
 
     // Exit the editor
-    var saveButtonFinder = find.byKey(const ValueKey('NewEntry'));
-    expect(saveButtonFinder, findsOneWidget);
-    await tester.tap(saveButtonFinder);
-    await tester.pumpAndSettle();
+    await tester.runAsync(() async {
+      var saveButtonFinder = find.byKey(const ValueKey('NewEntry'));
+      expect(saveButtonFinder, findsOneWidget);
+      await tester.tap(saveButtonFinder);
+      await tester.pumpAndSettle();
+
+      await Future.delayed(const Duration(milliseconds: 100));
+    });
 
     // Check the FileSystem
     expect(File(p.join(repoPath, 'doc.md')).existsSync(), false);
@@ -141,7 +149,51 @@ void main() {
     expect(repo.rootFolder.getAllNotes().length, 5);
 
     // Check the view
-    saveButtonFinder = find.byKey(const ValueKey('NewEntry'));
+    var saveButtonFinder = find.byKey(const ValueKey('NewEntry'));
     expect(saveButtonFinder, findsNothing);
+  });
+
+  testWidgets('Editing a Note body with a heading', (tester) async {
+    await tester.runAsync(
+      () async => await _setup('fef4ef7341751cb583d768dc9a6b13deca552954'),
+    );
+
+    // FIXME: Use a proper size of a mobile, also set the DPI
+    tester.binding.window.physicalSizeTestValue = const Size(10800, 23400);
+    await tester.pumpAndSettle();
+
+    // Open the note
+    var note = repo.rootFolder.getNoteWithSpec('heading.md')!;
+    var noteHash = GitHash('737943ab9672d967afa91641207a9a3592a522bf');
+    var widget = NoteEditor.fromNote(note, repo.rootFolder);
+    expect(note.oid, noteHash);
+
+    await tester.pumpWidget(_buildApp(widget));
+    await tester.pumpAndSettle();
+
+    // Make a modification to the body
+    var dialog = find.byType(NoteBodyEditor);
+
+    await tester.showKeyboard(dialog);
+    tester.testTextInput.updateEditingValue(
+      const TextEditingValue(text: '# dbg2e\n#dbg3'),
+    );
+
+    await tester.runAsync(() async {
+      // Save the Note
+      var saveButtonFinder = find.byKey(const ValueKey('NewEntry'));
+      expect(saveButtonFinder, findsOneWidget);
+      await tester.tap(saveButtonFinder);
+      await tester.pumpAndSettle();
+
+      // FIXME: Can this be avoided?
+      await Future.delayed(const Duration(milliseconds: 100));
+    });
+
+    note = repo.rootFolder.getNoteWithSpec('heading.md')!;
+
+    expect(note.oid, isNot(noteHash));
+    expect(note.title, "dbg1");
+    expect(note.body, '# dbg2e\n#dbg3');
   });
 }

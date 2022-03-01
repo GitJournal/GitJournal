@@ -377,9 +377,9 @@ class NoteEditorState extends State<NoteEditor>
           tr(LocaleKeys.editors_common_saveNoteFailed_message),
         );
       }
+      if (!mounted) return;
 
       var newNote = renameResult.getOrThrow();
-      // FIXME: Handle rename failing!
       setState(() {
         _note = newNote;
       });
@@ -496,6 +496,7 @@ class NoteEditorState extends State<NoteEditor>
         var originalNote = widget.existingNote!;
         var modifiedNote =
             await repo.updateNote(originalNote, note).getOrThrow();
+        if (!mounted) return false;
         setState(() {
           _note = modifiedNote;
         });
