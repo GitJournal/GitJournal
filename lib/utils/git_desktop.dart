@@ -72,7 +72,8 @@ Future<Result<void>> _gitCommandViaExecutable({
     ],
     workingDirectory: repoPath,
     environment: {
-      'GIT_SSH_COMMAND': 'ssh -i ${temp.path} -o IdentitiesOnly=yes',
+      if (privateKey.isNotEmpty)
+        'GIT_SSH_COMMAND': 'ssh -i ${temp.path} -o IdentitiesOnly=yes',
     },
   );
 
@@ -125,7 +126,8 @@ Future<Result<String>> gitDefaultBranchViaExecutable({
     ],
     workingDirectory: repoPath,
     environment: {
-      'GIT_SSH_COMMAND': 'ssh -i ${temp.path} -o IdentitiesOnly=yes',
+      if (privateKey.isNotEmpty)
+        'GIT_SSH_COMMAND': 'ssh -i ${temp.path} -o IdentitiesOnly=yes',
     },
   );
 
