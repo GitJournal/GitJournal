@@ -11,7 +11,7 @@ jobs:
       - checkout
       - run:
           name: Install gpg
-          command: brew install gnupg git-crypt md5sha1sum wget gnu-sed
+          command: brew install gnupg git-crypt md5sha1sum wget gnu-sed git
       - run:
           name: Install Flutter
           command: ./scripts/ios_install_flutter.sh
