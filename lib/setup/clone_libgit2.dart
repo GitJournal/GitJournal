@@ -91,8 +91,10 @@ Future<Result<String>> _defaultBranch(
   var remoteBranch = repo.guessRemoteHead(remoteName);
   var _ = repo.close();
   if (remoteBranch == null) {
+    Log.e("Failed to guess RemoteHead");
     return Result("");
   }
   var branch = remoteBranch.target!.branchName()!;
+  Log.d("Guessed default branch as $branch");
   return Result(branch);
 }
