@@ -44,6 +44,8 @@ Future<void> gjSetupAllTests() async {
 
   final logsCacheDir = await Directory.systemTemp.createTemp();
   await Log.init(cacheDir: logsCacheDir.path, ignoreFimber: false);
+
+  await runGit('version');
 }
 
 class TestData {
