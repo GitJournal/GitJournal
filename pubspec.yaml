@@ -99,6 +99,7 @@ dependencies:
   flutter_tex_js: ^1.2.15
   dart_date: ^1.1.1
   fast_immutable_collections: ^7.1.2
+  auto_updater: ^0.1.2
 
 dev_dependencies:
   #flutter_driver:

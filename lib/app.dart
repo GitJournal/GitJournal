@@ -8,6 +8,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import 'package:auto_updater/auto_updater.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:hive/hive.dart';
@@ -81,6 +82,12 @@ class JournalApp extends StatefulWidget {
     var _ = await repoManager.buildActiveRepository();
 
     InAppPurchases.confirmProPurchaseBoot();
+
+    if (Platform.isMacOS) {
+      var feedURL = 'http://gitjournal.io/sparkle/appcast.xml';
+      await autoUpdater.setFeedURL(feedURL);
+      await autoUpdater.checkForUpdates();
+    }
 
     runApp(EasyLocalization(
       child: GitJournalChangeNotifiers(

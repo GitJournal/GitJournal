@@ -1,4 +1,7 @@
 PODS:
+  - auto_updater (0.0.1):
+    - FlutterMacOS
+    - Sparkle
   - connectivity_plus_macos (0.0.1):
     - FlutterMacOS
     - ReachabilitySwift
@@ -24,6 +27,7 @@ PODS:
     - FlutterMacOS
   - shared_preferences_macos (0.0.1):
     - FlutterMacOS
+  - Sparkle (2.1.0)
   - sqflite (0.0.2):
     - FlutterMacOS
     - FMDB (>= 2.7.5)
@@ -31,6 +35,7 @@ PODS:
     - FlutterMacOS
 
 DEPENDENCIES:
+  - auto_updater (from `Flutter/ephemeral/.symlinks/plugins/auto_updater/macos`)
   - connectivity_plus_macos (from `Flutter/ephemeral/.symlinks/plugins/connectivity_plus_macos/macos`)
   - device_info_plus_macos (from `Flutter/ephemeral/.symlinks/plugins/device_info_plus_macos/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
@@ -47,8 +52,11 @@ SPEC REPOS:
     - FMDB
     - ReachabilitySwift
     - Sentry
+    - Sparkle
 
 EXTERNAL SOURCES:
+  auto_updater:
+    :path: Flutter/ephemeral/.symlinks/plugins/auto_updater/macos
   connectivity_plus_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/connectivity_plus_macos/macos
   device_info_plus_macos:
@@ -71,6 +79,7 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos
 
 SPEC CHECKSUMS:
+  auto_updater: d3c03e9e5f2a00ec78572d9f7473cb8c9a6c0273
   connectivity_plus_macos: f6e86fd000e971d361e54b5afcadc8c8fa773308
   device_info_plus_macos: 1ad388a1ef433505c4038e7dd9605aadd1e2e9c7
   FlutterMacOS: 57701585bf7de1b3fc2bb61f6378d73bbdea8424
@@ -82,6 +91,7 @@ SPEC CHECKSUMS:
   sentry_flutter: 4cd99764f9fe01c9415790d1f3fb1c7fd3a5cbe9
   share_plus_macos: 853ee48e7dce06b633998ca0735d482dd671ade4
   shared_preferences_macos: 480ce071d0666e37cef23fe6c702293a3d21799e
+  Sparkle: 7f5f6d4328458515e23272f4138e610c1fa3e32d
   sqflite: a5789cceda41d54d23f31d6de539d65bb14100ea
   url_launcher_macos: 45af3d61de06997666568a7149c1be98b41c95d4
 
