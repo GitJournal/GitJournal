@@ -90,7 +90,7 @@ Future<Result<String>> _defaultBranch(
   var repo = GitRepository.load(repoPath).getOrThrow();
   var remoteBranch = repo.guessRemoteHead(remoteName);
   var _ = repo.close();
-  if (remoteBranch == null) {
+  if (remoteBranch == null || remoteBranch.target == null) {
     Log.e("Failed to guess RemoteHead. Returning `main`");
     return Result("main");
   }
