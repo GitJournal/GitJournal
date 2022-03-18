@@ -259,7 +259,7 @@ class NoteSerializer implements NoteSerializerInterface {
       var v = props[key];
       if (v != null) {
         sortedProps[key] = v;
-        props.remove(key);
+        var _ = props.remove(key);
       }
     }
 
