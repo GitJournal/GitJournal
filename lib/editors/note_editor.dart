@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -156,19 +158,24 @@ class NoteEditorState extends State<NoteEditor>
       _note = _note.copyWith(body: existingText);
     }
 
-    if (existingImages.isNotEmpty) {
-      for (var imagePath in existingImages) {
-        () async {
-          try {
-            var image = await core.Image.copyIntoFs(_note.parent, imagePath)
-                .getOrThrow();
-            _note = _note.copyWith(
-                body: _note.body + image.toMarkup(_note.fileFormat));
-          } catch (e, st) {
-            Log.e("New Note Existing Image", ex: e, stacktrace: st);
-          }
-        }();
+    for (var imagePath in existingImages) {
+      unawaited(addImageToNote(imagePath));
+    }
+  }
+
+  Future<void> addImageToNote(String imagePath) async {
+    try {
+      var image =
+          await core.Image.copyIntoFs(_note.parent, imagePath).getOrThrow();
+      var note =
+          _note.copyWith(body: _note.body + image.toMarkup(_note.fileFormat));
+      if (mounted) {
+        setState(() {
+          _note = note;
+        });
       }
+    } catch (e, st) {
+      Log.e("New Note Existing Image", ex: e, stacktrace: st);
     }
   }
 
