@@ -147,10 +147,10 @@ class JournalApp extends StatefulWidget {
   const JournalApp({Key? key, required this.repoManager}) : super(key: key);
 
   @override
-  _JournalAppState createState() => _JournalAppState();
+  JournalAppState createState() => JournalAppState();
 }
 
-class _JournalAppState extends State<JournalApp> {
+class JournalAppState extends State<JournalApp> {
   final _navigatorKey = GlobalKey<NavigatorState>();
   String? _pendingShortcut;
 
@@ -224,6 +224,21 @@ class _JournalAppState extends State<JournalApp> {
         _navigatorKey.currentState!.pushNamed(AppRoute.NewNotePrefix + editor);
   }
 
+  @visibleForTesting
+  void handleSharedImages(Iterable<String> images) {
+    _sharedImages = images.toList();
+    WidgetsBinding.instance!.addPostFrameCallback(_handleShare);
+  }
+
+  @visibleForTesting
+  void handleSharedText(String? value) {
+    if (value == null) return;
+    if (value.startsWith('gitjournal-identity://')) return;
+
+    _sharedText = value;
+    WidgetsBinding.instance!.addPostFrameCallback(_handleShare);
+  }
+
   void _initShareSubscriptions() {
     if (!Platform.isAndroid && !Platform.isIOS) {
       return;
@@ -233,9 +248,7 @@ class _JournalAppState extends State<JournalApp> {
     _intentDataStreamSubscription = ReceiveSharingIntent.getMediaStream()
         .listen((List<SharedMediaFile> value) {
       Log.d("Received Media Share $value");
-
-      _sharedImages = value.map((f) => f.path).toList();
-      WidgetsBinding.instance!.addPostFrameCallback(_handleShare);
+      handleSharedImages(value.map((f) => f.path));
     }, onError: (err) {
       Log.e("getIntentDataStream error: $err");
     });
@@ -243,20 +256,14 @@ class _JournalAppState extends State<JournalApp> {
     // For sharing images coming from outside the app while the app is closed
     ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
       Log.d("Received MediaFile Share with App (media): $value");
-
-      _sharedImages = value.map((f) => f.path).toList();
-      WidgetsBinding.instance!.addPostFrameCallback(_handleShare);
+      handleSharedImages(value.map((f) => f.path));
     });
 
     // For sharing or opening text coming from outside the app while the app is in the memory
     _intentDataStreamSubscription =
         ReceiveSharingIntent.getTextStream().listen((String value) {
       Log.d("Received Text Share: ${value.length}");
-      if (value.startsWith('gitjournal-identity://')) {
-        return;
-      }
-      _sharedText = value;
-      WidgetsBinding.instance!.addPostFrameCallback(_handleShare);
+      handleSharedText(value);
     }, onError: (err) {
       Log.e("getLinkStream error: $err");
     });
@@ -265,8 +272,7 @@ class _JournalAppState extends State<JournalApp> {
     ReceiveSharingIntent.getInitialText().then((String? value) {
       if (value == null) return;
       Log.d("Received Share with App (text): ${value.length}");
-      _sharedText = value;
-      WidgetsBinding.instance!.addPostFrameCallback(_handleShare);
+      handleSharedText(value);
     });
   }
 
@@ -334,14 +340,18 @@ class _JournalAppState extends State<JournalApp> {
     );
     */
 
+    var easyLocale = EasyLocalization.of(context);
+
     return MaterialApp(
       key: const ValueKey("App"),
       navigatorKey: _navigatorKey,
       title: 'GitJournal',
 
-      localizationsDelegates: EasyLocalization.of(context)!.delegates,
-      supportedLocales: EasyLocalization.of(context)!.supportedLocales,
-      locale: EasyLocalization.of(context)!.locale,
+      localizationsDelegates: easyLocale?.delegates,
+      supportedLocales: easyLocale != null
+          ? easyLocale.supportedLocales
+          : const <Locale>[Locale('en', 'US')],
+      locale: easyLocale?.locale,
 
       theme: Themes.fromName(settings.lightTheme),
       darkTheme: Themes.fromName(settings.darkTheme),

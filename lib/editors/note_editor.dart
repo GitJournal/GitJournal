@@ -330,7 +330,7 @@ class NoteEditorState extends State<NoteEditor>
     assert(note.oid.isEmpty);
 
     var saved = await _saveNote(note);
-    if (saved) {
+    if (saved && mounted) {
       Navigator.pop(context);
     }
   }
