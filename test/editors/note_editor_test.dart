@@ -6,6 +6,8 @@
 
 import 'dart:io';
 
+import 'package:dart_git/git.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dart_git/plumbing/git_hash.dart';
@@ -47,6 +49,8 @@ void main() {
   }
 
   Widget _buildApp(Widget widget) {
+    EasyLocalization.logger.enableLevels = [];
+
     return GitJournalChangeNotifiers(
       appConfig: AppConfig(),
       repoManager: repoManager,
@@ -151,6 +155,57 @@ void main() {
     // Check the view
     var saveButtonFinder = find.byKey(const ValueKey('NewEntry'));
     expect(saveButtonFinder, findsNothing);
+  });
+
+  testWidgets('Existing Note not modified', (tester) async {
+    var headHash = '7fc65b59170bdc91013eb56cdc65fa3307f2e7de';
+    await tester.runAsync(
+      () async => await _setup(headHash),
+    );
+
+    // FIXME: Use a proper size of a mobile, also set the DPI
+    tester.binding.window.physicalSizeTestValue = const Size(10800, 23400);
+    await tester.pumpAndSettle();
+
+    var note = repo.rootFolder.getNoteWithSpec('doc.md')!;
+    var widget = NoteEditor.fromNote(note, repo.rootFolder);
+
+    await tester.pumpWidget(_buildApp(widget));
+    await tester.pumpAndSettle();
+
+    // Change the text
+    var bodyEditor = find.byType(NoteBodyEditor);
+    expect(bodyEditor, findsOneWidget);
+
+    await tester.showKeyboard(bodyEditor);
+    tester.testTextInput.updateEditingValue(
+      const TextEditingValue(text: '200 mgs of x\n'),
+    );
+    await tester.pumpAndSettle();
+
+    // expect(find.byIcon(Icons.close), findsOneWidget);
+    // expect(find.byIcon(Icons.check), findsNothing);
+
+    late Finder saveButtonFinder;
+    saveButtonFinder = find.byKey(const ValueKey('NewEntry'));
+    expect(saveButtonFinder, findsOneWidget);
+
+    // Exit the editor
+    await tester.runAsync(() async {
+      await tester.tap(saveButtonFinder);
+      await tester.pumpAndSettle();
+
+      await Future.delayed(const Duration(milliseconds: 1000));
+    });
+    await tester.pumpAndSettle();
+
+    // Check the view
+    saveButtonFinder = find.byKey(const ValueKey('NewEntry'));
+    expect(saveButtonFinder, findsNothing);
+
+    // Ensure nothing has changed
+    var gitRepo = GitRepository.load(repo.repoPath).getOrThrow();
+    expect(gitRepo.headHash().getOrThrow(), GitHash(headHash));
   });
 
   testWidgets('Editing a Note body with a heading', (tester) async {
