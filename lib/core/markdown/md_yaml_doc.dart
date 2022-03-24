@@ -43,7 +43,7 @@ class MdYamlDoc {
       other is MdYamlDoc &&
           runtimeType == other.runtimeType &&
           body == other.body &&
-          _deepEq(props, other.props);
+          _deepEq(props.unlock, other.props.unlock);
 
   @override
   String toString() {
