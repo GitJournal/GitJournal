@@ -23,7 +23,6 @@ import 'package:gitjournal/history/history_screen.dart';
 import 'package:gitjournal/iap/purchase_screen.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository_manager.dart';
-import 'package:gitjournal/screens/error_screen.dart';
 import 'package:gitjournal/screens/folder_listing.dart';
 import 'package:gitjournal/screens/graph_view.dart';
 import 'package:gitjournal/screens/home_screen.dart';
