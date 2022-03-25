@@ -4,11 +4,16 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'dart:io' as io;
+
 import 'package:dart_git/utils/date_time.dart';
+import 'package:dart_git/utils/result.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
 import 'package:gitjournal/core/markdown/md_yaml_doc.dart';
+import 'package:gitjournal/core/markdown/md_yaml_doc_loader.dart';
 import 'lib.dart';
 
 void main() {
@@ -47,5 +52,29 @@ void main() {
     );
     expect(a.props, MdYamlDoc.fromProtoBuf(a.toProtoBuf()).props);
     expect(a, MdYamlDoc.fromProtoBuf(a.toProtoBuf()));
+  });
+
+  test("Equality 2", () async {
+    // Load from file
+    var content = """---
+bar: Foo
+modified: 2017-02-15T22:41:19+01:00
+tags: ['A', 'B']
+---
+
+Hello
+""";
+
+    var tempDir = io.Directory.systemTemp.createTempSync();
+    var repoPath = tempDir.path + p.separator;
+
+    var noteFullPath = p.join(repoPath, "note.md");
+    io.File(noteFullPath).writeAsStringSync(content);
+
+    final mdYamlDocLoader = MdYamlDocLoader();
+    var doc1 = await mdYamlDocLoader.loadDoc(noteFullPath).getOrThrow();
+    var doc2 = await mdYamlDocLoader.loadDoc(noteFullPath).getOrThrow();
+
+    expect(doc1, doc2);
   });
 }
