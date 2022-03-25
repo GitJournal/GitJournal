@@ -338,7 +338,7 @@ class RepoTile extends StatelessWidget {
 
     var tile = ListTile(
       leading: icon,
-      title: Text(repoManager.repoFolderName(id)),
+      title: Text(repoManager.repoFolderName(id), style: textStyle),
       onTap: () async {
         Navigator.pop(context);
 
