@@ -12,7 +12,7 @@ cd ../
 flutter pub get
 
 # Download the required libraries
-export LIBS_URL="https://github.com/GitJournal/ios-libraries/releases/download/v1.1/libs.zip"
+export LIBS_URL="https://github.com/GitJournal/ios-libraries/releases/download/v1.2/libs.zip"
 
 if [ ! -d "ios/libs" ]; then
     echo "Downloading Libs"
