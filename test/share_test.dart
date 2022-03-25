@@ -94,7 +94,7 @@ void main() {
     var file = File(p.join(repoPath, 'Fake-Title.md'));
     expect(file.existsSync(), true);
     expect(file.readAsStringSync(), "foo\n");
-  });
+  }, skip: true);
 
   testWidgets('Sharing image works', (tester) async {
     await tester.runAsync(
