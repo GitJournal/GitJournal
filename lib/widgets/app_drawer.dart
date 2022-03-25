@@ -340,14 +340,7 @@ class RepoTile extends StatelessWidget {
       leading: icon,
       title: Text(repoManager.repoFolderName(id)),
       onTap: () async {
-        Navigator.pop(context);
-
-        var r = await repoManager.setCurrentRepo(id);
-        var route = r.isFailure ? ErrorScreen.routePath : HomeScreen.routePath;
-        var _ = Navigator.of(context).pushNamedAndRemoveUntil(
-          route,
-          (r) => true,
-        );
+        await repoManager.setCurrentRepo(id);
       },
     );
 
