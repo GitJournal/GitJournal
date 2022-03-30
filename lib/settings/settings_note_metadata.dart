@@ -71,13 +71,9 @@ class _NoteMetadataSettingsScreenState
       parent: parent,
       fileFormat: NoteFileFormat.Markdown,
       noteType: NoteType.Unknown,
-      file: File(
-        filePath: '',
-        repoPath: '',
+      file: File.virtual(
         created: created,
         modified: modified,
-        oid: GitHash.zero(),
-        fileLastModified: DateTime.now(),
       ),
       created: created,
       modified: modified,

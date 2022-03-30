@@ -69,6 +69,13 @@ class File {
     assert(repoPath.endsWith(p.separator));
   }
 
+  File.virtual({required this.created, DateTime? modified})
+      : filePath = '',
+        repoPath = '',
+        oid = GitHash.zero(),
+        fileLastModified = DateTime.now(),
+        modified = modified ?? created;
+
   String get fileName => p.basename(filePath);
 
   File copyFile({
