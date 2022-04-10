@@ -28,7 +28,9 @@ class NoteStorage {
     // HACK: This isn't great as the raw editor still shows the note with metadata
     var data = note.data;
     if (!note.canHaveMetadata) {
-      data = MdYamlDoc(body: data.body);
+      // Fix issue 579: If there is no yaml header, the title would get lost unless it is stored somewhere.
+      // Hence, store it in the file as a first heading.
+      data = MdYamlDoc(body: (note.title != null ? "# " + note.title! + "\n" : "") + data.body);
     }
 
     var contents = _serializer.encode(data);
