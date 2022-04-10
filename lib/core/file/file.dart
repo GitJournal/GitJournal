@@ -43,8 +43,9 @@ class File {
     required this.created,
     required this.fileLastModified,
   }) {
-    assert(repoPath.isNotEmpty);
-    assert(filePath.isNotEmpty);
+    // LB: Why does this assert exist?
+    //assert(repoPath.isNotEmpty);
+    //assert(filePath.isNotEmpty);
   }
 
   @visibleForTesting

@@ -454,7 +454,7 @@ packages:
       name: easy_localization
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0"
+    version: "3.0.1-dev"
   easy_localization_loader:
     dependency: "direct main"
     description:
