@@ -15,7 +15,7 @@ import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/image.dart' as core;
 import 'package:gitjournal/core/image.dart';
-import 'package:gitjournal/core/transformers/base.dart';
+import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/editors/common.dart';
 import '../lib.dart';
 

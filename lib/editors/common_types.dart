@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes/note.dart';
 
 enum EditorType { Markdown, Raw, Checklist, Journal, Org }
 

@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/utils/markdown.dart';
 import 'package:gitjournal/widgets/highlighted_text.dart';
 

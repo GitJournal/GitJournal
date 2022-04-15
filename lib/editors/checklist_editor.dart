@@ -14,6 +14,7 @@ import 'package:time/time.dart';
 import 'package:gitjournal/core/checklist.dart';
 import 'package:gitjournal/core/image.dart' as core;
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/editors/utils/disposable_change_notifier.dart';

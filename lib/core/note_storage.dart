@@ -20,6 +20,7 @@ import 'package:gitjournal/utils/result.dart';
 import 'file/file.dart';
 import 'folder/notes_folder_fs.dart';
 import 'note.dart';
+import 'notes/note.dart';
 
 class NoteStorage {
   static final _serializer = MarkdownYAMLCodec();

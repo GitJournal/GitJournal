@@ -11,8 +11,8 @@ import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
 
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
-import 'package:gitjournal/core/transformers/base.dart';
 import 'package:gitjournal/editors/common.dart';
+import 'notes/note.dart';
 
 class Image {
   final NotesFolderFS parent;

@@ -23,6 +23,7 @@ import 'package:gitjournal/core/markdown/md_yaml_doc.dart';
 import 'package:gitjournal/core/markdown/md_yaml_note_serializer.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_storage.dart';
+import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/utils/datetime.dart';
 import 'lib.dart';
 

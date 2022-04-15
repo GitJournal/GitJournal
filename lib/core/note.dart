@@ -13,79 +13,15 @@ import 'package:universal_io/io.dart' as io;
 import 'package:uuid/uuid.dart';
 
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
-import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/generated/core.pb.dart' as pb;
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
 import 'file/file.dart';
-import 'folder/notes_folder_config.dart';
 import 'markdown/md_yaml_doc.dart';
 import 'markdown/md_yaml_note_serializer.dart';
-
-typedef NoteSelectedFunction = void Function(Note note);
-typedef NoteBoolPropertyFunction = bool Function(Note note);
-
-enum NoteType { Unknown, Checklist, Journal, Org }
-
-class NoteFileFormatInfo {
-  final NotesFolderConfig config;
-  NoteFileFormatInfo(this.config);
-
-  static String defaultExtension(NoteFileFormat format) {
-    switch (format) {
-      case NoteFileFormat.Markdown:
-        return ".md";
-      case NoteFileFormat.OrgMode:
-        return '.org';
-      case NoteFileFormat.Txt:
-        return ".txt";
-    }
-  }
-
-  static EditorType defaultEditor(NoteFileFormat format) {
-    switch (format) {
-      case NoteFileFormat.Markdown:
-        return EditorType.Markdown;
-      case NoteFileFormat.Txt:
-        return EditorType.Raw;
-      case NoteFileFormat.OrgMode:
-        return EditorType.Org;
-    }
-  }
-
-  static NoteFileFormat fromFilePath(String filePath) {
-    var ext = p.extension(filePath).toLowerCase();
-    switch (ext) {
-      case ".md":
-        return NoteFileFormat.Markdown;
-      case ".org":
-        return NoteFileFormat.OrgMode;
-      case ".txt":
-      default:
-        return NoteFileFormat.Txt;
-    }
-  }
-
-  bool isAllowedFileName(String filePath) {
-    var noteFilePath = filePath.toLowerCase();
-    for (var ext in config.allowedFileExts) {
-      if (p.extension(noteFilePath) == ext) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-}
-
-// FIXME: Treat Markdown and Markdown + YAML differently
-enum NoteFileFormat {
-  Markdown,
-  OrgMode,
-  Txt,
-}
+import 'notes/note.dart';
 
 @immutable
 class Note implements File {

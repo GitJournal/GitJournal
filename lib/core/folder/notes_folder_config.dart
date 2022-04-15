@@ -9,7 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/core/folder/sorting_mode.dart';
-import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/settings/settings.dart';
