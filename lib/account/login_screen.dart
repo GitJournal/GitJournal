@@ -190,9 +190,10 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
           builder: (context) => const AccountScreen(),
         ));
       },
-      onRecoverPassword: (name) {
+      onRecoverPassword: (name) async {
         Log.i('Recover password info');
         Log.i('Name: $name');
+        return "";
         // return _recoverPassword(name);
         // Show new password dialog
       },
@@ -246,6 +247,8 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
     if (signupData.termsOfService.isNotEmpty) {
       Log.i(signupData.termsOfService[0].accepted);
     }
+
+    return "";
   }
 
   Future<String?> _login(LoginData loginData) async {
@@ -270,6 +273,8 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
     if (result.error != null) {
       return result.error!.message;
     }
+
+    return "";
   }
 }
 

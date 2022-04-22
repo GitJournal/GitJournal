@@ -70,6 +70,8 @@ DateTime? parseDateTime(String str) {
   } catch (ex) {
     Log.e("parseDateTime - '$str'", ex: ex);
   }
+
+  return null;
 }
 
 DateTime parseUnixTimeStamp(int val) {
