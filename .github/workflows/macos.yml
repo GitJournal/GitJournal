@@ -19,7 +19,7 @@ jobs:
         run: brew install git-crypt md5sha1sum gnu-sed create-dmg xmlstarlet
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: "2.8.1"
+          flutter-version: "2.10.5"
       - name: Test
         run: ./scripts/test.sh
       # - name: Test Report
