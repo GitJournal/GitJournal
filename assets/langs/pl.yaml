@@ -228,7 +228,7 @@ settings:
     syncFreq: Częstotliwość odświeżania
   note:
     title: Ustawienia notatek
-    defaultFolder: Katalod domyślny dla nowych notatek
+    defaultFolder: Katalog domyślny dla nowych notatek
     newNoteFileName: Nazwa nowej notatki
   storage:
     title: Miejsce przechowywania
