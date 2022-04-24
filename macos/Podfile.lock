@@ -16,13 +16,13 @@ PODS:
   - path_provider_macos (0.0.1):
     - FlutterMacOS
   - ReachabilitySwift (5.0.0)
-  - Sentry (7.5.4):
-    - Sentry/Core (= 7.5.4)
-  - Sentry/Core (7.5.4)
+  - Sentry (7.11.0):
+    - Sentry/Core (= 7.11.0)
+  - Sentry/Core (7.11.0)
   - sentry_flutter (0.0.1):
     - Flutter
     - FlutterMacOS
-    - Sentry (~> 7.5.1)
+    - Sentry (~> 7.11.0)
   - share_plus_macos (0.0.1):
     - FlutterMacOS
   - shared_preferences_macos (0.0.1):
@@ -87,13 +87,13 @@ SPEC CHECKSUMS:
   package_info_plus_macos: f010621b07802a241d96d01876d6705f15e77c1c
   path_provider_macos: 160cab0d5461f0c0e02995469a98f24bdb9a3f1f
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
-  Sentry: 5c5dd4005f3b7b9765d5a8871232cddbd0d888b7
-  sentry_flutter: 4cd99764f9fe01c9415790d1f3fb1c7fd3a5cbe9
+  Sentry: 0c5cd63d714187b4a39c331c1f0eb04ba7868341
+  sentry_flutter: efb3df2c203cd03aad255892a8d628a458656d14
   share_plus_macos: 853ee48e7dce06b633998ca0735d482dd671ade4
-  shared_preferences_macos: 480ce071d0666e37cef23fe6c702293a3d21799e
+  shared_preferences_macos: a64dc611287ed6cbe28fd1297898db1336975727
   Sparkle: 7f5f6d4328458515e23272f4138e610c1fa3e32d
   sqflite: a5789cceda41d54d23f31d6de539d65bb14100ea
-  url_launcher_macos: 45af3d61de06997666568a7149c1be98b41c95d4
+  url_launcher_macos: 597e05b8e514239626bcf4a850fcf9ef5c856ec3
 
 PODFILE CHECKSUM: d91b2a17104a4030e3b69ba1594a04635481c313
 

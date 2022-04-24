@@ -58,7 +58,7 @@ dependencies:
   provider: ^6.0.1
   quick_actions: ^0.6.0+3
   receive_sharing_intent: ^1.4.5
-  sentry_flutter: ^6.0.0
+  sentry_flutter: ^6.5.1
   share_plus: ^2.1.4
   shared_preferences: ^2.0.5
   #ssh_key: ^0.6.0
