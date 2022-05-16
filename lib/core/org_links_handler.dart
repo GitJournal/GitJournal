@@ -44,8 +44,8 @@ class OrgLinkHandler {
     if (looksLikeImagePath(link)) {
       if (looksLikeUrl(link)) {
         // Remote images
-        if (await canLaunch(link)) {
-          var _ = await launch(link);
+        if (await canLaunchUrl(Uri.parse(link))) {
+          var _ = await launchUrl(link);
         } else {
           //throw 'Could not launch $link';
           log('could not launch $link');
@@ -80,8 +80,8 @@ class OrgLinkHandler {
         // Remote link: Open in system handler.
         log('url: ' + link);
 
-        if (await canLaunch(link)) {
-          var _ = await launch(link);
+        if (await canLaunchUrl(Uri.parse(link))) {
+          var _ = await launchUrl(link);
         } else {
           Log.w('could not launch $link');
           //Log.e('Opening Link', ex: e, stacktrace: stackTrace);

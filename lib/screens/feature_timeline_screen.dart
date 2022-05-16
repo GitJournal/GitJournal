@@ -198,7 +198,7 @@ class _DevelopmentText extends StatelessWidget {
       style: const TextStyle(color: Colors.blue),
       recognizer: TapGestureRecognizer()
         ..onTap = () {
-          var _ = launch(githubUrl);
+          var _ = launchUrl(Uri.parse(githubUrl));
           logEvent(Event.FeatureTimelineGithubClicked);
         },
     );

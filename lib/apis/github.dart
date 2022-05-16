@@ -35,7 +35,7 @@ class GitHub implements GitHost {
         return;
       }
 
-      closeWebView();
+      closeInAppWebView();
       Log.d("GitHub: Called onUrl with " + call.arguments.toString());
 
       String url = call.arguments["URL"];
@@ -84,7 +84,7 @@ class GitHub implements GitHost {
     var url = "https://github.com/login/oauth/authorize?client_id=" +
         _clientID +
         "&scope=repo";
-    var _ = await launch(url);
+    var _ = await launchUrl(Uri.parse(url));
   }
 
   @override

@@ -130,7 +130,7 @@ class SettingsScreen extends StatelessWidget {
           iconData: Icons.question_answer_outlined,
           title: LocaleKeys.settings_project_docs.tr(),
           onTap: () {
-            var _ = launch('https://gitjournal.io/docs');
+            var _ = launchUrl(Uri.parse('https://gitjournal.io/docs'));
           },
         ),
         SettingsTile(
