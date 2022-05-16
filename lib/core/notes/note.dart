@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2019-2022 Vishesh Handa <me@vhanda.in>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
 import 'package:path/path.dart' as p;
 
 import 'package:gitjournal/core/file/file.dart';
