@@ -34,10 +34,35 @@ Future<Result<void>> cloneRemote({
       authorName: authorName,
       authorEmail: authorEmail,
       progressUpdate: progressUpdate,
+      gitCloneFn: _clone,
       gitFetchFn: _fetch,
       defaultBranchFn: _defaultBranch,
     ),
   );
+}
+
+Future<Result<void>> _clone({
+  required String cloneUrl,
+  required String repoPath,
+  required String sshPublicKey,
+  required String sshPrivateKey,
+  required String sshPassword,
+  required String statusFile,
+}) async {
+  try {
+    await git_bindings.GitRepo.clone(
+      cloneUrl: cloneUrl,
+      folderPath: repoPath,
+      publicKey: sshPublicKey,
+      privateKey: sshPrivateKey,
+      password: sshPassword,
+      statusFile: statusFile,
+    );
+  } catch (e, st) {
+    return Result.fail(e, st);
+  }
+
+  return Result(null);
 }
 
 Future<Result<void>> _fetch(

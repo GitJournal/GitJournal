@@ -736,10 +736,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "736adad90cd9c3132843bdc96ed4ed717e140d4f"
+      resolved-ref: ba1db24a7f9c29f4e5c9c4116c24687605f6d903
       url: "https://github.com/GitJournal/git_bindings.git"
     source: git
-    version: "0.0.18"
+    version: "0.0.19"
   glob:
     dependency: transitive
     description:

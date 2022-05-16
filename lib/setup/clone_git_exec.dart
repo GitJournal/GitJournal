@@ -33,9 +33,27 @@ Future<Result<void>> cloneRemote({
       authorName: authorName,
       authorEmail: authorEmail,
       progressUpdate: progressUpdate,
+      gitCloneFn: _clone,
       gitFetchFn: _fetch,
       defaultBranchFn: _defaultBranch,
     ),
+  );
+}
+
+Future<Result<void>> _clone({
+  required String cloneUrl,
+  required String repoPath,
+  required String sshPublicKey,
+  required String sshPrivateKey,
+  required String sshPassword,
+  required String statusFile,
+}) async {
+  // FIXME: Stop ignoring the statusFile
+  return gitCloneViaExecutable(
+    repoPath: repoPath,
+    cloneUrl: cloneUrl,
+    privateKey: sshPrivateKey,
+    privateKeyPassword: sshPassword,
   );
 }
 

@@ -27,37 +27,39 @@ void main() {
   setUpAll(gjSetupAllTests);
 
   test('Empty Repo - Default Main', () async {
+    const branch = 'master';
     var tempDir = await Directory.systemTemp.createTemp();
     var repoPath = tempDir.path;
 
-    GitRepository.init(repoPath, defaultBranch: 'main').throwOnError();
+    GitRepository.init(repoPath, defaultBranch: branch).throwOnError();
     await clone(repoPath, emptyRepoHttp);
 
     var repo = GitRepository.load(repoPath).getOrThrow();
     var remoteConfig = repo.config.remote('origin')!;
     expect(remoteConfig.url, emptyRepoHttp);
 
-    var branchConfig = repo.config.branch('main')!;
+    var branchConfig = repo.config.branch(branch)!;
     expect(branchConfig.remote, 'origin');
-    expect(branchConfig.merge!.value, 'refs/heads/main');
+    expect(branchConfig.merge!.value, 'refs/heads/$branch');
 
     repo.close().throwOnError();
   });
 
   test('Empty Repo - Default Master', () async {
+    const branch = 'master';
     var tempDir = await Directory.systemTemp.createTemp();
     var repoPath = tempDir.path;
 
-    GitRepository.init(repoPath, defaultBranch: 'master').throwOnError();
+    GitRepository.init(repoPath, defaultBranch: branch).throwOnError();
     await clone(repoPath, emptyRepoHttp);
 
     var repo = GitRepository.load(repoPath).getOrThrow();
     var remoteConfig = repo.config.remote('origin')!;
     expect(remoteConfig.url, emptyRepoHttp);
 
-    var branchConfig = repo.config.branch('master')!;
+    var branchConfig = repo.config.branch(branch)!;
     expect(branchConfig.remote, 'origin');
-    expect(branchConfig.merge!.value, 'refs/heads/main');
+    expect(branchConfig.merge!.value, 'refs/heads/$branch');
 
     repo.close().throwOnError();
   });

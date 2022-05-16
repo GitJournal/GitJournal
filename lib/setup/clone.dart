@@ -29,6 +29,15 @@ typedef GitFetchFunction = Future<Result<void>> Function(
   String statusFile,
 );
 
+typedef GitCloneFunction = Future<Result<void>> Function({
+  required String cloneUrl,
+  required String repoPath,
+  required String sshPublicKey,
+  required String sshPrivateKey,
+  required String sshPassword,
+  required String statusFile,
+});
+
 typedef GitDefaultBranchFunction = Future<Result<String>> Function(
   String repoPath,
   String remoteName,
@@ -48,12 +57,29 @@ Future<Result<void>> cloneRemotePluggable({
   required String authorEmail,
   required Func1<GitTransferProgress, void> progressUpdate,
   required GitFetchFunction gitFetchFn,
+  required GitCloneFunction gitCloneFn,
   required GitDefaultBranchFunction defaultBranchFn,
 }) async {
+  var statusFile = p.join(Directory.systemTemp.path, 'gj');
+
+  // Check if the repo is empty, and accordingly use clone instead
+  // this way we can avoid using dart-git unless absolutely necessary
+  // since it's clearly buggy
+  if (await _repoIsEmpty(repoPath)) {
+    Directory(repoPath).deleteSync(recursive: true);
+    return await gitCloneFn(
+      cloneUrl: cloneUrl,
+      repoPath: repoPath,
+      sshPublicKey: sshPublicKey,
+      sshPrivateKey: sshPrivateKey,
+      sshPassword: sshPassword,
+      statusFile: statusFile,
+    );
+  }
+
   var repo = await GitAsyncRepository.load(repoPath).getOrThrow();
   var remote = await repo.addOrUpdateRemote(remoteName, cloneUrl).getOrThrow();
 
-  var statusFile = p.join(Directory.systemTemp.path, 'gj');
   var duration = const Duration(milliseconds: 50);
   var timer = Timer.periodic(duration, (_) async {
     var progress = await GitTransferProgress.load(statusFile);
@@ -173,6 +199,17 @@ Future<Result<void>> cloneRemotePluggable({
   }
 
   return Result(null);
+}
+
+Future<bool> _repoIsEmpty(repoPath) async {
+  var entities = Directory(repoPath).listSync();
+  if (entities.length == 1) {
+    if (p.basename(entities[0].path) == '.git') {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 String folderNameFromCloneUrl(String cloneUrl) {

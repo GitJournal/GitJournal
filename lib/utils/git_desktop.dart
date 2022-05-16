@@ -25,8 +25,20 @@ Future<Result<void>> gitFetchViaExecutable({
       repoPath: repoPath,
       privateKey: privateKey,
       privateKeyPassword: privateKeyPassword,
-      remoteName: remoteName,
-      command: 'fetch',
+      args: ["fetch", remoteName],
+    );
+
+Future<Result<void>> gitCloneViaExecutable({
+  required String cloneUrl,
+  required String repoPath,
+  required String privateKey,
+  required String privateKeyPassword,
+}) =>
+    _gitCommandViaExecutable(
+      repoPath: null,
+      privateKey: privateKey,
+      privateKeyPassword: privateKeyPassword,
+      args: ["clone", cloneUrl, repoPath],
     );
 
 Future<Result<void>> gitPushViaExecutable({
@@ -39,18 +51,16 @@ Future<Result<void>> gitPushViaExecutable({
       repoPath: repoPath,
       privateKey: privateKey,
       privateKeyPassword: privateKeyPassword,
-      remoteName: remoteName,
-      command: 'push',
+      args: ["push", remoteName],
     );
 
 Future<Result<void>> _gitCommandViaExecutable({
-  required String repoPath,
+  required String? repoPath,
   required String privateKey,
   required String privateKeyPassword,
-  required String remoteName,
-  required String command,
+  required List<String> args,
 }) async {
-  assert(repoPath.startsWith('/'));
+  if (repoPath != null) assert(repoPath.startsWith('/'));
   if (privateKeyPassword.isNotEmpty) {
     var ex = Exception("SSH Keys with passwords are not supported");
     return Result.fail(ex);
@@ -63,13 +73,10 @@ Future<Result<void>> _gitCommandViaExecutable({
   _ = await temp.writeAsString(privateKey);
   temp.chmodSync(int.parse('0600', radix: 8));
 
-  Log.i("Running git $command $remoteName");
+  Log.i("Running git ${args.join(' ')}");
   var process = await Process.start(
     'git',
-    [
-      command,
-      remoteName,
-    ],
+    args,
     workingDirectory: repoPath,
     environment: {
       if (privateKey.isNotEmpty)
@@ -78,7 +85,7 @@ Future<Result<void>> _gitCommandViaExecutable({
   );
 
   Log.d('env GIT_SSH_COMMAND="ssh -i ${temp.path} -o IdentitiesOnly=yes"');
-  Log.d('git $command $remoteName');
+  Log.d("git ${args.join(' ')}");
 
   var exitCode = await process.exitCode;
   _ = await dir.delete(recursive: true);
