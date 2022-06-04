@@ -506,10 +506,16 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     try {
       if (_gitCloneUrl.startsWith("git@github.com:")) {
         Log.i("Launching $gitHubUrl");
-        var _ = await launchUrl(Uri.parse(gitHubUrl));
+        var _ = await launchUrl(
+          Uri.parse(gitHubUrl),
+          mode: LaunchMode.externalApplication,
+        );
       } else if (_gitCloneUrl.startsWith("git@gitlab.com:")) {
         Log.i("Launching $gitLabUrl");
-        var _ = await launchUrl(Uri.parse(gitLabUrl));
+        var _ = await launchUrl(
+          Uri.parse(gitLabUrl),
+          mode: LaunchMode.externalApplication,
+        );
       }
     } catch (err, stack) {
       Log.d('_launchDeployKeyPage: ' + err.toString());
@@ -522,9 +528,15 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
     try {
       if (_gitHostType == GitHostType.GitHub) {
-        var _ = await launchUrl(Uri.parse("https://github.com/new"));
+        var _ = await launchUrl(
+          Uri.parse("https://github.com/new"),
+          mode: LaunchMode.externalApplication,
+        );
       } else if (_gitHostType == GitHostType.GitLab) {
-        var _ = await launchUrl(Uri.parse("https://gitlab.com/projects/new"));
+        var _ = await launchUrl(
+          Uri.parse("https://gitlab.com/projects/new"),
+          mode: LaunchMode.externalApplication,
+        );
       }
     } catch (err, stack) {
       // FIXME: Error handling?

@@ -71,7 +71,10 @@ class GitLab implements GitHost {
 
     var url =
         "https://gitlab.com/oauth/authorize?client_id=$_clientID&response_type=token&state=$_stateOAuth&redirect_uri=gitjournal://login.oauth2";
-    var _ = await launchUrl(Uri.parse(url));
+    var _ = await launchUrl(
+      Uri.parse(url),
+      mode: LaunchMode.externalApplication,
+    );
   }
 
   @override

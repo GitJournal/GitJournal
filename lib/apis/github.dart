@@ -84,7 +84,10 @@ class GitHub implements GitHost {
     var url = "https://github.com/login/oauth/authorize?client_id=" +
         _clientID +
         "&scope=repo";
-    var _ = await launchUrl(Uri.parse(url));
+    var _ = await launchUrl(
+      Uri.parse(url),
+      mode: LaunchMode.externalApplication,
+    );
   }
 
   @override

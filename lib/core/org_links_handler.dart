@@ -13,7 +13,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:org_flutter/org_flutter.dart';
 import 'package:path/path.dart';
 import 'package:universal_io/io.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher.dart' as ul;
 
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/folder_views/common.dart';
@@ -44,8 +44,12 @@ class OrgLinkHandler {
     if (looksLikeImagePath(link)) {
       if (looksLikeUrl(link)) {
         // Remote images
-        if (await canLaunchUrl(Uri.parse(link))) {
-          var _ = await launchUrl(link);
+        final uri = Uri.parse(link);
+        if (await ul.canLaunchUrl(uri)) {
+          var _ = await ul.launchUrl(
+            uri,
+            mode: ul.LaunchMode.externalApplication,
+          );
         } else {
           //throw 'Could not launch $link';
           log('could not launch $link');
@@ -80,8 +84,12 @@ class OrgLinkHandler {
         // Remote link: Open in system handler.
         log('url: ' + link);
 
-        if (await canLaunchUrl(Uri.parse(link))) {
-          var _ = await launchUrl(link);
+        final uri = Uri.parse(link);
+        if (await ul.canLaunchUrl(uri)) {
+          var _ = await ul.launchUrl(
+            uri,
+            mode: ul.LaunchMode.externalApplication,
+          );
         } else {
           Log.w('could not launch $link');
           //Log.e('Opening Link', ex: e, stacktrace: stackTrace);

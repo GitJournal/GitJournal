@@ -34,7 +34,10 @@ class SettingsAboutPage extends StatelessWidget {
           title: LocaleKeys.settings_privacy.tr(),
           subtitle: _privacyUrl.replaceAll('https://', ''),
           onTap: () {
-            var _ = launchUrl(Uri.parse(_privacyUrl));
+            var _ = launchUrl(
+              Uri.parse(_privacyUrl),
+              mode: LaunchMode.externalApplication,
+            );
           },
         ),
         SettingsTile(
@@ -42,7 +45,10 @@ class SettingsAboutPage extends StatelessWidget {
           title: LocaleKeys.settings_terms.tr(),
           subtitle: _termsUrl.replaceAll('https://', ''),
           onTap: () {
-            var _ = launchUrl(Uri.parse(_termsUrl));
+            var _ = launchUrl(
+              Uri.parse(_termsUrl),
+              mode: LaunchMode.externalApplication,
+            );
           },
         ),
         SettingsTile(
