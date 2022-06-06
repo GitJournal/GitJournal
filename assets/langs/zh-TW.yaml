@@ -2,20 +2,20 @@
 # 
 # SPDX-License-Identifier: CC-BY-4.0
 settings:
-  ok: Ok
-  cancel: Mégse
-  title: Beállítások
+  ok: 確定
+  cancel: 取消
+  title: 設定
   author:
-    label: Név
+    label: Author Name
     validator: Please enter a name
   email:
-    label: Email
+    label: Email Address
     validator:
       empty: Please enter an email
       invalid: Please enter a valid email
   display:
-    title: Display Settings
-    homeScreen: Home Screen
+    title: 顯示設定
+    homeScreen: 主畫面
     theme: Theme
     images:
       title: Image Settings
@@ -108,17 +108,17 @@ settings:
       verbose: Verbose
     copy: Debug Logs Copied
   images:
-    title: Image Settings
+    title: 圖片設定
     subtitle: Configure how Images are stored
-    imageLocation: Image Location
+    imageLocation: 圖片位置
     currentFolder: Same Folder as Note
-    customFolder: Személyes mappa
+    customFolder: Custom Folder
   gitRemote:
     changeHost:
       title: Reconfigure Git Host
       subtitle: Notes which have not been synced will be lost
-      ok: Ok
-      cancel: Cancel
+      ok: 確定
+      cancel: 取消
     title: Git Remote Settings
     subtitle: Configure where your notes are synced
     host: Git Host
@@ -137,7 +137,7 @@ settings:
     example:
       title: Example Title
     titleMetaData:
-      title: Title
+      title: 標題
       fromH1: Text Header 1
       fromYaml: From YAML 'title'
       filename: FileName
@@ -167,57 +167,57 @@ settings:
   editors:
     title: Editor Settings
     subtitle: Configure how different editors work
-    defaultEditor: Alapértelmezett szerkesztő
+    defaultEditor: Default Editor
     defaultState: Default State
-    markdownEditor: Markdown szerkesztő
-    journalEditor: Journal szerkesztő
-    defaultFolder: Alapértelmezett mappa
-    checklistEditor: Ellenőrzőlista szerkesztő
-    rawEditor: Raw szerkesztő
-    choose: Válassz szerkesztőt
+    markdownEditor: Markdown Editor
+    journalEditor: Journal Editor
+    defaultFolder: Default Folder
+    checklistEditor: Checklist Editor
+    rawEditor: Raw Editor
+    choose: Choose Editor
     orgEditor: Org Editor
     defaultNoteFormat: Default Note Format
     journalDefaultFolderSelect: Creating a Note in '{}'
   sortingField:
     modified: Last Modified
-    created: Created
-    filename: Fájlnév
-    title: Cím
+    created: 已建立
+    filename: File Name
+    title: Title
   sortingOrder:
-    asc: Növekvő
-    desc: Csökkenő
+    asc: Ascending
+    desc: Descending
   sortingMode:
-    field: Mező
-    order: Sorrend
+    field: Field
+    order: Order
   remoteSync:
-    auto: Automatikus
-    manual: Kézi
+    auto: 自動
+    manual: 手動
   tags:
-    title: Címkék beállítása
+    title: Tags Settings
     subtitle: Configure how inline tags are parsed
     enable: Parse Inline Tags
     prefixes: Inline Tags Prefixes
   misc:
-    title: Egyéb beállítások
-    swipe: Jegyzet törlése csúsztatással
-    listView: Lista nézet
+    title: Misc Settings
+    swipe: Swipe to Delete Note
+    listView: List View
     confirmDelete: Show a Popup to Confirm Deletes
     hardWrap: Enable hardWrap
     emoji: Emojify text
   NoteFileNameFormat:
-    iso8601WithTimeZone: ISO86001 időzónával
+    iso8601WithTimeZone: ISO8601 With TimeZone
     iso8601: ISO8601
-    iso8601WithoutColon: ISO8601 kettőspont nélkül
-    title: Cím
+    iso8601WithoutColon: ISO8601 without Colons
+    title: Title
     uuid: Uuid V4
     zettelkasten: yyyymmddhhmmss
     simple: yyyy-mm-dd-hh-mm-ss
     dateOnly: yyyy-mm-dd
   HomeScreen:
-    allNotes: Minden jegyzet
-    allFolders: Minden mappa
+    allNotes: All Notes
+    allFolders: All Folders
   EditorDefaultView:
-    edit: Módosít
+    edit: Edit
     view: View
     lastUsed: Last Used
   theme:
@@ -255,8 +255,7 @@ settings:
     title: Note File Types
     subtitle: Configure what files are considered Notes
     numFiles:
-      one: "{} File"
-      other: ""
+      other: "{} File"
     noExt: No Extension
   list:
     userInterface:
@@ -290,15 +289,15 @@ settings:
     subtitle: GitJoural uses other great software
 editors:
   checklist:
-    add: Elem hozzáadása
+    add: Add Item
   common:
-    defaultBodyHint: Ide írj
-    defaultTitleHint: Cím
-    discard: Változások elvetése
-    share: Jegyzet megosztása
+    defaultBodyHint: Write here
+    defaultTitleHint: Title
+    discard: Discard Changes
+    share: Share Note
     takePhoto: Take Photo
     addImage: Add Image from Gallery
-    editFileName: Fájlnév
+    editFileName: Edit File Name
     tags: Edit Tags
     zen:
       enable: Enable Zen Mode
@@ -310,39 +309,39 @@ editors:
     find: Find in note
 pro: Pro
 actions:
-  newNote: Új jegyzet
-  newJournal: Új napló bejegyzés
-  newChecklist: Új ellenőrző lista
+  newNote: New Note
+  newJournal: New Journal Entry
+  newChecklist: New Checklist
 screens:
   folders:
-    title: Mappák
-    selected: Kiválasztott mappa
+    title: 資料夾
+    selected: Folder Selected
     dialog:
-      title: Új mappa
-      create: Új
-      discard: Elvet
+      title: Create new Folder
+      create: 建立
+      discard: 捨棄
     errorDialog:
-      title: Hiba
-      deleteContent: Jegyzetet tartalmazó mappa nem törölhető.
-      renameContent: A gyökér könyvtár nem átnevezhető
-      ok: Ok
+      title: 錯誤
+      deleteContent: Cannot delete a Folder which contains notes
+      renameContent: Cannot rename Root Folder
+      ok: 確定
     actions:
-      rename: Mappa átnevezése
-      subFolder: Új almappa
-      delete: Mappa törlése
-      decoration: Mappa neve
-      empty: Kérlek adj meg egy nevet
+      rename: Rename Folder
+      subFolder: Create Sub-Folder
+      delete: 刪除資料夾
+      decoration: Folder Name
+      empty: Please enter a name
   tags:
-    title: Címkék
+    title: Tags
     empty: No Tags Found
   filesystem:
     ignoredFile:
-      title: Fájl elvetve
-      ok: Ok
-      rename: Átnevezés
+      title: File Ignored
+      ok: 確定
+      rename: Rename
     rename:
-      decoration: Fájlnév
-      title: Átnevezés
+      decoration: File Name
+      title: Rename
   folder_view:
     empty: Let's add some notes?
   home:
@@ -354,20 +353,19 @@ screens:
     message: The repo couldn't be opened. Please file a bug and recreate the repo.
 widgets:
   rename:
-    'yes': Átnevezés
-    'no': Mégse
+    'yes': Rename
+    'no': 取消
     validator:
-      empty: Kérlek adj meg egy nevet
-      exists: Már létezik
-      contains: Nem tartalmazhat / jelet
+      empty: Please enter a name
+      exists: Already Exists
+      contains: Cannot contain /
     noExt: "Warning: Extension missing. Will treat file as plain text"
     changeExt: "Warning: Changing file type from '{}' to '{}'"
   backlinks:
     title:
-      one: "{} Jegyzet kapcsolódik ehhez a Jegyzethez"
-      other: "{} Jegyzetek kapcsolódnak ehhez a Jegyzethez"
+      other: "{} Note links to this Note"
   SortingOrderSelector:
-    title: Rendezési szabály
+    title: Sorting Criteria
   PurchaseButton:
     text: Purchase for {price}
     fail: Failed to Load
@@ -392,19 +390,18 @@ widgets:
     sortingOptions: Sorting Options
     viewOptions: View Options
     noteDeleted: Note Deleted
-    undo: Undo
+    undo: 復原
     searchFailed: No Search Results Found
     actions:
-      moveToFolder: Move To Folder
-    pinned: Pinned
-    others: Others
+      moveToFolder: 移至資料夾
+    pinned: 已釘選
+    others: 其他
   imageRenderer:
     caption: "{first} - {second}"
     httpError: "Code: {status} for {url}"
   NoteDeleteDialog:
     title:
-      one: Do you want to delete this note?
-      other: ""
+      other: Do you want to delete this note?
     'yes': true
     'no': false
   NoteEditor:
@@ -419,24 +416,24 @@ widgets:
     linkNotFound: Link '{}' not found
     linkInvalid: Link '{}' is invalid.
   FolderSelectionDialog:
-    title: Select a Folder
+    title: 選擇資料夾
   FolderTreeView:
     notesCount: "{} Notes"
-rootFolder: Gyökér mappa
+rootFolder: Root Folder
 ignoredFiles:
   dot: Starts with a .
   ext: Doesn't end with one of the following -
 drawer:
-  setup: Git Host beállítása
-  pro: Pro verzió feloldása
-  all: Minden jegyzet
-  folders: Mappák
-  fs: Fájl rendszer
-  tags: Címkék
-  share: App megosztása
-  rate: Értékelés
-  feedback: Visszajelzés
-  bug: Hiba jelzés
+  setup: Setup Git Host
+  pro: Unlock Pro Version
+  all: All Notes
+  folders: 資料夾
+  fs: File System
+  tags: Tags
+  share: Share App
+  rate: Rate Us
+  feedback: Feedback
+  bug: Bug Report
   graph: Graph View
   remote: No Git Host
   addRepo: Add Repository
@@ -445,8 +442,8 @@ drawer:
 setup:
   autoConfigure:
     title: How do you want to do this?
-    automatic: Automatikus beállítás
-    manual: Hadd csináljam manuálisan
+    automatic: Setup Automatically
+    manual: Let me do it manually
   autoconfigure:
     step1: 1. List your existing repos or create a new repo
     step2: 2. Generate an SSH Key on this device
@@ -489,20 +486,20 @@ setup:
     regenerate: Regenerate Key
     openDeploy: Open Deploy Key Webpage
     clone: Clone Repo
-    addDeploy: Hozzáadás Deploy Key-ként
+    addDeploy: Adding as a Deploy Key
     save: Save
   sshKeyChoice:
-    title: SSH kulcsokra van szükség a hitelesítéshez -
-    generate: Új kulcsok készítése
-    custom: Adj meg egyedi SSH kulcsokat
+    title: We need SSH keys to authenticate -
+    generate: Generate new keys
+    custom: Provide Custom SSH Keys
   sshKeyUserProvided:
-    public: Publikus kulcs -
-    private: Privát kulcs -
+    public: Public Key -
+    private: Private Key -
     password: Private Key Password
-  cloning: Klónozás ...
+  cloning: Cloning ...
   host:
-    title: Válassz Git-szolgáltatót -
-    custom: Egyedi
+    title: Select a Git Hosting Provider -
+    custom: Custom
 feature:
   darkMode: Dark Mode
   rawEditor: Raw Editor
@@ -549,9 +546,9 @@ feature:
   desktop: Desktop App
   markdownToolbar: Markdown Toolbar
   localization:
-    title: Lokalizálás
+    title: Localization
     subtitle: Allow GitJournal to be translated
-  inlineTags: Beágyazott címkék
+  inlineTags: Inline Tags
   singleJournalEntry: Single Journal Entry File per day
   configureBottomMenuBar: Configure the Bottom Menu Bar
   customFileNamePerEditor: Custom FileName per Editor
@@ -567,11 +564,11 @@ purchase_screen:
   desc: 'GitJournal is completely open source and is the result of significant development work. It has no venture capital or corporation backing and it never will. Your support directly sustains development.   GitJournal operates on a "pay what you want model (with a minimum)".'
   restore: Restore Purchase
   oneTime:
-    title: Egyszeri vásárlás
-    desc: "Véglegesen engedélyezi a GitJournal összes jelenleg elérhető Pro funkcióját és a következő 12 hónapban hozzáadott új funkciókat. "
+    title: One Time Purchase
+    desc: Permanently enables all Pro features currently in GitJournal and new features added in the following 12 months.
   monthly:
-    title: Havi előfizetés
-    desc: Engedélyezi az összes Pro funkciót. 12 hónap elteltével vagy a {minYearlyPurchase} befizetése után megkapod az "egyszeri vásárlás" összes előnyét
+    title: Monthly Installments
+    desc: Enables all Pro Features. After 12 months or after paying {minYearlyPurchase}, you will get all the benefits of the 'One Time Purchase'
   thanks:
     title: Thank You
     subtitle: You're awesome for supporting GitJournal

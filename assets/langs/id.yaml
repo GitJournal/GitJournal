@@ -150,6 +150,7 @@ settings:
       invalid: YAML Tidak Valid
     output: Output
     input: Input
+    editorType: Editor Type Field
   privacy: Kebijakan Privasi
   terms: Syarat dan Kententuan
   experimental:
@@ -238,6 +239,7 @@ settings:
     repoLocation: Lokasi Repo
     notWritable: "{} is not writable"
     failedExternal: Unable to get External Storage Directory
+    permissionFailed: External Storage Permission Failed
   drawer:
     title: Pengaturan Bilah Sisi
   bottomMenuBar:
@@ -346,6 +348,9 @@ screens:
     allNotes: Semua Catatan
   cacheLoading:
     text: Reading Git History ...
+  error:
+    title: Error
+    message: The repo couldn't be opened. Please file a bug and recreate the repo.
 widgets:
   rename:
     'yes': Namai Ulang
@@ -412,6 +417,8 @@ widgets:
     linkInvalid: Tautan '{}' tidak valid.
   FolderSelectionDialog:
     title: Pilih Folder
+  FolderTreeView:
+    notesCount: "{} Notes"
 rootFolder: Folder Akar
 ignoredFiles:
   dot: Mulai dengan a
@@ -546,6 +553,7 @@ feature:
   configureBottomMenuBar: Konfigurasikan Bilah Menu Bawah
   customFileNamePerEditor: Nama File Kustom per Editor
   branchSelection: Seleksi Branch Git
+  inlineLatex: Inline Katex Support in Markdown
 feature_timeline:
   title: Garis Waktu Fitur
   progress: Dalam Proses
@@ -564,6 +572,8 @@ purchase_screen:
   thanks:
     title: Terima kasih
     subtitle: Anda luar biasa karena mendukung GitJournal
+  expired: Subscription Expired on {}
+  unknown: Unknown
 OnBoarding:
   Skip: Lewati
   Next: Berikutnya

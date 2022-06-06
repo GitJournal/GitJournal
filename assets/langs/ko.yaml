@@ -150,6 +150,7 @@ settings:
       invalid: 잘못된 YAML
     output: Output
     input: Input
+    editorType: Editor Type Field
   privacy: 개인 정보 정책
   terms: 이용 약관
   experimental:
@@ -220,8 +221,8 @@ settings:
     view: View
     lastUsed: Last Used
   theme:
-    light: Light
-    dark: Dark
+    light: Light Theme
+    dark: Dark Theme
     default: System Default
   versionCopied: Copied version to clipboard
   ssh:
@@ -238,6 +239,7 @@ settings:
     repoLocation: Repo Location
     notWritable: "{} is not writable"
     failedExternal: Unable to get External Storage Directory
+    permissionFailed: External Storage Permission Failed
   drawer:
     title: Sidebar Settings
   bottomMenuBar:
@@ -346,6 +348,9 @@ screens:
     allNotes: All Notes
   cacheLoading:
     text: Reading Git History ...
+  error:
+    title: Error
+    message: The repo couldn't be opened. Please file a bug and recreate the repo.
 widgets:
   rename:
     'yes': 이름 바꾸기
@@ -412,6 +417,8 @@ widgets:
     linkInvalid: Link '{}' is invalid.
   FolderSelectionDialog:
     title: Select a Folder
+  FolderTreeView:
+    notesCount: "{} Notes"
 rootFolder: 루트 폴더
 ignoredFiles:
   dot: 로 시작합니다.
@@ -546,6 +553,7 @@ feature:
   configureBottomMenuBar: Configure the Bottom Menu Bar
   customFileNamePerEditor: Custom FileName per Editor
   branchSelection: Git Branch Selection
+  inlineLatex: Inline Katex Support in Markdown
 feature_timeline:
   title: 기능 타임 라인
   progress: 진행 중
@@ -564,6 +572,8 @@ purchase_screen:
   thanks:
     title: Thank You
     subtitle: You're awesome for supporting GitJournal
+  expired: Subscription Expired on {}
+  unknown: Unknown
 OnBoarding:
   Skip: Skip
   Next: Next

@@ -1,36 +1,7 @@
 # SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
-#
+# 
 # SPDX-License-Identifier: CC-BY-4.0
-
 settings:
-  list:
-    userInterface:
-      title: User Interface
-      subtitle: Theme, Language, Home, Bottom Bar, Rendering
-    git:
-      title: Git
-      subtitle: Git Author, Remote, Sync Frequency
-    editor:
-      title: Editor
-      subtitle: Default Editor, Default View
-    storage:
-      title: Storage & File Formats
-      subtitle: Storage, Serialization, Metadata, File Formats
-    analytics:
-      title: Analytics
-      subtitle: It's important that you feel comfortable
-    debug:
-      title: Debug
-      subtitle: Peek inside the inner workings of GitJournal
-    experiments:
-      title: Experiments
-      subtitle: Play around with experimental features
-  project:
-    header: Project
-    docs: Documentation & Support
-    contribute: Contribute
-    about: About
-
   ok: Ok
   cancel: Cancel
   title: Settings
@@ -46,7 +17,6 @@ settings:
     title: Display Settings
     homeScreen: Home Screen
     theme: Theme
-    lang: Language
     images:
       title: Image Settings
       subtitle: Configure how images are displayed
@@ -116,17 +86,13 @@ settings:
         themeVectorGraphics:
           title: Theme Vector Graphics
           filter: Using Color Filter
-          off: No
-          on: Yes
+          'off': false
+          'on': true
         vectorGraphics: Vector Graphics (.svg)
         vectorGraphicsAdjustColors: Colors to Adjust
-  theme:
-    light: Light Theme
-    dark: Dark Theme
-    default: System Default
+    lang: Language
   gitAuthor: Git Author Settings
   versionInfo: GitJournal Version
-  versionCopied: Copied version to clipboard
   analytics: Analytics
   crashReports: Collect Anonymous Crash Reports
   usageStats: Collect Anonymous Usage Statistics
@@ -160,18 +126,6 @@ settings:
     resetHard:
       title: Reset Git Host
       subtitle: This will HARD reset the current branch to its remote
-
-  fileTypes:
-    title: Note File Types
-    subtitle: Configure what files are considered Notes
-    numFiles:
-      zero: ""
-      one: "{} File"
-      many: "{} Files"
-      two: "{} Files"
-      few: "{} Files"
-      other: "{} Files"
-    noExt: No Extension
   noteMetaData:
     title: Note Metadata Settings
     subtitle: Configure how the Note Metadata is saved
@@ -180,7 +134,6 @@ settings:
     modified: Modified Field
     created: Created Field
     tags: Tags Field
-    editorType: Editor Type Field
     example:
       title: Example Title
     titleMetaData:
@@ -197,11 +150,9 @@ settings:
       invalid: Invalid YAML
     output: Output
     input: Input
+    editorType: Editor Type Field
   privacy: Privacy Policy
   terms: Terms and Conditions
-  license:
-    title: Licenses
-    subtitle: GitJoural uses other great software
   experimental:
     title: Experimental Features
     subtitle: Try out features in Development
@@ -217,16 +168,16 @@ settings:
     title: Editor Settings
     subtitle: Configure how different editors work
     defaultEditor: Default Editor
-    defaultNoteFormat: Default Note Format
     defaultState: Default State
     markdownEditor: Markdown Editor
     journalEditor: Journal Editor
     defaultFolder: Default Folder
-    journalDefaultFolderSelect: Creating a Note in '{}'
     checklistEditor: Checklist Editor
-    orgEditor: Org Editor
     rawEditor: Raw Editor
     choose: Choose Editor
+    orgEditor: Org Editor
+    defaultNoteFormat: Default Note Format
+    journalDefaultFolderSelect: Creating a Note in '{}'
   sortingField:
     modified: Last Modified
     created: Created
@@ -253,18 +204,14 @@ settings:
     confirmDelete: Show a Popup to Confirm Deletes
     hardWrap: Enable hardWrap
     emoji: Emojify text
-  fileFormat:
-    markdown: Markdown
-    txt: Txt
-    orgMode: Org Mode
   NoteFileNameFormat:
     iso8601WithTimeZone: ISO8601 With TimeZone
     iso8601: ISO8601
     iso8601WithoutColon: ISO8601 without Colons
     title: Title
     uuid: Uuid V4
-    simple: yyyy-mm-dd-hh-mm-ss
     zettelkasten: yyyymmddhhmmss
+    simple: yyyy-mm-dd-hh-mm-ss
     dateOnly: yyyy-mm-dd
   HomeScreen:
     allNotes: All Notes
@@ -273,6 +220,11 @@ settings:
     edit: Edit
     view: View
     lastUsed: Last Used
+  theme:
+    light: Light Theme
+    dark: Dark Theme
+    default: System Default
+  versionCopied: Copied version to clipboard
   ssh:
     syncFreq: Sync Frequency
   note:
@@ -295,40 +247,73 @@ settings:
     subtitle: Configure its appearance and behavior
     enable: Enable Bottom Menu Bar
   deleteRepo: Delete Repository
-
+  fileFormat:
+    markdown: Markdown
+    txt: Txt
+    orgMode: Org Mode
+  fileTypes:
+    title: Note File Types
+    subtitle: Configure what files are considered Notes
+    numFiles:
+      one: "{} File"
+      other: "{} Files"
+    noExt: No Extension
+  list:
+    userInterface:
+      title: User Interface
+      subtitle: Theme, Language, Home, Bottom Bar, Rendering
+    git:
+      title: Git
+      subtitle: Git Author, Remote, Sync Frequency
+    editor:
+      title: Editor
+      subtitle: Default Editor, Default View
+    storage:
+      title: Storage & File Formats
+      subtitle: Storage, Serialization, Metadata, File Formats
+    analytics:
+      title: Analytics
+      subtitle: It's important that you feel comfortable
+    debug:
+      title: Debug
+      subtitle: Peek inside the inner workings of GitJournal
+    experiments:
+      title: Experiments
+      subtitle: Play around with experimental features
+  project:
+    header: Project
+    docs: Documentation & Support
+    contribute: Contribute
+    about: About
+  license:
+    title: Licenses
+    subtitle: GitJoural uses other great software
 editors:
   checklist:
     add: Add Item
   common:
     defaultBodyHint: Write here
     defaultTitleHint: Title
-    defaultFileNameHint: File Name
     discard: Discard Changes
     share: Share Note
     takePhoto: Take Photo
     addImage: Add Image from Gallery
     editFileName: Edit File Name
     tags: Edit Tags
-    find: Find in note
     zen:
       enable: Enable Zen Mode
       disable: Disable Zen Mode
     saveNoteFailed:
       title: Failed to Save Note
       message: We're sorry, but we cannot seem to save the Note. It has been copied to the clipboard to avoid data loss.
+    defaultFileNameHint: File Name
+    find: Find in note
 pro: Pro
-beta: BETA
-none: None
 actions:
   newNote: New Note
   newJournal: New Journal Entry
   newChecklist: New Checklist
 screens:
-  error:
-    title: Error
-    message: The repo couldn't be opened. Please file a bug and recreate the repo.
-  home:
-    allNotes: All Notes
   folders:
     title: Folders
     selected: Folder Selected
@@ -360,24 +345,17 @@ screens:
       title: Rename
   folder_view:
     empty: Let's add some notes?
+  home:
+    allNotes: All Notes
   cacheLoading:
     text: Reading Git History ...
-
-OnBoarding:
-  Skip: Skip
-  Next: Next
-  getStarted: Get Started
-  subtitle: 'An Open Source Note Taking App
-built on top of Git'
-  page2: 'Your Notes are stored in a
-standard Markdown + YAML Header format'
-  page3: 'Sync your Local Git Repo
-with any provider'
-
+  error:
+    title: Error
+    message: The repo couldn't be opened. Please file a bug and recreate the repo.
 widgets:
   rename:
-    yes: Rename
-    no: Cancel
+    'yes': Rename
+    'no': Cancel
     validator:
       empty: Please enter a name
       exists: Already Exists
@@ -386,15 +364,8 @@ widgets:
     changeExt: "Warning: Changing file type from '{}' to '{}'"
   backlinks:
     title:
-      zero: ""
       one: "{} Note links to this Note"
-      many: "{} Notes link to this Note"
-      two: "{} Notes link to this Note"
-      few: "{} Notes link to this Note"
       other: "{} Notes link to this Note"
-  imageRenderer:
-    caption: "{first} - {second}"
-    httpError: "Code: {status} for {url}"
   SortingOrderSelector:
     title: Sorting Criteria
   PurchaseButton:
@@ -403,8 +374,6 @@ widgets:
     failSend: Failed to send purchase request
     failPurchase: Failed to Purchase - {}
   FolderView:
-    noteDeleted: Note Deleted
-    undo: Undo
     syncError: Sync Error {}
     headerOptions:
       heading: Header Options
@@ -418,24 +387,26 @@ widgets:
       journal: Journal View
       grid: Grid View
       card: Card View
-      calendar: Calendar View
       select: Select View
+      calendar: Calendar View
     sortingOptions: Sorting Options
     viewOptions: View Options
+    noteDeleted: Note Deleted
+    undo: Undo
     searchFailed: No Search Results Found
-    pinned: Pinned
-    others: Others
     actions:
       moveToFolder: Move To Folder
+    pinned: Pinned
+    others: Others
+  imageRenderer:
+    caption: "{first} - {second}"
+    httpError: "Code: {status} for {url}"
   NoteDeleteDialog:
     title:
       one: Do you want to delete this note?
-      two: Do you want to delete these {} notes?
-      few: Do you want to delete these {} notes?
-      many: Do you want to delete these {} notes?
       other: Do you want to delete these {} notes?
-    yes: Yes
-    no: No
+    'yes': true
+    'no': false
   NoteEditor:
     renameFile: Rename File
     fileName: Filename
@@ -451,7 +422,6 @@ widgets:
     title: Select a Folder
   FolderTreeView:
     notesCount: "{} Notes"
-
 rootFolder: Root Folder
 ignoredFiles:
   dot: Starts with a .
@@ -462,19 +432,22 @@ drawer:
   all: All Notes
   folders: Folders
   fs: File System
-  graph: Graph View
-  history: History
   tags: Tags
   share: Share App
   rate: Rate Us
   feedback: Feedback
   bug: Bug Report
+  graph: Graph View
   remote: No Git Host
   addRepo: Add Repository
   login: Login
+  history: History
 setup:
+  autoConfigure:
+    title: How do you want to do this?
+    automatic: Setup Automatically
+    manual: Let me do it manually
   autoconfigure:
-    title: We need permission to perform the following steps
     step1: 1. List your existing repos or create a new repo
     step2: 2. Generate an SSH Key on this device
     step3: 3. Add the key as a deploy key with write access to the repository
@@ -530,11 +503,6 @@ setup:
   host:
     title: Select a Git Hosting Provider -
     custom: Custom
-  autoConfigure:
-    title: How do you want to do this?
-    automatic: Setup Automatically
-    manual: Let me do it manually
-
 feature:
   darkMode: Dark Mode
   rawEditor: Raw Editor
@@ -589,21 +557,14 @@ feature:
   customFileNamePerEditor: Custom FileName per Editor
   branchSelection: Git Branch Selection
   inlineLatex: Inline Katex Support in Markdown
-
 feature_timeline:
   title: Feature Timeline
   progress: In Progress
   plan: Planned
   issues: GitJournal's development is tracked on Github. Please consider voting on the issues you consider important.
-
 purchase_screen:
   title: Pro Version
-  expired: Subscription Expired on {}
-  unknown: Unknown
-  desc: 'GitJournal is completely open source and is the result of significant development work. It has no venture capital or corporation backing and it never will. Your support directly sustains development.
-
-
-GitJournal operates on a "pay what you want model (with a minimum)".'
+  desc: 'GitJournal is completely open source and is the result of significant development work. It has no venture capital or corporation backing and it never will. Your support directly sustains development.   GitJournal operates on a "pay what you want model (with a minimum)".'
   restore: Restore Purchase
   oneTime:
     title: One Time Purchase
@@ -614,3 +575,14 @@ GitJournal operates on a "pay what you want model (with a minimum)".'
   thanks:
     title: Thank You
     subtitle: You're awesome for supporting GitJournal
+  expired: Subscription Expired on {}
+  unknown: Unknown
+OnBoarding:
+  Skip: Skip
+  Next: Next
+  getStarted: Get Started
+  subtitle: 'An Open Source Note Taking App built on top of Git'
+  page2: 'Your Notes are stored in a standard Markdown + YAML Header format'
+  page3: 'Sync your Local Git Repo with any provider'
+beta: BETA
+none: None

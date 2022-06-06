@@ -150,6 +150,7 @@ settings:
       invalid: Ogiltig YAML
     output: Output
     input: Input
+    editorType: Editor Type Field
   privacy: Integritetspolicy
   terms: Villkor
   experimental:
@@ -220,8 +221,8 @@ settings:
     view: View
     lastUsed: Last Used
   theme:
-    light: Light
-    dark: Dark
+    light: Light Theme
+    dark: Dark Theme
     default: System Default
   versionCopied: Copied version to clipboard
   ssh:
@@ -238,6 +239,7 @@ settings:
     repoLocation: Repo Location
     notWritable: "{} is not writable"
     failedExternal: Unable to get External Storage Directory
+    permissionFailed: External Storage Permission Failed
   drawer:
     title: Sidebar Settings
   bottomMenuBar:
@@ -347,6 +349,9 @@ screens:
     allNotes: All Notes
   cacheLoading:
     text: Reading Git History ...
+  error:
+    title: Error
+    message: The repo couldn't be opened. Please file a bug and recreate the repo.
 widgets:
   rename:
     'yes': Döp om
@@ -415,6 +420,8 @@ widgets:
     linkInvalid: Link '{}' is invalid.
   FolderSelectionDialog:
     title: Select a Folder
+  FolderTreeView:
+    notesCount: "{} Notes"
 rootFolder: Rotmapp
 ignoredFiles:
   dot: Börjar med en.
@@ -549,6 +556,7 @@ feature:
   configureBottomMenuBar: Configure the Bottom Menu Bar
   customFileNamePerEditor: Custom FileName per Editor
   branchSelection: Git Branch Selection
+  inlineLatex: Inline Katex Support in Markdown
 feature_timeline:
   title: Funktionstidslinje
   progress: Pågående
@@ -567,6 +575,8 @@ purchase_screen:
   thanks:
     title: Thank You
     subtitle: You're awesome for supporting GitJournal
+  expired: Subscription Expired on {}
+  unknown: Unknown
 OnBoarding:
   Skip: Skip
   Next: Next

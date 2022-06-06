@@ -150,6 +150,7 @@ settings:
       invalid: 不正なYAMLです
     output: Output
     input: Input
+    editorType: Editor Type Field
   privacy: プライバシーポリシー
   terms: 利用規約
   experimental:
@@ -238,6 +239,7 @@ settings:
     repoLocation: リポジトリの場所
     notWritable: "{} is not writable"
     failedExternal: Unable to get External Storage Directory
+    permissionFailed: External Storage Permission Failed
   drawer:
     title: サイドバーの設定
   bottomMenuBar:
@@ -346,6 +348,9 @@ screens:
     allNotes: 全てのノート
   cacheLoading:
     text: Reading Git History ...
+  error:
+    title: Error
+    message: The repo couldn't be opened. Please file a bug and recreate the repo.
 widgets:
   rename:
     'yes': リネームする
@@ -412,6 +417,8 @@ widgets:
     linkInvalid: リンク '{}' が無効です
   FolderSelectionDialog:
     title: フォルダを選択してください
+  FolderTreeView:
+    notesCount: "{} Notes"
 rootFolder: ルートフォルダ
 ignoredFiles:
   dot: .から始まるファイル
@@ -546,6 +553,7 @@ feature:
   configureBottomMenuBar: メニューバーの設定
   customFileNamePerEditor: エディタごとのファイル名の設定
   branchSelection: GitのBranch選択機能
+  inlineLatex: Inline Katex Support in Markdown
 feature_timeline:
   title: 機能追加のタイムライン
   progress: 進行中
@@ -564,6 +572,8 @@ purchase_screen:
   thanks:
     title: ありがとうございます！
     subtitle: GitJournalのご支援ありがとうございます。
+  expired: Subscription Expired on {}
+  unknown: Unknown
 OnBoarding:
   Skip: スキップ
   Next: 次へ

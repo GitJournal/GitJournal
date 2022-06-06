@@ -150,6 +150,7 @@ settings:
       invalid: Błędny YAML
     output: Output
     input: Input
+    editorType: Editor Type Field
   privacy: Polityka prywatności
   terms: Reulamin
   experimental:
@@ -238,6 +239,7 @@ settings:
     repoLocation: Lokalizacja repozytorium
     notWritable: "{} is not writable"
     failedExternal: Unable to get External Storage Directory
+    permissionFailed: External Storage Permission Failed
   drawer:
     title: Ustawienia paska bocznego
   bottomMenuBar:
@@ -349,6 +351,9 @@ screens:
     allNotes: Wszystkie notatki
   cacheLoading:
     text: Reading Git History ...
+  error:
+    title: Error
+    message: The repo couldn't be opened. Please file a bug and recreate the repo.
 widgets:
   rename:
     'yes': Zmień nazwę
@@ -421,6 +426,8 @@ widgets:
     linkInvalid: Link '{}' jest błędny.
   FolderSelectionDialog:
     title: Wybierz katalog
+  FolderTreeView:
+    notesCount: "{} Notes"
 rootFolder: Katalog główny
 ignoredFiles:
   dot: Rozpoczynające się .
@@ -555,6 +562,7 @@ feature:
   configureBottomMenuBar: Skonfiguruj dolny pasek menu
   customFileNamePerEditor: Niestandardowa nazwa pliku na edytora
   branchSelection: Git Branch Selection
+  inlineLatex: Inline Katex Support in Markdown
 feature_timeline:
   title: Oś czasu funkcji
   progress: W trakcie
@@ -573,6 +581,8 @@ purchase_screen:
   thanks:
     title: Thank You
     subtitle: You're awesome for supporting GitJournal
+  expired: Subscription Expired on {}
+  unknown: Unknown
 OnBoarding:
   Skip: Pomiń
   Next: Dalej
