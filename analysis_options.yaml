@@ -19,8 +19,6 @@ analyzer:
     - "lib/generated_plugin_registrant.dart"
     - lib/account/init.dart
     - lib/experiments/**
-  enable-experiment:
-    - nonfunction-type-aliases
   # plugins:
   # - dart_code_metrics
 
