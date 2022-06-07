@@ -6,3 +6,6 @@
 - [ ] Upgrade pubspec.yaml
 - [ ] Upgrade flutterw
 - [ ] Upgrade .github/workflows/macos.yml
+
+- [ ] Run `dart fix --apply`
+- [ ] Check `flutter analyze`

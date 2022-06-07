@@ -67,7 +67,7 @@ class _EditorAppSearchBarState extends State<EditorAppSearchBar> {
     super.initState();
 
     _focusNode = FocusNode();
-    SchedulerBinding.instance?.addPostFrameCallback((Duration _) {
+    SchedulerBinding.instance.addPostFrameCallback((Duration _) {
       FocusScope.of(context).requestFocus(_focusNode);
     });
   }

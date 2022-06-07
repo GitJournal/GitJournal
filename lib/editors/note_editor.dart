@@ -185,7 +185,7 @@ class NoteEditorState extends State<NoteEditor>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
 
     if (widget.existingNote != null) {
       var existingNote = widget.existingNote!;
@@ -220,7 +220,7 @@ class NoteEditorState extends State<NoteEditor>
 
   @override
   void dispose() {
-    var _ = WidgetsBinding.instance!.removeObserver(this);
+    var _ = WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 

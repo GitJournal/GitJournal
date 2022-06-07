@@ -78,7 +78,7 @@ class _RenameDialogState extends State<RenameDialog> {
                 return tr(LocaleKeys.widgets_rename_validator_contains);
               }
 
-              WidgetsBinding.instance!.addPostFrameCallback((_) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
                 setState(() {
                   _newExt = p.extension(value).toLowerCase();
                   if (_newExt == '.') _newExt = "";

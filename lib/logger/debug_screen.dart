@@ -37,7 +37,7 @@ class _DebugScreenState extends State<DebugScreen> {
     super.initState();
 
     _logs = Log.fetchLogs().toList();
-    WidgetsBinding.instance!.addPostFrameCallback((_) => _scrollToBottom());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
   }
 
   void _scrollToTop() {

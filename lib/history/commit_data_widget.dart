@@ -131,7 +131,7 @@ class __BlobLoaderState extends State<_BlobLoader> {
   void initState() {
     super.initState();
 
-    SchedulerBinding.instance!.addPostFrameCallback((_) => _initStateAsync);
+    SchedulerBinding.instance.addPostFrameCallback((_) => _initStateAsync);
   }
 
   void _initStateAsync() {

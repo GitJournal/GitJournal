@@ -171,8 +171,7 @@ class JournalAppState extends State<JournalApp> {
       Log.i("Quick Action Open: $shortcutType");
       if (_navigatorKey.currentState == null) {
         Log.i("Quick Action delegating for after build");
-        WidgetsBinding.instance!
-            .addPostFrameCallback((_) => _afterBuild(context));
+        WidgetsBinding.instance.addPostFrameCallback((_) => _afterBuild(context));
         setState(() {
           _pendingShortcut = shortcutType;
         });
@@ -227,7 +226,7 @@ class JournalAppState extends State<JournalApp> {
   @visibleForTesting
   void handleSharedImages(Iterable<String> images) {
     _sharedImages = images.toList();
-    WidgetsBinding.instance!.addPostFrameCallback(_handleShare);
+    WidgetsBinding.instance.addPostFrameCallback(_handleShare);
   }
 
   @visibleForTesting
@@ -236,7 +235,7 @@ class JournalAppState extends State<JournalApp> {
     if (value.startsWith('gitjournal-identity://')) return;
 
     _sharedText = value;
-    WidgetsBinding.instance!.addPostFrameCallback(_handleShare);
+    WidgetsBinding.instance.addPostFrameCallback(_handleShare);
   }
 
   void _initShareSubscriptions() {
