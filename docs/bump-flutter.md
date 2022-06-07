@@ -9,3 +9,4 @@
 
 - [ ] Run `dart fix --apply`
 - [ ] Check `flutter analyze`
+- [ ] Run all the tests
