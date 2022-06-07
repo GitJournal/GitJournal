@@ -603,12 +603,10 @@ packages:
   flutter_login:
     dependency: "direct main"
     description:
-      path: "."
-      ref: develop
-      resolved-ref: "06b9f1e8cfe670f7132ae90432a0b3486fa8cdc8"
-      url: "https://github.com/NearHuscarl/flutter_login.git"
-    source: git
-    version: "3.1.0"
+      name: flutter_login
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.2.0"
   flutter_markdown:
     dependency: "direct main"
     description:
@@ -724,6 +722,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.0"
+  functions_client:
+    dependency: transitive
+    description:
+      name: functions_client
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1-dev.5"
   git_bindings:
     dependency: "direct main"
     description:
@@ -767,7 +772,7 @@ packages:
       name: gotrue
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.6"
+    version: "0.2.2"
   graphs:
     dependency: transitive
     description:
@@ -1637,14 +1642,14 @@ packages:
       name: supabase
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.15"
+    version: "0.3.4+1"
   supabase_flutter:
     dependency: "direct main"
     description:
       name: supabase_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.12"
+    version: "0.3.1+1"
   synchronized:
     dependency: "direct main"
     description:
