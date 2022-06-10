@@ -213,6 +213,8 @@ settings:
     zettelkasten: yyyymmddhhmmss
     simple: yyyy-mm-dd-hh-mm-ss
     dateOnly: yyyy-mm-dd
+    kebabCase: Kebab Case
+
   HomeScreen:
     allNotes: All Notes
     allFolders: All Folders
