@@ -9,6 +9,7 @@ import 'package:dart_date/dart_date.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
+import 'package:recase/recase.dart';
 import 'package:universal_io/io.dart' as io;
 import 'package:uuid/uuid.dart';
 
@@ -263,6 +264,12 @@ class Note implements File {
         return const Uuid().v4();
       case NoteFileNameFormat.Zettelkasten:
         return toZettleDateTime(date);
+      case NoteFileNameFormat.KebabCase:
+        if (title != null) {
+          return buildTitleFileName(parent.fullFolderPath, title, ext);
+        } else {
+          return toSimpleDateTime(date);
+        }
     }
 
     return date.toString();
@@ -553,4 +560,11 @@ String buildTitleFileName(String parentDir, String title, String ext) {
   title = title.replaceAll(RegExp(r'[/<\>":|?*]'), '_');
 
   return ensureFileNameUnique(parentDir, title, ext);
+}
+
+String buildKebabTitleFileName(String parentDir, String title, String ext) {
+  // Sanitize the title - these characters are not allowed in Windows
+  title = title.replaceAll(RegExp(r'[/<\>":|?*]'), '-');
+
+  return ensureFileNameUnique(parentDir, title.camelCase, ext);
 }
