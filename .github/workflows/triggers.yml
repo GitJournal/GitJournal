@@ -18,6 +18,14 @@ jobs:
         env:
           ACCESS_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN_GITHUB }}
 
+  fdroid:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch Event to FDroid Repo
+        run: 'curl -X POST ''https://api.github.com/repos/GitJournal/fdroid/actions/workflows/update_repo.yml/dispatches'' -u "vHanda:${{secrets.ACCESS_TOKEN_GITHUB}}" -H "Content-Type: application/json" --data ''{"ref": "master"}'''
+        env:
+          ACCESS_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN_GITHUB }}
+
   poeditor:
     runs-on: ubuntu-latest
     steps:
