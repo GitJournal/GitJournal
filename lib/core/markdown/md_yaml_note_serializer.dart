@@ -294,8 +294,6 @@ class NoteSerializer implements NoteSerializerInterface {
     required File file,
     required NoteFileFormat fileFormat,
   }) {
-    assert(file.filePath.isNotEmpty);
-
     var propsUsed = <String>{};
 
     DateTime? modified;

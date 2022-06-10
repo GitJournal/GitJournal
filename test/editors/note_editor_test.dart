@@ -94,6 +94,52 @@ void main() {
     expect(file.existsSync(), true);
   });
 
+  testWidgets('New Note with Extra MetaData', (tester) async {
+    await tester.runAsync(
+      () async => await _setup('7fc65b59170bdc91013eb56cdc65fa3307f2e7de'),
+    );
+
+    var widget = NoteEditor.newNote(
+      repo.rootFolder,
+      repo.rootFolder,
+      EditorType.Markdown,
+      existingText: "",
+      existingImages: const [],
+      newNoteExtraProps: const {'foo': 1},
+    );
+
+    await tester.pumpWidget(_buildApp(widget));
+    await tester.pumpAndSettle();
+
+    var titleFinder = find.byType(NoteTitleEditor);
+    expect(titleFinder, findsOneWidget);
+
+    await tester.enterText(titleFinder, "Fake-Title");
+    await tester.pump();
+
+    var saveButtonFinder = find.byKey(const ValueKey('NewEntry'));
+    expect(saveButtonFinder, findsOneWidget);
+
+    await tester.runAsync(() async {
+      var saveButtonFinder = find.byKey(const ValueKey('NewEntry'));
+      expect(saveButtonFinder, findsOneWidget);
+      await tester.tap(saveButtonFinder);
+      await tester.pumpAndSettle();
+
+      await Future.delayed(const Duration(milliseconds: 100));
+    });
+
+    var file = File(p.join(repoPath, 'Fake-Title.md'));
+    expect(file.existsSync(), true);
+
+    var x = file.readAsStringSync();
+    expect(x.length, isNonZero);
+
+    var note = repo.rootFolder.getNoteWithSpec('Fake-Title.md')!;
+    expect(note.extraProps.length, 1);
+    expect(note.extraProps['foo'], 1);
+  });
+
   testWidgets('Existing Note Rename and Exit', (tester) async {
     await tester.runAsync(
       () async => await _setup('7fc65b59170bdc91013eb56cdc65fa3307f2e7de'),
