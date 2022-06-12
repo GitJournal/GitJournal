@@ -17,10 +17,10 @@ import 'package:gitjournal/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/setup/button.dart';
-import 'package:gitjournal/setup/error.dart';
-import 'package:gitjournal/setup/loading.dart';
 import 'package:gitjournal/widgets/highlighted_text.dart';
+import 'button.dart';
+import 'error.dart';
+import 'loading.dart';
 
 //import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 
 import 'package:gitjournal/apis/api_fakes.dart';
 import 'package:gitjournal/apis/githost_factory.dart';
-import 'package:gitjournal/setup/autoconfigure.dart';
-import 'package:gitjournal/setup/clone_url.dart';
-import 'package:gitjournal/setup/error.dart';
-import 'package:gitjournal/setup/fakes/clone_fake.dart';
-import 'package:gitjournal/setup/loading.dart';
-import 'package:gitjournal/setup/repo_selector.dart';
-import 'package:gitjournal/setup/screens.dart';
-import 'package:gitjournal/setup/sshkey.dart';
+import 'autoconfigure.dart';
+import 'clone_url.dart';
+import 'error.dart';
+import 'fakes/clone_fake.dart';
+import 'loading.dart';
+import 'repo_selector.dart';
+import 'screens.dart';
+import 'sshkey.dart';
 
 Widget autoConfigureChoice() {
   return Padding(

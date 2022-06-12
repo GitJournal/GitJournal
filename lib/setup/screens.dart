@@ -24,18 +24,18 @@ import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/settings/storage_config.dart';
-import 'package:gitjournal/setup/autoconfigure.dart';
-import 'package:gitjournal/setup/button.dart';
-import 'package:gitjournal/setup/clone.dart';
-import 'package:gitjournal/setup/clone_auto_select.dart';
-import 'package:gitjournal/setup/clone_url.dart';
-import 'package:gitjournal/setup/cloning.dart';
-import 'package:gitjournal/setup/loading_error.dart';
-import 'package:gitjournal/setup/repo_selector.dart';
-import 'package:gitjournal/setup/sshkey.dart';
 import 'package:gitjournal/ssh/keygen.dart';
 import 'package:gitjournal/utils/utils.dart';
+import 'autoconfigure.dart';
+import 'button.dart';
+import 'clone.dart';
+import 'clone_auto_select.dart';
+import 'clone_url.dart';
+import 'cloning.dart';
 import 'git_transfer_progress.dart';
+import 'loading_error.dart';
+import 'repo_selector.dart';
+import 'sshkey.dart';
 
 class GitHostSetupScreen extends StatefulWidget {
   static const routePath = '/setupRemoteGit';
