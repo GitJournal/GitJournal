@@ -6,7 +6,7 @@ version: 2.1
 jobs:
   build_ios:
     macos:
-      xcode: 12.5.1
+      xcode: 13.2.1
     steps:
       - checkout
       - run:
