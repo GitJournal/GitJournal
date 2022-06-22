@@ -50,8 +50,7 @@ class GitConfig extends ChangeNotifier with SettingsSharedPref {
     await setString("sshPublicKey", sshPublicKey, def.sshPublicKey);
     await setString("sshPrivateKey", sshPrivateKey, def.sshPrivateKey);
     await setString("sshPassword", sshPassword, def.sshPassword);
-    await setString("sshKeyType", sshKeyType.toInternalString(),
-        def.sshKeyType.toInternalString());
+    await setOption("sshKeyType", sshKeyType, def.sshKeyType);
 
     notifyListeners();
   }
