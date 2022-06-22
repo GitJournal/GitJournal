@@ -213,6 +213,7 @@ settings:
     zettelkasten: yyyymmddhhmmss
     simple: yyyy-mm-dd-hh-mm-ss
     dateOnly: yyyy-mm-dd
+    kebabCase: Kebab Case
   HomeScreen:
     allNotes: Wszystkie notatki
     allFolders: Wszystkie katalogi
@@ -229,7 +230,7 @@ settings:
     syncFreq: Częstotliwość odświeżania
   note:
     title: Ustawienia notatek
-    defaultFolder: Katalod domyślny dla nowych notatek
+    defaultFolder: Katalog domyślny dla nowych notatek
     newNoteFileName: Nazwa nowej notatki
   storage:
     title: Miejsce przechowywania
@@ -290,6 +291,10 @@ settings:
   license:
     title: Licenses
     subtitle: GitJoural uses other great software
+  sshKey:
+    keyType: SSH Key Type
+    rsa: RSA
+    ed25519: Ed25519
 editors:
   checklist:
     add: Dodaj element
@@ -587,8 +592,8 @@ OnBoarding:
   Skip: Pomiń
   Next: Dalej
   getStarted: Zacznijmy
-  subtitle: 'Otwartoźródłowa aplikacja do notatek oparta o Git'
-  page2: 'Twoje notatki są przechowywane w plikach markdown z nagłówkami YAML'
-  page3: 'Synchronizuj swoje repozytorium git z dowolnym usługodawcą'
+  subtitle: "Otwartoźródłowa aplikacja do notatek oparta o Git"
+  page2: "Twoje notatki są przechowywane w plikach markdown z nagłówkami YAML"
+  page3: "Synchronizuj swoje repozytorium git z dowolnym usługodawcą"
 beta: BETA
 none: None

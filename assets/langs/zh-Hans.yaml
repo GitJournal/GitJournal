@@ -213,6 +213,7 @@ settings:
     zettelkasten: yyyymmddhhmmss
     simple: yyyy-mm-dd-hh-mm-ss
     dateOnly: yyyy-mm-dd
+    kebabCase: Kebab Case
   HomeScreen:
     allNotes: 全部笔记
     allFolders: 所有目录
@@ -287,6 +288,10 @@ settings:
   license:
     title: 许可证
     subtitle: GitJournal 使用了其他优秀的软件
+  sshKey:
+    keyType: SSH Key Type
+    rsa: RSA
+    ed25519: Ed25519
 editors:
   checklist:
     add: 添加项目
@@ -578,8 +583,8 @@ OnBoarding:
   Skip: 跳过
   Next: 下一步
   getStarted: 开始
-  subtitle: '支持 Git 同步的开源笔记应用'
-  page2: '你的笔记以标准的 Markdown 加 YAML 头的格式存储'
-  page3: '同任何 Git 托管服务商同步你的笔记'
+  subtitle: "支持 Git 同步的开源笔记应用"
+  page2: "你的笔记以标准的 Markdown 加 YAML 头的格式存储"
+  page3: "同任何 Git 托管服务商同步你的笔记"
 beta: BETA
 none: None

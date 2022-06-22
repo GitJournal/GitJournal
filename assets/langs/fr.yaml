@@ -213,6 +213,7 @@ settings:
     zettelkasten: yyyymmddhhmmss
     simple: yyyy-mm-dd-hh-mm-ss
     dateOnly: yyyy-mm-dd
+    kebabCase: Kebab Case
   HomeScreen:
     allNotes: Toutes les notes
     allFolders: Tous les dossiers
@@ -288,6 +289,10 @@ settings:
   license:
     title: Licences
     subtitle: GitJournal utilise d'autres excellents logiciels
+  sshKey:
+    keyType: SSH Key Type
+    rsa: RSA
+    ed25519: Ed25519
 editors:
   checklist:
     add: Ajouter élément
@@ -581,8 +586,8 @@ OnBoarding:
   Skip: Sauter
   Next: Suivant
   getStarted: Se lancer
-  subtitle: 'Une application de prise de notes open source basée sur Git'
-  page2: 'Vos notes sont stockées dans un format standard de Markdown avec un en-tête YAML'
-  page3: 'Synchroniser votre dépôt Git local avec n''importe quel fournisseur'
+  subtitle: "Une application de prise de notes open source basée sur Git"
+  page2: "Vos notes sont stockées dans un format standard de Markdown avec un en-tête YAML"
+  page3: "Synchroniser votre dépôt Git local avec n'importe quel fournisseur"
 beta: BETA
 none: Aucun

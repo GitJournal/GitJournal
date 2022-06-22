@@ -214,6 +214,7 @@ settings:
     zettelkasten: yyymmddhhmmss
     simple: jjjj-mm-tt-hh-mm-ss
     dateOnly: jjjj-mm-tt
+    kebabCase: Kebab Case
   HomeScreen:
     allNotes: Alle Notizen
     allFolders: Alle Verzeichnisse
@@ -289,6 +290,10 @@ settings:
   license:
     title: Lizenzen
     subtitle: GitJoural uses other great software
+  sshKey:
+    keyType: SSH Key Type
+    rsa: RSA
+    ed25519: Ed25519
 editors:
   checklist:
     add: Eintrag hinzufügen
@@ -582,8 +587,8 @@ OnBoarding:
   Skip: Überspringen
   Next: Nächster
   getStarted: Erste Schritte
-  subtitle: 'Eine Notizen-App basierend auf GitHub'
-  page2: 'Deine Notizen werden im Markdown + YAML Header Format gespeichert'
-  page3: 'Synchronisieren Sie Ihre lokalen Git-Repositories mit einem beliebigen Anbieter'
+  subtitle: "Eine Notizen-App basierend auf GitHub"
+  page2: "Deine Notizen werden im Markdown + YAML Header Format gespeichert"
+  page3: "Synchronisieren Sie Ihre lokalen Git-Repositories mit einem beliebigen Anbieter"
 beta: BETA
 none: None

@@ -6,13 +6,13 @@ settings:
   cancel: 取消
   title: 設定
   author:
-    label: Author Name
-    validator: Please enter a name
+    label: 作者名稱
+    validator: 請輸入名稱
   email:
-    label: Email Address
+    label: 電子郵件地址
     validator:
-      empty: Please enter an email
-      invalid: Please enter a valid email
+      empty: 請輸入電子郵件地址
+      invalid: 請輸入有效的電子郵件地址
   display:
     title: 顯示設定
     homeScreen: 主畫面
@@ -91,9 +91,9 @@ settings:
         vectorGraphics: Vector Graphics (.svg)
         vectorGraphicsAdjustColors: Colors to Adjust
     lang: Language
-  gitAuthor: Git Author Settings
-  versionInfo: GitJournal Version
-  analytics: Analytics
+  gitAuthor: Git 作者設定
+  versionInfo: GitJournal 版本
+  analytics: 分析
   crashReports: Collect Anonymous Crash Reports
   usageStats: Collect Anonymous Usage Statistics
   debug:
@@ -112,14 +112,14 @@ settings:
     subtitle: Configure how Images are stored
     imageLocation: 圖片位置
     currentFolder: Same Folder as Note
-    customFolder: Custom Folder
+    customFolder: 自訂資料夾
   gitRemote:
     changeHost:
       title: Reconfigure Git Host
       subtitle: Notes which have not been synced will be lost
       ok: 確定
       cancel: 取消
-    title: Git Remote Settings
+    title: Git 遠端設定
     subtitle: Configure where your notes are synced
     host: Git Host
     branch: Branch
@@ -151,8 +151,8 @@ settings:
     output: Output
     input: Input
     editorType: Editor Type Field
-  privacy: Privacy Policy
-  terms: Terms and Conditions
+  privacy: 隱私權政策
+  terms: 條款及細則
   experimental:
     title: Experimental Features
     subtitle: Try out features in Development
@@ -171,7 +171,7 @@ settings:
     defaultState: Default State
     markdownEditor: Markdown Editor
     journalEditor: Journal Editor
-    defaultFolder: Default Folder
+    defaultFolder: 預設資料夾
     checklistEditor: Checklist Editor
     rawEditor: Raw Editor
     choose: Choose Editor
@@ -179,16 +179,16 @@ settings:
     defaultNoteFormat: Default Note Format
     journalDefaultFolderSelect: Creating a Note in '{}'
   sortingField:
-    modified: Last Modified
-    created: 已建立
-    filename: File Name
-    title: Title
+    modified: 上次修改時間
+    created: 建立時間
+    filename: 檔案名稱
+    title: 標題
   sortingOrder:
-    asc: Ascending
-    desc: Descending
+    asc: 遞增
+    desc: 遞減
   sortingMode:
-    field: Field
-    order: Order
+    field: 欄位
+    order: 順序
   remoteSync:
     auto: 自動
     manual: 手動
@@ -213,6 +213,7 @@ settings:
     zettelkasten: yyyymmddhhmmss
     simple: yyyy-mm-dd-hh-mm-ss
     dateOnly: yyyy-mm-dd
+    kebabCase: Kebab Case
   HomeScreen:
     allNotes: All Notes
     allFolders: All Folders
@@ -287,6 +288,10 @@ settings:
   license:
     title: Licenses
     subtitle: GitJoural uses other great software
+  sshKey:
+    keyType: SSH Key Type
+    rsa: RSA
+    ed25519: Ed25519
 editors:
   checklist:
     add: Add Item
@@ -294,10 +299,10 @@ editors:
     defaultBodyHint: Write here
     defaultTitleHint: Title
     discard: Discard Changes
-    share: Share Note
+    share: 分享記事
     takePhoto: Take Photo
     addImage: Add Image from Gallery
-    editFileName: Edit File Name
+    editFileName: 編輯檔案名稱
     tags: Edit Tags
     zen:
       enable: Enable Zen Mode
@@ -305,11 +310,11 @@ editors:
     saveNoteFailed:
       title: Failed to Save Note
       message: We're sorry, but we cannot seem to save the Note. It has been copied to the clipboard to avoid data loss.
-    defaultFileNameHint: File Name
+    defaultFileNameHint: 檔案名稱
     find: Find in note
 pro: Pro
 actions:
-  newNote: New Note
+  newNote: 新增記事
   newJournal: New Journal Entry
   newChecklist: New Checklist
 screens:
@@ -323,14 +328,14 @@ screens:
     errorDialog:
       title: 錯誤
       deleteContent: Cannot delete a Folder which contains notes
-      renameContent: Cannot rename Root Folder
+      renameContent: 無法重新命名根資料夾
       ok: 確定
     actions:
-      rename: Rename Folder
+      rename: 重新命名資料夾
       subFolder: Create Sub-Folder
       delete: 刪除資料夾
-      decoration: Folder Name
-      empty: Please enter a name
+      decoration: 資料夾名稱
+      empty: 請輸入名稱
   tags:
     title: Tags
     empty: No Tags Found
@@ -338,10 +343,10 @@ screens:
     ignoredFile:
       title: File Ignored
       ok: 確定
-      rename: Rename
+      rename: 重新命名
     rename:
-      decoration: File Name
-      title: Rename
+      decoration: 檔案名稱
+      title: 重新命名
   folder_view:
     empty: Let's add some notes?
   home:
@@ -353,11 +358,11 @@ screens:
     message: The repo couldn't be opened. Please file a bug and recreate the repo.
 widgets:
   rename:
-    'yes': Rename
+    'yes': 重新命名
     'no': 取消
     validator:
-      empty: Please enter a name
-      exists: Already Exists
+      empty: 請輸入名稱
+      exists: 已存在
       contains: Cannot contain /
     noExt: "Warning: Extension missing. Will treat file as plain text"
     changeExt: "Warning: Changing file type from '{}' to '{}'"
@@ -365,7 +370,7 @@ widgets:
     title:
       other: "{} Note links to this Note"
   SortingOrderSelector:
-    title: Sorting Criteria
+    title: 排序
   PurchaseButton:
     text: Purchase for {price}
     fail: Failed to Load
@@ -387,7 +392,7 @@ widgets:
       card: Card View
       select: Select View
       calendar: Calendar View
-    sortingOptions: Sorting Options
+    sortingOptions: 排序選項
     viewOptions: View Options
     noteDeleted: Note Deleted
     undo: 復原
@@ -405,7 +410,7 @@ widgets:
     'yes': true
     'no': false
   NoteEditor:
-    renameFile: Rename File
+    renameFile: 重新命名檔案
     fileName: Filename
     addType: Adding '{}' to supported file types
   SyncButton:
@@ -426,7 +431,7 @@ ignoredFiles:
 drawer:
   setup: Setup Git Host
   pro: Unlock Pro Version
-  all: All Notes
+  all: 所有記事
   folders: 資料夾
   fs: File System
   tags: Tags
@@ -578,8 +583,8 @@ OnBoarding:
   Skip: Skip
   Next: Next
   getStarted: Get Started
-  subtitle: 'An Open Source Note Taking App built on top of Git'
-  page2: 'Your Notes are stored in a standard Markdown + YAML Header format'
-  page3: 'Sync your Local Git Repo with any provider'
+  subtitle: "An Open Source Note Taking App built on top of Git"
+  page2: "Your Notes are stored in a standard Markdown + YAML Header format"
+  page3: "Sync your Local Git Repo with any provider"
 beta: BETA
 none: None

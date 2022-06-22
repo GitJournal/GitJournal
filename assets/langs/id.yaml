@@ -213,6 +213,7 @@ settings:
     zettelkasten: yyyymmddhhmmss
     simple: tttt-bb-hh-jj-mm-dd
     dateOnly: tttt-bb-hh
+    kebabCase: Kebab Case
   HomeScreen:
     allNotes: Semua Catatan
     allFolders: Semua Folder
@@ -287,6 +288,10 @@ settings:
   license:
     title: Licenses
     subtitle: GitJoural uses other great software
+  sshKey:
+    keyType: SSH Key Type
+    rsa: RSA
+    ed25519: Ed25519
 editors:
   checklist:
     add: Tambahkan Item
@@ -578,8 +583,8 @@ OnBoarding:
   Skip: Lewati
   Next: Berikutnya
   getStarted: Memulai
-  subtitle: 'Aplikasi Pencatat Sumber Terbuka yang dibangun di atas Git'
-  page2: 'Catatan Anda disimpan dalam format Markdown + YAML Header standar'
-  page3: 'Sinkronkan Repo Git Lokal Anda dengan penyedia mana pun'
+  subtitle: "Aplikasi Pencatat Sumber Terbuka yang dibangun di atas Git"
+  page2: "Catatan Anda disimpan dalam format Markdown + YAML Header standar"
+  page3: "Sinkronkan Repo Git Lokal Anda dengan penyedia mana pun"
 beta: BETA
 none: None

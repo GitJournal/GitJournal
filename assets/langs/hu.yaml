@@ -213,6 +213,7 @@ settings:
     zettelkasten: yyyymmddhhmmss
     simple: yyyy-mm-dd-hh-mm-ss
     dateOnly: yyyy-mm-dd
+    kebabCase: Kebab Case
   HomeScreen:
     allNotes: Minden jegyzet
     allFolders: Minden mappa
@@ -288,6 +289,10 @@ settings:
   license:
     title: Licenses
     subtitle: GitJoural uses other great software
+  sshKey:
+    keyType: SSH Key Type
+    rsa: RSA
+    ed25519: Ed25519
 editors:
   checklist:
     add: Elem hozzáadása
@@ -581,8 +586,8 @@ OnBoarding:
   Skip: Skip
   Next: Next
   getStarted: Get Started
-  subtitle: 'An Open Source Note Taking App built on top of Git'
-  page2: 'Your Notes are stored in a standard Markdown + YAML Header format'
-  page3: 'Sync your Local Git Repo with any provider'
+  subtitle: "An Open Source Note Taking App built on top of Git"
+  page2: "Your Notes are stored in a standard Markdown + YAML Header format"
+  page3: "Sync your Local Git Repo with any provider"
 beta: BETA
 none: None
