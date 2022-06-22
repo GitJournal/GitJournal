@@ -374,12 +374,6 @@ class _CustomMetDataTileState extends State<CustomMetDataTile> {
 
   @override
   Widget build(BuildContext context) {
-    /*
-    var settings = Provider.of<Settings>(context);
-    settings.customMetaData = "draft: true";
-    settings.save();
-    */
-
     return ListTile(
       title: Text(tr("settings.noteMetaData.customMetaData.title")),
       subtitle: Text(widget.value),

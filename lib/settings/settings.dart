@@ -99,6 +99,7 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
     confirmDelete = getBool("confirmDelete") ?? confirmDelete;
 
     hardWrap = getBool("hardWrap") ?? hardWrap;
+    customMetaData = getString("customMetaData") ?? customMetaData;
   }
 
   Future<void> save() async {
@@ -132,6 +133,7 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
         "theme", theme.toInternalString(), def.theme.toInternalString());
     await setString("lightTheme", lightTheme, def.lightTheme);
     await setString("darkTheme", darkTheme, def.darkTheme);
+    await setString("customMetaData", customMetaData, def.customMetaData);
 
     await setBool("zenMode", zenMode, def.zenMode);
     await setBool("swipeToDelete", swipeToDelete, def.swipeToDelete);
