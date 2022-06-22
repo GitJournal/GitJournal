@@ -266,7 +266,7 @@ class Note implements File {
         return toZettleDateTime(date);
       case NoteFileNameFormat.KebabCase:
         if (title != null) {
-          return buildTitleFileName(parent.fullFolderPath, title, ext);
+          return buildKebabTitleFileName(parent.fullFolderPath, title, ext);
         } else {
           return toSimpleDateTime(date);
         }
