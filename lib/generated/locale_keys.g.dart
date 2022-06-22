@@ -5,39 +5,6 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
 abstract class LocaleKeys {
-  static const settings_list_userInterface_title =
-      'settings.list.userInterface.title';
-  static const settings_list_userInterface_subtitle =
-      'settings.list.userInterface.subtitle';
-  static const settings_list_userInterface = 'settings.list.userInterface';
-  static const settings_list_git_title = 'settings.list.git.title';
-  static const settings_list_git_subtitle = 'settings.list.git.subtitle';
-  static const settings_list_git = 'settings.list.git';
-  static const settings_list_editor_title = 'settings.list.editor.title';
-  static const settings_list_editor_subtitle = 'settings.list.editor.subtitle';
-  static const settings_list_editor = 'settings.list.editor';
-  static const settings_list_storage_title = 'settings.list.storage.title';
-  static const settings_list_storage_subtitle =
-      'settings.list.storage.subtitle';
-  static const settings_list_storage = 'settings.list.storage';
-  static const settings_list_analytics_title = 'settings.list.analytics.title';
-  static const settings_list_analytics_subtitle =
-      'settings.list.analytics.subtitle';
-  static const settings_list_analytics = 'settings.list.analytics';
-  static const settings_list_debug_title = 'settings.list.debug.title';
-  static const settings_list_debug_subtitle = 'settings.list.debug.subtitle';
-  static const settings_list_debug = 'settings.list.debug';
-  static const settings_list_experiments_title =
-      'settings.list.experiments.title';
-  static const settings_list_experiments_subtitle =
-      'settings.list.experiments.subtitle';
-  static const settings_list_experiments = 'settings.list.experiments';
-  static const settings_list = 'settings.list';
-  static const settings_project_header = 'settings.project.header';
-  static const settings_project_docs = 'settings.project.docs';
-  static const settings_project_contribute = 'settings.project.contribute';
-  static const settings_project_about = 'settings.project.about';
-  static const settings_project = 'settings.project';
   static const settings_ok = 'settings.ok';
   static const settings_cancel = 'settings.cancel';
   static const settings_title = 'settings.title';
@@ -54,7 +21,6 @@ abstract class LocaleKeys {
   static const settings_display_title = 'settings.display.title';
   static const settings_display_homeScreen = 'settings.display.homeScreen';
   static const settings_display_theme = 'settings.display.theme';
-  static const settings_display_lang = 'settings.display.lang';
   static const settings_display_images_title = 'settings.display.images.title';
   static const settings_display_images_subtitle =
       'settings.display.images.subtitle';
@@ -199,14 +165,10 @@ abstract class LocaleKeys {
   static const settings_display_images_theming =
       'settings.display.images.theming';
   static const settings_display_images = 'settings.display.images';
+  static const settings_display_lang = 'settings.display.lang';
   static const settings_display = 'settings.display';
-  static const settings_theme_light = 'settings.theme.light';
-  static const settings_theme_dark = 'settings.theme.dark';
-  static const settings_theme_default = 'settings.theme.default';
-  static const settings_theme = 'settings.theme';
   static const settings_gitAuthor = 'settings.gitAuthor';
   static const settings_versionInfo = 'settings.versionInfo';
-  static const settings_versionCopied = 'settings.versionCopied';
   static const settings_analytics = 'settings.analytics';
   static const settings_crashReports = 'settings.crashReports';
   static const settings_usageStats = 'settings.usageStats';
@@ -246,11 +208,6 @@ abstract class LocaleKeys {
       'settings.gitRemote.resetHard.subtitle';
   static const settings_gitRemote_resetHard = 'settings.gitRemote.resetHard';
   static const settings_gitRemote = 'settings.gitRemote';
-  static const settings_fileTypes_title = 'settings.fileTypes.title';
-  static const settings_fileTypes_subtitle = 'settings.fileTypes.subtitle';
-  static const settings_fileTypes_numFiles = 'settings.fileTypes.numFiles';
-  static const settings_fileTypes_noExt = 'settings.fileTypes.noExt';
-  static const settings_fileTypes = 'settings.fileTypes';
   static const settings_noteMetaData_title = 'settings.noteMetaData.title';
   static const settings_noteMetaData_subtitle =
       'settings.noteMetaData.subtitle';
@@ -261,8 +218,6 @@ abstract class LocaleKeys {
       'settings.noteMetaData.modified';
   static const settings_noteMetaData_created = 'settings.noteMetaData.created';
   static const settings_noteMetaData_tags = 'settings.noteMetaData.tags';
-  static const settings_noteMetaData_editorType =
-      'settings.noteMetaData.editorType';
   static const settings_noteMetaData_example_title =
       'settings.noteMetaData.example.title';
   static const settings_noteMetaData_example = 'settings.noteMetaData.example';
@@ -292,12 +247,11 @@ abstract class LocaleKeys {
       'settings.noteMetaData.customMetaData';
   static const settings_noteMetaData_output = 'settings.noteMetaData.output';
   static const settings_noteMetaData_input = 'settings.noteMetaData.input';
+  static const settings_noteMetaData_editorType =
+      'settings.noteMetaData.editorType';
   static const settings_noteMetaData = 'settings.noteMetaData';
   static const settings_privacy = 'settings.privacy';
   static const settings_terms = 'settings.terms';
-  static const settings_license_title = 'settings.license.title';
-  static const settings_license_subtitle = 'settings.license.subtitle';
-  static const settings_license = 'settings.license';
   static const settings_experimental_title = 'settings.experimental.title';
   static const settings_experimental_subtitle =
       'settings.experimental.subtitle';
@@ -320,8 +274,6 @@ abstract class LocaleKeys {
   static const settings_editors_subtitle = 'settings.editors.subtitle';
   static const settings_editors_defaultEditor =
       'settings.editors.defaultEditor';
-  static const settings_editors_defaultNoteFormat =
-      'settings.editors.defaultNoteFormat';
   static const settings_editors_defaultState = 'settings.editors.defaultState';
   static const settings_editors_markdownEditor =
       'settings.editors.markdownEditor';
@@ -329,13 +281,15 @@ abstract class LocaleKeys {
       'settings.editors.journalEditor';
   static const settings_editors_defaultFolder =
       'settings.editors.defaultFolder';
-  static const settings_editors_journalDefaultFolderSelect =
-      'settings.editors.journalDefaultFolderSelect';
   static const settings_editors_checklistEditor =
       'settings.editors.checklistEditor';
-  static const settings_editors_orgEditor = 'settings.editors.orgEditor';
   static const settings_editors_rawEditor = 'settings.editors.rawEditor';
   static const settings_editors_choose = 'settings.editors.choose';
+  static const settings_editors_orgEditor = 'settings.editors.orgEditor';
+  static const settings_editors_defaultNoteFormat =
+      'settings.editors.defaultNoteFormat';
+  static const settings_editors_journalDefaultFolderSelect =
+      'settings.editors.journalDefaultFolderSelect';
   static const settings_editors = 'settings.editors';
   static const settings_sortingField_modified =
       'settings.sortingField.modified';
@@ -365,10 +319,6 @@ abstract class LocaleKeys {
   static const settings_misc_hardWrap = 'settings.misc.hardWrap';
   static const settings_misc_emoji = 'settings.misc.emoji';
   static const settings_misc = 'settings.misc';
-  static const settings_fileFormat_markdown = 'settings.fileFormat.markdown';
-  static const settings_fileFormat_txt = 'settings.fileFormat.txt';
-  static const settings_fileFormat_orgMode = 'settings.fileFormat.orgMode';
-  static const settings_fileFormat = 'settings.fileFormat';
   static const settings_NoteFileNameFormat_iso8601WithTimeZone =
       'settings.NoteFileNameFormat.iso8601WithTimeZone';
   static const settings_NoteFileNameFormat_iso8601 =
@@ -379,13 +329,19 @@ abstract class LocaleKeys {
       'settings.NoteFileNameFormat.title';
   static const settings_NoteFileNameFormat_uuid =
       'settings.NoteFileNameFormat.uuid';
-  static const settings_NoteFileNameFormat_simple =
-      'settings.NoteFileNameFormat.simple';
   static const settings_NoteFileNameFormat_zettelkasten =
       'settings.NoteFileNameFormat.zettelkasten';
+  static const settings_NoteFileNameFormat_simple =
+      'settings.NoteFileNameFormat.simple';
   static const settings_NoteFileNameFormat_dateOnly =
       'settings.NoteFileNameFormat.dateOnly';
+  static const settings_NoteFileNameFormat_kebabCase =
+      'settings.NoteFileNameFormat.kebabCase';
   static const settings_NoteFileNameFormat = 'settings.NoteFileNameFormat';
+  static const settings_sshKey_keyType = 'settings.sshKey.keyType';
+  static const settings_sshKey_rsa = 'settings.sshKey.rsa';
+  static const settings_sshKey_ed25519 = 'settings.sshKey.ed25519';
+  static const settings_sshKey = 'settings.sshKey';
   static const settings_HomeScreen_allNotes = 'settings.HomeScreen.allNotes';
   static const settings_HomeScreen_allFolders =
       'settings.HomeScreen.allFolders';
@@ -397,6 +353,11 @@ abstract class LocaleKeys {
   static const settings_EditorDefaultView_lastUsed =
       'settings.EditorDefaultView.lastUsed';
   static const settings_EditorDefaultView = 'settings.EditorDefaultView';
+  static const settings_theme_light = 'settings.theme.light';
+  static const settings_theme_dark = 'settings.theme.dark';
+  static const settings_theme_default = 'settings.theme.default';
+  static const settings_theme = 'settings.theme';
+  static const settings_versionCopied = 'settings.versionCopied';
   static const settings_ssh_syncFreq = 'settings.ssh.syncFreq';
   static const settings_ssh = 'settings.ssh';
   static const settings_note_title = 'settings.note.title';
@@ -422,6 +383,51 @@ abstract class LocaleKeys {
   static const settings_bottomMenuBar_enable = 'settings.bottomMenuBar.enable';
   static const settings_bottomMenuBar = 'settings.bottomMenuBar';
   static const settings_deleteRepo = 'settings.deleteRepo';
+  static const settings_fileFormat_markdown = 'settings.fileFormat.markdown';
+  static const settings_fileFormat_txt = 'settings.fileFormat.txt';
+  static const settings_fileFormat_orgMode = 'settings.fileFormat.orgMode';
+  static const settings_fileFormat = 'settings.fileFormat';
+  static const settings_fileTypes_title = 'settings.fileTypes.title';
+  static const settings_fileTypes_subtitle = 'settings.fileTypes.subtitle';
+  static const settings_fileTypes_numFiles = 'settings.fileTypes.numFiles';
+  static const settings_fileTypes_noExt = 'settings.fileTypes.noExt';
+  static const settings_fileTypes = 'settings.fileTypes';
+  static const settings_list_userInterface_title =
+      'settings.list.userInterface.title';
+  static const settings_list_userInterface_subtitle =
+      'settings.list.userInterface.subtitle';
+  static const settings_list_userInterface = 'settings.list.userInterface';
+  static const settings_list_git_title = 'settings.list.git.title';
+  static const settings_list_git_subtitle = 'settings.list.git.subtitle';
+  static const settings_list_git = 'settings.list.git';
+  static const settings_list_editor_title = 'settings.list.editor.title';
+  static const settings_list_editor_subtitle = 'settings.list.editor.subtitle';
+  static const settings_list_editor = 'settings.list.editor';
+  static const settings_list_storage_title = 'settings.list.storage.title';
+  static const settings_list_storage_subtitle =
+      'settings.list.storage.subtitle';
+  static const settings_list_storage = 'settings.list.storage';
+  static const settings_list_analytics_title = 'settings.list.analytics.title';
+  static const settings_list_analytics_subtitle =
+      'settings.list.analytics.subtitle';
+  static const settings_list_analytics = 'settings.list.analytics';
+  static const settings_list_debug_title = 'settings.list.debug.title';
+  static const settings_list_debug_subtitle = 'settings.list.debug.subtitle';
+  static const settings_list_debug = 'settings.list.debug';
+  static const settings_list_experiments_title =
+      'settings.list.experiments.title';
+  static const settings_list_experiments_subtitle =
+      'settings.list.experiments.subtitle';
+  static const settings_list_experiments = 'settings.list.experiments';
+  static const settings_list = 'settings.list';
+  static const settings_project_header = 'settings.project.header';
+  static const settings_project_docs = 'settings.project.docs';
+  static const settings_project_contribute = 'settings.project.contribute';
+  static const settings_project_about = 'settings.project.about';
+  static const settings_project = 'settings.project';
+  static const settings_license_title = 'settings.license.title';
+  static const settings_license_subtitle = 'settings.license.subtitle';
+  static const settings_license = 'settings.license';
   static const settings = 'settings';
   static const editors_checklist_add = 'editors.checklist.add';
   static const editors_checklist = 'editors.checklist';
@@ -429,15 +435,12 @@ abstract class LocaleKeys {
       'editors.common.defaultBodyHint';
   static const editors_common_defaultTitleHint =
       'editors.common.defaultTitleHint';
-  static const editors_common_defaultFileNameHint =
-      'editors.common.defaultFileNameHint';
   static const editors_common_discard = 'editors.common.discard';
   static const editors_common_share = 'editors.common.share';
   static const editors_common_takePhoto = 'editors.common.takePhoto';
   static const editors_common_addImage = 'editors.common.addImage';
   static const editors_common_editFileName = 'editors.common.editFileName';
   static const editors_common_tags = 'editors.common.tags';
-  static const editors_common_find = 'editors.common.find';
   static const editors_common_zen_enable = 'editors.common.zen.enable';
   static const editors_common_zen_disable = 'editors.common.zen.disable';
   static const editors_common_zen = 'editors.common.zen';
@@ -446,20 +449,16 @@ abstract class LocaleKeys {
   static const editors_common_saveNoteFailed_message =
       'editors.common.saveNoteFailed.message';
   static const editors_common_saveNoteFailed = 'editors.common.saveNoteFailed';
+  static const editors_common_defaultFileNameHint =
+      'editors.common.defaultFileNameHint';
+  static const editors_common_find = 'editors.common.find';
   static const editors_common = 'editors.common';
   static const editors = 'editors';
   static const pro = 'pro';
-  static const beta = 'beta';
-  static const none = 'none';
   static const actions_newNote = 'actions.newNote';
   static const actions_newJournal = 'actions.newJournal';
   static const actions_newChecklist = 'actions.newChecklist';
   static const actions = 'actions';
-  static const screens_error_title = 'screens.error.title';
-  static const screens_error_message = 'screens.error.message';
-  static const screens_error = 'screens.error';
-  static const screens_home_allNotes = 'screens.home.allNotes';
-  static const screens_home = 'screens.home';
   static const screens_folders_title = 'screens.folders.title';
   static const screens_folders_selected = 'screens.folders.selected';
   static const screens_folders_dialog_title = 'screens.folders.dialog.title';
@@ -506,16 +505,14 @@ abstract class LocaleKeys {
   static const screens_filesystem = 'screens.filesystem';
   static const screens_folder_view_empty = 'screens.folder_view.empty';
   static const screens_folder_view = 'screens.folder_view';
+  static const screens_home_allNotes = 'screens.home.allNotes';
+  static const screens_home = 'screens.home';
   static const screens_cacheLoading_text = 'screens.cacheLoading.text';
   static const screens_cacheLoading = 'screens.cacheLoading';
+  static const screens_error_title = 'screens.error.title';
+  static const screens_error_message = 'screens.error.message';
+  static const screens_error = 'screens.error';
   static const screens = 'screens';
-  static const OnBoarding_Skip = 'OnBoarding.Skip';
-  static const OnBoarding_Next = 'OnBoarding.Next';
-  static const OnBoarding_getStarted = 'OnBoarding.getStarted';
-  static const OnBoarding_subtitle = 'OnBoarding.subtitle';
-  static const OnBoarding_page2 = 'OnBoarding.page2';
-  static const OnBoarding_page3 = 'OnBoarding.page3';
-  static const OnBoarding = 'OnBoarding';
   static const widgets_rename_yes = 'widgets.rename.yes';
   static const widgets_rename_no = 'widgets.rename.no';
   static const widgets_rename_validator_empty =
@@ -530,10 +527,6 @@ abstract class LocaleKeys {
   static const widgets_rename = 'widgets.rename';
   static const widgets_backlinks_title = 'widgets.backlinks.title';
   static const widgets_backlinks = 'widgets.backlinks';
-  static const widgets_imageRenderer_caption = 'widgets.imageRenderer.caption';
-  static const widgets_imageRenderer_httpError =
-      'widgets.imageRenderer.httpError';
-  static const widgets_imageRenderer = 'widgets.imageRenderer';
   static const widgets_SortingOrderSelector_title =
       'widgets.SortingOrderSelector.title';
   static const widgets_SortingOrderSelector = 'widgets.SortingOrderSelector';
@@ -544,9 +537,6 @@ abstract class LocaleKeys {
   static const widgets_PurchaseButton_failPurchase =
       'widgets.PurchaseButton.failPurchase';
   static const widgets_PurchaseButton = 'widgets.PurchaseButton';
-  static const widgets_FolderView_noteDeleted =
-      'widgets.FolderView.noteDeleted';
-  static const widgets_FolderView_undo = 'widgets.FolderView.undo';
   static const widgets_FolderView_syncError = 'widgets.FolderView.syncError';
   static const widgets_FolderView_headerOptions_heading =
       'widgets.FolderView.headerOptions.heading';
@@ -568,23 +558,30 @@ abstract class LocaleKeys {
       'widgets.FolderView.views.journal';
   static const widgets_FolderView_views_grid = 'widgets.FolderView.views.grid';
   static const widgets_FolderView_views_card = 'widgets.FolderView.views.card';
-  static const widgets_FolderView_views_calendar =
-      'widgets.FolderView.views.calendar';
   static const widgets_FolderView_views_select =
       'widgets.FolderView.views.select';
+  static const widgets_FolderView_views_calendar =
+      'widgets.FolderView.views.calendar';
   static const widgets_FolderView_views = 'widgets.FolderView.views';
   static const widgets_FolderView_sortingOptions =
       'widgets.FolderView.sortingOptions';
   static const widgets_FolderView_viewOptions =
       'widgets.FolderView.viewOptions';
+  static const widgets_FolderView_noteDeleted =
+      'widgets.FolderView.noteDeleted';
+  static const widgets_FolderView_undo = 'widgets.FolderView.undo';
   static const widgets_FolderView_searchFailed =
       'widgets.FolderView.searchFailed';
-  static const widgets_FolderView_pinned = 'widgets.FolderView.pinned';
-  static const widgets_FolderView_others = 'widgets.FolderView.others';
   static const widgets_FolderView_actions_moveToFolder =
       'widgets.FolderView.actions.moveToFolder';
   static const widgets_FolderView_actions = 'widgets.FolderView.actions';
+  static const widgets_FolderView_pinned = 'widgets.FolderView.pinned';
+  static const widgets_FolderView_others = 'widgets.FolderView.others';
   static const widgets_FolderView = 'widgets.FolderView';
+  static const widgets_imageRenderer_caption = 'widgets.imageRenderer.caption';
+  static const widgets_imageRenderer_httpError =
+      'widgets.imageRenderer.httpError';
+  static const widgets_imageRenderer = 'widgets.imageRenderer';
   static const widgets_NoteDeleteDialog_title =
       'widgets.NoteDeleteDialog.title';
   static const widgets_NoteDeleteDialog_yes = 'widgets.NoteDeleteDialog.yes';
@@ -619,18 +616,21 @@ abstract class LocaleKeys {
   static const drawer_all = 'drawer.all';
   static const drawer_folders = 'drawer.folders';
   static const drawer_fs = 'drawer.fs';
-  static const drawer_graph = 'drawer.graph';
-  static const drawer_history = 'drawer.history';
   static const drawer_tags = 'drawer.tags';
   static const drawer_share = 'drawer.share';
   static const drawer_rate = 'drawer.rate';
   static const drawer_feedback = 'drawer.feedback';
   static const drawer_bug = 'drawer.bug';
+  static const drawer_graph = 'drawer.graph';
   static const drawer_remote = 'drawer.remote';
   static const drawer_addRepo = 'drawer.addRepo';
   static const drawer_login = 'drawer.login';
+  static const drawer_history = 'drawer.history';
   static const drawer = 'drawer';
-  static const setup_autoconfigure_title = 'setup.autoconfigure.title';
+  static const setup_autoConfigure_title = 'setup.autoConfigure.title';
+  static const setup_autoConfigure_automatic = 'setup.autoConfigure.automatic';
+  static const setup_autoConfigure_manual = 'setup.autoConfigure.manual';
+  static const setup_autoConfigure = 'setup.autoConfigure';
   static const setup_autoconfigure_step1 = 'setup.autoconfigure.step1';
   static const setup_autoconfigure_step2 = 'setup.autoconfigure.step2';
   static const setup_autoconfigure_step3 = 'setup.autoconfigure.step3';
@@ -693,10 +693,6 @@ abstract class LocaleKeys {
   static const setup_host_title = 'setup.host.title';
   static const setup_host_custom = 'setup.host.custom';
   static const setup_host = 'setup.host';
-  static const setup_autoConfigure_title = 'setup.autoConfigure.title';
-  static const setup_autoConfigure_automatic = 'setup.autoConfigure.automatic';
-  static const setup_autoConfigure_manual = 'setup.autoConfigure.manual';
-  static const setup_autoConfigure = 'setup.autoConfigure';
   static const setup = 'setup';
   static const feature_darkMode = 'feature.darkMode';
   static const feature_rawEditor = 'feature.rawEditor';
@@ -763,8 +759,6 @@ abstract class LocaleKeys {
   static const feature_timeline_issues = 'feature_timeline.issues';
   static const feature_timeline = 'feature_timeline';
   static const purchase_screen_title = 'purchase_screen.title';
-  static const purchase_screen_expired = 'purchase_screen.expired';
-  static const purchase_screen_unknown = 'purchase_screen.unknown';
   static const purchase_screen_desc = 'purchase_screen.desc';
   static const purchase_screen_restore = 'purchase_screen.restore';
   static const purchase_screen_oneTime_title = 'purchase_screen.oneTime.title';
@@ -777,5 +771,16 @@ abstract class LocaleKeys {
   static const purchase_screen_thanks_subtitle =
       'purchase_screen.thanks.subtitle';
   static const purchase_screen_thanks = 'purchase_screen.thanks';
+  static const purchase_screen_expired = 'purchase_screen.expired';
+  static const purchase_screen_unknown = 'purchase_screen.unknown';
   static const purchase_screen = 'purchase_screen';
+  static const OnBoarding_Skip = 'OnBoarding.Skip';
+  static const OnBoarding_Next = 'OnBoarding.Next';
+  static const OnBoarding_getStarted = 'OnBoarding.getStarted';
+  static const OnBoarding_subtitle = 'OnBoarding.subtitle';
+  static const OnBoarding_page2 = 'OnBoarding.page2';
+  static const OnBoarding_page3 = 'OnBoarding.page3';
+  static const OnBoarding = 'OnBoarding';
+  static const beta = 'beta';
+  static const none = 'none';
 }

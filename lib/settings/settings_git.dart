@@ -12,9 +12,11 @@ import 'package:provider/provider.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
+import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/settings/settings_git_remote.dart';
 import 'package:gitjournal/settings/settings_git_widgets.dart';
 import 'package:gitjournal/settings/widgets/settings_header.dart';
+import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
 
 class SettingsGit extends StatelessWidget {
   static const routePath = '/settings/git';
@@ -24,6 +26,7 @@ class SettingsGit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var repo = Provider.of<GitJournalRepo>(context);
+    var gitConfig = context.watch<GitConfig>();
 
     var list = ListView(
       children: [
@@ -43,6 +46,17 @@ class SettingsGit extends StatelessWidget {
             var _ = Navigator.push(context, route);
           },
           enabled: repo.remoteGitRepoConfigured,
+        ),
+        ListPreference(
+          title: tr(LocaleKeys.settings_sshKey_keyType),
+          currentOption: gitConfig.sshKeyType.toPublicString(),
+          options:
+              SettingsSSHKey.options.map((f) => f.toPublicString()).toList(),
+          onChange: (String publicStr) {
+            var val = SettingsSSHKey.fromPublicString(publicStr);
+            gitConfig.sshKeyType = val;
+            gitConfig.save();
+          },
         ),
         RedButton(
           text: tr(LocaleKeys.settings_deleteRepo),

@@ -147,7 +147,7 @@ class GitHostSetupAutoConfigurePageState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          tr(LocaleKeys.setup_autoconfigure_title),
+          tr(LocaleKeys.setup_autoConfigure_title),
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 32.0),

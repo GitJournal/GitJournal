@@ -6,8 +6,10 @@
 
 import 'package:flutter/foundation.dart';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/settings_sharedpref.dart';
 
 class GitConfig extends ChangeNotifier with SettingsSharedPref {
@@ -24,6 +26,7 @@ class GitConfig extends ChangeNotifier with SettingsSharedPref {
   var sshPublicKey = "";
   var sshPrivateKey = "";
   var sshPassword = "";
+  var sshKeyType = SettingsSSHKey.Default;
 
   void load() {
     gitAuthor = getString("gitAuthor") ?? gitAuthor;
@@ -31,6 +34,7 @@ class GitConfig extends ChangeNotifier with SettingsSharedPref {
     sshPublicKey = getString("sshPublicKey") ?? sshPublicKey;
     sshPrivateKey = getString("sshPrivateKey") ?? sshPrivateKey;
     sshPassword = getString("sshPassword") ?? sshPassword;
+    sshKeyType = SettingsSSHKey.fromInternalString(getString("sshKeyType"));
   }
 
   Future<void> save() async {
@@ -44,6 +48,8 @@ class GitConfig extends ChangeNotifier with SettingsSharedPref {
     await setString("sshPublicKey", sshPublicKey, def.sshPublicKey);
     await setString("sshPrivateKey", sshPrivateKey, def.sshPrivateKey);
     await setString("sshPassword", sshPassword, def.sshPassword);
+    await setString("sshKeyType", sshKeyType.toInternalString(),
+        def.sshKeyType.toInternalString());
 
     notifyListeners();
   }
@@ -63,3 +69,51 @@ class GitConfig extends ChangeNotifier with SettingsSharedPref {
 // 2. Less calls to setString so this is much faster
 
 // Optimizing this doesn't matter
+
+class SettingsSSHKey {
+  static const Rsa = SettingsSSHKey(LocaleKeys.settings_sshKey_rsa, "rsa");
+  static const Ed25519 =
+      SettingsSSHKey(LocaleKeys.settings_sshKey_ed25519, "ed25519");
+  static const Default = Ed25519;
+
+  final String _str;
+  final String _publicString;
+  const SettingsSSHKey(this._publicString, this._str);
+
+  String toInternalString() {
+    return _str;
+  }
+
+  String toPublicString() {
+    return tr(_publicString);
+  }
+
+  static const options = <SettingsSSHKey>[
+    Ed25519,
+    Rsa,
+  ];
+
+  static SettingsSSHKey fromInternalString(String? str) {
+    for (var opt in options) {
+      if (opt.toInternalString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  static SettingsSSHKey fromPublicString(String str) {
+    for (var opt in options) {
+      if (opt.toPublicString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  @override
+  String toString() {
+    assert(false, "SettingsSSHKey toString should never be called");
+    return "";
+  }
+}

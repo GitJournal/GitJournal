@@ -5,7 +5,13 @@
  */
 
 import 'package:cryptography/cryptography.dart';
+import 'package:git_bindings/git_bindings.dart' as gb;
 import 'package:openssh_ed25519/openssh_ed25519.dart';
+import 'package:path/path.dart' as p;
+import 'package:universal_io/io.dart' as io;
+
+import 'package:gitjournal/logger/logger.dart';
+import 'package:gitjournal/settings/git_config.dart';
 
 class SshKey {
   final String publicKey;
@@ -19,8 +25,46 @@ class SshKey {
   });
 }
 
-Future<SshKey?> generateSSHKeys({required String comment}) async {
-  return generateSSHKeysEd25519(comment: comment);
+Future<SshKey?> generateSSHKeys({
+  required SettingsSSHKey type,
+  required String comment,
+}) async {
+  switch (type) {
+    case SettingsSSHKey.Rsa:
+      return generateSSHKeysRsa(comment: comment);
+    case SettingsSSHKey.Ed25519:
+    default:
+      return generateSSHKeysEd25519(comment: comment);
+  }
+}
+
+Future<SshKey?> generateSSHKeysRsa({required String comment}) async {
+  try {
+    var stopwatch = Stopwatch()..start();
+    var dir = await io.Directory.systemTemp.createTemp('keys');
+    var publicKeyPath = p.join(dir.path, 'id_rsa.pub');
+    var privateKeyPath = p.join(dir.path, 'id_rsa');
+
+    await gb.generateSSHKeys(
+      publicKeyPath: publicKeyPath,
+      privateKeyPath: privateKeyPath,
+      comment: comment,
+    );
+    Log.i("Generating RSA KeyPair took: ${stopwatch.elapsed}");
+
+    var all = dir.listSync().map((e) => e.path).toList();
+    Log.d("Keys Dir: $all");
+
+    return SshKey(
+      publicKey: await io.File(publicKeyPath).readAsString(),
+      privateKey: await io.File(privateKeyPath).readAsString(),
+      password: "",
+    );
+  } catch (e, st) {
+    Log.e("generateSSHKeysNative", ex: e, stacktrace: st);
+  }
+
+  return null;
 }
 
 Future<SshKey?> generateSSHKeysEd25519({required String comment}) async {

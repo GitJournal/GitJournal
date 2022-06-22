@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
-# 
+#
 # SPDX-License-Identifier: CC-BY-4.0
 settings:
   ok: Ok
@@ -86,8 +86,8 @@ settings:
         themeVectorGraphics:
           title: Theme Vector Graphics
           filter: Using Color Filter
-          'off': false
-          'on': true
+          "off": false
+          "on": true
         vectorGraphics: Vector Graphics (.svg)
         vectorGraphicsAdjustColors: Colors to Adjust
     lang: Language
@@ -214,6 +214,10 @@ settings:
     simple: yyyy-mm-dd-hh-mm-ss
     dateOnly: yyyy-mm-dd
     kebabCase: Kebab Case
+  sshKey:
+    keyType: SSH Key Type
+    rsa: RSA
+    ed25519: Ed25519
 
   HomeScreen:
     allNotes: All Notes
@@ -356,8 +360,8 @@ screens:
     message: The repo couldn't be opened. Please file a bug and recreate the repo.
 widgets:
   rename:
-    'yes': Rename
-    'no': Cancel
+    "yes": Rename
+    "no": Cancel
     validator:
       empty: Please enter a name
       exists: Already Exists
@@ -407,8 +411,8 @@ widgets:
     title:
       one: Do you want to delete this note?
       other: Do you want to delete these {} notes?
-    'yes': true
-    'no': false
+    "yes": true
+    "no": false
   NoteEditor:
     renameFile: Rename File
     fileName: Filename
@@ -583,8 +587,8 @@ OnBoarding:
   Skip: Skip
   Next: Next
   getStarted: Get Started
-  subtitle: 'An Open Source Note Taking App built on top of Git'
-  page2: 'Your Notes are stored in a standard Markdown + YAML Header format'
-  page3: 'Sync your Local Git Repo with any provider'
+  subtitle: "An Open Source Note Taking App built on top of Git"
+  page2: "Your Notes are stored in a standard Markdown + YAML Header format"
+  page3: "Sync your Local Git Repo with any provider"
 beta: BETA
 none: None

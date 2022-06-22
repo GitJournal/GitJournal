@@ -207,12 +207,13 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
   }
 
   void _generateSshKey(BuildContext context) {
+    var keyType = context.read<GitConfig>().sshKeyType;
     var comment = "GitJournal-" +
         Platform.operatingSystem +
         "-" +
         DateTime.now().toIso8601String().substring(0, 10); // only the date
 
-    generateSSHKeys(comment: comment).then((SshKey? sshKey) {
+    generateSSHKeys(type: keyType, comment: comment).then((SshKey? sshKey) {
       var config = Provider.of<GitConfig>(context, listen: false);
       config.sshPublicKey = sshKey!.publicKey;
       config.sshPrivateKey = sshKey.publicKey;
