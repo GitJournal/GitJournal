@@ -68,7 +68,7 @@ void showErrorMessageSnackbar(BuildContext context, String message) {
 }
 
 void showErrorSnackbar(BuildContext context, Object error) {
-  assert(error is Error || error is Exception);
+  assert(error is Error || error is Exception, "Error is ${error.runtimeType}");
   var message = error.toString();
   showErrorMessageSnackbar(context, message);
 }

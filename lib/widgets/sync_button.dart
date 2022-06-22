@@ -113,7 +113,7 @@ class _SyncButtonState extends State<SyncButton> {
         tr(LocaleKeys.widgets_SyncButton_error, args: [e.cause]),
       );
     } catch (e) {
-      showErrorSnackbar(context, e.toString());
+      showErrorSnackbar(context, e);
     }
   }
 
