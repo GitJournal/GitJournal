@@ -16,7 +16,7 @@ import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/settings/settings_git_remote.dart';
 import 'package:gitjournal/settings/settings_git_widgets.dart';
 import 'package:gitjournal/settings/widgets/settings_header.dart';
-import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
+import 'package:gitjournal/settings/widgets/settings_list_option_preference.dart';
 
 class SettingsGit extends StatelessWidget {
   static const routePath = '/settings/git';
@@ -47,13 +47,12 @@ class SettingsGit extends StatelessWidget {
           },
           enabled: repo.remoteGitRepoConfigured,
         ),
-        ListPreference(
+        ListOptionPreference<SettingsSSHKey>(
           title: tr(LocaleKeys.settings_sshKey_keyType),
-          currentOption: gitConfig.sshKeyType.toPublicString(),
-          options:
-              SettingsSSHKey.options.map((f) => f.toPublicString()).toList(),
-          onChange: (String publicStr) {
-            var val = SettingsSSHKey.fromPublicString(publicStr);
+          currentOption: gitConfig.sshKeyType,
+          values: SettingsSSHKey.values,
+          defaultValue: SettingsSSHKey.Default,
+          onChange: (val) {
             gitConfig.sshKeyType = val;
             gitConfig.save();
           },

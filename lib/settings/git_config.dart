@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'dart:core';
+
 import 'package:flutter/foundation.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -70,50 +72,40 @@ class GitConfig extends ChangeNotifier with SettingsSharedPref {
 
 // Optimizing this doesn't matter
 
-class SettingsSSHKey {
-  static const Rsa = SettingsSSHKey(LocaleKeys.settings_sshKey_rsa, "rsa");
-  static const Ed25519 =
-      SettingsSSHKey(LocaleKeys.settings_sshKey_ed25519, "ed25519");
-  static const Default = Ed25519;
+abstract class SettingsOption {
+  String toPublicString();
+  String toInternalString();
 
-  final String _str;
+  List<SettingsOption> get allValues;
+}
+
+enum SettingsSSHKey implements SettingsOption {
+  Ed25519(LocaleKeys.settings_sshKey_ed25519),
+  Rsa(LocaleKeys.settings_sshKey_rsa);
+
+  static const SettingsSSHKey Default = Ed25519;
+
   final String _publicString;
-  const SettingsSSHKey(this._publicString, this._str);
+  const SettingsSSHKey(this._publicString);
 
-  String toInternalString() {
-    return _str;
-  }
-
-  String toPublicString() {
-    return tr(_publicString);
-  }
-
-  static const options = <SettingsSSHKey>[
-    Ed25519,
-    Rsa,
-  ];
+  @override
+  String toPublicString() => tr(_publicString);
+  @override
+  String toInternalString() => name;
+  @override
+  List<SettingsOption> get allValues => values;
 
   static SettingsSSHKey fromInternalString(String? str) {
-    for (var opt in options) {
-      if (opt.toInternalString() == str) {
-        return opt;
-      }
-    }
-    return Default;
+    return values.firstWhere(
+      (e) => e.toInternalString() == str,
+      orElse: () => Default,
+    );
   }
 
   static SettingsSSHKey fromPublicString(String str) {
-    for (var opt in options) {
-      if (opt.toPublicString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  @override
-  String toString() {
-    assert(false, "SettingsSSHKey toString should never be called");
-    return "";
+    return values.firstWhere(
+      (e) => e.toPublicString() == str,
+      orElse: () => Default,
+    );
   }
 }
