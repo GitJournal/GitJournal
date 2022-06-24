@@ -11,8 +11,10 @@ import 'package:flutter/services.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:function_types/function_types.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
+import 'package:synchronized/synchronized.dart';
 
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
@@ -138,6 +140,8 @@ class NoteEditorState extends State<NoteEditor>
   final _checklistEditorKey = GlobalKey<ChecklistEditorState>();
   final _journalEditorKey = GlobalKey<JournalEditorState>();
   final _orgEditorKey = GlobalKey<OrgEditorState>();
+
+  final _lock = Lock();
 
   NoteEditorState.newNote(
     NotesFolderFS folder,
@@ -333,8 +337,20 @@ class NoteEditorState extends State<NoteEditor>
     }
   }
 
+  void _lockAndCall(Func1<Note, Future<void>> fn, Note note) {
+    if (_lock.locked) {
+      Log.w("UI Locked");
+      return;
+    }
+    unawaited(_lock.synchronized(() {
+      fn(note);
+    }));
+  }
+
   @override
-  Future<void> exitEditorSelected(Note note) async {
+  void exitEditorSelected(Note note) => _lockAndCall(_exitEditorSelected, note);
+
+  Future<void> _exitEditorSelected(Note note) async {
     assert(note.oid.isEmpty);
 
     var saved = await _saveNote(note);
@@ -344,7 +360,9 @@ class NoteEditorState extends State<NoteEditor>
   }
 
   @override
-  Future<void> renameNote(Note note) async {
+  void renameNote(Note note) => _lockAndCall(_renameNote, note);
+
+  Future<void> _renameNote(Note note) async {
     assert(note.oid.isEmpty);
 
     if (_isNewNote && !_newNoteRenamed) {
@@ -424,7 +442,9 @@ class NoteEditorState extends State<NoteEditor>
   }
 
   @override
-  Future<void> deleteNote(Note note) async {
+  void deleteNote(Note note) => _lockAndCall(_deleteNote, note);
+
+  Future<void> _deleteNote(Note note) async {
     assert(note.oid.isEmpty);
 
     if (_isNewNote && !_noteModified(note)) {
@@ -542,7 +562,10 @@ class NoteEditorState extends State<NoteEditor>
   Note? _getNoteFromEditor() => _getEditorState()?.getNote();
 
   @override
-  Future<void> moveNoteToFolderSelected(Note note) async {
+  void moveNoteToFolderSelected(Note note) =>
+      _lockAndCall(_moveNoteToFolderSelected, note);
+
+  Future<void> _moveNoteToFolderSelected(Note note) async {
     assert(note.oid.isEmpty);
 
     var destFolder = await showDialog<NotesFolderFS>(
@@ -570,7 +593,9 @@ class NoteEditorState extends State<NoteEditor>
   }
 
   @override
-  Future<void> discardChanges(Note note) async {
+  void discardChanges(Note note) => _lockAndCall(_discardChanges, note);
+
+  Future<void> _discardChanges(Note note) async {
     assert(note.oid.isEmpty);
 
     if (!_isNewNote) {
@@ -582,7 +607,9 @@ class NoteEditorState extends State<NoteEditor>
   }
 
   @override
-  Future<void> editTags(Note note) async {
+  void editTags(Note note) => _lockAndCall(_editTags, note);
+
+  Future<void> _editTags(Note note) async {
     assert(note.oid.isEmpty);
 
     final rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
