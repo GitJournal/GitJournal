@@ -441,6 +441,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.6"
+  dio_smart_retry:
+    dependency: "direct main"
+    description:
+      name: dio_smart_retry
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   dots_indicator:
     dependency: "direct main"
     description:
