@@ -11,35 +11,25 @@ import 'package:gitjournal/analytics/generated/analytics.pbgrpc.dart';
 import 'package:gitjournal/utils/result.dart';
 import 'generated/analytics.pb.dart' as pb;
 
+import 'package:dio/dio.dart';
+
 const _port = 443;
 const _timeout = Duration(seconds: 120);
 
-Future<Result<void>> sendAnalytics(pb.AnalyticsMessage msg) async {
-  final channel = ClientChannel(
-    Env.analyticsUrl,
-    port: _port,
-    options: ChannelOptions(
-      // credentials: const ChannelCredentials.insecure(),
-      credentials: const ChannelCredentials.secure(),
-      codecRegistry: CodecRegistry(codecs: const [
-        IdentityCodec(),
-        GzipCodec(),
-      ]),
-    ),
-  );
+var dio = Dio();
 
-  final client = AnalyticsServiceClient(channel);
+Future<Result<void>> sendAnalytics(pb.AnalyticsMessage msg) async {
   try {
-    var call = client.sendData(
-      msg,
-      options: CallOptions(timeout: _timeout),
+    await dio.post(
+      Env.analyticsUrl,
+      data: msg.writeToJson(),
+      options: Options(
+        headers: {Headers.contentTypeHeader: "application/json"},
+      ),
     );
-    var _ = await call;
-  } catch (e, st) {
-    await channel.shutdown();
-    return Result.fail(e, st);
+  } catch (ex, st) {
+    return Result.fail(ex, st);
   }
 
-  await channel.shutdown();
   return Result(null);
 }
