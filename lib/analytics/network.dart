@@ -36,7 +36,7 @@ Future<Result<void>> sendAnalytics(pb.AnalyticsMessage msg) async {
 
   try {
     final data = msg.writeToBuffer();
-    await dio.post(
+    var _ = await dio.post(
       Env.analyticsUrl,
       // vHanda: Send POST data in DIO is so strange. It seems to mess up the data
       //         if I just pass the Uint8List
