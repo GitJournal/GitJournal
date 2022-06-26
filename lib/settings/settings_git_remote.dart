@@ -9,7 +9,6 @@ import 'package:flutter/services.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:git_setup/keygen.dart';
-import 'package:git_setup/screens.dart';
 import 'package:git_setup/sshkey.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
@@ -25,6 +24,7 @@ import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
 import 'package:gitjournal/ssh/keygen.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/future_builder_with_progress.dart';
+import 'package:gitjournal/widgets/setup.dart';
 
 class GitRemoteSettingsScreen extends StatefulWidget {
   static const routePath = '/settings/gitRemote';
@@ -215,7 +215,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
         DateTime.now().toIso8601String().substring(0, 10); // only the date
 
     GitJournalKeygen()
-        .generate(type: keyType.val, comment: comment)
+        .generate(type: keyType, comment: comment)
         .then((SshKey? sshKey) {
       var config = Provider.of<GitConfig>(context, listen: false);
       config.sshPublicKey = sshKey!.publicKey;
@@ -263,11 +263,9 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     await storageConfig.save();
 
     var route = MaterialPageRoute(
-      builder: (context) => GitHostSetupScreen(
+      builder: (context) => GitJournalGitSetupScreen(
         repoFolderName: repoFolderName,
-        remoteName: 'origin',
         onCompletedFunction: repo.completeGitHostSetup,
-        keygen: GitJournalKeygen(),
       ),
       settings: const RouteSettings(name: '/setupRemoteGit'),
     );

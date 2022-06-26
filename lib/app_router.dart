@@ -28,8 +28,8 @@ import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/settings/storage_config.dart';
-import 'package:gitjournal/ssh/keygen.dart';
 import 'package:gitjournal/utils/utils.dart';
+import 'package:gitjournal/widgets/setup.dart';
 
 class AppRoute {
   static const NewNotePrefix = '/newNote/';
@@ -136,11 +136,9 @@ class AppRouter {
       case AccountScreen.routePath:
         return const AccountScreen();
       case GitHostSetupScreen.routePath:
-        return GitHostSetupScreen(
+        return GitJournalGitSetupScreen(
           repoFolderName: storageConfig.folderName,
-          remoteName: "origin",
           onCompletedFunction: repository.completeGitHostSetup,
-          keygen: GitJournalKeygen(),
         );
       case OnBoardingScreen.routePath:
         return const OnBoardingScreen();

@@ -49,11 +49,11 @@ class SettingsGit extends StatelessWidget {
         ),
         ListOptionPreference<SettingsSSHKey>(
           title: tr(LocaleKeys.settings_sshKey_keyType),
-          currentOption: gitConfig.sshKeyType,
+          currentOption: SettingsSSHKey.fromEnum(gitConfig.sshKeyType),
           values: SettingsSSHKey.values,
           defaultValue: SettingsSSHKey.Default,
-          onChange: (val) {
-            gitConfig.sshKeyType = val;
+          onChange: (keyType) {
+            gitConfig.sshKeyType = keyType.val;
             gitConfig.save();
           },
         ),

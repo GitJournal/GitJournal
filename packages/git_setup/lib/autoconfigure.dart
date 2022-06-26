@@ -9,12 +9,11 @@ import 'package:flutter/services.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
+import 'package:git_setup/git_config.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/settings/git_config.dart';
-import 'package:provider/provider.dart';
 
 import 'apis/githost_factory.dart';
 import 'button.dart';
@@ -24,10 +23,12 @@ import 'loading.dart';
 class GitHostSetupAutoConfigurePage extends StatefulWidget {
   final GitHostType gitHostType;
   final Func2<GitHost?, UserInfo?, void> onDone;
+  final SetupProviders providers;
 
   const GitHostSetupAutoConfigurePage({
     required this.gitHostType,
     required this.onDone,
+    required this.providers,
     Key? key,
   }) : super(key: key);
 
@@ -81,7 +82,7 @@ class GitHostSetupAutoConfigurePageState
           userInfo = await gitHost!.getUserInfo().getOrThrow();
           Log.d("Got UserInfo - $userInfo");
 
-          var gitConfig = Provider.of<GitConfig>(context, listen: false);
+          var gitConfig = widget.providers.readGitConfig(context);
           if (userInfo.name.isNotEmpty) {
             gitConfig.gitAuthor = userInfo.name;
           } else if (userInfo.username.isNotEmpty) {

@@ -14,8 +14,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/settings_sharedpref.dart';
+import 'package:git_setup/git_config.dart' as setup;
 
-class GitConfig extends ChangeNotifier with SettingsSharedPref {
+class GitConfig extends ChangeNotifier
+    with SettingsSharedPref
+    implements setup.GitConfig {
   GitConfig(this.id, this.pref);
 
   @override
@@ -24,12 +27,18 @@ class GitConfig extends ChangeNotifier with SettingsSharedPref {
   @override
   final SharedPreferences pref;
 
+  @override
   var gitAuthor = "GitJournal";
+  @override
   var gitAuthorEmail = "app@gitjournal.io";
+  @override
   var sshPublicKey = "";
+  @override
   var sshPrivateKey = "";
+  @override
   var sshPassword = "";
-  var sshKeyType = SettingsSSHKey.Default;
+  @override
+  var sshKeyType = SettingsSSHKey.Default.val;
 
   void load() {
     gitAuthor = getString("gitAuthor") ?? gitAuthor;
@@ -37,9 +46,10 @@ class GitConfig extends ChangeNotifier with SettingsSharedPref {
     sshPublicKey = getString("sshPublicKey") ?? sshPublicKey;
     sshPrivateKey = getString("sshPrivateKey") ?? sshPrivateKey;
     sshPassword = getString("sshPassword") ?? sshPassword;
-    sshKeyType = SettingsSSHKey.fromInternalString(getString("sshKeyType"));
+    sshKeyType = SettingsSSHKey.fromInternalString(getString("sshKeyType")).val;
   }
 
+  @override
   Future<void> save() async {
     var def = GitConfig(id, pref);
     // I could call _load and get all the values
@@ -51,7 +61,11 @@ class GitConfig extends ChangeNotifier with SettingsSharedPref {
     await setString("sshPublicKey", sshPublicKey, def.sshPublicKey);
     await setString("sshPrivateKey", sshPrivateKey, def.sshPrivateKey);
     await setString("sshPassword", sshPassword, def.sshPassword);
-    await setOption("sshKeyType", sshKeyType, def.sshKeyType);
+    await setOption(
+      "sshKeyType",
+      SettingsSSHKey.fromEnum(sshKeyType),
+      SettingsSSHKey.fromEnum(def.sshKeyType),
+    );
 
     notifyListeners();
   }
@@ -106,6 +120,13 @@ enum SettingsSSHKey implements SettingsOption {
   static SettingsSSHKey fromPublicString(String str) {
     return values.firstWhere(
       (e) => e.toPublicString() == str,
+      orElse: () => Default,
+    );
+  }
+
+  static SettingsSSHKey fromEnum(SshKeyType k) {
+    return values.firstWhere(
+      (e) => e.val == k,
       orElse: () => Default,
     );
   }

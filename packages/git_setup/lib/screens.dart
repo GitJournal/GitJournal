@@ -15,7 +15,6 @@ import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
-import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:path/path.dart' as p;
@@ -24,6 +23,7 @@ import 'package:time/time.dart';
 import 'package:universal_io/io.dart' show Platform, Directory;
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:git_setup/git_config.dart';
 import 'apis/githost_factory.dart';
 import 'autoconfigure.dart';
 import 'button.dart';
@@ -44,12 +44,14 @@ class GitHostSetupScreen extends StatefulWidget {
   final String remoteName;
   final Func2<String, String, Future<void>> onCompletedFunction;
   final Keygen keygen;
+  final SetupProviders providers;
 
   const GitHostSetupScreen({
     required this.repoFolderName,
     required this.remoteName,
     required this.onCompletedFunction,
     required this.keygen,
+    required this.providers,
   });
 
   @override
@@ -208,6 +210,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
               });
             }
           },
+          providers: widget.providers,
         );
       }
     }
@@ -239,7 +242,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
           return GitHostUserProvidedKeysPage(
             doneFunction:
                 (String publicKey, String privateKey, String password) async {
-              var gitConfig = Provider.of<GitConfig>(context, listen: false);
+              var gitConfig = widget.providers.readGitConfig(context);
               gitConfig.sshPublicKey = publicKey;
               gitConfig.sshPrivateKey = privateKey;
               gitConfig.sshPassword = password;
@@ -336,7 +339,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         } else if (_keyGenerationChoice == KeyGenerationChoice.UserProvided) {
           return GitHostUserProvidedKeysPage(
             doneFunction: (publicKey, privateKey, password) async {
-              var gitConfig = Provider.of<GitConfig>(context, listen: false);
+              var gitConfig = widget.providers.readGitConfig(context);
               gitConfig.sshPublicKey = publicKey;
               gitConfig.sshPrivateKey = privateKey;
               gitConfig.sshPassword = password;
@@ -462,16 +465,16 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       return;
     }
 
-    var keyType = context.read<GitConfig>().sshKeyType;
+    var keyType = widget.providers.readGitConfig(context).sshKeyType;
     var comment = "GitJournal-" +
         Platform.operatingSystem +
         "-" +
         DateTime.now().toIso8601String().substring(0, 10); // only the date
 
     widget.keygen
-        .generate(type: keyType.val, comment: comment)
+        .generate(type: keyType, comment: comment)
         .then((SshKey? sshKey) {
-      var gitConfig = Provider.of<GitConfig>(context, listen: false);
+      var gitConfig = widget.providers.readGitConfig(context);
       gitConfig.sshPublicKey = sshKey!.publicKey;
       gitConfig.sshPrivateKey = sshKey.privateKey;
       gitConfig.sshPassword = sshKey.password;
@@ -560,7 +563,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     var repo = context.read<GitJournalRepo>();
     var basePath = repo.gitBaseDirectory;
 
-    var gitConfig = Provider.of<GitConfig>(context, listen: false);
+    var gitConfig = widget.providers.readGitConfig(context);
     var repoPath = p.join(basePath, widget.repoFolderName);
     Log.i("RepoPath: $repoPath");
 
@@ -628,16 +631,16 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       setState(() {
         _autoConfigureMessage = tr(LocaleKeys.setup_sshKey_generate);
       });
-      var keyType = context.read<GitConfig>().sshKeyType;
+      var keyType = widget.providers.readGitConfig(context).sshKeyType;
       var sshKey = await widget.keygen.generate(
-        type: keyType.val,
+        type: keyType,
         comment: "GitJournal",
       );
       if (sshKey == null) {
         // FIXME: Handle case when sshKey generation failed
         return;
       }
-      var gitConfig = Provider.of<GitConfig>(context, listen: false);
+      var gitConfig = widget.providers.readGitConfig(context);
       gitConfig.sshPublicKey = sshKey.publicKey;
       gitConfig.sshPrivateKey = sshKey.privateKey;
       gitConfig.sshPassword = sshKey.password;

@@ -5,6 +5,8 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:git_setup/git_config.dart';
+import 'package:git_setup/keygen.dart';
 
 import 'apis/api_fakes.dart';
 import 'apis/githost_factory.dart';
@@ -16,6 +18,36 @@ import 'loading.dart';
 import 'repo_selector.dart';
 import 'screens.dart';
 import 'sshkey.dart';
+
+class DummyGitConfig implements GitConfig {
+  @override
+  String gitAuthor = "GitAuthor";
+
+  @override
+  String gitAuthorEmail = "test@example.com";
+
+  @override
+  SshKeyType sshKeyType = SshKeyType.Ed25519;
+
+  @override
+  String sshPassword = "";
+
+  @override
+  String sshPrivateKey = "";
+
+  @override
+  String sshPublicKey = "";
+
+  @override
+  Future<void> save() async {}
+}
+
+class _Providers implements SetupProviders {
+  @override
+  GitConfig readGitConfig(BuildContext context) {
+    return DummyGitConfig();
+  }
+}
 
 Widget autoConfigureChoice() {
   return Padding(
@@ -42,6 +74,7 @@ Widget autoConfigure() {
     child: GitHostSetupAutoConfigurePage(
       gitHostType: GitHostType.GitHub,
       onDone: (host, userInfo) {},
+      providers: _Providers(),
     ),
   );
 }
