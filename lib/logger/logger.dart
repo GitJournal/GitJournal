@@ -9,13 +9,12 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart' as foundation;
 
 import 'package:fimber/fimber.dart';
+import 'package:git_setup/apis/githost.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:stack_trace/stack_trace.dart';
 import 'package:time/time.dart';
 import 'package:universal_io/io.dart';
-
-import 'package:git_setup/apis/githost.dart';
 
 // FIXME: Only catch Exception? type. Something else needs to be done with Errors
 class Log {

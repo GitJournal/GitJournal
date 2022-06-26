@@ -4,9 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:universal_io/io.dart' as io;
-
 import 'package:git_setup/apis/githost.dart';
+import 'package:universal_io/io.dart' as io;
 
 Future<Result<void>> saveFileSafely(String filePath, List<int> bytes) {
   return catchAll(() async {

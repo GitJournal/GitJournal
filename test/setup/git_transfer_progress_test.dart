@@ -5,8 +5,8 @@
  */
 
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:git_setup/git_transfer_progress.dart';
+
 import '../lib.dart';
 
 void main() {

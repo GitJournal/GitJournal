@@ -7,6 +7,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:function_types/function_types.dart';
+import 'package:git_setup/screens.dart';
 
 import 'package:gitjournal/account/account_screen.dart';
 import 'package:gitjournal/account/login_screen.dart';
@@ -27,7 +28,6 @@ import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/settings/storage_config.dart';
-import 'package:git_setup/screens.dart';
 import 'package:gitjournal/utils/utils.dart';
 
 class AppRoute {

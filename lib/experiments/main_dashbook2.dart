@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import 'package:dashbook/dashbook.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:git_setup/fakes/clone_fake.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,7 +17,6 @@ import 'package:gitjournal/logger/fakes/debug_screen_fake.dart';
 import 'package:gitjournal/logger/fakes/fake_path_provider.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_config.dart';
-import 'package:git_setup/fakes/clone_fake.dart';
 
 Future<void> main() async {
   dynamic _;

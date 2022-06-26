@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'package:dio/dio.dart';
+import 'package:dio_smart_retry/dio_smart_retry.dart';
+
 import 'package:gitjournal/.env.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/utils/result.dart';
 import 'generated/analytics.pb.dart' as pb;
-
-import 'package:dio/dio.dart';
-import 'package:dio_smart_retry/dio_smart_retry.dart';
 
 late final dio = () {
   var d = Dio();
