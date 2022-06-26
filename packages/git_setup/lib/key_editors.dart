@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' as io;
 
 class PublicKeyEditor extends StatelessWidget {
   final Key formKey;
@@ -121,7 +121,7 @@ class KeyEditor extends StatelessWidget {
     if (result != null &&
         result.files.isNotEmpty &&
         result.files.single.path != null) {
-      var file = File(result.files.single.path!);
+      var file = io.File(result.files.single.path!);
       try {
         var data = await file.readAsString();
         textEditingController.text = data.trim();

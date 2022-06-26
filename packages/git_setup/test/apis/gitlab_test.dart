@@ -5,10 +5,10 @@
  */
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:path/path.dart';
 import 'package:test/test.dart';
-import 'package:universal_io/io.dart';
 
 import 'package:git_setup/apis/githost_factory.dart';
 import 'package:git_setup/apis/gitlab.dart';
