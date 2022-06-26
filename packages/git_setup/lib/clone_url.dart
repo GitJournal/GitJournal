@@ -10,7 +10,7 @@ import 'package:dart_git/git_url_parse.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
 
-import 'package:gitjournal/apis/githost_factory.dart';
+import 'package:git_setup/apis/githost_factory.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'button.dart';
 

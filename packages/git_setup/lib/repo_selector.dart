@@ -13,7 +13,7 @@ import 'package:time/time.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:gitjournal/analytics/analytics.dart';
-import 'package:gitjournal/apis/githost_factory.dart';
+import 'package:git_setup/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';

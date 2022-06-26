@@ -6,7 +6,7 @@
 
 import 'package:universal_io/io.dart' as io;
 
-import 'package:gitjournal/apis/githost.dart';
+import 'package:git_setup/apis/githost.dart';
 
 Future<Result<void>> saveFileSafely(String filePath, List<int> bytes) {
   return catchAll(() async {

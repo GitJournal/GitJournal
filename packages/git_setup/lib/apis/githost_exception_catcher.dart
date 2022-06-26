@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:gitjournal/apis/githost.dart';
+import 'package:git_setup/apis/githost.dart';
 
 class GitHostExceptionCatcher implements GitHost {
   final GitHost _;

@@ -12,7 +12,7 @@ import 'package:function_types/function_types.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
-import 'package:gitjournal/apis/githost_factory.dart';
+import 'package:git_setup/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';

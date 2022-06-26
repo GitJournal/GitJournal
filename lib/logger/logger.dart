@@ -15,7 +15,7 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:time/time.dart';
 import 'package:universal_io/io.dart';
 
-import 'package:gitjournal/apis/githost.dart';
+import 'package:git_setup/apis/githost.dart';
 
 // FIXME: Only catch Exception? type. Something else needs to be done with Errors
 class Log {

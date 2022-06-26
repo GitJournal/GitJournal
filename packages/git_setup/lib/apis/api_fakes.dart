@@ -6,8 +6,8 @@
 
 import 'dart:convert';
 
-import 'package:gitjournal/apis/githost.dart';
-import 'package:gitjournal/apis/github.dart';
+import 'package:git_setup/apis/githost.dart';
+import 'package:git_setup/apis/github.dart';
 
 typedef JsonMap = Map<String, dynamic>;
 typedef JsonList = List<JsonMap>;
