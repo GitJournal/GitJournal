@@ -8,16 +8,16 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
-import 'package:path/path.dart' as p;
-import 'package:time/time.dart';
-import 'package:timeago/timeago.dart' as timeago;
-
 import 'package:gitjournal/analytics/analytics.dart';
-import 'package:git_setup/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/widgets/highlighted_text.dart';
+import 'package:path/path.dart' as p;
+import 'package:time/time.dart';
+import 'package:timeago/timeago.dart' as timeago;
+
+import 'apis/githost_factory.dart';
 import 'button.dart';
 import 'error.dart';
 import 'loading.dart';

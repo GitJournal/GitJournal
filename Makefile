@@ -34,7 +34,8 @@ unused:
 	./flutterw pub run dart_code_metrics:metrics check-unused-code lib
 
 fmt:
-	./flutterw pub run import_sorter:main
+	./flutterw pub run import_sorter:main --no-comments
+	cd packages/git_setup && flutter pub run import_sorter:main --no-comments
 
 lint:
 	./flutterw analyze

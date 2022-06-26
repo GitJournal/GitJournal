@@ -6,13 +6,13 @@
 
 import 'dart:convert';
 
-import 'package:git_setup/apis/githost_factory.dart';
-import 'package:git_setup/apis/github.dart';
 import 'package:path/path.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart';
 
-import '../lib.dart';
+import 'package:git_setup/apis/githost_factory.dart';
+import 'package:git_setup/apis/github.dart';
+import 'lib.dart';
 
 void main() {
   setUpAll(gjSetupAllTests);

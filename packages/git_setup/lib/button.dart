@@ -7,7 +7,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:function_types/function_types.dart';
-
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/logger/logger.dart';
 

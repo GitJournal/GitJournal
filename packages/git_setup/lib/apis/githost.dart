@@ -9,7 +9,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 
 import 'package:collection/collection.dart';
-
 import 'package:gitjournal/utils/result.dart';
 
 export 'package:gitjournal/utils/result.dart';

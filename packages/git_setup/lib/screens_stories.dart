@@ -6,8 +6,8 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:git_setup/apis/api_fakes.dart';
-import 'package:git_setup/apis/githost_factory.dart';
+import 'apis/api_fakes.dart';
+import 'apis/githost_factory.dart';
 import 'autoconfigure.dart';
 import 'clone_url.dart';
 import 'error.dart';

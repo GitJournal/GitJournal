@@ -10,12 +10,12 @@ import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/exceptions.dart';
 import 'package:dart_git/plumbing/reference.dart';
 import 'package:function_types/function_types.dart';
-import 'package:path/path.dart' as p;
-import 'package:universal_io/io.dart' show Directory;
-
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/result.dart';
+import 'package:path/path.dart' as p;
+import 'package:universal_io/io.dart' show Directory;
+
 import 'git_transfer_progress.dart';
 
 const DefaultBranchName = DEFAULT_BRANCH;

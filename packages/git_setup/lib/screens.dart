@@ -10,14 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
-import 'package:path/path.dart' as p;
-import 'package:provider/provider.dart';
-import 'package:time/time.dart';
-import 'package:universal_io/io.dart' show Platform, Directory;
-import 'package:url_launcher/url_launcher.dart';
-
 import 'package:gitjournal/analytics/analytics.dart';
-import 'package:git_setup/apis/githost_factory.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
@@ -26,6 +19,13 @@ import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/ssh/keygen.dart';
 import 'package:gitjournal/utils/utils.dart';
+import 'package:path/path.dart' as p;
+import 'package:provider/provider.dart';
+import 'package:time/time.dart';
+import 'package:universal_io/io.dart' show Platform, Directory;
+import 'package:url_launcher/url_launcher.dart';
+
+import 'apis/githost_factory.dart';
 import 'autoconfigure.dart';
 import 'button.dart';
 import 'clone.dart';

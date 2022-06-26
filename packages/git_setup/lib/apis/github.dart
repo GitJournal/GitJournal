@@ -10,12 +10,12 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/services.dart';
 
+import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'package:http/http.dart' as http;
 import 'package:universal_io/io.dart' show HttpHeaders;
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/logger/logger.dart';
 import 'githost.dart';
 
 // FIXME: Handle for edge cases of json.decode
