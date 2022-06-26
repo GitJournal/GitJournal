@@ -17,7 +17,6 @@ import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/settings/storage_config.dart';
-import 'package:gitjournal/ssh/keygen.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
@@ -33,6 +32,7 @@ import 'clone_auto_select.dart';
 import 'clone_url.dart';
 import 'cloning.dart';
 import 'git_transfer_progress.dart';
+import 'keygen.dart';
 import 'loading_error.dart';
 import 'repo_selector.dart';
 import 'sshkey.dart';
@@ -43,11 +43,13 @@ class GitHostSetupScreen extends StatefulWidget {
   final String repoFolderName;
   final String remoteName;
   final Func2<String, String, Future<void>> onCompletedFunction;
+  final Keygen keygen;
 
   const GitHostSetupScreen({
     required this.repoFolderName,
     required this.remoteName,
     required this.onCompletedFunction,
+    required this.keygen,
   });
 
   @override
@@ -466,7 +468,9 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         "-" +
         DateTime.now().toIso8601String().substring(0, 10); // only the date
 
-    generateSSHKeys(type: keyType, comment: comment).then((SshKey? sshKey) {
+    widget.keygen
+        .generate(type: keyType.val, comment: comment)
+        .then((SshKey? sshKey) {
       var gitConfig = Provider.of<GitConfig>(context, listen: false);
       gitConfig.sshPublicKey = sshKey!.publicKey;
       gitConfig.sshPrivateKey = sshKey.privateKey;
@@ -625,7 +629,10 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
         _autoConfigureMessage = tr(LocaleKeys.setup_sshKey_generate);
       });
       var keyType = context.read<GitConfig>().sshKeyType;
-      var sshKey = await generateSSHKeys(type: keyType, comment: "GitJournal");
+      var sshKey = await widget.keygen.generate(
+        type: keyType.val,
+        comment: "GitJournal",
+      );
       if (sshKey == null) {
         // FIXME: Handle case when sshKey generation failed
         return;

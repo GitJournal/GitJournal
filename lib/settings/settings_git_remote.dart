@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:git_setup/keygen.dart';
 import 'package:git_setup/screens.dart';
 import 'package:git_setup/sshkey.dart';
 import 'package:path/path.dart' as p;
@@ -213,7 +214,9 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
         "-" +
         DateTime.now().toIso8601String().substring(0, 10); // only the date
 
-    generateSSHKeys(type: keyType, comment: comment).then((SshKey? sshKey) {
+    GitJournalKeygen()
+        .generate(type: keyType.val, comment: comment)
+        .then((SshKey? sshKey) {
       var config = Provider.of<GitConfig>(context, listen: false);
       config.sshPublicKey = sshKey!.publicKey;
       config.sshPrivateKey = sshKey.publicKey;
@@ -264,6 +267,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
         repoFolderName: repoFolderName,
         remoteName: 'origin',
         onCompletedFunction: repo.completeGitHostSetup,
+        keygen: GitJournalKeygen(),
       ),
       settings: const RouteSettings(name: '/setupRemoteGit'),
     );

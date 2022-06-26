@@ -9,6 +9,7 @@ import 'dart:core';
 import 'package:flutter/foundation.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:git_setup/keygen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
@@ -79,13 +80,14 @@ abstract class SettingsOption {
 }
 
 enum SettingsSSHKey implements SettingsOption {
-  Ed25519(LocaleKeys.settings_sshKey_ed25519),
-  Rsa(LocaleKeys.settings_sshKey_rsa);
+  Ed25519(LocaleKeys.settings_sshKey_ed25519, SshKeyType.Ed25519),
+  Rsa(LocaleKeys.settings_sshKey_rsa, SshKeyType.Rsa);
 
   static const SettingsSSHKey Default = Ed25519;
 
   final String _publicString;
-  const SettingsSSHKey(this._publicString);
+  final SshKeyType val;
+  const SettingsSSHKey(this._publicString, this.val);
 
   @override
   String toPublicString() => tr(_publicString);

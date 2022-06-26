@@ -6,35 +6,26 @@
 
 import 'package:cryptography/cryptography.dart';
 import 'package:git_bindings/git_bindings.dart' as gb;
+import 'package:git_setup/keygen.dart';
 import 'package:openssh_ed25519/openssh_ed25519.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' as io;
 
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/settings/git_config.dart';
 
-class SshKey {
-  final String publicKey;
-  final String privateKey;
-  final String password;
-
-  const SshKey({
-    required this.publicKey,
-    required this.privateKey,
-    required this.password,
-  });
-}
-
-Future<SshKey?> generateSSHKeys({
-  required SettingsSSHKey type,
-  required String comment,
-}) async {
-  switch (type) {
-    case SettingsSSHKey.Rsa:
-      return generateSSHKeysRsa(comment: comment);
-    case SettingsSSHKey.Ed25519:
-    default:
-      return generateSSHKeysEd25519(comment: comment);
+class GitJournalKeygen implements Keygen {
+  @override
+  Future<SshKey?> generate({
+    required SshKeyType type,
+    required String comment,
+  }) {
+    switch (type) {
+      case SshKeyType.Rsa:
+        return generateSSHKeysRsa(comment: comment);
+      case SshKeyType.Ed25519:
+      default:
+        return generateSSHKeysEd25519(comment: comment);
+    }
   }
 }
 
@@ -59,6 +50,7 @@ Future<SshKey?> generateSSHKeysRsa({required String comment}) async {
       publicKey: await io.File(publicKeyPath).readAsString(),
       privateKey: await io.File(privateKeyPath).readAsString(),
       password: "",
+      type: SshKeyType.Rsa,
     );
   } catch (e, st) {
     Log.e("generateSSHKeysNative", ex: e, stacktrace: st);
@@ -80,5 +72,10 @@ Future<SshKey?> generateSSHKeysEd25519({required String comment}) async {
     publicBytes: publicBytes,
   );
 
-  return SshKey(publicKey: publicStr, privateKey: privateStr, password: "");
+  return SshKey(
+    publicKey: publicStr,
+    privateKey: privateStr,
+    password: "",
+    type: SshKeyType.Ed25519,
+  );
 }

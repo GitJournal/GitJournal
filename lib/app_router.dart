@@ -28,6 +28,7 @@ import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/settings/storage_config.dart';
+import 'package:gitjournal/ssh/keygen.dart';
 import 'package:gitjournal/utils/utils.dart';
 
 class AppRoute {
@@ -139,6 +140,7 @@ class AppRouter {
           repoFolderName: storageConfig.folderName,
           remoteName: "origin",
           onCompletedFunction: repository.completeGitHostSetup,
+          keygen: GitJournalKeygen(),
         );
       case OnBoardingScreen.routePath:
         return const OnBoardingScreen();
