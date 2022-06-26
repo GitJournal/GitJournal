@@ -5,9 +5,9 @@
  */
 
 import 'package:flutter/material.dart';
+
 import 'package:git_setup/git_config.dart';
 import 'package:git_setup/keygen.dart';
-
 import 'apis/api_fakes.dart';
 import 'apis/githost_factory.dart';
 import 'autoconfigure.dart';
@@ -19,7 +19,7 @@ import 'repo_selector.dart';
 import 'screens.dart';
 import 'sshkey.dart';
 
-class DummyGitConfig implements GitConfig {
+class DummyGitConfig implements IGitConfig {
   @override
   String gitAuthor = "GitAuthor";
 
@@ -42,9 +42,9 @@ class DummyGitConfig implements GitConfig {
   Future<void> save() async {}
 }
 
-class _Providers implements SetupProviders {
+class _Providers implements ISetupProviders {
   @override
-  GitConfig readGitConfig(BuildContext context) {
+  IGitConfig readGitConfig(BuildContext context) {
     return DummyGitConfig();
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:git_setup/keygen.dart';
 
-abstract class GitConfig {
+abstract class IGitConfig {
   String get gitAuthor;
   String get gitAuthorEmail;
   String get sshPublicKey;
@@ -20,6 +20,6 @@ abstract class GitConfig {
   Future<void> save();
 }
 
-abstract class SetupProviders {
-  GitConfig readGitConfig(BuildContext context);
+abstract class ISetupProviders {
+  IGitConfig readGitConfig(BuildContext context);
 }

@@ -9,16 +9,16 @@ import 'dart:core';
 import 'package:flutter/foundation.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:git_setup/git_config.dart';
 import 'package:git_setup/keygen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/settings_sharedpref.dart';
-import 'package:git_setup/git_config.dart' as setup;
 
 class GitConfig extends ChangeNotifier
     with SettingsSharedPref
-    implements setup.GitConfig {
+    implements IGitConfig {
   GitConfig(this.id, this.pref);
 
   @override

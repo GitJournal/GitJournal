@@ -1,11 +1,11 @@
 import 'package:flutter/widgets.dart';
 
 import 'package:function_types/function_types.dart';
-import 'package:git_setup/git_config.dart' as setup;
+import 'package:git_setup/git_config.dart';
 import 'package:git_setup/screens.dart';
-import 'package:gitjournal/settings/git_config.dart';
 import 'package:provider/provider.dart';
 
+import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/ssh/keygen.dart';
 
 class GitJournalGitSetupScreen extends StatelessWidget {
@@ -30,9 +30,9 @@ class GitJournalGitSetupScreen extends StatelessWidget {
   }
 }
 
-class _Providers implements setup.SetupProviders {
+class _Providers implements ISetupProviders {
   @override
-  setup.GitConfig readGitConfig(BuildContext context) {
+  IGitConfig readGitConfig(BuildContext context) {
     return context.read<GitConfig>();
   }
 }

@@ -44,7 +44,7 @@ class GitHostSetupScreen extends StatefulWidget {
   final String remoteName;
   final Func2<String, String, Future<void>> onCompletedFunction;
   final Keygen keygen;
-  final SetupProviders providers;
+  final ISetupProviders providers;
 
   const GitHostSetupScreen({
     required this.repoFolderName,
