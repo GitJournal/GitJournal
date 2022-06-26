@@ -7,13 +7,24 @@ environment:
   sdk: ">=2.17.3 <3.0.0"
   flutter: ">=1.17.0"
 
+publish_to: none
+
 dependencies:
+  dots_indicator: ^2.0.0
+  easy_localization: ^3.0.0
+  function_types: ^0.1.0
+  provider: ^6.0.1
+  time: ^2.0.0
+  universal_io: ^2.0.4
+  url_launcher: ^6.0.3
+  gitjournal:
+    path: ../../
   flutter:
     sdk: flutter
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  # flutter_lints: ^2.0.0
 
 flutter:

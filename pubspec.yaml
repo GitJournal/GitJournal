@@ -70,6 +70,8 @@ dependencies:
   nested: ^1.0.0
   openssh_ed25519:
     path: packages/openssh_ed25519
+  git_setup:
+    path: packages/git_setup
   org_flutter: ^1.4.0
   package_info_plus: ^1.0.4
   path: ^1.8.0

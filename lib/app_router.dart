@@ -27,7 +27,7 @@ import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/settings/storage_config.dart';
-import 'package:gitjournal/setup/screens.dart';
+import 'package:git_setup/screens.dart';
 import 'package:gitjournal/utils/utils.dart';
 
 class AppRoute {

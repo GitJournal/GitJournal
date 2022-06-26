@@ -16,7 +16,7 @@ import 'package:gitjournal/logger/fakes/debug_screen_fake.dart';
 import 'package:gitjournal/logger/fakes/fake_path_provider.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_config.dart';
-import 'package:gitjournal/setup/fakes/clone_fake.dart';
+import 'package:git_setup/fakes/clone_fake.dart';
 
 Future<void> main() async {
   dynamic _;
