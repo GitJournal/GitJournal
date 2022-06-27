@@ -1,0 +1,19 @@
+name: gitjournal
+repository: https://github.com/GitJournal/GitJournal
+
+packages:
+  - .
+  - packages/*
+
+ide:
+  intellij: false
+
+command:
+  bootstrap:
+    usePubspecOverrides: true
+
+scripts:
+  analyze:
+    exec: flutter analyze .
+  fmt:
+    exec: flutter pub run import_sorter:main --no-comments
