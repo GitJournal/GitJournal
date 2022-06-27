@@ -1,9 +1,0 @@
-# SPDX-FileCopyrightText: 2021 Vishesh Handa <me@vhanda.in>
-#
-# SPDX-License-Identifier: CC0-1.0
-
-# Files and directories created by pub.
-.dart_tool/
-.packages
-
-pubspec.lock

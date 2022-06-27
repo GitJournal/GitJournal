@@ -1079,9 +1079,11 @@ packages:
   openssh_ed25519:
     dependency: "direct main"
     description:
-      path: "packages/openssh_ed25519"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: bb4262ab81a6c072a35aa4c45f7a3c911966ad13
+      url: "https://github.com/GitJournal/openssh_ed25519.git"
+    source: git
     version: "1.1.0"
   org_flutter:
     dependency: "direct main"

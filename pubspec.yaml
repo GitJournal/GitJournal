@@ -69,7 +69,7 @@ dependencies:
   mutex: ^3.0.0
   nested: ^1.0.0
   openssh_ed25519:
-    path: packages/openssh_ed25519
+    git: https://github.com/GitJournal/openssh_ed25519.git
   git_setup:
     path: packages/git_setup
   org_flutter: ^1.4.0
