@@ -7,10 +7,10 @@
 import 'dart:io';
 
 import 'package:dart_git/dart_git.dart';
-import 'package:git_setup/clone_git_exec.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
+import 'package:gitjournal/setup/clone_git_exec.dart';
 import '../lib.dart';
 
 // import 'package:git_setup/clone_libgit2.dart';
