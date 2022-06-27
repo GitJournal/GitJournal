@@ -17,9 +17,12 @@ jobs:
       - uses: actions/checkout@v1
       - name: Install Deps
         run: brew install git-crypt md5sha1sum gnu-sed create-dmg xmlstarlet
+      - name: Get Flutter version
+        id: get-flutter-version
+        uses: zgosalvez/github-actions-get-flutter-version-env@v1
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: "3.0.3"
+          flutter-version: ${{ steps.get-flutter-version.outputs.version }}
       - name: Test
         run: ./scripts/test.sh
       # - name: Test Report
