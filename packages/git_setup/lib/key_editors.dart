@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -118,20 +120,23 @@ class KeyEditor extends StatelessWidget {
   Future<void> _pickAndLoadFile() async {
     var result = await FilePicker.platform.pickFiles();
 
-    if (result != null &&
-        result.files.isNotEmpty &&
-        result.files.single.path != null) {
-      var file = io.File(result.files.single.path!);
-      try {
-        var data = await file.readAsString();
-        textEditingController.text = data.trim();
-      } catch (e, stackTrace) {
-        Log.e(
-          "Open File for importing SSH Key",
-          ex: e,
-          stacktrace: stackTrace,
-        );
+    try {
+      if (result != null && result.files.isNotEmpty) {
+        var pf = result.files.single;
+        if (pf.bytes != null) {
+          textEditingController.text = utf8.decode(pf.bytes!);
+        } else {
+          var file = io.File(result.files.single.path!);
+          var data = await file.readAsString();
+          textEditingController.text = data.trim();
+        }
       }
+    } catch (e, stackTrace) {
+      Log.e(
+        "Open File for importing SSH Key",
+        ex: e,
+        stacktrace: stackTrace,
+      );
     }
   }
 }

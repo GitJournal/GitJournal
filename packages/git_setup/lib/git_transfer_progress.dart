@@ -5,7 +5,7 @@
  */
 
 import 'package:sprintf/sprintf.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' as io;
 
 class GitTransferProgress {
   int totalObjects = 0;
@@ -17,10 +17,10 @@ class GitTransferProgress {
   int receivedBytes = 0;
 
   static Future<GitTransferProgress?> load(String statusFile) async {
-    if (!File(statusFile).existsSync()) {
+    if (!io.File(statusFile).existsSync()) {
       return null;
     }
-    var str = await File(statusFile).readAsString();
+    var str = await io.File(statusFile).readAsString();
     return parse(str);
   }
 
