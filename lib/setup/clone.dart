@@ -103,7 +103,7 @@ Future<Result<void>> cloneRemotePluggable({
     return Result.fail(ex);
   }
   var remoteBranchName = branchNameR.getOrThrow();
-  if (remoteBranchName.isEmpty)  {
+  if (remoteBranchName.isEmpty) {
     var r = await repo.currentBranch();
     if (r.isSuccess) {
       remoteBranchName = r.getOrThrow();
