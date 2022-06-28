@@ -23,7 +23,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ steps.get-flutter-version.outputs.version }}
-          cache: true
+          channel: 'stable'
       - name: Test
         run: ./scripts/test.sh
       # - name: Test Report
