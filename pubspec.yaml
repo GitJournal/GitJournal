@@ -145,3 +145,6 @@ flutter_icons:
   macos: true
   windows: false
   linux: false
+
+import_sorter:
+  comments: false

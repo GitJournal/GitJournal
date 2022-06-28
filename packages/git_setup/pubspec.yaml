@@ -30,3 +30,6 @@ dev_dependencies:
   import_sorter: ^4.6.0
 
 flutter:
+
+import_sorter:
+  comments: false
