@@ -20,9 +20,10 @@ jobs:
       - name: Get Flutter version
         id: get-flutter-version
         uses: zgosalvez/github-actions-get-flutter-version-env@v1
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ steps.get-flutter-version.outputs.version }}
+          cache: true
       - name: Test
         run: ./scripts/test.sh
       # - name: Test Report
