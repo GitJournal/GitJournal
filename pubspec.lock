@@ -7,21 +7,21 @@ packages:
       name: _fe_analyzer_shared
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "40.0.0"
+    version: "38.0.0"
   analyzer:
     dependency: transitive
     description:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.1.0"
+    version: "3.4.1"
   analyzer_plugin:
     dependency: transitive
     description:
       name: analyzer_plugin
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.10.0"
+    version: "0.9.0"
   android_external_storage:
     dependency: "direct main"
     description:
@@ -1048,6 +1048,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
+  monarch:
+    dependency: "direct dev"
+    description:
+      name: monarch
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.3.0"
+  monarch_annotations:
+    dependency: transitive
+    description:
+      name: monarch_annotations
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
+  monarch_utils:
+    dependency: transitive
+    description:
+      name: monarch_utils
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4"
   mutex:
     dependency: "direct main"
     description:
