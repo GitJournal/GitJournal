@@ -9,6 +9,7 @@ set -eo pipefail
 cd "$(dirname "$0")"
 cd ../
 
+echo "COCOPOD VERSION: $(pod --version)"
 flutter pub get
 
 # Download the required libraries
