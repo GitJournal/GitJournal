@@ -257,6 +257,52 @@ bool handleError(FlutterResult result, int err) {
             return;
         }
     }
+    else if ([@"gitClone" isEqualToString:method]) {
+        NSString *folderPath = arguments[@"folderPath"];
+        NSString *cloneUrl = arguments[@"cloneUrl"];
+        NSString *publicKey = arguments[@"publicKey"];
+        NSString *privateKey = arguments[@"privateKey"];
+        NSString *password = arguments[@"password"];
+        NSString *statusFile = arguments[@"statusFile"];
+
+        if (publicKey == nil || [publicKey length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid publicKey" details:nil]);
+            return;
+        }
+        if (privateKey == nil || [privateKey length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid privateKey" details:nil]);
+            return;
+        }
+        if (password == nil || [privateKey length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid password" details:nil]);
+            return;
+        }
+
+        if (folderPath == nil || [folderPath length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid folderPath" details:nil]);
+            return;
+        }
+        if (cloneUrl == nil || [cloneUrl length] == 0) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid cloneUrl" details:nil]);
+            return;
+        }
+        if (statusFile == nil) {
+            result([FlutterError errorWithCode:@"InvalidParams"
+                                       message:@"Invalid statusFile" details:nil]);
+            return;
+        }
+
+        int err = gj_git_clone([cloneUrl UTF8String], [folderPath UTF8String], [publicKey UTF8String], [privateKey UTF8String], [password UTF8String], true, [statusFile UTF8String]);
+        if (!handleError(result, err)) {
+            result(@YES);
+            return;
+        }
+    }
     else if ([@"gitMerge" isEqualToString:method]) {
         NSString *folderPath = arguments[@"folderPath"];
         NSString *authorName = arguments[@"authorName"];
