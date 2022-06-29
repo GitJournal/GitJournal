@@ -45,6 +45,11 @@ static FlutterMethodChannel* gitChannel = 0;
                 [self handleMethodCallAsync:call result:result];
             });
         }
+        else if ([@"gitClone" isEqualToString:method]) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [self handleMethodCallAsync:call result:result];
+            });
+        }
         else if ([@"gitMerge" isEqualToString:method]) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [self handleMethodCallAsync:call result:result];
