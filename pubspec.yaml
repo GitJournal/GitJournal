@@ -24,7 +24,7 @@ dependencies:
   dart_date: ^1.1.1
   dart_git:
     git: https://github.com/GitJournal/dart-git.git
-  device_info_plus: ^2.1.0
+  device_info_plus: ^4.0.0
   dio: ^4.0.6
   dio_smart_retry: ^1.2.0
   dots_indicator: ^2.0.0
