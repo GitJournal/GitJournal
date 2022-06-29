@@ -198,7 +198,7 @@ class _AppDrawerState extends State<AppDrawer>
           if (appConfig.experimentalGraphView && repo != null)
             _buildDrawerTile(
               context,
-              icon: FontAwesomeIcons.projectDiagram,
+              icon: FontAwesomeIcons.diagramProject,
               isFontAwesome: true,
               title: tr(LocaleKeys.drawer_graph),
               onTap: () => _navTopLevel(context, GraphViewScreen.routePath),

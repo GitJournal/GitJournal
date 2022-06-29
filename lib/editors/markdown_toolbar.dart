@@ -60,7 +60,7 @@ class MarkdownToolBar extends StatelessWidget {
             onPressed: () => _modifyCurrentLine('1. '),
           ),
           fork.IconButton(
-            icon: const FaIcon(FontAwesomeIcons.tasks),
+            icon: const FaIcon(FontAwesomeIcons.listCheck),
             padding: const EdgeInsets.all(0.0),
             onPressed: () => _modifyCurrentLine('- [ ] '),
           ),

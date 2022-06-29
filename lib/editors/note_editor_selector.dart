@@ -42,7 +42,7 @@ class NoteEditorSelector extends StatelessWidget {
             context,
             EditorType.Checklist,
             tr(LocaleKeys.settings_editors_checklistEditor),
-            FontAwesomeIcons.tasks,
+            FontAwesomeIcons.listCheck,
           ),
         if (editorSupported(fileFormat, EditorType.Journal))
           _buildTile(

@@ -28,7 +28,7 @@ class NewNoteNavBar extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(4.0),
             child: IconButton(
-              icon: const FaIcon(FontAwesomeIcons.tasks),
+              icon: const FaIcon(FontAwesomeIcons.listCheck),
               onPressed: () => onPressed(EditorType.Checklist),
             ),
           ),

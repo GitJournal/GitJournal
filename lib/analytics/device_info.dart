@@ -7,7 +7,6 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:device_info_plus_platform_interface/model/web_browser_info.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:universal_io/io.dart' show Platform;
 

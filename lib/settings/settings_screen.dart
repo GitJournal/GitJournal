@@ -31,7 +31,7 @@ class SettingsScreen extends StatelessWidget {
     var list = ListView(
       children: [
         SettingsTile(
-          iconData: FontAwesomeIcons.paintBrush,
+          iconData: FontAwesomeIcons.paintbrush,
           title: LocaleKeys.settings_list_userInterface_title.tr(),
           subtitle: LocaleKeys.settings_list_userInterface_subtitle.tr(),
           onTap: () {
@@ -59,7 +59,7 @@ class SettingsScreen extends StatelessWidget {
           },
         ),
         SettingsTile(
-          iconData: FontAwesomeIcons.edit,
+          iconData: FontAwesomeIcons.penToSquare,
           title: LocaleKeys.settings_list_editor_title.tr(),
           subtitle: LocaleKeys.settings_list_editor_subtitle.tr(),
           onTap: () {
@@ -73,7 +73,7 @@ class SettingsScreen extends StatelessWidget {
           },
         ),
         SettingsTile(
-          iconData: FontAwesomeIcons.hdd,
+          iconData: FontAwesomeIcons.hardDrive,
           title: LocaleKeys.settings_list_storage_title.tr(),
           subtitle: LocaleKeys.settings_list_storage_subtitle.tr(),
           onTap: () {
@@ -142,7 +142,7 @@ class SettingsScreen extends StatelessWidget {
           onTap: () => createBugReport(context),
         ),
         SettingsTile(
-          iconData: FontAwesomeIcons.commentAlt,
+          iconData: FontAwesomeIcons.message,
           title: LocaleKeys.drawer_feedback.tr(),
           onTap: () => createFeedback(context),
         ),

@@ -52,7 +52,7 @@ class SettingsAboutPage extends StatelessWidget {
           },
         ),
         SettingsTile(
-          iconData: FontAwesomeIcons.infoCircle,
+          iconData: FontAwesomeIcons.circleInfo,
           title: LocaleKeys.settings_license_title.tr(),
           subtitle: LocaleKeys.settings_license_subtitle.tr(),
           onTap: () {
