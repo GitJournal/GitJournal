@@ -1429,14 +1429,14 @@ packages:
       name: sentry
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.6.0"
+    version: "6.6.1"
   sentry_flutter:
     dependency: "direct main"
     description:
       name: sentry_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.6.0"
+    version: "6.6.1"
   share_plus:
     dependency: "direct main"
     description:

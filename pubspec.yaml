@@ -82,7 +82,7 @@ dependencies:
   quick_actions: ^0.6.0+3
   recase: ^4.0.0
   receive_sharing_intent: ^1.4.5
-  sentry_flutter: ^6.5.1
+  sentry_flutter: ^6.6.1
   share_plus: ^2.1.4
   shared_preferences: ^2.0.5
   sprintf: ^6.0.0
