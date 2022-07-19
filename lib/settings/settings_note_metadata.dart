@@ -130,12 +130,44 @@ class _NoteMetadataSettingsScreenState
           enabled: folderConfig.yamlHeaderEnabled,
         ),
         ListPreference(
+          title: LocaleKeys.settings_noteMetaData_modifiedFormat.tr(),
+          options: NoteSerializationDateFormat.options
+              .map((f) => f.toPublicString())
+              .toList(),
+          currentOption: folderConfig.yamlModifiedFormat.toPublicString(),
+          onChange: (String publicStr) {
+            setState(() {
+              var newVal =
+                  NoteSerializationDateFormat.fromPublicString(publicStr);
+              folderConfig.yamlModifiedFormat = newVal;
+              folderConfig.save();
+            });
+          },
+          enabled: folderConfig.yamlHeaderEnabled,
+        ),
+        ListPreference(
           title: LocaleKeys.settings_noteMetaData_created.tr(),
           options: NoteSerializer.createdKeyOptions,
           currentOption: folderConfig.yamlCreatedKey,
           onChange: (String newVal) {
             setState(() {
               folderConfig.yamlCreatedKey = newVal;
+              folderConfig.save();
+            });
+          },
+          enabled: folderConfig.yamlHeaderEnabled,
+        ),
+        ListPreference(
+          title: LocaleKeys.settings_noteMetaData_createdFormat.tr(),
+          options: NoteSerializationDateFormat.options
+              .map((f) => f.toPublicString())
+              .toList(),
+          currentOption: folderConfig.yamlCreatedFormat.toPublicString(),
+          onChange: (String publicStr) {
+            setState(() {
+              var newVal =
+                  NoteSerializationDateFormat.fromPublicString(publicStr);
+              folderConfig.yamlCreatedFormat = newVal;
               folderConfig.save();
             });
           },

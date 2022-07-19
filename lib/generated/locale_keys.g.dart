@@ -216,7 +216,19 @@ abstract class LocaleKeys {
       'settings.noteMetaData.enableHeader';
   static const settings_noteMetaData_modified =
       'settings.noteMetaData.modified';
+  static const settings_noteMetaData_modifiedFormat =
+      'settings.noteMetaData.modifiedFormat';
   static const settings_noteMetaData_created = 'settings.noteMetaData.created';
+  static const settings_noteMetaData_createdFormat =
+      'settings.noteMetaData.createdFormat';
+  static const settings_noteMetaData_dateFormat_iso8601 =
+      'settings.noteMetaData.dateFormat.iso8601';
+  static const settings_noteMetaData_dateFormat_none =
+      'settings.noteMetaData.dateFormat.none';
+  static const settings_noteMetaData_dateFormat_unixTimestamp =
+      'settings.noteMetaData.dateFormat.unixTimestamp';
+  static const settings_noteMetaData_dateFormat =
+      'settings.noteMetaData.dateFormat';
   static const settings_noteMetaData_tags = 'settings.noteMetaData.tags';
   static const settings_noteMetaData_example_title =
       'settings.noteMetaData.example.title';

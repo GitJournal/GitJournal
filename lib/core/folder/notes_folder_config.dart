@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:gitjournal/core/folder/sorting_mode.dart';
+import 'package:gitjournal/core/markdown/md_yaml_note_serializer.dart';
 import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
@@ -40,7 +41,9 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
   var yamlHeaderEnabled = true;
 
   var yamlModifiedKey = "modified";
+  var yamlModifiedFormat = NoteSerializationDateFormat.Default;
   var yamlCreatedKey = "created";
+  var yamlCreatedFormat = NoteSerializationDateFormat.Default;
   var yamlTagsKey = "tags";
   var yamlEditorTypeKey = "type";
   var titleSettings = SettingsTitle.Default;
@@ -61,7 +64,11 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
         getString("journalNoteFileNameFormat"));
 
     yamlModifiedKey = getString("yamlModifiedKey") ?? yamlModifiedKey;
+    yamlModifiedFormat = NoteSerializationDateFormat.fromInternalString(
+        getString("yamlModifiedFormat"));
     yamlCreatedKey = getString("yamlCreatedKey") ?? yamlCreatedKey;
+    yamlCreatedFormat = NoteSerializationDateFormat.fromInternalString(
+        getString("yamlCreatedFormat"));
     yamlTagsKey = getString("yamlTagsKey") ?? yamlTagsKey;
     yamlEditorTypeKey = getString("yamlEditorTypeKey") ?? yamlEditorTypeKey;
 
@@ -119,7 +126,11 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
     await setBool(
         "yamlHeaderEnabled", yamlHeaderEnabled, def.yamlHeaderEnabled);
     await setString("yamlModifiedKey", yamlModifiedKey, def.yamlModifiedKey);
+    await setString("yamlModifiedFormat", yamlModifiedFormat.toInternalString(),
+        def.yamlModifiedFormat.toInternalString());
     await setString("yamlCreatedKey", yamlCreatedKey, def.yamlCreatedKey);
+    await setString("yamlCreatedFormat", yamlCreatedFormat.toInternalString(),
+        def.yamlCreatedFormat.toInternalString());
     await setString("yamlTagsKey", yamlTagsKey, def.yamlTagsKey);
     await setString(
         "yamlEditorTypeKey", yamlEditorTypeKey, def.yamlEditorTypeKey);

@@ -7,6 +7,7 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:yaml/yaml.dart';
@@ -34,15 +35,64 @@ abstract class NoteSerializerInterface {
 
 var emojiParser = EmojiParser();
 
-enum NoteSerializationDateFormat {
-  Iso8601,
-  UnixTimeStamp,
-  None,
+class NoteSerializationDateFormat {
+  static const Iso8601 = NoteSerializationDateFormat(
+      "settings.noteMetaData.dateFormat.iso8601", "iso8601");
+  static const UnixTimeStamp = NoteSerializationDateFormat(
+      "settings.noteMetaData.dateFormat.unixTimestamp", "unixTimestamp");
+  static const None = NoteSerializationDateFormat(
+      "settings.noteMetaData.dateFormat.none", "none");
+  static const Default = Iso8601;
+
+  final String _str;
+  final String _publicString;
+  const NoteSerializationDateFormat(this._publicString, this._str);
+
+  String toInternalString() {
+    return _str;
+  }
+
+  String toPublicString() {
+    return tr(_publicString);
+  }
+
+  static const options = <NoteSerializationDateFormat>[
+    Iso8601,
+    UnixTimeStamp,
+    None,
+  ];
+
+  static NoteSerializationDateFormat fromInternalString(String? str) {
+    for (var opt in options) {
+      if (opt.toInternalString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  static NoteSerializationDateFormat fromPublicString(String str) {
+    for (var opt in options) {
+      if (opt.toPublicString() == str) {
+        return opt;
+      }
+    }
+    return Default;
+  }
+
+  @override
+  String toString() {
+    assert(
+        false, "NoteSerializationDateFormat toString should never be called");
+    return "";
+  }
 }
 
 class NoteSerializationSettings {
   String modifiedKey = "modified";
+  var modifiedFormat = NoteSerializationDateFormat.Default;
   String createdKey = "created";
+  var createdFormat = NoteSerializationDateFormat.Default;
   String titleKey = "title";
   String editorTypeKey = "type";
   String tagsKey = "tags";
@@ -52,19 +102,16 @@ class NoteSerializationSettings {
 
   SettingsTitle titleSettings = SettingsTitle.Default;
 
-  var modifiedFormat = NoteSerializationDateFormat.Iso8601;
-  var createdFormat = NoteSerializationDateFormat.Iso8601;
-
   var emojify = false;
 
   NoteSerializationSettings.fromConfig(NotesFolderConfig config) {
     modifiedKey = config.yamlModifiedKey;
+    modifiedFormat = config.yamlModifiedFormat;
     createdKey = config.yamlCreatedKey;
+    createdFormat = config.yamlCreatedFormat;
     tagsKey = config.yamlTagsKey;
     editorTypeKey = config.yamlEditorTypeKey;
     titleSettings = config.titleSettings;
-
-    // FIXME: modified / created format!
   }
   NoteSerializationSettings();
 
@@ -87,15 +134,15 @@ class NoteSerializationSettings {
   pb.NoteSerializationSettings toProtoBuf() {
     return pb.NoteSerializationSettings(
       modifiedKey: modifiedKey,
+      modifiedFormat: _protoDateFormat(modifiedFormat),
       createdKey: createdKey,
+      createdFormat: _protoDateFormat(createdFormat),
       titleKey: titleKey,
       typeKey: editorTypeKey,
       tagsKey: tagsKey,
       tagsInString: tagsInString,
       tagsHaveHash: tagsHaveHash,
       emojify: emojify,
-      createdFormat: _protoDateFormat(createdFormat),
-      modifiedFormat: _protoDateFormat(modifiedFormat),
       titleSettings: titleSettings.toInternalString(),
     );
   }
@@ -122,10 +169,11 @@ class NoteSerializationSettings {
     switch (fmt) {
       case NoteSerializationDateFormat.None:
         return pb.DateFormat.None;
-      case NoteSerializationDateFormat.Iso8601:
-        return pb.DateFormat.Iso8601;
       case NoteSerializationDateFormat.UnixTimeStamp:
         return pb.DateFormat.UnixTimeStamp;
+      case NoteSerializationDateFormat.Iso8601:
+      default:
+        return pb.DateFormat.Iso8601;
     }
   }
 

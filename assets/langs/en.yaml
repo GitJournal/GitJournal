@@ -132,7 +132,13 @@ settings:
     text: Every note has some metadata which is stored in a YAML Header as follows -
     enableHeader: Enable YAML Header
     modified: Modified Field
+    modifiedFormat: Modified Format
     created: Created Field
+    createdFormat: Created Format
+    dateFormat:
+      iso8601: ISO 8601
+      none: None
+      unixTimestamp: Unix Timestamp
     tags: Tags Field
     example:
       title: Example Title
