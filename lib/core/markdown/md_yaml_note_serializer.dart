@@ -34,7 +34,7 @@ abstract class NoteSerializerInterface {
 
 var emojiParser = EmojiParser();
 
-enum DateFormat {
+enum NoteSerializationDateFormat {
   Iso8601,
   UnixTimeStamp,
   None,
@@ -52,8 +52,8 @@ class NoteSerializationSettings {
 
   SettingsTitle titleSettings = SettingsTitle.Default;
 
-  var modifiedFormat = DateFormat.Iso8601;
-  var createdFormat = DateFormat.Iso8601;
+  var modifiedFormat = NoteSerializationDateFormat.Iso8601;
+  var createdFormat = NoteSerializationDateFormat.Iso8601;
 
   var emojify = false;
 
@@ -118,28 +118,28 @@ class NoteSerializationSettings {
     return s;
   }
 
-  static pb.DateFormat _protoDateFormat(DateFormat fmt) {
+  static pb.DateFormat _protoDateFormat(NoteSerializationDateFormat fmt) {
     switch (fmt) {
-      case DateFormat.None:
+      case NoteSerializationDateFormat.None:
         return pb.DateFormat.None;
-      case DateFormat.Iso8601:
+      case NoteSerializationDateFormat.Iso8601:
         return pb.DateFormat.Iso8601;
-      case DateFormat.UnixTimeStamp:
+      case NoteSerializationDateFormat.UnixTimeStamp:
         return pb.DateFormat.UnixTimeStamp;
     }
   }
 
-  static DateFormat _fromProtoDateFormat(pb.DateFormat fmt) {
+  static NoteSerializationDateFormat _fromProtoDateFormat(pb.DateFormat fmt) {
     switch (fmt) {
       case pb.DateFormat.None:
-        return DateFormat.None;
+        return NoteSerializationDateFormat.None;
       case pb.DateFormat.Iso8601:
-        return DateFormat.Iso8601;
+        return NoteSerializationDateFormat.Iso8601;
       case pb.DateFormat.UnixTimeStamp:
-        return DateFormat.UnixTimeStamp;
+        return NoteSerializationDateFormat.UnixTimeStamp;
     }
 
-    return DateFormat.None;
+    return NoteSerializationDateFormat.None;
   }
 
   @override
@@ -187,25 +187,25 @@ class NoteSerializer implements NoteSerializerInterface {
     dynamic _;
 
     switch (settings.createdFormat) {
-      case DateFormat.Iso8601:
+      case NoteSerializationDateFormat.Iso8601:
         props[settings.createdKey] = toIso8601WithTimezone(note.created);
         break;
-      case DateFormat.UnixTimeStamp:
+      case NoteSerializationDateFormat.UnixTimeStamp:
         props[settings.createdKey] = toUnixTimeStamp(note.created);
         break;
-      case DateFormat.None:
+      case NoteSerializationDateFormat.None:
         _ = props.remove(settings.createdKey);
         break;
     }
 
     switch (settings.modifiedFormat) {
-      case DateFormat.Iso8601:
+      case NoteSerializationDateFormat.Iso8601:
         props[settings.modifiedKey] = toIso8601WithTimezone(note.modified);
         break;
-      case DateFormat.UnixTimeStamp:
+      case NoteSerializationDateFormat.UnixTimeStamp:
         props[settings.modifiedKey] = toUnixTimeStamp(note.modified);
         break;
-      case DateFormat.None:
+      case NoteSerializationDateFormat.None:
         _ = props.remove(settings.modifiedKey);
         break;
     }
@@ -302,10 +302,10 @@ class NoteSerializer implements NoteSerializerInterface {
       if (val != null) {
         if (val is int) {
           modified = parseUnixTimeStamp(val);
-          settings.modifiedFormat = DateFormat.UnixTimeStamp;
+          settings.modifiedFormat = NoteSerializationDateFormat.UnixTimeStamp;
         } else {
           modified = parseDateTime(val.toString());
-          settings.modifiedFormat = DateFormat.Iso8601;
+          settings.modifiedFormat = NoteSerializationDateFormat.Iso8601;
         }
         settings.modifiedKey = possibleKey;
 
@@ -314,7 +314,7 @@ class NoteSerializer implements NoteSerializerInterface {
       }
     }
     if (modified == null) {
-      settings.modifiedFormat = DateFormat.None;
+      settings.modifiedFormat = NoteSerializationDateFormat.None;
     }
 
     var body = settings.emojify ? emojiParser.emojify(data.body) : data.body;
@@ -325,10 +325,10 @@ class NoteSerializer implements NoteSerializerInterface {
       if (val != null) {
         if (val is int) {
           created = parseUnixTimeStamp(val);
-          settings.createdFormat = DateFormat.UnixTimeStamp;
+          settings.createdFormat = NoteSerializationDateFormat.UnixTimeStamp;
         } else {
           created = parseDateTime(val.toString());
-          settings.createdFormat = DateFormat.Iso8601;
+          settings.createdFormat = NoteSerializationDateFormat.Iso8601;
         }
         settings.createdKey = possibleKey;
 
@@ -337,7 +337,7 @@ class NoteSerializer implements NoteSerializerInterface {
       }
     }
     if (created == null) {
-      settings.createdFormat = DateFormat.None;
+      settings.createdFormat = NoteSerializationDateFormat.None;
     }
 
     //
