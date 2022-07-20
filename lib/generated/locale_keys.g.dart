@@ -214,6 +214,14 @@ abstract class LocaleKeys {
   static const settings_noteMetaData_text = 'settings.noteMetaData.text';
   static const settings_noteMetaData_enableHeader =
       'settings.noteMetaData.enableHeader';
+  static const settings_noteMetaData_unixTimestampMagnitude =
+      'settings.noteMetaData.unixTimestampMagnitude';
+  static const settings_noteMetaData_unixTimestampDateMagnitude_seconds =
+      'settings.noteMetaData.unixTimestampDateMagnitude.seconds';
+  static const settings_noteMetaData_unixTimestampDateMagnitude_milliseconds =
+      'settings.noteMetaData.unixTimestampDateMagnitude.milliseconds';
+  static const settings_noteMetaData_unixTimestampDateMagnitude =
+      'settings.noteMetaData.unixTimestampDateMagnitude';
   static const settings_noteMetaData_modified =
       'settings.noteMetaData.modified';
   static const settings_noteMetaData_modifiedFormat =

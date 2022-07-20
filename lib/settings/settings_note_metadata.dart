@@ -118,6 +118,22 @@ class _NoteMetadataSettingsScreenState
           },
         ),
         ListPreference(
+            title: LocaleKeys.settings_noteMetaData_unixTimestampMagnitude.tr(),
+            options: NoteSerializationUnixTimestampMagnitude.options
+                .map((m) => m.toPublicString())
+                .toList(),
+            currentOption:
+                folderConfig.yamlUnixTimestampMagnitude.toPublicString(),
+            onChange: (String publicStr) {
+              setState(() {
+                var newVal =
+                    NoteSerializationUnixTimestampMagnitude.fromPublicString(
+                        publicStr);
+                folderConfig.yamlUnixTimestampMagnitude = newVal;
+                folderConfig.save();
+              });
+            }),
+        ListPreference(
           title: LocaleKeys.settings_noteMetaData_modified.tr(),
           options: NoteSerializer.modifiedKeyOptions,
           currentOption: folderConfig.yamlModifiedKey,
