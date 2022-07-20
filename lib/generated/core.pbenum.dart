@@ -81,6 +81,31 @@ class NoteType extends $pb.ProtobufEnum {
   const NoteType._($core.int v, $core.String n) : super(v, n);
 }
 
+class UnixTimestampMagnitude extends $pb.ProtobufEnum {
+  static const UnixTimestampMagnitude Seconds = UnixTimestampMagnitude._(
+      0,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'Seconds');
+  static const UnixTimestampMagnitude Milliseconds = UnixTimestampMagnitude._(
+      1,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'Milliseconds');
+
+  static const $core.List<UnixTimestampMagnitude> values =
+      <UnixTimestampMagnitude>[
+    Seconds,
+    Milliseconds,
+  ];
+
+  static final $core.Map<$core.int, UnixTimestampMagnitude> _byValue =
+      $pb.ProtobufEnum.initByValue(values);
+  static UnixTimestampMagnitude? valueOf($core.int value) => _byValue[value];
+
+  const UnixTimestampMagnitude._($core.int v, $core.String n) : super(v, n);
+}
+
 class DateFormat extends $pb.ProtobufEnum {
   static const DateFormat Iso8601 = DateFormat._(
       0,

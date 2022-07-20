@@ -131,6 +131,10 @@ settings:
     subtitle: Configure how the Note Metadata is saved
     text: Every note has some metadata which is stored in a YAML Header as follows -
     enableHeader: Enable YAML Header
+    unixTimestampMagnitude: Unix Timestamp Magnitude
+    unixTimestampDateMagnitude:
+      seconds: Seconds
+      milliseconds: Milliseconds
     modified: Modified Field
     modifiedFormat: Modified Format
     created: Created Field

@@ -40,6 +40,19 @@ const NoteType$json = const {
 /// Descriptor for `NoteType`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List noteTypeDescriptor = $convert.base64Decode(
     'CghOb3RlVHlwZRILCgdVbmtub3duEAASDQoJQ2hlY2tsaXN0EAESCwoHSm91cm5hbBACEgcKA09yZxAD');
+@$core.Deprecated('Use unixTimestampMagnitudeDescriptor instead')
+const UnixTimestampMagnitude$json = const {
+  '1': 'UnixTimestampMagnitude',
+  '2': const [
+    const {'1': 'Seconds', '2': 0},
+    const {'1': 'Milliseconds', '2': 1},
+  ],
+};
+
+/// Descriptor for `UnixTimestampMagnitude`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List unixTimestampMagnitudeDescriptor =
+    $convert.base64Decode(
+        'ChZVbml4VGltZXN0YW1wTWFnbml0dWRlEgsKB1NlY29uZHMQABIQCgxNaWxsaXNlY29uZHMQAQ==');
 @$core.Deprecated('Use dateFormatDescriptor instead')
 const DateFormat$json = const {
   '1': 'DateFormat',
@@ -354,10 +367,18 @@ const NoteSerializationSettings$json = const {
       '5': 9,
       '10': 'titleSettings'
     },
+    const {
+      '1': 'unixTimestampMagnitude',
+      '3': 12,
+      '4': 1,
+      '5': 14,
+      '6': '.gitjournal.UnixTimestampMagnitude',
+      '10': 'unixTimestampMagnitude'
+    },
   ],
 };
 
 /// Descriptor for `NoteSerializationSettings`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List noteSerializationSettingsDescriptor =
     $convert.base64Decode(
-        'ChlOb3RlU2VyaWFsaXphdGlvblNldHRpbmdzEiAKC21vZGlmaWVkS2V5GAEgASgJUgttb2RpZmllZEtleRIeCgpjcmVhdGVkS2V5GAIgASgJUgpjcmVhdGVkS2V5EhoKCHRpdGxlS2V5GAMgASgJUgh0aXRsZUtleRIYCgd0eXBlS2V5GAQgASgJUgd0eXBlS2V5EhgKB3RhZ3NLZXkYBSABKAlSB3RhZ3NLZXkSIgoMdGFnc0luU3RyaW5nGAYgASgIUgx0YWdzSW5TdHJpbmcSIgoMdGFnc0hhdmVIYXNoGAcgASgIUgx0YWdzSGF2ZUhhc2gSGAoHZW1vamlmeRgIIAEoCFIHZW1vamlmeRI+Cg5tb2RpZmllZEZvcm1hdBgJIAEoDjIWLmdpdGpvdXJuYWwuRGF0ZUZvcm1hdFIObW9kaWZpZWRGb3JtYXQSPAoNY3JlYXRlZEZvcm1hdBgKIAEoDjIWLmdpdGpvdXJuYWwuRGF0ZUZvcm1hdFINY3JlYXRlZEZvcm1hdBIkCg10aXRsZVNldHRpbmdzGAsgASgJUg10aXRsZVNldHRpbmdz');
+        'ChlOb3RlU2VyaWFsaXphdGlvblNldHRpbmdzEiAKC21vZGlmaWVkS2V5GAEgASgJUgttb2RpZmllZEtleRIeCgpjcmVhdGVkS2V5GAIgASgJUgpjcmVhdGVkS2V5EhoKCHRpdGxlS2V5GAMgASgJUgh0aXRsZUtleRIYCgd0eXBlS2V5GAQgASgJUgd0eXBlS2V5EhgKB3RhZ3NLZXkYBSABKAlSB3RhZ3NLZXkSIgoMdGFnc0luU3RyaW5nGAYgASgIUgx0YWdzSW5TdHJpbmcSIgoMdGFnc0hhdmVIYXNoGAcgASgIUgx0YWdzSGF2ZUhhc2gSGAoHZW1vamlmeRgIIAEoCFIHZW1vamlmeRI+Cg5tb2RpZmllZEZvcm1hdBgJIAEoDjIWLmdpdGpvdXJuYWwuRGF0ZUZvcm1hdFIObW9kaWZpZWRGb3JtYXQSPAoNY3JlYXRlZEZvcm1hdBgKIAEoDjIWLmdpdGpvdXJuYWwuRGF0ZUZvcm1hdFINY3JlYXRlZEZvcm1hdBIkCg10aXRsZVNldHRpbmdzGAsgASgJUg10aXRsZVNldHRpbmdzEloKFnVuaXhUaW1lc3RhbXBNYWduaXR1ZGUYDCABKA4yIi5naXRqb3VybmFsLlVuaXhUaW1lc3RhbXBNYWduaXR1ZGVSFnVuaXhUaW1lc3RhbXBNYWduaXR1ZGU=');

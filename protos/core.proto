@@ -78,6 +78,10 @@ message DateTimeAnyTz {
     int32 offset = 2;
 }
 
+enum UnixTimestampMagnitude {
+    Seconds = 0;
+    Milliseconds = 1;
+}
 
 enum DateFormat {
     Iso8601 = 0;
@@ -101,4 +105,6 @@ message NoteSerializationSettings {
     DateFormat createdFormat = 10;
 
     string titleSettings = 11;
+
+    UnixTimestampMagnitude unixTimestampMagnitude = 12;
 }

@@ -40,6 +40,8 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
 
   var yamlHeaderEnabled = true;
 
+  var yamlUnixTimestampMagnitude =
+      NoteSerializationUnixTimestampMagnitude.Default;
   var yamlModifiedKey = "modified";
   var yamlModifiedFormat = NoteSerializationDateFormat.Default;
   var yamlCreatedKey = "created";
@@ -63,6 +65,9 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
     journalFileNameFormat = NoteFileNameFormat.fromInternalString(
         getString("journalNoteFileNameFormat"));
 
+    yamlUnixTimestampMagnitude =
+        NoteSerializationUnixTimestampMagnitude.fromInternalString(
+            getString("yamlUnixTimestampMagnitude"));
     yamlModifiedKey = getString("yamlModifiedKey") ?? yamlModifiedKey;
     yamlModifiedFormat = NoteSerializationDateFormat.fromInternalString(
         getString("yamlModifiedFormat"));
@@ -125,6 +130,10 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
 
     await setBool(
         "yamlHeaderEnabled", yamlHeaderEnabled, def.yamlHeaderEnabled);
+    await setString(
+        "yamlUnixTimestampMagnitude",
+        yamlUnixTimestampMagnitude.toInternalString(),
+        def.yamlUnixTimestampMagnitude.toInternalString());
     await setString("yamlModifiedKey", yamlModifiedKey, def.yamlModifiedKey);
     await setString("yamlModifiedFormat", yamlModifiedFormat.toInternalString(),
         def.yamlModifiedFormat.toInternalString());

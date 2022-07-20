@@ -1009,6 +1009,16 @@ class NoteSerializationSettings extends $pb.GeneratedMessage {
             ? ''
             : 'titleSettings',
         protoName: 'titleSettings')
+    ..e<UnixTimestampMagnitude>(
+        12,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'unixTimestampMagnitude',
+        $pb.PbFieldType.OE,
+        protoName: 'unixTimestampMagnitude',
+        defaultOrMaker: UnixTimestampMagnitude.Seconds,
+        valueOf: UnixTimestampMagnitude.valueOf,
+        enumValues: UnixTimestampMagnitude.values)
     ..hasRequiredFields = false;
 
   NoteSerializationSettings._() : super();
@@ -1024,6 +1034,7 @@ class NoteSerializationSettings extends $pb.GeneratedMessage {
     DateFormat? modifiedFormat,
     DateFormat? createdFormat,
     $core.String? titleSettings,
+    UnixTimestampMagnitude? unixTimestampMagnitude,
   }) {
     final _result = create();
     if (modifiedKey != null) {
@@ -1058,6 +1069,9 @@ class NoteSerializationSettings extends $pb.GeneratedMessage {
     }
     if (titleSettings != null) {
       _result.titleSettings = titleSettings;
+    }
+    if (unixTimestampMagnitude != null) {
+      _result.unixTimestampMagnitude = unixTimestampMagnitude;
     }
     return _result;
   }
@@ -1221,4 +1235,16 @@ class NoteSerializationSettings extends $pb.GeneratedMessage {
   $core.bool hasTitleSettings() => $_has(10);
   @$pb.TagNumber(11)
   void clearTitleSettings() => clearField(11);
+
+  @$pb.TagNumber(12)
+  UnixTimestampMagnitude get unixTimestampMagnitude => $_getN(11);
+  @$pb.TagNumber(12)
+  set unixTimestampMagnitude(UnixTimestampMagnitude v) {
+    setField(12, v);
+  }
+
+  @$pb.TagNumber(12)
+  $core.bool hasUnixTimestampMagnitude() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearUnixTimestampMagnitude() => clearField(12);
 }
