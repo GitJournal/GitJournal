@@ -1,7 +1,7 @@
 /*
  * SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
  *
- * SPDX-License-Identifier: AGPL-3.0-or-later
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import 'dart:core';
