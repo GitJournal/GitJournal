@@ -26,8 +26,8 @@ class ListOptionPreference<T extends SettingsOption> extends StatelessWidget {
     required this.currentOption,
     required this.onChange,
     this.enabled = true,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

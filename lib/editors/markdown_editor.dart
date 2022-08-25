@@ -40,7 +40,7 @@ class MarkdownEditor extends StatefulWidget implements Editor {
   final ThemeData theme;
 
   const MarkdownEditor({
-    Key? key,
+    super.key,
     required this.note,
     required this.parentFolder,
     required this.noteModified,
@@ -48,7 +48,7 @@ class MarkdownEditor extends StatefulWidget implements Editor {
     required this.highlightString,
     required this.theme,
     required this.common,
-  }) : super(key: key);
+  });
 
   @override
   MarkdownEditorState createState() {

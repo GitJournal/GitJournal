@@ -13,7 +13,7 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 class NoteDeleteDialog extends StatelessWidget {
   final int num;
 
-  const NoteDeleteDialog({Key? key, required this.num}) : super(key: key);
+  const NoteDeleteDialog({super.key, required this.num});
 
   @override
   Widget build(BuildContext context) {

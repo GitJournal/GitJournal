@@ -25,8 +25,8 @@ class CommitDataWidget extends StatefulWidget {
     required this.gitRepo,
     required this.commit,
     required this.parentCommit,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _CommitDataWidgetState createState() => _CommitDataWidgetState();
@@ -116,8 +116,7 @@ class _BlobLoader extends StatefulWidget {
     required this.gitRepo,
     required this.blobHash,
     required this.color,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   __BlobLoaderState createState() => __BlobLoaderState();

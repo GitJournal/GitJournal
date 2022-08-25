@@ -20,7 +20,7 @@ const _termsUrl = "https://gitjournal.io/terms";
 class SettingsAboutPage extends StatelessWidget {
   static const routePath = '/settings/about';
 
-  const SettingsAboutPage({Key? key}) : super(key: key);
+  const SettingsAboutPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +80,7 @@ class SettingsAboutPage extends StatelessWidget {
 }
 
 class _AboutPageHeader extends StatelessWidget {
-  const _AboutPageHeader({Key? key}) : super(key: key);
+  const _AboutPageHeader();
 
   @override
   Widget build(BuildContext context) {
@@ -93,10 +93,10 @@ class GitJournalLogo extends StatelessWidget {
   final int height;
 
   const GitJournalLogo({
-    Key? key,
+    super.key,
     required this.width,
     required this.height,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -32,11 +32,11 @@ class PurchaseButton extends StatelessWidget {
   const PurchaseButton(
     this.product,
     this.timePeriod, {
-    Key? key,
+    super.key,
     required this.subscription,
     required this.purchaseStarted,
     required this.purchaseCompleted,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -109,12 +109,12 @@ class PurchaseWidget extends StatefulWidget {
   final bool isSubscription;
 
   const PurchaseWidget({
-    Key? key,
+    super.key,
     required this.skus,
     required this.defaultSku,
     this.timePeriod = "",
     required this.isSubscription,
-  }) : super(key: key);
+  });
 
   @override
   _PurchaseWidgetState createState() => _PurchaseWidgetState();
@@ -317,7 +317,7 @@ class _PurchaseSliderButton extends StatelessWidget {
 class PurchaseFailedDialog extends StatelessWidget {
   final String text;
 
-  const PurchaseFailedDialog(this.text, {Key? key}) : super(key: key);
+  const PurchaseFailedDialog(this.text, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -335,7 +335,7 @@ class PurchaseFailedDialog extends StatelessWidget {
 }
 
 class RestorePurchaseButton extends StatefulWidget {
-  const RestorePurchaseButton({Key? key}) : super(key: key);
+  const RestorePurchaseButton({super.key});
 
   @override
   _RestorePurchaseButtonState createState() => _RestorePurchaseButtonState();

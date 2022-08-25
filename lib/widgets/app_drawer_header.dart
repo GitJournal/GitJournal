@@ -86,9 +86,8 @@ class AppDrawerHeader extends StatelessWidget {
 
 class _CurrentRepo extends StatefulWidget {
   const _CurrentRepo({
-    Key? key,
     required this.repoListToggled,
-  }) : super(key: key);
+  });
 
   final Func0<void> repoListToggled;
 

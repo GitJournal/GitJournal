@@ -25,10 +25,10 @@ class NoteViewer extends StatelessWidget {
   final Note note;
   final NotesFolder parentFolder;
   const NoteViewer({
-    Key? key,
+    super.key,
     required this.note,
     required this.parentFolder,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

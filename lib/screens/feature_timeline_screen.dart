@@ -15,7 +15,7 @@ import 'package:gitjournal/features.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 
 class FeatureTimelineScreen extends StatelessWidget {
-  const FeatureTimelineScreen({Key? key}) : super(key: key);
+  const FeatureTimelineScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class FeatureTimelineScreen extends StatelessWidget {
 class FeatureTile extends StatelessWidget {
   final Feature feature;
 
-  const FeatureTile(this.feature, {Key? key}) : super(key: key);
+  const FeatureTile(this.feature, {super.key});
 
   @override
   Widget build(BuildContext context) {

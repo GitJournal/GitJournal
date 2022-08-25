@@ -19,10 +19,10 @@ class NoteSummaryProvider extends SingleChildStatelessWidget {
   final String repoId;
 
   const NoteSummaryProvider({
-    Key? key,
-    Widget? child,
+    super.key,
+    super.child,
     required this.repoId,
-  }) : super(key: key, child: child);
+  });
 
   @override
   Widget buildWithChild(BuildContext context, Widget? child) {

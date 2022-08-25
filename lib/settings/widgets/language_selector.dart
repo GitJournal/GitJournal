@@ -15,7 +15,7 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
 
 class LanguageSelector extends StatelessWidget {
-  const LanguageSelector({Key? key}) : super(key: key);
+  const LanguageSelector({super.key});
 
   @override
   Widget build(BuildContext context) {

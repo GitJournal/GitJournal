@@ -151,9 +151,9 @@ class MonthlyRentalWidget extends StatelessWidget {
   final String minYearlyPurchase;
 
   const MonthlyRentalWidget({
-    Key? key,
+    super.key,
     required this.minYearlyPurchase,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -188,8 +188,8 @@ class MonthlyRentalWidget extends StatelessWidget {
 
 class YearlyPurchaseWidget extends StatelessWidget {
   const YearlyPurchaseWidget({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

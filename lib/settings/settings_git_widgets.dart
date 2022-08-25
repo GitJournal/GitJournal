@@ -14,7 +14,7 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'git_config.dart';
 
 class GitAuthorEmail extends StatelessWidget {
-  const GitAuthorEmail({Key? key}) : super(key: key);
+  const GitAuthorEmail({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class GitAuthorEmail extends StatelessWidget {
 }
 
 class _GitAuthorEmailDialog extends StatefulWidget {
-  const _GitAuthorEmailDialog({Key? key}) : super(key: key);
+  const _GitAuthorEmailDialog();
 
   @override
   State<_GitAuthorEmailDialog> createState() => _GitAuthorEmailDialogState();
@@ -104,7 +104,7 @@ class _GitAuthorEmailDialogState extends State<_GitAuthorEmailDialog> {
 }
 
 class GitAuthor extends StatelessWidget {
-  const GitAuthor({Key? key}) : super(key: key);
+  const GitAuthor({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +129,7 @@ class GitAuthor extends StatelessWidget {
 }
 
 class _GitAuthorDialog extends StatefulWidget {
-  const _GitAuthorDialog({Key? key}) : super(key: key);
+  const _GitAuthorDialog();
 
   @override
   __GitAuthorDialogState createState() => __GitAuthorDialogState();

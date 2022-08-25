@@ -19,7 +19,7 @@ import 'package:gitjournal/repository.dart';
 class NoteFileTypesSettings extends StatefulWidget {
   static const routePath = '/settings/fileTypes';
 
-  const NoteFileTypesSettings({Key? key}) : super(key: key);
+  const NoteFileTypesSettings({super.key});
 
   @override
   State<NoteFileTypesSettings> createState() => _NoteFileTypesSettingsState();

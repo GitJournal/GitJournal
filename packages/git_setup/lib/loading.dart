@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 class GitHostSetupLoadingPage extends StatelessWidget {
   final String text;
-  const GitHostSetupLoadingPage(this.text, {Key? key}) : super(key: key);
+  const GitHostSetupLoadingPage(this.text, {super.key});
 
   @override
   Widget build(BuildContext context) {

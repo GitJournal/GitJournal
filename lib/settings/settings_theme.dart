@@ -21,7 +21,7 @@ class SettingsThemeScreen extends StatefulWidget {
 
   final Brightness brightness;
 
-  const SettingsThemeScreen(this.brightness, {Key? key}) : super(key: key);
+  const SettingsThemeScreen(this.brightness, {super.key});
 
   @override
   _SettingsThemeState createState() => _SettingsThemeState();
@@ -106,8 +106,7 @@ class _SettingsThemeState extends State<SettingsThemeScreen> {
 class _GitJournalThemeView extends StatelessWidget {
   final GitJournalTheme gjTheme;
 
-  const _GitJournalThemeView({required this.gjTheme, Key? key})
-      : super(key: key);
+  const _GitJournalThemeView({required this.gjTheme});
 
   @override
   Widget build(BuildContext context) {

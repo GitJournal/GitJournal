@@ -35,14 +35,14 @@ class ChecklistEditor extends StatefulWidget implements Editor {
   final ThemeData theme;
 
   const ChecklistEditor({
-    Key? key,
+    super.key,
     required this.note,
     required this.noteModified,
     required this.editMode,
     required this.highlightString,
     required this.theme,
     required this.common,
-  }) : super(key: key);
+  });
 
   @override
   ChecklistEditorState createState() {
@@ -347,7 +347,7 @@ class ChecklistItemTile extends StatefulWidget {
   final ThemeData theme;
 
   const ChecklistItemTile({
-    Key? key,
+    super.key,
     required this.item,
     required this.statusChanged,
     required this.textChanged,
@@ -357,7 +357,7 @@ class ChecklistItemTile extends StatefulWidget {
     this.autofocus = false,
     required this.highlightString,
     required this.theme,
-  }) : super(key: key);
+  });
 
   @override
   _ChecklistItemTileState createState() => _ChecklistItemTileState();
@@ -452,7 +452,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
 class AddItemButton extends StatelessWidget {
   final void Function() onPressed;
 
-  const AddItemButton({Key? key, required this.onPressed}) : super(key: key);
+  const AddItemButton({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

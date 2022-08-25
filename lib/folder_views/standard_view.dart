@@ -121,7 +121,7 @@ class StandardView extends StatelessWidget {
 
 class StandardNoteListTile extends StatelessWidget {
   const StandardNoteListTile({
-    Key? key,
+    super.key,
     required this.headerType,
     required this.searchTerm,
     required this.searchTermLowerCase,
@@ -131,7 +131,7 @@ class StandardNoteListTile extends StatelessWidget {
     required this.note,
     required this.isSelected,
     required this.noteSummary,
-  }) : super(key: key);
+  });
 
   static final _dateFormat = DateFormat('dd MMM, yyyy');
 

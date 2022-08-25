@@ -36,8 +36,8 @@ class FolderListView extends StatefulWidget {
     required this.emptyText,
     required this.isNoteSelected,
     required this.searchTerm,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _FolderListViewState createState() => _FolderListViewState();

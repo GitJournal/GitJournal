@@ -75,15 +75,14 @@ class EditorAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Func0<void> onEditingModeChange;
 
   const EditorAppBar({
-    Key? key,
+    super.key,
     required this.editor,
     required this.editorState,
     required this.noteModified,
     required this.allowEdits,
     required this.onEditingModeChange,
     this.extraButton,
-  })  : preferredSize = const Size.fromHeight(kToolbarHeight),
-        super(key: key);
+  }) : preferredSize = const Size.fromHeight(kToolbarHeight);
 
   @override
   final Size preferredSize;

@@ -182,9 +182,7 @@ class SettingsScreen extends StatelessWidget {
 
 // ignore: unused_element
 class _SettingsSearchBar extends StatelessWidget {
-  const _SettingsSearchBar({
-    Key? key,
-  }) : super(key: key);
+  const _SettingsSearchBar();
 
   @override
   Widget build(BuildContext context) {
@@ -219,12 +217,12 @@ class SettingsTile extends StatelessWidget {
   final Func0<void>? onTap;
 
   const SettingsTile({
-    Key? key,
+    super.key,
     required this.iconData,
     required this.title,
     this.subtitle,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

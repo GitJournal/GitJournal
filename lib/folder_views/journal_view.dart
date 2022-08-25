@@ -85,7 +85,7 @@ class JournalNoteListTile extends StatelessWidget {
   static final _timeFormat = DateFormat('Hm');
 
   const JournalNoteListTile({
-    Key? key,
+    super.key,
     required this.searchTerm,
     required this.searchTermLowerCase,
     required this.noteTapped,
@@ -93,7 +93,7 @@ class JournalNoteListTile extends StatelessWidget {
     required this.note,
     required this.isSelected,
     required this.noteSummary,
-  }) : super(key: key);
+  });
 
   final String searchTerm;
   final String searchTermLowerCase;

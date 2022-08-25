@@ -34,10 +34,10 @@ class MarkdownRenderer extends StatelessWidget {
   final Func1<Note, void> onNoteTapped;
 
   const MarkdownRenderer({
-    Key? key,
+    super.key,
     required this.note,
     required this.onNoteTapped,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

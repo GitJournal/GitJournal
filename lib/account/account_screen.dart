@@ -13,7 +13,7 @@ import 'package:gitjournal/account/login_screen.dart';
 class AccountScreen extends StatefulWidget {
   static const routePath = '/account';
 
-  const AccountScreen({Key? key}) : super(key: key);
+  const AccountScreen({super.key});
 
   @override
   _AccountScreenState createState() => _AccountScreenState();

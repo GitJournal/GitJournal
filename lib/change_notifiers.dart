@@ -34,8 +34,8 @@ class GitJournalChangeNotifiers extends StatelessWidget {
     required this.appConfig,
     required this.pref,
     required this.child,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

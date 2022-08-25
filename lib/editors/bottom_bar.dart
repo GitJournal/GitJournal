@@ -39,7 +39,7 @@ class EditorBottomBar extends StatelessWidget {
   final bool findAllowed;
 
   const EditorBottomBar({
-    Key? key,
+    super.key,
     required this.editor,
     required this.editorState,
     required this.parentFolder,
@@ -53,7 +53,7 @@ class EditorBottomBar extends StatelessWidget {
     required this.redoAllowed,
     required this.onFindSelected,
     required this.findAllowed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -140,8 +140,7 @@ class AddBottomSheet extends StatelessWidget {
   final Editor editor;
   final EditorState editorState;
 
-  const AddBottomSheet(this.editor, this.editorState, {Key? key})
-      : super(key: key);
+  const AddBottomSheet(this.editor, this.editorState, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -204,7 +203,7 @@ class BottomMenuSheet extends StatelessWidget {
   final Func0<void> onFindSelected;
 
   const BottomMenuSheet({
-    Key? key,
+    super.key,
     required this.editor,
     required this.editorState,
     required this.zenModeEnabled,
@@ -212,7 +211,7 @@ class BottomMenuSheet extends StatelessWidget {
     required this.metaDataEditable,
     required this.onFindSelected,
     required this.findAllowed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -296,11 +295,7 @@ class _Visibility extends StatelessWidget {
   final Widget child;
   final bool visible;
 
-  const _Visibility({
-    required this.child,
-    required this.visible,
-    Key? key,
-  }) : super(key: key);
+  const _Visibility({required this.child, required this.visible});
 
   @override
   Widget build(BuildContext context) {

@@ -144,7 +144,7 @@ class JournalApp extends StatefulWidget {
 
   final RepositoryManager repoManager;
 
-  const JournalApp({Key? key, required this.repoManager}) : super(key: key);
+  const JournalApp({super.key, required this.repoManager});
 
   @override
   JournalAppState createState() => JournalAppState();
@@ -171,7 +171,8 @@ class JournalAppState extends State<JournalApp> {
       Log.i("Quick Action Open: $shortcutType");
       if (_navigatorKey.currentState == null) {
         Log.i("Quick Action delegating for after build");
-        WidgetsBinding.instance.addPostFrameCallback((_) => _afterBuild(context));
+        WidgetsBinding.instance
+            .addPostFrameCallback((_) => _afterBuild(context));
         setState(() {
           _pendingShortcut = shortcutType;
         });

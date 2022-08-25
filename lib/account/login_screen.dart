@@ -17,7 +17,7 @@ import 'package:gitjournal/logger/logger.dart';
 class LoginPage extends StatefulWidget {
   static const routePath = '/login';
 
-  const LoginPage({Key? key, this.title}) : super(key: key);
+  const LoginPage({super.key, this.title});
 
   final String? title;
 
@@ -279,7 +279,7 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
 }
 
 class FormBackButton extends StatelessWidget {
-  const FormBackButton({Key? key}) : super(key: key);
+  const FormBackButton({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -16,11 +16,11 @@ class NoteBodyEditor extends StatelessWidget {
   final Function onChanged;
 
   const NoteBodyEditor({
-    Key? key,
+    super.key,
     required this.textController,
     required this.autofocus,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

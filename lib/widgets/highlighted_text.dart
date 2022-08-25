@@ -17,7 +17,7 @@ class HighlightedText extends StatelessWidget {
   final int? maxLines;
 
   const HighlightedText({
-    Key? key,
+    super.key,
     required this.text,
     required this.highlightText,
     required this.highlightTextLowerCase,
@@ -25,7 +25,7 @@ class HighlightedText extends StatelessWidget {
     this.highlightStyle,
     this.overflow,
     this.maxLines,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

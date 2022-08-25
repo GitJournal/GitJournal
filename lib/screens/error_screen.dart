@@ -18,7 +18,7 @@ import 'home_screen.dart';
 class ErrorScreen extends StatelessWidget {
   static const routePath = '/error';
 
-  const ErrorScreen({Key? key}) : super(key: key);
+  const ErrorScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -131,7 +131,7 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
 }
 
 class DefaultEditorTile extends StatelessWidget {
-  const DefaultEditorTile({Key? key}) : super(key: key);
+  const DefaultEditorTile({super.key});
 
   @override
   Widget build(BuildContext context) {

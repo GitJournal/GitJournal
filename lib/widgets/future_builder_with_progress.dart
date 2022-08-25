@@ -10,9 +10,9 @@ class FutureBuilderWithProgress<T> extends StatelessWidget {
   final Future<T> future;
 
   const FutureBuilderWithProgress({
-    Key? key,
+    super.key,
     required this.future,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

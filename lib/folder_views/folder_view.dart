@@ -657,7 +657,7 @@ class _FolderViewState extends State<FolderView> {
 
 class _SliverHeader extends StatelessWidget {
   final String text;
-  const _SliverHeader({Key? key, required this.text}) : super(key: key);
+  const _SliverHeader({required this.text});
 
   @override
   Widget build(BuildContext context) {

@@ -24,8 +24,8 @@ class ListPreference extends StatelessWidget {
     required this.options,
     required this.onChange,
     this.enabled = true,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

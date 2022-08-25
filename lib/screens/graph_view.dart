@@ -21,7 +21,7 @@ import 'package:gitjournal/widgets/app_drawer.dart';
 class GraphViewScreen extends StatelessWidget {
   static const routePath = '/graph';
 
-  const GraphViewScreen({Key? key}) : super(key: key);
+  const GraphViewScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +42,7 @@ class _GraphViewScreen extends StatefulWidget {
   const _GraphViewScreen({
     required this.rootFolder,
     required this.linksView,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   _GraphViewScreenState createState() => _GraphViewScreenState();

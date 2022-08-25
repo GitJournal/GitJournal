@@ -14,7 +14,7 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/utils/utils.dart';
 
 class VersionNumberTile extends StatefulWidget {
-  const VersionNumberTile({Key? key}) : super(key: key);
+  const VersionNumberTile({super.key});
 
   @override
   VersionNumberTileState createState() {

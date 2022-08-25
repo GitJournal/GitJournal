@@ -22,13 +22,12 @@ class NoteFileNameEditor extends StatefulWidget {
   final String dirName;
 
   NoteFileNameEditor({
-    Key? key,
+    super.key,
     required this.filePath,
     required this.fs,
     required this.onChanged,
   })  : fileName = p.basename(filePath),
-        dirName = p.dirname(filePath),
-        super(key: key);
+        dirName = p.dirname(filePath);
 
   @override
   _NoteFileNameEditorState createState() => _NoteFileNameEditorState();

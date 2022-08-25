@@ -43,10 +43,10 @@ class FolderTreeView extends StatelessWidget {
   final FolderSelectedCallback onFolderEntered;
 
   const FolderTreeView({
-    Key? key,
+    super.key,
     required this.rootFolder,
     required this.onFolderEntered,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

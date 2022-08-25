@@ -35,14 +35,14 @@ class OrgEditor extends StatefulWidget implements Editor {
   final ThemeData theme;
 
   const OrgEditor({
-    Key? key,
+    super.key,
     required this.note,
     required this.noteModified,
     required this.editMode,
     required this.highlightString,
     required this.theme,
     required this.common,
-  }) : super(key: key);
+  });
 
   @override
   OrgEditorState createState() {
@@ -236,11 +236,11 @@ class _NoteEditor extends StatelessWidget {
   final Function onChanged;
 
   const _NoteEditor({
-    Key? key,
+    super.key,
     required this.textController,
     required this.autofocus,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   static TextStyle textStyle(BuildContext context) {
     var theme = Theme.of(context);

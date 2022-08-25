@@ -21,7 +21,7 @@ import 'package:gitjournal/settings/widgets/settings_list_option_preference.dart
 class SettingsGit extends StatelessWidget {
   static const routePath = '/settings/git';
 
-  const SettingsGit({Key? key}) : super(key: key);
+  const SettingsGit({super.key});
 
   @override
   Widget build(BuildContext context) {

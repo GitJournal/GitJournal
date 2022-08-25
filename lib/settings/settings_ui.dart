@@ -28,7 +28,7 @@ const feature_themes = false;
 class SettingsUIScreen extends StatelessWidget {
   static const routePath = '/settings/ui';
 
-  const SettingsUIScreen({Key? key}) : super(key: key);
+  const SettingsUIScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

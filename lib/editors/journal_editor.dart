@@ -34,14 +34,14 @@ class JournalEditor extends StatefulWidget implements Editor {
   final EditorCommon common;
 
   const JournalEditor({
-    Key? key,
+    super.key,
     required this.note,
     required this.noteModified,
     required this.editMode,
     required this.highlightString,
     required this.theme,
     required this.common,
-  }) : super(key: key);
+  });
 
   @override
   JournalEditorState createState() {

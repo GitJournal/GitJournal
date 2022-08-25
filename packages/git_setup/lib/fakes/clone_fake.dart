@@ -13,7 +13,7 @@ import '../cloning.dart';
 import '../git_transfer_progress.dart';
 
 class FakeTransferProgress extends StatefulWidget {
-  const FakeTransferProgress({Key? key}) : super(key: key);
+  const FakeTransferProgress({super.key});
 
   @override
   FakeTransferProgressState createState() => FakeTransferProgressState();

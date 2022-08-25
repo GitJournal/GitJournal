@@ -22,14 +22,14 @@ class AutoCompletionWidget extends StatefulWidget {
   final List<String> tags;
 
   const AutoCompletionWidget({
-    Key? key,
+    super.key,
     required this.textFieldFocusNode,
     required this.textFieldKey,
     required this.textFieldStyle,
     required this.textController,
     required this.child,
     required this.tags,
-  }) : super(key: key);
+  });
 
   @override
   _AutoCompletionWidgetState createState() => _AutoCompletionWidgetState();

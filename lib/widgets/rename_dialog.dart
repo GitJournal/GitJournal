@@ -136,7 +136,7 @@ class _RenameDialogState extends State<RenameDialog> {
 class _DialogWarningText extends StatelessWidget {
   final String text;
 
-  const _DialogWarningText(this.text, {Key? key}) : super(key: key);
+  const _DialogWarningText(this.text);
 
   @override
   Widget build(BuildContext context) {

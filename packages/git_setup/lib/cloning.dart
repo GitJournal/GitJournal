@@ -21,9 +21,8 @@ class GitHostCloningPage extends StatelessWidget {
   GitHostCloningPage({
     required this.errorMessage,
     required this.cloneProgress,
-    Key? key,
-  })  : loadingMessage = tr(LocaleKeys.setup_cloning),
-        super(key: key);
+    super.key,
+  }) : loadingMessage = tr(LocaleKeys.setup_cloning);
 
   @override
   Widget build(BuildContext context) {

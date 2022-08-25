@@ -27,7 +27,7 @@ import 'commit_data_widget.dart';
 class HistoryScreen extends StatelessWidget {
   static const String routePath = "/history";
 
-  const HistoryScreen({Key? key}) : super(key: key);
+  const HistoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class HistoryWidget extends StatefulWidget {
 
   String get repoPath => gjRepo.repoPath;
 
-  const HistoryWidget({Key? key, required this.gjRepo}) : super(key: key);
+  const HistoryWidget({super.key, required this.gjRepo});
 
   @override
   _HistoryWidgetState createState() => _HistoryWidgetState();
@@ -246,7 +246,7 @@ class _HistoryWidgetState extends State<HistoryWidget> {
 class _SyncAttemptTile extends StatelessWidget {
   final SyncAttempt attempt;
 
-  const _SyncAttemptTile(this.attempt, {Key? key}) : super(key: key);
+  const _SyncAttemptTile(this.attempt);
 
   @override
   Widget build(BuildContext context) {
@@ -273,11 +273,10 @@ class _CommitTile extends StatefulWidget {
   final GitCommit? prevCommit;
 
   const _CommitTile({
-    Key? key,
     required this.gitRepo,
     required this.commit,
     required this.prevCommit,
-  }) : super(key: key);
+  });
 
   @override
   State<_CommitTile> createState() => _CommitTileState();
@@ -349,7 +348,7 @@ class _CommitTileState extends State<_CommitTile> {
 class _FailureTile<T> extends StatelessWidget {
   final Result<T> result;
 
-  _FailureTile({Key? key, required this.result}) : super(key: key) {
+  _FailureTile({super.key, required this.result}) {
     Log.e("Failure", ex: result.error, stacktrace: result.stackTrace);
   }
 
@@ -368,7 +367,7 @@ class _FailureTile<T> extends StatelessWidget {
 // * Files + changes
 
 // class _ExpandedCommitTile extends StatelessWidget {
-//   const _ExpandedCommitTile({Key? key}) : super(key: key);
+//   const _ExpandedCommitTile({super.key}) ;
 
 //   @override
 //   Widget build(BuildContext context) {

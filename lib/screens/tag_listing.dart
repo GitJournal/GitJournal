@@ -27,7 +27,7 @@ import 'package:gitjournal/widgets/pro_overlay.dart';
 class TagListingScreen extends StatelessWidget {
   static const routePath = '/tags';
 
-  const TagListingScreen({Key? key}) : super(key: key);
+  const TagListingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

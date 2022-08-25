@@ -19,10 +19,10 @@ class GitJournalGitSetupScreen extends StatelessWidget {
   final Func2<String, String, Future<void>> onCompletedFunction;
 
   const GitJournalGitSetupScreen({
-    Key? key,
+    super.key,
     required this.repoFolderName,
     required this.onCompletedFunction,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

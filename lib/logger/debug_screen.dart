@@ -21,7 +21,7 @@ import 'package:gitjournal/utils/utils.dart';
 class DebugScreen extends StatefulWidget {
   static const routePath = '/settings/debug';
 
-  const DebugScreen({Key? key}) : super(key: key);
+  const DebugScreen({super.key});
 
   @override
   _DebugScreenState createState() => _DebugScreenState();
@@ -331,8 +331,8 @@ class FilterListTile extends StatelessWidget {
     this.publicLevel,
     this.internalLevel,
     this.currentLevel, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

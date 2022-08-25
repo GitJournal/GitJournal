@@ -17,7 +17,7 @@ import 'package:gitjournal/settings/app_config.dart';
 class SettingsAnalytics extends StatelessWidget {
   static const routePath = '/settings/analytics';
 
-  const SettingsAnalytics({Key? key}) : super(key: key);
+  const SettingsAnalytics({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +61,7 @@ class SettingsAnalytics extends StatelessWidget {
 }
 
 class _AnalyticsSwitchListTile extends StatefulWidget {
-  const _AnalyticsSwitchListTile({
-    Key? key,
-  }) : super(key: key);
+  const _AnalyticsSwitchListTile();
 
   @override
   State<_AnalyticsSwitchListTile> createState() =>

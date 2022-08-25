@@ -318,8 +318,8 @@ class _AppDrawerState extends State<AppDrawer>
 class RepoTile extends StatelessWidget {
   const RepoTile(
     this.id, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String id;
 

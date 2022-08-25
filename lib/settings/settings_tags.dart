@@ -15,7 +15,7 @@ import 'package:gitjournal/settings/widgets/settings_header.dart';
 class SettingsTagsScreen extends StatefulWidget {
   static const routePath = '/settings/tags';
 
-  const SettingsTagsScreen({Key? key}) : super(key: key);
+  const SettingsTagsScreen({super.key});
 
   @override
   SettingsTagsScreenState createState() => SettingsTagsScreenState();

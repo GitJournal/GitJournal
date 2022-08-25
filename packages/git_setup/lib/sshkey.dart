@@ -352,7 +352,7 @@ class PublicKeyWidget extends StatelessWidget {
 
 class _DoubleScrollView extends StatelessWidget {
   final Widget child;
-  const _DoubleScrollView({Key? key, required this.child}) : super(key: key);
+  const _DoubleScrollView({required this.child});
 
   @override
   Widget build(BuildContext context) {

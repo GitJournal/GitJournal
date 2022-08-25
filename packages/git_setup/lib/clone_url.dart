@@ -21,8 +21,8 @@ class GitCloneUrlPage extends StatefulWidget {
   const GitCloneUrlPage({
     required this.doneFunction,
     required this.initialValue,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   GitCloneUrlPageState createState() {
@@ -105,8 +105,8 @@ class GitCloneUrlKnownProviderPage extends StatefulWidget {
     required this.launchCreateUrlPage,
     required this.gitHostType,
     required this.initialValue,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   GitCloneUrlKnownProviderPageState createState() {

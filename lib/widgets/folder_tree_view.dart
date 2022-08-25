@@ -22,12 +22,12 @@ class FolderTreeView extends StatefulWidget {
   final FolderSelectedCallback onFolderEntered;
 
   const FolderTreeView({
-    Key? key,
+    super.key,
     required this.rootFolder,
     required this.onFolderEntered,
     this.onFolderSelected = _doNothing,
     this.onFolderUnselected = _doNothing2,
-  }) : super(key: key);
+  });
 
   @override
   FolderTreeViewState createState() => FolderTreeViewState();

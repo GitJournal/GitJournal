@@ -30,11 +30,11 @@ class GitHostSetupRepoSelector extends StatefulWidget {
   final Func1<GitHostRepo, void> onDone;
 
   const GitHostSetupRepoSelector({
-    Key? key,
+    super.key,
     required this.gitHost,
     required this.userInfo,
     required this.onDone,
-  }) : super(key: key);
+  });
 
   @override
   GitHostSetupRepoSelectorState createState() {

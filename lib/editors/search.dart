@@ -42,12 +42,11 @@ class EditorAppSearchBar extends StatefulWidget implements PreferredSizeWidget {
   final Func2<String, int, void> scrollToResult;
 
   const EditorAppSearchBar({
-    Key? key,
+    super.key,
     required this.editorState,
     required this.onCloseSelected,
     required this.scrollToResult,
-  })  : preferredSize = const Size.fromHeight(kToolbarHeight),
-        super(key: key);
+  }) : preferredSize = const Size.fromHeight(kToolbarHeight);
 
   @override
   final Size preferredSize;

@@ -42,10 +42,10 @@ class NoteLinksProvider extends SingleChildStatelessWidget {
   final String repoId;
 
   const NoteLinksProvider({
-    Key? key,
-    Widget? child,
+    super.key,
+    super.child,
     required this.repoId,
-  }) : super(key: key, child: child);
+  });
 
   @override
   Widget buildWithChild(BuildContext context, Widget? child) {

@@ -13,7 +13,7 @@ import 'package:gitjournal/logger/debug_screen.dart';
 import 'package:gitjournal/logger/logger.dart';
 
 class DebugScreenFake extends StatefulWidget {
-  const DebugScreenFake({Key? key}) : super(key: key);
+  const DebugScreenFake({super.key});
 
   @override
   _DebugScreenFakeState createState() => _DebugScreenFakeState();

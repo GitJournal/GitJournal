@@ -21,8 +21,8 @@ class GitHostSetupButton extends StatelessWidget {
     required this.onPressed,
     this.iconUrl,
     this.enabled = true,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

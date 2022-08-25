@@ -37,7 +37,7 @@ import 'package:gitjournal/widgets/pro_overlay.dart';
 class SettingsStorageScreen extends StatelessWidget {
   static const routePath = '/settings/storage';
 
-  const SettingsStorageScreen({Key? key}) : super(key: key);
+  const SettingsStorageScreen({super.key});
   @override
   Widget build(BuildContext context) {
     var folderConfig = Provider.of<NotesFolderConfig>(context);
@@ -275,7 +275,7 @@ Future<String> _getExternalDir(BuildContext context) async {
 }
 
 class DefaultNoteFolderTile extends StatelessWidget {
-  const DefaultNoteFolderTile({Key? key}) : super(key: key);
+  const DefaultNoteFolderTile({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -312,7 +312,7 @@ class DefaultNoteFolderTile extends StatelessWidget {
 }
 
 class DefaultFileFormatTile extends StatelessWidget {
-  const DefaultFileFormatTile({Key? key}) : super(key: key);
+  const DefaultFileFormatTile({super.key});
 
   @override
   Widget build(BuildContext context) {

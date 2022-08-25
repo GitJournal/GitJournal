@@ -40,14 +40,14 @@ class RawEditor extends StatefulWidget implements Editor {
   final ThemeData theme;
 
   const RawEditor({
-    Key? key,
+    super.key,
     required this.note,
     required this.noteModified,
     required this.editMode,
     required this.highlightString,
     required this.theme,
     required this.common,
-  }) : super(key: key);
+  });
 
   @override
   RawEditorState createState() {
@@ -240,11 +240,11 @@ class _NoteEditor extends StatefulWidget {
   final Function onChanged;
 
   const _NoteEditor({
-    Key? key,
+    super.key,
     required this.textController,
     required this.autofocus,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<_NoteEditor> createState() => _NoteEditorState();

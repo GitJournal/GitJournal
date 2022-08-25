@@ -14,7 +14,7 @@ import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
 
 class CacheLoadingScreen extends StatelessWidget {
-  const CacheLoadingScreen({Key? key}) : super(key: key);
+  const CacheLoadingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class CacheLoadingScreen extends StatelessWidget {
 class _CacheLoadingScreen extends StatefulWidget {
   final FileStorage fileStorage;
 
-  const _CacheLoadingScreen(this.fileStorage, {Key? key}) : super(key: key);
+  const _CacheLoadingScreen(this.fileStorage);
 
   @override
   _CacheLoadingScreenState createState() => _CacheLoadingScreenState();
