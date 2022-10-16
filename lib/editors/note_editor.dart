@@ -6,6 +6,7 @@
 
 import 'dart:async';
 
+import 'package:dart_git/plumbing/git_hash.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -40,7 +41,7 @@ import 'package:gitjournal/widgets/rename_dialog.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import 'package:synchronized/synchronized.dart';
-import 'package:dart_git/plumbing/git_hash.dart';
+import 'package:universal_io/io.dart' as io;
 
 class ShowUndoSnackbar {}
 
@@ -518,6 +519,17 @@ class NoteEditorState extends State<NoteEditor>
       if (_isNewNote && !_newNoteRenamed) {
         if (note.shouldRebuildPath) {
           Log.d("Rebuilding Note's FileName");
+
+          // It's a new note, but the file might already be saved to disk during didChangeAppLifecycleState
+          // if the user switched to another app and then returned before saving.
+          // If that's the case, deleting the existing file will avoid saving 2 files.
+          var filePath = note.fullFilePath;
+          final file = io.File(filePath);
+          if (file.existsSync()) {
+            Log.d("Deleting existing file for new note");
+            file.deleteSync();
+          }
+
           note = note.copyWithFileName(note.rebuildFileName());
           setState(() {
             _note = note;
