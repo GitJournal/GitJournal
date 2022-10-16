@@ -66,3 +66,11 @@ Example launch.json:
     ]
 }
 ```
+
+### Debugging with breakpoints
+
+To use Android Studio's debugger with breakpoints:
+* Open your local repo with Android Studio.
+* Android Studio should already have a Flutter Run Configuration named "main.dart", visible at the top of the window.
+* Edit this run configuration. For "Build flavor", type "dev" and save the configuration.
+* On the top bar of Android Studio, with "main.dart" selected, click the debug button (it has hover text "Debug main.dart").
