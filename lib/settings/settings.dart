@@ -226,6 +226,7 @@ class NoteFileNameFormat extends GjSetting {
     Zettelkasten,
     DateOnly,
     KebabCase,
+    Template
   ];
 
   static NoteFileNameFormat fromInternalString(String? str) =>
