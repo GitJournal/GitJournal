@@ -128,7 +128,9 @@ List<_TemplateSegment> _parseTemplate(String template) {
       if (resolvingVariable) {
         final variableSegments = text.split(':');
         final variableName = variableSegments[0];
-        final optionsSegments = variableSegments[1].split(',');
+        final List<String> optionsSegments =
+            variableSegments.length == 1 ? [] : variableSegments[1].split(',');
+
         final variableOptions =
             Map.fromEntries(optionsSegments.map((optionText) {
           final optionSegments = optionText.split('=');
