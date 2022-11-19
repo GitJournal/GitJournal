@@ -40,6 +40,26 @@ import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/themes.dart';
 
+// Arranged Alphabetically
+// Remember to update Info.plist
+const gitJournalSupportedLocales = [
+  Locale('de'),
+  Locale('en'),
+  Locale('es'),
+  Locale('fr'),
+  Locale('hu'),
+  Locale('id'),
+  Locale('it'),
+  Locale('ja'),
+  Locale('ko'),
+  Locale('pl'),
+  Locale('pt'),
+  Locale('ru'),
+  Locale('sv'),
+  Locale('vi'),
+  Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'),
+];
+
 class JournalApp extends StatefulWidget {
   static Future<void> main(SharedPreferences pref) async {
     await Log.init();
@@ -90,24 +110,7 @@ class JournalApp extends StatefulWidget {
         pref: pref,
         child: JournalApp(repoManager: repoManager),
       ),
-      supportedLocales: const [
-        // Arranged Alphabetically
-        Locale('de'),
-        Locale('en'),
-        Locale('es'),
-        Locale('fr'),
-        Locale('hu'),
-        Locale('id'),
-        Locale('it'),
-        Locale('ja'),
-        Locale('ko'),
-        Locale('pl'),
-        Locale('pt'),
-        Locale('ru'),
-        Locale('sv'),
-        Locale('vi'),
-        Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'),
-      ], // Remember to update Info.plist
+      supportedLocales: gitJournalSupportedLocales,
       fallbackLocale: const Locale('en'),
       useFallbackTranslations: true,
       path: 'assets/langs',
