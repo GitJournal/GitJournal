@@ -4,7 +4,7 @@ version: 1.85.2+10
 
 environment:
   sdk: ">=2.17.3 <3.0.0"
-  flutter: ">=3.0.3"
+  flutter: ">=3.3.3"
 
 publish_to: none
 
