@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_logger/easy_logger.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stack_trace/stack_trace.dart';
 
@@ -39,6 +40,8 @@ Future<void> main() async {
 
     await reportError(isolateError.first, isolateError.last);
   }).sendPort);
+
+  await FlutterDisplayMode.setHighRefreshRate();
 
   await runZonedGuarded(() async {
     await Chain.capture(() async {

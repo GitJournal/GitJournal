@@ -572,6 +572,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.5.0"
+  flutter_displaymode:
+    dependency: "direct main"
+    description:
+      name: flutter_displaymode
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.1"
   flutter_email_sender:
     dependency: "direct main"
     description:
@@ -1955,4 +1962,4 @@ packages:
     version: "0.0.12"
 sdks:
   dart: ">=2.17.3 <3.0.0"
-  flutter: ">=3.0.3"
+  flutter: ">=3.3.3"

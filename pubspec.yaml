@@ -98,6 +98,7 @@ dependencies:
   uuid: ^3.0.4
   yaml: ^3.1.0
   yaml_serializer: ^0.0.12
+  flutter_displaymode: ^0.4.1
 
 dev_dependencies:
   benchmark_harness: ^2.0.0
