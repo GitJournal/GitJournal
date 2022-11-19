@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_updater/auto_updater.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:hive/hive.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -30,7 +31,6 @@ import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/views/note_links_view.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/iap/iap.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository_manager.dart';
@@ -187,17 +187,17 @@ class JournalAppState extends State<JournalApp> {
       quickActions.setShortcutItems(<ShortcutItem>[
         ShortcutItem(
           type: 'Markdown',
-          localizedTitle: tr(LocaleKeys.actions_newNote),
+          localizedTitle: context.loc.actionsNewNote,
           icon: "ic_markdown",
         ),
         ShortcutItem(
           type: 'Checklist',
-          localizedTitle: tr(LocaleKeys.actions_newChecklist),
+          localizedTitle: context.loc.actionsNewChecklist,
           icon: "ic_tasks",
         ),
         ShortcutItem(
           type: 'Journal',
-          localizedTitle: tr(LocaleKeys.actions_newJournal),
+          localizedTitle: context.loc.actionsNewJournal,
           icon: "ic_book",
         ),
       ]);

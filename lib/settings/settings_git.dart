@@ -18,6 +18,8 @@ import 'package:gitjournal/settings/settings_git_widgets.dart';
 import 'package:gitjournal/settings/widgets/settings_header.dart';
 import 'package:gitjournal/settings/widgets/settings_list_option_preference.dart';
 
+import 'package:gitjournal/app_localizations_context.dart';
+
 class SettingsGit extends StatelessWidget {
   static const routePath = '/settings/git';
 
@@ -30,12 +32,12 @@ class SettingsGit extends StatelessWidget {
 
     var list = ListView(
       children: [
-        SettingsHeader(tr(LocaleKeys.settings_gitAuthor)),
+        SettingsHeader(context.loc.settingsGitAuthor),
         const GitAuthor(),
         const GitAuthorEmail(),
         ListTile(
-          title: Text(tr(LocaleKeys.settings_gitRemote_title)),
-          subtitle: Text(tr(LocaleKeys.settings_gitRemote_subtitle)),
+          title: Text(context.loc.settingsGitRemoteTitle),
+          subtitle: Text(context.loc.settingsGitRemoteSubtitle),
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => GitRemoteSettingsScreen(),
@@ -48,7 +50,7 @@ class SettingsGit extends StatelessWidget {
           enabled: repo.remoteGitRepoConfigured,
         ),
         ListOptionPreference<SettingsSSHKey>(
-          title: tr(LocaleKeys.settings_sshKey_keyType),
+          title: context.loc.settingsSshKeyKeyType,
           currentOption: SettingsSSHKey.fromEnum(gitConfig.sshKeyType),
           values: SettingsSSHKey.values,
           defaultValue: SettingsSSHKey.Default,
@@ -58,7 +60,7 @@ class SettingsGit extends StatelessWidget {
           },
         ),
         RedButton(
-          text: tr(LocaleKeys.settings_deleteRepo),
+          text: context.loc.settingsDeleteRepo,
           onPressed: () async {
             var ok = await showDialog(
               context: context,

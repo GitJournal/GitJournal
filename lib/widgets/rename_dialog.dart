@@ -10,6 +10,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
@@ -71,11 +72,11 @@ class _RenameDialogState extends State<RenameDialog> {
             decoration: InputDecoration(labelText: widget.inputDecoration),
             validator: (value) {
               if (value!.isEmpty) {
-                return tr(LocaleKeys.widgets_rename_validator_empty);
+                return context.loc.widgetsRenameValidatorEmpty;
               }
 
               if (value.contains(p.separator)) {
-                return tr(LocaleKeys.widgets_rename_validator_contains);
+                return context.loc.widgetsRenameValidatorContains;
               }
 
               WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -96,7 +97,7 @@ class _RenameDialogState extends State<RenameDialog> {
               var exists = r.getOrThrow();
 
               if (exists) {
-                return tr(LocaleKeys.widgets_rename_validator_exists);
+                return context.loc.widgetsRenameValidatorExists;
               }
 
               return null;
@@ -115,7 +116,7 @@ class _RenameDialogState extends State<RenameDialog> {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(tr(LocaleKeys.widgets_rename_no)),
+          child: Text(context.loc.widgetsRenameNo),
         ),
         TextButton(
           key: const ValueKey('RenameYes'),
@@ -125,7 +126,7 @@ class _RenameDialogState extends State<RenameDialog> {
               Navigator.of(context).pop(newName);
             }
           },
-          child: Text(tr(LocaleKeys.widgets_rename_yes)),
+          child: Text(context.loc.widgetsRenameYes),
         ),
       ],
       content: form,

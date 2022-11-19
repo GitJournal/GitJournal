@@ -22,7 +22,7 @@ Map<String, String> newMap = {};
 
 void process(List<String> prefixes, Map<String, dynamic> map) {
   for (var entry in map.entries) {
-    var p = [...prefixes, entry.key];
+    var p = [...prefixes, ...entry.key.split('_')];
 
     if (entry.value is String) {
       newMap[toCamel(p)] = entry.value;
@@ -35,9 +35,9 @@ void process(List<String> prefixes, Map<String, dynamic> map) {
 }
 
 String toCamel(List<String> l) {
-  var str = l[0].toLowerCase();
+  var str = l[0].replaceRange(0, 1, l[0][0].toLowerCase());
   for (var i = 1; i < l.length; i++) {
-    var s = l[i].toLowerCase();
+    var s = l[i];
     s = s.replaceRange(0, 1, s[0].toUpperCase());
     // ignore: use_string_buffers
     str += s;

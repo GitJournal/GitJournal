@@ -8,8 +8,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:time/time.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 import 'package:gitjournal/core/checklist.dart';
 import 'package:gitjournal/core/image.dart' as core;
@@ -18,7 +18,6 @@ import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/editors/utils/disposable_change_notifier.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'controllers/rich_text_controller.dart';
@@ -476,7 +475,7 @@ class AddItemButton extends StatelessWidget {
         ],
         mainAxisSize: MainAxisSize.min,
       ),
-      title: Text(tr(LocaleKeys.editors_checklist_add), style: style),
+      title: Text(context.loc.editorsChecklistAdd, style: style),
     );
 
     return GestureDetector(

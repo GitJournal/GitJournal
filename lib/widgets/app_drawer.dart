@@ -6,7 +6,6 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:git_setup/screens.dart';
 import 'package:launch_review/launch_review.dart';
@@ -19,7 +18,6 @@ import 'package:universal_io/io.dart' show Platform;
 import 'package:gitjournal/account/login_screen.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/features.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/history/history_screen.dart';
 import 'package:gitjournal/iap/purchase_screen.dart';
 import 'package:gitjournal/logger/logger.dart';
@@ -34,6 +32,7 @@ import 'package:gitjournal/settings/bug_report.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/widgets/app_drawer_header.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 class AppDrawer extends StatefulWidget {
   @override
@@ -85,7 +84,7 @@ class _AppDrawerState extends State<AppDrawer>
           child: _buildDrawerTile(
             context,
             icon: Icons.add,
-            title: tr(LocaleKeys.drawer_addRepo),
+            title: context.loc.drawerAddRepo,
             onTap: () {
               var _ = repoManager.addRepoAndSwitch();
               Navigator.pop(context);
@@ -121,7 +120,7 @@ class _AppDrawerState extends State<AppDrawer>
     if (repo?.remoteGitRepoConfigured == false) {
       setupGitButton = ListTile(
         leading: Icon(Icons.sync, color: textStyle!.color),
-        title: Text(tr(LocaleKeys.drawer_setup), style: textStyle),
+        title: Text(context.loc.drawerSetup, style: textStyle),
         trailing: const Icon(
           Icons.info,
           color: Colors.red,
@@ -159,7 +158,7 @@ class _AppDrawerState extends State<AppDrawer>
             _buildDrawerTile(
               context,
               icon: Icons.power,
-              title: tr(LocaleKeys.drawer_pro),
+              title: context.loc.drawerPro,
               onTap: () {
                 Navigator.pop(context);
                 var _ = Navigator.pushNamed(context, PurchaseScreen.routePath);
@@ -174,7 +173,7 @@ class _AppDrawerState extends State<AppDrawer>
             _buildDrawerTile(
               context,
               icon: Icons.account_circle,
-              title: tr(LocaleKeys.drawer_login),
+              title: context.loc.drawerLogin,
               onTap: () => _navTopLevel(context, LoginPage.routePath),
               selected: currentRoute == LoginPage.routePath,
             ),
@@ -183,7 +182,7 @@ class _AppDrawerState extends State<AppDrawer>
             _buildDrawerTile(
               context,
               icon: Icons.note,
-              title: tr(LocaleKeys.drawer_all),
+              title: context.loc.drawerAll,
               onTap: () => _navTopLevel(context, HomeScreen.routePath),
               selected: currentRoute == HomeScreen.routePath,
             ),
@@ -191,7 +190,7 @@ class _AppDrawerState extends State<AppDrawer>
             _buildDrawerTile(
               context,
               icon: Icons.folder,
-              title: tr(LocaleKeys.drawer_folders),
+              title: context.loc.drawerFolders,
               onTap: () => _navTopLevel(context, FolderListingScreen.routePath),
               selected: currentRoute == FolderListingScreen.routePath,
             ),
@@ -200,7 +199,7 @@ class _AppDrawerState extends State<AppDrawer>
               context,
               icon: FontAwesomeIcons.diagramProject,
               isFontAwesome: true,
-              title: tr(LocaleKeys.drawer_graph),
+              title: context.loc.drawerGraph,
               onTap: () => _navTopLevel(context, GraphViewScreen.routePath),
               selected: currentRoute == GraphViewScreen.routePath,
             ),
@@ -209,7 +208,7 @@ class _AppDrawerState extends State<AppDrawer>
               context,
               icon: Icons.history,
               isFontAwesome: true,
-              title: tr(LocaleKeys.drawer_history),
+              title: context.loc.drawerHistory,
               onTap: () => _navTopLevel(context, HistoryScreen.routePath),
               selected: currentRoute == HistoryScreen.routePath,
             ),
@@ -218,7 +217,7 @@ class _AppDrawerState extends State<AppDrawer>
               context,
               icon: FontAwesomeIcons.tag,
               isFontAwesome: true,
-              title: tr(LocaleKeys.drawer_tags),
+              title: context.loc.drawerTags,
               onTap: () => _navTopLevel(context, TagListingScreen.routePath),
               selected: currentRoute == TagListingScreen.routePath,
             ),
@@ -226,7 +225,7 @@ class _AppDrawerState extends State<AppDrawer>
           _buildDrawerTile(
             context,
             icon: Icons.share,
-            title: tr(LocaleKeys.drawer_share),
+            title: context.loc.drawerShare,
             onTap: () {
               Navigator.pop(context);
               Share.share('Checkout GitJournal https://gitjournal.io/');
@@ -238,7 +237,7 @@ class _AppDrawerState extends State<AppDrawer>
             _buildDrawerTile(
               context,
               icon: Icons.feedback,
-              title: tr(LocaleKeys.drawer_rate),
+              title: context.loc.drawerRate,
               onTap: () {
                 LaunchReview.launch(
                   androidAppId: "io.gitjournal.gitjournal",
@@ -252,7 +251,7 @@ class _AppDrawerState extends State<AppDrawer>
           _buildDrawerTile(
             context,
             icon: Icons.rate_review,
-            title: tr(LocaleKeys.drawer_feedback),
+            title: context.loc.drawerFeedback,
             onTap: () async {
               await createFeedback(context);
               Navigator.pop(context);
@@ -261,7 +260,7 @@ class _AppDrawerState extends State<AppDrawer>
           _buildDrawerTile(
             context,
             icon: Icons.bug_report,
-            title: tr(LocaleKeys.drawer_bug),
+            title: context.loc.drawerBug,
             onTap: () async {
               await createBugReport(context);
               Navigator.pop(context);
@@ -271,7 +270,7 @@ class _AppDrawerState extends State<AppDrawer>
             _buildDrawerTile(
               context,
               icon: Icons.settings,
-              title: tr(LocaleKeys.settings_title),
+              title: context.loc.settingsTitle,
               onTap: () {
                 Navigator.pop(context);
                 var _ = Navigator.pushNamed(context, SettingsScreen.routePath);

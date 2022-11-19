@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 import 'package:gitjournal/core/folder/flattened_notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder.dart';
@@ -147,7 +148,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
       },
     );
 
-    var title = Text(tr(LocaleKeys.screens_folders_title));
+    var title = Text(context.loc.screensFoldersTitle);
     if (_selectedFolder != null) {
       title = Text(LocaleKeys.screens_folders_selected.tr());
     }

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/markdown_renderer_config.dart';
@@ -41,10 +42,8 @@ class SettingsDisplayImagesThemingScreenState
         key: doNotThemeTagsKey,
         style: Theme.of(context).textTheme.headline6,
         decoration: InputDecoration(
-          hintText:
-              tr(LocaleKeys.settings_display_images_theming_doThemeTags_hint),
-          labelText:
-              tr(LocaleKeys.settings_display_images_theming_doThemeTags_label),
+          hintText: context.loc.settingsDisplayImagesThemingDoThemeTagsHint,
+          labelText: context.loc.settingsDisplayImagesThemingDoThemeTagsLabel,
         ),
         validator: (String? value) {
           value = value!.trim();
@@ -81,10 +80,8 @@ class SettingsDisplayImagesThemingScreenState
         key: doThemeTagsKey,
         style: Theme.of(context).textTheme.headline6,
         decoration: InputDecoration(
-          hintText:
-              tr(LocaleKeys.settings_display_images_theming_doThemeTags_hint),
-          labelText:
-              tr(LocaleKeys.settings_display_images_theming_doThemeTags_label),
+          hintText: context.loc.settingsDisplayImagesThemingDoThemeTagsHint,
+          labelText: context.loc.settingsDisplayImagesThemingDoThemeTagsLabel,
         ),
         validator: (String? value) {
           if (parseTags(value!).isEmpty) {
@@ -195,7 +192,7 @@ class SettingsDisplayImagesThemingScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr(LocaleKeys.settings_display_images_theming_title)),
+        title: Text(context.loc.settingsDisplayImagesThemingTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:easy_localization/easy_localization.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 import 'package:gitjournal/core/image.dart' as core;
 import 'package:gitjournal/core/image.dart';
@@ -18,7 +18,6 @@ import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/editors/undo_redo.dart';
 import 'package:gitjournal/editors/utils/disposable_change_notifier.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'org_text_controller.dart';
@@ -257,7 +256,7 @@ class _NoteEditor extends StatelessWidget {
       maxLines: null,
       style: textStyle(context),
       decoration: InputDecoration(
-        hintText: tr(LocaleKeys.editors_common_defaultBodyHint),
+        hintText: context.loc.editorsCommonDefaultBodyHint,
         border: InputBorder.none,
         isDense: true,
         fillColor: theme.scaffoldBackgroundColor,

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/markdown_renderer_config.dart';
@@ -120,7 +121,7 @@ class SettingsDisplayImagesCaptionScreenState
 
     var body = ListView(children: <Widget>[
       ListPreference(
-        title: tr(LocaleKeys.settings_display_images_captions_useAsCaption),
+        title: context.loc.settingsDisplayImagesCaptionsUseAsCaption,
         currentOption: settings.useAsCaption.toPublicString(),
         options: SettingsImageTextType.options
             .map((e) => e.toPublicString())
@@ -133,8 +134,8 @@ class SettingsDisplayImagesCaptionScreenState
         },
       ),
       SwitchListTile(
-        title: Text(
-            tr(LocaleKeys.settings_display_images_captions_overlayCaption)),
+        title:
+            Text(context.loc.settingsDisplayImagesCaptionsOverlayCaption),
         value: settings.overlayCaption,
         onChanged: (bool newVal) {
           settings.overlayCaption = newVal;
@@ -163,7 +164,7 @@ class SettingsDisplayImagesCaptionScreenState
         ),
       SwitchListTile(
         title: Text(
-            tr(LocaleKeys.settings_display_images_captions_tooltipFirst_title)),
+            context.loc.settingsDisplayImagesCaptionsTooltipFirstTitle),
         value: settings.tooltipFirst,
         subtitle: settings.tooltipFirst
             ? Text(tr(LocaleKeys
@@ -176,12 +177,12 @@ class SettingsDisplayImagesCaptionScreenState
         },
       ),
       SettingsHeader(
-        tr(LocaleKeys.settings_display_images_captions_captionOverrides),
+        context.loc.settingsDisplayImagesCaptionsCaptionOverrides,
       ),
       Padding(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-        child: Text(
-            tr(LocaleKeys.settings_display_images_captions_tagDescription)),
+        child:
+            Text(context.loc.settingsDisplayImagesCaptionsTagDescription),
       ),
       ListTile(title: doCaptionTagsForm),
       ListTile(title: doNotCaptionTagsForm)
@@ -189,7 +190,7 @@ class SettingsDisplayImagesCaptionScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr(LocaleKeys.settings_display_images_captions_title)),
+        title: Text(context.loc.settingsDisplayImagesCaptionsTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

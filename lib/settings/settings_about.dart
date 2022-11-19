@@ -13,6 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/settings/widgets/version_number_widgit.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 const _privacyUrl = "https://gitjournal.io/privacy";
 const _termsUrl = "https://gitjournal.io/terms";
@@ -66,7 +67,7 @@ class SettingsAboutPage extends StatelessWidget {
     );
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr(LocaleKeys.settings_project_about)),
+        title: Text(context.loc.settingsProjectAbout),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

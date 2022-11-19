@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/folder/notes_folder.dart';
@@ -79,7 +80,7 @@ class _NoteFileTypesSettingsState extends State<NoteFileTypesSettings> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr(LocaleKeys.settings_fileTypes_title)),
+        title: Text(context.loc.settingsFileTypesTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

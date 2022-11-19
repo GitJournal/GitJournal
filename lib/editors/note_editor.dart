@@ -15,6 +15,7 @@ import 'package:function_types/function_types.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import 'package:synchronized/synchronized.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
@@ -377,8 +378,8 @@ class NoteEditorState extends State<NoteEditor>
       context: context,
       builder: (_) => RenameDialog(
         oldPath: note.fileName,
-        inputDecoration: tr(LocaleKeys.widgets_NoteEditor_fileName),
-        dialogTitle: tr(LocaleKeys.widgets_NoteEditor_renameFile),
+        inputDecoration: context.loc.widgetsNoteEditorFileName,
+        dialogTitle: context.loc.widgetsNoteEditorRenameFile,
       ),
     );
     if (dialogResponse is! String) {
@@ -399,8 +400,8 @@ class NoteEditorState extends State<NoteEditor>
       if (renameResult.isFailure) {
         await showAlertDialog(
           context,
-          tr(LocaleKeys.editors_common_saveNoteFailed_title),
-          tr(LocaleKeys.editors_common_saveNoteFailed_message),
+          context.loc.editorsCommonSaveNoteFailedTitle,
+          context.loc.editorsCommonSaveNoteFailedMessage,
         );
       }
       if (!mounted) return;
@@ -535,8 +536,8 @@ class NoteEditorState extends State<NoteEditor>
 
       await showAlertDialog(
         context,
-        tr(LocaleKeys.editors_common_saveNoteFailed_title),
-        tr(LocaleKeys.editors_common_saveNoteFailed_message),
+        context.loc.editorsCommonSaveNoteFailedTitle,
+        context.loc.editorsCommonSaveNoteFailedMessage,
       );
       return false;
     }

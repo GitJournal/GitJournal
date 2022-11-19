@@ -13,6 +13,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:function_types/function_types.dart';
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
@@ -191,7 +192,7 @@ class __CurrentRepoState extends State<_CurrentRepo>
 
     if (remoteConfigs.isEmpty) {
       setState(() {
-        _gitRemoteUrl = tr(LocaleKeys.drawer_remote);
+        _gitRemoteUrl = context.loc.drawerRemote;
       });
       return;
     }

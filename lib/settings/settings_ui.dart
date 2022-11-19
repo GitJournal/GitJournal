@@ -22,6 +22,7 @@ import 'package:gitjournal/settings/widgets/language_selector.dart';
 import 'package:gitjournal/settings/widgets/settings_header.dart';
 import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 const feature_themes = false;
 
@@ -36,9 +37,9 @@ class SettingsUIScreen extends StatelessWidget {
 
     var list = ListView(
       children: [
-        SettingsHeader(tr(LocaleKeys.settings_display_title)),
+        SettingsHeader(context.loc.settingsDisplayTitle),
         ListPreference(
-          title: tr(LocaleKeys.settings_display_theme),
+          title: context.loc.settingsDisplayTheme,
           currentOption: settings.theme.toPublicString(),
           options:
               SettingsTheme.options.map((f) => f.toPublicString()).toList(),
@@ -78,8 +79,8 @@ class SettingsUIScreen extends StatelessWidget {
           ),
         const LanguageSelector(),
         ListTile(
-          title: Text(tr(LocaleKeys.settings_display_images_title)),
-          subtitle: Text(tr(LocaleKeys.settings_display_images_subtitle)),
+          title: Text(context.loc.settingsDisplayImagesTitle),
+          subtitle: Text(context.loc.settingsDisplayImagesSubtitle),
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => SettingsDisplayImagesScreen(),
@@ -93,7 +94,7 @@ class SettingsUIScreen extends StatelessWidget {
         ProOverlay(
           feature: Feature.customizeHomeScreen,
           child: ListPreference(
-            title: tr(LocaleKeys.settings_display_homeScreen),
+            title: context.loc.settingsDisplayHomeScreen,
             currentOption: settings.homeScreen.toPublicString(),
             options: SettingsHomeScreen.options
                 .map((f) => f.toPublicString())
@@ -108,8 +109,8 @@ class SettingsUIScreen extends StatelessWidget {
         ProOverlay(
           feature: Feature.configureBottomMenuBar,
           child: ListTile(
-            title: Text(tr(LocaleKeys.settings_bottomMenuBar_title)),
-            subtitle: Text(tr(LocaleKeys.settings_bottomMenuBar_subtitle)),
+            title: Text(context.loc.settingsBottomMenuBarTitle),
+            subtitle: Text(context.loc.settingsBottomMenuBarSubtitle),
             onTap: () {
               var route = MaterialPageRoute(
                 builder: (context) => BottomMenuBarSettings(),
@@ -121,7 +122,7 @@ class SettingsUIScreen extends StatelessWidget {
           ),
         ),
         ListTile(
-          title: Text(tr(LocaleKeys.settings_misc_title)),
+          title: Text(context.loc.settingsMiscTitle),
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => SettingsMisc(),

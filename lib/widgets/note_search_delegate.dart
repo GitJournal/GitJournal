@@ -6,7 +6,6 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/folder/notes_folder.dart';
@@ -14,7 +13,7 @@ import 'package:gitjournal/core/folder/virtual_notes_folder.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 class NoteSearchDelegate extends SearchDelegate<Note?> {
   final List<Note> notes;
@@ -82,7 +81,7 @@ class NoteSearchDelegate extends SearchDelegate<Note?> {
 
     var folderConfig = Provider.of<NotesFolderConfig>(context);
     var folder = VirtualNotesFolder(filteredNotes, folderConfig);
-    var emptyText = tr(LocaleKeys.widgets_FolderView_searchFailed);
+    var emptyText = context.loc.widgetsFolderViewSearchFailed;
 
     return buildFolderView(
       viewType: viewType,

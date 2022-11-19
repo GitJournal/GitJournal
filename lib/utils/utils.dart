@@ -8,15 +8,14 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 
 import 'package:dart_date/dart_date.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:time/time.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note_storage.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/result.dart';
 import '../core/note.dart';
@@ -40,11 +39,11 @@ Future<String> getVersionString({bool includeAppName = true}) async {
 }
 
 SnackBar buildUndoDeleteSnackbar(
-    GitJournalRepo stateContainer, Note deletedNote) {
+    BuildContext context, GitJournalRepo stateContainer, Note deletedNote) {
   return SnackBar(
-    content: Text(tr(LocaleKeys.widgets_FolderView_noteDeleted)),
+    content: Text(context.loc.widgetsFolderViewNoteDeleted),
     action: SnackBarAction(
-      label: tr(LocaleKeys.widgets_FolderView_undo),
+      label: context.loc.widgetsFolderViewUndo,
       onPressed: () {
         Log.d("Undoing delete");
         stateContainer.undoRemoveNote(deletedNote);

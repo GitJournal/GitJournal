@@ -6,9 +6,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:easy_localization/easy_localization.dart';
-
-import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 class NoteBodyEditor extends StatelessWidget {
   final TextEditingController textController;
@@ -32,7 +30,7 @@ class NoteBodyEditor extends StatelessWidget {
       maxLines: null,
       style: textStyle(context),
       decoration: InputDecoration(
-        hintText: tr(LocaleKeys.editors_common_defaultBodyHint),
+        hintText: context.loc.editorsCommonDefaultBodyHint,
         border: InputBorder.none,
         fillColor: theme.scaffoldBackgroundColor,
         hoverColor: theme.scaffoldBackgroundColor,

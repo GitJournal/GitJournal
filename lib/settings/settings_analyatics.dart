@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/app_config.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 class SettingsAnalytics extends StatelessWidget {
   static const routePath = '/settings/analytics';
@@ -30,7 +31,7 @@ class SettingsAnalytics extends StatelessWidget {
         const Divider(),
         const _AnalyticsSwitchListTile(),
         SwitchListTile(
-          title: Text(tr(LocaleKeys.settings_crashReports)),
+          title: Text(context.loc.settingsCrashReports),
           value: appConfig.collectCrashReports,
           onChanged: (bool val) {
             appConfig.collectCrashReports = val;
@@ -77,7 +78,7 @@ class _AnalyticsSwitchListTileState extends State<_AnalyticsSwitchListTile> {
     var analytics = Analytics.instance!;
 
     return SwitchListTile(
-      title: Text(tr(LocaleKeys.settings_usageStats)),
+      title: Text(context.loc.settingsUsageStats),
       value: analytics.enabled,
       onChanged: (bool val) {
         analytics.enabled = val;

@@ -11,9 +11,9 @@ import 'package:provider/provider.dart';
 
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 class SettingsImagesScreen extends StatefulWidget {
   static const routePath = '/settings/images';
@@ -74,7 +74,7 @@ class SettingsImagesScreenState extends State<SettingsImagesScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr(LocaleKeys.settings_images_title)),
+        title: Text(context.loc.settingsImagesTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

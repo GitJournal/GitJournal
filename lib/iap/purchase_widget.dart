@@ -21,6 +21,7 @@ import 'package:gitjournal/iap/purchase_slider.dart';
 import 'package:gitjournal/iap/purchase_thankyou_screen.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/utils/utils.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 class PurchaseButton extends StatelessWidget {
   final ProductDetails? product;
@@ -49,7 +50,7 @@ class PurchaseButton extends StatelessWidget {
         text += '/ $timePeriod';
       }
     } else {
-      text = tr(LocaleKeys.widgets_PurchaseButton_fail);
+      text = context.loc.widgetsPurchaseButtonFail;
     }
 
     return Padding(
@@ -322,11 +323,11 @@ class PurchaseFailedDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(tr(LocaleKeys.widgets_PurchaseWidget_failed)),
+      title: Text(context.loc.widgetsPurchaseWidgetFailed),
       content: Text(text),
       actions: <Widget>[
         TextButton(
-          child: Text(tr(LocaleKeys.settings_ok)),
+          child: Text(context.loc.settingsOk),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ],
@@ -346,7 +347,7 @@ class _RestorePurchaseButtonState extends State<RestorePurchaseButton> {
 
   @override
   Widget build(BuildContext context) {
-    var text = computing ? '...' : tr(LocaleKeys.purchase_screen_restore);
+    var text = computing ? '...' : context.loc.purchaseScreenRestore;
 
     return OutlinedButton(
       child: Text(

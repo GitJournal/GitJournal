@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:provider/provider.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'git_config.dart';
@@ -73,11 +74,11 @@ class _GitAuthorEmailDialogState extends State<_GitAuthorEmailDialog> {
       content: form,
       actions: <Widget>[
         TextButton(
-          child: Text(tr(LocaleKeys.settings_cancel)),
+          child: Text(context.loc.settingsCancel),
           onPressed: () => Navigator.of(context).pop(),
         ),
         TextButton(
-          child: Text(tr(LocaleKeys.settings_ok)),
+          child: Text(context.loc.settingsOk),
           onPressed: isValidEmail == true
               ? () => Navigator.of(context).pop(email)
               : null,
@@ -88,16 +89,16 @@ class _GitAuthorEmailDialogState extends State<_GitAuthorEmailDialog> {
 
   String? _validate(String? value) {
     if (value == null) {
-      return tr(LocaleKeys.settings_email_validator_empty);
+      return context.loc.settingsEmailValidatorEmpty;
     }
 
     value = value.trim();
     if (value.isEmpty) {
-      return tr(LocaleKeys.settings_email_validator_empty);
+      return context.loc.settingsEmailValidatorEmpty;
     }
 
     if (!EmailValidator.validate(value)) {
-      return tr(LocaleKeys.settings_email_validator_invalid);
+      return context.loc.settingsEmailValidatorInvalid;
     }
     return null;
   }
@@ -150,7 +151,7 @@ class __GitAuthorDialogState extends State<_GitAuthorDialog> {
       validator: (String? value) {
         value = value!.trim();
         if (value.isEmpty) {
-          return tr(LocaleKeys.settings_author_validator);
+          return context.loc.settingsAuthorValidator;
         }
         return null;
       },
@@ -169,11 +170,11 @@ class __GitAuthorDialogState extends State<_GitAuthorDialog> {
       content: form,
       actions: <Widget>[
         TextButton(
-          child: Text(tr(LocaleKeys.settings_cancel)),
+          child: Text(context.loc.settingsCancel),
           onPressed: () => Navigator.of(context).pop(),
         ),
         TextButton(
-          child: Text(tr(LocaleKeys.settings_ok)),
+          child: Text(context.loc.settingsOk),
           onPressed:
               isValid == true ? () => Navigator.of(context).pop(author) : null,
         ),

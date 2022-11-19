@@ -5,10 +5,7 @@
  */
 
 import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
-
-import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 class PurchaseThankYouScreen extends StatelessWidget {
   static const routePath = '/purchase_thank_you';
@@ -20,11 +17,11 @@ class PurchaseThankYouScreen extends StatelessWidget {
     Widget w = Column(
       children: <Widget>[
         Text(
-          tr(LocaleKeys.purchase_screen_thanks_title),
+          context.loc.purchaseScreenThanksTitle,
           style: textTheme.headline3,
         ),
         Text(
-          tr(LocaleKeys.purchase_screen_thanks_subtitle),
+          context.loc.purchaseScreenThanksSubtitle,
           style: textTheme.headline4,
           textAlign: TextAlign.center,
         ),

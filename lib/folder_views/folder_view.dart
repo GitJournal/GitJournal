@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:git_bindings/git_bindings.dart';
 import 'package:provider/provider.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/app_router.dart';
@@ -135,7 +136,7 @@ class _FolderViewState extends State<FolderView> {
     var folderView = buildFolderView(
       viewType: _viewType,
       folder: _sortedNotesFolder!,
-      emptyText: tr(LocaleKeys.screens_folder_view_empty),
+      emptyText: context.loc.screensFolderViewEmpty,
       header: _headerType,
       showSummary: _showSummary,
       noteTapped: _noteTapped,
@@ -389,8 +390,7 @@ class _FolderViewState extends State<FolderView> {
         return StatefulBuilder(
           builder: (BuildContext context, setState) {
             var children = <Widget>[
-              SettingsHeader(
-                  tr(LocaleKeys.widgets_FolderView_headerOptions_heading)),
+              SettingsHeader(context.loc.widgetsFolderViewHeaderOptionsHeading),
               RadioListTile<StandardViewHeader>(
                 title: Text(tr(
                     LocaleKeys.widgets_FolderView_headerOptions_titleFileName)),
@@ -402,8 +402,7 @@ class _FolderViewState extends State<FolderView> {
                 },
               ),
               RadioListTile<StandardViewHeader>(
-                title:
-                    Text(tr(LocaleKeys.widgets_FolderView_headerOptions_auto)),
+                title: Text(context.loc.widgetsFolderViewHeaderOptionsAuto),
                 value: StandardViewHeader.TitleGenerated,
                 groupValue: _headerType,
                 onChanged: (newVal) {
@@ -413,8 +412,7 @@ class _FolderViewState extends State<FolderView> {
               ),
               RadioListTile<StandardViewHeader>(
                 key: const ValueKey("ShowFileNameOnly"),
-                title: Text(
-                    tr(LocaleKeys.widgets_FolderView_headerOptions_fileName)),
+                title: Text(context.loc.widgetsFolderViewHeaderOptionsFileName),
                 value: StandardViewHeader.FileName,
                 groupValue: _headerType,
                 onChanged: (newVal) {
@@ -424,8 +422,7 @@ class _FolderViewState extends State<FolderView> {
               ),
               SwitchListTile(
                 key: const ValueKey("SummaryToggle"),
-                title: Text(
-                    tr(LocaleKeys.widgets_FolderView_headerOptions_summary)),
+                title: Text(context.loc.widgetsFolderViewHeaderOptionsSummary),
                 value: _showSummary,
                 onChanged: (bool newVal) {
                   setState(() {
@@ -439,8 +436,8 @@ class _FolderViewState extends State<FolderView> {
             return AlertDialog(
               title: GestureDetector(
                 key: const ValueKey("Hack_Back"),
-                child: Text(
-                    tr(LocaleKeys.widgets_FolderView_headerOptions_customize)),
+                child:
+                    Text(context.loc.widgetsFolderViewHeaderOptionsCustomize),
                 onTap: () {
                   // Hack to get out of the dialog in the tests
                   // driver.findByType('ModalBarrier') doesn't seem to be working
@@ -472,31 +469,31 @@ class _FolderViewState extends State<FolderView> {
       builder: (BuildContext context) {
         var children = <Widget>[
           RadioListTile<FolderViewType>(
-            title: Text(tr(LocaleKeys.widgets_FolderView_views_standard)),
+            title: Text(context.loc.widgetsFolderViewViewsStandard),
             value: FolderViewType.Standard,
             groupValue: _viewType,
             onChanged: onViewChange,
           ),
           RadioListTile<FolderViewType>(
-            title: Text(tr(LocaleKeys.widgets_FolderView_views_journal)),
+            title: Text(context.loc.widgetsFolderViewViewsJournal),
             value: FolderViewType.Journal,
             groupValue: _viewType,
             onChanged: onViewChange,
           ),
           RadioListTile<FolderViewType>(
-            title: Text(tr(LocaleKeys.widgets_FolderView_views_grid)),
+            title: Text(context.loc.widgetsFolderViewViewsGrid),
             value: FolderViewType.Grid,
             groupValue: _viewType,
             onChanged: onViewChange,
           ),
           RadioListTile<FolderViewType>(
-            title: Text(tr(LocaleKeys.widgets_FolderView_views_card)),
+            title: Text(context.loc.widgetsFolderViewViewsCard),
             value: FolderViewType.Card,
             groupValue: _viewType,
             onChanged: onViewChange,
           ),
           // RadioListTile<FolderViewType>(
-          //   title: Text(tr(LocaleKeys.widgets_FolderView_views_calendar)),
+          //   title: Text(context.loc.widgetsFolderViewViewsCalendar),
           //   value: FolderViewType.Calendar,
           //   groupValue: _viewType,
           //   onChanged: onViewChange,
@@ -504,7 +501,7 @@ class _FolderViewState extends State<FolderView> {
         ];
 
         return AlertDialog(
-          title: Text(tr(LocaleKeys.widgets_FolderView_views_select)),
+          title: Text(context.loc.widgetsFolderViewViewsSelect),
           content: Column(
             children: children,
             mainAxisSize: MainAxisSize.min,
@@ -545,13 +542,13 @@ class _FolderViewState extends State<FolderView> {
         PopupMenuItem<DropDownChoices>(
           key: const ValueKey("SortingOptions"),
           value: DropDownChoices.SortingOptions,
-          child: Text(tr(LocaleKeys.widgets_FolderView_sortingOptions)),
+          child: Text(context.loc.widgetsFolderViewSortingOptions),
         ),
         if (_viewType == FolderViewType.Standard)
           PopupMenuItem<DropDownChoices>(
             key: const ValueKey("ViewOptions"),
             value: DropDownChoices.ViewOptions,
-            child: Text(tr(LocaleKeys.widgets_FolderView_viewOptions)),
+            child: Text(context.loc.widgetsFolderViewViewOptions),
           ),
       ],
     );
@@ -594,7 +591,7 @@ class _FolderViewState extends State<FolderView> {
           <PopupMenuEntry<NoteSelectedExtraActions>>[
         PopupMenuItem<NoteSelectedExtraActions>(
           value: NoteSelectedExtraActions.MoveToFolder,
-          child: Text(tr(LocaleKeys.widgets_FolderView_actions_moveToFolder)),
+          child: Text(context.loc.widgetsFolderViewActionsMoveToFolder),
         ),
       ],
     );

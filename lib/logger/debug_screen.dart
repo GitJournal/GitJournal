@@ -9,11 +9,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/utils/utils.dart';
@@ -60,7 +59,7 @@ class _DebugScreenState extends State<DebugScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr(LocaleKeys.settings_debug_title)),
+        title: Text(context.loc.settingsDebugTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -157,7 +156,7 @@ class _DebugScreenState extends State<DebugScreen> {
     }
 
     Clipboard.setData(ClipboardData(text: messages.join('\n')));
-    showSnackbar(context, tr(LocaleKeys.settings_debug_copy));
+    showSnackbar(context, context.loc.settingsDebugCopy);
   }
 
   Widget _buildLogWidget(LogMessage msg) {
@@ -297,19 +296,18 @@ class _DebugScreenState extends State<DebugScreen> {
     var filterLevel = appConfig.debugLogLevel;
 
     var dialog = AlertDialog(
-      title: Text(tr(LocaleKeys.settings_debug_levels_title)),
+      title: Text(context.loc.settingsDebugLevelsTitle),
       content: Column(
         children: <Widget>[
           FilterListTile(
-              tr(LocaleKeys.settings_debug_levels_error), 'e', filterLevel),
+              context.loc.settingsDebugLevelsError, 'e', filterLevel),
           FilterListTile(
-              tr(LocaleKeys.settings_debug_levels_warning), 'w', filterLevel),
+              context.loc.settingsDebugLevelsWarning, 'w', filterLevel),
+          FilterListTile(context.loc.settingsDebugLevelsInfo, 'i', filterLevel),
           FilterListTile(
-              tr(LocaleKeys.settings_debug_levels_info), 'i', filterLevel),
+              context.loc.settingsDebugLevelsDebug, 'd', filterLevel),
           FilterListTile(
-              tr(LocaleKeys.settings_debug_levels_debug), 'd', filterLevel),
-          FilterListTile(
-              tr(LocaleKeys.settings_debug_levels_verbose), 'v', filterLevel),
+              context.loc.settingsDebugLevelsVerbose, 'v', filterLevel),
         ],
         mainAxisSize: MainAxisSize.min,
       ),

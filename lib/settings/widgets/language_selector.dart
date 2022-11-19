@@ -11,7 +11,8 @@ import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:language_picker/languages.dart';
 
-import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/app_localizations_context.dart';
+
 import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
 
 class LanguageSelector extends StatelessWidget {
@@ -26,7 +27,7 @@ class LanguageSelector extends StatelessWidget {
     }
 
     return ListPreference(
-      title: tr(LocaleKeys.settings_display_lang),
+      title: context.loc.settingsDisplayLang,
       currentOption: Language.fromIsoCode(
         easyLocale.currentLocale!.toStringWithSeparator(),
       ).name,

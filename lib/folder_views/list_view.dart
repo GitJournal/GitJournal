@@ -169,7 +169,7 @@ class _FolderListViewState extends State<FolderListView> {
           var stateContainer = context.read<GitJournalRepo>();
           stateContainer.removeNote(note);
 
-          var snackBar = buildUndoDeleteSnackbar(stateContainer, note);
+          var snackBar = buildUndoDeleteSnackbar(context, stateContainer, note);
           ScaffoldMessenger.of(context)
             ..removeCurrentSnackBar()
             ..showSnackBar(snackBar);

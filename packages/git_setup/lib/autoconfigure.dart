@@ -4,15 +4,16 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:function_types/function_types.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 import 'package:git_setup/git_config.dart';
 import 'apis/githost_factory.dart';
@@ -75,7 +76,7 @@ class GitHostSetupAutoConfigurePageState
         UserInfo? userInfo;
         try {
           setState(() {
-            _message = tr(LocaleKeys.setup_autoconfigure_readUser);
+            _message = context.loc.setupAutoconfigureReadUser;
           });
 
           Log.d("Starting to fetch userInfo");
@@ -148,29 +149,29 @@ class GitHostSetupAutoConfigurePageState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          tr(LocaleKeys.setup_autoConfigure_title),
+          context.loc.setupAutoConfigureTitle,
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 32.0),
 
         // Step 1
         Text(
-          tr(LocaleKeys.setup_autoconfigure_step1),
+          context.loc.setupAutoconfigureStep1,
           style: Theme.of(context).textTheme.bodyText1,
         ),
         const SizedBox(height: 8.0),
         Text(
-          tr(LocaleKeys.setup_autoconfigure_step2),
+          context.loc.setupAutoconfigureStep2,
           style: Theme.of(context).textTheme.bodyText1,
         ),
         const SizedBox(height: 8.0),
         Text(
-          tr(LocaleKeys.setup_autoconfigure_step3),
+          context.loc.setupAutoconfigureStep3,
           style: Theme.of(context).textTheme.bodyText1,
         ),
         const SizedBox(height: 32.0),
         Text(
-          tr(LocaleKeys.setup_autoconfigure_warning),
+          context.loc.setupAutoconfigureWarning,
           style: Theme.of(context).textTheme.bodyText1!.copyWith(
                 fontStyle: FontStyle.italic,
               ),
@@ -178,7 +179,7 @@ class GitHostSetupAutoConfigurePageState
         const SizedBox(height: 32.0),
 
         GitHostSetupButton(
-          text: tr(LocaleKeys.setup_autoconfigure_authorize),
+          text: context.loc.setupAutoconfigureAuthorize,
           onPressed: _startAutoConfigure,
         ),
       ],

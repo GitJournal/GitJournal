@@ -14,6 +14,7 @@ import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/settings_git_remote.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'home_screen.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 class ErrorScreen extends StatelessWidget {
   static const routePath = '/error';
@@ -73,7 +74,7 @@ class ErrorScreen extends StatelessWidget {
         ),
       ),
       RedButton(
-        text: tr(LocaleKeys.settings_deleteRepo),
+        text: context.loc.settingsDeleteRepo,
         onPressed: () async {
           var ok = await showDialog(
             context: context,

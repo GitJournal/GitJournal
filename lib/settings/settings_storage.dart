@@ -15,6 +15,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_io/io.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
@@ -48,7 +49,7 @@ class SettingsStorageScreen extends StatelessWidget {
     var list = ListView(
       children: [
         ListPreference(
-          title: tr(LocaleKeys.settings_note_newNoteFileName),
+          title: context.loc.settingsNoteNewNoteFileName,
           currentOption: folderConfig.fileNameFormat.toPublicString(),
           options: NoteFileNameFormat.options
               .map((f) => f.toPublicString())
@@ -62,8 +63,8 @@ class SettingsStorageScreen extends StatelessWidget {
         const DefaultFileFormatTile(),
         const DefaultNoteFolderTile(),
         ListTile(
-          title: Text(tr(LocaleKeys.settings_noteMetaData_title)),
-          subtitle: Text(tr(LocaleKeys.settings_noteMetaData_subtitle)),
+          title: Text(context.loc.settingsNoteMetaDataTitle),
+          subtitle: Text(context.loc.settingsNoteMetaDataSubtitle),
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => NoteMetadataSettingsScreen(),
@@ -75,8 +76,8 @@ class SettingsStorageScreen extends StatelessWidget {
           },
         ),
         ListTile(
-          title: Text(tr(LocaleKeys.settings_fileTypes_title)),
-          subtitle: Text(tr(LocaleKeys.settings_fileTypes_subtitle)),
+          title: Text(context.loc.settingsFileTypesTitle),
+          subtitle: Text(context.loc.settingsFileTypesSubtitle),
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => const NoteFileTypesSettings(),
@@ -90,8 +91,8 @@ class SettingsStorageScreen extends StatelessWidget {
         ProOverlay(
           feature: Feature.inlineTags,
           child: ListTile(
-            title: Text(tr(LocaleKeys.settings_tags_title)),
-            subtitle: Text(tr(LocaleKeys.settings_tags_subtitle)),
+            title: Text(context.loc.settingsTagsTitle),
+            subtitle: Text(context.loc.settingsTagsSubtitle),
             onTap: () {
               var route = MaterialPageRoute(
                 builder: (context) => const SettingsTagsScreen(),
@@ -103,8 +104,8 @@ class SettingsStorageScreen extends StatelessWidget {
           ),
         ),
         ListTile(
-          title: Text(tr(LocaleKeys.settings_images_title)),
-          subtitle: Text(tr(LocaleKeys.settings_images_subtitle)),
+          title: Text(context.loc.settingsImagesTitle),
+          subtitle: Text(context.loc.settingsImagesSubtitle),
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => SettingsImagesScreen(),
@@ -115,10 +116,10 @@ class SettingsStorageScreen extends StatelessWidget {
             var _ = Navigator.push(context, route);
           },
         ),
-        SettingsHeader(tr(LocaleKeys.settings_storage_title)),
+        SettingsHeader(context.loc.settingsStorageTitle),
         if (Platform.isAndroid)
           SwitchListTile(
-            title: Text(tr(LocaleKeys.settings_storage_external)),
+            title: Text(context.loc.settingsStorageExternal),
             value: !storageConfig.storeInternally,
             onChanged: (bool newVal) async {
               Future<void> moveBackToInternal(bool showError) async {
@@ -165,14 +166,14 @@ class SettingsStorageScreen extends StatelessWidget {
           ),
         if (Platform.isAndroid)
           ListTile(
-            title: Text(tr(LocaleKeys.settings_storage_repoLocation)),
+            title: Text(context.loc.settingsStorageRepoLocation),
             subtitle: Text(p.join(
                 storageConfig.storageLocation, storageConfig.folderName)),
             enabled: !storageConfig.storeInternally,
           ),
         if (Platform.isIOS)
           SwitchListTile(
-            title: Text(tr(LocaleKeys.settings_storage_icloud)),
+            title: Text(context.loc.settingsStorageIcloud),
             value: !storageConfig.storeInternally,
             onChanged: (bool newVal) async {
               if (newVal == false) {
@@ -191,7 +192,7 @@ class SettingsStorageScreen extends StatelessWidget {
           ),
         if (Platform.isLinux || Platform.isMacOS)
           ListTile(
-            title: Text(tr(LocaleKeys.settings_storage_repoLocation)),
+            title: Text(context.loc.settingsStorageRepoLocation),
             subtitle: Text(repo.repoPath),
             enabled: !storageConfig.storeInternally,
           ),
@@ -283,11 +284,11 @@ class DefaultNoteFolderTile extends StatelessWidget {
 
     var defaultNewFolder = settings.defaultNewNoteFolderSpec;
     if (defaultNewFolder.isEmpty) {
-      defaultNewFolder = tr(LocaleKeys.rootFolder);
+      defaultNewFolder = context.loc.rootFolder;
     } else {
       // Reset the settings in case the folder no longer exists
       if (!folderWithSpecExists(context, defaultNewFolder)) {
-        defaultNewFolder = tr(LocaleKeys.rootFolder);
+        defaultNewFolder = context.loc.rootFolder;
 
         settings.defaultNewNoteFolderSpec = "";
         settings.save();
@@ -295,7 +296,7 @@ class DefaultNoteFolderTile extends StatelessWidget {
     }
 
     return ListTile(
-      title: Text(tr(LocaleKeys.settings_note_defaultFolder)),
+      title: Text(context.loc.settingsNoteDefaultFolder),
       subtitle: Text(defaultNewFolder),
       onTap: () async {
         var destFolder = await showDialog<NotesFolderFS>(
@@ -319,7 +320,7 @@ class DefaultFileFormatTile extends StatelessWidget {
     var folderConfig = Provider.of<NotesFolderConfig>(context);
 
     return ListPreference(
-      title: tr(LocaleKeys.settings_editors_defaultNoteFormat),
+      title: context.loc.settingsEditorsDefaultNoteFormat,
       currentOption: folderConfig.defaultFileFormat.toPublicString(),
       options: SettingsNoteFileFormat.options
           .map((f) => f.toPublicString())
