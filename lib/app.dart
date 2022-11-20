@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:auto_updater/auto_updater.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gitjournal/app_localizations_context.dart';
 import 'package:hive/hive.dart';
 import 'package:path/path.dart' as p;
@@ -22,7 +21,6 @@ import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_io/io.dart' show Directory, Platform;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:gitjournal/account/init.dart';
 import 'package:gitjournal/analytics/analytics.dart';
@@ -41,26 +39,6 @@ import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/themes.dart';
-
-// Arranged Alphabetically
-// Remember to update Info.plist
-const gitJournalSupportedLocales = [
-  Locale('de'),
-  Locale('en'),
-  Locale('es'),
-  Locale('fr'),
-  Locale('hu'),
-  Locale('id'),
-  Locale('it'),
-  Locale('ja'),
-  Locale('ko'),
-  Locale('pl'),
-  Locale('pt'),
-  Locale('ru'),
-  Locale('sv'),
-  Locale('vi'),
-  Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'),
-];
 
 class JournalApp extends StatefulWidget {
   static Future<void> main(SharedPreferences pref) async {
@@ -352,13 +330,7 @@ class JournalAppState extends State<JournalApp> {
       navigatorKey: _navigatorKey,
       title: 'GitJournal',
 
-      localizationsDelegates: [
-        if (easyLocale != null) ...easyLocale.delegates,
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
+      localizationsDelegates: buildDelegates(context),
       supportedLocales: easyLocale != null
           ? easyLocale.supportedLocales
           : const <Locale>[Locale('en', 'US')],

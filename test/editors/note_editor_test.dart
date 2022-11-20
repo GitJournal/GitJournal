@@ -12,6 +12,7 @@ import 'package:dart_git/git.dart';
 import 'package:dart_git/plumbing/git_hash.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -55,9 +56,13 @@ void main() {
       appConfig: AppConfig(),
       repoManager: repoManager,
       pref: pref,
-      child: MaterialApp(
-        home: widget,
-      ),
+      child: Builder(builder: (context) {
+        return MaterialApp(
+          home: widget,
+          localizationsDelegates: buildDelegates(context),
+          supportedLocales: gitJournalSupportedLocales,
+        );
+      }),
     );
   }
 
