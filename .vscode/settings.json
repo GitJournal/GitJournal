@@ -1,0 +1,14 @@
+{
+  "cmake.configureOnOpen": false,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "match": "\\.arb$",
+        "cmd": "flutter gen-l10n"
+      }
+    ]
+  }
+}
