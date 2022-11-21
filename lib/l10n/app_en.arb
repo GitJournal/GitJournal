@@ -322,7 +322,12 @@
   "widgetsNoteDeleteDialogNo": "false",
   "widgetsNoteEditorRenameFile": "Rename File",
   "widgetsNoteEditorFileName": "Filename",
-  "widgetsNoteEditorAddType": "Adding '{}' to supported file types",
+  "widgetsNoteEditorAddType": "Adding '{ext}' to supported file types",
+  "@widgetsNoteEditorAddType": {
+    "placeholders": {
+      "ext": {}
+    }
+  },
   "widgetsSyncButtonError": "Sync Error {}",
   "widgetsPurchaseWidgetFailed": "Purchase Failed",
   "widgetsNoteViewerLinkNotFound": "Link '{}' not found",

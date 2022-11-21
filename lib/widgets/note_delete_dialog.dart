@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 class NoteDeleteDialog extends StatelessWidget {
   final int num;
@@ -22,11 +23,11 @@ class NoteDeleteDialog extends StatelessWidget {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(false),
-          child: Text(LocaleKeys.widgets_NoteDeleteDialog_no.tr()),
+          child: Text(context.loc.widgetsNoteDeleteDialogNo),
         ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(true),
-          child: Text(LocaleKeys.widgets_NoteDeleteDialog_yes.tr()),
+          child: Text(context.loc.widgetsNoteDeleteDialogYes),
         ),
       ],
     );

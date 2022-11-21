@@ -27,6 +27,7 @@ import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 class NoteMetadataSettingsScreen extends StatefulWidget {
   static const routePath = '/settings/noteMetaData';
@@ -80,8 +81,8 @@ class _NoteMetadataSettingsScreenState
       modified: modified,
       extraProps: extraProps,
       tags: ISet<String>({
-        LocaleKeys.settings_noteMetaData_exampleTag1.tr(),
-        LocaleKeys.settings_noteMetaData_exampleTag2.tr(),
+        context.loc.settingsNoteMetaDataExampleTag1,
+        context.loc.settingsNoteMetaDataExampleTag2,
       }),
       propsList: extraProps.keys.toIList(),
       serializerSettings: NoteSerializationSettings.fromConfig(parent.config),
@@ -92,7 +93,7 @@ class _NoteMetadataSettingsScreenState
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            LocaleKeys.settings_noteMetaData_text.tr(),
+            context.loc.settingsNoteMetaDataText,
             style: textTheme.bodyText1,
           ),
         ),
@@ -118,7 +119,7 @@ class _NoteMetadataSettingsScreenState
           },
         ),
         ListPreference(
-            title: LocaleKeys.settings_noteMetaData_unixTimestampMagnitude.tr(),
+            title: context.loc.settingsNoteMetaDataUnixTimestampMagnitude,
             options: NoteSerializationUnixTimestampMagnitude.options
                 .map((m) => m.toPublicString())
                 .toList(),

@@ -9,7 +9,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:function_types/function_types.dart';
 import 'package:path/path.dart' as p;
@@ -34,7 +33,6 @@ import 'package:gitjournal/editors/note_editor_selector.dart';
 import 'package:gitjournal/editors/org_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/settings.dart';
@@ -431,12 +429,11 @@ class NoteEditorState extends State<NoteEditor>
         var _ = config.allowedFileExts.add(newExt);
         config.save();
 
-        var ext = newExt.isNotEmpty
-            ? newExt
-            : LocaleKeys.settings_fileTypes_noExt.tr();
+        var ext =
+            newExt.isNotEmpty ? newExt : context.loc.settingsFileTypesNoExt;
         showSnackbar(
           context,
-          LocaleKeys.widgets_NoteEditor_addType.tr(args: [ext]),
+          context.loc.widgetsNoteEditorAddType(ext),
         );
       }
     }
