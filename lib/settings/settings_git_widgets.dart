@@ -4,14 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 import 'package:gitjournal/app_localizations_context.dart';
+import 'package:provider/provider.dart';
 
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'git_config.dart';
 
 class GitAuthorEmail extends StatelessWidget {
@@ -22,7 +19,7 @@ class GitAuthorEmail extends StatelessWidget {
     var gitConfig = Provider.of<GitConfig>(context);
 
     return ListTile(
-      title: Text(LocaleKeys.settings_email_label.tr()),
+      title: Text(context.loc.settingsEmailLabel),
       subtitle: Text(gitConfig.gitAuthorEmail),
       onTap: () async {
         var newEmail = await showDialog(
@@ -70,7 +67,7 @@ class _GitAuthorEmailDialogState extends State<_GitAuthorEmailDialog> {
     );
 
     return AlertDialog(
-      title: Text(LocaleKeys.settings_email_label.tr()),
+      title: Text(context.loc.settingsEmailLabel),
       content: form,
       actions: <Widget>[
         TextButton(
@@ -112,7 +109,7 @@ class GitAuthor extends StatelessWidget {
     var gitConfig = Provider.of<GitConfig>(context);
 
     return ListTile(
-      title: Text(LocaleKeys.settings_author_label.tr()),
+      title: Text(context.loc.settingsAuthorLabel),
       subtitle: Text(gitConfig.gitAuthor),
       onTap: () async {
         var newName = await showDialog(
@@ -166,7 +163,7 @@ class __GitAuthorDialogState extends State<_GitAuthorDialog> {
     );
 
     return AlertDialog(
-      title: Text(LocaleKeys.settings_author_label.tr()),
+      title: Text(context.loc.settingsAuthorLabel),
       content: form,
       actions: <Widget>[
         TextButton(

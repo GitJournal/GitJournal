@@ -5,13 +5,9 @@
  */
 
 import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
-
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/features.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_bottom_menu_bar.dart';
 import 'package:gitjournal/settings/settings_display_images.dart';
@@ -22,7 +18,7 @@ import 'package:gitjournal/settings/widgets/language_selector.dart';
 import 'package:gitjournal/settings/widgets/settings_header.dart';
 import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
-import 'package:gitjournal/app_localizations_context.dart';
+import 'package:provider/provider.dart';
 
 const feature_themes = false;
 
@@ -51,7 +47,7 @@ class SettingsUIScreen extends StatelessWidget {
         ),
         if (feature_themes)
           SettingsTile(
-            title: LocaleKeys.settings_theme_light.tr(),
+            title: context.loc.settingsThemeLight,
             iconData: FontAwesomeIcons.sun,
             onTap: () {
               var route = MaterialPageRoute(
@@ -65,7 +61,7 @@ class SettingsUIScreen extends StatelessWidget {
           ),
         if (feature_themes)
           SettingsTile(
-            title: LocaleKeys.settings_theme_dark.tr(),
+            title: context.loc.settingsThemeDark,
             iconData: FontAwesomeIcons.solidMoon,
             onTap: () {
               var route = MaterialPageRoute(
@@ -136,7 +132,7 @@ class SettingsUIScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(LocaleKeys.settings_list_userInterface_title.tr()),
+        title: Text(context.loc.settingsListUserInterfaceTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

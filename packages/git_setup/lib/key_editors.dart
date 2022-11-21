@@ -6,10 +6,9 @@
 
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:universal_io/io.dart' as io;
 
@@ -24,14 +23,14 @@ class PublicKeyEditor extends StatelessWidget {
     return KeyEditor(formKey, _controller, _validator);
   }
 
-  String? _validator(String? val) {
+  String? _validator(BuildContext context, String? val) {
     if (val == null) {
       return null;
     }
 
     val = val.trim();
     if (!val.startsWith("ssh-")) {
-      return tr("setup.keyEditors.public");
+      return context.loc.setup.keyEditors.public;
     }
     return null;
   }
@@ -48,17 +47,17 @@ class PrivateKeyEditor extends StatelessWidget {
     return KeyEditor(formKey, _controller, _validator);
   }
 
-  String? _validator(String? val) {
+  String? _validator(BuildContext context, String? val) {
     if (val == null) {
       return null;
     }
 
     val = val.trim();
     if (!val.startsWith("-----BEGIN ")) {
-      return tr("setup.keyEditors.private");
+      return context.loc.setup.keyEditors.private;
     }
     if (!val.endsWith("PRIVATE KEY-----")) {
-      return tr("setup.keyEditors.private");
+      return context.loc.setup.keyEditors.private;
     }
 
     return null;
@@ -68,7 +67,7 @@ class PrivateKeyEditor extends StatelessWidget {
 class KeyEditor extends StatelessWidget {
   final Key formKey;
   final TextEditingController textEditingController;
-  final String? Function(String?) validator;
+  final String? Function(BuildContext, String?) validator;
 
   const KeyEditor(this.formKey, this.textEditingController, this.validator);
 
@@ -81,7 +80,7 @@ class KeyEditor extends StatelessWidget {
         maxLines: null,
         style: Theme.of(context).textTheme.bodyText2,
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        validator: validator,
+        validator: (s) => validator(context, s),
         controller: textEditingController,
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
@@ -108,7 +107,7 @@ class KeyEditor extends StatelessWidget {
         ),
         OutlinedButton(
           child: Text(
-            tr("setup.keyEditors.load"),
+            context.loc.setup.keyEditors.load,
             style: Theme.of(context).textTheme.bodyText2,
           ),
           onPressed: _pickAndLoadFile,

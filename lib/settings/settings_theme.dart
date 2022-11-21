@@ -4,17 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:flutter/material.dart';
-
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:provider/provider.dart';
-
-import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:flutter/material.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/screens/home_screen.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/themes.dart';
+import 'package:provider/provider.dart';
 
 class SettingsThemeScreen extends StatefulWidget {
   static const routePath = '/settings/ui/theme';
@@ -54,8 +51,8 @@ class _SettingsThemeState extends State<SettingsThemeScreen> {
     );
 
     var title = widget.brightness == Brightness.light
-        ? LocaleKeys.settings_theme_light.tr()
-        : LocaleKeys.settings_theme_dark.tr();
+        ? context.loc.settingsThemeLight
+        : context.loc.settingsThemeDark;
 
     var settings = Provider.of<Settings>(context);
     var themeName = widget.brightness == Brightness.light

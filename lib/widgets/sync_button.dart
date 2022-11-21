@@ -6,18 +6,15 @@
 
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-
 import 'package:badges/badges.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:git_bindings/git_bindings.dart';
-import 'package:provider/provider.dart';
-
-import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/sync_attempt.dart';
 import 'package:gitjournal/utils/utils.dart';
+import 'package:provider/provider.dart';
 
 class SyncButton extends StatefulWidget {
   @override
@@ -110,7 +107,7 @@ class _SyncButtonState extends State<SyncButton> {
     } on GitException catch (e) {
       showErrorMessageSnackbar(
         context,
-        tr(LocaleKeys.widgets_SyncButton_error, args: [e.cause]),
+        context.loc.widgetsSyncButtonError(e.cause),
       );
     } catch (e) {
       showErrorSnackbar(context, e);

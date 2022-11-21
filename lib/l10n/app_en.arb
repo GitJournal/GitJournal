@@ -195,7 +195,12 @@
   "settingsStorageExternal": "Store Repo Externally",
   "settingsStorageIcloud": "Store in iCloud",
   "settingsStorageRepoLocation": "Repo Location",
-  "settingsStorageNotWritable": "{} is not writable",
+  "settingsStorageNotWritable": "{loc} is not writable",
+  "@settingsStorageNotWritable": {
+    "placeholders": {
+      "loc": {}
+    }
+  },
   "settingsStorageFailedExternal": "Unable to get External Storage Directory",
   "settingsStoragePermissionFailed": "External Storage Permission Failed",
   "settingsDrawerTitle": "Sidebar Settings",
@@ -293,7 +298,12 @@
   "widgetsPurchaseButtonFail": "Failed to Load",
   "widgetsPurchaseButtonFailSend": "Failed to send purchase request",
   "widgetsPurchaseButtonFailPurchase": "Failed to Purchase - {}",
-  "widgetsFolderViewSyncError": "Sync Error {}",
+  "widgetsFolderViewSyncError": "Sync Error {err}",
+  "@widgetsFolderViewSyncError": {
+    "placeholders": {
+      "err": {}
+    }
+  },
   "widgetsFolderViewHeaderOptionsHeading": "Header Options",
   "widgetsFolderViewHeaderOptionsAuto": "Auto Generated Title",
   "widgetsFolderViewHeaderOptionsTitleFileName": "Title or FileName",
@@ -328,12 +338,32 @@
       "ext": {}
     }
   },
-  "widgetsSyncButtonError": "Sync Error {}",
+  "widgetsSyncButtonError": "Sync Error {err}",
+  "@widgetsSyncButtonError": {
+    "placeholders": {
+      "err": {}
+    }
+  },
   "widgetsPurchaseWidgetFailed": "Purchase Failed",
-  "widgetsNoteViewerLinkNotFound": "Link '{}' not found",
-  "widgetsNoteViewerLinkInvalid": "Link '{}' is invalid.",
+  "widgetsNoteViewerLinkNotFound": "Link '{name}' not found",
+  "@widgetsNoteViewerLinkNotFound": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "widgetsNoteViewerLinkInvalid": "Link '{name}' is invalid.",
+  "@widgetsNoteViewerLinkInvalid": {
+    "placeholders": {
+      "name": {}
+    }
+  },
   "widgetsFolderSelectionDialogTitle": "Select a Folder",
-  "widgetsFolderTreeViewNotesCount": "{} Notes",
+  "widgetsFolderTreeViewNotesCount": "{num} Notes",
+  "@widgetsFolderTreeViewNotesCount": {
+    "placeholders": {
+      "num": {}
+    }
+  },
   "rootFolder": "Root Folder",
   "ignoredFilesDot": "Starts with a .",
   "ignoredFilesExt": "Doesn't end with one of the following -",

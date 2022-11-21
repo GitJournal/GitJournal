@@ -4,23 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:flutter/material.dart';
-
 import 'package:android_external_storage/android_external_storage.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:icloud_documents_path/icloud_documents_path.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
-import 'package:universal_io/io.dart';
+import 'package:flutter/material.dart';
 import 'package:gitjournal/app_localizations_context.dart';
-
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/features.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/settings.dart';
@@ -34,6 +24,12 @@ import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
+import 'package:icloud_documents_path/icloud_documents_path.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
+import 'package:universal_io/io.dart';
 
 class SettingsStorageScreen extends StatelessWidget {
   static const routePath = '/settings/storage';
@@ -132,7 +128,7 @@ class SettingsStorageScreen extends StatelessWidget {
                 if (showError) {
                   showErrorMessageSnackbar(
                     context,
-                    LocaleKeys.settings_storage_failedExternal.tr(),
+                    context.loc.settingsStorageFailedExternal,
                   );
                 }
               }
@@ -201,7 +197,7 @@ class SettingsStorageScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(LocaleKeys.settings_list_storage_title.tr()),
+        title: Text(context.loc.settingsListStorageTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -234,7 +230,7 @@ Future<String> _getExternalDir(BuildContext context) async {
     Log.e("Storage Permission Denied");
     showErrorMessageSnackbar(
       context,
-      LocaleKeys.settings_storage_permissionFailed.tr(),
+      context.loc.settingsStoragePermissionFailed,
     );
     return "";
   }
@@ -247,7 +243,7 @@ Future<String> _getExternalDir(BuildContext context) async {
       Log.e("FilePicker: Got $dir but it is not writable");
       showErrorMessageSnackbar(
         context,
-        tr(LocaleKeys.settings_storage_notWritable, args: [dir]),
+        context.loc.settingsStorageNotWritable(dir),
       );
     }
   }

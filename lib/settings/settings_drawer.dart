@@ -5,8 +5,7 @@
  */
 
 import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 class AppDrawerSettings extends StatefulWidget {
   @override
@@ -20,7 +19,7 @@ class _AppDrawerSettingsState extends State<AppDrawerSettings> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr("settings.drawer.title")),
+        title: Text(context.loc.settingsDrawerTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

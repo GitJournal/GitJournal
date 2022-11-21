@@ -7,19 +7,15 @@
 import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:function_types/function_types.dart';
-import 'package:provider/provider.dart';
-import 'package:time/time.dart';
 import 'package:gitjournal/app_localizations_context.dart';
-
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/settings.dart';
+import 'package:provider/provider.dart';
+import 'package:time/time.dart';
 
 class AppDrawerHeader extends StatelessWidget {
   final Func0<void> repoListToggled;
@@ -77,7 +73,7 @@ class AppDrawerHeader extends StatelessWidget {
 
     var isDesktop = Platform.isLinux || Platform.isWindows || Platform.isMacOS;
     return Banner(
-      message: isDesktop ? tr(LocaleKeys.beta) : tr(LocaleKeys.pro),
+      message: isDesktop ? context.loc.beta : context.loc.pro,
       location: BannerLocation.topStart,
       color: Theme.of(context).colorScheme.secondary,
       child: header,

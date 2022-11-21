@@ -5,17 +5,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import 'package:flutter/material.dart';
-
 import 'package:easy_localization/easy_localization.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 import 'package:gitjournal/app_localizations_context.dart';
-
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/markdown_renderer_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/widgets/settings_header.dart';
 import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
+import 'package:provider/provider.dart';
 
 class SettingsDisplayImagesThemingScreen extends StatefulWidget {
   @override
@@ -120,10 +118,10 @@ class SettingsDisplayImagesThemingScreenState
       SettingsHeader(tr('settings.display.images.theming.themeOverrides')),
       Padding(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-        child: Text(tr("settings.display.images.theming.tagDescription")),
+        child: Text(context.loc.settingsDisplayImagesThemingTagDescription),
       ),
       ListPreference(
-        title: tr("settings.display.images.theming.themeOverrideTagLocation"),
+        title: context.loc.settingsDisplayImagesThemingThemeOverrideTagLocation,
         currentOption: settings.themeOverrideTagLocation.toPublicString(),
         options: SettingsImageTextType.options
             .map((e) => e.toPublicString())
@@ -139,7 +137,7 @@ class SettingsDisplayImagesThemingScreenState
       ListTile(title: doNotThemeTagsForm),
       SettingsHeader(tr('settings.display.images.theming.vectorGraphics')),
       ListPreference(
-        title: tr("settings.display.images.theming.themeVectorGraphics.title"),
+        title: context.loc.settingsDisplayImagesThemingThemeVectorGraphicsTitle,
         currentOption: settings.themeVectorGraphics.toPublicString(),
         options: SettingsThemeVectorGraphics.options
             .map((e) => e.toPublicString())
@@ -175,8 +173,8 @@ class SettingsDisplayImagesThemingScreenState
         ),
       if (settings.themeVectorGraphics == SettingsThemeVectorGraphics.On)
         ListPreference(
-          title:
-              tr("settings.display.images.theming.vectorGraphicsAdjustColors"),
+          title: context
+              .loc.settingsDisplayImagesThemingVectorGraphicsAdjustColors,
           currentOption: settings.vectorGraphicsAdjustColors.toPublicString(),
           options: SettingsVectorGraphicsAdjustColors.options
               .map((e) => e.toPublicString())

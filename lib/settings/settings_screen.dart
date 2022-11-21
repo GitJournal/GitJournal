@@ -5,13 +5,9 @@
  */
 
 import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:function_types/function_types.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/logger/debug_screen.dart';
 import 'package:gitjournal/settings/bug_report.dart';
 import 'package:gitjournal/settings/settings_about.dart';
@@ -22,6 +18,7 @@ import 'package:gitjournal/settings/settings_git.dart';
 import 'package:gitjournal/settings/settings_storage.dart';
 import 'package:gitjournal/settings/settings_ui.dart';
 import 'package:gitjournal/settings/widgets/settings_header.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatelessWidget {
   static const routePath = '/settings';
@@ -32,8 +29,8 @@ class SettingsScreen extends StatelessWidget {
       children: [
         SettingsTile(
           iconData: FontAwesomeIcons.paintbrush,
-          title: LocaleKeys.settings_list_userInterface_title.tr(),
-          subtitle: LocaleKeys.settings_list_userInterface_subtitle.tr(),
+          title: context.loc.settingsListUserInterfaceTitle,
+          subtitle: context.loc.settingsListUserInterfaceSubtitle,
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => const SettingsUIScreen(),
@@ -46,8 +43,8 @@ class SettingsScreen extends StatelessWidget {
         ),
         SettingsTile(
           iconData: FontAwesomeIcons.git,
-          title: LocaleKeys.settings_list_git_title.tr(),
-          subtitle: LocaleKeys.settings_list_git_subtitle.tr(),
+          title: context.loc.settingsListGitTitle,
+          subtitle: context.loc.settingsListGitSubtitle,
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => const SettingsGit(),
@@ -60,8 +57,8 @@ class SettingsScreen extends StatelessWidget {
         ),
         SettingsTile(
           iconData: FontAwesomeIcons.penToSquare,
-          title: LocaleKeys.settings_list_editor_title.tr(),
-          subtitle: LocaleKeys.settings_list_editor_subtitle.tr(),
+          title: context.loc.settingsListEditorTitle,
+          subtitle: context.loc.settingsListEditorSubtitle,
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => SettingsEditorsScreen(),
@@ -74,8 +71,8 @@ class SettingsScreen extends StatelessWidget {
         ),
         SettingsTile(
           iconData: FontAwesomeIcons.hardDrive,
-          title: LocaleKeys.settings_list_storage_title.tr(),
-          subtitle: LocaleKeys.settings_list_storage_subtitle.tr(),
+          title: context.loc.settingsListStorageTitle,
+          subtitle: context.loc.settingsListStorageSubtitle,
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => const SettingsStorageScreen(),
@@ -88,8 +85,8 @@ class SettingsScreen extends StatelessWidget {
         ),
         SettingsTile(
           iconData: FontAwesomeIcons.chartArea,
-          title: LocaleKeys.settings_list_analytics_title.tr(),
-          subtitle: LocaleKeys.settings_list_analytics_subtitle.tr(),
+          title: context.loc.settingsListAnalyticsTitle,
+          subtitle: context.loc.settingsListAnalyticsSubtitle,
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => const SettingsAnalytics(),
@@ -100,8 +97,8 @@ class SettingsScreen extends StatelessWidget {
         ),
         SettingsTile(
           iconData: FontAwesomeIcons.wrench,
-          title: LocaleKeys.settings_list_debug_title.tr(),
-          subtitle: LocaleKeys.settings_list_debug_subtitle.tr(),
+          title: context.loc.settingsListDebugTitle,
+          subtitle: context.loc.settingsListDebugSubtitle,
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => const DebugScreen(),
@@ -112,8 +109,8 @@ class SettingsScreen extends StatelessWidget {
         ),
         SettingsTile(
           iconData: FontAwesomeIcons.flask,
-          title: LocaleKeys.settings_list_experiments_title.tr(),
-          subtitle: LocaleKeys.settings_list_experiments_subtitle.tr(),
+          title: context.loc.settingsListExperimentsTitle,
+          subtitle: context.loc.settingsListExperimentsSubtitle,
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => ExperimentalSettingsScreen(),
@@ -125,10 +122,10 @@ class SettingsScreen extends StatelessWidget {
           },
         ),
         const Divider(),
-        SettingsHeader(LocaleKeys.settings_project_header.tr()),
+        SettingsHeader(context.loc.settingsProjectHeader),
         SettingsTile(
           iconData: Icons.question_answer_outlined,
-          title: LocaleKeys.settings_project_docs.tr(),
+          title: context.loc.settingsProjectDocs,
           onTap: () {
             var _ = launchUrl(
               Uri.parse('https://gitjournal.io/docs'),
@@ -138,21 +135,21 @@ class SettingsScreen extends StatelessWidget {
         ),
         SettingsTile(
           iconData: FontAwesomeIcons.bug,
-          title: LocaleKeys.drawer_bug.tr(),
+          title: context.loc.drawerBug,
           onTap: () => createBugReport(context),
         ),
         SettingsTile(
           iconData: FontAwesomeIcons.message,
-          title: LocaleKeys.drawer_feedback.tr(),
+          title: context.loc.drawerFeedback,
           onTap: () => createFeedback(context),
         ),
         SettingsTile(
           iconData: FontAwesomeIcons.heart,
-          title: LocaleKeys.settings_project_contribute.tr(),
+          title: context.loc.settingsProjectContribute,
         ),
         SettingsTile(
           iconData: Icons.info_outline,
-          title: LocaleKeys.settings_project_about.tr(),
+          title: context.loc.settingsProjectAbout,
           onTap: () {
             var route = MaterialPageRoute(
               builder: (context) => const SettingsAboutPage(),
@@ -167,7 +164,7 @@ class SettingsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(LocaleKeys.settings_title.tr()),
+        title: Text(context.loc.settingsTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

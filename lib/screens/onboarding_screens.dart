@@ -4,19 +4,17 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:flutter/material.dart';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:function_types/function_types.dart';
+import 'package:gitjournal/analytics/analytics.dart';
+import 'package:gitjournal/app_localizations_context.dart';
+import 'package:gitjournal/screens/home_screen.dart';
+import 'package:gitjournal/settings/app_config.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:time/time.dart';
-
-import 'package:gitjournal/analytics/analytics.dart';
-import 'package:gitjournal/screens/home_screen.dart';
-import 'package:gitjournal/settings/app_config.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   static const routePath = "/onBoarding";
@@ -74,7 +72,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         children: <Widget>[
           OnBoardingBottomButton(
             key: const ValueKey("Skip"),
-            text: tr("OnBoarding.Skip"),
+            text: context.loc.onBoardingSkip,
             onPressed: _finish,
           ),
           Expanded(
@@ -93,7 +91,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
           ),
           OnBoardingBottomButton(
             key: const ValueKey("Next"),
-            text: tr("OnBoarding.Next"),
+            text: context.loc.onBoardingNext,
             onPressed: _nextPage,
           ),
         ],
@@ -114,7 +112,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         child: ElevatedButton(
           key: const ValueKey("GetStarted"),
           child: Text(
-            tr("OnBoarding.getStarted"),
+            context.loc.onBoardingGetStarted,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.button,
           ),
@@ -209,7 +207,7 @@ class OnBoardingPage1 extends StatelessWidget {
         Center(child: header),
         const SizedBox(height: 64.0),
         AutoSizeText(
-          tr("OnBoarding.subtitle"),
+          context.loc.onBoardingSubtitle,
           style: textTheme.headline5,
           textAlign: TextAlign.center,
           maxLines: 2,
@@ -243,7 +241,7 @@ class OnBoardingPage2 extends StatelessWidget {
         Center(child: header),
         const SizedBox(height: 64.0),
         AutoSizeText(
-          tr("OnBoarding.page2"),
+          context.loc.onBoardingPage2,
           style: textTheme.headline5,
           textAlign: TextAlign.center,
           maxLines: 3,
@@ -277,7 +275,7 @@ class OnBoardingPage3 extends StatelessWidget {
         Center(child: header),
         const SizedBox(height: 64.0),
         AutoSizeText(
-          tr("OnBoarding.page3"),
+          context.loc.onBoardingPage3,
           style: textTheme.headline5,
           textAlign: TextAlign.center,
           maxLines: 2,

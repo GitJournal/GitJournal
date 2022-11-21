@@ -4,12 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import 'package:flutter/material.dart';
-
 import 'package:dart_git/git_url_parse.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:function_types/function_types.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
 import 'apis/githost_factory.dart';
 import 'button.dart';
@@ -59,7 +57,7 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
         decoration: const InputDecoration(
           hintText: 'git@github.com:GitJournal/GitJournal.git',
         ),
-        validator: _isCloneUrlValid,
+        validator: (s) => _isCloneUrlValid(context, s),
         focusNode: inputFormFocus,
         textInputAction: TextInputAction.done,
         onFieldSubmitted: (String _) => formSubmitted(),
@@ -75,7 +73,7 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            LocaleKeys.setup_cloneUrl_enter.tr(),
+            context.loc.setupCloneUrlEnter,
             style: Theme.of(context).textTheme.headline5,
           ),
         ),
@@ -86,7 +84,7 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
         ),
         const SizedBox(height: 8.0),
         GitHostSetupButton(
-          text: LocaleKeys.setup_next.tr(),
+          text: context.loc.setupNext,
           onPressed: formSubmitted,
         ),
       ],
@@ -144,7 +142,7 @@ class GitCloneUrlKnownProviderPageState
         decoration: const InputDecoration(
           hintText: 'git@github.com:GitJournal/GitJournal.git',
         ),
-        validator: _isCloneUrlValid,
+        validator: (s) => _isCloneUrlValid(context, s),
         focusNode: inputFormFocus,
         textInputAction: TextInputAction.done,
         onFieldSubmitted: (String _) => formSubmitted(),
@@ -157,33 +155,33 @@ class GitCloneUrlKnownProviderPageState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          LocaleKeys.setup_cloneUrl_manual_title.tr(),
+          context.loc.setupCloneUrlManualTitle,
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 32.0),
 
         // Step 1
         Text(
-          LocaleKeys.setup_cloneUrl_manual_step1.tr(),
+          context.loc.setupCloneUrlManualStep1,
           style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 8.0),
         GitHostSetupButton(
-          text: LocaleKeys.setup_cloneUrl_manual_button.tr(),
+          text: context.loc.setupCloneUrlManualButton,
           onPressed: widget.launchCreateUrlPage,
         ),
         const SizedBox(height: 16.0),
 
         // Step 2
         Text(
-          LocaleKeys.setup_cloneUrl_manual_step2.tr(),
+          context.loc.setupCloneUrlManualStep2,
           style: Theme.of(context).textTheme.subtitle2,
         ),
         const SizedBox(height: 8.0),
         inputForm,
         const SizedBox(height: 16.0),
         GitHostSetupButton(
-          text: LocaleKeys.setup_next.tr(),
+          text: context.loc.setupNext,
           onPressed: formSubmitted,
         ),
       ],
@@ -192,22 +190,22 @@ class GitCloneUrlKnownProviderPageState
 }
 
 // Returns null when valid
-String? _isCloneUrlValid(String? url) {
+String? _isCloneUrlValid(BuildContext context, String? url) {
   if (url == null) {
-    return LocaleKeys.setup_cloneUrl_validator_empty.tr();
+    return context.loc.setupCloneUrlValidatorEmpty;
   }
   url = _cleanupGitUrl(url);
   if (url.isEmpty) {
-    return LocaleKeys.setup_cloneUrl_validator_empty.tr();
+    return context.loc.setupCloneUrlValidatorEmpty;
   }
 
   var result = gitUrlParse(url);
   if (result == null) {
-    return LocaleKeys.setup_cloneUrl_validator_invalid.tr();
+    return context.loc.setupCloneUrlValidatorInvalid;
   }
 
   if (result.protocol != 'ssh') {
-    return LocaleKeys.setup_cloneUrl_validator_onlySsh.tr();
+    return context.loc.setupCloneUrlValidatorOnlySsh;
   }
 
   return null;

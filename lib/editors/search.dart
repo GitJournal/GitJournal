@@ -6,11 +6,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-
-import 'package:easy_localization/easy_localization.dart' as local;
 import 'package:function_types/function_types.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'common.dart';
 
 class SearchInfo {
@@ -80,7 +78,7 @@ class _EditorAppSearchBarState extends State<EditorAppSearchBar> {
         focusNode: _focusNode,
         style: theme.textTheme.subtitle1,
         decoration: InputDecoration(
-          hintText: LocaleKeys.editors_common_find.tr(),
+          hintText: context.loc.editorsCommonFind,
           border: InputBorder.none,
         ),
         maxLines: 1,

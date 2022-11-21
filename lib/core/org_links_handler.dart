@@ -8,21 +8,18 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
-import 'package:org_flutter/org_flutter.dart';
-import 'package:path/path.dart';
-import 'package:universal_io/io.dart';
-import 'package:url_launcher/url_launcher.dart' as ul;
-
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/folder_views/common.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/images/image_details.dart';
 import 'package:gitjournal/widgets/images/themable_image.dart';
+import 'package:org_flutter/org_flutter.dart';
+import 'package:path/path.dart';
+import 'package:universal_io/io.dart';
+import 'package:url_launcher/url_launcher.dart' as ul;
 
 //import 'dart:html';
 
@@ -95,7 +92,7 @@ class OrgLinkHandler {
           //Log.e('Opening Link', ex: e, stacktrace: stackTrace);
           showErrorMessageSnackbar(
             context,
-            tr(LocaleKeys.widgets_NoteViewer_linkInvalid, args: [link]),
+            context.loc.widgetsNoteViewerLinkInvalid(link),
           );
         }
       } else {

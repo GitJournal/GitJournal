@@ -5,11 +5,7 @@
  */
 
 import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
-import 'package:provider/provider.dart';
-
-import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/git_config.dart';
@@ -17,8 +13,7 @@ import 'package:gitjournal/settings/settings_git_remote.dart';
 import 'package:gitjournal/settings/settings_git_widgets.dart';
 import 'package:gitjournal/settings/widgets/settings_header.dart';
 import 'package:gitjournal/settings/widgets/settings_list_option_preference.dart';
-
-import 'package:gitjournal/app_localizations_context.dart';
+import 'package:provider/provider.dart';
 
 class SettingsGit extends StatelessWidget {
   static const routePath = '/settings/git';
@@ -65,9 +60,8 @@ class SettingsGit extends StatelessWidget {
             var ok = await showDialog(
               context: context,
               builder: (_) => IrreversibleActionConfirmationDialog(
-                title: LocaleKeys.settings_deleteRepo.tr(),
-                subtitle:
-                    LocaleKeys.settings_gitRemote_changeHost_subtitle.tr(),
+                title: context.loc.settingsDeleteRepo,
+                subtitle: context.loc.settingsGitRemoteChangeHostSubtitle,
               ),
             );
             if (ok == null) {
@@ -85,7 +79,7 @@ class SettingsGit extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(LocaleKeys.settings_list_git_title.tr()),
+        title: Text(context.loc.settingsListGitTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

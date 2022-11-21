@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:flutter/material.dart';
-
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 
 import 'error.dart';
@@ -26,6 +26,7 @@ class GitHostCloningPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var loadingMessage = context.loc.setupCloning;
     if (errorMessage != null && errorMessage!.isNotEmpty) {
       return GitHostSetupErrorPage(errorMessage!);
     }

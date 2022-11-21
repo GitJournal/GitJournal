@@ -5,16 +5,11 @@
  */
 
 import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
-import 'package:provider/provider.dart';
 import 'package:gitjournal/app_localizations_context.dart';
-
 import 'package:gitjournal/core/folder/flattened_notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/folder_views/folder_view.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/utils/utils.dart';
@@ -22,6 +17,7 @@ import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/folder_tree_view.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
+import 'package:provider/provider.dart';
 
 class FolderListingScreen extends StatefulWidget {
   static const routePath = '/folders';
@@ -78,15 +74,15 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
         itemBuilder: (context) {
           return [
             PopupMenuItem<String>(
-              child: Text(LocaleKeys.screens_folders_actions_rename.tr()),
+              child: Text(context.loc.screensFoldersActionsRename),
               value: "Rename",
             ),
             PopupMenuItem<String>(
-              child: Text(LocaleKeys.screens_folders_actions_subFolder.tr()),
+              child: Text(context.loc.screensFoldersActionsSubFolder),
               value: "Create",
             ),
             PopupMenuItem<String>(
-              child: Text(LocaleKeys.screens_folders_actions_delete.tr()),
+              child: Text(context.loc.screensFoldersActionsDelete),
               value: "Delete",
             ),
           ];
@@ -105,9 +101,8 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
               context: context,
               builder: (_) => RenameDialog(
                 oldPath: _selectedFolder!.folderPath,
-                inputDecoration:
-                    LocaleKeys.screens_folders_actions_decoration.tr(),
-                dialogTitle: LocaleKeys.screens_folders_actions_rename.tr(),
+                inputDecoration: context.loc.screensFoldersActionsDecoration,
+                dialogTitle: context.loc.screensFoldersActionsRename,
               ),
             );
             if (folderName is String) {
@@ -150,7 +145,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
 
     var title = Text(context.loc.screensFoldersTitle);
     if (_selectedFolder != null) {
-      title = Text(LocaleKeys.screens_folders_selected.tr());
+      title = Text(context.loc.screensFoldersSelected);
     }
 
     return Scaffold(
@@ -209,11 +204,11 @@ class _CreateFolderAlertDialogState extends State<CreateFolderAlertDialog> {
         children: <Widget>[
           TextFormField(
             decoration: InputDecoration(
-              labelText: LocaleKeys.screens_folders_actions_decoration.tr(),
+              labelText: context.loc.screensFoldersActionsDecoration,
             ),
             validator: (value) {
               if (value!.isEmpty) {
-                return LocaleKeys.screens_folders_actions_empty.tr();
+                return context.loc.screensFoldersActionsEmpty;
               }
               return "";
             },
@@ -227,12 +222,12 @@ class _CreateFolderAlertDialogState extends State<CreateFolderAlertDialog> {
     );
 
     return AlertDialog(
-      title: Text(LocaleKeys.screens_folders_dialog_title.tr()),
+      title: Text(context.loc.screensFoldersDialogTitle),
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(false),
           child: Text(
-            LocaleKeys.screens_folders_dialog_discard.tr(),
+            context.loc.screensFoldersDialogDiscard,
           ),
         ),
         TextButton(
@@ -240,7 +235,7 @@ class _CreateFolderAlertDialogState extends State<CreateFolderAlertDialog> {
             var newFolderName = _textController.text;
             return Navigator.of(context).pop(newFolderName);
           },
-          child: Text(LocaleKeys.screens_folders_dialog_create.tr()),
+          child: Text(context.loc.screensFoldersDialogCreate),
         ),
       ],
       content: form,
@@ -262,11 +257,11 @@ class FolderErrorDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(LocaleKeys.screens_folders_errorDialog_title.tr()),
+      title: Text(context.loc.screensFoldersErrorDialogTitle),
       content: Text(content),
       actions: <Widget>[
         TextButton(
-          child: Text(LocaleKeys.screens_folders_errorDialog_ok.tr()),
+          child: Text(context.loc.screensFoldersErrorDialogOk),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ],
@@ -277,7 +272,7 @@ class FolderErrorDialog extends StatelessWidget {
 class DeleteFolderErrorDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var text = LocaleKeys.screens_folders_errorDialog_deleteContent.tr();
+    var text = context.loc.screensFoldersErrorDialogDeleteContent;
     return FolderErrorDialog(text);
   }
 }
@@ -285,7 +280,7 @@ class DeleteFolderErrorDialog extends StatelessWidget {
 class RenameFolderErrorDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var text = LocaleKeys.screens_folders_errorDialog_renameContent.tr();
+    var text = context.loc.screensFoldersErrorDialogRenameContent;
     return FolderErrorDialog(text);
   }
 }

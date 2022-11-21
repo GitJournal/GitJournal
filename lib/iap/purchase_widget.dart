@@ -6,13 +6,11 @@
 
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:function_types/function_types.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
-
 import 'package:gitjournal/analytics/analytics.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/iap/iap.dart';
@@ -21,7 +19,7 @@ import 'package:gitjournal/iap/purchase_slider.dart';
 import 'package:gitjournal/iap/purchase_thankyou_screen.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/utils/utils.dart';
-import 'package:gitjournal/app_localizations_context.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 
 class PurchaseButton extends StatelessWidget {
   final ProductDetails? product;
@@ -78,7 +76,7 @@ class PurchaseButton extends StatelessWidget {
 
     /*
     if (!sentSuccess) {
-      var dialog = PurchaseFailedDialog(tr("widgets.PurchaseButton.failSend"));
+      var dialog = PurchaseFailedDialog(context.loc.widgets.PurchaseButton.failSend);
       await showDialog(context: context, builder: (context) => dialog);
       return;
     }

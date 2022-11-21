@@ -4,14 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:flutter/material.dart';
 import 'package:function_types/function_types.dart';
-import 'package:provider/provider.dart';
-import 'package:time/time.dart';
-
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
@@ -22,12 +18,12 @@ import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/features.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
-import 'package:gitjournal/app_localizations_context.dart';
+import 'package:provider/provider.dart';
+import 'package:time/time.dart';
 
 class NoteMetadataSettingsScreen extends StatefulWidget {
   static const routePath = '/settings/noteMetaData';
@@ -68,8 +64,8 @@ class _NoteMetadataSettingsScreenState
     var repo = context.read<GitJournalRepo>();
     var parent = NotesFolderFS.root(folderConfig, repo.fileStorage);
     var note = Note.build(
-      title: tr("settings.noteMetaData.exampleTitle"),
-      body: tr("settings.noteMetaData.exampleBody"),
+      title: context.loc.settingsNoteMetaDataExampleTitle,
+      body: context.loc.settingsNoteMetaDataExampleBody,
       parent: parent,
       fileFormat: NoteFileFormat.Markdown,
       noteType: NoteType.Unknown,
@@ -104,7 +100,7 @@ class _NoteMetadataSettingsScreenState
         const SizedBox(height: 16.0),
         const Divider(),
         SwitchListTile(
-          title: Text(tr("settings.noteMetaData.enableHeader")),
+          title: Text(context.loc.settingsNoteMetaDataEnableHeader),
           value: folderConfig.yamlHeaderEnabled,
           onChanged: (bool newVal) {
             setState(() {
@@ -135,7 +131,7 @@ class _NoteMetadataSettingsScreenState
               });
             }),
         ListPreference(
-          title: LocaleKeys.settings_noteMetaData_modified.tr(),
+          title: context.loc.settingsNoteMetaDataModified,
           options: NoteSerializer.modifiedKeyOptions,
           currentOption: folderConfig.yamlModifiedKey,
           onChange: (String newVal) {
@@ -147,7 +143,7 @@ class _NoteMetadataSettingsScreenState
           enabled: folderConfig.yamlHeaderEnabled,
         ),
         ListPreference(
-          title: LocaleKeys.settings_noteMetaData_modifiedFormat.tr(),
+          title: context.loc.settingsNoteMetaDataModifiedFormat,
           options: NoteSerializationDateFormat.options
               .map((f) => f.toPublicString())
               .toList(),
@@ -163,7 +159,7 @@ class _NoteMetadataSettingsScreenState
           enabled: folderConfig.yamlHeaderEnabled,
         ),
         ListPreference(
-          title: LocaleKeys.settings_noteMetaData_created.tr(),
+          title: context.loc.settingsNoteMetaDataCreated,
           options: NoteSerializer.createdKeyOptions,
           currentOption: folderConfig.yamlCreatedKey,
           onChange: (String newVal) {
@@ -175,7 +171,7 @@ class _NoteMetadataSettingsScreenState
           enabled: folderConfig.yamlHeaderEnabled,
         ),
         ListPreference(
-          title: LocaleKeys.settings_noteMetaData_createdFormat.tr(),
+          title: context.loc.settingsNoteMetaDataCreatedFormat,
           options: NoteSerializationDateFormat.options
               .map((f) => f.toPublicString())
               .toList(),
@@ -191,7 +187,7 @@ class _NoteMetadataSettingsScreenState
           enabled: folderConfig.yamlHeaderEnabled,
         ),
         ListPreference(
-          title: LocaleKeys.settings_noteMetaData_tags.tr(),
+          title: context.loc.settingsNoteMetaDataTags,
           options: NoteSerializer.tagKeyOptions,
           currentOption: folderConfig.yamlTagsKey,
           onChange: (String newVal) {
@@ -203,7 +199,7 @@ class _NoteMetadataSettingsScreenState
           enabled: folderConfig.yamlHeaderEnabled,
         ),
         ListPreference(
-          title: LocaleKeys.settings_noteMetaData_editorType.tr(),
+          title: context.loc.settingsNoteMetaDataEditorType,
           options: NoteSerializer.editorTypeKeyOptions,
           currentOption: folderConfig.yamlEditorTypeKey,
           onChange: (String newVal) {
@@ -215,7 +211,7 @@ class _NoteMetadataSettingsScreenState
           enabled: folderConfig.yamlHeaderEnabled,
         ),
         ListPreference(
-          title: tr("settings.noteMetaData.titleMetaData.title"),
+          title: context.loc.settingsNoteMetaDataTitleMetaDataTitle,
           options:
               SettingsTitle.options.map((f) => f.toPublicString()).toList(),
           currentOption: folderConfig.titleSettings.toPublicString(),
@@ -243,7 +239,7 @@ class _NoteMetadataSettingsScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr("settings.noteMetaData.title")),
+        title: Text(context.loc.settingsNoteMetaDataTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -284,7 +280,7 @@ class NoteOutputExample extends StatelessWidget {
           ),
           _HeaderText(note.fileName, Alignment.topRight),
           _HeaderText(
-            LocaleKeys.settings_noteMetaData_output.tr(),
+            context.loc.settingsNoteMetaDataOutput,
             Alignment.topLeft,
           ),
         ],
@@ -328,7 +324,7 @@ class NoteInputExample extends StatelessWidget {
             ),
             _HeaderText(note.fileName, Alignment.topRight),
             _HeaderText(
-              LocaleKeys.settings_noteMetaData_input.tr(),
+              context.loc.settingsNoteMetaDataInput,
               Alignment.topLeft,
             ),
           ],
@@ -424,7 +420,7 @@ class _CustomMetDataTileState extends State<CustomMetDataTile> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(tr("settings.noteMetaData.customMetaData.title")),
+      title: Text(context.loc.settingsNoteMetaDataCustomMetaDataTitle),
       subtitle: Text(widget.value),
       onTap: () async {
         var val =
@@ -449,7 +445,7 @@ class _CustomMetDataTileState extends State<CustomMetDataTile> {
 
           var map = MarkdownYAMLCodec.parseYamlText(value);
           if (map.isEmpty) {
-            return tr("settings.noteMetaData.customMetaData.invalid");
+            return context.loc.settingsNoteMetaDataCustomMetaDataInvalid;
           }
           return "";
         },
@@ -464,11 +460,11 @@ class _CustomMetDataTileState extends State<CustomMetDataTile> {
     );
 
     return AlertDialog(
-      title: Text(tr("settings.noteMetaData.customMetaData.title")),
+      title: Text(context.loc.settingsNoteMetaDataCustomMetaDataTitle),
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(widget.value),
-          child: Text(LocaleKeys.settings_cancel.tr()),
+          child: Text(context.loc.settingsCancel),
         ),
         TextButton(
           onPressed: () {
@@ -480,7 +476,7 @@ class _CustomMetDataTileState extends State<CustomMetDataTile> {
 
             return Navigator.of(context).pop(text);
           },
-          child: Text(LocaleKeys.settings_ok.tr()),
+          child: Text(context.loc.settingsOk),
         ),
       ],
       content: form,

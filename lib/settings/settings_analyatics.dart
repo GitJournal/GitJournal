@@ -5,15 +5,11 @@
  */
 
 import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
-
 import 'package:gitjournal/analytics/analytics.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
-import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/app_localizations_context.dart';
+import 'package:gitjournal/settings/app_config.dart';
+import 'package:provider/provider.dart';
 
 class SettingsAnalytics extends StatelessWidget {
   static const routePath = '/settings/analytics';
@@ -48,7 +44,7 @@ class SettingsAnalytics extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(LocaleKeys.settings_list_analytics_title.tr()),
+        title: Text(context.loc.settingsListAnalyticsTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

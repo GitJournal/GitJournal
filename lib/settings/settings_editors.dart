@@ -5,17 +5,12 @@
  */
 
 import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
-import 'package:provider/provider.dart';
 import 'package:gitjournal/app_localizations_context.dart';
-
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/features.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_storage.dart';
 import 'package:gitjournal/settings/widgets/settings_header.dart';
@@ -23,6 +18,7 @@ import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
+import 'package:provider/provider.dart';
 
 class SettingsEditorsScreen extends StatefulWidget {
   static const routePath = '/settings/editors';
@@ -38,7 +34,7 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
     var folderConfig = Provider.of<NotesFolderConfig>(context);
     var defaultNewFolder = settings.journalEditordefaultNewNoteFolderSpec;
     if (defaultNewFolder.isEmpty) {
-      defaultNewFolder = LocaleKeys.none.tr();
+      defaultNewFolder = context.loc.none;
     } else {
       if (!folderWithSpecExists(context, defaultNewFolder)) {
         setState(() {
@@ -53,7 +49,7 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
     var body = ListView(children: <Widget>[
       const DefaultEditorTile(),
       const DefaultFileFormatTile(),
-      //SettingsHeader(tr("settings.editors.markdownEditor")),
+      //SettingsHeader(context.loc.settings.editors.markdownEditor),
       ListPreference(
         title: context.loc.settingsEditorsDefaultState,
         currentOption: settings.markdownDefaultView.toPublicString(),

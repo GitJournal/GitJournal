@@ -4,19 +4,17 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:flutter/material.dart';
-
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:function_types/function_types.dart';
 import 'package:gitjournal/analytics/analytics.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/widgets/highlighted_text.dart';
 import 'package:path/path.dart' as p;
 import 'package:time/time.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:gitjournal/app_localizations_context.dart';
 
 import 'apis/githost_factory.dart';
 import 'button.dart';
@@ -240,7 +238,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
       leading: const Icon(Icons.add),
       title: Align(
         child: Text(
-          tr(LocaleKeys.setup_repoSelector_create, args: [fullRepoName]),
+          context.loc.setupRepoSelectorCreate(fullRepoName),
         ),
         alignment: const Alignment(-1.3, 0),
       ),

@@ -5,12 +5,10 @@
  */
 
 import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
-import 'package:provider/provider.dart';
-
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/screens/home_screen.dart';
 import 'package:gitjournal/settings/settings.dart';
+import 'package:provider/provider.dart';
 
 class BottomMenuBarSettings extends StatefulWidget {
   static const routePath = '/settings/bottom_menu_bar';
@@ -30,7 +28,7 @@ class _BottomMenuBarSettingsState extends State<BottomMenuBarSettings> {
         bottomMenuBar(),
         const SizedBox(height: 16),
         SwitchListTile(
-          title: Text(tr("settings.bottomMenuBar.enable")),
+          title: Text(context.loc.settingsBottomMenuBarEnable),
           value: settings.bottomMenuBar,
           onChanged: (bool newVal) {
             setState(() {
@@ -52,7 +50,7 @@ class _BottomMenuBarSettingsState extends State<BottomMenuBarSettings> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr("settings.bottomMenuBar.title")),
+        title: Text(context.loc.settingsBottomMenuBarTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

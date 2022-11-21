@@ -4,19 +4,16 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'package:d3_force_flutter/d3_force_flutter.dart' as f;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-
-import 'package:d3_force_flutter/d3_force_flutter.dart' as f;
-import 'package:easy_localization/easy_localization.dart';
-import 'package:provider/provider.dart';
-
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/graph2.dart';
 import 'package:gitjournal/core/views/note_links_view.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
+import 'package:provider/provider.dart';
 
 class GraphViewScreen extends StatelessWidget {
   static const routePath = '/graph';
@@ -69,7 +66,7 @@ class _GraphViewScreenState extends State<_GraphViewScreen> {
     return Scaffold(
       drawer: AppDrawer(),
       appBar: AppBar(
-        title: Text(LocaleKeys.drawer_graph.tr()),
+        title: Text(context.loc.drawerGraph),
       ),
       body: graph != null ? GraphView(graph!) : Container(),
     );

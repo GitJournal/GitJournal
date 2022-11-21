@@ -4,15 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:git_bindings/git_bindings.dart';
-import 'package:provider/provider.dart';
-import 'package:gitjournal/app_localizations_context.dart';
-
 import 'package:gitjournal/analytics/analytics.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/core/folder/filtered_notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder.dart';
@@ -38,6 +35,7 @@ import 'package:gitjournal/widgets/note_delete_dialog.dart';
 import 'package:gitjournal/widgets/note_search_delegate.dart';
 import 'package:gitjournal/widgets/sorting_mode_selector.dart';
 import 'package:gitjournal/widgets/sync_button.dart';
+import 'package:provider/provider.dart';
 
 enum DropDownChoices {
   SortingOptions,
@@ -200,10 +198,10 @@ class _FolderViewState extends State<FolderView> {
           child: Builder(builder: (context) {
             var view = CustomScrollView(slivers: [
               if (havePinnedNotes)
-                _SliverHeader(text: LocaleKeys.widgets_FolderView_pinned.tr()),
+                _SliverHeader(text: context.loc.widgetsFolderViewPinned),
               if (havePinnedNotes) pinnedFolderView,
               if (havePinnedNotes)
-                _SliverHeader(text: LocaleKeys.widgets_FolderView_others.tr()),
+                _SliverHeader(text: context.loc.widgetsFolderViewOthers),
               folderView,
             ]);
             if (settings.remoteSyncFrequency == RemoteSyncFrequency.Manual) {
@@ -676,7 +674,7 @@ Future<void> syncRepo(BuildContext context) async {
   } on GitException catch (e) {
     showErrorMessageSnackbar(
       context,
-      tr(LocaleKeys.widgets_FolderView_syncError, args: [e.cause]),
+      context.loc.widgetsFolderViewSyncError(e.cause),
     );
   } catch (e) {
     showErrorSnackbar(context, e);

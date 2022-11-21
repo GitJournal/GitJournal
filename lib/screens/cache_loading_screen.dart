@@ -5,13 +5,10 @@
  */
 
 import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
-import 'package:provider/provider.dart';
-
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/core/file/file_storage.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
+import 'package:provider/provider.dart';
 
 class CacheLoadingScreen extends StatelessWidget {
   const CacheLoadingScreen({super.key});
@@ -54,7 +51,7 @@ class _CacheLoadingScreenState extends State<_CacheLoadingScreen> {
     var date = widget.fileStorage.dateTime;
     var dateText = date.toIso8601String().substring(0, 10);
 
-    var text = LocaleKeys.screens_cacheLoading_text.tr();
+    var text = context.loc.screensCacheLoadingText;
     var children = <Widget>[
       Padding(
         padding: const EdgeInsets.all(8.0),

@@ -5,12 +5,10 @@
  */
 
 import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
-import 'package:provider/provider.dart';
-
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/settings/widgets/settings_header.dart';
+import 'package:provider/provider.dart';
 
 class SettingsTagsScreen extends StatefulWidget {
   static const routePath = '/settings/tags';
@@ -27,7 +25,7 @@ class SettingsTagsScreenState extends State<SettingsTagsScreen> {
     var folderConfig = Provider.of<NotesFolderConfig>(context);
 
     var body = ListView(children: <Widget>[
-      SettingsHeader(tr("settings.tags.prefixes")),
+      SettingsHeader(context.loc.settingsTagsPrefixes),
       SwitchListTile(
         title: const Text('#'),
         value: folderConfig.inlineTagPrefixes.contains('#'),
@@ -74,7 +72,7 @@ class SettingsTagsScreenState extends State<SettingsTagsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr("settings.tags.title")),
+        title: Text(context.loc.settingsTagsTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

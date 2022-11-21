@@ -6,20 +6,13 @@
  */
 
 import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:function_types/function_types.dart';
-import 'package:markdown/markdown.dart' as md;
-import 'package:path/path.dart' as p;
-import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
-
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/folder_views/common.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/markdown/parsers/hardwrap.dart';
 import 'package:gitjournal/markdown/parsers/html_entities_syntax.dart';
@@ -27,6 +20,11 @@ import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/images/markdown_image.dart';
+import 'package:markdown/markdown.dart' as md;
+import 'package:path/path.dart' as p;
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'builders/katex_builder.dart';
 
 class MarkdownRenderer extends StatelessWidget {
@@ -99,7 +97,7 @@ class MarkdownRenderer extends StatelessWidget {
           if (!opened) {
             showErrorMessageSnackbar(
               context,
-              tr(LocaleKeys.widgets_NoteViewer_linkInvalid, args: [link]),
+              context.loc.widgetsNoteViewerLinkInvalid(link),
             );
           }
           return;
@@ -115,7 +113,7 @@ class MarkdownRenderer extends StatelessWidget {
           Log.e('Opening Link', ex: e, stacktrace: stackTrace);
           showErrorMessageSnackbar(
             context,
-            tr(LocaleKeys.widgets_NoteViewer_linkNotFound, args: [link]),
+            context.loc.widgetsNoteViewerLinkNotFound(link),
           );
         }
       },

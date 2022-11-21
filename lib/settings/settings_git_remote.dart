@@ -6,15 +6,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:git_setup/keygen.dart';
 import 'package:git_setup/sshkey.dart';
-import 'package:path/path.dart' as p;
-import 'package:provider/provider.dart';
-import 'package:universal_io/io.dart';
-
-import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/git_config.dart';
@@ -25,7 +19,9 @@ import 'package:gitjournal/ssh/keygen.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/future_builder_with_progress.dart';
 import 'package:gitjournal/widgets/setup.dart';
-import 'package:gitjournal/app_localizations_context.dart';
+import 'package:path/path.dart' as p;
+import 'package:provider/provider.dart';
+import 'package:universal_io/io.dart';
 
 class GitRemoteSettingsScreen extends StatefulWidget {
   static const routePath = '/settings/gitRemote';
@@ -233,8 +229,8 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     var ok = await showDialog(
       context: context,
       builder: (_) => IrreversibleActionConfirmationDialog(
-        title: LocaleKeys.settings_gitRemote_changeHost_title.tr(),
-        subtitle: LocaleKeys.settings_gitRemote_changeHost_subtitle.tr(),
+        title: context.loc.settingsGitRemoteChangeHostTitle,
+        subtitle: context.loc.settingsGitRemoteChangeHostSubtitle,
       ),
     );
     if (ok == null) {
@@ -278,8 +274,8 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     var ok = await showDialog(
       context: context,
       builder: (_) => IrreversibleActionConfirmationDialog(
-        title: LocaleKeys.settings_gitRemote_resetHard_title.tr(),
-        subtitle: LocaleKeys.settings_gitRemote_resetHard_subtitle.tr(),
+        title: context.loc.settingsGitRemoteResetHardTitle,
+        subtitle: context.loc.settingsGitRemoteResetHardSubtitle,
       ),
     );
     if (ok == null) {
@@ -355,11 +351,11 @@ class IrreversibleActionConfirmationDialog extends StatelessWidget {
       content: Text(subtitle),
       actions: <Widget>[
         TextButton(
-          child: Text(LocaleKeys.settings_gitRemote_changeHost_cancel.tr()),
+          child: Text(context.loc.settingsGitRemoteChangeHostCancel),
           onPressed: () => Navigator.of(context).pop(),
         ),
         TextButton(
-          child: Text(LocaleKeys.settings_gitRemote_changeHost_ok.tr()),
+          child: Text(context.loc.settingsGitRemoteChangeHostOk),
           onPressed: () => Navigator.of(context).pop(true),
         ),
       ],
