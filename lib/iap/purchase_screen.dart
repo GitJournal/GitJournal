@@ -7,12 +7,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
-import 'package:gitjournal/app_localizations_context.dart';
-
 import 'package:gitjournal/analytics/analytics.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/iap/purchase_manager.dart';
 import 'package:gitjournal/iap/purchase_widget.dart';
 import 'package:gitjournal/logger/logger.dart';
@@ -176,10 +172,9 @@ class MonthlyRentalWidget extends StatelessWidget {
             isSubscription: true,
           ),
           const SizedBox(height: 32.0),
-          Text(tr(
-            LocaleKeys.purchase_screen_monthly_desc,
-            namedArgs: {'minYearlyPurchase': minYearlyPurchase},
-          )),
+          Text(
+            context.loc.purchaseScreenMonthlyDesc(minYearlyPurchase),
+          ),
         ],
         mainAxisAlignment: MainAxisAlignment.start,
       ),

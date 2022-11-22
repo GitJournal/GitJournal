@@ -4,22 +4,19 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:function_types/function_types.dart';
 import 'package:gitjournal/app_localizations_context.dart';
-import 'package:image_picker/image_picker.dart';
-
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/features.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
+import 'package:image_picker/image_picker.dart';
 
 class EditorBottomBar extends StatelessWidget {
   final Editor editor;
@@ -270,8 +267,8 @@ class BottomMenuSheet extends StatelessWidget {
           child: ListTile(
             leading: const FaIcon(FontAwesomeIcons.peace),
             title: Text(tr(zenModeEnabled
-                ? LocaleKeys.editors_common_zen_disable
-                : LocaleKeys.editors_common_zen_enable)),
+                ? context.loc.editorsCommonZenDisable
+                : context.loc.editorsCommonZenEnable)),
             onTap: () {
               zenModeChanged();
               Navigator.of(context).pop();

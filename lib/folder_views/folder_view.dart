@@ -22,7 +22,6 @@ import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/editors/note_editor.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/widgets/settings_header.dart';
@@ -84,7 +83,7 @@ class _FolderViewState extends State<FolderView> {
     var otherNotesFolder = SortedNotesFolder(
       folder: await FilteredNotesFolder.load(
         widget.notesFolder,
-        title: LocaleKeys.widgets_FolderView_pinned,
+        title: context.loc.widgetsFolderViewPinned,
         filter: (Note note) async => !note.pinned,
       ),
       sortingMode: widget.notesFolder.config.sortingMode,
@@ -93,7 +92,7 @@ class _FolderViewState extends State<FolderView> {
     var pinnedFolder = SortedNotesFolder(
       folder: await FilteredNotesFolder.load(
         widget.notesFolder,
-        title: LocaleKeys.widgets_FolderView_pinned,
+        title: context.loc.widgetsFolderViewPinned,
         filter: (Note note) async => note.pinned,
       ),
       sortingMode: widget.notesFolder.config.sortingMode,
@@ -292,8 +291,7 @@ class _FolderViewState extends State<FolderView> {
         if (!isVirtualFolder) {
           showSnackbar(
             context,
-            LocaleKeys.settings_editors_journalDefaultFolderSelect
-                .tr(args: [spec]),
+            context.loc.settingsEditorsJournalDefaultFolderSelect(spec),
           );
         }
       }
@@ -390,8 +388,8 @@ class _FolderViewState extends State<FolderView> {
             var children = <Widget>[
               SettingsHeader(context.loc.widgetsFolderViewHeaderOptionsHeading),
               RadioListTile<StandardViewHeader>(
-                title: Text(tr(
-                    LocaleKeys.widgets_FolderView_headerOptions_titleFileName)),
+                title: Text(
+                    context.loc.widgetsFolderViewHeaderOptionsTitleFileName),
                 value: StandardViewHeader.TitleOrFileName,
                 groupValue: _headerType,
                 onChanged: (newVal) {

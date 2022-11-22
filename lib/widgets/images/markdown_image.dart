@@ -6,19 +6,16 @@
  */
 
 import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:path/path.dart' as p;
-import 'package:provider/provider.dart';
-import 'package:universal_io/io.dart';
-
-import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/markdown_renderer_config.dart';
 import 'package:gitjournal/widgets/images/image_caption.dart';
 import 'package:gitjournal/widgets/images/image_details.dart';
 import 'package:gitjournal/widgets/images/themable_image.dart';
+import 'package:path/path.dart' as p;
+import 'package:provider/provider.dart';
+import 'package:universal_io/io.dart';
 
 class MarkdownImage extends StatelessWidget {
   final double? width;
@@ -84,11 +81,9 @@ class MarkdownImage extends StatelessWidget {
                 Log.e(errorMessage);
                 if (snapshot.error is HttpExceptionWithStatus) {
                   final httpError = snapshot.error as HttpExceptionWithStatus;
-                  errorMessage = tr(LocaleKeys.widgets_imageRenderer_httpError,
-                      namedArgs: {
-                        "status": httpError.statusCode.toString(),
-                        "url": httpError.uri.toString()
-                      });
+                  errorMessage = context.loc.widgetsImageRendererHttpError(
+                      httpError.statusCode.toString(),
+                      httpError.uri.toString());
                 }
                 return SizedBox(
                   width: width,

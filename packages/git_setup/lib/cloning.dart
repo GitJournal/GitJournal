@@ -4,10 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/app_localizations_context.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 
 import 'error.dart';
 import 'git_transfer_progress.dart';
@@ -15,14 +13,13 @@ import 'loading.dart';
 
 class GitHostCloningPage extends StatelessWidget {
   final String? errorMessage;
-  final String loadingMessage;
   final GitTransferProgress cloneProgress;
 
   GitHostCloningPage({
     required this.errorMessage,
     required this.cloneProgress,
     super.key,
-  }) : loadingMessage = tr(LocaleKeys.setup_cloning);
+  });
 
   @override
   Widget build(BuildContext context) {

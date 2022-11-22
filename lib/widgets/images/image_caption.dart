@@ -8,13 +8,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-
-import 'package:easy_localization/easy_localization.dart';
-import 'package:provider/provider.dart';
-
-import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/settings/markdown_renderer_config.dart';
 import 'package:gitjournal/utils/hero_dialog.dart';
+import 'package:provider/provider.dart';
 
 class ImageCaption extends StatelessWidget {
   final String altText;
@@ -136,10 +133,9 @@ String captionText(BuildContext context, String altText, String tooltip) {
   String _tooltip = tooltipCaption ? _cleanCaption(context, tooltip) : "";
   String text = "";
   if (_altText.isNotEmpty && _tooltip.isNotEmpty) {
-    text = tr(LocaleKeys.widgets_imageRenderer_caption,
-        namedArgs: settings.tooltipFirst
-            ? {"first": _tooltip, "second": _altText}
-            : {"first": _altText, "second": _tooltip});
+    text = settings.tooltipFirst
+        ? context.loc.widgetsImageRendererCaption(_tooltip, _altText)
+        : context.loc.widgetsImageRendererCaption(_altText, _tooltip);
   } else {
     text = _altText + _tooltip;
   }

@@ -147,7 +147,12 @@
   "settingsEditorsChoose": "Choose Editor",
   "settingsEditorsOrgEditor": "Org Editor",
   "settingsEditorsDefaultNoteFormat": "Default Note Format",
-  "settingsEditorsJournalDefaultFolderSelect": "Creating a Note in '{}'",
+  "settingsEditorsJournalDefaultFolderSelect": "Creating a Note in '{loc}'",
+  "@settingsEditorsJournalDefaultFolderSelect": {
+    "placeholders": {
+      "loc": {}
+    }
+  },
   "settingsSortingFieldModified": "Last Modified",
   "settingsSortingFieldCreated": "Created",
   "settingsSortingFieldFilename": "File Name",
@@ -294,7 +299,13 @@
   "widgetsRenameValidatorExists": "Already Exists",
   "widgetsRenameValidatorContains": "Cannot contain /",
   "widgetsRenameNoExt": "Warning: Extension missing. Will treat file as plain text",
-  "widgetsRenameChangeExt": "Warning: Changing file type from '{}' to '{}'",
+  "widgetsRenameChangeExt": "Warning: Changing file type from '{from}' to '{to}'",
+  "@widgetsRenameChangeExt": {
+    "placeholders": {
+      "from": {},
+      "to": {}
+    }
+  },
   "widgetsBacklinksTitle": "{count, plural, one{1 Note links to this Note} other{{count} Notes link to this Note}}",
   "@widgetsBacklinksTitle": {
     "placeholders": {
@@ -303,6 +314,11 @@
   },
   "widgetsSortingOrderSelectorTitle": "Sorting Criteria",
   "widgetsPurchaseButtonText": "Purchase for {price}",
+  "@widgetsPurchaseButtonText": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "widgetsPurchaseButtonFail": "Failed to Load",
   "widgetsPurchaseButtonFailSend": "Failed to send purchase request",
   "widgetsPurchaseButtonFailPurchase": "Failed to Purchase - {}",
@@ -333,7 +349,19 @@
   "widgetsFolderViewPinned": "Pinned",
   "widgetsFolderViewOthers": "Others",
   "widgetsImageRendererCaption": "{first} - {second}",
+  "@widgetsImageRendererCaption": {
+    "placeholders": {
+      "first": {},
+      "second": {}
+    }
+  },
   "widgetsImageRendererHttpError": "Code: {status} for {url}",
+  "@widgetsImageRendererHttpError": {
+    "placeholders": {
+      "status": {},
+      "url": {}
+    }
+  },
   "widgetsNoteDeleteDialogTitle": "{count, plural, one{Do you want to delete this note?} other{Do you want to delete these {count} notes?}}",
   "@widgetsNoteDeleteDialogTitle": {
     "placeholders": {
@@ -506,9 +534,19 @@
   "purchaseScreenOneTimeDesc": "Permanently enables all Pro features currently in GitJournal and new features added in the following 12 months.",
   "purchaseScreenMonthlyTitle": "Monthly Installments",
   "purchaseScreenMonthlyDesc": "Enables all Pro Features. After 12 months or after paying {minYearlyPurchase}, you will get all the benefits of the 'One Time Purchase'",
+  "@purchaseScreenMonthlyDesc": {
+    "placeholders": {
+      "minYearlyPurchase": {}
+    }
+  },
   "purchaseScreenThanksTitle": "Thank You",
   "purchaseScreenThanksSubtitle": "You're awesome for supporting GitJournal",
-  "purchaseScreenExpired": "Subscription Expired on {}",
+  "purchaseScreenExpired": "Subscription Expired on {date}",
+  "@purchaseScreenExpired": {
+    "placeholders": {
+      "date": {}
+    }
+  },
   "purchaseScreenUnknown": "Unknown",
   "onBoardingSkip": "Skip",
   "onBoardingNext": "Next",

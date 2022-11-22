@@ -8,7 +8,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/app_localizations_context.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/settings/markdown_renderer_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/widgets/settings_header.dart';
@@ -46,13 +45,13 @@ class SettingsDisplayImagesThemingScreenState
         validator: (String? value) {
           value = value!.trim();
           if (parseTags(value).isEmpty) {
-            return tr(LocaleKeys
-                .settings_display_images_theming_doThemeTags_validator_empty);
+            return context
+                .loc.settingsDisplayImagesThemingDoThemeTagsValidatorEmpty;
           }
 
           if (parseTags(value).intersection(settings.doThemeTags).isNotEmpty) {
-            return tr(LocaleKeys
-                .settings_display_images_theming_doThemeTags_validator_same);
+            return context
+                .loc.settingsDisplayImagesThemingDoThemeTagsValidatorSame;
           }
 
           return null;
@@ -83,15 +82,15 @@ class SettingsDisplayImagesThemingScreenState
         ),
         validator: (String? value) {
           if (parseTags(value!).isEmpty) {
-            return tr(LocaleKeys
-                .settings_display_images_theming_doThemeTags_validator_empty);
+            return context
+                .loc.settingsDisplayImagesThemingDoThemeTagsValidatorEmpty;
           }
 
           if (parseTags(value)
               .intersection(settings.doNotThemeTags)
               .isNotEmpty) {
-            return tr(LocaleKeys
-                .settings_display_images_theming_doThemeTags_validator_same);
+            return context
+                .loc.settingsDisplayImagesThemingDoThemeTagsValidatorSame;
           }
 
           return null;

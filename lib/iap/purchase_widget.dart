@@ -12,7 +12,6 @@ import 'package:function_types/function_types.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/iap/iap.dart';
 import 'package:gitjournal/iap/purchase_manager.dart';
 import 'package:gitjournal/iap/purchase_slider.dart';
@@ -41,9 +40,7 @@ class PurchaseButton extends StatelessWidget {
   Widget build(BuildContext context) {
     String text;
     if (product != null) {
-      text = tr(LocaleKeys.widgets_PurchaseButton_text, namedArgs: {
-        'price': product!.price,
-      });
+      text = context.loc.widgetsPurchaseButtonText(product!.price);
       if (subscription) {
         text += '/ $timePeriod';
       }
@@ -375,8 +372,8 @@ class _RestorePurchaseButtonState extends State<RestorePurchaseButton> {
         } else {
           var expDate = sub.expiryDate != null
               ? sub.expiryDate!.toIso8601String().substring(0, 10)
-              : LocaleKeys.purchase_screen_unknown;
-          var meesage = LocaleKeys.purchase_screen_expired.tr(args: [expDate]);
+              : context.loc.purchaseScreenUnknown;
+          var meesage = context.loc.purchaseScreenExpired(expDate);
           showSnackbar(context, meesage);
 
           setState(() {

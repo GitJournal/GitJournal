@@ -4,10 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/app_localizations_context.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
@@ -63,7 +61,7 @@ class _RenameDialogState extends State<RenameDialog> {
           if (_noExtension) _DialogWarningText(context.loc.widgetsRenameNoExt),
           if (_changeExtension && !_noExtension)
             _DialogWarningText(
-              LocaleKeys.widgets_rename_changeExt.tr(args: [_oldExt, _newExt]),
+              context.loc.widgetsRenameChangeExt(_oldExt, _newExt),
             ),
           TextFormField(
             decoration: InputDecoration(labelText: widget.inputDecoration),
