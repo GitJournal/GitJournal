@@ -4,13 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
@@ -104,7 +102,7 @@ class _NoteFileTypesSettingsState extends State<NoteFileTypesSettings> {
         style: textTheme.subtitle1!.copyWith(fontFamily: "Roboto Mono"),
       ),
       secondary: Text(
-        LocaleKeys.settings_fileTypes_numFiles.plural(info.count),
+        context.loc.settingsFileTypesNumFiles(info.count),
         style: textTheme.subtitle2,
       ),
       controlAffinity: ListTileControlAffinity.leading,

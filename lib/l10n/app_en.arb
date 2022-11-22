@@ -213,8 +213,12 @@
   "settingsFileFormatOrgMode": "Org Mode",
   "settingsFileTypesTitle": "Note File Types",
   "settingsFileTypesSubtitle": "Configure what files are considered Notes",
-  "settingsFileTypesNumFilesOne": "{} File",
-  "settingsFileTypesNumFilesOther": "{} Files",
+  "settingsFileTypesNumFiles": "{count, plural, zero{No Files} one{1 File} other{{count} Files}}",
+  "@settingsFileTypesNumFiles": {
+    "placeholders": {
+      "count": {}
+    }
+  },
   "settingsFileTypesNoExt": "No Extension",
   "settingsListUserInterfaceTitle": "User Interface",
   "settingsListUserInterfaceSubtitle": "Theme, Language, Home, Bottom Bar, Rendering",
@@ -291,8 +295,12 @@
   "widgetsRenameValidatorContains": "Cannot contain /",
   "widgetsRenameNoExt": "Warning: Extension missing. Will treat file as plain text",
   "widgetsRenameChangeExt": "Warning: Changing file type from '{}' to '{}'",
-  "widgetsBacklinksTitleOne": "{} Note links to this Note",
-  "widgetsBacklinksTitleOther": "{} Notes link to this Note",
+  "widgetsBacklinksTitle": "{count, plural, one{1 Note links to this Note} other{{count} Notes link to this Note}}",
+  "@widgetsBacklinksTitle": {
+    "placeholders": {
+      "count": {}
+    }
+  },
   "widgetsSortingOrderSelectorTitle": "Sorting Criteria",
   "widgetsPurchaseButtonText": "Purchase for {price}",
   "widgetsPurchaseButtonFail": "Failed to Load",
@@ -326,8 +334,14 @@
   "widgetsFolderViewOthers": "Others",
   "widgetsImageRendererCaption": "{first} - {second}",
   "widgetsImageRendererHttpError": "Code: {status} for {url}",
+  "widgetsNoteDeleteDialogTitle": "{count, plural, one{Do you want to delete this note?} other{Do you want to delete these {count} notes?}}",
+  "@widgetsNoteDeleteDialogTitle": {
+    "placeholders": {
+      "count": {}
+    }
+  },
   "widgetsNoteDeleteDialogTitleOne": "Do you want to delete this note?",
-  "widgetsNoteDeleteDialogTitleOther": "Do you want to delete these {} notes?",
+  "widgetsNoteDeleteDialogTitleOther": "",
   "widgetsNoteDeleteDialogYes": "true",
   "widgetsNoteDeleteDialogNo": "false",
   "widgetsNoteEditorRenameFile": "Rename File",
