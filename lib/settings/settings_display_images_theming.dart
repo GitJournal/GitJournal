@@ -121,13 +121,14 @@ class SettingsDisplayImagesThemingScreenState
       ),
       ListPreference(
         title: context.loc.settingsDisplayImagesThemingThemeOverrideTagLocation,
-        currentOption: settings.themeOverrideTagLocation.toPublicString(),
+        currentOption:
+            settings.themeOverrideTagLocation.toPublicString(context),
         options: SettingsImageTextType.options
-            .map((e) => e.toPublicString())
+            .map((e) => e.toPublicString(context))
             .toList(),
         onChange: (String publicStr) {
           settings.themeOverrideTagLocation =
-              SettingsImageTextType.fromPublicString(publicStr);
+              SettingsImageTextType.fromPublicString(context, publicStr);
           settings.save();
           setState(() {});
         },
@@ -137,13 +138,13 @@ class SettingsDisplayImagesThemingScreenState
       SettingsHeader(tr('settings.display.images.theming.vectorGraphics')),
       ListPreference(
         title: context.loc.settingsDisplayImagesThemingThemeVectorGraphicsTitle,
-        currentOption: settings.themeVectorGraphics.toPublicString(),
+        currentOption: settings.themeVectorGraphics.toPublicString(context),
         options: SettingsThemeVectorGraphics.options
-            .map((e) => e.toPublicString())
+            .map((e) => e.toPublicString(context))
             .toList(),
         onChange: (String publicStr) {
           settings.themeVectorGraphics =
-              SettingsThemeVectorGraphics.fromPublicString(publicStr);
+              SettingsThemeVectorGraphics.fromPublicString(context, publicStr);
           settings.save();
           setState(() {});
         },
@@ -174,13 +175,15 @@ class SettingsDisplayImagesThemingScreenState
         ListPreference(
           title: context
               .loc.settingsDisplayImagesThemingVectorGraphicsAdjustColors,
-          currentOption: settings.vectorGraphicsAdjustColors.toPublicString(),
+          currentOption:
+              settings.vectorGraphicsAdjustColors.toPublicString(context),
           options: SettingsVectorGraphicsAdjustColors.options
-              .map((e) => e.toPublicString())
+              .map((e) => e.toPublicString(context))
               .toList(),
           onChange: (String publicStr) {
             settings.vectorGraphicsAdjustColors =
-                SettingsVectorGraphicsAdjustColors.fromPublicString(publicStr);
+                SettingsVectorGraphicsAdjustColors.fromPublicString(
+                    context, publicStr);
             settings.save();
             setState(() {});
           },

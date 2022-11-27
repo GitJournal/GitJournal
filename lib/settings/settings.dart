@@ -5,16 +5,17 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import 'package:flutter/material.dart';
-
 import 'package:easy_localization/easy_localization.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart';
-
+import 'package:flutter/material.dart';
+import 'package:gitjournal/core/folder/sorting_mode.dart';
 import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/folder_views/common_types.dart';
 import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/l10n.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
+
 import 'settings_sharedpref.dart';
 
 const DEFAULT_ID = "0";
@@ -172,28 +173,45 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
   }
 }
 
-class NoteFileNameFormat {
+class NoteFileNameFormat extends GjSetting {
   static const Iso8601WithTimeZone = NoteFileNameFormat(
-      "Iso8601WithTimeZone", 'settings.NoteFileNameFormat.iso8601WithTimeZone');
-  static const Iso8601 =
-      NoteFileNameFormat("Iso8601", 'settings.NoteFileNameFormat.iso8601');
+    Lk.settingsNoteFileNameFormatIso8601WithTimeZone,
+    "Iso8601WithTimeZone",
+  );
+  static const Iso8601 = NoteFileNameFormat(
+    Lk.settingsNoteFileNameFormatIso8601,
+    "Iso8601",
+  );
   static const Iso8601WithTimeZoneWithoutColon = NoteFileNameFormat(
-      "Iso8601WithTimeZoneWithoutColon",
-      'settings.NoteFileNameFormat.iso8601WithoutColon');
-  static const FromTitle =
-      NoteFileNameFormat("FromTitle", 'settings.NoteFileNameFormat.title');
-  static const SimpleDate =
-      NoteFileNameFormat("SimpleDate", 'settings.NoteFileNameFormat.simple');
+    Lk.settingsNoteFileNameFormatIso8601WithoutColon,
+    "Iso8601WithTimeZoneWithoutColon",
+  );
+  static const FromTitle = NoteFileNameFormat(
+    Lk.settingsNoteFileNameFormatTitle,
+    "FromTitle",
+  );
+  static const SimpleDate = NoteFileNameFormat(
+    Lk.settingsNoteFileNameFormatSimple,
+    "SimpleDate",
+  );
   static const UuidV4 =
-      NoteFileNameFormat("uuidv4", 'settings.NoteFileNameFormat.uuid');
+      NoteFileNameFormat(Lk.settingsNoteFileNameFormatUuid, "uuidv4");
   static const Zettelkasten = NoteFileNameFormat(
-      "Zettelkasten", 'settings.NoteFileNameFormat.zettelkasten');
-  static const DateOnly =
-      NoteFileNameFormat("DateOnly", 'settings.NoteFileNameFormat.dateOnly');
-  static const KebabCase =
-      NoteFileNameFormat("KebabCase", 'settings.NoteFileNameFormat.kebabCase');
+    Lk.settingsNoteFileNameFormatZettelkasten,
+    "Zettelkasten",
+  );
+  static const DateOnly = NoteFileNameFormat(
+    Lk.settingsNoteFileNameFormatDateOnly,
+    "DateOnly",
+  );
+  static const KebabCase = NoteFileNameFormat(
+    Lk.settingsNoteFileNameFormatKebabCase,
+    "KebabCase",
+  );
 
   static const Default = FromTitle;
+
+  const NoteFileNameFormat(super.lk, super.str);
 
   static const options = <NoteFileNameFormat>[
     SimpleDate,
@@ -207,42 +225,13 @@ class NoteFileNameFormat {
     KebabCase,
   ];
 
-  static NoteFileNameFormat fromInternalString(String? str) {
-    for (var opt in options) {
-      if (opt.toInternalString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
+  static NoteFileNameFormat fromInternalString(String? str) =>
+      GjSetting.fromInternalString(options, Default, str) as NoteFileNameFormat;
 
-  static NoteFileNameFormat fromPublicString(String str) {
-    for (var opt in options) {
-      if (opt.toPublicString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  final String _str;
-  final String _publicStr;
-
-  const NoteFileNameFormat(this._str, this._publicStr);
-
-  String toInternalString() {
-    return _str;
-  }
-
-  String toPublicString() {
-    return tr(_publicStr);
-  }
-
-  @override
-  String toString() {
-    assert(false, "NoteFileNameFormat toString should never be called");
-    return "";
-  }
+  static NoteFileNameFormat fromPublicString(
+          BuildContext context, String str) =>
+      GjSetting.fromPublicString(context, options, Default, str)
+          as NoteFileNameFormat;
 }
 
 class RemoteSyncFrequency {

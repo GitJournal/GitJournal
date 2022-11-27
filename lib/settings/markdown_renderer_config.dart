@@ -5,12 +5,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import 'package:flutter/foundation.dart';
-
-import 'package:easy_localization/easy_localization.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter/widgets.dart';
+import 'package:gitjournal/core/folder/sorting_mode.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/settings/settings_sharedpref.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MarkdownRendererConfig extends ChangeNotifier with SettingsSharedPref {
   MarkdownRendererConfig(this.id, this.pref);
@@ -151,26 +150,16 @@ String csvTags(Set<String> tags) {
   return tags.join(", ");
 }
 
-class SettingsThemeVectorGraphics {
+class SettingsThemeVectorGraphics extends GjSetting {
   static const On = SettingsThemeVectorGraphics(
-      "settings.display.images.theming.themeVectorGraphics.on", "on");
+      Lk.settingsDisplayImagesThemingThemeVectorGraphicsOn, "on");
   static const Off = SettingsThemeVectorGraphics(
-      "settings.display.images.theming.themeVectorGraphics.off", "off");
+      Lk.settingsDisplayImagesThemingThemeVectorGraphicsOff, "off");
   static const Filter = SettingsThemeVectorGraphics(
-      "settings.display.images.theming.themeVectorGraphics.filter", "filter");
+      Lk.settingsDisplayImagesThemingThemeVectorGraphicsFilter, "filter");
   static const Default = On;
 
-  final String _str;
-  final String _publicString;
-  const SettingsThemeVectorGraphics(this._publicString, this._str);
-
-  String toInternalString() {
-    return _str;
-  }
-
-  String toPublicString() {
-    return tr(_publicString);
-  }
+  const SettingsThemeVectorGraphics(super.lk, super.str);
 
   static const options = <SettingsThemeVectorGraphics>[
     On,
@@ -178,53 +167,27 @@ class SettingsThemeVectorGraphics {
     Filter,
   ];
 
-  static SettingsThemeVectorGraphics fromInternalString(String? str) {
-    for (var opt in options) {
-      if (opt.toInternalString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
+  static SettingsThemeVectorGraphics fromInternalString(String? str) =>
+      GjSetting.fromInternalString(options, Default, str)
+          as SettingsThemeVectorGraphics;
 
-  static SettingsThemeVectorGraphics fromPublicString(String str) {
-    for (var opt in options) {
-      if (opt.toPublicString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  @override
-  String toString() {
-    assert(
-        false, "SettingsThemeVectorGraphics toString should never be called");
-    return "";
-  }
+  static SettingsThemeVectorGraphics fromPublicString(
+          BuildContext context, String str) =>
+      GjSetting.fromPublicString(context, options, Default, str)
+          as SettingsThemeVectorGraphics;
 }
 
-class SettingsVectorGraphicsAdjustColors {
+class SettingsVectorGraphicsAdjustColors extends GjSetting {
   static const All = SettingsVectorGraphicsAdjustColors(
-      "settings.display.images.theming.adjustColors.all", "all");
+      Lk.settingsDisplayImagesThemingAdjustColorsAll, "all");
   static const BnW = SettingsVectorGraphicsAdjustColors(
-      "settings.display.images.theming.adjustColors.blackAndWhite",
+      Lk.settingsDisplayImagesThemingAdjustColorsBlackAndWhite,
       "black_and_white");
   static const Grays = SettingsVectorGraphicsAdjustColors(
-      "settings.display.images.theming.adjustColors.grays", "grays");
+      Lk.settingsDisplayImagesThemingAdjustColorsGrays, "grays");
   static const Default = All;
 
-  final String _str;
-  final String _publicString;
-  const SettingsVectorGraphicsAdjustColors(this._publicString, this._str);
-
-  String toInternalString() {
-    return _str;
-  }
-
-  String toPublicString() {
-    return tr(_publicString);
-  }
+  const SettingsVectorGraphicsAdjustColors(super.lk, super.str);
 
   static const options = <SettingsVectorGraphicsAdjustColors>[
     BnW,
@@ -232,54 +195,28 @@ class SettingsVectorGraphicsAdjustColors {
     All,
   ];
 
-  static SettingsVectorGraphicsAdjustColors fromInternalString(String? str) {
-    for (var opt in options) {
-      if (opt.toInternalString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
+  static SettingsVectorGraphicsAdjustColors fromInternalString(String? str) =>
+      GjSetting.fromInternalString(options, Default, str)
+          as SettingsVectorGraphicsAdjustColors;
 
-  static SettingsVectorGraphicsAdjustColors fromPublicString(String str) {
-    for (var opt in options) {
-      if (opt.toPublicString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  @override
-  String toString() {
-    assert(false,
-        "SettingsVectorGraphicsAdjustColors toString should never be called");
-    return "";
-  }
+  static SettingsVectorGraphicsAdjustColors fromPublicString(
+          BuildContext context, String str) =>
+      GjSetting.fromPublicString(context, options, Default, str)
+          as SettingsVectorGraphicsAdjustColors;
 }
 
-class SettingsImageTextType {
+class SettingsImageTextType extends GjSetting {
   static const AltTool = SettingsImageTextType(
-      "settings.display.images.imageTextType.altAndTooltip", "alt_and_tooltip");
+      Lk.settingsDisplayImagesImageTextTypeAltAndTooltip, "alt_and_tooltip");
   static const Tooltip = SettingsImageTextType(
-      "settings.display.images.imageTextType.tooltip", "tooltip");
+      Lk.settingsDisplayImagesImageTextTypeTooltip, "tooltip");
   static const Alt =
-      SettingsImageTextType("settings.display.images.imageTextType.alt", "alt");
-  static const None = SettingsImageTextType(
-      "settings.display.images.imageTextType.none", "none");
+      SettingsImageTextType(Lk.settingsDisplayImagesImageTextTypeAlt, "alt");
+  static const None =
+      SettingsImageTextType(Lk.settingsDisplayImagesImageTextTypeNone, "none");
   static const Default = AltTool;
 
-  final String _str;
-  final String _publicString;
-  const SettingsImageTextType(this._publicString, this._str);
-
-  String toInternalString() {
-    return _str;
-  }
-
-  String toPublicString() {
-    return tr(_publicString);
-  }
+  const SettingsImageTextType(super.lk, super.str);
 
   static const options = <SettingsImageTextType>[
     AltTool,
@@ -288,28 +225,12 @@ class SettingsImageTextType {
     None,
   ];
 
-  static SettingsImageTextType fromInternalString(String? str) {
-    for (var opt in options) {
-      if (opt.toInternalString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
+  static SettingsImageTextType fromInternalString(String? str) =>
+      GjSetting.fromInternalString(options, Default, str)
+          as SettingsImageTextType;
 
-  static SettingsImageTextType fromPublicString(String str) {
-    for (var opt in options) {
-      if (opt.toPublicString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  @override
-  String toString() {
-    assert(false,
-        "SettingsThemeOverrideTagLocation toString should never be called");
-    return "";
-  }
+  static SettingsImageTextType fromPublicString(
+          BuildContext context, String str) =>
+      GjSetting.fromPublicString(context, options, Default, str)
+          as SettingsImageTextType;
 }

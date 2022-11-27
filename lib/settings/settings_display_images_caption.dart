@@ -116,13 +116,13 @@ class SettingsDisplayImagesCaptionScreenState
     var body = ListView(children: <Widget>[
       ListPreference(
         title: context.loc.settingsDisplayImagesCaptionsUseAsCaption,
-        currentOption: settings.useAsCaption.toPublicString(),
+        currentOption: settings.useAsCaption.toPublicString(context),
         options: SettingsImageTextType.options
-            .map((e) => e.toPublicString())
+            .map((e) => e.toPublicString(context))
             .toList(),
         onChange: (String publicStr) {
           settings.useAsCaption =
-              SettingsImageTextType.fromPublicString(publicStr);
+              SettingsImageTextType.fromPublicString(context, publicStr);
           settings.save();
           setState(() {});
         },

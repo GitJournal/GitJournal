@@ -118,6 +118,62 @@ extension LocalizedBuildContext on BuildContext {
         return loc.featureEncryptedHosting;
       case Lk.featureDesktop:
         return loc.featureDesktop;
+      case Lk.settingsSortingOrderDesc:
+        return loc.settingsSortingOrderDesc;
+      case Lk.settingsSortingFieldCreated:
+        return loc.settingsSortingFieldCreated;
+      case Lk.settingsSortingFieldFilename:
+        return loc.settingsSortingFieldFilename;
+      case Lk.settingsSortingFieldModified:
+        return loc.settingsSortingFieldModified;
+      case Lk.settingsNoteMetaDataUnixTimestampDateMagnitudeSeconds:
+        return loc.settingsNoteMetaDataUnixTimestampDateMagnitudeSeconds;
+      case Lk.settingsNoteMetaDataUnixTimestampDateMagnitudeMilliseconds:
+        return loc.settingsNoteMetaDataUnixTimestampDateMagnitudeMilliseconds;
+      case Lk.settingsNoteMetaDataDateFormatIso8601:
+        return loc.settingsNoteMetaDataDateFormatIso8601;
+      case Lk.settingsNoteMetaDataDateFormatUnixTimestamp:
+        return loc.settingsNoteMetaDataDateFormatUnixTimestamp;
+      case Lk.settingsNoteMetaDataDateFormatNone:
+        return loc.settingsNoteMetaDataDateFormatNone;
+      case Lk.settingsDisplayImagesThemingThemeVectorGraphicsOff:
+        return loc.settingsDisplayImagesThemingThemeVectorGraphicsOff;
+      case Lk.settingsDisplayImagesThemingThemeVectorGraphicsOn:
+        return loc.settingsDisplayImagesThemingThemeVectorGraphicsOn;
+      case Lk.settingsDisplayImagesThemingThemeVectorGraphicsFilter:
+        return loc.settingsDisplayImagesThemingThemeVectorGraphicsFilter;
+      case Lk.settingsDisplayImagesThemingAdjustColorsGrays:
+        return loc.settingsDisplayImagesThemingAdjustColorsGrays;
+      case Lk.settingsDisplayImagesThemingAdjustColorsBlackAndWhite:
+        return loc.settingsDisplayImagesThemingAdjustColorsBlackAndWhite;
+      case Lk.settingsDisplayImagesThemingAdjustColorsAll:
+        return loc.settingsDisplayImagesThemingAdjustColorsAll;
+      case Lk.settingsDisplayImagesImageTextTypeAltAndTooltip:
+        return loc.settingsDisplayImagesImageTextTypeAltAndTooltip;
+      case Lk.settingsDisplayImagesImageTextTypeTooltip:
+        return loc.settingsDisplayImagesImageTextTypeTooltip;
+      case Lk.settingsDisplayImagesImageTextTypeAlt:
+        return loc.settingsDisplayImagesImageTextTypeAlt;
+      case Lk.settingsDisplayImagesImageTextTypeNone:
+        return loc.settingsDisplayImagesImageTextTypeNone;
+      case Lk.settingsNoteFileNameFormatIso8601WithTimeZone:
+        return loc.settingsNoteFileNameFormatIso8601WithTimeZone;
+      case Lk.settingsNoteFileNameFormatKebabCase:
+        return loc.settingsNoteFileNameFormatKebabCase;
+      case Lk.settingsNoteFileNameFormatDateOnly:
+        return loc.settingsNoteFileNameFormatDateOnly;
+      case Lk.settingsNoteFileNameFormatIso8601WithoutColon:
+        return loc.settingsNoteFileNameFormatIso8601WithoutColon;
+      case Lk.settingsNoteFileNameFormatUuid:
+        return loc.settingsNoteFileNameFormatUuid;
+      case Lk.settingsNoteFileNameFormatSimple:
+        return loc.settingsNoteFileNameFormatSimple;
+      case Lk.settingsNoteFileNameFormatTitle:
+        return loc.settingsNoteFileNameFormatTitle;
+      case Lk.settingsNoteFileNameFormatZettelkasten:
+        return loc.settingsNoteFileNameFormatZettelkasten;
+      case Lk.settingsNoteFileNameFormatIso8601:
+        return loc.settingsNoteFileNameFormatIso8601;
     }
   }
 }
@@ -206,4 +262,32 @@ enum Lk {
   featureMermaid,
   featureEncryptedHosting,
   featureDesktop,
+  settingsSortingOrderDesc,
+  settingsSortingFieldCreated,
+  settingsSortingFieldFilename,
+  settingsSortingFieldModified,
+  settingsNoteMetaDataUnixTimestampDateMagnitudeSeconds,
+  settingsNoteMetaDataUnixTimestampDateMagnitudeMilliseconds,
+  settingsNoteMetaDataDateFormatIso8601,
+  settingsNoteMetaDataDateFormatUnixTimestamp,
+  settingsNoteMetaDataDateFormatNone,
+  settingsDisplayImagesThemingThemeVectorGraphicsOff,
+  settingsDisplayImagesThemingThemeVectorGraphicsOn,
+  settingsDisplayImagesThemingThemeVectorGraphicsFilter,
+  settingsDisplayImagesThemingAdjustColorsGrays,
+  settingsDisplayImagesThemingAdjustColorsBlackAndWhite,
+  settingsDisplayImagesThemingAdjustColorsAll,
+  settingsDisplayImagesImageTextTypeAltAndTooltip,
+  settingsDisplayImagesImageTextTypeTooltip,
+  settingsDisplayImagesImageTextTypeAlt,
+  settingsDisplayImagesImageTextTypeNone,
+  settingsNoteFileNameFormatIso8601WithTimeZone,
+  settingsNoteFileNameFormatKebabCase,
+  settingsNoteFileNameFormatDateOnly,
+  settingsNoteFileNameFormatIso8601WithoutColon,
+  settingsNoteFileNameFormatUuid,
+  settingsNoteFileNameFormatSimple,
+  settingsNoteFileNameFormatTitle,
+  settingsNoteFileNameFormatZettelkasten,
+  settingsNoteFileNameFormatIso8601,
 }

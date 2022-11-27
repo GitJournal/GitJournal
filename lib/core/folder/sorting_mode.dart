@@ -4,86 +4,91 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import 'package:easy_localization/easy_localization.dart';
-
+import 'package:flutter/cupertino.dart';
 import 'package:gitjournal/core/file/file.dart';
+import 'package:gitjournal/l10n.dart';
 
 typedef SortingFunction = int Function(File a, File b);
 
-class SortingOrder {
-  static const Ascending = SortingOrder("settings.sortingOrder.asc", "asc");
-  static const Descending = SortingOrder("settings.sortingOrder.desc", "desc");
-  static const Default = Descending;
-
+class GjSetting {
   final String _str;
-  final String _publicString;
-  const SortingOrder(this._publicString, this._str);
+  final Lk _lk;
 
-  String toInternalString() {
-    return _str;
-  }
+  const GjSetting(this._lk, this._str);
 
-  String toPublicString() {
-    return tr(_publicString);
-  }
-
-  static const options = <SortingOrder>[
-    Ascending,
-    Descending,
-  ];
-
-  static SortingOrder fromInternalString(String? str) {
-    for (var opt in options) {
-      if (opt.toInternalString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  static SortingOrder fromPublicString(String str) {
-    for (var opt in options) {
-      if (opt.toPublicString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
+  String toPublicString(BuildContext context) => context.tr(_lk);
+  String toInternalString() => _str;
 
   @override
   String toString() {
     assert(false, "SortingOrder toString should never be called");
     return "";
   }
+
+  static GjSetting fromInternalString(
+    List<GjSetting> options,
+    GjSetting def,
+    String? str,
+  ) {
+    for (var opt in options) {
+      if (opt.toInternalString() == str) {
+        return opt;
+      }
+    }
+    return def;
+  }
+
+  static GjSetting fromPublicString(
+    BuildContext context,
+    List<GjSetting> options,
+    GjSetting def,
+    String str,
+  ) {
+    for (var opt in options) {
+      if (opt.toPublicString(context) == str) {
+        return opt;
+      }
+    }
+    return def;
+  }
 }
 
-class SortingField {
+class SortingOrder extends GjSetting {
+  static const Ascending = SortingOrder(Lk.settingsSortingOrderDesc, "asc");
+  static const Descending = SortingOrder(Lk.settingsSortingOrderDesc, "desc");
+  static const Default = Descending;
+
+  const SortingOrder(super.lk, super.str);
+
+  static const options = <SortingOrder>[
+    Ascending,
+    Descending,
+  ];
+
+  static SortingOrder fromInternalString(String? str) =>
+      GjSetting.fromInternalString(options, Default, str) as SortingOrder;
+
+  static SortingOrder fromPublicString(BuildContext context, String str) =>
+      GjSetting.fromPublicString(context, options, Default, str)
+          as SortingOrder;
+}
+
+class SortingField extends GjSetting {
   static const Modified = SortingField(
-    "settings.sortingField.modified",
+    Lk.settingsSortingFieldModified,
     "Modified",
   );
   static const Created = SortingField(
-    "settings.sortingField.created",
+    Lk.settingsSortingFieldCreated,
     "Created",
   );
   static const FileName = SortingField(
-    "settings.sortingField.filename",
+    Lk.settingsSortingFieldFilename,
     "FileName",
   );
-
   static const Default = Modified;
 
-  final String _str;
-  final String _publicString;
-  const SortingField(this._publicString, this._str);
-
-  String toInternalString() {
-    return _str;
-  }
-
-  String toPublicString() {
-    return tr(_publicString);
-  }
+  const SortingField(super.lk, super.str);
 
   static const options = <SortingField>[
     Modified,
@@ -91,20 +96,12 @@ class SortingField {
     FileName,
   ];
 
-  static SortingField fromInternalString(String? str) {
-    for (var opt in options) {
-      if (opt.toInternalString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
+  static SortingField fromInternalString(String? str) =>
+      GjSetting.fromInternalString(options, Default, str) as SortingField;
 
-  @override
-  String toString() {
-    assert(false, "SortingField toString should never be called");
-    return "";
-  }
+  static SortingField fromPublicString(BuildContext context, String str) =>
+      GjSetting.fromPublicString(context, options, Default, str)
+          as SortingField;
 }
 
 class SortingMode {

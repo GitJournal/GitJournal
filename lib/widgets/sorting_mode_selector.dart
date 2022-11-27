@@ -75,7 +75,7 @@ class _SortingModeSelectorState extends State<SortingModeSelector> {
 
   RadioListTile<SortingField> _buildSortingTile(SortingField sf) {
     return RadioListTile<SortingField>(
-      title: Text(sf.toPublicString()),
+      title: Text(sf.toPublicString(context)),
       value: sf,
       groupValue: _field,
       onChanged: (SortingField? sf) {
@@ -88,7 +88,7 @@ class _SortingModeSelectorState extends State<SortingModeSelector> {
 
   RadioListTile<SortingOrder> _buildSortingOrderTile(SortingOrder so) {
     return RadioListTile<SortingOrder>(
-      title: Text(so.toPublicString()),
+      title: Text(so.toPublicString(context)),
       value: so,
       groupValue: _order,
       onChanged: (SortingOrder? so) {

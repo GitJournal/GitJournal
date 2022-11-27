@@ -117,15 +117,15 @@ class _NoteMetadataSettingsScreenState
         ListPreference(
             title: context.loc.settingsNoteMetaDataUnixTimestampMagnitude,
             options: NoteSerializationUnixTimestampMagnitude.options
-                .map((m) => m.toPublicString())
+                .map((m) => m.toPublicString(context))
                 .toList(),
             currentOption:
-                folderConfig.yamlUnixTimestampMagnitude.toPublicString(),
+                folderConfig.yamlUnixTimestampMagnitude.toPublicString(context),
             onChange: (String publicStr) {
               setState(() {
                 var newVal =
                     NoteSerializationUnixTimestampMagnitude.fromPublicString(
-                        publicStr);
+                        context, publicStr);
                 folderConfig.yamlUnixTimestampMagnitude = newVal;
                 folderConfig.save();
               });
@@ -145,13 +145,14 @@ class _NoteMetadataSettingsScreenState
         ListPreference(
           title: context.loc.settingsNoteMetaDataModifiedFormat,
           options: NoteSerializationDateFormat.options
-              .map((f) => f.toPublicString())
+              .map((f) => f.toPublicString(context))
               .toList(),
-          currentOption: folderConfig.yamlModifiedFormat.toPublicString(),
+          currentOption:
+              folderConfig.yamlModifiedFormat.toPublicString(context),
           onChange: (String publicStr) {
             setState(() {
-              var newVal =
-                  NoteSerializationDateFormat.fromPublicString(publicStr);
+              var newVal = NoteSerializationDateFormat.fromPublicString(
+                  context, publicStr);
               folderConfig.yamlModifiedFormat = newVal;
               folderConfig.save();
             });
@@ -173,13 +174,13 @@ class _NoteMetadataSettingsScreenState
         ListPreference(
           title: context.loc.settingsNoteMetaDataCreatedFormat,
           options: NoteSerializationDateFormat.options
-              .map((f) => f.toPublicString())
+              .map((f) => f.toPublicString(context))
               .toList(),
-          currentOption: folderConfig.yamlCreatedFormat.toPublicString(),
+          currentOption: folderConfig.yamlCreatedFormat.toPublicString(context),
           onChange: (String publicStr) {
             setState(() {
-              var newVal =
-                  NoteSerializationDateFormat.fromPublicString(publicStr);
+              var newVal = NoteSerializationDateFormat.fromPublicString(
+                  context, publicStr);
               folderConfig.yamlCreatedFormat = newVal;
               folderConfig.save();
             });

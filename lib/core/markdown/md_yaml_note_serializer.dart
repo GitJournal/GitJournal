@@ -7,18 +7,20 @@
 import 'dart:collection';
 import 'dart:convert';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
-import 'package:yaml/yaml.dart';
-
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
+import 'package:gitjournal/core/folder/sorting_mode.dart';
 import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/generated/core.pb.dart' as pb;
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
+import 'package:yaml/yaml.dart';
+
 import '../file/file.dart';
 import '../note.dart';
 import 'md_yaml_doc.dart';
@@ -35,25 +37,18 @@ abstract class NoteSerializerInterface {
 
 var emojiParser = EmojiParser();
 
-class NoteSerializationUnixTimestampMagnitude {
+class NoteSerializationUnixTimestampMagnitude extends GjSetting {
   static const Seconds = NoteSerializationUnixTimestampMagnitude(
-      "settings.noteMetaData.unixTimestampDateMagnitude.seconds", "seconds");
+    Lk.settingsNoteMetaDataUnixTimestampDateMagnitudeSeconds,
+    "seconds",
+  );
   static const Milliseconds = NoteSerializationUnixTimestampMagnitude(
-      "settings.noteMetaData.unixTimestampDateMagnitude.milliseconds",
-      "milliseconds");
+    Lk.settingsNoteMetaDataUnixTimestampDateMagnitudeMilliseconds,
+    "milliseconds",
+  );
   static const Default = Seconds;
 
-  final String _str;
-  final String _publicStr;
-  const NoteSerializationUnixTimestampMagnitude(this._publicStr, this._str);
-
-  String toInternalString() {
-    return _str;
-  }
-
-  String toPublicString() {
-    return tr(_publicStr);
-  }
+  const NoteSerializationUnixTimestampMagnitude(super.lk, super.str);
 
   static const options = <NoteSerializationUnixTimestampMagnitude>[
     Seconds,
@@ -61,52 +56,26 @@ class NoteSerializationUnixTimestampMagnitude {
   ];
 
   static NoteSerializationUnixTimestampMagnitude fromInternalString(
-      String? str) {
-    for (var opt in options) {
-      if (opt.toInternalString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
+          String? str) =>
+      GjSetting.fromInternalString(options, Default, str)
+          as NoteSerializationUnixTimestampMagnitude;
 
-  static NoteSerializationUnixTimestampMagnitude fromPublicString(String str) {
-    for (var opt in options) {
-      if (opt.toPublicString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  @override
-  String toString() {
-    assert(false,
-        "NoteSerializationUnixTimestampMagnitude toString should never be called");
-    return "";
-  }
+  static NoteSerializationUnixTimestampMagnitude fromPublicString(
+          BuildContext context, String str) =>
+      GjSetting.fromPublicString(context, options, Default, str)
+          as NoteSerializationUnixTimestampMagnitude;
 }
 
-class NoteSerializationDateFormat {
+class NoteSerializationDateFormat extends GjSetting {
   static const Iso8601 = NoteSerializationDateFormat(
-      "settings.noteMetaData.dateFormat.iso8601", "iso8601");
+      Lk.settingsNoteMetaDataDateFormatIso8601, "iso8601");
   static const UnixTimeStamp = NoteSerializationDateFormat(
-      "settings.noteMetaData.dateFormat.unixTimestamp", "unixTimestamp");
+      Lk.settingsNoteMetaDataDateFormatUnixTimestamp, "unixTimestamp");
   static const None = NoteSerializationDateFormat(
-      "settings.noteMetaData.dateFormat.none", "none");
+      Lk.settingsNoteMetaDataDateFormatNone, "none");
   static const Default = Iso8601;
 
-  final String _str;
-  final String _publicString;
-  const NoteSerializationDateFormat(this._publicString, this._str);
-
-  String toInternalString() {
-    return _str;
-  }
-
-  String toPublicString() {
-    return tr(_publicString);
-  }
+  const NoteSerializationDateFormat(super.lk, super.str);
 
   static const options = <NoteSerializationDateFormat>[
     Iso8601,
@@ -114,30 +83,14 @@ class NoteSerializationDateFormat {
     None,
   ];
 
-  static NoteSerializationDateFormat fromInternalString(String? str) {
-    for (var opt in options) {
-      if (opt.toInternalString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
+  static NoteSerializationDateFormat fromInternalString(String? str) =>
+      GjSetting.fromInternalString(options, Default, str)
+          as NoteSerializationDateFormat;
 
-  static NoteSerializationDateFormat fromPublicString(String str) {
-    for (var opt in options) {
-      if (opt.toPublicString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  @override
-  String toString() {
-    assert(
-        false, "NoteSerializationDateFormat toString should never be called");
-    return "";
-  }
+  static NoteSerializationDateFormat fromPublicString(
+          BuildContext context, String str) =>
+      GjSetting.fromPublicString(context, options, Default, str)
+          as NoteSerializationDateFormat;
 }
 
 class NoteSerializationSettings {
@@ -188,7 +141,8 @@ class NoteSerializationSettings {
 
   pb.NoteSerializationSettings toProtoBuf() {
     return pb.NoteSerializationSettings(
-      unixTimestampMagnitude: _protoUnixTimestampMagnitude(unixTimestampMagnitude),
+      unixTimestampMagnitude:
+          _protoUnixTimestampMagnitude(unixTimestampMagnitude),
       modifiedKey: modifiedKey,
       modifiedFormat: _protoDateFormat(modifiedFormat),
       createdKey: createdKey,
@@ -221,7 +175,8 @@ class NoteSerializationSettings {
     return s;
   }
 
-  static pb.UnixTimestampMagnitude _protoUnixTimestampMagnitude(NoteSerializationUnixTimestampMagnitude magnitude) {
+  static pb.UnixTimestampMagnitude _protoUnixTimestampMagnitude(
+      NoteSerializationUnixTimestampMagnitude magnitude) {
     switch (magnitude) {
       case NoteSerializationUnixTimestampMagnitude.Milliseconds:
         return pb.UnixTimestampMagnitude.Milliseconds;
@@ -305,7 +260,8 @@ class NoteSerializer implements NoteSerializerInterface {
         props[settings.createdKey] = toIso8601WithTimezone(note.created);
         break;
       case NoteSerializationDateFormat.UnixTimeStamp:
-        props[settings.createdKey] = toUnixTimeStamp(note.created, settings.unixTimestampMagnitude);
+        props[settings.createdKey] =
+            toUnixTimeStamp(note.created, settings.unixTimestampMagnitude);
         break;
       case NoteSerializationDateFormat.None:
         _ = props.remove(settings.createdKey);
@@ -317,7 +273,8 @@ class NoteSerializer implements NoteSerializerInterface {
         props[settings.modifiedKey] = toIso8601WithTimezone(note.modified);
         break;
       case NoteSerializationDateFormat.UnixTimeStamp:
-        props[settings.modifiedKey] = toUnixTimeStamp(note.modified, settings.unixTimestampMagnitude);
+        props[settings.modifiedKey] =
+            toUnixTimeStamp(note.modified, settings.unixTimestampMagnitude);
         break;
       case NoteSerializationDateFormat.None:
         _ = props.remove(settings.modifiedKey);
