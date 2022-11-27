@@ -448,20 +448,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  easy_localization:
-    dependency: transitive
-    description:
-      name: easy_localization
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.1"
-  easy_logger:
-    dependency: transitive
-    description:
-      name: easy_logger
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.2"
   email_validator:
     dependency: "direct main"
     description:
