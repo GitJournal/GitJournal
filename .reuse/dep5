@@ -10,7 +10,7 @@ Files: macos/Runner/* macos/Runner.xcodeproj/* macos/Runner.xcworkspace/* macos/
        android/app/src/dev/res/values/*
        scripts/secrets/* packages/git_setup/test/apis/data/*
        *.lock *.iml *.jks *.metadata *.plist *.entitlements
-       *.yaml *.desktop *.gitignore *.arb
+       *.yaml *.desktop *.gitignore *.arb .vscode/*.json
 Copyright: Vishesh Handa <me@vhanda.in>
 License: CC0-1.0
 
