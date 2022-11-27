@@ -6,7 +6,7 @@
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:gitjournal/app_localizations_context.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:provider/provider.dart';
 
 import 'git_config.dart';

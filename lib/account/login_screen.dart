@@ -4,15 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:flutter/material.dart';
-
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
 import 'package:gitjournal/account/account_screen.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginPage extends StatefulWidget {
   static const routePath = '/login';
@@ -173,7 +171,7 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
           return "Email is empty";
         }
         if (!EmailValidator.validate(value)) {
-          return LocaleKeys.settings_email_validator_invalid;
+          return context.loc.settingsEmailValidatorInvalid;
         }
         return null;
       },

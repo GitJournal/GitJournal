@@ -7,7 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:function_types/function_types.dart';
-import 'package:gitjournal/app_localizations_context.dart';
+import 'package:gitjournal/l10n.dart';
 
 import 'common.dart';
 

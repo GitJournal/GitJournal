@@ -6,15 +6,13 @@
 
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:crypto/crypto.dart';
-import 'package:provider/provider.dart';
-import 'package:gitjournal/app_localizations_context.dart';
-
+import 'package:flutter/material.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_config.dart';
+import 'package:provider/provider.dart';
 
 class ExperimentalSettingsScreen extends StatefulWidget {
   static const routePath = '/settings/experimental';

@@ -7,7 +7,6 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/core/folder/flattened_filtered_notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/markdown/md_yaml_note_serializer.dart';
@@ -15,6 +14,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/views/inline_tags_view.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/folder_views/folder_view.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:gitjournal/widgets/future_builder_with_progress.dart';

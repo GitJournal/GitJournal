@@ -6,22 +6,10 @@
 
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-
 import 'package:auto_updater/auto_updater.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
-import 'package:gitjournal/app_localizations_context.dart';
-import 'package:hive/hive.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:quick_actions/quick_actions.dart';
-import 'package:receive_sharing_intent/receive_sharing_intent.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:universal_io/io.dart' show Directory, Platform;
-
+import 'package:flutter/material.dart';
 import 'package:gitjournal/account/init.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/analytics/route_observer.dart';
@@ -32,6 +20,7 @@ import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/views/note_links_view.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/iap/iap.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/screens/error_screen.dart';
@@ -39,6 +28,15 @@ import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/themes.dart';
+import 'package:hive/hive.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:quick_actions/quick_actions.dart';
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:universal_io/io.dart' show Directory, Platform;
 
 class JournalApp extends StatefulWidget {
   static Future<void> main(SharedPreferences pref) async {

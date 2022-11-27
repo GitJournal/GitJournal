@@ -8,9 +8,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/folder_views/common.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
 import 'package:gitjournal/utils/utils.dart';

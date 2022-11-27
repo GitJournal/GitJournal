@@ -6,7 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:gitjournal/app_localizations_context.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/settings/widgets/version_number_widgit.dart';
 import 'package:url_launcher/url_launcher.dart';

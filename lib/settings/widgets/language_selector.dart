@@ -4,16 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:flutter/foundation.dart' as foundation;
-import 'package:flutter/material.dart';
-
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:language_picker/languages.dart';
-
-import 'package:gitjournal/app_localizations_context.dart';
-
+import 'package:flutter/foundation.dart' as foundation;
+import 'package:flutter/material.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
+import 'package:language_picker/languages.dart';
 
 class LanguageSelector extends StatelessWidget {
   const LanguageSelector({super.key});

@@ -5,17 +5,15 @@
  */
 
 import 'package:flutter/material.dart';
-
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:provider/provider.dart';
-
 import 'package:gitjournal/core/folder/flattened_notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/folder_views/folder_view.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/screens/cache_loading_screen.dart';
-import 'package:gitjournal/app_localizations_context.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routePath = '/';

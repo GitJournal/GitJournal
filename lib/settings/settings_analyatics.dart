@@ -7,7 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gitjournal/analytics/analytics.dart';
-import 'package:gitjournal/app_localizations_context.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'package:provider/provider.dart';
 

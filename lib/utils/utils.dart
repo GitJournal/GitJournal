@@ -4,20 +4,19 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'package:dart_date/dart_date.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
-
-import 'package:dart_date/dart_date.dart';
+import 'package:gitjournal/core/folder/notes_folder_fs.dart';
+import 'package:gitjournal/core/note_storage.dart';
+import 'package:gitjournal/l10n.dart';
+import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/utils/result.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:time/time.dart';
-import 'package:gitjournal/app_localizations_context.dart';
 
-import 'package:gitjournal/core/folder/notes_folder_fs.dart';
-import 'package:gitjournal/core/note_storage.dart';
-import 'package:gitjournal/settings/settings.dart';
-import 'package:gitjournal/utils/result.dart';
 import '../core/note.dart';
 import '../editors/common_types.dart';
 import '../logger/logger.dart';

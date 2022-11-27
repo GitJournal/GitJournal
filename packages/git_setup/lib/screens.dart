@@ -4,13 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:function_types/function_types.dart';
+import 'package:git_setup/git_config.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/storage_config.dart';
@@ -22,9 +23,7 @@ import 'package:provider/provider.dart';
 import 'package:time/time.dart';
 import 'package:universal_io/io.dart' show Platform, Directory;
 import 'package:url_launcher/url_launcher.dart';
-import 'package:gitjournal/app_localizations_context.dart';
 
-import 'package:git_setup/git_config.dart';
 import 'apis/githost_factory.dart';
 import 'autoconfigure.dart';
 import 'button.dart';

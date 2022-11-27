@@ -5,12 +5,10 @@
  */
 
 import 'package:flutter/material.dart';
-
 import 'package:fs_shim/fs_shim.dart';
 import 'package:function_types/function_types.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:path/path.dart' as p;
-
-import 'package:gitjournal/app_localizations_context.dart';
 
 class NoteFileNameEditor extends StatefulWidget {
   final String filePath;

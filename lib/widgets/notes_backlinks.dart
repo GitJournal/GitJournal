@@ -6,7 +6,6 @@
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/link.dart';
@@ -14,6 +13,7 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/views/note_links_view.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/folder_views/common.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
 import 'package:gitjournal/widgets/future_builder_with_progress.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';

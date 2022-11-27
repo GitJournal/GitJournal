@@ -6,10 +6,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gitjournal/app_localizations_context.dart';
-
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/utils/utils.dart';
 
 class VersionNumberTile extends StatefulWidget {

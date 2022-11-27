@@ -5,10 +5,10 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';

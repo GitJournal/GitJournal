@@ -5,15 +5,13 @@
  */
 
 import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/virtual_notes_folder.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
-import 'package:gitjournal/app_localizations_context.dart';
+import 'package:gitjournal/l10n.dart';
+import 'package:provider/provider.dart';
 
 class NoteSearchDelegate extends SearchDelegate<Note?> {
   final List<Note> notes;

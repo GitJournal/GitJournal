@@ -8,14 +8,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:provider/provider.dart';
-import 'package:time/time.dart';
-import 'package:gitjournal/app_localizations_context.dart';
-
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/utils/utils.dart';
+import 'package:provider/provider.dart';
+import 'package:time/time.dart';
 
 class DebugScreen extends StatefulWidget {
   static const routePath = '/settings/debug';

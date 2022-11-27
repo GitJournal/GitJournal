@@ -8,7 +8,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:gitjournal/app_localizations_context.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/settings/markdown_renderer_config.dart';
 import 'package:gitjournal/utils/hero_dialog.dart';
 import 'package:provider/provider.dart';

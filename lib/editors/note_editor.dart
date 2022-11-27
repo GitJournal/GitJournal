@@ -6,16 +6,10 @@
 
 import 'dart:async';
 
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:function_types/function_types.dart';
-import 'package:path/path.dart' as p;
-import 'package:provider/provider.dart';
-import 'package:synchronized/synchronized.dart';
-import 'package:gitjournal/app_localizations_context.dart';
-
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/image.dart' as core;
@@ -33,6 +27,7 @@ import 'package:gitjournal/editors/note_editor_selector.dart';
 import 'package:gitjournal/editors/org_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
 import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/settings.dart';
@@ -42,6 +37,9 @@ import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/note_delete_dialog.dart';
 import 'package:gitjournal/widgets/note_tag_editor.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
+import 'package:path/path.dart' as p;
+import 'package:provider/provider.dart';
+import 'package:synchronized/synchronized.dart';
 
 class ShowUndoSnackbar {}
 

@@ -8,11 +8,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:function_types/function_types.dart';
-import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/folder_views/common.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/markdown/parsers/hardwrap.dart';
 import 'package:gitjournal/markdown/parsers/html_entities_syntax.dart';

@@ -5,7 +5,7 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:gitjournal/app_localizations_context.dart';
+import 'package:gitjournal/l10n.dart';
 
 class GitHostSetupErrorPage extends StatelessWidget {
   final String errorMessage;

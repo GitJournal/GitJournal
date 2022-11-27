@@ -6,12 +6,10 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
-import 'package:url_launcher/url_launcher.dart';
-
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/features.dart';
-import 'package:gitjournal/app_localizations_context.dart';
+import 'package:gitjournal/l10n.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FeatureTimelineScreen extends StatelessWidget {
   const FeatureTimelineScreen({super.key});

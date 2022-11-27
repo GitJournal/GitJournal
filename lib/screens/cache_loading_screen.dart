@@ -5,8 +5,8 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/core/file/file_storage.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:provider/provider.dart';
 

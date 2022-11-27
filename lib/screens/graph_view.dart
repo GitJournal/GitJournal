@@ -7,10 +7,10 @@
 import 'package:d3_force_flutter/d3_force_flutter.dart' as f;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:gitjournal/app_localizations_context.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/graph2.dart';
 import 'package:gitjournal/core/views/note_links_view.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
