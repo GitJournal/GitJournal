@@ -26,9 +26,5 @@ dev_dependencies:
     sdk: flutter
   # flutter_lints: ^2.0.0
   test: ^1.16.5
-  import_sorter: ^4.6.0
 
 flutter:
-
-import_sorter:
-  comments: false

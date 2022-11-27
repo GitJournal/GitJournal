@@ -14,7 +14,6 @@ protos:
 	protoc --dart_out=grpc:lib/generated -Iprotos protos/core.proto
 	rm lib/analytics/generated/analytics.pbgrpc.dart
 	flutter format lib/
-	flutter pub run import_sorter:main
 
 	reuse addheader --license 'AGPL-3.0-or-later' --copyright 'Vishesh Handa <me@vhanda.in>' --year '2021' lib/analytics/generated/*
 	reuse addheader --license 'AGPL-3.0-or-later' --copyright 'Vishesh Handa <me@vhanda.in>' --year '2021' lib/markdown/generated/*
@@ -25,10 +24,6 @@ protos:
 unused:
 	flutter pub run dart_code_metrics:metrics check-unused-files lib
 	flutter pub run dart_code_metrics:metrics check-unused-code lib
-
-fmt:
-	flutter pub run import_sorter:main --no-comments
-	cd packages/git_setup && flutter pub run import_sorter:main --no-comments
 
 lint:
 	flutter analyze

@@ -111,7 +111,6 @@ dev_dependencies:
     sdk: flutter
   hive_generator: ^1.1.0
   # flutter_webview_plugin: ^0.3.11
-  import_sorter: ^4.6.0
   junitreport: ^2.0.2
   monarch: ^2.3.0
   process_run: ^0.12.3+2
@@ -143,6 +142,3 @@ flutter_icons:
   macos: true
   windows: false
   linux: false
-
-import_sorter:
-  comments: false

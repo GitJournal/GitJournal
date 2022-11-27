@@ -15,5 +15,3 @@ command:
 scripts:
   analyze:
     exec: flutter analyze .
-  fmt:
-    exec: flutter pub run import_sorter:main --no-comments
