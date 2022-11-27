@@ -1,7 +1,6 @@
 {
-    "@@locale": "en",
-    "pro": "Pro",
-    "rootFolder": "Root Folder",
+    "pro": "프로",
+    "rootFolder": "루트 폴더",
     "beta": "BETA",
     "none": "None",
     "settingsOk": "Ok",

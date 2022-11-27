@@ -1,7 +1,6 @@
 {
-    "@@locale": "en",
     "pro": "Pro",
-    "rootFolder": "Root Folder",
+    "rootFolder": "ルートフォルダ",
     "beta": "BETA",
     "none": "None",
     "settingsOk": "Ok",

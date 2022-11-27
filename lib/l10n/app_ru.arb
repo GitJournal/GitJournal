@@ -1,7 +1,10 @@
 {
-    "@@locale": "en",
-    "pro": "Pro",
-    "rootFolder": "Root Folder",
+    "pro": "Про",
+    "rootFolder": "Корневой каталог",
+    "@rootFolder": {
+        "description": "Or \"Корневая папка\"",
+        "type": "text"
+    },
     "beta": "BETA",
     "none": "None",
     "settingsOk": "Ok",

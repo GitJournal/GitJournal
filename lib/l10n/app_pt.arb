@@ -1,9 +1,8 @@
 {
-    "@@locale": "en",
     "pro": "Pro",
-    "rootFolder": "Root Folder",
+    "rootFolder": "Diretório raíz",
     "beta": "BETA",
-    "none": "None",
+    "none": "Nenhum",
     "settingsOk": "Ok",
     "settingsCancel": "Cancel",
     "settingsTitle": "Settings",

@@ -1,9 +1,8 @@
 {
-    "@@locale": "en",
     "pro": "Pro",
-    "rootFolder": "Root Folder",
+    "rootFolder": "Dossier principal",
     "beta": "BETA",
-    "none": "None",
+    "none": "Aucun",
     "settingsOk": "Ok",
     "settingsCancel": "Cancel",
     "settingsTitle": "Settings",
