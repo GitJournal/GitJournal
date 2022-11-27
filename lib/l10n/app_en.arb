@@ -436,7 +436,12 @@
   "setupAutoconfigureReadUser": "Reading User Info",
   "setupRepoSelectorTitle": "Select or Create a Repository",
   "setupRepoSelectorHint": "Type to Search or Create a Repo",
-  "setupRepoSelectorCreate": "Create Private Repo {}",
+  "setupRepoSelectorCreate": "Create Private Repo {name}",
+  "@setupRepoSelectorCreate": {
+    "placeholders": {
+      "name": {}
+    }
+  },
   "setupRepoSelectorLoading": "Loading",
   "setupCloneUrlEnter": "Enter the Git Clone URL",
   "setupCloneUrlValidatorEmpty": "Please enter some text",

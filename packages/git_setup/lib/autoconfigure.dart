@@ -133,7 +133,7 @@ class GitHostSetupAutoConfigurePageState
 
   @override
   Widget build(BuildContext context) {
-    if (_message.isEmpty) _message = context.loc.setup_autoconfigure_waitPerm;
+    if (_message.isEmpty) _message = context.loc.setupAutoconfigureWaitPerm;
 
     if (_configuringStarted) {
       if (errorMessage.isNotEmpty) {

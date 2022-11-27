@@ -30,7 +30,7 @@ class PublicKeyEditor extends StatelessWidget {
 
     val = val.trim();
     if (!val.startsWith("ssh-")) {
-      return context.loc.setup.keyEditors.public;
+      return context.loc.setupKeyEditorsPublic;
     }
     return null;
   }
@@ -54,10 +54,10 @@ class PrivateKeyEditor extends StatelessWidget {
 
     val = val.trim();
     if (!val.startsWith("-----BEGIN ")) {
-      return context.loc.setup.keyEditors.private;
+      return context.loc.setupKeyEditorsPrivate;
     }
     if (!val.endsWith("PRIVATE KEY-----")) {
-      return context.loc.setup.keyEditors.private;
+      return context.loc.setupKeyEditorsPrivate;
     }
 
     return null;
@@ -107,7 +107,7 @@ class KeyEditor extends StatelessWidget {
         ),
         OutlinedButton(
           child: Text(
-            context.loc.setup.keyEditors.load,
+            context.loc.setupKeyEditorsLoad,
             style: Theme.of(context).textTheme.bodyText2,
           ),
           onPressed: _pickAndLoadFile,
