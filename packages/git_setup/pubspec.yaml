@@ -11,7 +11,6 @@ publish_to: none
 
 dependencies:
   dots_indicator: ^2.0.0
-  easy_localization: ^3.0.0
   function_types: ^0.1.0
   provider: ^6.0.1
   time: ^2.0.0

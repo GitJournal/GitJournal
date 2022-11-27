@@ -321,7 +321,12 @@
   },
   "widgetsPurchaseButtonFail": "Failed to Load",
   "widgetsPurchaseButtonFailSend": "Failed to send purchase request",
-  "widgetsPurchaseButtonFailPurchase": "Failed to Purchase - {}",
+  "widgetsPurchaseButtonFailPurchase": "Failed to Purchase - {err}",
+  "@widgetsPurchaseButtonFailPurchase": {
+    "placeholders": {
+      "err": {}
+    }
+  },
   "widgetsFolderViewSyncError": "Sync Error {err}",
   "@widgetsFolderViewSyncError": {
     "placeholders": {

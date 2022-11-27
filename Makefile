@@ -5,13 +5,6 @@
 DIR := ${CURDIR}
 export PATH := $(DIR)/.flutter/bin/:$(PATH)
 
-keys:
-	mkdir -p /tmp/codegen
-	yq -o=json eval assets/langs/en.yaml -P > /tmp/codegen/en.json
-	flutter pub run easy_localization:generate -S /tmp/codegen -f keys -o locale_keys.g.dart
-	flutter format lib/generated
-	flutter pub run import_sorter:main lib/generated/*
-	reuse addheader --license 'AGPL-3.0-or-later' --copyright 'Vishesh Handa <me@vhanda.in>' --year '2019-2021' lib/generated/locale_keys.g.dart
 
 protos:
 	protoc --dart_out=grpc:lib/analytics/generated -Ilib/analytics/ lib/analytics/analytics.proto

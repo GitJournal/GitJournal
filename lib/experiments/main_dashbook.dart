@@ -7,7 +7,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:dashbook/dashbook.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,8 +21,6 @@ Future<void> main() async {
   var _ = WidgetsFlutterBinding.ensureInitialized();
 
   final dashbook = Dashbook();
-
-  await EasyLocalization.ensureInitialized();
 
   // SharedPreferences.setMockInitialValues({});
 

@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -255,10 +254,7 @@ const gitJournalSupportedLocales = [
 ];
 
 Iterable<LocalizationsDelegate<dynamic>> buildDelegates(BuildContext context) {
-  var easyLocale = EasyLocalization.of(context);
-
   return [
-    if (easyLocale != null) ...easyLocale.delegates,
     AppLocalizations.delegate,
     GlobalMaterialLocalizations.delegate,
     GlobalWidgetsLocalizations.delegate,

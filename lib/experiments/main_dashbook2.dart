@@ -7,7 +7,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:dashbook/dashbook.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:git_setup/fakes/clone_fake.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +20,6 @@ import 'package:gitjournal/settings/app_config.dart';
 Future<void> main() async {
   dynamic _;
   _ = WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
 
   PathProviderPlatform.instance = await FakePathProviderPlatform.init();
   await Log.init();

@@ -12,6 +12,7 @@ import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/folder_views/common_types.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:universal_io/io.dart';
 import 'package:uuid/uuid.dart';
 
 import 'settings_sharedpref.dart';
@@ -62,6 +63,8 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
   bool confirmDelete = true;
   bool hardWrap = false;
 
+  String locale = Platform.localeName;
+
   void load() {
     defaultNewNoteFolderSpec =
         getString("defaultNewNoteFolderSpec") ?? defaultNewNoteFolderSpec;
@@ -99,6 +102,7 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
 
     hardWrap = getBool("hardWrap") ?? hardWrap;
     customMetaData = getString("customMetaData") ?? customMetaData;
+    locale = getString("locale") ?? locale;
   }
 
   Future<void> save() async {
@@ -142,6 +146,7 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
     await setInt("settingsVersion", version, def.version);
 
     await setBool("hardWrap", hardWrap, def.hardWrap);
+    await setString("locale", locale, def.locale);
 
     notifyListeners();
   }

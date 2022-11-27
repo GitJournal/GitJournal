@@ -28,8 +28,6 @@ dependencies:
   dio: ^4.0.6
   dio_smart_retry: ^1.2.0
   dots_indicator: ^2.0.0
-  easy_localization: ^3.0.0
-  easy_localization_loader: ^1.0.0
   email_validator: ^2.0.1
   equatable: ^2.0.0
   fast_immutable_collections: ^7.1.2

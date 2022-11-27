@@ -7,8 +7,6 @@
 import 'dart:async';
 
 import 'package:auto_updater/auto_updater.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/account/init.dart';
 import 'package:gitjournal/analytics/analytics.dart';
@@ -81,20 +79,14 @@ class JournalApp extends StatefulWidget {
       await autoUpdater.checkForUpdates();
     }
 
-    runApp(EasyLocalization(
-      child: GitJournalChangeNotifiers(
+    runApp(
+      GitJournalChangeNotifiers(
         repoManager: repoManager,
         appConfig: appConfig,
         pref: pref,
         child: JournalApp(repoManager: repoManager),
       ),
-      supportedLocales: gitJournalSupportedLocales,
-      fallbackLocale: const Locale('en'),
-      useFallbackTranslations: true,
-      path: 'assets/langs',
-      useOnlyLangCode: true,
-      assetLoader: YamlAssetLoader(),
-    ));
+    );
   }
 
   // TODO: All this logic should go inside the analytics package
@@ -321,7 +313,11 @@ class JournalAppState extends State<JournalApp> {
     );
     */
 
-    var easyLocale = EasyLocalization.of(context);
+    var locale = Locale(settings.locale);
+    var lSplit = settings.locale.split("_");
+    if (lSplit.length > 1) {
+      locale = Locale(lSplit[0], lSplit[1]);
+    }
 
     return MaterialApp(
       key: const ValueKey("App"),
@@ -329,10 +325,8 @@ class JournalAppState extends State<JournalApp> {
       title: 'GitJournal',
 
       localizationsDelegates: buildDelegates(context),
-      supportedLocales: easyLocale != null
-          ? easyLocale.supportedLocales
-          : const <Locale>[Locale('en', 'US')],
-      locale: easyLocale?.locale,
+      supportedLocales: gitJournalSupportedLocales,
+      locale: locale,
 
       theme: Themes.fromName(settings.lightTheme),
       darkTheme: Themes.fromName(settings.darkTheme),

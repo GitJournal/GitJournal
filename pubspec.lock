@@ -316,13 +316,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.17.2"
-  csv:
-    dependency: transitive
-    description:
-      name: csv
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "5.0.1"
   d3_force_flutter:
     dependency: "direct main"
     description:
@@ -456,19 +449,12 @@ packages:
     source: hosted
     version: "2.1.0"
   easy_localization:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: easy_localization
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
-  easy_localization_loader:
-    dependency: "direct main"
-    description:
-      name: easy_localization_loader
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   easy_logger:
     dependency: transitive
     description:

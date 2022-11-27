@@ -6,7 +6,6 @@
 
 import 'dart:async';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:function_types/function_types.dart';
 import 'package:gitjournal/analytics/analytics.dart';
@@ -86,10 +85,8 @@ class PurchaseButton extends StatelessWidget {
     } catch (err, stackTrace) {
       logException(err, stackTrace);
 
-      var errStr = tr(
-        "widgets.PurchaseButton.failPurchase",
-        args: [err.toString()],
-      );
+      var errStr =
+          context.loc.widgetsPurchaseButtonFailPurchase(err.toString());
       var _ = await showDialog(
         context: context,
         builder: (context) => PurchaseFailedDialog(errStr),

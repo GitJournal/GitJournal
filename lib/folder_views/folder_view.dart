@@ -72,7 +72,8 @@ class _FolderViewState extends State<FolderView> {
   @override
   void initState() {
     super.initState();
-    _init();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => _init());
   }
 
   Future<void> _init() async {
