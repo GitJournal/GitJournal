@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 import 'package:git_bindings/git_bindings.dart';
@@ -34,6 +33,7 @@ import 'package:gitjournal/widgets/note_delete_dialog.dart';
 import 'package:gitjournal/widgets/note_search_delegate.dart';
 import 'package:gitjournal/widgets/sorting_mode_selector.dart';
 import 'package:gitjournal/widgets/sync_button.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 enum DropDownChoices {

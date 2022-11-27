@@ -5,7 +5,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/settings/markdown_renderer_config.dart';
@@ -107,14 +106,15 @@ class SettingsDisplayImagesThemingScreenState
     );
     var body = ListView(children: <Widget>[
       SwitchListTile(
-        title: Text(tr('settings.display.images.theming.themeRasterGraphics')),
+        title:
+            Text(context.loc.settingsDisplayImagesThemingThemeRasterGraphics),
         value: settings.themeRasterGraphics,
         onChanged: (bool newVal) {
           settings.themeRasterGraphics = newVal;
           settings.save();
         },
       ),
-      SettingsHeader(tr('settings.display.images.theming.themeOverrides')),
+      SettingsHeader(context.loc.settingsDisplayImagesThemingThemeOverrides),
       Padding(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
         child: Text(context.loc.settingsDisplayImagesThemingTagDescription),
@@ -135,7 +135,7 @@ class SettingsDisplayImagesThemingScreenState
       ),
       ListTile(title: doThemeTagsForm),
       ListTile(title: doNotThemeTagsForm),
-      SettingsHeader(tr('settings.display.images.theming.vectorGraphics')),
+      SettingsHeader(context.loc.settingsDisplayImagesThemingVectorGraphics),
       ListPreference(
         title: context.loc.settingsDisplayImagesThemingThemeVectorGraphicsTitle,
         currentOption: settings.themeVectorGraphics.toPublicString(context),
@@ -152,7 +152,7 @@ class SettingsDisplayImagesThemingScreenState
       if (settings.themeVectorGraphics == SettingsThemeVectorGraphics.On)
         SwitchListTile(
           title: Text(
-              tr('settings.display.images.theming.themeSvgWithBackground')),
+              context.loc.settingsDisplayImagesThemingThemeSvgWithBackground),
           value: settings.themeSvgWithBackground,
           onChanged: (bool newVal) {
             settings.themeSvgWithBackground = newVal;
@@ -162,9 +162,9 @@ class SettingsDisplayImagesThemingScreenState
       if (settings.themeVectorGraphics == SettingsThemeVectorGraphics.On)
         SwitchListTile(
           title: Text(
-              tr('settings.display.images.theming.matchCanvasColor.title')),
+              context.loc.settingsDisplayImagesThemingMatchCanvasColorTitle),
           subtitle: Text(
-              tr('settings.display.images.theming.matchCanvasColor.subtitle')),
+              context.loc.settingsDisplayImagesThemingMatchCanvasColorSubtitle),
           value: settings.matchCanvasColor,
           onChanged: (bool newVal) {
             settings.matchCanvasColor = newVal;

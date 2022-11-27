@@ -46,12 +46,13 @@ class SettingsStorageScreen extends StatelessWidget {
       children: [
         ListPreference(
           title: context.loc.settingsNoteNewNoteFileName,
-          currentOption: folderConfig.fileNameFormat.toPublicString(),
+          currentOption: folderConfig.fileNameFormat.toPublicString(context),
           options: NoteFileNameFormat.options
-              .map((f) => f.toPublicString())
+              .map((f) => f.toPublicString(context))
               .toList(),
           onChange: (String publicStr) {
-            var format = NoteFileNameFormat.fromPublicString(publicStr);
+            var format =
+                NoteFileNameFormat.fromPublicString(context, publicStr);
             folderConfig.fileNameFormat = format;
             folderConfig.save();
           },

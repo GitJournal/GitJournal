@@ -98,12 +98,14 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
         feature: Feature.singleJournalEntry,
         child: ListPreference(
           title: context.loc.settingsNoteNewNoteFileName,
-          currentOption: folderConfig.journalFileNameFormat.toPublicString(),
+          currentOption:
+              folderConfig.journalFileNameFormat.toPublicString(context),
           options: NoteFileNameFormat.options
-              .map((f) => f.toPublicString())
+              .map((f) => f.toPublicString(context))
               .toList(),
           onChange: (String publicStr) {
-            var format = NoteFileNameFormat.fromPublicString(publicStr);
+            var format =
+                NoteFileNameFormat.fromPublicString(context, publicStr);
             folderConfig.journalFileNameFormat = format;
             folderConfig.save();
             setState(() {});
