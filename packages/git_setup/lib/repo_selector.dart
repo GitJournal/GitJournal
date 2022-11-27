@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:function_types/function_types.dart';
 import 'package:gitjournal/analytics/analytics.dart';
@@ -12,6 +11,7 @@ import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/widgets/highlighted_text.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
 import 'package:time/time.dart';
 import 'package:timeago/timeago.dart' as timeago;

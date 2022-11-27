@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -266,9 +265,9 @@ class BottomMenuSheet extends StatelessWidget {
           feature: Feature.zenMode,
           child: ListTile(
             leading: const FaIcon(FontAwesomeIcons.peace),
-            title: Text(tr(zenModeEnabled
+            title: Text(zenModeEnabled
                 ? context.loc.editorsCommonZenDisable
-                : context.loc.editorsCommonZenEnable)),
+                : context.loc.editorsCommonZenEnable),
             onTap: () {
               zenModeChanged();
               Navigator.of(context).pop();
