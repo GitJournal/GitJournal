@@ -318,12 +318,12 @@ class DefaultFileFormatTile extends StatelessWidget {
 
     return ListPreference(
       title: context.loc.settingsEditorsDefaultNoteFormat,
-      currentOption: folderConfig.defaultFileFormat.toPublicString(),
+      currentOption: folderConfig.defaultFileFormat.toPublicString(context),
       options: SettingsNoteFileFormat.options
-          .map((f) => f.toPublicString())
+          .map((f) => f.toPublicString(context))
           .toList(),
       onChange: (String publicStr) {
-        var val = SettingsNoteFileFormat.fromPublicString(publicStr);
+        var val = SettingsNoteFileFormat.fromPublicString(context, publicStr);
         folderConfig.defaultFileFormat = val;
         folderConfig.save();
       },

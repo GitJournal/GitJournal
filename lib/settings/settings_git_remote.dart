@@ -113,12 +113,12 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
         ),
         ListPreference(
           title: context.loc.settingsSshSyncFreq,
-          currentOption: settings.remoteSyncFrequency.toPublicString(),
+          currentOption: settings.remoteSyncFrequency.toPublicString(context),
           options: RemoteSyncFrequency.options
-              .map((f) => f.toPublicString())
+              .map((f) => f.toPublicString(context))
               .toList(),
           onChange: (String publicStr) {
-            var val = RemoteSyncFrequency.fromPublicString(publicStr);
+            var val = RemoteSyncFrequency.fromPublicString(context, publicStr);
             settings.remoteSyncFrequency = val;
             settings.save();
             setState(() {});

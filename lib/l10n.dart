@@ -174,6 +174,26 @@ extension LocalizedBuildContext on BuildContext {
         return loc.settingsNoteFileNameFormatZettelkasten;
       case Lk.settingsNoteFileNameFormatIso8601:
         return loc.settingsNoteFileNameFormatIso8601;
+      case Lk.settingsRemoteSyncManual:
+        return loc.settingsRemoteSyncManual;
+      case Lk.settingsRemoteSyncAuto:
+        return loc.settingsRemoteSyncAuto;
+      case Lk.widgetsFolderViewViewsStandard:
+        return loc.widgetsFolderViewViewsStandard;
+      case Lk.widgetsFolderViewViewsJournal:
+        return loc.widgetsFolderViewViewsJournal;
+      case Lk.widgetsFolderViewViewsCard:
+        return loc.widgetsFolderViewViewsCard;
+      case Lk.widgetsFolderViewViewsGrid:
+        return loc.widgetsFolderViewViewsGrid;
+      case Lk.widgetsFolderViewViewsCalendar:
+        return loc.widgetsFolderViewViewsCalendar;
+      case Lk.settingsFileFormatOrgMode:
+        return loc.settingsFileFormatOrgMode;
+      case Lk.settingsFileFormatTxt:
+        return loc.settingsFileFormatTxt;
+      case Lk.settingsFileFormatMarkdown:
+        return loc.settingsFileFormatMarkdown;
     }
   }
 }
@@ -290,4 +310,14 @@ enum Lk {
   settingsNoteFileNameFormatTitle,
   settingsNoteFileNameFormatZettelkasten,
   settingsNoteFileNameFormatIso8601,
+  settingsRemoteSyncManual,
+  settingsRemoteSyncAuto,
+  widgetsFolderViewViewsStandard,
+  widgetsFolderViewViewsJournal,
+  widgetsFolderViewViewsCard,
+  widgetsFolderViewViewsGrid,
+  widgetsFolderViewViewsCalendar,
+  settingsFileFormatOrgMode,
+  settingsFileFormatTxt,
+  settingsFileFormatMarkdown,
 }

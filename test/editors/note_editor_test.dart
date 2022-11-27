@@ -8,7 +8,6 @@ import 'dart:io';
 
 import 'package:dart_git/git.dart';
 import 'package:dart_git/plumbing/git_hash.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gitjournal/change_notifiers.dart';
@@ -49,8 +48,6 @@ void main() {
   }
 
   Widget _buildApp(Widget widget) {
-    EasyLocalization.logger.enableLevels = [];
-
     return GitJournalChangeNotifiers(
       appConfig: AppConfig(),
       repoManager: repoManager,

@@ -234,53 +234,28 @@ class NoteFileNameFormat extends GjSetting {
           as NoteFileNameFormat;
 }
 
-class RemoteSyncFrequency {
+class RemoteSyncFrequency extends GjSetting {
   static const Automatic =
-      RemoteSyncFrequency("settings.remoteSync.auto", "automatic");
+      RemoteSyncFrequency(Lk.settingsRemoteSyncAuto, "automatic");
   static const Manual =
-      RemoteSyncFrequency("settings.remoteSync.manual", "manual");
+      RemoteSyncFrequency(Lk.settingsRemoteSyncManual, "manual");
   static const Default = Automatic;
 
-  final String _str;
-  final String _publicString;
-  const RemoteSyncFrequency(this._publicString, this._str);
-
-  String toInternalString() {
-    return _str;
-  }
-
-  String toPublicString() {
-    return tr(_publicString);
-  }
+  const RemoteSyncFrequency(super.lk, super.str);
 
   static const options = <RemoteSyncFrequency>[
     Automatic,
     Manual,
   ];
 
-  static RemoteSyncFrequency fromInternalString(String? str) {
-    for (var opt in options) {
-      if (opt.toInternalString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
+  static RemoteSyncFrequency fromInternalString(String? str) =>
+      GjSetting.fromInternalString(options, Default, str)
+          as RemoteSyncFrequency;
 
-  static RemoteSyncFrequency fromPublicString(String str) {
-    for (var opt in options) {
-      if (opt.toPublicString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  @override
-  String toString() {
-    assert(false, "RemoteSyncFrequency toString should never be called");
-    return "";
-  }
+  static RemoteSyncFrequency fromPublicString(
+          BuildContext context, String str) =>
+      GjSetting.fromPublicString(context, options, Default, str)
+          as RemoteSyncFrequency;
 }
 
 class SettingsEditorType {
@@ -372,26 +347,30 @@ class SettingsEditorType {
   }
 }
 
-class SettingsNoteFileFormat {
-  static const Markdown = SettingsNoteFileFormat(
-      LocaleKeys.settings_fileFormat_markdown, "Markdown");
-  static const Txt =
-      SettingsNoteFileFormat(LocaleKeys.settings_fileFormat_txt, "Txt");
+class SettingsNoteFileFormat extends GjSetting {
+  static const Markdown =
+      SettingsNoteFileFormat(Lk.settingsFileFormatMarkdown, "Markdown");
+  static const Txt = SettingsNoteFileFormat(Lk.settingsFileFormatTxt, "Txt");
   static const OrgMode =
-      SettingsNoteFileFormat(LocaleKeys.settings_fileFormat_orgMode, "Org");
+      SettingsNoteFileFormat(Lk.settingsFileFormatOrgMode, "Org");
   static const Default = Markdown;
 
-  final String _str;
-  final String _publicString;
-  const SettingsNoteFileFormat(this._publicString, this._str);
+  const SettingsNoteFileFormat(super.lk, super.str);
 
-  String toInternalString() {
-    return _str;
-  }
+  static const options = <SettingsNoteFileFormat>[
+    Markdown,
+    Txt,
+    OrgMode,
+  ];
 
-  String toPublicString() {
-    return tr(_publicString);
-  }
+  static SettingsNoteFileFormat fromInternalString(String? str) =>
+      GjSetting.fromInternalString(options, Default, str)
+          as SettingsNoteFileFormat;
+
+  static SettingsNoteFileFormat fromPublicString(
+          BuildContext context, String str) =>
+      GjSetting.fromPublicString(context, options, Default, str)
+          as SettingsNoteFileFormat;
 
   NoteFileFormat toFileFormat() {
     switch (this) {
@@ -416,62 +395,22 @@ class SettingsNoteFileFormat {
         return OrgMode;
     }
   }
-
-  static const options = <SettingsNoteFileFormat>[
-    Markdown,
-    Txt,
-    OrgMode,
-  ];
-
-  static SettingsNoteFileFormat fromInternalString(String? str) {
-    for (var opt in options) {
-      if (opt.toInternalString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  static SettingsNoteFileFormat fromPublicString(String str) {
-    for (var opt in options) {
-      if (opt.toPublicString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  @override
-  String toString() {
-    assert(false, "SettingsNoteFileFormat toString should never be called");
-    return "";
-  }
 }
 
-class SettingsFolderViewType {
-  static const Standard = SettingsFolderViewType(
-      LocaleKeys.widgets_FolderView_views_standard, "Standard");
-  static const Journal = SettingsFolderViewType(
-      LocaleKeys.widgets_FolderView_views_journal, "Journal");
+class SettingsFolderViewType extends GjSetting {
+  static const Standard =
+      SettingsFolderViewType(Lk.widgetsFolderViewViewsStandard, "Standard");
+  static const Journal =
+      SettingsFolderViewType(Lk.widgetsFolderViewViewsJournal, "Journal");
   static const Card =
-      SettingsFolderViewType(LocaleKeys.widgets_FolderView_views_card, "Card");
+      SettingsFolderViewType(Lk.widgetsFolderViewViewsCard, "Card");
   static const Grid =
-      SettingsFolderViewType(LocaleKeys.widgets_FolderView_views_grid, "Grid");
-  static const Calendar = SettingsFolderViewType(
-      LocaleKeys.widgets_FolderView_views_calendar, "Calendar");
+      SettingsFolderViewType(Lk.widgetsFolderViewViewsGrid, "Grid");
+  static const Calendar =
+      SettingsFolderViewType(Lk.widgetsFolderViewViewsCalendar, "Calendar");
   static const Default = Standard;
 
-  final String _str;
-  final String _publicString;
-  const SettingsFolderViewType(this._publicString, this._str);
-
-  String toInternalString() {
-    return _str;
-  }
-
-  String toPublicString() {
-    return tr(_publicString);
-  }
+  const SettingsFolderViewType(super.lk, super.str);
 
   static const options = <SettingsFolderViewType>[
     Standard,
@@ -481,29 +420,14 @@ class SettingsFolderViewType {
     // Calendar,
   ];
 
-  static SettingsFolderViewType fromInternalString(String? str) {
-    for (var opt in options) {
-      if (opt.toInternalString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
+  static SettingsFolderViewType fromInternalString(String? str) =>
+      GjSetting.fromInternalString(options, Default, str)
+          as SettingsFolderViewType;
 
-  static SettingsFolderViewType fromPublicString(String str) {
-    for (var opt in options) {
-      if (opt.toPublicString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  @override
-  String toString() {
-    assert(false, "FolderViewType toString should never be called");
-    return "";
-  }
+  static SettingsFolderViewType fromPublicString(
+          BuildContext context, String str) =>
+      GjSetting.fromPublicString(context, options, Default, str)
+          as SettingsFolderViewType;
 
   FolderViewType toFolderViewType() {
     switch (this) {
