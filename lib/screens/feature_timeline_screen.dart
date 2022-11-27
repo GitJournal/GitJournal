@@ -27,14 +27,14 @@ class FeatureTimelineScreen extends StatelessWidget {
           for (var feature in Features.all) FeatureTile(feature),
           for (var title in Features.inProgress)
             _Tile(
-              title: title,
+              title: context.tr(title),
               subTitle: context.loc.featureTimelineProgress,
               iconText: "DEV",
               iconColor: theme.primaryColorDark,
             ),
           for (var title in Features.planned)
             _Tile(
-              title: title,
+              title: context.tr(title),
               subTitle: context.loc.featureTimelinePlan,
               iconText: "PLAN",
               iconColor: theme.colorScheme.secondary,
@@ -55,8 +55,8 @@ class FeatureTile extends StatelessWidget {
   Widget build(BuildContext context) {
     var dateStr = feature.date.toIso8601String().substring(0, 10);
     var subtitle = dateStr;
-    if (feature.subtitle.isNotEmpty) {
-      subtitle += ' - ' + feature.subtitle;
+    if (feature.subtitle != Lk.empty) {
+      subtitle += ' - ' + context.tr(feature.subtitle);
     }
 
     var theme = Theme.of(context);
@@ -69,7 +69,7 @@ class FeatureTile extends StatelessWidget {
     }
 
     return _Tile(
-      title: feature.title,
+      title: context.tr(feature.title),
       subTitle: subtitle,
       iconText: feature.pro ? 'PRO' : "FREE",
       iconColor: color,

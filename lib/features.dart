@@ -5,8 +5,7 @@
  */
 
 import 'package:flutter/foundation.dart' as foundation;
-
-import 'package:easy_localization/easy_localization.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:universal_io/io.dart' show Platform;
 
 class Features {
@@ -60,339 +59,339 @@ class Features {
     Feature.inlineLatex,
   ];
 
-  static final inProgress = <String>[
-    tr("feature.graphVisualization"),
-    tr("feature.gitLog"),
-    tr("feature.markdownToolbar"),
+  static final inProgress = <Lk>[
+    Lk.featureGraphVisualization,
+    Lk.featureGitLog,
+    Lk.featureMarkdownToolbar,
   ];
 
-  static final planned = <String>[
-    tr("feature.customThemes"),
-    tr("feature.latex"),
-    tr("feature.mermaid"),
-    tr("feature.encryptedHosting"),
-    tr("feature.desktop"),
+  static final planned = <Lk>[
+    Lk.featureCustomThemes,
+    Lk.featureLatex,
+    Lk.featureMermaid,
+    Lk.featureEncryptedHosting,
+    Lk.featureDesktop,
   ];
 }
 
 class Feature {
   final String featureName;
   final DateTime date;
-  final String title;
-  final String subtitle;
+  final Lk title;
+  final Lk subtitle;
   final bool pro;
 
   Feature(this.featureName, this.date, this.title, this.subtitle, this.pro);
 
   static final basicSearch = Feature(
-    "DarkMode",
+    "BasicSearch",
     DateTime(2019, 09, 15),
-    tr("feature.basicSearch"),
-    "",
+    Lk.featureBasicSearch,
+    Lk.empty,
     false,
   );
 
   static final darkMode = Feature(
     "DarkMode",
     DateTime(2019, 09, 25),
-    tr("feature.darkMode"),
-    "",
+    Lk.featureDarkMode,
+    Lk.empty,
     false,
   );
 
   static final rawEditor = Feature(
     "RawEditor",
     DateTime(2019, 10, 07),
-    tr("feature.rawEditor"),
-    "",
+    Lk.featureRawEditor,
+    Lk.empty,
     false,
   );
 
   static final folderSupport = Feature(
     "FolderSupport",
     DateTime(2019, 12, 04),
-    tr("feature.folderSupport"),
-    "",
+    Lk.featureFolderSupport,
+    Lk.empty,
     false,
   );
 
   static final fileNameCustomize = Feature(
     "FileNameCustomize",
     DateTime(2019, 12, 20),
-    tr("feature.fileNameCustomize"),
-    "",
+    Lk.featureFileNameCustomize,
+    Lk.empty,
     false,
   );
 
   static final noteMetaDataCustomize = Feature(
     "NoteMetaDataCustomize",
     DateTime(2019, 12, 20),
-    tr("feature.noteMetaDataCustomize.title"),
-    tr("feature.noteMetaDataCustomize.subtitle"),
+    Lk.featureNoteMetaDataCustomizeTitle,
+    Lk.featureNoteMetaDataCustomizeSubtitle,
     true,
   );
 
   static final autoMergeConflicts = Feature(
     "AutoMergeConflicts",
     DateTime(2019, 12, 28),
-    tr("feature.autoMergeConflicts"),
-    "",
+    Lk.featureAutoMergeConflicts,
+    Lk.empty,
     false,
   );
 
   static final yamlModifiedKey = Feature(
     "YamlModifiedKey",
     DateTime(2020, 01, 05),
-    tr("feature.yamlModifiedKey"),
-    "",
+    Lk.featureYamlModifiedKey,
+    Lk.empty,
     false,
   );
 
   static final noteSorting = Feature(
     "NoteSorting",
     DateTime(2020, 02, 09),
-    tr("feature.noteSorting"),
-    "",
+    Lk.featureNoteSorting,
+    Lk.empty,
     false,
   );
 
   static final gitPushFreq = Feature(
     "GitPushFreq",
     DateTime(2020, 02, 09),
-    tr("feature.gitPushFreq"),
-    "",
+    Lk.featureGitPushFreq,
+    Lk.empty,
     false,
   );
 
   static final emojiSupport = Feature(
     "EmojiSupport",
     DateTime(2020, 02, 14),
-    tr("feature.emojiSupport.title"),
-    tr("feature.emojiSupport.subtitle"),
+    Lk.featureEmojiSupportTitle,
+    Lk.featureEmojiSupportSubtitle,
     false,
   );
 
   static final checkListEditor = Feature(
     "CheckListEditor",
     DateTime(2020, 02, 15),
-    tr("feature.checklistEditor"),
-    "",
+    Lk.featureChecklistEditor,
+    Lk.empty,
     false,
   );
 
   static final customSSHKeys = Feature(
     "CustomSSHKeys",
     DateTime(2020, 02, 17),
-    tr("feature.customSSHKeys"),
-    "",
+    Lk.featureCustomSSHKeys,
+    Lk.empty,
     false,
   );
 
   static final disableYamlHeader = Feature(
     "DisableYamlHeader",
     DateTime(2020, 02, 18),
-    tr("feature.disableYamlHeader"),
-    "",
+    Lk.featureDisableYamlHeader,
+    Lk.empty,
     false,
   );
 
   static final journalEditor = Feature(
     "JournalEditor",
     DateTime(2020, 03, 01),
-    tr("feature.journalEditor"),
-    "",
+    Lk.featureJournalEditor,
+    Lk.empty,
     false,
   );
 
   static final allNotesView = Feature(
     "AllNotesView",
     DateTime(2020, 03, 15),
-    tr("feature.allNotesView"),
-    "",
+    Lk.featureAllNotesView,
+    Lk.empty,
     false,
   );
 
   static final diffViews = Feature(
     "DiffViews",
     DateTime(2020, 04, 01),
-    tr("feature.diffViews"),
-    "",
+    Lk.featureDiffViews,
+    Lk.empty,
     false,
   );
 
   static final journalEditorDefaultFolder = Feature(
     "JournalEditorDefaultFolder",
     DateTime(2020, 04, 01),
-    tr("feature.journalEditorDefaultFolder"),
-    "",
+    Lk.featureJournalEditorDefaultFolder,
+    Lk.empty,
     true,
   );
 
   static final customizeHomeScreen = Feature(
     "CustomizeHomeScreen",
     DateTime(2020, 05, 06),
-    tr("feature.customizeHomeScreen"),
-    "",
+    Lk.featureCustomizeHomeScreen,
+    Lk.empty,
     true,
   );
 
   static final imageSupport = Feature(
     "ImageSupport",
     DateTime(2020, 05, 08),
-    tr("feature.imageSupport"),
-    "",
+    Lk.featureImageSupport,
+    Lk.empty,
     false,
   );
 
   static final tags = Feature(
     "Tags",
     DateTime(2020, 05, 14),
-    tr("feature.tags"),
-    "",
+    Lk.featureTags,
+    Lk.empty,
     true,
   );
 
   static final appShortcuts = Feature(
     "AppShortcuts",
     DateTime(2020, 05, 14),
-    tr("feature.appShortcuts"),
-    "",
+    Lk.featureAppShortcuts,
+    Lk.empty,
     false,
   );
 
   static final createRepo = Feature(
     "CreateRepo",
     DateTime(2020, 05, 18),
-    tr("feature.createRepo"),
-    "",
+    Lk.featureCreateRepo,
+    Lk.empty,
     false,
   );
 
   static final backlinks = Feature(
     "Backlinks",
     DateTime(2020, 05, 27),
-    tr("feature.backlinks"),
-    "",
+    Lk.featureBacklinks,
+    Lk.empty,
     true,
   );
 
   static final txtFiles = Feature(
     "TxtFiles",
     DateTime(2020, 06, 03),
-    tr("feature.txtFiles"),
-    "",
+    Lk.featureTxtFiles,
+    Lk.empty,
     false,
   );
 
   static final wikiLinks = Feature(
     "WikiLinks",
     DateTime(2020, 07, 09),
-    tr("feature.wikiLinks"),
-    "",
+    Lk.featureWikiLinks,
+    Lk.empty,
     false,
   );
 
   static final zenMode = Feature(
     "ZenMode",
     DateTime(2020, 07, 28),
-    tr("feature.zenMode"),
-    "",
+    Lk.featureZenMode,
+    Lk.empty,
     true,
   );
 
   static final metaDataTitle = Feature(
     "MetaDataTitle",
     DateTime(2020, 07, 30),
-    tr("feature.metaDataTitle"),
-    "",
+    Lk.featureMetaDataTitle,
+    Lk.empty,
     false,
   );
 
   static final yamlCreatedKey = Feature(
     "YamlCreatedKey",
     DateTime(2020, 08, 02),
-    tr("feature.yamlCreatedKey"),
-    "",
+    Lk.featureYamlCreatedKey,
+    Lk.empty,
     false,
   );
 
   static final yamlTagsKey = Feature(
     "yamlTagsKey",
     DateTime(2020, 08, 06),
-    tr("feature.yamlTagsKey"),
-    "",
+    Lk.featureYamlTagsKey,
+    Lk.empty,
     false,
   );
 
   static final customMetaData = Feature(
     "customMetaData",
     DateTime(2020, 08, 18),
-    tr("feature.customMetaData"),
-    "",
+    Lk.featureCustomMetaData,
+    Lk.empty,
     true,
   );
 
   static final localization = Feature(
     "localization",
     DateTime(2020, 08, 30),
-    tr("feature.localization.title"),
-    tr("feature.localization.subtitle"),
+    Lk.featureLocalizationTitle,
+    Lk.featureLocalizationSubtitle,
     false,
   );
 
   static final inlineTags = Feature(
     "inlineTags",
     DateTime(2020, 09, 02),
-    tr("feature.inlineTags"),
-    "",
+    Lk.featureInlineTags,
+    Lk.empty,
     true,
   );
 
   static final singleJournalEntry = Feature(
     "singleJournalEntry",
     DateTime(2020, 09, 16),
-    tr("feature.singleJournalEntry"),
-    "",
+    Lk.featureSingleJournalEntry,
+    Lk.empty,
     true,
   );
 
   static final configureBottomMenuBar = Feature(
     "configureBottomMenuBar",
     DateTime(2020, 10, 05),
-    tr("feature.configureBottomMenuBar"),
-    "",
+    Lk.featureConfigureBottomMenuBar,
+    Lk.empty,
     true,
   );
 
   static final customFileNamePerEditor = Feature(
     "customFileNamePerEditor",
     DateTime(2020, 10, 05),
-    tr("feature.customFileNamePerEditor"),
-    "",
+    Lk.featureCustomFileNamePerEditor,
+    Lk.empty,
     true,
   );
 
   static final multiRepos = Feature(
     "multiRepos",
     DateTime(2021, 02, 20),
-    tr("feature.mutliRepos"),
-    "",
+    Lk.featureMutliRepos,
+    Lk.empty,
     true,
   );
 
   static final branchSelection = Feature(
     "multiRepos",
     DateTime(2021, 04, 20),
-    tr("feature.branchSelection"),
-    "",
+    Lk.featureBranchSelection,
+    Lk.empty,
     false,
   );
 
   static final inlineLatex = Feature(
     "inlineLatex",
     DateTime(2022, 01, 1),
-    tr("feature.inlineLatex"),
-    "",
+    Lk.featureInlineLatex,
+    Lk.empty,
     true,
   );
 }
