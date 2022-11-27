@@ -52,12 +52,13 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
       //SettingsHeader(context.loc.settings.editors.markdownEditor),
       ListPreference(
         title: context.loc.settingsEditorsDefaultState,
-        currentOption: settings.markdownDefaultView.toPublicString(),
+        currentOption: settings.markdownDefaultView.toPublicString(context),
         options: SettingsMarkdownDefaultView.options
-            .map((f) => f.toPublicString())
+            .map((f) => f.toPublicString(context))
             .toList(),
         onChange: (String publicStr) {
-          var val = SettingsMarkdownDefaultView.fromPublicString(publicStr);
+          var val =
+              SettingsMarkdownDefaultView.fromPublicString(context, publicStr);
           settings.markdownDefaultView = val;
           settings.save();
           setState(() {});
@@ -149,10 +150,10 @@ class DefaultEditorTile extends StatelessWidget {
 
     return ListPreference(
       title: context.loc.settingsEditorsDefaultEditor,
-      currentOption: defaultEditor.toPublicString(),
-      options: options.map((f) => f.toPublicString()).toList(),
+      currentOption: defaultEditor.toPublicString(context),
+      options: options.map((f) => f.toPublicString(context)).toList(),
       onChange: (String publicStr) {
-        var val = SettingsEditorType.fromPublicString(publicStr);
+        var val = SettingsEditorType.fromPublicString(context, publicStr);
         folderConfig.defaultEditor = val;
         folderConfig.save();
       },

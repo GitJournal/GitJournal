@@ -6,15 +6,13 @@
 
 import 'dart:core';
 
-import 'package:flutter/foundation.dart';
-
-import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/widgets.dart';
 import 'package:git_setup/git_config.dart';
 import 'package:git_setup/keygen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:gitjournal/generated/locale_keys.g.dart';
+import 'package:gitjournal/core/folder/sorting_mode.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/settings/settings_sharedpref.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GitConfig extends ChangeNotifier
     with SettingsSharedPref
@@ -38,7 +36,7 @@ class GitConfig extends ChangeNotifier
   @override
   var sshPassword = "";
   @override
-  var sshKeyType = SettingsSSHKey.Default.val;
+  var sshKeyType = SettingsSSHKey.Default.toEnum();
 
   void load() {
     gitAuthor = getString("gitAuthor") ?? gitAuthor;
@@ -46,7 +44,8 @@ class GitConfig extends ChangeNotifier
     sshPublicKey = getString("sshPublicKey") ?? sshPublicKey;
     sshPrivateKey = getString("sshPrivateKey") ?? sshPrivateKey;
     sshPassword = getString("sshPassword") ?? sshPassword;
-    sshKeyType = SettingsSSHKey.fromInternalString(getString("sshKeyType")).val;
+    sshKeyType =
+        SettingsSSHKey.fromInternalString(getString("sshKeyType")).toEnum();
   }
 
   @override
@@ -61,10 +60,10 @@ class GitConfig extends ChangeNotifier
     await setString("sshPublicKey", sshPublicKey, def.sshPublicKey);
     await setString("sshPrivateKey", sshPrivateKey, def.sshPrivateKey);
     await setString("sshPassword", sshPassword, def.sshPassword);
-    await setOption(
+    await setString(
       "sshKeyType",
-      SettingsSSHKey.fromEnum(sshKeyType),
-      SettingsSSHKey.fromEnum(def.sshKeyType),
+      SettingsSSHKey.fromEnum(sshKeyType).toInternalString(),
+      SettingsSSHKey.fromEnum(def.sshKeyType).toInternalString(),
     );
 
     notifyListeners();
@@ -86,48 +85,43 @@ class GitConfig extends ChangeNotifier
 
 // Optimizing this doesn't matter
 
-abstract class SettingsOption {
-  String toPublicString();
-  String toInternalString();
+class SettingsSSHKey extends GjSetting {
+  static const Ed25519 = SettingsSSHKey(Lk.settingsSshKeyEd25519, "Ed25519");
+  static const Rsa = SettingsSSHKey(Lk.settingsSshKeyRsa, "Rsa");
+  static const Default = Ed25519;
 
-  List<SettingsOption> get allValues;
-}
+  const SettingsSSHKey(super.lk, super.str);
 
-enum SettingsSSHKey implements SettingsOption {
-  Ed25519(LocaleKeys.settings_sshKey_ed25519, SshKeyType.Ed25519),
-  Rsa(LocaleKeys.settings_sshKey_rsa, SshKeyType.Rsa);
+  static const options = [
+    Ed25519,
+    Rsa,
+  ];
 
-  static const SettingsSSHKey Default = Ed25519;
+  static SettingsSSHKey fromInternalString(String? str) =>
+      GjSetting.fromInternalString(options, Default, str) as SettingsSSHKey;
 
-  final String _publicString;
-  final SshKeyType val;
-  const SettingsSSHKey(this._publicString, this.val);
-
-  @override
-  String toPublicString() => tr(_publicString);
-  @override
-  String toInternalString() => name;
-  @override
-  List<SettingsOption> get allValues => values;
-
-  static SettingsSSHKey fromInternalString(String? str) {
-    return values.firstWhere(
-      (e) => e.toInternalString() == str,
-      orElse: () => Default,
-    );
-  }
-
-  static SettingsSSHKey fromPublicString(String str) {
-    return values.firstWhere(
-      (e) => e.toPublicString() == str,
-      orElse: () => Default,
-    );
-  }
+  static SettingsSSHKey fromPublicString(BuildContext context, String str) =>
+      GjSetting.fromPublicString(context, options, Default, str)
+          as SettingsSSHKey;
 
   static SettingsSSHKey fromEnum(SshKeyType k) {
-    return values.firstWhere(
-      (e) => e.val == k,
-      orElse: () => Default,
-    );
+    switch (k) {
+      case SshKeyType.Rsa:
+        return Rsa;
+      case SshKeyType.Ed25519:
+        return Ed25519;
+    }
+  }
+
+  SshKeyType toEnum() {
+    switch (this) {
+      case Ed25519:
+        return SshKeyType.Ed25519;
+      case Rsa:
+        return SshKeyType.Rsa;
+      default:
+        assert(false, "SshKeyType mismatch");
+        return SshKeyType.Ed25519;
+    }
   }
 }

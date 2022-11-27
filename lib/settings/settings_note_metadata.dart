@@ -213,11 +213,12 @@ class _NoteMetadataSettingsScreenState
         ),
         ListPreference(
           title: context.loc.settingsNoteMetaDataTitleMetaDataTitle,
-          options:
-              SettingsTitle.options.map((f) => f.toPublicString()).toList(),
-          currentOption: folderConfig.titleSettings.toPublicString(),
+          options: SettingsTitle.options
+              .map((f) => f.toPublicString(context))
+              .toList(),
+          currentOption: folderConfig.titleSettings.toPublicString(context),
           onChange: (String publicStr) {
-            var format = SettingsTitle.fromPublicString(publicStr);
+            var format = SettingsTitle.fromPublicString(context, publicStr);
             folderConfig.titleSettings = format;
             folderConfig.save();
             setState(() {});

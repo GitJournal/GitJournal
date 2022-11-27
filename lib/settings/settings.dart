@@ -5,13 +5,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/folder/sorting_mode.dart';
 import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/folder_views/common_types.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -258,28 +256,34 @@ class RemoteSyncFrequency extends GjSetting {
           as RemoteSyncFrequency;
 }
 
-class SettingsEditorType {
+class SettingsEditorType extends GjSetting {
   static const Markdown =
-      SettingsEditorType('settings.editors.markdownEditor', "Markdown");
-  static const Raw = SettingsEditorType('settings.editors.rawEditor', "Raw");
+      SettingsEditorType(Lk.settingsEditorsMarkdownEditor, "Markdown");
+  static const Raw = SettingsEditorType(Lk.settingsEditorsRawEditor, "Raw");
   static const Journal =
-      SettingsEditorType('settings.editors.journalEditor', "Journal");
+      SettingsEditorType(Lk.settingsEditorsJournalEditor, "Journal");
   static const Checklist =
-      SettingsEditorType('settings.editors.checklistEditor', "Checklist");
-  static const Org = SettingsEditorType('settings.editors.orgEditor', "Org");
+      SettingsEditorType(Lk.settingsEditorsChecklistEditor, "Checklist");
+  static const Org = SettingsEditorType(Lk.settingsEditorsOrgEditor, "Org");
   static const Default = Markdown;
 
-  final String _str;
-  final String _publicString;
-  const SettingsEditorType(this._publicString, this._str);
+  const SettingsEditorType(super.lk, super.str);
 
-  String toInternalString() {
-    return _str;
-  }
+  static const options = <SettingsEditorType>[
+    Markdown,
+    Raw,
+    Journal,
+    Checklist,
+    Org,
+  ];
 
-  String toPublicString() {
-    return tr(_publicString);
-  }
+  static SettingsEditorType fromInternalString(String? str) =>
+      GjSetting.fromInternalString(options, Default, str) as SettingsEditorType;
+
+  static SettingsEditorType fromPublicString(
+          BuildContext context, String str) =>
+      GjSetting.fromPublicString(context, options, Default, str)
+          as SettingsEditorType;
 
   EditorType toEditorType() {
     switch (this) {
@@ -312,38 +316,6 @@ class SettingsEditorType {
       case EditorType.Org:
         return SettingsEditorType.Org;
     }
-  }
-
-  static const options = <SettingsEditorType>[
-    Markdown,
-    Raw,
-    Journal,
-    Checklist,
-    Org,
-  ];
-
-  static SettingsEditorType fromInternalString(String? str) {
-    for (var opt in options) {
-      if (opt.toInternalString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  static SettingsEditorType fromPublicString(String str) {
-    for (var opt in options) {
-      if (opt.toPublicString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  @override
-  String toString() {
-    assert(false, "EditorType toString should never be called");
-    return "";
   }
 }
 
@@ -462,26 +434,16 @@ class SettingsFolderViewType extends GjSetting {
   }
 }
 
-class SettingsMarkdownDefaultView {
+class SettingsMarkdownDefaultView extends GjSetting {
   static const Edit =
-      SettingsMarkdownDefaultView('settings.EditorDefaultView.edit', "Edit");
+      SettingsMarkdownDefaultView(Lk.settingsEditorDefaultViewEdit, "Edit");
   static const View =
-      SettingsMarkdownDefaultView('settings.EditorDefaultView.view', "View");
+      SettingsMarkdownDefaultView(Lk.settingsEditorDefaultViewView, "View");
   static const LastUsed = SettingsMarkdownDefaultView(
-      'settings.EditorDefaultView.lastUsed', "Last Used");
+      Lk.settingsEditorDefaultViewLastUsed, "Last Used");
   static const Default = LastUsed;
 
-  final String _str;
-  final String _publicStr;
-  const SettingsMarkdownDefaultView(this._publicStr, this._str);
-
-  String toInternalString() {
-    return _str;
-  }
-
-  String toPublicString() {
-    return tr(_publicStr);
-  }
+  const SettingsMarkdownDefaultView(super.lk, super.str);
 
   static const options = <SettingsMarkdownDefaultView>[
     Edit,
@@ -489,103 +451,51 @@ class SettingsMarkdownDefaultView {
     LastUsed,
   ];
 
-  static SettingsMarkdownDefaultView fromInternalString(String? str) {
-    for (var opt in options) {
-      if (opt.toInternalString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
+  static SettingsMarkdownDefaultView fromInternalString(String? str) =>
+      GjSetting.fromInternalString(options, Default, str)
+          as SettingsMarkdownDefaultView;
 
-  static SettingsMarkdownDefaultView fromPublicString(String str) {
-    for (var opt in options) {
-      if (opt.toPublicString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  @override
-  String toString() {
-    assert(
-        false, "SettingsMarkdownDefaultView toString should never be called");
-    return "";
-  }
+  static SettingsMarkdownDefaultView fromPublicString(
+          BuildContext context, String str) =>
+      GjSetting.fromPublicString(context, options, Default, str)
+          as SettingsMarkdownDefaultView;
 }
 
-class SettingsHomeScreen {
+class SettingsHomeScreen extends GjSetting {
   static const AllNotes =
-      SettingsHomeScreen("settings.HomeScreen.allNotes", "all_notes");
+      SettingsHomeScreen(Lk.settingsHomeScreenAllNotes, "all_notes");
   static const AllFolders =
-      SettingsHomeScreen("settings.HomeScreen.allFolders", "all_folders");
+      SettingsHomeScreen(Lk.settingsHomeScreenAllFolders, "all_folders");
   static const Default = AllNotes;
 
-  final String _str;
-  final String _publicString;
-  const SettingsHomeScreen(this._publicString, this._str);
-
-  String toInternalString() {
-    return _str;
-  }
-
-  String toPublicString() {
-    return tr(_publicString);
-  }
+  const SettingsHomeScreen(super.lk, super.str);
 
   static const options = <SettingsHomeScreen>[
     AllNotes,
     AllFolders,
   ];
 
-  static SettingsHomeScreen fromInternalString(String? str) {
-    for (var opt in options) {
-      if (opt.toInternalString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
+  static SettingsHomeScreen fromInternalString(String? str) =>
+      GjSetting.fromInternalString(options, Default, str) as SettingsHomeScreen;
 
-  static SettingsHomeScreen fromPublicString(String str) {
-    for (var opt in options) {
-      if (opt.toPublicString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  @override
-  String toString() {
-    assert(false, "SettingsHomeScreen toString should never be called");
-    return "";
-  }
+  static SettingsHomeScreen fromPublicString(
+          BuildContext context, String str) =>
+      GjSetting.fromPublicString(context, options, Default, str)
+          as SettingsHomeScreen;
 }
 
 String generateRandomId() {
   return const Uuid().v4().substring(0, 8);
 }
 
-class SettingsTheme {
-  static const Dark = SettingsTheme(LocaleKeys.settings_theme_dark, "dark");
-  static const Light = SettingsTheme(LocaleKeys.settings_theme_light, "light");
+class SettingsTheme extends GjSetting {
+  static const Dark = SettingsTheme(Lk.settingsThemeDark, "dark");
+  static const Light = SettingsTheme(Lk.settingsThemeLight, "light");
   static const SystemDefault =
-      SettingsTheme(LocaleKeys.settings_theme_default, "default");
+      SettingsTheme(Lk.settingsThemeDefault, "default");
   static const Default = SystemDefault;
 
-  final String _str;
-  final String _publicString;
-  const SettingsTheme(this._publicString, this._str);
-
-  String toInternalString() {
-    return _str;
-  }
-
-  String toPublicString() {
-    return tr(_publicString);
-  }
+  const SettingsTheme(super.lk, super.str);
 
   static const options = <SettingsTheme>[
     Light,
@@ -593,29 +503,12 @@ class SettingsTheme {
     SystemDefault,
   ];
 
-  static SettingsTheme fromInternalString(String? str) {
-    for (var opt in options) {
-      if (opt.toInternalString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
+  static SettingsTheme fromInternalString(String? str) =>
+      GjSetting.fromInternalString(options, Default, str) as SettingsTheme;
 
-  static SettingsTheme fromPublicString(String str) {
-    for (var opt in options) {
-      if (opt.toPublicString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  @override
-  String toString() {
-    assert(false, "SettingsTheme toString should never be called");
-    return "";
-  }
+  static SettingsTheme fromPublicString(BuildContext context, String str) =>
+      GjSetting.fromPublicString(context, options, Default, str)
+          as SettingsTheme;
 
   ThemeMode toThemeMode() {
     if (this == SystemDefault) {
@@ -628,27 +521,17 @@ class SettingsTheme {
   }
 }
 
-class SettingsTitle {
+class SettingsTitle extends GjSetting {
   static const InYaml =
-      SettingsTitle("settings.noteMetaData.titleMetaData.fromYaml", "yaml");
+      SettingsTitle(Lk.settingsNoteMetaDataTitleMetaDataFromYaml, "yaml");
   static const InH1 =
-      SettingsTitle("settings.noteMetaData.titleMetaData.fromH1", "h1");
+      SettingsTitle(Lk.settingsNoteMetaDataTitleMetaDataFromH1, "h1");
   static const InFileName =
-      SettingsTitle("settings.noteMetaData.titleMetaData.filename", "filename");
+      SettingsTitle(Lk.settingsNoteMetaDataTitleMetaDataFilename, "filename");
 
   static const Default = InH1;
 
-  final String _str;
-  final String _publicString;
-  const SettingsTitle(this._publicString, this._str);
-
-  String toInternalString() {
-    return _str;
-  }
-
-  String toPublicString() {
-    return tr(_publicString);
-  }
+  const SettingsTitle(super.lk, super.str);
 
   static const options = <SettingsTitle>[
     InH1,
@@ -656,29 +539,12 @@ class SettingsTitle {
     // InFileName,
   ];
 
-  static SettingsTitle fromInternalString(String? str) {
-    for (var opt in options) {
-      if (opt.toInternalString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
+  static SettingsTitle fromInternalString(String? str) =>
+      GjSetting.fromInternalString(options, Default, str) as SettingsTitle;
 
-  static SettingsTitle fromPublicString(String str) {
-    for (var opt in options) {
-      if (opt.toPublicString() == str) {
-        return opt;
-      }
-    }
-    return Default;
-  }
-
-  @override
-  String toString() {
-    assert(false, "SettingsTitle toString should never be called");
-    return "";
-  }
+  static SettingsTitle fromPublicString(BuildContext context, String str) =>
+      GjSetting.fromPublicString(context, options, Default, str)
+          as SettingsTitle;
 }
 
 Set<String> parseTags(String tags) {

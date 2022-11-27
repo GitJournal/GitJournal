@@ -8,8 +8,6 @@ import 'package:collection/collection.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:gitjournal/settings/git_config.dart';
-
 abstract class SettingsSharedPref {
   @protected
   String get id;
@@ -54,17 +52,6 @@ abstract class SettingsSharedPref {
       var _ = await pref.remove(key);
     } else {
       var _ = await pref.setString(key, value);
-    }
-  }
-
-  @protected
-  Future<void> setOption(
-      String key, SettingsOption value, SettingsOption defaultValue) async {
-    key = id + '_' + key;
-    if (value == defaultValue) {
-      var _ = await pref.remove(key);
-    } else {
-      var _ = await pref.setString(key, value.toInternalString());
     }
   }
 

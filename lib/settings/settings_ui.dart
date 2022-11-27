@@ -36,11 +36,12 @@ class SettingsUIScreen extends StatelessWidget {
         SettingsHeader(context.loc.settingsDisplayTitle),
         ListPreference(
           title: context.loc.settingsDisplayTheme,
-          currentOption: settings.theme.toPublicString(),
-          options:
-              SettingsTheme.options.map((f) => f.toPublicString()).toList(),
+          currentOption: settings.theme.toPublicString(context),
+          options: SettingsTheme.options
+              .map((f) => f.toPublicString(context))
+              .toList(),
           onChange: (String publicStr) {
-            var s = SettingsTheme.fromPublicString(publicStr);
+            var s = SettingsTheme.fromPublicString(context, publicStr);
             settings.theme = s;
             settings.save();
           },
@@ -91,12 +92,12 @@ class SettingsUIScreen extends StatelessWidget {
           feature: Feature.customizeHomeScreen,
           child: ListPreference(
             title: context.loc.settingsDisplayHomeScreen,
-            currentOption: settings.homeScreen.toPublicString(),
+            currentOption: settings.homeScreen.toPublicString(context),
             options: SettingsHomeScreen.options
-                .map((f) => f.toPublicString())
+                .map((f) => f.toPublicString(context))
                 .toList(),
             onChange: (String publicStr) {
-              var s = SettingsHomeScreen.fromPublicString(publicStr);
+              var s = SettingsHomeScreen.fromPublicString(context, publicStr);
               settings.homeScreen = s;
               settings.save();
             },

@@ -194,6 +194,42 @@ extension LocalizedBuildContext on BuildContext {
         return loc.settingsFileFormatTxt;
       case Lk.settingsFileFormatMarkdown:
         return loc.settingsFileFormatMarkdown;
+      case Lk.settingsEditorsRawEditor:
+        return loc.settingsEditorsRawEditor;
+      case Lk.settingsEditorsMarkdownEditor:
+        return loc.settingsEditorsMarkdownEditor;
+      case Lk.settingsEditorsJournalEditor:
+        return loc.settingsEditorsJournalEditor;
+      case Lk.settingsEditorsChecklistEditor:
+        return loc.settingsEditorsChecklistEditor;
+      case Lk.settingsEditorsOrgEditor:
+        return loc.settingsEditorsOrgEditor;
+      case Lk.settingsEditorDefaultViewEdit:
+        return loc.settingsEditorDefaultViewEdit;
+      case Lk.settingsEditorDefaultViewView:
+        return loc.settingsEditorDefaultViewView;
+      case Lk.settingsEditorDefaultViewLastUsed:
+        return loc.settingsEditorDefaultViewLastUsed;
+      case Lk.settingsHomeScreenAllNotes:
+        return loc.settingsHomeScreenAllNotes;
+      case Lk.settingsHomeScreenAllFolders:
+        return loc.settingsHomeScreenAllFolders;
+      case Lk.settingsThemeDark:
+        return loc.settingsThemeDark;
+      case Lk.settingsThemeLight:
+        return loc.settingsThemeLight;
+      case Lk.settingsThemeDefault:
+        return loc.settingsThemeDefault;
+      case Lk.settingsNoteMetaDataTitleMetaDataFromYaml:
+        return loc.settingsNoteMetaDataTitleMetaDataFromYaml;
+      case Lk.settingsNoteMetaDataTitleMetaDataFromH1:
+        return loc.settingsNoteMetaDataTitleMetaDataFromH1;
+      case Lk.settingsNoteMetaDataTitleMetaDataFilename:
+        return loc.settingsNoteMetaDataTitleMetaDataFilename;
+      case Lk.settingsSshKeyEd25519:
+        return loc.settingsSshKeyEd25519;
+      case Lk.settingsSshKeyRsa:
+        return loc.settingsSshKeyRsa;
     }
   }
 }
@@ -320,4 +356,22 @@ enum Lk {
   settingsFileFormatOrgMode,
   settingsFileFormatTxt,
   settingsFileFormatMarkdown,
+  settingsEditorsRawEditor,
+  settingsEditorsMarkdownEditor,
+  settingsEditorsJournalEditor,
+  settingsEditorsChecklistEditor,
+  settingsEditorsOrgEditor,
+  settingsEditorDefaultViewEdit,
+  settingsEditorDefaultViewView,
+  settingsEditorDefaultViewLastUsed,
+  settingsHomeScreenAllNotes,
+  settingsHomeScreenAllFolders,
+  settingsThemeDark,
+  settingsThemeLight,
+  settingsThemeDefault,
+  settingsNoteMetaDataTitleMetaDataFromYaml,
+  settingsNoteMetaDataTitleMetaDataFromH1,
+  settingsNoteMetaDataTitleMetaDataFilename,
+  settingsSshKeyEd25519,
+  settingsSshKeyRsa,
 }
