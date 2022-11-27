@@ -131,8 +131,11 @@ class FolderTileState extends State<FolderTile> {
 
     final theme = Theme.of(context);
 
-    var publicName =
-        folder.folderName.isEmpty ? folder.publicName : folder.folderName;
+    var publicName = folder.parent == null
+        ? context.loc.rootFolder
+        : folder.folderName.isEmpty
+            ? folder.publicName
+            : folder.folderName;
 
     var selected = widget.selectedFolder == widget.folder;
     return Card(

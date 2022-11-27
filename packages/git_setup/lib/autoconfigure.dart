@@ -4,14 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:function_types/function_types.dart';
 import 'package:git_setup/git_config.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/generated/locale_keys.g.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
 
@@ -44,7 +42,7 @@ class GitHostSetupAutoConfigurePageState
   String errorMessage = "";
 
   bool _configuringStarted = false;
-  String _message = tr(LocaleKeys.setup_autoconfigure_waitPerm);
+  String _message = "";
 
   Future<void> _startAutoConfigure() async {
     Log.d("Starting autoconfigure");
@@ -135,6 +133,8 @@ class GitHostSetupAutoConfigurePageState
 
   @override
   Widget build(BuildContext context) {
+    if (_message.isEmpty) _message = context.loc.setup_autoconfigure_waitPerm;
+
     if (_configuringStarted) {
       if (errorMessage.isNotEmpty) {
         return GitHostSetupErrorPage(errorMessage);
