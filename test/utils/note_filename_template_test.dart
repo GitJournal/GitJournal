@@ -1,18 +1,17 @@
+import 'package:gitjournal/utils/note_filename_template.dart';
 import 'package:test/test.dart';
 
-import 'package:gitjournal/utils/note_filename_template.dart';
-
 void main() {
-  String renderTestTemplate(FileNameTemplate template, String? title) {
-    return template.render(
-      date: DateTime.parse('2022-02-27T19:00:00'),
-      root: 'root',
-      uuidv4: () => 'fake_uuid',
-      title: title,
-    );
-  }
-
   group('valid FileNameTemplate', () {
+    String renderTestTemplate(FileNameTemplate template, String? title) {
+      return template.render(
+        date: DateTime.parse('2022-02-27T19:00:00'),
+        root: 'root',
+        uuidv4: () => 'fake_uuid',
+        title: title,
+      );
+    }
+
     test('combining date and title + multiple title options', () async {
       final template = FileNameTemplate.parse(
           '{{date:fmt=yyyy_MM_dd}}_{{title:lowercase,snake_case}}');
@@ -107,12 +106,21 @@ void main() {
   });
 
   group('Invalid FileNameTemplate', () {
+    test('no unique identifier in template', () {
+      final template = FileNameTemplate.parse('static_file_name');
+
+      expect(
+        template.validate(),
+        isA<FileNameTemplateValidationFailure>(),
+      );
+    });
+
     test('invalid date fmt', () {
       final template = FileNameTemplate.parse('{{date:fmt=invalid format!!}}');
 
       expect(
-        () => renderTestTemplate(template, "Some note title"),
-        throwsA(isA<Error>()),
+        template.validate(),
+        isA<FileNameTemplateValidationFailure>(),
       );
     });
 
@@ -120,8 +128,8 @@ void main() {
       final template = FileNameTemplate.parse('{{invalid_template_variable}}');
 
       expect(
-        () => renderTestTemplate(template, "Some note title"),
-        throwsA(isA<Exception>()),
+        template.validate(),
+        isA<FileNameTemplateValidationFailure>(),
       );
     });
 
@@ -129,8 +137,8 @@ void main() {
       final template = FileNameTemplate.parse('{{title:invalid_option_name}}');
 
       expect(
-        () => renderTestTemplate(template, "Some note title"),
-        throwsA(isA<Exception>()),
+        template.validate(),
+        isA<FileNameTemplateValidationFailure>(),
       );
     });
 
@@ -139,8 +147,8 @@ void main() {
           '{{invalid_template_variable:invalid_option_name}}');
 
       expect(
-        () => renderTestTemplate(template, "Some note title"),
-        throwsA(isA<Exception>()),
+        template.validate(),
+        isA<FileNameTemplateValidationFailure>(),
       );
     });
   });

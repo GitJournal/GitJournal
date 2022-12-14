@@ -53,6 +53,16 @@ class FileNameTemplate {
         ];
       }
 
+      if (segmentsIncludeDate) {
+        final dateSegment =
+            segments.firstWhere((segment) => segment.variableName == 'date');
+        try {
+          _renderDate(DateTime.now(), dateSegment.variableOptions);
+        } catch (e) {
+          return ["Invalid date format: ${dateSegment.text}"];
+        }
+      }
+
       return [];
     });
     if (segmentVariableErrors.isNotEmpty) {
@@ -69,16 +79,6 @@ class FileNameTemplate {
     String? title,
   }) {
     final renderedSegments = segments.map((segment) {
-      final invalidOptions = segment.variableOptions?.keys.where((key) {
-        final validOptions =
-            validTemplateVariablesAndOptions[segment.variableName];
-        return validOptions != null ? validOptions.contains(key) : false;
-      }).toList();
-      if (invalidOptions != null && invalidOptions.isNotEmpty) {
-        throw Exception(
-            "Invalid option(s) for variable ${segment.variableName}: ${invalidOptions.join(', ')}");
-      }
-
       if (segment.variableName == null) {
         return segment.text;
       } else if (segment.variableName == 'date') {
@@ -173,8 +173,6 @@ class _TemplateSegment {
   _TemplateSegment(this.text, this.variableName, this.variableOptions);
 
   isVariable() => variableName != null;
-
-  validate() {}
 }
 
 String _renderDate(DateTime date, Map<String, String>? variableOptions) {
