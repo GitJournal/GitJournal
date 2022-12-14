@@ -12,7 +12,6 @@ final Map<String, Set<String>> validTemplateVariablesAndOptions = {
     'default'
   },
   'uuidv4': {},
-  'root': {},
 };
 
 class FileNameTemplate {
@@ -63,12 +62,23 @@ class FileNameTemplate {
     return const FileNameTemplateValidationSuccess();
   }
 
-  String render(
-      {required DateTime date,
-      required String root,
-      required String Function() uuidv4,
-      String? title}) {
+  String render({
+    required DateTime date,
+    required String root,
+    required String Function() uuidv4,
+    String? title,
+  }) {
     final renderedSegments = segments.map((segment) {
+      final invalidOptions = segment.variableOptions?.keys.where((key) {
+        final validOptions =
+            validTemplateVariablesAndOptions[segment.variableName];
+        return validOptions != null ? validOptions.contains(key) : false;
+      }).toList();
+      if (invalidOptions != null && invalidOptions.isNotEmpty) {
+        throw Exception(
+            "Invalid option(s) for variable ${segment.variableName}: ${invalidOptions.join(', ')}");
+      }
+
       if (segment.variableName == null) {
         return segment.text;
       } else if (segment.variableName == 'date') {
@@ -77,8 +87,6 @@ class FileNameTemplate {
         return _renderTitle(title, segment.variableOptions);
       } else if (segment.variableName == 'uuidv4') {
         return uuidv4();
-      } else if (segment.variableName == 'root') {
-        return root;
       } else {
         throw Exception(
             "Unknown template variable {{${segment.variableName}}}");
