@@ -63,6 +63,16 @@ class FileNameTemplate {
         }
       }
 
+      if (segmentsIncludeTitle) {
+        final titleSegment =
+            segments.firstWhere((segment) => segment.variableName == 'title');
+        try {
+          _renderTitle(titleSegment.text, titleSegment.variableOptions);
+        } catch (e) {
+          return ["Invalid title format: ${titleSegment.text}"];
+        }
+      }
+
       return [];
     });
     if (segmentVariableErrors.isNotEmpty) {
