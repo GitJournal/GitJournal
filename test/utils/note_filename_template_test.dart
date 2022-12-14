@@ -116,6 +116,15 @@ void main() {
   });
 
   group('Invalid FileNameTemplate', () {
+    test("malformed template", () {
+      expect(
+        () {
+          FileNameTemplate.parse('{{date:fmt=yyyy_MM_dd');
+        },
+        throwsException,
+      );
+    });
+
     test('no unique identifier in template', () {
       final template = FileNameTemplate.parse('static_file_name');
 
