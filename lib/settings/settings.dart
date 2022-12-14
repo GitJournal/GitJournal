@@ -211,6 +211,10 @@ class NoteFileNameFormat extends GjSetting {
     Lk.settingsNoteFileNameFormatKebabCase,
     "KebabCase",
   );
+  static const Template = NoteFileNameFormat(
+    Lk.settingsNoteFileNameFormatTemplate,
+    "Template",
+  );
 
   static const Default = FromTitle;
 

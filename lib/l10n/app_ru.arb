@@ -191,6 +191,7 @@
   "settingsNoteFileNameFormatSimple": "yyyy-mm-dd-hh-mm-ss",
   "settingsNoteFileNameFormatDateOnly": "yyyy-mm-dd",
   "settingsNoteFileNameFormatKebabCase": "Kebab Case",
+  "settingsNoteFileNameFormatTemplate": "Template",
   "settingsHomeScreenAllNotes": "All Notes",
   "settingsHomeScreenAllFolders": "All Folders",
   "settingsEditorDefaultViewEdit": "Edit",
