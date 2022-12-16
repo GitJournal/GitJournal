@@ -1,30 +1,13 @@
+import 'package:collection/collection.dart';
 import 'package:gitjournal/utils/datetime.dart';
 import 'package:intl/intl.dart';
-
-final Map<String, Set<String>> validTemplateVariablesAndOptions = {
-  'date': {'fmt'},
-  'title': {
-    'lowercase',
-    'uppercase',
-    'snake_case',
-    'kebab_case',
-    'max_length',
-    'default'
-  },
-  'uuidv4': {},
-};
-
 class FileNameTemplate {
   List<_TemplateSegment> segments;
 
   FileNameTemplate(this.segments);
 
   static FileNameTemplate parse(String template) {
-    try {
-      return FileNameTemplate(_parseTemplate(template));
-    } on Exception catch (e) {
-      throw Exception("Problem parsing template: $e");
-    }
+    return FileNameTemplate(_parseTemplate(template));
   }
 
   FileNameTemplateValidationResult validate() {
@@ -48,9 +31,12 @@ class FileNameTemplate {
           validTemplateVariablesAndOptions[segment.variableName] ?? {};
       final invalidOptionNames = optionNames.difference(validOptionNames);
       if (invalidOptionNames.isNotEmpty) {
-        return [
-          "Invalid option(s) for variable ${segment.variableName}: ${invalidOptionNames.join(', ')}"
-        ];
+        return invalidOptionNames.length == 1 &&
+                invalidOptionNames.firstOrNull == ""
+            ? ["Please specify options for variable ${segment.variableName}."]
+            : [
+                "Invalid option(s) for variable ${segment.variableName}: ${invalidOptionNames.join(', ')}"
+              ];
       }
 
       if (segmentsIncludeDate) {
@@ -84,7 +70,6 @@ class FileNameTemplate {
 
   String render({
     required DateTime date,
-    required String root,
     required String Function() uuidv4,
     String? title,
   }) {
@@ -105,7 +90,7 @@ class FileNameTemplate {
     return renderedSegments.join();
   }
 }
-
+f
 abstract class FileNameTemplateValidationResult {
   const FileNameTemplateValidationResult();
 }
@@ -153,7 +138,7 @@ List<_TemplateSegment> _parseTemplate(String template) {
             Map.fromEntries(optionsSegments.map((optionText) {
           final optionSegments = optionText.split('=');
           if (optionSegments.length > 2) {
-            throw Exception("Invalid option for $variableName `$optionText`");
+            throw Exception("ption for $variableName `$optionText`");
           }
           return MapEntry(
             optionSegments[0],
@@ -186,15 +171,23 @@ class _TemplateSegment {
 }
 
 String _renderDate(DateTime date, Map<String, String>? variableOptions) {
-  if (variableOptions == null || variableOptions['fmt'] == null) {
-    return toSimpleDateTime(date);
+  var result = formatDate(date, variableOptions);
+
+  if (variableOptions != null && variableOptions['lowercase'] == 'true') {
+    result = result.toLowerCase();
+  } else if (variableOptions != null &&
+      variableOptions['uppercase'] == 'true') {
+    result = result.toUpperCase();
   }
 
-  return DateFormat(variableOptions['fmt']).format(date);
+  return result;
 }
 
 String _renderTitle(String? titleInput, Map<String, String>? variableOptions) {
-  final defaultTitle = variableOptions?['default'] ?? 'untitled';
+  final defaultTitleOption = variableOptions?['default'];
+  final defaultTitle = defaultTitleOption == null || defaultTitleOption.isEmpty
+      ? 'Untitled'
+      : defaultTitleOption;
   var title = titleInput ?? defaultTitle;
   if (variableOptions == null) {
     return title;
@@ -225,3 +218,111 @@ String _renderTitle(String? titleInput, Map<String, String>? variableOptions) {
 
   return title;
 }
+
+
+final Map<String, Set<String>> validTemplateVariablesAndOptions = {
+  'date': {'lowercase', 'uppercase', 'date_only', 'hyphens', 'zettel', 'fmt'},
+  'title': {
+    'lowercase',
+    'uppercase',
+    'snake_case',
+    'kebab_case',
+    'max_length',
+    'default'
+  },
+  'uuidv4': {},
+};
+
+final dateFormatOptions = {'date_only', 'hyphens', 'zettel', 'fmt'};
+
+String formatDate(DateTime date, Map<String, String>? options) {
+  if (options == null) {
+    return toSimpleDateTime(date);
+  }
+  final presentFormatOptions =
+      options.keys.toSet().difference(dateFormatOptions);
+  if (presentFormatOptions.length > 1) {
+    throw Exception(
+        "Only one of ${dateFormatOptions.join(', ')} can be specified");
+  }
+
+  final formatOption = presentFormatOptions.toList().firstOrNull ?? 'hyphens';
+  switch (formatOption) {
+    case 'hyphens':
+      return toSimpleDateTime(date);
+    case 'zettel':
+      return toZettleDateTime(date);
+    case 'date_only':
+      return DateFormat('yyyy-MM-dd').format(date);
+    case 'fmt':
+      final fmtOptionIsBlank = (options['fmt'] == null ||
+          options['fmt'] == 'true' ||
+          options['fmt'] == '');
+      return fmtOptionIsBlank
+          ? toSimpleDateTime(date)
+          : DateFormat(options['fmt']).format(date);
+    default:
+      throw Exception("Invalid date format option: $formatOption");
+  }
+}
+
+
+const templateFormatHelperText = """
+Templates can include the following variables,
+replaced with the appropriate values when the
+note is created.
+
+Template variables are written between
+double curly braces, with any options
+specified after a colon.
+
+For example:
+  TEMPLATE:
+     {{date}}_{{title:snake_case}}
+  RESULT:
+     2022-01-05_Title_of_the_note
+
+AVAILABLE TEMPLATE VARIABLES:
+
+{{date}} - The date and time at note creation.
+  OPTIONS:              
+    hyphens - YYYY-MM-DD-HH-mm-SS
+              (the default format)
+    date_only - YYYY-MM-DD
+              (same as default format, but
+               without the time)
+    zettel - YYYYMMDDHHmmSS
+              (Zettelkasten format)
+    fmt - Use a custom format. The format is
+          specified according to the ICU/JDK
+          date/time pattern specification.
+          For example:
+              {{date:fmt=YY-MMMM-DD}}
+            produces a result like:
+              22-January-05
+    lowercase - Make all characters lowercase
+                after applying formatting.
+    uppercase - Make all characters uppercase
+                after applying formatting.
+{{title}} - The title of the note.
+    OPTIONS:
+      lowercase - Make all characters lowercase.
+      uppercase - Make all characters uppercase.
+      snake_case - Convert to snake_case.
+      kebab_case - Convert to kebab-case.
+      max_length - Truncate the title to a
+                   maximum length.
+                   For example:
+                     {{title:max_length=10}}
+      default - Set the default title if the
+                title is empty.
+                Defaults to "Untitled".
+                For example:
+                  {{title:default=Untitled-note}}
+  {{uuidv4}} - A random UUIDv4 string.
+
+
+Multiple options may be specified for a variable, separated commas.
+For example:
+  {{title:lowercase,snake_case}}
+            """;

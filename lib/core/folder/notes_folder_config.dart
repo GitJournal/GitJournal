@@ -5,9 +5,6 @@
  */
 
 import 'package:flutter/foundation.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:gitjournal/core/folder/sorting_mode.dart';
 import 'package:gitjournal/core/markdown/md_yaml_note_serializer.dart';
 import 'package:gitjournal/core/notes/note.dart';
@@ -15,6 +12,7 @@ import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_sharedpref.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
   NotesFolderConfig(this.id, this.pref);
@@ -37,6 +35,8 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
   var showNoteSummary = true;
   var fileNameFormat = NoteFileNameFormat.Default;
   var journalFileNameFormat = NoteFileNameFormat.Default;
+  var fileNameTemplate = "{{date}} {{title}}";
+  var journalFileNameTemplate = "{{date}} {{title}}";
 
   var yamlHeaderEnabled = true;
 
@@ -64,6 +64,9 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
         NoteFileNameFormat.fromInternalString(getString("noteFileNameFormat"));
     journalFileNameFormat = NoteFileNameFormat.fromInternalString(
         getString("journalNoteFileNameFormat"));
+    fileNameTemplate = getString("noteFileNameTemplate") ?? fileNameTemplate;
+    journalFileNameTemplate =
+        getString("journalNoteFileNameTemplate") ?? journalFileNameTemplate;
 
     yamlUnixTimestampMagnitude =
         NoteSerializationUnixTimestampMagnitude.fromInternalString(
@@ -107,12 +110,18 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
   Future<void> save() async {
     var def = NotesFolderConfig(id, pref);
 
-    await setString("noteFileNameFormat", fileNameFormat.toInternalString(),
-        def.fileNameFormat.toInternalString());
+    await setString(
+        "noteFileNameFormat",
+        NoteFileNameFormat.DateOnly.toInternalString(),
+        NoteFileNameFormat.DateOnly.toInternalString());
     await setString(
         "journalNoteFileNameFormat",
         journalFileNameFormat.toInternalString(),
         def.journalFileNameFormat.toInternalString());
+    await setString(
+        "noteFileNameTemplate", fileNameTemplate, def.fileNameTemplate);
+    await setString("journalNoteFileNameTemplate", journalFileNameTemplate,
+        def.journalFileNameTemplate);
 
     await setString("sortingField", sortingField.toInternalString(),
         def.sortingField.toInternalString());
@@ -162,6 +171,8 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
     return <String, String>{
       "noteFileNameFormat": fileNameFormat.toInternalString(),
       "journalNoteFileNameFormat": journalFileNameFormat.toInternalString(),
+      "noteFileNameTemplate": fileNameTemplate,
+      "journalNoteFileNameTemplate": journalFileNameTemplate,
       "yamlModifiedKey": yamlModifiedKey,
       "yamlCreatedKey": yamlCreatedKey,
       "yamlTagsKey": yamlTagsKey,

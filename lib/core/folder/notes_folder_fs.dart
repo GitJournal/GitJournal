@@ -36,6 +36,9 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   final NotesFolderConfig _config;
   late final FileStorage fileStorage;
 
+  get fileNameTemplate => config.fileNameTemplate;
+  get journalFileNameTemplate => _config.journalFileNameTemplate;
+
   NotesFolderFS(NotesFolderFS parent, this._folderPath, this._config)
       : _parent = parent,
         fileStorage = parent.fileStorage {

@@ -19,6 +19,7 @@ import 'package:gitjournal/settings/settings_images.dart';
 import 'package:gitjournal/settings/settings_note_metadata.dart';
 import 'package:gitjournal/settings/settings_tags.dart';
 import 'package:gitjournal/settings/storage_config.dart';
+import 'package:gitjournal/settings/widgets/settings_filename_format_preference.dart';
 import 'package:gitjournal/settings/widgets/settings_header.dart';
 import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
 import 'package:gitjournal/utils/utils.dart';
@@ -44,16 +45,19 @@ class SettingsStorageScreen extends StatelessWidget {
 
     var list = ListView(
       children: [
-        ListPreference(
-          title: context.loc.settingsNoteNewNoteFileName,
-          currentOption: folderConfig.fileNameFormat.toPublicString(context),
-          options: NoteFileNameFormat.options
-              .map((f) => f.toPublicString(context))
-              .toList(),
-          onChange: (String publicStr) {
-            var format =
-                NoteFileNameFormat.fromPublicString(context, publicStr);
+        NoteFileNameFormatPreference(
+          getFileNameFormatFromConfig: () => folderConfig.fileNameFormat,
+          setFileNameFormatInConfig: (format) {
             folderConfig.fileNameFormat = format;
+            folderConfig.save();
+          },
+          getFileNameTemplateFromConfig: () =>
+              folderConfig.fileNameTemplate.isEmpty
+                  ? "{{date}} {{title}}"
+                  : folderConfig.fileNameTemplate,
+          setFileNameFormatWithTemplateInConfig: (text) {
+            folderConfig.fileNameFormat = NoteFileNameFormat.Template;
+            folderConfig.fileNameTemplate = text;
             folderConfig.save();
           },
         ),

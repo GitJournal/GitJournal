@@ -4,9 +4,14 @@ import 'package:test/test.dart';
 void main() {
   group('valid FileNameTemplate', () {
     String renderTestTemplate(FileNameTemplate template, String? title) {
+      if (template is FileNameTemplateValidationFailure) {
+        throw Exception(
+            (template as FileNameTemplateValidationFailure).message);
+      }
+      expect(template.validate(), isA<FileNameTemplateValidationSuccess>());
+
       return template.render(
         date: DateTime.parse('2022-02-27T19:00:00'),
-        root: 'root',
         uuidv4: () => 'fake_uuid',
         title: title,
       );
@@ -16,7 +21,6 @@ void main() {
       final template = FileNameTemplate.parse(
           '{{date:fmt=yyyy_MM_dd}}_{{title:lowercase,snake_case}}');
 
-      expect(template.validate(), isA<FileNameTemplateValidationSuccess>());
       expect(
         renderTestTemplate(template, "Some note title"),
         '2022_02_27_some_note_title',
@@ -26,10 +30,9 @@ void main() {
     test('title placeholder', () async {
       final template = FileNameTemplate.parse('{{title}}');
 
-      expect(template.validate(), isA<FileNameTemplateValidationSuccess>());
       expect(
         renderTestTemplate(template, null),
-        "untitled",
+        "Untitled",
       );
     });
 
@@ -37,7 +40,6 @@ void main() {
       final template =
           FileNameTemplate.parse('{{title:default=UNTITLED_NOTE}}');
 
-      expect(template.validate(), isA<FileNameTemplateValidationSuccess>());
       expect(
         renderTestTemplate(template, null),
         "UNTITLED_NOTE",
@@ -47,7 +49,6 @@ void main() {
     test('title length', () async {
       final template = FileNameTemplate.parse('{{title:max_length=5}}');
 
-      expect(template.validate(), isA<FileNameTemplateValidationSuccess>());
       expect(
         renderTestTemplate(template, "Some note title"),
         "Some ",
@@ -57,7 +58,6 @@ void main() {
     test('kebab case title', () async {
       final template = FileNameTemplate.parse('{{title:kebab_case}}');
 
-      expect(template.validate(), isA<FileNameTemplateValidationSuccess>());
       expect(
         renderTestTemplate(template, "Some note title with_underscores"),
         "Some-note-title-with_underscores",
@@ -67,7 +67,6 @@ void main() {
     test('snake case title', () async {
       final template = FileNameTemplate.parse('{{title:snake_case}}');
 
-      expect(template.validate(), isA<FileNameTemplateValidationSuccess>());
       expect(
         renderTestTemplate(template, "Some note title with-hyphens"),
         "Some_note_title_with-hyphens",
@@ -77,7 +76,6 @@ void main() {
     test('uppercase title', () async {
       final template = FileNameTemplate.parse('{{title:uppercase}}');
 
-      expect(template.validate(), isA<FileNameTemplateValidationSuccess>());
       expect(
         renderTestTemplate(template, "Some note title"),
         "SOME NOTE TITLE",
@@ -87,7 +85,15 @@ void main() {
     test('default date format', () {
       final template = FileNameTemplate.parse('{{date}}');
 
-      expect(template.validate(), isA<FileNameTemplateValidationSuccess>());
+      expect(
+        renderTestTemplate(template, "Some note title"),
+        '2022-02-27-19-00-00',
+      );
+    });
+
+    test('preset date format', () {
+      final template = FileNameTemplate.parse('{{date:simple}}');
+
       expect(
         renderTestTemplate(template, "Some note title"),
         '2022-02-27-19-00-00',
@@ -97,7 +103,6 @@ void main() {
     test('lowercase title', () async {
       final template = FileNameTemplate.parse('{{title:lowercase}}');
 
-      expect(template.validate(), isA<FileNameTemplateValidationSuccess>());
       expect(
         renderTestTemplate(template, "Some note title"),
         "some note title",
@@ -107,7 +112,6 @@ void main() {
     test('custom date format', () {
       final template = FileNameTemplate.parse('{{date:fmt=yyyy_MM_dd}}');
 
-      expect(template.validate(), isA<FileNameTemplateValidationSuccess>());
       expect(
         renderTestTemplate(template, "Some note title"),
         '2022_02_27',
@@ -141,6 +145,12 @@ void main() {
         template.validate(),
         isA<FileNameTemplateValidationFailure>(),
       );
+    });
+
+    test('multiple date format options', () {
+      final template = FileNameTemplate.parse('{{date:simple,zettel}}');
+
+      expect(template.validate(), isA<FileNameTemplateValidationFailure>());
     });
 
     test('invalid template variable', () {
