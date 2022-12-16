@@ -149,6 +149,8 @@ class FileNameTemplatePreviewState extends State<FileNameTemplatePreview> {
               keyboardType: TextInputType.multiline,
               maxLines: null,
               controller: _controller,
+              enableSuggestions: false,
+              enableIMEPersonalizedLearning: false,
               onChanged: (String value) {
                 setState(() {
                   setPreview(value);

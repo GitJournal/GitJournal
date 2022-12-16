@@ -582,12 +582,11 @@ String buildTemplateFileName(
   String? title,
   String ext,
 ) {
-  // Sanitize the title - these characters are not allowed in Windows
   title = FileNameTemplate.parse(
     template,
   )
-      .render(date: date, uuidv4: const Uuid().v4, title: title)
-      .replaceAll(RegExp(r'[/<\>":|?*]'), '_');
+      .render(date: date, uuidv4: const Uuid().v4, title: title);
+      
 
   return ensureFileNameUnique(parentDir, title, ext);
 }

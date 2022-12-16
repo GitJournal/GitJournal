@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:gitjournal/utils/datetime.dart';
 import 'package:intl/intl.dart';
+
 class FileNameTemplate {
   List<_TemplateSegment> segments;
 
@@ -39,16 +40,6 @@ class FileNameTemplate {
               ];
       }
 
-      if (segmentsIncludeDate) {
-        final dateSegment =
-            segments.firstWhere((segment) => segment.variableName == 'date');
-        try {
-          _renderDate(DateTime.now(), dateSegment.variableOptions);
-        } catch (e) {
-          return ["Invalid date format: ${dateSegment.text}"];
-        }
-      }
-
       if (segmentsIncludeTitle) {
         final titleSegment =
             segments.firstWhere((segment) => segment.variableName == 'title');
@@ -62,7 +53,8 @@ class FileNameTemplate {
       return [];
     });
     if (segmentVariableErrors.isNotEmpty) {
-      return FileNameTemplateValidationFailure(segmentVariableErrors.join(';'));
+      return FileNameTemplateValidationFailure(
+          segmentVariableErrors.join('; '));
     }
 
     return const FileNameTemplateValidationSuccess();
@@ -188,7 +180,11 @@ String _renderTitle(String? titleInput, Map<String, String>? variableOptions) {
   final defaultTitle = defaultTitleOption == null || defaultTitleOption.isEmpty
       ? 'Untitled'
       : defaultTitleOption;
-  var title = titleInput ?? defaultTitle;
+  var title = (titleInput ?? defaultTitle)
+      // Sanitize the title - these characters are not allowed in Windows
+      .replaceAll(RegExp(r'[/<\>":|?*]'), '_');
+  ;
+
   if (variableOptions == null) {
     return title;
   }
@@ -219,7 +215,6 @@ String _renderTitle(String? titleInput, Map<String, String>? variableOptions) {
   return title;
 }
 
-
 final Map<String, Set<String>> validTemplateVariablesAndOptions = {
   'date': {'lowercase', 'uppercase', 'date_only', 'hyphens', 'zettel', 'fmt'},
   'title': {
@@ -240,7 +235,7 @@ String formatDate(DateTime date, Map<String, String>? options) {
     return toSimpleDateTime(date);
   }
   final presentFormatOptions =
-      options.keys.toSet().difference(dateFormatOptions);
+      options.keys.toSet().intersection(dateFormatOptions);
   if (presentFormatOptions.length > 1) {
     throw Exception(
         "Only one of ${dateFormatOptions.join(', ')} can be specified");
@@ -265,7 +260,6 @@ String formatDate(DateTime date, Map<String, String>? options) {
       throw Exception("Invalid date format option: $formatOption");
   }
 }
-
 
 const templateFormatHelperText = """
 Templates can include the following variables,
