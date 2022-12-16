@@ -90,7 +90,7 @@ class FileNameTemplate {
     return renderedSegments.join();
   }
 }
-f
+
 abstract class FileNameTemplateValidationResult {
   const FileNameTemplateValidationResult();
 }
