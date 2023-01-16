@@ -66,6 +66,3 @@ debugSymbols
 # Linux Building
 /AppDir
 appimage-builder-cache/
-
-# Monarch related
-.monarch/

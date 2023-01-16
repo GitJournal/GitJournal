@@ -112,7 +112,6 @@ dev_dependencies:
   hive_generator: ^1.1.0
   # flutter_webview_plugin: ^0.3.11
   junitreport: ^2.0.2
-  monarch: ^2.3.0
   process_run: ^0.12.3+2
   # multicast_dns: ^0.3.0
   test: ^1.16.5
