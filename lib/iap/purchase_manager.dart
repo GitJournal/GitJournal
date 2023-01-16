@@ -18,7 +18,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 typedef PurchaseCallback = void Function(String, SubscriptionStatus?);
 
 class PurchaseManager {
-  late InAppPurchaseConnection con;
+  late InAppPurchase con;
   late StreamSubscription<List<PurchaseDetails>> _subscription;
   final List<PurchaseCallback> _callbacks = [];
 
@@ -31,9 +31,7 @@ class PurchaseManager {
     }
 
     _instance = PurchaseManager();
-
-    InAppPurchaseConnection.enablePendingPurchases();
-    _instance!.con = InAppPurchaseConnection.instance;
+    _instance!.con = InAppPurchase.instance;
 
     final bool available = await _instance!.con.isAvailable();
     if (!available) {
@@ -44,7 +42,7 @@ class PurchaseManager {
 
     // Start listening for changes
     var i = _instance!;
-    final purchaseUpdates = i.con.purchaseUpdatedStream;
+    final purchaseUpdates = i.con.purchaseStream;
     i._subscription = purchaseUpdates.listen(i._listenToPurchaseUpdated);
 
     return _instance;
@@ -92,8 +90,7 @@ class PurchaseManager {
       Log.i("Pending Complete Purchase - ${purchaseDetails.productID}");
 
       try {
-        var _ = await InAppPurchaseConnection.instance
-            .completePurchase(purchaseDetails);
+        var _ = await InAppPurchase.instance.completePurchase(purchaseDetails);
       } catch (e, stackTrace) {
         logException(e, stackTrace);
       }
@@ -146,7 +143,7 @@ class PurchaseManager {
     PurchaseCallback callback,
   ) async {
     var purchaseParam = PurchaseParam(productDetails: product);
-    var sentSuccess = await InAppPurchaseConnection.instance
+    var sentSuccess = await InAppPurchase.instance
         .buyNonConsumable(purchaseParam: purchaseParam);
 
     if (sentSuccess) {

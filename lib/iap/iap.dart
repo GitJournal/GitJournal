@@ -4,25 +4,20 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart' as foundation;
-
-import 'package:google_api_availability/google_api_availability.dart';
-import 'package:http/http.dart' as http;
-import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:in_app_purchase/store_kit_wrappers.dart';
-import 'package:universal_io/io.dart' show Platform;
-
-import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/features.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/utils/result.dart';
+import 'package:http/http.dart' as http;
+import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:universal_io/io.dart' show Platform;
 
 class InAppPurchases {
   static Future<void> confirmProPurchaseBoot() async {
-    clearTransactionsIos();
     confirmPendingPurchases();
 
     var appConfig = AppConfig.instance;
@@ -83,6 +78,20 @@ class InAppPurchases {
   }
 
   static Future<SubscriptionStatus> _subscriptionStatus() async {
+    return SubscriptionStatus.basic();
+
+    /*
+    late StreamSubscription<List<PurchaseDetails>> _subscription;
+
+    final purchaseUpdated = InAppPurchase.instance.purchaseStream;
+    _subscription = purchaseUpdated.listen((purchaseDetailsList) {
+      // _listenToPurchaseUpdated(purchaseDetailsList);
+    }, onDone: () {
+      _subscription.cancel();
+    }, onError: (error) {
+      // handle error here.
+    });
+
     InAppPurchaseConnection.enablePendingPurchases();
     var iapConn = InAppPurchaseConnection.instance;
     var dtNow = DateTime.now().toUtc();
@@ -124,42 +133,11 @@ class InAppPurchases {
     }
 
     return sub;
-  }
-
-  static Future<void> clearTransactionsIos() async {
-    if (!Platform.isIOS) {
-      return;
-    }
-
-    final transactions = await SKPaymentQueueWrapper().transactions();
-    Log.i("Old Transactions: ${transactions.length}");
-    for (final transaction in transactions) {
-      Log.i("Processing old transaction: $transaction");
-      try {
-        if (transaction.transactionState ==
-            SKPaymentTransactionStateWrapper.purchased) {
-          Log.i("Already purchased. Ignoring");
-          continue;
-        }
-        if (transaction.transactionState ==
-            SKPaymentTransactionStateWrapper.restored) {
-          Log.i("Already Restored. Ignoring");
-          continue;
-        }
-
-        if (transaction.transactionState !=
-            SKPaymentTransactionStateWrapper.purchasing) {
-          Log.i("Purchasing. Finishing Transaction.");
-
-          await SKPaymentQueueWrapper().finishTransaction(transaction);
-        }
-      } catch (e, stackTrace) {
-        logException(e, stackTrace);
-      }
-    }
+    */
   }
 
   static Future<void> confirmPendingPurchases() async {
+    /*
     // On iOS this results in a "Sign in with Apple ID" dialog
     if (!Platform.isAndroid) {
       return;
@@ -187,6 +165,7 @@ class InAppPurchases {
         }
       }
     }
+    */
   }
 }
 
