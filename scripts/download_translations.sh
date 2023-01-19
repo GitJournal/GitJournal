@@ -18,7 +18,14 @@ for lang in $langs; do
     echo "Downloading for $lang"
 
     url=$(curl -s -X POST https://api.poeditor.com/v2/projects/export -d api_token="$TOKEN" -d id="$ID" -d language="$lang" -d type="arb" | jq -r .result.url)
-    wget -q -O "app_$lang.arb" "$url"
+
+    TEMP_FILE="/tmp/t"
+    wget -q -O $TEMP_FILE "$url"
+    cat $TEMP_FILE | jq >"app_$lang.arb"
 done
+
+mv app_pt-br.arb app_pt.arb
+mv app_zh-Hans.arb app_zh_Hans.arb
+mv app_zh-TW.arb app_zh_TW.arb
 
 echo "Done"
