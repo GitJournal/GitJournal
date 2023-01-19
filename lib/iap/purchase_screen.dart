@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/iap/purchase_manager.dart';
 import 'package:gitjournal/iap/purchase_widget.dart';
+import 'package:gitjournal/iap/restore_purchase_button.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/screens/feature_timeline_screen.dart';

@@ -16,7 +16,6 @@ import 'package:gitjournal/iap/purchase_slider.dart';
 import 'package:gitjournal/iap/purchase_thankyou_screen.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/utils/utils.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
 class PurchaseButton extends StatelessWidget {
@@ -323,61 +322,6 @@ class PurchaseFailedDialog extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ],
-    );
-  }
-}
-
-class RestorePurchaseButton extends StatefulWidget {
-  const RestorePurchaseButton({super.key});
-
-  @override
-  _RestorePurchaseButtonState createState() => _RestorePurchaseButtonState();
-}
-
-class _RestorePurchaseButtonState extends State<RestorePurchaseButton> {
-  bool computing = false;
-
-  @override
-  Widget build(BuildContext context) {
-    var text = computing ? '...' : context.loc.purchaseScreenRestore;
-
-    return OutlinedButton(
-      child: Text(
-        text,
-        style: Theme.of(context).textTheme.bodyText2,
-      ),
-      onPressed: () async {
-        setState(() {
-          computing = true;
-        });
-        Log.i("Restoring Purchases");
-        var result = await InAppPurchases.confirmProPurchase();
-        if (result.isFailure) {
-          Log.e("confirmProPurchase", result: result);
-          var err = result.error ?? Exception("Unknown Error");
-          showErrorMessageSnackbar(context, err.toString());
-
-          setState(() {
-            computing = false;
-          });
-          return;
-        }
-
-        var sub = result.getOrThrow();
-        if (sub.isActive) {
-          Navigator.of(context).pop();
-        } else {
-          var expDate = sub.expiryDate != null
-              ? sub.expiryDate!.toIso8601String().substring(0, 10)
-              : context.loc.purchaseScreenUnknown;
-          var meesage = context.loc.purchaseScreenExpired(expDate);
-          showSnackbar(context, meesage);
-
-          setState(() {
-            computing = false;
-          });
-        }
-      },
     );
   }
 }
