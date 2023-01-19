@@ -1,9 +1,9 @@
 {
-  "@@locale": "pt-br",
+  "@@locale": "pt",
   "pro": "Pro",
-  "rootFolder": "Pasta Raíz",
+  "rootFolder": "Diretório raíz",
   "beta": "BETA",
-  "none": "None",
+  "none": "Nenhum",
   "settingsOk": "Ok",
   "settingsCancel": "Cancel",
   "settingsTitle": "Settings",
