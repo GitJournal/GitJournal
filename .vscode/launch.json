@@ -8,6 +8,12 @@
       "args": ["--flavor", "dev"]
     },
     {
+      "name": "Prod Flavor",
+      "request": "launch",
+      "type": "dart",
+      "args": ["--flavor", "prod"]
+    },
+    {
       "name": "No Flavor",
       "request": "launch",
       "type": "dart"
