@@ -71,7 +71,7 @@ class JournalApp extends StatefulWidget {
     // Ignore the error, the router will show an error screen
     var _ = await repoManager.buildActiveRepository();
 
-    InAppPurchases.confirmProPurchaseBoot();
+    GitJournalInAppPurchases.confirmProPurchaseBoot();
 
     if (Platform.isMacOS) {
       var feedURL = 'http://gitjournal.io/sparkle/appcast.xml';
@@ -107,11 +107,6 @@ class JournalApp extends StatefulWidget {
     analytics.setUserProperty(
       name: 'proMode',
       value: appConfig.proMode.toString(),
-    );
-
-    analytics.setUserProperty(
-      name: 'proExpirationDate',
-      value: appConfig.proExpirationDate.toString(),
     );
   }
 

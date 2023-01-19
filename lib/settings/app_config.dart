@@ -5,11 +5,8 @@
  */
 
 import 'package:flutter/material.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:gitjournal/features.dart';
 import 'package:gitjournal/logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppConfig extends ChangeNotifier {
   // singleton
@@ -26,11 +23,7 @@ class AppConfig extends ChangeNotifier {
 
   int version = 0;
 
-  DateTime? proExpirationDate;
-  bool get proMode {
-    if (proExpirationDate == null) return false;
-    return DateTime.now().isBefore(proExpirationDate!);
-  }
+  bool proMode = false;
 
   var validateProMode = true;
 
@@ -53,8 +46,7 @@ class AppConfig extends ChangeNotifier {
         pref.getBool("collectCrashReports") ?? collectCrashReports;
 
     version = pref.getInt("appSettingsVersion") ?? version;
-    proExpirationDate =
-        pref.getDateTime("proExpirationDate") ?? proExpirationDate;
+    proMode = pref.getBool("proMode") ?? proMode;
     validateProMode = pref.getBool("validateProMode") ?? validateProMode;
 
     debugLogLevel = pref.getString("debugLogLevel") ?? debugLogLevel;
@@ -87,8 +79,7 @@ class AppConfig extends ChangeNotifier {
     _setBool(pref, "collectCrashReports", collectCrashReports,
         defaultSet.collectCrashReports);
 
-    _setDateTime(pref, "proExpirationDate", proExpirationDate,
-        defaultSet.proExpirationDate);
+    _setBool(pref, "proMode", proMode, defaultSet.proMode);
     _setBool(
         pref, "validateProMode", validateProMode, defaultSet.validateProMode);
     _setString(pref, "debugLogLevel", debugLogLevel, defaultSet.debugLogLevel);
@@ -123,7 +114,7 @@ class AppConfig extends ChangeNotifier {
       "collectCrashReports": collectCrashReports.toString(),
       "version": version.toString(),
       'validateProMode': validateProMode.toString(),
-      'proExpirationDate': proExpirationDate.toString(),
+      'proMode': proMode.toString(),
       'debugLogLevel': debugLogLevel,
       'experimentalMarkdownToolbar': experimentalMarkdownToolbar.toString(),
       'experimentalGraphView': experimentalGraphView.toString(),
@@ -159,21 +150,6 @@ class AppConfig extends ChangeNotifier {
     } else {
       var _ = await pref.setBool(key, value);
     }
-  }
-
-  Future<void> _setDateTime(
-    SharedPreferences pref,
-    String key,
-    DateTime? value,
-    DateTime? defaultValue,
-  ) async {
-    dynamic _;
-    if (value == null || value == defaultValue) {
-      _ = await pref.remove(key);
-      return;
-    }
-
-    _ = await pref.setInt(key, value.millisecondsSinceEpoch ~/ 1000);
   }
 }
 

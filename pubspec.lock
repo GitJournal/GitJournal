@@ -909,12 +909,12 @@ packages:
     source: hosted
     version: "3.1.1"
   in_app_purchase_android:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: in_app_purchase_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.3"
+    version: "0.2.3+9"
   in_app_purchase_platform_interface:
     dependency: transitive
     description:
@@ -956,7 +956,7 @@ packages:
       name: json_annotation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.5.0"
+    version: "4.7.0"
   junitreport:
     dependency: "direct dev"
     description:

@@ -499,12 +499,6 @@
     },
     "purchaseScreenThanksTitle": "Thank You",
     "purchaseScreenThanksSubtitle": "You're awesome for supporting GitJournal",
-    "purchaseScreenExpired": "Subscription Expired on {date}",
-    "@purchaseScreenExpired": {
-        "placeholders": {
-            "date": {}
-        }
-    },
     "purchaseScreenUnknown": "Unknown",
     "onBoardingSkip": "Skip",
     "onBoardingNext": "Next",

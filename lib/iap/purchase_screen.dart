@@ -13,16 +13,7 @@ import 'package:gitjournal/iap/purchase_widget.dart';
 import 'package:gitjournal/iap/restore_purchase_button.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/screens/feature_timeline_screen.dart';
 import 'package:gitjournal/widgets/scroll_view_without_animation.dart';
-
-Set<String> _generateMonthlySkus() {
-  var list = <String>{};
-  for (var i = 0; i <= 25; i++) {
-    var _ = list.add("sku_monthly_min$i");
-  }
-  return list;
-}
 
 Set<String> _generateYearlySkus() {
   var list = <String>{};
@@ -40,8 +31,6 @@ class PurchaseScreen extends StatefulWidget {
 }
 
 class _PurchaseScreenState extends State<PurchaseScreen> {
-  String _minYearlyPurchase = "";
-
   @override
   void initState() {
     _fillMinYearPurchase();
@@ -61,10 +50,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
     if (!mounted) return;
     if (response.productDetails.isEmpty) return;
-
-    setState(() {
-      _minYearlyPurchase = response.productDetails.first.price;
-    });
   }
 
   @override
@@ -91,38 +76,17 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           ),
         ),
         const SizedBox(height: 32.0),
-        PurchaseCards(
+        const PurchaseCards(
           children: [
-            const SizedBox(width: 16.0),
-            const YearlyPurchaseWidget(),
-            const SizedBox(width: 16.0),
-            MonthlyRentalWidget(minYearlyPurchase: _minYearlyPurchase),
-            const SizedBox(width: 16.0),
+            SizedBox(width: 16.0),
+            YearlyPurchaseWidget(),
+            SizedBox(width: 16.0),
           ],
         ),
         const SizedBox(height: 32.0),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-          child: Wrap(
-            children: [
-              const RestorePurchaseButton(),
-              OutlinedButton(
-                child: Text(
-                  context.loc.featureTimelineTitle,
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
-                onPressed: () {
-                  var route = MaterialPageRoute(
-                    builder: (context) => const FeatureTimelineScreen(),
-                    settings: const RouteSettings(name: '/featureTimeline'),
-                  );
-                  var _ = Navigator.push(context, route);
-                },
-              ),
-            ],
-            alignment: WrapAlignment.spaceEvenly,
-            direction: Axis.horizontal,
-          ),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+          child: RestorePurchaseButton(),
         ),
       ],
       mainAxisAlignment: MainAxisAlignment.start,
@@ -142,44 +106,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   Future<bool> _onWillPop() async {
     logEvent(Event.PurchaseScreenClose);
     return true;
-  }
-}
-
-class MonthlyRentalWidget extends StatelessWidget {
-  final String minYearlyPurchase;
-
-  const MonthlyRentalWidget({
-    super.key,
-    required this.minYearlyPurchase,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    var textTheme = Theme.of(context).textTheme;
-
-    return PurchaseCard(
-      child: Column(
-        children: [
-          Text(
-            context.loc.purchaseScreenMonthlyTitle,
-            style: textTheme.headline5,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 32.0),
-          PurchaseWidget(
-            skus: _generateMonthlySkus(),
-            defaultSku: "sku_monthly_min3",
-            timePeriod: "Month",
-            isSubscription: true,
-          ),
-          const SizedBox(height: 32.0),
-          Text(
-            context.loc.purchaseScreenMonthlyDesc(minYearlyPurchase),
-          ),
-        ],
-        mainAxisAlignment: MainAxisAlignment.start,
-      ),
-    );
   }
 }
 

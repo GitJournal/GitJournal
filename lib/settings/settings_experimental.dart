@@ -167,7 +167,7 @@ class _PasswordForm extends StatelessWidget {
 
           var appConfig = AppConfig.instance;
           appConfig.validateProMode = false;
-          appConfig.proExpirationDate = DateTime(2050, 01, 01);
+          appConfig.proMode = true;
           appConfig.save();
         },
       ),

@@ -18,7 +18,6 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 typedef PurchaseCallback = void Function(String, SubscriptionStatus?);
 
 class PurchaseManager {
-  late InAppPurchase con;
   late StreamSubscription<List<PurchaseDetails>> _subscription;
   final List<PurchaseCallback> _callbacks = [];
 
@@ -31,9 +30,8 @@ class PurchaseManager {
     }
 
     _instance = PurchaseManager();
-    _instance!.con = InAppPurchase.instance;
 
-    final bool available = await _instance!.con.isAvailable();
+    final bool available = await InAppPurchase.instance.isAvailable();
     if (!available) {
       error = "Store cannot be reached";
       _instance = null;
@@ -41,15 +39,15 @@ class PurchaseManager {
     }
 
     // Start listening for changes
-    var i = _instance!;
-    final purchaseUpdates = i.con.purchaseStream;
-    i._subscription = purchaseUpdates.listen(i._listenToPurchaseUpdated);
+    _instance!._subscription = InAppPurchase.instance.purchaseStream.listen(
+      _instance!._listenToPurchaseUpdated,
+    );
 
     return _instance;
   }
 
   void destroy() {
-    _instance!._subscription.cancel();
+    _instance?._subscription.cancel();
   }
 
   Future<void> _listenToPurchaseUpdated(
@@ -63,34 +61,42 @@ class PurchaseManager {
     Log.i(
         "PurchaseDetailsUpdated: {productID: ${purchaseDetails.productID}, purchaseID: ${purchaseDetails.purchaseID}, status: ${purchaseDetails.status}");
 
-    if (purchaseDetails.status == PurchaseStatus.pending) {
-      Log.i("Pending - ${purchaseDetails.productID}");
-      return;
+    switch (purchaseDetails.status) {
+      case PurchaseStatus.pending:
+        Log.i("Pending - ${purchaseDetails.productID}");
+        break;
+
+      case PurchaseStatus.error:
+        _handleIAPError(purchaseDetails.error!);
+        break;
+
+      case PurchaseStatus.purchased:
+      case PurchaseStatus.restored:
+        Log.i("Verifying purchase sub");
+        try {
+          var subStatus = await verifyPurchase(purchaseDetails);
+          if (subStatus.isActive) {
+            _deliverProduct(subStatus);
+          } else {
+            // FIXME: This should be translated!
+            _handleError("Purchase Failed");
+            return;
+          }
+        } catch (err) {
+          _handleError(err.toString());
+        }
+        break;
+
+      case PurchaseStatus.canceled:
+        _handleError("Purchase Canceled");
+        break;
     }
 
-    if (purchaseDetails.status == PurchaseStatus.error) {
-      _handleIAPError(purchaseDetails.error!);
-      return;
-    } else if (purchaseDetails.status == PurchaseStatus.purchased) {
-      Log.i("Verifying purchase sub");
-      try {
-        var subStatus = await verifyPurchase(purchaseDetails);
-        if (subStatus.isActive) {
-          _deliverProduct(subStatus);
-        } else {
-          // FIXME: This should be translated!
-          _handleError("Purchase Failed");
-          return;
-        }
-      } catch (err) {
-        _handleError(err.toString());
-      }
-    }
     if (purchaseDetails.pendingCompletePurchase) {
       Log.i("Pending Complete Purchase - ${purchaseDetails.productID}");
 
       try {
-        var _ = await InAppPurchase.instance.completePurchase(purchaseDetails);
+        await InAppPurchase.instance.completePurchase(purchaseDetails);
       } catch (e, stackTrace) {
         logException(e, stackTrace);
       }
@@ -115,20 +121,22 @@ class PurchaseManager {
 
   void _deliverProduct(SubscriptionStatus status) {
     var appConfig = AppConfig.instance;
-    appConfig.proExpirationDate = status.expiryDate;
+    appConfig.proMode = true;
     appConfig.save();
 
     Log.i("Calling Purchase Completed Callbacks: ${_callbacks.length}");
     for (var callback in _callbacks) {
       callback("", status);
     }
+
+    // FIXME: We need to restart the app?
   }
 
   /// Returns the ProductDetails sorted by price
   Future<ProductDetailsResponse> queryProductDetails(Set<String> skus) async {
     // Cache this response?
     // FIXME: What if the sotre cannot be reached?
-    var response = await _instance!.con.queryProductDetails(skus);
+    var response = await InAppPurchase.instance.queryProductDetails(skus);
     response.productDetails.sort((a, b) {
       var pa = PaymentInfo.fromProductDetail(a);
       var pb = PaymentInfo.fromProductDetail(b);
