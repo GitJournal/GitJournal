@@ -5,14 +5,12 @@
  */
 
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:universal_io/io.dart';
-
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/utils/utils.dart';
+import 'package:universal_io/io.dart';
 
 Future<void> createBugReport(BuildContext context) async {
   var platform = Platform.operatingSystem;
@@ -23,11 +21,6 @@ Future<void> createBugReport(BuildContext context) async {
   body += "Version: $versionText\n";
   body += "Platform: $platform\n";
   body += "isPro: $isPro\n";
-
-  var exp = AppConfig.instance.proExpirationDate;
-  if (exp != null) {
-    body += "expiryDate: $exp";
-  }
 
   final Email email = Email(
     body: body,
@@ -55,11 +48,6 @@ Future<void> createFeedback(BuildContext context) async {
   body += "Version: $versionText\n";
   body += "Platform: $platform\n";
   body += "isPro: $isPro\n";
-
-  var exp = AppConfig.instance.proExpirationDate;
-  if (exp != null) {
-    body += "expiryDate: $exp";
-  }
 
   final Email email = Email(
     body: body,

@@ -46,12 +46,6 @@ class AppConfig extends ChangeNotifier {
 
   var experimentalHistory = false;
 
-  bool paidForFeature(Feature feature) {
-    if (Features.alwaysPro) return true;
-    if (proExpirationDate == null) return false;
-    return feature.date.isBefore(proExpirationDate!);
-  }
-
   void load(SharedPreferences pref) {
     onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
 

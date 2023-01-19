@@ -5,13 +5,11 @@
  */
 
 import 'package:flutter/widgets.dart';
-
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_tex_js/flutter_tex_js.dart';
+import 'package:gitjournal/widgets/pro_overlay.dart';
 import 'package:markdown/markdown.dart' as md;
 
-import 'package:gitjournal/features.dart';
-import 'package:gitjournal/widgets/pro_overlay.dart';
 import '../parsers/katex.dart';
 
 class KatexBuilder extends MarkdownElementBuilder {
@@ -23,7 +21,6 @@ class KatexBuilder extends MarkdownElementBuilder {
   Widget? visitElementAfter(md.Element element, TextStyle? style) {
     var text = element.textContent;
     return ProOverlay(
-      feature: Feature.inlineLatex,
       child: TexImage(text, color: style?.color, fontSize: style?.fontSize),
     );
   }

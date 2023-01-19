@@ -8,7 +8,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart' as foundation;
-import 'package:gitjournal/features.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/utils/result.dart';
@@ -21,7 +20,7 @@ class InAppPurchases {
     confirmPendingPurchases();
 
     var appConfig = AppConfig.instance;
-    if (Features.alwaysPro || !appConfig.validateProMode) {
+    if (!appConfig.validateProMode) {
       return;
     }
 

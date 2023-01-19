@@ -9,7 +9,6 @@ import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/editors/common_types.dart';
-import 'package:gitjournal/features.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_storage.dart';
@@ -66,7 +65,6 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
       ),
       SettingsHeader(context.loc.settingsEditorsJournalEditor),
       ProOverlay(
-        feature: Feature.journalEditorDefaultFolder,
         child: ListTile(
           title: Text(context.loc.settingsEditorsDefaultFolder),
           subtitle: Text(defaultNewFolder),
@@ -84,9 +82,8 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
         ),
       ),
       ProOverlay(
-        feature: Feature.singleJournalEntry,
         child: SwitchListTile(
-          title: Text(context.loc.featureSingleJournalEntry),
+          title: Text(context.loc.singleJournalEntry),
           value: settings.journalEditorSingleNote,
           onChanged: (bool newVal) {
             settings.journalEditorSingleNote = newVal;
@@ -96,7 +93,6 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
         ),
       ),
       ProOverlay(
-        feature: Feature.singleJournalEntry,
         child: ListPreference(
           title: context.loc.settingsNoteNewNoteFileName,
           currentOption:

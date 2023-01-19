@@ -12,7 +12,6 @@ import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/markdown/md_yaml_note_serializer.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/views/inline_tags_view.dart';
-import 'package:gitjournal/features.dart';
 import 'package:gitjournal/folder_views/folder_view.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
@@ -65,10 +64,7 @@ class TagListingScreen extends StatelessWidget {
         leading: GJAppBarMenuButton(),
       ),
       body: Scrollbar(
-        child: ProOverlay(
-          feature: Feature.tags,
-          child: body,
-        ),
+        child: ProOverlay(child: body),
       ),
       drawer: AppDrawer(),
     );

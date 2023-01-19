@@ -16,7 +16,6 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
-import 'package:gitjournal/features.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/settings.dart';
@@ -225,7 +224,6 @@ class _NoteMetadataSettingsScreenState
           },
         ),
         ProOverlay(
-          feature: Feature.customMetaData,
           child: CustomMetDataTile(
             value: settings.customMetaData,
             onChange: (String newVal) {

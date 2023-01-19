@@ -11,7 +11,6 @@ import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/views/note_links_view.dart';
-import 'package:gitjournal/features.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
@@ -113,7 +112,7 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
         child: c,
       ),
     );
-    return ProOverlay(feature: Feature.backlinks, child: child);
+    return ProOverlay(child: child);
   }
 }
 

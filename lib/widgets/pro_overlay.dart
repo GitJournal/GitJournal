@@ -5,28 +5,15 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:gitjournal/analytics/analytics.dart';
-import 'package:gitjournal/features.dart';
 import 'package:gitjournal/l10n.dart';
-import 'package:gitjournal/settings/app_config.dart';
-import 'package:provider/provider.dart';
 
 class ProOverlay extends StatelessWidget {
   final Widget child;
-  final Feature feature;
 
-  ProOverlay({required this.child, required this.feature}) {
-    assert(feature.pro == true);
-  }
+  const ProOverlay({required this.child});
 
   @override
   Widget build(BuildContext context) {
-    var appConfig = Provider.of<AppConfig>(context);
-
-    if (appConfig.paidForFeature(feature)) {
-      return child;
-    }
-
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       child: Banner(
@@ -37,11 +24,6 @@ class ProOverlay extends StatelessWidget {
       ),
       onTap: () {
         var _ = Navigator.pushNamed(context, "/purchase");
-
-        logEvent(
-          Event.PurchaseScreenOpen,
-          parameters: {"from": feature.featureName},
-        );
       },
     );
   }

@@ -7,10 +7,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-
 import 'package:org_flutter/org_flutter.dart';
 
-import 'package:gitjournal/features.dart';
 import 'controllers/rich_text_controller.dart';
 
 class OrgTextController extends TextEditingController {
@@ -137,13 +135,6 @@ TextEditingController buildOrgTextController({
   required ThemeData theme,
   int currentPos = -1,
 }) {
-  if (!Features.fancyOrgEditor) {
-    return buildController(
-      text: text,
-      highlightText: highlightText,
-      theme: theme,
-    );
-  }
   var color = theme.textSelectionTheme.selectionColor!;
   var currentColor = theme.brightness != Brightness.light
       ? color.lighten(0.2)

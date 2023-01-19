@@ -9,7 +9,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:git_setup/screens.dart';
 import 'package:gitjournal/account/login_screen.dart';
 import 'package:gitjournal/analytics/analytics.dart';
-import 'package:gitjournal/features.dart';
 import 'package:gitjournal/history/history_screen.dart';
 import 'package:gitjournal/iap/purchase_screen.dart';
 import 'package:gitjournal/l10n.dart';
@@ -78,7 +77,6 @@ class _AppDrawerState extends State<AppDrawer>
         const SizedBox(height: 8),
         for (var id in repoIds) RepoTile(id),
         ProOverlay(
-          feature: Feature.multiRepos,
           child: _buildDrawerTile(
             context,
             icon: Icons.add,

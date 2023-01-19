@@ -6,7 +6,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:gitjournal/features.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_bottom_menu_bar.dart';
@@ -89,7 +88,6 @@ class SettingsUIScreen extends StatelessWidget {
           },
         ),
         ProOverlay(
-          feature: Feature.customizeHomeScreen,
           child: ListPreference(
             title: context.loc.settingsDisplayHomeScreen,
             currentOption: settings.homeScreen.toPublicString(context),
@@ -104,7 +102,6 @@ class SettingsUIScreen extends StatelessWidget {
           ),
         ),
         ProOverlay(
-          feature: Feature.configureBottomMenuBar,
           child: ListTile(
             title: Text(context.loc.settingsBottomMenuBarTitle),
             subtitle: Text(context.loc.settingsBottomMenuBarSubtitle),

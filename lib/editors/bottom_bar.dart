@@ -11,7 +11,6 @@ import 'package:function_types/function_types.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/features.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/pro_overlay.dart';
@@ -238,7 +237,6 @@ class BottomMenuSheet extends StatelessWidget {
         ),
         if (metaDataEditable)
           ProOverlay(
-            feature: Feature.tags,
             child: ListTile(
               leading: const FaIcon(FontAwesomeIcons.tag),
               title: Text(context.loc.editorsCommonTags),
@@ -262,7 +260,6 @@ class BottomMenuSheet extends StatelessWidget {
           },
         ),
         ProOverlay(
-          feature: Feature.zenMode,
           child: ListTile(
             leading: const FaIcon(FontAwesomeIcons.peace),
             title: Text(zenModeEnabled
