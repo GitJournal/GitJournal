@@ -265,11 +265,8 @@ class Note implements File {
       case NoteFileNameFormat.Zettelkasten:
         return toZettleDateTime(date);
       case NoteFileNameFormat.KebabCase:
-        if (title != null) {
-          return buildKebabTitleFileName(parent.fullFolderPath, title, ext);
-        } else {
-          return toSimpleDateTime(date);
-        }
+        title ??= toSimpleDateTime(date);
+        return buildKebabTitleFileName(parent.fullFolderPath, title, ext);
     }
 
     return date.toString();
