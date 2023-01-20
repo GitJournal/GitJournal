@@ -126,7 +126,7 @@ class _FolderViewState extends State<FolderView> {
     if (_sortedNotesFolder == null) {
       return Container();
     }
-    var title = widget.notesFolder.publicName;
+    var title = widget.notesFolder.publicName(context);
     if (inSelectionMode) {
       title = NumberFormat.compact().format(_selectedNotes.length);
     }

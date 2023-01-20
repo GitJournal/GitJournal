@@ -116,7 +116,7 @@ class FolderMiniTileState extends State<FolderMiniTile> {
             color: Theme.of(context).colorScheme.secondary,
           ),
         ),
-        title: Text(folder.publicName),
+        title: Text(folder.publicName(context)),
         trailing: trailling,
       ),
     );

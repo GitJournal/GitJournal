@@ -106,7 +106,7 @@ class EditorBottomBar extends StatelessWidget {
             TextButton.icon(
               icon: const Icon(Icons.folder),
               label: Text(
-                parentFolder.publicName,
+                parentFolder.publicName(context),
                 style: theme.textTheme.bodyText2,
               ),
               onPressed: () {

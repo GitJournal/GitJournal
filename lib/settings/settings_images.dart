@@ -54,7 +54,7 @@ class SettingsImagesScreenState extends State<SettingsImagesScreen> {
       if (folderConfig.imageLocationSpec != '.')
         ListTile(
           title: Text(customFolder),
-          subtitle: Text(folder != null ? folder.publicName : "/"),
+          subtitle: Text(folder != null ? folder.publicName(context) : "/"),
           onTap: () async {
             var destFolder = await showDialog<NotesFolderFS>(
               context: context,

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/l10n.dart';
 

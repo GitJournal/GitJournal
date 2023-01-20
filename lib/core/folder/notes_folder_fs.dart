@@ -5,11 +5,13 @@
  */
 
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/file/unopened_files.dart';
 import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/core/views/inline_tags_view.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/utils/result.dart';
 import 'package:path/path.dart' as p;
@@ -528,7 +530,9 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
   }
 
   @override
-  String get publicName => folderPath;
+  String publicName(BuildContext context) {
+    return folderPath.isEmpty ? context.loc.rootFolder : folderPath;
+  }
 
   Iterable<Note> getAllNotes() sync* {
     for (var f in _files) {

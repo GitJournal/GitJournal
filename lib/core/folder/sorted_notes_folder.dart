@@ -6,8 +6,10 @@
 
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:gitjournal/core/folder/sorting_mode.dart';
 import 'package:gitjournal/logger/logger.dart';
+
 import '../note.dart';
 import 'notes_folder.dart';
 import 'notes_folder_notifier.dart';
@@ -175,7 +177,7 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
   String get name => folder.name;
 
   @override
-  String get publicName => folder.publicName;
+  String publicName(BuildContext context) => folder.publicName(context);
 
   @override
   NotesFolder? get fsFolder => folder.fsFolder;

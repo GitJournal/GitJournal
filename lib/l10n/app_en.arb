@@ -377,8 +377,8 @@
       "count": {}
     }
   },
-  "widgetsNoteDeleteDialogYes": "true",
-  "widgetsNoteDeleteDialogNo": "false",
+  "widgetsNoteDeleteDialogYes": "Delete",
+  "widgetsNoteDeleteDialogNo": "No",
   "widgetsNoteEditorRenameFile": "Rename File",
   "widgetsNoteEditorFileName": "Filename",
   "widgetsNoteEditorAddType": "Adding '{ext}' to supported file types",

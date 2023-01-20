@@ -134,7 +134,7 @@ class FolderTileState extends State<FolderTile> {
     var publicName = folder.parent == null
         ? context.loc.rootFolder
         : folder.folderName.isEmpty
-            ? folder.publicName
+            ? folder.publicName(context)
             : folder.folderName;
 
     var selected = widget.selectedFolder == widget.folder;

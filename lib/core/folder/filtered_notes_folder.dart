@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:synchronized/synchronized.dart';
-
+import 'package:flutter/widgets.dart';
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_notifier.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:synchronized/synchronized.dart';
 
 typedef NotesFilter = Future<bool> Function(Note note);
 
@@ -121,7 +121,7 @@ class FilteredNotesFolder with NotesFolderNotifier implements NotesFolder {
   String get name => title;
 
   @override
-  String get publicName => title;
+  String publicName(BuildContext _) => title;
 
   @override
   NotesFolderConfig get config => folder.config;
