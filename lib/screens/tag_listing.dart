@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gitjournal/core/folder/flattened_filtered_notes_folder.dart';
@@ -32,11 +33,11 @@ class TagListingScreen extends StatelessWidget {
 
     return FutureBuilderWithProgress(future: () async {
       var allTags = await rootFolder.getNoteTagsRecursively(inlineTagsView);
-      return _buildWithTags(context, allTags);
+      return _buildWithTags(context, SplayTreeSet.from(allTags));
     }());
   }
 
-  Widget _buildWithTags(BuildContext context, ISet<String> allTags) {
+  Widget _buildWithTags(BuildContext context, Iterable<String> allTags) {
     Widget body;
     if (allTags.isNotEmpty) {
       body = ListView(
