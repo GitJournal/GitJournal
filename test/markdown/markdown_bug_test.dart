@@ -35,24 +35,6 @@ class _WikiLinkSyntax extends md.InlineSyntax {
   }
 }
 
-/// Parse [task list items](https://github.github.com/gfm/#task-list-items-extension-).
-class _TaskListSyntax extends md.InlineSyntax {
-  // FIXME: Waiting for dart-lang/markdown#269 to land
-  static const String _pattern = r'^ *\[([ xX])\] +';
-
-  _TaskListSyntax() : super(_pattern);
-
-  @override
-  bool onMatch(md.InlineParser parser, Match match) {
-    md.Element el = md.Element.withTag('input');
-    el.attributes['type'] = 'checkbox';
-    el.attributes['disabled'] = 'true';
-    el.attributes['checked'] = '${match[1]!.trim().isNotEmpty}';
-    parser.addNode(el);
-    return true;
-  }
-}
-
 void main() {
   setUpAll(gjSetupAllTests);
 
@@ -66,15 +48,15 @@ void main() {
     var doc = md.Document(
       encodeHtml: false,
       extensionSet: md.ExtensionSet.gitHubFlavored,
-      inlineSyntaxes: [_WikiLinkSyntax(), _TaskListSyntax()],
+      inlineSyntaxes: [_WikiLinkSyntax()],
     );
     var nodes = doc.parseLines(lines);
     var html = md.renderToHtml(nodes);
 
     var expectedHtml =
         """<p><a type="wiki" href="[[GitJournal]]" term="GitJournal">GitJournal</a> should match.</p>
-<ul>
-<li><input type="checkbox" disabled="true" checked="false"></input>task item</li>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox"></input>task item</li>
 </ul>""";
 
     expect(html, expectedHtml);

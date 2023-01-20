@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'package:gitjournal/markdown/markdown_renderer.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:test/test.dart';
 
-import 'package:gitjournal/markdown/markdown_renderer.dart';
 import '../lib.dart';
 
 void main() {
@@ -26,8 +26,8 @@ void main() {
 
     var expected =
         """<p><a type="wiki" href="[[GitJournal]]" term="GitJournal">GitJournal</a> should match.</p>
-<ul>
-<li><input type="checkbox" disabled="true" checked="false"></input>task item</li>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox"></input>task item</li>
 </ul>""";
 
     expect(md.renderToHtml(nodes), expected);
