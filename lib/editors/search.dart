@@ -95,11 +95,11 @@ class _EditorAppSearchBarState extends State<EditorAppSearchBar> {
       actions: [
         if (_searchInfo.isNotEmpty)
           TextButton(
+            onPressed: null,
             child: Text(
               '${_searchInfo.currentMatch.toInt() + 1}/${_searchInfo.numMatches}',
               style: theme.textTheme.subtitle1,
             ),
-            onPressed: null,
           ),
         // Disable these when not possible
         IconButton(

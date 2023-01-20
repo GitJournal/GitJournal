@@ -77,6 +77,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
           ),
           Expanded(
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 DotsIndicator(
                   dotsCount: pages.length,
@@ -86,7 +87,6 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                   ),
                 ),
               ],
-              mainAxisAlignment: MainAxisAlignment.center,
             ),
           ),
           OnBoardingBottomButton(
@@ -98,12 +98,12 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       );
 
       bottomBar = Container(
+        color: Colors.grey[200],
         child: SizedBox(
           width: double.infinity,
           height: _bottomBarHeight,
           child: row,
         ),
-        color: Colors.grey[200],
       );
     } else {
       bottomBar = SizedBox(
@@ -111,16 +111,16 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         height: _bottomBarHeight,
         child: ElevatedButton(
           key: const ValueKey("GetStarted"),
-          child: Text(
-            context.loc.onBoardingGetStarted,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.button,
-          ),
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(
                 Theme.of(context).primaryColor),
           ),
           onPressed: _finish,
+          child: Text(
+            context.loc.onBoardingGetStarted,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.button,
+          ),
         ),
       );
     }
@@ -129,8 +129,8 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        child: pageView,
         padding: const EdgeInsets.all(16.0),
+        child: pageView,
       ),
       bottomNavigationBar: AnimatedSwitcher(
         duration: 300.milliseconds,
@@ -169,13 +169,13 @@ class OnBoardingBottomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       key: key,
+      //color: Colors.grey[200],
+      onPressed: onPressed,
       child: Text(
         text,
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.button,
       ),
-      //color: Colors.grey[200],
-      onPressed: onPressed,
     );
   }
 }
@@ -203,6 +203,8 @@ class OnBoardingPage1 extends StatelessWidget {
     );
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Center(child: header),
         const SizedBox(height: 64.0),
@@ -213,8 +215,6 @@ class OnBoardingPage1 extends StatelessWidget {
           maxLines: 2,
         ),
       ],
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
     );
   }
 }
@@ -237,6 +237,8 @@ class OnBoardingPage2 extends StatelessWidget {
     );
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Center(child: header),
         const SizedBox(height: 64.0),
@@ -247,8 +249,6 @@ class OnBoardingPage2 extends StatelessWidget {
           maxLines: 3,
         ),
       ],
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
     );
   }
 }
@@ -271,6 +271,8 @@ class OnBoardingPage3 extends StatelessWidget {
     );
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Center(child: header),
         const SizedBox(height: 64.0),
@@ -281,8 +283,6 @@ class OnBoardingPage3 extends StatelessWidget {
           maxLines: 2,
         ),
       ],
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
     );
   }
 }

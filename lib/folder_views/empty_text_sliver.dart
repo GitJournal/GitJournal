@@ -18,6 +18,8 @@ class EmptyTextSliver extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverFillRemaining(
+      hasScrollBody: false,
+      fillOverscroll: false,
       child: Center(
         child: Text(
           emptyText,
@@ -29,8 +31,6 @@ class EmptyTextSliver extends StatelessWidget {
           ),
         ),
       ),
-      hasScrollBody: false,
-      fillOverscroll: false,
     );
   }
 }

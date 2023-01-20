@@ -4,12 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:flutter_test/flutter_test.dart' as ft;
-import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-import 'package:test/test.dart';
+// ignore_for_file: depend_on_referenced_packages
 
+import 'package:flutter_test/flutter_test.dart' as ft;
 import 'package:gitjournal/logger/fakes/fake_path_provider.dart';
 import 'package:gitjournal/logger/logger.dart';
+import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
+import 'package:test/test.dart';
 
 void main() {
   setUp(() async {

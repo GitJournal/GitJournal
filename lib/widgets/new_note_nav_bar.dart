@@ -24,6 +24,8 @@ class NewNoteNavBar extends StatelessWidget {
       color: Theme.of(context).bottomAppBarColor,
       shape: const CircularNotchedRectangle(),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(4.0),
@@ -47,8 +49,6 @@ class NewNoteNavBar extends StatelessWidget {
             ),
           ),
         ],
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
       ),
     );
   }

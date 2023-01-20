@@ -90,18 +90,19 @@ class EditorBottomBar extends StatelessWidget {
       child: SafeArea(
         top: false,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             _Visibility(
-              child: addIcon,
               visible: allowEdits,
+              child: addIcon,
             ),
             const Spacer(),
             _Visibility(
+              visible: undoAllowed,
               child: IconButton(
                 icon: const Icon(Icons.undo),
                 onPressed: undoAllowed ? onUndoSelected : null,
               ),
-              visible: undoAllowed,
             ),
             TextButton.icon(
               icon: const Icon(Icons.folder),
@@ -115,17 +116,16 @@ class EditorBottomBar extends StatelessWidget {
               },
             ),
             _Visibility(
+              visible: redoAllowed,
               child: IconButton(
                 icon: const Icon(Icons.redo),
                 onPressed: redoAllowed ? onRedoSelected : null,
               ),
-              visible: redoAllowed,
             ),
             const Spacer(),
             // Remove Material when https://github.com/flutter/flutter/issues/30658 is fixed
             Material(child: menuIcon),
           ],
-          mainAxisAlignment: MainAxisAlignment.center,
         ),
       ),
     );
@@ -295,12 +295,13 @@ class _Visibility extends StatelessWidget {
   Widget build(BuildContext context) {
     return Visibility(
       // Remove Material when https://github.com/flutter/flutter/issues/30658 is fixed
-      child: Material(child: child),
       visible: visible,
       maintainSize: true,
       maintainAnimation: true,
       maintainState: true,
       maintainInteractivity: false,
+      // Remove Material when https://github.com/flutter/flutter/issues/30658 is fixed
+      child: Material(child: child),
     );
   }
 }

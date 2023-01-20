@@ -69,13 +69,7 @@ class ThemableImage extends StatelessWidget {
       image = SvgPicture(
           StringPicture(
               _transformSVG,
-              string +
-                  '<?theme '
-                      'themingMethod="$themingMethod" '
-                      'themingCondition="$themingCondition" '
-                      'colorCondition="$colorCondition" '
-                      'backgroundColor="$bg" '
-                      '?>'),
+              '$string<?theme themingMethod="$themingMethod" themingCondition="$themingCondition" colorCondition="$colorCondition" backgroundColor="$bg" ?>'),
           width: width,
           height: height);
     } else {

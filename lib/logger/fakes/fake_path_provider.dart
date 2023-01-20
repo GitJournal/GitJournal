@@ -5,6 +5,7 @@
  */
 
 // ignore_for_file: invalid_use_of_visible_for_testing_member
+// ignore_for_file: depend_on_referenced_packages
 
 import 'package:path/path.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';

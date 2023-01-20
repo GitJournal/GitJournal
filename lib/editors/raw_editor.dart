@@ -307,8 +307,8 @@ class _NoteEditorState extends State<_NoteEditor> {
         textFieldKey: _textFieldKey,
         textFieldFocusNode: _focusNode,
         textController: widget.textController,
-        child: textField,
         tags: allTags.toList(),
+        child: textField,
       );
     }
 

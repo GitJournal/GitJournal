@@ -39,10 +39,10 @@ class NoteViewer extends StatelessWidget {
         note.body,
         onLinkTap: handler.launchUrl,
         onLocalSectionLinkTap: (OrgSection section) {
-          Log.d("local section link: " + section.toString());
+          Log.d("local section link: $section");
         },
         onSectionLongPress: (OrgSection section) {
-          Log.d('local section long-press: ' + section.headline.rawTitle!);
+          Log.d('local section long-press: ${section.headline.rawTitle!}');
         },
       );
     }
@@ -50,6 +50,7 @@ class NoteViewer extends StatelessWidget {
     final rootFolder = Provider.of<NotesFolderFS>(context);
     var view = EditorScrollView(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           NoteTitleHeader(note.title ?? ""),
           Padding(
@@ -69,7 +70,6 @@ class NoteViewer extends StatelessWidget {
           ),
           // _buildFooter(context),
         ],
-        crossAxisAlignment: CrossAxisAlignment.start,
       ),
     );
 

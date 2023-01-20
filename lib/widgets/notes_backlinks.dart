@@ -81,6 +81,8 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
     var num = _linkedNotes.length;
     var textTheme = Theme.of(context).textTheme;
     var c = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
           context.loc.widgetsBacklinksTitle(num),
@@ -96,8 +98,6 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
             },
           ),
       ],
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
     );
 
     var backgroundColor = Colors.grey[200];
@@ -141,13 +141,13 @@ class NoteSnippet extends StatelessWidget {
           color: theme.scaffoldBackgroundColor,
           width: MediaQuery.of(context).size.width,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(title, style: textTheme.bodyText1),
               const SizedBox(height: 8.0),
               _buildSummary(context),
             ],
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
           ),
         ),
       ),

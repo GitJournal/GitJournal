@@ -49,12 +49,12 @@ class PurchaseButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 16.0),
       child: ElevatedButton(
-        child: Text(text, textAlign: TextAlign.center),
         onPressed: product != null ? () => _reportExceptions(context) : null,
         style: ButtonStyle(
           backgroundColor:
               MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
         ),
+        child: Text(text, textAlign: TextAlign.center),
       ),
     );
   }
@@ -204,8 +204,10 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
     );
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         Row(
+          mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             _PurchaseSliderButton(
               icon: const Icon(Icons.arrow_left),
@@ -225,7 +227,6 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
               },
             ),
           ],
-          mainAxisSize: MainAxisSize.max,
         ),
         const SizedBox(height: 32.0),
         PurchaseButton(
@@ -240,7 +241,6 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
           purchaseCompleted: _purchaseCompleted,
         ),
       ],
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
     );
   }
 

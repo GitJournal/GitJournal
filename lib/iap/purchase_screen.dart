@@ -55,18 +55,20 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
+      onWillPop: _onWillPop,
       child: Scaffold(
         appBar: AppBar(
           title: Text(context.loc.purchaseScreenTitle),
         ),
         body: buildBody(context),
       ),
-      onWillPop: _onWillPop,
     );
   }
 
   Widget buildBody(BuildContext context) {
     Widget w = Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
@@ -89,8 +91,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           child: RestorePurchaseButton(),
         ),
       ],
-      mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
     );
 
     return CustomScrollView(
@@ -120,6 +120,7 @@ class YearlyPurchaseWidget extends StatelessWidget {
 
     return PurchaseCard(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
             context.loc.purchaseScreenOneTimeTitle,
@@ -135,7 +136,6 @@ class YearlyPurchaseWidget extends StatelessWidget {
           const SizedBox(height: 32.0),
           Text(context.loc.purchaseScreenOneTimeDesc),
         ],
-        mainAxisAlignment: MainAxisAlignment.start,
       ),
     );
   }
@@ -176,8 +176,8 @@ class PurchaseCards extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: IntrinsicHeight(
         child: Row(
-          children: children,
           mainAxisSize: MainAxisSize.min,
+          children: children,
         ),
       ),
     );

@@ -159,8 +159,7 @@ class _FolderListViewState extends State<FolderListView> {
 
     if (settings.swipeToDelete) {
       viewItem = IconDismissable(
-        key: ValueKey("FolderListView_" + note.filePath),
-        child: viewItem,
+        key: ValueKey("FolderListView_${note.filePath}"),
         backgroundColor: Colors.red[800]!,
         iconData: Icons.delete,
         onDismissed: (direction) {
@@ -174,11 +173,12 @@ class _FolderListViewState extends State<FolderListView> {
             ..removeCurrentSnackBar()
             ..showSnackBar(snackBar);
         },
+        child: viewItem,
       );
     }
 
     return SizeTransition(
-      key: ValueKey("FolderListView_tr_" + note.filePath),
+      key: ValueKey("FolderListView_tr_${note.filePath}"),
       axis: Axis.vertical,
       sizeFactor: animation,
       child: viewItem,

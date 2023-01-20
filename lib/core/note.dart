@@ -546,7 +546,7 @@ String ensureFileNameUnique(String parentDir, String name, String ext) {
   }
 
   for (var i = 1;; i++) {
-    var fileName = name + "_$i$ext";
+    var fileName = "${name}_$i$ext";
     var fullPath = p.join(parentDir, fileName);
     var file = io.File(fullPath);
     if (!file.existsSync()) {

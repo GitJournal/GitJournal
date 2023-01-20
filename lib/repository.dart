@@ -436,7 +436,7 @@ class GitJournalRepo with ChangeNotifier {
         return fail(r);
       }
 
-      Log.d("Created New Folder: " + newFolderPath);
+      Log.d("Created New Folder: $newFolderPath");
       parent.addFolder(newFolder);
 
       var result = await _gitRepo.addFolder(newFolder);
@@ -460,7 +460,7 @@ class GitJournalRepo with ChangeNotifier {
 
     await _gitOpLock.synchronized(() async {
       Log.d("Got removeFolder lock");
-      Log.d("Removing Folder: " + folder.folderPath);
+      Log.d("Removing Folder: ${folder.folderPath}");
 
       folder.parentFS!.removeFolder(folder);
       var result = await _gitRepo.removeFolder(folder);

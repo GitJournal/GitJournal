@@ -79,7 +79,7 @@ class OrgLinkHandler {
       //
       if (looksLikeUrl(link)) {
         // Remote link: Open in system handler.
-        log('url: ' + link);
+        log('url: $link');
 
         final uri = Uri.parse(link);
         if (await ul.canLaunchUrl(uri)) {

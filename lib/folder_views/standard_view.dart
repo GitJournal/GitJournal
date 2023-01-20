@@ -186,10 +186,10 @@ class StandardNoteListTile extends StatelessWidget {
     }
 
     var titleRow = Row(
-      children: <Widget>[Expanded(child: titleWidget), trailing],
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.baseline,
       textBaseline: TextBaseline.alphabetic,
+      children: <Widget>[Expanded(child: titleWidget), trailing],
     );
 
     ListTile tile;
@@ -197,7 +197,7 @@ class StandardNoteListTile extends StatelessWidget {
       var summary = <Widget>[
         const SizedBox(height: 8.0),
         HighlightedText(
-          text: noteSummary + '\n', // no minLines option
+          text: '$noteSummary\n', // no minLines option
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
           style: textTheme.bodyText2!,
@@ -210,8 +210,8 @@ class StandardNoteListTile extends StatelessWidget {
         isThreeLine: true,
         title: titleRow,
         subtitle: Column(
-          children: summary,
           crossAxisAlignment: CrossAxisAlignment.start,
+          children: summary,
         ),
         onTap: () => noteTapped(note),
         onLongPress: () => noteLongPressed(note),

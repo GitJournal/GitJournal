@@ -24,11 +24,11 @@ class _RestorePurchaseButtonState extends State<RestorePurchaseButton> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
+      onPressed: restored ? null : _restore,
       child: Text(
         context.loc.purchaseScreenRestore,
         style: Theme.of(context).textTheme.bodyText2,
       ),
-      onPressed: restored ? null : _restore,
     );
   }
 

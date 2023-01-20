@@ -90,10 +90,10 @@ class _DebugScreenState extends State<DebugScreen> {
             width: 1000.0,
             child: ListView(
               controller: _controller,
+              padding: const EdgeInsets.all(16.0),
               children: <Widget>[
                 ..._fetchLogWidgets(),
               ],
-              padding: const EdgeInsets.all(16.0),
             ),
           ),
         ),
@@ -167,7 +167,7 @@ class _DebugScreenState extends State<DebugScreen> {
 
     var dt = DateTime.fromMillisecondsSinceEpoch(msg.t);
     var timeStr = dt.toIso8601String().substring(11, 11 + 8);
-    var str = ' ' + msg.msg;
+    var str = ' ${msg.msg}';
 
     var props = <TextSpan>[];
     msg.props?.forEach((key, value) {
@@ -280,12 +280,12 @@ class _DebugScreenState extends State<DebugScreen> {
 
     var text = dt.toIso8601String().substring(0, 10);
     return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: SelectableText(
         text,
         style: textStyle,
         textAlign: TextAlign.center,
       ),
-      padding: const EdgeInsets.all(8.0),
     );
   }
 
@@ -296,6 +296,7 @@ class _DebugScreenState extends State<DebugScreen> {
     var dialog = AlertDialog(
       title: Text(context.loc.settingsDebugLevelsTitle),
       content: Column(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           FilterListTile(
               context.loc.settingsDebugLevelsError, 'e', filterLevel),
@@ -307,7 +308,6 @@ class _DebugScreenState extends State<DebugScreen> {
           FilterListTile(
               context.loc.settingsDebugLevelsVerbose, 'v', filterLevel),
         ],
-        mainAxisSize: MainAxisSize.min,
       ),
     );
     var l = await showDialog(context: context, builder: (context) => dialog);

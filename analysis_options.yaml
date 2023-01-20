@@ -33,6 +33,9 @@ linter:
     use_string_buffers: true
     avoid_void_async: true
     # unawaited_futures: true
+    no_leading_underscores_for_local_identifiers: false
+    library_private_types_in_public_api: false
+    use_build_context_synchronously: false
 
 dart_code_metrics:
   metrics-exclude:

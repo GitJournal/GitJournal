@@ -121,18 +121,18 @@ class JournalNoteListTile extends StatelessWidget {
     var timeColor = textTheme.bodyText2!.color!.withAlpha(100);
 
     var titleWidget = Row(
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
       children: <Widget>[
         Text(dateStr, style: textTheme.headline6),
         Text(time, style: textTheme.bodyText2!.copyWith(color: timeColor)),
       ],
-      crossAxisAlignment: CrossAxisAlignment.baseline,
-      textBaseline: TextBaseline.alphabetic,
     );
 
     var children = <Widget>[
       const SizedBox(height: 8.0),
       HighlightedText(
-        text: noteSummary + '\n', // no minLines option
+        text: '$noteSummary\n', // no minLines option
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
         style: textTheme.bodyText2!,
@@ -145,8 +145,8 @@ class JournalNoteListTile extends StatelessWidget {
       isThreeLine: true,
       title: titleWidget,
       subtitle: Column(
-        children: children,
         crossAxisAlignment: CrossAxisAlignment.start,
+        children: children,
       ),
       onTap: () => noteTapped(note),
       onLongPress: () => noteLongPressed(note),

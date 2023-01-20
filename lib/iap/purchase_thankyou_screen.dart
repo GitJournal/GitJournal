@@ -15,6 +15,7 @@ class PurchaseThankYouScreen extends StatelessWidget {
     var theme = Theme.of(context);
     var textTheme = theme.textTheme;
     Widget w = Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         Text(
           context.loc.purchaseScreenThanksTitle,
@@ -28,7 +29,6 @@ class PurchaseThankYouScreen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(64.0, 16.0, 64.0, 16.0),
           child: ElevatedButton(
-            child: const Text("Back"),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -36,16 +36,16 @@ class PurchaseThankYouScreen extends StatelessWidget {
               backgroundColor: MaterialStateProperty.all<Color>(
                   Theme.of(context).primaryColor),
             ),
+            child: const Text("Back"),
           ),
         ),
       ],
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
     );
 
     return Container(
-      child: SafeArea(child: w),
       color: theme.scaffoldBackgroundColor,
       padding: const EdgeInsets.all(16.0),
+      child: SafeArea(child: w),
     );
   }
 }

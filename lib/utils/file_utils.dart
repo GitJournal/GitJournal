@@ -9,7 +9,7 @@ import 'package:universal_io/io.dart' as io;
 
 Future<Result<void>> saveFileSafely(String filePath, List<int> bytes) {
   return catchAll(() async {
-    var newFilePath = filePath + '.new';
+    var newFilePath = '$filePath.new';
 
     var file = io.File(newFilePath);
     dynamic _;

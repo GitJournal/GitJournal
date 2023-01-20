@@ -63,6 +63,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     }
 
     var body = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         if (remoteHost.isNotEmpty)
           Text(
@@ -146,7 +147,6 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
           );
         }()),
       ],
-      crossAxisAlignment: CrossAxisAlignment.start,
     );
 
     return Scaffold(
@@ -206,10 +206,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
 
   void _generateSshKey(BuildContext context) {
     var keyType = context.read<GitConfig>().sshKeyType;
-    var comment = "GitJournal-" +
-        Platform.operatingSystem +
-        "-" +
-        DateTime.now().toIso8601String().substring(0, 10); // only the date
+    var comment = "GitJournal-${Platform.operatingSystem}-${DateTime.now().toIso8601String().substring(0, 10)}"; // only the date
 
     GitJournalKeygen()
         .generate(type: keyType, comment: comment)
@@ -220,7 +217,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
       config.sshPassword = sshKey.password;
       config.save();
 
-      Log.d("PublicKey: " + sshKey.publicKey);
+      Log.d("PublicKey: ${sshKey.publicKey}");
       _copyKeyToClipboard(context);
     });
   }
@@ -301,16 +298,16 @@ class Button extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        child: Text(
-          text,
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.button,
-        ),
         style: ButtonStyle(
           backgroundColor:
               MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
         ),
         onPressed: onPressed,
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.button,
+        ),
       ),
     );
   }
@@ -327,11 +324,11 @@ class RedButton extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        child: Text(text, textAlign: TextAlign.center),
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
         ),
         onPressed: onPressed,
+        child: Text(text, textAlign: TextAlign.center),
       ),
     );
   }

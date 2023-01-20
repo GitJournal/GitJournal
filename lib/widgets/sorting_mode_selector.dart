@@ -42,10 +42,10 @@ class _SortingModeSelectorState extends State<SortingModeSelector> {
       title: Text(context.loc.widgetsSortingOrderSelectorTitle),
       content: SingleChildScrollView(
         child: Column(
-          children: children,
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
+          children: children,
         ),
       ),
       actions: [

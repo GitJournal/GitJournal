@@ -419,6 +419,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
     return ListTile(
       dense: true,
       leading: Row(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           const SizedBox(
             height: 24.0,
@@ -435,7 +436,6 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
             ),
           ),
         ],
-        mainAxisSize: MainAxisSize.min,
       ),
       title: editor,
       trailing: IconButton(
@@ -459,6 +459,7 @@ class AddItemButton extends StatelessWidget {
     var tile = ListTile(
       dense: true,
       leading: Row(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           const SizedBox(height: 24.0, width: 24.0),
           const SizedBox(width: 8.0),
@@ -472,7 +473,6 @@ class AddItemButton extends StatelessWidget {
             ),
           ),
         ],
-        mainAxisSize: MainAxisSize.min,
       ),
       title: Text(context.loc.editorsChecklistAdd, style: style),
     );

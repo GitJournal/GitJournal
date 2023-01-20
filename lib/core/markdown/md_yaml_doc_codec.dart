@@ -22,7 +22,7 @@ class MarkdownYAMLCodec {
     if (str == emptyYamlHeaderStr) {
       return MdYamlDoc();
     }
-    if (str.startsWith(emptyYamlHeaderStr + "\n")) {
+    if (str.startsWith("$emptyYamlHeaderStr\n")) {
       var bodyBeginingPos = emptyYamlHeaderStr.length + 1;
       if (str[bodyBeginingPos] == '\n') {
         bodyBeginingPos += 1;
@@ -99,7 +99,7 @@ class MarkdownYAMLCodec {
 
   static String toYamlHeader(IMap<String, dynamic> data) {
     var yaml = toYAML(data.unlock);
-    return "---\n" + yaml + "---\n";
+    return "---\n$yaml---\n";
   }
 }
 

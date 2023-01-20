@@ -30,7 +30,7 @@ dependencies:
   dots_indicator: ^2.0.0
   email_validator: ^2.0.1
   equatable: ^2.0.0
-  fast_immutable_collections: ^7.1.2
+  fast_immutable_collections: ^8.1.1
   file_picker: ^4.0.2
   filesystem_picker: ^2.0.0-nullsafety.0
   fimber: ^0.6.1
@@ -97,6 +97,16 @@ dependencies:
   yaml: ^3.1.0
   yaml_serializer: ^0.0.12
   flutter_displaymode: ^0.4.1
+  fixnum: ^1.0.1
+  markdown: ^6.0.1
+  buffer: ^1.2.0
+  meta: ^1.8.0
+  path_provider: ^2.0.11
+  hive: ^2.2.3
+  tuple: ^2.0.1
+  crypto: ^3.0.2
+  convert: ^3.1.1
+  quiver: ^3.2.1
 
 dev_dependencies:
   benchmark_harness: ^2.0.0
@@ -106,7 +116,7 @@ dev_dependencies:
   # bonsoir: ^1.0.0
   flutter_launcher_icons:
     git: https://github.com/dirkbo/flutter_launcher_icons
-  flutter_lints: ^1.0.4
+  flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
   hive_generator: ^1.1.0

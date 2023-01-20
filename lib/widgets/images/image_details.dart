@@ -39,15 +39,15 @@ class _ImageDetailsState extends State<ImageDetails> {
       children: [
         PhotoView.customChild(
           backgroundDecoration: BoxDecoration(color: bg),
-          child: RotatedBox(
-              quarterTurns: _rotation,
-              child: ThemableImage.from(widget.image, bg: bg)),
           minScale: 1.0,
           maxScale: settings.maxImageZoom,
           heroAttributes: PhotoViewHeroAttributes(tag: widget.image),
           onTapUp: (context, details, controllerValue) =>
               setState(() => _showUI = !_showUI),
           enableRotation: settings.rotateImageGestures,
+          child: RotatedBox(
+              quarterTurns: _rotation,
+              child: ThemableImage.from(widget.image, bg: bg)),
         ),
         if (_showUI)
           Positioned(
@@ -82,6 +82,9 @@ class _ImageDetailsState extends State<ImageDetails> {
               child: Hero(
                   tag: "caption",
                   child: Container(
+                    color: overlayColor,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: ConstrainedBox(
                       constraints: const BoxConstraints(maxHeight: 200),
                       child: SingleChildScrollView(
@@ -90,9 +93,6 @@ class _ImageDetailsState extends State<ImageDetails> {
                         style: theme.primaryTextTheme.bodyText1,
                       )),
                     ),
-                    color: overlayColor,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   )))
       ],
     );

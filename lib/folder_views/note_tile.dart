@@ -53,6 +53,8 @@ class NoteTile extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           if (note.title != null)
             HighlightedText(
@@ -70,8 +72,6 @@ class NoteTile extends StatelessWidget {
             child: _buildBody(context, body),
           ),
         ],
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
       ),
     );
 
@@ -80,6 +80,9 @@ class NoteTile extends StatelessWidget {
       borderRadius: borderRadius,
       type: MaterialType.card,
       child: InkWell(
+        borderRadius: borderRadius,
+        onTap: () => noteTapped(note),
+        onLongPress: () => noteLongPressed(note),
         child: Hero(
           tag: note.filePath,
           child: tileContent,
@@ -90,9 +93,6 @@ class NoteTile extends StatelessWidget {
                   BuildContext toHeroContext) =>
               Material(child: toHeroContext.widget),
         ),
-        borderRadius: borderRadius,
-        onTap: () => noteTapped(note),
-        onLongPress: () => noteLongPressed(note),
       ),
     );
   }

@@ -67,7 +67,7 @@ class Themes {
       case DEFAULT_DARK_THEME_NAME:
         return _dark;
       default:
-        throw Exception("Theme not found - " + name);
+        throw Exception("Theme not found - $name");
     }
   }
 }

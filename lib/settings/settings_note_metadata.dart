@@ -309,6 +309,7 @@ class NoteInputExample extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(32.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   NoteTitleEditor(titleController, () {}),
                   NoteBodyEditor(
@@ -319,7 +320,6 @@ class NoteInputExample extends StatelessWidget {
                   Container(height: 8.0),
                   TagsWidget(note.tags.toSet()),
                 ],
-                crossAxisAlignment: CrossAxisAlignment.start,
               ),
             ),
             _HeaderText(note.fileName, Alignment.topRight),
@@ -387,12 +387,12 @@ class TagsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      children: [
-        for (var tagText in tags) _Tag(tagText),
-      ],
       alignment: WrapAlignment.start,
       spacing: 8.0,
       runSpacing: 8.0,
+      children: [
+        for (var tagText in tags) _Tag(tagText),
+      ],
     );
   }
 }

@@ -68,6 +68,7 @@ class _BottomMenuBarSettingsState extends State<BottomMenuBarSettings> {
 
     var homeScreen = Transform.scale(
       scale: 0.75,
+      alignment: Alignment.bottomCenter,
       child: Container(
         padding: const EdgeInsets.all(2.0),
         color: theme.colorScheme.secondary.withAlpha(256 ~/ 10),
@@ -77,7 +78,6 @@ class _BottomMenuBarSettingsState extends State<BottomMenuBarSettings> {
           child: IgnorePointer(child: HomeScreen()),
         ),
       ),
-      alignment: Alignment.bottomCenter,
     );
 
     return ClipRect(

@@ -115,6 +115,7 @@ class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
     //print("Painter ${painter.width} $height");
 
     var list = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         for (var tag in widget.tags)
           Padding(
@@ -122,7 +123,6 @@ class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
             child: Text('#$tag', style: const TextStyle(fontSize: 20.0)),
           ),
       ],
-      crossAxisAlignment: CrossAxisAlignment.start,
     );
 
     _hideOverlay();

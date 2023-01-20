@@ -40,6 +40,7 @@ class _ExperimentalSettingsScreenState
       ),
       body: Scrollbar(
         child: ListView(
+          padding: const EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 0.0),
           children: <Widget>[
             const Center(
               child: Icon(CommunityMaterialIcons.flask, size: 64 * 2),
@@ -119,7 +120,7 @@ class _ExperimentalSettingsScreenState
             ),
             ListTile(
               title: const Text('Enter Pro Password'),
-              subtitle: Text('Pro: ' + AppConfig.instance.proMode.toString()),
+              subtitle: Text('Pro: ${AppConfig.instance.proMode}'),
               onTap: () async {
                 var _ = await showDialog(
                   context: context,
@@ -129,7 +130,6 @@ class _ExperimentalSettingsScreenState
               },
             ),
           ],
-          padding: const EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 0.0),
         ),
       ),
     );

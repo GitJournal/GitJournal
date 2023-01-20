@@ -26,6 +26,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var list = ListView(
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
       children: [
         SettingsTile(
           iconData: FontAwesomeIcons.paintbrush,
@@ -159,7 +160,6 @@ class SettingsScreen extends StatelessWidget {
           },
         ),
       ],
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
     );
 
     return Scaffold(

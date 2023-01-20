@@ -115,8 +115,8 @@ class _GitJournalThemeView extends StatelessWidget {
         width: mq.size.width,
         height: mq.size.height,
         child: IgnorePointer(
-          child: HomeScreen(),
           ignoringSemantics: true,
+          child: HomeScreen(),
         ),
       ),
     );
@@ -129,10 +129,10 @@ class _GitJournalThemeView extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              child: homeScreen,
               decoration: BoxDecoration(
                 border: Border.all(color: theme.dividerColor),
               ),
+              child: homeScreen,
             ),
             const SizedBox(height: 32),
             Text(

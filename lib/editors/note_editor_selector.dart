@@ -19,6 +19,7 @@ class NoteEditorSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var list = Column(
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         if (editorSupported(fileFormat, EditorType.Markdown))
           _buildTile(
@@ -56,7 +57,6 @@ class NoteEditorSelector extends StatelessWidget {
             FontAwesomeIcons.horseHead,
           )
       ],
-      mainAxisSize: MainAxisSize.min,
     );
 
     return AlertDialog(

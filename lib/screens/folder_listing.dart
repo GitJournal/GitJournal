@@ -74,16 +74,16 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
         itemBuilder: (context) {
           return [
             PopupMenuItem<String>(
-              child: Text(context.loc.screensFoldersActionsRename),
               value: "Rename",
+              child: Text(context.loc.screensFoldersActionsRename),
             ),
             PopupMenuItem<String>(
-              child: Text(context.loc.screensFoldersActionsSubFolder),
               value: "Create",
+              child: Text(context.loc.screensFoldersActionsSubFolder),
             ),
             PopupMenuItem<String>(
-              child: Text(context.loc.screensFoldersActionsDelete),
               value: "Delete",
+              child: Text(context.loc.screensFoldersActionsDelete),
             ),
           ];
         },

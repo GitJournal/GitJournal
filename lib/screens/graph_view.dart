@@ -172,6 +172,9 @@ class _GraphViewState extends State<GraphView>
       }
 
       var w = Positioned(
+        left: node.x - (nodeSize / 2),
+        top: node.y - (nodeSize / 2),
+        width: nodeSize,
         child: GestureDetector(
           child: NodeWidget(node, nodeSize),
           // onPanStart: (details) {
@@ -211,9 +214,6 @@ class _GraphViewState extends State<GraphView>
           //   // print("Pan update ${node.label} $pos");
           // },
         ),
-        left: node.x - (nodeSize / 2),
-        top: node.y - (nodeSize / 2),
-        width: nodeSize,
       );
       children.add(w);
     }
@@ -223,17 +223,17 @@ class _GraphViewState extends State<GraphView>
       height: 2500,
       color: Theme.of(context).scaffoldBackgroundColor,
       child: Stack(
-        children: children,
         fit: StackFit.expand,
+        children: children,
       ),
     );
 
     return InteractiveViewer(
-      child: view,
       panEnabled: true,
       constrained: false,
       minScale: 0.1,
       transformationController: transformationController,
+      child: view,
     );
   }
 }
@@ -306,6 +306,7 @@ class NodeWidget extends StatelessWidget {
     //   label = label.substring(5);
     // }
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
           width: size,
@@ -322,7 +323,6 @@ class NodeWidget extends StatelessWidget {
         ),
         Text(label, style: textStyle),
       ],
-      crossAxisAlignment: CrossAxisAlignment.center,
     );
   }
 }

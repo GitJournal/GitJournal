@@ -139,6 +139,7 @@ class FolderTileState extends State<FolderTile> {
 
     var selected = widget.selectedFolder == widget.folder;
     return Card(
+      color: selected ? theme.selectedRowColor : theme.cardColor,
       child: ListTile(
         leading: Container(
           width: 48,
@@ -155,7 +156,6 @@ class FolderTileState extends State<FolderTile> {
         trailing: trailling,
         selected: selected,
       ),
-      color: selected ? theme.selectedRowColor : theme.cardColor,
     );
   }
 

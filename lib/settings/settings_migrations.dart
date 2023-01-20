@@ -4,12 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'package:gitjournal/logger/logger.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_io/io.dart';
-
-import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/settings/settings.dart';
 
 Future<void> migrateSettings(
   String id,
@@ -146,13 +145,13 @@ Future<void> migrateSettings(
 
     version = 2;
     _ = await pref.remove("settingsVersion");
-    _ = await pref.setInt(prefix + "settingsVersion", version);
+    _ = await pref.setInt("${prefix}settingsVersion", version);
   }
 
   if (version == 2) {
-    var saveTitleInH1 = pref.getBool(id + '_' + "saveTitleInH1");
+    var saveTitleInH1 = pref.getBool('${id}_saveTitleInH1');
     if (saveTitleInH1 == false) {
-      var key = id + "_" + "titleSettings";
+      var key = "${id}_titleSettings";
       _ = await pref.setString(key, "yaml");
     }
 
@@ -192,8 +191,8 @@ Future<void> migrateSshKeysFromDir(
     var sshPublicKey = await File(sshPublicKeyPath).readAsString();
     var sshPrivateKey = await File(sshPrivateKeyPath).readAsString();
 
-    _ = await pref.setString(prefix + "sshPublicKey", sshPublicKey);
-    _ = await pref.setString(prefix + "sshPrivateKey", sshPrivateKey);
-    _ = await pref.setString(prefix + "sshPassword", "");
+    _ = await pref.setString("${prefix}sshPublicKey", sshPublicKey);
+    _ = await pref.setString("${prefix}sshPrivateKey", sshPrivateKey);
+    _ = await pref.setString("${prefix}sshPassword", "");
   }
 }

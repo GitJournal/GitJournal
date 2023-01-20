@@ -15,7 +15,7 @@ void main() {
   group('Editor Heuristic Tests', () {
     test('Does not modify test on newline', () {
       var origText = "Hello";
-      var newText = origText + '\n';
+      var newText = '$origText\n';
 
       var result = autoAddBulletList(origText, newText, newText.length);
       expect(result, null);
@@ -23,7 +23,7 @@ void main() {
 
     test('Adds a bullet point at the end', () {
       var origText = "Hello\n* One";
-      var newText = origText + '\n';
+      var newText = '$origText\n';
 
       var result = autoAddBulletList(origText, newText, newText.length)!;
       expect(result.text, "Hello\n* One\n* ");
@@ -41,7 +41,7 @@ void main() {
 
     test('Adds a numbered list at the end', () {
       var origText = "Hello\n1. One";
-      var newText = origText + '\n';
+      var newText = '$origText\n';
 
       var result = autoAddBulletList(origText, newText, newText.length)!;
       expect(result.text, "Hello\n1. One\n2. ");
@@ -50,7 +50,7 @@ void main() {
 
     test('Pressing enter on an empty list removes it', () {
       var origText = "Hello\n* One\n* ";
-      var newText = origText + '\n';
+      var newText = '$origText\n';
 
       var result = autoAddBulletList(origText, newText, newText.length)!;
       expect(result.text, "Hello\n* One\n");
@@ -68,7 +68,7 @@ void main() {
 
     test('Does not add a bullet point without spaces', () {
       var origText = "*One";
-      var newText = origText + '\n';
+      var newText = '$origText\n';
 
       var result = autoAddBulletList(origText, newText, newText.length);
       expect(result, null);
@@ -76,7 +76,7 @@ void main() {
 
     test('Adds a bullet point with many spaces', () {
       var origText = "*   One";
-      var newText = origText + '\n';
+      var newText = '$origText\n';
 
       var result = autoAddBulletList(origText, newText, newText.length)!;
       expect(result.text, "*   One\n*   ");
@@ -85,7 +85,7 @@ void main() {
 
     test('Adds a numbered list in the first line', () {
       var origText = "1. Hello";
-      var newText = origText + '\n';
+      var newText = '$origText\n';
 
       var result = autoAddBulletList(origText, newText, newText.length)!;
       expect(result.text, "1. Hello\n2. ");
@@ -103,7 +103,7 @@ void main() {
 
     test('Works with item with spaces', () {
       var origText = "* Hi There";
-      var newText = origText + '\n';
+      var newText = '$origText\n';
 
       var result = autoAddBulletList(origText, newText, newText.length)!;
       expect(result.text, "* Hi There\n* ");
@@ -112,7 +112,7 @@ void main() {
 
     test('Triple dashs', () {
       var origText = "---";
-      var newText = origText + '\n';
+      var newText = '$origText\n';
 
       var result = autoAddBulletList(origText, newText, newText.length);
       expect(result, null);

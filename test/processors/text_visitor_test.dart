@@ -33,7 +33,7 @@ void main() {
 
     var result = "";
     void callback(String content) {
-      result += content + "-";
+      result += "$content-";
     }
 
     _visit(body, callback);
@@ -45,7 +45,7 @@ void main() {
 
     var result = "";
     void callback(String content) {
-      result += content + "-";
+      result += "$content-";
     }
 
     _visit(body, callback);
@@ -62,7 +62,7 @@ Done
 
     var result = "";
     void callback(String content) {
-      result += content + "-";
+      result += "$content-";
     }
 
     _visit(body, callback);

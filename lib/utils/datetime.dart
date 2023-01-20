@@ -50,19 +50,19 @@ String toIso8601WithTimezone(DateTime dt) {
 
   String hourStr;
   if (hours < 10) {
-    hourStr = '0' + hours.toString();
+    hourStr = '0$hours';
   } else {
     hourStr = hours.toString();
   }
 
   String minutesStr;
   if (minutes < 10) {
-    minutesStr = '0' + minutes.toString();
+    minutesStr = '0$minutes';
   } else {
     minutesStr = minutes.toString();
   }
 
-  return result + sign + hourStr + ':' + minutesStr;
+  return '$result$sign$hourStr:$minutesStr';
 }
 
 DateTime? parseDateTime(String str) {

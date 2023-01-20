@@ -75,10 +75,10 @@ class _GitAuthorEmailDialogState extends State<_GitAuthorEmailDialog> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         TextButton(
-          child: Text(context.loc.settingsOk),
           onPressed: isValidEmail == true
               ? () => Navigator.of(context).pop(email)
               : null,
+          child: Text(context.loc.settingsOk),
         ),
       ],
     );
@@ -171,9 +171,9 @@ class __GitAuthorDialogState extends State<_GitAuthorDialog> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         TextButton(
-          child: Text(context.loc.settingsOk),
           onPressed:
               isValid == true ? () => Navigator.of(context).pop(author) : null,
+          child: Text(context.loc.settingsOk),
         ),
       ],
     );

@@ -64,8 +64,8 @@ class ListPreference extends StatelessWidget {
         child: ScrollConfiguration(
           behavior: _NoScrollBehavior(),
           child: ListView(
-            children: children,
             shrinkWrap: true,
+            children: children,
           ),
         ),
       ),

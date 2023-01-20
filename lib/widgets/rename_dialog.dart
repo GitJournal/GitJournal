@@ -54,6 +54,7 @@ class _RenameDialogState extends State<RenameDialog> {
   Widget build(BuildContext context) {
     var form = Form(
       key: _formKey,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +104,6 @@ class _RenameDialogState extends State<RenameDialog> {
           ),
         ],
       ),
-      autovalidateMode: AutovalidateMode.onUserInteraction,
     );
 
     return AlertDialog(

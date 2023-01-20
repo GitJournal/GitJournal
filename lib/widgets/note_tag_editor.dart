@@ -85,12 +85,12 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
     var q = query.toLowerCase();
 
     return ListView(
+      padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
       children: <Widget>[
         if (query.isNotEmpty && !_allTags.contains(query)) _buildAddTag(query),
         for (var tag in _allTags)
           if (tag.toLowerCase().contains(q)) _buildTagTile(tag),
       ],
-      padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
     );
   }
 

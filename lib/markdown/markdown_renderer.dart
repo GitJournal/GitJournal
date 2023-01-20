@@ -136,7 +136,6 @@ class MarkdownRenderer extends StatelessWidget {
       HtmlEntitiesSyntax(),
       if (hardWrapEnabled) HardWrapSyntax(),
       WikiLinkSyntax(),
-      TaskListSyntax(),
       ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes,
       KatexBuilder.inlineParser,
     ];

@@ -117,7 +117,7 @@ class Log {
     }
 
     if (foundation.kDebugMode) {
-      Fimber.log("E", msg + " " + ex.toString() + stacktrace.toString(),
+      Fimber.log("E", "$msg $ex$stacktrace",
           ex: ex, stacktrace: stacktrace, tag: LogTree.getTag(stackIndex: 2));
     }
     _write('e', msg, ex, stacktrace, props);
@@ -163,7 +163,7 @@ class Log {
     }
 
     var str = json.encode(logMsg.toMap());
-    logFile!.writeStringSync(str + '\n');
+    logFile!.writeStringSync('$str\n');
   }
 
   static Future<void> setLogCapture(bool state) async {

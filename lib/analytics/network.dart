@@ -12,7 +12,7 @@ import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/utils/result.dart';
 import 'generated/analytics.pb.dart' as pb;
 
-late final dio = () {
+final dio = () {
   var d = Dio();
   d.options.connectTimeout = 10000; // 10 sec
   d.options.receiveTimeout = 10000;

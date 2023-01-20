@@ -26,9 +26,9 @@ Future<String> getVersionString({bool includeAppName = true}) async {
   var info = await PackageInfo.fromPlatform();
   var versionText = "";
   if (includeAppName) {
-    versionText += info.appName + " ";
+    versionText += "${info.appName} ";
   }
-  versionText += info.version + "+" + info.buildNumber;
+  versionText += "${info.version}+${info.buildNumber}";
 
   if (foundation.kDebugMode) {
     versionText += " (Debug)";

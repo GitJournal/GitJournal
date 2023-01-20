@@ -302,8 +302,8 @@ class _AppDrawerState extends State<AppDrawer>
       selected: selected,
     );
     return Container(
-      child: tile,
       color: selected ? theme.selectedRowColor : theme.scaffoldBackgroundColor,
+      child: tile,
     );
   }
 }
@@ -345,8 +345,8 @@ class RepoTile extends StatelessWidget {
     );
 
     return Container(
-      child: tile,
       color: selected ? theme.selectedRowColor : theme.scaffoldBackgroundColor,
+      child: tile,
     );
   }
 }

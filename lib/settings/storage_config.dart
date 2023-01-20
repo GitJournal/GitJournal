@@ -29,7 +29,7 @@ class StorageConfig extends ChangeNotifier with SettingsSharedPref {
   // I'm giving it a random name in Debug as this way more bugs are caught
   var folderName = kReleaseMode
       ? "journal"
-      : "journal-" + Random().nextInt(1 << 16).toString();
+      : "journal-${Random().nextInt(1 << 16)}";
 
   var storeInternally = true;
   var storageLocation = "";

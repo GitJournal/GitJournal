@@ -14,7 +14,7 @@ import '../parsers/katex.dart';
 
 class KatexBuilder extends MarkdownElementBuilder {
   static const tag = 'katex';
-  static late final inlineParser = KatexInlineSyntax();
+  static final inlineParser = KatexInlineSyntax();
   static const blockParser = KatexBlockSyntax();
 
   @override

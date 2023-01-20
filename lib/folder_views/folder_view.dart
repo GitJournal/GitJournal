@@ -445,9 +445,9 @@ class _FolderViewState extends State<FolderView> {
               ),
               key: const ValueKey("ViewOptionsDialog"),
               content: Column(
-                children: children,
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
+                children: children,
               ),
             );
           },
@@ -500,8 +500,8 @@ class _FolderViewState extends State<FolderView> {
         return AlertDialog(
           title: Text(context.loc.widgetsFolderViewViewsSelect),
           content: Column(
-            children: children,
             mainAxisSize: MainAxisSize.min,
+            children: children,
           ),
         );
       },

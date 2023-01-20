@@ -63,7 +63,7 @@ packages:
       name: args
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.1"
+    version: "2.3.2"
   async:
     dependency: transitive
     description:
@@ -114,12 +114,12 @@ packages:
     source: hosted
     version: "2.1.0"
   buffer:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: buffer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.1"
+    version: "1.2.0"
   build:
     dependency: transitive
     description:
@@ -275,12 +275,12 @@ packages:
     source: hosted
     version: "1.2.2"
   convert:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: convert
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.2"
+    version: "3.1.1"
   coverage:
     dependency: transitive
     description:
@@ -296,7 +296,7 @@ packages:
     source: hosted
     version: "0.3.3+1"
   crypto:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: crypto
       url: "https://pub.dartlang.org"
@@ -353,7 +353,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: ed5a5884217d6ec1d309a5100f14b885f480d39b
+      resolved-ref: "1ec40c34455f0c7350947028721426d190b8506e"
       url: "https://github.com/GitJournal/dart-git.git"
     source: git
     version: "0.0.2"
@@ -461,7 +461,7 @@ packages:
       name: equatable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "2.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -475,7 +475,7 @@ packages:
       name: fast_immutable_collections
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.4.1"
+    version: "8.1.1"
   ffi:
     dependency: transitive
     description:
@@ -489,7 +489,7 @@ packages:
       name: file
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.1.2"
+    version: "6.1.4"
   file_picker:
     dependency: "direct main"
     description:
@@ -512,7 +512,7 @@ packages:
     source: hosted
     version: "0.6.6"
   fixnum:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: fixnum
       url: "https://pub.dartlang.org"
@@ -587,7 +587,7 @@ packages:
       name: flutter_lints
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.4"
+    version: "2.0.1"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -606,7 +606,7 @@ packages:
       name: flutter_markdown
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.10+2"
+    version: "0.6.13"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -686,7 +686,7 @@ packages:
       name: freezed_annotation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.14.3"
+    version: "2.2.0"
   frontend_server_client:
     dependency: transitive
     description:
@@ -774,12 +774,12 @@ packages:
     source: hosted
     version: "0.7.0"
   hive:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: hive
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.2"
+    version: "2.2.3"
   hive_generator:
     dependency: "direct dev"
     description:
@@ -963,7 +963,7 @@ packages:
       name: lints
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "2.0.1"
   logging:
     dependency: transitive
     description:
@@ -972,12 +972,12 @@ packages:
     source: hosted
     version: "1.0.2"
   markdown:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: markdown
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.0"
+    version: "6.0.1"
   matcher:
     dependency: transitive
     description:
@@ -993,7 +993,7 @@ packages:
     source: hosted
     version: "0.1.5"
   meta:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: meta
       url: "https://pub.dartlang.org"
@@ -1137,7 +1137,7 @@ packages:
     source: hosted
     version: "0.2.1"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       url: "https://pub.dartlang.org"
@@ -1312,12 +1312,12 @@ packages:
     source: hosted
     version: "1.0.2"
   quiver:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: quiver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.0"
+    version: "3.2.1"
   recase:
     dependency: "direct main"
     description:
@@ -1574,14 +1574,14 @@ packages:
       name: stash
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.2.2"
+    version: "4.4.1"
   stash_memory:
     dependency: transitive
     description:
       name: stash_memory
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.2.1"
+    version: "4.4.1"
   stream_channel:
     dependency: transitive
     description:
@@ -1609,7 +1609,7 @@ packages:
       name: synchronized
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0+2"
+    version: "3.0.1"
   table_calendar:
     dependency: "direct main"
     description:
@@ -1681,12 +1681,12 @@ packages:
     source: hosted
     version: "1.0.0"
   tuple:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: tuple
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.1"
   typed_data:
     dependency: transitive
     description:
@@ -1763,7 +1763,7 @@ packages:
       name: uuid
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.6"
+    version: "3.0.7"
   vector_math:
     dependency: transitive
     description:
@@ -1835,5 +1835,5 @@ packages:
     source: hosted
     version: "0.0.12"
 sdks:
-  dart: ">=2.17.3 <3.0.0"
+  dart: ">=2.18.0 <3.0.0"
   flutter: ">=3.3.3"

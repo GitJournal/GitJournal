@@ -307,6 +307,7 @@ class _CommitTileState extends State<_CommitTile> {
 
     if (expanded && widget.prevCommit != null) {
       body = Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           body,
           CommitDataWidget(
@@ -315,7 +316,6 @@ class _CommitTileState extends State<_CommitTile> {
             parentCommit: widget.prevCommit!,
           ),
         ],
-        mainAxisSize: MainAxisSize.min,
       );
     }
 

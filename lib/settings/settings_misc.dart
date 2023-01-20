@@ -25,6 +25,7 @@ class _SettingsMiscState extends State<SettingsMisc> {
     var folderConfig = Provider.of<NotesFolderConfig>(context);
 
     var body = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SettingsHeader(context.loc.settingsMiscListView),
         SwitchListTile(
@@ -60,7 +61,6 @@ class _SettingsMiscState extends State<SettingsMisc> {
           },
         ),
       ],
-      crossAxisAlignment: CrossAxisAlignment.start,
     );
 
     return Scaffold(

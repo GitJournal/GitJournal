@@ -29,6 +29,8 @@ class AppDrawerHeader extends StatelessWidget {
     var appConfig = Provider.of<AppConfig>(context);
 
     var top = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         const DecoratedBox(
           decoration: BoxDecoration(
@@ -43,8 +45,6 @@ class AppDrawerHeader extends StatelessWidget {
           child: ThemeSwitcherButton(),
         ),
       ],
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
     );
 
     var currentRepo = _CurrentRepo(
@@ -58,12 +58,12 @@ class AppDrawerHeader extends StatelessWidget {
       ),
       padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           top,
           currentRepo,
         ],
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
       ),
     );
 
@@ -124,9 +124,12 @@ class __CurrentRepoState extends State<_CurrentRepo>
     var textTheme = Theme.of(context).textTheme;
 
     var w = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Expanded(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(_repoFolderName, style: textTheme.headline6),
               const SizedBox(height: 8.0),
@@ -138,7 +141,6 @@ class __CurrentRepoState extends State<_CurrentRepo>
               ),
               const SizedBox(height: 8.0),
             ],
-            crossAxisAlignment: CrossAxisAlignment.start,
           ),
         ),
         RotationTransition(
@@ -149,14 +151,12 @@ class __CurrentRepoState extends State<_CurrentRepo>
           ),
         ),
       ],
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
     );
 
     return GestureDetector(
-      child: w,
       behavior: HitTestBehavior.opaque,
       onTap: _pressed,
+      child: w,
     );
   }
 

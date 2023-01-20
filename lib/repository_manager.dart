@@ -71,7 +71,7 @@ class RepositoryManager with ChangeNotifier {
   }
 
   String repoFolderName(String id) {
-    return pref.getString(id + "_" + FOLDER_NAME_KEY) ?? "journal";
+    return pref.getString("${id}_$FOLDER_NAME_KEY") ?? "journal";
   }
 
   Future<Result<String>> addRepoAndSwitch() async {
@@ -88,7 +88,7 @@ class RepositoryManager with ChangeNotifier {
     dynamic _;
 
     // Generate a default folder name!
-    _ = await pref.setString(id + "_" + FOLDER_NAME_KEY, "repo_$id");
+    _ = await pref.setString("${id}_$FOLDER_NAME_KEY", "repo_$id");
     Log.i("Creating new repo with id: $id and folder: repo_$id");
 
     var r = await buildActiveRepository();

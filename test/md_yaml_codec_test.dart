@@ -177,7 +177,7 @@ foo: bar
       expect({"foo": "bar"}.lock, doc.props);
 
       var actualStr = serializer.encode(doc);
-      expect(actualStr, str + '\n\n');
+      expect(actualStr, '$str\n\n');
     });
 
     test('Only YAML Header with \\n at end', () {
@@ -193,7 +193,7 @@ foo: bar
       expect({"foo": "bar"}.lock, doc.props);
 
       var actualStr = serializer.encode(doc);
-      expect(actualStr, str + '\n');
+      expect(actualStr, '$str\n');
     });
 
     test('Should not have any YamlMaps', () {

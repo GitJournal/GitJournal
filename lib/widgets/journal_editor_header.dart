@@ -37,18 +37,18 @@ class JournalEditorHeader extends StatelessWidget {
     );
 
     var w = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         bigNum,
         const SizedBox(width: 8.0),
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             dateText,
             timeText,
           ],
-          crossAxisAlignment: CrossAxisAlignment.start,
         ),
       ],
-      crossAxisAlignment: CrossAxisAlignment.start,
     );
 
     return Padding(
