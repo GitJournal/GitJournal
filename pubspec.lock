@@ -364,13 +364,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.3"
-  dashbook:
-    dependency: "direct dev"
-    description:
-      name: dashbook
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.4"
   dbus:
     dependency: transitive
     description:
@@ -544,13 +537,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.3.0"
-  flutter_colorpicker:
-    dependency: transitive
-    description:
-      name: flutter_colorpicker
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.0"
   flutter_displaymode:
     dependency: "direct main"
     description:
