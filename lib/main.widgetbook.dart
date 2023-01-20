@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2019-2021 Vishesh Handa <me@vhanda.in>
+ * SPDX-FileCopyrightText: 2023 Vishesh Handa <me@vhanda.in>
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
@@ -8,9 +8,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:gitjournal/app_router.dart';
+import 'package:gitjournal/change_notifiers.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository_manager.dart';
+import 'package:gitjournal/screens.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/themes.dart';
@@ -50,12 +52,22 @@ Future<void> main() async {
     storageConfig: storageConfig,
   );
 
+  var buildAppDeps = (BuildContext context, Widget child) {
+    return GitJournalChangeNotifiers(
+      repoManager: repoManager,
+      appConfig: appConfig,
+      pref: pref,
+      child: child,
+    );
+  };
+
   var widgetBook = Widgetbook(
     localizationsDelegates: gitJournalLocalizationDelegates,
     supportedLocales: gitJournalSupportedLocales,
     categories: [
+      buildWidgetbookCategory("Screens", allScreens, buildAppDeps),
       WidgetbookCategory(
-        name: 'Screens',
+        name: 'Router',
         widgets: [
           WidgetbookComponent(
             name: "All Components",

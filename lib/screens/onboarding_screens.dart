@@ -19,7 +19,16 @@ import 'package:time/time.dart';
 class OnBoardingScreen extends StatefulWidget {
   static const routePath = "/onBoarding";
 
-  const OnBoardingScreen();
+  final bool skipPage1;
+  final bool skipPage2;
+  final bool skipPage3;
+
+  const OnBoardingScreen({
+    super.key,
+    this.skipPage1 = false,
+    this.skipPage2 = false,
+    this.skipPage3 = false,
+  });
 
   @override
   OnBoardingScreenState createState() {
@@ -52,9 +61,9 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     var pages = <Widget>[
-      OnBoardingPage1(),
-      OnBoardingPage2(),
-      OnBoardingPage3(),
+      if (!widget.skipPage1) OnBoardingPage1(),
+      if (!widget.skipPage2) OnBoardingPage2(),
+      if (!widget.skipPage3) OnBoardingPage3(),
     ];
     var pageView = PageView(
       controller: _pageController,
