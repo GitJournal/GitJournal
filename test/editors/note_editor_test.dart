@@ -55,7 +55,7 @@ void main() {
       child: Builder(builder: (context) {
         return MaterialApp(
           home: widget,
-          localizationsDelegates: buildDelegates(context),
+          localizationsDelegates: gitJournalLocalizationDelegates,
           supportedLocales: gitJournalSupportedLocales,
         );
       }),

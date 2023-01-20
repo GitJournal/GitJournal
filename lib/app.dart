@@ -316,7 +316,7 @@ class JournalAppState extends State<JournalApp> {
       navigatorKey: _navigatorKey,
       title: 'GitJournal',
 
-      localizationsDelegates: buildDelegates(context),
+      localizationsDelegates: gitJournalLocalizationDelegates,
       supportedLocales: gitJournalSupportedLocales,
       locale: locale,
 

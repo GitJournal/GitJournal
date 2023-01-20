@@ -152,14 +152,12 @@ const gitJournalSupportedLocales = [
   Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'),
 ];
 
-Iterable<LocalizationsDelegate<dynamic>> buildDelegates(BuildContext context) {
-  return [
-    AppLocalizations.delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-  ];
-}
+const gitJournalLocalizationDelegates = [
+  AppLocalizations.delegate,
+  GlobalMaterialLocalizations.delegate,
+  GlobalWidgetsLocalizations.delegate,
+  GlobalCupertinoLocalizations.delegate,
+];
 
 enum Lk {
   empty,
