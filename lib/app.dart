@@ -8,7 +8,6 @@ import 'dart:async';
 
 import 'package:auto_updater/auto_updater.dart';
 import 'package:flutter/material.dart';
-import 'package:gitjournal/account/init.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/analytics/route_observer.dart';
 import 'package:gitjournal/app_router.dart';
@@ -59,8 +58,6 @@ class JournalApp extends StatefulWidget {
     Hive.init(cacheDir);
     Hive.registerAdapter(LinkAdapter());
     Hive.registerAdapter(LinksListAdapter());
-
-    initSupabase();
 
     var repoManager = RepositoryManager(
       gitBaseDir: gitBaseDirectory,

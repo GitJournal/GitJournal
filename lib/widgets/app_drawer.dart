@@ -27,7 +27,6 @@ import 'package:gitjournal/widgets/pro_overlay.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:time/time.dart';
 import 'package:universal_io/io.dart' show Platform;
 
@@ -131,7 +130,6 @@ class _AppDrawerState extends State<AppDrawer>
     }
 
     var divider = Row(children: const <Widget>[Expanded(child: Divider())]);
-    var user = Supabase.instance.client.auth.currentUser;
 
     return Drawer(
       child: ListView(
@@ -165,7 +163,7 @@ class _AppDrawerState extends State<AppDrawer>
                 );
               },
             ),
-          if (appConfig.experimentalAccounts && user == null)
+          if (appConfig.experimentalAccounts)
             _buildDrawerTile(
               context,
               icon: Icons.account_circle,

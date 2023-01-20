@@ -708,13 +708,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.0"
-  functions_client:
-    dependency: transitive
-    description:
-      name: functions_client
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1-dev.5"
   git_bindings:
     dependency: "direct main"
     description:
@@ -759,13 +752,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.1"
-  gotrue:
-    dependency: transitive
-    description:
-      name: gotrue
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.2"
   graphs:
     dependency: transitive
     description:
@@ -794,13 +780,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.2"
-  hive_flutter:
-    dependency: transitive
-    description:
-      name: hive_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.0"
   hive_generator:
     dependency: "direct dev"
     description:
@@ -964,13 +943,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"
-  jwt_decode:
-    dependency: transitive
-    description:
-      name: jwt_decode
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.1"
   language_picker:
     dependency: "direct main"
     description:
@@ -1269,13 +1241,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.5.1"
-  postgrest:
-    dependency: transitive
-    description:
-      name: postgrest
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.10+1"
   process:
     dependency: transitive
     description:
@@ -1353,13 +1318,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.0"
-  realtime_client:
-    dependency: transitive
-    description:
-      name: realtime_client
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.15"
   recase:
     dependency: "direct main"
     description:
@@ -1624,13 +1582,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.2.1"
-  storage_client:
-    dependency: transitive
-    description:
-      name: storage_client
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.6+2"
   stream_channel:
     dependency: transitive
     description:
@@ -1652,20 +1603,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.1"
-  supabase:
-    dependency: transitive
-    description:
-      name: supabase
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.4+1"
-  supabase_flutter:
-    dependency: "direct main"
-    description:
-      name: supabase_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.1+3"
   synchronized:
     dependency: "direct main"
     description:
@@ -1757,27 +1694,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.1"
-  uni_links:
-    dependency: transitive
-    description:
-      name: uni_links
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.1"
-  uni_links_platform_interface:
-    dependency: transitive
-    description:
-      name: uni_links_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
-  uni_links_web:
-    dependency: transitive
-    description:
-      name: uni_links_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.0"
   universal_io:
     dependency: "direct main"
     description:

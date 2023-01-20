@@ -10,7 +10,6 @@ import 'package:flutter_login/flutter_login.dart';
 import 'package:gitjournal/account/account_screen.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginPage extends StatefulWidget {
   static const routePath = '/login';
@@ -23,36 +22,10 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends SupabaseAuthState<LoginPage> {
-  @override
-  void onUnauthenticated() {
-    Log.i('onUnauthenticated');
-  }
-
-  @override
-  void onAuthenticated(Session session) {
-    Log.i('onAuthenticated');
-  }
-
-  @override
-  void onReceivedAuthDeeplink(Uri uri) {
-    Supabase.instance.log('onReceivedAuthDeeplink uri: $uri');
-    Log.i("Received Auth Deep Link: $uri");
-  }
-
-  @override
-  void onPasswordRecovery(Session session) {}
-
-  @override
-  void onErrorAuthenticating(String message) {
-    Log.e(message);
-  }
-
+class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-
-    var _ = recoverSupabaseSession();
   }
 
   @override
@@ -213,65 +186,10 @@ class _LoginPageState extends SupabaseAuthState<LoginPage> {
     Log.i('Name: ${signupData.name}');
     Log.i('Password: ${signupData.password}');
 
-    var email = signupData.name;
-    var password = signupData.password;
-
-    email = 'test6@gitjournal.io';
-    password = 'hellohello';
-
-    var auth = Supabase.instance.client.auth;
-    var result = await auth.signUp(
-      email,
-      password,
-      options: AuthOptions(
-        redirectTo: 'gitjournal-identity://register-callback',
-      ),
-    );
-
-    Log.i('Result: $result');
-
-    if (result.error != null) {
-      // Show the error
-      Log.i('Error ${result.error}');
-      return result.error!.message;
-    }
-    if (result.data == null && result.error == null) {
-      // Email Validation
-      Log.i('Email verification required');
-    }
-
-    Log.i('Terms of serveice');
-    Log.i(signupData.termsOfService);
-    if (signupData.termsOfService.isNotEmpty) {
-      Log.i(signupData.termsOfService[0].accepted);
-    }
-
     return "";
   }
 
   Future<String?> _login(LoginData loginData) async {
-    var email = loginData.name;
-    var password = loginData.password;
-
-    Log.i('Login info');
-    Log.i('Name: ${loginData.name}');
-    Log.i('Password: ${loginData.password}');
-
-    // For testing
-    email = 'test@gitjournal.io';
-    password = 'hellohellod';
-
-    var auth = Supabase.instance.client.auth;
-    var result = await auth.signIn(email: email, password: password);
-
-    if (result.data?.user != null) {
-      return null;
-    }
-
-    if (result.error != null) {
-      return result.error!.message;
-    }
-
     return "";
   }
 }
