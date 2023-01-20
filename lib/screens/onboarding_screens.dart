@@ -107,7 +107,9 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       );
 
       bottomBar = Container(
-        color: Colors.grey[200],
+        color: Theme.of(context).brightness == Brightness.light
+            ? Colors.grey[200]
+            : Theme.of(context).primaryColor,
         child: SizedBox(
           width: double.infinity,
           height: _bottomBarHeight,
@@ -176,10 +178,18 @@ class OnBoardingBottomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isDark = Theme.of(context).brightness == Brightness.dark;
+
     return TextButton(
       key: key,
-      //color: Colors.grey[200],
       onPressed: onPressed,
+      style: isDark
+          ? ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                Theme.of(context).primaryColor,
+              ),
+            )
+          : null,
       child: Text(
         text,
         textAlign: TextAlign.center,
