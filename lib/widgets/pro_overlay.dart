@@ -6,6 +6,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:gitjournal/l10n.dart';
+import 'package:gitjournal/settings/app_config.dart';
+import 'package:provider/provider.dart';
 
 class ProOverlay extends StatelessWidget {
   final Widget child;
@@ -14,6 +16,9 @@ class ProOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var appConfig = context.watch<AppConfig>();
+    if (appConfig.proMode) return child;
+
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       child: Banner(
