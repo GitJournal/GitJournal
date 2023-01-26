@@ -40,6 +40,7 @@ import 'package:gitjournal/widgets/rename_dialog.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import 'package:synchronized/synchronized.dart';
+import 'package:dart_git/plumbing/git_hash.dart';
 
 class ShowUndoSnackbar {}
 
@@ -131,6 +132,7 @@ class NoteEditorState extends State<NoteEditor>
   bool _newNoteRenamed = false;
   late EditorType _editorType;
   MdYamlDoc _originalNoteData = MdYamlDoc();
+  GitHash? _originalNoteOid;
 
   final _rawEditorKey = GlobalKey<RawEditorState>();
   final _markdownEditorKey = GlobalKey<MarkdownEditorState>();
@@ -190,6 +192,7 @@ class NoteEditorState extends State<NoteEditor>
 
     if (widget.existingNote != null) {
       var existingNote = widget.existingNote!;
+      _originalNoteOid = existingNote.oid;
       _note = existingNote.resetOid();
       _originalNoteData = _note.data;
 
@@ -460,6 +463,10 @@ class NoteEditorState extends State<NoteEditor>
     if (shouldDelete == true) {
       if (!_isNewNote) {
         var stateContainer = context.read<GitJournalRepo>();
+        if (_originalNoteOid != null) {
+          //can't delete with blank oid, so get a note with original oid
+          note = note.copyWith(file: note.file.copyFile(oid: _originalNoteOid));
+        }
         stateContainer.removeNote(note);
       }
 
