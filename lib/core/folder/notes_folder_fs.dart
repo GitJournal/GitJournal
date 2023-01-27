@@ -705,7 +705,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     }
 
     note.parent.remove(note);
-    note = note.copyWith(parent: destFolder);
+    note = note.copyWith(parent: destFolder, filePath: "${destFolder.folderPath}/${note.fileName}");
     note.parent.add(note);
 
     return Result(note);
