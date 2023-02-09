@@ -18,6 +18,7 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
+      "deviceId": "linux",
       "program": "lib/main.widgetbook.dart"
     }
   ]
