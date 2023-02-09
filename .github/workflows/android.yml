@@ -12,7 +12,7 @@ on:
 jobs:
   Build:
     runs-on: ubuntu-latest
-    container: vhanda/flutter-android:latest
+    container: ghcr.io/gitjournal/flutter-android-sdk:latest
     steps:
       - name: checkout
         uses: actions/checkout@v2
