@@ -78,7 +78,7 @@ class KeyEditor extends StatelessWidget {
       child: TextFormField(
         textAlign: TextAlign.left,
         maxLines: null,
-        style: Theme.of(context).textTheme.bodyText2,
+        style: Theme.of(context).textTheme.bodyMedium,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: (s) => validator(context, s),
         controller: textEditingController,
@@ -108,7 +108,7 @@ class KeyEditor extends StatelessWidget {
         OutlinedButton(
           child: Text(
             context.loc.setupKeyEditorsLoad,
-            style: Theme.of(context).textTheme.bodyText2,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           onPressed: _pickAndLoadFile,
         ),

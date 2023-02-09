@@ -73,7 +73,7 @@ class TagListingScreen extends StatelessWidget {
 
   Widget _buildTagTile(BuildContext context, String tag) {
     var theme = Theme.of(context);
-    var titleColor = theme.textTheme.headline1!.color;
+    var titleColor = theme.textTheme.displayLarge!.color;
 
     return ListTile(
       leading: FaIcon(FontAwesomeIcons.tag, color: titleColor),

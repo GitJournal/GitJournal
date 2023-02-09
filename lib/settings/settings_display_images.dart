@@ -83,7 +83,7 @@ class SettingsDisplayImagesScreenState
                     )
                   : Text(
                       NumberFormat("##.0").format(settings.maxImageZoom),
-                      style: theme.textTheme.subtitle2!
+                      style: theme.textTheme.titleSmall!
                           .copyWith(color: theme.colorScheme.secondary),
                       textAlign: TextAlign.center,
                     ),

@@ -33,7 +33,7 @@ class GitHostSetupButton extends StatelessWidget {
           child: Text(
             text,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.button,
+            style: Theme.of(context).textTheme.labelLarge,
           ),
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(
@@ -49,7 +49,7 @@ class GitHostSetupButton extends StatelessWidget {
           label: Text(
             text,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.button,
+            style: Theme.of(context).textTheme.labelLarge,
           ),
           icon: Image.asset(iconUrl!, width: 32, height: 32),
           style: ButtonStyle(

@@ -160,7 +160,7 @@ class _DebugScreenState extends State<DebugScreen> {
   Widget _buildLogWidget(LogMessage msg) {
     var origTextStyle = Theme.of(context)
         .textTheme
-        .bodyText2!
+        .bodyMedium!
         .copyWith(fontFamily: "Roboto Mono");
 
     var textStyle = origTextStyle.copyWith(color: _colorForLevel(msg.l));
@@ -275,7 +275,7 @@ class _DebugScreenState extends State<DebugScreen> {
   Widget _buildDateWidget(DateTime dt) {
     var textStyle = Theme.of(context)
         .textTheme
-        .headline6!
+        .titleLarge!
         .copyWith(fontFamily: "Roboto Mono");
 
     var text = dt.toIso8601String().substring(0, 10);
@@ -344,7 +344,7 @@ class FilterListTile extends StatelessWidget {
 
   Icon _getIcon(BuildContext context) {
     var theme = Theme.of(context);
-    var color = theme.textTheme.headline6!.color;
+    var color = theme.textTheme.titleLarge!.color;
     if (_isSelected()) {
       switch (theme.brightness) {
         case Brightness.light:

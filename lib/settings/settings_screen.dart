@@ -226,7 +226,7 @@ class SettingsTile extends StatelessWidget {
     var theme = Theme.of(context);
     var listTileTheme = ListTileTheme.of(context);
 
-    var textStyle = theme.textTheme.subtitle1!.copyWith(
+    var textStyle = theme.textTheme.titleMedium!.copyWith(
       color: listTileTheme.textColor,
     );
 

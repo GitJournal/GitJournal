@@ -53,7 +53,7 @@ class _SortingModeSelectorState extends State<SortingModeSelector> {
           key: const ValueKey("Cancel"),
           child: Text(
             context.loc.settingsCancel,
-            style: Theme.of(context).textTheme.bodyText2,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           onPressed: () {
             Navigator.of(context).pop();
@@ -63,7 +63,7 @@ class _SortingModeSelectorState extends State<SortingModeSelector> {
           key: const ValueKey("Ok"),
           child: Text(
             context.loc.settingsOk,
-            style: Theme.of(context).textTheme.bodyText2,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           onPressed: () {
             Navigator.of(context).pop(SortingMode(_field, _order));

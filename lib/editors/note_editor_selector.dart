@@ -74,7 +74,7 @@ class NoteEditorSelector extends StatelessWidget {
     var selected = et == currentEditor;
     var theme = Theme.of(context);
     var listTileTheme = ListTileTheme.of(context);
-    var textStyle = theme.textTheme.bodyText2!.copyWith(
+    var textStyle = theme.textTheme.bodyMedium!.copyWith(
       color: selected ? theme.primaryColor : listTileTheme.textColor,
     );
 

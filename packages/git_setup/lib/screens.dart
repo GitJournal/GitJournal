@@ -725,7 +725,7 @@ class GitHostChoicePage extends StatelessWidget {
       children: <Widget>[
         Text(
           context.loc.setupHostTitle,
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
         const SizedBox(height: 16.0),
         GitHostSetupButton(
@@ -775,7 +775,7 @@ class GitHostAutoConfigureChoicePage extends StatelessWidget {
       children: <Widget>[
         Text(
           context.loc.setupAutoConfigureTitle,
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
         const SizedBox(height: 16.0),
         if (!_isDesktop)

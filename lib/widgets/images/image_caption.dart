@@ -27,7 +27,7 @@ class ImageCaption extends StatelessWidget {
     final text = captionText(context, altText, tooltip);
 
     if (!overlay) {
-      return Text(text, style: theme.textTheme.caption);
+      return Text(text, style: theme.textTheme.bodySmall);
     }
 
     return LayoutBuilder(builder: (context, constraints) {
@@ -55,7 +55,7 @@ class ImageCaption extends StatelessWidget {
                   text,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.bodyText2,
+                  style: theme.textTheme.bodyMedium,
                 )),
           ),
         ),

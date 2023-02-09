@@ -45,6 +45,6 @@ class NoteBodyEditor extends StatelessWidget {
 
   static TextStyle textStyle(BuildContext context) {
     var theme = Theme.of(context);
-    return theme.textTheme.subtitle1!;
+    return theme.textTheme.titleMedium!;
   }
 }

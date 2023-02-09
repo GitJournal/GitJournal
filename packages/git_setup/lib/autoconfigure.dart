@@ -149,29 +149,29 @@ class GitHostSetupAutoConfigurePageState
       children: <Widget>[
         Text(
           context.loc.setupAutoConfigureTitle,
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 32.0),
 
         // Step 1
         Text(
           context.loc.setupAutoconfigureStep1,
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context).textTheme.bodyLarge,
         ),
         const SizedBox(height: 8.0),
         Text(
           context.loc.setupAutoconfigureStep2,
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context).textTheme.bodyLarge,
         ),
         const SizedBox(height: 8.0),
         Text(
           context.loc.setupAutoconfigureStep3,
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context).textTheme.bodyLarge,
         ),
         const SizedBox(height: 32.0),
         Text(
           context.loc.setupAutoconfigureWarning,
-          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 fontStyle: FontStyle.italic,
               ),
         ),

@@ -27,7 +27,7 @@ class _RestorePurchaseButtonState extends State<RestorePurchaseButton> {
       onPressed: restored ? null : _restore,
       child: Text(
         context.loc.purchaseScreenRestore,
-        style: Theme.of(context).textTheme.bodyText2,
+        style: Theme.of(context).textTheme.bodyMedium,
       ),
     );
   }

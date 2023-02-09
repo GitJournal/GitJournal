@@ -158,7 +158,7 @@ class __BlobLoaderState extends State<_BlobLoader> {
       var text = utf8.decode(blob.blobData);
 
       var theme = Theme.of(context);
-      var style = theme.textTheme.subtitle1!.copyWith(
+      var style = theme.textTheme.titleMedium!.copyWith(
         fontFamily: "Roboto Mono",
         color: widget.color,
       );

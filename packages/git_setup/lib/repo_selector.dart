@@ -197,7 +197,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
       children: <Widget>[
         Text(
           context.loc.setupRepoSelectorTitle,
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 16.0),
         textField,
@@ -330,7 +330,7 @@ class _RepoTile extends StatelessWidget {
       ),
     ); */
 
-    var style = Theme.of(context).textTheme.subtitle1;
+    var style = Theme.of(context).textTheme.titleMedium;
 
     Widget title = Text(repo.fullName, style: style);
     if (searchText.isNotEmpty) {
@@ -352,7 +352,7 @@ class _RepoTile extends StatelessWidget {
 
     var tile = ListTile(
       title: title,
-      trailing: _SmartDateTime(repo.updatedAt, textTheme.caption),
+      trailing: _SmartDateTime(repo.updatedAt, textTheme.bodySmall),
       selected: selected,
       contentPadding: const EdgeInsets.all(0.0),
       onTap: onTap,

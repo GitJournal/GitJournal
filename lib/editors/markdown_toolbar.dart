@@ -28,7 +28,7 @@ class MarkdownToolBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
-    var style = textTheme.bodyText2!.copyWith(fontWeight: FontWeight.bold);
+    var style = textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold);
 
     var scroll = SingleChildScrollView(
       scrollDirection: Axis.horizontal,

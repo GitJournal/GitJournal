@@ -138,6 +138,6 @@ class _DialogWarningText extends StatelessWidget {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
 
-    return Text(text, style: textTheme.subtitle2);
+    return Text(text, style: textTheme.titleSmall);
   }
 }

@@ -7,11 +7,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-
-import 'package:time/time.dart';
-
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/logger/logger.dart';
+import 'package:time/time.dart';
 
 class AutoCompletionWidget extends StatefulWidget {
   final FocusNode textFieldFocusNode;
@@ -140,7 +138,7 @@ class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
         ),
       );
     });
-    Overlay.of(context)!.insert(overlayEntry!);
+    Overlay.of(context).insert(overlayEntry!);
 
     // Removes the over lay entry from the Overly after 500 milliseconds
     var _ = await Future.delayed(5000.milliseconds);

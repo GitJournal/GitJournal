@@ -99,11 +99,11 @@ class _NoteFileTypesSettingsState extends State<NoteFileTypesSettings> {
       value: info.enabled,
       title: Text(
         title,
-        style: textTheme.subtitle1!.copyWith(fontFamily: "Roboto Mono"),
+        style: textTheme.titleMedium!.copyWith(fontFamily: "Roboto Mono"),
       ),
       secondary: Text(
         context.loc.settingsFileTypesNumFiles(info.count),
-        style: textTheme.subtitle2,
+        style: textTheme.titleSmall,
       ),
       controlAffinity: ListTileControlAffinity.leading,
       onChanged: (newVal) {

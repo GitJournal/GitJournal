@@ -74,7 +74,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
           child: Text(
             context.loc.purchaseScreenDesc,
-            style: Theme.of(context).textTheme.bodyText2,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
         const SizedBox(height: 32.0),
@@ -124,7 +124,7 @@ class YearlyPurchaseWidget extends StatelessWidget {
         children: [
           Text(
             context.loc.purchaseScreenOneTimeTitle,
-            style: textTheme.headline5,
+            style: textTheme.headlineSmall,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 32.0),

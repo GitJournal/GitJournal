@@ -45,7 +45,6 @@ class Themes {
     ),
     brightness: Brightness.dark,
     primaryColor: const Color(0xff212121),
-    toggleableActiveColor: const Color(0xFF66bb6a),
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Color(0xFF66bb6a),
       selectionHandleColor: Color(0xFF66bb6a),
@@ -57,7 +56,30 @@ class Themes {
       TargetPlatform.linux: CupertinoPageTransitionsBuilder(),
       TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
       TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
-    }),
+    }), checkboxTheme: CheckboxThemeData(
+ fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ if (states.contains(MaterialState.disabled)) { return null; }
+ if (states.contains(MaterialState.selected)) { return const Color(0xFF66bb6a); }
+ return null;
+ }),
+ ), radioTheme: RadioThemeData(
+ fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ if (states.contains(MaterialState.disabled)) { return null; }
+ if (states.contains(MaterialState.selected)) { return const Color(0xFF66bb6a); }
+ return null;
+ }),
+ ), switchTheme: SwitchThemeData(
+ thumbColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ if (states.contains(MaterialState.disabled)) { return null; }
+ if (states.contains(MaterialState.selected)) { return const Color(0xFF66bb6a); }
+ return null;
+ }),
+ trackColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ if (states.contains(MaterialState.disabled)) { return null; }
+ if (states.contains(MaterialState.selected)) { return const Color(0xFF66bb6a); }
+ return null;
+ }),
+ ),
   );
 
   static ThemeData fromName(String name) {

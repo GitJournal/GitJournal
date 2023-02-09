@@ -36,7 +36,7 @@ class SettingsDisplayImagesThemingScreenState
     var doNotThemeTagsForm = Form(
       child: TextFormField(
         key: doNotThemeTagsKey,
-        style: Theme.of(context).textTheme.headline6,
+        style: Theme.of(context).textTheme.titleLarge,
         decoration: InputDecoration(
           hintText: context.loc.settingsDisplayImagesThemingDoThemeTagsHint,
           labelText: context.loc.settingsDisplayImagesThemingDoThemeTagsLabel,
@@ -74,7 +74,7 @@ class SettingsDisplayImagesThemingScreenState
     var doThemeTagsForm = Form(
       child: TextFormField(
         key: doThemeTagsKey,
-        style: Theme.of(context).textTheme.headline6,
+        style: Theme.of(context).textTheme.titleLarge,
         decoration: InputDecoration(
           hintText: context.loc.settingsDisplayImagesThemingDoThemeTagsHint,
           labelText: context.loc.settingsDisplayImagesThemingDoThemeTagsLabel,

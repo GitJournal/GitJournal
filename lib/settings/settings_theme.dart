@@ -137,7 +137,7 @@ class _GitJournalThemeView extends StatelessWidget {
             const SizedBox(height: 32),
             Text(
               gjTheme.name,
-              style: Theme.of(context).textTheme.headline3!.copyWith(
+              style: Theme.of(context).textTheme.displaySmall!.copyWith(
                     fontWeight: FontWeight.w400,
                   ),
             ),

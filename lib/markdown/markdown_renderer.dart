@@ -43,7 +43,7 @@ class MarkdownRenderer extends StatelessWidget {
     var settings = Provider.of<Settings>(context);
     theme = theme.copyWith(
       textTheme: theme.textTheme.copyWith(
-        subtitle1: theme.textTheme.subtitle1,
+        titleMedium: theme.textTheme.titleMedium,
       ),
     );
 
@@ -53,10 +53,10 @@ class MarkdownRenderer extends StatelessWidget {
     // p is changed
     var markdownStyleSheet = MarkdownStyleSheet.fromTheme(theme).copyWith(
       p: NoteBodyEditor.textStyle(context),
-      code: theme.textTheme.bodyText2!.copyWith(
+      code: theme.textTheme.bodyMedium!.copyWith(
         backgroundColor: theme.dialogBackgroundColor,
         fontFamily: 'monospace',
-        fontSize: theme.textTheme.bodyText2!.fontSize! * 0.85,
+        fontSize: theme.textTheme.bodyMedium!.fontSize! * 0.85,
       ),
       tableBorder: TableBorder.all(color: theme.highlightColor, width: 0),
       tableCellsDecoration: BoxDecoration(color: theme.dialogBackgroundColor),
@@ -73,7 +73,7 @@ class MarkdownRenderer extends StatelessWidget {
         color: theme.primaryColorLight,
         borderRadius: BorderRadius.circular(2.0),
       ),
-      checkbox: theme.textTheme.bodyText2!.copyWith(
+      checkbox: theme.textTheme.bodyMedium!.copyWith(
         color: isDark ? theme.primaryColorLight : theme.primaryColor,
       ),
     );

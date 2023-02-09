@@ -6,7 +6,7 @@
 
 import 'dart:async';
 
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:git_bindings/git_bindings.dart';
@@ -183,18 +183,18 @@ class GitPendingChangesBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     var darkMode = theme.brightness == Brightness.dark;
-    var style = theme.textTheme.caption!.copyWith(
+    var style = theme.textTheme.bodySmall!.copyWith(
       fontSize: 6.0,
       color: darkMode ? Colors.black : Colors.white,
     );
 
     final repo = Provider.of<GitJournalRepo>(context);
 
-    return Badge(
+    return badges.Badge(
       badgeContent: Text(repo.numChanges.toString(), style: style),
       showBadge: repo.numChanges != 0,
       badgeColor: theme.iconTheme.color!,
-      position: BadgePosition.topEnd(top: 10.0, end: 4.0),
+      position: badges.BadgePosition.topEnd(top: 10.0, end: 4.0),
       child: child,
     );
   }

@@ -249,7 +249,7 @@ class _NoteEditor extends StatefulWidget {
 
   static TextStyle textStyle(BuildContext context) {
     var theme = Theme.of(context);
-    return theme.textTheme.subtitle1!.copyWith(fontFamily: "Roboto Mono");
+    return theme.textTheme.titleMedium!.copyWith(fontFamily: "Roboto Mono");
   }
 }
 

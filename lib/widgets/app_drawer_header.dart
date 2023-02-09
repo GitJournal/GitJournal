@@ -131,11 +131,11 @@ class __CurrentRepoState extends State<_CurrentRepo>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(_repoFolderName, style: textTheme.headline6),
+              Text(_repoFolderName, style: textTheme.titleLarge),
               const SizedBox(height: 8.0),
               Text(
                 _gitRemoteUrl,
-                style: textTheme.subtitle2,
+                style: textTheme.titleSmall,
                 overflow: TextOverflow.clip,
                 maxLines: 1,
               ),

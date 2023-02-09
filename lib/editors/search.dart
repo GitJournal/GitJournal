@@ -76,7 +76,7 @@ class _EditorAppSearchBarState extends State<EditorAppSearchBar> {
       automaticallyImplyLeading: false,
       title: TextField(
         focusNode: _focusNode,
-        style: theme.textTheme.subtitle1,
+        style: theme.textTheme.titleMedium,
         decoration: InputDecoration(
           hintText: context.loc.editorsCommonFind,
           border: InputBorder.none,
@@ -98,7 +98,7 @@ class _EditorAppSearchBarState extends State<EditorAppSearchBar> {
             onPressed: null,
             child: Text(
               '${_searchInfo.currentMatch.toInt() + 1}/${_searchInfo.numMatches}',
-              style: theme.textTheme.subtitle1,
+              style: theme.textTheme.titleMedium,
             ),
           ),
         // Disable these when not possible

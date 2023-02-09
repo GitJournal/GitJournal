@@ -58,7 +58,7 @@ class _CacheLoadingScreenState extends State<_CacheLoadingScreen> {
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline4,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       Padding(
@@ -66,7 +66,7 @@ class _CacheLoadingScreenState extends State<_CacheLoadingScreen> {
         child: Text(
           dateText,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
       const SizedBox(height: 8.0),

@@ -54,7 +54,7 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
         title: TextField(
           focusNode: _focusNode,
           controller: _textController,
-          style: theme.textTheme.headline6,
+          style: theme.textTheme.titleLarge,
           decoration: InputDecoration(
             border: InputBorder.none,
             hintText: context.loc.editorsCommonTags,

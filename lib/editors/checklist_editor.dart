@@ -393,7 +393,7 @@ class _ChecklistItemTileState extends State<ChecklistItemTile> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    var style = theme.textTheme.subtitle1;
+    var style = theme.textTheme.titleMedium;
     if (widget.item.checked) {
       style = style!.copyWith(
         decoration: TextDecoration.lineThrough,
@@ -454,7 +454,7 @@ class AddItemButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var style = Theme.of(context).textTheme.subtitle1;
+    var style = Theme.of(context).textTheme.titleMedium;
 
     var tile = ListTile(
       dense: true,
