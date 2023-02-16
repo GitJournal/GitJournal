@@ -30,6 +30,7 @@
 .pub/
 /build/
 pubspec_overrides.yaml
+Podfile.lock
 
 # Web related
 lib/generated_plugin_registrant.dart
