@@ -15,9 +15,10 @@ jobs:
     container: ghcr.io/gitjournal/flutter-android-sdk:latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - run: git config --global --add safe.directory '*'
       - name: Test
         run: ./scripts/test.sh
       # - name: Test Report
