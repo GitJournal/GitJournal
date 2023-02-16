@@ -299,7 +299,7 @@ class NodeWidget extends StatelessWidget {
     }
 
     var theme = Theme.of(context);
-    var textStyle = theme.textTheme.subtitle1!.copyWith(fontSize: 8.0);
+    var textStyle = theme.textTheme.titleMedium!.copyWith(fontSize: 8.0);
 
     var label = node.note.filePath;
     // if (label.startsWith('docs/')) {

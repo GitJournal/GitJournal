@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note_storage.dart';
+import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/result.dart';
@@ -117,7 +118,7 @@ Future<void> shareNote(Note note) async {
 Future<Note?> getTodayJournalEntry(NotesFolderFS rootFolder) async {
   var today = Date.today;
   var matches = await rootFolder.matchNotes((n) async {
-    return n.created.isAtSameDayAs(today);
+    return n.type == NoteType.Journal && n.created.isAtSameDayAs(today);
   });
 
   return matches.isNotEmpty ? matches[0] : null;

@@ -41,9 +41,9 @@ class VersionNumberTileState extends State<VersionNumberTile> {
     return ListTile(
       leading: FaIcon(
         FontAwesomeIcons.stamp,
-        color: textTheme.subtitle1!.color,
+        color: textTheme.titleMedium!.color,
       ),
-      title: Text(context.loc.settingsVersionInfo, style: textTheme.subtitle1),
+      title: Text(context.loc.settingsVersionInfo, style: textTheme.titleMedium),
       subtitle: Text(versionText),
       onTap: () {
         Clipboard.setData(ClipboardData(text: versionText));

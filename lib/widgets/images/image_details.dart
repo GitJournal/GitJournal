@@ -90,7 +90,7 @@ class _ImageDetailsState extends State<ImageDetails> {
                       child: SingleChildScrollView(
                           child: Text(
                         widget.caption,
-                        style: theme.primaryTextTheme.bodyText1,
+                        style: theme.primaryTextTheme.bodyLarge,
                       )),
                     ),
                   )))

@@ -118,14 +118,14 @@ class JournalNoteListTile extends StatelessWidget {
     var dateStr = _dateFormat.format(date);
     var time = _timeFormat.format(date);
 
-    var timeColor = textTheme.bodyText2!.color!.withAlpha(100);
+    var timeColor = textTheme.bodyMedium!.color!.withAlpha(100);
 
     var titleWidget = Row(
       crossAxisAlignment: CrossAxisAlignment.baseline,
       textBaseline: TextBaseline.alphabetic,
       children: <Widget>[
-        Text(dateStr, style: textTheme.headline6),
-        Text(time, style: textTheme.bodyText2!.copyWith(color: timeColor)),
+        Text(dateStr, style: textTheme.titleLarge),
+        Text(time, style: textTheme.bodyMedium!.copyWith(color: timeColor)),
       ],
     );
 
@@ -135,7 +135,7 @@ class JournalNoteListTile extends StatelessWidget {
         text: '$noteSummary\n', // no minLines option
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
-        style: textTheme.bodyText2!,
+        style: textTheme.bodyMedium!,
         highlightText: searchTerm,
         highlightTextLowerCase: searchTermLowerCase,
       ),

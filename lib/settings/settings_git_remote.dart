@@ -68,7 +68,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
         if (remoteHost.isNotEmpty)
           Text(
             context.loc.settingsGitRemoteHost,
-            style: textTheme.bodyText1,
+            style: textTheme.bodyLarge,
             textAlign: TextAlign.left,
           ),
         if (remoteHost.isNotEmpty) ListTile(title: Text(remoteHost)),
@@ -87,7 +87,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
         const SizedBox(height: 8.0),
         Text(
           context.loc.setupSshKeyUserProvidedPublic,
-          style: textTheme.bodyText1,
+          style: textTheme.bodyLarge,
           textAlign: TextAlign.left,
         ),
         const SizedBox(height: 16.0),
@@ -306,7 +306,7 @@ class Button extends StatelessWidget {
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.button,
+          style: Theme.of(context).textTheme.labelLarge,
         ),
       ),
     );

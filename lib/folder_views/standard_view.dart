@@ -165,7 +165,7 @@ class StandardNoteListTile extends StatelessWidget {
     var textTheme = Theme.of(context).textTheme;
     Widget titleWidget = HighlightedText(
       text: title,
-      style: textTheme.headline6!,
+      style: textTheme.titleLarge!,
       overflow: TextOverflow.ellipsis,
       highlightText: searchTerm,
       highlightTextLowerCase: searchTermLowerCase,
@@ -182,7 +182,7 @@ class StandardNoteListTile extends StatelessWidget {
 
     if (date != null) {
       var dateStr = _dateFormat.format(date);
-      trailing = Text(dateStr, style: textTheme.caption);
+      trailing = Text(dateStr, style: textTheme.bodySmall);
     }
 
     var titleRow = Row(
@@ -200,7 +200,7 @@ class StandardNoteListTile extends StatelessWidget {
           text: '$noteSummary\n', // no minLines option
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
-          style: textTheme.bodyText2!,
+          style: textTheme.bodyMedium!,
           highlightText: searchTerm,
           highlightTextLowerCase: searchTermLowerCase,
         ),

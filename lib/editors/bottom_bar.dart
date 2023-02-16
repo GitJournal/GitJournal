@@ -108,7 +108,7 @@ class EditorBottomBar extends StatelessWidget {
               icon: const Icon(Icons.folder),
               label: Text(
                 parentFolder.publicName(context),
-                style: theme.textTheme.bodyText2,
+                style: theme.textTheme.bodyMedium,
               ),
               onPressed: () {
                 var note = editorState.getNote();

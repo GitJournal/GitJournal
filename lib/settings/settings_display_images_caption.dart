@@ -37,7 +37,7 @@ class SettingsDisplayImagesCaptionScreenState
     var doNotCaptionTagsForm = Form(
       child: TextFormField(
         key: doNotCaptionTagsKey,
-        style: Theme.of(context).textTheme.headline6,
+        style: Theme.of(context).textTheme.titleLarge,
         decoration: InputDecoration(
           hintText: context.loc.settingsDisplayImagesCaptionsDoCaptionTagsHint,
           labelText:
@@ -81,7 +81,7 @@ class SettingsDisplayImagesCaptionScreenState
     var doCaptionTagsForm = Form(
       child: TextFormField(
         key: doCaptionTagsKey,
-        style: Theme.of(context).textTheme.headline6,
+        style: Theme.of(context).textTheme.titleLarge,
         decoration: InputDecoration(
           hintText: context.loc.settingsDisplayImagesCaptionsDoCaptionTagsHint,
           labelText:

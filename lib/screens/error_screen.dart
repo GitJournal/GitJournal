@@ -29,7 +29,7 @@ class ErrorScreen extends StatelessWidget {
         child: Text(
           "This screen should never be visible",
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline4,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       );
     }
@@ -40,7 +40,7 @@ class ErrorScreen extends StatelessWidget {
         child: Text(
           context.loc.screensErrorMessage,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
       Padding(
@@ -48,7 +48,7 @@ class ErrorScreen extends StatelessWidget {
         child: Text(
           repoManager.currentRepoError.toString(),
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.subtitle2,
+          style: Theme.of(context).textTheme.titleSmall,
         ),
       ),
       const SizedBox(height: 64),

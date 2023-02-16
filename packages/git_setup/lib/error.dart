@@ -20,7 +20,7 @@ class GitHostSetupErrorPage extends StatelessWidget {
         child: Text(
           context.loc.setupFail,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline4,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       Padding(
@@ -28,7 +28,7 @@ class GitHostSetupErrorPage extends StatelessWidget {
         child: Text(
           errorMessage,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline4,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
     ];

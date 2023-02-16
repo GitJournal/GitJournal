@@ -53,7 +53,7 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
         key: sshUrlKey,
         textAlign: TextAlign.center,
         autofocus: true,
-        style: Theme.of(context).textTheme.subtitle1,
+        style: Theme.of(context).textTheme.titleMedium,
         decoration: const InputDecoration(
           hintText: 'git@github.com:GitJournal/GitJournal.git',
         ),
@@ -74,7 +74,7 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
           padding: const EdgeInsets.all(8.0),
           child: Text(
             context.loc.setupCloneUrlEnter,
-            style: Theme.of(context).textTheme.headline5,
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
         ),
         const SizedBox(height: 16.0),
@@ -138,7 +138,7 @@ class GitCloneUrlKnownProviderPageState
         key: sshUrlKey,
         textAlign: TextAlign.center,
         autofocus: true,
-        style: Theme.of(context).textTheme.subtitle1,
+        style: Theme.of(context).textTheme.titleMedium,
         decoration: const InputDecoration(
           hintText: 'git@github.com:GitJournal/GitJournal.git',
         ),
@@ -156,14 +156,14 @@ class GitCloneUrlKnownProviderPageState
       children: <Widget>[
         Text(
           context.loc.setupCloneUrlManualTitle,
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 32.0),
 
         // Step 1
         Text(
           context.loc.setupCloneUrlManualStep1,
-          style: Theme.of(context).textTheme.subtitle2,
+          style: Theme.of(context).textTheme.titleSmall,
         ),
         const SizedBox(height: 8.0),
         GitHostSetupButton(
@@ -175,7 +175,7 @@ class GitCloneUrlKnownProviderPageState
         // Step 2
         Text(
           context.loc.setupCloneUrlManualStep2,
-          style: Theme.of(context).textTheme.subtitle2,
+          style: Theme.of(context).textTheme.titleSmall,
         ),
         const SizedBox(height: 8.0),
         inputForm,

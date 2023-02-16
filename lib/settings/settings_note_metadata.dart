@@ -89,7 +89,7 @@ class _NoteMetadataSettingsScreenState
           padding: const EdgeInsets.all(16.0),
           child: Text(
             context.loc.settingsNoteMetaDataText,
-            style: textTheme.bodyText1,
+            style: textTheme.bodyLarge,
           ),
         ),
         const SizedBox(height: 16.0),
@@ -260,7 +260,7 @@ class NoteOutputExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    var style = theme.textTheme.subtitle1!;
+    var style = theme.textTheme.titleMedium!;
     style = style.copyWith(fontFamily: "Roboto Mono");
 
     var folderConfig = Provider.of<NotesFolderConfig>(context);
@@ -349,7 +349,7 @@ class _HeaderText extends StatelessWidget {
         alignment: alignment,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(text, style: textTheme.caption),
+          child: Text(text, style: textTheme.bodySmall),
         ),
       ),
     );
@@ -374,7 +374,7 @@ class _Tag extends StatelessWidget {
         ],
       ),
       padding: const EdgeInsets.all(8.0),
-      child: Text(text, style: theme.textTheme.button),
+      child: Text(text, style: theme.textTheme.labelLarge),
     );
   }
 }

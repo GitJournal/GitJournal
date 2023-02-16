@@ -142,7 +142,7 @@ class _PasswordForm extends StatelessWidget {
     return AlertDialog(
       title: const Text('Enter Pro Password'),
       content: TextField(
-        style: Theme.of(context).textTheme.headline6,
+        style: Theme.of(context).textTheme.titleLarge,
         decoration: const InputDecoration(
           icon: Icon(Icons.security_rounded),
           hintText: 'Enter Password',

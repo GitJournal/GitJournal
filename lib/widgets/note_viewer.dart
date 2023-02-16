@@ -112,7 +112,7 @@ class NoteTitleHeader extends StatelessWidget {
     var textTheme = Theme.of(context).textTheme;
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-      child: Text(header, style: textTheme.headline6),
+      child: Text(header, style: textTheme.titleLarge),
     );
   }
 }

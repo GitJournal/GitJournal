@@ -96,13 +96,13 @@ class MarkdownImage extends StatelessWidget {
                           children: [
                             Icon(
                               Icons.error,
-                              color: theme.errorColor,
+                              color: theme.colorScheme.error,
                               size: 36,
                             ),
                             Text(
                               errorMessage,
-                              style: theme.textTheme.bodyText1!
-                                  .copyWith(color: theme.errorColor),
+                              style: theme.textTheme.bodyLarge!
+                                  .copyWith(color: theme.colorScheme.error),
                               textAlign: TextAlign.center,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,

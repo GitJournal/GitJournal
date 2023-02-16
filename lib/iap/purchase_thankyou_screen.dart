@@ -19,11 +19,11 @@ class PurchaseThankYouScreen extends StatelessWidget {
       children: <Widget>[
         Text(
           context.loc.purchaseScreenThanksTitle,
-          style: textTheme.headline3,
+          style: textTheme.displaySmall,
         ),
         Text(
           context.loc.purchaseScreenThanksSubtitle,
-          style: textTheme.headline4,
+          style: textTheme.headlineMedium,
           textAlign: TextAlign.center,
         ),
         Padding(

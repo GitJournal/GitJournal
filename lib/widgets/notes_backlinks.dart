@@ -86,7 +86,7 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
       children: <Widget>[
         Text(
           context.loc.widgetsBacklinksTitle(num),
-          style: textTheme.headline6,
+          style: textTheme.titleLarge,
         ),
         const SizedBox(height: 8.0),
         for (var note in _linkedNotes)
@@ -102,7 +102,7 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
 
     var backgroundColor = Colors.grey[200];
     if (Theme.of(context).brightness == Brightness.dark) {
-      backgroundColor = Theme.of(context).backgroundColor;
+      backgroundColor = Theme.of(context).colorScheme.background;
     }
     var child = Container(
       color: backgroundColor,
@@ -144,7 +144,7 @@ class NoteSnippet extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(title, style: textTheme.bodyText1),
+              Text(title, style: textTheme.bodyLarge),
               const SizedBox(height: 8.0),
               _buildSummary(context),
             ],
@@ -195,7 +195,7 @@ class NoteSnippet extends StatelessWidget {
     // FIXME: Ideally, we should be parsing the entire markdown properly and rendering all of it
     return RichText(
       text: TextSpan(
-        children: _extraMetaLinks(textTheme.bodyText2!, paragraph),
+        children: _extraMetaLinks(textTheme.bodyMedium!, paragraph),
       ),
       maxLines: 3,
     );

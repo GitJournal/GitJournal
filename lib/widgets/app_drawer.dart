@@ -109,7 +109,7 @@ class _AppDrawerState extends State<AppDrawer>
     var repoManager = context.watch<RepositoryManager>();
     var repo = repoManager.currentRepo;
     var appConfig = context.watch<AppConfig>();
-    var textStyle = Theme.of(context).textTheme.bodyText1;
+    var textStyle = Theme.of(context).textTheme.bodyLarge;
     var currentRoute = ModalRoute.of(context)!.settings.name;
 
     if (repo?.remoteGitRepoConfigured == false) {
@@ -287,7 +287,7 @@ class _AppDrawerState extends State<AppDrawer>
   }) {
     var theme = Theme.of(context);
     var listTileTheme = ListTileTheme.of(context);
-    var textStyle = theme.textTheme.bodyText1!.copyWith(
+    var textStyle = theme.textTheme.bodyLarge!.copyWith(
       color: selected ? theme.colorScheme.secondary : listTileTheme.textColor,
     );
 
@@ -302,6 +302,7 @@ class _AppDrawerState extends State<AppDrawer>
       selected: selected,
     );
     return Container(
+      // ignore: deprecated_member_use
       color: selected ? theme.selectedRowColor : theme.scaffoldBackgroundColor,
       child: tile,
     );
@@ -323,7 +324,7 @@ class RepoTile extends StatelessWidget {
     var repoManager = context.watch<RepositoryManager>();
 
     var selected = repoManager.currentId == id;
-    var textStyle = theme.textTheme.bodyText1!.copyWith(
+    var textStyle = theme.textTheme.bodyLarge!.copyWith(
       color: selected ? theme.colorScheme.secondary : listTileTheme.textColor,
     );
 
@@ -345,6 +346,7 @@ class RepoTile extends StatelessWidget {
     );
 
     return Container(
+      // ignore: deprecated_member_use
       color: selected ? theme.selectedRowColor : theme.scaffoldBackgroundColor,
       child: tile,
     );

@@ -297,9 +297,9 @@ class _CommitTileState extends State<_CommitTile> {
     Widget body = Row(
       children: <Widget>[
         Expanded(
-          child: Text(title, style: textTheme.subtitle2!),
+          child: Text(title, style: textTheme.titleSmall!),
         ),
-        Text(when, style: textTheme.caption)
+        Text(when, style: textTheme.bodySmall)
       ],
       // crossAxisAlignment: CrossAxisAlignment.baseline,
       // textBaseline: TextBaseline.alphabetic,

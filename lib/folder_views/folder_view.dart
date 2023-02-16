@@ -660,7 +660,7 @@ class _SliverHeader extends StatelessWidget {
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
-        child: Text(text, style: textTheme.subtitle2),
+        child: Text(text, style: textTheme.titleSmall),
       ),
     );
   }

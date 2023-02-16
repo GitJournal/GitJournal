@@ -40,14 +40,14 @@ class GitHostSetupSshKeyKnownProviderPage extends StatelessWidget {
       children: <Widget>[
         Text(
           context.loc.setupSshKeyTitle,
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 32.0),
 
         // Step 1
         Text(
           context.loc.setupSshKeyStep1,
-          style: Theme.of(context).textTheme.subtitle2,
+          style: Theme.of(context).textTheme.titleSmall,
         ),
         const SizedBox(height: 8.0),
         PublicKeyWidget(publicKey!),
@@ -66,7 +66,7 @@ class GitHostSetupSshKeyKnownProviderPage extends StatelessWidget {
         // Step 2
         Text(
           context.loc.setupSshKeyStep2a,
-          style: Theme.of(context).textTheme.subtitle2,
+          style: Theme.of(context).textTheme.titleSmall,
         ),
         const SizedBox(height: 8.0),
         GitHostSetupButton(
@@ -78,7 +78,7 @@ class GitHostSetupSshKeyKnownProviderPage extends StatelessWidget {
         // Step 3
         Text(
           context.loc.setupSshKeyStep3,
-          style: Theme.of(context).textTheme.subtitle2,
+          style: Theme.of(context).textTheme.titleSmall,
         ),
         const SizedBox(height: 8.0),
         GitHostSetupButton(
@@ -121,14 +121,14 @@ class GitHostSetupSshKeyUnknownProviderPage extends StatelessWidget {
       children: <Widget>[
         Text(
           context.loc.setupSshKeyTitle,
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 32.0),
 
         // Step 1
         Text(
           context.loc.setupSshKeyStep1,
-          style: Theme.of(context).textTheme.subtitle2,
+          style: Theme.of(context).textTheme.titleSmall,
         ),
         const SizedBox(height: 8.0),
         PublicKeyWidget(publicKey!),
@@ -147,14 +147,14 @@ class GitHostSetupSshKeyUnknownProviderPage extends StatelessWidget {
         // Step 2
         Text(
           context.loc.setupSshKeyStep2b,
-          style: Theme.of(context).textTheme.subtitle2,
+          style: Theme.of(context).textTheme.titleSmall,
         ),
         const SizedBox(height: 16.0),
 
         // Step 3
         Text(
           context.loc.setupSshKeyStep3,
-          style: Theme.of(context).textTheme.subtitle2,
+          style: Theme.of(context).textTheme.titleSmall,
         ),
         const SizedBox(height: 8.0),
         GitHostSetupButton(
@@ -187,7 +187,7 @@ class GitHostSetupKeyChoicePage extends StatelessWidget {
       children: <Widget>[
         Text(
           context.loc.setupSshKeyChoiceTitle,
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
         const SizedBox(height: 16.0),
         GitHostSetupButton(
@@ -259,14 +259,14 @@ class _GitHostUserProvidedKeysPageState
       children: <Widget>[
         Text(
           context.loc.setupSshKeyUserProvidedPublic,
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
         const SizedBox(height: 8.0),
         PublicKeyEditor(_publicFormKey, _publicKeyController),
         const SizedBox(height: 8.0),
         Text(
           context.loc.setupSshKeyUserProvidedPrivate,
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
         const SizedBox(height: 8.0),
         PrivateKeyEditor(_privateFormKey, _privateKeyController),
@@ -340,7 +340,7 @@ class PublicKeyWidget extends StatelessWidget {
             publicKey.trim(),
             textAlign: TextAlign.left,
             maxLines: null,
-            style: Theme.of(context).textTheme.bodyText2,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
       ),
