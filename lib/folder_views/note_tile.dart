@@ -7,7 +7,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/utils/markdown.dart';
@@ -73,8 +72,8 @@ class NoteTile extends StatelessWidget {
               text: '${note.created.day} ${DateFormat('MMMM, yyyy').format(note.created)}\n${DateFormat('EEEE HH:mm').format(note.created)}',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: textTheme.headline6!
-                  .copyWith(fontSize: textTheme.headline6!.fontSize! * 0.8),
+              style: textTheme.titleLarge!
+                  .copyWith(fontSize: textTheme.titleLarge!.fontSize! * 0.8),
               highlightText: searchTerm,
               highlightTextLowerCase: searchTermLowerCase,
             ),
