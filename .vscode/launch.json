@@ -14,6 +14,11 @@
       "args": ["--flavor", "prod"]
     },
     {
+      "name": "No Flavor",
+      "request": "launch",
+      "type": "dart",
+    },
+    {
       "name": "WidgetBook",
       "request": "launch",
       "type": "dart",
