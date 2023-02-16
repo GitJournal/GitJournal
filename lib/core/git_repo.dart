@@ -168,8 +168,6 @@ class GitNoteRepository {
     assert(oldPaths.isNotEmpty);
     assert(newPaths.isNotEmpty);
     assert(oldPaths.length == newPaths.length);
-    assert(oldPaths.every((e) => !e.startsWith('/')));
-    assert(newPaths.every((e) => !e.startsWith('/')));
 
     var msg = oldPaths.length == 1
         ? messageBuilder.moveNote(oldPaths.first, newPaths.first)
