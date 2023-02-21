@@ -153,34 +153,34 @@ var allScreens = [
       ),
     ),
     TestScreen(
-      name: "GitHostChoicePage",
+      name: "Choice",
       builder: (_) => GitHostChoicePage(
         onCustomGitHost: () {},
         onKnownGitHost: (GitHostType) {},
       ),
     ),
     TestScreen(
-      name: "GitCloneUrlPage",
+      name: "CloneUrl",
       builder: (_) => GitCloneUrlPage(
         doneFunction: (String arg1) {},
         initialValue: '',
       ),
     ),
     TestScreen(
-      name: "GitHostAutoConfigureChoicePage",
+      name: "AutoConfigureChoice",
       builder: (_) => GitHostAutoConfigureChoicePage(
         onDone: (GitHostSetupType) {},
       ),
     ),
     TestScreen(
-      name: "GitHostSetupKeyChoicePage",
+      name: "KeyChoice",
       builder: (_) => GitHostSetupKeyChoicePage(
         onGenerateKeys: () {},
         onUserProvidedKeys: () {},
       ),
     ),
     TestScreen(
-      name: "GitCloneUrlKnownProviderPage",
+      name: "CloneUrlKnownProvider",
       builder: (_) => GitCloneUrlKnownProviderPage(
         doneFunction: (_) {},
         gitHostType: GitHostType.GitHub,
@@ -189,7 +189,7 @@ var allScreens = [
       ),
     ),
     TestScreen(
-      name: "GitHostSetupAutoConfigurePage",
+      name: "AutoConfigure",
       builder: (_) => GitHostSetupAutoConfigurePage(
         gitHostType: GitHostType.GitHub,
         onDone: (_, __) {},
@@ -197,7 +197,7 @@ var allScreens = [
       ),
     ),
     TestScreen(
-      name: "GitHostSetupSshKeyUnknownProviderPage",
+      name: "SshKeyUnknownProvider",
       builder: (_) => GitHostSetupSshKeyUnknownProviderPage(
         copyKeyFunction: (_) {},
         doneFunction: () {},
@@ -206,13 +206,13 @@ var allScreens = [
       ),
     ),
     TestScreen(
-      name: "GitHostUserProvidedKeysPage",
+      name: "UserProvidedKeys",
       builder: (_) => GitHostUserProvidedKeysPage(
         doneFunction: (a, b, c) {},
       ),
     ),
     TestScreen(
-      name: "GitHostSetupRepoSelector",
+      name: "RepoSelector",
       builder: (_) => GitHostSetupRepoSelector(
         gitHost: GitHubFake(gitHubDataFake),
         userInfo: UserInfo(
@@ -224,14 +224,14 @@ var allScreens = [
       ),
     ),
     TestScreen(
-      name: "GitHostCloningPage",
+      name: "Cloning",
       builder: (_) => GitHostCloningPage(
         cloneProgress: GitTransferProgress(),
         errorMessage: null,
       ),
     ),
     TestScreen(
-      name: "GitHostSetupSshKeyKnownProviderPage",
+      name: "SshKeyKnownProvider",
       builder: (_) => GitHostSetupSshKeyKnownProviderPage(
         copyKeyFunction: (BuildContext arg1) {},
         doneFunction: () {},
@@ -241,14 +241,14 @@ var allScreens = [
       ),
     ),
     TestScreen(
-      name: "GitHostSetupLoadingErrorPage Error",
+      name: "Error",
       builder: (_) => const GitHostSetupLoadingErrorPage(
         errorMessage: 'Error Message',
         loadingMessage: 'Loading Message',
       ),
     ),
     TestScreen(
-      name: "GitHostSetupLoadingErrorPage Loading",
+      name: "Loading",
       builder: (_) => const GitHostSetupLoadingErrorPage(
         errorMessage: null,
         loadingMessage: 'Loading Message',
