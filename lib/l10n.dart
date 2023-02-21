@@ -134,11 +134,11 @@ extension LocalizedBuildContext on BuildContext {
   }
 }
 
-// Arranged Alphabetically
+// Arranged Alphabetically with the exception of 'en'
 // Remember to update Info.plist
 const gitJournalSupportedLocales = [
-  Locale('de'),
   Locale('en'),
+  Locale('de'),
   Locale('es'),
   Locale('fr'),
   Locale('hu'),
