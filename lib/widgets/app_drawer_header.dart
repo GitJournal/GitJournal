@@ -94,7 +94,7 @@ class _CurrentRepo extends StatefulWidget {
 
 class __CurrentRepoState extends State<_CurrentRepo>
     with SingleTickerProviderStateMixin {
-  late Animation _animation;
+  late Animation<double> _animation;
   late AnimationController _controller;
 
   var _gitRemoteUrl = "";
@@ -144,7 +144,7 @@ class __CurrentRepoState extends State<_CurrentRepo>
           ),
         ),
         RotationTransition(
-          turns: _animation as Animation<double>,
+          turns: _animation,
           child: IconButton(
             icon: const FaIcon(FontAwesomeIcons.angleDown),
             onPressed: _pressed,
