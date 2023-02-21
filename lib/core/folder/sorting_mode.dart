@@ -54,7 +54,7 @@ class GjSetting {
 }
 
 class SortingOrder extends GjSetting {
-  static const Ascending = SortingOrder(Lk.settingsSortingOrderDesc, "asc");
+  static const Ascending = SortingOrder(Lk.settingsSortingOrderAsc, "asc");
   static const Descending = SortingOrder(Lk.settingsSortingOrderDesc, "desc");
   static const Default = Descending;
 

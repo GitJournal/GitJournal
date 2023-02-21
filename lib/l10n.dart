@@ -16,6 +16,8 @@ extension LocalizedBuildContext on BuildContext {
     switch (key) {
       case Lk.empty:
         return "";
+      case Lk.settingsSortingOrderAsc:
+        return loc.settingsSortingOrderAsc;
       case Lk.settingsSortingOrderDesc:
         return loc.settingsSortingOrderDesc;
       case Lk.settingsSortingFieldCreated:
@@ -161,6 +163,7 @@ const gitJournalLocalizationDelegates = [
 
 enum Lk {
   empty,
+  settingsSortingOrderAsc,
   settingsSortingOrderDesc,
   settingsSortingFieldCreated,
   settingsSortingFieldFilename,
