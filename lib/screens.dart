@@ -18,9 +18,15 @@ import 'package:gitjournal/folder_views/folder_view_configuration_dialog.dart';
 import 'package:gitjournal/folder_views/folder_view_selection_dialog.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/iap/purchase_thankyou_screen.dart';
+import 'package:gitjournal/iap/purchase_widget.dart';
 import 'package:gitjournal/l10n.dart';
+import 'package:gitjournal/screens/folder_listing.dart';
 import 'package:gitjournal/screens/onboarding_screens.dart';
+import 'package:gitjournal/settings/settings_git_remote.dart';
+import 'package:gitjournal/settings/settings_git_widgets.dart';
+import 'package:gitjournal/settings/settings_note_metadata.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
+import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
 import 'package:gitjournal/widgets/note_delete_dialog.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
 import 'package:gitjournal/widgets/sorting_mode_selection_dialog.dart';
@@ -118,9 +124,36 @@ var allScreens = [
   ]),
   TestScreenGroup(name: "Payment", screens: [
     TestScreen(name: "Thank You", builder: (_) => PurchaseThankYouScreen()),
+    TestScreen(
+      name: "Purchase Failed",
+      builder: (_) => const PurchaseFailedDialog("Foo"),
+    ),
   ]),
   TestScreenGroup(name: "Settings", screens: [
     TestScreen(name: "Home", builder: (_) => SettingsScreen()),
+    TestScreen(
+      name: "Irreversible Action Confirmation Dialog",
+      builder: (context) => IrreversibleActionConfirmationDialog(
+        title: context.loc.settingsDeleteRepo,
+        subtitle: context.loc.settingsGitRemoteChangeHostSubtitle,
+      ),
+    ),
+    TestScreen(
+      name: "Git Author Email Dialog",
+      builder: (_) => const GitAuthorEmailDialog(),
+    ),
+    TestScreen(
+      name: "Custom MetaData Input Dialog",
+      builder: (_) => const CustomMetaDataInputDialog(value: ""),
+    ),
+    TestScreen(
+      name: "List Preference Selection Dialog",
+      builder: (_) => const ListPreferenceSelectionDialog(
+        options: ["A", "B"],
+        title: "Title",
+        currentOption: "A",
+      ),
+    )
   ]),
   TestScreenGroup(name: "Folder View", screens: [
     TestScreen(
@@ -138,6 +171,16 @@ var allScreens = [
         viewType: FolderViewType.Standard,
         onViewChange: (_) {},
       ),
+    ),
+  ]),
+  TestScreenGroup(name: "Folder Listing", screens: [
+    TestScreen(
+      name: "Create Folder Alert Dialog",
+      builder: (_) => CreateFolderAlertDialog(),
+    ),
+    TestScreen(
+      name: "Delete Folder Alert Dialog",
+      builder: (_) => DeleteFolderErrorDialog(),
     ),
   ]),
   TestScreenGroup(name: "Editor", screens: [

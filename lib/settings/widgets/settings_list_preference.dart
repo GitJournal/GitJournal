@@ -32,7 +32,11 @@ class ListPreference extends StatelessWidget {
       onTap: () async {
         var option = await showDialog<String>(
           context: context,
-          builder: _dialogBuilder,
+          builder: (_) => ListPreferenceSelectionDialog(
+            title: title,
+            options: options,
+            currentOption: currentOption,
+          ),
         );
 
         if (option != null) {
@@ -42,20 +46,22 @@ class ListPreference extends StatelessWidget {
       enabled: enabled,
     );
   }
+}
 
-  Widget _dialogBuilder(BuildContext context) {
-    var children = <Widget>[];
-    for (var o in options) {
-      var tile = _LabeledRadio(
-        label: o,
-        value: o,
-        groupValue: currentOption,
-        onChanged: (String? val) {
-          Navigator.of(context).pop(val);
-        },
-      );
-      children.add(tile);
-    }
+class ListPreferenceSelectionDialog extends StatelessWidget {
+  final List<String> options;
+  final String? currentOption;
+  final String title;
+
+  const ListPreferenceSelectionDialog({
+    super.key,
+    required this.options,
+    this.currentOption,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(title),
       titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
@@ -65,7 +71,17 @@ class ListPreference extends StatelessWidget {
           behavior: _NoScrollBehavior(),
           child: ListView(
             shrinkWrap: true,
-            children: children,
+            children: [
+              for (var o in options)
+                _LabeledRadio(
+                  label: o,
+                  value: o,
+                  groupValue: currentOption,
+                  onChanged: (String? val) {
+                    Navigator.of(context).pop(val);
+                  },
+                ),
+            ],
           ),
         ),
       ),

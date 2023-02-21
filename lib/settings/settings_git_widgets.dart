@@ -24,7 +24,7 @@ class GitAuthorEmail extends StatelessWidget {
       onTap: () async {
         var newEmail = await showDialog(
           context: context,
-          builder: (context) => const _GitAuthorEmailDialog(),
+          builder: (context) => const GitAuthorEmailDialog(),
         );
 
         if (newEmail != null && newEmail != gitConfig.gitAuthorEmail) {
@@ -36,14 +36,14 @@ class GitAuthorEmail extends StatelessWidget {
   }
 }
 
-class _GitAuthorEmailDialog extends StatefulWidget {
-  const _GitAuthorEmailDialog();
+class GitAuthorEmailDialog extends StatefulWidget {
+  const GitAuthorEmailDialog({super.key});
 
   @override
-  State<_GitAuthorEmailDialog> createState() => _GitAuthorEmailDialogState();
+  State<GitAuthorEmailDialog> createState() => _GitAuthorEmailDialogState();
 }
 
-class _GitAuthorEmailDialogState extends State<_GitAuthorEmailDialog> {
+class _GitAuthorEmailDialogState extends State<GitAuthorEmailDialog> {
   final gitAuthorEmailKey = GlobalKey<FormFieldState<String>>();
 
   @override

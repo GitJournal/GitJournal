@@ -397,44 +397,59 @@ class TagsWidget extends StatelessWidget {
   }
 }
 
-class CustomMetDataTile extends StatefulWidget {
+class CustomMetDataTile extends StatelessWidget {
   final String value;
   final Func1<String, void> onChange;
 
   const CustomMetDataTile({required this.value, required this.onChange});
 
   @override
-  _CustomMetDataTileState createState() => _CustomMetDataTileState();
-}
-
-class _CustomMetDataTileState extends State<CustomMetDataTile> {
-  TextEditingController? _textController;
-
-  @override
-  void initState() {
-    _textController = TextEditingController(text: widget.value);
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(context.loc.settingsNoteMetaDataCustomMetaDataTitle),
-      subtitle: Text(widget.value),
+      subtitle: Text(value),
       onTap: () async {
-        var val =
-            await showDialog<String>(context: context, builder: _buildDialog);
+        var val = await showDialog<String>(
+          context: context,
+          builder: (context) => CustomMetaDataInputDialog(value: value),
+        );
 
         val ??= "";
-        if (val != widget.value) {
-          widget.onChange(val);
+        if (val != value) {
+          onChange(val);
         }
       },
     );
   }
+}
 
-  Widget _buildDialog(BuildContext context) {
+class CustomMetaDataInputDialog extends StatefulWidget {
+  final String value;
+
+  const CustomMetaDataInputDialog({super.key, required this.value});
+
+  @override
+  State<CustomMetaDataInputDialog> createState() =>
+      _CustomMetaDataInputDialogState();
+}
+
+class _CustomMetaDataInputDialogState extends State<CustomMetaDataInputDialog> {
+  late TextEditingController _textController;
+
+  @override
+  void initState() {
+    _textController = TextEditingController(text: widget.value);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     var form = Form(
       child: TextFormField(
         validator: (value) {
@@ -468,7 +483,7 @@ class _CustomMetDataTileState extends State<CustomMetDataTile> {
         ),
         TextButton(
           onPressed: () {
-            var text = _textController!.text.trim();
+            var text = _textController.text.trim();
             var map = MarkdownYAMLCodec.parseYamlText(text);
             if (map.isEmpty) {
               return Navigator.of(context).pop();
