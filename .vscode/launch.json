@@ -16,7 +16,15 @@
     {
       "name": "No Flavor",
       "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "WidgetBook Linux",
+      "request": "launch",
       "type": "dart",
+      "flutterMode": "debug",
+      "deviceId": "linux",
+      "program": "lib/main.widgetbook.dart"
     },
     {
       "name": "WidgetBook",
