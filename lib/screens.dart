@@ -224,6 +224,19 @@ var allScreens = [
       ),
     ),
     TestScreen(
+      name: "RepoSelector New Repo",
+      builder: (_) => GitHostSetupRepoSelector(
+        gitHost: GitHubFake(gitHubDataFake),
+        userInfo: UserInfo(
+          email: 'me@vhanda.in',
+          name: 'vhanda',
+          username: 'vhanda',
+        ),
+        onDone: (GitHostRepo arg1) {},
+        initialSearchText: "dart",
+      ),
+    ),
+    TestScreen(
       name: "Cloning",
       builder: (_) => GitHostCloningPage(
         cloneProgress: GitTransferProgress(),

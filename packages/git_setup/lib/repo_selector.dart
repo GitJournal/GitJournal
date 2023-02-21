@@ -27,12 +27,14 @@ class GitHostSetupRepoSelector extends StatefulWidget {
   final GitHost gitHost;
   final UserInfo userInfo;
   final Func1<GitHostRepo, void> onDone;
+  final String initialSearchText;
 
   const GitHostSetupRepoSelector({
     super.key,
     required this.gitHost,
     required this.userInfo,
     required this.onDone,
+    this.initialSearchText = "",
   });
 
   @override
@@ -55,31 +57,35 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
   void initState() {
     super.initState();
 
-    _textController = TextEditingController();
-    _textController.addListener(() {
-      var q = _textController.text.toLowerCase();
-      if (q.isEmpty) {
-        setState(() {
-          selectedRepo = null;
-          createRepo = false;
-        });
-        return;
-      }
-      var repoIndex = repos.indexWhere((r) =>
-          r.name.toLowerCase() == q && r.username == widget.userInfo.username);
-      if (repoIndex == -1) {
-        setState(() {
-          selectedRepo = null;
-          createRepo = false;
-        });
-      } else {
-        setState(() {
-          selectedRepo = repos[repoIndex];
-          createRepo = false;
-        });
-      }
-    });
+    _textController = TextEditingController(text: widget.initialSearchText);
+    _textController.addListener(_onTextChanged);
     _initStateAysnc();
+
+    _onTextChanged();
+  }
+
+  void _onTextChanged() {
+    var q = _textController.text.toLowerCase();
+    if (q.isEmpty) {
+      setState(() {
+        selectedRepo = null;
+        createRepo = false;
+      });
+      return;
+    }
+    var repoIndex = repos.indexWhere((r) =>
+        r.name.toLowerCase() == q && r.username == widget.userInfo.username);
+    if (repoIndex == -1) {
+      setState(() {
+        selectedRepo = null;
+        createRepo = false;
+      });
+    } else {
+      setState(() {
+        selectedRepo = repos[repoIndex];
+        createRepo = false;
+      });
+    }
   }
 
   Future<void> _initStateAysnc() async {
