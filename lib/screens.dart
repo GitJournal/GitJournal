@@ -14,8 +14,10 @@ import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/editors/note_editor_selection_dialog.dart';
 import 'package:gitjournal/iap/purchase_thankyou_screen.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/screens/onboarding_screens.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
+import 'package:gitjournal/widgets/rename_dialog.dart';
 import 'package:gitjournal/widgets/sorting_mode_selection_dialog.dart';
 import 'package:widgetbook/widgetbook.dart';
 
@@ -121,6 +123,14 @@ var allScreens = [
       builder: (_) => const NoteEditorSelectionDialog(
         EditorType.Markdown,
         NoteFileFormat.Markdown,
+      ),
+    ),
+    TestScreen(
+      name: "Rename Dialog",
+      builder: (context) => RenameDialog(
+        oldPath: "oldPath",
+        inputDecoration: context.loc.widgetsNoteEditorFileName,
+        dialogTitle: context.loc.widgetsNoteEditorRenameFile,
       ),
     ),
   ]),
