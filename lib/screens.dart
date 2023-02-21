@@ -13,7 +13,9 @@ import 'package:gitjournal/core/folder/sorting_mode.dart';
 import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/editors/note_editor_selection_dialog.dart';
+import 'package:gitjournal/folder_views/common_types.dart';
 import 'package:gitjournal/folder_views/folder_view_configuration_dialog.dart';
+import 'package:gitjournal/folder_views/folder_view_selection_dialog.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/iap/purchase_thankyou_screen.dart';
 import 'package:gitjournal/l10n.dart';
@@ -128,6 +130,13 @@ var allScreens = [
         showSummary: true,
         onHeaderTypeChanged: (_) {},
         onShowSummaryChanged: (_) {},
+      ),
+    ),
+    TestScreen(
+      name: "Folder View Selection Dialog",
+      builder: (_) => FolderViewSelectionDialog(
+        viewType: FolderViewType.Standard,
+        onViewChange: (_) {},
       ),
     ),
   ]),

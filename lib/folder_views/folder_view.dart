@@ -19,6 +19,7 @@ import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/editors/note_editor.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/folder_views/folder_view_configuration_dialog.dart';
+import 'package:gitjournal/folder_views/folder_view_selection_dialog.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/repository.dart';
@@ -398,50 +399,12 @@ class _FolderViewState extends State<FolderView> {
   }
 
   Future<void> _folderViewChooserSelected() async {
-    void onViewChange(FolderViewType? vt) => Navigator.of(context).pop(vt);
-
     var newViewType = await showDialog<FolderViewType>(
       context: context,
       builder: (BuildContext context) {
-        var children = <Widget>[
-          RadioListTile<FolderViewType>(
-            title: Text(context.loc.widgetsFolderViewViewsStandard),
-            value: FolderViewType.Standard,
-            groupValue: _viewType,
-            onChanged: onViewChange,
-          ),
-          RadioListTile<FolderViewType>(
-            title: Text(context.loc.widgetsFolderViewViewsJournal),
-            value: FolderViewType.Journal,
-            groupValue: _viewType,
-            onChanged: onViewChange,
-          ),
-          RadioListTile<FolderViewType>(
-            title: Text(context.loc.widgetsFolderViewViewsGrid),
-            value: FolderViewType.Grid,
-            groupValue: _viewType,
-            onChanged: onViewChange,
-          ),
-          RadioListTile<FolderViewType>(
-            title: Text(context.loc.widgetsFolderViewViewsCard),
-            value: FolderViewType.Card,
-            groupValue: _viewType,
-            onChanged: onViewChange,
-          ),
-          // RadioListTile<FolderViewType>(
-          //   title: Text(context.loc.widgetsFolderViewViewsCalendar),
-          //   value: FolderViewType.Calendar,
-          //   groupValue: _viewType,
-          //   onChanged: onViewChange,
-          // ),
-        ];
-
-        return AlertDialog(
-          title: Text(context.loc.widgetsFolderViewViewsSelect),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: children,
-          ),
+        return FolderViewSelectionDialog(
+          viewType: _viewType,
+          onViewChange: (vt) => Navigator.of(context).pop(vt),
         );
       },
     );
