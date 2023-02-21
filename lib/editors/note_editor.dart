@@ -24,7 +24,7 @@ import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/editors/journal_editor.dart';
 import 'package:gitjournal/editors/markdown_editor.dart';
-import 'package:gitjournal/editors/note_editor_selector.dart';
+import 'package:gitjournal/editors/note_editor_selection_dialog.dart';
 import 'package:gitjournal/editors/org_editor.dart';
 import 'package:gitjournal/editors/raw_editor.dart';
 import 'package:gitjournal/error_reporting.dart';
@@ -326,7 +326,7 @@ class NoteEditorState extends State<NoteEditor>
     var newEditorType = await showDialog<EditorType>(
       context: context,
       builder: (BuildContext context) {
-        return NoteEditorSelector(_editorType, note.fileFormat);
+        return NoteEditorSelectionDialog(_editorType, note.fileFormat);
       },
     );
 

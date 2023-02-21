@@ -10,11 +10,11 @@ import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/l10n.dart';
 
-class NoteEditorSelector extends StatelessWidget {
+class NoteEditorSelectionDialog extends StatelessWidget {
   final EditorType currentEditor;
   final NoteFileFormat fileFormat;
 
-  const NoteEditorSelector(this.currentEditor, this.fileFormat);
+  const NoteEditorSelectionDialog(this.currentEditor, this.fileFormat);
 
   @override
   Widget build(BuildContext context) {

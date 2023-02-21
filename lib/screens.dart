@@ -10,6 +10,9 @@ import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gitjournal/core/folder/sorting_mode.dart';
+import 'package:gitjournal/core/notes/note.dart';
+import 'package:gitjournal/editors/common_types.dart';
+import 'package:gitjournal/editors/note_editor_selection_dialog.dart';
 import 'package:gitjournal/iap/purchase_thankyou_screen.dart';
 import 'package:gitjournal/screens/onboarding_screens.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
@@ -111,6 +114,15 @@ var allScreens = [
   ]),
   TestScreenGroup(name: "Settings", screens: [
     TestScreen(name: "Home", builder: (_) => SettingsScreen()),
+  ]),
+  TestScreenGroup(name: "Editor", screens: [
+    TestScreen(
+      name: "Selection Dialog",
+      builder: (_) => const NoteEditorSelectionDialog(
+        EditorType.Markdown,
+        NoteFileFormat.Markdown,
+      ),
+    ),
   ]),
   TestScreenGroup(name: "Misc", screens: [
     TestScreen(
