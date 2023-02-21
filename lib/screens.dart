@@ -9,9 +9,11 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:gitjournal/core/folder/sorting_mode.dart';
 import 'package:gitjournal/iap/purchase_thankyou_screen.dart';
 import 'package:gitjournal/screens/onboarding_screens.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
+import 'package:gitjournal/widgets/sorting_mode_selection_dialog.dart';
 import 'package:widgetbook/widgetbook.dart';
 
 Future<void> _defaultOnCreate(WidgetTester tester) async {}
@@ -109,5 +111,13 @@ var allScreens = [
   ]),
   TestScreenGroup(name: "Settings", screens: [
     TestScreen(name: "Home", builder: (_) => SettingsScreen()),
+  ]),
+  TestScreenGroup(name: "Misc", screens: [
+    TestScreen(
+      name: "Sorting Mode Selection Dialog",
+      builder: (_) => SortingModeSelectionDialog(
+        SortingMode(SortingField.Default, SortingOrder.Default),
+      ),
+    ),
   ]),
 ];

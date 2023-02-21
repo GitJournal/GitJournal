@@ -9,16 +9,18 @@ import 'package:gitjournal/core/folder/sorting_mode.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/settings/widgets/settings_header.dart';
 
-class SortingModeSelector extends StatefulWidget {
+class SortingModeSelectionDialog extends StatefulWidget {
   final SortingMode selectedMode;
 
-  const SortingModeSelector(this.selectedMode);
+  const SortingModeSelectionDialog(this.selectedMode);
 
   @override
-  _SortingModeSelectorState createState() => _SortingModeSelectorState();
+  _SortingModeSelectionDialogState createState() =>
+      _SortingModeSelectionDialogState();
 }
 
-class _SortingModeSelectorState extends State<SortingModeSelector> {
+class _SortingModeSelectionDialogState
+    extends State<SortingModeSelectionDialog> {
   late SortingField _field;
   late SortingOrder _order;
 
