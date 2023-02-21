@@ -1,6 +1,15 @@
 {
-    "recommendations": [
-        "dart-code.flutter",
-        "emeraldwalk.runonsave"
-    ]
+  "recommendations": [
+    "alexisvt.flutter-snippets",
+    "circlecodesolution.ccs-flutter-color",
+    "dart-code.dart-code",
+    "eamodio.gitlens",
+    "GitHub.copilot",
+    "jeroen-meijer.pubspec-assist",
+    "usernamehw.errorlens",
+    "dart-code.flutter",
+    "localizely.flutter-intl",
+    "Orta.vscode-ios-common-files",
+    "emeraldwalk.runonsave"
+  ]
 }
