@@ -56,15 +56,6 @@ class _ExperimentalSettingsScreenState
               },
             ),
             SwitchListTile(
-              title: Text(context.loc.settingsExperimentalGraphView),
-              value: appConfig.experimentalGraphView,
-              onChanged: (bool newVal) {
-                appConfig.experimentalGraphView = newVal;
-                appConfig.save();
-                setState(() {});
-              },
-            ),
-            SwitchListTile(
               title: Text(context.loc.settingsExperimentalMarkdownToolbar),
               value: appConfig.experimentalMarkdownToolbar,
               onChanged: (bool newVal) {

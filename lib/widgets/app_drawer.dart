@@ -16,7 +16,6 @@ import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/screens/error_screen.dart';
 import 'package:gitjournal/screens/folder_listing.dart';
-import 'package:gitjournal/screens/graph_view.dart';
 import 'package:gitjournal/screens/home_screen.dart';
 import 'package:gitjournal/screens/tag_listing.dart';
 import 'package:gitjournal/settings/app_config.dart';
@@ -187,15 +186,6 @@ class _AppDrawerState extends State<AppDrawer>
               title: context.loc.drawerFolders,
               onTap: () => _navTopLevel(context, FolderListingScreen.routePath),
               selected: currentRoute == FolderListingScreen.routePath,
-            ),
-          if (appConfig.experimentalGraphView && repo != null)
-            _buildDrawerTile(
-              context,
-              icon: FontAwesomeIcons.diagramProject,
-              isFontAwesome: true,
-              title: context.loc.drawerGraph,
-              onTap: () => _navTopLevel(context, GraphViewScreen.routePath),
-              selected: currentRoute == GraphViewScreen.routePath,
             ),
           if (appConfig.experimentalHistory && repo != null)
             _buildDrawerTile(
