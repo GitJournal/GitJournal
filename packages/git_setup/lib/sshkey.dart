@@ -241,8 +241,17 @@ class _GitHostUserProvidedKeysPageState
     _privateKeyController = TextEditingController();
     _passwordController = TextEditingController();
 
-    saveText =
-        widget.saveText.isEmpty ? context.loc.setupNext : widget.saveText;
+    saveText = widget.saveText;
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        if (!mounted) return;
+        if (saveText.isEmpty) {
+          setState(() {
+            saveText = context.loc.setupNext;
+          });
+        }
+      },
+    );
   }
 
   @override

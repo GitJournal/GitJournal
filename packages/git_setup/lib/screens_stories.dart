@@ -5,19 +5,10 @@
  */
 
 import 'package:flutter/material.dart';
-
 import 'package:git_setup/git_config.dart';
 import 'package:git_setup/keygen.dart';
-import 'apis/api_fakes.dart';
-import 'apis/githost_factory.dart';
-import 'autoconfigure.dart';
-import 'clone_url.dart';
-import 'error.dart';
+
 import 'fakes/clone_fake.dart';
-import 'loading.dart';
-import 'repo_selector.dart';
-import 'screens.dart';
-import 'sshkey.dart';
 
 class DummyGitConfig implements IGitConfig {
   @override
@@ -42,133 +33,11 @@ class DummyGitConfig implements IGitConfig {
   Future<void> save() async {}
 }
 
-class _Providers implements ISetupProviders {
+class DummyProvider implements ISetupProviders {
   @override
   IGitConfig readGitConfig(BuildContext context) {
     return DummyGitConfig();
   }
-}
-
-Widget autoConfigureChoice() {
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: GitHostAutoConfigureChoicePage(
-      onDone: (_) {},
-    ),
-  );
-}
-
-Widget gitHostChoice() {
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: GitHostChoicePage(
-      onCustomGitHost: () {},
-      onKnownGitHost: (_) {},
-    ),
-  );
-}
-
-Widget autoConfigure() {
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: GitHostSetupAutoConfigurePage(
-      gitHostType: GitHostType.GitHub,
-      onDone: (host, userInfo) {},
-      providers: _Providers(),
-    ),
-  );
-}
-
-Widget cloneUrl() {
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: GitCloneUrlPage(
-      initialValue: "foo?",
-      doneFunction: (val) {},
-    ),
-  );
-}
-
-// FIXME: Create widgets for all the errors!
-Widget loadingError() {
-  return const Padding(
-    padding: EdgeInsets.all(16.0),
-    child: GitHostSetupErrorPage(
-      "This is an error message",
-    ),
-  );
-}
-
-// FIXME: Create widgets for all the loading screen messages!
-Widget loading() {
-  return const Padding(
-    padding: EdgeInsets.all(16.0),
-    child: GitHostSetupLoadingPage(
-      "Loading Message",
-    ),
-  );
-}
-
-var _publicKey =
-    "ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzODQAAABhBJ9OSG+YIxqsZiXWisqJIqRStX5wjy9oMrT9gnB85jgR03RjMBWpxXAtrlreo7ljDqhs9g3zdXq/oxcPgzyS+mm33A4WTGGY0u4RbxY14q8V1p/CVu5sd39UYpwYsj0HLw== vishesh@Visheshs-MacBook-Pro.local";
-
-Widget sshKeyKnownProviderPage() {
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: GitHostSetupSshKeyKnownProviderPage(
-      openDeployKeyPage: () {},
-      copyKeyFunction: (_) {},
-      publicKey: _publicKey,
-      regenerateFunction: () {},
-      doneFunction: () {},
-    ),
-  );
-}
-
-Widget sshKeyUnknownProviderPage() {
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: GitHostSetupSshKeyUnknownProviderPage(
-      publicKey: _publicKey,
-      regenerateFunction: () {},
-      doneFunction: () {},
-      copyKeyFunction: (_) {},
-    ),
-  );
-}
-
-Widget keyChoicePage() {
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: GitHostSetupKeyChoicePage(
-      onGenerateKeys: () {},
-      onUserProvidedKeys: () {},
-    ),
-  );
-}
-
-Widget keyUserProvidedKeysPage() {
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: GitHostUserProvidedKeysPage(
-      doneFunction: (_, __, ___) {},
-    ),
-  );
-}
-
-Widget repoSelector() {
-  return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: GitHostSetupRepoSelector(
-      gitHost: GitHubFake(_gitHubData),
-      userInfo: UserInfo(
-        name: 'vhanda',
-        email: 'me@vhanda.in',
-        username: 'vhanda',
-      ),
-      onDone: (_) {},
-    ),
-  );
 }
 
 Widget cloning() {
@@ -178,7 +47,7 @@ Widget cloning() {
   );
 }
 
-var _gitHubData = '''
+var gitHubDataFake = '''
 [
   {
     "id": 229985363,

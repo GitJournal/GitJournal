@@ -9,6 +9,17 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:git_setup/apis/api_fakes.dart';
+import 'package:git_setup/apis/githost_factory.dart';
+import 'package:git_setup/autoconfigure.dart';
+import 'package:git_setup/clone_url.dart';
+import 'package:git_setup/cloning.dart';
+import 'package:git_setup/git_transfer_progress.dart';
+import 'package:git_setup/loading_error.dart';
+import 'package:git_setup/repo_selector.dart';
+import 'package:git_setup/screens.dart';
+import 'package:git_setup/screens_stories.dart';
+import 'package:git_setup/sshkey.dart';
 import 'package:gitjournal/core/folder/sorting_mode.dart';
 import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/editors/common_types.dart';
@@ -29,6 +40,7 @@ import 'package:gitjournal/settings/settings_screen.dart';
 import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
 import 'package:gitjournal/widgets/note_delete_dialog.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
+import 'package:gitjournal/widgets/setup.dart';
 import 'package:gitjournal/widgets/sorting_mode_selection_dialog.dart';
 import 'package:widgetbook/widgetbook.dart';
 
@@ -95,6 +107,9 @@ WidgetbookCategory buildWidgetbookCategory(
   );
 }
 
+const _publicKey =
+    "ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzODQAAABhBJ9OSG+YIxqsZiXWisqJIqRStX5wjy9oMrT9gnB85jgR03RjMBWpxXAtrlreo7ljDqhs9g3zdXq/oxcPgzyS+mm33A4WTGGY0u4RbxY14q8V1p/CVu5sd39UYpwYsj0HLw== vishesh@Visheshs-MacBook-Pro.local";
+
 var allScreens = [
   TestScreenGroup(name: "OnBoarding", screens: [
     TestScreen(
@@ -127,6 +142,117 @@ var allScreens = [
     TestScreen(
       name: "Purchase Failed",
       builder: (_) => const PurchaseFailedDialog("Foo"),
+    ),
+  ]),
+  TestScreenGroup(name: "Setup", screens: [
+    TestScreen(
+      name: "Main",
+      builder: (_) => GitJournalGitSetupScreen(
+        repoFolderName: "foo",
+        onCompletedFunction: (_, __) async {},
+      ),
+    ),
+    TestScreen(
+      name: "GitHostChoicePage",
+      builder: (_) => GitHostChoicePage(
+        onCustomGitHost: () {},
+        onKnownGitHost: (GitHostType) {},
+      ),
+    ),
+    TestScreen(
+      name: "GitCloneUrlPage",
+      builder: (_) => GitCloneUrlPage(
+        doneFunction: (String arg1) {},
+        initialValue: '',
+      ),
+    ),
+    TestScreen(
+      name: "GitHostAutoConfigureChoicePage",
+      builder: (_) => GitHostAutoConfigureChoicePage(
+        onDone: (GitHostSetupType) {},
+      ),
+    ),
+    TestScreen(
+      name: "GitHostSetupKeyChoicePage",
+      builder: (_) => GitHostSetupKeyChoicePage(
+        onGenerateKeys: () {},
+        onUserProvidedKeys: () {},
+      ),
+    ),
+    TestScreen(
+      name: "GitCloneUrlKnownProviderPage",
+      builder: (_) => GitCloneUrlKnownProviderPage(
+        doneFunction: (_) {},
+        gitHostType: GitHostType.GitHub,
+        initialValue: '',
+        launchCreateUrlPage: () {},
+      ),
+    ),
+    TestScreen(
+      name: "GitHostSetupAutoConfigurePage",
+      builder: (_) => GitHostSetupAutoConfigurePage(
+        gitHostType: GitHostType.GitHub,
+        onDone: (_, __) {},
+        providers: DummyProvider(),
+      ),
+    ),
+    TestScreen(
+      name: "GitHostSetupSshKeyUnknownProviderPage",
+      builder: (_) => GitHostSetupSshKeyUnknownProviderPage(
+        copyKeyFunction: (_) {},
+        doneFunction: () {},
+        publicKey: _publicKey,
+        regenerateFunction: () {},
+      ),
+    ),
+    TestScreen(
+      name: "GitHostUserProvidedKeysPage",
+      builder: (_) => GitHostUserProvidedKeysPage(
+        doneFunction: (a, b, c) {},
+      ),
+    ),
+    TestScreen(
+      name: "GitHostSetupRepoSelector",
+      builder: (_) => GitHostSetupRepoSelector(
+        gitHost: GitHubFake(gitHubDataFake),
+        userInfo: UserInfo(
+          email: 'me@vhanda.in',
+          name: 'vhanda',
+          username: 'vhanda',
+        ),
+        onDone: (GitHostRepo arg1) {},
+      ),
+    ),
+    TestScreen(
+      name: "GitHostCloningPage",
+      builder: (_) => GitHostCloningPage(
+        cloneProgress: GitTransferProgress(),
+        errorMessage: null,
+      ),
+    ),
+    TestScreen(
+      name: "GitHostSetupSshKeyKnownProviderPage",
+      builder: (_) => GitHostSetupSshKeyKnownProviderPage(
+        copyKeyFunction: (BuildContext arg1) {},
+        doneFunction: () {},
+        openDeployKeyPage: () {},
+        publicKey: _publicKey,
+        regenerateFunction: () {},
+      ),
+    ),
+    TestScreen(
+      name: "GitHostSetupLoadingErrorPage Error",
+      builder: (_) => const GitHostSetupLoadingErrorPage(
+        errorMessage: 'Error Message',
+        loadingMessage: 'Loading Message',
+      ),
+    ),
+    TestScreen(
+      name: "GitHostSetupLoadingErrorPage Loading",
+      builder: (_) => const GitHostSetupLoadingErrorPage(
+        errorMessage: null,
+        loadingMessage: 'Loading Message',
+      ),
     ),
   ]),
   TestScreenGroup(name: "Settings", screens: [
