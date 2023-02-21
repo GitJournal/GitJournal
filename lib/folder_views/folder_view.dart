@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 import 'package:git_bindings/git_bindings.dart';
 import 'package:gitjournal/analytics/analytics.dart';
@@ -19,11 +18,11 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/editors/note_editor.dart';
 import 'package:gitjournal/folder_views/common.dart';
+import 'package:gitjournal/folder_views/folder_view_configuration_dialog.dart';
 import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/settings.dart';
-import 'package:gitjournal/settings/widgets/settings_header.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/app_bar_menu_button.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
@@ -360,102 +359,42 @@ class _FolderViewState extends State<FolderView> {
   Future<void> _configureViewButtonPressed() async {
     var _ = await showDialog<SortingMode>(
       context: context,
-      builder: (BuildContext context) {
-        void headerTypeChanged(StandardViewHeader? newHeader) {
-          if (newHeader == null) {
-            return;
-          }
-          setState(() {
-            _headerType = newHeader;
-          });
-
-          var folderConfig = _sortedNotesFolder!.config;
-          folderConfig.viewHeader = _headerType;
-          folderConfig.save();
-        }
-
-        void summaryChanged(bool newVal) {
-          setState(() {
-            _showSummary = newVal;
-          });
-
-          var folderConfig = _sortedNotesFolder!.config;
-          folderConfig.showNoteSummary = newVal;
-          folderConfig.save();
-        }
-
-        return StatefulBuilder(
-          builder: (BuildContext context, setState) {
-            var children = <Widget>[
-              SettingsHeader(context.loc.widgetsFolderViewHeaderOptionsHeading),
-              RadioListTile<StandardViewHeader>(
-                title: Text(
-                    context.loc.widgetsFolderViewHeaderOptionsTitleFileName),
-                value: StandardViewHeader.TitleOrFileName,
-                groupValue: _headerType,
-                onChanged: (newVal) {
-                  headerTypeChanged(newVal);
-                  setState(() {});
-                },
-              ),
-              RadioListTile<StandardViewHeader>(
-                title: Text(context.loc.widgetsFolderViewHeaderOptionsAuto),
-                value: StandardViewHeader.TitleGenerated,
-                groupValue: _headerType,
-                onChanged: (newVal) {
-                  headerTypeChanged(newVal);
-                  setState(() {});
-                },
-              ),
-              RadioListTile<StandardViewHeader>(
-                key: const ValueKey("ShowFileNameOnly"),
-                title: Text(context.loc.widgetsFolderViewHeaderOptionsFileName),
-                value: StandardViewHeader.FileName,
-                groupValue: _headerType,
-                onChanged: (newVal) {
-                  headerTypeChanged(newVal);
-                  setState(() {});
-                },
-              ),
-              SwitchListTile(
-                key: const ValueKey("SummaryToggle"),
-                title: Text(context.loc.widgetsFolderViewHeaderOptionsSummary),
-                value: _showSummary,
-                onChanged: (bool newVal) {
-                  setState(() {
-                    _showSummary = newVal;
-                  });
-                  summaryChanged(newVal);
-                },
-              ),
-            ];
-
-            return AlertDialog(
-              title: GestureDetector(
-                key: const ValueKey("Hack_Back"),
-                child:
-                    Text(context.loc.widgetsFolderViewHeaderOptionsCustomize),
-                onTap: () {
-                  // Hack to get out of the dialog in the tests
-                  // driver.findByType('ModalBarrier') doesn't seem to be working
-                  if (foundation.kDebugMode) {
-                    Navigator.of(context).pop();
-                  }
-                },
-              ),
-              key: const ValueKey("ViewOptionsDialog"),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: children,
-              ),
-            );
-          },
-        );
-      },
+      builder: _viewDialog,
     );
 
     setState(() {});
+  }
+
+  Widget _viewDialog(BuildContext context) {
+    void headerTypeChanged(StandardViewHeader? newHeader) {
+      if (newHeader == null) {
+        return;
+      }
+      setState(() {
+        _headerType = newHeader;
+      });
+
+      var folderConfig = _sortedNotesFolder!.config;
+      folderConfig.viewHeader = _headerType;
+      folderConfig.save();
+    }
+
+    void summaryChanged(bool newVal) {
+      setState(() {
+        _showSummary = newVal;
+      });
+
+      var folderConfig = _sortedNotesFolder!.config;
+      folderConfig.showNoteSummary = newVal;
+      folderConfig.save();
+    }
+
+    return FolderViewConfigurationDialog(
+      headerType: _headerType,
+      showSummary: _showSummary,
+      onHeaderTypeChanged: headerTypeChanged,
+      onShowSummaryChanged: summaryChanged,
+    );
   }
 
   Future<void> _folderViewChooserSelected() async {

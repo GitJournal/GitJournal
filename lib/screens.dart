@@ -13,10 +13,13 @@ import 'package:gitjournal/core/folder/sorting_mode.dart';
 import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/editors/note_editor_selection_dialog.dart';
+import 'package:gitjournal/folder_views/folder_view_configuration_dialog.dart';
+import 'package:gitjournal/folder_views/standard_view.dart';
 import 'package:gitjournal/iap/purchase_thankyou_screen.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/screens/onboarding_screens.dart';
 import 'package:gitjournal/settings/settings_screen.dart';
+import 'package:gitjournal/widgets/note_delete_dialog.dart';
 import 'package:gitjournal/widgets/rename_dialog.dart';
 import 'package:gitjournal/widgets/sorting_mode_selection_dialog.dart';
 import 'package:widgetbook/widgetbook.dart';
@@ -117,6 +120,17 @@ var allScreens = [
   TestScreenGroup(name: "Settings", screens: [
     TestScreen(name: "Home", builder: (_) => SettingsScreen()),
   ]),
+  TestScreenGroup(name: "Folder View", screens: [
+    TestScreen(
+      name: "Folder View Configuration Dialog",
+      builder: (_) => FolderViewConfigurationDialog(
+        headerType: StandardViewHeader.TitleOrFileName,
+        showSummary: true,
+        onHeaderTypeChanged: (_) {},
+        onShowSummaryChanged: (_) {},
+      ),
+    ),
+  ]),
   TestScreenGroup(name: "Editor", screens: [
     TestScreen(
       name: "Selection Dialog",
@@ -132,6 +146,14 @@ var allScreens = [
         inputDecoration: context.loc.widgetsNoteEditorFileName,
         dialogTitle: context.loc.widgetsNoteEditorRenameFile,
       ),
+    ),
+    TestScreen(
+      name: "Delete Dialog - 1",
+      builder: (context) => const NoteDeleteDialog(num: 1),
+    ),
+    TestScreen(
+      name: "Delete Dialog - 2",
+      builder: (context) => const NoteDeleteDialog(num: 2),
     ),
   ]),
   TestScreenGroup(name: "Misc", screens: [
