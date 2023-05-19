@@ -103,6 +103,7 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
 
     inlineTagPrefixes = getStringSet("inlineTagPrefixes") ?? inlineTagPrefixes;
 
+
     emojify = getBool("emojify") ?? emojify;
     allowedFileExts = getStringSet("allowedFileExts") ?? allowedFileExts;
   }
@@ -110,10 +111,8 @@ class NotesFolderConfig extends ChangeNotifier with SettingsSharedPref {
   Future<void> save() async {
     var def = NotesFolderConfig(id, pref);
 
-    await setString(
-        "noteFileNameFormat",
-        NoteFileNameFormat.DateOnly.toInternalString(),
-        NoteFileNameFormat.DateOnly.toInternalString());
+    await setString("noteFileNameFormat", fileNameFormat.toInternalString(),
+        def.fileNameFormat.toInternalString());
     await setString(
         "journalNoteFileNameFormat",
         journalFileNameFormat.toInternalString(),
