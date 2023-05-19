@@ -84,7 +84,7 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
       ),
       ProOverlay(
         child: SwitchListTile(
-          title: Text(context.loc.featureSingleJournalEntry),
+          title: Text(context.loc.singleJournalEntry),
           value: settings.journalEditorSingleNote,
           onChanged: (bool newVal) {
             settings.journalEditorSingleNote = newVal;

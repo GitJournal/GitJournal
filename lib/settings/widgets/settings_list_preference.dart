@@ -42,6 +42,8 @@ class ListPreference extends StatelessWidget {
             title: title,
             options: options,
             currentOption: currentOption,
+            actionsBuilder: actionsBuilder,
+            optionLabelBuilder: optionLabelBuilder,
           ),
         );
 
@@ -58,12 +60,18 @@ class ListPreferenceSelectionDialog extends StatelessWidget {
   final List<String> options;
   final String? currentOption;
   final String title;
+  final List<Widget> Function(BuildContext context, String? currentOption)?
+      actionsBuilder;
+  final Widget Function(String? currentOption, String option)?
+      optionLabelBuilder;
 
   const ListPreferenceSelectionDialog({
     super.key,
     required this.options,
     this.currentOption,
     required this.title,
+    this.actionsBuilder,
+    this.optionLabelBuilder,
   });
 
   @override
@@ -80,7 +88,9 @@ class ListPreferenceSelectionDialog extends StatelessWidget {
             children: [
               for (var o in options)
                 _LabeledRadio(
-                  label: o,
+                  label: optionLabelBuilder != null
+            ? optionLabelBuilder!(currentOption, o)
+            : Text(o),
                   value: o,
                   groupValue: currentOption,
                   onChanged: (String? val) {
