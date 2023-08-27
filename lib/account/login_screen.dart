@@ -205,8 +205,8 @@ class FormBackButton extends StatelessWidget {
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Row(
-          children: const <Widget>[
+        child: const Row(
+          children: <Widget>[
             Icon(Icons.keyboard_arrow_left, color: Colors.black),
             Text(
               'Back',

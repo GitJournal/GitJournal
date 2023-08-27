@@ -27,18 +27,17 @@ dependencies:
   dart_date: ^1.1.1
   dart_git:
     git: https://github.com/GitJournal/dart-git.git
-  device_info_plus: ^4.0.0
+  device_info_plus: ^9.0.2
   dio: ^4.0.6
   dio_smart_retry: ^1.2.0
   dots_indicator: ^2.0.0
   email_validator: ^2.0.1
   equatable: ^2.0.0
-  fast_immutable_collections: ^8.1.1
-  file_picker: ^4.0.2
+  fast_immutable_collections: ^9.1.5
+  file_picker: ^5.3.2
   filesystem_picker: ^2.0.0-nullsafety.0
   fimber: ^0.6.1
   fixnum: ^1.0.1
-  flex_color_scheme: ^4.2.0
   flutter:
     sdk: flutter
   flutter_cache_manager: ^3.0.1
@@ -51,8 +50,8 @@ dependencies:
   flutter_markdown: ^0.6.1
   flutter_runtime_env: ^0.0.4
   flutter_staggered_grid_view: ^0.4.1
-  flutter_svg: ^0.21.0+1
-  flutter_tex_js: ^1.2.15
+  flutter_svg: ^2.0.7
+  flutter_tex_js: ^2.0.0
   font_awesome_flutter: ^10.0.0
   fs_shim: ^2.0.1+2
   function_types: ^0.1.0
@@ -70,7 +69,7 @@ dependencies:
   image_picker: ^0.8.4+1
   in_app_purchase: ^3.1.1
   in_app_purchase_android: ^0.2.3+9
-  intl: ^0.17.0
+  intl: ^0.18.0
   language_picker: ^0.4.1
   launch_review: ^3.0.1
   markdown: ^6.0.1
@@ -79,19 +78,19 @@ dependencies:
   nested: ^1.0.0
   openssh_ed25519:
     git: https://github.com/GitJournal/openssh_ed25519.git
-  org_flutter: ^1.4.0
-  package_info_plus: ^1.0.4
+  org_flutter: ^3.0.0
+  package_info_plus: ^4.0.2
   path: ^1.8.0
   path_provider: ^2.0.11
   permission_handler: ^10.2.0
-  photo_view: ^0.13.0
+  photo_view: ^0.14.0
   protobuf: ^2.0.0
   provider: ^6.0.1
   quick_actions: ^0.6.0+3
   quiver: ^3.2.1
   recase: ^4.0.0
   receive_sharing_intent: ^1.4.5
-  sentry_flutter: ^6.6.1
+  sentry_flutter: ^7.8.0
   share_plus: ^2.1.4
   shared_preferences: ^2.0.5
   sprintf: ^6.0.0
@@ -118,10 +117,13 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   hive_generator: ^1.1.0
-  junitreport: ^2.0.2
   process_run: ^0.12.3+2
   test: ^1.16.5
-  widgetbook: ^2.4.1
+  widgetbook:
+    git:
+      url: https://github.com/devfelipereis/widgetbook
+      ref: upgrade-flutter-3.10
+      path: packages/widgetbook
 
 flutter:
   uses-material-design: true

@@ -5,10 +5,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:universal_io/io.dart';
 
@@ -66,20 +63,14 @@ class ThemableImage extends StatelessWidget {
     if (file != null) {
       image = Image.file(file!, width: width, height: height);
     } else if (string.isNotEmpty) {
-      image = SvgPicture(
-          StringPicture(
-              _transformSVG,
-              '$string<?theme themingMethod="$themingMethod" themingCondition="$themingCondition" colorCondition="$colorCondition" backgroundColor="$bg" ?>'),
-          width: width,
-          height: height);
+      image = SvgPicture.string(string, width: width, height: height);
     } else {
       throw Exception("Tried to render an image without File or SVG string");
     }
-    return themingMethod == ThemingMethod.filter
-        ? _themeFilter(image, bg)
-        : image;
+    return themingMethod == ThemingMethod.filter ? image : image;
   }
 
+  /*
   Future<PictureInfo> _transformSVG(data, colorFilter, key) async {
     DrawableRoot svgRoot = await svg.fromSvgString(data, key);
     if (themingCondition != ThemingCondition.noBackground ||
@@ -138,6 +129,7 @@ class ThemableImage extends StatelessWidget {
       size: svgRoot.viewport.size,
     );
   }
+  */
 }
 
 enum ThemingMethod { none, filter, wToBg, invertBrightness }
@@ -146,6 +138,7 @@ enum ThemingCondition { none, noBackground }
 
 enum ColorCondition { all, bw, gray }
 
+/*
 /// Tests if the [Drawable] [draw] has a non transparent background
 ///
 /// [width] and [height] specify the area for a drawable to fill to be a valid background.
@@ -230,3 +223,5 @@ Widget _themeFilter(Widget widget, Color background) {
       child: widget);
   return stack;
 }
+
+*/

@@ -3,7 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
-
 import 'dart:io';
 
 import 'package:dart_git/git.dart';
@@ -147,7 +146,7 @@ void main() {
     );
 
     // FIXME: Use a proper size of a mobile, also set the DPI
-    tester.binding.window.physicalSizeTestValue = const Size(10800, 23400);
+    await tester.binding.setSurfaceSize(const Size(10800, 23400));
     await tester.pumpAndSettle();
 
     var note = repo.rootFolder.getNoteWithSpec('doc.md')!;
@@ -211,7 +210,7 @@ void main() {
     );
 
     // FIXME: Use a proper size of a mobile, also set the DPI
-    tester.binding.window.physicalSizeTestValue = const Size(10800, 23400);
+    await tester.binding.setSurfaceSize(const Size(10800, 23400));
     await tester.pumpAndSettle();
 
     var note = repo.rootFolder.getNoteWithSpec('doc.md')!;
@@ -261,7 +260,7 @@ void main() {
     );
 
     // FIXME: Use a proper size of a mobile, also set the DPI
-    tester.binding.window.physicalSizeTestValue = const Size(10800, 23400);
+    await tester.binding.setSurfaceSize(const Size(10800, 23400));
     await tester.pumpAndSettle();
 
     // Open the note

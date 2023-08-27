@@ -66,7 +66,7 @@ class _AppDrawerState extends State<AppDrawer>
   }
 
   Widget _buildRepoList() {
-    var divider = Row(children: const <Widget>[Expanded(child: Divider())]);
+    var divider = const Row(children: <Widget>[Expanded(child: Divider())]);
     var repoManager = context.watch<RepositoryManager>();
     var repoIds = repoManager.repoIds;
 
@@ -128,7 +128,7 @@ class _AppDrawerState extends State<AppDrawer>
       );
     }
 
-    var divider = Row(children: const <Widget>[Expanded(child: Divider())]);
+    var divider = const Row(children: <Widget>[Expanded(child: Divider())]);
 
     return Drawer(
       child: ListView(

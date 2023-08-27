@@ -5,7 +5,7 @@
  */
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
+// import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/screens/home_screen.dart';
@@ -78,6 +78,7 @@ class _SettingsThemeState extends State<SettingsThemeScreen> {
 
   Widget homeScreen(int i) {
     var themes = [
+      /*
       GitJournalTheme.fromFlexLight(
         name: "Mandy Red",
         flexScheme: FlexScheme.mandyRed,
@@ -94,6 +95,7 @@ class _SettingsThemeState extends State<SettingsThemeScreen> {
         name: "Amber",
         flexScheme: FlexScheme.amber,
       ),
+      */
     ];
 
     return _GitJournalThemeView(gjTheme: themes[i]);
@@ -115,7 +117,7 @@ class _GitJournalThemeView extends StatelessWidget {
         width: mq.size.width,
         height: mq.size.height,
         child: IgnorePointer(
-          ignoringSemantics: true,
+          // ignoringSemantics: true,
           child: HomeScreen(),
         ),
       ),
@@ -159,8 +161,10 @@ class GitJournalTheme {
 
   GitJournalTheme({required this.name, required this.themeData});
 
+  /*
   GitJournalTheme.fromFlexLight({
     required this.name,
     required FlexScheme flexScheme,
   }) : themeData = FlexColorScheme.light(scheme: flexScheme).toTheme;
+  */
 }

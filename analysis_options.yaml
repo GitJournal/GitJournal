@@ -5,8 +5,6 @@
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
-  strong-mode:
-    implicit-dynamic: true
   errors:
     missing_required_param: error
     missing_return: error
