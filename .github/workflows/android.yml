@@ -12,7 +12,6 @@ on:
 jobs:
   Build:
     runs-on: ubuntu-latest
-    container: ghcr.io/gitjournal/flutter-android-sdk:latest
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -21,17 +20,28 @@ jobs:
       - run: git config --global --add safe.directory '*'
       - name: Test
         run: ./scripts/test.sh
-      # - name: Test Report
-      #   uses: dorny/test-reporter@v1
-      #   if: success() || failure()
-      #   with:
-      #     name: Unit Tests ${{ matrix.os }} ${{ matrix.sdk }}
-      #     path: test-results.xml
-      #     reporter: jest-junit
-      - name: Unlock Secrets
+
+      - name: Unlock secrets
+        uses: sliteteam/github-action-git-crypt-unlock@1.2.0
         env:
-          GITCRYPT_KEY: ${{ secrets.GITCRYPT_KEY }}
-        run: ./scripts/decrypt_secrets.sh
+          GIT_CRYPT_KEY: ${{ secrets.GITCRYPT_KEY }}
+      - uses: actions/setup-java@v2
+        with:
+          distribution: "zulu"
+          java-version: "11"
+      - uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r19
+      - name: Get Flutter version from pubspec
+        run: |
+          set -e
+          FLUTTER_VERSION=$(cat pubspec.yaml | grep 'flutter:' | head -n 1 | awk '{ print $2 }' | tr -d '"' | cut -d "=" -f 2)
+          echo "FLUTTER_VERSION=${FLUTTER_VERSION}" >> $GITHUB_ENV
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
       - name: Setup Env
         run: dart ./scripts/setup_env.dart
       - name: Build
