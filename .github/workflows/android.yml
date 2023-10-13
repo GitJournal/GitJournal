@@ -42,8 +42,8 @@ jobs:
         run: dart ./scripts/setup_env.dart
       - name: Flutter Doctor
         run: flutter doctor
-      - name: Get Deps
-        run: flutter pub get
+      - name: Get Flutter Deps
+        run: flutter pub get --enforce-lockfile --suppress-analytics
       - name: Build
         run: ./scripts/build_android.sh
       - name: "Upload Artifact"
