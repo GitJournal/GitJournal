@@ -13,6 +13,8 @@ jobs:
   Build:
     runs-on: ubuntu-latest
     steps:
+      - name: Give more Disk Space
+        run: sudo rm -rf /usr/share/dotnet
       - name: checkout
         uses: actions/checkout@v3
         with:
