@@ -9,7 +9,7 @@ set -eux pipefail
 BUILD_NUM=$(git rev-list --count HEAD)
 echo "Build Number: $BUILD_NUM"
 
-flutter build appbundle --verbose --flavor prod --build-number="$BUILD_NUM" --dart-define=INSTALL_SOURCE=playstore
+flutter build appbundle --flavor prod --build-number="$BUILD_NUM" --dart-define=INSTALL_SOURCE=playstore
 
 BUILD_ID=$(make version | tail -n 1 | awk '{ print $4 }')
 
