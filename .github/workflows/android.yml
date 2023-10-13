@@ -28,10 +28,6 @@ jobs:
         with:
           distribution: "zulu"
           java-version: "17"
-      - uses: nttld/setup-ndk@v1
-        with:
-          ndk-version: r19
-          link-to-sdk: true
       - name: Get Flutter version from pubspec
         run: |
           set -e
