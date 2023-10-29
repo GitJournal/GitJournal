@@ -5,6 +5,7 @@
  */
 
 import 'dart:async';
+import 'dart:io';
 import 'dart:isolate';
 
 import 'package:flutter/material.dart';
@@ -32,7 +33,9 @@ Future<void> main() async {
     await reportError(isolateError.first, isolateError.last);
   }).sendPort);
 
-  await FlutterDisplayMode.setHighRefreshRate();
+  if (Platform.isIOS || Platform.isAndroid) {
+    await FlutterDisplayMode.setHighRefreshRate();
+  }
 
   await runZonedGuarded(() async {
     await Chain.capture(() async {
