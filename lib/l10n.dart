@@ -74,6 +74,8 @@ extension LocalizedBuildContext on BuildContext {
         return loc.settingsNoteFileNameFormatZettelkasten;
       case Lk.settingsNoteFileNameFormatIso8601:
         return loc.settingsNoteFileNameFormatIso8601;
+      case Lk.settingsNoteFileNameFormatTemplate:
+        return loc.settingsNoteFileNameFormatTemplate;
       case Lk.settingsRemoteSyncManual:
         return loc.settingsRemoteSyncManual;
       case Lk.settingsRemoteSyncAuto:
@@ -192,6 +194,7 @@ enum Lk {
   settingsNoteFileNameFormatTitle,
   settingsNoteFileNameFormatZettelkasten,
   settingsNoteFileNameFormatIso8601,
+  settingsNoteFileNameFormatTemplate,
   settingsRemoteSyncManual,
   settingsRemoteSyncAuto,
   widgetsFolderViewViewsStandard,

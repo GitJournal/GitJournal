@@ -7,9 +7,6 @@
 import 'dart:convert';
 
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:path/path.dart' as p;
-import 'package:universal_io/io.dart' as io;
-
 import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/markdown/md_yaml_doc.dart';
 import 'package:gitjournal/core/markdown/md_yaml_doc_codec.dart';
@@ -17,6 +14,10 @@ import 'package:gitjournal/core/markdown/md_yaml_doc_loader.dart';
 import 'package:gitjournal/core/markdown/md_yaml_note_serializer.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/utils/result.dart';
+import 'package:path/path.dart' as p;
+import 'package:path/path.dart';
+import 'package:universal_io/io.dart' as io;
+
 import 'file/file.dart';
 import 'folder/notes_folder_fs.dart';
 import 'note.dart';
@@ -50,6 +51,13 @@ class NoteStorage {
 
     return catchAll<Note>(() async {
       assert(note.fullFilePath.startsWith(p.separator));
+
+      final directory = dirname(note.fullFilePath);
+      final directoryExists = io.Directory(directory).existsSync();
+      if (!directoryExists) {
+        Log.i("msg: Directory does not exist, creating it: $directory");
+        await (io.Directory(directory).create(recursive: true));
+      }
 
       var file = io.File(note.fullFilePath);
       var _ = await file.writeAsBytes(contents, flush: true);

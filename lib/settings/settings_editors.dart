@@ -12,6 +12,7 @@ import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_storage.dart';
+import 'package:gitjournal/settings/widgets/settings_filename_format_preference.dart';
 import 'package:gitjournal/settings/widgets/settings_header.dart';
 import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
 import 'package:gitjournal/utils/utils.dart';
@@ -93,17 +94,20 @@ class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
         ),
       ),
       ProOverlay(
-        child: ListPreference(
-          title: context.loc.settingsNoteNewNoteFileName,
-          currentOption:
-              folderConfig.journalFileNameFormat.toPublicString(context),
-          options: NoteFileNameFormat.options
-              .map((f) => f.toPublicString(context))
-              .toList(),
-          onChange: (String publicStr) {
-            var format =
-                NoteFileNameFormat.fromPublicString(context, publicStr);
+        child: NoteFileNameFormatPreference(
+          getFileNameFormatFromConfig: () => folderConfig.journalFileNameFormat,
+          setFileNameFormatInConfig: (format) {
             folderConfig.journalFileNameFormat = format;
+            folderConfig.save();
+            setState(() {});
+          },
+          getFileNameTemplateFromConfig: () =>
+              folderConfig.journalFileNameTemplate.isEmpty
+                  ? "{{date}} {{title}}"
+                  : folderConfig.journalFileNameTemplate,
+          setFileNameFormatWithTemplateInConfig: (text) {
+            folderConfig.journalFileNameFormat = NoteFileNameFormat.Template;
+            folderConfig.journalFileNameTemplate = text;
             folderConfig.save();
             setState(() {});
           },
