@@ -14,7 +14,6 @@ import 'package:gitjournal/iap/purchase_screen.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository_manager.dart';
-import 'package:gitjournal/screens/error_screen.dart';
 import 'package:gitjournal/screens/folder_listing.dart';
 import 'package:gitjournal/screens/home_screen.dart';
 import 'package:gitjournal/screens/tag_listing.dart';
@@ -324,14 +323,7 @@ class RepoTile extends StatelessWidget {
       leading: icon,
       title: Text(repoManager.repoFolderName(id), style: textStyle),
       onTap: () async {
-        Navigator.pop(context);
-
-        var r = await repoManager.setCurrentRepo(id);
-        var route = r.isFailure ? ErrorScreen.routePath : HomeScreen.routePath;
-        var _ = Navigator.of(context).pushNamedAndRemoveUntil(
-          route,
-          (r) => true,
-        );
+        await repoManager.setCurrentRepo(id);
       },
     );
 
