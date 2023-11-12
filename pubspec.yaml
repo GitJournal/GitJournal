@@ -22,8 +22,6 @@ dependencies:
   convert: ^3.1.1
   crypto: ^3.0.2
   cryptography: ^2.0.5
-  d3_force_flutter:
-    git: https://github.com/MathGaps/d3-force-flutter.git
   dart_date: ^1.1.1
   dart_git:
     git: https://github.com/GitJournal/dart-git.git
