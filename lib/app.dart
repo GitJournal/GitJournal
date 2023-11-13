@@ -6,7 +6,6 @@
 
 import 'dart:async';
 
-import 'package:auto_updater/auto_updater.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/analytics/route_observer.dart';
@@ -69,12 +68,6 @@ class JournalApp extends StatefulWidget {
     var _ = await repoManager.buildActiveRepository();
 
     GitJournalInAppPurchases.confirmProPurchaseBoot();
-
-    if (Platform.isMacOS) {
-      var feedURL = 'http://gitjournal.io/sparkle/appcast.xml';
-      await autoUpdater.setFeedURL(feedURL);
-      await autoUpdater.checkForUpdates();
-    }
 
     runApp(
       GitJournalChangeNotifiers(

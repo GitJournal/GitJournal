@@ -89,14 +89,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
-  auto_updater:
-    dependency: "direct main"
-    description:
-      name: auto_updater
-      sha256: "73a651d2318c29a1093d1eafd48b3552eef08ae2fefbd178ce952d5d3bcb942e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.7"
   background_fetch:
     dependency: "direct main"
     description:
@@ -546,14 +538,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.9.3"
-  filesystem_picker:
-    dependency: "direct main"
-    description:
-      name: filesystem_picker
-      sha256: "41bb01c65cbd8abc389509adfbd08fc4c9090d2d4d15c5fa8813d0efd980f523"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.1"
   fimber:
     dependency: "direct main"
     description:

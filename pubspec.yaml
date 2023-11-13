@@ -11,7 +11,6 @@ publish_to: none
 dependencies:
   android_external_storage: ^0.1.0
   auto_size_text: ^3.0.0-nullsafety.0
-  auto_updater: ^0.1.2
   background_fetch: ^1.0.3
   badges: ^2.0.1
   buffer: ^1.2.0
@@ -33,7 +32,6 @@ dependencies:
   equatable: ^2.0.0
   fast_immutable_collections: ^9.1.5
   file_picker: ^5.3.2
-  filesystem_picker: ^2.0.0-nullsafety.0
   fimber: ^0.6.1
   fixnum: ^1.0.1
   flutter:
