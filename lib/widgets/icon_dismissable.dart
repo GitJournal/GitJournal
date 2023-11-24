@@ -11,15 +11,12 @@ class IconDismissable extends Dismissible {
   final IconData iconData;
 
   IconDismissable({
-    required Key key,
+    required super.key,
     required this.backgroundColor,
     required this.iconData,
-    required Function(DismissDirection) onDismissed,
-    required Widget child,
+    required Function(DismissDirection) super.onDismissed,
+    required super.child,
   }) : super(
-          key: key,
-          child: child,
-          onDismissed: onDismissed,
           background: Container(
             color: backgroundColor,
             alignment: AlignmentDirectional.centerStart,

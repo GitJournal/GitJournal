@@ -34,14 +34,14 @@ class KatexBlockSyntax extends BlockSyntax {
 
   @override
   bool canParse(BlockParser parser) {
-    var hasStartTag = parser.current.startsWith(r'$$');
+    var hasStartTag = parser.current.content.startsWith(r'$$');
     if (!hasStartTag) return false;
 
     var ahead = 1;
     while (true) {
       var line = parser.peek(ahead);
       if (line == null) return false;
-      if (line.endsWith(r'$$')) return true;
+      if (line.content.endsWith(r'$$')) return true;
 
       ahead++;
     }
@@ -50,14 +50,14 @@ class KatexBlockSyntax extends BlockSyntax {
   @override
   Node? parse(BlockParser parser) {
     var lines = <String>[];
-    if (parser.current.startsWith(r'$$')) {
-      if (parser.current.length > 2) {
-        lines.add(parser.current.substring(2));
+    if (parser.current.content.startsWith(r'$$')) {
+      if (parser.current.content.length > 2) {
+        lines.add(parser.current.content.substring(2));
       }
       parser.advance();
 
       while (!parser.isDone) {
-        var line = parser.current;
+        var line = parser.current.content;
         if (line.endsWith(r'$$')) {
           if (line.length > 2) {
             line = line.substring(0, line.length - 2);
@@ -69,7 +69,7 @@ class KatexBlockSyntax extends BlockSyntax {
           break;
         }
 
-        lines.add(parser.current);
+        lines.add(parser.current.content);
         parser.advance();
       }
     } else {
@@ -82,6 +82,6 @@ class KatexBlockSyntax extends BlockSyntax {
 
   @override
   bool canEndBlock(BlockParser parser) {
-    return parser.current.endsWith(r'$$');
+    return parser.current.content.endsWith(r'$$');
   }
 }

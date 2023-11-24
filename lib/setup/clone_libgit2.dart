@@ -5,6 +5,7 @@
  */
 
 import 'package:dart_git/dart_git.dart';
+import 'package:dart_git/plumbing/reference.dart';
 import 'package:function_types/function_types.dart';
 import 'package:git_bindings/git_bindings.dart' as git_bindings;
 import 'package:git_setup/git_transfer_progress.dart';
@@ -101,11 +102,11 @@ Future<String> _defaultBranch(
   var repo = GitRepository.load(repoPath);
   var remoteBranch = repo.guessRemoteHead(remoteName);
   repo.close();
-  if (remoteBranch == null || remoteBranch.target == null) {
+  if (remoteBranch == null || remoteBranch is! SymbolicReference) {
     Log.e("Failed to guess RemoteHead. Returning `main`");
     return "main";
   }
-  var branch = remoteBranch.target!.branchName()!;
+  var branch = remoteBranch.target.branchName()!;
   Log.d("Guessed default branch as $branch");
   return branch;
 }

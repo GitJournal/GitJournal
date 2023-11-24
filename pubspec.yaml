@@ -4,7 +4,7 @@ version: 1.87.0+10
 
 environment:
   sdk: ">=2.19.2 <3.0.0"
-  flutter: ">=3.13.6"
+  flutter: ">=3.16.0"
 
 publish_to: none
 
@@ -17,14 +17,14 @@ dependencies:
   carousel_slider: ^4.0.0
   collection: ^1.15.0-nullsafety.4
   community_material_icon: ^5.9.55
-  connectivity_plus: ^2.2.0
+  connectivity_plus: ^5.0.2
   convert: ^3.1.1
   crypto: ^3.0.2
   cryptography: ^2.0.5
   dart_date: ^1.1.1
   dart_git:
     git: https://github.com/GitJournal/dart-git.git
-  device_info_plus: ^9.0.2
+  device_info_plus: ^9.1.1
   dio: ^4.0.6
   dio_smart_retry: ^1.2.0
   dots_indicator: ^2.0.0
@@ -43,7 +43,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_login: ^4.0.0
-  flutter_markdown: ^0.6.1
+  flutter_markdown: ^0.6.18+2
   flutter_runtime_env: ^0.0.4
   flutter_staggered_grid_view: ^0.4.1
   flutter_svg: ^2.0.7
@@ -68,7 +68,7 @@ dependencies:
   intl: ^0.18.0
   language_picker: ^0.4.1
   launch_review: ^3.0.1
-  markdown: ^6.0.1
+  markdown: ^7.1.1
   meta: ^1.8.0
   mutex: ^3.0.0
   nested: ^1.0.0
@@ -87,9 +87,9 @@ dependencies:
   recase: ^4.0.0
   receive_sharing_intent: ^1.4.5
   sentry_flutter: ^7.8.0
-  share_plus: ^2.1.4
+  share_plus: ^7.2.1
   shared_preferences: ^2.0.5
-  sprintf: ^6.0.0
+  sprintf: ^7.0.0
   stack_trace: ^1.10.0
   synchronized: ^3.0.0
   table_calendar: ^3.0.3
@@ -99,22 +99,21 @@ dependencies:
   tuple: ^2.0.1
   universal_io: ^2.0.4
   url_launcher: ^6.0.3
-  uuid: ^3.0.4
+  uuid: ^4.2.1
   yaml: ^3.1.0
   yaml_serializer: ^0.0.12
 
 dev_dependencies:
   benchmark_harness: ^2.0.0
-  build_runner: ^2.1.0
-  dart_code_metrics: ^4.10.1
+  build_runner:
   flutter_launcher_icons:
     git: https://github.com/dirkbo/flutter_launcher_icons
-  flutter_lints: ^2.0.1
+  flutter_lints: ^3.0.1
   flutter_test:
     sdk: flutter
-  hive_generator: ^1.1.0
+  hive_generator: ^2.0.1
   process_run: ^0.12.3+2
-  test: ^1.16.5
+  test:
   widgetbook:
     git:
       url: https://github.com/devfelipereis/widgetbook

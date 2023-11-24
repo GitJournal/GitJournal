@@ -38,7 +38,7 @@ class ImageCaption extends StatelessWidget {
       final overflown = (TextPainter(
               text: TextSpan(text: text),
               maxLines: 2,
-              textScaleFactor: MediaQuery.of(context).textScaleFactor,
+              textScaler: MediaQuery.of(context).textScaler,
               textDirection: Directionality.of(context))
             ..layout(maxWidth: maxWidth - 2 * (padding + margin)))
           .didExceedMaxLines;

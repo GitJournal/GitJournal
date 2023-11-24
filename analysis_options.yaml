@@ -17,8 +17,6 @@ analyzer:
     - "lib/generated_plugin_registrant.dart"
     - lib/account/init.dart
     - lib/experiments/**
-  # plugins:
-  # - dart_code_metrics
 
 linter:
   rules:
@@ -34,26 +32,4 @@ linter:
     no_leading_underscores_for_local_identifiers: false
     library_private_types_in_public_api: false
     use_build_context_synchronously: false
-
-dart_code_metrics:
-  metrics-exclude:
-    - test/**
-    - lib/settings/settings_screen.dart
-    - lib/setup/screens.dart
-    - lib/widgets/images/markdown_image.dart
-  metrics:
-    cyclomatic-complexity: 200
-    maximum-nesting-level: 50
-    number-of-parameters: 40
-    source-lines-of-code: 5000
-    number-of-methods: 100
-  rules:
-    - avoid-ignoring-return-values
-    - double-literal-format
-    # - avoid-unused-parameters
-    # - double-literal-format
-    # - no-boolean-literal-compare
-    # - no-equal-arguments
-    # - no-magic-number
-    # - no-object-declaration
-    # - prefer-conditional-expressions
+    dangling_library_doc_comments: false

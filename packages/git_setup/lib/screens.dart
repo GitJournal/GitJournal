@@ -416,6 +416,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       body: body,
     );
 
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         if (_currentPageIndex != 0) {

@@ -21,13 +21,8 @@ protos:
 
 	git checkout lib/generated/locale_keys.g.dart
 
-unused:
-	flutter pub run dart_code_metrics:metrics check-unused-files lib
-	flutter pub run dart_code_metrics:metrics check-unused-code lib
-
 lint:
 	flutter analyze
-	flutter pub run dart_code_metrics:metrics lib
 
 build_env:
 	flutter scripts/setup_env.dart gen

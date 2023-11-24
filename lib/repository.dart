@@ -11,6 +11,7 @@ import 'package:dart_git/config.dart';
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/exceptions.dart';
 import 'package:dart_git/plumbing/git_hash.dart';
+import 'package:dart_git/plumbing/reference.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:git_bindings/git_bindings.dart';
@@ -37,8 +38,8 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:time/time.dart';
-import 'package:universal_io/io.dart' show Platform;
 import 'package:universal_io/io.dart' as io;
+import 'package:universal_io/io.dart' show Platform;
 
 class GitJournalRepo with ChangeNotifier {
   final RepositoryManager repoManager;
@@ -764,7 +765,7 @@ class GitJournalRepo with ChangeNotifier {
     var remoteBranchRef = remoteBranches.firstWhereOrNull(
       (ref) => ref.name.branchName() == name,
     );
-    if (remoteBranchRef == null) {
+    if (remoteBranchRef == null || remoteBranchRef is! HashReference) {
       return "";
     }
 
@@ -794,7 +795,7 @@ class GitJournalRepo with ChangeNotifier {
       throw Exception("Branch config for '$branchName' misdsing remote");
     }
     var remoteBranch = await repo.remoteBranch(remoteName, branchName);
-    await repo.resetHard(remoteBranch.hash!);
+    await repo.resetHard(remoteBranch.hash);
 
     numChanges = 0;
     notifyListeners();

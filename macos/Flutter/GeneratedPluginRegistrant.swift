@@ -5,14 +5,14 @@
 import FlutterMacOS
 import Foundation
 
-import connectivity_plus_macos
+import connectivity_plus
 import device_info_plus
 import file_selector_macos
 import in_app_purchase_storekit
 import package_info_plus
 import path_provider_foundation
 import sentry_flutter
-import share_plus_macos
+import share_plus
 import shared_preferences_foundation
 import sqflite
 import url_launcher_macos

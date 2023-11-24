@@ -23,8 +23,6 @@ jobs:
           cache: true
       - name: Analyze
         run: flutter analyze
-      - name: dart code metrics
-        run: flutter pub run dart_code_metrics:metrics lib
 
   REUSE-Licensing:
     runs-on: ubuntu-latest

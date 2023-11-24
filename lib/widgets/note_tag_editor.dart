@@ -72,6 +72,7 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
       ),
     );
 
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         Navigator.of(context).pop(_selectedTags);

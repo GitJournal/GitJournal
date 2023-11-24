@@ -5,14 +5,13 @@
  */
 
 import 'package:flutter/material.dart';
-
+import 'package:gitjournal/core/link.dart';
+import 'package:gitjournal/core/links_loader.dart';
+import 'package:gitjournal/core/transformers/base.dart';
 import 'package:hive/hive.dart';
 import 'package:nested/nested.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/core/link.dart';
-import 'package:gitjournal/core/links_loader.dart';
-import 'package:gitjournal/core/transformers/base.dart';
 import 'notes_materialized_view.dart';
 
 part 'note_links_view.g.dart';
@@ -27,10 +26,10 @@ class _LinksList {
 
 class NoteLinksView extends NotesMaterializedView<_LinksList> {
   NoteLinksView({
-    required String name,
-    required NotesViewComputer<_LinksList> computeFn,
-    required String repoId,
-  }) : super(name: name, computeFn: computeFn, repoId: repoId);
+    required super.name,
+    required super.computeFn,
+    required super.repoId,
+  });
 
   Future<List<Link>> fetchLinks(Note note) async {
     var linksList = await fetch(note);

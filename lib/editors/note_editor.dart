@@ -250,6 +250,7 @@ class NoteEditorState extends State<NoteEditor>
 
   @override
   Widget build(BuildContext context) {
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         var note = _getNoteFromEditor();
