@@ -5,10 +5,6 @@
  */
 
 import 'package:flutter/material.dart';
-
-import 'package:path/path.dart' as p;
-import 'package:provider/provider.dart';
-
 import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
@@ -22,6 +18,9 @@ import 'package:gitjournal/folder_views/journal_view.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/utils/utils.dart';
+import 'package:path/path.dart' as p;
+import 'package:provider/provider.dart';
+
 import 'common_types.dart';
 import 'standard_view.dart';
 
@@ -147,7 +146,7 @@ bool openNewNoteEditor(BuildContext context, String noteSpec) {
     AppRoute.NewNotePrefix + folderConfig.defaultEditor.toInternalString(),
   );
 
-  var _ = Navigator.push(context, route);
+  Navigator.push(context, route);
   return true;
 }
 

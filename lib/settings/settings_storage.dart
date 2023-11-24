@@ -68,7 +68,7 @@ class SettingsStorageScreen extends StatelessWidget {
                 name: NoteMetadataSettingsScreen.routePath,
               ),
             );
-            var _ = Navigator.push(context, route);
+            Navigator.push(context, route);
           },
         ),
         ListTile(
@@ -81,7 +81,7 @@ class SettingsStorageScreen extends StatelessWidget {
                 name: NoteFileTypesSettings.routePath,
               ),
             );
-            var _ = Navigator.push(context, route);
+            Navigator.push(context, route);
           },
         ),
         ProOverlay(
@@ -94,7 +94,7 @@ class SettingsStorageScreen extends StatelessWidget {
                 settings:
                     const RouteSettings(name: SettingsTagsScreen.routePath),
               );
-              var _ = Navigator.push(context, route);
+              Navigator.push(context, route);
             },
           ),
         ),
@@ -108,7 +108,7 @@ class SettingsStorageScreen extends StatelessWidget {
                 name: SettingsImagesScreen.routePath,
               ),
             );
-            var _ = Navigator.push(context, route);
+            Navigator.push(context, route);
           },
         ),
         SettingsHeader(context.loc.settingsStorageTitle),
@@ -214,9 +214,8 @@ Future<bool> _isDirWritable(String path) async {
   var file = File(p.join(path, fileName));
 
   try {
-    dynamic _;
-    _ = await file.writeAsString("test");
-    _ = await file.delete();
+    await file.writeAsString("test");
+    await file.delete();
   } catch (_) {
     return false;
   }

@@ -5,15 +5,12 @@
  */
 
 import 'package:flutter/material.dart';
-
-import 'package:path/path.dart' as p;
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/storage_config.dart';
-import 'package:gitjournal/utils/result.dart';
+import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RepositoryManager with ChangeNotifier {
   var repoIds = <String>[];
@@ -39,7 +36,7 @@ class RepositoryManager with ChangeNotifier {
   GitJournalRepo? get currentRepo => _repo;
   Object? get currentRepoError => _repoError;
 
-  Future<Result<GitJournalRepo>> buildActiveRepository({
+  Future<GitJournalRepo?> buildActiveRepository({
     bool loadFromCache = true,
     bool syncOnBoot = true,
   }) async {
@@ -49,32 +46,32 @@ class RepositoryManager with ChangeNotifier {
     _repoError = null;
     notifyListeners();
 
-    var r = await GitJournalRepo.load(
-      repoManager: this,
-      gitBaseDir: gitBaseDir,
-      cacheDir: repoCacheDir,
-      pref: pref,
-      id: currentId,
-      loadFromCache: loadFromCache,
-      syncOnBoot: syncOnBoot,
-    );
-    if (r.isFailure) {
-      Log.e("buildActiveRepo", result: r);
-      _repoError = r.error;
-      return fail(r);
+    try {
+      _repo = await GitJournalRepo.load(
+        repoManager: this,
+        gitBaseDir: gitBaseDir,
+        cacheDir: repoCacheDir,
+        pref: pref,
+        id: currentId,
+        loadFromCache: loadFromCache,
+        syncOnBoot: syncOnBoot,
+      );
+    } catch (ex, st) {
+      Log.e("buildActiveRepo", ex: ex, stacktrace: st);
+      _repoError = ex;
+      notifyListeners();
+      return null;
     }
 
-    _repo = r.getOrThrow();
-
     notifyListeners();
-    return Result(_repo!);
+    return _repo!;
   }
 
   String repoFolderName(String id) {
     return pref.getString("${id}_$FOLDER_NAME_KEY") ?? "journal";
   }
 
-  Future<Result<String>> addRepoAndSwitch() async {
+  Future<String> addRepoAndSwitch() async {
     int i = repoIds.length;
     while (repoIds.contains(i.toString())) {
       i++;
@@ -85,24 +82,17 @@ class RepositoryManager with ChangeNotifier {
     currentId = id;
     await _save();
 
-    dynamic _;
-
     // Generate a default folder name!
-    _ = await pref.setString("${id}_$FOLDER_NAME_KEY", "repo_$id");
+    await pref.setString("${id}_$FOLDER_NAME_KEY", "repo_$id");
     Log.i("Creating new repo with id: $id and folder: repo_$id");
 
-    var r = await buildActiveRepository();
-    if (r.isFailure) {
-      return fail(r);
-    }
-
-    return Result(id);
+    await buildActiveRepository();
+    return id;
   }
 
   Future<void> _save() async {
-    dynamic _;
-    _ = await pref.setString("activeRepo", currentId);
-    _ = await pref.setStringList("gitRepos", repoIds);
+    await pref.setString("activeRepo", currentId);
+    await pref.setStringList("gitRepos", repoIds);
   }
 
   void _load() {
@@ -110,25 +100,24 @@ class RepositoryManager with ChangeNotifier {
     repoIds = pref.getStringList("gitRepos") ?? [DEFAULT_ID];
   }
 
-  Future<Result<void>> setCurrentRepo(String id) async {
+  Future<void> setCurrentRepo(String id) async {
     assert(repoIds.contains(id));
     currentId = id;
     await _save();
 
     Log.i("Switching to repo with id: $id");
-    return buildActiveRepository();
+    buildActiveRepository();
   }
 
   Future<void> deleteCurrent() async {
     Log.i("Deleting repo: $currentId");
-    dynamic _;
 
     var i = repoIds.indexOf(currentId);
     await _repo?.delete();
-    _ = repoIds.removeAt(i);
+    repoIds.removeAt(i);
 
     if (repoIds.isEmpty) {
-      _ = await addRepoAndSwitch();
+      await addRepoAndSwitch();
       return;
     }
 
@@ -136,7 +125,7 @@ class RepositoryManager with ChangeNotifier {
     currentId = repoIds[i];
 
     await _save();
-    _ = await buildActiveRepository();
+    await buildActiveRepository();
   }
 
   // Not sure when to call this!

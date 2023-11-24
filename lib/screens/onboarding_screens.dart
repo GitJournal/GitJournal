@@ -155,7 +155,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     appConfig.onBoardingCompleted = true;
     appConfig.save();
 
-    var _ = Navigator.popAndPushNamed(context, HomeScreen.routePath);
+    Navigator.popAndPushNamed(context, HomeScreen.routePath);
   }
 
   void _nextPage() {

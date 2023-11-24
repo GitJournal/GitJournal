@@ -11,7 +11,6 @@ import 'package:dart_git/plumbing/commit_iterator.dart';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/folder_views/folder_view.dart';
 import 'package:gitjournal/l10n.dart';
-import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/sync_attempt.dart';
 import 'package:gitjournal/widgets/app_drawer.dart';
@@ -53,10 +52,10 @@ class HistoryWidget extends StatefulWidget {
 }
 
 class _HistoryWidgetState extends State<HistoryWidget> {
-  final List<Result<GitCommit>> _commits = [];
+  final List<GitCommit> _commits = [];
   List<dynamic> _commitsAndSyncAttempts = [];
 
-  Iterable<Result<GitCommit>>? _stream;
+  Iterable<GitCommit>? _stream;
 
   final _scrollController = ScrollController();
   final _lock = Lock();
@@ -105,7 +104,7 @@ class _HistoryWidgetState extends State<HistoryWidget> {
       _stream ??= await _initStream();
       var stream = _stream!;
 
-      var list = <Result<GitCommit>>[];
+      var list = <GitCommit>[];
       for (var commit in stream.take(20)) {
         list.add(commit);
       }
@@ -117,10 +116,10 @@ class _HistoryWidgetState extends State<HistoryWidget> {
     });
   }
 
-  Future<Iterable<Result<GitCommit>>> _initStream() async {
+  Future<Iterable<GitCommit>> _initStream() async {
     try {
-      _gitRepo = GitRepository.load(widget.repoPath).getOrThrow();
-      var head = _gitRepo!.headHash().getOrThrow();
+      _gitRepo = GitRepository.load(widget.repoPath);
+      var head = _gitRepo!.headHash();
       return commitPreOrderIterator(
           objStorage: _gitRepo!.objStorage, from: head);
     } on Exception catch (ex) {
@@ -140,12 +139,8 @@ class _HistoryWidgetState extends State<HistoryWidget> {
       late DateTime aDt;
       if (a is SyncAttempt) {
         aDt = a.when;
-      } else if (a is Result<GitCommit>) {
-        if (a.isSuccess) {
-          aDt = a.getOrThrow().author.date;
-        } else {
-          aDt = DateTime.now(); // WTF, am I supposed to do in this case?
-        }
+      } else if (a is GitCommit) {
+        aDt = a.author.date;
       } else {
         assert(false, "Something else is stored in History - ${a.runtimeType}");
       }
@@ -153,12 +148,8 @@ class _HistoryWidgetState extends State<HistoryWidget> {
       late DateTime bDt;
       if (b is SyncAttempt) {
         bDt = b.when;
-      } else if (b is Result<GitCommit>) {
-        if (b.isSuccess) {
-          bDt = b.getOrThrow().author.date;
-        } else {
-          bDt = DateTime.now(); // WTF, am I supposed to do in this case?
-        }
+      } else if (b is GitCommit) {
+        bDt = b.author.date;
       } else {
         assert(false, "Something else is stored in History - ${b.runtimeType}");
       }
@@ -170,7 +161,7 @@ class _HistoryWidgetState extends State<HistoryWidget> {
   @override
   Widget build(BuildContext context) {
     if (_exception != null) {
-      return _FailureTile(result: Result.fail(_exception!));
+      return _FailureTile(error: _exception!.toString());
     }
 
     var extra = _lock.locked ? 1 : 0;
@@ -199,13 +190,11 @@ class _HistoryWidgetState extends State<HistoryWidget> {
       return _SyncAttemptTile(d);
     }
 
-    assert(d is Result<GitCommit>);
-
-    var commitR = d as Result<GitCommit>;
-    Result<GitCommit>? parentCommitR;
+    var commitR = d as GitCommit;
+    GitCommit? parentCommitR;
     for (var j = i + 1; j < _commitsAndSyncAttempts.length; j++) {
       var dd = _commitsAndSyncAttempts[j];
-      if (dd is Result<GitCommit>) {
+      if (dd is GitCommit) {
         parentCommitR = dd;
         break;
       }
@@ -216,27 +205,25 @@ class _HistoryWidgetState extends State<HistoryWidget> {
 
   Widget _buildCommitTile(
     BuildContext context,
-    Result<GitCommit> commitR,
-    Result<GitCommit>? parentCommitR,
+    GitCommit commitR,
+    GitCommit? parentCommitR,
   ) {
     if (parentCommitR == null) {
-      return commitR.isSuccess
-          ? _CommitTile(
-              commit: commitR.getOrThrow(),
-              prevCommit: null,
-              gitRepo: _gitRepo!,
-            )
-          : _FailureTile(result: commitR);
+      return _CommitTile(
+        commit: commitR,
+        prevCommit: null,
+        gitRepo: _gitRepo!,
+      );
     }
 
     try {
       return _CommitTile(
         gitRepo: _gitRepo!,
-        commit: commitR.getOrThrow(),
-        prevCommit: parentCommitR.getOrThrow(),
+        commit: commitR,
+        prevCommit: parentCommitR,
       );
-    } catch (ex, st) {
-      return _FailureTile(result: Result.fail(ex, st));
+    } catch (ex) {
+      return _FailureTile(error: ex.toString());
     }
   }
 }
@@ -343,16 +330,14 @@ class _CommitTileState extends State<_CommitTile> {
   }
 }
 
-class _FailureTile<T> extends StatelessWidget {
-  final Result<T> result;
+class _FailureTile extends StatelessWidget {
+  final String error;
 
-  _FailureTile({super.key, required this.result}) {
-    Log.e("Failure", ex: result.error, stacktrace: result.stackTrace);
-  }
+  const _FailureTile({required this.error});
 
   @override
   Widget build(BuildContext context) {
-    return Text(result.error.toString());
+    return Text(error.toString());
   }
 }
 

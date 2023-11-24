@@ -40,7 +40,7 @@ class SettingsGit extends StatelessWidget {
                 name: GitRemoteSettingsScreen.routePath,
               ),
             );
-            var _ = Navigator.push(context, route);
+            Navigator.push(context, route);
           },
           enabled: repo.remoteGitRepoConfigured,
         ),

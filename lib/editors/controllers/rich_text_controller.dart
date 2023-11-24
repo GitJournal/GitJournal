@@ -30,7 +30,7 @@ class RichTextController extends TextEditingController {
     var children = <TextSpan>[];
 
     var index = 0;
-    var _ = text.splitMapJoin(
+    text.splitMapJoin(
       regexp,
       onMatch: (Match m) {
         var backgroundColor = index != currentPos

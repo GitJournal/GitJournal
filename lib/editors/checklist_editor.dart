@@ -15,7 +15,6 @@ import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/editors/utils/disposable_change_notifier.dart';
 import 'package:gitjournal/l10n.dart';
-import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:time/time.dart';
 
@@ -203,7 +202,7 @@ class ChecklistEditorState extends State<ChecklistEditor>
     while (checklist.items.isNotEmpty) {
       var last = checklist.items.last;
       if (last.checked == false && last.text.trim().isEmpty) {
-        var _ = checklist.removeAt(checklist.items.length - 1);
+        checklist.removeAt(checklist.items.length - 1);
       } else {
         break;
       }
@@ -258,9 +257,8 @@ class ChecklistEditorState extends State<ChecklistEditor>
           }
 
           var k = _getKey(item);
-          dynamic _;
-          _ = focusNodes.remove(k);
-          _ = keys.remove(k);
+          focusNodes.remove(k);
+          keys.remove(k);
           checklist.removeItem(item);
 
           // FIXME: Make this happen on the next build
@@ -294,21 +292,18 @@ class ChecklistEditorState extends State<ChecklistEditor>
   @override
   Future<void> addImage(String filePath) async {
     // FIXME: This should be handled in a better way!
-    var note = getNote();
-    var imageR = await core.Image.copyIntoFs(note.parent, filePath);
-    if (imageR.isFailure) {
-      Log.e("addImage", result: imageR);
-      showResultError(context, imageR);
-      return;
+    try {
+      var note = getNote();
+      var image = await core.Image.copyIntoFs(note.parent, filePath);
+      note = note.copyWith(body: note.body + image.toMarkup(note.fileFormat));
+
+      setState(() {
+        checklist = Checklist(note);
+        _noteModified = true;
+      });
+    } catch (ex) {
+      showErrorSnackbar(context, ex);
     }
-    var image = imageR.getOrThrow();
-
-    note = note.copyWith(body: note.body + image.toMarkup(note.fileFormat));
-
-    setState(() {
-      checklist = Checklist(note);
-      _noteModified = true;
-    });
   }
 
   @override

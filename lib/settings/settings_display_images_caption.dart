@@ -76,7 +76,7 @@ class SettingsDisplayImagesCaptionScreenState
       }
       settings.doCaptionTags = parseTags(doCaptionTags);
       settings.save();
-      var _ = doNotCaptionTagsForm.createState();
+      doNotCaptionTagsForm.createState();
     };
     var doCaptionTagsForm = Form(
       child: TextFormField(

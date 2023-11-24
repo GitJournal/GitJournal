@@ -143,7 +143,7 @@ class _EditorAppSearchBarState extends State<EditorAppSearchBar> {
         IconButton(
           icon: const Icon(Icons.close),
           onPressed: () {
-            var _ = widget.editorState.search(null);
+            widget.editorState.search(null);
             widget.onCloseSelected();
           },
         ),

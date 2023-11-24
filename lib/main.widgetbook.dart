@@ -16,14 +16,13 @@ import 'package:gitjournal/screens.dart';
 import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/themes.dart';
-import 'package:gitjournal/utils/result.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:widgetbook/widgetbook.dart';
 
 Future<void> main() async {
   //TestWidgetsFlutterBinding.ensureInitialized();
-  var _ = WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
   // SharedPreferences.setMockInitialValues({});
 
@@ -42,7 +41,7 @@ Future<void> main() async {
     cacheDir: cacheDir,
     pref: pref,
   );
-  await repoManager.buildActiveRepository().getOrThrow();
+  await repoManager.buildActiveRepository();
   var repo = repoManager.currentRepo!;
   var settings = repo.settings;
   var storageConfig = repo.storageConfig;

@@ -74,7 +74,7 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
 
     var index = _notes.indexWhere((n) => n.filePath == note.filePath);
     assert(index != -1);
-    var _ = _notes.removeAt(index);
+    _notes.removeAt(index);
 
     notifyNoteRemoved(index, note);
   }
@@ -88,9 +88,8 @@ class SortedNotesFolder with NotesFolderNotifier implements NotesFolder {
       return;
     }
 
-    dynamic _;
-    _ = _notes.removeAt(i);
-    _ = _insertInCorrectPos(note);
+    _notes.removeAt(i);
+    _insertInCorrectPos(note);
 
     notifyNoteModified(-1, note);
   }

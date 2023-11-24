@@ -4,14 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:dart_git/dart_git.dart';
 import 'package:function_types/function_types.dart';
 import 'package:git_setup/git_transfer_progress.dart';
-
 import 'package:gitjournal/utils/git_desktop.dart';
+
 import 'clone.dart';
 
-Future<Result<void>> cloneRemote({
+Future<void> cloneRemote({
   required String repoPath,
   required String cloneUrl,
   required String remoteName,
@@ -22,25 +21,23 @@ Future<Result<void>> cloneRemote({
   required String authorEmail,
   required Func1<GitTransferProgress, void> progressUpdate,
 }) {
-  return catchAll(
-    () => cloneRemotePluggable(
-      repoPath: repoPath,
-      cloneUrl: cloneUrl,
-      remoteName: remoteName,
-      sshPublicKey: sshPublicKey,
-      sshPrivateKey: sshPrivateKey,
-      sshPassword: sshPassword,
-      authorName: authorName,
-      authorEmail: authorEmail,
-      progressUpdate: progressUpdate,
-      gitCloneFn: _clone,
-      gitFetchFn: _fetch,
-      defaultBranchFn: _defaultBranch,
-    ),
+  return cloneRemotePluggable(
+    repoPath: repoPath,
+    cloneUrl: cloneUrl,
+    remoteName: remoteName,
+    sshPublicKey: sshPublicKey,
+    sshPrivateKey: sshPrivateKey,
+    sshPassword: sshPassword,
+    authorName: authorName,
+    authorEmail: authorEmail,
+    progressUpdate: progressUpdate,
+    gitCloneFn: _clone,
+    gitFetchFn: _fetch,
+    defaultBranchFn: _defaultBranch,
   );
 }
 
-Future<Result<void>> _clone({
+Future<void> _clone({
   required String cloneUrl,
   required String repoPath,
   required String sshPublicKey,
@@ -57,7 +54,7 @@ Future<Result<void>> _clone({
   );
 }
 
-Future<Result<void>> _fetch(
+Future<void> _fetch(
   String repoPath,
   String remoteName,
   String sshPublicKey,
@@ -74,7 +71,7 @@ Future<Result<void>> _fetch(
   );
 }
 
-Future<Result<String>> _defaultBranch(
+Future<String> _defaultBranch(
   String repoPath,
   String remoteName,
   String sshPublicKey,

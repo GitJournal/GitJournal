@@ -70,8 +70,7 @@ class AppConfig extends ChangeNotifier {
     var pref = await SharedPreferences.getInstance();
     var defaultSet = AppConfig._internal();
 
-    dynamic _;
-    _ = pref.setBool("onBoardingCompleted", onBoardingCompleted);
+    pref.setBool("onBoardingCompleted", onBoardingCompleted);
 
     _setBool(pref, "collectCrashReports", collectCrashReports,
         defaultSet.collectCrashReports);
@@ -98,7 +97,7 @@ class AppConfig extends ChangeNotifier {
     _setBool(pref, "experimentalHistory", experimentalHistory,
         defaultSet.experimentalHistory);
 
-    _ = pref.setInt("appSettingsVersion", version);
+    pref.setInt("appSettingsVersion", version);
 
     notifyListeners();
   }
@@ -127,9 +126,9 @@ class AppConfig extends ChangeNotifier {
     String defaultValue,
   ) async {
     if (value == defaultValue) {
-      var _ = await pref.remove(key);
+      await pref.remove(key);
     } else {
-      var _ = await pref.setString(key, value);
+      await pref.setString(key, value);
     }
   }
 
@@ -140,9 +139,9 @@ class AppConfig extends ChangeNotifier {
     bool defaultValue,
   ) async {
     if (value == defaultValue) {
-      var _ = await pref.remove(key);
+      await pref.remove(key);
     } else {
-      var _ = await pref.setBool(key, value);
+      await pref.setBool(key, value);
     }
   }
 }

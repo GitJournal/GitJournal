@@ -77,7 +77,7 @@ class GitHostSetupAutoConfigurePageState
           });
 
           Log.d("Starting to fetch userInfo");
-          userInfo = await gitHost!.getUserInfo().getOrThrow();
+          userInfo = await gitHost!.getUserInfo();
           Log.d("Got UserInfo - $userInfo");
 
           var gitConfig = widget.providers.readGitConfig(context);

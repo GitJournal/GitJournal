@@ -9,12 +9,12 @@ import 'package:dart_git/blob_ctime_builder.dart';
 import 'package:dart_git/file_mtime_builder.dart';
 import 'package:dart_git/git.dart';
 import 'package:dart_git/utils/date_time.dart';
-import 'package:test/test.dart';
-import 'package:universal_io/io.dart' as io;
-
 import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/file/file_storage_cache.dart';
+import 'package:test/test.dart';
+import 'package:universal_io/io.dart' as io;
+
 import '../../lib.dart';
 
 void main() {
@@ -61,7 +61,7 @@ void main() {
     var tempDir = await io.Directory.systemTemp.createTemp('__fnft__');
     var repoPath = tempDir.path;
 
-    GitRepository.init(repoPath).throwOnError();
+    GitRepository.init(repoPath);
 
     var fileStorage = FileStorage(
       repoPath: repoPath,

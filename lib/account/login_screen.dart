@@ -157,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
       onLogin: _login,
       onSignup: _signup,
       onSubmitAnimationCompleted: () {
-        var _ = Navigator.of(context).pushReplacement(_FadePageRoute(
+        Navigator.of(context).pushReplacement(_FadePageRoute(
           builder: (context) => const AccountScreen(),
         ));
       },

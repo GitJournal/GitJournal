@@ -32,7 +32,6 @@ import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/settings.dart';
-import 'package:gitjournal/utils/result.dart';
 import 'package:gitjournal/utils/utils.dart';
 import 'package:gitjournal/widgets/folder_selection_dialog.dart';
 import 'package:gitjournal/widgets/note_delete_dialog.dart';
@@ -170,8 +169,7 @@ class NoteEditorState extends State<NoteEditor>
 
   Future<void> addImageToNote(String imagePath) async {
     try {
-      var image =
-          await core.Image.copyIntoFs(_note.parent, imagePath).getOrThrow();
+      var image = await core.Image.copyIntoFs(_note.parent, imagePath);
       var note =
           _note.copyWith(body: _note.body + image.toMarkup(_note.fileFormat));
       if (mounted) {
@@ -225,7 +223,7 @@ class NoteEditorState extends State<NoteEditor>
 
   @override
   void dispose() {
-    var _ = WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -239,12 +237,14 @@ class NoteEditorState extends State<NoteEditor>
       if (!_noteModified(note)) return;
 
       Log.d("App Lost Focus - saving note");
-      var repo = Provider.of<GitJournalRepo>(context, listen: false);
-      repo.saveNoteToDisk(note).then((r) {
-        if (r.isFailure) {
-          Log.e("Failed to save note", ex: r.error, stacktrace: r.stackTrace);
+      var repo = context.read<GitJournalRepo>();
+      () async {
+        try {
+          await repo.saveNoteToDisk(note);
+        } catch (ex) {
+          Log.e("Failed to save note", ex: ex);
         }
-      });
+      }();
     }
   }
 
@@ -393,23 +393,22 @@ class NoteEditorState extends State<NoteEditor>
         _newNoteRenamed = true;
       });
     } else {
-      var container = context.read<GitJournalRepo>();
+      var repo = context.read<GitJournalRepo>();
 
       var originalNote = widget.existingNote!;
-      var renameResult = await container.renameNote(originalNote, newFileName);
-      if (renameResult.isFailure) {
+      try {
+        var newNote = await repo.renameNote(originalNote, newFileName);
+        setState(() {
+          _note = newNote;
+        });
+      } catch (ex) {
+        if (!mounted) return;
         await showAlertDialog(
           context,
           context.loc.editorsCommonSaveNoteFailedTitle,
           context.loc.editorsCommonSaveNoteFailedMessage,
         );
       }
-      if (!mounted) return;
-
-      var newNote = renameResult.getOrThrow();
-      setState(() {
-        _note = newNote;
-      });
     }
 
     var newExt = p.extension(newFileName).toLowerCase();
@@ -428,7 +427,7 @@ class NoteEditorState extends State<NoteEditor>
       // Make sure this file type is supported
       var config = note.parent.config;
       if (!config.allowedFileExts.contains(newExt)) {
-        var _ = config.allowedFileExts.add(newExt);
+        config.allowedFileExts.add(newExt);
         config.save();
 
         var ext =
@@ -535,11 +534,10 @@ class NoteEditorState extends State<NoteEditor>
             _note = note;
           });
         }
-        await repo.addNote(note).throwOnError();
+        await repo.addNote(note);
       } else {
         var originalNote = widget.existingNote!;
-        var modifiedNote =
-            await repo.updateNote(originalNote, note).getOrThrow();
+        var modifiedNote = await repo.updateNote(originalNote, note);
         if (!mounted) return false;
         setState(() {
           _note = modifiedNote;
@@ -594,16 +592,16 @@ class NoteEditorState extends State<NoteEditor>
           _note = note.copyWith(parent: destFolder);
         });
       } else {
-        var stateContainer = context.read<GitJournalRepo>();
-        var r = await stateContainer.moveNote(note, destFolder);
-        if (r.isFailure) {
-          showResultError(context, r);
-          return;
-        }
+        try {
+          var repo = context.read<GitJournalRepo>();
+          var n = await repo.moveNote(note, destFolder);
 
-        setState(() {
-          _note = r.getOrThrow();
-        });
+          setState(() {
+            _note = n;
+          });
+        } catch (ex) {
+          showErrorSnackbar(context, ex);
+        }
       }
     }
   }

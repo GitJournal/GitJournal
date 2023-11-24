@@ -221,7 +221,7 @@ class _FolderViewState extends State<FolderView> {
     var i = _selectedNotes.indexOf(note);
     if (i != -1) {
       setState(() {
-        var _ = _selectedNotes.removeAt(i);
+        _selectedNotes.removeAt(i);
       });
     } else {
       setState(() {
@@ -239,7 +239,7 @@ class _FolderViewState extends State<FolderView> {
     var i = _selectedNotes.indexOf(note);
     if (i != -1) {
       setState(() {
-        var _ = _selectedNotes.removeAt(i);
+        _selectedNotes.removeAt(i);
       });
     } else {
       setState(() {
@@ -331,7 +331,7 @@ class _FolderViewState extends State<FolderView> {
       ),
       AppRoute.NewNotePrefix + routeType,
     );
-    var _ = await Navigator.push(context, route);
+    await Navigator.push(context, route);
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
   }
 
@@ -358,7 +358,7 @@ class _FolderViewState extends State<FolderView> {
   }
 
   Future<void> _configureViewButtonPressed() async {
-    var _ = await showDialog<SortingMode>(
+    await showDialog<SortingMode>(
       context: context,
       builder: _viewDialog,
     );
@@ -463,7 +463,7 @@ class _FolderViewState extends State<FolderView> {
         icon: const Icon(Icons.search),
         onPressed: () {
           logEvent(Event.SearchButtonPressed);
-          var _ = showSearch(
+          showSearch(
             context: context,
             delegate: NoteSearchDelegate(
               _sortedNotesFolder!.notes,
@@ -536,9 +536,12 @@ class _FolderViewState extends State<FolderView> {
       builder: (context) => FolderSelectionDialog(),
     );
     if (destFolder != null) {
-      var repo = context.read<GitJournalRepo>();
-      var r = await repo.moveNotes(_selectedNotes, destFolder);
-      showResultError(context, r);
+      try {
+        var repo = context.read<GitJournalRepo>();
+        await repo.moveNotes(_selectedNotes, destFolder);
+      } catch (ex) {
+        showErrorSnackbar(context, ex);
+      }
     }
 
     _resetSelection();

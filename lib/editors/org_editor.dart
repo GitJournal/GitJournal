@@ -16,7 +16,6 @@ import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/editors/undo_redo.dart';
 import 'package:gitjournal/editors/utils/disposable_change_notifier.dart';
 import 'package:gitjournal/l10n.dart';
-import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/utils/utils.dart';
 
 import 'org_text_controller.dart';
@@ -155,23 +154,21 @@ class OrgEditorState extends State<OrgEditor>
 
   @override
   Future<void> addImage(String filePath) async {
-    var imageR = await core.Image.copyIntoFs(_note.parent, filePath);
-    if (imageR.isFailure) {
-      Log.e("addImage", result: imageR);
-      showResultError(context, imageR);
-      return;
+    try {
+      var image = await core.Image.copyIntoFs(_note.parent, filePath);
+      var ts = insertImage(
+        TextEditorState.fromValue(_textController.value),
+        image,
+        _note.fileFormat,
+      );
+
+      setState(() {
+        _textController.value = ts.toValue();
+        _noteModified = true;
+      });
+    } catch (ex) {
+      showErrorSnackbar(context, ex);
     }
-
-    var ts = insertImage(
-      TextEditorState.fromValue(_textController.value),
-      imageR.getOrThrow(),
-      _note.fileFormat,
-    );
-
-    setState(() {
-      _textController.value = ts.toValue();
-      _noteModified = true;
-    });
   }
 
   @override

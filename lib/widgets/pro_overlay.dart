@@ -28,7 +28,7 @@ class ProOverlay extends StatelessWidget {
         child: IgnorePointer(child: Opacity(opacity: 0.5, child: child)),
       ),
       onTap: () {
-        var _ = Navigator.pushNamed(context, "/purchase");
+        Navigator.pushNamed(context, "/purchase");
       },
     );
   }

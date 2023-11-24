@@ -4,12 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:dart_git/utils/result.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:path/path.dart' as p;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:universal_io/io.dart' as io;
-
 import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
@@ -17,6 +12,10 @@ import 'package:gitjournal/core/image.dart' as core;
 import 'package:gitjournal/core/image.dart';
 import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/editors/common.dart';
+import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:universal_io/io.dart' as io;
+
 import '../lib.dart';
 
 void main() {
@@ -44,7 +43,7 @@ void main() {
       imagePath = p.join(currentDir.path, 'test/testdata/icon.png');
     }
 
-    image = await core.Image.copyIntoFs(rootFolder, imagePath).getOrThrow();
+    image = await core.Image.copyIntoFs(rootFolder, imagePath);
   });
 
   test('Insert at end', () {

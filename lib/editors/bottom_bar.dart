@@ -56,7 +56,7 @@ class EditorBottomBar extends StatelessWidget {
     var addIcon = IconButton(
       icon: const Icon(Icons.attach_file),
       onPressed: () {
-        var _ = showModalBottomSheet(
+        showModalBottomSheet(
           context: context,
           builder: (c) => AddBottomSheet(editor, editorState),
           elevation: 0,
@@ -67,7 +67,7 @@ class EditorBottomBar extends StatelessWidget {
     var menuIcon = IconButton(
       icon: const Icon(Icons.more_vert),
       onPressed: () {
-        var _ = showModalBottomSheet(
+        showModalBottomSheet(
           context: context,
           builder: (c) => BottomMenuSheet(
             editor: editor,

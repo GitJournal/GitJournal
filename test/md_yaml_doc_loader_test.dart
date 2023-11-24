@@ -4,12 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import 'package:gitjournal/core/markdown/md_yaml_doc_loader.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart';
 
-import 'package:gitjournal/core/markdown/md_yaml_doc_loader.dart';
-import 'package:gitjournal/utils/result.dart';
 import 'lib.dart';
 
 void main() {
@@ -37,7 +36,7 @@ Alright.""";
 
     test('Should load one doc', () async {
       var loader = MdYamlDocLoader();
-      var doc = await loader.loadDoc(filePath).getOrThrow();
+      var doc = await loader.loadDoc(filePath);
 
       expect(doc.body, "Alright.");
       expect(doc.props["type"], "Journal");

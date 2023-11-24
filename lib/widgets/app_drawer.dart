@@ -80,7 +80,7 @@ class _AppDrawerState extends State<AppDrawer>
             icon: Icons.add,
             title: context.loc.drawerAddRepo,
             onTap: () {
-              var _ = repoManager.addRepoAndSwitch();
+              repoManager.addRepoAndSwitch();
               Navigator.pop(context);
             },
             selected: false,
@@ -121,7 +121,7 @@ class _AppDrawerState extends State<AppDrawer>
         ),
         onTap: () {
           Navigator.pop(context);
-          var _ = Navigator.pushNamed(context, GitHostSetupScreen.routePath);
+          Navigator.pushNamed(context, GitHostSetupScreen.routePath);
 
           logEvent(Event.DrawerSetupGitHost);
         },
@@ -138,9 +138,9 @@ class _AppDrawerState extends State<AppDrawer>
           AppDrawerHeader(
             repoListToggled: () {
               if (animController.isCompleted) {
-                var _ = animController.reverse(from: 1.0);
+                animController.reverse(from: 1.0);
               } else {
-                var _ = animController.forward(from: 0.0);
+                animController.forward(from: 0.0);
               }
             },
           ),
@@ -154,7 +154,7 @@ class _AppDrawerState extends State<AppDrawer>
               title: context.loc.drawerPro,
               onTap: () {
                 Navigator.pop(context);
-                var _ = Navigator.pushNamed(context, PurchaseScreen.routePath);
+                Navigator.pushNamed(context, PurchaseScreen.routePath);
 
                 logEvent(
                   Event.PurchaseScreenOpen,
@@ -257,7 +257,7 @@ class _AppDrawerState extends State<AppDrawer>
               title: context.loc.settingsTitle,
               onTap: () {
                 Navigator.pop(context);
-                var _ = Navigator.pushNamed(context, SettingsScreen.routePath);
+                Navigator.pushNamed(context, SettingsScreen.routePath);
 
                 logEvent(Event.DrawerSettings);
               },
@@ -326,10 +326,18 @@ class RepoTile extends StatelessWidget {
       onTap: () async {
         Navigator.pop(context);
 
-        var r = await repoManager.setCurrentRepo(id);
-        var route = r.isFailure ? ErrorScreen.routePath : HomeScreen.routePath;
-        var _ = Navigator.of(context).pushNamedAndRemoveUntil(
-          route,
+        try {
+          await repoManager.setCurrentRepo(id);
+        } catch (ex) {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            ErrorScreen.routePath,
+            (r) => true,
+          );
+          return;
+        }
+
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          HomeScreen.routePath,
           (r) => true,
         );
       },
@@ -369,6 +377,6 @@ void _navTopLevel(BuildContext context, String toRoute) {
     },
   );
   if (!wasParent) {
-    var _ = Navigator.pushNamed(context, toRoute);
+    Navigator.pushNamed(context, toRoute);
   }
 }

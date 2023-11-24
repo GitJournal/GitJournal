@@ -65,7 +65,7 @@ class JournalApp extends StatefulWidget {
     );
 
     // Ignore the error, the router will show an error screen
-    var _ = await repoManager.buildActiveRepository();
+    await repoManager.buildActiveRepository();
 
     GitJournalInAppPurchases.confirmProPurchaseBoot();
 
@@ -86,7 +86,7 @@ class JournalApp extends StatefulWidget {
   ) async {
     var supportDir = await getApplicationSupportDirectory();
     var analyticsStorage = p.join(supportDir.path, 'analytics');
-    var _ = await Directory(analyticsStorage).create(recursive: true);
+    await Directory(analyticsStorage).create(recursive: true);
 
     var analytics = await Analytics.init(
       pref: pref,
@@ -136,7 +136,7 @@ class JournalAppState extends State<JournalApp> {
         });
         return;
       }
-      var _ = _navigatorKey.currentState!
+      _navigatorKey.currentState!
           .pushNamed(AppRoute.NewNotePrefix + shortcutType);
 
       quickActions.setShortcutItems(<ShortcutItem>[
@@ -164,7 +164,7 @@ class JournalAppState extends State<JournalApp> {
   void _afterBuild(BuildContext context) {
     if (_pendingShortcut != null) {
       var routeName = AppRoute.NewNotePrefix + _pendingShortcut!;
-      var _ = _navigatorKey.currentState!.pushNamed(routeName);
+      _navigatorKey.currentState!.pushNamed(routeName);
       _pendingShortcut = null;
     }
   }
@@ -178,8 +178,7 @@ class JournalAppState extends State<JournalApp> {
 
     var folderConfig = Provider.of<NotesFolderConfig>(context, listen: false);
     var editor = folderConfig.defaultEditor.toInternalString();
-    var _ =
-        _navigatorKey.currentState!.pushNamed(AppRoute.NewNotePrefix + editor);
+    _navigatorKey.currentState!.pushNamed(AppRoute.NewNotePrefix + editor);
   }
 
   @visibleForTesting

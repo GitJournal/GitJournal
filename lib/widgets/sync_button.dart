@@ -156,7 +156,7 @@ class _BlinkingIconState extends State<BlinkingIcon>
       curve: Curves.linear,
     );
 
-    var _ = _controller.repeat(reverse: true);
+    _controller.repeat(reverse: true);
   }
 
   @override

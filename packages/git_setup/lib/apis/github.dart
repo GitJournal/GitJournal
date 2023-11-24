@@ -9,7 +9,6 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/services.dart';
-
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:http/http.dart' as http;
@@ -84,17 +83,16 @@ class GitHub implements GitHost {
     var url = "https://github.com/login/oauth/authorize?client_id=" +
         _clientID +
         "&scope=repo";
-    var _ = await launchUrl(
+    await launchUrl(
       Uri.parse(url),
       mode: LaunchMode.externalApplication,
     );
   }
 
   @override
-  Future<Result<List<GitHostRepo>>> listRepos() async {
+  Future<List<GitHostRepo>> listRepos() async {
     if (_accessCode.isEmpty) {
-      var ex = GitHostException.MissingAccessCode;
-      return Result.fail(ex);
+      throw GitHostException.MissingAccessCode;
     }
 
     var url =
@@ -113,8 +111,7 @@ class GitHub implements GitHost {
           response.statusCode.toString() +
           ": " +
           response.body);
-      var ex = GitHostException.HttpResponseFail;
-      return Result.fail(ex);
+      throw GitHostException.HttpResponseFail;
     }
 
     List<dynamic> list = jsonDecode(response.body);
@@ -126,14 +123,13 @@ class GitHub implements GitHost {
     }
 
     // FIXME: Sort these based on some criteria
-    return Result(repos);
+    return repos;
   }
 
   @override
-  Future<Result<GitHostRepo>> createRepo(String name) async {
+  Future<GitHostRepo> createRepo(String name) async {
     if (_accessCode.isEmpty) {
-      var ex = GitHostException.MissingAccessCode;
-      return Result.fail(ex);
+      throw GitHostException.MissingAccessCode;
     }
 
     var url = Uri.parse("https://api.github.com/user/repos");
@@ -157,32 +153,25 @@ class GitHub implements GitHost {
 
       if (response.statusCode == 422) {
         if (response.body.contains("name already exists")) {
-          var ex = GitHostException.RepoExists;
-          return Result.fail(ex);
+          throw GitHostException.RepoExists;
         }
       }
 
-      var ex = GitHostException.CreateRepoFailed;
-      return Result.fail(ex);
+      throw GitHostException.CreateRepoFailed;
     }
 
     Log.d("GitHub createRepo: " + response.body);
     Map<String, dynamic> map = json.decode(response.body);
-    return Result(repoFromJson(map));
+    return repoFromJson(map);
   }
 
   @override
-  Future<Result<GitHostRepo>> getRepo(String name) async {
+  Future<GitHostRepo> getRepo(String name) async {
     if (_accessCode.isEmpty) {
-      var ex = GitHostException.MissingAccessCode;
-      return Result.fail(ex);
+      throw GitHostException.MissingAccessCode;
     }
 
-    var userInfoR = await getUserInfo();
-    if (userInfoR.isFailure) {
-      return fail(userInfoR);
-    }
-    var userInfo = userInfoR.getOrThrow();
+    var userInfo = await getUserInfo();
     var owner = userInfo.username;
     var url = Uri.parse("https://api.github.com/repos/$owner/$name");
 
@@ -197,24 +186,18 @@ class GitHub implements GitHost {
           ": " +
           response.body);
 
-      var ex = GitHostException.GetRepoFailed;
-      return Result.fail(ex);
+      throw GitHostException.GetRepoFailed;
     }
 
     Log.d("GitHub getRepo: " + response.body);
-    try {
-      Map<String, dynamic> map = json.decode(response.body);
-      return Result(repoFromJson(map));
-    } catch (ex, st) {
-      return Result.fail(ex, st);
-    }
+    Map<String, dynamic> map = json.decode(response.body);
+    return repoFromJson(map);
   }
 
   @override
-  Future<Result<void>> addDeployKey(String sshPublicKey, String repo) async {
+  Future<void> addDeployKey(String sshPublicKey, String repo) async {
     if (_accessCode.isEmpty) {
-      var ex = GitHostException.MissingAccessCode;
-      return Result.fail(ex);
+      throw GitHostException.MissingAccessCode;
     }
 
     var url = Uri.parse("https://api.github.com/repos/$repo/keys");
@@ -237,12 +220,10 @@ class GitHub implements GitHost {
           response.statusCode.toString() +
           ": " +
           response.body);
-      var ex = GitHostException.DeployKeyFailed;
-      return Result.fail(ex);
+      throw GitHostException.DeployKeyFailed;
     }
 
     Log.d("GitHub addDeployKey: " + response.body);
-    return Result(null);
   }
 
   static GitHostRepo repoFromJson(Map<String, dynamic> parsedJson) {
@@ -288,10 +269,9 @@ class GitHub implements GitHost {
   }
 
   @override
-  Future<Result<UserInfo>> getUserInfo() async {
+  Future<UserInfo> getUserInfo() async {
     if (_accessCode.isEmpty) {
-      var ex = GitHostException.MissingAccessCode;
-      return Result.fail(ex);
+      throw GitHostException.MissingAccessCode;
     }
 
     var url = Uri.parse("https://api.github.com/user");
@@ -306,8 +286,7 @@ class GitHub implements GitHost {
           response.statusCode.toString() +
           ": " +
           response.body);
-      var ex = GitHostException.HttpResponseFail;
-      return Result.fail(ex);
+      throw GitHostException.HttpResponseFail;
     }
 
     Map<String, dynamic>? map;
@@ -319,23 +298,22 @@ class GitHub implements GitHost {
             ": " +
             response.body);
 
-        var ex = GitHostException.JsonDecodingFail;
-        return Result.fail(ex);
+        throw GitHostException.JsonDecodingFail;
       }
     } catch (ex, st) {
       Log.e("GitHub user Info", ex: ex, stacktrace: st);
       logException(ex, st);
-      return Result.fail(ex, st);
+      rethrow;
     }
 
     if (!map.containsKey('name')) {
-      return Result.fail(Exception('GitHub UserInfo missing name'));
+      throw Exception('GitHub UserInfo missing name');
     }
     if (!map.containsKey('email')) {
-      return Result.fail(Exception('GitHub UserInfo missing email'));
+      throw Exception('GitHub UserInfo missing email');
     }
     if (!map.containsKey('login')) {
-      return Result.fail(Exception('GitHub UserInfo missing login'));
+      throw Exception('GitHub UserInfo missing login');
     }
 
     var name = "";
@@ -354,7 +332,7 @@ class GitHub implements GitHost {
       login = map['login'];
     }
 
-    return Result(UserInfo(name: name, email: email, username: login));
+    return UserInfo(name: name, email: email, username: login);
   }
 
   String _buildAuthHeader() {

@@ -5,16 +5,16 @@
  */
 
 import 'package:dart_git/dart_git.dart';
-import 'package:path/path.dart' as p;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:test/test.dart';
-import 'package:universal_io/io.dart';
-
 import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/utils/link_resolver.dart';
+import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test/test.dart';
+import 'package:universal_io/io.dart';
+
 import 'lib.dart';
 
 void main() {
@@ -49,16 +49,14 @@ void main() {
     await generateNote(repoPath, "zeplin.txt");
     await generateNote(repoPath, "Goat  Sim.md");
 
-    var repo = GitRepository.load(repoPath).getOrThrow();
-    repo
-        .commit(
-          message: "Prepare Test Env",
-          author: GitAuthor(name: 'Name', email: "name@example.com"),
-          addAll: true,
-        )
-        .throwOnError();
+    var repo = GitRepository.load(repoPath);
+    repo.commit(
+      message: "Prepare Test Env",
+      author: GitAuthor(name: 'Name', email: "name@example.com"),
+      addAll: true,
+    );
 
-    await rootFolder.fileStorage.reload().throwOnError();
+    await rootFolder.fileStorage.reload();
     await rootFolder.loadRecursively();
   });
 

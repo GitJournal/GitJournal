@@ -6,12 +6,11 @@
 
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
-import 'package:dart_git/utils/result.dart';
+import 'package:gitjournal/core/folder/notes_folder_fs.dart';
+import 'package:gitjournal/editors/common.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
 
-import 'package:gitjournal/core/folder/notes_folder_fs.dart';
-import 'package:gitjournal/editors/common.dart';
 import 'notes/note.dart';
 
 class Image {
@@ -20,19 +19,13 @@ class Image {
 
   Image._(this.parent, this.filePath);
 
-  static Future<Result<Image>> copyIntoFs(
-      NotesFolderFS parent, String filePath) async {
-    try {
-      var hash = await _md5Hash(filePath);
-      var ext = p.extension(filePath);
-      var imagePath = Image._buildImagePath(parent, hash.toString() + ext);
+  static Future<Image> copyIntoFs(NotesFolderFS parent, String filePath) async {
+    var hash = await _md5Hash(filePath);
+    var ext = p.extension(filePath);
+    var imagePath = Image._buildImagePath(parent, hash.toString() + ext);
 
-      var _ = await File(filePath).copy(p.join(parent.repoPath, imagePath));
-      var img = Image._(parent, imagePath);
-      return Result(img);
-    } catch (ex, st) {
-      return Result.fail(ex, st);
-    }
+    await File(filePath).copy(p.join(parent.repoPath, imagePath));
+    return Image._(parent, imagePath);
   }
 
   static String _buildImagePath(NotesFolderFS parent, String imageFileName) {

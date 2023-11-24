@@ -85,18 +85,17 @@ class _RenameDialogState extends State<RenameDialog> {
               });
 
               var newPath = join(dirname(widget.oldPath), value);
-              var repo = context.read<GitJournalRepo>();
-              var r = repo.fileExists(newPath);
-              if (r.isFailure) {
-                return r.error.toString();
-              }
-              var exists = r.getOrThrow();
+              try {
+                var repo = context.read<GitJournalRepo>();
+                var exists = repo.fileExists(newPath);
+                if (exists) {
+                  return context.loc.widgetsRenameValidatorExists;
+                }
 
-              if (exists) {
-                return context.loc.widgetsRenameValidatorExists;
+                return null;
+              } catch (ex) {
+                return ex.toString();
               }
-
-              return null;
             },
             autofocus: true,
             keyboardType: TextInputType.text,

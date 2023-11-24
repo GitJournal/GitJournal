@@ -27,7 +27,7 @@ class InlineTagsProcessor {
         for (var t in all) {
           t = sanitize(t);
           if (t.isNotEmpty) {
-            var _ = tags.add(t);
+            tags.add(t);
           }
         }
       }

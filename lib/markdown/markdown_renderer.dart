@@ -105,7 +105,7 @@ class MarkdownRenderer extends StatelessWidget {
 
         // External Link
         try {
-          var _ = await launchUrl(
+          await launchUrl(
             Uri.parse(link),
             mode: LaunchMode.externalApplication,
           );

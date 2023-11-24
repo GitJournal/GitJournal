@@ -6,12 +6,10 @@
 
 import 'dart:isolate';
 
-import 'package:synchronized/synchronized.dart';
-import 'package:universal_io/io.dart';
-
 import 'package:gitjournal/core/markdown/md_yaml_doc.dart';
 import 'package:gitjournal/core/markdown/md_yaml_doc_codec.dart';
-import 'package:gitjournal/utils/result.dart';
+import 'package:synchronized/synchronized.dart';
+import 'package:universal_io/io.dart';
 
 class MdYamlDocLoader {
   Isolate? _isolate;
@@ -41,15 +39,14 @@ class MdYamlDocLoader {
     });
   }
 
-  Future<Result<MdYamlDoc>> loadDoc(String filePath) async {
+  Future<MdYamlDoc> loadDoc(String filePath) async {
     assert(filePath.startsWith('/'));
 
     await _initIsolate();
 
     final file = File(filePath);
     if (!file.existsSync()) {
-      var ex = MdYamlDocNotFoundException(filePath);
-      return Result.fail(ex);
+      throw MdYamlDocNotFoundException(filePath);
     }
 
     var rec = ReceivePort();
@@ -61,11 +58,10 @@ class MdYamlDocLoader {
     assert(resp.filePath == filePath);
 
     if (resp.doc != null) {
-      return Result(resp.doc!);
+      return resp.doc!;
     }
 
-    var ex = MdYamlParsingException(filePath, resp.err.toString());
-    return Result.fail(ex);
+    throw MdYamlParsingException(filePath, resp.err.toString());
   }
 }
 
@@ -82,7 +78,7 @@ void _isolateMain(SendPort toMainSender) {
 
   final _serializer = MarkdownYAMLCodec();
 
-  var _ = fromMainRec.listen((data) async {
+  fromMainRec.listen((data) async {
     assert(data is _LoadingMessage);
     var msg = data as _LoadingMessage;
 

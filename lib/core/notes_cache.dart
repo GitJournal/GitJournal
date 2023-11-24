@@ -6,12 +6,8 @@
 
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
-
 import 'package:collection/collection.dart';
-import 'package:path/path.dart' as p;
-import 'package:universal_io/io.dart' as io;
-
+import 'package:flutter/material.dart';
 import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/folder/sorting_mode.dart';
@@ -20,6 +16,8 @@ import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/generated/core.pb.dart' as pb;
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/utils/file_utils.dart';
+import 'package:path/path.dart' as p;
+import 'package:universal_io/io.dart' as io;
 
 class NotesCache {
   final String folderPath;
@@ -61,13 +59,13 @@ class NotesCache {
       var note = Note.fromProtoBuf(parent, pbNote);
       assert(note.oid.isNotEmpty);
       parent.add(note);
-      var _ = selectFolders.add(parent);
+      selectFolders.add(parent);
     }
   }
 
   Future<void> clear() async {
     if (!enabled) return;
-    var _ = await io.File(filePath).delete();
+    await io.File(filePath).delete();
   }
 
   Future<void> buildCache(NotesFolderFS rootFolder) async {
@@ -106,7 +104,7 @@ class NotesCache {
         heap.add(note);
       }
       if (heap.length > CACHE_SIZE) {
-        var _ = heap.removeFirst();
+        heap.removeFirst();
       }
     }
 
@@ -156,9 +154,6 @@ class NotesCache {
       }),
     ).writeToBuffer();
 
-    var r = await saveFileSafely(filePath, contents);
-    if (r.isFailure) {
-      Log.e("Notes Cache saveToDisk", result: r);
-    }
+    await saveFileSafely(filePath, contents);
   }
 }

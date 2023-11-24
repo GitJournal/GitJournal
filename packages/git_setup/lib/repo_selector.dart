@@ -92,7 +92,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
     Log.d("Starting RepoSelector");
 
     try {
-      var allRepos = await widget.gitHost.listRepos().getOrThrow();
+      var allRepos = await widget.gitHost.listRepos();
       allRepos.sort((GitHostRepo a, GitHostRepo b) {
         if (a.updatedAt != null && b.updatedAt != null) {
           return a.updatedAt!.compareTo(b.updatedAt!);
@@ -221,7 +221,7 @@ class GitHostSetupRepoSelectorState extends State<GitHostSetupRepoSelector> {
 
             try {
               var repoName = _textController.text.trim();
-              var repo = await widget.gitHost.createRepo(repoName).getOrThrow();
+              var repo = await widget.gitHost.createRepo(repoName);
               widget.onDone(repo);
               return;
             } catch (e, stacktrace) {

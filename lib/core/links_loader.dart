@@ -8,12 +8,10 @@ import 'dart:convert';
 import 'dart:isolate';
 
 import 'package:flutter/material.dart';
-
+import 'package:gitjournal/core/link.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:path/path.dart' as p;
 import 'package:synchronized/synchronized.dart';
-
-import 'package:gitjournal/core/link.dart';
 
 class LinksLoader {
   Isolate? _isolate;
@@ -65,7 +63,7 @@ void _isolateMain(SendPort toMainSender) {
   ReceivePort fromMainRec = ReceivePort();
   toMainSender.send(fromMainRec.sendPort);
 
-  var _ = fromMainRec.listen((data) async {
+  fromMainRec.listen((data) async {
     assert(data is _LoadingMessage);
     var msg = data as _LoadingMessage;
 

@@ -164,7 +164,7 @@ class MarkdownImage extends StatelessWidget {
                 return GestureDetector(
                   child: im,
                   onTap: () {
-                    var _ = Navigator.push(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => ImageDetails(

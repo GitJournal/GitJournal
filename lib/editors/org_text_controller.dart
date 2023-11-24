@@ -36,7 +36,7 @@ class OrgTextController extends TextEditingController {
       var children = <TextSpan>[];
 
       var index = 0;
-      var _ = text.splitMapJoin(
+      text.splitMapJoin(
         regexp,
         onMatch: (Match m) {
           var backgroundColor = index != currentPos
@@ -92,7 +92,7 @@ class OrgTextController extends TextEditingController {
         firstLine = false;
       }
 
-      var _ = document.visit((p) {
+      document.visit((p) {
         if (p is OrgMarkup) {
           var newStyle = style;
           if (p.style == OrgStyle.bold) {

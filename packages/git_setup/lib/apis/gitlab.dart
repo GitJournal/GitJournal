@@ -10,7 +10,6 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/services.dart';
-
 import 'package:gitjournal/logger/logger.dart';
 import 'package:http/http.dart' as http;
 import 'package:universal_io/io.dart' show HttpHeaders;
@@ -71,17 +70,16 @@ class GitLab implements GitHost {
 
     var url =
         "https://gitlab.com/oauth/authorize?client_id=$_clientID&response_type=token&state=$_stateOAuth&redirect_uri=gitjournal://login.oauth2";
-    var _ = await launchUrl(
+    await launchUrl(
       Uri.parse(url),
       mode: LaunchMode.externalApplication,
     );
   }
 
   @override
-  Future<Result<List<GitHostRepo>>> listRepos() async {
+  Future<List<GitHostRepo>> listRepos() async {
     if (_accessCode!.isEmpty) {
-      var ex = GitHostException.MissingAccessCode;
-      return Result.fail(ex);
+      throw GitHostException.MissingAccessCode;
     }
 
     // FIXME: pagination!
@@ -98,8 +96,7 @@ class GitLab implements GitHost {
           response.statusCode.toString() +
           ": " +
           response.body);
-      var ex = GitHostException.HttpResponseFail;
-      return Result.fail(ex);
+      throw GitHostException.HttpResponseFail;
     }
 
     List<dynamic> list = jsonDecode(response.body);
@@ -111,14 +108,13 @@ class GitLab implements GitHost {
     }
 
     // FIXME: Sort these based on some criteria
-    return Result(repos);
+    return repos;
   }
 
   @override
-  Future<Result<GitHostRepo>> createRepo(String name) async {
+  Future<GitHostRepo> createRepo(String name) async {
     if (_accessCode!.isEmpty) {
-      var ex = GitHostException.MissingAccessCode;
-      return Result.fail(ex);
+      throw GitHostException.MissingAccessCode;
     }
 
     var url = Uri.parse(
@@ -142,32 +138,25 @@ class GitLab implements GitHost {
 
       if (response.statusCode == 400) {
         if (response.body.contains("has already been taken")) {
-          var ex = GitHostException.RepoExists;
-          return Result.fail(ex);
+          throw GitHostException.RepoExists;
         }
       }
 
-      var ex = GitHostException.CreateRepoFailed;
-      return Result.fail(ex);
+      throw GitHostException.CreateRepoFailed;
     }
 
     Log.d("GitLab createRepo: " + response.body);
     Map<String, dynamic> map = json.decode(response.body);
-    return Result(repoFromJson(map));
+    return repoFromJson(map);
   }
 
   @override
-  Future<Result<GitHostRepo>> getRepo(String name) async {
+  Future<GitHostRepo> getRepo(String name) async {
     if (_accessCode!.isEmpty) {
-      var ex = GitHostException.MissingAccessCode;
-      return Result.fail(ex);
+      throw GitHostException.MissingAccessCode;
     }
 
-    var userInfoR = await getUserInfo();
-    if (userInfoR.isFailure) {
-      return fail(userInfoR);
-    }
-    var userInfo = userInfoR.getOrThrow();
+    var userInfo = await getUserInfo();
     var repo = userInfo.username + '%2F' + name;
     var url = Uri.parse(
         "https://gitlab.com/api/v4/projects/$repo?access_token=$_accessCode");
@@ -179,20 +168,18 @@ class GitLab implements GitHost {
           ": " +
           response.body);
 
-      var ex = GitHostException.GetRepoFailed;
-      return Result.fail(ex);
+      throw GitHostException.GetRepoFailed;
     }
 
     Log.d("GitLab getRepo: " + response.body);
     Map<String, dynamic> map = json.decode(response.body);
-    return Result(repoFromJson(map));
+    return repoFromJson(map);
   }
 
   @override
-  Future<Result<void>> addDeployKey(String sshPublicKey, String repo) async {
+  Future<void> addDeployKey(String sshPublicKey, String repo) async {
     if (_accessCode!.isEmpty) {
-      var ex = GitHostException.MissingAccessCode;
-      return Result.fail(ex);
+      throw GitHostException.MissingAccessCode;
     }
 
     repo = repo.replaceAll('/', '%2F');
@@ -216,12 +203,10 @@ class GitLab implements GitHost {
           response.statusCode.toString() +
           ": " +
           response.body);
-      var ex = GitHostException.DeployKeyFailed;
-      return Result.fail(ex);
+      throw GitHostException.DeployKeyFailed;
     }
 
     Log.d("GitLab addDeployKey: " + response.body);
-    return Result(null);
   }
 
   static GitHostRepo repoFromJson(Map<String, dynamic> parsedJson) {
@@ -266,10 +251,9 @@ class GitLab implements GitHost {
   }
 
   @override
-  Future<Result<UserInfo>> getUserInfo() async {
+  Future<UserInfo> getUserInfo() async {
     if (_accessCode!.isEmpty) {
-      var ex = GitHostException.MissingAccessCode;
-      return Result.fail(ex);
+      throw GitHostException.MissingAccessCode;
     }
 
     var url =
@@ -282,8 +266,7 @@ class GitLab implements GitHost {
           ": " +
           response.body);
 
-      var ex = GitHostException.HttpResponseFail;
-      return Result.fail(ex);
+      throw GitHostException.HttpResponseFail;
     }
 
     Map<String, dynamic>? map = jsonDecode(response.body);
@@ -293,15 +276,14 @@ class GitLab implements GitHost {
           ": " +
           response.body);
 
-      var ex = GitHostException.JsonDecodingFail;
-      return Result.fail(ex);
+      throw GitHostException.JsonDecodingFail;
     }
 
-    return Result(UserInfo(
+    return UserInfo(
       name: map['name'],
       email: map['email'],
       username: map['username'],
-    ));
+    );
   }
 }
 

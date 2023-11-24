@@ -7,11 +7,6 @@
 import 'dart:math';
 
 import 'package:dart_git/dart_git.dart';
-import 'package:path/path.dart' as p;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:test/test.dart';
-import 'package:universal_io/io.dart' as io;
-
 import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/folder/flattened_filtered_notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
@@ -19,6 +14,11 @@ import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/notes/note.dart';
+import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test/test.dart';
+import 'package:universal_io/io.dart' as io;
+
 import '../lib.dart';
 
 void main() {
@@ -62,7 +62,7 @@ void main() {
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "$i\n",
         );
-        note = await NoteStorage.save(note).getOrThrow();
+        note = await NoteStorage.save(note);
       }
 
       io.Directory(p.join(repoPath, "sub1")).createSync();
@@ -79,7 +79,7 @@ void main() {
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "sub1-$i\n",
         );
-        note = await NoteStorage.save(note).getOrThrow();
+        note = await NoteStorage.save(note);
       }
 
       var sub2Folder = NotesFolderFS(rootFolder, "sub2", config);
@@ -92,7 +92,7 @@ void main() {
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "sub2-$i\n",
         );
-        note = await NoteStorage.save(note).getOrThrow();
+        note = await NoteStorage.save(note);
       }
 
       var p1Folder = NotesFolderFS(sub1Folder, p.join("sub1", "p1"), config);
@@ -105,19 +105,17 @@ void main() {
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "p1-$i\n",
         );
-        note = await NoteStorage.save(note).getOrThrow();
+        note = await NoteStorage.save(note);
       }
 
-      var repo = GitRepository.load(repoPath).getOrThrow();
-      repo
-          .commit(
-            message: "Prepare Test Env",
-            author: GitAuthor(name: 'Name', email: "name@example.com"),
-            addAll: true,
-          )
-          .throwOnError();
+      var repo = GitRepository.load(repoPath);
+      repo.commit(
+        message: "Prepare Test Env",
+        author: GitAuthor(name: 'Name', email: "name@example.com"),
+        addAll: true,
+      );
 
-      await rootFolder.fileStorage.reload().throwOnError();
+      await rootFolder.fileStorage.reload();
 
       expect(fileStorage.blobCTimeBuilder.map, isNotEmpty);
       expect(fileStorage.fileMTimeBuilder.map, isNotEmpty);

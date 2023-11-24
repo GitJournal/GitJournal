@@ -5,19 +5,17 @@
  */
 
 import 'package:dart_git/blob_ctime_builder.dart';
-import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/file_mtime_builder.dart';
 import 'package:dart_git/utils/date_time.dart';
 import 'package:fixnum/fixnum.dart';
-import 'package:path/path.dart' as p;
-import 'package:tuple/tuple.dart';
-import 'package:universal_io/io.dart' as io;
-
 import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/generated/builders.pb.dart' as pb;
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/utils/file_utils.dart';
+import 'package:path/path.dart' as p;
+import 'package:tuple/tuple.dart';
+import 'package:universal_io/io.dart' as io;
 
 class FileStorageCache {
   final String cacheFolderPath;
@@ -29,9 +27,8 @@ class FileStorageCache {
 
   Future<void> clear() async {
     try {
-      dynamic _;
-      _ = await io.File(_cTimeFilePath).delete(recursive: true);
-      _ = await io.File(_mTimeFilePath).delete(recursive: true);
+      await io.File(_cTimeFilePath).delete(recursive: true);
+      await io.File(_mTimeFilePath).delete(recursive: true);
     } on io.FileSystemException catch (err, st) {
       if (err.osError?.errorCode == 2 /* File Not Found */) {
         return;
@@ -64,24 +61,20 @@ class FileStorageCache {
     );
   }
 
-  Future<Result<void>> save(FileStorage fileStorage) async {
-    if (lastProcessedHead == fileStorage.head && lastProcessedHead.isNotEmpty) {
-      return Result(null);
-    }
+  Future<void> save(FileStorage fileStorage) async {
+    if (lastProcessedHead == fileStorage.head &&
+        lastProcessedHead.isNotEmpty) {}
 
-    return catchAll(() async {
-      lastProcessedHead = fileStorage.head;
+    lastProcessedHead = fileStorage.head;
 
-      var blobCTimeBuilder = fileStorage.blobCTimeBuilder;
-      var fileMTimeBUilder = fileStorage.fileMTimeBuilder;
+    var blobCTimeBuilder = fileStorage.blobCTimeBuilder;
+    var fileMTimeBUilder = fileStorage.fileMTimeBuilder;
 
-      Log.d("Saving MTimeCache: ${fileMTimeBUilder.map.length} items");
-      Log.d("Saving CTimeCache: ${blobCTimeBuilder.map.length} items");
+    Log.d("Saving MTimeCache: ${fileMTimeBUilder.map.length} items");
+    Log.d("Saving CTimeCache: ${blobCTimeBuilder.map.length} items");
 
-      await _saveCTime(blobCTimeBuilder);
-      await _saveMTime(fileMTimeBUilder);
-      return Result(null);
-    });
+    await _saveCTime(blobCTimeBuilder);
+    await _saveMTime(fileMTimeBUilder);
   }
 
   String get _cTimeFilePath => p.join(cacheFolderPath, 'blob_ctime_v1');
@@ -184,10 +177,7 @@ class FileStorageCache {
       map: map,
     );
 
-    var r = await saveFileSafely(_cTimeFilePath, data.writeToBuffer());
-    if (r.isFailure) {
-      Log.e("_saveCTime", result: r);
-    }
+    await saveFileSafely(_cTimeFilePath, data.writeToBuffer());
   }
 
   Future<void> _saveMTime(FileMTimeBuilder builder) async {
@@ -214,10 +204,7 @@ class FileStorageCache {
       map: map,
     );
 
-    var r = await saveFileSafely(_mTimeFilePath, data.writeToBuffer());
-    if (r.isFailure) {
-      Log.e("_saveMTime", result: r);
-    }
+    await saveFileSafely(_mTimeFilePath, data.writeToBuffer());
   }
 }
 

@@ -13,7 +13,6 @@ import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/core/views/inline_tags_view.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 import 'package:synchronized/synchronized.dart';
@@ -75,9 +74,8 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
     _lock.synchronized(() {
       assert(_entityMap.containsKey(oldPath));
-      dynamic _;
 
-      _ = _entityMap.remove(oldPath);
+      _entityMap.remove(oldPath);
       _entityMap[note.filePath] = note;
 
       var index = _files.indexWhere((n) => n.filePath == oldPath);
@@ -92,7 +90,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
     _lock.synchronized(() {
       assert(_entityMap.containsKey(oldPath));
-      var _ = _entityMap.remove(oldPath);
+      _entityMap.remove(oldPath);
       _entityMap[folder.folderPath] = folder;
 
       var index = _folders.indexWhere((n) => n.folderPath == oldPath);
@@ -174,11 +172,14 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       var file = _files[i];
       if (file is UnopenedFile) {
         future = (int index, UnopenedFile file) async {
-          var result = await NoteStorage.load(file, file.parent);
-          if (result.isFailure) {
+          late final Note note;
+
+          try {
+            note = await NoteStorage.load(file, file.parent);
+          } catch (ex) {
             var reason = IgnoreReason.Custom;
-            var reasonError = result.error;
-            if (result.error!
+            var reasonError = ex;
+            if (ex
                 .toString()
                 .toLowerCase()
                 .contains("failed to decode data using encoding 'utf-8'")) {
@@ -195,7 +196,6 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
             return;
           }
 
-          var note = result.getOrThrow();
           _files[index] = note;
           _entityMap[file.filePath] = note;
 
@@ -204,11 +204,15 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         }(i, file);
       } else if (file is Note) {
         future = (int index, Note note) async {
-          var result = await NoteStorage.reload(note, fileStorage);
-          if (result.isFailure) {
-            if (result.error is NoteReloadNotRequired) {
-              return;
-            }
+          try {
+            note = await NoteStorage.reload(note, fileStorage);
+            _files[index] = note;
+            _entityMap[file.filePath] = note;
+
+            assert(note.oid.isNotEmpty);
+            notifyNoteModified(index, note);
+          } catch (ex) {
+            if (ex is NoteReloadNotRequired) return;
             _files[index] = IgnoredFile(
               file: file,
               reason: IgnoreReason.Custom,
@@ -216,13 +220,6 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
             _entityMap[file.filePath] = _files[index];
             return;
           }
-
-          note = result.getOrThrow();
-          _files[index] = note;
-          _entityMap[file.filePath] = note;
-
-          assert(note.oid.isNotEmpty);
-          notifyNoteModified(index, note);
         }(i, file);
       } else {
         continue;
@@ -233,18 +230,16 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       futures.add(future);
 
       if (futures.length >= maxParallel) {
-        var _ = await Future.wait(futures);
+        await Future.wait(futures);
         futures = <Future>[];
       }
     }
 
-    var _ = await Future.wait(futures);
+    await Future.wait(futures);
   }
 
-  Future<Result<void>> loadRecursively() async {
-    var r = await load();
-    if (r.isFailure) return r;
-
+  Future<void> loadRecursively() async {
+    await load();
     await loadNotes();
 
     var futures = <Future>[];
@@ -253,17 +248,15 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       futures.add(f);
     }
 
-    var _ = await Future.wait(futures);
-    return Result(null);
+    await Future.wait(futures);
   }
 
-  Future<Result<void>> load() => _lock.synchronized(_load);
+  Future<void> load() => _lock.synchronized(_load);
 
-  Future<Result<void>> _load() async {
+  Future<void> _load() async {
     var ignoreFilePath = p.join(fullFolderPath, ".gjignore");
     if (io.File(ignoreFilePath).existsSync()) {
       Log.i("Ignoring $folderPath as it has .gjignore");
-      return Result(null);
     }
 
     var newEntityMap = <String, dynamic>{};
@@ -298,16 +291,14 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
       assert(fsEntity is io.File);
 
-      var fileR = await fileStorage.load(filePath);
-      if (fileR.isFailure) {
-        Log.e("NotesFolderFS FileStorage Failure", result: fileR);
-        if (fileR.error is FileStorageCacheIncomplete) {
-          return fileR;
-        }
-        assert(fileR.isFailure == false);
+      late final File file;
+      try {
+        file = await fileStorage.load(filePath);
+      } catch (ex, st) {
+        Log.e("NotesFolderFS FileStorage Failure", ex: ex, stacktrace: st);
+        if (ex is FileStorageCacheIncomplete) return;
         continue;
       }
-      var file = fileR.getOrThrow();
 
       var fileName = p.basename(filePath);
       if (fileName.startsWith('.')) {
@@ -409,8 +400,6 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
         _entityMap[ent.folderPath] = ent;
       }
     }
-
-    return Result(null);
   }
 
   void add(Note note) {
@@ -435,29 +424,23 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
     var index = _files.indexWhere((n) => n.filePath == f.filePath);
 
-    dynamic _;
-    _ = _files.removeAt(index);
-    _ = _entityMap.remove(f.filePath);
+    _files.removeAt(index);
+    _entityMap.remove(f.filePath);
 
     if (f is Note) {
       notifyNoteRemoved(index, f);
     }
   }
 
-  Result<void> create() {
-    try {
-      // Git doesn't track Directories, only files, so we create an empty .gitignore file
-      // in the directory instead.
-      var gitIgnoreFilePath = p.join(fullFolderPath, ".gitignore");
-      var file = io.File(gitIgnoreFilePath);
-      if (!file.existsSync()) {
-        file.createSync(recursive: true);
-      }
-      notifyListeners();
-      return Result(null);
-    } catch (ex, st) {
-      return Result.fail(ex, st);
+  void create() {
+    // Git doesn't track Directories, only files, so we create an empty .gitignore file
+    // in the directory instead.
+    var gitIgnoreFilePath = p.join(fullFolderPath, ".gitignore");
+    var file = io.File(gitIgnoreFilePath);
+    if (!file.existsSync()) {
+      file.createSync(recursive: true);
     }
+    notifyListeners();
   }
 
   void addFolder(NotesFolderFS folder) {
@@ -484,9 +467,8 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
 
     var index = _folders.indexWhere((f) => f.folderPath == folder.folderPath);
     assert(index != -1);
-    dynamic _;
-    _ = _folders.removeAt(index);
-    _ = _entityMap.remove(folder.folderPath);
+    _folders.removeAt(index);
+    _entityMap.remove(folder.folderPath);
 
     notifyFolderRemoved(index, folder);
   }
@@ -504,7 +486,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     if (io.Directory(fullFolderPath).existsSync()) {
       throw Exception("Directory already exists");
     }
-    var _ = dir.renameSync(fullFolderPath);
+    dir.renameSync(fullFolderPath);
 
     notifyThisFolderRenamed(this, oldPath);
   }
@@ -624,7 +606,7 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
       if (!foundFolder) {
         return null;
       }
-      var _ = parts.removeAt(0);
+      parts.removeAt(0);
     }
 
     var fileName = parts[0];
@@ -668,47 +650,40 @@ class NotesFolderFS with NotesFolderNotifier implements NotesFolder {
     }
 
     for (var folder in _folders) {
-      var _ = await folder._matchNotes(matchedNotes, pred);
+      await folder._matchNotes(matchedNotes, pred);
     }
   }
 
   ///
   /// Do not let the user rename it to a different file-type.
   ///
-  Result<void> renameNote(Note fromNote, Note toNote) {
+  void renameNote(Note fromNote, Note toNote) {
     assert(fromNote.oid.isNotEmpty);
     assert(_files.indexWhere((n) => n.filePath == fromNote.filePath) != -1);
     assert(_files.indexWhere((n) => n.filePath == toNote.filePath) == -1);
 
-    try {
-      var _ = io.File(fromNote.fullFilePath).renameSync(toNote.fullFilePath);
-    } catch (ex, st) {
-      return Result.fail(ex, st);
-    }
+    io.File(fromNote.fullFilePath).renameSync(toNote.fullFilePath);
 
     _noteRenamed(toNote, fromNote.filePath);
     notifyNoteModified(-1, toNote);
-    return Result(null);
   }
 
-  static Result<Note> moveNote(Note note, NotesFolderFS destFolder) {
+  static Note moveNote(Note note, NotesFolderFS destFolder) {
     var destPath = p.join(destFolder.fullFolderPath, note.fileName);
     if (io.File(destPath).existsSync()) {
-      var ex = Exception('Note Destination Exists');
-      return Result.fail(ex);
+      throw Exception('Note Destination Exists');
     }
 
-    try {
-      var _ = io.File(note.fullFilePath).renameSync(destPath);
-    } catch (ex, st) {
-      return Result.fail(ex, st);
-    }
+    io.File(note.fullFilePath).renameSync(destPath);
 
     note.parent.remove(note);
-    note = note.copyWith(parent: destFolder, filePath: "${destFolder.folderPath}/${note.fileName}");
+    note = note.copyWith(
+      parent: destFolder,
+      filePath: "${destFolder.folderPath}/${note.fileName}",
+    );
     note.parent.add(note);
 
-    return Result(note);
+    return note;
   }
 
   void visit(void Function(File) visitor) {

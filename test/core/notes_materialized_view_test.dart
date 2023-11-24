@@ -62,7 +62,7 @@ Hello
       var parentFolder = NotesFolderFS.root(config, fileStorage);
       var file = File.short("note.md", repoPath, gitDt);
       var noteR = await NoteStorage.load(file, parentFolder);
-      return noteR.getOrThrow();
+      return noteR;
     }
 
     test('Test', () async {

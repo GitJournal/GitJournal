@@ -124,7 +124,6 @@ class _NoteTagEditorState extends State<NoteTagEditor> {
 
   void _addTag(String tag) {
     setState(() {
-      dynamic _;
       _selectedTags = _selectedTags.add(tag);
       _allTags = _allTags.add(tag);
       _textController.text = "";

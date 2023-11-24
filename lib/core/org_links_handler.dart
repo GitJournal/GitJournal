@@ -43,7 +43,7 @@ class OrgLinkHandler {
         // Remote images
         final uri = Uri.parse(link);
         if (await ul.canLaunchUrl(uri)) {
-          var _ = await ul.launchUrl(
+          await ul.launchUrl(
             uri,
             mode: ul.LaunchMode.externalApplication,
           );
@@ -83,7 +83,7 @@ class OrgLinkHandler {
 
         final uri = Uri.parse(link);
         if (await ul.canLaunchUrl(uri)) {
-          var _ = await ul.launchUrl(
+          await ul.launchUrl(
             uri,
             mode: ul.LaunchMode.externalApplication,
           );
@@ -104,7 +104,7 @@ class OrgLinkHandler {
   void _showImage(File file) {
     ThemableImage im = ThemableImage.image(file);
 
-    var _ = Navigator.push(
+    Navigator.push(
         context, MaterialPageRoute(builder: (context) => ImageDetails(im, "")));
     // captionText(context, altText, tooltip)
   }

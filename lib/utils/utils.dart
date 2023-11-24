@@ -12,7 +12,6 @@ import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/settings/settings.dart';
-import 'package:gitjournal/utils/result.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -70,12 +69,6 @@ void showErrorSnackbar(BuildContext context, Object error) {
   assert(error is Error || error is Exception, "Error is ${error.runtimeType}");
   var message = error.toString();
   showErrorMessageSnackbar(context, message);
-}
-
-void showResultError<T>(BuildContext context, Result<T> result) {
-  if (result.isFailure) {
-    showErrorMessageSnackbar(context, result.error.toString());
-  }
 }
 
 NotesFolderFS getFolderForEditor(

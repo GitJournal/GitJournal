@@ -57,14 +57,19 @@ class ErrorScreen extends StatelessWidget {
         child: ElevatedButton(
           child: Text(context.loc.drawerAddRepo),
           onPressed: () async {
-            var r = await repoManager.addRepoAndSwitch();
+            try {
+              await repoManager.addRepoAndSwitch();
+            } catch (ex) {
+              Navigator.pop(context);
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                ErrorScreen.routePath,
+                (r) => true,
+              );
+            }
+
             Navigator.pop(context);
-
-            var route =
-                r.isFailure ? ErrorScreen.routePath : HomeScreen.routePath;
-
-            var _ = Navigator.of(context).pushNamedAndRemoveUntil(
-              route,
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              HomeScreen.routePath,
               (r) => true,
             );
           },

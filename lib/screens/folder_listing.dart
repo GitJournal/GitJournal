@@ -54,7 +54,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
           ),
           settings: const RouteSettings(name: '/folder/'),
         );
-        var _ = Navigator.push(context, route);
+        Navigator.push(context, route);
       },
       onFolderSelected: (folder) {
         setState(() {
@@ -90,7 +90,7 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
         onSelected: (String value) async {
           if (value == "Rename") {
             if (_selectedFolder!.folderPath.isEmpty) {
-              var _ = await showDialog(
+              await showDialog(
                 context: context,
                 builder: (_) => RenameFolderErrorDialog(),
               );
@@ -115,13 +115,16 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
               builder: (_) => CreateFolderAlertDialog(),
             );
             if (folderName is String) {
-              var repo = context.read<GitJournalRepo>();
-              var r = await repo.createFolder(_selectedFolder!, folderName);
-              showResultError(context, r);
+              try {
+                var repo = context.read<GitJournalRepo>();
+                await repo.createFolder(_selectedFolder!, folderName);
+              } catch (ex) {
+                showErrorSnackbar(context, ex);
+              }
             }
           } else if (value == "Delete") {
             if (_selectedFolder!.hasNotesRecursive) {
-              var _ = await showDialog(
+              await showDialog(
                 context: context,
                 builder: (_) => DeleteFolderErrorDialog(),
               );
@@ -175,11 +178,13 @@ class CreateFolderButton extends StatelessWidget {
         );
         if (folderName is String) {
           var repo = context.read<GitJournalRepo>();
-          final notesFolder =
-              Provider.of<NotesFolderFS>(context, listen: false);
+          var notesFolder = context.read<NotesFolderFS>();
 
-          var r = await repo.createFolder(notesFolder, folderName);
-          showResultError(context, r);
+          try {
+            await repo.createFolder(notesFolder, folderName);
+          } catch (ex) {
+            showErrorSnackbar(context, ex);
+          }
         }
       },
       child: const Icon(Icons.add),

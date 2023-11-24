@@ -6,23 +6,14 @@
 
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
 import 'package:collection/collection.dart';
 import 'package:dart_git/config.dart';
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/exceptions.dart';
 import 'package:dart_git/plumbing/git_hash.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:git_bindings/git_bindings.dart';
-import 'package:path/path.dart' as p;
-import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:synchronized/synchronized.dart';
-import 'package:time/time.dart';
-import 'package:universal_io/io.dart' as io;
-import 'package:universal_io/io.dart' show Platform;
-
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/core/commit_message_builder.dart';
 import 'package:gitjournal/core/file/file_storage.dart';
@@ -41,6 +32,13 @@ import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/settings_migrations.dart';
 import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/sync_attempt.dart';
+import 'package:path/path.dart' as p;
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:synchronized/synchronized.dart';
+import 'package:time/time.dart';
+import 'package:universal_io/io.dart' show Platform;
+import 'package:universal_io/io.dart' as io;
 
 class GitJournalRepo with ChangeNotifier {
   final RepositoryManager repoManager;
@@ -96,7 +94,7 @@ class GitJournalRepo with ChangeNotifier {
     return GitRepository.isValidRepo(repoPath);
   }
 
-  static Future<Result<GitJournalRepo>> load({
+  static Future<GitJournalRepo> load({
     required String gitBaseDir,
     required String cacheDir,
     required SharedPreferences pref,
@@ -150,11 +148,7 @@ class GitJournalRepo with ChangeNotifier {
 
     if (!repoDir.existsSync()) {
       Log.i("Calling GitInit for ${storageConfig.folderName} at: $repoPath");
-      var r = GitRepository.init(repoPath, defaultBranch: DEFAULT_BRANCH);
-      if (r.isFailure) {
-        Log.e("GitInit Failed", result: r);
-        return fail(r);
-      }
+      GitRepository.init(repoPath, defaultBranch: DEFAULT_BRANCH);
 
       storageConfig.save();
     }
@@ -165,31 +159,25 @@ class GitJournalRepo with ChangeNotifier {
       // has disappeared?
       // FIXME: What if the '.config' file is not accessible?
       // -> https://sentry.io/share/issue/bafc5c417bdb4fd196cead1d28432f12/
-      var ex = Exception('Folder is no longer a valid Git Repo');
-      return Result.fail(ex);
+      throw Exception('Folder is no longer a valid Git Repo');
     }
 
-    var repoR = await GitAsyncRepository.load(repoPath);
-    if (repoR.isFailure) {
-      return fail(repoR);
-    }
-    var repo = repoR.getOrThrow();
+    var repo = await GitAsyncRepository.load(repoPath);
     var remoteConfigured = repo.config.remotes.isNotEmpty;
 
     if (!storageConfig.storeInternally) {
-      var r = await _commitUnTrackedChanges(repo, gitConfig);
-      if (r.isFailure) {
-        return fail(r);
-      }
+      await _commitUnTrackedChanges(repo, gitConfig);
     }
 
-    var _ = await io.Directory(cacheDir).create(recursive: true);
+    await io.Directory(cacheDir).create(recursive: true);
 
     var fileStorageCache = FileStorageCache(cacheDir);
     var fileStorage = await fileStorageCache.load(repoPath);
 
-    var headR = await repo.headHash();
-    var head = headR.isFailure ? GitHash.zero() : headR.getOrThrow();
+    var head = GitHash.zero();
+    try {
+      head = await repo.headHash();
+    } catch (_) {}
 
     var gjRepo = GitJournalRepo._internal(
       repoManager: repoManager,
@@ -204,13 +192,13 @@ class GitJournalRepo with ChangeNotifier {
       id: id,
       fileStorage: fileStorage,
       fileStorageCache: fileStorageCache,
-      currentBranch: await repo.currentBranch().getOrThrow(),
+      currentBranch: await repo.currentBranch(),
       headHash: head,
       loadFromCache: loadFromCache,
       syncOnBoot: syncOnBoot,
     );
 
-    return Result(gjRepo);
+    return gjRepo;
   }
 
   GitJournalRepo._internal({
@@ -275,7 +263,7 @@ class GitJournalRepo with ChangeNotifier {
     await fileStorageCache.clear();
 
     // This will discard this Repository and build a new one
-    var _ = repoManager.buildActiveRepository();
+    repoManager.buildActiveRepository();
   }
 
   Future<void> reloadNotes() => _loadNotes();
@@ -285,17 +273,16 @@ class GitJournalRepo with ChangeNotifier {
 
     // FIXME: We should report the notes that failed to load
     return _loadLock.synchronized(() async {
-      var r = await rootFolder.loadRecursively();
-      if (r.isFailure) {
-        if (r.error is FileStorageCacheIncomplete) {
-          var ex = r.error as FileStorageCacheIncomplete;
-          Log.i("FileStorageCacheIncomplete ${ex.path}");
-          var repo = await GitAsyncRepository.load(repoPath).getOrThrow();
-          await _commitUnTrackedChanges(repo, gitConfig).throwOnError();
-          await _resetFileStorage();
-          return;
-        }
+      try {
+        await rootFolder.loadRecursively();
+      } on FileStorageCacheIncomplete catch (ex) {
+        Log.i("FileStorageCacheIncomplete ${ex.path}");
+        var repo = await GitAsyncRepository.load(repoPath);
+        await _commitUnTrackedChanges(repo, gitConfig);
+        await _resetFileStorage();
+        return;
       }
+
       await _notesCache.buildCache(rootFolder);
 
       var changes = await _gitRepo.numChanges();
@@ -317,12 +304,7 @@ class GitJournalRepo with ChangeNotifier {
 
     if (firstTime) Log.i("Built Git Time Cache - $endTime");
 
-    var r = await fileStorageCache.save(fileStorage);
-    if (r.isFailure) {
-      Log.e("Failed to save FileStorageCache", result: r);
-      logException(r.exception!, r.stackTrace!);
-    }
-
+    await fileStorageCache.save(fileStorage);
     assert(fileStorageCache.lastProcessedHead == fileStorage.head);
 
     // Notify that the cache is ready
@@ -341,13 +323,13 @@ class GitJournalRepo with ChangeNotifier {
   Future<void> syncNotes({bool doNotThrow = false}) async {
     // This is extremely slow with dart-git, can take over a second!
     if (_shouldCheckForChanges()) {
-      var repoR = await GitAsyncRepository.load(repoPath);
-      if (repoR.isFailure) {
-        Log.e("SyncNotes Failed to Load Repo", result: repoR);
+      try {
+        var repo = await GitAsyncRepository.load(repoPath);
+        await _commitUnTrackedChanges(repo, gitConfig);
+      } catch (ex, st) {
+        Log.e("SyncNotes Failed to Load Repo", ex: ex, stacktrace: st);
         return;
       }
-      var repo = repoR.getOrThrow();
-      await _commitUnTrackedChanges(repo, gitConfig).throwOnError();
     }
 
     if (!remoteGitRepoConfigured) {
@@ -365,18 +347,18 @@ class GitJournalRepo with ChangeNotifier {
     Future<void>? noteLoadingFuture;
     try {
       await _networkLock.synchronized(() async {
-        await _gitRepo.fetch().throwOnError();
+        await _gitRepo.fetch();
       });
 
       attempt.add(SyncStatus.Merging);
 
       await _gitOpLock.synchronized(() async {
-        var r = await _gitRepo.merge();
-        if (r.isFailure) {
-          var ex = r.error!;
+        try {
+          await _gitRepo.merge();
+        } catch (ex) {
           // When there is nothing to merge into
           if (ex is! GitRefNotFound) {
-            throw ex;
+            rethrow;
             // FIXME: Do not throw this exception, try to solve it somehow!!
           }
         }
@@ -388,7 +370,7 @@ class GitJournalRepo with ChangeNotifier {
       noteLoadingFuture = _loadNotes();
 
       await _networkLock.synchronized(() async {
-        await _gitRepo.push().throwOnError();
+        await _gitRepo.push();
       });
 
       Log.d("Synced!");
@@ -423,36 +405,24 @@ class GitJournalRepo with ChangeNotifier {
     return syncNotes(doNotThrow: true);
   }
 
-  Future<Result<void>> createFolder(
-      NotesFolderFS parent, String folderName) async {
+  Future<void> createFolder(NotesFolderFS parent, String folderName) async {
     logEvent(Event.FolderAdded);
 
-    var r = await _gitOpLock.synchronized(() async {
+    await _gitOpLock.synchronized(() async {
       var newFolderPath = p.join(parent.folderPath, folderName);
       var newFolder = NotesFolderFS(parent, newFolderPath, folderConfig);
-      var r = newFolder.create();
-      if (r.isFailure) {
-        Log.e("createFolder", result: r);
-        return fail(r);
-      }
+      newFolder.create();
 
       Log.d("Created New Folder: $newFolderPath");
       parent.addFolder(newFolder);
 
-      var result = await _gitRepo.addFolder(newFolder);
-      if (result.isFailure) {
-        Log.e("createFolder", result: result);
-        return fail(result);
-      }
+      await _gitRepo.addFolder(newFolder);
 
       numChanges += 1;
       notifyListeners();
-      return Result(null);
     });
-    if (r.isFailure) return fail(r);
 
     unawaited(_syncNotes());
-    return Result(null);
   }
 
   Future<void> removeFolder(NotesFolderFS folder) async {
@@ -463,11 +433,7 @@ class GitJournalRepo with ChangeNotifier {
       Log.d("Removing Folder: ${folder.folderPath}");
 
       folder.parentFS!.removeFolder(folder);
-      var result = await _gitRepo.removeFolder(folder);
-      if (result.isFailure) {
-        Log.e("removeFolder", result: result);
-        return;
-      }
+      await _gitRepo.removeFolder(folder);
 
       numChanges += 1;
       notifyListeners();
@@ -486,14 +452,10 @@ class GitJournalRepo with ChangeNotifier {
       Log.d("Renaming Folder from $oldFolderPath -> $newFolderName");
       folder.rename(newFolderName);
 
-      var result = await _gitRepo.renameFolder(
+      await _gitRepo.renameFolder(
         oldFolderPath,
         folder.folderPath,
       );
-      if (result.isFailure) {
-        Log.e("renameFolder", result: result);
-        return;
-      }
 
       numChanges += 1;
       notifyListeners();
@@ -502,7 +464,7 @@ class GitJournalRepo with ChangeNotifier {
     unawaited(_syncNotes());
   }
 
-  Future<Result<Note>> renameNote(Note fromNote, String newFileName) async {
+  Future<Note> renameNote(Note fromNote, String newFileName) async {
     assert(!newFileName.contains(p.separator));
     assert(fromNote.oid.isNotEmpty);
 
@@ -510,129 +472,94 @@ class GitJournalRepo with ChangeNotifier {
 
     var toNote = fromNote.copyWithFileName(newFileName);
     if (io.File(toNote.fullFilePath).existsSync()) {
-      var ex = Exception('Destination Note exists');
-      return Result.fail(ex);
+      throw Exception('Destination Note exists');
     }
 
-    var renameR = fromNote.parent.renameNote(fromNote, toNote);
-    if (renameR.isFailure) {
-      return fail(renameR);
-    }
+    fromNote.parent.renameNote(fromNote, toNote);
 
-    var _ = await _gitOpLock.synchronized(() async {
-      var result = await _gitRepo.renameNote(
+    await _gitOpLock.synchronized(() async {
+      await _gitRepo.renameNote(
         fromNote.filePath,
         toNote.filePath,
       );
-      if (result.isFailure) {
-        Log.e("renameNote", result: result);
-        return fail(result);
-      }
 
       numChanges += 1;
       notifyListeners();
     });
 
     unawaited(_syncNotes());
-    return Result(toNote);
+    return toNote;
   }
 
-  Future<Result<Note>> moveNote(Note note, NotesFolderFS destFolder) async {
-    var r = await moveNotes([note], destFolder);
-    if (r.isFailure) return fail(r);
+  Future<Note> moveNote(Note note, NotesFolderFS destFolder) async {
+    var newNotes = await moveNotes([note], destFolder);
 
-    var newNotes = r.getOrThrow();
     assert(newNotes.length == 1);
-    return Result(newNotes.first);
+    return newNotes.first;
   }
 
-  Future<Result<List<Note>>> moveNotes(
+  Future<List<Note>> moveNotes(
       List<Note> notes, NotesFolderFS destFolder) async {
     notes = notes
         .where((n) => n.parent.folderPath != destFolder.folderPath)
         .toList();
 
     if (notes.isEmpty) {
-      var ex = Exception(
+      throw Exception(
         "All selected notes are already in `${destFolder.folderPath}`",
       );
-      return Result.fail(ex);
     }
 
     var newNotes = <Note>[];
 
     logEvent(Event.NoteMoved);
-    var r = await _gitOpLock.synchronized(() async {
+    await _gitOpLock.synchronized(() async {
       Log.d("Got moveNote lock");
 
       var oldPaths = <String>[];
       var newPaths = <String>[];
       for (var note in notes) {
-        var result = NotesFolderFS.moveNote(note, destFolder);
-        // FIXME: We need to validate that this wont cause any problems!
-        //        Transaction needs to be reverted
-        if (result.isFailure) {
-          Log.e("moveNotes", result: result);
-          return fail(result);
-        }
-        var newNote = result.getOrThrow();
+        var newNote = NotesFolderFS.moveNote(note, destFolder);
         oldPaths.add(note.filePath);
         newPaths.add(newNote.filePath);
 
         newNotes.add(newNote);
       }
 
-      var result = await _gitRepo.moveNotes(oldPaths, newPaths);
-      if (result.isFailure) {
-        Log.e("moveNotes", result: result);
-        return fail(result);
-      }
+      await _gitRepo.moveNotes(oldPaths, newPaths);
 
       numChanges += 1;
       notifyListeners();
-      return Result(null);
     });
-    if (r.isFailure) return fail(r);
 
     unawaited(_syncNotes());
-    return Result(newNotes);
+    return newNotes;
   }
 
-  Future<Result<Note>> saveNoteToDisk(Note note) async {
+  Future<Note> saveNoteToDisk(Note note) async {
     assert(note.oid.isEmpty);
     return NoteStorage.save(note);
   }
 
-  Future<Result<Note>> addNote(Note note) async {
+  Future<Note> addNote(Note note) async {
     assert(note.oid.isEmpty);
     logEvent(Event.NoteAdded);
 
     note = note.updateModified();
-
-    var r = await NoteStorage.save(note);
-    if (r.isFailure) {
-      Log.e("Note saving failed", ex: r.error, stacktrace: r.stackTrace);
-      return fail(r);
-    }
-    note = r.getOrThrow();
-
+    note = await NoteStorage.save(note);
     note.parent.add(note);
 
     await _gitOpLock.synchronized(() async {
       Log.d("Got addNote lock");
 
-      var result = await _gitRepo.addNote(note);
-      if (result.isFailure) {
-        Log.e("addNote", result: result);
-        return;
-      }
+      await _gitRepo.addNote(note);
 
       numChanges += 1;
       notifyListeners();
     });
 
     unawaited(_syncNotes());
-    return Result(note);
+    return note;
   }
 
   void removeNote(Note note) => removeNotes([note]);
@@ -647,11 +574,7 @@ class GitJournalRepo with ChangeNotifier {
       for (var note in notes) {
         note.parent.remove(note);
       }
-      var result = await _gitRepo.removeNotes(notes);
-      if (result.isFailure) {
-        Log.e("removeNotes", result: result);
-        return;
-      }
+      await _gitRepo.removeNotes(notes);
 
       numChanges += 1;
       notifyListeners();
@@ -660,7 +583,7 @@ class GitJournalRepo with ChangeNotifier {
       // The '4 seconds' is taken from snack_bar.dart -> _kSnackBarDisplayDuration
       // We wait an aritfical amount of time, so that the user has a chance to undo
       // their delete operation, and that commit is not synced with the server, till then.
-      var _ = await Future.delayed(4.seconds);
+      await Future.delayed(4.seconds);
     });
 
     unawaited(_syncNotes());
@@ -673,11 +596,7 @@ class GitJournalRepo with ChangeNotifier {
       Log.d("Got undoRemoveNote lock");
 
       note.parent.add(note);
-      var result = await _gitRepo.resetLastCommit();
-      if (result.isFailure) {
-        Log.e("undoRemoveNote", result: result);
-        return;
-      }
+      await _gitRepo.resetLastCommit();
 
       numChanges -= 1;
       notifyListeners();
@@ -686,7 +605,7 @@ class GitJournalRepo with ChangeNotifier {
     unawaited(_syncNotes());
   }
 
-  Future<Result<Note>> updateNote(Note oldNote, Note newNote) async {
+  Future<Note> updateNote(Note oldNote, Note newNote) async {
     assert(oldNote.oid.isNotEmpty);
     assert(newNote.oid.isEmpty);
 
@@ -697,30 +616,25 @@ class GitJournalRepo with ChangeNotifier {
 
     newNote = newNote.updateModified();
 
-    var r = await NoteStorage.save(newNote);
-    if (r.isFailure) {
-      Log.e("Note saving failed", ex: r.error, stacktrace: r.stackTrace);
-      return fail(r);
+    try {
+      newNote = await NoteStorage.save(newNote);
+    } catch (ex, st) {
+      Log.e("Note saving failed", ex: ex, stacktrace: st);
+      rethrow;
     }
-    newNote = r.getOrThrow();
-
     newNote.parent.updateNote(newNote);
 
     await _gitOpLock.synchronized(() async {
       Log.d("Got updateNote lock");
 
-      var result = await _gitRepo.updateNote(newNote);
-      if (result.isFailure) {
-        Log.e("updateNote", result: result);
-        return;
-      }
+      await _gitRepo.updateNote(newNote);
 
       numChanges += 1;
       notifyListeners();
     });
 
     unawaited(_syncNotes());
-    return Result(newNote);
+    return newNote;
   }
 
   Future<void> completeGitHostSetup(
@@ -736,7 +650,7 @@ class GitJournalRepo with ChangeNotifier {
       Log.i("Old Path: $repoPath");
       Log.i("New Path: $newRepoPath");
 
-      var _ = repoManager.buildActiveRepository();
+      repoManager.buildActiveRepository();
       return;
     }
 
@@ -765,19 +679,18 @@ class GitJournalRepo with ChangeNotifier {
       Log.i("Old Path: $repoPath");
       Log.i("New Path: $newRepoPath");
 
-      dynamic _;
-      _ = await io.Directory(newRepoPath).create(recursive: true);
+      await io.Directory(newRepoPath).create(recursive: true);
       await _copyDirectory(repoPath, newRepoPath);
-      _ = await io.Directory(repoPath).delete(recursive: true);
+      await io.Directory(repoPath).delete(recursive: true);
 
-      _ = repoManager.buildActiveRepository();
+      repoManager.buildActiveRepository();
     }
   }
 
   Future<void> discardChanges(Note note) async {
     // FIXME: Add the checkout method to GJRepo
-    var gitRepo = await GitAsyncRepository.load(repoPath).getOrThrow();
-    await gitRepo.checkout(note.filePath).throwOnError();
+    var gitRepo = await GitAsyncRepository.load(repoPath);
+    await gitRepo.checkout(note.filePath);
 
     // FIXME: Instead of this just reload that specific file
     // FIXME: I don't think this will work!
@@ -785,17 +698,17 @@ class GitJournalRepo with ChangeNotifier {
   }
 
   Future<List<GitRemoteConfig>> remoteConfigs() async {
-    var repo = await GitAsyncRepository.load(repoPath).getOrThrow();
+    var repo = await GitAsyncRepository.load(repoPath);
     var config = repo.config.remotes;
     return config;
   }
 
   Future<List<String>> branches() async {
-    var repo = await GitAsyncRepository.load(repoPath).getOrThrow();
-    var branches = Set<String>.from(await repo.branches().getOrThrow());
+    var repo = await GitAsyncRepository.load(repoPath);
+    var branches = Set<String>.from(await repo.branches());
     if (repo.config.remotes.isNotEmpty) {
       var remoteName = repo.config.remotes.first.name;
-      var remoteBranches = await repo.remoteBranches(remoteName).getOrThrow();
+      var remoteBranches = await repo.remoteBranches(remoteName);
       branches.addAll(remoteBranches.map((e) {
         return e.name.branchName()!;
       }));
@@ -807,7 +720,7 @@ class GitJournalRepo with ChangeNotifier {
 
   Future<String> checkoutBranch(String branchName) async {
     Log.i("Changing branch to $branchName");
-    var repo = await GitAsyncRepository.load(repoPath).getOrThrow();
+    var repo = await GitAsyncRepository.load(repoPath);
 
     try {
       var created = await createBranchIfRequired(repo, branchName);
@@ -819,7 +732,7 @@ class GitJournalRepo with ChangeNotifier {
     }
 
     try {
-      await repo.checkoutBranch(branchName).throwOnError();
+      await repo.checkoutBranch(branchName);
       _currentBranch = branchName;
       Log.i("Done checking out $branchName");
 
@@ -838,7 +751,7 @@ class GitJournalRepo with ChangeNotifier {
   /// throws exceptions
   Future<String> createBranchIfRequired(
       GitAsyncRepository repo, String name) async {
-    var localBranches = await repo.branches().getOrThrow();
+    var localBranches = await repo.branches();
     if (localBranches.contains(name)) {
       return name;
     }
@@ -847,8 +760,7 @@ class GitJournalRepo with ChangeNotifier {
       return "";
     }
     var remoteConfig = repo.config.remotes.first;
-    var remoteBranches =
-        await repo.remoteBranches(remoteConfig.name).getOrThrow();
+    var remoteBranches = await repo.remoteBranches(remoteConfig.name);
     var remoteBranchRef = remoteBranches.firstWhereOrNull(
       (ref) => ref.name.branchName() == name,
     );
@@ -856,114 +768,95 @@ class GitJournalRepo with ChangeNotifier {
       return "";
     }
 
-    await repo.createBranch(name, hash: remoteBranchRef.hash).throwOnError();
-    await repo.setBranchUpstreamTo(name, remoteConfig, name).throwOnError();
+    await repo.createBranch(name, hash: remoteBranchRef.hash);
+    await repo.setBranchUpstreamTo(name, remoteConfig, name);
 
     Log.i("Created branch $name");
     return name;
   }
 
   Future<void> delete() async {
-    dynamic _;
-    _ = await io.Directory(repoPath).delete(recursive: true);
-    _ = await io.Directory(cacheDir).delete(recursive: true);
+    await io.Directory(repoPath).delete(recursive: true);
+    await io.Directory(cacheDir).delete(recursive: true);
   }
 
   /// reset --hard the current branch to its remote branch
-  Future<Result<void>> resetHard() {
-    return catchAll(() async {
-      var repo =
-          await GitAsyncRepository.load(_gitRepo.gitRepoPath).getOrThrow();
-      var branchName = await repo.currentBranch().getOrThrow();
-      var branchConfig = repo.config.branch(branchName);
-      if (branchConfig == null) {
-        throw Exception("Branch config for '$branchName' not found");
-      }
+  Future<void> resetHard() async {
+    var repo = await GitAsyncRepository.load(_gitRepo.gitRepoPath);
+    var branchName = await repo.currentBranch();
+    var branchConfig = repo.config.branch(branchName);
+    if (branchConfig == null) {
+      throw Exception("Branch config for '$branchName' not found");
+    }
 
-      var remoteName = branchConfig.remote;
-      if (remoteName == null) {
-        throw Exception("Branch config for '$branchName' misdsing remote");
-      }
-      var remoteBranch =
-          await repo.remoteBranch(remoteName, branchName).getOrThrow();
-      await repo.resetHard(remoteBranch.hash!).throwOnError();
+    var remoteName = branchConfig.remote;
+    if (remoteName == null) {
+      throw Exception("Branch config for '$branchName' misdsing remote");
+    }
+    var remoteBranch = await repo.remoteBranch(remoteName, branchName);
+    await repo.resetHard(remoteBranch.hash!);
 
-      numChanges = 0;
-      notifyListeners();
+    numChanges = 0;
+    notifyListeners();
 
-      _loadNotes();
-
-      return Result(null);
-    });
+    _loadNotes();
   }
 
-  Future<Result<bool>> canResetHard() {
-    return catchAll(() async {
-      var repo =
-          await GitAsyncRepository.load(_gitRepo.gitRepoPath).getOrThrow();
-      var branchName = await repo.currentBranch().getOrThrow();
-      var branchConfig = repo.config.branch(branchName);
-      if (branchConfig == null) {
-        throw Exception("Branch config for '$branchName' not found");
-      }
+  Future<bool> canResetHard() async {
+    var repo = await GitAsyncRepository.load(_gitRepo.gitRepoPath);
+    var branchName = await repo.currentBranch();
+    var branchConfig = repo.config.branch(branchName);
+    if (branchConfig == null) {
+      throw Exception("Branch config for '$branchName' not found");
+    }
 
-      var remoteName = branchConfig.remote;
-      if (remoteName == null) {
-        throw Exception("Branch config for '$branchName' misdsing remote");
-      }
-      var remoteBranch =
-          await repo.remoteBranch(remoteName, branchName).getOrThrow();
-      var headHash = await repo.headHash().getOrThrow();
-      return Result(remoteBranch.hash != headHash);
-    });
+    var remoteName = branchConfig.remote;
+    if (remoteName == null) {
+      throw Exception("Branch config for '$branchName' misdsing remote");
+    }
+    var remoteBranch = await repo.remoteBranch(remoteName, branchName);
+    var headHash = await repo.headHash();
+    return remoteBranch.hash != headHash;
   }
 
-  Future<Result<void>> removeRemote(String remoteName) async {
-    var repo = GitRepository.load(repoPath).getOrThrow();
+  Future<void> removeRemote(String remoteName) async {
+    var repo = GitRepository.load(repoPath);
     if (repo.config.remote(remoteName) != null) {
-      var r = repo.removeRemote(remoteName);
-      var _ = repo.close();
-      if (r.isFailure) {
-        return fail(r);
+      try {
+        repo.removeRemote(remoteName);
+      } catch (ex, st) {
+        Log.e("removeRemote", ex: ex, stacktrace: st);
+      } finally {
+        repo.close();
       }
     }
-
-    return Result(null);
   }
 
-  Future<Result<void>> ensureValidRepo() async {
+  Future<void> ensureValidRepo() async {
     if (!GitRepository.isValidRepo(repoPath)) {
-      var r = GitRepository.init(repoPath, defaultBranch: DEFAULT_BRANCH);
-      if (r.isFailure) {
-        return fail(r);
-      }
+      GitRepository.init(repoPath, defaultBranch: DEFAULT_BRANCH);
     }
-
-    return Result(null);
   }
 
-  Result<bool> fileExists(String path) {
-    return catchAllSync(() {
-      var type = io.FileSystemEntity.typeSync(path);
-      return Result(type != io.FileSystemEntityType.notFound);
-    });
+  bool fileExists(String path) {
+    var type = io.FileSystemEntity.typeSync(path);
+    return type != io.FileSystemEntityType.notFound;
   }
 
-  Future<Result<void>> init(String repoPath) async {
+  Future<void> init(String repoPath) async {
     return GitRepository.init(repoPath, defaultBranch: DEFAULT_BRANCH);
   }
 }
 
 Future<void> _copyDirectory(String source, String destination) async {
   await for (var entity in io.Directory(source).list(recursive: false)) {
-    dynamic _;
     if (entity is io.Directory) {
       var newDirectory = io.Directory(p.join(
           io.Directory(destination).absolute.path, p.basename(entity.path)));
-      _ = await newDirectory.create();
+      await newDirectory.create();
       await _copyDirectory(entity.absolute.path, newDirectory.path);
     } else if (entity is io.File) {
-      _ = await entity.copy(p.join(destination, p.basename(entity.path)));
+      await entity.copy(p.join(destination, p.basename(entity.path)));
     }
   }
 }
@@ -998,31 +891,25 @@ Future<void> _ensureOneCommitInRepo({
   }
 }
 
-Future<Result<void>> _commitUnTrackedChanges(
+Future<void> _commitUnTrackedChanges(
     GitAsyncRepository repo, GitConfig gitConfig) async {
   var timer = Stopwatch()..start();
   //
   // Check for un-committed files and save them
   //
-  var addR = await repo.add('.');
-  if (addR.isFailure) {
-    return fail(addR);
-  }
+  await repo.add('.');
 
-  var commitR = await repo.commit(
-    message: CommitMessageBuilder().autoCommit(),
-    author: GitAuthor(
-      name: gitConfig.gitAuthor,
-      email: gitConfig.gitAuthorEmail,
-    ),
-  );
-  if (commitR.isFailure) {
-    if (commitR.error is! GitEmptyCommit) {
-      Log.i('_commitUntracked NoCommit: ${timer.elapsed}');
-      return fail(commitR);
-    }
+  try {
+    await repo.commit(
+      message: CommitMessageBuilder().autoCommit(),
+      author: GitAuthor(
+        name: gitConfig.gitAuthor,
+        email: gitConfig.gitAuthorEmail,
+      ),
+    );
+  } catch (ex) {
+    if (ex is! GitEmptyCommit) rethrow;
   }
 
   Log.i('_commitUntracked: ${timer.elapsed}');
-  return Result(null);
 }

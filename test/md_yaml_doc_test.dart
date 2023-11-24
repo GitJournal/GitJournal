@@ -7,13 +7,12 @@
 import 'dart:io' as io;
 
 import 'package:dart_git/utils/date_time.dart';
-import 'package:dart_git/utils/result.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:gitjournal/core/markdown/md_yaml_doc.dart';
+import 'package:gitjournal/core/markdown/md_yaml_doc_loader.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
-import 'package:gitjournal/core/markdown/md_yaml_doc.dart';
-import 'package:gitjournal/core/markdown/md_yaml_doc_loader.dart';
 import 'lib.dart';
 
 void main() {
@@ -72,8 +71,8 @@ Hello
     io.File(noteFullPath).writeAsStringSync(content);
 
     final mdYamlDocLoader = MdYamlDocLoader();
-    var doc1 = await mdYamlDocLoader.loadDoc(noteFullPath).getOrThrow();
-    var doc2 = await mdYamlDocLoader.loadDoc(noteFullPath).getOrThrow();
+    var doc1 = await mdYamlDocLoader.loadDoc(noteFullPath);
+    var doc2 = await mdYamlDocLoader.loadDoc(noteFullPath);
 
     expect(doc1, doc2);
   });

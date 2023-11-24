@@ -9,13 +9,11 @@
 import 'dart:convert';
 
 import 'package:dart_git/utils/file_extensions.dart';
-import 'package:universal_io/io.dart';
-
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/settings.dart';
-import 'package:gitjournal/utils/result.dart';
+import 'package:universal_io/io.dart';
 
-Future<Result<void>> gitFetchViaExecutable({
+Future<void> gitFetchViaExecutable({
   required String repoPath,
   required String privateKey,
   required String privateKeyPassword,
@@ -28,7 +26,7 @@ Future<Result<void>> gitFetchViaExecutable({
       args: ["fetch", remoteName],
     );
 
-Future<Result<void>> gitCloneViaExecutable({
+Future<void> gitCloneViaExecutable({
   required String cloneUrl,
   required String repoPath,
   required String privateKey,
@@ -41,7 +39,7 @@ Future<Result<void>> gitCloneViaExecutable({
       args: ["clone", cloneUrl, repoPath],
     );
 
-Future<Result<void>> gitPushViaExecutable({
+Future<void> gitPushViaExecutable({
   required String repoPath,
   required String privateKey,
   required String privateKeyPassword,
@@ -54,7 +52,7 @@ Future<Result<void>> gitPushViaExecutable({
       args: ["push", remoteName],
     );
 
-Future<Result<void>> _gitCommandViaExecutable({
+Future<void> _gitCommandViaExecutable({
   required String? repoPath,
   required String privateKey,
   required String privateKeyPassword,
@@ -62,15 +60,12 @@ Future<Result<void>> _gitCommandViaExecutable({
 }) async {
   if (repoPath != null) assert(repoPath.startsWith('/'));
   if (privateKeyPassword.isNotEmpty) {
-    var ex = Exception("SSH Keys with passwords are not supported");
-    return Result.fail(ex);
+    throw Exception("SSH Keys with passwords are not supported");
   }
-
-  dynamic _;
 
   var dir = Directory.systemTemp.createTempSync();
   var temp = File("${dir.path}/key");
-  _ = await temp.writeAsString(privateKey);
+  await temp.writeAsString(privateKey);
   temp.chmodSync(int.parse('0600', radix: 8));
 
   Log.i("Running git ${args.join(' ')}");
@@ -88,7 +83,7 @@ Future<Result<void>> _gitCommandViaExecutable({
   Log.d("git ${args.join(' ')}");
 
   var exitCode = await process.exitCode;
-  _ = await dir.delete(recursive: true);
+  await dir.delete(recursive: true);
 
   var stdoutB = <int>[];
   await for (var d in process.stdout) {
@@ -98,14 +93,12 @@ Future<Result<void>> _gitCommandViaExecutable({
 
   if (exitCode != 0) {
     var ex = Exception("Failed to fetch - $stdout - exitCode: $exitCode");
-    return Result.fail(ex);
+    throw ex;
   }
-
-  return Result(null);
 }
 
 // Default branch - git remote show origin | grep 'HEAD branch'
-Future<Result<String>> gitDefaultBranchViaExecutable({
+Future<String> gitDefaultBranchViaExecutable({
   required String repoPath,
   required String privateKey,
   required String privateKeyPassword,
@@ -114,14 +107,12 @@ Future<Result<String>> gitDefaultBranchViaExecutable({
   assert(repoPath.startsWith('/'));
   if (privateKeyPassword.isNotEmpty) {
     var ex = Exception("SSH Keys with passwords are not supported");
-    return Result.fail(ex);
+    throw ex;
   }
-
-  dynamic _;
 
   var dir = Directory.systemTemp.createTempSync();
   var temp = File("${dir.path}/key");
-  _ = await temp.writeAsString(privateKey);
+  await temp.writeAsString(privateKey);
   temp.chmodSync(int.parse('0600', radix: 8));
 
   var process = await Process.start(
@@ -142,11 +133,11 @@ Future<Result<String>> gitDefaultBranchViaExecutable({
   Log.d('git remote show $remoteName');
 
   var exitCode = await process.exitCode;
-  _ = await dir.delete(recursive: true);
+  await dir.delete(recursive: true);
 
   if (exitCode != 0) {
     var ex = Exception("Failed to fetch default branch, exitCode: $exitCode");
-    return Result.fail(ex);
+    throw ex;
   }
 
   var stdoutB = <int>[];
@@ -158,12 +149,12 @@ Future<Result<String>> gitDefaultBranchViaExecutable({
     if (line.contains('HEAD branch:')) {
       var branch = line.split(':')[1].trim();
       if (branch == '(unknown)') {
-        return Result(DEFAULT_BRANCH);
+        return DEFAULT_BRANCH;
       }
-      return Result(branch);
+      return branch;
     }
   }
 
   var ex = Exception('Default Branch not found');
-  return Result.fail(ex);
+  throw ex;
 }

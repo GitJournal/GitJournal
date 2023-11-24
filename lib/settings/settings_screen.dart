@@ -39,7 +39,7 @@ class SettingsScreen extends StatelessWidget {
                 name: SettingsUIScreen.routePath,
               ),
             );
-            var _ = Navigator.push(context, route);
+            Navigator.push(context, route);
           },
         ),
         SettingsTile(
@@ -53,7 +53,7 @@ class SettingsScreen extends StatelessWidget {
                 name: SettingsGit.routePath,
               ),
             );
-            var _ = Navigator.push(context, route);
+            Navigator.push(context, route);
           },
         ),
         SettingsTile(
@@ -67,7 +67,7 @@ class SettingsScreen extends StatelessWidget {
                 name: SettingsEditorsScreen.routePath,
               ),
             );
-            var _ = Navigator.push(context, route);
+            Navigator.push(context, route);
           },
         ),
         SettingsTile(
@@ -81,7 +81,7 @@ class SettingsScreen extends StatelessWidget {
                 name: SettingsStorageScreen.routePath,
               ),
             );
-            var _ = Navigator.push(context, route);
+            Navigator.push(context, route);
           },
         ),
         SettingsTile(
@@ -93,7 +93,7 @@ class SettingsScreen extends StatelessWidget {
               builder: (context) => const SettingsAnalytics(),
               settings: const RouteSettings(name: SettingsAnalytics.routePath),
             );
-            var _ = Navigator.push(context, route);
+            Navigator.push(context, route);
           },
         ),
         SettingsTile(
@@ -105,7 +105,7 @@ class SettingsScreen extends StatelessWidget {
               builder: (context) => const DebugScreen(),
               settings: const RouteSettings(name: DebugScreen.routePath),
             );
-            var _ = Navigator.push(context, route);
+            Navigator.push(context, route);
           },
         ),
         SettingsTile(
@@ -119,7 +119,7 @@ class SettingsScreen extends StatelessWidget {
                 name: ExperimentalSettingsScreen.routePath,
               ),
             );
-            var _ = Navigator.push(context, route);
+            Navigator.push(context, route);
           },
         ),
         const Divider(),
@@ -128,7 +128,7 @@ class SettingsScreen extends StatelessWidget {
           iconData: Icons.question_answer_outlined,
           title: context.loc.settingsProjectDocs,
           onTap: () {
-            var _ = launchUrl(
+            launchUrl(
               Uri.parse('https://gitjournal.io/docs'),
               mode: LaunchMode.externalApplication,
             );
@@ -156,7 +156,7 @@ class SettingsScreen extends StatelessWidget {
               builder: (context) => const SettingsAboutPage(),
               settings: const RouteSettings(name: SettingsAboutPage.routePath),
             );
-            var _ = Navigator.push(context, route);
+            Navigator.push(context, route);
           },
         ),
       ],

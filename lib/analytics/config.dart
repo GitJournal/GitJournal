@@ -5,10 +5,8 @@
  */
 
 import 'package:flutter/foundation.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:gitjournal/settings/settings_sharedpref.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AnalyticsConfig extends ChangeNotifier with SettingsSharedPref {
   AnalyticsConfig(this.id, this.pref);
@@ -32,6 +30,6 @@ class AnalyticsConfig extends ChangeNotifier with SettingsSharedPref {
     var def = AnalyticsConfig(id, pref);
 
     await setBool("collectUsageStatistics", enabled, def.enabled);
-    var _ = await pref.setString("appVersion", appVersion);
+    await pref.setString("appVersion", appVersion);
   }
 }

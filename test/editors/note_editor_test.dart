@@ -250,8 +250,8 @@ void main() {
     expect(saveButtonFinder, findsNothing);
 
     // Ensure nothing has changed
-    var gitRepo = GitRepository.load(repo.repoPath).getOrThrow();
-    expect(gitRepo.headHash().getOrThrow(), GitHash(headHash));
+    var gitRepo = GitRepository.load(repo.repoPath);
+    expect(gitRepo.headHash(), GitHash(headHash));
   });
 
   testWidgets('Editing a Note body with a heading', (tester) async {

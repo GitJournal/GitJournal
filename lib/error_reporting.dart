@@ -6,18 +6,16 @@
 
 import 'dart:async';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/foundation.dart';
-
-import 'package:device_info_plus/device_info_plus.dart';
+import 'package:gitjournal/.env.dart';
+import 'package:gitjournal/logger/logger.dart';
+import 'package:gitjournal/settings/app_config.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart';
 import 'package:universal_io/io.dart' show Platform;
-
-import 'package:gitjournal/.env.dart';
-import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/settings/app_config.dart';
 
 Future<void> initSentry() async {
   if (Sentry.isEnabled) {
@@ -156,8 +154,7 @@ Future<void> _captureSentryException(
       level: level,
     );
 
-    var _ = await Sentry.captureEvent(event,
-        stackTrace: Trace.from(stackTrace).terse);
+    await Sentry.captureEvent(event, stackTrace: Trace.from(stackTrace).terse);
     return;
   } catch (e, st) {
     Log.e("Failed to report with Sentry:", ex: e, stacktrace: st);

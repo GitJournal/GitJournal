@@ -7,16 +7,14 @@
 import 'dart:io';
 
 import 'package:dart_git/plumbing/git_hash.dart';
-import 'package:dart_git/utils/result.dart';
-import 'package:path/path.dart' as p;
-import 'package:process_run/process_run.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/settings/storage_config.dart';
+import 'package:path/path.dart' as p;
+import 'package:process_run/process_run.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final inCI = Platform.environment.containsKey("CI");
 
@@ -81,12 +79,13 @@ class TestData {
     var repoId = DEFAULT_ID;
     await pref.setString("${repoId}_$FOLDER_NAME_KEY", 'test_data');
 
-    var repo = await repoManager
-        .buildActiveRepository(
-          loadFromCache: false,
-          syncOnBoot: false,
-        )
-        .getOrThrow();
+    var repo = await repoManager.buildActiveRepository(
+      loadFromCache: false,
+      syncOnBoot: false,
+    );
+    if (repo == null) {
+      throw Exception("Failed to build active repo");
+    }
     await repo.reloadNotes();
 
     return TestData._(baseDir, repoPath, pref, repo, repoManager);

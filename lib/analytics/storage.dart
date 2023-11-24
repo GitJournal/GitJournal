@@ -9,12 +9,12 @@ import 'dart:typed_data';
 import 'package:buffer/buffer.dart';
 import 'package:collection/collection.dart';
 import 'package:function_types/function_types.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:synchronized/synchronized.dart';
 import 'package:universal_io/io.dart';
 
-import 'package:gitjournal/logger/logger.dart';
 import 'generated/analytics.pb.dart' as pb;
 
 class AnalyticsStorage {
@@ -54,7 +54,7 @@ class AnalyticsStorage {
     builder.add(eventData);
 
     try {
-      var _ = await File(filePath).writeAsBytes(
+      await File(filePath).writeAsBytes(
         builder.toBytes(),
         mode: FileMode.append,
       );

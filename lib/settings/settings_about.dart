@@ -31,7 +31,7 @@ class SettingsAboutPage extends StatelessWidget {
           title: context.loc.settingsPrivacy,
           subtitle: _privacyUrl.replaceAll('https://', ''),
           onTap: () {
-            var _ = launchUrl(
+            launchUrl(
               Uri.parse(_privacyUrl),
               mode: LaunchMode.externalApplication,
             );
@@ -42,7 +42,7 @@ class SettingsAboutPage extends StatelessWidget {
           title: context.loc.settingsTerms,
           subtitle: _termsUrl.replaceAll('https://', ''),
           onTap: () {
-            var _ = launchUrl(
+            launchUrl(
               Uri.parse(_termsUrl),
               mode: LaunchMode.externalApplication,
             );

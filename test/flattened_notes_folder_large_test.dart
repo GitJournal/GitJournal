@@ -7,11 +7,6 @@
 import 'dart:math';
 
 import 'package:dart_git/dart_git.dart';
-import 'package:path/path.dart' as p;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:test/test.dart';
-import 'package:universal_io/io.dart' as io;
-
 import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/folder/flattened_notes_folder.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
@@ -19,6 +14,11 @@ import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/notes/note.dart';
+import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test/test.dart';
+import 'package:universal_io/io.dart' as io;
+
 import 'lib.dart';
 
 void main() {
@@ -45,16 +45,14 @@ void main() {
         await _writeRandomNote(random, repoPath, config, fileStorage);
       }
 
-      var repo = GitRepository.load(repoPath).getOrThrow();
-      repo
-          .commit(
-            message: "Prepare Test Env",
-            author: GitAuthor(name: 'Name', email: "name@example.com"),
-            addAll: true,
-          )
-          .throwOnError();
+      var repo = GitRepository.load(repoPath);
+      repo.commit(
+        message: "Prepare Test Env",
+        author: GitAuthor(name: 'Name', email: "name@example.com"),
+        addAll: true,
+      );
 
-      await fileStorage.reload().throwOnError();
+      await fileStorage.reload();
 
       rootFolder = NotesFolderFS.root(config, fileStorage);
       await rootFolder.loadRecursively();
@@ -75,16 +73,14 @@ void main() {
       var newFileStorage = await FileStorage.fake(newRepoPath);
       await _writeRandomNote(Random(), newRepoPath, config, newFileStorage);
 
-      var repo = GitRepository.load(newRepoPath).getOrThrow();
-      repo
-          .commit(
-            message: "Prepare Test Env",
-            author: GitAuthor(name: 'Name', email: "name@example.com"),
-            addAll: true,
-          )
-          .throwOnError();
+      var repo = GitRepository.load(newRepoPath);
+      repo.commit(
+        message: "Prepare Test Env",
+        author: GitAuthor(name: 'Name', email: "name@example.com"),
+        addAll: true,
+      );
 
-      await newFileStorage.reload().throwOnError();
+      await newFileStorage.reload();
     });
   });
 }
@@ -106,5 +102,5 @@ Future<void> _writeRandomNote(Random random, String dirPath,
     modified: DateTime(2014, 1, 1 + (random.nextInt(2000))),
     body: "p1",
   );
-  note = await NoteStorage.save(note).getOrThrow();
+  note = await NoteStorage.save(note);
 }

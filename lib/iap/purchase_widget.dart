@@ -86,7 +86,7 @@ class PurchaseButton extends StatelessWidget {
 
       var errStr =
           context.loc.widgetsPurchaseButtonFailPurchase(err.toString());
-      var _ = await showDialog(
+      await showDialog(
         context: context,
         builder: (context) => PurchaseFailedDialog(errStr),
       );
@@ -270,8 +270,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
     if (err.isEmpty) {
       Log.i("Purchase Completed: $subStatus");
       logEvent(Event.PurchaseScreenThankYou);
-      var _ = Navigator.of(context)
-          .popAndPushNamed(PurchaseThankYouScreen.routePath);
+      Navigator.of(context).popAndPushNamed(PurchaseThankYouScreen.routePath);
       return;
     }
 
@@ -282,7 +281,7 @@ class _PurchaseWidgetState extends State<PurchaseWidget> {
       Log.e(err);
       return;
     }
-    var _ = showDialog(
+    showDialog(
       context: context,
       builder: (context) => PurchaseFailedDialog(err),
     );

@@ -41,7 +41,7 @@ class SettingsDisplayImagesScreenState
             settings:
                 const RouteSettings(name: '/settings/display_images/theming'),
           );
-          var _ = Navigator.push(context, route);
+          Navigator.push(context, route);
         },
       ),
       ListTile(
@@ -53,7 +53,7 @@ class SettingsDisplayImagesScreenState
             settings:
                 const RouteSettings(name: '/settings/display_images/caption'),
           );
-          var _ = Navigator.push(context, route);
+          Navigator.push(context, route);
         },
       ),
       SettingsHeader(context.loc.settingsDisplayImagesDetailsViewHeader),

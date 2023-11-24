@@ -85,7 +85,7 @@ class TagListingScreen extends StatelessWidget {
           ),
           settings: const RouteSettings(name: TagListingScreen.routePath),
         );
-        var _ = Navigator.push(context, route);
+        Navigator.push(context, route);
       },
     );
   }

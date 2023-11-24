@@ -44,7 +44,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   void removeFolderRemovedListener(FolderNotificationCallback listener) {
     if (_folderRemovedListeners != null) {
       assert(_folderRemovedListeners!.contains(listener));
-      var _ = _folderRemovedListeners!.remove(listener);
+      _folderRemovedListeners!.remove(listener);
     }
   }
 
@@ -57,7 +57,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   void removeFolderAddedListener(FolderNotificationCallback listener) {
     if (_folderAddedListeners != null) {
       assert(_folderAddedListeners!.contains(listener));
-      var _ = _folderAddedListeners!.remove(listener);
+      _folderAddedListeners!.remove(listener);
     }
   }
 
@@ -70,7 +70,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   void removeThisFolderRenamedListener(FolderRenamedCallback listener) {
     if (_thisFolderRenamedListeners != null) {
       assert(_thisFolderRenamedListeners!.contains(listener));
-      var _ = _thisFolderRenamedListeners!.remove(listener);
+      _thisFolderRenamedListeners!.remove(listener);
     }
   }
 
@@ -83,7 +83,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   void removeNoteAddedListener(NoteNotificationCallback listener) {
     if (_noteAddedListeners != null) {
       assert(_noteAddedListeners!.contains(listener));
-      var _ = _noteAddedListeners!.remove(listener);
+      _noteAddedListeners!.remove(listener);
     }
   }
 
@@ -96,7 +96,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   void removeNoteRemovedListener(NoteNotificationCallback listener) {
     if (_noteRemovedListeners != null) {
       assert(_noteRemovedListeners!.contains(listener));
-      var _ = _noteRemovedListeners!.remove(listener);
+      _noteRemovedListeners!.remove(listener);
     }
   }
 
@@ -109,7 +109,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   void removeNoteModifiedListener(NoteNotificationCallback listener) {
     if (_noteModifiedListeners != null) {
       assert(_noteModifiedListeners!.contains(listener));
-      var _ = _noteModifiedListeners!.remove(listener);
+      _noteModifiedListeners!.remove(listener);
     }
   }
 
@@ -122,7 +122,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   void removeNoteRenameListener(NoteRenamedCallback listener) {
     if (_noteRenameListeners != null) {
       assert(_noteRenameListeners!.contains(listener));
-      var _ = _noteRenameListeners!.remove(listener);
+      _noteRenameListeners!.remove(listener);
     }
   }
 
@@ -380,7 +380,7 @@ class NotesFolderNotifier implements ChangeNotifier {
   @override
   void removeListener(VoidCallback listener) {
     assert(_debugAssertNotDisposed());
-    var _ = _listeners!.remove(listener);
+    _listeners!.remove(listener);
   }
 
   /// Call all the registered listeners.

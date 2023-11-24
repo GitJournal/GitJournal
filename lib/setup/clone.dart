@@ -11,16 +11,14 @@ import 'package:dart_git/exceptions.dart';
 import 'package:dart_git/plumbing/reference.dart';
 import 'package:function_types/function_types.dart';
 import 'package:git_setup/git_transfer_progress.dart';
+import 'package:gitjournal/logger/logger.dart';
+import 'package:gitjournal/settings/settings.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' show Directory;
 
-import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/settings/settings.dart';
-import 'package:gitjournal/utils/result.dart';
-
 const DefaultBranchName = DEFAULT_BRANCH;
 
-typedef GitFetchFunction = Future<Result<void>> Function(
+typedef GitFetchFunction = Future<void> Function(
   String repoPath,
   String remoteName,
   String sshPublicKey,
@@ -29,7 +27,7 @@ typedef GitFetchFunction = Future<Result<void>> Function(
   String statusFile,
 );
 
-typedef GitCloneFunction = Future<Result<void>> Function({
+typedef GitCloneFunction = Future<void> Function({
   required String cloneUrl,
   required String repoPath,
   required String sshPublicKey,
@@ -38,7 +36,7 @@ typedef GitCloneFunction = Future<Result<void>> Function({
   required String statusFile,
 });
 
-typedef GitDefaultBranchFunction = Future<Result<String>> Function(
+typedef GitDefaultBranchFunction = Future<String> Function(
   String repoPath,
   String remoteName,
   String sshPublicKey,
@@ -46,7 +44,7 @@ typedef GitDefaultBranchFunction = Future<Result<String>> Function(
   String sshPassword,
 );
 
-Future<Result<void>> cloneRemotePluggable({
+Future<void> cloneRemotePluggable({
   required String repoPath,
   required String cloneUrl,
   required String remoteName,
@@ -77,8 +75,8 @@ Future<Result<void>> cloneRemotePluggable({
     );
   }
 
-  var repo = await GitAsyncRepository.load(repoPath).getOrThrow();
-  var remote = await repo.addOrUpdateRemote(remoteName, cloneUrl).getOrThrow();
+  var repo = await GitAsyncRepository.load(repoPath);
+  var remote = await repo.addOrUpdateRemote(remoteName, cloneUrl);
 
   var duration = const Duration(milliseconds: 50);
   var timer = Timer.periodic(duration, (_) async {
@@ -88,26 +86,26 @@ Future<Result<void>> cloneRemotePluggable({
     }
   });
 
-  var fetchR = await gitFetchFn(repoPath, remoteName, sshPublicKey,
-      sshPrivateKey, sshPassword, statusFile);
-  timer.cancel();
-  if (fetchR.isFailure) {
-    var ex = WrappedException(fetchR, "`git fetch` failed");
-    return Result.fail(ex);
+  try {
+    await gitFetchFn(repoPath, remoteName, sshPublicKey, sshPrivateKey,
+        sshPassword, statusFile);
+  } catch (ex) {
+    rethrow;
+  } finally {
+    timer.cancel();
   }
 
-  var branchNameR = await defaultBranchFn(
-      repoPath, remoteName, sshPublicKey, sshPrivateKey, sshPassword);
-  if (branchNameR.isFailure) {
-    var ex = WrappedException(branchNameR, "`git fetch default branch` failed");
-    return Result.fail(ex);
+  var remoteBranchName = "";
+  try {
+    remoteBranchName = await defaultBranchFn(
+        repoPath, remoteName, sshPublicKey, sshPrivateKey, sshPassword);
+  } catch (ex, st) {
+    Log.e("`git fetch default branch` failed", ex: ex, stacktrace: st);
   }
-  var remoteBranchName = branchNameR.getOrThrow();
   if (remoteBranchName.isEmpty) {
-    var r = await repo.currentBranch();
-    if (r.isSuccess) {
-      remoteBranchName = r.getOrThrow();
-    } else {
+    try {
+      remoteBranchName = await repo.currentBranch();
+    } catch (_) {
       remoteBranchName = DefaultBranchName;
     }
   }
@@ -115,30 +113,23 @@ Future<Result<void>> cloneRemotePluggable({
   Log.i("Using remote branch: $remoteBranchName");
   var skipCheckout = false;
 
-  var branches = await repo.branches().getOrThrow();
+  var branches = await repo.branches();
   Log.i("Repo has the following branches: $branches");
   if (branches.isEmpty) {
     Log.i("Completing - no local branch");
-    var remoteBranchR = await repo.remoteBranch(remoteName, remoteBranchName);
-    if (remoteBranchR.isFailure) {
-      if (remoteBranchR.error is! GitNotFound) {
-        return fail(remoteBranchR);
-      }
-
-      // remoteBranch doesn't exist - do nothing? Are you sure?
-      skipCheckout = true;
-    } else {
+    try {
+      var remoteBranch = await repo.remoteBranch(remoteName, remoteBranchName);
       // remote branch exists
       Log.i("Remote branch exists $remoteName/$remoteBranchName");
-      var remoteBranch = remoteBranchR.getOrThrow();
-      await repo
-          .createBranch(remoteBranchName, hash: remoteBranch.hash)
-          .throwOnError();
-      await repo.checkoutBranch(remoteBranchName).throwOnError();
+      await repo.createBranch(remoteBranchName, hash: remoteBranch.hash);
+      await repo.checkoutBranch(remoteBranchName);
+    } catch (ex) {
+      if (ex is! GitNotFound) rethrow;
+      skipCheckout = true;
     }
 
     // FIXME: This will fail if the currentBranch doesn't exist!!
-    await repo.setUpstreamTo(remote, remoteBranchName).throwOnError();
+    await repo.setUpstreamTo(remote, remoteBranchName);
   } else {
     Log.i("Local branches $branches");
     var branch = branches[0];
@@ -146,7 +137,7 @@ Future<Result<void>> cloneRemotePluggable({
     if (branch == remoteBranchName) {
       Log.i("Completing - localBranch: $branch");
 
-      var currentBranch = await repo.currentBranch().getOrThrow();
+      var currentBranch = await repo.currentBranch();
       if (currentBranch != branch) {
         Log.i("Current branch is not the only branch");
         Log.d("Current Branch: $currentBranch");
@@ -155,33 +146,28 @@ Future<Result<void>> cloneRemotePluggable({
         // Shit happens sometimes
         // There is only one local branch, and that branch is not the current
         // branch, wtf?
-        await repo.checkoutBranch(branch).throwOnError();
+        await repo.checkoutBranch(branch);
       }
 
-      await repo.setUpstreamTo(remote, remoteBranchName).throwOnError();
-      var remoteBranchR = await repo.remoteBranch(remoteName, remoteBranchName);
-      if (remoteBranchR.isSuccess) {
-        Log.i("Merging '$remoteName/$remoteBranchName'");
-        var r = await _merge(
+      await repo.setUpstreamTo(remote, remoteBranchName);
+      try {
+        await repo.remoteBranch(remoteName, remoteBranchName);
+        await _merge(
             repoPath, remoteName, remoteBranchName, authorName, authorEmail);
-        if (r.isFailure) {
-          return fail(r);
-        }
+      } catch (ex, st) {
+        Log.e("Remote branch merging failed", ex: ex, stacktrace: st);
       }
     } else {
       Log.i("Completing - localBranch diff remote: $branch $remoteBranchName");
-      await repo.createBranch(remoteBranchName).throwOnError();
-      await repo.checkoutBranch(remoteBranchName).throwOnError();
+      await repo.createBranch(remoteBranchName);
+      await repo.checkoutBranch(remoteBranchName);
 
-      await repo.deleteBranch(branch).throwOnError();
-      await repo.setUpstreamTo(remote, remoteBranchName).throwOnError();
+      await repo.deleteBranch(branch);
+      await repo.setUpstreamTo(remote, remoteBranchName);
 
       Log.i("Merging '$remoteName/$remoteBranchName'");
-      var r = await _merge(
+      await _merge(
           repoPath, remoteName, remoteBranchName, authorName, authorEmail);
-      if (r.isFailure) {
-        return fail(r);
-      }
     }
   }
 
@@ -192,13 +178,8 @@ Future<Result<void>> cloneRemotePluggable({
   //   https://sentry.io/organizations/gitjournal/issues/2254310735/?project=5168082&query=is%3Aunresolved
   //
   if (!skipCheckout) {
-    var r = await repo.checkout(".");
-    if (r.isFailure) {
-      return fail(r);
-    }
+    await repo.checkout(".");
   }
-
-  return Result(null);
 }
 
 Future<bool> _repoIsEmpty(repoPath) async {
@@ -220,33 +201,28 @@ String folderNameFromCloneUrl(String cloneUrl) {
   return name;
 }
 
-Future<Result<void>> _merge(
+Future<void> _merge(
   String repoPath,
   String remoteName,
   String remoteBranchName,
   String authorName,
   String authorEmail,
-) {
-  return catchAll(() async {
-    var repo = GitRepository.load(repoPath).getOrThrow();
-    var author = GitAuthor(name: authorName, email: authorEmail);
-    var r = repo.mergeCurrentTrackingBranch(author: author);
-    if (r.isFailure) {
-      var ex = r.error;
-      while (ex is ResultException) {
-        ex = ex.exception;
+) async {
+  var repo = GitRepository.load(repoPath);
+  var author = GitAuthor(name: authorName, email: authorEmail);
+  try {
+    repo.mergeTrackingBranch(author: author);
+  } catch (ex) {
+    if (ex is GitRefNotFound) {
+      var refName = ReferenceName.remote(remoteName, remoteBranchName);
+      if (ex.refName == refName) {
+        Log.d("Remote Repo is empty");
       }
-      if (ex is GitRefNotFound) {
-        var refName = ReferenceName.remote(remoteName, remoteBranchName);
-        if (ex.refName == refName) {
-          Log.d("Remote Repo is empty");
-          return Result(null);
-        }
-      }
-
-      r.throwOnError();
+      repo.close();
+      return;
     }
-    repo.close().throwOnError();
-    return Result(null);
-  });
+
+    rethrow;
+  }
+  repo.close();
 }

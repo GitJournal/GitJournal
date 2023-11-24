@@ -433,14 +433,12 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
   Future<void> _removeRemote() async {
     var repo = context.read<GitJournalRepo>();
 
-    var r1 = await repo.ensureValidRepo();
-    if (r1.isFailure) {
-      showResultError(context, r1);
-    }
+    try {
+      await repo.ensureValidRepo();
 
-    var r2 = await repo.removeRemote(widget.remoteName);
-    if (r2.isFailure) {
-      showResultError(context, r2);
+      await repo.removeRemote(widget.remoteName);
+    } catch (ex) {
+      Log.e("Failed to remove remote", ex: ex);
     }
   }
 
@@ -514,13 +512,13 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     try {
       if (_gitCloneUrl.startsWith("git@github.com:")) {
         Log.i("Launching $gitHubUrl");
-        var _ = await launchUrl(
+        await launchUrl(
           Uri.parse(gitHubUrl),
           mode: LaunchMode.externalApplication,
         );
       } else if (_gitCloneUrl.startsWith("git@gitlab.com:")) {
         Log.i("Launching $gitLabUrl");
-        var _ = await launchUrl(
+        await launchUrl(
           Uri.parse(gitLabUrl),
           mode: LaunchMode.externalApplication,
         );
@@ -536,12 +534,12 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
     try {
       if (_gitHostType == GitHostType.GitHub) {
-        var _ = await launchUrl(
+        await launchUrl(
           Uri.parse("https://github.com/new"),
           mode: LaunchMode.externalApplication,
         );
       } else if (_gitHostType == GitHostType.GitLab) {
-        var _ = await launchUrl(
+        await launchUrl(
           Uri.parse("https://gitlab.com/projects/new"),
           mode: LaunchMode.externalApplication,
         );
@@ -565,24 +563,25 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
     var repoPath = p.join(basePath, widget.repoFolderName);
     Log.i("RepoPath: $repoPath");
 
-    var cloneR = await cloneRemote(
-      cloneUrl: _gitCloneUrl,
-      remoteName: widget.remoteName,
-      repoPath: repoPath,
-      sshPassword: gitConfig.sshPassword,
-      sshPrivateKey: gitConfig.sshPrivateKey,
-      sshPublicKey: gitConfig.sshPublicKey,
-      authorEmail: gitConfig.gitAuthorEmail,
-      authorName: gitConfig.gitAuthor,
-      progressUpdate: (GitTransferProgress p) {
-        setState(() {
-          _cloneProgress = p;
-        });
-      },
-    );
-    if (cloneR.isFailure) {
-      Log.e("Failed to clone", ex: cloneR.error, stacktrace: cloneR.stackTrace);
-      var error = cloneR.error.toString();
+    try {
+      await cloneRemote(
+        cloneUrl: _gitCloneUrl,
+        remoteName: widget.remoteName,
+        repoPath: repoPath,
+        sshPassword: gitConfig.sshPassword,
+        sshPrivateKey: gitConfig.sshPrivateKey,
+        sshPublicKey: gitConfig.sshPublicKey,
+        authorEmail: gitConfig.gitAuthorEmail,
+        authorName: gitConfig.gitAuthor,
+        progressUpdate: (GitTransferProgress p) {
+          setState(() {
+            _cloneProgress = p;
+          });
+        },
+      );
+    } catch (ex, st) {
+      Log.e("Failed to clone", ex: ex, stacktrace: st);
+      var error = ex.toString();
       _removeRemote();
 
       setState(() {
@@ -612,7 +611,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
 
       var repoPath = p.join(basePath, widget.repoFolderName);
       Log.i("Renaming $repoPath --> $newRepoPath");
-      var _ = await Directory(repoPath).rename(newRepoPath);
+      await Directory(repoPath).rename(newRepoPath);
       storageConfig.folderName = p.basename(newRepoPath);
     }
 
@@ -651,9 +650,8 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       Log.i("Adding as a deploy key");
       _autoConfigureMessage = context.loc.setupSshKeyAddDeploy;
 
-      await _gitHost!
-          .addDeployKey(_publicKey, _gitHostRepo.fullName)
-          .throwOnError();
+      await _gitHost!.addDeployKey(_publicKey, _gitHostRepo.fullName);
+      ;
     } on Exception catch (e, stacktrace) {
       _handleGitHostException(e, stacktrace);
       return;

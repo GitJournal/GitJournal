@@ -9,14 +9,14 @@ import 'dart:io' as io;
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/plumbing/git_hash.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:path/path.dart' as p;
-import 'package:test/test.dart';
-import 'package:universal_io/io.dart' as io;
-
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/settings.dart';
+import 'package:path/path.dart' as p;
+import 'package:test/test.dart';
+import 'package:universal_io/io.dart' as io;
+
 import 'lib.dart';
 
 Future<void> main() async {
@@ -50,16 +50,16 @@ Future<void> main() async {
     var note = repo.rootFolder.notes.firstWhere((n) => n.fileName == '1.md');
 
     var newPath = "1_new.md";
-    var newNote = await repo.renameNote(note, newPath).getOrThrow();
+    var newNote = await repo.renameNote(note, newPath);
 
     expect(newNote.filePath, newPath);
     expect(newNote.fileFormat, NoteFileFormat.Markdown);
     expect(repo.rootFolder.getAllNotes().length, 3);
 
-    var gitRepo = GitRepository.load(repoPath).getOrThrow();
-    expect(gitRepo.headHash().getOrThrow(), isNot(headHash));
+    var gitRepo = GitRepository.load(repoPath);
+    expect(gitRepo.headHash(), isNot(headHash));
 
-    var headCommit = gitRepo.headCommit().getOrThrow();
+    var headCommit = gitRepo.headCommit();
     expect(headCommit.parents.length, 1);
     expect(headCommit.parents[0], headHash);
   });
@@ -69,7 +69,7 @@ Future<void> main() async {
     var note = repo.rootFolder.notes.firstWhere((n) => n.fileName == '1.md');
 
     var newPath = "1_new.txt";
-    var newNote = await repo.renameNote(note, newPath).getOrThrow();
+    var newNote = await repo.renameNote(note, newPath);
 
     expect(newNote.filePath, newPath);
     expect(newNote.fileFormat, NoteFileFormat.Txt);
@@ -81,12 +81,12 @@ Future<void> main() async {
     var note = repo.rootFolder.notes.firstWhere((n) => n.fileName == '1.md');
 
     var newPath = "2.md";
-    var result = await repo.renameNote(note, newPath);
-    expect(result.isFailure, true);
-    expect(result.error, isA<Exception>());
+    await expectLater(() async {
+      await repo.renameNote(note, newPath);
+    }, throwsA(isA<Exception>()));
 
-    var gitRepo = GitRepository.load(repoPath).getOrThrow();
-    expect(gitRepo.headHash().getOrThrow(), headHash);
+    var gitRepo = GitRepository.load(repoPath);
+    expect(gitRepo.headHash(), headHash);
   });
 
   test('updateNote - Basic', () async {
@@ -95,12 +95,12 @@ Future<void> main() async {
 
     var toNote = note.resetOid();
     toNote = toNote.copyWith(body: '11');
-    toNote = await repo.updateNote(note, toNote).getOrThrow();
+    toNote = await repo.updateNote(note, toNote);
 
-    var gitRepo = GitRepository.load(repoPath).getOrThrow();
-    expect(gitRepo.headHash().getOrThrow(), isNot(headHash));
+    var gitRepo = GitRepository.load(repoPath);
+    expect(gitRepo.headHash(), isNot(headHash));
 
-    var headCommit = gitRepo.headCommit().getOrThrow();
+    var headCommit = gitRepo.headCommit();
     expect(headCommit.parents.length, 1);
     expect(headCommit.parents[0], headHash);
 
@@ -116,12 +116,12 @@ Future<void> main() async {
     toNote = toNote.copyWith(body: "doesn't matter");
     io.Directory(note.parent.fullFolderPath).deleteSync(recursive: true);
 
-    var result = await repo.updateNote(note, toNote);
-    expect(result.isFailure, true);
-    expect(result.error, isA<Exception>());
+    await expectLater(() async {
+      await repo.updateNote(note, toNote);
+    }, throwsA(isA<Exception>()));
 
-    var gitRepo = GitRepository.load(repoPath).getOrThrow();
-    expect(gitRepo.headHash().getOrThrow(), headHash);
+    var gitRepo = GitRepository.load(repoPath);
+    expect(gitRepo.headHash(), headHash);
   });
 
   test('addNote - Basic', () async {
@@ -133,12 +133,12 @@ Future<void> main() async {
 
     note = note.copyWith(body: '7');
     note = note.copyWithFileName('7.md');
-    note = await repo.addNote(note).getOrThrow();
+    note = await repo.addNote(note);
 
-    var gitRepo = GitRepository.load(repoPath).getOrThrow();
-    expect(gitRepo.headHash().getOrThrow(), isNot(headHash));
+    var gitRepo = GitRepository.load(repoPath);
+    expect(gitRepo.headHash(), isNot(headHash));
 
-    var headCommit = gitRepo.headCommit().getOrThrow();
+    var headCommit = gitRepo.headCommit();
     expect(headCommit.parents.length, 1);
     expect(headCommit.parents[0], headHash);
 
@@ -155,12 +155,12 @@ Future<void> main() async {
     note = note.copyWithFileName('7.md');
 
     io.Directory(folder.fullFolderPath).deleteSync(recursive: true);
-    var result = await repo.addNote(note);
-    expect(result.isFailure, true);
-    expect(result.error, isA<Exception>());
+    await expectLater(() async {
+      await repo.addNote(note);
+    }, throwsA(isA<Exception>()));
 
-    var gitRepo = GitRepository.load(repoPath).getOrThrow();
-    expect(gitRepo.headHash().getOrThrow(), headHash);
+    var gitRepo = GitRepository.load(repoPath);
+    expect(gitRepo.headHash(), headHash);
   });
 
   test('Outside Changes', () async {
@@ -177,9 +177,8 @@ Future<void> main() async {
     io.File(note.fullFilePath).writeAsStringSync('foo');
 
     var repoManager = repo.repoManager;
-    var newRepo = await repoManager
-        .buildActiveRepository(loadFromCache: false, syncOnBoot: false)
-        .getOrThrow();
+    var newRepo = (await repoManager.buildActiveRepository(
+        loadFromCache: false, syncOnBoot: false))!;
     await newRepo.reloadNotes();
 
     var repoPath = newRepo.repoPath;
@@ -189,10 +188,10 @@ Future<void> main() async {
     expect(newNote.body, 'foo');
     expect(newNote, isNot(note));
 
-    var gitRepo = GitRepository.load(repoPath).getOrThrow();
-    expect(gitRepo.headHash().getOrThrow(), isNot(headHash));
+    var gitRepo = GitRepository.load(repoPath);
+    expect(gitRepo.headHash(), isNot(headHash));
 
-    var headCommit = gitRepo.headCommit().getOrThrow();
+    var headCommit = gitRepo.headCommit();
     expect(headCommit.parents.length, 1);
     expect(headCommit.parents[0], headHash);
   });
@@ -205,12 +204,12 @@ Future<void> main() async {
     var toNote = note.resetOid();
 
     expect(toNote.created, note.created);
-    toNote = await repo.updateNote(note, toNote).getOrThrow();
+    toNote = await repo.updateNote(note, toNote);
 
-    var gitRepo = GitRepository.load(repoPath).getOrThrow();
-    expect(gitRepo.headHash().getOrThrow(), isNot(headHash));
+    var gitRepo = GitRepository.load(repoPath);
+    expect(gitRepo.headHash(), isNot(headHash));
 
-    var headCommit = gitRepo.headCommit().getOrThrow();
+    var headCommit = gitRepo.headCommit();
     expect(headCommit.parents.length, 1);
     expect(headCommit.parents[0], headHash);
 
@@ -223,14 +222,12 @@ Future<void> main() async {
     var note = repo.rootFolder.getNoteWithSpec('1.md')!;
     var folder = repo.rootFolder.getFolderWithSpec('f1')!;
 
-    var r = await repo.moveNote(note, folder);
-    expect(r.isSuccess, true);
-    expect(r.isFailure, false);
+    await repo.moveNote(note, folder);
 
-    var gitRepo = GitRepository.load(repoPath).getOrThrow();
-    expect(gitRepo.headHash().getOrThrow(), isNot(headHash));
+    var gitRepo = GitRepository.load(repoPath);
+    expect(gitRepo.headHash(), isNot(headHash));
 
-    var headCommit = gitRepo.headCommit().getOrThrow();
+    var headCommit = gitRepo.headCommit();
     expect(headCommit.parents.length, 1);
     expect(headCommit.parents[0], headHash);
 
@@ -244,14 +241,12 @@ Future<void> main() async {
     var note = repo.rootFolder.getNoteWithSpec('f1/3.md')!;
     var folder = repo.rootFolder;
 
-    var r = await repo.moveNote(note, folder);
-    expect(r.isSuccess, true);
-    expect(r.isFailure, false);
+    await repo.moveNote(note, folder);
 
-    var gitRepo = GitRepository.load(repoPath).getOrThrow();
-    expect(gitRepo.headHash().getOrThrow(), isNot(headHash));
+    var gitRepo = GitRepository.load(repoPath);
+    expect(gitRepo.headHash(), isNot(headHash));
 
-    var headCommit = gitRepo.headCommit().getOrThrow();
+    var headCommit = gitRepo.headCommit();
     expect(headCommit.parents.length, 1);
     expect(headCommit.parents[0], headHash);
 
@@ -266,14 +261,12 @@ Future<void> main() async {
     var folder = repo.rootFolder.getOrBuildFolderWithSpec('f2');
     folder.create();
 
-    var r = await repo.moveNote(note, folder);
-    expect(r.isSuccess, true);
-    expect(r.isFailure, false);
+    await repo.moveNote(note, folder);
 
-    var gitRepo = GitRepository.load(repoPath).getOrThrow();
-    expect(gitRepo.headHash().getOrThrow(), isNot(headHash));
+    var gitRepo = GitRepository.load(repoPath);
+    expect(gitRepo.headHash(), isNot(headHash));
 
-    var headCommit = gitRepo.headCommit().getOrThrow();
+    var headCommit = gitRepo.headCommit();
     expect(headCommit.parents.length, 1);
     expect(headCommit.parents[0], headHash);
 
@@ -287,11 +280,12 @@ Future<void> main() async {
     var note = repo.rootFolder.getNoteWithSpec('1.md')!;
     var folder = repo.rootFolder.getOrBuildFolderWithSpec('f2');
 
-    var r = await repo.moveNote(note, folder);
-    expect(r.isFailure, true);
+    await expectLater(() async {
+      await repo.moveNote(note, folder);
+    }, throwsA(isA<Exception>()));
 
-    var gitRepo = GitRepository.load(repoPath).getOrThrow();
-    expect(gitRepo.headHash().getOrThrow(), headHash);
+    var gitRepo = GitRepository.load(repoPath);
+    expect(gitRepo.headHash(), headHash);
 
     var root = repo.rootFolder;
     expect(root.getNoteWithSpec('1.md'), isNotNull);
@@ -304,14 +298,12 @@ Future<void> main() async {
     var note = repo.rootFolder.getNoteWithSpec('f1/3.md')!;
     var folder = repo.rootFolder.getFolderWithSpec('f2')!;
 
-    var r = await repo.moveNote(note, folder);
-    expect(r.isSuccess, true);
-    expect(r.isFailure, false);
+    await repo.moveNote(note, folder);
 
-    var gitRepo = GitRepository.load(repoPath).getOrThrow();
-    expect(gitRepo.headHash().getOrThrow(), isNot(headHash));
+    var gitRepo = GitRepository.load(repoPath);
+    expect(gitRepo.headHash(), isNot(headHash));
 
-    var headCommit = gitRepo.headCommit().getOrThrow();
+    var headCommit = gitRepo.headCommit();
     expect(headCommit.parents.length, 1);
     expect(headCommit.parents[0], headHash);
 
@@ -328,18 +320,14 @@ Future<void> main() async {
     var updatedNote = note.resetOid();
     updatedNote = updatedNote.copyWith(tags: {"Foo"}.lock);
 
-    var r = await repo.updateNote(note, updatedNote);
-    expect(r.isSuccess, true);
-    expect(r.isFailure, false);
-
-    var note2 = r.getOrThrow();
+    var note2 = await repo.updateNote(note, updatedNote);
     expect(note2.tags, {"Foo"});
     expect(note2.data.props.containsKey("tags"), true);
 
-    var gitRepo = GitRepository.load(repoPath).getOrThrow();
-    expect(gitRepo.headHash().getOrThrow(), isNot(headHash));
+    var gitRepo = GitRepository.load(repoPath);
+    expect(gitRepo.headHash(), isNot(headHash));
 
-    var headCommit = gitRepo.headCommit().getOrThrow();
+    var headCommit = gitRepo.headCommit();
     expect(headCommit.parents.length, 1);
     expect(headCommit.parents[0], headHash);
   });

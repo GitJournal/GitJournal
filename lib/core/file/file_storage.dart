@@ -6,18 +6,17 @@
 
 import 'dart:isolate';
 
-import 'package:flutter/foundation.dart';
-
 import 'package:dart_git/blob_ctime_builder.dart';
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/exceptions.dart';
 import 'package:dart_git/file_mtime_builder.dart';
+import 'package:flutter/foundation.dart';
+import 'package:gitjournal/error_reporting.dart';
+import 'package:gitjournal/logger/logger.dart';
 import 'package:path/path.dart' as p;
 import 'package:tuple/tuple.dart';
 import 'package:universal_io/io.dart' as io;
 
-import 'package:gitjournal/error_reporting.dart';
-import 'package:gitjournal/logger/logger.dart';
 import 'file.dart';
 
 class FileStorage with ChangeNotifier {
@@ -40,7 +39,7 @@ class FileStorage with ChangeNotifier {
         repoPath.endsWith(p.separator) ? repoPath : repoPath + p.separator;
   }
 
-  Future<Result<File>> load(String filePath) async {
+  Future<File> load(String filePath) async {
     assert(!filePath.startsWith(p.separator));
     var fullFilePath = p.join(repoPath, filePath);
 
@@ -50,21 +49,18 @@ class FileStorage with ChangeNotifier {
     var ioFile = io.File(fullFilePath);
     var stat = ioFile.statSync();
     if (stat.type == io.FileSystemEntityType.notFound) {
-      var ex = Exception("File note found - $fullFilePath");
-      return Result.fail(ex);
+      throw Exception("File note found - $fullFilePath");
     }
 
     if (stat.type != io.FileSystemEntityType.file) {
       // FIXME: Better error!
-      var ex = Exception('File is not file. Is ${stat.type}');
-      return Result.fail(ex);
+      throw Exception('File is not file. Is ${stat.type}');
     }
 
     var mTimeInfo = fileMTimeBuilder.info(filePath);
     if (mTimeInfo == null) {
       Log.e("Failed to build path: $filePath");
-      var ex = FileStorageCacheIncomplete(filePath);
-      return Result.fail(ex);
+      throw FileStorageCacheIncomplete(filePath);
     }
 
     var oid = mTimeInfo.hash;
@@ -74,23 +70,22 @@ class FileStorage with ChangeNotifier {
 
     var created = blobCTimeBuilder.cTime(oid);
     if (created == null) {
-      var ex = Exception('when can this happen?');
-      return Result.fail(ex);
+      throw Exception('when can this happen?');
     }
 
-    return Result(File(
+    return File(
       oid: oid,
       filePath: filePath,
       repoPath: repoPath,
       fileLastModified: stat.modified,
       created: created,
       modified: modified,
-    ));
+    );
   }
 
   Future<void> fill() async {
     var rp = ReceivePort();
-    var _ = rp.listen((d) {
+    rp.listen((d) {
       if (d is DateTime) {
         _dateTime = d;
         notifyListeners();
@@ -122,18 +117,19 @@ class FileStorage with ChangeNotifier {
   static Future<FileStorage> fake(String rootFolder) async {
     assert(rootFolder.startsWith(p.separator));
 
-    GitRepository.init(rootFolder).throwOnError();
+    GitRepository.init(rootFolder);
 
     var blobVisitor = BlobCTimeBuilder();
     var mTimeBuilder = FileMTimeBuilder();
 
-    var repo = GitRepository.load(rootFolder).getOrThrow();
-    var result = repo.headHash();
-    if (result.isSuccess) {
+    try {
+      var repo = GitRepository.load(rootFolder);
+      var headHash = repo.headHash();
       var multi = MultiTreeEntryVisitor([blobVisitor, mTimeBuilder]);
-      repo
-          .visitTree(fromCommitHash: result.getOrThrow(), visitor: multi)
-          .throwOnError();
+      repo.visitTree(fromCommitHash: headHash, visitor: multi);
+    } catch (ex, stackTrace) {
+      Log.e("Failed to load repo or get headHash",
+          ex: ex, stacktrace: stackTrace);
     }
     // assert(!headHashR.isFailure, "Failed to get head hash");
 
@@ -149,9 +145,8 @@ class FileStorage with ChangeNotifier {
   }
 
   @visibleForTesting
-  Future<Result<void>> reload() async {
+  Future<void> reload() async {
     await fill();
-    return Result(null);
   }
 }
 
@@ -184,28 +179,23 @@ _FillFileStorageOutput? _fillFileStorage(_FillFileStorageParams params) {
     },
   );
 
-  var gitRepo = GitRepository.load(repoPath).getOrThrow();
-  var headR = gitRepo.headHash();
-  if (headR.isFailure) {
-    if (headR.error is GitRefNotFound) {
-      // No commits
-      // fileStorageCacheReady = true;
-      // notifyListeners();
-      // FIXME: Send a signal saying its done
+  var gitRepo = GitRepository.load(repoPath);
+  try {
+    var head = gitRepo.headHash();
+    Log.d("Got HEAD: $head");
+
+    gitRepo.visitTree(fromCommitHash: head, visitor: visitor);
+    return _FillFileStorageOutput(blobCTimeBuilder, fileMTimeBuilder, head);
+  } catch (ex, st) {
+    if (ex is GitRefNotFound) {
       return _FillFileStorageOutput(
-          blobCTimeBuilder, fileMTimeBuilder, GitHash.zero());
+        blobCTimeBuilder,
+        fileMTimeBuilder,
+        GitHash.zero(),
+      );
     }
-    Log.e("Failed to fetch HEAD", result: headR);
+    logException(ex, st);
+
     return null;
   }
-  var head = headR.getOrThrow();
-  Log.d("Got HEAD: $head");
-
-  var result = gitRepo.visitTree(fromCommitHash: head, visitor: visitor);
-  if (result.isFailure) {
-    Log.e("Failed to build FileStorage cache", result: result);
-    logException(result.exception!, result.stackTrace!);
-  }
-
-  return _FillFileStorageOutput(blobCTimeBuilder, fileMTimeBuilder, head);
 }

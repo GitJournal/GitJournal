@@ -31,7 +31,7 @@ class FakePathProviderPlatform extends Fake
 
   static Future<FakePathProviderPlatform> init() async {
     var dir = await Directory.systemTemp.createTemp();
-    var _ = await Directory(join(dir.path, kTemporaryPath)).create();
+    await Directory(join(dir.path, kTemporaryPath)).create();
 
     return FakePathProviderPlatform(dir);
   }

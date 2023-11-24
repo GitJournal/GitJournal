@@ -6,14 +6,12 @@
 
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/diff_commit.dart';
 import 'package:dart_git/plumbing/git_hash.dart';
 import 'package:dart_git/plumbing/objects/blob.dart';
-
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:gitjournal/logger/logger.dart';
 
 class CommitDataWidget extends StatefulWidget {
@@ -46,21 +44,22 @@ class _CommitDataWidgetState extends State<CommitDataWidget> {
   void _initStateAsync() {
     // FIXME: Run all of this in another worker thread!
 
-    var r = diffCommits(
-      fromCommit: widget.parentCommit,
-      toCommit: widget.commit,
-      objStore: widget.gitRepo.objStorage,
-    );
-    if (r.isFailure) {
-      Log.e("Got exception in diffCommits",
-          ex: r.error, stacktrace: r.stackTrace);
+    try {
+      var changes = diffCommits(
+        fromCommit: widget.parentCommit,
+        toCommit: widget.commit,
+        objStore: widget.gitRepo.objStorage,
+      );
+
       setState(() {
-        _exception = r.exception;
+        _changes = changes;
+      });
+    } on Exception catch (ex, st) {
+      Log.e("Got exception in diffCommits", ex: ex, stacktrace: st);
+      setState(() {
+        _exception = ex;
       });
     }
-    setState(() {
-      _changes = r.getOrThrow();
-    });
   }
 
   @override
@@ -134,11 +133,12 @@ class __BlobLoaderState extends State<_BlobLoader> {
   }
 
   void _initStateAsync() {
-    var result = widget.gitRepo.objStorage.readBlob(widget.blobHash);
-    setState(() {
-      _exception = result.exception;
-      _blob = result.data;
-    });
+    try {
+      _blob = widget.gitRepo.objStorage.readBlob(widget.blobHash);
+    } on Exception catch (ex) {
+      _exception = ex;
+    }
+    setState(() {});
   }
 
   @override

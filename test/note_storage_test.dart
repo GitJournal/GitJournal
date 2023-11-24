@@ -10,11 +10,6 @@ import 'package:dart_date/dart_date.dart';
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/utils/date_time.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:path/path.dart' as p;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:test/test.dart';
-import 'package:universal_io/io.dart' as io;
-
 import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
@@ -25,6 +20,11 @@ import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/note_storage.dart';
 import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/utils/datetime.dart';
+import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test/test.dart';
+import 'package:universal_io/io.dart' as io;
+
 import 'lib.dart';
 
 GitHash _compute(String s) => GitHash.compute(utf8.encode(s));
@@ -87,16 +87,14 @@ void main() {
 
       io.File(p.join(repoPath, '.gitignore')).writeAsStringSync('');
 
-      var repo = GitRepository.load(tempDir.path).getOrThrow();
-      repo
-          .commit(
-            message: "Prepare Test Env",
-            author: GitAuthor(name: 'Name', email: "name@example.com"),
-            addAll: true,
-          )
-          .throwOnError();
+      var repo = GitRepository.load(tempDir.path);
+      repo.commit(
+        message: "Prepare Test Env",
+        author: GitAuthor(name: 'Name', email: "name@example.com"),
+        addAll: true,
+      );
 
-      await parent.fileStorage.reload().throwOnError();
+      await parent.fileStorage.reload();
     });
 
     tearDownAll(() async {
@@ -106,7 +104,7 @@ void main() {
     test('Should persist and load Notes from disk', () async {
       for (var note in notes) {
         note = note.resetOid();
-        await NoteStorage.save(note).throwOnError();
+        await NoteStorage.save(note);
       }
 
       var fileList = tempDir
@@ -121,7 +119,7 @@ void main() {
       var parent = NotesFolderFS.root(config, fileStorage);
 
       for (var origNote in notes) {
-        var note = await NoteStorage.load(origNote.file, parent).getOrThrow();
+        var note = await NoteStorage.load(origNote.file, parent);
         loadedNotes.add(note);
       }
 

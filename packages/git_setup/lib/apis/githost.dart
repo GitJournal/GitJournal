@@ -6,12 +6,8 @@
 
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-
 import 'package:collection/collection.dart';
-import 'package:gitjournal/utils/result.dart';
-
-export 'package:gitjournal/utils/result.dart';
+import 'package:flutter/foundation.dart';
 
 typedef OAuthCallback = void Function(GitHostException?);
 
@@ -19,11 +15,11 @@ abstract class GitHost {
   void init(OAuthCallback oAuthCallback);
   Future<void> launchOAuthScreen();
 
-  Future<Result<UserInfo>> getUserInfo();
-  Future<Result<List<GitHostRepo>>> listRepos();
-  Future<Result<GitHostRepo>> createRepo(String name);
-  Future<Result<GitHostRepo>> getRepo(String name);
-  Future<Result<void>> addDeployKey(String sshPublicKey, String repoFullName);
+  Future<UserInfo> getUserInfo();
+  Future<List<GitHostRepo>> listRepos();
+  Future<GitHostRepo> createRepo(String name);
+  Future<GitHostRepo> getRepo(String name);
+  Future<void> addDeployKey(String sshPublicKey, String repoFullName);
 }
 
 class UserInfo {

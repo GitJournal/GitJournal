@@ -6,11 +6,6 @@
 
 import 'dart:math';
 
-import 'package:path/path.dart' as p;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:test/test.dart';
-import 'package:universal_io/io.dart' as io;
-
 import 'package:gitjournal/core/file/file.dart';
 import 'package:gitjournal/core/file/file_storage.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
@@ -18,7 +13,11 @@ import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/folder/sorted_notes_folder.dart';
 import 'package:gitjournal/core/folder/sorting_mode.dart';
 import 'package:gitjournal/core/note_storage.dart';
-import 'package:gitjournal/utils/result.dart';
+import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test/test.dart';
+import 'package:universal_io/io.dart' as io;
+
 import 'lib.dart';
 
 void main() {
@@ -48,13 +47,12 @@ void main() {
       for (var i = 0; i < 5; i++) {
         var path = p.join(folder.folderPath, "${random.nextInt(1000)}.md");
         var note =
-            await NoteStorage.load(File.short(path, repoPath, gitDt), folder)
-                .getOrThrow();
+            await NoteStorage.load(File.short(path, repoPath, gitDt), folder);
         note = note.copyWith(
           modified: DateTime(2020, 1, 10 + (i * 2)),
           body: "$i\n",
         );
-        await NoteStorage.save(note).throwOnError();
+        await NoteStorage.save(note);
       }
       await folder.loadRecursively();
     });
@@ -107,14 +105,14 @@ void main() {
       );
 
       var fNew = File.short('new.md', repoPath, gitDt);
-      var note = await NoteStorage.load(fNew, folder).getOrThrow();
+      var note = await NoteStorage.load(fNew, folder);
       folder.add(note);
 
       note = note.copyWith(
         modified: DateTime(2020, 2, 1),
         body: "new\n",
       );
-      await NoteStorage.save(note).throwOnError();
+      await NoteStorage.save(note);
 
       expect(sf.notes.length, 6);
 
@@ -134,14 +132,14 @@ void main() {
       );
 
       var fNew = File.short('new.md', repoPath, gitDt);
-      var note = await NoteStorage.load(fNew, folder).getOrThrow();
+      var note = await NoteStorage.load(fNew, folder);
       folder.add(note);
 
       note = note.copyWith(
         modified: DateTime(2020, 1, 1),
         body: "new\n",
       );
-      await NoteStorage.save(note).throwOnError();
+      await NoteStorage.save(note);
 
       expect(sf.notes.length, 6);
 

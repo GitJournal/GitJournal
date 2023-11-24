@@ -72,7 +72,7 @@ class FilteredNotesFolder with NotesFolderNotifier implements NotesFolder {
         return;
       }
 
-      var _ = _notes.removeAt(i);
+      _notes.removeAt(i);
       notifyNoteRemoved(-1, note);
     });
   }

@@ -71,7 +71,7 @@ class GitJournalInAppPurchases {
         Log.i("Pending Complete Purchase - ${pd.productID}");
 
         try {
-          var _ = await iapCon.completePurchase(pd);
+          await iapCon.completePurchase(pd);
         } catch (e, stackTrace) {
           logException(e, stackTrace);
         }

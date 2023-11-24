@@ -22,32 +22,27 @@ class GitHubFake implements GitHost {
   Future<void> launchOAuthScreen() async {}
 
   @override
-  Future<Result<UserInfo>> getUserInfo() async {
-    var ex = Exception("Not Implemented");
-    return Result.fail(ex);
+  Future<UserInfo> getUserInfo() async {
+    throw Exception("Not Implemented");
   }
 
   @override
-  Future<Result<void>> addDeployKey(
-      String sshPublicKey, String repoFullName) async {
-    var ex = Exception("Not Implemented");
-    return Result.fail(ex);
+  Future<void> addDeployKey(String sshPublicKey, String repoFullName) async {
+    throw Exception("Not Implemented");
   }
 
   @override
-  Future<Result<GitHostRepo>> createRepo(String name) async {
-    var ex = Exception("Not Implemented");
-    return Result.fail(ex);
+  Future<GitHostRepo> createRepo(String name) async {
+    throw Exception("Not Implemented");
   }
 
   @override
-  Future<Result<GitHostRepo>> getRepo(String name) async {
-    var ex = Exception("Not Implemented");
-    return Result.fail(ex);
+  Future<GitHostRepo> getRepo(String name) async {
+    throw Exception("Not Implemented");
   }
 
   @override
-  Future<Result<List<GitHostRepo>>> listRepos() async {
+  Future<List<GitHostRepo>> listRepos() async {
     List<dynamic> list = jsonDecode(data);
     var repos = <GitHostRepo>[];
     for (var d in list) {
@@ -56,6 +51,6 @@ class GitHubFake implements GitHost {
       repos.add(repo);
     }
 
-    return Result(repos);
+    return repos;
   }
 }

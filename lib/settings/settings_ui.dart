@@ -56,7 +56,7 @@ class SettingsUIScreen extends StatelessWidget {
                 settings:
                     const RouteSettings(name: SettingsThemeScreen.routePath),
               );
-              var _ = Navigator.push(context, route);
+              Navigator.push(context, route);
             },
           ),
         if (feature_themes)
@@ -70,7 +70,7 @@ class SettingsUIScreen extends StatelessWidget {
                 settings:
                     const RouteSettings(name: SettingsThemeScreen.routePath),
               );
-              var _ = Navigator.push(context, route);
+              Navigator.push(context, route);
             },
           ),
         const LanguageSelector(),
@@ -84,7 +84,7 @@ class SettingsUIScreen extends StatelessWidget {
                 name: SettingsDisplayImagesScreen.routePath,
               ),
             );
-            var _ = Navigator.push(context, route);
+            Navigator.push(context, route);
           },
         ),
         ProOverlay(
@@ -111,7 +111,7 @@ class SettingsUIScreen extends StatelessWidget {
                 settings:
                     const RouteSettings(name: BottomMenuBarSettings.routePath),
               );
-              var _ = Navigator.push(context, route);
+              Navigator.push(context, route);
             },
           ),
         ),
@@ -122,7 +122,7 @@ class SettingsUIScreen extends StatelessWidget {
               builder: (context) => SettingsMisc(),
               settings: const RouteSettings(name: SettingsMisc.routePath),
             );
-            var _ = Navigator.push(context, route);
+            Navigator.push(context, route);
           },
         ),
       ],

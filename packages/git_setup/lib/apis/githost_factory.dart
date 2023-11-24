@@ -5,7 +5,6 @@
  */
 
 import 'githost.dart';
-import 'githost_exception_catcher.dart';
 import 'github.dart';
 import 'gitlab.dart';
 
@@ -21,10 +20,10 @@ enum GitHostType {
 GitHost? createGitHost(GitHostType type) {
   switch (type) {
     case GitHostType.GitHub:
-      return GitHostExceptionCatcher(GitHub());
+      return GitHub();
 
     case GitHostType.GitLab:
-      return GitHostExceptionCatcher(GitLab());
+      return GitLab();
 
     default:
       return null;
