@@ -54,7 +54,7 @@ class _SettingsThemeState extends State<SettingsThemeScreen> {
         ? context.loc.settingsThemeLight
         : context.loc.settingsThemeDark;
 
-    var settings = Provider.of<Settings>(context);
+    var settings = context.watch<Settings>();
     var themeName = widget.brightness == Brightness.light
         ? settings.lightTheme
         : settings.darkTheme;

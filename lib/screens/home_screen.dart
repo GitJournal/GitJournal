@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _initFolder() async {
     if (!mounted) return;
 
-    var root = Provider.of<NotesFolderFS>(context);
+    var root = context.watch<NotesFolderFS>();
     if (root != rootFolder) {
       rootFolder = root;
       notesFolder = FlattenedNotesFolder(

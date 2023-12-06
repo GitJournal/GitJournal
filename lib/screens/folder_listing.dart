@@ -32,10 +32,10 @@ class _FolderListingScreenState extends State<FolderListingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final notesFolder = Provider.of<NotesFolderFS>(context);
+    final notesFolder = context.watch<NotesFolderFS>();
 
     // Load experimental setting
-    var settings = Provider.of<AppConfig>(context);
+    var settings = context.watch<AppConfig>();
 
     var treeView = FolderTreeView(
       key: _folderTreeViewKey,

@@ -156,7 +156,7 @@ class _FolderViewState extends State<FolderView> {
       );
     }
 
-    var settings = Provider.of<Settings>(context);
+    var settings = context.watch<Settings>();
     final showButtomMenuBar = settings.bottomMenuBar;
 
     // So the FAB doesn't hide parts of the last entry
@@ -257,7 +257,7 @@ class _FolderViewState extends State<FolderView> {
       child: const Icon(Icons.add),
     );
 
-    var settings = Provider.of<Settings>(context);
+    var settings = context.watch<Settings>();
     final showButtomMenuBar = settings.bottomMenuBar;
 
     return Scaffold(
@@ -273,8 +273,8 @@ class _FolderViewState extends State<FolderView> {
   }
 
   Future<void> _newPost(EditorType editorType) async {
-    var settings = Provider.of<Settings>(context, listen: false);
-    var rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
+    var settings = context.read<Settings>();
+    var rootFolder = context.read<NotesFolderFS>();
 
     var folder = widget.notesFolder;
     var fsFolder = folder.fsFolder as NotesFolderFS;
@@ -422,7 +422,7 @@ class _FolderViewState extends State<FolderView> {
   }
 
   List<Widget> _buildNoteActions() {
-    final repo = Provider.of<GitJournalRepo>(context);
+    final repo = context.watch<GitJournalRepo>();
 
     var extraActions = PopupMenuButton<DropDownChoices>(
       key: const ValueKey("PopupMenu"),
@@ -513,7 +513,7 @@ class _FolderViewState extends State<FolderView> {
   }
 
   Future<void> _deleteSelectedNotes() async {
-    var settings = Provider.of<Settings>(context, listen: false);
+    var settings = context.read<Settings>();
     var shouldDelete = true;
     if (settings.confirmDelete) {
       shouldDelete = (await showDialog(

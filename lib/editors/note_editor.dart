@@ -627,7 +627,7 @@ class NoteEditorState extends State<NoteEditor>
   Future<void> _editTags(Note note) async {
     assert(note.oid.isEmpty);
 
-    final rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
+    final rootFolder = context.read<NotesFolderFS>();
     var inlineTagsView = InlineTagsProvider.of(context, listen: false);
     var allTags = await rootFolder.getNoteTagsRecursively(inlineTagsView);
 

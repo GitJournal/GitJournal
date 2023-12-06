@@ -6,11 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-
 import 'package:function_types/function_types.dart';
-import 'package:provider/provider.dart';
-import 'package:time/time.dart';
-
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/editors/bottom_bar.dart';
@@ -18,6 +14,8 @@ import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/widgets/note_viewer.dart';
+import 'package:provider/provider.dart';
+import 'package:time/time.dart';
 
 class EditorScaffold extends StatefulWidget {
   final Note startingNote;
@@ -73,13 +71,14 @@ class _EditorScaffoldState extends State<EditorScaffold> {
 
     note = widget.startingNote;
 
-    SchedulerBinding.instance.addPostFrameCallback((_) => _initStateWithContext());
+    SchedulerBinding.instance
+        .addPostFrameCallback((_) => _initStateWithContext());
   }
 
   void _initStateWithContext() {
     if (!mounted) return;
 
-    var settings = Provider.of<Settings>(context, listen: false);
+    var settings = context.read<Settings>();
 
     setState(() {
       _hideUIElements = settings.zenMode;
@@ -108,7 +107,7 @@ class _EditorScaffoldState extends State<EditorScaffold> {
   }
 
   void _editorChanged() {
-    var settings = Provider.of<Settings>(context, listen: false);
+    var settings = context.read<Settings>();
 
     if (settings.zenMode && !_hideUIElements) {
       setState(() {
@@ -118,7 +117,7 @@ class _EditorScaffoldState extends State<EditorScaffold> {
   }
 
   void _switchMode() {
-    var settings = Provider.of<Settings>(context, listen: false);
+    var settings = context.read<Settings>();
 
     setState(() {
       _editingMode = !_editingMode;
@@ -137,7 +136,7 @@ class _EditorScaffoldState extends State<EditorScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    var settings = Provider.of<Settings>(context);
+    var settings = context.watch<Settings>();
 
     var responsiveBody = LayoutBuilder(builder: (context, constraints) {
       // FIXME: This shouldn't depend on the font

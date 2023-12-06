@@ -14,7 +14,7 @@ typedef NoteFolderCallback = void Function(NotesFolderFS);
 class FolderSelectionDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final notesFolder = Provider.of<NotesFolderFS>(context);
+    final notesFolder = context.watch<NotesFolderFS>();
 
     var body = SizedBox(
       width: double.maxFinite,

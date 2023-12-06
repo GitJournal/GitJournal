@@ -26,7 +26,7 @@ class AppDrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var appConfig = Provider.of<AppConfig>(context);
+    var appConfig = context.watch<AppConfig>();
 
     var top = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

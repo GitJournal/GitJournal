@@ -26,7 +26,7 @@ class _ExperimentalSettingsScreenState
     extends State<ExperimentalSettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    var appConfig = Provider.of<AppConfig>(context);
+    var appConfig = context.watch<AppConfig>();
 
     return Scaffold(
       appBar: AppBar(

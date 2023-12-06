@@ -28,7 +28,7 @@ class SettingsUIScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var settings = Provider.of<Settings>(context);
+    var settings = context.watch<Settings>();
 
     var list = ListView(
       children: [

@@ -5,12 +5,11 @@
  */
 
 import 'package:flutter/material.dart';
-
+import 'package:gitjournal/core/processors/inline_tags.dart';
+import 'package:gitjournal/core/transformers/base.dart';
 import 'package:nested/nested.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gitjournal/core/processors/inline_tags.dart';
-import 'package:gitjournal/core/transformers/base.dart';
 import 'notes_materialized_view.dart';
 
 typedef InlineTagsView = NotesMaterializedView<List<String>>;

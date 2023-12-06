@@ -22,8 +22,9 @@ class SettingsImagesScreen extends StatefulWidget {
 class SettingsImagesScreenState extends State<SettingsImagesScreen> {
   @override
   Widget build(BuildContext context) {
-    var folderConfig = Provider.of<NotesFolderConfig>(context);
-    var folder = Provider.of<NotesFolderFS>(context)
+    var folderConfig = context.watch<NotesFolderConfig>();
+    var folder = context
+        .watch<NotesFolderFS>()
         .getFolderWithSpec(folderConfig.imageLocationSpec);
 
     // If the Custom Folder specified no longer exists

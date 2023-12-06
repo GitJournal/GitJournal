@@ -117,9 +117,9 @@ Future<void> openNoteEditor(
 }
 
 bool openNewNoteEditor(BuildContext context, String noteSpec) {
-  var rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
+  var rootFolder = context.read<NotesFolderFS>();
   var parentFolder = rootFolder;
-  var folderConfig = Provider.of<NotesFolderConfig>(context, listen: false);
+  var folderConfig = context.read<NotesFolderConfig>();
   var defaultEditor = folderConfig.defaultEditor.toEditorType();
 
   var fileName = noteSpec;

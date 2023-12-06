@@ -29,8 +29,8 @@ class SettingsEditorsScreen extends StatefulWidget {
 class SettingsEditorsScreenState extends State<SettingsEditorsScreen> {
   @override
   Widget build(BuildContext context) {
-    var settings = Provider.of<Settings>(context);
-    var folderConfig = Provider.of<NotesFolderConfig>(context);
+    var settings = context.watch<Settings>();
+    var folderConfig = context.watch<NotesFolderConfig>();
     var defaultNewFolder = settings.journalEditordefaultNewNoteFolderSpec;
     if (defaultNewFolder.isEmpty) {
       defaultNewFolder = context.loc.none;
@@ -131,7 +131,7 @@ class DefaultEditorTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var folderConfig = Provider.of<NotesFolderConfig>(context);
+    var folderConfig = context.watch<NotesFolderConfig>();
     var fileFormat = folderConfig.defaultFileFormat.toFileFormat();
 
     var options = SettingsEditorType.options

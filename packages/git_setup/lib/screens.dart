@@ -599,7 +599,7 @@ class GitHostSetupScreenState extends State<GitHostSetupScreen> {
       parameters: _buildOnboardingAnalytics(),
     );
 
-    var storageConfig = Provider.of<StorageConfig>(context, listen: false);
+    var storageConfig = context.read<StorageConfig>();
     var folderName = folderNameFromCloneUrl(_gitCloneUrl);
     if (folderName != widget.repoFolderName) {
       var newRepoPath = p.join(basePath, folderName);

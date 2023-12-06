@@ -142,7 +142,7 @@ class _FolderListViewState extends State<FolderListView> {
     bool selected,
     Animation<double> animation,
   ) {
-    var settings = Provider.of<Settings>(context);
+    var settings = context.watch<Settings>();
     Widget viewItem = Hero(
       tag: note.filePath,
       child: widget.noteTileBuilder(context, note, selected),

@@ -102,7 +102,7 @@ class _DebugScreenState extends State<DebugScreen> {
   }
 
   bool _shouldDisplay(LogMessage msg) {
-    var appConfig = Provider.of<AppConfig>(context);
+    var appConfig = context.watch<AppConfig>();
     var filterLevel = appConfig.debugLogLevel;
 
     if (filterLevel.isEmpty) {
@@ -290,7 +290,7 @@ class _DebugScreenState extends State<DebugScreen> {
   }
 
   Future<void> _showFilterSelection() async {
-    var appConfig = Provider.of<AppConfig>(context);
+    var appConfig = context.watch<AppConfig>();
     var filterLevel = appConfig.debugLogLevel;
 
     var dialog = AlertDialog(

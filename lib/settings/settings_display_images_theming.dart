@@ -26,7 +26,7 @@ class SettingsDisplayImagesThemingScreenState
 
   @override
   Widget build(BuildContext context) {
-    var settings = Provider.of<MarkdownRendererConfig>(context);
+    var settings = context.watch<MarkdownRendererConfig>();
 
     void saveDoNotThemeTag(String? doNotThemeTags) {
       settings.doNotThemeTags = parseTags(doNotThemeTags!);

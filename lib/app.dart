@@ -176,7 +176,7 @@ class JournalAppState extends State<JournalApp> {
       return;
     }
 
-    var folderConfig = Provider.of<NotesFolderConfig>(context, listen: false);
+    var folderConfig = context.read<NotesFolderConfig>();
     var editor = folderConfig.defaultEditor.toInternalString();
     _navigatorKey.currentState!.pushNamed(AppRoute.NewNotePrefix + editor);
   }
@@ -248,7 +248,7 @@ class JournalAppState extends State<JournalApp> {
     // FIXME: Make Settings not depend on Repository
     late Settings settings;
     try {
-      settings = Provider.of<Settings>(context);
+      settings = context.watch<Settings>();
     } catch (_) {
       return const SizedBox();
     }
@@ -259,8 +259,8 @@ class JournalAppState extends State<JournalApp> {
     var themeMode = ThemeMode.system;
 
     if (repo != null) {
-      var appConfig = Provider.of<AppConfig>(context);
-      var storageConfig = Provider.of<StorageConfig>(context);
+      var appConfig = context.watch<AppConfig>();
+      var storageConfig = context.watch<StorageConfig>();
 
       router = AppRouter(
         settings: settings,

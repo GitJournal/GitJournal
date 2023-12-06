@@ -16,7 +16,7 @@ class GitAuthorEmail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var gitConfig = Provider.of<GitConfig>(context);
+    var gitConfig = context.watch<GitConfig>();
 
     return ListTile(
       title: Text(context.loc.settingsEmailLabel),
@@ -48,7 +48,7 @@ class _GitAuthorEmailDialogState extends State<GitAuthorEmailDialog> {
 
   @override
   Widget build(BuildContext context) {
-    var gitConfig = Provider.of<GitConfig>(context);
+    var gitConfig = context.watch<GitConfig>();
     var isValidEmail = gitAuthorEmailKey.currentState?.isValid;
     var email = gitAuthorEmailKey.currentState?.value;
 
@@ -106,7 +106,7 @@ class GitAuthor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var gitConfig = Provider.of<GitConfig>(context);
+    var gitConfig = context.watch<GitConfig>();
 
     return ListTile(
       title: Text(context.loc.settingsAuthorLabel),
@@ -138,7 +138,7 @@ class __GitAuthorDialogState extends State<_GitAuthorDialog> {
 
   @override
   Widget build(BuildContext context) {
-    var gitConfig = Provider.of<GitConfig>(context);
+    var gitConfig = context.watch<GitConfig>();
     var isValid = gitAuthorKey.currentState?.isValid;
     var author = gitAuthorKey.currentState?.value;
 

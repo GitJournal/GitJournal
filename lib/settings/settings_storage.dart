@@ -36,10 +36,10 @@ class SettingsStorageScreen extends StatelessWidget {
   const SettingsStorageScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    var folderConfig = Provider.of<NotesFolderConfig>(context);
-    var storageConfig = Provider.of<StorageConfig>(context);
-    final repo = Provider.of<GitJournalRepo>(context);
-    var settings = Provider.of<Settings>(context);
+    var folderConfig = context.watch<NotesFolderConfig>();
+    var storageConfig = context.watch<StorageConfig>();
+    final repo = context.watch<GitJournalRepo>();
+    var settings = context.watch<Settings>();
 
     var list = ListView(
       children: [
@@ -274,7 +274,7 @@ class DefaultNoteFolderTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var settings = Provider.of<Settings>(context);
+    var settings = context.watch<Settings>();
 
     var defaultNewFolder = settings.defaultNewNoteFolderSpec;
     if (defaultNewFolder.isEmpty) {
@@ -311,7 +311,7 @@ class DefaultFileFormatTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var folderConfig = Provider.of<NotesFolderConfig>(context);
+    var folderConfig = context.watch<NotesFolderConfig>();
 
     return ListPreference(
       title: context.loc.settingsEditorsDefaultNoteFormat,

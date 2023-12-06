@@ -48,8 +48,8 @@ class _NoteMetadataSettingsScreenState
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
-    var settings = Provider.of<Settings>(context);
-    var folderConfig = Provider.of<NotesFolderConfig>(context);
+    var settings = context.watch<Settings>();
+    var folderConfig = context.watch<NotesFolderConfig>();
 
     var extraProps = <String, dynamic>{};
     if (settings.customMetaData != "") {
@@ -263,7 +263,7 @@ class NoteOutputExample extends StatelessWidget {
     var style = theme.textTheme.titleMedium!;
     style = style.copyWith(fontFamily: "Roboto Mono");
 
-    var folderConfig = Provider.of<NotesFolderConfig>(context);
+    var folderConfig = context.watch<NotesFolderConfig>();
     var serialSettings = NoteSerializationSettings.fromConfig(folderConfig);
     var doc = NoteSerializer.fromConfig(serialSettings).encode(note);
 

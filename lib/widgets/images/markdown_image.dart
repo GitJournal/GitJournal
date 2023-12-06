@@ -46,7 +46,7 @@ class MarkdownImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final settings = Provider.of<MarkdownRendererConfig>(context);
+    final settings = context.watch<MarkdownRendererConfig>();
     final theme = Theme.of(context);
     final dark = theme.brightness == Brightness.dark;
 
@@ -201,10 +201,9 @@ class MarkdownImage extends StatelessWidget {
   }
 }
 
-Color getOverlayBackgroundColor(BuildContext context,
+Color getOverlayBackgroundColor(
+    MarkdownRendererConfig settings, ThemeData theme,
     {Color? light, Color? dark}) {
-  final settings = Provider.of<MarkdownRendererConfig>(context);
-  final theme = Theme.of(context);
   return theme.brightness == Brightness.dark
       ? settings.transparentCaption
           ? Colors.black.withAlpha(100)

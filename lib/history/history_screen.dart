@@ -28,7 +28,7 @@ class HistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var gjRepo = Provider.of<GitJournalRepo>(context);
+    var gjRepo = context.watch<GitJournalRepo>();
 
     return Scaffold(
       appBar: AppBar(

@@ -39,9 +39,9 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
-    var settings = Provider.of<Settings>(context);
-    var gitConfig = Provider.of<GitConfig>(context);
-    var repo = Provider.of<GitJournalRepo>(context);
+    var settings = context.watch<Settings>();
+    var gitConfig = context.watch<GitConfig>();
+    var repo = context.watch<GitJournalRepo>();
 
     if (remoteHost.isEmpty) {
       repo.remoteConfigs().then((list) {
@@ -185,7 +185,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
   }
 
   void _updateKeys(String publicKey, String privateKey, String password) {
-    var config = Provider.of<GitConfig>(context, listen: false);
+    var config = context.read<GitConfig>();
 
     if (publicKey.isEmpty || privateKey.isEmpty) {
       return;
@@ -212,7 +212,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     GitJournalKeygen()
         .generate(type: keyType, comment: comment)
         .then((SshKey? sshKey) {
-      var config = Provider.of<GitConfig>(context, listen: false);
+      var config = context.read<GitConfig>();
       config.sshPublicKey = sshKey!.publicKey;
       config.sshPrivateKey = sshKey.publicKey;
       config.sshPassword = sshKey.password;
@@ -255,7 +255,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     }
     repoFolderName = repoFolderName + num.toString();
 
-    var storageConfig = Provider.of<StorageConfig>(context, listen: false);
+    var storageConfig = context.read<StorageConfig>();
     storageConfig.folderName = repoFolderName;
     storageConfig.storeInternally = true;
     await storageConfig.save();

@@ -6,13 +6,11 @@
  */
 
 import 'package:flutter/material.dart';
-
-import 'package:photo_view/photo_view.dart';
-import 'package:provider/provider.dart';
-
 import 'package:gitjournal/settings/markdown_renderer_config.dart';
 import 'package:gitjournal/widgets/images/markdown_image.dart';
 import 'package:gitjournal/widgets/images/themable_image.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:provider/provider.dart';
 
 class ImageDetails extends StatefulWidget {
   final ThemableImage image;
@@ -30,10 +28,10 @@ class _ImageDetailsState extends State<ImageDetails> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final settings = Provider.of<MarkdownRendererConfig>(context);
+    final settings = context.watch<MarkdownRendererConfig>();
     final bg =
         theme.brightness == Brightness.dark ? Colors.black : Colors.white;
-    final overlayColor = getOverlayBackgroundColor(context,
+    final overlayColor = getOverlayBackgroundColor(settings, theme,
         light: Colors.white, dark: Colors.black);
     return Stack(
       children: [

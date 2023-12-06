@@ -28,7 +28,7 @@ class SettingsDisplayImagesScreenState
     extends State<SettingsDisplayImagesScreen> {
   @override
   Widget build(BuildContext context) {
-    final settings = Provider.of<MarkdownRendererConfig>(context);
+    final settings = context.watch<MarkdownRendererConfig>();
     final theme = Theme.of(context);
 
     final body = ListView(children: <Widget>[

@@ -20,7 +20,7 @@ class BottomMenuBarSettings extends StatefulWidget {
 class _BottomMenuBarSettingsState extends State<BottomMenuBarSettings> {
   @override
   Widget build(BuildContext context) {
-    var settings = Provider.of<Settings>(context);
+    var settings = context.watch<Settings>();
 
     var body = Column(
       children: [

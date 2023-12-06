@@ -77,7 +77,7 @@ class NoteSearchDelegate extends SearchDelegate<Note?> {
       return note.body.toLowerCase().contains(q);
     }).toList();
 
-    var folderConfig = Provider.of<NotesFolderConfig>(context);
+    var folderConfig = context.watch<NotesFolderConfig>();
     var folder = VirtualNotesFolder(filteredNotes, folderConfig);
     var emptyText = context.loc.widgetsFolderViewSearchFailed;
 

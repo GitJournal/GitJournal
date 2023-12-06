@@ -40,7 +40,7 @@ class MarkdownRenderer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    var settings = Provider.of<Settings>(context);
+    var settings = context.watch<Settings>();
     theme = theme.copyWith(
       textTheme: theme.textTheme.copyWith(
         titleMedium: theme.textTheme.titleMedium,

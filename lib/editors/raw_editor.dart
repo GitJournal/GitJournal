@@ -288,12 +288,12 @@ class _NoteEditorState extends State<_NoteEditor> {
       onChanged: (_) => widget.onChanged(),
     );
 
-    var appConfig = Provider.of<AppConfig>(context);
+    var appConfig = context.watch<AppConfig>();
     if (!appConfig.experimentalTagAutoCompletion) {
       return textField;
     }
 
-    final rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
+    final rootFolder = context.read<NotesFolderFS>();
     final inlineTagsView = InlineTagsProvider.of(context);
 
     futureBuilder() async {

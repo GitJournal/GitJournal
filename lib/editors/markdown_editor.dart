@@ -137,7 +137,7 @@ class MarkdownEditorState extends State<MarkdownEditor>
       ),
     );
 
-    var settings = Provider.of<AppConfig>(context);
+    var settings = context.watch<AppConfig>();
     Widget? markdownToolbar;
     if (settings.experimentalMarkdownToolbar) {
       markdownToolbar = MarkdownToolBar(

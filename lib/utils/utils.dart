@@ -99,7 +99,7 @@ Future<void> showAlertDialog(
 }
 
 bool folderWithSpecExists(BuildContext context, String spec) {
-  var rootFolder = Provider.of<NotesFolderFS>(context, listen: false);
+  var rootFolder = context.read<NotesFolderFS>();
 
   return rootFolder.getFolderWithSpec(spec) != null;
 }

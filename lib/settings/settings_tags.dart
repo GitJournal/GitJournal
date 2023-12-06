@@ -22,7 +22,7 @@ class SettingsTagsScreen extends StatefulWidget {
 class SettingsTagsScreenState extends State<SettingsTagsScreen> {
   @override
   Widget build(BuildContext context) {
-    var folderConfig = Provider.of<NotesFolderConfig>(context);
+    var folderConfig = context.watch<NotesFolderConfig>();
 
     var body = ListView(children: <Widget>[
       SettingsHeader(context.loc.settingsTagsPrefixes),

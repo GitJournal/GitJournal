@@ -21,8 +21,8 @@ class SettingsMisc extends StatefulWidget {
 class _SettingsMiscState extends State<SettingsMisc> {
   @override
   Widget build(BuildContext context) {
-    var settings = Provider.of<Settings>(context);
-    var folderConfig = Provider.of<NotesFolderConfig>(context);
+    var settings = context.watch<Settings>();
+    var folderConfig = context.watch<NotesFolderConfig>();
 
     var body = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
