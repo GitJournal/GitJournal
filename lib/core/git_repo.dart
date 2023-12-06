@@ -235,24 +235,11 @@ class GitNoteRepository {
       rethrow;
     }
 
-    if (useDartGit || AppConfig.instance.experimentalGitMerge) {
-      var author = GitAuthor(
-        email: config.gitAuthorEmail,
-        name: config.gitAuthor,
-      );
-      return repo.mergeCurrentTrackingBranch(author: author);
-    }
-
-    try {
-      await _gitRepo.merge(
-        branch: branchConfig.remoteTrackingBranch(),
-        authorEmail: config.gitAuthorEmail,
-        authorName: config.gitAuthor,
-      );
-    } on gb.GitException catch (ex, stackTrace) {
-      Log.e("Git Merge Failed", ex: ex, stacktrace: stackTrace);
-      rethrow;
-    }
+    var author = GitAuthor(
+      email: config.gitAuthorEmail,
+      name: config.gitAuthor,
+    );
+    return repo.mergeCurrentTrackingBranch(author: author);
   }
 
   Future<void> push() async {

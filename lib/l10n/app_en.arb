@@ -137,7 +137,6 @@
   "settingsExperimentalAccounts": "Platform Independent Accounts",
   "settingsExperimentalIncludeSubfolders": "Include Subfolders",
   "settingsExperimentalExperimentalGitOps": "Dart-only Git implementation",
-  "settingsExperimentalMerge": "Dart-only merge implementation",
   "settingsExperimentalAutoCompleteTags": "Tags Auto Completion",
   "settingsExperimentalHistory": "History View",
   "settingsEditorsTitle": "Editor Settings",
