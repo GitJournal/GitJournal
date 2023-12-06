@@ -108,8 +108,8 @@ Future<void> openNoteEditor(
   if (showUndoSnackBar != null) {
     Log.d("Showing an undo snackbar");
 
-    var stateContainer = context.read<GitJournalRepo>();
-    var snackBar = buildUndoDeleteSnackbar(context, stateContainer, note);
+    var repo = context.read<GitJournalRepo>();
+    var snackBar = buildUndoDeleteSnackbar(context, repo, note);
     ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()
       ..showSnackBar(snackBar);

@@ -463,12 +463,12 @@ class NoteEditorState extends State<NoteEditor>
     }
     if (shouldDelete == true) {
       if (!_isNewNote) {
-        var stateContainer = context.read<GitJournalRepo>();
+        var repo = context.read<GitJournalRepo>();
         if (_originalNoteOid != null) {
           //can't delete with blank oid, so get a note with original oid
           note = note.copyWith(file: note.file.copyFile(oid: _originalNoteOid));
         }
-        stateContainer.removeNote(note);
+        repo.removeNote(note);
       }
 
       if (_isNewNote) {
@@ -614,8 +614,8 @@ class NoteEditorState extends State<NoteEditor>
     assert(note.oid.isEmpty);
 
     if (!_isNewNote) {
-      var stateContainer = context.read<GitJournalRepo>();
-      stateContainer.discardChanges(note);
+      var repo = context.read<GitJournalRepo>();
+      repo.discardChanges(note);
     }
 
     Navigator.pop(context);

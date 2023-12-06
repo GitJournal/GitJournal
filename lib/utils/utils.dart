@@ -38,14 +38,14 @@ Future<String> getVersionString({bool includeAppName = true}) async {
 }
 
 SnackBar buildUndoDeleteSnackbar(
-    BuildContext context, GitJournalRepo stateContainer, Note deletedNote) {
+    BuildContext context, GitJournalRepo repo, Note deletedNote) {
   return SnackBar(
     content: Text(context.loc.widgetsFolderViewNoteDeleted),
     action: SnackBarAction(
       label: context.loc.widgetsFolderViewUndo,
       onPressed: () {
         Log.d("Undoing delete");
-        stateContainer.undoRemoveNote(deletedNote);
+        repo.undoRemoveNote(deletedNote);
       },
     ),
   );
