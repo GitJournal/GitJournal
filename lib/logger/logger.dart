@@ -212,8 +212,6 @@ class Log {
       var fp = filePathForDate(today.subtract(i.days));
       if (File(fp).existsSync()) {
         l.add(fp);
-      } else {
-        Log.i("Log file $fp not found");
       }
     }
 
