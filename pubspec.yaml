@@ -90,7 +90,7 @@ dependencies:
   share_plus: ^7.2.1
   shared_preferences: ^2.0.5
   sprintf: ^7.0.0
-  stack_trace: ^1.10.0
+  stack_trace: ^1.11.1
   synchronized: ^3.0.0
   table_calendar: ^3.0.3
   time: ^2.0.0
