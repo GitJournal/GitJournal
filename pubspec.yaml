@@ -23,7 +23,10 @@ dependencies:
   cryptography: ^2.0.5
   dart_date: ^1.1.1
   dart_git:
-    git: https://github.com/GitJournal/dart-git.git
+    git:
+      # TODO: revert this to `git: https://github.com/GitJournal/dart-git.git` once the dart-git PR is merged.
+      url: https://github.com/lucidBrot/dart-git.git
+      ref: 4b087a6d36369e1189027995f69a83daff9ab3e3
   device_info_plus: ^9.1.1
   dio: ^4.0.6
   dio_smart_retry: ^1.2.0
