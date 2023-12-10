@@ -1978,4 +1978,4 @@ packages:
     version: "0.0.12"
 sdks:
   dart: ">=3.2.0-194.0.dev <4.0.0"
-  flutter: ">=3.16.0"
+  flutter: ">=3.16.3"
