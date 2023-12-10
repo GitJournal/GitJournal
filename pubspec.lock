@@ -309,9 +309,9 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "4b087a6d36369e1189027995f69a83daff9ab3e3"
-      resolved-ref: "4b087a6d36369e1189027995f69a83daff9ab3e3"
-      url: "https://github.com/lucidBrot/dart-git.git"
+      ref: HEAD
+      resolved-ref: "9769fa50cd82d0d79a930427e13fcb95dcd35593"
+      url: "https://github.com/GitJournal/dart-git.git"
     source: git
     version: "0.0.2"
   dart_style:
