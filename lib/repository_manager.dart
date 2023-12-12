@@ -37,7 +37,7 @@ class RepositoryManager with ChangeNotifier {
   Object? get currentRepoError => _repoError;
 
   Future<GitJournalRepo?> buildActiveRepository({
-    bool loadFromCache = true,
+    bool loadFromCache = false, // LB: `false` seems to shave 2 seconds off startup.
     bool syncOnBoot = true,
   }) async {
     var repoCacheDir = p.join(cacheDir, currentId);
