@@ -5,7 +5,6 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:git_bindings/git_bindings.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/app_router.dart';
 import 'package:gitjournal/core/folder/filtered_notes_folder.dart';
@@ -575,11 +574,6 @@ Future<void> syncRepo(BuildContext context) async {
   try {
     var container = context.read<GitJournalRepo>();
     await container.syncNotes();
-  } on GitException catch (e) {
-    showErrorMessageSnackbar(
-      context,
-      context.loc.widgetsFolderViewSyncError(e.cause),
-    );
   } catch (e) {
     showErrorSnackbar(context, e);
   }

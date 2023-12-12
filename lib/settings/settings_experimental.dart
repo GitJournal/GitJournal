@@ -74,15 +74,6 @@ class _ExperimentalSettingsScreenState
               },
             ),
             SwitchListTile(
-              title: Text(context.loc.settingsExperimentalExperimentalGitOps),
-              value: appConfig.experimentalGitOps,
-              onChanged: (bool newVal) {
-                appConfig.experimentalGitOps = newVal;
-                appConfig.save();
-                setState(() {});
-              },
-            ),
-            SwitchListTile(
               title: Text(context.loc.settingsExperimentalAutoCompleteTags),
               value: appConfig.experimentalTagAutoCompletion,
               onChanged: (bool newVal) {

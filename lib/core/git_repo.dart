@@ -14,13 +14,10 @@ import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/settings/app_config.dart';
 import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/utils/git_desktop.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' show Platform, Directory;
-
-bool useDartGit = false;
 
 class GitNoteRepository {
   final String gitRepoPath;
@@ -32,29 +29,16 @@ class GitNoteRepository {
     required this.gitRepoPath,
     required this.config,
   })  : _gitRepo = gb.GitRepo(folderPath: gitRepoPath),
-        messageBuilder = CommitMessageBuilder() {
-    // git-bindings aren't properly implemented in these platforms
-    if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
-      useDartGit = true;
-    }
-  }
+        messageBuilder = CommitMessageBuilder();
 
   Future<void> _add(String pathSpec) async {
-    if (useDartGit || AppConfig.instance.experimentalGitOps) {
-      var repo = await GitAsyncRepository.load(gitRepoPath);
-      await repo.add(pathSpec);
-    } else {
-      await _gitRepo.add(pathSpec);
-    }
+    var repo = await GitAsyncRepository.load(gitRepoPath);
+    await repo.add(pathSpec);
   }
 
   Future<void> _rm(String pathSpec) async {
-    if (useDartGit || AppConfig.instance.experimentalGitOps) {
-      var repo = await GitAsyncRepository.load(gitRepoPath);
-      await repo.rm(pathSpec);
-    } else {
-      await _gitRepo.rm(pathSpec);
-    }
+    var repo = await GitAsyncRepository.load(gitRepoPath);
+    await repo.rm(pathSpec);
   }
 
   Future<void> _commit({
@@ -62,17 +46,9 @@ class GitNoteRepository {
     required String authorEmail,
     required String authorName,
   }) async {
-    if (useDartGit || AppConfig.instance.experimentalGitOps) {
-      var repo = await GitAsyncRepository.load(gitRepoPath);
-      var author = GitAuthor(name: authorName, email: authorEmail);
-      await repo.commit(message: message, author: author);
-    } else {
-      await _gitRepo.commit(
-        message: message,
-        authorEmail: config.gitAuthorEmail,
-        authorName: config.gitAuthor,
-      );
-    }
+    var repo = await GitAsyncRepository.load(gitRepoPath);
+    var author = GitAuthor(name: authorName, email: authorEmail);
+    await repo.commit(message: message, author: author);
   }
 
   Future<void> _addAllAndCommit(String commitMessage) async {
@@ -166,13 +142,9 @@ class GitNoteRepository {
   }
 
   Future<void> resetLastCommit() async {
-    if (useDartGit || AppConfig.instance.experimentalGitOps) {
-      var repo = await GitAsyncRepository.load(gitRepoPath);
-      var headCommit = await repo.headCommit();
-      await repo.resetHard(headCommit.parents[0]);
-    } else {
-      await _gitRepo.resetLast();
-    }
+    var repo = await GitAsyncRepository.load(gitRepoPath);
+    var headCommit = await repo.headCommit();
+    await repo.resetHard(headCommit.parents[0]);
   }
 
   Future<void> updateNote(Note note) async {

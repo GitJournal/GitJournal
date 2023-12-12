@@ -14,7 +14,6 @@ import 'package:dart_git/plumbing/git_hash.dart';
 import 'package:dart_git/plumbing/reference.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:git_bindings/git_bindings.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/core/commit_message_builder.dart';
 import 'package:gitjournal/core/file/file_storage.dart';
@@ -878,13 +877,14 @@ Future<void> _ensureOneCommitInRepo({
       var ignoreFile = io.File(p.join(repoPath, ".gitignore"));
       ignoreFile.createSync();
 
-      var repo = GitRepo(folderPath: repoPath);
-      await repo.add('.gitignore');
-
+      var repo = await GitAsyncRepository.load(repoPath);
+      await repo.add(".gitignore");
       await repo.commit(
         message: "Add gitignore file",
-        authorEmail: config.gitAuthorEmail,
-        authorName: config.gitAuthor,
+        author: GitAuthor(
+          name: config.gitAuthor,
+          email: config.gitAuthorEmail,
+        ),
       );
     }
   } catch (ex, st) {

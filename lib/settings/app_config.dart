@@ -32,7 +32,6 @@ class AppConfig extends ChangeNotifier {
   var experimentalSubfolders = false;
   var experimentalMarkdownToolbar = false;
   var experimentalAccounts = false;
-  var experimentalGitOps = false;
   var experimentalTagAutoCompletion = false;
 
   var experimentalHistory = false;
@@ -54,8 +53,6 @@ class AppConfig extends ChangeNotifier {
         experimentalMarkdownToolbar;
     experimentalAccounts =
         pref.getBool("experimentalAccounts") ?? experimentalAccounts;
-    experimentalGitOps =
-        pref.getBool("experimentalGitOps") ?? experimentalGitOps;
     experimentalTagAutoCompletion =
         pref.getBool("experimentalTagAutoCompletion") ??
             experimentalTagAutoCompletion;
@@ -82,8 +79,6 @@ class AppConfig extends ChangeNotifier {
         defaultSet.experimentalMarkdownToolbar);
     _setBool(pref, "experimentalAccounts", experimentalAccounts,
         defaultSet.experimentalAccounts);
-    _setBool(pref, "experimentalGitOps", experimentalGitOps,
-        defaultSet.experimentalGitOps);
     _setBool(
         pref,
         "experimentalTagAutoCompletion",
@@ -107,7 +102,6 @@ class AppConfig extends ChangeNotifier {
       'debugLogLevel': debugLogLevel,
       'experimentalMarkdownToolbar': experimentalMarkdownToolbar.toString(),
       'experimentalAccounts': experimentalAccounts.toString(),
-      'experimentalGitOps': experimentalGitOps.toString(),
       'experimentalTagAutoCompletion': experimentalTagAutoCompletion.toString(),
       'experimentalHistory': experimentalHistory.toString(),
     };

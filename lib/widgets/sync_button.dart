@@ -9,8 +9,6 @@ import 'dart:async';
 import 'package:badges/badges.dart' as badges;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:git_bindings/git_bindings.dart';
-import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/sync_attempt.dart';
 import 'package:gitjournal/utils/utils.dart';
@@ -104,11 +102,6 @@ class _SyncButtonState extends State<SyncButton> {
     try {
       final repo = context.read<GitJournalRepo>();
       await repo.syncNotes();
-    } on GitException catch (e) {
-      showErrorMessageSnackbar(
-        context,
-        context.loc.widgetsSyncButtonError(e.cause),
-      );
     } catch (e) {
       showErrorSnackbar(context, e);
     }
