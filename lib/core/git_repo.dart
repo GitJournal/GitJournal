@@ -5,10 +5,10 @@
  */
 
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dart_git/dart_git.dart';
 import 'package:dart_git/exceptions.dart';
-import 'package:git_bindings/git_bindings.dart' as gb;
 import 'package:gitjournal/core/commit_message_builder.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note.dart';
@@ -16,20 +16,19 @@ import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/utils/git_desktop.dart';
+import 'package:go_git_dart/go_git_dart_async.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' show Platform, Directory;
 
 class GitNoteRepository {
   final String gitRepoPath;
-  final gb.GitRepo _gitRepo;
   final GitConfig config;
   final CommitMessageBuilder messageBuilder;
 
   GitNoteRepository({
     required this.gitRepoPath,
     required this.config,
-  })  : _gitRepo = gb.GitRepo(folderPath: gitRepoPath),
-        messageBuilder = CommitMessageBuilder();
+  }) : messageBuilder = CommitMessageBuilder();
 
   Future<void> _add(String pathSpec) async {
     var repo = await GitAsyncRepository.load(gitRepoPath);
@@ -157,16 +156,9 @@ class GitNoteRepository {
 
     if (Platform.isAndroid || Platform.isIOS) {
       try {
-        await _gitRepo.fetch(
-          remote: remoteName,
-          publicKey: config.sshPublicKey,
-          privateKey: config.sshPrivateKey,
-          password: config.sshPassword,
-          statusFile: p.join(Directory.systemTemp.path, 'gj'),
-        );
-      } on gb.GitException catch (ex, stackTrace) {
-        Log.e("GitPull Failed", ex: ex, stacktrace: stackTrace);
-        rethrow;
+        var bindings = GitBindingsAsync();
+        await bindings.fetch(remoteName, gitRepoPath,
+            utf8.encode(config.sshPrivateKey), config.sshPassword);
       } catch (ex) {
         rethrow;
       }
@@ -228,14 +220,11 @@ class GitNoteRepository {
     var remoteName = 'origin';
     if (Platform.isAndroid || Platform.isIOS) {
       try {
-        await _gitRepo.push(
-          remote: remoteName,
-          publicKey: config.sshPublicKey,
-          privateKey: config.sshPrivateKey,
-          password: config.sshPassword,
-          statusFile: p.join(Directory.systemTemp.path, 'gj'),
-        );
+        var bindings = GitBindingsAsync();
+        await bindings.push(remoteName, gitRepoPath,
+            utf8.encode(config.sshPrivateKey), config.sshPassword);
       } catch (ex, stackTrace) {
+        /*
         if (ex is gb.GitException) {
           if (ex.cause == 'cannot push non-fastforwardable reference') {
             await fetch();
@@ -243,6 +232,7 @@ class GitNoteRepository {
             await push();
           }
         }
+        */
         Log.e("GitPush Failed", ex: ex, stacktrace: stackTrace);
         rethrow;
       }
@@ -287,10 +277,7 @@ const ignoredMessages = [
 ];
 
 bool shouldLogGitException(Exception ex) {
-  if (ex is! gb.GitException) {
-    return false;
-  }
-  var msg = ex.cause.toLowerCase();
+  var msg = ex.toString().toLowerCase();
   for (var i = 0; i < ignoredMessages.length; i++) {
     if (msg.contains(ignoredMessages[i])) {
       return false;

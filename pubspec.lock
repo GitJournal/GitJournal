@@ -711,6 +711,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  go_git_dart:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: e59eae337661a8b0e92a988bb9700078b6ed4dc5
+      url: "https://github.com/GitJournal/go_git_dart.git"
+    source: git
+    version: "0.0.1"
   go_router:
     dependency: transitive
     description:
@@ -1977,5 +1986,5 @@ packages:
     source: hosted
     version: "0.0.12"
 sdks:
-  dart: ">=3.2.0-194.0.dev <4.0.0"
+  dart: ">=3.2.0 <4.0.0"
   flutter: ">=3.16.3"

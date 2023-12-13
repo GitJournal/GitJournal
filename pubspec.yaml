@@ -53,6 +53,8 @@ dependencies:
   function_types: ^0.1.0
   git_bindings:
     git: https://github.com/GitJournal/git_bindings.git
+  go_git_dart:
+    git: https://github.com/GitJournal/go_git_dart.git
   git_setup:
     path: packages/git_setup
   google_api_availability: ^3.0.1
