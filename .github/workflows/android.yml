@@ -43,7 +43,7 @@ jobs:
       - name: Flutter Doctor
         run: flutter doctor
       - name: Get Flutter Deps
-        run: flutter pub get --enforce-lockfile --suppress-analytics
+        run: flutter pub get --suppress-analytics
       - name: Build
         run: ./scripts/build_android.sh
       - name: "Upload Artifact"
