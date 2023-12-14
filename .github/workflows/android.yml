@@ -19,7 +19,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - run: git config --global --add safe.directory '*'
       - name: Unlock secrets
         uses: sliteteam/github-action-git-crypt-unlock@1.2.0
         env:
