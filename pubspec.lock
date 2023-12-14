@@ -310,7 +310,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "9769fa50cd82d0d79a930427e13fcb95dcd35593"
+      resolved-ref: "2ca0f3e2b71f1e327e951a2afc9f073519119e14"
       url: "https://github.com/GitJournal/dart-git.git"
     source: git
     version: "0.0.2"
@@ -716,7 +716,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: e59eae337661a8b0e92a988bb9700078b6ed4dc5
+      resolved-ref: "28baa8291f9c25d58fa883db45b27b4bad8e0038"
       url: "https://github.com/GitJournal/go_git_dart.git"
     source: git
     version: "0.0.1"
