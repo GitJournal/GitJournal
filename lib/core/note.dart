@@ -361,7 +361,7 @@ class Note implements File {
 
   String get body => _body;
   String? get title {
-    assert(_title != null ? _title!.isNotEmpty : true);
+    assert(_title != null ? _title.isNotEmpty : true);
     return _title;
   }
 

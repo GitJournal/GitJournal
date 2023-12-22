@@ -8,7 +8,7 @@ import 'package:collection/collection.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-abstract class SettingsSharedPref {
+abstract mixin class SettingsSharedPref {
   @protected
   String get id;
 

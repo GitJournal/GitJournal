@@ -12,12 +12,12 @@ import 'package:flutter/foundation.dart';
 /// renamed to disposeListenables. This is done so that it can be used
 /// as a mixin with a State class which also has a dispose method
 
-class _ListenerEntry extends LinkedListEntry<_ListenerEntry> {
+final class _ListenerEntry extends LinkedListEntry<_ListenerEntry> {
   _ListenerEntry(this.listener);
   final VoidCallback listener;
 }
 
-class DisposableChangeNotifier implements Listenable {
+mixin class DisposableChangeNotifier implements Listenable {
   LinkedList<_ListenerEntry>? _listeners = LinkedList<_ListenerEntry>();
 
   bool _debugAssertNotDisposed() {
