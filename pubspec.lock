@@ -687,15 +687,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.0"
-  git_bindings:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: ba1db24a7f9c29f4e5c9c4116c24687605f6d903
-      url: "https://github.com/GitJournal/git_bindings.git"
-    source: git
-    version: "0.0.19"
   git_setup:
     dependency: "direct main"
     description:

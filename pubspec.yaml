@@ -51,8 +51,6 @@ dependencies:
   font_awesome_flutter: ^10.0.0
   fs_shim: ^2.0.1+2
   function_types: ^0.1.0
-  git_bindings:
-    git: https://github.com/GitJournal/git_bindings.git
   go_git_dart:
     git: https://github.com/GitJournal/go_git_dart.git
   git_setup:
