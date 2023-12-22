@@ -716,7 +716,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "28baa8291f9c25d58fa883db45b27b4bad8e0038"
+      resolved-ref: "551c2351d4fb965e754981a2c021e38e95e3fb14"
       url: "https://github.com/GitJournal/go_git_dart.git"
     source: git
     version: "0.0.1"
