@@ -73,14 +73,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
-  background_fetch:
-    dependency: "direct main"
-    description:
-      name: background_fetch
-      sha256: f70b28a0f7a3156195e9742229696f004ea3bf10f74039b7bf4c78a74fbda8a4
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.2.1"
   badges:
     dependency: "direct main"
     description:
