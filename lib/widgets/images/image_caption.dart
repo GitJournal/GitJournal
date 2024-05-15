@@ -162,7 +162,7 @@ String _cleanCaption(BuildContext context, String caption) {
       .trim();
 }
 
-Color _overlayBackgroundColor(context) {
+Color _overlayBackgroundColor(BuildContext context) {
   final settings = context.watch<MarkdownRendererConfig>();
   final theme = Theme.of(context);
   return settings.transparentCaption
