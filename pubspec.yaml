@@ -3,8 +3,8 @@ description: A Note Taking App Built on top of Git
 version: 1.87.0+10
 
 environment:
-  sdk: ">=3.2.0 <4.0.0"
-  flutter: ">=3.16.3"
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.19.6"
 
 publish_to: none
 
@@ -42,7 +42,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_login: ^4.0.0
-  flutter_markdown: ^0.6.18+2
+  flutter_markdown: ^0.7.1
   flutter_runtime_env: ^0.0.4
   flutter_staggered_grid_view: ^0.4.1
   flutter_svg: ^2.0.7
@@ -67,7 +67,7 @@ dependencies:
   intl: ^0.18.0
   language_picker: ^0.4.1
   launch_review: ^3.0.1
-  markdown: ^7.1.1
+  markdown: ^7.2.2
   meta: ^1.8.0
   mutex: ^3.0.0
   nested: ^1.0.0

@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/logger/logger.dart';

@@ -6,13 +6,9 @@
 
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-
 import 'package:dart_git/plumbing/git_hash.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:path/path.dart' as p;
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:gitjournal/app.dart';
 import 'package:gitjournal/change_notifiers.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
@@ -20,6 +16,10 @@ import 'package:gitjournal/editors/note_title_editor.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
 import 'package:gitjournal/settings/app_config.dart';
+import 'package:path/path.dart' as p;
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'lib.dart';
 
 void main() {
@@ -71,7 +71,8 @@ void main() {
 
     var appState = tester.state(find.byType(JournalApp)) as JournalAppState;
     await tester.runAsync(() async {
-      appState.handleSharedText("foo");
+      var media = SharedMediaFile(path: "foo", type: SharedMediaType.text);
+      appState.handleSharedMedia([media]);
       await Future.delayed(const Duration(milliseconds: 100));
     });
     await tester.pumpAndSettle();
@@ -118,7 +119,8 @@ void main() {
 
     var appState = tester.state(find.byType(JournalApp)) as JournalAppState;
     await tester.runAsync(() async {
-      appState.handleSharedImages([imagePath]);
+      var media = SharedMediaFile(path: imagePath, type: SharedMediaType.image);
+      appState.handleSharedMedia([media]);
       await Future.delayed(const Duration(milliseconds: 200));
     });
     await tester.pumpAndSettle();
