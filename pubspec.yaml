@@ -62,8 +62,8 @@ dependencies:
   icloud_documents_path:
     git: https://github.com/GitJournal/icloud_documents_path.git
   image_picker: ^0.8.4+1
-  in_app_purchase: ^3.1.1
-  in_app_purchase_android: ^0.2.3+9
+  in_app_purchase: ^3.2.0
+  in_app_purchase_android: ^0.3.4
   intl: ^0.19.0
   language_picker: ^0.4.1
   launch_review: ^3.0.1
