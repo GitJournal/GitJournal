@@ -102,7 +102,7 @@ class _NoteBacklinkRendererState extends State<NoteBacklinkRenderer> {
 
     var backgroundColor = Colors.grey[200];
     if (Theme.of(context).brightness == Brightness.dark) {
-      backgroundColor = Theme.of(context).colorScheme.background;
+      backgroundColor = Theme.of(context).colorScheme.surface;
     }
     var child = Container(
       color: backgroundColor,

@@ -5,7 +5,6 @@
  */
 
 import 'package:flutter/material.dart';
-
 import 'package:function_types/function_types.dart';
 import 'package:gitjournal/analytics/analytics.dart';
 import 'package:gitjournal/logger/logger.dart';
@@ -36,7 +35,7 @@ class GitHostSetupButton extends StatelessWidget {
             style: Theme.of(context).textTheme.labelLarge,
           ),
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(
+            backgroundColor: WidgetStateProperty.all<Color>(
                 enabled ? Theme.of(context).primaryColor : Colors.grey),
           ),
           onPressed: _onPressedWithAnalytics,
@@ -53,8 +52,8 @@ class GitHostSetupButton extends StatelessWidget {
           ),
           icon: Image.asset(iconUrl!, width: 32, height: 32),
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(
-                Theme.of(context).primaryColor),
+            backgroundColor:
+                WidgetStateProperty.all<Color>(Theme.of(context).primaryColor),
           ),
           onPressed: _onPressedWithAnalytics,
         ),

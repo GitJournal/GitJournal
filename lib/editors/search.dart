@@ -243,6 +243,6 @@ void scrollToSearchResult({
   scrollController.animateTo(
     newPosition,
     duration: const Duration(milliseconds: 300),
-    curve: decelerateEasing,
+    curve: Easing.legacyDecelerate,
   );
 }

@@ -33,7 +33,7 @@ class PurchaseThankYouScreen extends StatelessWidget {
               Navigator.of(context).pop();
             },
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(
+              backgroundColor: WidgetStateProperty.all<Color>(
                   Theme.of(context).primaryColor),
             ),
             child: const Text("Back"),

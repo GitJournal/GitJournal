@@ -52,7 +52,7 @@ class PurchaseButton extends StatelessWidget {
         onPressed: product != null ? () => _reportExceptions(context) : null,
         style: ButtonStyle(
           backgroundColor:
-              MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+              WidgetStateProperty.all<Color>(Theme.of(context).primaryColor),
         ),
         child: Text(text, textAlign: TextAlign.center),
       ),

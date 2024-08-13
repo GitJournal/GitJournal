@@ -51,11 +51,11 @@ class _AppDrawerState extends State<AppDrawer>
     slideAnimation = Tween(begin: const Offset(0.0, -0.5), end: Offset.zero)
         .animate(CurvedAnimation(
       parent: animController,
-      curve: standardEasing,
+      curve: Easing.legacy,
     ));
     sizeAnimation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
       parent: animController,
-      curve: standardEasing,
+      curve: Easing.legacy,
     ));
   }
 

@@ -307,7 +307,7 @@ class Button extends StatelessWidget {
       child: ElevatedButton(
         style: ButtonStyle(
           backgroundColor:
-              MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+              WidgetStateProperty.all<Color>(Theme.of(context).primaryColor),
         ),
         onPressed: onPressed,
         child: Text(
@@ -332,7 +332,7 @@ class RedButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+          backgroundColor: WidgetStateProperty.all<Color>(Colors.red),
         ),
         onPressed: onPressed,
         child: Text(text, textAlign: TextAlign.center),
