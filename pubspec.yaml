@@ -64,7 +64,7 @@ dependencies:
   image_picker: ^0.8.4+1
   in_app_purchase: ^3.1.1
   in_app_purchase_android: ^0.2.3+9
-  intl: ^0.18.0
+  intl: ^0.19.0
   language_picker: ^0.4.1
   launch_review: ^3.0.1
   markdown: ^7.2.2
