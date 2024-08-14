@@ -6,7 +6,6 @@
 
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart' as foundation;
-import 'package:flutter_runtime_env/flutter_runtime_env.dart';
 import 'package:function_types/function_types.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -55,7 +54,8 @@ class Analytics {
     required Func2<String, Map<String, String>, void> analyticsCallback,
     required String storagePath,
   }) async {
-    bool inFireBaseTestLab = await inFirebaseTestLab();
+    bool inFireBaseTestLab =
+        false; // FIXME: We need to disable analytics in Firebase Test Lab
     bool canBeEnabled = !foundation.kDebugMode && !inFireBaseTestLab;
 
     var pseudoId = pref.getString("pseudoId");

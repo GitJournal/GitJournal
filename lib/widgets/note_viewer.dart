@@ -35,7 +35,7 @@ class NoteViewer extends StatelessWidget {
 
       return Org(
         note.body,
-        onLinkTap: handler.launchUrl,
+        onLinkTap: (link) => handler.launchUrl(link.location),
         onLocalSectionLinkTap: (OrgSection section) {
           Log.d("local section link: $section");
         },

@@ -22,14 +22,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.7.0"
-  android_external_storage:
+  android_x_storage:
     dependency: "direct main"
     description:
-      name: android_external_storage
-      sha256: "19c6e5cf7f2058e35aac97f4f440bdef270c08e724d63a1cfb4fc332e8b7802f"
+      name: android_x_storage
+      sha256: "890765511e33407454c8b9e3e4fd5872903502c7ce7e42a4385151775286e65e"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0"
+    version: "1.0.0"
   another_flushbar:
     dependency: transitive
     description:
@@ -178,10 +178,10 @@ packages:
     dependency: "direct main"
     description:
       name: carousel_slider
-      sha256: "9c695cc963bf1d04a47bd6021f68befce8970bcd61d24938e1fb0918cf5d9c42"
+      sha256: "7b006ec356205054af5beaef62e2221160ea36b90fb70a35e4deacd49d0349ae"
       url: "https://pub.dev"
     source: hosted
-    version: "4.2.1"
+    version: "5.0.0"
   characters:
     dependency: transitive
     description:
@@ -504,10 +504,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_displaymode
-      sha256: fdeaceb35d84ed000625ae0666bbec5b015407d1f90135cdd1bbfdb4ca73de1a
+      sha256: "42c5e9abd13d28ed74f701b60529d7f8416947e58256e6659c5550db719c57ef"
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.1"
+    version: "0.6.0"
   flutter_email_sender:
     dependency: "direct main"
     description:
@@ -524,14 +524,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.5.1"
-  flutter_highlight:
-    dependency: transitive
-    description:
-      name: flutter_highlight
-      sha256: "7b96333867aa07e122e245c033b8ad622e4e3a42a1a2372cbb098a2541d8782c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.7.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -578,14 +570,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.21"
-  flutter_runtime_env:
-    dependency: "direct main"
+  flutter_slidable:
+    dependency: transitive
     description:
-      name: flutter_runtime_env
-      sha256: a6a36de4bb560cfbf0ea96e7e6e322b7a0557a8da68c2da32766e7df8bf2d6f2
+      name: flutter_slidable
+      sha256: "2c5611c0b44e20d180e4342318e1bbc28b0a44ad2c442f5df16962606fd3e8e3"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.4"
+    version: "3.1.1"
   flutter_staggered_grid_view:
     dependency: "direct main"
     description:
@@ -611,18 +603,18 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_tex_js
-      sha256: "3a9afe230fbcedff11ee7864c6099541433cce41b8751977c46413c2bad9dcb0"
+      sha256: "8e731a5c89a07a75d86c83a20fa8810c5f6ea88b34b3f05746b1f59416cb2622"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0"
+    version: "3.0.0"
   flutter_tex_js_android:
     dependency: transitive
     description:
       name: flutter_tex_js_android
-      sha256: "9e4c99f0e1e13fd1783ad27eae138fd0658753d41d9f2f3b06f3593dc1d9c2a9"
+      sha256: "99f1127fa2687d3ebdea705b4980dcfc530e65e2768a5ab43b7c3e943b504068"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.9"
+    version: "2.1.1"
   flutter_tex_js_ios:
     dependency: transitive
     description:
@@ -684,6 +676,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.0"
+  functional_zipper:
+    dependency: transitive
+    description:
+      name: functional_zipper
+      sha256: "1010a17991c1d1f9bffff65777abb34d39c5ce05bfe2203e18f395fc05296ad5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   git_setup:
     dependency: "direct main"
     description:
@@ -720,10 +720,26 @@ packages:
     dependency: "direct main"
     description:
       name: google_api_availability
-      sha256: a1f58c5213abae549fb1e1451bc68eb499da7033039f77bc289fd6faca384295
+      sha256: "3e9548cfd991d983d11425a2436d5bd957d048c279cc9e145ffe3f36fd847385"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.1"
+    version: "5.0.0"
+  google_api_availability_android:
+    dependency: transitive
+    description:
+      name: google_api_availability_android
+      sha256: d95429ae78083585c312de2c6578085e7d53d100a94656d691bce0bb0ce435be
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
+  google_api_availability_platform_interface:
+    dependency: transitive
+    description:
+      name: google_api_availability_platform_interface
+      sha256: "65b7da62fe5b582bb3d508628ad827d36d890710ea274766a992a56fa5420da6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   google_fonts:
     dependency: "direct main"
     description:
@@ -756,14 +772,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.4"
-  highlight:
+  highlighting:
     dependency: transitive
     description:
-      name: highlight
-      sha256: "5353a83ffe3e3eca7df0abfb72dcf3fa66cc56b953728e7113ad4ad88497cf21"
+      name: highlighting
+      sha256: "196005ed9c98ee559939fcecd466fa941b9e99b3a93394691b86780ad4da50f3"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.0"
+    version: "0.9.0+11.8.0"
   hive:
     dependency: "direct main"
     description:
@@ -981,14 +997,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.4+1"
-  launch_review:
+  launch_app_store:
     dependency: "direct main"
     description:
-      name: launch_review
-      sha256: "04cdaf752033cefd53bc0fa9c22105801ef53791a93d8b6cdd00fcb3c1c1604b"
+      name: launch_app_store
+      sha256: "0fbe127f37fbababe3d3d0ab4e74097ffc033bdfb799a041ecb93f3f0ee1455d"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.1"
+    version: "1.1.2"
   leak_tracker:
     dependency: transitive
     description:
@@ -1146,18 +1162,18 @@ packages:
     dependency: "direct main"
     description:
       name: org_flutter
-      sha256: "36a0e06117f3337f5bc81ae0266939f6c2b197e36eb43694ad830c59730e7d81"
+      sha256: "62ff0c2d8abd577234d04d0018a404f4a4c77625df170d3cd8d8b0743d3d10c4"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.0"
+    version: "6.0.3"
   org_parser:
     dependency: transitive
     description:
       name: org_parser
-      sha256: b21b9277c4049510211c9df4f004ed6d37523928c3d64323ac10e711ac19fdd1
+      sha256: "84f60df0f8541a19d9f3d43eb865304c6d890786665df57bb13a5474ee2f50a0"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.1"
+    version: "5.6.1"
   package_config:
     dependency: transitive
     description:
@@ -1286,14 +1302,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.3"
+  petit_lisp:
+    dependency: transitive
+    description:
+      name: petit_lisp
+      sha256: "559c9e7656e994b246da4c5e1eec778e8dabe284707a9b81c779557dcd824962"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.4.0"
   petitparser:
     dependency: transitive
     description:
       name: petitparser
-      sha256: cb3798bef7fc021ac45b308f4b51208a152792445cce0448c9a4ba5879dd8750
+      sha256: c15605cd28af66339f8eb6fbe0e541bfe2d1b72d5825efc6598f3e0a31b9ad27
       url: "https://pub.dev"
     source: hosted
-    version: "5.4.0"
+    version: "6.0.2"
   phone_numbers_parser:
     dependency: transitive
     description:
@@ -1985,10 +2009,10 @@ packages:
     dependency: transitive
     description:
       name: xml
-      sha256: "5bc72e1e45e941d825fd7468b9b4cc3b9327942649aeb6fc5cdbf135f0a86e84"
+      sha256: b015a8ad1c488f66851d762d3090a21c600e479dc75e68328c52774040cf9226
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.0"
+    version: "6.5.0"
   yaml:
     dependency: "direct main"
     description:

@@ -4,9 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:android_external_storage/android_external_storage.dart';
+import 'package:android_x_storage/android_x_storage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gitjournal/core/folder/notes_folder_config.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/l10n.dart';
@@ -246,7 +247,14 @@ Future<String> _getExternalDir(BuildContext context) async {
     }
   }
 
-  var path = await AndroidExternalStorage.getExternalStorageDirectory();
+  final _androidXStoragePlugin = AndroidXStorage();
+  String? path;
+  try {
+    path = await _androidXStoragePlugin.getExternalStorageDirectory();
+  } on PlatformException catch (e) {
+    Log.e("Error getting external storage directory", ex: e);
+  }
+
   if (path != null) {
     if (await _isDirWritable(path)) {
       return path;

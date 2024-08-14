@@ -9,11 +9,11 @@ environment:
 publish_to: none
 
 dependencies:
-  android_external_storage: ^0.1.0
+  android_x_storage: ^1.0.0
   auto_size_text: ^3.0.0-nullsafety.0
   badges: ^2.0.1
   buffer: ^1.2.0
-  carousel_slider: ^4.0.0
+  carousel_slider: ^5.0.0
   collection: ^1.15.0-nullsafety.4
   community_material_icon: ^5.9.55
   connectivity_plus: ^5.0.2
@@ -36,17 +36,16 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_cache_manager: ^3.0.1
-  flutter_displaymode: ^0.4.1
+  flutter_displaymode: ^0.6.0
   flutter_email_sender: ^5.0.2
   flutter_emoji: ^2.4.0
   flutter_localizations:
     sdk: flutter
   flutter_login: ^4.0.0
   flutter_markdown: ^0.7.1
-  flutter_runtime_env: ^0.0.4
   flutter_staggered_grid_view: ^0.4.1
   flutter_svg: ^2.0.7
-  flutter_tex_js: ^2.0.0
+  flutter_tex_js: ^3.0.0
   font_awesome_flutter: ^10.0.0
   fs_shim: ^2.0.1+2
   function_types: ^0.1.0
@@ -54,7 +53,7 @@ dependencies:
     git: https://github.com/GitJournal/go_git_dart.git
   git_setup:
     path: packages/git_setup
-  google_api_availability: ^3.0.1
+  google_api_availability: ^5.0.0
   google_fonts: ^2.1.0
   grpc: ^3.0.0
   hive: ^2.2.3
@@ -66,14 +65,14 @@ dependencies:
   in_app_purchase_android: ^0.3.4
   intl: ^0.19.0
   language_picker: ^0.4.1
-  launch_review: ^3.0.1
+  launch_app_store: ^1.1.2
   markdown: ^7.2.2
   meta: ^1.8.0
   mutex: ^3.0.0
   nested: ^1.0.0
   openssh_ed25519:
     git: https://github.com/GitJournal/openssh_ed25519.git
-  org_flutter: ^3.0.0
+  org_flutter: ^6.0.3
   package_info_plus: ^4.0.2
   path: ^1.8.0
   path_provider: ^2.0.11
