@@ -105,7 +105,7 @@ bool folderWithSpecExists(BuildContext context, String spec) {
 }
 
 Future<void> shareNote(Note note) async {
-  return Share.share(NoteStorage.serialize(note));
+  await Share.share(NoteStorage.serialize(note));
 }
 
 Future<Note?> getTodayJournalEntry(NotesFolderFS rootFolder) async {

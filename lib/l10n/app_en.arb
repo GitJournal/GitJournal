@@ -504,5 +504,8 @@
   "onBoardingSubtitle": "An Open Source Note Taking App built on top of Git",
   "onBoardingPage2": "Your Notes are stored in a standard Markdown + YAML Header format",
   "onBoardingPage3": "Sync your Local Git Repo with any provider",
-  "singleJournalEntry": "Single Journal Entry File per day"
+  "singleJournalEntry": "Single Journal Entry File per day",
+  "exportRepo": "Export Repository",
+  "shareAsZip": "Share as a ZIP file",
+  "failedToExport": "Failed to Export"
 }

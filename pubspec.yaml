@@ -29,7 +29,7 @@ dependencies:
   dots_indicator: ^2.0.0
   email_validator: ^2.0.1
   equatable: ^2.0.0
-  fast_immutable_collections: ^9.1.5
+  fast_immutable_collections: ^10.2.4
   file_picker: ^5.3.2
   fimber: ^0.6.1
   fixnum: ^1.0.1
@@ -83,7 +83,7 @@ dependencies:
   recase: ^4.0.0
   receive_sharing_intent: ^1.4.5
   sentry_flutter: ^7.8.0
-  share_plus: ^7.2.1
+  share_plus: ^10.0.2
   shared_preferences: ^2.0.5
   sprintf: ^7.0.0
   stack_trace: ^1.11.1
@@ -96,6 +96,7 @@ dependencies:
   uuid: ^4.2.1
   yaml: ^3.1.0
   yaml_serializer: ^0.0.12
+  archive: ^3.6.1
 
 dev_dependencies:
   benchmark_harness: ^2.0.0

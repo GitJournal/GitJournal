@@ -6,6 +6,7 @@
 
 import 'dart:async';
 
+import 'package:archive/archive_io.dart';
 import 'package:collection/collection.dart';
 import 'package:dart_git/config.dart';
 import 'package:dart_git/dart_git.dart';
@@ -34,6 +35,7 @@ import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/sync_attempt.dart';
 import 'package:path/path.dart' as p;
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:time/time.dart';
@@ -845,6 +847,26 @@ class GitJournalRepo with ChangeNotifier {
 
   Future<void> init(String repoPath) async {
     return GitRepository.init(repoPath, defaultBranch: DEFAULT_BRANCH);
+  }
+
+  Future<void> exportRepo() async {
+    // 1. Create a temporary folder
+    var dir = await io.Directory.systemTemp.createTemp();
+    var repoName = repoManager.repoFolderName(id);
+    var exportPath = p.join(dir.path, "$repoName.zip");
+
+    // 2. Create a zip file in that folder
+    await _gitOpLock.synchronized(() async {
+      var encoder = ZipFileEncoder();
+      await encoder.zipDirectoryAsync(
+        io.Directory(repoPath),
+        filename: exportPath,
+      );
+    });
+
+    // 3. Share the zip file
+    await Share.shareXFiles([XFile(exportPath, name: "$repoName.zip")]);
+    await dir.delete(recursive: true);
   }
 }
 

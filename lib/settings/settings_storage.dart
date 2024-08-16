@@ -192,6 +192,7 @@ class SettingsStorageScreen extends StatelessWidget {
             subtitle: Text(repo.repoPath),
             enabled: !storageConfig.storeInternally,
           ),
+        const ShareRepoTile(),
       ],
     );
 
@@ -206,6 +207,45 @@ class SettingsStorageScreen extends StatelessWidget {
         ),
       ),
       body: list,
+    );
+  }
+}
+
+class ShareRepoTile extends StatefulWidget {
+  const ShareRepoTile({super.key});
+
+  @override
+  State<ShareRepoTile> createState() => _ShareRepoTileState();
+}
+
+class _ShareRepoTileState extends State<ShareRepoTile> {
+  var _isExporting = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(context.loc.exportRepo),
+      subtitle: Text(context.loc.shareAsZip),
+      enabled: !_isExporting,
+      onTap: () async {
+        try {
+          setState(() {
+            _isExporting = true;
+          });
+          var repo = context.read<GitJournalRepo>();
+          await repo.exportRepo();
+        } catch (e, st) {
+          Log.e("Exporting Repo", ex: e, stacktrace: st);
+          showErrorMessageSnackbar(
+            context,
+            context.loc.failedToExport,
+          );
+        }
+
+        setState(() {
+          _isExporting = false;
+        });
+      },
     );
   }
 }

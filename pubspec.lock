@@ -47,7 +47,7 @@ packages:
     source: hosted
     version: "2.0.1"
   archive:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: archive
       sha256: cb6a278ef2dbb298455e1a713bda08524a175630ec643a242c399c932a0a1f7d
@@ -307,10 +307,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "2ca0f3e2b71f1e327e951a2afc9f073519119e14"
+      resolved-ref: ceb04b4496433ede232e8c31c6e09a63ceace5e1
       url: "https://github.com/GitJournal/dart-git.git"
     source: git
-    version: "0.0.2"
+    version: "0.0.3"
   dart_style:
     dependency: transitive
     description:
@@ -411,10 +411,10 @@ packages:
     dependency: "direct main"
     description:
       name: fast_immutable_collections
-      sha256: b910ccdc99bb38a2abbce07c5afb8f81d4e222a892e4d095a548b99814837b0c
+      sha256: c3c73f4f989d3302066e4ec94e6ec73b5dc872592d02194f49f1352d64126b8c
       url: "https://pub.dev"
     source: hosted
-    version: "9.2.1"
+    version: "10.2.4"
   ffi:
     dependency: transitive
     description:
@@ -427,10 +427,10 @@ packages:
     dependency: transitive
     description:
       name: file
-      sha256: "1b92bec4fc2a72f59a8e15af5f52cd441e4a7860b49499d69dfa817af20e925d"
+      sha256: "5fc22d7c25582e38ad9a8515372cd9a93834027aacf1801cf01164dac0ffa08c"
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.4"
+    version: "7.0.0"
   file_picker:
     dependency: "direct main"
     description:
@@ -1442,18 +1442,18 @@ packages:
     dependency: "direct main"
     description:
       name: share_plus
-      sha256: "3ef39599b00059db0990ca2e30fca0a29d8b37aae924d60063f8e0184cf20900"
+      sha256: "468c43f285207c84bcabf5737f33b914ceb8eb38398b91e5e3ad1698d1b72a52"
       url: "https://pub.dev"
     source: hosted
-    version: "7.2.2"
+    version: "10.0.2"
   share_plus_platform_interface:
     dependency: transitive
     description:
       name: share_plus_platform_interface
-      sha256: "251eb156a8b5fa9ce033747d73535bf53911071f8d3b6f4f0b578505ce0d4496"
+      sha256: "6ababf341050edff57da8b6990f11f4e99eaba837865e2e6defe16d039619db5"
       url: "https://pub.dev"
     source: hosted
-    version: "3.4.0"
+    version: "5.0.0"
   shared_preferences:
     dependency: "direct main"
     description:
