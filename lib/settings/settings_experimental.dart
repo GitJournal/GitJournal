@@ -82,15 +82,6 @@ class _ExperimentalSettingsScreenState
                 setState(() {});
               },
             ),
-            SwitchListTile(
-              title: Text(context.loc.settingsExperimentalHistory),
-              value: appConfig.experimentalHistory,
-              onChanged: (bool newVal) {
-                appConfig.experimentalHistory = newVal;
-                appConfig.save();
-                setState(() {});
-              },
-            ),
             ListTile(
               title: const Text('Enter Pro Password'),
               subtitle: Text('Pro: ${AppConfig.instance.proMode}'),

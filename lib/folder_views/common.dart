@@ -11,7 +11,6 @@ import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/editors/note_editor.dart';
-import 'package:gitjournal/folder_views/calendar_view.dart';
 import 'package:gitjournal/folder_views/card_view.dart';
 import 'package:gitjournal/folder_views/grid_view.dart';
 import 'package:gitjournal/folder_views/journal_view.dart';
@@ -69,15 +68,6 @@ Widget buildFolderView({
       );
     case FolderViewType.Grid:
       return GridFolderView(
-        folder: folder,
-        noteTapped: noteTapped,
-        noteLongPressed: noteLongPressed,
-        emptyText: emptyText,
-        isNoteSelected: isNoteSelected,
-        searchTerm: searchTerm,
-      );
-    case FolderViewType.Calendar:
-      return CalendarFolderView(
         folder: folder,
         noteTapped: noteTapped,
         noteLongPressed: noteLongPressed,

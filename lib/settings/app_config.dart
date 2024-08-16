@@ -34,8 +34,6 @@ class AppConfig extends ChangeNotifier {
   var experimentalAccounts = false;
   var experimentalTagAutoCompletion = false;
 
-  var experimentalHistory = false;
-
   void load(SharedPreferences pref) {
     onBoardingCompleted = pref.getBool("onBoardingCompleted") ?? false;
 
@@ -56,8 +54,6 @@ class AppConfig extends ChangeNotifier {
     experimentalTagAutoCompletion =
         pref.getBool("experimentalTagAutoCompletion") ??
             experimentalTagAutoCompletion;
-    experimentalHistory =
-        pref.getBool("experimentalHistory") ?? experimentalHistory;
   }
 
   Future<void> save() async {
@@ -84,8 +80,6 @@ class AppConfig extends ChangeNotifier {
         "experimentalTagAutoCompletion",
         experimentalTagAutoCompletion,
         defaultSet.experimentalTagAutoCompletion);
-    _setBool(pref, "experimentalHistory", experimentalHistory,
-        defaultSet.experimentalHistory);
 
     pref.setInt("appSettingsVersion", version);
 
@@ -103,7 +97,6 @@ class AppConfig extends ChangeNotifier {
       'experimentalMarkdownToolbar': experimentalMarkdownToolbar.toString(),
       'experimentalAccounts': experimentalAccounts.toString(),
       'experimentalTagAutoCompletion': experimentalTagAutoCompletion.toString(),
-      'experimentalHistory': experimentalHistory.toString(),
     };
   }
 

@@ -383,8 +383,6 @@ class SettingsFolderViewType extends GjSetting {
       SettingsFolderViewType(Lk.widgetsFolderViewViewsCard, "Card");
   static const Grid =
       SettingsFolderViewType(Lk.widgetsFolderViewViewsGrid, "Grid");
-  static const Calendar =
-      SettingsFolderViewType(Lk.widgetsFolderViewViewsCalendar, "Calendar");
   static const Default = Standard;
 
   const SettingsFolderViewType(super.lk, super.str);
@@ -394,7 +392,6 @@ class SettingsFolderViewType extends GjSetting {
     Journal,
     Card,
     Grid,
-    // Calendar,
   ];
 
   static SettingsFolderViewType fromInternalString(String? str) =>
@@ -416,8 +413,6 @@ class SettingsFolderViewType extends GjSetting {
         return FolderViewType.Card;
       case Grid:
         return FolderViewType.Grid;
-      case Calendar:
-        return FolderViewType.Calendar;
     }
 
     return FolderViewType.Standard;
@@ -433,8 +428,6 @@ class SettingsFolderViewType extends GjSetting {
         return SettingsFolderViewType.Card;
       case FolderViewType.Grid:
         return SettingsFolderViewType.Grid;
-      case FolderViewType.Calendar:
-        return SettingsFolderViewType.Calendar;
     }
   }
 }

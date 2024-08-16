@@ -47,7 +47,6 @@ dependencies:
   flutter_svg: ^2.0.7
   flutter_tex_js: ^3.0.0
   font_awesome_flutter: ^10.0.0
-  fs_shim: ^2.0.1+2
   function_types: ^0.1.0
   go_git_dart:
     git: https://github.com/GitJournal/go_git_dart.git
@@ -90,10 +89,8 @@ dependencies:
   sprintf: ^7.0.0
   stack_trace: ^1.11.1
   synchronized: ^3.0.0
-  table_calendar: ^3.0.3
   time: ^2.0.0
   timeago: ^3.1.0
-  timeline_tile: ^2.0.0
   tuple: ^2.0.1
   universal_io: ^2.0.4
   url_launcher: ^6.0.3

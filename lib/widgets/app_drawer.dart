@@ -9,7 +9,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:git_setup/screens.dart';
 import 'package:gitjournal/account/login_screen.dart';
 import 'package:gitjournal/analytics/analytics.dart';
-import 'package:gitjournal/history/history_screen.dart';
 import 'package:gitjournal/iap/purchase_screen.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/logger/logger.dart';
@@ -186,15 +185,6 @@ class _AppDrawerState extends State<AppDrawer>
               title: context.loc.drawerFolders,
               onTap: () => _navTopLevel(context, FolderListingScreen.routePath),
               selected: currentRoute == FolderListingScreen.routePath,
-            ),
-          if (appConfig.experimentalHistory && repo != null)
-            _buildDrawerTile(
-              context,
-              icon: Icons.history,
-              isFontAwesome: true,
-              title: context.loc.drawerHistory,
-              onTap: () => _navTopLevel(context, HistoryScreen.routePath),
-              selected: currentRoute == HistoryScreen.routePath,
             ),
           if (repo != null)
             _buildDrawerTile(
