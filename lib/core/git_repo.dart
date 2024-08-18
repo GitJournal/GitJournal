@@ -18,7 +18,7 @@ import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/utils/git_desktop.dart';
 import 'package:go_git_dart/go_git_dart_async.dart';
 import 'package:path/path.dart' as p;
-import 'package:universal_io/io.dart' show Platform, Directory;
+import 'package:universal_io/io.dart' show Platform;
 
 class GitNoteRepository {
   final String gitRepoPath;
@@ -137,7 +137,6 @@ class GitNoteRepository {
       authorEmail: config.gitAuthorEmail,
       authorName: config.gitAuthor,
     );
-    await Directory(folder.folderPath).delete(recursive: true);
   }
 
   Future<void> resetLastCommit() async {
