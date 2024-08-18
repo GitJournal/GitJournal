@@ -97,6 +97,8 @@ dependencies:
   yaml: ^3.1.0
   yaml_serializer: ^0.0.12
   archive: ^3.6.1
+  flutter_bloc: ^8.1.6
+  bloc: ^8.1.4
 
 dev_dependencies:
   benchmark_harness: ^2.0.0

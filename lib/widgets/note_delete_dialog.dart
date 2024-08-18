@@ -29,3 +29,24 @@ class NoteDeleteDialog extends StatelessWidget {
     );
   }
 }
+
+class NotesFolderDeleteDialog extends StatelessWidget {
+  const NotesFolderDeleteDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(context.loc.widgetsNotesFolderDeleteDialogTitle),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: Text(context.loc.widgetsNoteDeleteDialogNo),
+        ),
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(true),
+          child: Text(context.loc.widgetsNoteDeleteDialogYes),
+        ),
+      ],
+    );
+  }
+}
