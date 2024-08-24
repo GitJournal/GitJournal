@@ -9,7 +9,6 @@ export PATH := $(DIR)/.flutter/bin/:$(PATH)
 protos:
 	protoc --dart_out=grpc:lib/analytics/generated -Ilib/analytics/ lib/analytics/analytics.proto
 	protoc --dart_out=grpc:lib/markdown/generated -Ilib/markdown/ lib/markdown/markdown.proto
-	protoc --dart_out=grpc:lib/generated -Iprotos protos/shared_preferences.proto
 	protoc --dart_out=grpc:lib/generated -Iprotos protos/builders.proto
 	protoc --dart_out=grpc:lib/generated -Iprotos protos/core.proto
 	rm lib/analytics/generated/analytics.pbgrpc.dart
