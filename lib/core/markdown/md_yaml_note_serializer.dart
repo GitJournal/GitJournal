@@ -71,6 +71,8 @@ class NoteSerializationDateFormat extends GjSetting {
       Lk.settingsNoteMetaDataDateFormatIso8601, "iso8601");
   static const UnixTimeStamp = NoteSerializationDateFormat(
       Lk.settingsNoteMetaDataDateFormatUnixTimestamp, "unixTimestamp");
+  static const YearMonthDay = NoteSerializationDateFormat(
+      Lk.settingsNoteMetaDataDateFormatYearMonthDay, "yearMonthDay");
   static const None = NoteSerializationDateFormat(
       Lk.settingsNoteMetaDataDateFormatNone, "none");
   static const Default = Iso8601;
@@ -80,6 +82,7 @@ class NoteSerializationDateFormat extends GjSetting {
   static const options = <NoteSerializationDateFormat>[
     Iso8601,
     UnixTimeStamp,
+    YearMonthDay,
     None,
   ];
 
@@ -192,6 +195,8 @@ class NoteSerializationSettings {
         return pb.DateFormat.None;
       case NoteSerializationDateFormat.UnixTimeStamp:
         return pb.DateFormat.UnixTimeStamp;
+      case NoteSerializationDateFormat.YearMonthDay:
+        return pb.DateFormat.YearMonthDay;
       case NoteSerializationDateFormat.Iso8601:
       default:
         return pb.DateFormat.Iso8601;
@@ -204,6 +209,8 @@ class NoteSerializationSettings {
         return NoteSerializationDateFormat.None;
       case pb.DateFormat.Iso8601:
         return NoteSerializationDateFormat.Iso8601;
+      case pb.DateFormat.YearMonthDay:
+        return NoteSerializationDateFormat.YearMonthDay;
       case pb.DateFormat.UnixTimeStamp:
         return NoteSerializationDateFormat.UnixTimeStamp;
     }
@@ -258,6 +265,9 @@ class NoteSerializer implements NoteSerializerInterface {
       case NoteSerializationDateFormat.Iso8601:
         props[settings.createdKey] = toIso8601WithTimezone(note.created);
         break;
+      case NoteSerializationDateFormat.YearMonthDay:
+        props[settings.createdKey] = toDateString(note.created);
+        break;
       case NoteSerializationDateFormat.UnixTimeStamp:
         props[settings.createdKey] =
             toUnixTimeStamp(note.created, settings.unixTimestampMagnitude);
@@ -270,6 +280,9 @@ class NoteSerializer implements NoteSerializerInterface {
     switch (settings.modifiedFormat) {
       case NoteSerializationDateFormat.Iso8601:
         props[settings.modifiedKey] = toIso8601WithTimezone(note.modified);
+        break;
+      case NoteSerializationDateFormat.YearMonthDay:
+        props[settings.modifiedKey] = toDateString(note.modified);
         break;
       case NoteSerializationDateFormat.UnixTimeStamp:
         props[settings.modifiedKey] =
@@ -374,8 +387,14 @@ class NoteSerializer implements NoteSerializerInterface {
           modified = parseUnixTimeStamp(val, settings.unixTimestampMagnitude);
           settings.modifiedFormat = NoteSerializationDateFormat.UnixTimeStamp;
         } else {
-          modified = parseDateTime(val.toString());
-          settings.modifiedFormat = NoteSerializationDateFormat.Iso8601;
+          var str = val.toString();
+          if (str.length == 10) {
+            modified = parseDateTime(str);
+            settings.modifiedFormat = NoteSerializationDateFormat.YearMonthDay;
+          } else {
+            modified = parseDateTime(str);
+            settings.modifiedFormat = NoteSerializationDateFormat.Iso8601;
+          }
         }
         settings.modifiedKey = possibleKey;
 
@@ -397,8 +416,14 @@ class NoteSerializer implements NoteSerializerInterface {
           created = parseUnixTimeStamp(val, settings.unixTimestampMagnitude);
           settings.createdFormat = NoteSerializationDateFormat.UnixTimeStamp;
         } else {
-          created = parseDateTime(val.toString());
-          settings.createdFormat = NoteSerializationDateFormat.Iso8601;
+          var str = val.toString();
+          if (str.length == 10) {
+            created = parseDateTime(val.toString());
+            settings.createdFormat = NoteSerializationDateFormat.YearMonthDay;
+          } else {
+            created = parseDateTime(val.toString());
+            settings.createdFormat = NoteSerializationDateFormat.Iso8601;
+          }
         }
         settings.createdKey = possibleKey;
 

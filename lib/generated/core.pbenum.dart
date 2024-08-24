@@ -1,36 +1,25 @@
-// SPDX-FileCopyrightText: 2021 Vishesh Handa <me@vhanda.in>
 //
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-///
 //  Generated code. Do not modify.
 //  source: core.proto
 //
 // @dart = 2.12
-// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
 
-// ignore_for_file: UNDEFINED_SHOWN_NAME
+// ignore_for_file: annotate_overrides, camel_case_types, comment_references
+// ignore_for_file: constant_identifier_names, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class NoteFileFormat extends $pb.ProtobufEnum {
-  static const NoteFileFormat Markdown = NoteFileFormat._(
-      0,
-      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
-          ? ''
-          : 'Markdown');
-  static const NoteFileFormat OrgMode = NoteFileFormat._(
-      1,
-      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
-          ? ''
-          : 'OrgMode');
-  static const NoteFileFormat Txt = NoteFileFormat._(
-      2,
-      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
-          ? ''
-          : 'Txt');
+  static const NoteFileFormat Markdown =
+      NoteFileFormat._(0, _omitEnumNames ? '' : 'Markdown');
+  static const NoteFileFormat OrgMode =
+      NoteFileFormat._(1, _omitEnumNames ? '' : 'OrgMode');
+  static const NoteFileFormat Txt =
+      NoteFileFormat._(2, _omitEnumNames ? '' : 'Txt');
 
   static const $core.List<NoteFileFormat> values = <NoteFileFormat>[
     Markdown,
@@ -46,26 +35,13 @@ class NoteFileFormat extends $pb.ProtobufEnum {
 }
 
 class NoteType extends $pb.ProtobufEnum {
-  static const NoteType Unknown = NoteType._(
-      0,
-      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
-          ? ''
-          : 'Unknown');
-  static const NoteType Checklist = NoteType._(
-      1,
-      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
-          ? ''
-          : 'Checklist');
-  static const NoteType Journal = NoteType._(
-      2,
-      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
-          ? ''
-          : 'Journal');
-  static const NoteType Org = NoteType._(
-      3,
-      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
-          ? ''
-          : 'Org');
+  static const NoteType Unknown =
+      NoteType._(0, _omitEnumNames ? '' : 'Unknown');
+  static const NoteType Checklist =
+      NoteType._(1, _omitEnumNames ? '' : 'Checklist');
+  static const NoteType Journal =
+      NoteType._(2, _omitEnumNames ? '' : 'Journal');
+  static const NoteType Org = NoteType._(3, _omitEnumNames ? '' : 'Org');
 
   static const $core.List<NoteType> values = <NoteType>[
     Unknown,
@@ -82,16 +58,10 @@ class NoteType extends $pb.ProtobufEnum {
 }
 
 class UnixTimestampMagnitude extends $pb.ProtobufEnum {
-  static const UnixTimestampMagnitude Seconds = UnixTimestampMagnitude._(
-      0,
-      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
-          ? ''
-          : 'Seconds');
-  static const UnixTimestampMagnitude Milliseconds = UnixTimestampMagnitude._(
-      1,
-      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
-          ? ''
-          : 'Milliseconds');
+  static const UnixTimestampMagnitude Seconds =
+      UnixTimestampMagnitude._(0, _omitEnumNames ? '' : 'Seconds');
+  static const UnixTimestampMagnitude Milliseconds =
+      UnixTimestampMagnitude._(1, _omitEnumNames ? '' : 'Milliseconds');
 
   static const $core.List<UnixTimestampMagnitude> values =
       <UnixTimestampMagnitude>[
@@ -107,26 +77,19 @@ class UnixTimestampMagnitude extends $pb.ProtobufEnum {
 }
 
 class DateFormat extends $pb.ProtobufEnum {
-  static const DateFormat Iso8601 = DateFormat._(
-      0,
-      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
-          ? ''
-          : 'Iso8601');
-  static const DateFormat UnixTimeStamp = DateFormat._(
-      1,
-      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
-          ? ''
-          : 'UnixTimeStamp');
-  static const DateFormat None = DateFormat._(
-      2,
-      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
-          ? ''
-          : 'None');
+  static const DateFormat Iso8601 =
+      DateFormat._(0, _omitEnumNames ? '' : 'Iso8601');
+  static const DateFormat UnixTimeStamp =
+      DateFormat._(1, _omitEnumNames ? '' : 'UnixTimeStamp');
+  static const DateFormat None = DateFormat._(2, _omitEnumNames ? '' : 'None');
+  static const DateFormat YearMonthDay =
+      DateFormat._(3, _omitEnumNames ? '' : 'YearMonthDay');
 
   static const $core.List<DateFormat> values = <DateFormat>[
     Iso8601,
     UnixTimeStamp,
     None,
+    YearMonthDay,
   ];
 
   static final $core.Map<$core.int, DateFormat> _byValue =
@@ -135,3 +98,5 @@ class DateFormat extends $pb.ProtobufEnum {
 
   const DateFormat._($core.int v, $core.String n) : super(v, n);
 }
+
+const _omitEnumNames = $core.bool.fromEnvironment('protobuf.omit_enum_names');

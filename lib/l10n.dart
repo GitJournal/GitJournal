@@ -34,6 +34,8 @@ extension LocalizedBuildContext on BuildContext {
         return loc.settingsNoteMetaDataDateFormatIso8601;
       case Lk.settingsNoteMetaDataDateFormatUnixTimestamp:
         return loc.settingsNoteMetaDataDateFormatUnixTimestamp;
+      case Lk.settingsNoteMetaDataDateFormatYearMonthDay:
+        return loc.settingsNoteMetaDataDateFormatYearMonthDay;
       case Lk.settingsNoteMetaDataDateFormatNone:
         return loc.settingsNoteMetaDataDateFormatNone;
       case Lk.settingsDisplayImagesThemingThemeVectorGraphicsOff:
@@ -172,6 +174,7 @@ enum Lk {
   settingsNoteMetaDataUnixTimestampDateMagnitudeMilliseconds,
   settingsNoteMetaDataDateFormatIso8601,
   settingsNoteMetaDataDateFormatUnixTimestamp,
+  settingsNoteMetaDataDateFormatYearMonthDay,
   settingsNoteMetaDataDateFormatNone,
   settingsDisplayImagesThemingThemeVectorGraphicsOff,
   settingsDisplayImagesThemingThemeVectorGraphicsOn,

@@ -1,13 +1,13 @@
-// SPDX-FileCopyrightText: 2021 Vishesh Handa <me@vhanda.in>
 //
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-///
 //  Generated code. Do not modify.
 //  source: core.proto
 //
 // @dart = 2.12
-// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
+
+// ignore_for_file: annotate_overrides, camel_case_types, comment_references
+// ignore_for_file: constant_identifier_names, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:core' as $core;
 
@@ -19,55 +19,6 @@ import 'core.pbenum.dart';
 export 'core.pbenum.dart';
 
 class File extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'File',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'gitjournal'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'repoPath',
-        protoName: 'repoPath')
-    ..a<$core.List<$core.int>>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'hash',
-        $pb.PbFieldType.OY)
-    ..aOS(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'filePath',
-        protoName: 'filePath')
-    ..aOM<DateTimeAnyTz>(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'modified',
-        subBuilder: DateTimeAnyTz.create)
-    ..aOM<DateTimeAnyTz>(
-        5,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'created',
-        subBuilder: DateTimeAnyTz.create)
-    ..aOM<DateTimeAnyTz>(
-        6,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'fileLastModified',
-        protoName: 'fileLastModified',
-        subBuilder: DateTimeAnyTz.create)
-    ..hasRequiredFields = false;
-
-  File._() : super();
   factory File({
     $core.String? repoPath,
     $core.List<$core.int>? hash,
@@ -76,33 +27,51 @@ class File extends $pb.GeneratedMessage {
     DateTimeAnyTz? created,
     DateTimeAnyTz? fileLastModified,
   }) {
-    final _result = create();
+    final $result = create();
     if (repoPath != null) {
-      _result.repoPath = repoPath;
+      $result.repoPath = repoPath;
     }
     if (hash != null) {
-      _result.hash = hash;
+      $result.hash = hash;
     }
     if (filePath != null) {
-      _result.filePath = filePath;
+      $result.filePath = filePath;
     }
     if (modified != null) {
-      _result.modified = modified;
+      $result.modified = modified;
     }
     if (created != null) {
-      _result.created = created;
+      $result.created = created;
     }
     if (fileLastModified != null) {
-      _result.fileLastModified = fileLastModified;
+      $result.fileLastModified = fileLastModified;
     }
-    return _result;
+    return $result;
   }
+  File._() : super();
   factory File.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory File.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'File',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'gitjournal'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'repoPath', protoName: 'repoPath')
+    ..a<$core.List<$core.int>>(
+        2, _omitFieldNames ? '' : 'hash', $pb.PbFieldType.OY)
+    ..aOS(3, _omitFieldNames ? '' : 'filePath', protoName: 'filePath')
+    ..aOM<DateTimeAnyTz>(4, _omitFieldNames ? '' : 'modified',
+        subBuilder: DateTimeAnyTz.create)
+    ..aOM<DateTimeAnyTz>(5, _omitFieldNames ? '' : 'created',
+        subBuilder: DateTimeAnyTz.create)
+    ..aOM<DateTimeAnyTz>(6, _omitFieldNames ? '' : 'fileLastModified',
+        protoName: 'fileLastModified', subBuilder: DateTimeAnyTz.create)
+    ..hasRequiredFields = false;
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
@@ -111,9 +80,10 @@ class File extends $pb.GeneratedMessage {
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
   File copyWith(void Function(File) updates) =>
-      super.copyWith((message) => updates(message as File))
-          as File; // ignore: deprecated_member_use
+      super.copyWith((message) => updates(message as File)) as File;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static File create() => File._();
   File createEmptyInstance() => create();
@@ -203,94 +173,6 @@ class File extends $pb.GeneratedMessage {
 }
 
 class Note extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'Note',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'gitjournal'),
-      createEmptyInstance: create)
-    ..aOM<File>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'file',
-        subBuilder: File.create)
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'title')
-    ..aOS(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'body')
-    ..e<NoteType>(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'type',
-        $pb.PbFieldType.OE,
-        defaultOrMaker: NoteType.Unknown,
-        valueOf: NoteType.valueOf,
-        enumValues: NoteType.values)
-    ..pPS(
-        5,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'tags')
-    ..m<$core.String, Union>(
-        6,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'extraProps',
-        protoName: 'extraProps',
-        entryClassName: 'Note.ExtraPropsEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.OM,
-        valueCreator: Union.create,
-        packageName: const $pb.PackageName('gitjournal'))
-    ..e<NoteFileFormat>(
-        7,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'fileFormat',
-        $pb.PbFieldType.OE,
-        protoName: 'fileFormat',
-        defaultOrMaker: NoteFileFormat.Markdown,
-        valueOf: NoteFileFormat.valueOf,
-        enumValues: NoteFileFormat.values)
-    ..aOM<DateTimeAnyTz>(
-        10,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'modified',
-        subBuilder: DateTimeAnyTz.create)
-    ..aOM<DateTimeAnyTz>(
-        11,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'created',
-        subBuilder: DateTimeAnyTz.create)
-    ..aOM<NoteSerializationSettings>(
-        12,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'serializerSettings',
-        protoName: 'serializerSettings',
-        subBuilder: NoteSerializationSettings.create)
-    ..pPS(
-        13,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'propsList',
-        protoName: 'propsList')
-    ..hasRequiredFields = false;
-
-  Note._() : super();
   factory Note({
     File? file,
     $core.String? title,
@@ -304,48 +186,87 @@ class Note extends $pb.GeneratedMessage {
     NoteSerializationSettings? serializerSettings,
     $core.Iterable<$core.String>? propsList,
   }) {
-    final _result = create();
+    final $result = create();
     if (file != null) {
-      _result.file = file;
+      $result.file = file;
     }
     if (title != null) {
-      _result.title = title;
+      $result.title = title;
     }
     if (body != null) {
-      _result.body = body;
+      $result.body = body;
     }
     if (type != null) {
-      _result.type = type;
+      $result.type = type;
     }
     if (tags != null) {
-      _result.tags.addAll(tags);
+      $result.tags.addAll(tags);
     }
     if (extraProps != null) {
-      _result.extraProps.addAll(extraProps);
+      $result.extraProps.addAll(extraProps);
     }
     if (fileFormat != null) {
-      _result.fileFormat = fileFormat;
+      $result.fileFormat = fileFormat;
     }
     if (modified != null) {
-      _result.modified = modified;
+      $result.modified = modified;
     }
     if (created != null) {
-      _result.created = created;
+      $result.created = created;
     }
     if (serializerSettings != null) {
-      _result.serializerSettings = serializerSettings;
+      $result.serializerSettings = serializerSettings;
     }
     if (propsList != null) {
-      _result.propsList.addAll(propsList);
+      $result.propsList.addAll(propsList);
     }
-    return _result;
+    return $result;
   }
+  Note._() : super();
   factory Note.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory Note.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Note',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'gitjournal'),
+      createEmptyInstance: create)
+    ..aOM<File>(1, _omitFieldNames ? '' : 'file', subBuilder: File.create)
+    ..aOS(2, _omitFieldNames ? '' : 'title')
+    ..aOS(3, _omitFieldNames ? '' : 'body')
+    ..e<NoteType>(4, _omitFieldNames ? '' : 'type', $pb.PbFieldType.OE,
+        defaultOrMaker: NoteType.Unknown,
+        valueOf: NoteType.valueOf,
+        enumValues: NoteType.values)
+    ..pPS(5, _omitFieldNames ? '' : 'tags')
+    ..m<$core.String, Union>(6, _omitFieldNames ? '' : 'extraProps',
+        protoName: 'extraProps',
+        entryClassName: 'Note.ExtraPropsEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OM,
+        valueCreator: Union.create,
+        // valueDefaultOrMaker: Union.getDefault,
+        packageName: const $pb.PackageName('gitjournal'))
+    ..e<NoteFileFormat>(
+        7, _omitFieldNames ? '' : 'fileFormat', $pb.PbFieldType.OE,
+        protoName: 'fileFormat',
+        defaultOrMaker: NoteFileFormat.Markdown,
+        valueOf: NoteFileFormat.valueOf,
+        enumValues: NoteFileFormat.values)
+    ..aOM<DateTimeAnyTz>(10, _omitFieldNames ? '' : 'modified',
+        subBuilder: DateTimeAnyTz.create)
+    ..aOM<DateTimeAnyTz>(11, _omitFieldNames ? '' : 'created',
+        subBuilder: DateTimeAnyTz.create)
+    ..aOM<NoteSerializationSettings>(
+        12, _omitFieldNames ? '' : 'serializerSettings',
+        protoName: 'serializerSettings',
+        subBuilder: NoteSerializationSettings.create)
+    ..pPS(13, _omitFieldNames ? '' : 'propsList', protoName: 'propsList')
+    ..hasRequiredFields = false;
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
@@ -354,9 +275,10 @@ class Note extends $pb.GeneratedMessage {
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
   Note copyWith(void Function(Note) updates) =>
-      super.copyWith((message) => updates(message as Note))
-          as Note; // ignore: deprecated_member_use
+      super.copyWith((message) => updates(message as Note)) as Note;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static Note create() => Note._();
   Note createEmptyInstance() => create();
@@ -481,40 +403,31 @@ class Note extends $pb.GeneratedMessage {
 }
 
 class NoteList extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'NoteList',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'gitjournal'),
-      createEmptyInstance: create)
-    ..pc<Note>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'notes',
-        $pb.PbFieldType.PM,
-        subBuilder: Note.create)
-    ..hasRequiredFields = false;
-
-  NoteList._() : super();
   factory NoteList({
     $core.Iterable<Note>? notes,
   }) {
-    final _result = create();
+    final $result = create();
     if (notes != null) {
-      _result.notes.addAll(notes);
+      $result.notes.addAll(notes);
     }
-    return _result;
+    return $result;
   }
+  NoteList._() : super();
   factory NoteList.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory NoteList.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'NoteList',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'gitjournal'),
+      createEmptyInstance: create)
+    ..pc<Note>(1, _omitFieldNames ? '' : 'notes', $pb.PbFieldType.PM,
+        subBuilder: Note.create)
+    ..hasRequiredFields = false;
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
@@ -523,9 +436,10 @@ class NoteList extends $pb.GeneratedMessage {
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
   NoteList copyWith(void Function(NoteList) updates) =>
-      super.copyWith((message) => updates(message as NoteList))
-          as NoteList; // ignore: deprecated_member_use
+      super.copyWith((message) => updates(message as NoteList)) as NoteList;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static NoteList create() => NoteList._();
   NoteList createEmptyInstance() => create();
@@ -540,52 +454,41 @@ class NoteList extends $pb.GeneratedMessage {
 }
 
 class MdYamlDoc extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'MdYamlDoc',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'gitjournal'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'body')
-    ..m<$core.String, Union>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'map',
-        entryClassName: 'MdYamlDoc.MapEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.OM,
-        valueCreator: Union.create,
-        packageName: const $pb.PackageName('gitjournal'))
-    ..hasRequiredFields = false;
-
-  MdYamlDoc._() : super();
   factory MdYamlDoc({
     $core.String? body,
     $core.Map<$core.String, Union>? map,
   }) {
-    final _result = create();
+    final $result = create();
     if (body != null) {
-      _result.body = body;
+      $result.body = body;
     }
     if (map != null) {
-      _result.map.addAll(map);
+      $result.map.addAll(map);
     }
-    return _result;
+    return $result;
   }
+  MdYamlDoc._() : super();
   factory MdYamlDoc.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory MdYamlDoc.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'MdYamlDoc',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'gitjournal'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'body')
+    ..m<$core.String, Union>(2, _omitFieldNames ? '' : 'map',
+        entryClassName: 'MdYamlDoc.MapEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OM,
+        valueCreator: Union.create,
+        // valueDefaultOrMaker: Union.getDefault,
+        packageName: const $pb.PackageName('gitjournal'))
+    ..hasRequiredFields = false;
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
@@ -594,9 +497,10 @@ class MdYamlDoc extends $pb.GeneratedMessage {
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
   MdYamlDoc copyWith(void Function(MdYamlDoc) updates) =>
-      super.copyWith((message) => updates(message as MdYamlDoc))
-          as MdYamlDoc; // ignore: deprecated_member_use
+      super.copyWith((message) => updates(message as MdYamlDoc)) as MdYamlDoc;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static MdYamlDoc create() => MdYamlDoc._();
   MdYamlDoc createEmptyInstance() => create();
@@ -632,77 +536,6 @@ enum Union_UnionOneof {
 }
 
 class Union extends $pb.GeneratedMessage {
-  static const $core.Map<$core.int, Union_UnionOneof> _Union_UnionOneofByTag = {
-    1: Union_UnionOneof.booleanValue,
-    2: Union_UnionOneof.stringValue,
-    3: Union_UnionOneof.dateValue,
-    4: Union_UnionOneof.intValue,
-    7: Union_UnionOneof.isNull,
-    0: Union_UnionOneof.notSet
-  };
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'Union',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'gitjournal'),
-      createEmptyInstance: create)
-    ..oo(0, [1, 2, 3, 4, 7])
-    ..aOB(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'booleanValue',
-        protoName: 'booleanValue')
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'stringValue',
-        protoName: 'stringValue')
-    ..aOM<DateTimeAnyTz>(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'dateValue',
-        protoName: 'dateValue',
-        subBuilder: DateTimeAnyTz.create)
-    ..aInt64(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'intValue',
-        protoName: 'intValue')
-    ..pc<Union>(
-        5,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'listValue',
-        $pb.PbFieldType.PM,
-        protoName: 'listValue',
-        subBuilder: Union.create)
-    ..m<$core.String, Union>(
-        6,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'mapValue',
-        protoName: 'mapValue',
-        entryClassName: 'Union.MapValueEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.OM,
-        valueCreator: Union.create,
-        packageName: const $pb.PackageName('gitjournal'))
-    ..aOB(
-        7,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'isNull',
-        protoName: 'isNull')
-    ..hasRequiredFields = false;
-
-  Union._() : super();
   factory Union({
     $core.bool? booleanValue,
     $core.String? stringValue,
@@ -712,36 +545,69 @@ class Union extends $pb.GeneratedMessage {
     $core.Map<$core.String, Union>? mapValue,
     $core.bool? isNull,
   }) {
-    final _result = create();
+    final $result = create();
     if (booleanValue != null) {
-      _result.booleanValue = booleanValue;
+      $result.booleanValue = booleanValue;
     }
     if (stringValue != null) {
-      _result.stringValue = stringValue;
+      $result.stringValue = stringValue;
     }
     if (dateValue != null) {
-      _result.dateValue = dateValue;
+      $result.dateValue = dateValue;
     }
     if (intValue != null) {
-      _result.intValue = intValue;
+      $result.intValue = intValue;
     }
     if (listValue != null) {
-      _result.listValue.addAll(listValue);
+      $result.listValue.addAll(listValue);
     }
     if (mapValue != null) {
-      _result.mapValue.addAll(mapValue);
+      $result.mapValue.addAll(mapValue);
     }
     if (isNull != null) {
-      _result.isNull = isNull;
+      $result.isNull = isNull;
     }
-    return _result;
+    return $result;
   }
+  Union._() : super();
   factory Union.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory Union.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
+  static const $core.Map<$core.int, Union_UnionOneof> _Union_UnionOneofByTag = {
+    1: Union_UnionOneof.booleanValue,
+    2: Union_UnionOneof.stringValue,
+    3: Union_UnionOneof.dateValue,
+    4: Union_UnionOneof.intValue,
+    7: Union_UnionOneof.isNull,
+    0: Union_UnionOneof.notSet
+  };
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Union',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'gitjournal'),
+      createEmptyInstance: create)
+    ..oo(0, [1, 2, 3, 4, 7])
+    ..aOB(1, _omitFieldNames ? '' : 'booleanValue', protoName: 'booleanValue')
+    ..aOS(2, _omitFieldNames ? '' : 'stringValue', protoName: 'stringValue')
+    ..aOM<DateTimeAnyTz>(3, _omitFieldNames ? '' : 'dateValue',
+        protoName: 'dateValue', subBuilder: DateTimeAnyTz.create)
+    ..aInt64(4, _omitFieldNames ? '' : 'intValue', protoName: 'intValue')
+    ..pc<Union>(5, _omitFieldNames ? '' : 'listValue', $pb.PbFieldType.PM,
+        protoName: 'listValue', subBuilder: Union.create)
+    ..m<$core.String, Union>(6, _omitFieldNames ? '' : 'mapValue',
+        protoName: 'mapValue',
+        entryClassName: 'Union.MapValueEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OM,
+        valueCreator: Union.create,
+        // valueDefaultOrMaker: Union.getDefault,
+        packageName: const $pb.PackageName('gitjournal'))
+    ..aOB(7, _omitFieldNames ? '' : 'isNull', protoName: 'isNull')
+    ..hasRequiredFields = false;
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
@@ -750,9 +616,10 @@ class Union extends $pb.GeneratedMessage {
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
   Union copyWith(void Function(Union) updates) =>
-      super.copyWith((message) => updates(message as Union))
-          as Union; // ignore: deprecated_member_use
+      super.copyWith((message) => updates(message as Union)) as Union;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static Union create() => Union._();
   Union createEmptyInstance() => create();
@@ -836,50 +703,37 @@ class Union extends $pb.GeneratedMessage {
 }
 
 class DateTimeAnyTz extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'DateTimeAnyTz',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'gitjournal'),
-      createEmptyInstance: create)
-    ..a<$fixnum.Int64>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'timestamp',
-        $pb.PbFieldType.OU6,
-        defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$core.int>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'offset',
-        $pb.PbFieldType.O3)
-    ..hasRequiredFields = false;
-
-  DateTimeAnyTz._() : super();
   factory DateTimeAnyTz({
     $fixnum.Int64? timestamp,
     $core.int? offset,
   }) {
-    final _result = create();
+    final $result = create();
     if (timestamp != null) {
-      _result.timestamp = timestamp;
+      $result.timestamp = timestamp;
     }
     if (offset != null) {
-      _result.offset = offset;
+      $result.offset = offset;
     }
-    return _result;
+    return $result;
   }
+  DateTimeAnyTz._() : super();
   factory DateTimeAnyTz.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory DateTimeAnyTz.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'DateTimeAnyTz',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'gitjournal'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(
+        1, _omitFieldNames ? '' : 'timestamp', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'offset', $pb.PbFieldType.O3)
+    ..hasRequiredFields = false;
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
@@ -889,8 +743,10 @@ class DateTimeAnyTz extends $pb.GeneratedMessage {
       'Will be removed in next major version')
   DateTimeAnyTz copyWith(void Function(DateTimeAnyTz) updates) =>
       super.copyWith((message) => updates(message as DateTimeAnyTz))
-          as DateTimeAnyTz; // ignore: deprecated_member_use
+          as DateTimeAnyTz;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static DateTimeAnyTz create() => DateTimeAnyTz._();
   DateTimeAnyTz createEmptyInstance() => create();
@@ -901,6 +757,7 @@ class DateTimeAnyTz extends $pb.GeneratedMessage {
       $pb.GeneratedMessage.$_defaultFor<DateTimeAnyTz>(create);
   static DateTimeAnyTz? _defaultInstance;
 
+  /// / in seconds
   @$pb.TagNumber(1)
   $fixnum.Int64 get timestamp => $_getI64(0);
   @$pb.TagNumber(1)
@@ -913,6 +770,7 @@ class DateTimeAnyTz extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   void clearTimestamp() => clearField(1);
 
+  /// / offset in seconds east of GMT
   @$pb.TagNumber(2)
   $core.int get offset => $_getIZ(1);
   @$pb.TagNumber(2)
@@ -927,101 +785,6 @@ class DateTimeAnyTz extends $pb.GeneratedMessage {
 }
 
 class NoteSerializationSettings extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'NoteSerializationSettings',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'gitjournal'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'modifiedKey',
-        protoName: 'modifiedKey')
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'createdKey',
-        protoName: 'createdKey')
-    ..aOS(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'titleKey',
-        protoName: 'titleKey')
-    ..aOS(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'typeKey',
-        protoName: 'typeKey')
-    ..aOS(
-        5,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'tagsKey',
-        protoName: 'tagsKey')
-    ..aOB(
-        6,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'tagsInString',
-        protoName: 'tagsInString')
-    ..aOB(
-        7,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'tagsHaveHash',
-        protoName: 'tagsHaveHash')
-    ..aOB(
-        8,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'emojify')
-    ..e<DateFormat>(
-        9,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'modifiedFormat',
-        $pb.PbFieldType.OE,
-        protoName: 'modifiedFormat',
-        defaultOrMaker: DateFormat.Iso8601,
-        valueOf: DateFormat.valueOf,
-        enumValues: DateFormat.values)
-    ..e<DateFormat>(
-        10,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'createdFormat',
-        $pb.PbFieldType.OE,
-        protoName: 'createdFormat',
-        defaultOrMaker: DateFormat.Iso8601,
-        valueOf: DateFormat.valueOf,
-        enumValues: DateFormat.values)
-    ..aOS(
-        11,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'titleSettings',
-        protoName: 'titleSettings')
-    ..e<UnixTimestampMagnitude>(
-        12,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'unixTimestampMagnitude',
-        $pb.PbFieldType.OE,
-        protoName: 'unixTimestampMagnitude',
-        defaultOrMaker: UnixTimestampMagnitude.Seconds,
-        valueOf: UnixTimestampMagnitude.valueOf,
-        enumValues: UnixTimestampMagnitude.values)
-    ..hasRequiredFields = false;
-
-  NoteSerializationSettings._() : super();
   factory NoteSerializationSettings({
     $core.String? modifiedKey,
     $core.String? createdKey,
@@ -1036,51 +799,87 @@ class NoteSerializationSettings extends $pb.GeneratedMessage {
     $core.String? titleSettings,
     UnixTimestampMagnitude? unixTimestampMagnitude,
   }) {
-    final _result = create();
+    final $result = create();
     if (modifiedKey != null) {
-      _result.modifiedKey = modifiedKey;
+      $result.modifiedKey = modifiedKey;
     }
     if (createdKey != null) {
-      _result.createdKey = createdKey;
+      $result.createdKey = createdKey;
     }
     if (titleKey != null) {
-      _result.titleKey = titleKey;
+      $result.titleKey = titleKey;
     }
     if (typeKey != null) {
-      _result.typeKey = typeKey;
+      $result.typeKey = typeKey;
     }
     if (tagsKey != null) {
-      _result.tagsKey = tagsKey;
+      $result.tagsKey = tagsKey;
     }
     if (tagsInString != null) {
-      _result.tagsInString = tagsInString;
+      $result.tagsInString = tagsInString;
     }
     if (tagsHaveHash != null) {
-      _result.tagsHaveHash = tagsHaveHash;
+      $result.tagsHaveHash = tagsHaveHash;
     }
     if (emojify != null) {
-      _result.emojify = emojify;
+      $result.emojify = emojify;
     }
     if (modifiedFormat != null) {
-      _result.modifiedFormat = modifiedFormat;
+      $result.modifiedFormat = modifiedFormat;
     }
     if (createdFormat != null) {
-      _result.createdFormat = createdFormat;
+      $result.createdFormat = createdFormat;
     }
     if (titleSettings != null) {
-      _result.titleSettings = titleSettings;
+      $result.titleSettings = titleSettings;
     }
     if (unixTimestampMagnitude != null) {
-      _result.unixTimestampMagnitude = unixTimestampMagnitude;
+      $result.unixTimestampMagnitude = unixTimestampMagnitude;
     }
-    return _result;
+    return $result;
   }
+  NoteSerializationSettings._() : super();
   factory NoteSerializationSettings.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory NoteSerializationSettings.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'NoteSerializationSettings',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'gitjournal'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'modifiedKey', protoName: 'modifiedKey')
+    ..aOS(2, _omitFieldNames ? '' : 'createdKey', protoName: 'createdKey')
+    ..aOS(3, _omitFieldNames ? '' : 'titleKey', protoName: 'titleKey')
+    ..aOS(4, _omitFieldNames ? '' : 'typeKey', protoName: 'typeKey')
+    ..aOS(5, _omitFieldNames ? '' : 'tagsKey', protoName: 'tagsKey')
+    ..aOB(6, _omitFieldNames ? '' : 'tagsInString', protoName: 'tagsInString')
+    ..aOB(7, _omitFieldNames ? '' : 'tagsHaveHash', protoName: 'tagsHaveHash')
+    ..aOB(8, _omitFieldNames ? '' : 'emojify')
+    ..e<DateFormat>(
+        9, _omitFieldNames ? '' : 'modifiedFormat', $pb.PbFieldType.OE,
+        protoName: 'modifiedFormat',
+        defaultOrMaker: DateFormat.Iso8601,
+        valueOf: DateFormat.valueOf,
+        enumValues: DateFormat.values)
+    ..e<DateFormat>(
+        10, _omitFieldNames ? '' : 'createdFormat', $pb.PbFieldType.OE,
+        protoName: 'createdFormat',
+        defaultOrMaker: DateFormat.Iso8601,
+        valueOf: DateFormat.valueOf,
+        enumValues: DateFormat.values)
+    ..aOS(11, _omitFieldNames ? '' : 'titleSettings',
+        protoName: 'titleSettings')
+    ..e<UnixTimestampMagnitude>(
+        12, _omitFieldNames ? '' : 'unixTimestampMagnitude', $pb.PbFieldType.OE,
+        protoName: 'unixTimestampMagnitude',
+        defaultOrMaker: UnixTimestampMagnitude.Seconds,
+        valueOf: UnixTimestampMagnitude.valueOf,
+        enumValues: UnixTimestampMagnitude.values)
+    ..hasRequiredFields = false;
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
@@ -1092,8 +891,10 @@ class NoteSerializationSettings extends $pb.GeneratedMessage {
   NoteSerializationSettings copyWith(
           void Function(NoteSerializationSettings) updates) =>
       super.copyWith((message) => updates(message as NoteSerializationSettings))
-          as NoteSerializationSettings; // ignore: deprecated_member_use
+          as NoteSerializationSettings;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static NoteSerializationSettings create() => NoteSerializationSettings._();
   NoteSerializationSettings createEmptyInstance() => create();
@@ -1248,3 +1049,7 @@ class NoteSerializationSettings extends $pb.GeneratedMessage {
   @$pb.TagNumber(12)
   void clearUnixTimestampMagnitude() => clearField(12);
 }
+
+const _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
+const _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

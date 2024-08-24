@@ -1,53 +1,44 @@
-// SPDX-FileCopyrightText: 2021 Vishesh Handa <me@vhanda.in>
 //
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-///
 //  Generated code. Do not modify.
 //  source: markdown.proto
 //
 // @dart = 2.12
-// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
+
+// ignore_for_file: annotate_overrides, camel_case_types, comment_references
+// ignore_for_file: constant_identifier_names, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class NodeList extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'NodeList',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'gitjournal'),
-      createEmptyInstance: create)
-    ..pc<Node>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'node',
-        $pb.PbFieldType.PM,
-        subBuilder: Node.create)
-    ..hasRequiredFields = false;
-
-  NodeList._() : super();
   factory NodeList({
     $core.Iterable<Node>? node,
   }) {
-    final _result = create();
+    final $result = create();
     if (node != null) {
-      _result.node.addAll(node);
+      $result.node.addAll(node);
     }
-    return _result;
+    return $result;
   }
+  NodeList._() : super();
   factory NodeList.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory NodeList.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'NodeList',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'gitjournal'),
+      createEmptyInstance: create)
+    ..pc<Node>(1, _omitFieldNames ? '' : 'node', $pb.PbFieldType.PM,
+        subBuilder: Node.create)
+    ..hasRequiredFields = false;
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
@@ -56,9 +47,10 @@ class NodeList extends $pb.GeneratedMessage {
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
   NodeList copyWith(void Function(NodeList) updates) =>
-      super.copyWith((message) => updates(message as NodeList))
-          as NodeList; // ignore: deprecated_member_use
+      super.copyWith((message) => updates(message as NodeList)) as NodeList;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static NodeList create() => NodeList._();
   NodeList createEmptyInstance() => create();
@@ -75,54 +67,42 @@ class NodeList extends $pb.GeneratedMessage {
 enum Node_Value { element, text, notSet }
 
 class Node extends $pb.GeneratedMessage {
-  static const $core.Map<$core.int, Node_Value> _Node_ValueByTag = {
-    1: Node_Value.element,
-    2: Node_Value.text,
-    0: Node_Value.notSet
-  };
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'Node',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'gitjournal'),
-      createEmptyInstance: create)
-    ..oo(0, [1, 2])
-    ..aOM<Element>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'element',
-        subBuilder: Element.create)
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'text')
-    ..hasRequiredFields = false;
-
-  Node._() : super();
   factory Node({
     Element? element,
     $core.String? text,
   }) {
-    final _result = create();
+    final $result = create();
     if (element != null) {
-      _result.element = element;
+      $result.element = element;
     }
     if (text != null) {
-      _result.text = text;
+      $result.text = text;
     }
-    return _result;
+    return $result;
   }
+  Node._() : super();
   factory Node.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory Node.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
+  static const $core.Map<$core.int, Node_Value> _Node_ValueByTag = {
+    1: Node_Value.element,
+    2: Node_Value.text,
+    0: Node_Value.notSet
+  };
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Node',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'gitjournal'),
+      createEmptyInstance: create)
+    ..oo(0, [1, 2])
+    ..aOM<Element>(1, _omitFieldNames ? '' : 'element',
+        subBuilder: Element.create)
+    ..aOS(2, _omitFieldNames ? '' : 'text')
+    ..hasRequiredFields = false;
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
@@ -131,9 +111,10 @@ class Node extends $pb.GeneratedMessage {
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
   Node copyWith(void Function(Node) updates) =>
-      super.copyWith((message) => updates(message as Node))
-          as Node; // ignore: deprecated_member_use
+      super.copyWith((message) => updates(message as Node)) as Node;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static Node create() => Node._();
   Node createEmptyInstance() => create();
@@ -174,72 +155,50 @@ class Node extends $pb.GeneratedMessage {
 }
 
 class Element extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'Element',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'gitjournal'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'tag')
-    ..m<$core.String, $core.String>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'attributes',
-        entryClassName: 'Element.AttributesEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.OS,
-        packageName: const $pb.PackageName('gitjournal'))
-    ..pc<Node>(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'children',
-        $pb.PbFieldType.PM,
-        subBuilder: Node.create)
-    ..aOS(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'generatedId',
-        protoName: 'generatedId')
-    ..hasRequiredFields = false;
-
-  Element._() : super();
   factory Element({
     $core.String? tag,
     $core.Map<$core.String, $core.String>? attributes,
     $core.Iterable<Node>? children,
     $core.String? generatedId,
   }) {
-    final _result = create();
+    final $result = create();
     if (tag != null) {
-      _result.tag = tag;
+      $result.tag = tag;
     }
     if (attributes != null) {
-      _result.attributes.addAll(attributes);
+      $result.attributes.addAll(attributes);
     }
     if (children != null) {
-      _result.children.addAll(children);
+      $result.children.addAll(children);
     }
     if (generatedId != null) {
-      _result.generatedId = generatedId;
+      $result.generatedId = generatedId;
     }
-    return _result;
+    return $result;
   }
+  Element._() : super();
   factory Element.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory Element.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Element',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'gitjournal'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'tag')
+    ..m<$core.String, $core.String>(2, _omitFieldNames ? '' : 'attributes',
+        entryClassName: 'Element.AttributesEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OS,
+        packageName: const $pb.PackageName('gitjournal'))
+    ..pc<Node>(3, _omitFieldNames ? '' : 'children', $pb.PbFieldType.PM,
+        subBuilder: Node.create)
+    ..aOS(4, _omitFieldNames ? '' : 'generatedId', protoName: 'generatedId')
+    ..hasRequiredFields = false;
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
@@ -248,9 +207,10 @@ class Element extends $pb.GeneratedMessage {
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
   Element copyWith(void Function(Element) updates) =>
-      super.copyWith((message) => updates(message as Element))
-          as Element; // ignore: deprecated_member_use
+      super.copyWith((message) => updates(message as Element)) as Element;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static Element create() => Element._();
   Element createEmptyInstance() => create();
@@ -290,3 +250,7 @@ class Element extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   void clearGeneratedId() => clearField(4);
 }
+
+const _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
+const _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

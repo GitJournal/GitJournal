@@ -128,6 +128,7 @@
   "settingsNoteMetaDataDateFormatIso8601": "ISO 8601",
   "settingsNoteMetaDataDateFormatNone": "None",
   "settingsNoteMetaDataDateFormatUnixTimestamp": "Unix Timestamp",
+  "settingsNoteMetaDataDateFormatYearMonthDay": "YYYY-MM-DD",
   "settingsPrivacy": "Privacy Policy",
   "settingsTerms": "Terms and Conditions",
   "settingsExperimentalTitle": "Experimental Features",

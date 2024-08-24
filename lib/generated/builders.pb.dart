@@ -1,13 +1,13 @@
-// SPDX-FileCopyrightText: 2021 Vishesh Handa <me@vhanda.in>
 //
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-///
 //  Generated code. Do not modify.
 //  source: builders.proto
 //
 // @dart = 2.12
-// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
+
+// ignore_for_file: annotate_overrides, camel_case_types, comment_references
+// ignore_for_file: constant_identifier_names, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:core' as $core;
 
@@ -15,76 +15,57 @@ import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class BlobCTimeBuilderData extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'BlobCTimeBuilderData',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'gitjournal'),
-      createEmptyInstance: create)
-    ..p<$core.List<$core.int>>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'commitHashes',
-        $pb.PbFieldType.PY,
-        protoName: 'commitHashes')
-    ..p<$core.List<$core.int>>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'treeHashes',
-        $pb.PbFieldType.PY,
-        protoName: 'treeHashes')
-    ..m<$core.String, TzDateTime>(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'map',
-        entryClassName: 'BlobCTimeBuilderData.MapEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.OM,
-        valueCreator: TzDateTime.create,
-        packageName: const $pb.PackageName('gitjournal'))
-    ..a<$core.List<$core.int>>(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'headHash',
-        $pb.PbFieldType.OY,
-        protoName: 'headHash')
-    ..hasRequiredFields = false;
-
-  BlobCTimeBuilderData._() : super();
   factory BlobCTimeBuilderData({
     $core.Iterable<$core.List<$core.int>>? commitHashes,
     $core.Iterable<$core.List<$core.int>>? treeHashes,
     $core.Map<$core.String, TzDateTime>? map,
     $core.List<$core.int>? headHash,
   }) {
-    final _result = create();
+    final $result = create();
     if (commitHashes != null) {
-      _result.commitHashes.addAll(commitHashes);
+      $result.commitHashes.addAll(commitHashes);
     }
     if (treeHashes != null) {
-      _result.treeHashes.addAll(treeHashes);
+      $result.treeHashes.addAll(treeHashes);
     }
     if (map != null) {
-      _result.map.addAll(map);
+      $result.map.addAll(map);
     }
     if (headHash != null) {
-      _result.headHash = headHash;
+      $result.headHash = headHash;
     }
-    return _result;
+    return $result;
   }
+  BlobCTimeBuilderData._() : super();
   factory BlobCTimeBuilderData.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory BlobCTimeBuilderData.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'BlobCTimeBuilderData',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'gitjournal'),
+      createEmptyInstance: create)
+    ..p<$core.List<$core.int>>(
+        1, _omitFieldNames ? '' : 'commitHashes', $pb.PbFieldType.PY,
+        protoName: 'commitHashes')
+    ..p<$core.List<$core.int>>(
+        2, _omitFieldNames ? '' : 'treeHashes', $pb.PbFieldType.PY,
+        protoName: 'treeHashes')
+    ..m<$core.String, TzDateTime>(3, _omitFieldNames ? '' : 'map',
+        entryClassName: 'BlobCTimeBuilderData.MapEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OM,
+        valueCreator: TzDateTime.create,
+        // valueDefaultOrMaker: TzDateTime.getDefault,
+        packageName: const $pb.PackageName('gitjournal'))
+    ..a<$core.List<$core.int>>(
+        4, _omitFieldNames ? '' : 'headHash', $pb.PbFieldType.OY,
+        protoName: 'headHash')
+    ..hasRequiredFields = false;
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
@@ -95,8 +76,10 @@ class BlobCTimeBuilderData extends $pb.GeneratedMessage {
       'Will be removed in next major version')
   BlobCTimeBuilderData copyWith(void Function(BlobCTimeBuilderData) updates) =>
       super.copyWith((message) => updates(message as BlobCTimeBuilderData))
-          as BlobCTimeBuilderData; // ignore: deprecated_member_use
+          as BlobCTimeBuilderData;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static BlobCTimeBuilderData create() => BlobCTimeBuilderData._();
   BlobCTimeBuilderData createEmptyInstance() => create();
@@ -130,65 +113,50 @@ class BlobCTimeBuilderData extends $pb.GeneratedMessage {
 }
 
 class FileMTimeBuilderData extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'FileMTimeBuilderData',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'gitjournal'),
-      createEmptyInstance: create)
-    ..p<$core.List<$core.int>>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'commitHashes',
-        $pb.PbFieldType.PY,
-        protoName: 'commitHashes')
-    ..m<$core.String, FileMTimeInfo>(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'map',
-        entryClassName: 'FileMTimeBuilderData.MapEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.OM,
-        valueCreator: FileMTimeInfo.create,
-        packageName: const $pb.PackageName('gitjournal'))
-    ..a<$core.List<$core.int>>(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'headHash',
-        $pb.PbFieldType.OY,
-        protoName: 'headHash')
-    ..hasRequiredFields = false;
-
-  FileMTimeBuilderData._() : super();
   factory FileMTimeBuilderData({
     $core.Iterable<$core.List<$core.int>>? commitHashes,
     $core.Map<$core.String, FileMTimeInfo>? map,
     $core.List<$core.int>? headHash,
   }) {
-    final _result = create();
+    final $result = create();
     if (commitHashes != null) {
-      _result.commitHashes.addAll(commitHashes);
+      $result.commitHashes.addAll(commitHashes);
     }
     if (map != null) {
-      _result.map.addAll(map);
+      $result.map.addAll(map);
     }
     if (headHash != null) {
-      _result.headHash = headHash;
+      $result.headHash = headHash;
     }
-    return _result;
+    return $result;
   }
+  FileMTimeBuilderData._() : super();
   factory FileMTimeBuilderData.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory FileMTimeBuilderData.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FileMTimeBuilderData',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'gitjournal'),
+      createEmptyInstance: create)
+    ..p<$core.List<$core.int>>(
+        1, _omitFieldNames ? '' : 'commitHashes', $pb.PbFieldType.PY,
+        protoName: 'commitHashes')
+    ..m<$core.String, FileMTimeInfo>(3, _omitFieldNames ? '' : 'map',
+        entryClassName: 'FileMTimeBuilderData.MapEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OM,
+        valueCreator: FileMTimeInfo.create,
+        // valueDefaultOrMaker: FileMTimeInfo.getDefault,
+        packageName: const $pb.PackageName('gitjournal'))
+    ..a<$core.List<$core.int>>(
+        4, _omitFieldNames ? '' : 'headHash', $pb.PbFieldType.OY,
+        protoName: 'headHash')
+    ..hasRequiredFields = false;
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
@@ -199,8 +167,10 @@ class FileMTimeBuilderData extends $pb.GeneratedMessage {
       'Will be removed in next major version')
   FileMTimeBuilderData copyWith(void Function(FileMTimeBuilderData) updates) =>
       super.copyWith((message) => updates(message as FileMTimeBuilderData))
-          as FileMTimeBuilderData; // ignore: deprecated_member_use
+          as FileMTimeBuilderData;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static FileMTimeBuilderData create() => FileMTimeBuilderData._();
   FileMTimeBuilderData createEmptyInstance() => create();
@@ -231,50 +201,37 @@ class FileMTimeBuilderData extends $pb.GeneratedMessage {
 }
 
 class TzDateTime extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'TzDateTime',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'gitjournal'),
-      createEmptyInstance: create)
-    ..a<$fixnum.Int64>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'timestamp',
-        $pb.PbFieldType.OU6,
-        defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$core.int>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'offset',
-        $pb.PbFieldType.O3)
-    ..hasRequiredFields = false;
-
-  TzDateTime._() : super();
   factory TzDateTime({
     $fixnum.Int64? timestamp,
     $core.int? offset,
   }) {
-    final _result = create();
+    final $result = create();
     if (timestamp != null) {
-      _result.timestamp = timestamp;
+      $result.timestamp = timestamp;
     }
     if (offset != null) {
-      _result.offset = offset;
+      $result.offset = offset;
     }
-    return _result;
+    return $result;
   }
+  TzDateTime._() : super();
   factory TzDateTime.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory TzDateTime.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'TzDateTime',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'gitjournal'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(
+        1, _omitFieldNames ? '' : 'timestamp', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'offset', $pb.PbFieldType.O3)
+    ..hasRequiredFields = false;
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
@@ -283,9 +240,10 @@ class TzDateTime extends $pb.GeneratedMessage {
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
   TzDateTime copyWith(void Function(TzDateTime) updates) =>
-      super.copyWith((message) => updates(message as TzDateTime))
-          as TzDateTime; // ignore: deprecated_member_use
+      super.copyWith((message) => updates(message as TzDateTime)) as TzDateTime;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static TzDateTime create() => TzDateTime._();
   TzDateTime createEmptyInstance() => create();
@@ -295,6 +253,7 @@ class TzDateTime extends $pb.GeneratedMessage {
       $pb.GeneratedMessage.$_defaultFor<TzDateTime>(create);
   static TzDateTime? _defaultInstance;
 
+  /// / in seconds
   @$pb.TagNumber(1)
   $fixnum.Int64 get timestamp => $_getI64(0);
   @$pb.TagNumber(1)
@@ -307,6 +266,7 @@ class TzDateTime extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   void clearTimestamp() => clearField(1);
 
+  /// / offset in seconds east of GMT
   @$pb.TagNumber(2)
   $core.int get offset => $_getIZ(1);
   @$pb.TagNumber(2)
@@ -321,59 +281,42 @@ class TzDateTime extends $pb.GeneratedMessage {
 }
 
 class FileMTimeInfo extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'FileMTimeInfo',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'gitjournal'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'filePath',
-        protoName: 'filePath')
-    ..a<$core.List<$core.int>>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'hash',
-        $pb.PbFieldType.OY)
-    ..aOM<TzDateTime>(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'dt',
-        subBuilder: TzDateTime.create)
-    ..hasRequiredFields = false;
-
-  FileMTimeInfo._() : super();
   factory FileMTimeInfo({
     $core.String? filePath,
     $core.List<$core.int>? hash,
     TzDateTime? dt,
   }) {
-    final _result = create();
+    final $result = create();
     if (filePath != null) {
-      _result.filePath = filePath;
+      $result.filePath = filePath;
     }
     if (hash != null) {
-      _result.hash = hash;
+      $result.hash = hash;
     }
     if (dt != null) {
-      _result.dt = dt;
+      $result.dt = dt;
     }
-    return _result;
+    return $result;
   }
+  FileMTimeInfo._() : super();
   factory FileMTimeInfo.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory FileMTimeInfo.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FileMTimeInfo',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'gitjournal'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'filePath', protoName: 'filePath')
+    ..a<$core.List<$core.int>>(
+        2, _omitFieldNames ? '' : 'hash', $pb.PbFieldType.OY)
+    ..aOM<TzDateTime>(3, _omitFieldNames ? '' : 'dt',
+        subBuilder: TzDateTime.create)
+    ..hasRequiredFields = false;
+
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
@@ -383,8 +326,10 @@ class FileMTimeInfo extends $pb.GeneratedMessage {
       'Will be removed in next major version')
   FileMTimeInfo copyWith(void Function(FileMTimeInfo) updates) =>
       super.copyWith((message) => updates(message as FileMTimeInfo))
-          as FileMTimeInfo; // ignore: deprecated_member_use
+          as FileMTimeInfo;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static FileMTimeInfo create() => FileMTimeInfo._();
   FileMTimeInfo createEmptyInstance() => create();
@@ -433,3 +378,7 @@ class FileMTimeInfo extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   TzDateTime ensureDt() => $_ensure(2);
 }
+
+const _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
+const _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

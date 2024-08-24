@@ -323,6 +323,48 @@ Hello
     expect(actualContent, equals(expectedContent));
   });
 
+  test('Date Only FrontMatter', () async {
+    var content = """---
+bar: Foo
+modified: 2022-07-14
+created: 2024-07-14
+---
+
+Hello
+""";
+
+    var noteFullPath = p.join(repoPath, "note.md");
+    await io.File(noteFullPath).writeAsString(content);
+
+    var parentFolder = NotesFolderFS.root(config, fileStorage);
+    var file = File.short("note.md", repoPath, gitDt);
+    var note = await NoteStorage.load(file, parentFolder);
+    parentFolder.add(note);
+
+    expect(note.modified, DateTime.parse('2022-07-14'));
+    expect(note.created, DateTime.parse('2024-07-14'));
+
+    note = note.copyWith(
+      modified: DateTime.parse('2022-08-15'),
+      created: DateTime.parse('2024-08-15'),
+      file: note.file.copyFile(oid: GitHash.zero()),
+    );
+
+    var expectedContent = """---
+bar: Foo
+modified: 2022-08-15
+created: 2024-08-15
+---
+
+Hello
+""";
+
+    await NoteStorage.save(note);
+
+    var actualContent = io.File(noteFullPath).readAsStringSync();
+    expect(actualContent, equals(expectedContent));
+  });
+
   test('Note title should be saved as File Name', () async {
     var parentFolder = NotesFolderFS.root(config, fileStorage);
     var n = Note.newNote(parentFolder, fileFormat: NoteFileFormat.Markdown);

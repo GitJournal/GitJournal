@@ -87,6 +87,7 @@ enum DateFormat {
     Iso8601 = 0;
     UnixTimeStamp = 1;
     None = 2;
+    YearMonthDay = 3;
 }
 
 message NoteSerializationSettings {
