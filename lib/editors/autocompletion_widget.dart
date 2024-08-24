@@ -72,6 +72,9 @@ class _AutoCompletionWidgetState extends State<AutoCompletionWidget> {
       return;
     }
 
+    if ((range.end - range.start) <= 0) return;
+    if (range.end > text.length) return;
+
     var prefix = text.substring(range.start, range.end);
     if (prefix == "\n") {
       // Pressed Enter
