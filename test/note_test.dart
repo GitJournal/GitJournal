@@ -341,8 +341,14 @@ Hello
     var note = await NoteStorage.load(file, parentFolder);
     parentFolder.add(note);
 
-    expect(note.modified, DateTime.parse('2022-07-14'));
-    expect(note.created, DateTime.parse('2024-07-14'));
+    // Doing this to avoid timezone issues
+    expect(note.modified.year, 2022);
+    expect(note.modified.month, 7);
+    expect(note.modified.day, 14);
+
+    expect(note.created.year, 2024);
+    expect(note.created.month, 7);
+    expect(note.created.day, 14);
 
     note = note.copyWith(
       modified: DateTime.parse('2022-08-15'),
