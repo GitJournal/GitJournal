@@ -6,10 +6,11 @@
 
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
-import 'package:gitjournal/.env.dart';
 import 'package:gitjournal/logger/logger.dart';
 
 import 'generated/analytics.pb.dart' as pb;
+
+const _analyticsUrl = "https://analytics-wetu2tkdpq-ew.a.run.app/v1/sendData";
 
 final dio = () {
   var d = Dio();
@@ -31,11 +32,9 @@ final dio = () {
 }();
 
 Future<void> sendAnalytics(pb.AnalyticsMessage msg) async {
-  assert(Env.analyticsUrl.isNotEmpty);
-
   final data = msg.writeToBuffer();
   await dio.post(
-    Env.analyticsUrl,
+    _analyticsUrl,
     // vHanda: Send POST data in DIO is so strange. It seems to mess up the data
     //         if I just pass the Uint8List
     data: Stream.fromIterable(data.map((e) => [e])),
