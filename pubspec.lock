@@ -25,22 +25,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-  another_flushbar:
+  app_links:
     dependency: transitive
     description:
-      name: another_flushbar
-      sha256: "19bf9520230ec40b300aaf9dd2a8fefcb277b25ecd1c4838f530566965befc2a"
+      name: app_links
+      sha256: "50437e5916e6f56c1ca53e967cbfd6d53b3451465b41eef05ba1533bf1e1c5ea"
       url: "https://pub.dev"
     source: hosted
-    version: "1.12.30"
-  another_transformer_page_view:
+    version: "6.3.0"
+  app_links_linux:
     dependency: transitive
     description:
-      name: another_transformer_page_view
-      sha256: a7cd46ede62d621c5abe7e58c7cb2745abe67b3bfec64f59b8889c93d7be7a8e
+      name: app_links_linux
+      sha256: f5f7173a78609f3dfd4c2ff2c95bd559ab43c80a87dc6a095921d96c05688c81
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.1"
+    version: "1.0.3"
+  app_links_platform_interface:
+    dependency: transitive
+    description:
+      name: app_links_platform_interface
+      sha256: "05f5379577c513b534a29ddea68176a4d4802c46180ee8e2e966257158772a3f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
+  app_links_web:
+    dependency: transitive
+    description:
+      name: app_links_web
+      sha256: af060ed76183f9e2b87510a9480e56a5352b6c249778d07bd2c95fc35632a555
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
   archive:
     dependency: "direct main"
     description:
@@ -557,14 +573,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_login:
-    dependency: "direct main"
-    description:
-      name: flutter_login
-      sha256: "97f27a52bd68038090bd79f22600ad9ae86158f1d55c47e3d0cef66b299579f3"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.2.1"
   flutter_markdown:
     dependency: "direct main"
     description:
@@ -687,6 +695,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.2"
+  functions_client:
+    dependency: transitive
+    description:
+      name: functions_client
+      sha256: e63f49cd3b41727f47b3bde284a11a4ac62839e0604f64077d4257487510e484
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.2"
   git_setup:
     dependency: "direct main"
     description:
@@ -751,6 +767,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.3"
+  gotrue:
+    dependency: transitive
+    description:
+      name: gotrue
+      sha256: "8703db795511f69194fe77125a0c838bbb6befc2f95717b6e40331784a8bdecb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.8.4"
   graphs:
     dependency: transitive
     description:
@@ -759,6 +783,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.2"
+  gtk:
+    dependency: transitive
+    description:
+      name: gtk
+      sha256: e8ce9ca4b1df106e4d72dad201d345ea1a036cc12c360f1a7d5a758f78ffa42c
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   highlighting:
     dependency: transitive
     description:
@@ -928,14 +960,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.19.0"
-  intl_phone_number_input:
-    dependency: transitive
-    description:
-      name: intl_phone_number_input
-      sha256: "1c4328713a9503ab26a1fdbb6b00b4cada68c18aac922b35bedbc72eff1297c3"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.7.4"
   io:
     dependency: transitive
     description:
@@ -960,6 +984,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.9.0"
+  jwt_decode:
+    dependency: transitive
+    description:
+      name: jwt_decode
+      sha256: d2e9f68c052b2225130977429d30f187aa1981d789c76ad104a32243cfdebfbb
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.1"
   language_picker:
     dependency: "direct main"
     description:
@@ -1000,30 +1032,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
-  libphonenumber_platform_interface:
-    dependency: transitive
-    description:
-      name: libphonenumber_platform_interface
-      sha256: f801f6c65523f56504b83f0890e6dad584ab3a7507dca65fec0eed640afea40f
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.2"
-  libphonenumber_plugin:
-    dependency: transitive
-    description:
-      name: libphonenumber_plugin
-      sha256: c615021d9816fbda2b2587881019ed595ecdf54d999652d7e4cce0e1f026368c
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.3"
-  libphonenumber_web:
-    dependency: transitive
-    description:
-      name: libphonenumber_web
-      sha256: "8186f420dbe97c3132283e52819daff1e55d60d6db46f7ea5ac42f42a28cc2ef"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.2"
   lints:
     dependency: transitive
     description:
@@ -1281,14 +1289,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.2"
-  phone_numbers_parser:
-    dependency: transitive
-    description:
-      name: phone_numbers_parser
-      sha256: "62451b689d842791ed1fd5dc9eacf36ffa8bad23a78ad6cde732dc2fb222fae2"
-      url: "https://pub.dev"
-    source: hosted
-    version: "8.3.0"
   photo_view:
     dependency: "direct main"
     description:
@@ -1321,6 +1321,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.1"
+  postgrest:
+    dependency: transitive
+    description:
+      name: postgrest
+      sha256: c4197238601c7c3103b03a4bb77f2050b17d0064bf8b968309421abdebbb7f0e
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.4"
   process_run:
     dependency: "direct dev"
     description:
@@ -1401,6 +1409,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.1"
+  realtime_client:
+    dependency: transitive
+    description:
+      name: realtime_client
+      sha256: d897a65ee3b1b5ddc1cf606f0b83792262d38fd5679c2df7e38da29c977513da
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.1"
   recase:
     dependency: "direct main"
     description:
@@ -1417,6 +1433,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.0"
+  retry:
+    dependency: transitive
+    description:
+      name: retry
+      sha256: "822e118d5b3aafed083109c72d5f484c6dc66707885e07c0fbcb8b986bba7efc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.2"
   rxdart:
     dependency: transitive
     description:
@@ -1545,14 +1569,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
-  sign_in_button:
-    dependency: transitive
-    description:
-      name: sign_in_button
-      sha256: "977b9b0415d2f3909e642275dfabba7919ba8e111324641b76cae6d1acbd183e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.2.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -1630,6 +1646,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.1"
+  storage_client:
+    dependency: transitive
+    description:
+      name: storage_client
+      sha256: "28c147c805304dbc2b762becd1fc26ee0cb621ace3732b9ae61ef979aab8b367"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.3"
   stream_channel:
     dependency: transitive
     description:
@@ -1654,6 +1678,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  supabase:
+    dependency: transitive
+    description:
+      name: supabase
+      sha256: "4ed1cf3298f39865c05b2d8557f92eb131a9b9af70e32e218672a0afce01a6bc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.0"
+  supabase_flutter:
+    dependency: "direct main"
+    description:
+      name: supabase_flutter
+      sha256: ff6ba3048fd47d831fdc0027d3efb99346d99b95becfcb406562454bd9b229c5
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.6.0"
   synchronized:
     dependency: "direct main"
     description:
@@ -1952,6 +1992,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.12"
+  yet_another_json_isolate:
+    dependency: transitive
+    description:
+      name: yet_another_json_isolate
+      sha256: "47ed3900e6b0e4dfe378811a4402e85b7fc126a7daa94f840fef65ea9c8e46f4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
 sdks:
   dart: ">=3.4.0 <4.0.0"
   flutter: ">=3.22.3"
