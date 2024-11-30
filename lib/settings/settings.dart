@@ -177,6 +177,8 @@ class Settings extends ChangeNotifier with SettingsSharedPref {
 }
 
 class NoteFileNameFormat extends GjSetting {
+  final bool usesTitle;
+
   static const Iso8601WithTimeZone = NoteFileNameFormat(
     Lk.settingsNoteFileNameFormatIso8601WithTimeZone,
     "Iso8601WithTimeZone",
@@ -190,9 +192,8 @@ class NoteFileNameFormat extends GjSetting {
     "Iso8601WithTimeZoneWithoutColon",
   );
   static const FromTitle = NoteFileNameFormat(
-    Lk.settingsNoteFileNameFormatTitle,
-    "FromTitle",
-  );
+      Lk.settingsNoteFileNameFormatTitle, "FromTitle",
+      usesTitle: true);
   static const SimpleDate = NoteFileNameFormat(
     Lk.settingsNoteFileNameFormatSimple,
     "SimpleDate",
@@ -208,13 +209,15 @@ class NoteFileNameFormat extends GjSetting {
     "DateOnly",
   );
   static const KebabCase = NoteFileNameFormat(
-    Lk.settingsNoteFileNameFormatKebabCase,
-    "KebabCase",
-  );
+      Lk.settingsNoteFileNameFormatKebabCase, "KebabCase",
+      usesTitle: true);
+  static const Template = NoteFileNameFormat(
+      Lk.settingsNoteFileNameFormatTemplate, "Template",
+      usesTitle: true);
 
   static const Default = FromTitle;
 
-  const NoteFileNameFormat(super.lk, super.str);
+  const NoteFileNameFormat(super.lk, super.str, {this.usesTitle = false});
 
   static const options = <NoteFileNameFormat>[
     SimpleDate,
@@ -226,6 +229,7 @@ class NoteFileNameFormat extends GjSetting {
     Zettelkasten,
     DateOnly,
     KebabCase,
+    Template
   ];
 
   static NoteFileNameFormat fromInternalString(String? str) =>

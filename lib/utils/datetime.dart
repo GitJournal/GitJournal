@@ -9,10 +9,9 @@ import 'dart:core';
 import 'package:dart_git/utils/date_time.dart';
 import 'package:fixnum/fixnum.dart' as fixnum;
 import 'package:gitjournal/core/markdown/md_yaml_note_serializer.dart';
-import 'package:intl/intl.dart';
-
 import 'package:gitjournal/generated/core.pb.dart' as pb;
 import 'package:gitjournal/logger/logger.dart';
+import 'package:intl/intl.dart';
 
 final _dateOnlyFormat = DateFormat("yyyy-MM-dd");
 final _simpleDateFormat = DateFormat("yyyy-MM-dd-HH-mm-ss");
@@ -75,14 +74,16 @@ DateTime? parseDateTime(String str) {
   return null;
 }
 
-DateTime parseUnixTimeStamp(int val, NoteSerializationUnixTimestampMagnitude magnitude) {
+DateTime parseUnixTimeStamp(
+    int val, NoteSerializationUnixTimestampMagnitude magnitude) {
   if (magnitude == NoteSerializationUnixTimestampMagnitude.Seconds) {
     val *= 1000;
   }
   return DateTime.fromMillisecondsSinceEpoch(val, isUtc: true);
 }
 
-int toUnixTimeStamp(DateTime dt, NoteSerializationUnixTimestampMagnitude magnitude) {
+int toUnixTimeStamp(
+    DateTime dt, NoteSerializationUnixTimestampMagnitude magnitude) {
   var timestamp = dt.toUtc();
   switch (magnitude) {
     case NoteSerializationUnixTimestampMagnitude.Milliseconds:
