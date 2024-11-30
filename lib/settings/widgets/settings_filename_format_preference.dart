@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/settings/settings.dart';
@@ -164,7 +162,7 @@ class FileNameTemplatePreviewState extends State<FileNameTemplatePreview> {
                   "Template text (without file extension)",
                   style: TextStyle(
                     fontFamily:
-                        Theme.of(context).textTheme.bodyText1!.fontFamily,
+                        Theme.of(context).textTheme.bodyMedium!.fontFamily,
                   ),
                 ),
                 errorMaxLines: 10,

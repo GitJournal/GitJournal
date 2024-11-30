@@ -13,7 +13,6 @@ import 'package:gitjournal/core/markdown/md_yaml_doc_codec.dart';
 import 'package:gitjournal/core/markdown/md_yaml_doc_loader.dart';
 import 'package:gitjournal/core/markdown/md_yaml_note_serializer.dart';
 import 'package:gitjournal/logger/logger.dart';
-import 'package:gitjournal/utils/result.dart';
 import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 import 'package:universal_io/io.dart' as io;
