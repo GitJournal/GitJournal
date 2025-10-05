@@ -4,12 +4,12 @@ version: 1.89.0+10
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
-  flutter: ">=3.24.2"
+  flutter: ">=3.35.2"
 
 publish_to: none
 
 dependencies:
-  android_x_storage: ^1.0.0
+  android_x_storage: ^1.0.2
   auto_size_text: ^3.0.0-nullsafety.0
   badges: ^2.0.1
   buffer: ^1.2.0
@@ -38,7 +38,7 @@ dependencies:
     sdk: flutter
   flutter_cache_manager: ^3.0.1
   flutter_displaymode: ^0.6.0
-  flutter_email_sender: ^5.0.2
+  flutter_email_sender: ^8.0.0
   flutter_emoji: ^2.4.0
   flutter_localizations:
     sdk: flutter
@@ -61,7 +61,7 @@ dependencies:
   image_picker: ^0.8.4+1
   in_app_purchase: ^3.2.0
   in_app_purchase_android: ^0.3.4
-  intl: ^0.19.0
+  intl: ^0.20.2
   language_picker: ^0.4.1
   launch_app_store: ^1.1.2
   markdown: ^7.2.2

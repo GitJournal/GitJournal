@@ -22,6 +22,7 @@ if (!keystoreProperties.containsKey('keyAlias')) {
 }
 
 android {
+    namespace 'io.gitjournal.gitjournal'
     compileSdkVersion flutter.compileSdkVersion
 
     lintOptions {
