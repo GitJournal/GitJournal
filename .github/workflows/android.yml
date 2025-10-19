@@ -48,7 +48,7 @@ jobs:
       - name: Build
         run: ./scripts/build_android.sh
       - name: "Upload Artifact"
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: APK
           path: "*.apk"
