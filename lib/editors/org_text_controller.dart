@@ -113,7 +113,7 @@ class OrgTextController extends TextEditingController {
             return true;
           }
 
-          children.add(TextSpan(text: p.content, style: style));
+          children.add(TextSpan(text: p.content.id, style: style));
           return true;
         }
         if (p is OrgPlainText) {

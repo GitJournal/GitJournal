@@ -20,7 +20,7 @@ dependencies:
   convert: ^3.1.1
   crypto: ^3.0.2
   cryptography: ^2.0.5
-  dart_date: ^1.1.1
+  dart_date: ^1.5.3
   dart_git:
     git: https://github.com/GitJournal/dart-git.git
     # path: ../gitjournal/dart-git
@@ -31,7 +31,7 @@ dependencies:
   email_validator: ^2.0.1
   equatable: ^2.0.0
   fast_immutable_collections: ^10.2.4
-  file_picker: ^5.3.2
+  file_picker: ^10.3.3
   fimber: ^0.6.1
   fixnum: ^1.0.1
   flutter:
@@ -45,14 +45,14 @@ dependencies:
   flutter_markdown: ^0.7.1
   flutter_staggered_grid_view: ^0.4.1
   flutter_svg: ^2.0.7
-  flutter_tex_js: ^3.0.0
+  flutter_tex_js: ^5.0.0
   font_awesome_flutter: ^10.0.0
   function_types: ^0.1.0
   go_git_dart:
     git: https://github.com/GitJournal/go_git_dart.git
   git_setup:
     path: packages/git_setup
-  google_api_availability: ^5.0.0
+  google_api_availability: ^5.0.1
   google_fonts: ^2.1.0
   hive: ^2.2.3
   http: ^0.13.1
@@ -63,26 +63,28 @@ dependencies:
   in_app_purchase_android: ^0.3.4
   intl: ^0.20.2
   language_picker: ^0.4.1
-  launch_app_store: ^1.1.2
+  launch_app_store: ^1.1.4
   markdown: ^7.2.2
   meta: ^1.8.0
   mutex: ^3.0.0
   nested: ^1.0.0
   openssh_ed25519:
     git: https://github.com/GitJournal/openssh_ed25519.git
-  org_flutter: ^6.0.3
+  org_flutter: ^9.10.1
   package_info_plus: ^4.0.2
   path: ^1.8.0
   path_provider: ^2.0.11
-  permission_handler: ^10.2.0
+  permission_handler: ^12.0.1
   photo_view: ^0.14.0
   protobuf: ^2.0.0
   provider: ^6.0.1
   quick_actions: ^1.0.6
   quiver: ^3.2.1
   recase: ^4.0.0
-  receive_sharing_intent: ^1.4.5
-  sentry_flutter: ^7.8.0
+  receive_sharing_intent:
+    git:
+      url: https://github.com/KasemJaffer/receive_sharing_intent
+  sentry_flutter: ^9.7.0
   share_plus: ^10.0.2
   shared_preferences: ^2.0.5
   sprintf: ^7.0.0

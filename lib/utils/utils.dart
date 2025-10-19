@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import 'package:dart_date/dart_date.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
@@ -112,7 +111,7 @@ Future<void> shareNote(Note note) async {
 }
 
 Future<Note?> getTodayJournalEntry(NotesFolderFS rootFolder) async {
-  var today = Date.today;
+  var today = DateTime.now();
   var matches = await rootFolder.matchNotes((n) async {
     return n.type == NoteType.Journal && n.created.isAtSameDayAs(today);
   });

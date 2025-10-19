@@ -41,7 +41,7 @@ void main() {
     late NotesFolderConfig config;
     late FileStorage fileStorage;
 
-    final gitDt = Date.startOfToday;
+    final gitDt = DateTime.now().startOfDay;
 
     setUpAll(() async {
       tempDir = await io.Directory.systemTemp.createTemp('__storage_test__');
