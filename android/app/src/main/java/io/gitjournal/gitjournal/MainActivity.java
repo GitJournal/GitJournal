@@ -42,9 +42,5 @@ public class MainActivity extends FlutterActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (BuildConfig.DEBUG) {
-            Log.d("SCREEN", "Keeping screen in debug mode");
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        }
     }
 }
