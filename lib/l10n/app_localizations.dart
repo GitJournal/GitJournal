@@ -1827,6 +1827,18 @@ abstract class AppLocalizations {
   /// **'The repo couldn\'t be opened. Please file a bug and recreate the repo.'**
   String get screensErrorMessage;
 
+  /// No description provided for @settingsNoRemoteConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'No Git Host Configured'**
+  String get settingsNoRemoteConfigured;
+
+  /// No description provided for @settingsMultipleGitRemotesNotSupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Multiple Git Remotes are not currently supported'**
+  String get settingsMultipleGitRemotesNotSupported;
+
   /// No description provided for @widgetsRenameYes.
   ///
   /// In en, this message translates to:

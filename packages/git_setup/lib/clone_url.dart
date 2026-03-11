@@ -57,7 +57,7 @@ class GitCloneUrlPageState extends State<GitCloneUrlPage> {
         decoration: const InputDecoration(
           hintText: 'git@github.com:GitJournal/GitJournal.git',
         ),
-        validator: (s) => _isCloneUrlValid(context, s),
+        validator: (s) => isCloneUrlValid(context, s),
         focusNode: inputFormFocus,
         textInputAction: TextInputAction.done,
         onFieldSubmitted: (String _) => formSubmitted(),
@@ -142,7 +142,7 @@ class GitCloneUrlKnownProviderPageState
         decoration: const InputDecoration(
           hintText: 'git@github.com:GitJournal/GitJournal.git',
         ),
-        validator: (s) => _isCloneUrlValid(context, s),
+        validator: (s) => isCloneUrlValid(context, s),
         focusNode: inputFormFocus,
         textInputAction: TextInputAction.done,
         onFieldSubmitted: (String _) => formSubmitted(),
@@ -190,7 +190,7 @@ class GitCloneUrlKnownProviderPageState
 }
 
 // Returns null when valid
-String? _isCloneUrlValid(BuildContext context, String? url) {
+String? isCloneUrlValid(BuildContext context, String? url) {
   if (url == null) {
     return context.loc.setupCloneUrlValidatorEmpty;
   }

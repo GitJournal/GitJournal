@@ -297,6 +297,8 @@
   "screensCacheLoadingText": "Reading Git History ...",
   "screensErrorTitle": "Error",
   "screensErrorMessage": "The repo couldn't be opened. Please file a bug and recreate the repo.",
+  "settingsNoRemoteConfigured": "No Git Host Configured",
+  "settingsMultipleGitRemotesNotSupported": "Multiple Git Remotes are not currently supported",
   "widgetsRenameYes": "Rename",
   "widgetsRenameNo": "Cancel",
   "widgetsRenameValidatorEmpty": "Please enter a name",

@@ -932,6 +932,13 @@ class AppLocalizationsJa extends AppLocalizations {
       'The repo couldn\'t be opened. Please file a bug and recreate the repo.';
 
   @override
+  String get settingsNoRemoteConfigured => 'No Git Host Configured';
+
+  @override
+  String get settingsMultipleGitRemotesNotSupported =>
+      'Multiple Git Remotes are not currently supported';
+
+  @override
   String get widgetsRenameYes => 'Rename';
 
   @override

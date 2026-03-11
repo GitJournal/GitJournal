@@ -13,6 +13,7 @@ import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/settings/git_config.dart';
 import 'package:gitjournal/settings/settings.dart';
+import 'package:gitjournal/settings/settings_git_remote_host.dart';
 import 'package:gitjournal/settings/storage_config.dart';
 import 'package:gitjournal/settings/widgets/settings_list_preference.dart';
 import 'package:gitjournal/ssh/keygen.dart';
@@ -33,7 +34,6 @@ class GitRemoteSettingsScreen extends StatefulWidget {
 
 class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
   var branches = <String>[];
-  var remoteHost = "";
   var currentBranch = "";
 
   @override
@@ -42,15 +42,6 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     var settings = context.watch<Settings>();
     var gitConfig = context.watch<GitConfig>();
     var repo = context.watch<GitJournalRepo>();
-
-    if (remoteHost.isEmpty) {
-      repo.remoteConfigs().then((list) {
-        setState(() {
-          if (!mounted) return;
-          remoteHost = list.first.url;
-        });
-      });
-    }
 
     if (branches.isEmpty) {
       currentBranch = repo.currentBranch ?? "";
@@ -65,13 +56,7 @@ class _GitRemoteSettingsScreenState extends State<GitRemoteSettingsScreen> {
     var body = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        if (remoteHost.isNotEmpty)
-          Text(
-            context.loc.settingsGitRemoteHost,
-            style: textTheme.bodyLarge,
-            textAlign: TextAlign.left,
-          ),
-        if (remoteHost.isNotEmpty) ListTile(title: Text(remoteHost)),
+        const GitRemoteHost(),
         if (branches.isNotEmpty)
           ListPreference(
             title: context.loc.settingsGitRemoteBranch,
