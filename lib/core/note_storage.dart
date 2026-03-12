@@ -14,6 +14,7 @@ import 'package:gitjournal/core/markdown/md_yaml_doc_loader.dart';
 import 'package:gitjournal/core/markdown/md_yaml_note_serializer.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:path/path.dart' as p;
+import 'package:path/path.dart';
 import 'package:universal_io/io.dart' as io;
 
 import 'file/file.dart';
@@ -52,6 +53,13 @@ class NoteStorage {
     var contents = utf8.encode(serialize(note));
 
     assert(note.fullFilePath.startsWith(p.separator));
+
+    final directory = dirname(note.fullFilePath);
+    final directoryExists = io.Directory(directory).existsSync();
+    if (!directoryExists) {
+      Log.i("msg: Directory does not exist, creating it: $directory");
+      await (io.Directory(directory).create(recursive: true));
+    }
 
     var file = io.File(note.fullFilePath);
     await file.writeAsBytes(contents, flush: true);
