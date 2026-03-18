@@ -7,18 +7,18 @@
 import 'package:collection/collection.dart';
 import 'package:dart_date/dart_date.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:meta/meta.dart';
-import 'package:path/path.dart' as p;
-import 'package:recase/recase.dart';
-import 'package:universal_io/io.dart' as io;
-import 'package:uuid/uuid.dart';
-
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/error_reporting.dart';
 import 'package:gitjournal/generated/core.pb.dart' as pb;
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/settings/settings.dart';
 import 'package:gitjournal/utils/datetime.dart';
+import 'package:meta/meta.dart';
+import 'package:path/path.dart' as p;
+import 'package:recase/recase.dart';
+import 'package:universal_io/io.dart' as io;
+import 'package:uuid/uuid.dart';
+
 import 'file/file.dart';
 import 'markdown/md_yaml_doc.dart';
 import 'markdown/md_yaml_note_serializer.dart';
