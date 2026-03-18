@@ -4,7 +4,7 @@ version: 1.89.0+10
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
-  flutter: ">=3.38.5"
+  flutter: ">=3.41.5"
 
 publish_to: none
 
@@ -111,7 +111,7 @@ dev_dependencies:
   flutter_lints: ^3.0.1
   flutter_test:
     sdk: flutter
-  hive_generator: ^2.0.1
+  hive_generator_plus: ^5.0.0
   process_run: ^0.12.3+2
   test:
   widgetbook:
