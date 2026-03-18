@@ -20,7 +20,6 @@ class GitJournalKeygen implements Keygen {
       case SshKeyType.Rsa:
         return generateSSHKeysRsa(comment: comment);
       case SshKeyType.Ed25519:
-      default:
         return generateSSHKeysEd25519(comment: comment);
     }
   }

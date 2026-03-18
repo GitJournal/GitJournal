@@ -220,7 +220,6 @@ class Note implements File {
         break;
 
       case NoteFileFormat.Markdown:
-      default:
         if (!fp.toLowerCase().endsWith('.md')) {
           fp += '.md';
         }
