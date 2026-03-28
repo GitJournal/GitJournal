@@ -1,5 +1,7 @@
 # Building Instructions
 
+Current verified macOS flow for building the Android `dev/debug APK` is documented in [`docs/android-dev-build.md`](docs/android-dev-build.md). The instructions below are older and should be treated as historical context.
+
 - It's best to just work on this on Android - the ios setup is far more complicated and I haven't managed to automate it.
 
 ## Environment Setup
