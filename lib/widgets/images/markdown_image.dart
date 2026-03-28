@@ -20,28 +20,38 @@ import 'package:universal_io/io.dart';
 class MarkdownImage extends StatelessWidget {
   final double? width;
   final double? height;
+  final double widthFactor;
   final String altText;
   final String tooltip;
 
   // FIXME: Avoid using dynamic!
   final Future<dynamic> data;
 
-  const MarkdownImage._(
-      this.data, this.width, this.height, String? altText, String? tooltip)
+  const MarkdownImage._(this.data, this.width, this.height, this.widthFactor,
+      String? altText, String? tooltip)
       : altText = altText ?? "",
         tooltip = tooltip ?? "";
 
   factory MarkdownImage(Uri uri, String imageDirectory,
       {double? width, double? height, String? altText, String? titel}) {
-    final file = ((uri.isScheme("http") || uri.isScheme("https"))
-        ? DefaultCacheManager().getSingleFile(uri.toString())
-        : Future.sync(() =>
-            File.fromUri(Uri.parse(p.join(imageDirectory, uri.toString())))));
+    final imageUri = uri.fragment.isEmpty ? uri : uri.replace(fragment: '');
+    final widthFactor =
+        _parseWidthFactor(titel) ?? _parseWidthFactor(uri.fragment) ?? 1.0;
+    final file = ((imageUri.isScheme("http") || imageUri.isScheme("https"))
+        ? DefaultCacheManager().getSingleFile(imageUri.toString())
+        : Future.sync(() => File(p.join(imageDirectory, imageUri.path))));
 
     final data = file.then(
         (value) => value.path.endsWith(".svg") ? value.readAsString() : file);
 
-    return MarkdownImage._(data, width, height, altText, titel);
+    return MarkdownImage._(
+      data,
+      width,
+      height,
+      widthFactor,
+      altText,
+      titel,
+    );
   }
 
   @override
@@ -73,6 +83,10 @@ class MarkdownImage extends StatelessWidget {
       builder: (context, constraints) {
         final small =
             constraints.maxWidth < MediaQuery.of(context).size.width - 40;
+        final maxWidth = constraints.maxWidth.isFinite
+            ? constraints.maxWidth
+            : MediaQuery.of(context).size.width;
+        final effectiveWidth = width ?? maxWidth * widthFactor;
         final image = FutureBuilder(
             future: data,
             builder: (context, snapshot) {
@@ -118,7 +132,7 @@ class MarkdownImage extends StatelessWidget {
                 if (snapshot.data is String) {
                   im = ThemableImage.svg(
                     snapshot.data as String,
-                    width: width ?? MediaQuery.of(context).size.width,
+                    width: effectiveWidth,
                     height: height,
                     themingMethod: override == ThemeOverride.No ||
                             settings.themeVectorGraphics ==
@@ -151,7 +165,7 @@ class MarkdownImage extends StatelessWidget {
                 } else {
                   im = ThemableImage.image(
                     snapshot.data as File,
-                    width: width,
+                    width: effectiveWidth,
                     height: height,
                     doTheme: (settings.themeRasterGraphics ||
                             override == ThemeOverride.Do) &&
@@ -214,3 +228,28 @@ Color getOverlayBackgroundColor(
 }
 
 enum ThemeOverride { None, Do, No }
+
+double? _parseWidthFactor(String? value) {
+  if (value == null || value.isEmpty) {
+    return null;
+  }
+
+  var normalized = value.trim();
+  if (normalized.endsWith('%')) {
+    normalized = normalized.substring(0, normalized.length - 1);
+  }
+
+  final parsedSize = int.tryParse(normalized);
+  if (parsedSize == null) {
+    return null;
+  }
+
+  if (parsedSize == 25 ||
+      parsedSize == 50 ||
+      parsedSize == 75 ||
+      parsedSize == 100) {
+    return parsedSize / 100;
+  }
+
+  return null;
+}

@@ -50,7 +50,7 @@ void main() {
     var ts = TextEditorState("Hell ", 5);
     var val = insertImage(ts, image, NoteFileFormat.Markdown);
 
-    expect(val.text, "Hell ![Image](./$hash.png) ");
+    expect(val.text, "Hell\n\n![Image](./$hash.png)");
     expect(val.cursorPos, val.text.length);
   });
 
@@ -58,8 +58,8 @@ void main() {
     var ts = TextEditorState("Hello", 1);
     var val = insertImage(ts, image, NoteFileFormat.Markdown);
 
-    var cp = " ![Image](./$hash.png) ".length;
-    expect(val.text, "H ![Image](./$hash.png) ello");
+    var cp = "\n\n![Image](./$hash.png)\n\n".length;
+    expect(val.text, "H\n\n![Image](./$hash.png)\n\nello");
     expect(val.cursorPos, cp + 1);
   });
 
@@ -67,7 +67,7 @@ void main() {
     var ts = TextEditorState("", 0);
     var val = insertImage(ts, image, NoteFileFormat.Markdown);
 
-    expect(val.text, "![Image](./$hash.png) ");
+    expect(val.text, "![Image](./$hash.png)");
     expect(val.cursorPos, val.text.length);
   });
 
@@ -75,7 +75,7 @@ void main() {
     var ts = TextEditorState("", 1);
     var val = insertImage(ts, image, NoteFileFormat.Markdown);
 
-    expect(val.text, "![Image](./$hash.png) ");
+    expect(val.text, "![Image](./$hash.png)");
     expect(val.cursorPos, val.text.length);
   });
 }

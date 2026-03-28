@@ -12,6 +12,7 @@ import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/editors/heuristics.dart';
+import 'package:gitjournal/editors/journal_image_size_controls.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/editors/undo_redo.dart';
 import 'package:gitjournal/editors/utils/disposable_change_notifier.dart';
@@ -117,6 +118,10 @@ class JournalEditorState extends State<JournalEditor>
             key: _editorKey,
             textController: _textController,
             autofocus: widget.editMode,
+            onChanged: _noteTextChanged,
+          ),
+          JournalImageSizeControls(
+            textController: _textController,
             onChanged: _noteTextChanged,
           ),
         ],

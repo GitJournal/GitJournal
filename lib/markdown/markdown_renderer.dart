@@ -10,6 +10,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:function_types/function_types.dart';
 import 'package:gitjournal/core/link.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/processors/image_extractor.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/l10n.dart';
@@ -48,20 +49,22 @@ class MarkdownRenderer extends StatelessWidget {
     );
 
     var isDark = theme.brightness == Brightness.dark;
+    final dialogBackgroundColor =
+        theme.dialogTheme.backgroundColor ?? theme.canvasColor;
 
     // Copied from MarkdownStyleSheet except Grey is replaced with Highlight color
     // p is changed
     var markdownStyleSheet = MarkdownStyleSheet.fromTheme(theme).copyWith(
       p: NoteBodyEditor.textStyle(context),
       code: theme.textTheme.bodyMedium!.copyWith(
-        backgroundColor: theme.dialogBackgroundColor,
+        backgroundColor: dialogBackgroundColor,
         fontFamily: 'monospace',
         fontSize: theme.textTheme.bodyMedium!.fontSize! * 0.85,
       ),
       tableBorder: TableBorder.all(color: theme.highlightColor, width: 0),
-      tableCellsDecoration: BoxDecoration(color: theme.dialogBackgroundColor),
+      tableCellsDecoration: BoxDecoration(color: dialogBackgroundColor),
       codeblockDecoration: BoxDecoration(
-        color: theme.dialogBackgroundColor,
+        color: dialogBackgroundColor,
         borderRadius: BorderRadius.circular(2.0),
       ),
       horizontalRuleDecoration: BoxDecoration(
@@ -79,7 +82,7 @@ class MarkdownRenderer extends StatelessWidget {
     );
 
     var view = MarkdownBody(
-      data: note.body,
+      data: ImageExtractor().normalizeImageSizes(note.body),
       // selectable: false, -> making this true breaks link navigation
       styleSheet: markdownStyleSheet,
       onTapLink: (String _, String? link, String __) async {

@@ -79,6 +79,18 @@ TextEditorState insertImage(
   Image image,
   NoteFileFormat fileFormat,
 ) {
+  if (fileFormat == NoteFileFormat.OrgMode) {
+    return _insertInlineImage(ts, image, fileFormat);
+  }
+
+  return _insertBlockImage(ts, image, fileFormat);
+}
+
+TextEditorState _insertInlineImage(
+  TextEditorState ts,
+  Image image,
+  NoteFileFormat fileFormat,
+) {
   var b = ts.text;
   var markup = image.toMarkup(fileFormat);
 
@@ -98,4 +110,77 @@ TextEditorState insertImage(
   }
 
   return TextEditorState(b, ts.cursorPos + markup.length);
+}
+
+TextEditorState _insertBlockImage(
+  TextEditorState ts,
+  Image image,
+  NoteFileFormat fileFormat,
+) {
+  var b = ts.text;
+  var markup = image.toMarkup(fileFormat).trimRight();
+
+  if (ts.cursorPos > ts.text.length) {
+    ts.cursorPos = ts.text.length;
+  }
+
+  while (ts.cursorPos > 0 &&
+      (b[ts.cursorPos - 1] == ' ' || b[ts.cursorPos - 1] == '\t')) {
+    b = b.substring(0, ts.cursorPos - 1) + b.substring(ts.cursorPos);
+    ts.cursorPos -= 1;
+  }
+
+  final prefix = _requiredParagraphBreakBefore(b, ts.cursorPos);
+  final suffix = _requiredParagraphBreakAfter(b, ts.cursorPos);
+
+  var insertion = '$prefix$markup$suffix';
+
+  if (ts.cursorPos < b.length) {
+    b = b.substring(0, ts.cursorPos) + insertion + b.substring(ts.cursorPos);
+  } else {
+    b += insertion;
+  }
+
+  return TextEditorState(
+    b,
+    ts.cursorPos + insertion.length,
+  );
+}
+
+String _requiredParagraphBreakBefore(String text, int cursorPos) {
+  if (cursorPos == 0) {
+    return '';
+  }
+
+  var newlineCount = 0;
+  for (var i = cursorPos - 1; i >= 0 && text[i] == '\n'; i--) {
+    newlineCount += 1;
+  }
+
+  if (newlineCount >= 2) {
+    return '';
+  }
+  if (newlineCount == 1) {
+    return '\n';
+  }
+  return '\n\n';
+}
+
+String _requiredParagraphBreakAfter(String text, int cursorPos) {
+  if (cursorPos >= text.length) {
+    return '';
+  }
+
+  var newlineCount = 0;
+  for (var i = cursorPos; i < text.length && text[i] == '\n'; i++) {
+    newlineCount += 1;
+  }
+
+  if (newlineCount >= 2) {
+    return '';
+  }
+  if (newlineCount == 1) {
+    return '\n';
+  }
+  return '\n\n';
 }
