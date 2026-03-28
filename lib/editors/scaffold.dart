@@ -9,6 +9,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:function_types/function_types.dart';
 import 'package:gitjournal/core/folder/notes_folder_fs.dart';
 import 'package:gitjournal/core/note.dart';
+import 'package:gitjournal/core/notes/note.dart';
+import 'package:gitjournal/core/processors/image_extractor.dart';
 import 'package:gitjournal/editors/bottom_bar.dart';
 import 'package:gitjournal/editors/common.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
@@ -95,6 +97,14 @@ class _EditorScaffoldState extends State<EditorScaffold> {
 
       if (widget.editMode) {
         _editingMode = true;
+      }
+
+      final hasEmbeddedImages =
+          ImageExtractor().extract(widget.startingNote.body).isNotEmpty;
+      if (!widget.editMode &&
+          widget.startingNote.type == NoteType.Journal &&
+          hasEmbeddedImages) {
+        _editingMode = false;
       }
     });
   }

@@ -19,6 +19,13 @@ final _simpleDateFormat = DateFormat("yyyy-MM-dd-HH-mm-ss");
 final _iso8601DateFormat = DateFormat("yyyy-MM-ddTHH:mm:ss");
 final _zettleDateFormat = DateFormat("yyyyMMddHHmmss");
 
+String _intlLocale([String? locale]) {
+  final value = (locale == null || locale.isEmpty)
+      ? Intl.getCurrentLocale()
+      : locale.replaceAll('-', '_');
+  return Intl.canonicalizedLocale(value);
+}
+
 String toDateString(DateTime dt) {
   return _dateOnlyFormat.format(dt);
 }
@@ -33,6 +40,32 @@ String toIso8601(DateTime dt) {
 
 String toZettleDateTime(DateTime dt) {
   return _zettleDateFormat.format(dt);
+}
+
+String formatJournalHeaderMonthYear(DateTime dt, {String? locale}) {
+  return DateFormat.yMMMM(_intlLocale(locale)).format(dt);
+}
+
+String formatJournalWeekdayTime(DateTime dt, {String? locale}) {
+  final intlLocale = _intlLocale(locale);
+  final weekday = DateFormat.EEEE(intlLocale).format(dt);
+  final time = DateFormat.Hm(intlLocale).format(dt);
+  return '$weekday $time';
+}
+
+String formatJournalListDate(DateTime dt, {String? locale}) {
+  return DateFormat.yMMMd(_intlLocale(locale)).format(dt);
+}
+
+String formatJournalTime(DateTime dt, {String? locale}) {
+  return DateFormat.Hm(_intlLocale(locale)).format(dt);
+}
+
+String formatJournalGeneratedTitle(DateTime dt, {String? locale}) {
+  final intlLocale = _intlLocale(locale);
+  final date = DateFormat.yMMMMEEEEd(intlLocale).format(dt);
+  final time = formatJournalTime(dt, locale: intlLocale);
+  return '$date $time';
 }
 
 String toIso8601WithTimezone(DateTime dt) {
@@ -75,14 +108,16 @@ DateTime? parseDateTime(String str) {
   return null;
 }
 
-DateTime parseUnixTimeStamp(int val, NoteSerializationUnixTimestampMagnitude magnitude) {
+DateTime parseUnixTimeStamp(
+    int val, NoteSerializationUnixTimestampMagnitude magnitude) {
   if (magnitude == NoteSerializationUnixTimestampMagnitude.Seconds) {
     val *= 1000;
   }
   return DateTime.fromMillisecondsSinceEpoch(val, isUtc: true);
 }
 
-int toUnixTimeStamp(DateTime dt, NoteSerializationUnixTimestampMagnitude magnitude) {
+int toUnixTimeStamp(
+    DateTime dt, NoteSerializationUnixTimestampMagnitude magnitude) {
   var timestamp = dt.toUtc();
   switch (magnitude) {
     case NoteSerializationUnixTimestampMagnitude.Milliseconds:

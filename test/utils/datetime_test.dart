@@ -5,6 +5,7 @@
  */
 
 import 'package:dart_git/utils/date_time.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:test/test.dart';
 import 'package:time/time.dart';
 
@@ -12,7 +13,10 @@ import 'package:gitjournal/utils/datetime.dart';
 import '../lib.dart';
 
 void main() {
-  setUpAll(gjSetupAllTests);
+  setUpAll(() async {
+    await initializeDateFormatting();
+    await gjSetupAllTests();
+  });
 
   group('DateTime Utils', () {
     test('Test random date', () {
@@ -61,6 +65,16 @@ void main() {
       var dateTime = DateTime.utc(2011, 6, 6, 5, 5, 3);
       var str = toZettleDateTime(dateTime);
       expect(str, "20110606050503");
+    });
+
+    test('Formats journal title in Simplified Chinese', () {
+      final dateTime = DateTime(2026, 3, 28, 14, 30);
+      final title = formatJournalGeneratedTitle(dateTime, locale: 'zh_Hans');
+
+      expect(title, startsWith('2026年3月28日'));
+      expect(title, contains('14:30'));
+      expect(
+          formatJournalHeaderMonthYear(dateTime, locale: 'zh_Hans'), '2026年3月');
     });
   });
 }

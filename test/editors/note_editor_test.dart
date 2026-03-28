@@ -10,10 +10,12 @@ import 'package:dart_git/plumbing/git_hash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gitjournal/change_notifiers.dart';
+import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/editors/common_types.dart';
 import 'package:gitjournal/editors/note_body_editor.dart';
 import 'package:gitjournal/editors/note_editor.dart';
 import 'package:gitjournal/editors/note_title_editor.dart';
+import 'package:hive/hive.dart';
 import 'package:gitjournal/l10n.dart';
 import 'package:gitjournal/repository.dart';
 import 'package:gitjournal/repository_manager.dart';
@@ -29,7 +31,11 @@ void main() {
   late SharedPreferences pref;
   late String repoPath;
 
-  setUpAll(gjSetupAllTests);
+  setUpAll(() async {
+    await gjSetupAllTests();
+    final cacheDir = await Directory.systemTemp.createTemp('gj_hive_cache');
+    Hive.init(cacheDir.path);
+  });
 
   Future<void> _setup(
     String head, {
@@ -296,5 +302,25 @@ void main() {
     expect(note.oid, isNot(noteHash));
     expect(note.title, "dbg1");
     expect(note.body, '# dbg2e\n#dbg3');
+  });
+
+  testWidgets('Journal with images opens in preview mode', (tester) async {
+    await tester.runAsync(
+      () async => await _setup('7fc65b59170bdc91013eb56cdc65fa3307f2e7de'),
+    );
+
+    final originalNote = repo.rootFolder.getNoteWithSpec('doc.md')!;
+    final note = originalNote.copyWith(
+      body: '![Image](./missing.jpg)',
+      type: NoteType.Journal,
+    );
+
+    await tester
+        .pumpWidget(_buildApp(NoteEditor.fromNote(note, repo.rootFolder)));
+    await tester.pumpAndSettle();
+
+    expect(find.byIcon(Icons.edit), findsOneWidget);
+    expect(find.byIcon(Icons.remove_red_eye), findsNothing);
+    expect(find.text('![Image](./missing.jpg)'), findsNothing);
   });
 }

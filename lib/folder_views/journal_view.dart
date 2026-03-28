@@ -6,14 +6,13 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:intl/intl.dart';
-
 import 'package:gitjournal/core/folder/notes_folder.dart';
 import 'package:gitjournal/core/folder/sorting_mode.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes/note.dart';
 import 'package:gitjournal/core/views/summary_view.dart';
 import 'package:gitjournal/folder_views/list_view.dart';
+import 'package:gitjournal/utils/datetime.dart';
 import 'package:gitjournal/widgets/highlighted_text.dart';
 
 class JournalView extends StatelessWidget {
@@ -81,9 +80,6 @@ class JournalView extends StatelessWidget {
 }
 
 class JournalNoteListTile extends StatelessWidget {
-  static final _dateFormat = DateFormat('dd MMM, yyyy  ');
-  static final _timeFormat = DateFormat('Hm');
-
   const JournalNoteListTile({
     super.key,
     required this.searchTerm,
@@ -106,17 +102,14 @@ class JournalNoteListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
+    final locale = Localizations.localeOf(context).toLanguageTag();
 
-    DateTime? date;
     var sortingField = note.parent.config.sortingMode.field;
-    if (sortingField == SortingField.Created) {
-      date = note.created;
-    } else {
-      date = note.modified;
-    }
+    final date =
+        sortingField == SortingField.Created ? note.created : note.modified;
 
-    var dateStr = _dateFormat.format(date);
-    var time = _timeFormat.format(date);
+    var dateStr = formatJournalListDate(date, locale: locale);
+    var time = formatJournalTime(date, locale: locale);
 
     var timeColor = textTheme.bodyMedium!.color!.withAlpha(100);
 
@@ -125,6 +118,7 @@ class JournalNoteListTile extends StatelessWidget {
       textBaseline: TextBaseline.alphabetic,
       children: <Widget>[
         Text(dateStr, style: textTheme.titleLarge),
+        const SizedBox(width: 8.0),
         Text(time, style: textTheme.bodyMedium!.copyWith(color: timeColor)),
       ],
     );
@@ -155,7 +149,7 @@ class JournalNoteListTile extends StatelessWidget {
     var dc = Theme.of(context).dividerColor;
     var divider = SizedBox(
       height: 1.0,
-      child: Divider(color: dc.withOpacity(dc.opacity / 3)),
+      child: Divider(color: dc.withValues(alpha: dc.a / 3)),
     );
 
     if (!isSelected) {

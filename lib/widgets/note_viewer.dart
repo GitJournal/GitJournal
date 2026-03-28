@@ -15,6 +15,7 @@ import 'package:gitjournal/editors/editor_scroll_view.dart';
 import 'package:gitjournal/folder_views/common.dart';
 import 'package:gitjournal/logger/logger.dart';
 import 'package:gitjournal/markdown/markdown_renderer.dart';
+import 'package:gitjournal/utils/datetime.dart';
 import 'package:gitjournal/widgets/notes_backlinks.dart';
 import 'package:org_flutter/org_flutter.dart';
 import 'package:provider/provider.dart';
@@ -46,11 +47,12 @@ class NoteViewer extends StatelessWidget {
     }
 
     final rootFolder = context.watch<NotesFolderFS>();
+    final header = _headerText(context);
     var view = EditorScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          NoteTitleHeader(note.title ?? ""),
+          if (header.isNotEmpty) NoteTitleHeader(header),
           Padding(
             padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
             child: MarkdownRenderer(
@@ -72,6 +74,20 @@ class NoteViewer extends StatelessWidget {
     );
 
     return view;
+  }
+
+  String _headerText(BuildContext context) {
+    final title = note.title?.trim();
+    if (title != null && title.isNotEmpty) {
+      return title;
+    }
+
+    if (note.type == NoteType.Journal) {
+      final locale = Localizations.localeOf(context).toLanguageTag();
+      return formatJournalGeneratedTitle(note.created, locale: locale);
+    }
+
+    return "";
   }
 
   /*

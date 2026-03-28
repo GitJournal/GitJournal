@@ -9,9 +9,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gitjournal/core/note.dart';
 import 'package:gitjournal/core/notes/note.dart';
+import 'package:gitjournal/utils/datetime.dart';
 import 'package:gitjournal/utils/markdown.dart';
 import 'package:gitjournal/widgets/highlighted_text.dart';
-import 'package:intl/intl.dart';
 
 class NoteTile extends StatelessWidget {
   final Note note;
@@ -32,6 +32,7 @@ class NoteTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var body = _displayText();
+    final locale = Localizations.localeOf(context).toLanguageTag();
 
     var theme = Theme.of(context);
     var textTheme = theme.textTheme;
@@ -69,7 +70,8 @@ class NoteTile extends StatelessWidget {
           if (note.title != null) const SizedBox(height: 8.0),
           if (note.title == null && note.type == NoteType.Journal)
             HighlightedText(
-              text: '${note.created.day} ${DateFormat('MMMM, yyyy').format(note.created)}\n${DateFormat('EEEE HH:mm').format(note.created)}',
+              text: '${formatJournalListDate(note.created, locale: locale)}\n'
+                  '${formatJournalWeekdayTime(note.created, locale: locale)}',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: textTheme.titleLarge!
@@ -77,7 +79,8 @@ class NoteTile extends StatelessWidget {
               highlightText: searchTerm,
               highlightTextLowerCase: searchTermLowerCase,
             ),
-          if (note.title == null && note.type == NoteType.Journal) const SizedBox(height: 8.0),
+          if (note.title == null && note.type == NoteType.Journal)
+            const SizedBox(height: 8.0),
           Flexible(
             flex: 1,
             child: _buildBody(context, body),

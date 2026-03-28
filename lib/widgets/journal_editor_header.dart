@@ -7,7 +7,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:function_types/function_types.dart';
-import 'package:intl/intl.dart';
+import 'package:gitjournal/utils/datetime.dart';
 
 class JournalEditorHeader extends StatelessWidget {
   final DateTime dt;
@@ -18,8 +18,9 @@ class JournalEditorHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var created = dt;
-    var dateStr = DateFormat('MMMM, yyyy').format(created);
-    var timeStr = DateFormat('EEEE HH:mm').format(created);
+    final locale = Localizations.localeOf(context).toLanguageTag();
+    var dateStr = formatJournalHeaderMonthYear(created, locale: locale);
+    var timeStr = formatJournalWeekdayTime(created, locale: locale);
 
     var bigNum = Text(
       created.day.toString(),
