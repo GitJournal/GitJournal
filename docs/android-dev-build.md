@@ -10,6 +10,36 @@
 
 `dev/debug` 构建不依赖 release 签名。`android/app/build.gradle` 中只有 `release` buildType 使用了 `signingConfigs.release`。
 
+## 版本号管理
+
+Android 版本号默认由 [`pubspec.yaml`](../pubspec.yaml) 管理：
+
+```yaml
+version: 1.89.0+10
+```
+
+对应关系如下：
+
+- `1.89.0` -> Android `versionName`
+- `10` -> Android `versionCode`
+
+[`android/app/build.gradle`](../android/app/build.gradle) 通过 Flutter 注入的值读取：
+
+```gradle
+versionCode flutter.versionCode
+versionName flutter.versionName
+```
+
+`dev` flavor 还会额外附加：
+
+```gradle
+versionNameSuffix "-dev"
+```
+
+所以 `dev/debug APK` 实际版本通常会显示为 `1.89.0-dev`，版本号为 `10`。
+
+如果构建命令显式传入 `--build-number`，则会覆盖默认的 `versionCode`。例如 [`scripts/build_android.sh`](../scripts/build_android.sh) 会把 Git 提交数作为 `--build-number` 传给 Flutter。
+
 ## 前置条件
 
 当前仓库要求：
@@ -128,8 +158,14 @@ export FLUTTER_STORAGE_BASE_URL="https://storage.flutter-io.cn"
 
 ### NDK 版本警告
 
-当前构建可成功完成，但 `jni` 插件会提示更高的 NDK 版本。若要消除警告，可在 `android/app/build.gradle` 的 `android {}` 中增加：
+当前仓库已经在 [`android/app/build.gradle`](../android/app/build.gradle) 中固定：
 
 ```gradle
-ndkVersion = "28.2.13676358"
+ndkVersion "28.2.13676358"
+```
+
+如果本机没有安装这个 NDK 版本，可执行：
+
+```bash
+sdkmanager --sdk_root="$ANDROID_HOME" "ndk;28.2.13676358"
 ```

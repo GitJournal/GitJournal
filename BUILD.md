@@ -2,6 +2,14 @@
 
 Current verified macOS flow for building the Android `dev/debug APK` is documented in [`docs/android-dev-build.md`](docs/android-dev-build.md). The instructions below are older and should be treated as historical context.
 
+Android 打包版本号的当前说明也以 [`docs/android-dev-build.md`](docs/android-dev-build.md) 为准。简要规则是：
+
+- 默认版本来源于 [`pubspec.yaml`](pubspec.yaml) 的 `version: x.y.z+N`
+- 其中 `x.y.z` 对应 Android `versionName`
+- `N` 对应 Android `versionCode`
+- `dev` flavor 会额外追加 `-dev`，因此 `1.89.0+10` 会打成 `1.89.0-dev (10)`
+- 如果构建命令显式传入 `--build-number`，它会覆盖默认的 `versionCode`
+
 - It's best to just work on this on Android - the ios setup is far more complicated and I haven't managed to automate it.
 
 ## Environment Setup

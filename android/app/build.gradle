@@ -24,6 +24,7 @@ if (!keystoreProperties.containsKey('keyAlias')) {
 android {
     namespace 'io.gitjournal.gitjournal'
     compileSdkVersion flutter.compileSdkVersion
+    ndkVersion "28.2.13676358"
 
     lintOptions {
         disable 'InvalidPackage'
