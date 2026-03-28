@@ -7,6 +7,7 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:gitjournal/l10n.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginPage extends StatefulWidget {
@@ -46,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
         children: [
           TextButton(
             onPressed: _login,
-            child: const Text('Login'),
+            child: Text(context.loc.drawerLogin),
           ),
         ],
       ),

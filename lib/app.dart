@@ -249,6 +249,34 @@ class JournalAppState extends State<JournalApp> {
     super.dispose();
   }
 
+  Locale _localeFromSetting(String value) {
+    final parts = value.split('_');
+    if (parts.length == 1) {
+      return Locale(parts[0]);
+    }
+
+    if (parts.length == 2) {
+      final second = parts[1];
+      if (second.length == 4) {
+        return Locale.fromSubtags(
+          languageCode: parts[0],
+          scriptCode: second,
+        );
+      }
+
+      return Locale(parts[0], second);
+    }
+
+    final scriptCode = parts[1].length == 4 ? parts[1] : null;
+    final countryCode = scriptCode == null ? parts[1] : parts[2];
+
+    return Locale.fromSubtags(
+      languageCode: parts[0],
+      scriptCode: scriptCode,
+      countryCode: countryCode,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var repo = widget.repoManager.currentRepo;
@@ -307,11 +335,7 @@ class JournalAppState extends State<JournalApp> {
     );
     */
 
-    var locale = Locale(settings.locale);
-    var lSplit = settings.locale.split("_");
-    if (lSplit.length > 1) {
-      locale = Locale(lSplit[0], lSplit[1]);
-    }
+    final locale = _localeFromSetting(settings.locale);
 
     return MaterialApp(
       key: const ValueKey("App"),
