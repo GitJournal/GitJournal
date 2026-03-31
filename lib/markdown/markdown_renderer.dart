@@ -54,14 +54,16 @@ class MarkdownRenderer extends StatelessWidget {
     var markdownStyleSheet = MarkdownStyleSheet.fromTheme(theme).copyWith(
       p: NoteBodyEditor.textStyle(context),
       code: theme.textTheme.bodyMedium!.copyWith(
-        backgroundColor: theme.dialogBackgroundColor,
+        backgroundColor: theme.dialogTheme.backgroundColor,
         fontFamily: 'monospace',
         fontSize: theme.textTheme.bodyMedium!.fontSize! * 0.85,
       ),
       tableBorder: TableBorder.all(color: theme.highlightColor, width: 0),
-      tableCellsDecoration: BoxDecoration(color: theme.dialogBackgroundColor),
+      tableCellsDecoration: BoxDecoration(
+        color: theme.dialogTheme.backgroundColor,
+      ),
       codeblockDecoration: BoxDecoration(
-        color: theme.dialogBackgroundColor,
+        color: theme.dialogTheme.backgroundColor,
         borderRadius: BorderRadius.circular(2.0),
       ),
       horizontalRuleDecoration: BoxDecoration(
