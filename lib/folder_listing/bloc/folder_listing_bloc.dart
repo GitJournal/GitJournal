@@ -30,6 +30,10 @@ class FolderListingBloc extends Bloc<FolderListingEvent, FolderListingState> {
     Emitter<FolderListingState> emit,
   ) async {
     try {
+      repo.rootFolder.addListener(() {
+        var rootFolder = convertNotesFolderFS(null, repo.rootFolder);
+        emit(FolderListingLoaded(rootFolder));
+      });
       var rootFolder = convertNotesFolderFS(null, repo.rootFolder);
       emit(FolderListingLoaded(rootFolder));
     } catch (e) {
