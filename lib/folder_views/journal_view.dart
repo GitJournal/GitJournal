@@ -155,7 +155,7 @@ class JournalNoteListTile extends StatelessWidget {
     var dc = Theme.of(context).dividerColor;
     var divider = SizedBox(
       height: 1.0,
-      child: Divider(color: dc.withOpacity(dc.opacity / 3)),
+      child: Divider(color: dc.withValues(alpha: dc.a / 3)),
     );
 
     if (!isSelected) {
