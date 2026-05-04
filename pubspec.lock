@@ -334,7 +334,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "1aaeab565e68ade89d1aa868b5bcd17b010dde1e"
+      resolved-ref: "1eba76f36b3060ad1f8f077ca21351d0655e8b7d"
       url: "https://github.com/GitJournal/dart-git.git"
     source: git
     version: "0.0.3"
@@ -1687,6 +1687,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.12.1"
+  stdlibc:
+    dependency: transitive
+    description:
+      name: stdlibc
+      sha256: "953a7bfbd94ce17485cfb3721f1731e5b8be91b5b2bd46355d7c34a7ad96a6ba"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.4"
   storage_client:
     dependency: transitive
     description:
